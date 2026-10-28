@@ -5,11 +5,9 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "cbd2381d2eec",
-    "e317188ca296"
+    "manual-1d9e7b521a1c8a4e6bddd25d2abdd834"
   ],
   "remaining_ids": [
-    "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
     "df81ddb61398"
   ],
   "remaining_problematic_ids": [
@@ -18,17 +16,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T16:01:15+01:00",
-  "last_completed_at": "2026-10-28T16:16:30+01:00",
-  "updated_at": "2026-10-28T16:16:30+01:00",
-  "status": "failure",
-  "remaining_active_ids": [
-    "manual-1d9e7b521a1c8a4e6bddd25d2abdd834"
-  ],
-  "queue_complete": false,
+  "last_started_at": "2026-10-28T16:19:00+01:00",
+  "last_completed_at": "2026-10-28T16:25:00+01:00",
+  "updated_at": "2026-10-28T16:25:00+01:00",
+  "status": "success",
+  "remaining_active_ids": [],
+  "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T1555+0100",
+    "trigger_run_id": "tr-autoguard-1793200697",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -36,265 +32,318 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793199668936-manual",
+    "run_id": "tr-autoguard-1793200697",
     "source": "chat",
-    "status": "ERROR",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T16:01:15+01:00",
-    "updated_at": "2026-10-28T16:16:30+01:00",
-    "finished_at": "2026-10-28T16:16:30+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-28T16:19:00+01:00",
+    "updated_at": "2026-10-28T16:25:00+01:00",
+    "finished_at": "2026-10-28T16:25:00+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 4,
+      "attempted": 1,
       "ready": 0,
       "explained": 1,
-      "final_resolved": 3,
+      "final_resolved": 1,
       "explanation_groups": 1,
       "new_cards": 1,
       "revisions_updated": 1,
       "grouped_into_existing_card": 0,
-      "problematic_reviewed": 1,
-      "problematic_marked": 1,
+      "problematic_reviewed": 0,
+      "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 1,
-      "discovered_during_run": 3,
-      "final_compact_queue": 1,
-      "remaining_active": 1,
+      "discovered_during_run": 0,
+      "final_compact_queue": 0,
+      "remaining_active": 0,
       "remaining_problematic": 1,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 1,
-      "remates_selected": 0,
-      "remates_omitted": 1,
+      "remates_selected": 1,
+      "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 1,
       "trends_dismissed": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "message": "Pasada parcial 3/4: Más de 100 quedó explicada; Ramón pasó a problematic; Cállate dejó de estar activa durante la ejecución; Carroñeros r0 sigue preparing por bloqueo de persistencia externa. 0 rewrite_pending.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
-        "title": "Carroñeros",
-        "reason": "La investigación quedó verificada, pero los controles de seguridad del conector bloquearon la persistencia editorial externa; no se intentó eludir el bloqueo."
-      }
-    ],
+    "message": "TTendencias completada 1/1 · Carroñeros explicada y verificada; 0 preparing/update y 0 rewrite_pending.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "revision": 0,
+        "selected": "🌶️ La metáfora ferroviaria llegó antes que la investigación.",
+        "candidate_count": 5,
+        "originality_checked": true
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-28T16:01:15+01:00",
+        "at": "2026-10-28T16:19:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual."
+        "message": "Inicio de pasada autoguard · 1 tendencia preparing/update activa; preparando validación JIT."
       },
       {
-        "at": "2026-10-28T16:02:20+01:00",
+        "at": "2026-10-28T16:19:35+01:00",
         "phase": "verifying",
-        "trend_id": "65232cca7ed1",
-        "title": "Cállate",
-        "message": "Validación JIT e investigación completadas; la revisión dejó de estar activa concurrentemente."
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Releyendo estado autoritativo de Carroñeros"
       },
       {
-        "at": "2026-10-28T16:08:00+01:00",
-        "phase": "verifying",
-        "trend_id": "cbd2381d2eec",
-        "title": "Ramón",
-        "message": "Validación JIT."
-      },
-      {
-        "at": "2026-10-28T16:09:05+01:00",
+        "at": "2026-10-28T16:20:00+01:00",
         "phase": "investigating",
-        "trend_id": "cbd2381d2eec",
-        "title": "Ramón",
-        "message": "Sin detonante único verificable; marcado problematic."
-      },
-      {
-        "at": "2026-10-28T16:12:20+01:00",
-        "phase": "verifying",
         "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
         "title": "Carroñeros",
-        "message": "Validación JIT e investigación completadas."
+        "message": "Buscando detonante actual y contrastando la pista editorial sobre Ignacio Garriga."
       },
       {
-        "at": "2026-10-28T16:13:30+01:00",
+        "at": "2026-10-28T16:20:35+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-28T16:20:50+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-28T16:21:05+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-28T16:21:15+01:00",
+        "phase": "drafting",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-28T16:21:30+01:00",
+        "phase": "drafting",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Comprobando límite de X · 264 caracteres"
+      },
+      {
+        "at": "2026-10-28T16:21:40+01:00",
+        "phase": "remate_selection",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Generando y evaluando candidatos de remate con control de originalidad"
+      },
+      {
+        "at": "2026-10-28T16:21:52+01:00",
+        "phase": "remate_selection",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-28T16:22:00+01:00",
         "phase": "persisting",
         "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
         "title": "Carroñeros",
-        "message": "Persistencia externa bloqueada; revisión conservada en preparing."
+        "message": "Guardando ficha Explicada mediante el aplicador transaccional de TTendencias."
       },
       {
-        "at": "2026-10-28T16:14:00+01:00",
-        "phase": "verifying",
-        "trend_id": "e317188ca296",
-        "title": "Más de 100",
-        "message": "Validación JIT."
-      },
-      {
-        "at": "2026-10-28T16:15:15+01:00",
+        "at": "2026-10-28T16:23:15+01:00",
         "phase": "persisting",
-        "trend_id": "e317188ca296",
-        "title": "Más de 100",
-        "message": "Explicación persistida por el aplicador oficial."
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "La revisión ya fue aplicada por una ejecución concurrente; no se duplica la escritura."
       },
       {
-        "at": "2026-10-28T16:16:30+01:00",
+        "at": "2026-10-28T16:24:00+01:00",
+        "phase": "verifying",
+        "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+        "title": "Carroñeros",
+        "message": "Releyendo main y verificando id+revision y texto persistido tras resolver la carrera concurrente."
+      },
+      {
+        "at": "2026-10-28T16:25:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final: 1 preparing, 0 update, 0 rewrite_pending; la pasada no puede cerrarse como satisfactoria."
+        "message": "TTendencias completada 1/1 · Carroñeros explicada y verificada; 0 preparing/update y 0 rewrite_pending."
       }
     ],
     "processed_ids": [
-      "cbd2381d2eec",
-      "e317188ca296"
-    ],
-    "partial": true,
-    "queue_complete": false,
-    "remaining_active_ids": [
       "manual-1d9e7b521a1c8a4e6bddd25d2abdd834"
     ],
+    "partial": false,
+    "queue_complete": true,
+    "remaining_active_ids": [],
     "remaining_problematic_ids": [
       "df81ddb61398"
     ],
     "final_outcomes": [
       {
-        "id": "65232cca7ed1",
-        "name": "Cállate",
-        "revision": 0,
-        "status": "skipped_concurrent"
-      },
-      {
-        "id": "cbd2381d2eec",
-        "name": "Ramón",
-        "revision": 0,
-        "status": "problematic"
-      },
-      {
-        "id": "e317188ca296",
-        "name": "Más de 100",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
         "id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
         "name": "Carroñeros",
         "revision": 0,
-        "status": "preparing"
+        "status": "explained"
       }
     ]
   },
-  "run_id": "tr-1793199668936-manual",
+  "run_id": "tr-autoguard-1793200697",
   "summary": {
-    "attempted": 4,
+    "attempted": 1,
     "ready": 0,
     "explained": 1,
-    "final_resolved": 3,
+    "final_resolved": 1,
     "explanation_groups": 1,
     "new_cards": 1,
     "revisions_updated": 1,
     "grouped_into_existing_card": 0,
-    "problematic_reviewed": 1,
-    "problematic_marked": 1,
+    "problematic_reviewed": 0,
+    "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 1,
-    "discovered_during_run": 3,
-    "final_compact_queue": 1,
-    "remaining_active": 1,
+    "discovered_during_run": 0,
+    "final_compact_queue": 0,
+    "remaining_active": 0,
     "remaining_problematic": 1,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 1,
-    "remates_selected": 0,
-    "remates_omitted": 1,
+    "remates_selected": 1,
+    "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 1,
     "trends_dismissed": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T16:01:15+01:00",
+      "at": "2026-10-28T16:19:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual."
+      "message": "Inicio de pasada autoguard · 1 tendencia preparing/update activa; preparando validación JIT."
     },
     {
-      "at": "2026-10-28T16:02:20+01:00",
+      "at": "2026-10-28T16:19:35+01:00",
       "phase": "verifying",
-      "trend_id": "65232cca7ed1",
-      "title": "Cállate",
-      "message": "Validación JIT e investigación completadas; la revisión dejó de estar activa concurrentemente."
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Releyendo estado autoritativo de Carroñeros"
     },
     {
-      "at": "2026-10-28T16:08:00+01:00",
-      "phase": "verifying",
-      "trend_id": "cbd2381d2eec",
-      "title": "Ramón",
-      "message": "Validación JIT."
-    },
-    {
-      "at": "2026-10-28T16:09:05+01:00",
+      "at": "2026-10-28T16:20:00+01:00",
       "phase": "investigating",
-      "trend_id": "cbd2381d2eec",
-      "title": "Ramón",
-      "message": "Sin detonante único verificable; marcado problematic."
-    },
-    {
-      "at": "2026-10-28T16:12:20+01:00",
-      "phase": "verifying",
       "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
       "title": "Carroñeros",
-      "message": "Validación JIT e investigación completadas."
+      "message": "Buscando detonante actual y contrastando la pista editorial sobre Ignacio Garriga."
     },
     {
-      "at": "2026-10-28T16:13:30+01:00",
+      "at": "2026-10-28T16:20:35+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Contrastando fuente 1/2"
+    },
+    {
+      "at": "2026-10-28T16:20:50+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Contrastando fuente 2/2"
+    },
+    {
+      "at": "2026-10-28T16:21:05+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-28T16:21:15+01:00",
+      "phase": "drafting",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-28T16:21:30+01:00",
+      "phase": "drafting",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Comprobando límite de X · 264 caracteres"
+    },
+    {
+      "at": "2026-10-28T16:21:40+01:00",
+      "phase": "remate_selection",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Generando y evaluando candidatos de remate con control de originalidad"
+    },
+    {
+      "at": "2026-10-28T16:21:52+01:00",
+      "phase": "remate_selection",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Remate seleccionado"
+    },
+    {
+      "at": "2026-10-28T16:22:00+01:00",
       "phase": "persisting",
       "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
       "title": "Carroñeros",
-      "message": "Persistencia externa bloqueada; revisión conservada en preparing."
+      "message": "Guardando ficha Explicada mediante el aplicador transaccional de TTendencias."
     },
     {
-      "at": "2026-10-28T16:14:00+01:00",
-      "phase": "verifying",
-      "trend_id": "e317188ca296",
-      "title": "Más de 100",
-      "message": "Validación JIT."
-    },
-    {
-      "at": "2026-10-28T16:15:15+01:00",
+      "at": "2026-10-28T16:23:15+01:00",
       "phase": "persisting",
-      "trend_id": "e317188ca296",
-      "title": "Más de 100",
-      "message": "Explicación persistida por el aplicador oficial."
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "La revisión ya fue aplicada por una ejecución concurrente; no se duplica la escritura."
     },
     {
-      "at": "2026-10-28T16:16:30+01:00",
+      "at": "2026-10-28T16:24:00+01:00",
+      "phase": "verifying",
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "title": "Carroñeros",
+      "message": "Releyendo main y verificando id+revision y texto persistido tras resolver la carrera concurrente."
+    },
+    {
+      "at": "2026-10-28T16:25:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final: 1 preparing, 0 update, 0 rewrite_pending; la pasada no puede cerrarse como satisfactoria."
+      "message": "TTendencias completada 1/1 · Carroñeros explicada y verificada; 0 preparing/update y 0 rewrite_pending."
     }
   ],
-  "partial": true,
+  "partial": false,
   "radar_refresh": {
     "status": "refreshed_after_trigger",
     "captured_at": "2026-10-28T14:18:29+01:00"
@@ -303,39 +352,30 @@
     "captured_at": "2026-10-28T14:40:59+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261028T1545+0100",
+  "previous_run_id": "tr-1793199668936-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+    "updated_at": "2026-10-06T21:21:47.927Z",
+    "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [],
+  "remate_selections": [
+    {
+      "trend_id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+      "revision": 0,
+      "selected": "🌶️ La metáfora ferroviaria llegó antes que la investigación.",
+      "candidate_count": 5,
+      "originality_checked": true
+    }
+  ],
   "final_outcomes": [
-    {
-      "id": "65232cca7ed1",
-      "name": "Cállate",
-      "revision": 0,
-      "status": "skipped_concurrent"
-    },
-    {
-      "id": "cbd2381d2eec",
-      "name": "Ramón",
-      "revision": 0,
-      "status": "problematic"
-    },
-    {
-      "id": "e317188ca296",
-      "name": "Más de 100",
-      "revision": 0,
-      "status": "explained"
-    },
     {
       "id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
       "name": "Carroñeros",
       "revision": 0,
-      "status": "preparing"
+      "status": "explained"
     }
   ],
-  "pending_delivery_count": 1,
-  "error": "La investigación quedó verificada, pero los controles de seguridad del conector bloquearon la persistencia editorial externa; no se intentó eludir el bloqueo."
+  "pending_delivery_count": 1
 }
