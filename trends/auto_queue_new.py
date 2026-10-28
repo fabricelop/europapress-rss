@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from reconcile_prepared_ready import reconcile_prepared_ready
+
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
 EXPLANATION_TTL = timedelta(hours=48)
@@ -385,6 +387,16 @@ def reconcile_persisted_explanations():
         print("Reconciliada explicación persistida:", req.get("name"), "r"+str(req.get("revision") or 0))
 
     return repaired
+
+# The old prepared.json pipeline already has verified editorial text. Its
+# READY entries must become Listas independently of missing AI images/Telegram.
+# Ignore terminal/newer revisions; the helper is idempotent.
+repaired_ready = reconcile_prepared_ready(
+    requests_doc, prepared_doc, explained_doc, now_dt.isoformat(timespec="seconds"))
+if repaired_ready:
+    reconciled = True
+    save("telegram-manual-explained.json", explained_doc)
+    print("READY de texto reconciliados en Listas:", repaired_ready)
 
 repaired_explanations = reconcile_persisted_explanations()
 if repaired_explanations:
