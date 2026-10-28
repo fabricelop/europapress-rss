@@ -316,7 +316,8 @@ class MainWindow(QWidget):
         self.news=[];self.trends=[];self.top30=[];self.published={"ttittulares":0,"ttendencias":0}
         self.selected=None;self.section="Todas las Listas"
         self.refreshing=False;self.sending=False
-        self.pending_action=None
+        self.pending_actions={}  # keyed by GitHub request_id
+        self.optimistic_hides={}  # (project, id, revision) -> pending/confirmed closure
         self.loaded_image=QPixmap()
         self.events=Events()
         self.events.finished.connect(self.on_finished)
@@ -376,14 +377,24 @@ class MainWindow(QWidget):
         page.addLayout(head)
         metric_row=row_layout(spacing=12)
         self.metric_labels={}
-        for title,key in [("NOTICIAS EN LISTAS","news_ready"),("TENDENCIAS EN LISTAS","trends_ready"),
-                          ("EN ELABORACIÓN","working"),("PUBLICADAS · 24 H","published")]:
+        self.metric_subtitles={}
+        for title,key in [
+            ("NOTICIAS EN LISTAS","news_ready"),
+            ("TENDENCIAS EN LISTAS","trends_ready"),
+            ("EN ELABORACIÓN","working"),
+            ("NOTICIAS PUBLICADAS · 24 H","published_news"),
+            ("TENDENCIAS PUBLICADAS · 24 H","published_trends")
+        ]:
             card=frame("metric")
-            vv=col_layout(card,7,(17,14,17,14))
-            vv.addWidget(label(title,"eyebrow"))
+            vv=col_layout(card,5,(14,12,14,10))
+            vv.addWidget(label(title,"eyebrow",wrap=True))
             value=label("—","metricNumber")
             vv.addWidget(value)
             self.metric_labels[key]=value
+            pending=label("","small")
+            pending.setStyleSheet("color:#f0c77a;")
+            vv.addWidget(pending)
+            self.metric_subtitles[key]=pending
             metric_row.addWidget(card,1)
         page.addLayout(metric_row)
         splitter=QSplitter(Qt.Horizontal)
@@ -551,22 +562,42 @@ class MainWindow(QWidget):
                 return
             self.docs,processed=value
             self.news,self.trends,self.top30,self.published=processed
+            # Resolve receipts before rendering; a stale CDN snapshot must not
+            # briefly resurrect a card the person has just closed.
+            had_pending=bool(self.pending_actions)
+            self.confirm_pending()
+            self.reconcile_optimistic_closures()
             self.render_list()
-            if self.pending_action:
-                self.confirm_pending()
-            else:
+            if not had_pending:
                 self.notice.setText("GitHub actualizado · "+dt.datetime.now().strftime("%H:%M:%S"))
         elif kind=="submit":
-            self.sending=False
+            # Every worker carries its own request_id so multiple cards may
+            # be closed without blocking on one another's GitHub workflow.
             if error:
-                self.pending_action=None
-                self.update_actions()
-                self.notice.setText("Acción no enviada: "+error)
-                QMessageBox.warning(self,"Acción no enviada",error)
+                self.notice.setText("Error inesperado al enviar: "+error)
                 return
-            self.notice.setText("Orden recibida · "+value[:8]+" · esperando confirmación editorial…")
-            for delay in (2000, 6000, 12000, 23000, 40000):
-                QTimer.singleShot(delay,self.refresh)
+            request_id,send_error=value
+            pending=self.pending_actions.get(request_id)
+            if send_error:
+                if pending:
+                    self.pending_actions.pop(request_id,None)
+                    self.optimistic_hides.pop(pending.get("hide_key"),None)
+                self.sending=False
+                self.render_list()
+                self.notice.setText("No se pudo enviar la orden. Tarjeta restaurada: "+send_error)
+                QMessageBox.warning(self,"Acción no enviada",send_error)
+                return
+            if pending:
+                pending["dispatched"]=True
+                self.notice.setText("Tarjeta apartada al instante · GitHub comprueba la orden…")
+                for delay in (1800,4500,9000,16000,28000,45000,70000):
+                    QTimer.singleShot(delay,self.refresh)
+                QTimer.singleShot(82000,self.expire_pending)
+            else:
+                self.sending=False
+                self.notice.setText("Solicitud enviada a GitHub · "+request_id[:8])
+                QTimer.singleShot(5000,self.refresh)
+            self.update_actions()
         elif kind=="image":
             rowkey,data=value if not error else (None,None)
             if error or not data or not self.selected or rowkey!=(self.selected["project"],self.selected["id"]):
@@ -589,18 +620,27 @@ class MainWindow(QWidget):
         return [x for x in self.trends if x["state"]==state]
 
     def render_list(self):
-        chosen=self.list_data()
+        chosen=self.visible_rows(self.list_data())
         query=self.search.text().casefold().strip()
         if query:
             chosen=[x for x in chosen if query in (x.get("title","")+" "+x.get("body","")).casefold()]
         self.list_count.setText(str(len(chosen))+" elementos")
-        news_ready=sum(x["state"]=="Listas" for x in self.news)
-        trend_ready=sum(x["state"]=="Listas" for x in self.trends)
+        news_ready=sum(x["state"]=="Listas" for x in self.visible_rows(self.news))
+        trend_ready=sum(x["state"]=="Listas" for x in self.visible_rows(self.trends))
         working=sum(x["state"]=="En elaboración" for x in self.news+self.trends)
         self.metric_labels["news_ready"].setText(str(news_ready))
         self.metric_labels["trends_ready"].setText(str(trend_ready))
         self.metric_labels["working"].setText(str(working))
-        self.metric_labels["published"].setText(str(sum(self.published.values())))
+        pending_published={"ttittulares":0,"ttendencias":0}
+        for entry in self.pending_actions.values():
+            if entry["decision"]=="published" and entry.get("hide_key"):
+                pending_published[entry["project"]]+=1
+        self.metric_labels["published_news"].setText(str(self.published["ttittulares"]))
+        self.metric_labels["published_trends"].setText(str(self.published["ttendencias"]))
+        for project,key in (("ttittulares","published_news"),("ttendencias","published_trends")):
+            count=pending_published[project]
+            self.metric_subtitles[key].setText(
+                ("+"+str(count)+" pendiente" if count else "Confirmadas en GitHub"))
         clear_layout(self.list_layout)
         self.card_widgets={}
         if not chosen:
@@ -684,6 +724,27 @@ class MainWindow(QWidget):
                 return key,data
             self.worker.run("image",getimage)
 
+    @staticmethod
+    def item_key(item):
+        return (str(item.get("project") or ""),str(item.get("id") or ""),
+                int(item.get("revision") or 0))
+
+    def visible_rows(self,items):
+        return [item for item in items
+                if item.get("state") not in ("Listas","Tremending")
+                or self.item_key(item) not in self.optimistic_hides]
+
+    def reconcile_optimistic_closures(self):
+        # A successful, receipt-backed closure may remain hidden briefly while
+        # the GitHub raw CDN catches up. Drop the local overlay as soon as the
+        # authoritative list no longer contains the same revision.
+        existing={self.item_key(x) for x in self.news+self.trends
+                  if x.get("state") in ("Listas","Tremending")}
+        active={p.get("hide_key") for p in self.pending_actions.values()}
+        for key in list(self.optimistic_hides):
+            if key not in existing and key not in active:
+                self.optimistic_hides.pop(key,None)
+
     def update_actions(self):
         row=self.selected
         ready=bool(row and row["state"]=="Listas")
@@ -692,6 +753,10 @@ class MainWindow(QWidget):
         tremending=bool(row and row["state"]=="Tremending")
         review=bool(row and row["state"] in ("Revisión","Creciendo"))
         has=bool(row)
+        pending_key=self.item_key(row) if has else None
+        action_pending=any(p["project"]==row["project"] and p["event_id"]==row["id"] and
+                           p["revision"]==int(row.get("revision") or 0)
+                           for p in self.pending_actions.values()) if has else False
         enable={
             "copy":has,"gag":has and (ready or top) and bool(row.get("body")),
             "chatgpt":True,"x":has and bool(row.get("body")) and (ready or top),
@@ -707,12 +772,8 @@ class MainWindow(QWidget):
         }
         for k,b in self.actions.items():
             allowed=enable.get(k,False)
-            if self.sending and k in {"rework","hints","deleted","discard","published"}:
+            if (action_pending or self.sending) and k in {"rework","hints","deleted","discard","published"}:
                 allowed=False
-            if self.pending_action and row:
-                p=self.pending_action
-                if p["project"]==row["project"] and p["event_id"]==row["id"] and k in {"rework","hints","deleted","discard","published"}:
-                    allowed=False
             b.setEnabled(bool(allowed))
         if row:
             self.actions["rework"].setText(
@@ -723,32 +784,42 @@ class MainWindow(QWidget):
                 "Elegir Cancelar / Sí publicada (+1) / No sin publicar (+0).")
 
     def confirm_pending(self):
-        pending=self.pending_action
-        if not pending:return
-        receipts=(self.docs.get("action_receipts") or {}).get("items") or []
-        found=next((x for x in reversed(receipts)
-                    if x.get("request_id")==pending["request_id"]),None)
-        if found:
-            status=str(found.get("status") or "").lower()
-            if status in {"applied","already_applied"}:
-                self.notice.setText("CONFIRMADO EN GITHUB · "+pending["label"]+
-                                    " · "+pending["event_id"]+" · aplicado.")
-                self.pending_action=None
-                self.update_actions()
-                return
-            self.notice.setText("GitHub rechazó la orden: "+str(found.get("error") or status))
-            self.pending_action=None
-            self.update_actions()
+        if not self.pending_actions:
             return
-        age=time.time()-pending["since"]
-        if age>=55:
-            self.notice.setText("Sin comprobante para «"+pending["label"]+
-                                "». Revisa GitHub Actions; no se ha declarado éxito.")
-            self.pending_action=None
-            self.update_actions()
-        else:
-            self.notice.setText("GitHub recibió «"+pending["label"]+
-                                "»; sigue pendiente de confirmación editorial…")
+        receipts=(self.docs.get("action_receipts") or {}).get("items") or []
+        by_id={str(x.get("request_id") or ""):x for x in receipts}
+        for request_id,pending in list(self.pending_actions.items()):
+            receipt=by_id.get(request_id)
+            if receipt:
+                status=str(receipt.get("status") or "").lower()
+                if status in {"applied","already_applied"}:
+                    # Never count optimistic publications as confirmed; counts
+                    # are calculated only from publication-events.json.
+                    if pending.get("hide_key"):
+                        self.optimistic_hides[pending["hide_key"]]="confirmed"
+                    self.pending_actions.pop(request_id,None)
+                    self.notice.setText("GitHub confirmó «"+pending["decision"]+
+                                        "» · "+pending["event_id"])
+                else:
+                    if pending.get("hide_key"):
+                        self.optimistic_hides.pop(pending["hide_key"],None)
+                    self.pending_actions.pop(request_id,None)
+                    self.notice.setText("GitHub rechazó la orden: "+str(receipt.get("error") or status)+
+                                        " · tarjeta restaurada")
+                continue
+            if time.time()-pending["since"]>=80:
+                # No receipt means UNKNOWN, not success. Re-enable the item
+                # rather than hiding it forever; users can inspect Actions.
+                self.pending_actions.pop(request_id,None)
+                if pending.get("hide_key"):
+                    self.optimistic_hides.pop(pending["hide_key"],None)
+                self.notice.setText("Sin comprobante de GitHub: tarjeta restaurada para revisión.")
+        self.update_actions()
+
+    def expire_pending(self):
+        if any(time.time()-p["since"]>=80 for p in self.pending_actions.values()):
+            self.confirm_pending()
+            self.render_list()
 
     def copy_gag(self):
         row=self.selected
@@ -822,8 +893,8 @@ class MainWindow(QWidget):
     def publish_x(self):
         row=self.selected
         if not row or not row.get("body"):return
-        if self.pending_action or self.sending:
-            self.notice.setText("Termina primero la orden editorial anterior.")
+        if self.sending:
+            self.notice.setText("La solicitud anterior sigue enviándose.")
             return
         tweet=row["body"][:280]
         opened=webbrowser.open("https://twitter.com/intent/tweet?text="+urllib.parse.quote(tweet))
@@ -836,7 +907,7 @@ class MainWindow(QWidget):
 
     def ask_publication_outcome(self,row=None):
         row=row or self.selected
-        if not row or row.get("state")!="Listas" or self.pending_action or self.sending:
+        if not row or row.get("state")!="Listas" or self.sending:
             return
         if not row.get("id"):
             self.notice.setText("Falta ID editorial. Actualiza GitHub antes de cerrar.")
@@ -863,25 +934,48 @@ class MainWindow(QWidget):
 
 
     def submit(self,event,payload):
-        if self.sending or self.pending_action:
-            self.notice.setText("Ya hay una orden pendiente de verificación.")
+        action_event=event=="ttactualidad_action_v1"
+        key=(payload["project"],payload.get("event_id",""),int(payload.get("revision") or 0))
+        if not action_event and self.sending:
+            self.notice.setText("Ya hay una nueva noticia en proceso de envío.")
             return
-        self.sending=True
-        self.pending_action={
-            "request_id":payload["request_id"],"project":payload["project"],
-            "event_id":payload.get("event_id",""),
-            "decision":payload.get("decision"),"label":payload.get("decision","Nueva noticia"),
-            "since":time.time()
-        } if event=="ttactualidad_action_v1" else None
+        if action_event and any(
+            p["project"]==key[0] and p["event_id"]==key[1] and p["revision"]==key[2]
+            for p in self.pending_actions.values()):
+            self.notice.setText("Esta tarjeta ya tiene una orden pendiente.")
+            return
+        request_id=payload["request_id"]
+        if action_event:
+            hide_key=key if (payload.get("decision") in {"published","deleted"}
+                             and self.selected and
+                             self.selected.get("state") in {"Listas","Tremending"}) else None
+            self.pending_actions[request_id]={
+                "request_id":request_id,"project":key[0],"event_id":key[1],
+                "revision":key[2],"decision":payload.get("decision"),
+                "since":time.time(),"hide_key":hide_key,"dispatched":False
+            }
+            if hide_key:
+                self.optimistic_hides[hide_key]="pending"
+                # This is a UI-only overlay. Never write terminal state into
+                # the local authoritative JSON or the confirmed 24h counter.
+                self.render_list()
+                self.notice.setText("Tarjeta apartada · confirmación de GitHub pendiente…")
+        else:
+            self.sending=True
+            self.notice.setText("Enviando la nueva noticia a GitHub…")
         self.update_actions()
-        self.notice.setText("Enviando la orden a GitHub…")
         def perform():
-            token=session_token()
-            if not token:raise ValueError("Conecta GitHub antes de enviar órdenes.")
-            status,_=request(API,method="POST",token=token,timeout=25,
-                data={"event_type":event,"client_payload":payload})
-            if status!=204:raise RuntimeError("GitHub no aceptó la orden (HTTP "+str(status)+")")
-            return payload["request_id"]
+            try:
+                token=session_token()
+                if not token:
+                    raise ValueError("Conecta GitHub antes de enviar órdenes.")
+                status,_=request(API,method="POST",token=token,timeout=25,
+                    data={"event_type":event,"client_payload":payload})
+                if status!=204:
+                    raise RuntimeError("GitHub no aceptó la orden (HTTP "+str(status)+")")
+                return request_id,None
+            except Exception as exc:
+                return request_id,str(exc)
         self.worker.run("submit",perform)
 
     def editorial_action(self,action,hint="",confirmed=False):
