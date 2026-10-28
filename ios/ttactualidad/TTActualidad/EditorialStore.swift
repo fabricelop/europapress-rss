@@ -716,6 +716,12 @@ final class EditorialStore: ObservableObject {
             retireAbandonedTrendOperations(requests: docs["trends/requests.json"] ?? [:],
                                            queue: docs["trends/editorial-queue.json"] ?? [:])
         }
+        // A grouped explanation closes every member's request, even though
+        // only the leader gets a separate card in Listas. Do not leave local
+        // optimistic "En elaboración" overlays over confirmed explanations.
+        if downloaded["trends/requests.json"] != nil {
+            retireExplainedTrendActions(requests: docs["trends/requests.json"] ?? [:])
+        }
         if !partial && downloaded.count == paths.count {
             retireSyncedActions()
             retireSyncedDrafts()
@@ -842,7 +848,7 @@ final class EditorialStore: ObservableObject {
         let workingTrends = canonicalSnapshot.trendsElaboracion
 
         for operation in operationHistory where
-            !["Rechazada", "Retirada", "Caducada", "Sustituida"].contains(operation.status) {
+            !["Rechazada", "Retirada", "Caducada", "Sustituida", "Explicada"].contains(operation.status) {
             guard let identity = operationIdentity(operation) else { continue }
             let id = identity.eventID
             let isTrend = identity.project == "ttendencias"
@@ -1021,6 +1027,41 @@ final class EditorialStore: ObservableObject {
 
     // Clears orphaned in-memory optimistic reworks even when their local
     // operation was recorded in an older build without a request_id.
+    // Only a freshly downloaded request with a verifiable explanation may
+    // retire the matching iPhone action. A completed group member need not
+    // have its own card in telegram-manual-explained.json or Listas.
+    private func retireExplainedTrendActions(requests: [String: Any]) {
+        let rows = Self.rows(requests, "requests")
+        for (key, action) in activeEditorialActions where
+            action.project == "ttendencias" &&
+            ["prepare", "rework", "hints"].contains(action.decision) {
+            guard let operation = operationHistory.first(where: { $0.id == key }) else {
+                continue
+            }
+            let minimumRevision = action.revision +
+                (["rework", "hints"].contains(action.decision) ? 1 : 0)
+            guard let finished = rows.filter({
+                Self.str($0, "id") == action.id &&
+                Self.int($0, "revision") >= minimumRevision &&
+                ["explained", "published"].contains(Self.str($0, "status").lowercased()) &&
+                !Self.str($0, "explanation").isEmpty &&
+                (Self.when($0, ["explained_at"]) ?? .distantPast) >=
+                    operation.createdAt.addingTimeInterval(-180)
+            }).max(by: { Self.int($0, "revision") < Self.int($1, "revision") })
+            else { continue }
+            let grouped = !Self.str(finished, "group_leader_id").isEmpty &&
+                Self.str(finished, "group_leader_id") != action.id
+            activeEditorialActions.removeValue(forKey: key)
+            recordOperation(id: key, title: action.title, kind: action.decision,
+                            status: "Explicada", requestID: action.requestID,
+                            project: action.project, eventID: action.id,
+                            revision: action.revision,
+                            detail: grouped ?
+                                "Explicación agrupada confirmada en GitHub." :
+                                "Explicación confirmada en GitHub.")
+        }
+    }
+
     private func retireClosedTrendOverlays(manual: [String: Any],
                                            requests: [String: Any],
                                            decisions: [String: Any]) {
@@ -1658,10 +1699,16 @@ final class EditorialStore: ObservableObject {
         for row in rows(manual, "items") {
             guard ["explained", "deleted", "dismissed", "published"].contains(
                 str(row, "status").lowercased()) else { continue }
-            let name = norm(str(row, "name"))
+            // An explained group has ONE leader card, but ALL covered names
+            // must stop showing as work in progress. This also safeguards
+            // partial refreshes where requests.json falls back to iOS cache.
+            let names = [str(row, "name")] + (row["trend_names"] as? [String] ?? [])
             let timestamp = when(row, ["deleted_at", "explained_at", "updated_at"]) ?? .distantPast
-            if !name.isEmpty {
-                finishedByName[name] = max(finishedByName[name] ?? .distantPast, timestamp)
+            for value in names {
+                let name = norm(value)
+                if !name.isEmpty {
+                    finishedByName[name] = max(finishedByName[name] ?? .distantPast, timestamp)
+                }
             }
         }
         var result: [String: [String: Any]] = [:]
