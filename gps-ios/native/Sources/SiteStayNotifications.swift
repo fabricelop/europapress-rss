@@ -13,8 +13,6 @@ final class SiteStayNotifications: NSObject, UNUserNotificationCenterDelegate {
     private var inFlight: Set<String> = []
     private let enabledAtKey = "siteAlertsEnabledAtV78"
     private let sentKeysKey = "siteAlertsSentStaysV78"
-    private let recentSiteKey = "siteAlertsRecentSiteV78"
-    private let recentAtKey = "siteAlertsRecentAtV78"
     private let pendingActionsKey = "siteAlertsPendingActionsV78"
 
     private enum Action {
@@ -50,80 +48,75 @@ final class SiteStayNotifications: NSObject, UNUserNotificationCenterDelegate {
         replayPendingActions()
     }
 
-    /// Called from the normal GPS callback. At most once per minute, without
-    /// involving the network, Apple Maps lookup or a history-wide refresh.
+    /// A notification belongs to ONE visible row of Histórico de sitios,
+    /// not to a grid square or a raw GPS segment. The calendar owns grouping.
+    /// Triggered by GPS samples, and throttled so it never taxes GPS tracking.
     func evaluate(model: TimeModel) {
         let now = Date()
         guard now.timeIntervalSince(lastCheckedAt) >= 50 else { return }
         lastCheckedAt = now
-        guard model.storageIsHealthy, model.recording, !model.isResting,
-              let cell = model.activeCell,
-              let start = model.currentVisitStart,
-              let fix = model.current?.date,
-              now.timeIntervalSince(fix) <= 120,
-              start.timeIntervalSince1970 >
-                  UserDefaults.standard.double(forKey: enabledAtKey),
-              model.staySeconds(now: now) > SiteStayHistory.minimumSeconds,
-              model.preferredSiteID(for: cell.id) != nil else { return }
+        let enabledAt = UserDefaults.standard.double(forKey: enabledAtKey)
+        guard enabledAt > 0, model.storageIsHealthy,
+              let latestFix = model.current?.date,
+              now.timeIntervalSince(latestFix) <= 120 else { return }
 
-        // The historical screen uses SiteStayHistory plus SiteDayPartsIndex.
-        // Reuse exactly those decisions, not an independent guessed label.
-        // The tail bound avoids reprocessing years of GPS data every minute.
-        let stays = SiteStayHistory.extract(Array(model.data.intervals.suffix(1500)))
-        guard let stay = stays.first(where: {
-            $0.cell == cell && $0.end >= fix.addingTimeInterval(-120) &&
-            abs($0.start.timeIntervalSince(start)) < 180 &&
-            $0.confirmedSeconds > SiteStayHistory.minimumSeconds
-        }) else { return }
-
-        let key = stay.id
-        let sent = UserDefaults.standard.stringArray(forKey: sentKeysKey) ?? []
-        guard !sent.contains(key), !inFlight.contains(key) else { return }
+        // Only today and yesterday: new rows since the feature was enabled.
+        // Do not scan all years of GPS records in every location callback.
+        let calendar = Calendar.current
+        let yesterday = calendar.date(byAdding: .day, value: -1,
+                                      to:calendar.startOfDay(for:now)) ?? now
+        let recent = model.data.intervals.filter { $0.end > yesterday }
+        guard !recent.isEmpty else { return }
+        let stays = SiteStayHistory.extract(recent)
+        guard !stays.isEmpty else { return }
         let lookup = SiteDayPartsIndex(
-            assignments: model.data.siteStayAssignments,
-            parts: model.data.siteStayParts,
-            sites: model.data.identifiedSites)
-        let portions = lookup.parts(for: stay)
-        guard portions.count == 1, let part = portions.first,
-              part.kind == .place, !part.confirmed,
-              let siteID = part.siteID,
-              let site = model.siteNamed(siteID) else { return }
+            assignments:model.data.siteStayAssignments,
+            parts:model.data.siteStayParts,
+            sites:model.data.identifiedSites)
+        let entries = stays.map { SiteDaySource(stay:$0, parts:lookup.parts(for:$0)) }
+        let days = [yesterday, now]
+        let sent = Set(UserDefaults.standard.stringArray(forKey: sentKeysKey) ?? [])
 
-        // Consecutive adjacent 100m grid squares assigned to the SAME place
-        // must not create a burst of repeated notifications.
-        let lastSite = UserDefaults.standard.string(forKey: recentSiteKey)
-        let lastAt = UserDefaults.standard.double(forKey: recentAtKey)
-        if lastSite == siteID.uuidString && now.timeIntervalSince1970 - lastAt < 900 {
-            remember(key)
-            return
+        for date in days {
+            let report = SiteDayPresentation.build(entries,on:date,calendar:calendar)
+            for group in report.groups where !group.confirmed {
+                // A block in the list may contain multiple GPS stays / cells.
+                // A new occurrence of the same place after a DIFFERENT entry
+                // is a new group and therefore gets a separate notification.
+                guard let siteID = group.siteID,
+                      let site = model.siteNamed(siteID),
+                      group.firstStart.timeIntervalSince1970 >= enabledAt,
+                      group.recordedSeconds > SiteStayHistory.minimumSeconds,
+                      !sent.contains(group.id), !inFlight.contains(group.id)
+                      else { continue }
+                deliver(groupID:group.id,siteID:siteID,siteName:site.name,
+                        started:group.firstStart)
+            }
         }
+    }
 
+    private func deliver(groupID: String,siteID: UUID,
+                         siteName: String,started: Date) {
         let content = UNMutableNotificationContent()
         content.title = "Nuevo sitio en Histórico"
-        content.subtitle = site.name
+        content.subtitle = siteName
         let hour = DateFormatter()
-        hour.locale = Locale(identifier: "es_ES")
+        hour.locale = Locale(identifier:"es_ES")
         hour.timeStyle = .short
         hour.dateStyle = .none
-        content.body = "Estancia iniciada a las " + hour.string(from: stay.start)
+        content.body = "Estancia iniciada a las " + hour.string(from:started)
         content.sound = .default
         content.categoryIdentifier = Action.category
-        content.userInfo = [
-            "stayID": key,
-            "siteID": siteID.uuidString
-        ]
+        content.userInfo = ["stayID":groupID,"siteID":siteID.uuidString]
 
-        let request = UNNotificationRequest(identifier: "mimapa-site-" + key,
-                                             content: content, trigger: nil)
-        inFlight.insert(key)
+        let request = UNNotificationRequest(identifier:"mimapa-site-" + groupID,
+                                            content:content,trigger:nil)
+        inFlight.insert(groupID)
         center.add(request) { [weak self] error in
             Task { @MainActor in
                 guard let self else { return }
-                self.inFlight.remove(key)
-                guard error == nil else { return }
-                self.remember(key)
-                UserDefaults.standard.set(siteID.uuidString, forKey: self.recentSiteKey)
-                UserDefaults.standard.set(now.timeIntervalSince1970, forKey: self.recentAtKey)
+                self.inFlight.remove(groupID)
+                if error == nil { self.remember(groupID) }
             }
         }
     }
