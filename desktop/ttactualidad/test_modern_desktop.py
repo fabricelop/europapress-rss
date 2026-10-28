@@ -30,7 +30,10 @@ class DesktopModernTests(unittest.TestCase):
     def test_layout_has_metric_cards_sidebar_and_actions(self):
         self.assertEqual(len(self.window.nav),9)
         self.assertEqual(len(self.window.metric_labels),4)
-        self.assertEqual(len(self.window.actions),8)
+        self.assertEqual(len(self.window.actions),14)
+        self.assertIn("chatgpt",self.window.actions)
+        self.assertIn("gag",self.window.actions)
+        self.assertIn("hints",self.window.actions)
         self.assertFalse(self.window.actions["deleted"].isEnabled())
         self.assertFalse(self.window.actions["published"].isEnabled())
 
@@ -74,6 +77,59 @@ class DesktopModernTests(unittest.TestCase):
         self.assertFalse(appmod.safe_url("file:///etc/passwd"))
         self.assertFalse(appmod.safe_url("javascript:alert(1)"))
         self.assertEqual(appmod.safe_url("https://example.org/test"),"https://example.org/test")
+
+    def test_published_action_requires_ready_and_confirmed_receipt(self):
+        from unittest.mock import patch
+        row={"project":"ttendencias","id":"bd2a535275d1","revision":0,
+             "state":"Listas","title":"Ministerio de Transportes",
+             "body":"TT#10 Texto","category":"Tendencias","source":"","image":""}
+        self.window.select_item(row)
+        self.assertTrue(self.window.actions["published"].isEnabled())
+        self.window.pending_action={"request_id":"one","event_id":row["id"],
+            "project":row["project"],"decision":"published",
+            "label":"published","since":appmod.time.time()}
+        self.window.update_actions()
+        self.assertFalse(self.window.actions["published"].isEnabled())
+        self.window.docs["action_receipts"]={"items":[
+            {"request_id":"other","status":"applied"},
+            {"request_id":"one","project":"ttendencias","event_id":row["id"],
+             "status":"applied","decision":"published"}]}
+        self.window.confirm_pending()
+        self.assertIsNone(self.window.pending_action)
+        self.assertIn("CONFIRMADO EN GITHUB",self.window.notice.text())
+
+    def test_unconfirmed_dispatch_never_claims_publication(self):
+        row={"project":"ttendencias","id":"t1","revision":0,
+             "state":"Listas","title":"Tendencia",
+             "body":"Texto","category":"Tendencias","source":"","image":""}
+        self.window.select_item(row)
+        self.window.pending_action={"request_id":"pending-req","event_id":"t1",
+            "project":"ttendencias","decision":"published",
+            "label":"published","since":appmod.time.time()}
+        self.window.docs["action_receipts"]={"items":[]}
+        self.window.confirm_pending()
+        self.assertIsNotNone(self.window.pending_action)
+        self.assertIn("pendiente",self.window.notice.text())
+
+    def test_parity_tools_are_available_without_phone(self):
+        row={"project":"ttendencias","id":"t1","revision":0,
+             "state":"Listas","title":"Tendencia",
+             "body":"Texto confirmado\n🌶️ Remate","category":"Tendencias","source":"","image":""}
+        self.window.select_item(row)
+        self.assertTrue(self.window.actions["gag"].isEnabled())
+        self.assertTrue(self.window.actions["chatgpt"].isEnabled())
+        self.assertTrue(self.window.actions["hints"].isEnabled())
+        self.window.copy_gag()
+        self.assertIn("TEXTO EXACTO",appmod.QApplication.clipboard().text())
+
+    def test_tremending_removed_with_delete_not_publication(self):
+        row={"project":"ttittulares","id":"tremending-abc","revision":0,
+             "state":"Tremending","title":"Noticia en Tremending",
+             "body":"","category":"Noticias","source":"","image":""}
+        self.window.select_item(row)
+        self.assertTrue(self.window.actions["deleted"].isEnabled())
+        self.assertFalse(self.window.actions["published"].isEnabled())
+
 
 if __name__=="__main__":
     unittest.main()
