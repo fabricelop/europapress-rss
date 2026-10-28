@@ -824,7 +824,9 @@ struct SavedState: Codable {
             }
             if raw.count == 1,
                data.siteStayParts[raw[0]].kind == .place,
-               data.siteStayParts[raw[0]].siteID == expectedSiteID {
+               data.siteStayParts[raw[0]].siteID == expectedSiteID,
+               SiteStayHistory.valid([data.siteStayParts[raw[0]]],
+                                     for:entry.stay) {
                 data.siteStayParts[raw[0]].confirmed = true
             } else {
                 data.siteStayAssignments = SiteStayPolicy.select(
