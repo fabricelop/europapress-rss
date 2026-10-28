@@ -23,6 +23,7 @@ jobs:
         shell: bash
         env:
           TT_ACTUALIDAD_MANUAL_JSON: ${{ toJSON(github.event.client_payload) }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           git config user.name "ttactualidad-actions[bot]"
@@ -39,6 +40,9 @@ jobs:
             git commit -m "TTActualidad: encolar noticia aportada por usuario"
             if git push origin HEAD:main; then
               echo "GitHub confirmado: nueva noticia en En elaboración."
+              # Despertar inmediatamente el editor de TTiTTulares, incluidos
+              # los envíos manuales y las tendencias convertidas en noticia.
+              python3 ttittulares/request_pc_editorial.py --trigger
               exit 0
             fi
             sleep "$((attempt * 2))"
