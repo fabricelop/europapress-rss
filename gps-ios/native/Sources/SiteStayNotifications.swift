@@ -40,6 +40,7 @@ final class SiteStayNotifications: NSObject, UNUserNotificationCenterDelegate {
     }
 
     func activate(model: TimeModel) {
+        center.delegate = self
         self.model = model
         // Existing history is the baseline: never notify old visits on update.
         if UserDefaults.standard.object(forKey: enabledAtKey) == nil {
@@ -192,6 +193,15 @@ final class SiteStayNotifications: NSObject, UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
+        if response.notification.request.identifier == GPSStaleWatchdogPolicy.identifier {
+            UserDefaults.standard.set(true,forKey:"gpsWatchdogOpenHistory")
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name:Notification.Name("gpsWatchdogOpenHistory"),
+                    object:nil)
+            }
+            completionHandler()
+            return
+        }
         let data = response.notification.request.content.userInfo
         let stay = data["stayID"] as? String ?? ""
         let site = data["siteID"] as? String ?? ""
