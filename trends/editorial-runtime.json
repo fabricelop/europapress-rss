@@ -4,23 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "6b53f221c92d"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T19:25:30+01:00",
-  "last_completed_at": "2026-10-28T19:36:00+01:00",
-  "updated_at": "2026-10-28T19:36:00+01:00",
+  "last_started_at": "2026-10-28T19:40:00+01:00",
+  "last_completed_at": "2026-10-28T19:42:00+01:00",
+  "updated_at": "2026-10-28T19:42:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793211930000-manual",
+    "trigger_run_id": "tr-1793212800000-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,28 +26,28 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793211930000-manual",
+    "run_id": "tr-1793212800000-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T19:25:30+01:00",
-    "updated_at": "2026-10-28T19:36:00+01:00",
-    "finished_at": "2026-10-28T19:36:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-28T19:40:00+01:00",
+    "updated_at": "2026-10-28T19:42:00+01:00",
+    "finished_at": "2026-10-28T19:42:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "ready": 0,
-      "explained": 1,
-      "final_resolved": 1,
+      "explained": 0,
+      "final_resolved": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "inactive_after_retry": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,13 +55,13 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
+      "remates_omitted": 2,
+      "recent_missing_closer_reviewed": 2,
       "incidents": 0
     },
-    "message": "TTendencias cerrada · 1/1. Vete quedó explicada y verificada; cola final 0, sin rewrite_pending. Reparación visual solicitada por el flujo independiente.",
+    "message": "TTendencias cerrada · 0/0. Cola final vacía y sin reexplicaciones pendientes; 2 explicadas recientes sin remate se mantienen así por sensibilidad del accidente ferroviario.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -73,175 +71,63 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "6b53f221c92d",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "selected_text": null,
-        "no_remate_reason": "tragedy_with_victims"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T19:25:30+01:00",
+        "at": "2026-10-28T19:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 1 entrada activa: Vete"
+        "message": "Preparando pasada editorial · cola inicial 0; comprobando reexplicaciones y estado fresco"
       },
       {
-        "at": "2026-10-28T19:27:00+01:00",
+        "at": "2026-10-28T19:41:20+01:00",
         "phase": "verifying",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Releyendo estado autoritativo de Vete"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · captura fresca 19:41 y cola editorial 0"
       },
       {
-        "at": "2026-10-28T19:28:00+01:00",
-        "phase": "investigating",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-28T19:29:00+01:00",
-        "phase": "investigating",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Contrastando fuente 1/2 · la tendencia aparece clasificada como política junto al bloque del accidente ferroviario"
-      },
-      {
-        "at": "2026-10-28T19:29:40+01:00",
-        "phase": "investigating",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Contrastando fuente 2/2 · críticas virales a Óscar Puente y recuperación de su reciente «vete a saber»"
-      },
-      {
-        "at": "2026-10-28T19:30:10+01:00",
-        "phase": "investigating",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-28T19:30:30+01:00",
-        "phase": "drafting",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-28T19:31:00+01:00",
-        "phase": "drafting",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-28T19:31:30+01:00",
-        "phase": "remate_selection",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Sin remate · tragedia ferroviaria con víctimas; explicación factual suficiente"
-      },
-      {
-        "at": "2026-10-28T19:32:15+01:00",
+        "at": "2026-10-28T19:41:35+01:00",
         "phase": "verifying",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Releyendo estado autoritativo de Vete · r0 sigue preparing"
+        "trend_id": null,
+        "title": null,
+        "message": "Comprobando reexplicaciones · 0 rewrite_pending"
       },
       {
-        "at": "2026-10-28T19:32:30+01:00",
+        "at": "2026-10-28T19:41:45+01:00",
         "phase": "verifying",
-        "trend_id": "54289f350156",
-        "title": "YA ESTÁ BIEN",
-        "message": "Pendiente reciente sin remate revisado · se mantiene sin humor por tragedia con víctimas"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Explicadas recientes sin remate · 2 sensibles; se mantienen sin humor"
       },
       {
-        "at": "2026-10-28T19:33:00+01:00",
-        "phase": "persisting",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-28T19:33:30+01:00",
-        "phase": "persisting",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-28T19:34:00+01:00",
-        "phase": "persisting",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-28T19:34:30+01:00",
-        "phase": "verifying",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-28T19:34:45+01:00",
-        "phase": "verifying",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-28T19:35:00+01:00",
-        "phase": "verifying",
-        "trend_id": "6b53f221c92d",
-        "title": "Vete",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-28T19:36:00+01:00",
+        "at": "2026-10-28T19:42:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main · sin preparing/update ni rewrite_pending"
       }
     ],
-    "processed_ids": [
-      "6b53f221c92d"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": [
-      {
-        "id": "6b53f221c92d",
-        "name": "Vete",
-        "revision": 0,
-        "status": "explained",
-        "resolution": "persisted_verified"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-1793211438649-manual",
+  "run_id": "tr-1793212800000-manual",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "ready": 0,
-    "explained": 1,
-    "final_resolved": 1,
+    "explained": 0,
+    "final_resolved": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "inactive_after_retry": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -249,142 +135,51 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
+    "remates_omitted": 2,
+    "recent_missing_closer_reviewed": 2,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T19:17:18+01:00",
+      "at": "2026-10-28T19:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial · cola inicial 1"
+      "message": "Preparando pasada editorial · cola inicial 0; comprobando reexplicaciones y estado fresco"
     },
     {
-      "at": "2026-10-28T19:17:30+01:00",
-      "phase": "verifying",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Releyendo estado autoritativo de eder sarabia"
-    },
-    {
-      "at": "2026-10-28T19:18:00+01:00",
-      "phase": "investigating",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Buscando detonante actual"
-    },
-    {
-      "at": "2026-10-28T19:18:45+01:00",
-      "phase": "investigating",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Contrastando fuente 1/2 · fichaje oficial hasta 2028"
-    },
-    {
-      "at": "2026-10-28T19:19:15+01:00",
-      "phase": "investigating",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Contrastando fuente 2/2 · contexto del 4-3 ante Sestao"
-    },
-    {
-      "at": "2026-10-28T19:19:40+01:00",
-      "phase": "investigating",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Hecho esencial verificado"
-    },
-    {
-      "at": "2026-10-28T19:20:00+01:00",
-      "phase": "drafting",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-28T19:20:15+01:00",
-      "phase": "drafting",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Comprobando límite de X"
-    },
-    {
-      "at": "2026-10-28T19:20:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Evaluando candidatos con ratings"
-    },
-    {
-      "at": "2026-10-28T19:20:45+01:00",
-      "phase": "remate_selection",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Remate seleccionado · originalidad comprobada"
-    },
-    {
-      "at": "2026-10-28T19:21:00+01:00",
-      "phase": "persisting",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-28T19:21:10+01:00",
-      "phase": "persisting",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-28T19:21:20+01:00",
-      "phase": "persisting",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-28T19:21:50+01:00",
-      "phase": "verifying",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-28T19:22:05+01:00",
-      "phase": "verifying",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-28T19:22:15+01:00",
-      "phase": "verifying",
-      "trend_id": "e035fbe68548",
-      "title": "eder sarabia",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-28T19:22:20+01:00",
+      "at": "2026-10-28T19:41:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final · cola 0 y sin rewrite_pending"
+      "message": "Releyendo main · captura fresca 19:41 y cola editorial 0"
     },
     {
-      "at": "2026-10-28T19:22:30+01:00",
+      "at": "2026-10-28T19:41:35+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Comprobando reexplicaciones · 0 rewrite_pending"
+    },
+    {
+      "at": "2026-10-28T19:41:45+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Explicadas recientes sin remate · 2 sensibles; se mantienen sin humor"
+    },
+    {
+      "at": "2026-10-28T19:42:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 1/1 explicada y verificada"
+      "message": "Relectura final de main · sin preparing/update ni rewrite_pending"
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261028-1910",
+  "previous_run_id": "tr-1793211930000-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -411,15 +206,7 @@
       "no_remate_reason": "tragedy_with_victims"
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "e035fbe68548",
-      "name": "eder sarabia",
-      "revision": 0,
-      "outcome": "explained",
-      "verified": true
-    }
-  ],
+  "final_outcomes": [],
   "pending_delivery_count": 1,
   "apply_workflow": {
     "run_id": 40740689705,
