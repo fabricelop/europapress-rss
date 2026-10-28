@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-28T19:55:02.587381+00:00",
+  "checked_at": "2026-10-28T20:01:40.516500+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -40,12 +40,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
-      "non_stale_sources": 2,
+      "non_stale_sources": 3,
       "captured_age_minutes": 0.2,
-      "noise_count": 0,
-      "repair_started": true
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
@@ -54,9 +53,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
+      "age_minutes": 6.5,
       "run_id": 40758575334,
       "reason": null,
       "repairable": true,
@@ -99,9 +98,7 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [],
   "warnings": [],
   "alert_sent": false,
