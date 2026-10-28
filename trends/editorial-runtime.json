@@ -4,15 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "1cf1cf5b6fe1",
+    "9a56287463c4",
+    "09a030d2efd0",
+    "3c4b70c9eb66",
+    "985b3a5efe28"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T22:56:33+01:00",
-  "last_completed_at": "2026-10-28T22:57:43+01:00",
-  "updated_at": "2026-10-28T22:57:43+01:00",
+  "last_started_at": "2026-10-28T23:01:00+01:00",
+  "last_completed_at": "2026-10-28T23:29:00+01:00",
+  "updated_at": "2026-10-28T23:29:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,28 +32,28 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T225633+0100",
+    "run_id": "tr-1793224860541-manual",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-28T22:56:33+01:00",
-    "updated_at": "2026-10-28T22:57:43+01:00",
-    "finished_at": "2026-10-28T22:57:43+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-28T23:01:00+01:00",
+    "updated_at": "2026-10-28T23:29:00+01:00",
+    "finished_at": "2026-10-28T23:29:00+01:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "problematic_reviewed": 0,
-      "problematic_marked": 0,
+      "attempted": 5,
+      "ready": 4,
+      "explained": 4,
+      "final_resolved": 5,
+      "problematic_reviewed": 1,
+      "problematic_marked": 1,
       "inactive_after_retry": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 5,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -55,16 +61,16 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_visual_candidates_reviewed": 1,
-      "incidents": 0
+      "explanations_verified_under_280": 4,
+      "remates_selected": 2,
+      "remates_omitted": 2,
+      "incidents": 1
     },
-    "message": "TTendencias cerrada 0/0 · cola final 0, sin reexplicaciones ni huérfanos; saneamiento visual solicitado.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "TTendencias cerrada 5/5 · 4 explicadas y 1 problematic; cola final 0 y sin reexplicaciones pendientes.",
+    "incident_count": 1,
+    "incidents": [
+      "Lo País r0: detonante no verificable tras dos búsquedas distintas; se marcó problematic y se retiró de la cola conforme al flujo."
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -74,63 +80,156 @@
     },
     "remate_selections": [
       {
-        "trend_id": "bd2a535275d1",
+        "trend_id": "985b3a5efe28",
         "revision": 0,
         "candidate_count": 0,
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "sensitive_accident_context"
+        "no_remate_reason": "sensitive_press_freedom_detention_context"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-28T22:56:33+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · cola inicial 0; verificando requests, reexplicaciones, huérfanos y Pendientes recientes."
-      },
-      {
-        "at": "2026-10-28T22:56:33+01:00",
+        "at": "2026-10-28T23:21:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo estado autoritativo · cola, requests activos, huérfanos y Explicadas recientes."
+        "trend_id": "3c4b70c9eb66",
+        "title": "Lo País",
+        "message": "Releyendo estado autoritativo de Lo País"
       },
       {
-        "at": "2026-10-28T22:57:43+01:00",
+        "at": "2026-10-28T23:21:00+01:00",
+        "phase": "investigating",
+        "trend_id": "3c4b70c9eb66",
+        "title": "Lo País",
+        "message": "Buscando detonante actual de Lo País"
+      },
+      {
+        "at": "2026-10-28T23:22:00+01:00",
+        "phase": "investigating",
+        "trend_id": "3c4b70c9eb66",
+        "title": "Lo País",
+        "message": "Contrastando segunda búsqueda independiente"
+      },
+      {
+        "at": "2026-10-28T23:23:00+01:00",
+        "phase": "persisting",
+        "trend_id": "3c4b70c9eb66",
+        "title": "Lo País",
+        "message": "No se verifica detonante tras dos búsquedas · registrado como problematic"
+      },
+      {
+        "at": "2026-10-28T23:24:00+01:00",
         "phase": "verifying",
-        "trend_id": "bd2a535275d1",
-        "title": "Ministerio de Transportes",
-        "message": "Explicada reciente revisada · se mantiene sin remate por contexto sensible del accidente ferroviario."
+        "trend_id": "985b3a5efe28",
+        "title": "Egipto",
+        "message": "Releyendo estado autoritativo de Egipto"
       },
       {
-        "at": "2026-10-28T22:57:43+01:00",
+        "at": "2026-10-28T23:25:00+01:00",
+        "phase": "investigating",
+        "trend_id": "985b3a5efe28",
+        "title": "Egipto",
+        "message": "Contrastando cierre de Mada Masr y situación de Lina Attalah"
+      },
+      {
+        "at": "2026-10-28T23:26:00+01:00",
+        "phase": "investigating",
+        "trend_id": "985b3a5efe28",
+        "title": "Egipto",
+        "message": "Hecho esencial verificado con fuentes actuales"
+      },
+      {
+        "at": "2026-10-28T23:26:30+01:00",
+        "phase": "drafting",
+        "trend_id": "985b3a5efe28",
+        "title": "Egipto",
+        "message": "Redactando explicación factual y comprobando límite de X"
+      },
+      {
+        "at": "2026-10-28T23:27:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "985b3a5efe28",
+        "title": "Egipto",
+        "message": "Sin remate · contexto sensible de libertad de prensa y detención"
+      },
+      {
+        "at": "2026-10-28T23:28:00+01:00",
+        "phase": "persisting",
+        "trend_id": "985b3a5efe28",
+        "title": "Egipto",
+        "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-28T23:28:30+01:00",
+        "phase": "verifying",
+        "trend_id": "985b3a5efe28",
+        "title": "Egipto",
+        "message": "Releyendo main · Egipto r0 explicado y cola en 0"
+      },
+      {
+        "at": "2026-10-28T23:29:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0 · cola final 0, sin reexplicaciones ni huérfanos; saneamiento visual solicitado."
+        "message": "TTendencias cerrada 5/5 · cola final 0 y sin reexplicaciones pendientes"
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "1cf1cf5b6fe1",
+      "9a56287463c4",
+      "09a030d2efd0",
+      "3c4b70c9eb66",
+      "985b3a5efe28"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "1cf1cf5b6fe1",
+        "name": "La SER",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "9a56287463c4",
+        "name": "Japón",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "09a030d2efd0",
+        "name": "#FelipeVIDebesIrte",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "3c4b70c9eb66",
+        "name": "Lo País",
+        "revision": 0,
+        "status": "problematic"
+      },
+      {
+        "id": "985b3a5efe28",
+        "name": "Egipto",
+        "revision": 0,
+        "status": "explained"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261028T225633+0100",
+  "run_id": "tr-1793224860541-manual",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
-    "problematic_reviewed": 0,
-    "problematic_marked": 0,
+    "attempted": 5,
+    "ready": 4,
+    "explained": 4,
+    "final_resolved": 5,
+    "problematic_reviewed": 1,
+    "problematic_marked": 1,
     "inactive_after_retry": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 5,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -138,41 +237,95 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_visual_candidates_reviewed": 1,
-    "incidents": 0
+    "explanations_verified_under_280": 4,
+    "remates_selected": 2,
+    "remates_omitted": 2,
+    "incidents": 1
   },
   "activity": [
     {
-      "at": "2026-10-28T22:56:33+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Preparando pasada editorial · cola inicial 0; verificando requests, reexplicaciones, huérfanos y Pendientes recientes."
-    },
-    {
-      "at": "2026-10-28T22:56:33+01:00",
+      "at": "2026-10-28T23:21:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo estado autoritativo · cola, requests activos, huérfanos y Explicadas recientes."
+      "trend_id": "3c4b70c9eb66",
+      "title": "Lo País",
+      "message": "Releyendo estado autoritativo de Lo País"
     },
     {
-      "at": "2026-10-28T22:57:43+01:00",
+      "at": "2026-10-28T23:21:00+01:00",
+      "phase": "investigating",
+      "trend_id": "3c4b70c9eb66",
+      "title": "Lo País",
+      "message": "Buscando detonante actual de Lo País"
+    },
+    {
+      "at": "2026-10-28T23:22:00+01:00",
+      "phase": "investigating",
+      "trend_id": "3c4b70c9eb66",
+      "title": "Lo País",
+      "message": "Contrastando segunda búsqueda independiente"
+    },
+    {
+      "at": "2026-10-28T23:23:00+01:00",
+      "phase": "persisting",
+      "trend_id": "3c4b70c9eb66",
+      "title": "Lo País",
+      "message": "No se verifica detonante tras dos búsquedas · registrado como problematic"
+    },
+    {
+      "at": "2026-10-28T23:24:00+01:00",
       "phase": "verifying",
-      "trend_id": "bd2a535275d1",
-      "title": "Ministerio de Transportes",
-      "message": "Explicada reciente revisada · se mantiene sin remate por contexto sensible del accidente ferroviario."
+      "trend_id": "985b3a5efe28",
+      "title": "Egipto",
+      "message": "Releyendo estado autoritativo de Egipto"
     },
     {
-      "at": "2026-10-28T22:57:43+01:00",
+      "at": "2026-10-28T23:25:00+01:00",
+      "phase": "investigating",
+      "trend_id": "985b3a5efe28",
+      "title": "Egipto",
+      "message": "Contrastando cierre de Mada Masr y situación de Lina Attalah"
+    },
+    {
+      "at": "2026-10-28T23:26:00+01:00",
+      "phase": "investigating",
+      "trend_id": "985b3a5efe28",
+      "title": "Egipto",
+      "message": "Hecho esencial verificado con fuentes actuales"
+    },
+    {
+      "at": "2026-10-28T23:26:30+01:00",
+      "phase": "drafting",
+      "trend_id": "985b3a5efe28",
+      "title": "Egipto",
+      "message": "Redactando explicación factual y comprobando límite de X"
+    },
+    {
+      "at": "2026-10-28T23:27:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "985b3a5efe28",
+      "title": "Egipto",
+      "message": "Sin remate · contexto sensible de libertad de prensa y detención"
+    },
+    {
+      "at": "2026-10-28T23:28:00+01:00",
+      "phase": "persisting",
+      "trend_id": "985b3a5efe28",
+      "title": "Egipto",
+      "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-28T23:28:30+01:00",
+      "phase": "verifying",
+      "trend_id": "985b3a5efe28",
+      "title": "Egipto",
+      "message": "Releyendo main · Egipto r0 explicado y cola en 0"
+    },
+    {
+      "at": "2026-10-28T23:29:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 0/0 · cola final 0, sin reexplicaciones ni huérfanos; saneamiento visual solicitado."
+      "message": "TTendencias cerrada 5/5 · cola final 0 y sin reexplicaciones pendientes"
     }
   ],
   "partial": false,
@@ -186,15 +339,46 @@
   },
   "remate_selections": [
     {
-      "trend_id": "bd2a535275d1",
+      "trend_id": "985b3a5efe28",
       "revision": 0,
       "candidate_count": 0,
       "selected_candidate": null,
       "selected_score": null,
-      "no_remate_reason": "sensitive_accident_context"
+      "no_remate_reason": "sensitive_press_freedom_detention_context"
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "1cf1cf5b6fe1",
+      "name": "La SER",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "9a56287463c4",
+      "name": "Japón",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "09a030d2efd0",
+      "name": "#FelipeVIDebesIrte",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "3c4b70c9eb66",
+      "name": "Lo País",
+      "revision": 0,
+      "status": "problematic"
+    },
+    {
+      "id": "985b3a5efe28",
+      "name": "Egipto",
+      "revision": 0,
+      "status": "explained"
+    }
+  ],
   "pending_delivery_count": 4,
   "apply_workflow": {
     "run_id": 40774303176,
