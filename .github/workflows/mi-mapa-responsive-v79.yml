@@ -1,0 +1,75 @@
+name: "Mi Mapa Sitios: navegación fluida v79 - iPhone"
+on:
+  push:
+    branches:
+      - feature/mimapa-ui-responsive-v79
+    paths:
+      - 'gps-ios/native/Sources/**'
+      - 'gps-ios/native/Tests/**'
+      - 'gps-ios/native/project.yml'
+      - '.github/workflows/mi-mapa-responsive-v79.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mimapa-responsive-v79
+  cancel-in-progress: true
+jobs:
+  test-and-ipa:
+    runs-on: macos-15
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parseo Swift y XcodeGen
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Pruebas iOS simulador
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          obj=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))
+          phones=[d for rt,ds in obj["devices"].items() if "iOS" in rt
+                    for d in ds if "iPhone" in d["name"] and d["state"]!="Unavailable"]
+          assert phones,"No iOS simulator"
+          open("/tmp/mimapa-v79-udid","w").write(phones[0]["udid"])
+          PY
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/mimapa-v79-udid)" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Generar IPA iPhone sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/mimapa-responsive-v79" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/mimapa-responsive-v79/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"]);assert app.is_dir()
+          info=plistlib.loads((app/"Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert info["CFBundleShortVersionString"]=="1.0.79"
+          assert info["CFBundleVersion"]=="80"
+          assert info["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").is_dir()
+          assert "mimapadeltiempoprueba" in str(info["CFBundleURLTypes"])
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Sitios-Alertas-1.0.79.ipa Payload
+          unzip -t MiMapaDelTiempo-Sitios-Alertas-1.0.79.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Sitios-Alertas-1.0.79-build80-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Sitios-Alertas-1.0.79.ipa
+          retention-days: 14
+          if-no-files-found: error
