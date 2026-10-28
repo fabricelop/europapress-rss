@@ -1,24 +1,31 @@
 {
   "project": "TTendencias",
-  "engine": "chat-direct",
+  "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "7873f51ff683",
-    "dbe9e502f10b"
+    "0fdda5e0230c"
   ],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "733a5bf61b40",
+    "0a6a02124ebe",
+    "4fc099aeb560"
+  ],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T13:53:00+01:00",
+  "last_started_at": "2026-10-28T14:05:18+01:00",
   "last_completed_at": "2026-10-28T14:01:00+01:00",
-  "updated_at": "2026-10-28T14:01:00+01:00",
-  "status": "success",
-  "remaining_active_ids": [],
-  "queue_complete": true,
+  "updated_at": "2026-10-28T14:05:18+01:00",
+  "status": "waiting",
+  "remaining_active_ids": [
+    "733a5bf61b40",
+    "0a6a02124ebe",
+    "4fc099aeb560"
+  ],
+  "queue_complete": false,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
     "trigger_run_id": "tr-1793192013819-manual",
