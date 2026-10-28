@@ -49,6 +49,14 @@ jobs:
                 python3 trends/request_pc_editorial.py --trigger ||
                   echo "TT_EDITORIAL_TRIGGER_ERROR: solicitud persistida; revisar lanzador PC"
               fi
+              # A user selecting an important NEWS item must not wait for the
+              # half-hour editorial scheduler. Persist first; then wake the
+              # same dedicated Windows/ChatGPT runner as the iOS run button.
+              if [ "${{ github.event.client_payload.project }}" = "ttittulares" ] &&
+                 { [ "${{ github.event.client_payload.decision }}" = "prepare" ] ||
+                   [ "${{ github.event.client_payload.decision }}" = "rework" ]; }; then
+                python3 ttittulares/request_pc_editorial.py --trigger
+              fi
               exit 0
             fi
             echo "Concurrent update: retry against fresh main."
