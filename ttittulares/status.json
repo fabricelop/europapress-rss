@@ -1,64 +1,367 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-28T11:16:08.939854Z",
+  "updated_at": "2026-10-28T11:34:20.528402Z",
   "radar_at": "2026-10-28T11:12:32.144299Z",
   "processing_count": 3,
   "processing_items": [
     {
-      "event_id": "df719307c114",
-      "title": "Todos los partidos, salvo Vox, suspenden sus actos de precampaña por el accidente de Toledo y el Gobierno cancela su agenda",
-      "url": "https://www.20minutos.es/nacional/todos-los-partidos-salvo-vox-suspenden-sus-actos-precampana-por-accidente-toledo-gobierno-cancela-su-agenda_7054429_0.html",
-      "selected_at": "2026-10-28T11:16:07.670081Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 7,
-      "sources": [
-        "20minutos",
-        "El HuffPost",
-        "La Vanguardia",
-        "Público",
-        "RTVE",
-        "Servimedia",
-        "elDiario.es"
-      ]
-    },
-    {
-      "event_id": "92dfef043fbb",
-      "title": "Un radar pilla por exceso de velocidad a dos patrullas de la Guardia Civil que acudían a un atraco en Granada y cuatro agentes acaban ante el juez: la Fiscalía descarta su responsabilidad",
+      "id": "92dfef043fbb",
+      "canonical_title": "Un radar pilla por exceso de velocidad a dos patrullas de la Guardia Civil que acudían a un atraco en Granada y cuatro agentes acaban ante el juez: la Fiscalía descarta su responsabilidad",
       "url": "https://www.huffingtonpost.es/sociedad/un-radar-pilla-exceso-velocidad-dos-patrullas-guardia-civil-acudian-atraco-granada-cuatro-agentes-acaban-juez-fiscalia-descarta-responsabilidad-f202610.html",
-      "selected_at": "2026-10-28T11:16:07.470024Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 6,
+      "appearances": [
+        {
+          "source": "El HuffPost",
+          "source_type": "general",
+          "title": "Un radar pilla por exceso de velocidad a dos patrullas de la Guardia Civil que acudían a un atraco en Granada y cuatro agentes acaban ante el juez: la Fiscalía descarta su responsabilidad",
+          "url": "https://www.huffingtonpost.es/sociedad/un-radar-pilla-exceso-velocidad-dos-patrullas-guardia-civil-acudian-atraco-granada-cuatro-agentes-acaban-juez-fiscalia-descarta-responsabilidad-f202610.html",
+          "first_seen": "2026-10-27T13:34:01.240565Z",
+          "last_seen": "2026-10-27T18:07:19.961203Z"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Un juez de Cdiz imputa por primera vez en Espaa a cinco 'petaqueros' por un delito de piratera martima en aguas territoriales tras embestir a la Guardia Civil con su narcolancha",
+          "url": "https://www.elmundo.es/andalucia/2026/10/27/6ae083d7e85eced04d8b457e.html",
+          "first_seen": "2026-10-27T13:34:01.240565Z",
+          "last_seen": "2026-10-27T17:42:25.454548Z"
+        },
+        {
+          "source": "Europa Press",
+          "source_type": "general",
+          "title": "La Guardia Civil incorpora a 44 nuevos agentes a la vigilancia de las carreteras de la Comunitat",
+          "url": "https://www.europapress.es/comunitat-valenciana/noticia-guardia-civil-incorpora-44-nuevos-agentes-vigilancia-carreteras-comunitat-20261028090419.html",
+          "first_seen": "2026-10-28T08:12:40.161537Z",
+          "last_seen": "2026-10-28T08:22:25.078176Z"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "La Guardia Civil, tras llegar a la zona del siniestro: «Había cadáveres entre los hierros»",
+          "url": "https://www.abc.es/espana/castilla-la-mancha/guardia-civil-tras-llegar-zona-siniestro-urda-20261028105937-nt.html",
+          "first_seen": "2026-10-28T10:13:12.706701Z",
+          "last_seen": "2026-10-28T10:24:24.023450Z"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "La Guardia Civil difunde las primeras imágenes aéreas que muestran cuatro vagones descarrilados",
+          "url": "https://www.20minutos.es/nacional/guardia-civil-difunde-las-primeras-imagenes-aereas-accidente-entre-un-ave-un-iryo-toledo_7054416_0.html",
+          "first_seen": "2026-10-28T11:12:32.144299Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        },
+        {
+          "source": "Onda Cero",
+          "source_type": "general",
+          "title": "El vídeo de la Guardia Civil con las imágenes aéreas del accidente ferroviario de Urda",
+          "url": "https://www.ondacero.es/noticias/sociedad/video-guardia-civil-imagenes-aereas-accidente-ferroviario-urda_202610286ae1d2a8004b78127ab6dc7f.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        }
+      ],
       "sources": [
-        "20minutos",
-        "ABC",
         "El HuffPost",
         "El Mundo",
         "Europa Press",
+        "ABC",
+        "20minutos",
         "Onda Cero"
-      ]
+      ],
+      "source_count": 6,
+      "percentage": 37.5,
+      "first_seen": "2026-10-27T13:34:01.240565Z",
+      "last_seen": "2026-10-28T11:12:32.144299Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [],
+      "discovery_sources": [],
+      "source_families": [
+        "El HuffPost",
+        "El Mundo",
+        "Europa Press",
+        "ABC",
+        "20minutos",
+        "Atresmedia"
+      ],
+      "outlet_count": 6,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-28T11:12:32.144299Z",
+      "event_id": "92dfef043fbb",
+      "title": "Un radar pilla por exceso de velocidad a dos patrullas de la Guardia Civil que acudían a un atraco en Granada y cuatro agentes acaban ante el juez: la Fiscalía descarta su responsabilidad",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-28T11:16:07.470024Z",
+      "source_evidence": [
+        {
+          "source": "El HuffPost",
+          "source_type": "general",
+          "title": "Un radar pilla por exceso de velocidad a dos patrullas de la Guardia Civil que acudían a un atraco en Granada y cuatro agentes acaban ante el juez: la Fiscalía descarta su responsabilidad",
+          "url": "https://www.huffingtonpost.es/sociedad/un-radar-pilla-exceso-velocidad-dos-patrullas-guardia-civil-acudian-atraco-granada-cuatro-agentes-acaban-juez-fiscalia-descarta-responsabilidad-f202610.html",
+          "first_seen": "2026-10-27T13:34:01.240565Z",
+          "last_seen": "2026-10-27T18:07:19.961203Z",
+          "source_family": "El HuffPost"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Un juez de Cdiz imputa por primera vez en Espaa a cinco 'petaqueros' por un delito de piratera martima en aguas territoriales tras embestir a la Guardia Civil con su narcolancha",
+          "url": "https://www.elmundo.es/andalucia/2026/10/27/6ae083d7e85eced04d8b457e.html",
+          "first_seen": "2026-10-27T13:34:01.240565Z",
+          "last_seen": "2026-10-27T17:42:25.454548Z",
+          "source_family": "El Mundo"
+        },
+        {
+          "source": "Europa Press",
+          "source_type": "general",
+          "title": "La Guardia Civil incorpora a 44 nuevos agentes a la vigilancia de las carreteras de la Comunitat",
+          "url": "https://www.europapress.es/comunitat-valenciana/noticia-guardia-civil-incorpora-44-nuevos-agentes-vigilancia-carreteras-comunitat-20261028090419.html",
+          "first_seen": "2026-10-28T08:12:40.161537Z",
+          "last_seen": "2026-10-28T08:22:25.078176Z",
+          "source_family": "Europa Press"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "La Guardia Civil, tras llegar a la zona del siniestro: «Había cadáveres entre los hierros»",
+          "url": "https://www.abc.es/espana/castilla-la-mancha/guardia-civil-tras-llegar-zona-siniestro-urda-20261028105937-nt.html",
+          "first_seen": "2026-10-28T10:13:12.706701Z",
+          "last_seen": "2026-10-28T10:24:24.023450Z",
+          "source_family": "ABC"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "La Guardia Civil difunde las primeras imágenes aéreas que muestran cuatro vagones descarrilados",
+          "url": "https://www.20minutos.es/nacional/guardia-civil-difunde-las-primeras-imagenes-aereas-accidente-entre-un-ave-un-iryo-toledo_7054416_0.html",
+          "first_seen": "2026-10-28T11:12:32.144299Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "20minutos"
+        },
+        {
+          "source": "Onda Cero",
+          "source_type": "general",
+          "title": "El vídeo de la Guardia Civil con las imágenes aéreas del accidente ferroviario de Urda",
+          "url": "https://www.ondacero.es/noticias/sociedad/video-guardia-civil-imagenes-aereas-accidente-ferroviario-urda_202610286ae1d2a8004b78127ab6dc7f.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "Atresmedia"
+        }
+      ],
+      "drafted_source_count": 6,
+      "verified_source_count": 6
     },
+    {
+      "id": "df719307c114",
+      "canonical_title": "Todos los partidos, salvo Vox, suspenden sus actos de precampaña por el accidente de Toledo y el Gobierno cancela su agenda",
+      "url": "https://www.20minutos.es/nacional/todos-los-partidos-salvo-vox-suspenden-sus-actos-precampana-por-accidente-toledo-gobierno-cancela-su-agenda_7054429_0.html",
+      "appearances": [
+        {
+          "source": "El HuffPost",
+          "source_type": "general",
+          "title": "Gobierno y partidos políticos cancelan su agenda para atender el accidente ferroviario, menos Vox",
+          "url": "https://www.huffingtonpost.es/politica/gobierno-partidos-politicos-cancelan-agenda-atender-accidente-ferroviario-udra-f202610.html",
+          "first_seen": "2026-10-28T10:24:24.023450Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Los partidos cancelan sus actos por el accidente salvo Vox, que ya culpa al Gobierno",
+          "url": "https://www.lavanguardia.com/politica/20261028/11669987/partidos-suspenden-agendas-accidente-ferroviario-toledo.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        },
+        {
+          "source": "RTVE",
+          "source_type": "general",
+          "title": "Todos los partidos, salvo Vox, suspenden sus actos de precampaa tras el accidente de tren de Toledo",
+          "url": "https://www.rtve.es/noticias/20261028/todos-partidos-salvo-vox-suspenden-actos-campana-accidente-tren-toledo/17286743.shtml",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "El Gobierno y todos los partidos menos Vox cancelan sus agendas",
+          "url": "https://www.publico.es/politica/memoria-publica/gobierno-todos-partidos-vox-cancelan-agendas-accidente-trenes.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        },
+        {
+          "source": "Servimedia",
+          "source_type": "general",
+          "title": "Vox carga contra el Gobierno tras el accidente de tren: “Ha destinado el dinero para prevenirlos a mordidas del PSOE”",
+          "url": "https://www.servimedia.es/noticias/vox-carga-gobierno-tras-accidente-tren-ha-destinado-dinero-para-prevenirlos-mordidas-psoe/1413495664",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        },
+        {
+          "source": "elDiario.es",
+          "source_type": "general",
+          "title": "Vox mantiene su agenda y ataca al Gobierno con el accidente de Toledo: “La campaña del amor del PSOE causa muertos”",
+          "url": "https://www.eldiario.es/politica/vox-mantiene-agenda-ataca-gobierno-accidente-toledo-campana-amor-psoe-causa-muertos_1_13620836.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Todos los partidos, salvo Vox, suspenden sus actos de precampaña por el accidente de Toledo y el Gobierno cancela su agenda",
+          "url": "https://www.20minutos.es/nacional/todos-los-partidos-salvo-vox-suspenden-sus-actos-precampana-por-accidente-toledo-gobierno-cancela-su-agenda_7054429_0.html",
+          "first_seen": "2026-10-28T11:12:32.144299Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z"
+        }
+      ],
+      "sources": [
+        "El HuffPost",
+        "La Vanguardia",
+        "RTVE",
+        "Público",
+        "Servimedia",
+        "elDiario.es",
+        "20minutos"
+      ],
+      "source_count": 7,
+      "percentage": 43.8,
+      "first_seen": "2026-10-28T10:24:24.023450Z",
+      "last_seen": "2026-10-28T11:12:32.144299Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [],
+      "discovery_sources": [],
+      "source_families": [
+        "El HuffPost",
+        "La Vanguardia",
+        "RTVE",
+        "Público",
+        "Servimedia",
+        "elDiario.es",
+        "20minutos"
+      ],
+      "outlet_count": 7,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-28T11:12:32.144299Z",
+      "event_id": "df719307c114",
+      "title": "Todos los partidos, salvo Vox, suspenden sus actos de precampaña por el accidente de Toledo y el Gobierno cancela su agenda",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-28T11:16:07.670081Z",
+      "source_evidence": [
+        {
+          "source": "El HuffPost",
+          "source_type": "general",
+          "title": "Gobierno y partidos políticos cancelan su agenda para atender el accidente ferroviario, menos Vox",
+          "url": "https://www.huffingtonpost.es/politica/gobierno-partidos-politicos-cancelan-agenda-atender-accidente-ferroviario-udra-f202610.html",
+          "first_seen": "2026-10-28T10:24:24.023450Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "El HuffPost"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Los partidos cancelan sus actos por el accidente salvo Vox, que ya culpa al Gobierno",
+          "url": "https://www.lavanguardia.com/politica/20261028/11669987/partidos-suspenden-agendas-accidente-ferroviario-toledo.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "La Vanguardia"
+        },
+        {
+          "source": "RTVE",
+          "source_type": "general",
+          "title": "Todos los partidos, salvo Vox, suspenden sus actos de precampaa tras el accidente de tren de Toledo",
+          "url": "https://www.rtve.es/noticias/20261028/todos-partidos-salvo-vox-suspenden-actos-campana-accidente-tren-toledo/17286743.shtml",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "RTVE"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "El Gobierno y todos los partidos menos Vox cancelan sus agendas",
+          "url": "https://www.publico.es/politica/memoria-publica/gobierno-todos-partidos-vox-cancelan-agendas-accidente-trenes.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "Público"
+        },
+        {
+          "source": "Servimedia",
+          "source_type": "general",
+          "title": "Vox carga contra el Gobierno tras el accidente de tren: “Ha destinado el dinero para prevenirlos a mordidas del PSOE”",
+          "url": "https://www.servimedia.es/noticias/vox-carga-gobierno-tras-accidente-tren-ha-destinado-dinero-para-prevenirlos-mordidas-psoe/1413495664",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "Servimedia"
+        },
+        {
+          "source": "elDiario.es",
+          "source_type": "general",
+          "title": "Vox mantiene su agenda y ataca al Gobierno con el accidente de Toledo: “La campaña del amor del PSOE causa muertos”",
+          "url": "https://www.eldiario.es/politica/vox-mantiene-agenda-ataca-gobierno-accidente-toledo-campana-amor-psoe-causa-muertos_1_13620836.html",
+          "first_seen": "2026-10-28T10:54:09.092495Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "elDiario.es"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Todos los partidos, salvo Vox, suspenden sus actos de precampaña por el accidente de Toledo y el Gobierno cancela su agenda",
+          "url": "https://www.20minutos.es/nacional/todos-los-partidos-salvo-vox-suspenden-sus-actos-precampana-por-accidente-toledo-gobierno-cancela-su-agenda_7054429_0.html",
+          "first_seen": "2026-10-28T11:12:32.144299Z",
+          "last_seen": "2026-10-28T11:12:32.144299Z",
+          "source_family": "20minutos"
+        }
+      ],
+      "drafted_source_count": 7,
+      "verified_source_count": 7
+    },
+    {
+      "event_id": "manual-15474c6b-bb2f-468d-9117-341ad22d5422",
+      "title": "Suspendidos los partidos de copa del rey de hoy por el accidente de tren.",
+      "url": "",
+      "status": "PROCESSING",
+      "revision": 1,
+      "selected_at": "2026-10-28T11:34:15.229972Z",
+      "requested_at": "2026-10-28T11:34:15.229972Z",
+      "selection_mode": "TTACTUALIDAD_MANUAL",
+      "manual_submission": true,
+      "manual_investigation_requested": true,
+      "force_user_elaborate": true,
+      "allow_zero_initial_sources": true,
+      "source_count": 0,
+      "verified_source_count": 0,
+      "sources": [],
+      "user_instructions": "",
+      "rewrite_request": "",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY."
+    }
+  ],
+  "ready_count": 0,
+  "problematic_count": 1,
+  "problematic_items": [
     {
       "event_id": "dbf0e8c85952",
       "title": "Un agricultor cordobés, atrapado en Ciudad Real tras el accidente de trenes en Toledo: «Un amigo está ayudando a los heridos, dice que son muchísimos»",
       "url": "https://www.abc.es/espana/andalucia/cordoba/agricultor-cordobes-atrapado-ciudad-real-tras-accidente-20261028105249-nts.html",
       "selected_at": "2026-10-28T11:16:07.319283Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
+      "problematic_at": "2026-10-28T11:34:20.528402Z",
+      "problem_reason": "insufficient_independent_verification: the quoted anecdote and the specific farmer case are supported by one source only; the other matches verify the general train accident or are unrelated to the anecdote.",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
       "source_count": 5,
       "sources": [
-        "ABC",
-        "COPE",
-        "EL PAÍS",
         "Europa Press",
-        "Telecinco Noticias"
+        "Telecinco Noticias",
+        "ABC",
+        "EL PAÍS",
+        "COPE"
       ]
     }
   ],
-  "ready_count": 1,
-  "problematic_count": 0,
-  "problematic_items": [],
   "trend_candidates_count": 0,
   "trend_candidates": [],
   "one_source_count": 393,
