@@ -31,6 +31,14 @@ jobs:
         run: |
           python -m py_compile desktop/ttactualidad/TTActualidad.py desktop/ttactualidad/TTActualidad_Moderno.pyw
           python -m unittest discover -s desktop/ttactualidad -p 'test_*.py' -v
+      - name: Render modern Windows UI visual snapshot
+        run: python desktop/ttactualidad/render_preview.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TTActualidad-Windows-Visual-Preview
+          path: desktop/ttactualidad/dist/TTActualidad-preview.png
+          if-no-files-found: error
+          retention-days: 7
       - name: Package modern native Windows application
         run: |
           python -m PyInstaller --noconfirm --clean --onefile --windowed --name TTActualidad --paths desktop/ttactualidad --hidden-import=keyring.backends.Windows desktop/ttactualidad/TTActualidad_Moderno.pyw

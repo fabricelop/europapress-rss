@@ -7,6 +7,7 @@ import html
 import json
 import os
 import pathlib
+import re
 import threading
 import time
 import urllib.parse
@@ -21,7 +22,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QApplication, QWidget, QFrame, QLabel, QPushButton, QLineEdit, QVBoxLayout,
     QHBoxLayout, QGridLayout, QScrollArea, QTextBrowser, QDialog, QDialogButtonBox,
-    QMessageBox, QTextEdit, QStackedWidget, QSizePolicy, QSplitter
+    QMessageBox, QTextEdit, QInputDialog, QSizePolicy, QSplitter, QMenu
 )
 
 from TTActualidad import FILES, RAW, API, REPO, KEYRING_SERVICE, normalise, request, text
@@ -49,17 +50,27 @@ GOLD = "#f0c77a"
 
 STYLE = """
 QWidget { background:#0b1220; color:#eef5ff; font-family:'Segoe UI'; font-size:13px; }
-QFrame#sidebar { background:#101c2e; border-right:1px solid #293b50; }
-QFrame#panel { background:#101c2e; border:1px solid #293b50; border-radius:16px; }
-QFrame#metric { background:#17263a; border:1px solid #2c4056; border-radius:14px; }
-QFrame#rowCard { background:#17263a; border:1px solid #2c4056; border-radius:12px; }
-QFrame#rowCard:hover { background:#20334a; border-color:#64d8c3; }
-QLabel#brand { font-size:25px; font-weight:800; color:#76ead1; }
+QLabel { background:transparent; border:0px; padding:0px; }
+QFrame QLabel { background:transparent; }
+QScrollArea QWidget#listHost { background:transparent; }
+QFrame#sidebar { background:#111d2c; border-right:1px solid #273951; }
+QFrame#panel { background:#121f31; border:1px solid #2a4057; border-radius:18px; }
+QFrame#metric { background:#172b3e; border:1px solid #31506a; border-radius:16px; }
+QFrame#rowCard { background:#1c2d42; border:1px solid #34485f; border-radius:13px; }
+QFrame#rowCard:hover { background:#233a50; border-color:#64d8c3; }
+QFrame#rowCard[selected="true"] { background:#243d4e; border:1px solid #74dac6; }
+QMenu { background:#192a3e; border:1px solid #3a566f; border-radius:10px; padding:6px; }
+QMenu::item { padding:9px 18px; color:#eaf2ff; border-radius:6px; }
+QMenu::item:selected { background:#2a554e; color:#9bffe7; }
+QMenu::item:disabled { color:#64798f; }
+QToolTip { background:#243b51; color:white; border:1px solid #57768e; border-radius:6px; padding:7px; }
+
+QLabel#brand { font-size:26px; font-weight:800; color:#83ecd6; }
 QLabel#eyebrow { color:#94adc4; font-size:11px; font-weight:700; }
 QLabel#pageTitle { font-size:24px; font-weight:750; }
-QLabel#metricNumber { font-size:29px; font-weight:800; color:#eef5ff; }
+QLabel#metricNumber { font-size:33px; font-weight:800; color:#f4fbff; }
 QLabel#cardTitle { font-size:14px; font-weight:650; }
-QLabel#detailTitle { font-size:24px; font-weight:750; }
+QLabel#detailTitle { font-size:23px; font-weight:750; }
 QLabel#small { font-size:12px; color:#9caec1; }
 QLabel#body { font-size:14px; color:#d5e2ef; }
 QPushButton { border:1px solid #3a516a; border-radius:10px; padding:9px 14px;
@@ -75,7 +86,7 @@ QPushButton#nav { border:0; background:transparent; padding:11px 14px; text-alig
    color:#a8bad0; border-radius:9px; }
 QPushButton#nav:hover { background:#1e3247; color:white; }
 QPushButton#nav[active="true"] { background:#23453f; color:#78ebd3; font-weight:750; }
-QLineEdit, QTextEdit { background:#17283c; border:1px solid #3a5169; border-radius:10px;
+QLineEdit, QTextEdit { background:#1b2b40; border:1px solid #385470; border-radius:10px;
   padding:10px 12px; selection-background-color:#276a62; }
 QLineEdit:focus, QTextEdit:focus { border:1px solid #6be1c7; }
 QTextBrowser { background:#101c2e; color:#dce9f7; border:0; font-size:14px; }
@@ -135,6 +146,10 @@ def safe_url(url):
         return o.geturl() if o.scheme=="https" and o.netloc else ""
     except ValueError: return ""
 
+def publication_outcome(choice):
+    """Map the user's explicit result to the two distinct terminal outcomes."""
+    return {"yes":"published", "no":"deleted", "cancel":None}.get(choice)
+
 def stored_session():
     try: return json.loads(keyring.get_password(KEYRING_SERVICE,SERVICE_KEY) or "{}")
     except Exception: return {}
@@ -159,6 +174,35 @@ def validate_token(token):
         raise ValueError("GitHub no ha reconocido este token.")
     return login
 
+_archive_cache={}
+_archive_checked_at=0.0
+
+def load_archive_paths():
+    """Fetch the same GitHub archive photo catalog used by iOS (no AI imagery)."""
+    global _archive_cache, _archive_checked_at
+    if _archive_checked_at and time.time()-_archive_checked_at<600:
+        return dict(_archive_cache)
+    try:
+        _,tree=request("https://api.github.com/repos/"+REPO+"/git/trees/main?recursive=1",timeout=15)
+        if tree.get("truncated"):
+            raise ValueError("El listado de archivos está truncado")
+        found={}
+        for node in tree.get("tree",[]):
+            path=node.get("path","")
+            if node.get("type")!="blob" or not path.startswith(("trends/archive-images/","ttittulares/archive-images/")):
+                continue
+            match=re.fullmatch(r"(.+)-r([0-9]+)-[^/]+[.](jpg|jpeg|png|webp)",path.rsplit("/",1)[-1],re.I)
+            if not match:
+                continue
+            project="ttendencias" if path.startswith("trends/") else "ttittulares"
+            found[project+":"+match.group(1)+":r"+match.group(2)]=RAW+path
+        _archive_cache=found
+        _archive_checked_at=time.time()
+    except Exception:
+        # Missing photo catalog must never discard legitimate editorial data.
+        pass
+    return dict(_archive_cache)
+
 def fetch_editorial():
     result={}
     def one(pair):
@@ -175,6 +219,7 @@ def fetch_editorial():
                 result[k]=v
             except Exception as exc:errors.append(jobs[future]+": "+str(exc))
     if errors: raise RuntimeError("Sin actualizar datos incompletos: "+"; ".join(errors[:3]))
+    result["archive_photos"]=load_archive_paths()
     return result,normalise(result)
 
 class Events(QObject):
@@ -265,16 +310,19 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("TTActualidad · Escritorio")
-        self.resize(1460,920)
-        self.setMinimumSize(1050,670)
+        self.resize(1460,880)
+        self.setMinimumSize(1040,660)
         self.docs={}
         self.news=[];self.trends=[];self.top30=[];self.published={"ttittulares":0,"ttendencias":0}
         self.selected=None;self.section="Todas las Listas"
         self.refreshing=False;self.sending=False
+        self.pending_action=None
+        self.loaded_image=QPixmap()
         self.events=Events()
         self.events.finished.connect(self.on_finished)
         self.worker=Worker(self.events)
         self.nav={}
+        self.card_widgets={}
         self.draw()
         self.timer=QTimer(self)
         self.timer.timeout.connect(self.refresh)
@@ -286,17 +334,20 @@ class MainWindow(QWidget):
         side=frame("sidebar")
         side.setFixedWidth(245)
         root.addWidget(side)
-        nav=col_layout(side,12,(18,30,18,22))
+        nav=col_layout(side,6,(19,29,19,18))
         nav.addWidget(label("TTActualidad","brand"))
         nav.addWidget(label("REDACCIÓN  /  WINDOWS","eyebrow"))
-        nav.addSpacing(25)
-        nav.addWidget(label("ESPACIO DE TRABAJO","eyebrow"))
+        nav.addSpacing(21)
+        nav.addWidget(label("BANDEJAS","eyebrow"))
         for title,_,_ in SECTIONS:
-            caption=title
-            if title=="Todas las Listas":caption="⌂   Todas las listas"
-            if title.startswith("Noticias"):caption=title.replace("Noticias · ","N   ")
-            if title.startswith("Tendencias"):caption=title.replace("Tendencias · ","T   ")
-            b=button(caption,lambda checked=False,n=title:self.change_section(n),"nav")
+            if title=="Noticias · Listas":
+                nav.addSpacing(16)
+                nav.addWidget(label("NOTICIAS","eyebrow"))
+            if title=="Tendencias · Listas":
+                nav.addSpacing(12)
+                nav.addWidget(label("TENDENCIAS","eyebrow"))
+            caption="Resumen general" if title=="Todas las Listas" else title.split(" · ")[-1]
+            b=button("  "+caption,lambda checked=False,n=title:self.change_section(n),"nav")
             b.setProperty("active",title==self.section)
             b.style().unpolish(b);b.style().polish(b)
             self.nav[title]=b
@@ -305,12 +356,12 @@ class MainWindow(QWidget):
         nav.addWidget(label("CONEXIÓN SEGURA","eyebrow"))
         self.auth_label=label("GitHub · sin conectar","small",wrap=True)
         nav.addWidget(self.auth_label)
-        nav.addWidget(button("Conectar GitHub",self.connect,"primary"))
+        nav.addWidget(button("Cambiar conexión",self.connect))
         nav.addWidget(button("Cerrar sesión",self.logout))
         content=QWidget()
         content.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         root.addWidget(content,1)
-        page=col_layout(content,18,(25,24,25,16))
+        page=col_layout(content,18,(27,27,27,19))
         head=row_layout(spacing=18)
         titles=col_layout(spacing=4)
         self.heading=label("Todas las listas","pageTitle")
@@ -318,6 +369,7 @@ class MainWindow(QWidget):
         titles.addWidget(label("PANEL EDITORIAL   ·   GITHUB","eyebrow"))
         titles.addWidget(self.heading);titles.addWidget(self.subtitle)
         head.addLayout(titles,1)
+        head.addWidget(button("ChatGPT Images ↗",lambda:webbrowser.open("https://chatgpt.com/images")))
         head.addWidget(button("+  Nueva noticia",self.new_story,"primary"))
         self.reload=button("Actualizar",self.refresh)
         head.addWidget(self.reload)
@@ -339,7 +391,7 @@ class MainWindow(QWidget):
         page.addWidget(splitter,1)
 
         left=frame("panel")
-        ll=col_layout(left,12,(15,17,15,15))
+        ll=col_layout(left,12,(18,20,18,18))
         lhead=row_layout()
         lhead.addWidget(label("Bandeja editorial","cardTitle"))
         self.list_count=label("0 elementos","small")
@@ -351,48 +403,91 @@ class MainWindow(QWidget):
         ll.addWidget(self.search)
         self.scroll=QScrollArea();self.scroll.setWidgetResizable(True)
         self.list_host=QWidget()
+        self.list_host.setObjectName("listHost")
         self.list_layout=col_layout(self.list_host,8,(2,4,2,6))
         self.scroll.setWidget(self.list_host)
         ll.addWidget(self.scroll,1)
         splitter.addWidget(left)
 
         right=frame("panel")
-        rl=col_layout(right,12,(20,18,20,18))
-        self.state_tag=label("SELECCIONA UNA TARJETA","eyebrow")
+        rl=col_layout(right,12,(24,21,24,21))
+        self.state_tag=label("SELECCIONA UN ELEMENTO","eyebrow")
         rl.addWidget(self.state_tag)
-        self.detail_title=label("Elige una noticia o tendencia","detailTitle",wrap=True)
+        self.detail_title=label("Tu bandeja editorial","detailTitle",wrap=True)
+        self.detail_title.setMaximumHeight(112)
         rl.addWidget(self.detail_title)
-        self.detail_meta=label("Verás aquí el texto, las fuentes y las acciones disponibles.","small",wrap=True)
+        self.detail_meta=label("Selecciona una tarjeta para leerla y gestionar sus acciones.","small",wrap=True)
         rl.addWidget(self.detail_meta)
-        self.image_label=label()
-        self.image_label.setFixedHeight(0)
-        self.image_label.setAlignment(Qt.AlignCenter)
-        self.image_label.setStyleSheet("border-radius:12px;background:#17283a;")
-        rl.addWidget(self.image_label)
+
+        # Text and photographic preview SHARE one row. Photos can no longer
+        # push the action buttons below the bottom of the window.
+        preview=row_layout(spacing=14)
         self.body=QTextBrowser()
+        self.body.setMinimumHeight(115)
         self.body.setOpenExternalLinks(False)
         self.body.anchorClicked.connect(self.open_link)
-        self.body.setHtml("<p style='color:#99adc4'>Selecciona un elemento de la bandeja.</p>")
-        rl.addWidget(self.body,1)
-        actions=QGridLayout();actions.setHorizontalSpacing(9);actions.setVerticalSpacing(9)
+        self.body.setHtml("<p style='color:#99adc4'>Las noticias y tendencias aparecerán aquí.</p>")
+        preview.addWidget(self.body,1)
+        self.image_label=label()
+        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setFixedSize(180,132)
+        self.image_label.setStyleSheet("background:#22354a;border:1px solid #36516b;border-radius:12px;")
+        self.image_label.hide()
+        preview.addWidget(self.image_label,0,Qt.AlignTop)
+        rl.addLayout(preview,1)
+
+        # Primary actions remain in the visible, STICKY action dock; secondary
+        # actions are available in a genuine menu without nine tiny rows.
         self.actions={}
-        defs=[
+        rl.addWidget(label("HERRAMIENTAS DE PUBLICACIÓN","eyebrow"))
+        quick=row_layout(spacing=8)
+        quick_items=[
             ("Copiar texto","copy",self.copy_text,None),
-            ("Publicar en X","x",self.publish_x,"primary"),
-            ("Abrir fuente","source",self.open_source,None),
-            ("Ver foto archivo","image",self.open_image,None),
-            ("Elaborar / Reelaborar","rework",lambda:self.editorial_action("rework"),None),
-            ("Desestimar","discard",lambda:self.editorial_action("discard"),"danger"),
-            ("Quitar de Listas","deleted",lambda:self.editorial_action("deleted"),"danger"),
-            ("Marcar publicada","published",lambda:self.editorial_action("published"),None),
+            ("Copiar GAG","gag",self.copy_gag,None),
+            ("ChatGPT Images ↗","chatgpt",lambda:webbrowser.open("https://chatgpt.com/images"),None),
+            ("Publicar en X ↗","x",self.publish_x,"primary"),
         ]
-        for i,(txt,key,fn,kind) in enumerate(defs):
-            b=button(txt,fn,kind);self.actions[key]=b
-            actions.addWidget(b,i//2,i%2)
-        rl.addLayout(actions)
+        for caption,key,fn,kind in quick_items:
+            btn=button(caption,fn,kind)
+            btn.setMinimumHeight(40)
+            self.actions[key]=btn
+            quick.addWidget(btn,1)
+        rl.addLayout(quick)
+
+        rl.addWidget(label("GESTIÓN EDITORIAL","eyebrow"))
+        editorial=row_layout(spacing=8)
+        primary_decisions=[
+            ("Preparar / Reelaborar","rework",self.prepare_or_rework,None),
+            ("Quitar de Listas","deleted",lambda:self.editorial_action("deleted"),"danger"),
+            ("Cerrar · Sí / No","published",self.ask_publication_outcome,"primary")
+        ]
+        for caption,key,fn,kind in primary_decisions:
+            btn=button(caption,fn,kind)
+            btn.setMinimumHeight(42)
+            self.actions[key]=btn
+            editorial.addWidget(btn,1)
+        self.more_menu=QMenu(right)
+        extra=[
+            ("Buscar en X ↗","searchx",self.search_x),
+            ("TTImages ↗","ttimages",lambda:webbrowser.open("https://t.me/TTImages_bot")),
+            ("Abrir fuente ↗","source",self.open_source),
+            ("Ver foto de archivo ↗","image",self.open_image),
+            ("Copiar foto de archivo","photo_copy",self.copy_photo),
+            ("Añadir pistas a la tendencia","hints",self.add_hints),
+            ("Desestimar","discard",lambda:self.editorial_action("discard")),
+        ]
+        for caption,key,fn in extra:
+            action=self.more_menu.addAction(caption)
+            action.triggered.connect(lambda checked=False,callback=fn:callback())
+            self.actions[key]=action
+        self.more_button=button("Más  ···",lambda:self.more_menu.exec(
+            self.more_button.mapToGlobal(self.more_button.rect().bottomLeft())))
+        self.more_button.setMinimumHeight(42)
+        editorial.addWidget(self.more_button)
+        rl.addLayout(editorial)
         splitter.addWidget(right)
-        splitter.setSizes([460,720])
-        self.notice=label("La información proviene directamente de GitHub. Ninguna acción se confirma antes de verificarse.","small",wrap=True)
+        splitter.setSizes([475,720])
+        self.notice=label("GitHub es la autoridad editorial · las órdenes se verifican antes de confirmarse.","small",wrap=True)
         page.addWidget(self.notice)
         self.update_auth_badge()
         self.update_actions()
@@ -457,25 +552,31 @@ class MainWindow(QWidget):
             self.docs,processed=value
             self.news,self.trends,self.top30,self.published=processed
             self.render_list()
-            self.notice.setText("GitHub actualizado · "+dt.datetime.now().strftime("%H:%M:%S"))
+            if self.pending_action:
+                self.confirm_pending()
+            else:
+                self.notice.setText("GitHub actualizado · "+dt.datetime.now().strftime("%H:%M:%S"))
         elif kind=="submit":
             self.sending=False
             if error:
+                self.pending_action=None
+                self.update_actions()
                 self.notice.setText("Acción no enviada: "+error)
                 QMessageBox.warning(self,"Acción no enviada",error)
                 return
-            self.notice.setText("GitHub ha recibido la orden · "+value[:8]+
-                                " · pendiente de confirmación en los archivos editoriales.")
-            QTimer.singleShot(6000,self.refresh)
-            QTimer.singleShot(15000,self.refresh)
+            self.notice.setText("Orden recibida · "+value[:8]+" · esperando confirmación editorial…")
+            for delay in (2000, 6000, 12000, 23000, 40000):
+                QTimer.singleShot(delay,self.refresh)
         elif kind=="image":
             rowkey,data=value if not error else (None,None)
             if error or not data or not self.selected or rowkey!=(self.selected["project"],self.selected["id"]):
                 return
             pix=QPixmap()
             if not pix.loadFromData(data):return
-            self.image_label.setPixmap(pix.scaled(QSize(820,180),Qt.KeepAspectRatio,Qt.SmoothTransformation))
-            self.image_label.setFixedHeight(180)
+            self.loaded_image=pix
+            self.image_label.setPixmap(pix.scaled(QSize(172,124),Qt.KeepAspectRatio,Qt.SmoothTransformation))
+            self.image_label.show()
+            self.update_actions()
 
     def list_data(self):
         if self.section=="Todas las Listas":
@@ -501,11 +602,16 @@ class MainWindow(QWidget):
         self.metric_labels["working"].setText(str(working))
         self.metric_labels["published"].setText(str(sum(self.published.values())))
         clear_layout(self.list_layout)
+        self.card_widgets={}
         if not chosen:
             msg=label("No hay elementos en esta sección.","small",wrap=True)
             self.list_layout.addWidget(msg)
         for item in chosen[:180]:
             card=frame("rowCard")
+            is_selected=(self.selected and item["id"]==self.selected["id"]
+                         and item["project"]==self.selected["project"])
+            card.setProperty("selected",bool(is_selected))
+            self.card_widgets[(item["project"],item["id"])]=card
             card.setCursor(Qt.PointingHandCursor)
             cc=col_layout(card,7,(13,12,13,11))
             line=row_layout(spacing=8)
@@ -542,22 +648,28 @@ class MainWindow(QWidget):
         self.detail_meta.setText("Verás aquí el texto, las fuentes y las acciones disponibles.")
         self.state_tag.setText("SELECCIONA UNA TARJETA")
         self.body.setHtml("<p style='color:#99adc4'>Selecciona un elemento de la bandeja.</p>")
+        self.loaded_image=QPixmap()
         self.image_label.setPixmap(QPixmap())
-        self.image_label.setFixedHeight(0)
+        self.image_label.hide()
         self.update_actions()
 
     def select_item(self,item,load_image=True):
         self.selected=item
+        for key,card in self.card_widgets.items():
+            card.setProperty("selected",key==(item["project"],item["id"]))
+            card.style().unpolish(card)
+            card.style().polish(card)
         self.state_tag.setText(item["category"].upper()+"   /   "+item["state"].upper())
         self.detail_title.setText(item.get("title") or "Sin título")
-        self.detail_meta.setText("ID "+item["id"]+"  ·  Revisión "+str(item["revision"]))
+        self.detail_meta.setText("ID "+item["id"]+"  ·  Rev. "+str(item["revision"])+("  ·  #"+str(item.get("rank")) if item.get("rank") else "")+("  ·  "+item.get("trend_status","") if item["state"]=="Top 30" else ""))
         body=html.escape(item.get("body") or "Pendiente de texto.").replace("\n","<br>")
         meta=("<p style='font-size:12px;color:#8fa9bf;margin-top:20px'>"
               "Fuente: "+("disponible" if safe_url(item.get("source")) else "no disponible")+
               " · Foto de archivo: "+("disponible" if safe_url(item.get("image")) else "no disponible")+"</p>")
         self.body.setHtml("<div style='font-family:Segoe UI;font-size:15px;"
                           "line-height:155%;color:#e2edf8'>"+body+"</div>"+meta)
-        self.image_label.setPixmap(QPixmap());self.image_label.setFixedHeight(0)
+        self.loaded_image=QPixmap()
+        self.image_label.setPixmap(QPixmap());self.image_label.hide()
         self.update_actions()
         url=safe_url(item.get("image"))
         if load_image and url:
@@ -574,18 +686,121 @@ class MainWindow(QWidget):
 
     def update_actions(self):
         row=self.selected
+        ready=bool(row and row["state"]=="Listas")
+        working=bool(row and row["state"]=="En elaboración")
+        top=bool(row and row["state"]=="Top 30")
+        tremending=bool(row and row["state"]=="Tremending")
+        review=bool(row and row["state"] in ("Revisión","Creciendo"))
         has=bool(row)
-        ready=has and row["state"]=="Listas"
-        working=has and row["state"]=="En elaboración"
-        for k in ("copy","x","source","image","rework","discard","deleted","published"):
-            self.actions[k].setEnabled(bool(has))
-        if not has:return
-        self.actions["source"].setEnabled(bool(safe_url(row.get("source"))))
-        self.actions["image"].setEnabled(bool(safe_url(row.get("image"))))
-        self.actions["published"].setEnabled(bool(ready))
-        self.actions["deleted"].setEnabled(bool(ready))
-        self.actions["discard"].setEnabled(bool(working))
-        self.actions["rework"].setEnabled(bool(ready or row["state"]=="Top 30"))
+        enable={
+            "copy":has,"gag":has and (ready or top) and bool(row.get("body")),
+            "chatgpt":True,"x":has and bool(row.get("body")) and (ready or top),
+            "searchx":has,"ttimages":True,
+            "source":has and bool(safe_url(row.get("source"))),
+            "image":has and bool(safe_url(row.get("image"))),
+            "photo_copy":has and not self.loaded_image.isNull(),
+            "rework":has and (ready or review or top),
+            "hints":has and row["project"]=="ttendencias" and ready,
+            "deleted":has and (ready or tremending),
+            "discard":has and (working or (review and row["project"]=="ttittulares")),
+            "published":has and ready
+        }
+        for k,b in self.actions.items():
+            allowed=enable.get(k,False)
+            if self.sending and k in {"rework","hints","deleted","discard","published"}:
+                allowed=False
+            if self.pending_action and row:
+                p=self.pending_action
+                if p["project"]==row["project"] and p["event_id"]==row["id"] and k in {"rework","hints","deleted","discard","published"}:
+                    allowed=False
+            b.setEnabled(bool(allowed))
+        if row:
+            self.actions["rework"].setText(
+                "Preparar" if row["state"] in ("Revisión","Creciendo")
+                or (top and not row.get("body") and row.get("rank",0)>10)
+                else "Reelaborar")
+            self.actions["published"].setToolTip(
+                "Elegir Cancelar / Sí publicada (+1) / No sin publicar (+0).")
+
+    def confirm_pending(self):
+        pending=self.pending_action
+        if not pending:return
+        receipts=(self.docs.get("action_receipts") or {}).get("items") or []
+        found=next((x for x in reversed(receipts)
+                    if x.get("request_id")==pending["request_id"]),None)
+        if found:
+            status=str(found.get("status") or "").lower()
+            if status in {"applied","already_applied"}:
+                self.notice.setText("CONFIRMADO EN GITHUB · "+pending["label"]+
+                                    " · "+pending["event_id"]+" · aplicado.")
+                self.pending_action=None
+                self.update_actions()
+                return
+            self.notice.setText("GitHub rechazó la orden: "+str(found.get("error") or status))
+            self.pending_action=None
+            self.update_actions()
+            return
+        age=time.time()-pending["since"]
+        if age>=55:
+            self.notice.setText("Sin comprobante para «"+pending["label"]+
+                                "». Revisa GitHub Actions; no se ha declarado éxito.")
+            self.pending_action=None
+            self.update_actions()
+        else:
+            self.notice.setText("GitHub recibió «"+pending["label"]+
+                                "»; sigue pendiente de confirmación editorial…")
+
+    def copy_gag(self):
+        row=self.selected
+        if not row or not row.get("body"):return
+        full=row["body"]
+        closer=next((p for p in reversed(full.splitlines()) if p.strip().startswith("🌶")),"")
+        kind="TTendencias" if row["project"]=="ttendencias" else "TTiTTulares"
+        prompt=("\n\n".join([
+            "Genera AHORA UNA SOLA imagen GAG IA para "+kind+".",
+            "TÍTULO:\n"+("#"+str(row["rank"])+" " if row.get("rank") else "")+row["title"],
+            "TEXTO EXACTO CERRADO. NO LO REESCRIBAS:\n"+full,
+            "REMATE EXACTO:\n"+closer,
+            "CONTEXTO DOCUMENTADO:\n"+full,
+            "DIRECCIÓN VISUAL: una sola idea visual fuerte, composición limpia, sin inventar hechos."]))
+        QApplication.clipboard().setText(prompt)
+        self.notice.setText("Prompt de imagen copiado · abre ChatGPT Images para pegarlo.")
+
+    def search_x(self):
+        if not self.selected:return
+        terms=self.selected["title"]
+        url="https://x.com/search?q="+urllib.parse.quote(terms)+"&f=live"
+        webbrowser.open(url)
+
+    def copy_photo(self):
+        if not self.loaded_image.isNull():
+            QApplication.clipboard().setPixmap(self.loaded_image)
+            self.notice.setText("Foto de archivo copiada al portapapeles.")
+
+    def prepare_or_rework(self):
+        row=self.selected
+        if not row:return
+        if row["state"] in ("Revisión","Creciendo"):
+            self.editorial_action("prepare")
+        elif row["state"]=="Top 30" and not row.get("body") and row.get("rank",0)>10:
+            if not row.get("id","").startswith("manual-"):
+                QMessageBox.warning(self,"Top 30","Actualiza: no se puede verificar el identificador manual.")
+                return
+            self.editorial_action("prepare")
+        else:
+            self.editorial_action("rework")
+
+    def add_hints(self):
+        row=self.selected
+        if not row or row["project"]!="ttendencias" or row["state"]!="Listas":return
+        hint,ok=QInputDialog.getMultiLineText(self,"Pistas para la tendencia",
+            "Fuentes, contexto y qué debe cambiar en la explicación de "+row["title"]+":")
+        if not ok:return
+        hint=hint.strip()
+        if not 8<=len(hint)<=6000:
+            QMessageBox.warning(self,"Pistas","Introduce entre 8 y 6000 caracteres.")
+            return
+        self.editorial_action("hints",hint=hint)
 
     def open_link(self,url):
         parsed=safe_url(url.toString())
@@ -605,13 +820,60 @@ class MainWindow(QWidget):
             webbrowser.open(self.selected["image"])
 
     def publish_x(self):
-        if self.selected:
-            tweet=(self.selected.get("body") or self.selected.get("title",""))[:280]
-            webbrowser.open("https://twitter.com/intent/tweet?text="+urllib.parse.quote(tweet))
+        row=self.selected
+        if not row or not row.get("body"):return
+        if self.pending_action or self.sending:
+            self.notice.setText("Termina primero la orden editorial anterior.")
+            return
+        tweet=row["body"][:280]
+        opened=webbrowser.open("https://twitter.com/intent/tweet?text="+urllib.parse.quote(tweet))
+        if not opened:
+            self.notice.setText("No se pudo abrir X. Ningún estado editorial ha cambiado.")
+            return
+        # We cannot inspect the X browser. Only the person can confirm the
+        # outcome. Show all THREE choices, and never equate opening X to posting.
+        self.ask_publication_outcome(row)
+
+    def ask_publication_outcome(self,row=None):
+        row=row or self.selected
+        if not row or row.get("state")!="Listas" or self.pending_action or self.sending:
+            return
+        if not row.get("id"):
+            self.notice.setText("Falta ID editorial. Actualiza GitHub antes de cerrar.")
+            return
+        dlg=QMessageBox(self)
+        dlg.setWindowTitle("¿Has publicado en X?")
+        dlg.setIcon(QMessageBox.Question)
+        dlg.setText("¿Se ha publicado realmente este contenido en X?")
+        dlg.setInformativeText(row["title"]+"\n\n"
+            "Sí: retirar de Listas y sumar 1 a Publicadas 24 h.\n"
+            "No: retirar de Listas SIN sumar al contador.\n"
+            "Cancelar: no modificar nada.")
+        yes=dlg.addButton("Sí · publicada",QMessageBox.AcceptRole)
+        no=dlg.addButton("No · retirar",QMessageBox.DestructiveRole)
+        cancel=dlg.addButton("Cancelar",QMessageBox.RejectRole)
+        dlg.setDefaultButton(cancel)
+        dlg.exec()
+        chosen=dlg.clickedButton()
+        choice="yes" if chosen is yes else "no" if chosen is no else "cancel"
+        decision=publication_outcome(choice)
+        if decision is not None:
+            self.editorial_action(decision,confirmed=True)
+        # Cancel deliberately sends no GitHub event.
+
 
     def submit(self,event,payload):
-        if self.sending:return
+        if self.sending or self.pending_action:
+            self.notice.setText("Ya hay una orden pendiente de verificación.")
+            return
         self.sending=True
+        self.pending_action={
+            "request_id":payload["request_id"],"project":payload["project"],
+            "event_id":payload.get("event_id",""),
+            "decision":payload.get("decision"),"label":payload.get("decision","Nueva noticia"),
+            "since":time.time()
+        } if event=="ttactualidad_action_v1" else None
+        self.update_actions()
         self.notice.setText("Enviando la orden a GitHub…")
         def perform():
             token=session_token()
@@ -622,17 +884,26 @@ class MainWindow(QWidget):
             return payload["request_id"]
         self.worker.run("submit",perform)
 
-    def editorial_action(self,action):
+    def editorial_action(self,action,hint="",confirmed=False):
         r=self.selected
         if not r:return
-        if action in ("published","deleted","discard"):
-            msg={"published":"Marcar como publicada","deleted":"Quitar de Listas","discard":"Desestimar"}[action]
-            if QMessageBox.question(self,msg,"¿"+msg+"?\n\n"+r["title"]+
-                "\n\nGitHub volverá a verificar la revisión y el estado editorial.")!=QMessageBox.Yes:
+        if not r.get("id"):
+            QMessageBox.warning(self,"No verificable","Esta tarjeta aún no tiene ID editorial. Actualiza.")
+            return
+        if action in ("published","deleted","discard") and not confirmed:
+            prompt={
+                "published":"¿Ya la has publicado en X? Esta orden SOLO registrará la publicación en GitHub; no enviará ningún tuit.",
+                "deleted":"¿Quitar esta tarjeta de Listas?",
+                "discard":"¿Desestimar esta tarjeta en elaboración?"
+            }[action]
+            if QMessageBox.question(self,"Confirmación editorial",prompt+"\n\n"+r["title"]+
+                "\n\nEl resultado se verificará automáticamente en GitHub.")!=QMessageBox.Yes:
                 return
         payload={"project":r["project"],"event_id":r["id"],"revision":r["revision"],
             "decision":action,"request_id":str(uuid.uuid4()),"received_at":stamp(),
             "trend_name":r.get("title"),"trend_rank":r.get("rank",0)}
+        if action=="hints":
+            payload["hints"]=hint
         self.submit("ttactualidad_action_v1",payload)
 
     def new_story(self):

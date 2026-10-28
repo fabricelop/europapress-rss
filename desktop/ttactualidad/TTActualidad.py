@@ -1,7 +1,7 @@
 # TTActualidad Desktop for Windows. GitHub is the only editorial authority.
 # No Cloudflare, local web server, Telegram or continuously running service.
 from __future__ import annotations
-import concurrent.futures, datetime as dt, json, os, pathlib, threading, time, urllib.error, urllib.parse, urllib.request, uuid, webbrowser
+import concurrent.futures, datetime as dt, hashlib, json, os, pathlib, threading, time, unicodedata, urllib.error, urllib.parse, urllib.request, uuid, webbrowser
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 import keyring
@@ -26,6 +26,8 @@ FILES = {
     "trend_decisions":"trends/mobile-decisions.json",
     "trend_queue":"trends/editorial-queue.json",
     "pub_events":"pilot/ttactualidad-publication-events.json",
+    "action_receipts":"pilot/ttactualidad-action-receipts.json",
+    "explained":"trends/explained.json",
 }
 TERMINAL = {"published","deleted","dismissed","removed","delete_pending"}
 NEWS_ACTIVE = {"PROCESSING","UPDATE_PROCESSING"}
@@ -59,6 +61,25 @@ def date(value):
 def text(v):
     return str(v or "").strip()
 
+def norm(value):
+    value=unicodedata.normalize("NFD", text(value).casefold())
+    value="".join(c for c in value if unicodedata.category(c)!="Mn")
+    return " ".join(value.split())
+
+def archive_url(docs,project,event_id,revision,raw):
+    url=(docs.get("archive_photos") or {}).get(
+        project+":"+text(event_id)+":r"+str(revision))
+    if url:
+        return url
+    raw=text(raw)
+    if not raw.startswith("https://"):
+        return ""
+    path=raw.lower()
+    if ("chatgpt.com" in path or "generated-images" in path
+            or "ai-image" in path or "/images/ai/" in path):
+        return ""
+    return raw
+
 def latest_rows(items, key):
     latest = {}
     for item in items or []:
@@ -89,7 +110,8 @@ def normalise(docs):
         archive = item.get("archive_image") or item.get("fallback_image") or {}
         ready_news.append({"project":"ttittulares","id":ident,"revision":int(item.get("revision") or 0),
             "title":text(item.get("title")), "body":text(tweet.get("text")) or text(item.get("explanation") or item.get("factual_summary")),
-            "state":"Listas", "category":"Noticias", "source":text(item.get("url")), "image":text(archive.get("url"))})
+            "state":"Listas", "category":"Noticias", "source":text(item.get("url")),
+            "image":archive_url(docs,"ttittulares",ident,item.get("revision") or 0,archive.get("url"))})
     active = [x for x in rows(docs["news_queue"]) if text(x.get("status")).upper() in NEWS_ACTIVE]
     if not active:
         active = rows(docs["status"], "processing_items")
@@ -98,7 +120,7 @@ def normalise(docs):
         output = []
         for x in items:
             ident = text(x.get("event_id") or x.get("id"))
-            if not ident or ident in closed or (label!="En elaboración" and ident in active_ids):
+            if not ident or ident in closed or text(x.get("status")).lower() in TERMINAL or (label!="En elaboración" and ident in active_ids):
                 continue
             output.append({"project":"ttittulares","id":ident,"revision":int(x.get("revision") or 0),
                 "title":text(x.get("title") or x.get("name")), "body":text(x.get("explanation") or x.get("factual_summary")),
@@ -130,6 +152,16 @@ def normalise(docs):
         req = requests.get(ident,{})
         if int(req.get("revision") or 0) > rev:
             continue
+        # The iPhone checks BOTH the explanation and the request. A terminal
+        # request takes precedence over the older explained snapshot.
+        if any(text(z.get("status")).lower() in TERMINAL or
+               text(z.get("telegram_package_status")).lower() in TERMINAL
+               for z in (x,req)):
+            continue
+        requested=date(req.get("requested_at"))
+        if (text(req.get("status")).lower() in {"preparing","update","ready"}
+                and requested and explained < requested - dt.timedelta(seconds=60)):
+            continue
         newer_work = any(text(q.get("id"))==ident and text(q.get("status")).lower() in TREND_ACTIVE
                          and int(q.get("revision") or 0)>rev for q in trend_queue)
         if newer_work:
@@ -140,69 +172,97 @@ def normalise(docs):
             continue
         trend_ready.append({"project":"ttendencias","id":ident,"revision":rev,"title":text(x.get("name") or req.get("name")),
             "body":text(x.get("explanation")), "state":"Listas","category":"Tendencias",
-            "source":text(x.get("source_url")), "image":text(x.get("archive_image_url")), "rank":int(x.get("rank") or req.get("rank") or 0)})
-    # READY may be saved in trends/prepared.json before the separate manual
-    # explanations ledger is reconciled. Expose only verified, unclosed cards
-    # of the exact revision so users can remove them through the normal action.
-    readyIDs = {x["id"] for x in trend_ready}
-    for ident,x in staged.items():
-        if ident in readyIDs:
-            continue
-        req = requests.get(ident,{})
-        rev = int(x.get("revision") or 0)
-        if text(req.get("status")).lower() not in {"ready", "explained"} or int(req.get("revision") or 0) != rev:
-            continue
-        if text(x.get("group_leader_id") or ident) != ident:
-            continue
-        body = text(x.get("explanation") or (x.get("primary") or {}).get("text") or req.get("explanation"))
-        generated = date(x.get("generated_at") or req.get("ready_at"))
-        if not body or not generated or not -3600 <= (now-generated).total_seconds() <= 48*3600:
-            continue
-        if text(req.get("telegram_package_status")).lower() in TERMINAL:
-            continue
-        if any(text(q.get("id"))==ident and text(q.get("status")).lower() in TREND_ACTIVE
-               and int(q.get("revision") or 0)>=rev for q in trend_queue):
-            continue
-        if any(text(k.get("status")).lower() in TERMINAL
-               and int(k.get("revision") or 0)>=rev
-               for k in (closures.get(ident,{}),delivered.get(ident,{}),manual.get(ident,{}))):
-            continue
-        trend_ready.append({"project":"ttendencias","id":ident,"revision":rev,
-            "title":text(x.get("trend_name") or req.get("name") or ident),"body":body,
-            "state":"Listas","category":"Tendencias",
-            "source":text((x.get("sources") or [""])[0]),"image":"",
+            "source":text(x.get("source_url")),
+            "image":archive_url(docs,"ttendencias",ident,rev,
+                                (x.get("archive_image") or x.get("fallback_image") or {}).get("url")
+                                or x.get("archive_image_url")),
             "rank":int(x.get("rank") or req.get("rank") or 0)})
-        readyIDs.add(ident)
-    working = []
-    for x in trend_queue:
-        if text(x.get("status")).lower() not in TREND_ACTIVE:
+    # Listas uses the SAME authoritative manual ledger as iPhone.
+    # Staged-only prepared snapshots are intentionally not promoted to Listas.
+    readyIDs = {x["id"] for x in trend_ready}
+    # iOS: both requests and the queue can contain a live preparing/update.
+    work_by_id={}
+    for x in rows(docs["requests"],"requests")+trend_queue:
+        ident=text(x.get("id"))
+        if not ident or text(x.get("status")).lower() not in TREND_ACTIVE:
             continue
-        ident = text(x.get("id"))
-        if not ident or ident in readyIDs or text(closures.get(ident,{}).get("status")).lower() in TERMINAL:
+        rev=int(x.get("revision") or 0)
+        if ident in readyIDs and any(y["id"]==ident and y["revision"]>=rev for y in trend_ready):
             continue
-        req = requests.get(ident,{})
+        if text(closures.get(ident,{}).get("status")).lower() in TERMINAL:
+            continue
+        old=work_by_id.get(ident)
+        if old is None or rev>int(old.get("revision") or 0):
+            work_by_id[ident]=x
+    working=[]
+    for ident,x in work_by_id.items():
+        req=requests.get(ident,{})
         working.append({"project":"ttendencias","id":ident,"revision":int(x.get("revision") or req.get("revision") or 0),
-            "title":text(x.get("name") or req.get("name") or ident), "body":text(x.get("explanation") or x.get("problem_reason")),
-            "state":"En elaboración","category":"Tendencias","source":"","image":"","rank":int(x.get("rank") or req.get("rank") or 0)})
-    rank_list = []
-    recent = rows(docs["recent"])
-    if recent:
-        rank_list = recent[:30]
-    else:
-        names = docs["recent"].get("top30",[])
-        rank_list = [{"name":name,"rank":i+1} for i,name in enumerate(names[:30])]
-    known = {text(x["title"]).casefold():x for x in trend_ready+working}
-    trending = []
-    for i,x in enumerate(rank_list):
-        name = text(x.get("name"))
-        if not name: continue
-        row = known.get(name.casefold())
-        if row:
-            trending.append(dict(row, rank=int(x.get("rank") or i+1), category="Top 30"))
+            "title":text(x.get("name") or req.get("name") or ident),
+            "body":text(x.get("explanation") or x.get("problem_reason")),
+            "state":"En elaboración","category":"Tendencias","source":text(x.get("source_url")),
+            "image":"","rank":int(x.get("rank") or req.get("rank") or 0)})
+    # Exact Top30 ranking from the iOS radar, with editorial explanations
+    # matched by normalized name (not by unverified radar id).
+    recent=rows(docs["recent"])
+    rank_by_number={}
+    for i,x in enumerate(recent):
+        rank=int(x.get("rank") or i+1)
+        if 1<=rank<=30 and text(x.get("name")):
+            rank_by_number[rank]=text(x["name"])
+    for i,name in enumerate(docs["recent"].get("top30",[])[:30]):
+        rank_by_number.setdefault(i+1,text(name))
+    histories=(rows(docs["manual"])+rows(docs["explained"])+rows(docs["requests"],"requests"))
+    explanations={}
+    for record in histories:
+        if not text(record.get("explanation")):
+            continue
+        names=[record.get("name"),record.get("display_name")]
+        names+=(record.get("trend_names") or [])
+        names +=[x.get("name") for x in (record.get("trend_context") or []) if isinstance(x,dict)]
+        for name in names:
+            key=norm(name)
+            if key:
+                old=explanations.get(key)
+                if old is None or str(record.get("updated_at") or record.get("explained_at") or "")>=str(old.get("updated_at") or old.get("explained_at") or ""):
+                    explanations[key]=record
+    request_by_name={}
+    for record in rows(docs["requests"],"requests"):
+        key=norm(record.get("name"))
+        if key:
+            old=request_by_name.get(key)
+            if old is None or int(record.get("revision") or 0)>int(old.get("revision") or 0) or (
+                int(record.get("revision") or 0)==int(old.get("revision") or 0)
+                and str(record.get("updated_at") or record.get("requested_at") or "")>=str(old.get("updated_at") or old.get("requested_at") or "")):
+                request_by_name[key]=record
+    ready_names={norm(x["title"]) for x in trend_ready}
+    trending=[]
+    for rank in range(1,31):
+        name=rank_by_number.get(rank)
+        if not name:
+            continue
+        key=norm(name)
+        exp=explanations.get(key,{})
+        req=request_by_name.get(key,{})
+        explanation=text(exp.get("explanation"))
+        req_status=text(req.get("status")).lower()
+        if req_status in {"preparing","update","ready"}:
+            status="EN ELABORACIÓN"
+        elif explanation:
+            status="EXPLICADA"
         else:
-            trending.append({"project":"ttendencias","id":text(x.get("id")) or name,
-                "revision":int(x.get("revision") or 0),"title":name,"body":text(x.get("explanation")),
-                "state":"Top 30","category":"Top 30","source":"","image":"","rank":int(x.get("rank") or i+1)})
+            status="PENDIENTE" if rank<=10 else "PREPARACIÓN MANUAL"
+        # When there is no editorial request, Top 11-30 uses the valid
+        # server-side manual-{sha256(NFC(name))[:32]} identifier for prepare.
+        ident=text(req.get("id") or exp.get("id"))
+        if not ident and rank>10:
+            ident="manual-"+hashlib.sha256(unicodedata.normalize("NFC",name).encode("utf-8")).hexdigest()[:32]
+        archive=exp.get("archive_image") or exp.get("fallback_image") or {}
+        trending.append({"project":"ttendencias","id":ident,"revision":int(req.get("revision") or exp.get("revision") or 0),
+            "title":name,"body":explanation,"state":"Top 30","category":"Top 30","rank":rank,
+            "source":text(req.get("source_url") or exp.get("source_url")),
+            "image":archive_url(docs,"ttendencias",ident,int(req.get("revision") or exp.get("revision") or 0),archive.get("url")),
+            "trend_status":status,"inListas":key in ready_names})
     lb = now - dt.timedelta(hours=24)
     published = set()
     totals = {"ttittulares":0,"ttendencias":0}
