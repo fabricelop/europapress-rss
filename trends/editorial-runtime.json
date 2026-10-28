@@ -4,21 +4,27 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "5c4ed0171dad",
+    "98f756791609",
+    "aae166854230",
+    "6e5758e5d6fa",
+    "53a7e450d1fa"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T10:50:44+01:00",
-  "last_completed_at": "2026-10-28T10:53:51+01:00",
-  "updated_at": "2026-10-28T10:53:51+01:00",
+  "last_started_at": "2026-10-28T11:10:10+01:00",
+  "last_completed_at": "2026-10-28T11:15:30+01:00",
+  "updated_at": "2026-10-28T11:15:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-ios-1793181044699-38faafa0",
+    "trigger_run_id": "tr-mobile-backlog-20261028T101010-tt",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,225 +32,324 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-ios-1793181044699-38faafa0",
+    "run_id": "tr-mobile-backlog-20261028T101010-tt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T10:50:44+01:00",
-    "updated_at": "2026-10-28T10:53:51+01:00",
-    "finished_at": "2026-10-28T10:53:51+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-28T11:10:10+01:00",
+    "updated_at": "2026-10-28T11:15:30+01:00",
+    "finished_at": "2026-10-28T11:15:30+01:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 5,
+      "ready": 5,
+      "explained": 5,
+      "final_resolved": 5,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 4,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "initial_compact_queue": 5,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
-      "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 5,
       "remates_selected": 0,
       "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 3,
       "rewrite_pending_remaining": 0,
-      "skipped_concurrent": 0,
-      "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "Pasada iOS cerrada 0/0 · sin preparing/update ni rewrite_pending tras relectura de main.",
+    "message": "TTendencias completada 5/5 · cola editorial y reexplicaciones verificadas en 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-28T10:53:02+01:00",
+        "at": "2026-10-28T11:10:10+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada iOS · cola editorial 0 tras reconciliación; verificando reexplicaciones y Pendientes."
+        "message": "Inicio de pasada móvil · 5 entradas activas; validando estado y activando saneamiento visual."
       },
       {
-        "at": "2026-10-28T10:53:25+01:00",
+        "at": "2026-10-28T11:11:50+01:00",
+        "phase": "verifying",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Releyendo estado autoritativo de Renfe · revisión 0 sigue activa."
+      },
+      {
+        "at": "2026-10-28T11:11:55+01:00",
+        "phase": "verifying",
+        "trend_id": "98f756791609",
+        "title": "Asesinos",
+        "message": "Releyendo estado autoritativo de Asesinos · revisión 0 sigue activa."
+      },
+      {
+        "at": "2026-10-28T11:12:00+01:00",
+        "phase": "verifying",
+        "trend_id": "aae166854230",
+        "title": "Dimite",
+        "message": "Releyendo estado autoritativo de Dimite · revisión 0 sigue activa."
+      },
+      {
+        "at": "2026-10-28T11:12:05+01:00",
+        "phase": "verifying",
+        "trend_id": "6e5758e5d6fa",
+        "title": "Adif",
+        "message": "Releyendo estado autoritativo de Adif · revisión 0 sigue activa."
+      },
+      {
+        "at": "2026-10-28T11:12:10+01:00",
+        "phase": "verifying",
+        "trend_id": "53a7e450d1fa",
+        "title": "Consternado",
+        "message": "Releyendo estado autoritativo de Consternado · revisión 0 sigue activa."
+      },
+      {
+        "at": "2026-10-28T11:12:20+01:00",
+        "phase": "investigating",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Contrastando fuente 1/2 · choque Renfe–Iryo, intervención de Adif y corte Madrid-Andalucía."
+      },
+      {
+        "at": "2026-10-28T11:12:30+01:00",
+        "phase": "investigating",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Contrastando fuente 2/2 · reacción de Sánchez y petición pública de dimisión tras el accidente."
+      },
+      {
+        "at": "2026-10-28T11:12:40+01:00",
+        "phase": "investigating",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Hecho esencial verificado · los cinco términos pertenecen a la misma oleada de conversación del accidente de Urda."
+      },
+      {
+        "at": "2026-10-28T11:12:50+01:00",
+        "phase": "drafting",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Redactando explicación factual conjunta para Renfe, Asesinos, Dimite, Adif y Consternado."
+      },
+      {
+        "at": "2026-10-28T11:13:00+01:00",
+        "phase": "drafting",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Comprobando límite de X · explicación completa: 268 caracteres."
+      },
+      {
+        "at": "2026-10-28T11:13:10+01:00",
+        "phase": "remate_selection",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Sin remate · accidente con víctimas; se evita humor sobre el suceso."
+      },
+      {
+        "at": "2026-10-28T11:13:20+01:00",
+        "phase": "persisting",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Guardando ficha Explicada del nuevo grupo con Renfe como líder."
+      },
+      {
+        "at": "2026-10-28T11:13:40+01:00",
+        "phase": "persisting",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Actualizando requests · sincronizando las cinco revisiones con la ficha Explicada."
+      },
+      {
+        "at": "2026-10-28T11:15:05+01:00",
+        "phase": "verifying",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Releyendo main · ficha Explicada y cinco requests sincronizadas por id+revision."
+      },
+      {
+        "at": "2026-10-28T11:15:15+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main para confirmar cola, requests y reexplicaciones antes de cerrar 0/0."
+        "message": "Verificación final · cola 0 y ningún rewrite_pending vigente."
       },
       {
-        "at": "2026-10-28T10:53:40+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisión de Pendientes completada · 3 tarjetas recientes; saneamiento visual solicitado. Toledo conserva remate vacío por sensibilidad del suceso."
-      },
-      {
-        "at": "2026-10-28T10:53:51+01:00",
+        "at": "2026-10-28T11:15:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iOS cerrada 0/0 · sin preparing/update ni rewrite_pending tras relectura de main."
+        "message": "TTendencias completada 5/5 · grupo Renfe/Asesinos/Dimite/Adif/Consternado cerrado y verificado."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "5c4ed0171dad",
+      "98f756791609",
+      "aae166854230",
+      "6e5758e5d6fa",
+      "53a7e450d1fa"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "ratings_snapshot": null,
     "remate_selections": []
   },
-  "run_id": "tr-chat-20261028T1045+0100",
+  "run_id": "tr-mobile-backlog-20261028T101010-tt",
   "summary": {
-    "attempted": 7,
-    "ready": 7,
-    "explained": 7,
-    "final_resolved": 7,
-    "explanation_groups": 2,
-    "new_cards": 2,
+    "attempted": 5,
+    "ready": 5,
+    "explained": 5,
+    "final_resolved": 5,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 5,
+    "grouped_into_existing_card": 4,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 7,
-    "discovered_during_run": 0,
+    "initial_compact_queue": 5,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
-    "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 7,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 5,
+    "remates_selected": 0,
     "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_cards_reviewed": 3,
     "rewrite_pending_remaining": 0,
-    "skipped_concurrent": 0,
-    "trends_dismissed": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T10:45:00+01:00",
+      "at": "2026-10-28T11:10:10+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial directa · 7 entradas activas; activando saneamiento visual y validación JIT."
+      "message": "Inicio de pasada móvil · 5 entradas activas; validando estado y activando saneamiento visual."
     },
     {
-      "at": "2026-10-28T10:46:00+01:00",
+      "at": "2026-10-28T11:11:50+01:00",
       "phase": "verifying",
-      "trend_id": "24d64469c94e",
-      "title": "Toledo",
-      "message": "Releyendo estado autoritativo · las 7 revisiones siguen preparing; Toledo ocupa ahora el puesto 1."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Releyendo estado autoritativo de Renfe · revisión 0 sigue activa."
     },
     {
-      "at": "2026-10-28T10:47:00+01:00",
+      "at": "2026-10-28T11:11:55+01:00",
+      "phase": "verifying",
+      "trend_id": "98f756791609",
+      "title": "Asesinos",
+      "message": "Releyendo estado autoritativo de Asesinos · revisión 0 sigue activa."
+    },
+    {
+      "at": "2026-10-28T11:12:00+01:00",
+      "phase": "verifying",
+      "trend_id": "aae166854230",
+      "title": "Dimite",
+      "message": "Releyendo estado autoritativo de Dimite · revisión 0 sigue activa."
+    },
+    {
+      "at": "2026-10-28T11:12:05+01:00",
+      "phase": "verifying",
+      "trend_id": "6e5758e5d6fa",
+      "title": "Adif",
+      "message": "Releyendo estado autoritativo de Adif · revisión 0 sigue activa."
+    },
+    {
+      "at": "2026-10-28T11:12:10+01:00",
+      "phase": "verifying",
+      "trend_id": "53a7e450d1fa",
+      "title": "Consternado",
+      "message": "Releyendo estado autoritativo de Consternado · revisión 0 sigue activa."
+    },
+    {
+      "at": "2026-10-28T11:12:20+01:00",
       "phase": "investigating",
-      "trend_id": "24d64469c94e",
-      "title": "Toledo",
-      "message": "Contrastando el accidente ferroviario con Reuters, fuentes nacionales y contexto de Adamuz."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Contrastando fuente 1/2 · choque Renfe–Iryo, intervención de Adif y corte Madrid-Andalucía."
     },
     {
-      "at": "2026-10-28T10:48:00+01:00",
+      "at": "2026-10-28T11:12:30+01:00",
       "phase": "investigating",
-      "trend_id": "24d64469c94e",
-      "title": "Toledo",
-      "message": "Hecho esencial verificado · seis términos corresponden al mismo episodio y se agrupan sin duplicar tarjeta."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Contrastando fuente 2/2 · reacción de Sánchez y petición pública de dimisión tras el accidente."
     },
     {
-      "at": "2026-10-28T10:49:00+01:00",
+      "at": "2026-10-28T11:12:40+01:00",
       "phase": "investigating",
-      "trend_id": "f37fc7ae4c66",
-      "title": "#VuelveOcarinaOfTime",
-      "message": "Hecho esencial verificado · Nintendo confirma Ocarina of Time para Switch 2 con lanzamiento el 5 de noviembre."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Hecho esencial verificado · los cinco términos pertenecen a la misma oleada de conversación del accidente de Urda."
     },
     {
-      "at": "2026-10-28T10:50:00+01:00",
+      "at": "2026-10-28T11:12:50+01:00",
       "phase": "drafting",
-      "trend_id": "24d64469c94e",
-      "title": "Toledo",
-      "message": "Redactando explicación factual del accidente; sin remate por tratarse de un suceso con víctimas y heridos."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Redactando explicación factual conjunta para Renfe, Asesinos, Dimite, Adif y Consternado."
     },
     {
-      "at": "2026-10-28T10:50:20+01:00",
+      "at": "2026-10-28T11:13:00+01:00",
       "phase": "drafting",
-      "trend_id": "f37fc7ae4c66",
-      "title": "#VuelveOcarinaOfTime",
-      "message": "Redactando explicación factual y comprobando el límite de X."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Comprobando límite de X · explicación completa: 268 caracteres."
     },
     {
-      "at": "2026-10-28T10:50:40+01:00",
+      "at": "2026-10-28T11:13:10+01:00",
       "phase": "remate_selection",
-      "trend_id": "f37fc7ae4c66",
-      "title": "#VuelveOcarinaOfTime",
-      "message": "Evaluando remates específicos y descartando fórmulas genéricas."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Sin remate · accidente con víctimas; se evita humor sobre el suceso."
     },
     {
-      "at": "2026-10-28T10:51:00+01:00",
+      "at": "2026-10-28T11:13:20+01:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "La primera escritura conjunta fue rechazada por el conector antes de aplicar cambios; reintentando por ficheros separados."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Guardando ficha Explicada del nuevo grupo con Renfe como líder."
     },
     {
-      "at": "2026-10-28T10:52:00+01:00",
+      "at": "2026-10-28T11:13:40+01:00",
       "phase": "persisting",
-      "trend_id": "24d64469c94e",
-      "title": "Toledo",
-      "message": "Guardando fichas Explicadas de Toledo y #VuelveOcarinaOfTime."
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Actualizando requests · sincronizando las cinco revisiones con la ficha Explicada."
     },
     {
-      "at": "2026-10-28T10:52:30+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Actualizando requests · las 7 revisiones pasan a explained con texto y grupos sincronizados."
+      "at": "2026-10-28T11:15:05+01:00",
+      "phase": "verifying",
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Releyendo main · ficha Explicada y cinco requests sincronizadas por id+revision."
     },
     {
-      "at": "2026-10-28T10:53:00+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Retirando las 7 revisiones de la cola editorial."
-    },
-    {
-      "at": "2026-10-28T10:54:00+01:00",
+      "at": "2026-10-28T11:15:15+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · cola 0, siete requests explained y dos fichas de grupo persistidas."
+      "message": "Verificación final · cola 0 y ningún rewrite_pending vigente."
     },
     {
-      "at": "2026-10-28T10:54:20+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificando reexplicaciones y Pendientes · 0 rewrite_pending; 3 tarjetas recientes quedan en saneamiento visual no bloqueante."
-    },
-    {
-      "at": "2026-10-28T10:55:00+01:00",
+      "at": "2026-10-28T11:15:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 7/7 · cola editorial y reexplicaciones verificadas en 0."
+      "message": "TTendencias completada 5/5 · grupo Renfe/Asesinos/Dimite/Adif/Consternado cerrado y verificado."
     }
   ],
   "partial": false,
