@@ -55,3 +55,28 @@ Las Listas y Top 30 leen los mismos JSON y aplican las mismas reglas de cierre
 que el iPhone. **ChatGPT Images ↗** abre la interfaz real de Images en el navegador,
 no genera imágenes desde el proceso Windows. La foto de archivo se resuelve de
 GitHub y no se confunde con imágenes IA.
+
+
+## Contadores desglosados y cierre inmediato en Windows
+
+La cabecera muestra ahora cinco métricas: Noticias en Listas, Tendencias en Listas,
+En elaboración, **Noticias publicadas · 24 h** y **Tendencias publicadas · 24 h**.
+Los dos contadores de publicaciones se calculan por separado a partir de los
+eventos confirmados por GitHub en las últimas 24 horas (ventana móvil).
+
+Cuando se pulsa **Sí · publicada** o **No · retirar**, Windows aparta la tarjeta
+**inmediatamente** de la bandeja, sin bloquear la navegación o el cierre de
+otras tarjetas. Es un cambio visual provisional: el JSON autoritativo no se
+modifica desde la aplicación de escritorio. El contador de publicadas solo suma
+un caso cuando GitHub lo confirma; durante la comprobación, la tarjeta de
+estadísticas indica `+1 pendiente` (o varias pendientes), para no confundir
+una orden aceptada con una publicación efectuada.
+
+La aplicación consulta los recibos por `request_id`. Si el envío falla, el
+servidor rechaza la acción o no existe recibo después del tiempo de verificación,
+la ficha se **restaura visualmente** y se muestra el motivo. Si el servidor confirma,
+la tarjeta sigue oculta hasta que el nuevo estado editoral esté disponible.
+**Cancelar** nunca envía una orden ni oculta la tarjeta.
+
+Los cambios son exclusivos de Windows. No se modifican la app iPhone, los
+Workers, URGENTE, ChatGPT Images ni las automatizaciones editoriales.
