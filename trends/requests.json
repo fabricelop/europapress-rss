@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-28T15:11:32+01:00",
+  "updated_at": "2026-10-28T15:18:41+01:00",
   "count": 316,
   "requests": [
     {
@@ -20793,7 +20793,7 @@
       "id": "bc3296ccd511",
       "name": "Vete",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-28T15:11:32+01:00",
       "revision": 0,
       "reexplain": false,
@@ -20807,7 +20807,11 @@
         "Vete"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "problematic_at": "2026-10-28T15:18:41+01:00",
+      "problem_reason": "No se ha podido identificar con fiabilidad un detonante único y actual para «Vete»: el radar la sitúa en el Top 10, pero dos rondas de búsquedas actuales devuelven contextos políticos distintos (Óscar Puente/accidente de Urda, Mazón/DANA y otros usos de «vete») sin evidencia suficiente para atribuir la tendencia a uno de ellos. No se publica una explicación especulativa.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
   "items": [
