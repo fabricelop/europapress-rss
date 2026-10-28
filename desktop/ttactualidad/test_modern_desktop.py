@@ -29,7 +29,9 @@ class DesktopModernTests(unittest.TestCase):
 
     def test_layout_has_metric_cards_sidebar_and_actions(self):
         self.assertEqual(len(self.window.nav),9)
-        self.assertEqual(len(self.window.metric_labels),4)
+        self.assertEqual(len(self.window.metric_labels),5)
+        self.assertIn("published_news",self.window.metric_labels)
+        self.assertIn("published_trends",self.window.metric_labels)
         self.assertEqual(len(self.window.actions),14)
         self.assertIn("chatgpt",self.window.actions)
         self.assertIn("gag",self.window.actions)
@@ -78,38 +80,122 @@ class DesktopModernTests(unittest.TestCase):
         self.assertFalse(appmod.safe_url("javascript:alert(1)"))
         self.assertEqual(appmod.safe_url("https://example.org/test"),"https://example.org/test")
 
-    def test_published_action_requires_ready_and_confirmed_receipt(self):
-        from unittest.mock import patch
-        row={"project":"ttendencias","id":"bd2a535275d1","revision":0,
-             "state":"Listas","title":"Ministerio de Transportes",
-             "body":"TT#10 Texto","category":"Tendencias","source":"","image":""}
-        self.window.select_item(row)
-        self.assertTrue(self.window.actions["published"].isEnabled())
-        self.window.pending_action={"request_id":"one","event_id":row["id"],
-            "project":row["project"],"decision":"published",
-            "label":"published","since":appmod.time.time()}
-        self.window.update_actions()
-        self.assertFalse(self.window.actions["published"].isEnabled())
-        self.window.docs["action_receipts"]={"items":[
-            {"request_id":"other","status":"applied"},
-            {"request_id":"one","project":"ttendencias","event_id":row["id"],
-             "status":"applied","decision":"published"}]}
-        self.window.confirm_pending()
-        self.assertIsNone(self.window.pending_action)
-        self.assertIn("CONFIRMADO EN GITHUB",self.window.notice.text())
+    def _ready(self,project,ident):
+        return {"project":project,"id":ident,"revision":0,"state":"Listas",
+                "title":"Ejemplo "+ident,"body":"Texto","category":"Noticias" if project=="ttittulares" else "Tendencias",
+                "source":"","image":""}
 
-    def test_unconfirmed_dispatch_never_claims_publication(self):
-        row={"project":"ttendencias","id":"t1","revision":0,
-             "state":"Listas","title":"Tendencia",
-             "body":"Texto","category":"Tendencias","source":"","image":""}
-        self.window.select_item(row)
-        self.window.pending_action={"request_id":"pending-req","event_id":"t1",
-            "project":"ttendencias","decision":"published",
-            "label":"published","since":appmod.time.time()}
-        self.window.docs["action_receipts"]={"items":[]}
+    def test_separate_confirmed_news_and_trends_counters(self):
+        self.window.published={"ttittulares":42,"ttendencias":37}
+        self.window.render_list()
+        self.assertEqual(self.window.metric_labels["published_news"].text(),"42")
+        self.assertEqual(self.window.metric_labels["published_trends"].text(),"37")
+        self.assertEqual(self.window.metric_subtitles["published_news"].text(),"Confirmadas en GitHub")
+
+    def test_optimistic_yes_hides_immediately_but_does_not_falsely_count(self):
+        item=self._ready("ttittulares","news-one")
+        self.window.news=[item]
+        self.window.published={"ttittulares":42,"ttendencias":37}
+        self.window.change_section("Noticias · Listas")
+        self.window.select_item(item,load_image=False)
+        with patch.object(self.window.worker,"run") as worker:
+            self.window.editorial_action("published",confirmed=True)
+            worker.assert_called_once()
+        self.assertEqual(self.window.list_count.text(),"0 elementos")
+        self.assertEqual(self.window.metric_labels["news_ready"].text(),"0")
+        self.assertEqual(self.window.metric_labels["published_news"].text(),"42")
+        self.assertEqual(self.window.metric_subtitles["published_news"].text(),"+1 pendiente")
+        self.assertEqual(len(self.window.pending_actions),1)
+
+    def test_optimistic_no_hides_without_increment(self):
+        item=self._ready("ttendencias","trend-two")
+        self.window.trends=[item]
+        self.window.change_section("Tendencias · Listas")
+        self.window.select_item(item,load_image=False)
+        with patch.object(self.window.worker,"run") as worker:
+            self.window.editorial_action("deleted",confirmed=True)
+            worker.assert_called_once()
+        self.assertEqual(self.window.list_count.text(),"0 elementos")
+        self.assertEqual(self.window.metric_subtitles["published_trends"].text(),"Confirmadas en GitHub")
+        request=next(iter(self.window.pending_actions.values()))
+        self.assertEqual(request["decision"],"deleted")
+
+    def test_rollback_on_send_failure_restores_hidden_card(self):
+        item=self._ready("ttittulares","news-failed")
+        self.window.news=[item]
+        self.window.change_section("Noticias · Listas")
+        self.window.select_item(item,load_image=False)
+        with patch.object(self.window.worker,"run"):
+            self.window.editorial_action("published",confirmed=True)
+        self.assertEqual(self.window.list_count.text(),"0 elementos")
+        request_id=next(iter(self.window.pending_actions))
+        with patch.object(appmod.QMessageBox,"warning"):
+            self.window.on_finished("submit",(request_id,"GitHub 403"),None)
+        self.assertEqual(self.window.list_count.text(),"1 elementos")
+        self.assertEqual(self.window.pending_actions,{})
+        self.assertEqual(self.window.optimistic_hides,{})
+
+    def test_success_receipt_keeps_card_hidden_until_remote_state_catches_up(self):
+        item=self._ready("ttendencias","trend-success")
+        self.window.trends=[item]
+        self.window.change_section("Tendencias · Listas")
+        self.window.select_item(item,load_image=False)
+        with patch.object(self.window.worker,"run"):
+            self.window.editorial_action("published",confirmed=True)
+        request_id=next(iter(self.window.pending_actions))
+        self.window.docs["action_receipts"]={"items":[{"request_id":request_id,
+            "project":"ttendencias","event_id":"trend-success","status":"applied"}]}
         self.window.confirm_pending()
-        self.assertIsNotNone(self.window.pending_action)
-        self.assertIn("pendiente",self.window.notice.text())
+        self.window.render_list()
+        self.assertEqual(self.window.list_count.text(),"0 elementos")
+        self.assertEqual(self.window.pending_actions,{})
+        self.assertEqual(len(self.window.optimistic_hides),1)
+        self.window.trends=[]
+        self.window.reconcile_optimistic_closures()
+        self.assertEqual(self.window.optimistic_hides,{})
+
+    def test_receipt_failure_restores_card(self):
+        item=self._ready("ttendencias","trend-rejected")
+        self.window.trends=[item]
+        self.window.change_section("Tendencias · Listas")
+        self.window.select_item(item,load_image=False)
+        with patch.object(self.window.worker,"run"):
+            self.window.editorial_action("deleted",confirmed=True)
+        request_id=next(iter(self.window.pending_actions))
+        self.window.docs["action_receipts"]={"items":[{"request_id":request_id,"status":"rejected"}]}
+        self.window.confirm_pending()
+        self.window.render_list()
+        self.assertEqual(self.window.list_count.text(),"1 elementos")
+        self.assertEqual(self.window.pending_actions,{})
+
+    def test_multiple_cards_can_close_independently(self):
+        first=self._ready("ttittulares","news-1")
+        second=self._ready("ttittulares","news-2")
+        self.window.news=[first,second]
+        self.window.change_section("Noticias · Listas")
+        with patch.object(self.window.worker,"run") as worker:
+            self.window.select_item(first,load_image=False)
+            self.window.editorial_action("published",confirmed=True)
+            self.window.select_item(second,load_image=False)
+            self.window.editorial_action("deleted",confirmed=True)
+            self.assertEqual(worker.call_count,2)
+        self.assertEqual(self.window.list_count.text(),"0 elementos")
+        self.assertEqual(len(self.window.pending_actions),2)
+        self.assertEqual(self.window.metric_subtitles["published_news"].text(),"+1 pendiente")
+
+    def test_unknown_receipt_timeout_does_not_hide_forever(self):
+        item=self._ready("ttittulares","news-timeout")
+        self.window.news=[item]
+        self.window.change_section("Noticias · Listas")
+        self.window.select_item(item,load_image=False)
+        with patch.object(self.window.worker,"run"):
+            self.window.editorial_action("published",confirmed=True)
+        request=next(iter(self.window.pending_actions.values()))
+        request["since"]-=81
+        self.window.confirm_pending()
+        self.window.render_list()
+        self.assertEqual(self.window.list_count.text(),"1 elementos")
+        self.assertEqual(self.window.pending_actions,{})
 
     def test_parity_tools_are_available_without_phone(self):
         row={"project":"ttendencias","id":"t1","revision":0,
