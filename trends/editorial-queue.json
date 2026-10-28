@@ -1,31 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-28T23:23:00+01:00",
+  "updated_at": "2026-10-28T23:11:24+01:00",
   "count": 1,
   "items": [
     {
       "id": "985b3a5efe28",
       "name": "Egipto",
       "rank": 22,
-      "revision": 0,
       "status": "preparing",
-      "created_at": "2026-10-28T22:01:36.250672+00:00",
       "requested_at": "2026-10-28T22:01:36.250672+00:00",
-      "updated_at": "2026-10-28T22:01:36.250672+00:00",
-      "task": "explain",
-      "auto_queued": false,
-      "request_source": "ttactualidad_direct_rework",
+      "revision": 0,
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Egipto, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
       "with_image": true,
-      "disable_ai_image": false,
-      "rewrite_with_image": true,
-      "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "image_mode": "ai_plus_fallback",
+      "image_instruction": "La ejecución editorial NO genera IA. Para todo item explicado que no sea Tremending ni tenga un bloqueo explícito actual, deja la IA pendiente para un chat de imagen independiente por item. No marques disable_ai_image solo por separar las ejecuciones. Un failed/none/disabled heredado sin ai_image_block_reason explícito se considera pendiente/reintentable.",
+      "batch_id": null,
       "requested_together": [
         "Egipto"
       ],
-      "originated_from_prior_id": "manual-136dee47812ccb030b70ff368e4189f9",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Egipto, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "captured_with": [],
+      "auto_queued": false,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
