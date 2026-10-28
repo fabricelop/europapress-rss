@@ -33,12 +33,16 @@ jobs:
                 'cache-control':'no-cache'})
               try:
                 with urllib.request.urlopen(request,timeout=12) as response:
-                  body=response.read(512)
+                  body=response.read(3000000)
                   content_type=response.headers.get('content-type','')
                   keys=[]
                   try:
                     doc=json.loads(body)
                     keys=list(doc)[:12] if isinstance(doc,dict) else ['array']
+                    trigger=(doc.get('trigger') or {}) if isinstance(doc,dict) else {}
+                    ack=(doc.get('ack') or {}) if isinstance(doc,dict) else {}
+                    print('REMOTE',origin,path,'trigger_command',trigger.get('command_id'),
+                          'ack_command',ack.get('command_id'),'ack_stage',ack.get('stage'))
                   except Exception: pass
                   print('PROBE',origin,path,'HTTP',response.status,
                         'TYPE',content_type,'KEYS',keys)
