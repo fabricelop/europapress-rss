@@ -87,6 +87,39 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(changes["ttittulares/editorial-queue.json"]["count"], 1)
         self.assertEqual(changes["telegram/editorial-processing.json"]["items"][1]["status"], "PROCESSING")
 
+    def test_live_discard_races_same_revision_ready(self):
+        self.write("ttittulares/prepared.json", {
+            "items": [{"event_id": "abc123", "revision": 1},
+                      {"event_id": "other456", "revision": 1}], "count": 2})
+        self.write("telegram/editorial-processing.json", {
+            "items": [{"event_id": "abc123", "revision": 1, "status": "READY"},
+                      {"event_id": "other456", "revision": 1, "status": "PROCESSING"}]})
+        changes, result = mod.apply_live("ttittulares", "abc123", "discard", 1)
+        self.assertEqual(result, "applied")
+        self.assertEqual(changes["ttittulares/prepared.json"]["count"], 1)
+        self.assertEqual(changes["ttittulares/prepared.json"]["items"][0]["event_id"], "other456")
+        mirror = changes["telegram/editorial-processing.json"]["items"]
+        self.assertEqual(mirror[0]["status"], "DISMISSED")
+        self.assertEqual(mirror[1]["status"], "PROCESSING")
+        terminal = changes["ttittulares/decisions.json"]["items"][0]
+        self.assertEqual((terminal["event_id"], terminal["revision"], terminal["status"]),
+                         ("abc123", 1, "dismissed"))
+
+    def test_live_discard_ready_stale_revision_rejected(self):
+        self.write("ttittulares/prepared.json", {
+            "items": [{"event_id": "abc123", "revision": 2}], "count": 1})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttittulares", "abc123", "discard", 1)
+        self.assertEqual(mod.load("ttittulares/prepared.json", {})["count"], 1)
+
+    def test_live_discard_does_not_override_publication(self):
+        self.write("ttittulares/prepared.json", {
+            "items": [{"event_id": "abc123", "revision": 1}], "count": 1})
+        self.write("ttittulares/decisions.json", {
+            "items": [{"event_id": "abc123", "revision": 1, "status": "published"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttittulares", "abc123", "discard", 1)
+
     def test_live_discard_fails_closed_on_stale_revision(self):
         self.write("ttittulares/editorial-queue.json", {
             "items": [{"event_id": "abc123", "revision": 2, "status": "PROCESSING"}], "count": 1})
