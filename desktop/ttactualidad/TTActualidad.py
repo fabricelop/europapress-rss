@@ -150,11 +150,11 @@ def normalise(docs):
             continue
         req = requests.get(ident,{})
         rev = int(x.get("revision") or 0)
-        if text(req.get("status")).lower() != "ready" or int(req.get("revision") or 0) != rev:
+        if text(req.get("status")).lower() not in {"ready", "explained"} or int(req.get("revision") or 0) != rev:
             continue
         if text(x.get("group_leader_id") or ident) != ident:
             continue
-        body = text(x.get("explanation") or (x.get("primary") or {}).get("text"))
+        body = text(x.get("explanation") or (x.get("primary") or {}).get("text") or req.get("explanation"))
         generated = date(x.get("generated_at") or req.get("ready_at"))
         if not body or not generated or not -3600 <= (now-generated).total_seconds() <= 48*3600:
             continue
