@@ -187,7 +187,7 @@ struct TTDashboard: View {
                     .font(.caption).foregroundStyle(TTTheme.muted)
             }
             Spacer(minLength: 4)
-            TimelineView(.periodic(from: .now, by: 1)) { context in
+            TimelineView(.periodic(from: .now, by: 60)) { context in
                 HStack(spacing: 4) {
                     if showCombinedListas {
                         published24hChip("TTiT", project: "ttittulares",
