@@ -23,6 +23,13 @@ jobs:
         working-directory: gps-ios/native
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The monorepo contains large unrelated editorial assets. Only the
+          # iOS native project is necessary for compilation and simulator tests.
+          sparse-checkout: |
+            gps-ios/native
+          sparse-checkout-cone-mode: true
+          fetch-depth: 1
       - name: Parseo Swift y XcodeGen
         run: |
           set -euo pipefail
