@@ -1,29 +1,32 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-28T17:55:06.299551Z",
+  "updated_at": "2026-10-28T18:06:08.073355Z",
   "radar_at": "2026-10-28T17:52:32.038665Z",
-  "processing_count": 1,
-  "processing_items": [
+  "processing_count": 0,
+  "processing_items": [],
+  "ready_count": 0,
+  "problematic_count": 3,
+  "problematic_items": [
     {
       "event_id": "922eab01da5a",
       "title": "Parlon da veracidad a la convocatoria de Blocus en Barcelona y prevé \"un episodio similar\" de disturbios la noche de Halloween",
       "url": "https://www.20minutos.es/cataluna/barcelona/parlon-da-veracidad-convocatoria-blocus-barcelona-preve-un-episodio-similar-disturbios-noche-halloween_7054635_0.html",
       "selected_at": "2026-10-28T17:55:04.715133Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
+      "problematic_at": "2026-10-28T18:06:08.073355Z",
+      "problem_reason": "transport_write_blocked",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
       "source_count": 5,
       "sources": [
-        "20minutos",
-        "La Vanguardia",
         "Público",
+        "La Vanguardia",
         "RTVE",
+        "20minutos",
         "elDiario.es"
       ]
-    }
-  ],
-  "ready_count": 4,
-  "problematic_count": 2,
-  "problematic_items": [
+    },
     {
       "event_id": "e703b0cf76c6",
       "title": "Feijóo exige una investigación tras el accidente de Urda: \"España debe saber qué está pasando con sus infraestructuras, el dolor no obliga a callar\"",
@@ -37,13 +40,12 @@
       "revision": 1,
       "source_count": 6,
       "sources": [
-        "Antena 3 Noticias",
-        "COPE",
+        "Onda Cero",
+        "La Vanguardia",
+        "Telecinco Noticias",
         "Cadena SER",
         "El HuffPost",
-        "La Vanguardia",
-        "Onda Cero",
-        "Telecinco Noticias"
+        "COPE"
       ]
     },
     {
@@ -59,11 +61,11 @@
       "revision": 1,
       "source_count": 5,
       "sources": [
-        "ABC",
-        "Antena 3 Noticias",
         "COPE",
         "Europa Press",
-        "Servimedia"
+        "Antena 3 Noticias",
+        "Servimedia",
+        "ABC"
       ]
     }
   ],
