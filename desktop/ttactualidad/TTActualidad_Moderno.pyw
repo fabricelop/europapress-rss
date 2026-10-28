@@ -7,6 +7,7 @@ import html
 import json
 import os
 import pathlib
+import re
 import threading
 import time
 import urllib.parse
@@ -162,6 +163,35 @@ def validate_token(token):
         raise ValueError("GitHub no ha reconocido este token.")
     return login
 
+_archive_cache={}
+_archive_checked_at=0.0
+
+def load_archive_paths():
+    """Fetch the same GitHub archive photo catalog used by iOS (no AI imagery)."""
+    global _archive_cache, _archive_checked_at
+    if _archive_checked_at and time.time()-_archive_checked_at<600:
+        return dict(_archive_cache)
+    try:
+        _,tree=request("https://api.github.com/repos/"+REPO+"/git/trees/main?recursive=1",timeout=15)
+        if tree.get("truncated"):
+            raise ValueError("El listado de archivos está truncado")
+        found={}
+        for node in tree.get("tree",[]):
+            path=node.get("path","")
+            if node.get("type")!="blob" or not path.startswith(("trends/archive-images/","ttittulares/archive-images/")):
+                continue
+            match=re.fullmatch(r"(.+)-r([0-9]+)-[^/]+[.](jpg|jpeg|png|webp)",path.rsplit("/",1)[-1],re.I)
+            if not match:
+                continue
+            project="ttendencias" if path.startswith("trends/") else "ttittulares"
+            found[project+":"+match.group(1)+":r"+match.group(2)]=RAW+path
+        _archive_cache=found
+        _archive_checked_at=time.time()
+    except Exception:
+        # Missing photo catalog must never discard legitimate editorial data.
+        pass
+    return dict(_archive_cache)
+
 def fetch_editorial():
     result={}
     def one(pair):
@@ -178,6 +208,7 @@ def fetch_editorial():
                 result[k]=v
             except Exception as exc:errors.append(jobs[future]+": "+str(exc))
     if errors: raise RuntimeError("Sin actualizar datos incompletos: "+"; ".join(errors[:3]))
+    result["archive_photos"]=load_archive_paths()
     return result,normalise(result)
 
 class Events(QObject):
