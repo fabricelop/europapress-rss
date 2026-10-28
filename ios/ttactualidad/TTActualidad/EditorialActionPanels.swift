@@ -28,6 +28,9 @@ struct EditorialActions: View {
     @State private var showHints = false
     @State private var confirmTrendToNews = false
     @Environment(\.openURL) private var openURL
+    @AppStorage("TTActualidad.chatGPTProjectLink.v1") private var chatGPTProjectLink = ""
+    @State private var projectLinkDraft = ""
+    @State private var showProjectLinkAlert = false
 
     private var title: String { news?.title ?? trend?.name ?? "" }
     private var fullText: String { news?.editorial ?? trend?.explanation ?? "" }
@@ -54,9 +57,10 @@ struct EditorialActions: View {
                             copyManualEditorialPrompt()
                         }
                         quickButton("Abrir ChatGPT", "arrow.up.right.square") {
-                            openChatGPTApp()
+                            openEditorialChat()
                         }
                     }
+                    projectChatDestinationControl
                     quickButton("URGENTE · Elaborar ya", "bolt.fill", urgent: true) {
                         launchUrgentEditorial()
                     }
@@ -98,9 +102,10 @@ struct EditorialActions: View {
                         copyManualEditorialPrompt()
                     }
                     quickButton("Abrir ChatGPT", "arrow.up.right.square") {
-                        openChatGPTApp()
+                        openEditorialChat()
                     }
                 }
+                projectChatDestinationControl
             } else {
             HStack(spacing: 7) {
                 quickLink("TTImages", "photo.stack", "https://t.me/TTImages_bot")
@@ -169,6 +174,22 @@ struct EditorialActions: View {
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
             }
+        }
+        .alert("Chat de PROYECTOS APP", isPresented: $showProjectLinkAlert) {
+            TextField("Enlace a un chat del proyecto", text: $projectLinkDraft)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+            Button("Guardar") {
+                guard let canonical = projectChatURL(from: projectLinkDraft) else {
+                    outcome = "Enlace no válido. Copia la dirección de un chat del proyecto PROYECTOS APP desde ChatGPT."
+                    return
+                }
+                chatGPTProjectLink = canonical.absoluteString
+                outcome = "Destino guardado. Se usará para Abrir ChatGPT y URGENTE."
+            }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("Pega una vez el enlace https://chatgpt.com/g/g-p-…/c/… de un chat existente de PROYECTOS APP. También admite la página /project. No modifica ChatGPT Images.")
         }
         .sheet(isPresented: $showHints) {
             if let trend {
@@ -393,6 +414,54 @@ struct EditorialActions: View {
         return (common + details).joined(separator: "\n\n")
     }
 
+    private var projectChatDestinationControl: some View {
+        Button {
+            projectLinkDraft = chatGPTProjectLink
+            showProjectLinkAlert = true
+        } label: {
+            Label(chatGPTProjectLink.isEmpty ?
+                  "Fijar chat de PROYECTOS APP" : "Destino: PROYECTOS APP · Cambiar",
+                  systemImage: "link")
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(TTTheme.muted)
+                .frame(maxWidth: .infinity, minHeight: 32)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func projectChatURL(from raw: String) -> URL? {
+        guard let url = URL(string: raw.trimmingCharacters(in: .whitespacesAndNewlines)),
+              url.scheme?.lowercased() == "https",
+              url.host?.lowercased() == "chatgpt.com",
+              url.user == nil, url.password == nil, url.query == nil,
+              url.fragment == nil else { return nil }
+        let parts = url.pathComponents
+        guard parts.count >= 4, parts[1] == "g",
+              parts[2].hasPrefix("g-p-"),
+              ((parts.count == 4 && parts[3] == "project") ||
+               (parts.count == 5 && parts[3] == "c" && !parts[4].isEmpty))
+        else { return nil }
+        return url
+    }
+
+    /// Request the specific ChatGPT project/chat as a signed-in iOS universal
+    /// link only. Never fall back to the unauthenticated Safari page.
+    private func openEditorialChat() {
+        guard let projectURL = projectChatURL(from: chatGPTProjectLink) else {
+            outcome = "Configura una vez el enlace a PROYECTOS APP para ir a ese chat."
+            projectLinkDraft = chatGPTProjectLink
+            showProjectLinkAlert = true
+            return
+        }
+        UIApplication.shared.open(projectURL, options: [.universalLinksOnly: true]) { opened in
+            guard !opened else { return }
+            DispatchQueue.main.async {
+                outcome = "El enlace al proyecto no se abrió directamente; ChatGPT se abrirá sin destino. La orden sigue copiada."
+                openChatGPTApp()
+            }
+        }
+    }
+
     private var urgentEditorialPrompt: String {
         [
             "TTITTULARES_URGENTE_MANUAL_V1 | PRIORIDAD EDITORIAL INMEDIATA. Atiende SOLO esta noticia ahora, sin esperar a una ejecución horaria, desde ChatGPT en la nube; no necesitas el PC.",
@@ -409,7 +478,7 @@ struct EditorialActions: View {
         }
         copy(urgentEditorialPrompt)
         outcome = "Orden urgente copiada. Pégala y envíala en ChatGPT para iniciar."
-        openChatGPTApp()
+        openEditorialChat()
     }
 
     /// Open ChatGPT's installed iOS app, not the separate Safari web session.
