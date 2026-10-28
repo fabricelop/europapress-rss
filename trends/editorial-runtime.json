@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
@@ -16,15 +16,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T15:58:36+01:00",
-  "last_completed_at": "2026-10-28T15:58:36+01:00",
-  "updated_at": "2026-10-28T15:58:36+01:00",
+  "last_started_at": "2026-10-28T15:55:00+01:00",
+  "last_completed_at": "2026-10-28T15:59:30+01:00",
+  "updated_at": "2026-10-28T15:59:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T1545+0100",
+    "trigger_run_id": "tr-chat-20261028T1555+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -32,13 +32,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T1545+0100",
+    "run_id": "tr-chat-20261028T1555+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T15:45:30+01:00",
-    "updated_at": "2026-10-28T15:50:25+01:00",
-    "finished_at": "2026-10-28T15:50:25+01:00",
+    "started_at": "2026-10-28T15:55:00+01:00",
+    "updated_at": "2026-10-28T15:59:30+01:00",
+    "finished_at": "2026-10-28T15:59:30+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -74,91 +74,91 @@
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 1/1 · Vete r0 sigue problematic por falta de detonante único verificable; 0 preparing/update y 0 reexplicaciones pendientes.",
+    "message": "TTendencias completada 1/1 · Vete r0 sigue problematic; 0 preparing/update y 0 reexplicaciones pendientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T15:45:30+01:00",
+        "at": "2026-10-28T15:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Inicio de pasada manual · 1 tendencia reintentable en Top 10; preparando validación JIT y saneamiento."
       },
       {
-        "at": "2026-10-28T15:46:10+01:00",
+        "at": "2026-10-28T15:55:20+01:00",
         "phase": "verifying",
         "trend_id": "df81ddb61398",
         "title": "Vete",
         "message": "Releyendo estado autoritativo de Vete"
       },
       {
-        "at": "2026-10-28T15:46:25+01:00",
+        "at": "2026-10-28T15:55:35+01:00",
         "phase": "investigating",
         "trend_id": "df81ddb61398",
         "title": "Vete",
-        "message": "Buscando detonante actual"
+        "message": "Buscando detonante actual con consultas nuevas"
       },
       {
-        "at": "2026-10-28T15:47:05+01:00",
+        "at": "2026-10-28T15:56:10+01:00",
         "phase": "investigating",
         "trend_id": "df81ddb61398",
         "title": "Vete",
-        "message": "Contrastando fuente 1/2 · tendencia dentro del bloque de conversación sobre Urda y Óscar Puente"
+        "message": "Contrastando fuente 1/2 · aparece conversación política sobre responsabilidades por Urda, pero no un origen inequívoco de «Vete»"
       },
       {
-        "at": "2026-10-28T15:47:45+01:00",
+        "at": "2026-10-28T15:56:35+01:00",
         "phase": "investigating",
         "trend_id": "df81ddb61398",
         "title": "Vete",
-        "message": "Contrastando fuente 2/2 · no aparece un origen único verificable del término"
+        "message": "Contrastando fuente 2/2 · las búsquedas específicas no vinculan el término a un detonante único verificable"
       },
       {
-        "at": "2026-10-28T15:48:05+01:00",
+        "at": "2026-10-28T15:56:45+01:00",
         "phase": "investigating",
         "trend_id": "df81ddb61398",
         "title": "Vete",
         "message": "No se verifica un detonante único; se mantiene problematic para no inferir una explicación"
       },
       {
-        "at": "2026-10-28T15:48:20+01:00",
+        "at": "2026-10-28T15:57:05+01:00",
         "phase": "persisting",
         "trend_id": "df81ddb61398",
         "title": "Vete",
         "message": "Persistiendo outbox problematic con motivo y búsquedas del reintento"
       },
       {
-        "at": "2026-10-28T15:49:00+01:00",
+        "at": "2026-10-28T15:58:05+01:00",
+        "phase": "persisting",
+        "trend_id": "df81ddb61398",
+        "title": "Vete",
+        "message": "Actualizando requests con el resultado del reintento problematic"
+      },
+      {
+        "at": "2026-10-28T15:58:36+01:00",
         "phase": "verifying",
         "trend_id": "df81ddb61398",
         "title": "Vete",
-        "message": "Releyendo main · outbox problematic verificado y 0 preparing/update"
+        "message": "Aplicador consumió el outbox; releyendo main y verificando estado persistido"
       },
       {
-        "at": "2026-10-28T15:49:20+01:00",
+        "at": "2026-10-28T15:59:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 4 tarjetas recientes; 3 sin remate se mantienen sin humor por contexto de accidente y duelo"
+        "message": "Revisando Pendientes · 4 tarjetas recientes; 3 sin remate se mantienen sin humor por contexto sensible"
       },
       {
-        "at": "2026-10-28T15:49:35+01:00",
+        "at": "2026-10-28T15:59:15+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reexplicaciones pendientes verificadas: 0; saneamiento visual solicitado al inicio"
+        "message": "Reexplicaciones pendientes verificadas: 0; 0 preparing/update en la cola"
       },
       {
-        "at": "2026-10-28T15:50:10+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Conflicto concurrente de runtime reconciliado; releyendo main antes del cierre"
-      },
-      {
-        "at": "2026-10-28T15:50:25+01:00",
+        "at": "2026-10-28T15:59:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -183,7 +183,7 @@
       }
     ]
   },
-  "run_id": "tr-chat-20261028T1545+0100",
+  "run_id": "tr-chat-20261028T1555+0100",
   "summary": {
     "attempted": 1,
     "ready": 0,
@@ -217,84 +217,84 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T15:45:30+01:00",
+      "at": "2026-10-28T15:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual · 1 tendencia reintentable en Top 10; preparando validación JIT y saneamiento."
     },
     {
-      "at": "2026-10-28T15:46:10+01:00",
+      "at": "2026-10-28T15:55:20+01:00",
       "phase": "verifying",
       "trend_id": "df81ddb61398",
       "title": "Vete",
       "message": "Releyendo estado autoritativo de Vete"
     },
     {
-      "at": "2026-10-28T15:46:25+01:00",
+      "at": "2026-10-28T15:55:35+01:00",
       "phase": "investigating",
       "trend_id": "df81ddb61398",
       "title": "Vete",
-      "message": "Buscando detonante actual"
+      "message": "Buscando detonante actual con consultas nuevas"
     },
     {
-      "at": "2026-10-28T15:47:05+01:00",
+      "at": "2026-10-28T15:56:10+01:00",
       "phase": "investigating",
       "trend_id": "df81ddb61398",
       "title": "Vete",
-      "message": "Contrastando fuente 1/2 · tendencia dentro del bloque de conversación sobre Urda y Óscar Puente"
+      "message": "Contrastando fuente 1/2 · aparece conversación política sobre responsabilidades por Urda, pero no un origen inequívoco de «Vete»"
     },
     {
-      "at": "2026-10-28T15:47:45+01:00",
+      "at": "2026-10-28T15:56:35+01:00",
       "phase": "investigating",
       "trend_id": "df81ddb61398",
       "title": "Vete",
-      "message": "Contrastando fuente 2/2 · no aparece un origen único verificable del término"
+      "message": "Contrastando fuente 2/2 · las búsquedas específicas no vinculan el término a un detonante único verificable"
     },
     {
-      "at": "2026-10-28T15:48:05+01:00",
+      "at": "2026-10-28T15:56:45+01:00",
       "phase": "investigating",
       "trend_id": "df81ddb61398",
       "title": "Vete",
       "message": "No se verifica un detonante único; se mantiene problematic para no inferir una explicación"
     },
     {
-      "at": "2026-10-28T15:48:20+01:00",
+      "at": "2026-10-28T15:57:05+01:00",
       "phase": "persisting",
       "trend_id": "df81ddb61398",
       "title": "Vete",
       "message": "Persistiendo outbox problematic con motivo y búsquedas del reintento"
     },
     {
-      "at": "2026-10-28T15:49:00+01:00",
+      "at": "2026-10-28T15:58:05+01:00",
+      "phase": "persisting",
+      "trend_id": "df81ddb61398",
+      "title": "Vete",
+      "message": "Actualizando requests con el resultado del reintento problematic"
+    },
+    {
+      "at": "2026-10-28T15:58:36+01:00",
       "phase": "verifying",
       "trend_id": "df81ddb61398",
       "title": "Vete",
-      "message": "Releyendo main · outbox problematic verificado y 0 preparing/update"
+      "message": "Aplicador consumió el outbox; releyendo main y verificando estado persistido"
     },
     {
-      "at": "2026-10-28T15:49:20+01:00",
+      "at": "2026-10-28T15:59:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 4 tarjetas recientes; 3 sin remate se mantienen sin humor por contexto de accidente y duelo"
+      "message": "Revisando Pendientes · 4 tarjetas recientes; 3 sin remate se mantienen sin humor por contexto sensible"
     },
     {
-      "at": "2026-10-28T15:49:35+01:00",
+      "at": "2026-10-28T15:59:15+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Reexplicaciones pendientes verificadas: 0; saneamiento visual solicitado al inicio"
+      "message": "Reexplicaciones pendientes verificadas: 0; 0 preparing/update en la cola"
     },
     {
-      "at": "2026-10-28T15:50:10+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Conflicto concurrente de runtime reconciliado; releyendo main antes del cierre"
-    },
-    {
-      "at": "2026-10-28T15:50:25+01:00",
+      "at": "2026-10-28T15:59:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -310,7 +310,7 @@
     "captured_at": "2026-10-28T14:40:59+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261028T1515+0100",
+  "previous_run_id": "tr-chat-20261028T1545+0100",
   "ratings_snapshot": null,
   "remate_selections": [],
   "final_outcomes": [
