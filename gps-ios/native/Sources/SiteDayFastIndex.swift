@@ -78,9 +78,13 @@ struct SiteDayPartsIndex {
             }
             return explicit.sorted{$0.from<$1.from}
         }
-        return [SiteStayHistory.defaultPart(
+        var proposal = SiteStayHistory.defaultPart(
             for:stay,suggested:confirmedByStay[stay.id]?.siteID ??
-                preferredByCell[stay.cell.id])]
+                preferredByCell[stay.cell.id])
+        // Keep an explicit confirmation effective without freezing the
+        // end of a still-growing GPS stay.
+        proposal.confirmed = confirmedByStay[stay.id] != nil
+        return [proposal]
     }
 }
 
