@@ -66,6 +66,17 @@ class EditorialDesktopTests(unittest.TestCase):
         self.assertEqual([(x["id"],x["state"]) for x in trends],[("orphan-ready","Listas")])
         self.assertEqual(trends[0]["body"],"TT#7 Lamine explicada")
 
+    def test_orphan_explained_request_without_manual_ledger(self):
+        docs=documents()
+        now=dt.datetime.now(dt.timezone.utc).isoformat()
+        docs["requests"]={"requests":[{"id":"orphan-ready","name":"Paracetamol",
+            "revision":0,"status":"explained","ready_at":now,
+            "explained_at":now,"explanation":"TT#9 Texto confirmado"}]}
+        docs["trend_prepared"]={"items":[{"id":"orphan-ready","trend_name":"Paracetamol",
+            "revision":0,"generated_at":now,"explanation":"TT#9 Texto confirmado"}]}
+        _,trends,_,_=normalise(docs)
+        self.assertEqual([(x["id"],x["state"]) for x in trends],[("orphan-ready","Listas")])
+
     def test_staged_ready_blocked_if_active_or_terminal(self):
         docs=documents()
         now=dt.datetime.now(dt.timezone.utc).isoformat()
