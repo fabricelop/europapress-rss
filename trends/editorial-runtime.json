@@ -5,27 +5,22 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "0fdda5e0230c",
-    "733a5bf61b40",
-    "0a6a02124ebe",
-    "4fc099aeb560"
+    "b1123ab4926a"
   ],
   "remaining_ids": [],
-  "remaining_problematic_ids": [
-    "0fdda5e0230c"
-  ],
+  "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T14:00:22.922+01:00",
-  "last_completed_at": "2026-10-28T14:14:00+01:00",
-  "updated_at": "2026-10-28T14:14:00+01:00",
+  "last_started_at": "2026-10-28T14:15:00+01:00",
+  "last_completed_at": "2026-10-28T14:19:00+01:00",
+  "updated_at": "2026-10-28T14:19:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793192422922-manual",
+    "trigger_run_id": "tr-chat-20261028T1415+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -33,476 +28,309 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793192422922-manual",
+    "run_id": "tr-chat-20261028T1415+0100",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T14:00:22.922+01:00",
-    "updated_at": "2026-10-28T14:14:00+01:00",
-    "finished_at": "2026-10-28T14:14:00+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-28T14:15:00+01:00",
+    "updated_at": "2026-10-28T14:19:00+01:00",
+    "finished_at": "2026-10-28T14:19:00+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 4,
+      "attempted": 1,
       "ready": 0,
-      "explained": 3,
-      "final_resolved": 4,
-      "explanation_groups": 3,
-      "new_cards": 3,
-      "revisions_updated": 3,
-      "grouped_into_existing_card": 0,
-      "problematic_reviewed": 1,
-      "problematic_marked": 1,
+      "explained": 1,
+      "final_resolved": 1,
+      "explanation_groups": 1,
+      "new_cards": 0,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 1,
+      "problematic_reviewed": 0,
+      "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 4,
-      "discovered_during_run": 0,
+      "initial_compact_queue": 0,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
-      "remaining_problematic": 1,
+      "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 3,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
-      "remates_omitted": 3,
+      "remates_omitted": 1,
       "recent_missing_closer_reviewed": 3,
       "pending_cards_reviewed": 3,
       "rewrite_pending_remaining": 0,
-      "skipped_concurrent": 1,
+      "skipped_concurrent": 0,
       "trends_dismissed": 0,
-      "incidents": 3
+      "incidents": 0
     },
-    "message": "TTendencias completada: 3 explicadas y 1 problematic (Carroñero); 0 preparing/update y 0 rewrite_pending. Sin ImageGen.",
-    "incident_count": 3,
-    "incidents": [
-      {
-        "at": "2026-10-28T14:10:05+01:00",
-        "phase": "persisting",
-        "trend_id": "0a6a02124ebe",
-        "title": "Miserable",
-        "reason": "Un escritor concurrente cambió Requests a ready y retiró la revisión de la cola entre la ficha Explicada y la sincronización; se releyó main y se reconcilió la revisión exacta al contrato vigente explained."
-      },
-      {
-        "at": "2026-10-28T14:06:00+01:00",
-        "phase": "verifying",
-        "trend_id": "0fdda5e0230c",
-        "title": "Carroñero",
-        "reason": "La revisión pasó a problematic por un escritor concurrente antes del tratamiento JIT. Se respetó el cambio, se repitieron búsquedas y se completó el outbox problematic faltante sin inventar detonante."
-      },
-      {
-        "at": "2026-10-28T14:10:40+01:00",
-        "phase": "verifying",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "reason": "Un escritor concurrente había cambiado la request a ready y retirado la revisión de la cola sin ficha Explicada. Se reconcilió la revisión exacta al contrato vigente y quedó explained verificada."
-      }
-    ],
+    "message": "TTendencias completada 1/1 · Fallo reconciliada como explained en el grupo Error; cola y reexplicaciones en 0. Sin ImageGen.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T14:10:15+01:00",
-        "phase": "persisting",
-        "trend_id": "0a6a02124ebe",
-        "title": "Miserable",
-        "message": "Actualizando requests tras carrera concurrente"
+        "at": "2026-10-28T14:15:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Inicio de pasada manual · cola inicial vacía; comprobando estado autoritativo, reexplicaciones y frescura del radar."
       },
       {
-        "at": "2026-10-28T14:10:25+01:00",
-        "phase": "verifying",
-        "trend_id": "0a6a02124ebe",
-        "title": "Miserable",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-28T14:10:30+01:00",
-        "phase": "verifying",
-        "trend_id": "0a6a02124ebe",
-        "title": "Miserable",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-28T14:10:35+01:00",
-        "phase": "verifying",
-        "trend_id": "0a6a02124ebe",
-        "title": "Miserable",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-28T14:10:40+01:00",
-        "phase": "verifying",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Releyendo estado autoritativo de Error"
-      },
-      {
-        "at": "2026-10-28T14:10:50+01:00",
-        "phase": "investigating",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-28T14:11:00+01:00",
-        "phase": "investigating",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Contrastando fuente 1/2"
-      },
-      {
-        "at": "2026-10-28T14:11:10+01:00",
-        "phase": "investigating",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Contrastando fuente 2/2"
-      },
-      {
-        "at": "2026-10-28T14:11:20+01:00",
-        "phase": "investigating",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-28T14:11:30+01:00",
-        "phase": "drafting",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-28T14:11:40+01:00",
-        "phase": "drafting",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-28T14:11:45+01:00",
-        "phase": "drafting",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Sin remate · tema sensible con víctimas"
-      },
-      {
-        "at": "2026-10-28T14:11:50+01:00",
-        "phase": "persisting",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-28T14:12:05+01:00",
-        "phase": "persisting",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Actualizando requests y reconciliando el ready concurrente"
-      },
-      {
-        "at": "2026-10-28T14:12:15+01:00",
-        "phase": "verifying",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-28T14:12:25+01:00",
-        "phase": "verifying",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-28T14:12:35+01:00",
-        "phase": "verifying",
-        "trend_id": "4fc099aeb560",
-        "title": "Error",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-28T14:12:45+01:00",
-        "phase": "persisting",
-        "trend_id": "0fdda5e0230c",
-        "title": "Carroñero",
-        "message": "Registrando outbox problematic faltante"
-      },
-      {
-        "at": "2026-10-28T14:13:15+01:00",
+        "at": "2026-10-28T14:15:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, Requests, Explicadas y reexplicaciones pendientes"
+        "message": "Radar con captura 13:50:56; solicitado refresh por superar 20 minutos y relectura realizada."
       },
       {
-        "at": "2026-10-28T14:14:00+01:00",
+        "at": "2026-10-28T14:16:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "0 preparing/update y 0 rewrite_pending; 3 Explicadas recientes sin remate revisadas y conservadas sin humor por sensibilidad."
+      },
+      {
+        "at": "2026-10-28T14:16:15+01:00",
+        "phase": "verifying",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Releyendo estado autoritativo de Fallo"
+      },
+      {
+        "at": "2026-10-28T14:16:30+01:00",
+        "phase": "investigating",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Contrastando el detonante actual con fuentes de hoy"
+      },
+      {
+        "at": "2026-10-28T14:16:50+01:00",
+        "phase": "investigating",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Hecho esencial verificado: Fallo y Error describen la misma hipótesis sobre señalización/LZB y posible error humano, aún no confirmada por Adif"
+      },
+      {
+        "at": "2026-10-28T14:17:00+01:00",
+        "phase": "drafting",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Reutilizando la explicación factual ya verificada del grupo Error; sin remate por tratarse de una tragedia con víctimas"
+      },
+      {
+        "at": "2026-10-28T14:17:10+01:00",
+        "phase": "persisting",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Guardando vínculo de Fallo en la ficha Explicada del grupo Error"
+      },
+      {
+        "at": "2026-10-28T14:17:50+01:00",
+        "phase": "persisting",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Actualizando Requests y cerrando Fallo r0 como explained"
+      },
+      {
+        "at": "2026-10-28T14:18:45+01:00",
+        "phase": "verifying",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Releyendo main y verificando id+revision, grupo y texto persistido"
+      },
+      {
+        "at": "2026-10-28T14:18:50+01:00",
+        "phase": "verifying",
+        "trend_id": "b1123ab4926a",
+        "title": "Fallo",
+        "message": "Tendencia cerrada y verificada dentro del grupo Error"
+      },
+      {
+        "at": "2026-10-28T14:18:55+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Radar refrescado a 14:18:29; cola final 0, 0 preparing/update y 0 rewrite_pending"
+      },
+      {
+        "at": "2026-10-28T14:19:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: 3 explicadas y 1 problematic (Carroñero); 0 preparing/update y 0 rewrite_pending. Sin ImageGen."
+        "message": "TTendencias completada 1/1 · Fallo reconciliada como explained en el grupo Error; cola y reexplicaciones en 0. Sin ImageGen."
       }
     ],
     "processed_ids": [
-      "0fdda5e0230c",
-      "733a5bf61b40",
-      "0a6a02124ebe",
-      "4fc099aeb560"
+      "b1123ab4926a"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "0fdda5e0230c",
-        "name": "Carroñero",
+        "id": "b1123ab4926a",
+        "name": "Fallo",
         "revision": 0,
-        "status": "problematic",
+        "status": "explained",
         "closer_text": "",
-        "problem_reason": "No se puede atribuir con fiabilidad el término singular a un detonante único sin especular."
-      },
-      {
-        "id": "733a5bf61b40",
-        "name": "La RFEF",
-        "revision": 0,
-        "status": "explained",
-        "closer_text": ""
-      },
-      {
-        "id": "0a6a02124ebe",
-        "name": "Miserable",
-        "revision": 0,
-        "status": "explained",
-        "closer_text": ""
-      },
-      {
-        "id": "4fc099aeb560",
-        "name": "Error",
-        "revision": 0,
-        "status": "explained",
-        "closer_text": ""
+        "explanation_group_id": "grp-4fc099aeb560-r0"
       }
     ],
-    "remaining_problematic_ids": [
-      "0fdda5e0230c"
-    ]
+    "remaining_problematic_ids": []
   },
-  "run_id": "tr-1793192422922-manual",
+  "run_id": "tr-chat-20261028T1415+0100",
   "summary": {
-    "attempted": 4,
+    "attempted": 1,
     "ready": 0,
-    "explained": 3,
-    "final_resolved": 4,
-    "explanation_groups": 3,
-    "new_cards": 3,
-    "revisions_updated": 3,
-    "grouped_into_existing_card": 0,
-    "problematic_reviewed": 1,
-    "problematic_marked": 1,
+    "explained": 1,
+    "final_resolved": 1,
+    "explanation_groups": 1,
+    "new_cards": 0,
+    "revisions_updated": 1,
+    "grouped_into_existing_card": 1,
+    "problematic_reviewed": 0,
+    "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 4,
-    "discovered_during_run": 0,
+    "initial_compact_queue": 0,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
-    "remaining_problematic": 1,
+    "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 3,
+    "explanations_verified_under_280": 1,
     "remates_selected": 0,
-    "remates_omitted": 3,
+    "remates_omitted": 1,
     "recent_missing_closer_reviewed": 3,
     "pending_cards_reviewed": 3,
     "rewrite_pending_remaining": 0,
-    "skipped_concurrent": 1,
+    "skipped_concurrent": 0,
     "trends_dismissed": 0,
-    "incidents": 3
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T14:10:15+01:00",
-      "phase": "persisting",
-      "trend_id": "0a6a02124ebe",
-      "title": "Miserable",
-      "message": "Actualizando requests tras carrera concurrente"
+      "at": "2026-10-28T14:15:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio de pasada manual · cola inicial vacía; comprobando estado autoritativo, reexplicaciones y frescura del radar."
     },
     {
-      "at": "2026-10-28T14:10:25+01:00",
-      "phase": "verifying",
-      "trend_id": "0a6a02124ebe",
-      "title": "Miserable",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-28T14:10:30+01:00",
-      "phase": "verifying",
-      "trend_id": "0a6a02124ebe",
-      "title": "Miserable",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-28T14:10:35+01:00",
-      "phase": "verifying",
-      "trend_id": "0a6a02124ebe",
-      "title": "Miserable",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-28T14:10:40+01:00",
-      "phase": "verifying",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Releyendo estado autoritativo de Error"
-    },
-    {
-      "at": "2026-10-28T14:10:50+01:00",
-      "phase": "investigating",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Buscando detonante actual"
-    },
-    {
-      "at": "2026-10-28T14:11:00+01:00",
-      "phase": "investigating",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Contrastando fuente 1/2"
-    },
-    {
-      "at": "2026-10-28T14:11:10+01:00",
-      "phase": "investigating",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Contrastando fuente 2/2"
-    },
-    {
-      "at": "2026-10-28T14:11:20+01:00",
-      "phase": "investigating",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Hecho esencial verificado"
-    },
-    {
-      "at": "2026-10-28T14:11:30+01:00",
-      "phase": "drafting",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-28T14:11:40+01:00",
-      "phase": "drafting",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Comprobando límite de X"
-    },
-    {
-      "at": "2026-10-28T14:11:45+01:00",
-      "phase": "drafting",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Sin remate · tema sensible con víctimas"
-    },
-    {
-      "at": "2026-10-28T14:11:50+01:00",
-      "phase": "persisting",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-28T14:12:05+01:00",
-      "phase": "persisting",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Actualizando requests y reconciliando el ready concurrente"
-    },
-    {
-      "at": "2026-10-28T14:12:15+01:00",
-      "phase": "verifying",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-28T14:12:25+01:00",
-      "phase": "verifying",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-28T14:12:35+01:00",
-      "phase": "verifying",
-      "trend_id": "4fc099aeb560",
-      "title": "Error",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-28T14:12:45+01:00",
-      "phase": "persisting",
-      "trend_id": "0fdda5e0230c",
-      "title": "Carroñero",
-      "message": "Registrando outbox problematic faltante"
-    },
-    {
-      "at": "2026-10-28T14:13:15+01:00",
+      "at": "2026-10-28T14:15:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo cola, Requests, Explicadas y reexplicaciones pendientes"
+      "message": "Radar con captura 13:50:56; solicitado refresh por superar 20 minutos y relectura realizada."
     },
     {
-      "at": "2026-10-28T14:14:00+01:00",
+      "at": "2026-10-28T14:16:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "0 preparing/update y 0 rewrite_pending; 3 Explicadas recientes sin remate revisadas y conservadas sin humor por sensibilidad."
+    },
+    {
+      "at": "2026-10-28T14:16:15+01:00",
+      "phase": "verifying",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Releyendo estado autoritativo de Fallo"
+    },
+    {
+      "at": "2026-10-28T14:16:30+01:00",
+      "phase": "investigating",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Contrastando el detonante actual con fuentes de hoy"
+    },
+    {
+      "at": "2026-10-28T14:16:50+01:00",
+      "phase": "investigating",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Hecho esencial verificado: Fallo y Error describen la misma hipótesis sobre señalización/LZB y posible error humano, aún no confirmada por Adif"
+    },
+    {
+      "at": "2026-10-28T14:17:00+01:00",
+      "phase": "drafting",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Reutilizando la explicación factual ya verificada del grupo Error; sin remate por tratarse de una tragedia con víctimas"
+    },
+    {
+      "at": "2026-10-28T14:17:10+01:00",
+      "phase": "persisting",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Guardando vínculo de Fallo en la ficha Explicada del grupo Error"
+    },
+    {
+      "at": "2026-10-28T14:17:50+01:00",
+      "phase": "persisting",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Actualizando Requests y cerrando Fallo r0 como explained"
+    },
+    {
+      "at": "2026-10-28T14:18:45+01:00",
+      "phase": "verifying",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Releyendo main y verificando id+revision, grupo y texto persistido"
+    },
+    {
+      "at": "2026-10-28T14:18:50+01:00",
+      "phase": "verifying",
+      "trend_id": "b1123ab4926a",
+      "title": "Fallo",
+      "message": "Tendencia cerrada y verificada dentro del grupo Error"
+    },
+    {
+      "at": "2026-10-28T14:18:55+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Radar refrescado a 14:18:29; cola final 0, 0 preparing/update y 0 rewrite_pending"
+    },
+    {
+      "at": "2026-10-28T14:19:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: 3 explicadas y 1 problematic (Carroñero); 0 preparing/update y 0 rewrite_pending. Sin ImageGen."
+      "message": "TTendencias completada 1/1 · Fallo reconciliada como explained en el grupo Error; cola y reexplicaciones en 0. Sin ImageGen."
     }
   ],
   "partial": false,
   "radar_refresh": {
-    "status": "not_needed_fresh",
-    "captured_at": "2026-10-28T12:11:16+01:00"
+    "status": "refreshed_after_trigger",
+    "captured_at": "2026-10-28T14:18:29+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-28T12:11:16+01:00",
+    "captured_at": "2026-10-28T14:18:29+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261028T1345+0100",
+  "previous_run_id": "tr-1793192422922-manual",
   "ratings_snapshot": null,
   "remate_selections": [],
   "final_outcomes": [
     {
-      "id": "0fdda5e0230c",
-      "name": "Carroñero",
+      "id": "b1123ab4926a",
+      "name": "Fallo",
       "revision": 0,
-      "status": "problematic",
+      "status": "explained",
       "closer_text": "",
-      "problem_reason": "No se puede atribuir con fiabilidad el término singular a un detonante único sin especular."
-    },
-    {
-      "id": "733a5bf61b40",
-      "name": "La RFEF",
-      "revision": 0,
-      "status": "explained",
-      "closer_text": ""
-    },
-    {
-      "id": "0a6a02124ebe",
-      "name": "Miserable",
-      "revision": 0,
-      "status": "explained",
-      "closer_text": ""
-    },
-    {
-      "id": "4fc099aeb560",
-      "name": "Error",
-      "revision": 0,
-      "status": "explained",
-      "closer_text": ""
+      "explanation_group_id": "grp-4fc099aeb560-r0"
     }
   ],
   "pending_delivery_count": 3,
