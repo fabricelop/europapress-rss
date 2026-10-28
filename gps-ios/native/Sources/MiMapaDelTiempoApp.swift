@@ -186,6 +186,8 @@ struct SavedState: Codable {
     @Published var minimized = false
     @Published var routePeriod: RouteDisplayPeriod = .today
     @Published var selectedTab = 0
+    // A specific stay requested from an interactive notification.
+    @Published var requestedSiteStayID: String?
     private var mapNavigation = MapNavigationOnce()
     @Published var mapNavigationRevision = UUID()
     @Published private(set) var renameUndoAvailable = false
@@ -686,8 +688,12 @@ struct SavedState: Codable {
             return explicit.sorted { $0.from < $1.from }
         }
         let legacy = data.siteStayAssignments.first { $0.id == stay.id && $0.confirmed }
-        return [SiteStayHistory.defaultPart(for:stay,
-                suggested: legacy?.siteID ?? preferredSiteID(for:stay.cell.id))]
+        var proposed = SiteStayHistory.defaultPart(for:stay,
+                suggested: legacy?.siteID ?? preferredSiteID(for:stay.cell.id))
+        // A notification's Confirmado action is a real confirmation, and
+        // must remain confirmed while the ongoing GPS stay keeps growing.
+        proposed.confirmed = legacy != nil
+        return [proposed]
     }
     func writeSiteParts(_ parts: [SiteStayPart], stay: SiteGridStay) {
         guard SiteStayHistory.valid(parts,for:stay), storageIsHealthy else { return }
@@ -786,6 +792,61 @@ struct SavedState: Codable {
     func siteNamed(_ id: UUID) -> IdentifiedSite? {
         data.identifiedSites.first { $0.id == id }
     }
+
+    /// Confirm exactly the visible Histórico de sitios row named by
+    /// groupID, including ALL its constituent 100m GPS stays. Revalidate
+    /// against the latest calendar grouping before touching saved choices.
+    @discardableResult
+    func confirmNotifiedStay(stayID groupID: String,
+                             expectedSiteID: UUID) -> Bool {
+        guard storageIsHealthy, siteNamed(expectedSiteID) != nil else { return false }
+        let stays = SiteStayHistory.extract(data.intervals)
+        guard let first = stays.first(where: { $0.id == groupID }) else { return false }
+        let index = SiteDayPartsIndex(assignments:data.siteStayAssignments,
+                       parts:data.siteStayParts, sites:data.identifiedSites)
+        let sources = stays.map { SiteDaySource(stay:$0,
+                                               parts:index.parts(for:$0)) }
+        let report = SiteDayPresentation.build(sources,on:first.start)
+        guard let group = report.groups.first(where:{$0.id == groupID}),
+              group.siteID == expectedSiteID, !group.confirmed else { return false }
+
+        // Atomic verification: no partial confirmations and no overwriting
+        // a different place manually assigned since this notification.
+        for entry in group.entries {
+            let parts = index.parts(for:entry.stay)
+            guard parts.count == 1, let only = parts.first,
+                  only.kind == .place, only.siteID == expectedSiteID,
+                  !only.confirmed else { return false }
+        }
+        for entry in group.entries {
+            let raw = data.siteStayParts.indices.filter {
+                data.siteStayParts[$0].stayID == entry.stay.id
+            }
+            if raw.count == 1,
+               data.siteStayParts[raw[0]].kind == .place,
+               data.siteStayParts[raw[0]].siteID == expectedSiteID,
+               SiteStayHistory.valid([data.siteStayParts[raw[0]]],
+                                     for:entry.stay) {
+                data.siteStayParts[raw[0]].confirmed = true
+            } else {
+                data.siteStayAssignments = SiteStayPolicy.select(
+                    siteID:expectedSiteID,cellID:entry.stay.cell.id,
+                    entered:entry.stay.start,assignments:data.siteStayAssignments)
+            }
+        }
+        save(force:true)
+        activityPublisher.refresh(from:self,force:true)
+        objectWillChange.send()
+        return true
+    }
+
+    /// Show the same GROUP in the historical list, including its sub-stays
+    /// if it spans more than one square.
+    func openNotifiedStay(stayID: String) {
+        requestedSiteStayID = stayID
+        selectedTab = 3
+    }
+
     func siteOptions(for cell: Cell) -> [(site: IdentifiedSite, confirmations: Int, fromOtherSquares: Int)] {
         let votes = SiteStayPolicy.confirmedCounts(data.siteStayAssignments,
                                 cellID: cell.id, parts: data.siteStayParts)
@@ -1428,6 +1489,7 @@ struct SavedState: Codable {
         activityPublisher.refresh(from:self)
         evaluateCurrentSite(now: sample.date)
         GPSPersonalAlerts.shared.evaluate(model:self)
+        SiteStayNotifications.shared.evaluate(model:self)
         objectWillChange.send()
     }
     // Interpolate between real fixes. Long gaps / impossible jumps are NOT invented.
@@ -2014,6 +2076,10 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 }
 @main struct MiMapaDelTiempoApp: App {
+    // Register the notification action delegate at launch, including launches
+    // triggered by the background Confirmado action.
+    init() { _ = SiteStayNotifications.shared }
+
     @StateObject private var model = TimeModel()
     @StateObject private var gps = GPSService()
     @Environment(\.scenePhase) private var phase
@@ -2026,6 +2092,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                     if model.isResting { gps.restoreRest(model) }
                     else if model.data.trackingEnabled && !model.recording { gps.begin(model) }
                     model.restoreLiveActivityIfNeeded()
+                    SiteStayNotifications.shared.activate(model: model)
                 }
                 .onChange(of: model.storageIsHealthy) { _, healthy in
                     if !healthy { gps.haltForStorageFailure(model) }

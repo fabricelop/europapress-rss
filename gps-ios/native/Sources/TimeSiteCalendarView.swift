@@ -38,6 +38,40 @@ struct TimeSiteCalendarView: View {
     // Pin the opened historical stay outside the live-recomputed day rows.
     // GPS updates can rebuild the calendar without recreating the editor.
     @State private var selectedStay: SiteGridStay?
+    @State private var groupToExpandAfterDayChange: String?
+
+    /// Corregir opens the actual row in Histórico de sitios: a single
+    /// stay opens its editor; an aggregated site expands all its sub-stays.
+    private func openRequestedStay() {
+        guard let key = model.requestedSiteStayID,
+              let stay = allStays.first(where: { $0.id == key }) else { return }
+        let targetDay = SiteCalendarDay.normalized(stay.start)
+        let changingDay = !Calendar.current.isDate(selectedDay,inSameDayAs:targetDay)
+        let candidates = allStays.filter {
+            Calendar.current.isDate($0.start,inSameDayAs:targetDay) ||
+            Calendar.current.isDate($0.end,inSameDayAs:targetDay)
+        }
+        let index = SiteDayPartsIndex(assignments:model.data.siteStayAssignments,
+                        parts:model.data.siteStayParts, sites:model.data.identifiedSites)
+        let sources = candidates.map {
+            SiteDaySource(stay:$0,parts:index.parts(for:$0))
+        }
+        let group = SiteDayPresentation.build(sources,on:targetDay)
+            .groups.first(where:{$0.id == key})
+        onlyUnclassified = false
+        selectedDay = targetDay
+        if group?.isExpandable == true {
+            selectedStay = nil
+            if changingDay {
+                groupToExpandAfterDayChange = key
+            } else {
+                expandedGroups.insert(key)
+            }
+        } else {
+            selectedStay = stay
+        }
+        model.requestedSiteStayID = nil
+    }
 
     private func changeDay(_ delta: Int) {
         selectedDay = SiteCalendarDay.addingDays(delta, to: selectedDay)
@@ -314,7 +348,12 @@ struct TimeSiteCalendarView: View {
                 rebuild()
             } else {
                 refreshPartsIndex()
+                openRequestedStay()
             }
+        }
+        .onChange(of:model.requestedSiteStayID) { _, _ in
+            if allStays.isEmpty { rebuild() }
+            else { openRequestedStay() }
         }
         .onChange(of:selectedDay) { _, chosen in
             let normalized=SiteCalendarDay.normalized(chosen)
@@ -322,6 +361,10 @@ struct TimeSiteCalendarView: View {
             expandedGroups.removeAll()
             onlyUnclassified=false
             refreshDay()
+            if let requested = groupToExpandAfterDayChange {
+                expandedGroups.insert(requested)
+                groupToExpandAfterDayChange = nil
+            }
         }
         .onChange(of:model.data.intervals.count) { _,_ in rebuild() }
         .onChange(of:model.data.siteStayParts) { _,_ in refreshPartsIndex() }
@@ -431,6 +474,7 @@ struct TimeSiteCalendarView: View {
                 indexedIntervalCount=original.count
                 refreshPartsIndex()
                 preparing=false
+                openRequestedStay()
             }
         }
     }
