@@ -213,8 +213,7 @@ def deliver():
         req = request.Request("https://ntfy.sh/" + topic, data=payload, method="POST",
                               headers={"Title": f"TTActualidad - {label} en Listas",
                                        "Priority": "default",
-                                       "X-Sequence-ID": "ttactualidad-" + event["id"],
-                                       "Cache": "no"})
+                                       "X-Sequence-ID": "ttactualidad-" + event["id"]})
         with request.urlopen(req, timeout=15) as response:
             if response.status // 100 != 2:
                 raise RuntimeError(f"ntfy HTTP {response.status}")
