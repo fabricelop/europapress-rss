@@ -2,90 +2,231 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-28T08:25:33.442470+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-28T15:18:21.244897+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "ed33bdd26612",
+          "title": "El arquitecto Joaquín Torres, entre los pasajeros de los trenes accidentados en Toledo: “Se me ha mu",
+          "seconds": 228,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1031481,
+          "seconds": 1056248,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "2656d5990df697e69600fcd88110d572c59507eed0aa26a717fc315e42a77ce3",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-28T08:25:33.442470+00:00",
-      "issue_count": 9,
+      "checked_at": "2026-10-28T15:18:21.244897+00:00",
+      "issue_count": 28,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "manual-1d9e7b521a1c8a4e6bddd25d2abdd834",
+          "title": "Carroñeros",
+          "seconds": 995,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "editorial_overdue",
           "id": "4e5b3b162b0f",
           "title": "Paracetamol",
-          "seconds": 45256,
+          "seconds": 70024,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "c5a63e21f604",
           "title": "#rcde",
-          "seconds": 39256,
+          "seconds": 64024,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "8860faae230c",
           "title": "Manolo",
-          "seconds": 39256,
+          "seconds": 64024,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "7280355b9bdb",
           "title": "Las Llanas",
-          "seconds": 39256,
+          "seconds": 64024,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "59265957576d",
           "title": "#LaCopaMola",
-          "seconds": 39256,
+          "seconds": 64024,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "fc1e4bc8ee32",
           "title": "#MCCLegends",
-          "seconds": 26066,
+          "seconds": 50834,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "01be51f2e141",
           "title": "Yola",
-          "seconds": 25462,
+          "seconds": 50230,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "0719ebb277e4",
           "title": "Lamine",
-          "seconds": 23665,
+          "seconds": 48433,
           "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "b59fd3a871a0",
+          "title": "Iryo",
+          "seconds": 21435,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "bff9314ae61b",
+          "title": "Urda",
+          "seconds": 21435,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "2e51a7a10dd3",
+          "title": "Óscar Puente",
+          "seconds": 21435,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "04e55e888680",
+          "title": "Madrid-Andalucía",
+          "seconds": 21435,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "0f5bf1e8b366",
+          "title": "Adamuz",
+          "seconds": 20225,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "98f756791609",
+          "title": "Asesinos",
+          "seconds": 18936,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "aae166854230",
+          "title": "Dimite",
+          "seconds": 18936,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "6e5758e5d6fa",
+          "title": "Adif",
+          "seconds": 18936,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "53a7e450d1fa",
+          "title": "Consternado",
+          "seconds": 18936,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "a1d3878f5ab1",
+          "title": "Ministro de Transportes",
+          "seconds": 18032,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "9f3022fc9d7f",
+          "title": "Asesino",
+          "seconds": 18024,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "c6acd19419d2",
+          "title": "Alta Velocidad",
+          "seconds": 18022,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "0987248fce11",
+          "title": "Madrid-Sevilla",
+          "seconds": 16038,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "15e61aeeef2d",
+          "title": "Protección Civil",
+          "seconds": 16033,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "4ae6c43bd32f",
+          "title": "Atocha",
+          "seconds": 16026,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "16afe57592c3",
+          "title": "Angrois",
+          "seconds": 16021,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "b1123ab4926a",
+          "title": "Fallo",
+          "seconds": 13219,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e317188ca296",
+          "title": "Más de 100",
+          "seconds": 988,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1031480,
+          "seconds": 1056248,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -94,16 +235,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "2d67fbf24146d762817ed588142d252aae79b79ca1b3cdf3990f5d1ea2e74ab9",
+      "open_signature": "647952aa62b73572f0a4b42bd1962f803b846015290586176a2dead428775bb5",
       "repair_via_workflow_run": false,
-      "escalation_required": 8
+      "escalation_required": 25
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-27T19:30:31.521314+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-28T08:25:33.442470+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-28T08:25:33.442470+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-28T08:25:33.442470+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-28T15:18:21.244897+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-28T15:18:21.244897+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-28T15:18:21.244897+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-28T15:18:21.244897+00:00"
   },
-  "checked_at": "2026-10-28T08:25:33.442470+00:00"
+  "checked_at": "2026-10-28T15:18:21.244897+00:00"
 }
