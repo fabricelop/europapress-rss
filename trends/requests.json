@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-28T10:51:19.624740+00:00",
+  "updated_at": "2026-10-28T11:55:00+01:00",
   "count": 298,
   "requests": [
     {
@@ -19636,10 +19636,10 @@
       "name": "Transportes",
       "rank": 14,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-10-28T10:50:55.499160+00:00",
       "requested_at": "2026-10-28T10:50:55.499160+00:00",
-      "updated_at": "2026-10-28T10:50:55.499160+00:00",
+      "updated_at": "2026-10-28T11:55:00+01:00",
       "task": "explain",
       "auto_queued": false,
       "request_source": "ttactualidad_direct_rework",
@@ -19647,23 +19647,117 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Transportes"
       ],
       "originated_from_prior_id": "manual-524f7ecb7b468ebcf64bc591b1dfd259",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Transportes, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Transportes, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-10-28T11:55:00+01:00",
+      "last_attempt_at": "2026-10-28T11:55:00+01:00",
+      "explanation": "TT#14 Transportes es tendencia junto a Madrid-Sevilla, Protección Civil, Atocha y Angrois por el choque AVE-Iryo en Urda, con al menos 30 muertos: sigue cortada la alta velocidad; emergencias actúan y Angrois reaparece como referencia.\n#Urda #AltaVelocidad #ProtecciónCivil",
+      "closer_text": "",
+      "rank_at_explanation": 14,
+      "category": "Sucesos/Transporte",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://www.europapress.es/sociedad/noticia-heridos-prioridad-proteccion-civil-sucesos-urda-priorizan-casos-mas-graves-20261028113506.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-oscar-puente-llega-centro-control-adif-atocha-madrid-dar-informacion-20261028105913.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-alcance-dos-trenes-interrumpe-circulacion-linea-alta-velocidad-madrid-andalucia-20261028093012.html",
+        "https://www.europasur.es/andalucia/asociacion-ingenieros-caminos-apunta-fallo_0_2008365876.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Las cinco entradas corresponden a la misma oleada del accidente ferroviario de Urda: corte de la alta velocidad Madrid-Andalucía, actuación de emergencias y Protección Civil, atención/información en Atocha y referencias públicas a Angrois. No se atribuye causa ni responsabilidad; el balance citado es provisional.",
+      "group_id": "grp-42e4101cc1b8-r0",
+      "explanation_group_id": "grp-42e4101cc1b8-r0",
+      "group_title": "Accidente AVE–Iryo en Toledo · servicios y referencias",
+      "group_leader_id": "42e4101cc1b8",
+      "trend_names": [
+        "Transportes",
+        "Madrid-Sevilla",
+        "Protección Civil",
+        "Atocha",
+        "Angrois"
+      ],
+      "trend_context": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "0987248fce11",
       "name": "Madrid-Sevilla",
       "rank": 15,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-10-28T10:51:03.117814+00:00",
       "requested_at": "2026-10-28T10:51:03.117814+00:00",
-      "updated_at": "2026-10-28T10:51:03.117814+00:00",
+      "updated_at": "2026-10-28T11:55:00+01:00",
       "task": "explain",
       "auto_queued": false,
       "request_source": "ttactualidad_direct_rework",
@@ -19671,23 +19765,117 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Madrid-Sevilla"
       ],
       "originated_from_prior_id": "manual-a7db60a725f485d8698123f3287c5227",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Madrid-Sevilla, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Madrid-Sevilla, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-10-28T11:55:00+01:00",
+      "last_attempt_at": "2026-10-28T11:55:00+01:00",
+      "explanation": "TT#14 Transportes es tendencia junto a Madrid-Sevilla, Protección Civil, Atocha y Angrois por el choque AVE-Iryo en Urda, con al menos 30 muertos: sigue cortada la alta velocidad; emergencias actúan y Angrois reaparece como referencia.\n#Urda #AltaVelocidad #ProtecciónCivil",
+      "closer_text": "",
+      "rank_at_explanation": 15,
+      "category": "Sucesos/Transporte",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://www.europapress.es/sociedad/noticia-heridos-prioridad-proteccion-civil-sucesos-urda-priorizan-casos-mas-graves-20261028113506.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-oscar-puente-llega-centro-control-adif-atocha-madrid-dar-informacion-20261028105913.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-alcance-dos-trenes-interrumpe-circulacion-linea-alta-velocidad-madrid-andalucia-20261028093012.html",
+        "https://www.europasur.es/andalucia/asociacion-ingenieros-caminos-apunta-fallo_0_2008365876.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Las cinco entradas corresponden a la misma oleada del accidente ferroviario de Urda: corte de la alta velocidad Madrid-Andalucía, actuación de emergencias y Protección Civil, atención/información en Atocha y referencias públicas a Angrois. No se atribuye causa ni responsabilidad; el balance citado es provisional.",
+      "group_id": "grp-42e4101cc1b8-r0",
+      "explanation_group_id": "grp-42e4101cc1b8-r0",
+      "group_title": "Accidente AVE–Iryo en Toledo · servicios y referencias",
+      "group_leader_id": "42e4101cc1b8",
+      "trend_names": [
+        "Transportes",
+        "Madrid-Sevilla",
+        "Protección Civil",
+        "Atocha",
+        "Angrois"
+      ],
+      "trend_context": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "15e61aeeef2d",
       "name": "Protección Civil",
       "rank": 16,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-10-28T10:51:07.772577+00:00",
       "requested_at": "2026-10-28T10:51:07.772577+00:00",
-      "updated_at": "2026-10-28T10:51:07.772577+00:00",
+      "updated_at": "2026-10-28T11:55:00+01:00",
       "task": "explain",
       "auto_queued": false,
       "request_source": "ttactualidad_direct_rework",
@@ -19695,23 +19883,117 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Protección Civil"
       ],
       "originated_from_prior_id": "manual-b199f9ceed62687ef1c92f4c88d95eac",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Protección Civil, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Protección Civil, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-10-28T11:55:00+01:00",
+      "last_attempt_at": "2026-10-28T11:55:00+01:00",
+      "explanation": "TT#14 Transportes es tendencia junto a Madrid-Sevilla, Protección Civil, Atocha y Angrois por el choque AVE-Iryo en Urda, con al menos 30 muertos: sigue cortada la alta velocidad; emergencias actúan y Angrois reaparece como referencia.\n#Urda #AltaVelocidad #ProtecciónCivil",
+      "closer_text": "",
+      "rank_at_explanation": 16,
+      "category": "Sucesos/Transporte",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://www.europapress.es/sociedad/noticia-heridos-prioridad-proteccion-civil-sucesos-urda-priorizan-casos-mas-graves-20261028113506.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-oscar-puente-llega-centro-control-adif-atocha-madrid-dar-informacion-20261028105913.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-alcance-dos-trenes-interrumpe-circulacion-linea-alta-velocidad-madrid-andalucia-20261028093012.html",
+        "https://www.europasur.es/andalucia/asociacion-ingenieros-caminos-apunta-fallo_0_2008365876.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Las cinco entradas corresponden a la misma oleada del accidente ferroviario de Urda: corte de la alta velocidad Madrid-Andalucía, actuación de emergencias y Protección Civil, atención/información en Atocha y referencias públicas a Angrois. No se atribuye causa ni responsabilidad; el balance citado es provisional.",
+      "group_id": "grp-42e4101cc1b8-r0",
+      "explanation_group_id": "grp-42e4101cc1b8-r0",
+      "group_title": "Accidente AVE–Iryo en Toledo · servicios y referencias",
+      "group_leader_id": "42e4101cc1b8",
+      "trend_names": [
+        "Transportes",
+        "Madrid-Sevilla",
+        "Protección Civil",
+        "Atocha",
+        "Angrois"
+      ],
+      "trend_context": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "4ae6c43bd32f",
       "name": "Atocha",
       "rank": 17,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-10-28T10:51:15.169636+00:00",
       "requested_at": "2026-10-28T10:51:15.169636+00:00",
-      "updated_at": "2026-10-28T10:51:15.169636+00:00",
+      "updated_at": "2026-10-28T11:55:00+01:00",
       "task": "explain",
       "auto_queued": false,
       "request_source": "ttactualidad_direct_rework",
@@ -19719,23 +20001,117 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Atocha"
       ],
       "originated_from_prior_id": "manual-e949f15efed7c4de71d82eb7bd47b7e8",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Atocha, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Atocha, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-10-28T11:55:00+01:00",
+      "last_attempt_at": "2026-10-28T11:55:00+01:00",
+      "explanation": "TT#14 Transportes es tendencia junto a Madrid-Sevilla, Protección Civil, Atocha y Angrois por el choque AVE-Iryo en Urda, con al menos 30 muertos: sigue cortada la alta velocidad; emergencias actúan y Angrois reaparece como referencia.\n#Urda #AltaVelocidad #ProtecciónCivil",
+      "closer_text": "",
+      "rank_at_explanation": 17,
+      "category": "Sucesos/Transporte",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://www.europapress.es/sociedad/noticia-heridos-prioridad-proteccion-civil-sucesos-urda-priorizan-casos-mas-graves-20261028113506.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-oscar-puente-llega-centro-control-adif-atocha-madrid-dar-informacion-20261028105913.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-alcance-dos-trenes-interrumpe-circulacion-linea-alta-velocidad-madrid-andalucia-20261028093012.html",
+        "https://www.europasur.es/andalucia/asociacion-ingenieros-caminos-apunta-fallo_0_2008365876.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Las cinco entradas corresponden a la misma oleada del accidente ferroviario de Urda: corte de la alta velocidad Madrid-Andalucía, actuación de emergencias y Protección Civil, atención/información en Atocha y referencias públicas a Angrois. No se atribuye causa ni responsabilidad; el balance citado es provisional.",
+      "group_id": "grp-42e4101cc1b8-r0",
+      "explanation_group_id": "grp-42e4101cc1b8-r0",
+      "group_title": "Accidente AVE–Iryo en Toledo · servicios y referencias",
+      "group_leader_id": "42e4101cc1b8",
+      "trend_names": [
+        "Transportes",
+        "Madrid-Sevilla",
+        "Protección Civil",
+        "Atocha",
+        "Angrois"
+      ],
+      "trend_context": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "16afe57592c3",
       "name": "Angrois",
       "rank": 20,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-10-28T10:51:19.624740+00:00",
       "requested_at": "2026-10-28T10:51:19.624740+00:00",
-      "updated_at": "2026-10-28T10:51:19.624740+00:00",
+      "updated_at": "2026-10-28T11:55:00+01:00",
       "task": "explain",
       "auto_queued": false,
       "request_source": "ttactualidad_direct_rework",
@@ -19743,13 +20119,107 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Angrois"
       ],
       "originated_from_prior_id": "manual-59935abe8014861d920e6149a336f5a2",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Angrois, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Angrois, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-10-28T11:55:00+01:00",
+      "last_attempt_at": "2026-10-28T11:55:00+01:00",
+      "explanation": "TT#14 Transportes es tendencia junto a Madrid-Sevilla, Protección Civil, Atocha y Angrois por el choque AVE-Iryo en Urda, con al menos 30 muertos: sigue cortada la alta velocidad; emergencias actúan y Angrois reaparece como referencia.\n#Urda #AltaVelocidad #ProtecciónCivil",
+      "closer_text": "",
+      "rank_at_explanation": 20,
+      "category": "Sucesos/Transporte",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://www.europapress.es/sociedad/noticia-heridos-prioridad-proteccion-civil-sucesos-urda-priorizan-casos-mas-graves-20261028113506.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-oscar-puente-llega-centro-control-adif-atocha-madrid-dar-informacion-20261028105913.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-alcance-dos-trenes-interrumpe-circulacion-linea-alta-velocidad-madrid-andalucia-20261028093012.html",
+        "https://www.europasur.es/andalucia/asociacion-ingenieros-caminos-apunta-fallo_0_2008365876.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Las cinco entradas corresponden a la misma oleada del accidente ferroviario de Urda: corte de la alta velocidad Madrid-Andalucía, actuación de emergencias y Protección Civil, atención/información en Atocha y referencias públicas a Angrois. No se atribuye causa ni responsabilidad; el balance citado es provisional.",
+      "group_id": "grp-42e4101cc1b8-r0",
+      "explanation_group_id": "grp-42e4101cc1b8-r0",
+      "group_title": "Accidente AVE–Iryo en Toledo · servicios y referencias",
+      "group_leader_id": "42e4101cc1b8",
+      "trend_names": [
+        "Transportes",
+        "Madrid-Sevilla",
+        "Protección Civil",
+        "Atocha",
+        "Angrois"
+      ],
+      "trend_context": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "42e4101cc1b8",
+          "name": "Transportes",
+          "rank": 14,
+          "revision": 0
+        },
+        {
+          "id": "0987248fce11",
+          "name": "Madrid-Sevilla",
+          "rank": 15,
+          "revision": 0
+        },
+        {
+          "id": "15e61aeeef2d",
+          "name": "Protección Civil",
+          "rank": 16,
+          "revision": 0
+        },
+        {
+          "id": "4ae6c43bd32f",
+          "name": "Atocha",
+          "rank": 17,
+          "revision": 0
+        },
+        {
+          "id": "16afe57592c3",
+          "name": "Angrois",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     }
   ],
   "items": [
