@@ -146,6 +146,10 @@ def safe_url(url):
         return o.geturl() if o.scheme=="https" and o.netloc else ""
     except ValueError: return ""
 
+def publication_outcome(choice):
+    """Map the user's explicit result to the two distinct terminal outcomes."""
+    return {"yes":"published", "no":"deleted", "cancel":None}.get(choice)
+
 def stored_session():
     try: return json.loads(keyring.get_password(KEYRING_SERVICE,SERVICE_KEY) or "{}")
     except Exception: return {}
@@ -851,10 +855,10 @@ class MainWindow(QWidget):
         dlg.setDefaultButton(cancel)
         dlg.exec()
         chosen=dlg.clickedButton()
-        if chosen is yes:
-            self.editorial_action("published",confirmed=True)
-        elif chosen is no:
-            self.editorial_action("deleted",confirmed=True)
+        choice="yes" if chosen is yes else "no" if chosen is no else "cancel"
+        decision=publication_outcome(choice)
+        if decision is not None:
+            self.editorial_action(decision,confirmed=True)
         # Cancel deliberately sends no GitHub event.
 
 
