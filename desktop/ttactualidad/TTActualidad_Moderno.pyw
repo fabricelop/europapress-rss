@@ -22,7 +22,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QApplication, QWidget, QFrame, QLabel, QPushButton, QLineEdit, QVBoxLayout,
     QHBoxLayout, QGridLayout, QScrollArea, QTextBrowser, QDialog, QDialogButtonBox,
-    QMessageBox, QTextEdit, QInputDialog, QSizePolicy, QSplitter
+    QMessageBox, QTextEdit, QInputDialog, QSizePolicy, QSplitter, QMenu
 )
 
 from TTActualidad import FILES, RAW, API, REPO, KEYRING_SERVICE, normalise, request, text
@@ -299,8 +299,8 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("TTActualidad · Escritorio")
-        self.resize(1460,920)
-        self.setMinimumSize(1050,670)
+        self.resize(1460,880)
+        self.setMinimumSize(1040,660)
         self.docs={}
         self.news=[];self.trends=[];self.top30=[];self.published={"ttittulares":0,"ttendencias":0}
         self.selected=None;self.section="Todas las Listas"
@@ -398,56 +398,81 @@ class MainWindow(QWidget):
         splitter.addWidget(left)
 
         right=frame("panel")
-        rl=col_layout(right,13,(24,22,24,22))
-        self.state_tag=label("SELECCIONA UNA TARJETA","eyebrow")
+        rl=col_layout(right,12,(24,21,24,21))
+        self.state_tag=label("SELECCIONA UN ELEMENTO","eyebrow")
         rl.addWidget(self.state_tag)
-        self.detail_title=label("Elige una noticia o tendencia","detailTitle",wrap=True)
+        self.detail_title=label("Tu bandeja editorial","detailTitle",wrap=True)
+        self.detail_title.setMaximumHeight(112)
         rl.addWidget(self.detail_title)
-        self.detail_meta=label("Verás aquí el texto, las fuentes y las acciones disponibles.","small",wrap=True)
+        self.detail_meta=label("Selecciona una tarjeta para leerla y gestionar sus acciones.","small",wrap=True)
         rl.addWidget(self.detail_meta)
-        self.image_label=label()
-        self.image_label.setFixedHeight(0)
-        self.image_label.setAlignment(Qt.AlignCenter)
-        self.image_label.setStyleSheet("border-radius:12px;background:#17283a;")
-        rl.addWidget(self.image_label)
+
+        # Text and photographic preview SHARE one row. Photos can no longer
+        # push the action buttons below the bottom of the window.
+        preview=row_layout(spacing=14)
         self.body=QTextBrowser()
+        self.body.setMinimumHeight(115)
         self.body.setOpenExternalLinks(False)
         self.body.anchorClicked.connect(self.open_link)
-        self.body.setHtml("<p style='color:#99adc4'>Selecciona un elemento de la bandeja.</p>")
-        rl.addWidget(self.body,1)
+        self.body.setHtml("<p style='color:#99adc4'>Las noticias y tendencias aparecerán aquí.</p>")
+        preview.addWidget(self.body,1)
+        self.image_label=label()
+        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setFixedSize(180,132)
+        self.image_label.setStyleSheet("background:#22354a;border:1px solid #36516b;border-radius:12px;")
+        self.image_label.hide()
+        preview.addWidget(self.image_label,0,Qt.AlignTop)
+        rl.addLayout(preview,1)
+
+        # Primary actions remain in the visible, STICKY action dock; secondary
+        # actions are available in a genuine menu without nine tiny rows.
         self.actions={}
-        rl.addWidget(label("CREACIÓN Y PUBLICACIÓN","eyebrow"))
-        tool_actions=QGridLayout()
-        tool_actions.setHorizontalSpacing(8);tool_actions.setVerticalSpacing(8)
-        tools=[
+        rl.addWidget(label("HERRAMIENTAS DE PUBLICACIÓN","eyebrow"))
+        quick=row_layout(spacing=8)
+        quick_items=[
             ("Copiar texto","copy",self.copy_text,None),
             ("Copiar GAG","gag",self.copy_gag,None),
             ("ChatGPT Images ↗","chatgpt",lambda:webbrowser.open("https://chatgpt.com/images"),None),
             ("Publicar en X ↗","x",self.publish_x,"primary"),
-            ("Buscar en X ↗","searchx",self.search_x,None),
-            ("TTImages ↗","ttimages",lambda:webbrowser.open("https://t.me/TTImages_bot"),None),
-            ("Abrir fuente ↗","source",self.open_source,None),
-            ("Ver foto archivo ↗","image",self.open_image,None),
-            ("Copiar foto","photo_copy",self.copy_photo,None)
         ]
-        for i,(caption,key,fn,kind) in enumerate(tools):
-            btn=button(caption,fn,kind);self.actions[key]=btn
-            tool_actions.addWidget(btn,i//3,i%3)
-        rl.addLayout(tool_actions)
-        rl.addWidget(label("ACCIONES EDITORIALES","eyebrow"))
-        edit_actions=QGridLayout()
-        edit_actions.setHorizontalSpacing(8);edit_actions.setVerticalSpacing(8)
-        decisions=[
+        for caption,key,fn,kind in quick_items:
+            btn=button(caption,fn,kind)
+            btn.setMinimumHeight(40)
+            self.actions[key]=btn
+            quick.addWidget(btn,1)
+        rl.addLayout(quick)
+
+        rl.addWidget(label("GESTIÓN EDITORIAL","eyebrow"))
+        editorial=row_layout(spacing=8)
+        primary_decisions=[
             ("Preparar / Reelaborar","rework",self.prepare_or_rework,None),
-            ("Añadir pistas","hints",self.add_hints,None),
             ("Quitar de Listas","deleted",lambda:self.editorial_action("deleted"),"danger"),
-            ("Desestimar","discard",lambda:self.editorial_action("discard"),"danger"),
-            ("Cerrar tras X · Sí/No","published",self.ask_publication_outcome,None)
+            ("Cerrar · Sí / No","published",self.ask_publication_outcome,"primary")
         ]
-        for i,(caption,key,fn,kind) in enumerate(decisions):
-            btn=button(caption,fn,kind);self.actions[key]=btn
-            edit_actions.addWidget(btn,i//3,i%3)
-        rl.addLayout(edit_actions)
+        for caption,key,fn,kind in primary_decisions:
+            btn=button(caption,fn,kind)
+            btn.setMinimumHeight(42)
+            self.actions[key]=btn
+            editorial.addWidget(btn,1)
+        self.more_menu=QMenu(right)
+        extra=[
+            ("Buscar en X ↗","searchx",self.search_x),
+            ("TTImages ↗","ttimages",lambda:webbrowser.open("https://t.me/TTImages_bot")),
+            ("Abrir fuente ↗","source",self.open_source),
+            ("Ver foto de archivo ↗","image",self.open_image),
+            ("Copiar foto de archivo","photo_copy",self.copy_photo),
+            ("Añadir pistas a la tendencia","hints",self.add_hints),
+            ("Desestimar","discard",lambda:self.editorial_action("discard")),
+        ]
+        for caption,key,fn in extra:
+            action=self.more_menu.addAction(caption)
+            action.triggered.connect(lambda checked=False,callback=fn:callback())
+            self.actions[key]=action
+        self.more_button=button("Más  ···",lambda:self.more_menu.exec(
+            self.more_button.mapToGlobal(self.more_button.rect().bottomLeft())))
+        self.more_button.setMinimumHeight(42)
+        editorial.addWidget(self.more_button)
+        rl.addLayout(editorial)
         splitter.addWidget(right)
         splitter.setSizes([475,720])
         self.notice=label("GitHub es la autoridad editorial · las órdenes se verifican antes de confirmarse.","small",wrap=True)
@@ -537,8 +562,8 @@ class MainWindow(QWidget):
             pix=QPixmap()
             if not pix.loadFromData(data):return
             self.loaded_image=pix
-            self.image_label.setPixmap(pix.scaled(QSize(820,180),Qt.KeepAspectRatio,Qt.SmoothTransformation))
-            self.image_label.setFixedHeight(180)
+            self.image_label.setPixmap(pix.scaled(QSize(172,124),Qt.KeepAspectRatio,Qt.SmoothTransformation))
+            self.image_label.show()
             self.update_actions()
 
     def list_data(self):
@@ -608,7 +633,7 @@ class MainWindow(QWidget):
         self.body.setHtml("<p style='color:#99adc4'>Selecciona un elemento de la bandeja.</p>")
         self.loaded_image=QPixmap()
         self.image_label.setPixmap(QPixmap())
-        self.image_label.setFixedHeight(0)
+        self.image_label.hide()
         self.update_actions()
 
     def select_item(self,item,load_image=True):
@@ -623,7 +648,7 @@ class MainWindow(QWidget):
         self.body.setHtml("<div style='font-family:Segoe UI;font-size:15px;"
                           "line-height:155%;color:#e2edf8'>"+body+"</div>"+meta)
         self.loaded_image=QPixmap()
-        self.image_label.setPixmap(QPixmap());self.image_label.setFixedHeight(0)
+        self.image_label.setPixmap(QPixmap());self.image_label.hide()
         self.update_actions()
         url=safe_url(item.get("image"))
         if load_image and url:
