@@ -49,6 +49,13 @@ struct EditorialActions: View {
                     }
                 }
                 if news.status == "EN ELABORACIÓN" {
+                    HStack(spacing: 7) {
+                        quickButton("Copiar orden editorial", "doc.on.doc") {
+                            copyManualEditorialPrompt()
+                        }
+                        quickLink("Abrir ChatGPT", "arrow.up.right.square",
+                                  "https://chatgpt.com/")
+                    }
                     quickButton("Suprimir · No pasar a Listas", "trash", danger: true) {
                         request("discard")
                     }
@@ -78,7 +85,13 @@ struct EditorialActions: View {
             } else if trend?.status == "EN ELABORACIÓN" {
                 Text("Elaboración solicitada en GitHub; pendiente de cierre editorial.")
                     .font(.caption).foregroundStyle(TTTheme.muted)
-                quickButton("Copiar nombre", "doc.on.doc") { copy(title) }
+                HStack(spacing: 7) {
+                    quickButton("Copiar orden editorial", "doc.on.doc") {
+                        copyManualEditorialPrompt()
+                    }
+                    quickLink("Abrir ChatGPT", "arrow.up.right.square",
+                              "https://chatgpt.com/")
+                }
             } else {
             HStack(spacing: 7) {
                 quickLink("TTImages", "photo.stack", "https://t.me/TTImages_bot")
@@ -328,6 +341,53 @@ struct EditorialActions: View {
             "DIRECCIÓN VISUAL: gag satírico original. Una sola idea visual fuerte, composición limpia, lectura en 1-2 segundos, sin inventar hechos."
         ].joined(separator: "\n\n")
     }
+    /// Manual cloud-only fallback when Windows editorial listeners are offline.
+    /// The prompt is a REQUEST, not a GitHub dispatch or a claim of completion.
+    /// A fresh GitHub read and the official outbox are mandatory for success.
+    private var manualEditorialPrompt: String {
+        let common = [
+            "TT_ACTUALIDAD_MANUAL_EDITORIAL_V1 | Ejecuta AHORA la elaboración editorial REAL de este elemento desde ChatGPT, SIN depender del ordenador Windows.",
+            "Repositorio autoritativo: fabricelop/europapress-rss, rama main. Utiliza el conector GitHub y búsqueda web para investigar y persistir. Si no puedes acceder o escribir en GitHub, indícalo y NO declares que has terminado.",
+            "Proyecto: \(project). Elemento: \(title). ID exacto: \(editorialID). Revisión solicitada: \(revision).",
+            "ANTES DE EMPEZAR, lee el contrato editorial vigente del proyecto en main y su cola y estado autoritativos. Relee el ID y revisión justo antes de investigar y antes de escribir. Si ya está explicado, READY, publicado, desestimado, eliminado, agrupado bajo una explicación vigente, o sustituido por otra revisión, NO lo reelabores ni lo dupliques; comprueba el cierre y explícalo.",
+            "Trata solamente la revisión indicada y las relaciones editoriales imprescindibles para cerrar su grupo, sin reprocesar indiscriminadamente toda la cola. El título y los datos copiados del móvil son pistas, NO hechos verificados. Investiga con fuentes actuales e independientes; si no hay pruebas suficientes, conserva el estado pendiente o problemático y explica por qué.",
+            "No llames a ImageGen, no generes imágenes, no envíes mensajes editoriales a Telegram, no publiques en X y no uses listeners, scripts ni tareas del PC. Nunca bloquees READY/explicada por falta de imagen.",
+            "Aplica el resultado SOLO mediante el transporte/aplicador oficial de GitHub para este proyecto, sin modificar PR de control #2/#7, FabCalendar, SeLoRecordamos ni otros proyectos. El resultado no es válido por haber redactado un texto en el chat: verifica su persistencia real releyendo main y el estado final.",
+            "AL TERMINAR informa del estado exacto, enlace al commit o aplicación, y si el elemento ha desaparecido de En elaboración y está en Listas. Si la escritura falla o sigue pendiente, dilo expresamente, sin afirmar éxito."
+        ]
+        if let news {
+            var details = [
+                "CONTRATO TTiTTulares: ttittulares/editorial-run-prompt.md.",
+                "ESTADO TTiTTulares: ttittulares/editorial-queue.json, ttittulares/status.json, telegram/editorial-processing.json, ttittulares/prepared.json y ttittulares/decisions.json.",
+                "Investiga y elabora el texto factual, 2–3 hashtags concretos y UN remate conforme al contrato. El tuit completo debe medir como máximo 256 caracteres. Si es publicable, materializa esta misma revisión en READY/Listas mediante el outbox oficial transportado por issue #164 y verifica el aplicador; no basta publicar un comentario.",
+                "Fuentes detectadas en la tarjeta: \(news.sources)."
+            ]
+            if let url = news.sourceURL {
+                details.append("Enlace de referencia para verificar, no prueba suficiente: \(url.absoluteString)")
+            }
+            return (common + details).joined(separator: "\n\n")
+        }
+        var details = [
+            "CONTRATO TTendencias: trends/editorial-run-prompt.md.",
+            "ESTADO TTendencias: trends/editorial-queue.json, trends/requests.json, trends/telegram-manual-explained.json y trends/mobile-decisions.json.",
+            "Investiga la tendencia y redacta UNA explicación común si forma parte de un grupo lógico. Reutiliza el grupo si ya está explicado; no crees tarjetas duplicadas. Persiste el estado explained para el ID y revisión originales y sus miembros válidos mediante el outbox/aplicador oficial ttendencias-editorial-apply.yml. Comprueba que desaparece de preparing/update; en Listas puede figurar una sola tarjeta líder del grupo.",
+            "Posición registrada en el móvil: \(rank)."
+        ]
+        if let trend, !trend.problemReason.isEmpty {
+            details.append("Motivo de revisión mostrado, sin verificar: \(trend.problemReason)")
+        }
+        return (common + details).joined(separator: "\n\n")
+    }
+
+    private func copyManualEditorialPrompt() {
+        guard !editorialID.isEmpty else {
+            outcome = "Falta el ID editorial. Actualiza la tarjeta antes de copiar."
+            return
+        }
+        copy(manualEditorialPrompt)
+        outcome = "Orden copiada. Abre ChatGPT en el móvil, pega y envía. No necesita el PC."
+    }
+
     private func copy(_ value: String) {
         guard !value.isEmpty else { outcome = "No hay texto disponible."; return }
         UIPasteboard.general.string = value
