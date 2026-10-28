@@ -295,6 +295,8 @@ struct SavedState: Codable {
     private var zoneCatalogCache:[TimeCustomZone]?
     private var zoneIndexCache:[String:Int]=[:]
     private var zoneOverlayCache:[TimeZoneOverlay]=[]
+    private var zoneGeometryGeneration = UUID()
+    @Published private(set) var zoneOverlayRevision = 0
     private var cachedPeriod:TimePeriod?
     private var cachedPeriodValues:[String:TimeInterval]=[:]
     private var cachedPeriodCount = -1
@@ -321,17 +323,31 @@ struct SavedState: Codable {
             }
         }
         zoneIndexCache=index
-        zoneOverlayCache=zones.prefix(18).map { zone in
-            TimeZoneOverlay(zone:zone,
-                            contours:TimeZoneOutline.contours(for:zone),
-                            center:TimeZoneOutline.visibleCenter(for:zone))
-        }
         zoneCatalogCache=zones
+        // Build contours on a utility queue; a large zone can include 3,000
+        // cells and must not block map gestures or live GPS callbacks.
+        let generation = UUID()
+        zoneGeometryGeneration = generation
+        let outlines = Array(zones.prefix(18))
+        DispatchQueue.global(qos:.utility).async {
+            let projected = outlines.map { zone in
+                TimeZoneOverlay(zone:zone,
+                    contours:TimeZoneOutline.contours(for:zone),
+                    center:TimeZoneOutline.visibleCenter(for:zone))
+            }
+            DispatchQueue.main.async {
+                guard self.zoneGeometryGeneration == generation else { return }
+                self.zoneOverlayCache = projected
+                self.zoneOverlayRevision &+= 1
+            }
+        }
     }
     private func invalidateZoneCatalog() {
         zoneCatalogCache=nil
         zoneIndexCache.removeAll(keepingCapacity:true)
         zoneOverlayCache=[]
+        zoneGeometryGeneration = UUID()
+        zoneOverlayRevision &+= 1
     }
     var zoneOverlays:[TimeZoneOverlay] {
         ensureZoneCatalog()
@@ -2436,6 +2452,9 @@ struct TimeMapView: View {
         .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.totalsRefreshRevision) { _,_ in
+            refreshMapSnapshot(force:true)
+        }
+        .onChange(of:model.zoneOverlayRevision) { _,_ in
             refreshMapSnapshot(force:true)
         }
         .onChange(of:model.data.customZones.count) { _,_ in refreshMapSnapshot(force: true) }
