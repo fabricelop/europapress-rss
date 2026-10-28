@@ -5,7 +5,7 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "df81ddb61398"
+    "14cbbbc094ca"
   ],
   "remaining_ids": [
     "df81ddb61398"
@@ -16,15 +16,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T16:25:00+01:00",
-  "last_completed_at": "2026-10-28T16:28:30+01:00",
-  "updated_at": "2026-10-28T16:28:30+01:00",
+  "last_started_at": "2026-10-28T16:33:00+01:00",
+  "last_completed_at": "2026-10-28T16:38:00+01:00",
+  "updated_at": "2026-10-28T16:38:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261028T1625-manual",
+    "trigger_run_id": "tr-1793201595837-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -32,13 +32,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261028T1625-manual",
+    "run_id": "tr-1793201595837-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T16:25:00+01:00",
-    "updated_at": "2026-10-28T16:28:30+01:00",
-    "finished_at": "2026-10-28T16:28:30+01:00",
+    "started_at": "2026-10-28T16:33:00+01:00",
+    "updated_at": "2026-10-28T16:38:00+01:00",
+    "finished_at": "2026-10-28T16:38:00+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -46,23 +46,33 @@
     "summary": {
       "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "problematic_reviewed": 1,
-      "problematic_marked": 1,
+      "explained": 1,
+      "final_resolved": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 0,
+      "problematic_reviewed": 0,
+      "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 1,
-      "final_compact_queue": 1,
+      "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
+      "manual_visual_dispatches": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 0,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 0,
       "rewrite_pending_remaining": 0,
-      "recent_missing_closer_reviewed": 1,
+      "skipped_concurrent": 0,
+      "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "Cierre verificado: 0 preparing, 0 update y 0 rewrite_pending; queda 1 problematic.",
+    "message": "TTendencias completada 1/1 · Inverosímil explicada y verificada; 0 preparing/update y 0 rewrite_pending.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,57 +82,85 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T16:25:00+01:00",
+        "at": "2026-10-28T16:33:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual."
+        "message": "Inicio de pasada manual · 1 tendencia preparing/update activa; preparando validación JIT."
       },
       {
-        "at": "2026-10-28T16:26:00+01:00",
+        "at": "2026-10-28T16:34:00+01:00",
         "phase": "verifying",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Releyendo estado autoritativo."
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Releyendo estado autoritativo de Inverosímil · id+revision siguen preparing."
       },
       {
-        "at": "2026-10-28T16:26:30+01:00",
+        "at": "2026-10-28T16:35:00+01:00",
         "phase": "investigating",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Buscando detonante actual."
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Buscando detonante actual y contrastando la comparecencia de Óscar Puente sobre Urda."
       },
       {
-        "at": "2026-10-28T16:27:00+01:00",
+        "at": "2026-10-28T16:35:30+01:00",
         "phase": "investigating",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "No se acredita un detonante único verificable."
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Hecho esencial verificado en varias fuentes actuales: «inverosímil» alude al choque por alcance de Urda."
       },
       {
-        "at": "2026-10-28T16:27:30+01:00",
+        "at": "2026-10-28T16:36:00+01:00",
+        "phase": "drafting",
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Redactando explicación factual desde cero."
+      },
+      {
+        "at": "2026-10-28T16:36:20+01:00",
+        "phase": "drafting",
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Comprobando límite de X · 260 caracteres."
+      },
+      {
+        "at": "2026-10-28T16:36:30+01:00",
+        "phase": "remate_selection",
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Sin remate · tragedia con víctimas; explicación factual suficiente."
+      },
+      {
+        "at": "2026-10-28T16:37:00+01:00",
         "phase": "persisting",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Intento problematic actualizado."
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión de la cola en un commit transaccional."
       },
       {
-        "at": "2026-10-28T16:28:00+01:00",
+        "at": "2026-10-28T16:37:30+01:00",
         "phase": "verifying",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Estado revalidado en main."
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-28T16:28:30+01:00",
+        "at": "2026-10-28T16:37:45+01:00",
+        "phase": "verifying",
+        "trend_id": "14cbbbc094ca",
+        "title": "Inverosímil",
+        "message": "Tendencia cerrada y verificada; explanation y closer_text coinciden en Explicadas y requests."
+      },
+      {
+        "at": "2026-10-28T16:38:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre editorial verificado."
+        "message": "TTendencias completada 1/1 · Inverosímil explicada y verificada; 0 preparing/update y 0 rewrite_pending."
       }
     ],
     "processed_ids": [
-      "df81ddb61398"
+      "14cbbbc094ca"
     ],
     "partial": false,
     "queue_complete": true,
@@ -132,44 +170,61 @@
     ],
     "final_outcomes": [
       {
-        "id": "df81ddb61398",
+        "id": "14cbbbc094ca",
+        "name": "Inverosímil",
         "revision": 0,
-        "status": "problematic"
+        "status": "explained"
       }
     ]
   },
-  "run_id": "tr-20261028T1625-manual",
+  "run_id": "tr-1793201595837-manual",
   "summary": {
     "attempted": 1,
-    "explained": 0,
-    "problematic_reviewed": 1,
-    "problematic_marked": 1,
+    "ready": 0,
+    "explained": 1,
+    "final_resolved": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "revisions_updated": 1,
+    "grouped_into_existing_card": 0,
+    "problematic_reviewed": 0,
+    "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
+    "initial_compact_queue": 1,
+    "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 1,
     "visual_backlog": 0,
+    "pending_repair_triggered": 1,
+    "manual_visual_dispatches": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 0,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 0,
     "rewrite_pending_remaining": 0,
+    "skipped_concurrent": 0,
+    "trends_dismissed": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T16:25:00+01:00",
+      "at": "2026-10-28T16:33:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual."
+      "message": "Inicio de pasada manual · 1 tendencia preparing/update activa; preparando validación JIT."
     },
     {
-      "at": "2026-10-28T16:28:30+01:00",
+      "at": "2026-10-28T16:38:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Cierre editorial verificado."
+      "message": "TTendencias completada 1/1 · Inverosímil explicada y verificada; 0 preparing/update y 0 rewrite_pending."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-autoguard-1793200697",
+  "previous_run_id": "tr-20261028T1625-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "recent_considered": 30
@@ -177,10 +232,12 @@
   "remate_selections": [],
   "final_outcomes": [
     {
-      "id": "df81ddb61398",
+      "id": "14cbbbc094ca",
+      "name": "Inverosímil",
       "revision": 0,
-      "status": "problematic"
+      "status": "explained"
     }
   ],
-  "pending_delivery_count": 1
+  "pending_delivery_count": 1,
+  "error": null
 }
