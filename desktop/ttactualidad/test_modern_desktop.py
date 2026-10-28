@@ -131,5 +131,30 @@ class DesktopModernTests(unittest.TestCase):
         self.assertFalse(self.window.actions["published"].isEnabled())
 
 
+    def test_explicit_publication_outcomes_do_not_confuse_deleted_and_published(self):
+        self.assertEqual(appmod.publication_outcome("yes"),"published")
+        self.assertEqual(appmod.publication_outcome("no"),"deleted")
+        self.assertIsNone(appmod.publication_outcome("cancel"))
+
+    def test_primary_actions_remain_visible_at_compact_window_height(self):
+        self.window.resize(1100,700)
+        self.window.show()
+        appmod.QApplication.processEvents()
+        for key in ("copy","gag","chatgpt","x","rework","deleted","published"):
+            action=self.window.actions[key]
+            self.assertTrue(action.isVisible(),key)
+            bottom=action.mapTo(self.window,action.rect().bottomLeft()).y()
+            self.assertGreater(bottom,0,key)
+            self.assertLessEqual(bottom,self.window.height(),key)
+        self.assertEqual(len(self.window.actions),14)
+
+    def test_no_secondary_action_truncation_in_menu(self):
+        entries=[action.text() for action in self.window.more_menu.actions()]
+        self.assertEqual(len(entries),7)
+        self.assertIn("Buscar en X ↗",entries)
+        self.assertIn("Añadir pistas a la tendencia",entries)
+        self.assertIn("Desestimar",entries)
+
+
 if __name__=="__main__":
     unittest.main()
