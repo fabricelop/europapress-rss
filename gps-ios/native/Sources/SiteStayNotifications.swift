@@ -11,6 +11,7 @@ final class SiteStayNotifications: NSObject, UNUserNotificationCenterDelegate {
     private weak var model: TimeModel?
     private var lastCheckedAt = Date.distantPast
     private var inFlight: Set<String> = []
+    private var evaluating = false
     private let enabledAtKey = "siteAlertsEnabledAtV78"
     private let sentKeysKey = "siteAlertsSentStaysV78"
     private let pendingActionsKey = "siteAlertsPendingActionsV78"
@@ -49,48 +50,58 @@ final class SiteStayNotifications: NSObject, UNUserNotificationCenterDelegate {
     }
 
     /// A notification belongs to ONE visible row of Histórico de sitios,
-    /// not to a grid square or a raw GPS segment. The calendar owns grouping.
-    /// Triggered by GPS samples, and throttled so it never taxes GPS tracking.
+    /// not to a GPS grid. The expensive date grouping runs off-main.
     func evaluate(model: TimeModel) {
         let now = Date()
-        guard now.timeIntervalSince(lastCheckedAt) >= 50 else { return }
+        guard now.timeIntervalSince(lastCheckedAt) >= 50, !evaluating else { return }
         lastCheckedAt = now
         let enabledAt = UserDefaults.standard.double(forKey: enabledAtKey)
         guard enabledAt > 0, model.storageIsHealthy,
               let latestFix = model.current?.date,
               now.timeIntervalSince(latestFix) <= 120 else { return }
 
-        // Only today and yesterday: new rows since the feature was enabled.
-        // Do not scan all years of GPS records in every location callback.
         let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1,
+        let yesterday = calendar.date(byAdding:.day,value:-1,
                                       to:calendar.startOfDay(for:now)) ?? now
-        let recent = model.data.intervals.filter { $0.end > yesterday }
-        guard !recent.isEmpty else { return }
-        let stays = SiteStayHistory.extract(recent)
-        guard !stays.isEmpty else { return }
-        let lookup = SiteDayPartsIndex(
-            assignments:model.data.siteStayAssignments,
-            parts:model.data.siteStayParts,
-            sites:model.data.identifiedSites)
-        let entries = stays.map { SiteDaySource(stay:$0, parts:lookup.parts(for:$0)) }
-        let days = [yesterday, now]
-        let sent = Set(UserDefaults.standard.stringArray(forKey: sentKeysKey) ?? [])
-
-        for date in days {
-            let report = SiteDayPresentation.build(entries,on:date,calendar:calendar)
-            for group in report.groups where !group.confirmed {
-                // A block in the list may contain multiple GPS stays / cells.
-                // A new occurrence of the same place after a DIFFERENT entry
-                // is a new group and therefore gets a separate notification.
-                guard let siteID = group.siteID,
-                      let site = model.siteNamed(siteID),
-                      group.firstStart.timeIntervalSince1970 >= enabledAt,
-                      group.recordedSeconds > SiteStayHistory.minimumSeconds,
-                      !sent.contains(group.id), !inFlight.contains(group.id)
-                      else { continue }
-                deliver(groupID:group.id,siteID:siteID,siteName:site.name,
-                        started:group.firstStart)
+        // Capturing Swift arrays is COW: no history-wide canonicalization
+        // while the user is scrolling or the GPS callback needs to return.
+        let intervals = model.data.intervals
+        let assignments = model.data.siteStayAssignments
+        let parts = model.data.siteStayParts
+        let sites = model.data.identifiedSites
+        evaluating = true
+        DispatchQueue.global(qos:.utility).async { [weak self] in
+            let recent = intervals.filter { $0.end > yesterday }
+            let stays = SiteStayHistory.extract(recent)
+            let lookup = SiteDayPartsIndex(assignments:assignments,
+                                            parts:parts,sites:sites)
+            let entries = stays.map {
+                SiteDaySource(stay:$0,parts:lookup.parts(for:$0))
+            }
+            let names = Dictionary(uniqueKeysWithValues:sites.map { ($0.id,$0.name) })
+            var candidates:[(String,UUID,String,Date)] = []
+            for date in [yesterday,now] {
+                let report = SiteDayPresentation.build(entries,on:date,calendar:calendar)
+                for group in report.groups where !group.confirmed {
+                    guard let siteID = group.siteID,
+                          let name = names[siteID],
+                          group.firstStart.timeIntervalSince1970 >= enabledAt,
+                          group.recordedSeconds > SiteStayHistory.minimumSeconds
+                          else { continue }
+                    candidates.append((group.id,siteID,name,group.firstStart))
+                }
+            }
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.evaluating = false
+                let sent = Set(UserDefaults.standard.stringArray(
+                    forKey:self.sentKeysKey) ?? [])
+                for (groupID,siteID,name,start) in candidates {
+                    guard !sent.contains(groupID),
+                          !self.inFlight.contains(groupID) else { continue }
+                    self.deliver(groupID:groupID,siteID:siteID,
+                                 siteName:name,started:start)
+                }
             }
         }
     }
