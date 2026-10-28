@@ -21,7 +21,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QApplication, QWidget, QFrame, QLabel, QPushButton, QLineEdit, QVBoxLayout,
     QHBoxLayout, QGridLayout, QScrollArea, QTextBrowser, QDialog, QDialogButtonBox,
-    QMessageBox, QTextEdit, QStackedWidget, QSizePolicy, QSplitter
+    QMessageBox, QTextEdit, QInputDialog, QSizePolicy, QSplitter
 )
 
 from TTActualidad import FILES, RAW, API, REPO, KEYRING_SERVICE, normalise, request, text
@@ -49,17 +49,20 @@ GOLD = "#f0c77a"
 
 STYLE = """
 QWidget { background:#0b1220; color:#eef5ff; font-family:'Segoe UI'; font-size:13px; }
-QFrame#sidebar { background:#101c2e; border-right:1px solid #293b50; }
-QFrame#panel { background:#101c2e; border:1px solid #293b50; border-radius:16px; }
-QFrame#metric { background:#17263a; border:1px solid #2c4056; border-radius:14px; }
-QFrame#rowCard { background:#17263a; border:1px solid #2c4056; border-radius:12px; }
-QFrame#rowCard:hover { background:#20334a; border-color:#64d8c3; }
-QLabel#brand { font-size:25px; font-weight:800; color:#76ead1; }
+QLabel { background:transparent; border:0px; padding:0px; }
+QFrame QLabel { background:transparent; }
+QScrollArea QWidget#listHost { background:transparent; }
+QFrame#sidebar { background:#111d2c; border-right:1px solid #273951; }
+QFrame#panel { background:#121f31; border:1px solid #2a4057; border-radius:18px; }
+QFrame#metric { background:#172b3e; border:1px solid #31506a; border-radius:16px; }
+QFrame#rowCard { background:#1c2d42; border:1px solid #34485f; border-radius:13px; }
+QFrame#rowCard:hover { background:#233a50; border-color:#64d8c3; }
+QLabel#brand { font-size:26px; font-weight:800; color:#83ecd6; }
 QLabel#eyebrow { color:#94adc4; font-size:11px; font-weight:700; }
 QLabel#pageTitle { font-size:24px; font-weight:750; }
-QLabel#metricNumber { font-size:29px; font-weight:800; color:#eef5ff; }
+QLabel#metricNumber { font-size:33px; font-weight:800; color:#f4fbff; }
 QLabel#cardTitle { font-size:14px; font-weight:650; }
-QLabel#detailTitle { font-size:24px; font-weight:750; }
+QLabel#detailTitle { font-size:23px; font-weight:750; }
 QLabel#small { font-size:12px; color:#9caec1; }
 QLabel#body { font-size:14px; color:#d5e2ef; }
 QPushButton { border:1px solid #3a516a; border-radius:10px; padding:9px 14px;
@@ -75,7 +78,7 @@ QPushButton#nav { border:0; background:transparent; padding:11px 14px; text-alig
    color:#a8bad0; border-radius:9px; }
 QPushButton#nav:hover { background:#1e3247; color:white; }
 QPushButton#nav[active="true"] { background:#23453f; color:#78ebd3; font-weight:750; }
-QLineEdit, QTextEdit { background:#17283c; border:1px solid #3a5169; border-radius:10px;
+QLineEdit, QTextEdit { background:#1b2b40; border:1px solid #385470; border-radius:10px;
   padding:10px 12px; selection-background-color:#276a62; }
 QLineEdit:focus, QTextEdit:focus { border:1px solid #6be1c7; }
 QTextBrowser { background:#101c2e; color:#dce9f7; border:0; font-size:14px; }
@@ -286,17 +289,20 @@ class MainWindow(QWidget):
         side=frame("sidebar")
         side.setFixedWidth(245)
         root.addWidget(side)
-        nav=col_layout(side,12,(18,30,18,22))
+        nav=col_layout(side,6,(19,29,19,18))
         nav.addWidget(label("TTActualidad","brand"))
         nav.addWidget(label("REDACCIÓN  /  WINDOWS","eyebrow"))
-        nav.addSpacing(25)
-        nav.addWidget(label("ESPACIO DE TRABAJO","eyebrow"))
+        nav.addSpacing(21)
+        nav.addWidget(label("BANDEJAS","eyebrow"))
         for title,_,_ in SECTIONS:
-            caption=title
-            if title=="Todas las Listas":caption="⌂   Todas las listas"
-            if title.startswith("Noticias"):caption=title.replace("Noticias · ","N   ")
-            if title.startswith("Tendencias"):caption=title.replace("Tendencias · ","T   ")
-            b=button(caption,lambda checked=False,n=title:self.change_section(n),"nav")
+            if title=="Noticias · Listas":
+                nav.addSpacing(16)
+                nav.addWidget(label("NOTICIAS","eyebrow"))
+            if title=="Tendencias · Listas":
+                nav.addSpacing(12)
+                nav.addWidget(label("TENDENCIAS","eyebrow"))
+            caption="Resumen general" if title=="Todas las Listas" else title.split(" · ")[-1]
+            b=button("  "+caption,lambda checked=False,n=title:self.change_section(n),"nav")
             b.setProperty("active",title==self.section)
             b.style().unpolish(b);b.style().polish(b)
             self.nav[title]=b
@@ -305,12 +311,12 @@ class MainWindow(QWidget):
         nav.addWidget(label("CONEXIÓN SEGURA","eyebrow"))
         self.auth_label=label("GitHub · sin conectar","small",wrap=True)
         nav.addWidget(self.auth_label)
-        nav.addWidget(button("Conectar GitHub",self.connect,"primary"))
+        nav.addWidget(button("Cambiar conexión",self.connect))
         nav.addWidget(button("Cerrar sesión",self.logout))
         content=QWidget()
         content.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         root.addWidget(content,1)
-        page=col_layout(content,18,(25,24,25,16))
+        page=col_layout(content,18,(27,27,27,19))
         head=row_layout(spacing=18)
         titles=col_layout(spacing=4)
         self.heading=label("Todas las listas","pageTitle")
@@ -318,6 +324,7 @@ class MainWindow(QWidget):
         titles.addWidget(label("PANEL EDITORIAL   ·   GITHUB","eyebrow"))
         titles.addWidget(self.heading);titles.addWidget(self.subtitle)
         head.addLayout(titles,1)
+        head.addWidget(button("ChatGPT Images ↗",lambda:webbrowser.open("https://chatgpt.com/images")))
         head.addWidget(button("+  Nueva noticia",self.new_story,"primary"))
         self.reload=button("Actualizar",self.refresh)
         head.addWidget(self.reload)
@@ -339,7 +346,7 @@ class MainWindow(QWidget):
         page.addWidget(splitter,1)
 
         left=frame("panel")
-        ll=col_layout(left,12,(15,17,15,15))
+        ll=col_layout(left,12,(18,20,18,18))
         lhead=row_layout()
         lhead.addWidget(label("Bandeja editorial","cardTitle"))
         self.list_count=label("0 elementos","small")
@@ -351,13 +358,14 @@ class MainWindow(QWidget):
         ll.addWidget(self.search)
         self.scroll=QScrollArea();self.scroll.setWidgetResizable(True)
         self.list_host=QWidget()
+        self.list_host.setObjectName("listHost")
         self.list_layout=col_layout(self.list_host,8,(2,4,2,6))
         self.scroll.setWidget(self.list_host)
         ll.addWidget(self.scroll,1)
         splitter.addWidget(left)
 
         right=frame("panel")
-        rl=col_layout(right,12,(20,18,20,18))
+        rl=col_layout(right,13,(24,22,24,22))
         self.state_tag=label("SELECCIONA UNA TARJETA","eyebrow")
         rl.addWidget(self.state_tag)
         self.detail_title=label("Elige una noticia o tendencia","detailTitle",wrap=True)
@@ -374,24 +382,41 @@ class MainWindow(QWidget):
         self.body.anchorClicked.connect(self.open_link)
         self.body.setHtml("<p style='color:#99adc4'>Selecciona un elemento de la bandeja.</p>")
         rl.addWidget(self.body,1)
-        actions=QGridLayout();actions.setHorizontalSpacing(9);actions.setVerticalSpacing(9)
         self.actions={}
-        defs=[
+        rl.addWidget(label("CREACIÓN Y PUBLICACIÓN","eyebrow"))
+        tool_actions=QGridLayout()
+        tool_actions.setHorizontalSpacing(8);tool_actions.setVerticalSpacing(8)
+        tools=[
             ("Copiar texto","copy",self.copy_text,None),
-            ("Publicar en X","x",self.publish_x,"primary"),
-            ("Abrir fuente","source",self.open_source,None),
-            ("Ver foto archivo","image",self.open_image,None),
-            ("Elaborar / Reelaborar","rework",lambda:self.editorial_action("rework"),None),
-            ("Desestimar","discard",lambda:self.editorial_action("discard"),"danger"),
-            ("Quitar de Listas","deleted",lambda:self.editorial_action("deleted"),"danger"),
-            ("Marcar publicada","published",lambda:self.editorial_action("published"),None),
+            ("Copiar GAG","gag",self.copy_gag,None),
+            ("ChatGPT Images ↗","chatgpt",lambda:webbrowser.open("https://chatgpt.com/images"),None),
+            ("Publicar en X ↗","x",self.publish_x,"primary"),
+            ("Buscar en X ↗","searchx",self.search_x,None),
+            ("TTImages ↗","ttimages",lambda:webbrowser.open("https://t.me/TTImages_bot"),None),
+            ("Abrir fuente ↗","source",self.open_source,None),
+            ("Ver foto archivo ↗","image",self.open_image,None),
+            ("Copiar foto","photo_copy",self.copy_photo,None)
         ]
-        for i,(txt,key,fn,kind) in enumerate(defs):
-            b=button(txt,fn,kind);self.actions[key]=b
-            actions.addWidget(b,i//2,i%2)
-        rl.addLayout(actions)
+        for i,(caption,key,fn,kind) in enumerate(tools):
+            btn=button(caption,fn,kind);self.actions[key]=btn
+            tool_actions.addWidget(btn,i//3,i%3)
+        rl.addLayout(tool_actions)
+        rl.addWidget(label("ACCIONES EDITORIALES","eyebrow"))
+        edit_actions=QGridLayout()
+        edit_actions.setHorizontalSpacing(8);edit_actions.setVerticalSpacing(8)
+        decisions=[
+            ("Preparar / Reelaborar","rework",self.prepare_or_rework,None),
+            ("Añadir pistas","hints",self.add_hints,None),
+            ("Quitar de Listas","deleted",lambda:self.editorial_action("deleted"),"danger"),
+            ("Desestimar","discard",lambda:self.editorial_action("discard"),"danger"),
+            ("Confirmar publicada","published",lambda:self.editorial_action("published"),None)
+        ]
+        for i,(caption,key,fn,kind) in enumerate(decisions):
+            btn=button(caption,fn,kind);self.actions[key]=btn
+            edit_actions.addWidget(btn,i//3,i%3)
+        rl.addLayout(edit_actions)
         splitter.addWidget(right)
-        splitter.setSizes([460,720])
+        splitter.setSizes([475,720])
         self.notice=label("La información proviene directamente de GitHub. Ninguna acción se confirma antes de verificarse.","small",wrap=True)
         page.addWidget(self.notice)
         self.update_auth_badge()
