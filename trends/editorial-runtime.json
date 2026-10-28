@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "fc1e4bc8ee32"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T01:15:00+01:00",
-  "last_completed_at": "2026-10-28T01:18:00+01:00",
-  "updated_at": "2026-10-28T01:18:00+01:00",
+  "last_started_at": "2026-10-28T02:15:00+01:00",
+  "last_completed_at": "2026-10-28T02:21:00+01:00",
+  "updated_at": "2026-10-28T02:21:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T0115+0100",
+    "trigger_run_id": "tr-chat-20261028T0215+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,31 +28,31 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T0115+0100",
+    "run_id": "tr-chat-20261028T0215+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T01:15:00+01:00",
-    "updated_at": "2026-10-28T01:18:00+01:00",
-    "finished_at": "2026-10-28T01:18:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-28T02:15:00+01:00",
+    "updated_at": "2026-10-28T02:21:00+01:00",
+    "finished_at": "2026-10-28T02:21:00+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 1,
+      "ready": 1,
+      "explained": 1,
+      "final_resolved": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -58,57 +60,115 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 6,
+      "pending_cards_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0.",
+    "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-28T01:15:00+01:00",
+        "at": "2026-10-28T02:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial directa · cola activa inicial 0; comprobando reexplicaciones y Pendientes recientes."
+        "message": "Iniciando pasada editorial directa · 1 entrada activa; activando saneamiento visual y validación JIT."
       },
       {
-        "at": "2026-10-28T01:16:00+01:00",
+        "at": "2026-10-28T02:16:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 6 tarjetas recientes; todas tienen remate editorial y la reparación visual quedó solicitada."
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Releyendo estado autoritativo de #MCCLegends · revisión 0 sigue preparing y ocupa el puesto 9."
       },
       {
-        "at": "2026-10-28T01:17:00+01:00",
+        "at": "2026-10-28T02:17:00+01:00",
+        "phase": "investigating",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Hecho esencial verificado · corresponde al programa 9 de MasterChef Celebrity Legends, en emisión esta noche en La 1."
+      },
+      {
+        "at": "2026-10-28T02:18:00+01:00",
+        "phase": "drafting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Redactando explicación factual · programa 9, Cines Callao y duelos de eliminación."
+      },
+      {
+        "at": "2026-10-28T02:18:20+01:00",
+        "phase": "drafting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Comprobando límite de X · texto completo verificado por debajo de 280 caracteres."
+      },
+      {
+        "at": "2026-10-28T02:18:40+01:00",
+        "phase": "remate_selection",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Evaluando candidatos con ratings y últimos 30 remates · sin coincidencia cercana."
+      },
+      {
+        "at": "2026-10-28T02:19:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Remate seleccionado · «La redención pide repetir plato.»"
+      },
+      {
+        "at": "2026-10-28T02:19:20+01:00",
+        "phase": "persisting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Guardando ficha Explicada de #MCCLegends."
+      },
+      {
+        "at": "2026-10-28T02:19:40+01:00",
+        "phase": "persisting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Actualizando requests · revisión 0 pasa a explained con texto y remate sincronizados."
+      },
+      {
+        "at": "2026-10-28T02:20:00+01:00",
+        "phase": "persisting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Retirando revisión 0 de la cola editorial tras sincronizar Explicadas y requests."
+      },
+      {
+        "at": "2026-10-28T02:20:20+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola, requests y reexplicaciones antes del cierre."
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Releyendo main para verificar id+revision y texto persistido."
       },
       {
-        "at": "2026-10-28T01:17:30+01:00",
+        "at": "2026-10-28T02:20:40+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola autoritativa confirmada vacía · 0 preparing/update y 0 reexplicaciones pendientes."
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Tendencia cerrada y verificada · Explicadas y requests coinciden exactamente."
       },
       {
-        "at": "2026-10-28T01:18:00+01:00",
+        "at": "2026-10-28T02:21:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0."
+        "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "fc1e4bc8ee32"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -118,23 +178,37 @@
       "updated_at": "2026-10-06T21:21:47.927Z",
       "recent_considered": 30
     },
-    "remate_selections": []
+    "remate_selections": [
+      {
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "selected": "🌶️ La redención pide repetir plato.",
+        "candidates": [
+          "🌶️ La redención pide repetir plato.",
+          "🌶️ El pasado volvió a cocina con temporizador.",
+          "🌶️ En Callao, la segunda oportunidad llegó con campana.",
+          "🌶️ El menú de hoy venía con botón de rehacer.",
+          "🌶️ Los errores del pasado regresaron con mise en place."
+        ],
+        "rationale": "Seleccionado por concreción con la prueba de redención, claridad y ausencia de coincidencia conceptual cercana en los últimos 30 remates."
+      }
+    ]
   },
-  "run_id": "tr-chat-20261028T0115+0100",
+  "run_id": "tr-chat-20261028T0215+0100",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "attempted": 1,
+    "ready": 1,
+    "explained": 1,
+    "final_resolved": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -142,11 +216,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 6,
+    "pending_cards_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -154,39 +228,95 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T01:15:00+01:00",
+      "at": "2026-10-28T02:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial directa · cola activa inicial 0; comprobando reexplicaciones y Pendientes recientes."
+      "message": "Iniciando pasada editorial directa · 1 entrada activa; activando saneamiento visual y validación JIT."
     },
     {
-      "at": "2026-10-28T01:16:00+01:00",
+      "at": "2026-10-28T02:16:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes · 6 tarjetas recientes; todas tienen remate editorial y la reparación visual quedó solicitada."
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Releyendo estado autoritativo de #MCCLegends · revisión 0 sigue preparing y ocupa el puesto 9."
     },
     {
-      "at": "2026-10-28T01:17:00+01:00",
+      "at": "2026-10-28T02:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Hecho esencial verificado · corresponde al programa 9 de MasterChef Celebrity Legends, en emisión esta noche en La 1."
+    },
+    {
+      "at": "2026-10-28T02:18:00+01:00",
+      "phase": "drafting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Redactando explicación factual · programa 9, Cines Callao y duelos de eliminación."
+    },
+    {
+      "at": "2026-10-28T02:18:20+01:00",
+      "phase": "drafting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Comprobando límite de X · texto completo verificado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-10-28T02:18:40+01:00",
+      "phase": "remate_selection",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Evaluando candidatos con ratings y últimos 30 remates · sin coincidencia cercana."
+    },
+    {
+      "at": "2026-10-28T02:19:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Remate seleccionado · «La redención pide repetir plato.»"
+    },
+    {
+      "at": "2026-10-28T02:19:20+01:00",
+      "phase": "persisting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Guardando ficha Explicada de #MCCLegends."
+    },
+    {
+      "at": "2026-10-28T02:19:40+01:00",
+      "phase": "persisting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Actualizando requests · revisión 0 pasa a explained con texto y remate sincronizados."
+    },
+    {
+      "at": "2026-10-28T02:20:00+01:00",
+      "phase": "persisting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Retirando revisión 0 de la cola editorial tras sincronizar Explicadas y requests."
+    },
+    {
+      "at": "2026-10-28T02:20:20+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main · cola, requests y reexplicaciones antes del cierre."
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Releyendo main para verificar id+revision y texto persistido."
     },
     {
-      "at": "2026-10-28T01:17:30+01:00",
+      "at": "2026-10-28T02:20:40+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola autoritativa confirmada vacía · 0 preparing/update y 0 reexplicaciones pendientes."
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Tendencia cerrada y verificada · Explicadas y requests coinciden exactamente."
     },
     {
-      "at": "2026-10-28T01:18:00+01:00",
+      "at": "2026-10-28T02:21:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0."
+      "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0."
     }
   ],
   "partial": false,
@@ -198,14 +328,37 @@
     "captured_at": "2026-10-28T01:10:50+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261028T0045+0100",
+  "previous_run_id": "tr-chat-20261028T0115+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
     "recent_considered": 30
   },
-  "remate_selections": [],
-  "final_outcomes": [],
+  "remate_selections": [
+    {
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "selected": "🌶️ La redención pide repetir plato.",
+      "candidates": [
+        "🌶️ La redención pide repetir plato.",
+        "🌶️ El pasado volvió a cocina con temporizador.",
+        "🌶️ En Callao, la segunda oportunidad llegó con campana.",
+        "🌶️ El menú de hoy venía con botón de rehacer.",
+        "🌶️ Los errores del pasado regresaron con mise en place."
+      ],
+      "rationale": "Seleccionado por concreción con la prueba de redención, claridad y ausencia de coincidencia conceptual cercana en los últimos 30 remates."
+    }
+  ],
+  "final_outcomes": [
+    {
+      "id": "fc1e4bc8ee32",
+      "name": "#MCCLegends",
+      "revision": 0,
+      "status": "explained",
+      "explained_at": "2026-10-28T02:19:20+01:00",
+      "verified": true
+    }
+  ],
   "pending_delivery_count": 6
 }
