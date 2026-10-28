@@ -7,12 +7,12 @@
       "armed": true,
       "sequence": 6,
       "active_ids": [],
-      "observed_at": "2026-10-28T12:54:59.514708+00:00"
+      "observed_at": "2026-10-28T12:58:29.396940+00:00"
     },
     "ttendencias": {
-      "count": 0,
-      "armed": true,
-      "sequence": 5
+      "count": 2,
+      "armed": false,
+      "sequence": 6
     }
   },
   "outbox": [
@@ -103,6 +103,13 @@
       "at": "2026-10-28T12:19:40.292789+00:00",
       "status": "sent",
       "sent_at": "2026-10-28T12:19:41.771327+00:00"
+    },
+    {
+      "id": "ttendencias-6",
+      "project": "ttendencias",
+      "count": 2,
+      "at": "2026-10-28T12:58:29.396940+00:00",
+      "status": "pending"
     }
   ]
 }
