@@ -411,7 +411,7 @@ class MainWindow(QWidget):
             ("Añadir pistas","hints",self.add_hints,None),
             ("Quitar de Listas","deleted",lambda:self.editorial_action("deleted"),"danger"),
             ("Desestimar","discard",lambda:self.editorial_action("discard"),"danger"),
-            ("Confirmar publicada","published",lambda:self.editorial_action("published"),None)
+            ("Cerrar tras X · Sí/No","published",self.ask_publication_outcome,None)
         ]
         for i,(caption,key,fn,kind) in enumerate(decisions):
             btn=button(caption,fn,kind);self.actions[key]=btn
@@ -643,7 +643,7 @@ class MainWindow(QWidget):
                 or (top and not row.get("body") and row.get("rank",0)>10)
                 else "Reelaborar")
             self.actions["published"].setToolTip(
-                "Confirma en GitHub que YA la has publicado en X. No envía el tuit.")
+                "Elegir Cancelar / Sí publicada (+1) / No sin publicar (+0).")
 
     def confirm_pending(self):
         pending=self.pending_action
@@ -743,9 +743,47 @@ class MainWindow(QWidget):
             webbrowser.open(self.selected["image"])
 
     def publish_x(self):
-        if self.selected:
-            tweet=(self.selected.get("body") or self.selected.get("title",""))[:280]
-            webbrowser.open("https://twitter.com/intent/tweet?text="+urllib.parse.quote(tweet))
+        row=self.selected
+        if not row or not row.get("body"):return
+        if self.pending_action or self.sending:
+            self.notice.setText("Termina primero la orden editorial anterior.")
+            return
+        tweet=row["body"][:280]
+        opened=webbrowser.open("https://twitter.com/intent/tweet?text="+urllib.parse.quote(tweet))
+        if not opened:
+            self.notice.setText("No se pudo abrir X. Ningún estado editorial ha cambiado.")
+            return
+        # We cannot inspect the X browser. Only the person can confirm the
+        # outcome. Show all THREE choices, and never equate opening X to posting.
+        self.ask_publication_outcome(row)
+
+    def ask_publication_outcome(self,row=None):
+        row=row or self.selected
+        if not row or row.get("state")!="Listas" or self.pending_action or self.sending:
+            return
+        if not row.get("id"):
+            self.notice.setText("Falta ID editorial. Actualiza GitHub antes de cerrar.")
+            return
+        dlg=QMessageBox(self)
+        dlg.setWindowTitle("¿Has publicado en X?")
+        dlg.setIcon(QMessageBox.Question)
+        dlg.setText("¿Se ha publicado realmente este contenido en X?")
+        dlg.setInformativeText(row["title"]+"\n\n"
+            "Sí: retirar de Listas y sumar 1 a Publicadas 24 h.\n"
+            "No: retirar de Listas SIN sumar al contador.\n"
+            "Cancelar: no modificar nada.")
+        yes=dlg.addButton("Sí · publicada",QMessageBox.AcceptRole)
+        no=dlg.addButton("No · retirar",QMessageBox.DestructiveRole)
+        cancel=dlg.addButton("Cancelar",QMessageBox.RejectRole)
+        dlg.setDefaultButton(cancel)
+        dlg.exec()
+        chosen=dlg.clickedButton()
+        if chosen is yes:
+            self.editorial_action("published",confirmed=True)
+        elif chosen is no:
+            self.editorial_action("deleted",confirmed=True)
+        # Cancel deliberately sends no GitHub event.
+
 
     def submit(self,event,payload):
         if self.sending or self.pending_action:
@@ -769,13 +807,13 @@ class MainWindow(QWidget):
             return payload["request_id"]
         self.worker.run("submit",perform)
 
-    def editorial_action(self,action,hint=""):
+    def editorial_action(self,action,hint="",confirmed=False):
         r=self.selected
         if not r:return
         if not r.get("id"):
             QMessageBox.warning(self,"No verificable","Esta tarjeta aún no tiene ID editorial. Actualiza.")
             return
-        if action in ("published","deleted","discard"):
+        if action in ("published","deleted","discard") and not confirmed:
             prompt={
                 "published":"¿Ya la has publicado en X? Esta orden SOLO registrará la publicación en GitHub; no enviará ningún tuit.",
                 "deleted":"¿Quitar esta tarjeta de Listas?",
