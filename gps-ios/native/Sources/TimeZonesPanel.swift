@@ -1,12 +1,34 @@
 import SwiftUI
 import MapKit
 
+private struct TimeRankedZone: Identifiable {
+    let zone: TimeCustomZone
+    let seconds: TimeInterval
+    var id: UUID { zone.id }
+}
+
 struct TimeZonesPanel: View {
     @ObservedObject var model: TimeModel
     @State private var creating = false
     private var values: [String:TimeInterval] {
         model.periodTotals()
     }
+    /// Cache each zone's total once per render; compare scalar values,
+    /// never rescan every cell inside the sorting comparator.
+    private var rankedZones: [TimeRankedZone] {
+        let totals: [String:TimeInterval] = values
+        let zones: [TimeCustomZone] = model.visibleZones
+        let entries: [TimeRankedZone] = zones.map { zone -> TimeRankedZone in
+            var seconds: TimeInterval = 0
+            for id in zone.cellIDs { seconds += totals[id] ?? 0 }
+            return TimeRankedZone(zone:zone,seconds:seconds)
+        }
+        return entries.sorted { left,right -> Bool in
+            if left.seconds != right.seconds { return left.seconds > right.seconds }
+            return left.zone.name.localizedStandardCompare(right.zone.name) == .orderedAscending
+        }
+    }
+
     var body: some View {
         VStack(alignment:.leading,spacing:12) {
             HStack {
@@ -25,11 +47,8 @@ struct TimeZonesPanel: View {
                     systemImage:"square.3.layers.3d",
                     description:Text("Dibuja un contorno para seleccionar cuadrículas, incluso sin visitar."))
             }
-            ForEach(model.visibleZones.sorted {
-                let a=$0.cells.reduce(0) { $0+(values[$1] ?? 0) }
-                let b=$1.cells.reduce(0) { $0+(values[$1] ?? 0) }
-                return a == b ? $0.name.localizedStandardCompare($1.name) == .orderedAscending : a>b
-            }) { zone in
+            ForEach(rankedZones) { entry in
+                let zone = entry.zone
                 NavigationLink {
                     TimeZoneEditor(model:model,existing:zone)
                 } label: {
@@ -40,9 +59,8 @@ struct TimeZonesPanel: View {
                                 .font(.caption2).foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Text(DurationFormat.full(zone.cells.reduce(0) {
-                            $0 + (values[$1] ?? 0)
-                        })).font(.subheadline.monospacedDigit()).foregroundStyle(.teal)
+                        Text(DurationFormat.full(entry.seconds))
+                            .font(.subheadline.monospacedDigit()).foregroundStyle(.teal)
                     }.padding(10)
                 }
             }

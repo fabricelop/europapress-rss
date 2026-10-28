@@ -61,7 +61,7 @@ struct VisitTerritoriesView: View {
         let selectedPeriod = period
         let now = Date()
         loading = true
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos:.utility).async {
             let next = VisitTerritoryEngine.calculate(intervals,
                 period: selectedPeriod, now: now)
             DispatchQueue.main.async {

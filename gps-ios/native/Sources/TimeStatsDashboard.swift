@@ -149,12 +149,16 @@ struct TimeStatsDashboard: View {
     }
 
     private var cellList: some View {
-        VStack(alignment:.leading,spacing:12) {
+        // Reuse one ranked snapshot for this rendering pass rather than
+        // repeatedly sorting all cells when a button or GPS tick invalidates it.
+        let ranking = ranked
+        let visibleRanking = top > 0 ? Array(ranking.prefix(top)) : ranking
+        return VStack(alignment:.leading,spacing:12) {
             HStack {
                 Text(onlyIndividualCells ? "Cuadrículas sin Zona" :
                      "Zonas y cuadrículas independientes").font(.headline)
                 Spacer()
-                Text("\(displayed.count) de \(ranked.count)")
+                Text("\(visibleRanking.count) de \(ranking.count)")
                     .font(.caption2).foregroundStyle(.secondary)
             }
             Picker("Tipo de listado",selection:$onlyIndividualCells) {
@@ -167,11 +171,11 @@ struct TimeStatsDashboard: View {
                 Text("Top 50").tag(50)
                 Text("Todas").tag(-1)
             }.pickerStyle(.segmented)
-            if displayed.isEmpty {
+            if visibleRanking.isEmpty {
                 ContentUnavailableView("Sin registros",systemImage:"map",
                     description:Text("Todavía no hay cuadrículas con tiempo registrado."))
             }
-            ForEach(Array(displayed.enumerated()),id:\.element.id) { index,item in
+            ForEach(Array(visibleRanking.enumerated()),id:\.element.id) { index,item in
                 VStack(alignment:.leading,spacing:8) {
                     HStack(spacing:10) {
                         Text("\(index+1).")
@@ -215,7 +219,7 @@ struct TimeStatsDashboard: View {
                     GeometryReader { geo in
                         Capsule().fill(Color.teal.opacity(0.12)).overlay(alignment:.leading) {
                             Capsule().fill(.teal.gradient).frame(width:
-                                geo.size.width*item.seconds/max(1,ranked.first?.seconds ?? 1))
+                                geo.size.width*item.seconds/max(1,ranking.first?.seconds ?? 1))
                         }
                     }.frame(height:5)
                     if let zoneID=item.zoneID,expandedZones.contains(zoneID) {

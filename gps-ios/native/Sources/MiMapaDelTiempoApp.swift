@@ -287,9 +287,16 @@ struct SavedState: Codable {
     private var normalizedCacheIntervalCount = -1
     private var normalizedCacheLastEnd: Date?
     private var normalizedCacheTime: Date = .distantPast
+    private var normalizedBuildRunning = false
+    private var periodBuildRunning = false
+    // A small published revision repaints consumers once an off-main result
+    // arrives. Expensive canonicalization never runs in a SwiftUI body.
+    @Published private(set) var totalsRefreshRevision = 0
     private var zoneCatalogCache:[TimeCustomZone]?
     private var zoneIndexCache:[String:Int]=[:]
     private var zoneOverlayCache:[TimeZoneOverlay]=[]
+    private var zoneGeometryGeneration = UUID()
+    @Published private(set) var zoneOverlayRevision = 0
     private var cachedPeriod:TimePeriod?
     private var cachedPeriodValues:[String:TimeInterval]=[:]
     private var cachedPeriodCount = -1
@@ -316,17 +323,31 @@ struct SavedState: Codable {
             }
         }
         zoneIndexCache=index
-        zoneOverlayCache=zones.prefix(18).map { zone in
-            TimeZoneOverlay(zone:zone,
-                            contours:TimeZoneOutline.contours(for:zone),
-                            center:TimeZoneOutline.visibleCenter(for:zone))
-        }
         zoneCatalogCache=zones
+        // Build contours on a utility queue; a large zone can include 3,000
+        // cells and must not block map gestures or live GPS callbacks.
+        let generation = UUID()
+        zoneGeometryGeneration = generation
+        let outlines = Array(zones.prefix(18))
+        DispatchQueue.global(qos:.utility).async {
+            let projected = outlines.map { zone in
+                TimeZoneOverlay(zone:zone,
+                    contours:TimeZoneOutline.contours(for:zone),
+                    center:TimeZoneOutline.visibleCenter(for:zone))
+            }
+            DispatchQueue.main.async {
+                guard self.zoneGeometryGeneration == generation else { return }
+                self.zoneOverlayCache = projected
+                self.zoneOverlayRevision &+= 1
+            }
+        }
     }
     private func invalidateZoneCatalog() {
         zoneCatalogCache=nil
         zoneIndexCache.removeAll(keepingCapacity:true)
         zoneOverlayCache=[]
+        zoneGeometryGeneration = UUID()
+        zoneOverlayRevision &+= 1
     }
     var zoneOverlays:[TimeZoneOverlay] {
         ensureZoneCatalog()
@@ -479,35 +500,74 @@ struct SavedState: Codable {
                    currentCellID:activeCell?.id,cellIDs:cellIDs)
     }
     func confirmedTotals(now:Date = .now) -> [String:TimeInterval] {
-        let changed = data.intervals.count != normalizedCacheIntervalCount ||
-                      data.intervals.last?.end != normalizedCacheLastEnd
-        if normalizedCacheIntervalCount < 0 ||
-           changed && now.timeIntervalSince(normalizedCacheTime) >= 5 {
-            normalizedTotalsCache=TimeAttribution.byCell(data.intervals)
-            normalizedCacheIntervalCount=data.intervals.count
-            normalizedCacheLastEnd=data.intervals.last?.end
-            normalizedCacheTime=now
+        let count = data.intervals.count
+        let lastEnd = data.intervals.last?.end
+        let changed = count != normalizedCacheIntervalCount ||
+                      lastEnd != normalizedCacheLastEnd
+        if (normalizedCacheIntervalCount < 0 ||
+             (changed && now.timeIntervalSince(normalizedCacheTime) >= 5)) &&
+             !normalizedBuildRunning {
+            normalizedBuildRunning = true
+            normalizedCacheTime = now
+            let snapshot = data.intervals
+            DispatchQueue.global(qos:.utility).async {
+                let calculated = TimeAttribution.byCell(snapshot)
+                DispatchQueue.main.async {
+                    self.normalizedBuildRunning = false
+                    // A new GPS interval can arrive while normalization runs.
+                    // The result is still a valid older snapshot, so show it
+                    // immediately and schedule its successor on a later tick.
+                    self.normalizedTotalsCache = calculated
+                    self.normalizedCacheIntervalCount = count
+                    self.normalizedCacheLastEnd = lastEnd
+                    self.normalizedCacheTime = .now
+                    self.totalsRefreshRevision &+= 1
+                }
+            }
         }
-        return normalizedTotalsCache
+        // Saved totals give the user a useful first frame while the canonical
+        // nonoverlapping view is being prepared in the background.
+        return normalizedCacheIntervalCount < 0 ? data.totals : normalizedTotalsCache
     }
     func periodTotals(now: Date = .now) -> [String:TimeInterval] {
         guard let window = TimeAnalytics.window(for:period,now:now) else {
             return confirmedTotals(now:now)
         }
-        let count=data.intervals.count
-        let bucket=TimeMapPeriodPolicy.refreshBucket(for:period,now:now)
-        let changed=cachedPeriodCount != count ||
-                    cachedPeriodEnd != data.intervals.last?.end
-        if cachedPeriod != period || cachedPeriodBucket != bucket ||
-           (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
-            cachedPeriodValues=TimeAttribution.byCell(data.intervals,window:window)
-            cachedPeriod=period
-            cachedPeriodCount=count
-            cachedPeriodEnd=data.intervals.last?.end
-            cachedPeriodSince=now
-            cachedPeriodBucket=bucket
+        let requestedPeriod = period
+        let count = data.intervals.count
+        let lastEnd = data.intervals.last?.end
+        let bucket = TimeMapPeriodPolicy.refreshBucket(for:requestedPeriod,now:now)
+        let changed = cachedPeriodCount != count || cachedPeriodEnd != lastEnd
+        if (cachedPeriod != requestedPeriod || cachedPeriodBucket != bucket ||
+            (changed && now.timeIntervalSince(cachedPeriodSince) >= 3)) &&
+            !periodBuildRunning {
+            periodBuildRunning = true
+            let snapshot = data.intervals
+            DispatchQueue.global(qos:.utility).async {
+                let calculated = TimeAttribution.byCell(snapshot,window:window)
+                DispatchQueue.main.async {
+                    self.periodBuildRunning = false
+                    // Never publish totals belonging to a different filter.
+                    if self.period == requestedPeriod &&
+                       TimeMapPeriodPolicy.refreshBucket(for:requestedPeriod,now:.now) == bucket {
+                        self.cachedPeriodValues = calculated
+                        self.cachedPeriod = requestedPeriod
+                        self.cachedPeriodCount = count
+                        self.cachedPeriodEnd = lastEnd
+                        self.cachedPeriodSince = .now
+                        self.cachedPeriodBucket = bucket
+                        self.totalsRefreshRevision &+= 1
+                    } else {
+                        // A rapid filter switch takes priority over an obsolete
+                        // calculation; the next job starts without a user tap.
+                        _ = self.periodTotals(now:.now)
+                    }
+                }
+            }
         }
-        return cachedPeriodValues
+        // On filter switches never display the previous period as current.
+        return cachedPeriod == requestedPeriod && cachedPeriodBucket == bucket
+            ? cachedPeriodValues : [:]
     }
     func confirmed(for cell:Cell,now:Date = .now) -> TimeInterval {
         periodTotals(now:now)[cell.id] ?? 0
@@ -1711,10 +1771,20 @@ struct SavedState: Codable {
                Date().timeIntervalSince(lastSafetyCopyAttempt) >= 21_600,
                (!data.fixes.isEmpty || !data.intervals.isEmpty || !data.totals.isEmpty) {
                 lastSafetyCopyAttempt = Date()
-                do {
-                    try store.createSafetyCopy(in: fileURL.deletingLastPathComponent())
-                } catch {
-                    storeStatus = "SQLite activo · copia de seguridad pendiente"
+                // Separate SQLite connection and utility queue: backup I/O
+                // never occupies the main thread, while WAL allows writes.
+                // Do not pass the live store across actor/thread boundaries.
+                let directory = fileURL.deletingLastPathComponent()
+                let databaseURL = directory.appendingPathComponent("time-map-v3.sqlite")
+                DispatchQueue.global(qos:.utility).async {
+                    do {
+                        let reader = try TimeSQLiteStore(url:databaseURL)
+                        try reader.createSafetyCopy(in:directory)
+                    } catch {
+                        DispatchQueue.main.async {
+                            self.storeStatus = "SQLite activo · copia de seguridad pendiente"
+                        }
+                    }
                 }
             }
         } catch {
@@ -2298,6 +2368,7 @@ struct TimeMapView: View {
     @State private var renderedRouteFixCount = -1
     @State private var renderedRoutePeriod = ""
     @State private var lastRouteDraw = Date.distantPast
+    @State private var routeRenderGeneration = UUID()
     @Environment(\.scenePhase) private var scenePhase
 
     init(model: TimeModel, gps: GPSService) {
@@ -2362,7 +2433,9 @@ struct TimeMapView: View {
         }
     }
 
-    private var mapDataEvents: some View {
+    // Keep SwiftUI modifier chains short for predictable type checking.
+    // Dividing the event handlers does not alter their execution or order.
+    private var mapBaseDataEvents: some View {
         mapSheets
         .onChange(of:searchOpen) { _,open in
             if !open,let cell=queuedCellForMap {
@@ -2380,6 +2453,16 @@ struct TimeMapView: View {
         }
         .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
+    }
+
+    private var mapDataEvents: some View {
+        mapBaseDataEvents
+        .onChange(of:model.totalsRefreshRevision) { _,_ in
+            refreshMapSnapshot(force:true)
+        }
+        .onChange(of:model.zoneOverlayRevision) { _,_ in
+            refreshMapSnapshot(force:true)
+        }
         .onChange(of:model.data.customZones.count) { _,_ in refreshMapSnapshot(force: true) }
         .onChange(of:model.data.places.count) { _,_ in refreshMapSnapshot(force: true) }
         .onChange(of:namingCell) { _,newValue in
@@ -2876,16 +2959,26 @@ struct TimeMapView: View {
                   now.timeIntervalSince(lastRouteDraw) >= 60 else { return }
             guard now.timeIntervalSince(lastRouteDraw) >= 5 else { return }
         }
+        let generation = UUID()
+        routeRenderGeneration = generation
+        // Snapshot current route on main, but sort/split/map the thousands
+        // of points on a lower-priority queue while gestures stay responsive.
         let points = model.routePoints(at: now)
-        renderedRouteSegments = GPSRouteSegments.split(points.map {
-            GPSHistoryFix(date: $0.date, latitude: $0.latitude, longitude: $0.longitude)
-        }).map { segment in
-            segment.map { CLLocationCoordinate2D(latitude: $0.latitude,
-                                                 longitude: $0.longitude) }
-        }
         renderedRouteFixCount = count
         renderedRoutePeriod = period
         lastRouteDraw = now
+        DispatchQueue.global(qos:.utility).async {
+            let segments = GPSRouteSegments.split(points.map {
+                GPSHistoryFix(date:$0.date,latitude:$0.latitude,longitude:$0.longitude)
+            }).map { group in
+                group.map { CLLocationCoordinate2D(latitude:$0.latitude,
+                                                   longitude:$0.longitude) }
+            }
+            DispatchQueue.main.async {
+                guard routeRenderGeneration == generation else { return }
+                renderedRouteSegments = segments
+            }
+        }
     }
 
     private func beginMapDrag() {
