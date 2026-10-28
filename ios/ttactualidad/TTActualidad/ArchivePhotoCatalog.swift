@@ -3,6 +3,8 @@ import Foundation
 /// Archive-only image resolver. Never returns generated-images, AI image URLs,
 /// ChatGPT Images assets, or TTImages media.
 enum ArchivePhotoCatalog {
+    private static let memory = ArchivePhotoMemory()
+
     private struct GitTree: Decodable {
         struct Node: Decodable { let path: String; let type: String }
         let tree: [Node]
@@ -12,22 +14,34 @@ enum ArchivePhotoCatalog {
     /// List genuine archive photos in the public repository. A cached tree
     /// avoids losing the gallery when GitHub is temporarily unavailable.
     static func load() async -> [String: URL] {
+        // A full recursive repository tree is expensive to deserialize.
+        // Reuse the resolved archive map for ten minutes per app session.
+        if let fresh = await memory.fresh() { return fresh }
         let cached = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("ttactualidad-archive-paths.json")
         let endpoint = URL(string: "https://api.github.com/repos/fabricelop/europapress-rss/git/trees/main?recursive=1")!
         var data: Data?
+        // Avoid refetching the entire tree on every foreground/receipt poll.
+        // Failures still recover the last verified archive listing.
+        let modified = (try? FileManager.default.attributesOfItem(
+            atPath: cached.path)[.modificationDate]) as? Date
+        if let modified, Date().timeIntervalSince(modified) < 600 {
+            data = try? Data(contentsOf: cached)
+        }
         var request = URLRequest(url: endpoint, cachePolicy: .reloadIgnoringLocalCacheData,
                                  timeoutInterval: 15)
         request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        do {
-            let (received, response) = try await URLSession.shared.data(for: request)
-            if (response as? HTTPURLResponse)?.statusCode == 200,
-               let tree = try? JSONDecoder().decode(GitTree.self, from: received),
-               !tree.truncated {
-                data = received
-                try? received.write(to: cached, options: .atomic)
-            }
-        } catch { /* Recover the last verified archive listing. */ }
+        if data == nil {
+            do {
+                let (received, response) = try await URLSession.shared.data(for: request)
+                if (response as? HTTPURLResponse)?.statusCode == 200,
+                   let tree = try? JSONDecoder().decode(GitTree.self, from: received),
+                   !tree.truncated {
+                    data = received
+                    try? received.write(to: cached, options: .atomic)
+                }
+            } catch { /* Recover the last verified archive listing. */ }
+        }
         if data == nil { data = try? Data(contentsOf: cached) }
         guard let data, let tree = try? JSONDecoder().decode(GitTree.self, from: data),
               !tree.truncated else { return [:] }
@@ -52,6 +66,7 @@ enum ArchivePhotoCatalog {
             // editorial revision is valid; never guess paths from an ID alone.
             archive[key] = url
         }
+        await memory.store(archive)
         return archive
     }
 
@@ -67,5 +82,23 @@ enum ArchivePhotoCatalog {
               !image.path.lowercased().contains("/images/ai/")
         else { return nil }
         return image
+    }
+}
+
+
+/// Protects the parsed, archive-only map from unnecessary full-tree parsing
+/// while the user switches sections or checks pending editorial operations.
+private actor ArchivePhotoMemory {
+    private var value: [String: URL]?
+    private var createdAt = Date.distantPast
+
+    func fresh() -> [String: URL]? {
+        guard Date().timeIntervalSince(createdAt) < 600 else { return nil }
+        return value
+    }
+
+    func store(_ map: [String: URL]) {
+        value = map
+        createdAt = Date()
     }
 }
