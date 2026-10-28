@@ -793,33 +793,58 @@ struct SavedState: Codable {
         data.identifiedSites.first { $0.id == id }
     }
 
-    /// Confirm the exact proposed historical visit, not every stay in the
-    /// same square. A later manual correction always wins.
+    /// Confirm exactly the visible Histórico de sitios row named by
+    /// groupID, including ALL its constituent 100m GPS stays. Revalidate
+    /// against the latest calendar grouping before touching saved choices.
     @discardableResult
-    func confirmNotifiedStay(stayID: String, expectedSiteID: UUID) -> Bool {
-        guard storageIsHealthy, siteNamed(expectedSiteID) != nil,
-              !data.siteStayParts.contains(where: { $0.stayID == stayID }),
-              let stay = SiteStayHistory.extract(data.intervals).first(
-                where: { $0.id == stayID }) else { return false }
-        let lookup = SiteDayPartsIndex(assignments: data.siteStayAssignments,
-                    parts: data.siteStayParts, sites: data.identifiedSites)
-        let proposed = lookup.parts(for: stay)
-        guard proposed.count == 1, let only = proposed.first,
-              only.kind == .place, only.siteID == expectedSiteID,
-              !only.confirmed else { return false }
-        data.siteStayAssignments = SiteStayPolicy.select(
-            siteID: expectedSiteID, cellID: stay.cell.id,
-            entered: stay.start, assignments: data.siteStayAssignments)
-        save(force: true)
-        activityPublisher.refresh(from: self, force: true)
+    func confirmNotifiedStay(stayID groupID: String,
+                             expectedSiteID: UUID) -> Bool {
+        guard storageIsHealthy, siteNamed(expectedSiteID) != nil else { return false }
+        let stays = SiteStayHistory.extract(data.intervals)
+        guard let first = stays.first(where: { $0.id == groupID }) else { return false }
+        let index = SiteDayPartsIndex(assignments:data.siteStayAssignments,
+                       parts:data.siteStayParts, sites:data.identifiedSites)
+        let sources = stays.map { SiteDaySource(stay:$0,
+                                               parts:index.parts(for:$0)) }
+        let report = SiteDayPresentation.build(sources,on:first.start)
+        guard let group = report.groups.first(where:{$0.id == groupID}),
+              group.siteID == expectedSiteID, !group.confirmed else { return false }
+
+        // Atomic verification: no partial confirmations and no overwriting
+        // a different place manually assigned since this notification.
+        for entry in group.entries {
+            let parts = index.parts(for:entry.stay)
+            guard parts.count == 1, let only = parts.first,
+                  only.kind == .place, only.siteID == expectedSiteID,
+                  !only.confirmed else { return false }
+        }
+        for entry in group.entries {
+            let raw = data.siteStayParts.indices.filter {
+                data.siteStayParts[$0].stayID == entry.stay.id
+            }
+            if raw.count == 1,
+               data.siteStayParts[raw[0]].kind == .place,
+               data.siteStayParts[raw[0]].siteID == expectedSiteID {
+                data.siteStayParts[raw[0]].confirmed = true
+            } else {
+                data.siteStayAssignments = SiteStayPolicy.select(
+                    siteID:expectedSiteID,cellID:entry.stay.cell.id,
+                    entered:entry.stay.start,assignments:data.siteStayAssignments)
+            }
+        }
+        save(force:true)
+        activityPublisher.refresh(from:self,force:true)
         objectWillChange.send()
         return true
     }
 
+    /// Show the same GROUP in the historical list, including its sub-stays
+    /// if it spans more than one square.
     func openNotifiedStay(stayID: String) {
         requestedSiteStayID = stayID
         selectedTab = 3
     }
+
     func siteOptions(for cell: Cell) -> [(site: IdentifiedSite, confirmations: Int, fromOtherSquares: Int)] {
         let votes = SiteStayPolicy.confirmedCounts(data.siteStayAssignments,
                                 cellID: cell.id, parts: data.siteStayParts)
