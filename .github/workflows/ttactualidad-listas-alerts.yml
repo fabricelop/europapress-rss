@@ -1,0 +1,101 @@
+name: TTActualidad · alertar solo cuando Listas pasa de 0 a positivo
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ttittulares/prepared.json'
+      - 'ttittulares/decisions.json'
+      - 'trends/telegram-manual-explained.json'
+      - 'trends/requests.json'
+      - 'trends/mobile-decisions.json'
+      - 'trends/telegram-image-deliveries.json'
+      - 'trends/editorial-queue.json'
+      - 'pilot/listas_transition_alerts.py'
+      - '.github/workflows/ttactualidad-listas-alerts.yml'
+  pull_request:
+    paths:
+      - 'pilot/listas_transition_alerts.py'
+      - '.github/workflows/ttactualidad-listas-alerts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttactualidad-listas-alert-state
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python3 -m py_compile pilot/listas_transition_alerts.py
+          python3 pilot/listas_transition_alerts.py selftest
+
+  check-and-notify:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TT_ACTUALIDAD_NTFY_TOPIC: ${{ secrets.TT_ACTUALIDAD_NTFY_TOPIC }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Detectar cambios a partir de ficheros completos y actuales
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ttactualidad-alerts[bot]'
+          git config user.email 'ttactualidad-alerts[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4 5 6; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/listas_transition_alerts.py prepare
+            git add pilot/ttactualidad-listas-alert-state.json
+            if git diff --cached --quiet; then
+              echo 'Sin transición nueva.'
+              break
+            fi
+            git commit -m 'TTActualidad: registrar transición de Listas'
+            if git push origin HEAD:main; then
+              echo 'Estado de alertas guardado.'
+              break
+            fi
+            if [[ "$attempt" == 6 ]]; then
+              echo 'No se pudo guardar el estado de alertas.' >&2
+              exit 1
+            fi
+            sleep "$attempt"
+          done
+      - name: Notificar únicamente si el usuario ha activado su receptor
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin main
+          git reset --hard origin/main
+          python3 pilot/listas_transition_alerts.py deliver
+          cp pilot/ttactualidad-listas-alert-state.json /tmp/ttactualidad-alert-ack.json
+          for attempt in 1 2 3 4 5 6; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/listas_transition_alerts.py merge-ack /tmp/ttactualidad-alert-ack.json
+            git add pilot/ttactualidad-listas-alert-state.json
+            if git diff --cached --quiet; then
+              exit 0
+            fi
+            git commit -m 'TTActualidad: confirmar envío de aviso de Listas'
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            if [[ "$attempt" == 6 ]]; then
+              echo 'Envío confirmado, pero falta registrar el acuse.' >&2
+              exit 1
+            fi
+            sleep "$attempt"
+          done
