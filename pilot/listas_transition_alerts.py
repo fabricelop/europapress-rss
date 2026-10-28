@@ -187,6 +187,15 @@ def prepare():
     }))
 
 
+def click_target(project: str) -> str:
+    """The existing iOS 0.4.17 app registers the ttactualidad URL scheme."""
+    if project == "ttittulares":
+        return "ttactualidad://noticias"
+    if project == "ttendencias":
+        return "ttactualidad://tendencias"
+    raise ValueError("Unknown Listas project; refusing to send untrusted link")
+
+
 def deliver():
     topic = os.environ.get("TT_ACTUALIDAD_NTFY_TOPIC", "")
     if not topic:
@@ -213,6 +222,10 @@ def deliver():
         req = request.Request("https://ntfy.sh/" + topic, data=payload, method="POST",
                               headers={"Title": f"TTActualidad - {label} en Listas",
                                        "Priority": "default",
+                                       # ntfy iOS opens the installed app through its
+                                       # registered URL scheme when the user taps
+                                       # the notification; no new IPA is needed.
+                                       "X-Click": click_target(event["project"]),
                                        "X-Sequence-ID": "ttactualidad-" + event["id"]})
         with request.urlopen(req, timeout=15) as response:
             if response.status // 100 != 2:
@@ -246,6 +259,14 @@ def merge_ack(path):
 
 
 def selftest():
+    assert click_target("ttittulares") == "ttactualidad://noticias"
+    assert click_target("ttendencias") == "ttactualidad://tendencias"
+    try:
+        click_target("unknown")
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("Unknown project must not generate a deep link")
     at = datetime(2026, 10, 28, 8, tzinfo=timezone.utc)
     state, events = reconcile({}, {"ttittulares": 2, "ttendencias": 1}, at, True)
     assert not events, "Initial nonempty state must be silent"
