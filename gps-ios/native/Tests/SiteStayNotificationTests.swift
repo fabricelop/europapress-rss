@@ -57,4 +57,42 @@ final class SiteStayNotificationTests: XCTestCase {
         XCTAssertEqual(index.parts(for:first).first?.confirmed,true)
         XCTAssertEqual(index.parts(for:next).first?.confirmed,false)
     }
+    func testHistoricalSiteGroupsNotIndividualGridSquares() {
+        let b = Cell(row:100,column:501)
+        let c = Cell(row:100,column:502)
+        let alpha = IdentifiedSite(name:"SAP ESPAÑA",latitude:40,longitude:-3,origin:"private")
+        let beta = IdentifiedSite(name:"Favorit",latitude:40.001,longitude:-3,origin:"private")
+        func segment(_ start:Double,_ end:Double,_ cell:Cell)->AssignedInterval {
+            AssignedInterval(start:Date(timeIntervalSince1970:start),
+                             end:Date(timeIntervalSince1970:end),
+                             cell:cell,quality:"observado",source:"gps")
+        }
+        let intervals = [
+            segment(10_000,10_400,square),
+            segment(10_400,10_800,b),
+            segment(10_800,11_200,c),
+            segment(11_200,11_600,square)
+        ]
+        func earlier(_ cell:Cell,_ id:UUID)->SiteStayAssignment {
+            SiteStayAssignment(id:SiteStayPolicy.visitKey(
+                                cellID:cell.id,entered:Date(timeIntervalSince1970:5_000)),
+                               cellID:cell.id,startedAt:Date(timeIntervalSince1970:5_000),
+                               siteID:id,confirmed:true)
+        }
+        let idx = SiteDayPartsIndex(
+            assignments:[earlier(square,alpha.id),earlier(b,alpha.id),
+                         earlier(c,beta.id)],
+            parts:[],sites:[alpha,beta])
+        let stays=SiteStayHistory.extract(intervals)
+        let report=SiteDayPresentation.build(
+            stays.map { SiteDaySource(stay:$0,parts:idx.parts(for:$0)) },
+            on:Date(timeIntervalSince1970:10_000))
+        XCTAssertEqual(report.groups.count,3)
+        XCTAssertEqual(report.groups[0].entries.count,2)
+        XCTAssertEqual(report.groups[0].uniqueCells,2)
+        XCTAssertEqual(report.groups[0].siteID,alpha.id)
+        XCTAssertEqual(report.groups[1].siteID,beta.id)
+        XCTAssertEqual(report.groups[2].siteID,alpha.id)
+        XCTAssertNotEqual(report.groups[0].id,report.groups[2].id)
+    }
 }
