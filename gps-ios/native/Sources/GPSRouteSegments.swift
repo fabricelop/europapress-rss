@@ -47,6 +47,5 @@ enum GPSPlaybackPosition {
         let f = date.timeIntervalSince(a.date) / b.date.timeIntervalSince(a.date)
         return .interpolated(latitude:a.latitude + (b.latitude - a.latitude) * f,
                              longitude:a.longitude + (b.longitude - a.longitude) * f)
-        return .unavailable
     }
 }
