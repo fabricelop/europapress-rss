@@ -53,8 +53,9 @@ struct EditorialActions: View {
                         quickButton("Copiar orden editorial", "doc.on.doc") {
                             copyManualEditorialPrompt()
                         }
-                        quickLink("Abrir ChatGPT", "arrow.up.right.square",
-                                  "https://chatgpt.com/")
+                        quickButton("Abrir ChatGPT", "arrow.up.right.square") {
+                            openChatGPTApp()
+                        }
                     }
                     quickButton("URGENTE · Elaborar ya", "bolt.fill", urgent: true) {
                         launchUrgentEditorial()
@@ -96,8 +97,9 @@ struct EditorialActions: View {
                     quickButton("Copiar orden editorial", "doc.on.doc") {
                         copyManualEditorialPrompt()
                     }
-                    quickLink("Abrir ChatGPT", "arrow.up.right.square",
-                              "https://chatgpt.com/")
+                    quickButton("Abrir ChatGPT", "arrow.up.right.square") {
+                        openChatGPTApp()
+                    }
                 }
             } else {
             HStack(spacing: 7) {
@@ -334,7 +336,7 @@ struct EditorialActions: View {
         .buttonStyle(.plain)
     }
 
-        private func quickLink(_ name: String, _ symbol: String, _ raw: String) -> some View {
+    private func quickLink(_ name: String, _ symbol: String, _ raw: String) -> some View {
         quickButton(name, symbol) {
             guard let url = URL(string: raw) else { return }
             openURL(url)
@@ -407,8 +409,28 @@ struct EditorialActions: View {
         }
         copy(urgentEditorialPrompt)
         outcome = "Orden urgente copiada. Pégala y envíala en ChatGPT para iniciar."
-        if let url = URL(string: "https://chatgpt.com/") {
-            openURL(url)
+        openChatGPTApp()
+    }
+
+    /// Open ChatGPT's installed iOS app, not the separate Safari web session.
+    /// Both schemes have been used by ChatGPT iOS; never fall back to the
+    /// unauthenticated web homepage. Keep the editorial prompt on clipboard.
+    private func openChatGPTApp() {
+        guard let primary = URL(string: "chatgpt://"),
+              let secondary = URL(string: "com.openai.chat://") else {
+            outcome = "Orden copiada. Abre la app ChatGPT instalada y pega la orden."
+            return
+        }
+        UIApplication.shared.open(primary, options: [:]) { opened in
+            guard !opened else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.open(secondary, options: [:]) { alternativeOpened in
+                    guard !alternativeOpened else { return }
+                    DispatchQueue.main.async {
+                        outcome = "No se pudo abrir ChatGPT automáticamente. La orden sigue copiada; abre la app desde el iPhone."
+                    }
+                }
+            }
         }
     }
 
