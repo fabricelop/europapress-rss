@@ -39,6 +39,17 @@ struct TimeSiteCalendarView: View {
     // GPS updates can rebuild the calendar without recreating the editor.
     @State private var selectedStay: SiteGridStay?
 
+    /// Focus the exact stay requested from the notification's Corregir button.
+    /// Keep the request pending until the asynchronous history index is ready.
+    private func openRequestedStay() {
+        guard let key = model.requestedSiteStayID,
+              let stay = allStays.first(where: { $0.id == key }) else { return }
+        selectedDay = SiteCalendarDay.normalized(stay.start)
+        expandedGroups.removeAll()
+        selectedStay = stay
+        model.requestedSiteStayID = nil
+    }
+
     private func changeDay(_ delta: Int) {
         selectedDay = SiteCalendarDay.addingDays(delta, to: selectedDay)
         expandedGroups.removeAll()
@@ -314,7 +325,12 @@ struct TimeSiteCalendarView: View {
                 rebuild()
             } else {
                 refreshPartsIndex()
+                openRequestedStay()
             }
+        }
+        .onChange(of:model.requestedSiteStayID) { _, _ in
+            if allStays.isEmpty { rebuild() }
+            else { openRequestedStay() }
         }
         .onChange(of:selectedDay) { _, chosen in
             let normalized=SiteCalendarDay.normalized(chosen)
@@ -431,6 +447,7 @@ struct TimeSiteCalendarView: View {
                 indexedIntervalCount=original.count
                 refreshPartsIndex()
                 preparing=false
+                openRequestedStay()
             }
         }
     }
