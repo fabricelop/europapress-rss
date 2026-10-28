@@ -464,7 +464,7 @@ struct TimeSiteCalendarView: View {
         if indexedIntervalCount < 0 { preparing=true }
         let original=model.data.intervals
         let calendar=Calendar.current
-        DispatchQueue.global(qos:.userInitiated).async {
+        DispatchQueue.global(qos:.utility).async {
             let computed=SiteStayHistory.extract(original)
             let indexed=SiteDayIndex.build(computed,calendar:calendar)
             DispatchQueue.main.async {
