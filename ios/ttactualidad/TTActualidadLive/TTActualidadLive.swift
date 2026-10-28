@@ -171,18 +171,34 @@ struct TTActualidadLiveWidget: Widget {
                     }
                 }
             } compactLeading: {
-                Text("N\(context.state.newsReady)")
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(.mint)
+                compactCounts(
+                    prefix: "N", ready: context.state.newsReady,
+                    working: context.state.newsWorking,
+                    published24h: context.state.newsPublished24h,
+                    publishedAvailable: context.state.publishedCountsAvailable,
+                    color: .mint, alignment: .leading,
+                    attention: context.isStale || context.state.partialData)
+                .accessibilityLabel(
+                    "Noticias: \(context.state.newsReady) en Listas, " +
+                    "\(context.state.newsWorking) en elaboración, " +
+                    (context.state.publishedCountsAvailable ?
+                     "\(context.state.newsPublished24h) publicadas en 24 horas" :
+                     "publicaciones de 24 horas sin verificar"))
             } compactTrailing: {
-                HStack(spacing: 2) {
-                    Text("T\(context.state.trendsReady)")
-                    if context.state.pendingActions > 0 {
-                        Circle().fill(Color.orange).frame(width: 4, height: 4)
-                    }
-                }
-                .font(.caption.weight(.bold))
-                .foregroundStyle(.cyan)
+                compactCounts(
+                    prefix: "T", ready: context.state.trendsReady,
+                    working: context.state.trendsWorking,
+                    published24h: context.state.trendsPublished24h,
+                    publishedAvailable: context.state.publishedCountsAvailable,
+                    color: .cyan, alignment: .trailing,
+                    attention: context.isStale || context.state.partialData ||
+                               context.state.pendingActions > 0)
+                .accessibilityLabel(
+                    "Tendencias: \(context.state.trendsReady) en Listas, " +
+                    "\(context.state.trendsWorking) en elaboración, " +
+                    (context.state.publishedCountsAvailable ?
+                     "\(context.state.trendsPublished24h) publicadas en 24 horas" :
+                     "publicaciones de 24 horas sin verificar"))
             } minimal: {
                 Image(systemName: context.state.pendingActions > 0 ?
                       "clock.badge.exclamationmark" : "newspaper")
@@ -191,6 +207,44 @@ struct TTActualidadLiveWidget: Widget {
             .keylineTint(.cyan)
             .widgetURL(URL(string: "ttactualidad://listas"))
         }
+    }
+
+    // The compact Island has just two very narrow regions. Keep the six
+    // editorial figures visible using two short lines per project:
+    // N7 +2 / 24h12 (news) and T4 +3 / 24h8 (trends).
+    // The last-check time stays in the expanded view: there is no reliable
+    // space for a seventh text field on the compact presentation.
+    private func compactCounts(
+        prefix: String, ready: Int, working: Int,
+        published24h: Int, publishedAvailable: Bool,
+        color: Color, alignment: HorizontalAlignment, attention: Bool
+    ) -> some View {
+        VStack(alignment: alignment, spacing: 0) {
+            HStack(spacing: 2) {
+                Text("\(prefix)\(ready)")
+                    .foregroundStyle(color)
+                Text("+\(working)")
+                    .foregroundStyle(.orange)
+            }
+            .font(.system(size: 11, weight: .bold, design: .rounded))
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+            HStack(spacing: 2) {
+                Text("24h")
+                    .foregroundStyle(.white.opacity(0.67))
+                Text(publishedAvailable ? String(published24h) : "—")
+                    .foregroundStyle(publishedAvailable ? Color.white : Color.orange)
+                if attention {
+                    Circle().fill(Color.orange).frame(width: 3, height: 3)
+                }
+            }
+            .font(.system(size: 9, weight: .semibold, design: .rounded))
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+        }
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     private func statusText(_ context: ActivityViewContext<LiveCountsAttributes>) -> some View {
