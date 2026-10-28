@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-28T10:48:40.987223Z",
+  "updated_at": "2026-10-28T10:48:20Z",
   "items": [
     {
       "event_id": "manual-7681ae53-597e-4d96-a1b8-5dc05c93b492",
@@ -41,8 +41,8 @@
       "image_strategy": "archive_only",
       "ai_image_status": "none",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "fallback_image_status": "none",
+      "image_choice": "none",
       "image_pending": false,
       "sensitive_editorial": true,
       "sensitive_image_reason": "Accidente mortal con víctimas: evitar caricaturizar víctimas o escenas explícitas; IA posterior independiente.",
@@ -59,15 +59,69 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Urda (Toledo): el balance provisional del choque entre un AVE y un Iryo alcanza al menos 30 fallecidos"
-      },
-      "fallback_image": {
-        "url": "https://img.rtve.es/imagenes/accidente-tren-directo-ultima-hora/01793178806524.jpg",
-        "source": "www.rtve.es",
-        "source_url": "https://www.rtve.es/noticias/20261028/accidente-tren-directo-ultima-hora/17286720.shtml",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Urda (Toledo): el balance provisional del choque entre un AVE y un Iryo alcanza al menos 30 fallecidos"
       }
+    },
+    {
+      "event_id": "manual-93d249bc-bcf2-4ce1-95a1-0682bd12719e",
+      "revision": 1,
+      "title": "El balance del accidente de Urda sube a al menos 30 muertos",
+      "url": "https://www.rtve.es/noticias/20261028/accidente-tren-directo-ultima-hora/17286720.shtml",
+      "selection_mode": "MANUAL_REOPEN_OUTCOME",
+      "factual_summary": "El balance confirmado del accidente ferroviario de Urda (Toledo) asciende a al menos 30 fallecidos. En la colisión están implicados un AVE de Renfe y un tren Iryo; la circulación de alta velocidad Madrid-Andalucía continúa interrumpida y las causas siguen sin estar confirmadas.",
+      "explanation": "RTVE y 20minutos coinciden en el nuevo mínimo de 30 fallecidos y en la interrupción de la alta velocidad entre Madrid y Andalucía. La causa del accidente sigue bajo investigación y no se presenta ninguna hipótesis como conclusión.",
+      "sources_at_draft": [
+        "RTVE",
+        "20minutos"
+      ],
+      "drafted_source_count": 2,
+      "source_count": 2,
+      "verified_source_count": 2,
+      "citations": [
+        {
+          "source": "RTVE",
+          "url": "https://www.rtve.es/noticias/20261028/accidente-tren-directo-ultima-hora/17286720.shtml"
+        },
+        {
+          "source": "20minutos",
+          "url": "https://www.20minutos.es/nacional/choque-entre-dos-trenes-linea-ave-entre-madrid-sevilla-servicio-se-encuentra-interrumpido_7054308_0.html"
+        }
+      ],
+      "source_evidence": [
+        {
+          "source": "RTVE",
+          "url": "https://www.rtve.es/noticias/20261028/accidente-tren-directo-ultima-hora/17286720.shtml",
+          "supports": "Confirma al menos 30 fallecidos, los dos trenes implicados y la interrupción de la línea Madrid-Andalucía; las causas siguen sin determinar."
+        },
+        {
+          "source": "20minutos",
+          "url": "https://www.20minutos.es/nacional/choque-entre-dos-trenes-linea-ave-entre-madrid-sevilla-servicio-se-encuentra-interrumpido_7054308_0.html",
+          "supports": "Confirma al menos 30 fallecidos y la suspensión de la alta velocidad; cualquier hipótesis causal se presenta como no definitiva."
+        }
+      ],
+      "tweet": {
+        "text": "El balance del accidente ferroviario de Urda (Toledo) asciende a al menos 30 muertos. Un AVE de Renfe y un Iryo colisionaron; la línea Madrid-Andalucía sigue suspendida.\n\n#Urda #Toledo #AltaVelocidad\n🌶️ El balance sigue siendo provisional.",
+        "remate": "🌶️ El balance sigue siendo provisional.",
+        "url": "https://twitter.com/intent/tweet?text=El%20balance%20del%20accidente%20ferroviario%20de%20Urda%20%28Toledo%29%20asciende%20a%20al%20menos%2030%20muertos.%20Un%20AVE%20de%20Renfe%20y%20un%20Iryo%20colisionaron%3B%20la%20l%C3%ADnea%20Madrid-Andaluc%C3%ADa%20sigue%20suspendida.%0A%0A%23Urda%20%23Toledo%20%23AltaVelocidad%0A%F0%9F%8C%B6%EF%B8%8F%20El%20balance%20sigue%20siendo%20provisional."
+      },
+      "category": "España",
+      "source": "editorial_chat_direct",
+      "prepared_at": "2026-10-28T10:48:20Z",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "none",
+      "archive_image": null,
+      "archive_image_status": "none",
+      "fallback_image_status": "none",
+      "image_choice": "none",
+      "image_pending": false,
+      "sensitive_editorial": true,
+      "archive_image_search_attempted_at": "2026-10-28T10:48:00Z",
+      "fallback_image_search_attempted_at": "2026-10-28T10:48:00Z",
+      "image_status": "none",
+      "image_app_available": false,
+      "image_delivery": "none",
+      "problematic_attempts_before_ready": 1
     }
   ],
   "count": 0,
