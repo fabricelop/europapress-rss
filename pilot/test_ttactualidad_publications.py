@@ -56,6 +56,8 @@ class PublishedConfirmation(unittest.TestCase):
                           "explanation": "Texto"}]})
         self.write("trends/telegram-image-deliveries.json", {"items": []})
         self.write("trends/mobile-decisions.json", {"items": []})
+        self.write("trends/editorial-queue.json", {"items": [], "count": 0})
+        self.write("trends/prepared.json", {"items": []})
 
     def run_action(self, project, decision, revision, request_id="test-request-a1"):
         payload = json.dumps({"project": project, "event_id": self.event_id,
