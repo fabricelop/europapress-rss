@@ -9,21 +9,45 @@ struct GPSDayView: View {
     private var nextDay: Date {
         Calendar.current.date(byAdding:.day,value:1,to:day) ?? day.addingTimeInterval(86400)
     }
-    private var episodes:[GPSHistoryEpisode] {
-        GPSHistoryGrouping.episodes(fixes,manualBreaks:model.data.manualBreaks)
-            .filter { $0.end>day && $0.start<nextDay && valid($0) }
+    @State private var computedEpisodes:[GPSHistoryEpisode] = []
+    @State private var computedAssigned:TimeInterval = 0
+    @State private var preparing = false
+    @State private var calculationGeneration = UUID()
+
+    /// Classify journeys, stays and canonicalized time on a utility queue.
+    /// Reopening the same day displays its list while a new snapshot loads.
+    private func refreshDay() {
+        let id = UUID()
+        calculationGeneration = id
+        if computedEpisodes.isEmpty { preparing = true }
+        let allFixes = fixes
+        let allIntervals = intervals
+        let breaks = model.data.manualBreaks
+        let start = day
+        let end = nextDay
+        DispatchQueue.global(qos:.utility).async {
+            let episodes = GPSHistoryGrouping.episodes(allFixes,manualBreaks:breaks)
+                .filter { $0.end > start && $0.start < end && Self.valid($0) }
+            let totals = TimeAttribution.byCell(
+                allIntervals,window:DateInterval(start:start,end:end))
+            let assigned = totals.values.reduce(0,+)
+            DispatchQueue.main.async {
+                guard calculationGeneration == id else { return }
+                computedEpisodes = episodes
+                computedAssigned = assigned
+                preparing = false
+            }
+        }
     }
-    private func valid(_ ep:GPSHistoryEpisode) -> Bool {
+
+    private static func valid(_ ep:GPSHistoryEpisode) -> Bool {
         guard ep.points.count>=2,ep.duration>0 else { return false }
         if ep.kind == .stay { return ep.duration>=5*60 }
         let distance=zip(ep.points,ep.points.dropFirst())
             .reduce(0.0) { $0+GPSHistoryGrouping.distance($1.0,$1.1) }
         return ep.duration>=30 && distance>=65
     }
-    private var assigned:TimeInterval {
-        let rows=TimeAttribution.byCell(intervals,window:DateInterval(start:day,end:nextDay))
-        return rows.values.reduce(0,+)
-    }
+
     private func label(_ point: GPSHistoryFix?) -> String {
         guard let point else { return "ubicación desconocida" }
         let cell=Grid.cell(latitude:point.latitude,longitude:point.longitude)
@@ -36,17 +60,20 @@ struct GPSDayView: View {
     var body: some View {
         List {
             Section("Resumen del día") {
-                LabeledContent("Tiempo atribuido",value:DurationFormat.full(assigned))
-                LabeledContent("Estancias y trayectos reconocibles",value:String(episodes.count))
+                LabeledContent("Tiempo atribuido",value:DurationFormat.full(computedAssigned))
+                LabeledContent("Estancias y trayectos reconocibles",value:String(computedEpisodes.count))
                 Text("Las lagunas GPS se mantienen sin atribuir. Las paradas y trayectos se reconocen de manera aproximada, a partir de las muestras disponibles.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             Section("Cronología") {
-                if episodes.isEmpty {
+                if preparing && computedEpisodes.isEmpty {
+                    ProgressView("Preparando estancias y trayectos…")
+                }
+                if !preparing && computedEpisodes.isEmpty {
                     Text("No hay estancias o desplazamientos suficientemente largos para clasificar con confianza.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
-                ForEach(episodes) { episode in
+                ForEach(computedEpisodes) { episode in
                     NavigationLink {
                         GPSReplayShell(episode:episode,intervals:intervals)
                     } label: {
@@ -96,5 +123,8 @@ struct GPSDayView: View {
             }
         }
         .navigationTitle(day.formatted(.dateTime.day().month().year().locale(Locale(identifier:"es_ES"))))
+        .onAppear { refreshDay() }
+        .onChange(of:model.data.manualBreaks) { _,_ in refreshDay() }
+        .onChange(of:model.data.intervals.count) { _,_ in refreshDay() }
     }
 }
