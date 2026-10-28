@@ -1,34 +1,27 @@
-# TTActualidad Desktop · Windows (primer paquete)
+# TTActualidad Windows — rediseño moderno
 
-Aplicación de escritorio **Windows**. No abre ni requiere el antiguo sitio web de TTActualidad. La app nativa del iPhone sigue funcionando sin cambios.
+Aplicación de escritorio nativa para Windows con interfaz Qt, conectada a GitHub directamente. El código de la versión antigua Tkinter queda como capa de lectura, normalización y compatibilidad. **El iPhone permanece intacto**.
 
-## Instalar
+## Qué cambia
 
-1. Descarga el artefacto **TTActualidad-Windows-Portable-EXE** del workflow «TTActualidad Windows - EXE».
-2. Descomprime el ZIP y ejecuta `TTActualidad.exe` en Windows 10/11. No hace falta instalar Python, Node, Chrome ni mantener una web o Worker activo.
-3. La primera vez, pulsa **Conectar GitHub** e introduce el **Client ID público** de la misma GitHub App configurada en el iPhone. Autoriza en GitHub con el código que se abre en el navegador. El token se guarda mediante Windows Credential Manager (`keyring`), no en un archivo de texto.
-4. Usa **Actualizar desde GitHub** para sincronizar; la ventana también consulta cada dos minutos mientras permanece abierta.
+- Nueva barra lateral con 9 secciones; tarjetas editoriales para noticias y tendencias; panel de lectura sin URLs kilométricas; resumen de Listas, elaboración y publicaciones de las últimas 24 h.
+- Botones habilitados solo según estado: Desestimar en elaboración, Quitar de Listas/Marcar publicada en Listas; publicación en X solo abre el borrador.
+- Foto de archivo contextual cuando la fuente proporciona una URL HTTPS de imagen válida.
+- Autenticación independiente de iPhone: botón Conectar GitHub y token personal de alcance limitado al repositorio. Los tokens se guardan en Windows Credential Manager. No se guardan claves en archivos ni en GitHub.
+- Sin Cloudflare Worker, ni web externa de TTActualidad, ni navegador integrado; GitHub sigue siendo la autoridad editorial.
 
-## Funciones disponibles
+## Descargas
 
-- Noticias: Listas, En elaboración, Revisión, Creciendo, Tremending.
-- Tendencias: Top 30, Listas, En elaboración.
-- Vista conjunta **Todas las Listas**, buscador, panel de detalles, contadores, publicaciones confirmadas de últimas 24 h.
-- **+ Noticia**, **Elaborar/Reelaborar**, **Desestimar**, **Quitar de Listas**, **Marcar publicada** envían los mismos eventos `ttactualidad_manual_news_v1` y `ttactualidad_action_v1` que la aplicación iPhone. GitHub siempre valida ID, revisión y estado.
-- **Publicar en X** abre el borrador en el navegador, sin suponer publicación; **Copiar texto**, abrir fuente y ChatGPT Images.
-- Las respuestas HTTP 204 **solo confirman recepción de solicitud**. Nada se marca como publicado/elaborado sin que los archivos de GitHub lo confirmen tras sincronizar.
+- **TTActualidad-Windows-Portable-EXE:** ejecutable portable con interfaz moderna. No dispone de firma de código; la empresa puede bloquearlo.
+- **TTActualidad-Windows-Sin-EXE:** ZIP de código fuente con la aplicación .pyw. Requiere Python 3.12 y las dependencias de requirements.txt; sigue sujeto a las políticas corporativas. Consulta GUIA-WINDOWS-SIN-EXE.md.
 
-**Pendiente de paridad completa**: algunas opciones avanzadas de la app iOS (fotos de archivo integradas en la interfaz, aportación de pistas, agrupación y órdenes editoriales manuales) aún no tienen controles propios en Windows. El programa muestra sus datos editoriales, pero no debe anunciarse como clon exacto.
+## Conexión GitHub desde Windows
+
+Pulsa Conectar GitHub y crea un fine-grained personal access token desde GitHub. Selecciona **solo** fabricelop/europapress-rss y permiso Contents: Read and write. Introduce el token una sola vez en la app. La lectura funciona sin token; las acciones se autentican y su aceptación HTTP 204 no equivale a publicación real. El estado se verifica mediante nueva lectura de los JSON autoritativos.
 
 ## Seguridad e infraestructura
 
-- Nunca almacena contraseñas, PAT ni secretos de Cloudflare en el repositorio o en el EXE.
-- El Client ID es público y se guarda en `%APPDATA%\\TTActualidad\\desktop.json`. Los tokens OAuth se guardan en **Credential Manager**.
-- Los datos proceden exclusivamente de `raw.githubusercontent.com/fabricelop/europapress-rss/main/`. Acciones autorizadas a `api.github.com/repos/fabricelop/europapress-rss/dispatches`.
-- Sin web alojada, sin procesos persistentes cuando está cerrado, sin Worker, KV o servidor local.
-- Si una fuente no responde, **no se sustituye toda la pantalla por cero**. La actualización parcial no reemplaza el último estado ya validado.
-- Para el borrado de la web antigua, usar el procedimiento separado `Retirar-Web-Antigua.ps1` solo después de instalar y verificar la versión Windows; no borrar ningún Worker de TTendencias, TTiTTulares o Instagram.
-
-## Compilación
-
-`.github/workflows/ttactualidad-windows.yml` compila en `windows-latest` mediante PyInstaller y publica un EXE portable (sin firma digital). Es normal que Windows SmartScreen muestre una advertencia para binarios sin firmar.
+- La app no modifica URGENTE, ChatGPT Images ni los Workers de otros proyectos.
+- No retirar el Worker anterior ni la web antigua hasta verificar completamente la nueva versión en el ordenador.
+- Las consultas JSON se ejecutan fuera del hilo de UI; un fallo de red no sustituye el estado anterior por listas vacías.
+- La versión Windows es una alternativa al iPhone y puede seguir evolucionando sin cambiar su funcionamiento.
