@@ -5405,7 +5405,7 @@
       "event_id": "manual-93d249bc-bcf2-4ce1-95a1-0682bd12719e",
       "title": "Actualiza con las última noticias del accidente de tren en Toledo",
       "url": "",
-      "status": "PROCESSING",
+      "status": "PROBLEMATIC",
       "revision": 1,
       "selected_at": "2026-10-28T10:27:33.665079Z",
       "requested_at": "2026-10-28T10:27:33.665079Z",
@@ -5421,8 +5421,11 @@
       "rewrite_request": "",
       "with_image": true,
       "image_mode": "ai_plus_fallback",
-      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY."
+      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY.",
+      "problematic_at": "2026-10-28T10:34:28.545918Z",
+      "problem_reason": "transport_write_blocked",
+      "problematic_attempts": 1
     }
   ],
-  "updated_at": "2026-10-28T10:27:33.665079Z"
+  "updated_at": "2026-10-28T10:34:28.545918Z"
 }
