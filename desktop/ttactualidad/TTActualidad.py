@@ -66,6 +66,20 @@ def norm(value):
     value="".join(c for c in value if unicodedata.category(c)!="Mn")
     return " ".join(value.split())
 
+def archive_url(docs,project,event_id,revision,raw):
+    url=(docs.get("archive_photos") or {}).get(
+        project+":"+text(event_id)+":r"+str(revision))
+    if url:
+        return url
+    raw=text(raw)
+    if not raw.startswith("https://"):
+        return ""
+    path=raw.lower()
+    if ("chatgpt.com" in path or "generated-images" in path
+            or "ai-image" in path or "/images/ai/" in path):
+        return ""
+    return raw
+
 def latest_rows(items, key):
     latest = {}
     for item in items or []:
@@ -96,7 +110,8 @@ def normalise(docs):
         archive = item.get("archive_image") or item.get("fallback_image") or {}
         ready_news.append({"project":"ttittulares","id":ident,"revision":int(item.get("revision") or 0),
             "title":text(item.get("title")), "body":text(tweet.get("text")) or text(item.get("explanation") or item.get("factual_summary")),
-            "state":"Listas", "category":"Noticias", "source":text(item.get("url")), "image":text(archive.get("url"))})
+            "state":"Listas", "category":"Noticias", "source":text(item.get("url")),
+            "image":archive_url(docs,"ttittulares",ident,item.get("revision") or 0,archive.get("url"))})
     active = [x for x in rows(docs["news_queue"]) if text(x.get("status")).upper() in NEWS_ACTIVE]
     if not active:
         active = rows(docs["status"], "processing_items")
@@ -157,7 +172,11 @@ def normalise(docs):
             continue
         trend_ready.append({"project":"ttendencias","id":ident,"revision":rev,"title":text(x.get("name") or req.get("name")),
             "body":text(x.get("explanation")), "state":"Listas","category":"Tendencias",
-            "source":text(x.get("source_url")), "image":text(x.get("archive_image_url")), "rank":int(x.get("rank") or req.get("rank") or 0)})
+            "source":text(x.get("source_url")),
+            "image":archive_url(docs,"ttendencias",ident,rev,
+                                (x.get("archive_image") or x.get("fallback_image") or {}).get("url")
+                                or x.get("archive_image_url")),
+            "rank":int(x.get("rank") or req.get("rank") or 0)})
     # Listas uses the SAME authoritative manual ledger as iPhone.
     # Staged-only prepared snapshots are intentionally not promoted to Listas.
     readyIDs = {x["id"] for x in trend_ready}
@@ -241,7 +260,8 @@ def normalise(docs):
         archive=exp.get("archive_image") or exp.get("fallback_image") or {}
         trending.append({"project":"ttendencias","id":ident,"revision":int(req.get("revision") or exp.get("revision") or 0),
             "title":name,"body":explanation,"state":"Top 30","category":"Top 30","rank":rank,
-            "source":text(req.get("source_url") or exp.get("source_url")),"image":text(archive.get("url")),
+            "source":text(req.get("source_url") or exp.get("source_url")),
+            "image":archive_url(docs,"ttendencias",ident,int(req.get("revision") or exp.get("revision") or 0),archive.get("url")),
             "trend_status":status,"inListas":key in ready_names})
     lb = now - dt.timedelta(hours=24)
     published = set()
