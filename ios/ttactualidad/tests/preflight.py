@@ -298,9 +298,10 @@ assert 'if let fresh = await memory.fresh()' in catalog
 assert 'Date().timeIntervalSince(modified) < 600' in catalog
 assert 'TimelineView(.periodic(from: .now, by: 60))' in dashboard
 assert 'TimelineView(.periodic(from: .now, by: 1))' not in dashboard
-# User-configurable project chat opens only through iOS universal links.
-assert 'TTActualidad.chatGPTProjectLink.v1' in actions
-assert 'openEditorialChat()' in actions
-assert '.universalLinksOnly: true' in actions
+# Keep urgent/manual ChatGPT and ChatGPT Images navigation unchanged.
+assert 'launchUrgentEditorial()' in actions
+assert 'openChatGPTApp()' in actions
+assert 'TTActualidad.chatGPTProjectLink.v1' not in actions
+assert 'openEditorialChat()' not in actions
 assert 'quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/images")' in actions
-print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_AND_PROJECT_LINK_PREFLIGHT_OK")
+print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
