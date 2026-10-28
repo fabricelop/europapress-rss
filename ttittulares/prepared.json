@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-28T10:22:50.866Z",
+  "updated_at": "2026-10-28T10:26:07.588788Z",
   "items": [
     {
       "event_id": "298ffa510165",
@@ -44,8 +44,8 @@
       "category": "sucesos",
       "source": "editorial_chat_direct",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "none",
       "archive_image_status": "none",
       "fallback_image_status": "none",
@@ -100,8 +100,8 @@
       "category": "politica",
       "source": "editorial_chat_direct",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "none",
       "archive_image_status": "ready",
       "fallback_image_status": "none",
@@ -158,15 +158,34 @@
       "category": "sucesos",
       "source": "editorial_chat_direct",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "none",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-28T10:26:07.588788Z",
+      "fallback_image_search_attempted_at": "2026-10-28T10:26:07.588788Z",
+      "archive_image": {
+        "url": "https://static.eldiario.es/clip/390f1269-083d-4733-91bb-3bc9f4327ed7_facebook-aspect-ratio-1200-675_default_0.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/extremadura/politica/guardiola-ofrece-apoyo-castilla-mancha-accidente-ferroviario-toledo-diez-fallecidos_1_13620895.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Guardiola ofrece apoyo a Castilla-La Mancha tras el accidente ferroviario de Toledo con al menos diez fallecidos"
+      },
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/390f1269-083d-4733-91bb-3bc9f4327ed7_facebook-aspect-ratio-1200-675_default_0.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/extremadura/politica/guardiola-ofrece-apoyo-castilla-mancha-accidente-ferroviario-toledo-diez-fallecidos_1_13620895.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Guardiola ofrece apoyo a Castilla-La Mancha tras el accidente ferroviario de Toledo con al menos diez fallecidos"
+      },
+      "archive_image_status": "ready"
     }
   ],
   "count": 0,
