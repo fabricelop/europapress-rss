@@ -16,29 +16,30 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T17:40:00+01:00",
-  "last_completed_at": "2026-10-28T17:45:00+01:00",
-  "updated_at": "2026-10-28T17:45:00+01:00",
+  "last_started_at": "2026-10-28T17:55:00+01:00",
+  "last_completed_at": "2026-10-28T17:59:20+01:00",
+  "updated_at": "2026-10-28T17:59:20+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261028T1725-chat",
-    "status": "requested",
-    "editorial_blocking": false
+    "trigger_run_id": "tr-chat-20261028-1755-vete",
+    "status": "in_progress",
+    "editorial_blocking": false,
+    "workflow_run_id": 40730787510
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261028T1740-chat",
+    "run_id": "tr-chat-20261028-1755-vete",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-28T17:40:00+01:00",
-    "updated_at": "2026-10-28T17:45:00+01:00",
-    "finished_at": "2026-10-28T17:45:00+01:00",
+    "started_at": "2026-10-28T17:55:00+01:00",
+    "updated_at": "2026-10-28T17:59:20+01:00",
+    "finished_at": "2026-10-28T17:59:20+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -82,74 +83,73 @@
         "name": "Vete",
         "revision": 0,
         "type": "problematic",
-        "message": "No se ha podido verificar con suficiente fiabilidad el detonante exacto del término «Vete» tras búsquedas actuales y alternativas; se conserva para reintento mientras siga en Top 10."
+        "message": "No se ha podido verificar con suficiente fiabilidad el detonante exacto del término «Vete» tras un nuevo juego de búsquedas actuales y alternativas; se conserva para reintento mientras siga en Top 10."
       }
     ],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 30
+    },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T17:40:00+01:00",
+        "at": "2026-10-28T17:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual · verificando cola autoritativa y saneamiento de Pendientes."
+        "message": "Preparando pasada editorial · 1 entrada candidata"
       },
       {
-        "at": "2026-10-28T17:41:20+01:00",
+        "at": "2026-10-28T17:56:00+01:00",
         "phase": "verifying",
         "trend_id": "f14d2fe3a09a",
         "title": "Vete",
         "message": "Releyendo estado autoritativo de Vete"
       },
       {
-        "at": "2026-10-28T17:41:35+01:00",
+        "at": "2026-10-28T17:56:20+01:00",
         "phase": "investigating",
         "trend_id": "f14d2fe3a09a",
         "title": "Vete",
-        "message": "Buscando detonante actual de Vete"
+        "message": "Buscando detonante actual de Vete con consultas nuevas"
       },
       {
-        "at": "2026-10-28T17:42:00+01:00",
+        "at": "2026-10-28T17:58:00+01:00",
         "phase": "investigating",
-        "message": "Contrastando fuente 1/2 · búsquedas sobre Vete, Óscar Puente y Urda",
         "trend_id": "f14d2fe3a09a",
-        "title": "Vete"
+        "title": "Vete",
+        "message": "Contrastando fuente 2/2 · no aparece una atribución fiable del término Vete"
       },
       {
-        "at": "2026-10-28T17:42:30+01:00",
+        "at": "2026-10-28T17:59:00+01:00",
         "phase": "investigating",
-        "message": "Contrastando fuente 2/2 · búsquedas alternativas y fuentes de tendencias",
         "trend_id": "f14d2fe3a09a",
-        "title": "Vete"
+        "title": "Vete",
+        "message": "Detonante exacto no verificado · se evita atribuir Vete sin fuente fiable"
       },
       {
-        "at": "2026-10-28T17:43:00+01:00",
-        "phase": "investigating",
-        "message": "Detonante exacto no verificado · se evita atribuir Vete sin fuente fiable",
-        "trend_id": "f14d2fe3a09a",
-        "title": "Vete"
-      },
-      {
-        "at": "2026-10-28T17:43:20+01:00",
+        "at": "2026-10-28T17:59:30+01:00",
         "phase": "persisting",
         "trend_id": "f14d2fe3a09a",
         "title": "Vete",
-        "message": "Resultado problematic guardado; esperando aplicación del outbox"
+        "message": "Resultado problematic persistido · verificando aplicador editorial"
       },
       {
-        "at": "2026-10-28T17:44:30+01:00",
+        "at": "2026-10-28T17:59:10+01:00",
         "phase": "verifying",
         "trend_id": "f14d2fe3a09a",
         "title": "Vete",
-        "message": "Releyendo main · Vete figura problematic y no quedan preparing/update"
+        "message": "Releyendo main · sin preparing/update ni rewrite_pending"
       },
       {
-        "at": "2026-10-28T17:45:00+01:00",
+        "at": "2026-10-28T17:59:20+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada con 1 problematic pendiente de reintento; sin preparing/update ni rewrite_pending."
+        "message": "TTendencias cerrada con 1 problematic pendiente de reintento; cola activa vacía."
       }
     ],
     "processed_ids": [
@@ -170,7 +170,7 @@
       }
     ]
   },
-  "run_id": "tr-20261028T1740-chat",
+  "run_id": "tr-chat-20261028-1755-vete",
   "summary": {
     "attempted": 1,
     "ready": 0,
@@ -204,71 +204,64 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T17:40:00+01:00",
+      "at": "2026-10-28T17:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual · verificando cola autoritativa y saneamiento de Pendientes."
+      "message": "Preparando pasada editorial · 1 entrada candidata"
     },
     {
-      "at": "2026-10-28T17:41:20+01:00",
+      "at": "2026-10-28T17:56:00+01:00",
       "phase": "verifying",
       "trend_id": "f14d2fe3a09a",
       "title": "Vete",
       "message": "Releyendo estado autoritativo de Vete"
     },
     {
-      "at": "2026-10-28T17:41:35+01:00",
+      "at": "2026-10-28T17:56:20+01:00",
       "phase": "investigating",
       "trend_id": "f14d2fe3a09a",
       "title": "Vete",
-      "message": "Buscando detonante actual de Vete"
+      "message": "Buscando detonante actual de Vete con consultas nuevas"
     },
     {
-      "at": "2026-10-28T17:42:00+01:00",
+      "at": "2026-10-28T17:58:00+01:00",
       "phase": "investigating",
-      "message": "Contrastando fuente 1/2 · búsquedas sobre Vete, Óscar Puente y Urda",
       "trend_id": "f14d2fe3a09a",
-      "title": "Vete"
+      "title": "Vete",
+      "message": "Contrastando fuente 2/2 · no aparece una atribución fiable del término Vete"
     },
     {
-      "at": "2026-10-28T17:42:30+01:00",
+      "at": "2026-10-28T17:59:00+01:00",
       "phase": "investigating",
-      "message": "Contrastando fuente 2/2 · búsquedas alternativas y fuentes de tendencias",
       "trend_id": "f14d2fe3a09a",
-      "title": "Vete"
+      "title": "Vete",
+      "message": "Detonante exacto no verificado · se evita atribuir Vete sin fuente fiable"
     },
     {
-      "at": "2026-10-28T17:43:00+01:00",
-      "phase": "investigating",
-      "message": "Detonante exacto no verificado · se evita atribuir Vete sin fuente fiable",
-      "trend_id": "f14d2fe3a09a",
-      "title": "Vete"
-    },
-    {
-      "at": "2026-10-28T17:43:20+01:00",
+      "at": "2026-10-28T17:59:30+01:00",
       "phase": "persisting",
       "trend_id": "f14d2fe3a09a",
       "title": "Vete",
-      "message": "Resultado problematic guardado; esperando aplicación del outbox"
+      "message": "Resultado problematic persistido · verificando aplicador editorial"
     },
     {
-      "at": "2026-10-28T17:44:30+01:00",
+      "at": "2026-10-28T17:59:10+01:00",
       "phase": "verifying",
       "trend_id": "f14d2fe3a09a",
       "title": "Vete",
-      "message": "Releyendo main · Vete figura problematic y no quedan preparing/update"
+      "message": "Releyendo main · sin preparing/update ni rewrite_pending"
     },
     {
-      "at": "2026-10-28T17:45:00+01:00",
+      "at": "2026-10-28T17:59:20+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada con 1 problematic pendiente de reintento; sin preparing/update ni rewrite_pending."
+      "message": "TTendencias cerrada con 1 problematic pendiente de reintento; cola activa vacía."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-20261028T1710-chat",
+  "previous_run_id": "tr-20261028T1740-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -285,6 +278,12 @@
       "status": "problematic"
     }
   ],
-  "pending_delivery_count": 2,
-  "error": null
+  "pending_delivery_count": 1,
+  "error": null,
+  "apply_workflow": {
+    "run_id": 40731153558,
+    "status": "in_progress",
+    "conclusion": null,
+    "editorial_blocking": false
+  }
 }
