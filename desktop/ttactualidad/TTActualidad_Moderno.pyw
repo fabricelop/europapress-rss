@@ -17,7 +17,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import keyring
 from PySide6.QtCore import QObject, Qt, QTimer, Signal, QSize
-from PySide6.QtGui import QFont, QPixmap, QDesktopServices
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QApplication, QWidget, QFrame, QLabel, QPushButton, QLineEdit, QVBoxLayout,
     QHBoxLayout, QGridLayout, QScrollArea, QTextBrowser, QDialog, QDialogButtonBox,
@@ -137,7 +137,7 @@ def safe_url(url):
 
 def stored_session():
     try: return json.loads(keyring.get_password(KEYRING_SERVICE,SERVICE_KEY) or "{}")
-    except (ValueError,TypeError): return {}
+    except Exception: return {}
 
 def session_token():
     data=stored_session()
@@ -508,7 +508,7 @@ class MainWindow(QWidget):
             card=frame("rowCard")
             card.setCursor(Qt.PointingHandCursor)
             cc=col_layout(card,7,(13,12,13,11))
-            line=row_layout(8)
+            line=row_layout(spacing=8)
             kind="NOTICIA" if item["project"]=="ttittulares" else "TENDENCIA"
             cap=label(kind+"  ·  "+item["state"].upper(),"eyebrow")
             line.addWidget(cap)
