@@ -25,23 +25,28 @@ enum GPSPlaybackPosition {
     static func at(_ date: Date, in fixes: [GPSHistoryFix]) -> GPSPlaybackPosition {
         guard let first = fixes.first, let last = fixes.last,
               date >= first.date, date <= last.date else { return .unavailable }
-        for index in fixes.indices {
-            let b = fixes[index]
-            if date == b.date {
-                return .observed(latitude: b.latitude, longitude: b.longitude)
-            }
-            if date < b.date {
-                guard index > 0 else { return .unavailable }
-                let a = fixes[index - 1]
-                guard GPSHistoryGrouping.connected(a, b),
-                      PlaybackGapPolicy.canInterpolate(seconds: b.date.timeIntervalSince(a.date)) else {
-                    return .unavailable
-                }
-                let f = date.timeIntervalSince(a.date) / b.date.timeIntervalSince(a.date)
-                return .interpolated(latitude: a.latitude + (b.latitude - a.latitude) * f,
-                                     longitude: a.longitude + (b.longitude - a.longitude) * f)
-            }
+        // Playback can advance 4 times per second. Locate the bracketing
+        // GPS fix in logarithmic time instead of scanning every fix per frame.
+        var low = 0
+        var high = fixes.count
+        while low < high {
+            let mid = low + (high - low) / 2
+            if fixes[mid].date < date { low = mid + 1 }
+            else { high = mid }
         }
+        guard low < fixes.count else { return .unavailable }
+        let b = fixes[low]
+        if date == b.date {
+            return .observed(latitude:b.latitude,longitude:b.longitude)
+        }
+        guard low > 0 else { return .unavailable }
+        let a = fixes[low-1]
+        guard GPSHistoryGrouping.connected(a,b),
+              PlaybackGapPolicy.canInterpolate(seconds:b.date.timeIntervalSince(a.date))
+              else { return .unavailable }
+        let f = date.timeIntervalSince(a.date) / b.date.timeIntervalSince(a.date)
+        return .interpolated(latitude:a.latitude + (b.latitude - a.latitude) * f,
+                             longitude:a.longitude + (b.longitude - a.longitude) * f)
         return .unavailable
     }
 }
