@@ -13,18 +13,24 @@ struct TimeZonesPanel: View {
     private var values: [String:TimeInterval] {
         model.periodTotals()
     }
-    var body: some View {
-        let totals = values
-        let rankedZones = model.visibleZones.map { zone in
-            TimeRankedZone(zone:zone,seconds:zone.cells.reduce(0) {
-                $0 + (totals[$1] ?? 0)
-            })
-        }.sorted {
-            $0.seconds == $1.seconds
-                ? $0.zone.name.localizedStandardCompare($1.zone.name) == .orderedAscending
-                : $0.seconds > $1.seconds
+    /// Cache each zone's total once per render; compare scalar values,
+    /// never rescan every cell inside the sorting comparator.
+    private var rankedZones: [TimeRankedZone] {
+        let totals: [String:TimeInterval] = values
+        let zones: [TimeCustomZone] = model.visibleZones
+        let entries: [TimeRankedZone] = zones.map { zone -> TimeRankedZone in
+            var seconds: TimeInterval = 0
+            for id in zone.cellIDs { seconds += totals[id] ?? 0 }
+            return TimeRankedZone(zone:zone,seconds:seconds)
         }
-        return VStack(alignment:.leading,spacing:12) {
+        return entries.sorted { left,right -> Bool in
+            if left.seconds != right.seconds { return left.seconds > right.seconds }
+            return left.zone.name.localizedStandardCompare(right.zone.name) == .orderedAscending
+        }
+    }
+
+    var body: some View {
+        VStack(alignment:.leading,spacing:12) {
             HStack {
                 VStack(alignment:.leading,spacing:4) {
                     Text("Mis zonas").font(.headline)
