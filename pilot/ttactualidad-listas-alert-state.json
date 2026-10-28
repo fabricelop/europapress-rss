@@ -3,9 +3,9 @@
   "initialized": true,
   "lists": {
     "ttittulares": {
-      "count": 0,
-      "armed": true,
-      "sequence": 0
+      "count": 4,
+      "armed": false,
+      "sequence": 1
     },
     "ttendencias": {
       "count": 0,
@@ -13,5 +13,13 @@
       "sequence": 0
     }
   },
-  "outbox": []
+  "outbox": [
+    {
+      "id": "ttittulares-1",
+      "project": "ttittulares",
+      "count": 4,
+      "at": "2026-10-28T08:09:14.267001+00:00",
+      "status": "pending"
+    }
+  ]
 }
