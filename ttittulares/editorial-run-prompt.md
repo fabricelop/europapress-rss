@@ -196,7 +196,7 @@ La pasada editorial no abre directamente el chat visual ni espera a ImageGen: la
 
 ## Outbox editorial
 
-Publica cada resultado editorial mediante un comentario del PR #2:
+Publica cada resultado editorial mediante un comentario del **issue de transporte #164** (buzón autoritativo vigente), que dispara el mismo workflow `ttittulares-outbox-comment-ingest.yml` y el mismo aplicador que los comentarios del PR #2. **No publiques nuevos outboxes en el PR #2**: GitHub rechaza la creación de comentarios cuando el issue supera 2.500 comentarios (HTTP 403). El PR #2 permanece abierto y NO se fusiona; sigue siendo referencia de control y RUNTRACE, pero no es el transporte de nuevas noticias. El issue #164 está admitido explícitamente tanto por el workflow como por `ingest_pr_outbox_comment.py`. No marques una noticia `transport_write_blocked` por un rechazo del PR #2: usa directamente #164 y verifica su ejecución; solo aplica el fallback si también se bloquea de verdad el transporte autorizado #164.
 
 `TTITTULARES_OUTBOX_V1`
 `<base64 del JSON UTF-8 en una línea>`
@@ -209,7 +209,7 @@ El `prepared_item` editorial debe ser completo en texto/tuit, pero NO debe conte
 
 ## Fallback obligatorio cuando el transporte del outbox es bloqueado
 
-Si la escritura normal del comentario `TTITTULARES_OUTBOX_V1` es rechazada por el canal/conector **antes de llegar a GitHub** (por ejemplo, un bloqueo de transporte asociado al contenido), no reintentes indefinidamente el mismo payload ni dejes la entrada en `PROCESSING`.
+Si la escritura normal del comentario `TTITTULARES_OUTBOX_V1` en el issue #164 es rechazada por el canal/conector **antes de llegar a GitHub** (por ejemplo, un bloqueo de transporte asociado al contenido), no reintentes indefinidamente el mismo payload ni dejes la entrada en `PROCESSING`.
 
 1. Relee JIT `editorial-queue.json`, `status.json`, `prepared.json` y `decisions.json`. Si la revisión ya no está activa, sáltala.
 2. Si sigue activa, envía un outbox mínimo, sin repetir titular, resumen ni contenido sensible: 
