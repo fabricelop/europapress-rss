@@ -50,7 +50,8 @@ def request(url, method="GET", data=None, token="", form=False, timeout=17):
 
 def date(value):
     try:
-        return dt.datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        parsed = dt.datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=dt.timezone.utc)
     except (ValueError, TypeError):
         return None
 
@@ -403,7 +404,8 @@ class TTActualidad(tk.Tk):
                         raise ValueError(result.get("error_description") or "Autorización rechazada.")
                 raise TimeoutError("El código de GitHub ha caducado.")
             except Exception as exc:
-                self.ui(lambda:self.notice.set("Conexión GitHub: "+str(exc)))
+                err = str(exc)
+                self.ui(lambda:self.notice.set("Conexión GitHub: "+err))
         threading.Thread(target=work,daemon=True).start()
 
     def submit(self,event,payload,detail):
@@ -420,7 +422,8 @@ class TTActualidad(tk.Tk):
                 self.ui(lambda:self.notice.set("GitHub recibió la solicitud "+rid[:8]+" · pendiente de verificación; no se marca como completada."))
                 self.ui(lambda:self.after(7000,self.refresh))
             except Exception as exc:
-                self.ui(lambda:self.notice.set(detail+": "+str(exc)))
+                err = str(exc)
+                self.ui(lambda:self.notice.set(detail+": "+err))
             finally:
                 self.ui(lambda:setattr(self,"sending",False))
         threading.Thread(target=work,daemon=True).start()
