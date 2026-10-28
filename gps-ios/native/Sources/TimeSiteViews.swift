@@ -477,7 +477,7 @@ struct TimeMySitesView: View {
         let parts=model.data.siteStayParts
         let legacy=model.data.siteStayAssignments
         let sites=model.data.identifiedSites
-        DispatchQueue.global(qos:.userInitiated).async {
+        DispatchQueue.global(qos:.utility).async {
             let statistics=SiteStayTotals.calculate(intervals:raw,parts:parts,
                                                    assignments:legacy)
             let records=SiteVisitLookup.index(intervals:raw,parts:parts,
