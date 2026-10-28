@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "b7839978cb6c"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T23:40:00+01:00",
-  "last_completed_at": "2026-10-28T23:44:20+01:00",
-  "updated_at": "2026-10-28T23:44:20+01:00",
+  "last_started_at": "2026-10-28T23:49:00+01:00",
+  "last_completed_at": "2026-10-28T23:53:30+01:00",
+  "updated_at": "2026-10-28T23:53:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T232500+0100",
+    "trigger_run_id": "tr-1793227663109-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,12 +28,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T234000+0100",
+    "run_id": "tr-1793227663109-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T23:40:00+01:00",
-    "updated_at": "2026-10-28T23:44:20+01:00",
+    "started_at": "2026-10-28T23:49:00+01:00",
+    "updated_at": "2026-10-28T23:53:30+01:00",
+    "finished_at": "2026-10-28T23:53:30+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -46,8 +49,8 @@
       "inactive_after_retry": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
-      "discovered_during_run": 1,
+      "initial_compact_queue": 1,
+      "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
@@ -56,12 +59,12 @@
       "rewrite_pending_remaining": 0,
       "explanations_verified_under_280": 1,
       "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 1,
+      "remates_omitted": 2,
+      "recent_missing_closer_reviewed": 2,
+      "pending_visual_candidates_reviewed": 3,
       "incidents": 0
     },
-    "message": "TTendencias cerrada · 1/1; cola final 0 y sin reexplicaciones pendientes.",
+    "message": "TTendencias cerrada · 1/1; Falange r0 explicada y verificada, cola final 0 y sin reexplicaciones pendientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -71,129 +74,148 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "b7839978cb6c",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "tragedy_with_victims"
+      },
+      {
+        "trend_id": "0c5d9449baf9",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "tragedy_with_victims"
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-28T23:40:00+01:00",
+        "at": "2026-10-28T23:49:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola inicial 0; verificando estado autoritativo y saneamiento pendiente."
+        "message": "Preparando pasada editorial · cola inicial 1; verificando estado autoritativo y saneamiento pendiente."
       },
       {
-        "at": "2026-10-28T23:40:10+01:00",
+        "at": "2026-10-28T23:49:25+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado mediante trigger dedicado."
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
+        "message": "Releyendo estado autoritativo de Falange"
       },
       {
-        "at": "2026-10-28T23:40:25+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 1 tarjeta reciente; reparación visual solicitada sin bloquear la pasada editorial."
-      },
-      {
-        "at": "2026-10-28T23:41:30+01:00",
-        "phase": "verifying",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
-        "message": "Releyendo estado autoritativo de #ObjetivoAccidente"
-      },
-      {
-        "at": "2026-10-28T23:41:45+01:00",
+        "at": "2026-10-28T23:49:40+01:00",
         "phase": "investigating",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-28T23:41:55+01:00",
+        "at": "2026-10-28T23:50:05+01:00",
         "phase": "investigating",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
-        "message": "Contrastando fuente 1/2 · laSexta"
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
+        "message": "Contrastando fuente 1/2 · EFE/eldiario.es"
       },
       {
-        "at": "2026-10-28T23:42:05+01:00",
+        "at": "2026-10-28T23:50:20+01:00",
         "phase": "investigating",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
-        "message": "Contrastando fuente 2/2 · programación especial"
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
+        "message": "Contrastando fuente 2/2 · laSexta"
       },
       {
-        "at": "2026-10-28T23:42:10+01:00",
+        "at": "2026-10-28T23:50:30+01:00",
         "phase": "investigating",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
-        "message": "Hecho esencial verificado · especial de El Objetivo sobre el accidente de Urda y su investigación."
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
+        "message": "Hecho esencial verificado · protesta frente a Transportes tras Urda con participación de Falange y Revuelta y cargas policiales."
       },
       {
-        "at": "2026-10-28T23:42:30+01:00",
+        "at": "2026-10-28T23:50:45+01:00",
         "phase": "drafting",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-28T23:42:40+01:00",
+        "at": "2026-10-28T23:50:55+01:00",
         "phase": "drafting",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
-        "message": "Comprobando límite de X · 201 caracteres"
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
+        "message": "Comprobando límite de X · 245 caracteres"
       },
       {
-        "at": "2026-10-28T23:42:50+01:00",
+        "at": "2026-10-28T23:51:05+01:00",
         "phase": "remate_selection",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
-        "message": "Sin remate · tragedia con víctimas"
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
+        "message": "Sin remate · tragedia con víctimas; se mantiene cierre factual"
       },
       {
-        "at": "2026-10-28T23:43:00+01:00",
+        "at": "2026-10-28T23:51:20+01:00",
         "phase": "persisting",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-28T23:43:10+01:00",
+        "at": "2026-10-28T23:51:40+01:00",
         "phase": "persisting",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-28T23:43:20+01:00",
+        "at": "2026-10-28T23:52:05+01:00",
         "phase": "persisting",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Retirando revisión de la cola"
       },
       {
-        "at": "2026-10-28T23:43:30+01:00",
+        "at": "2026-10-28T23:52:25+01:00",
         "phase": "verifying",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-28T23:44:10+01:00",
+        "at": "2026-10-28T23:52:45+01:00",
         "phase": "verifying",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-28T23:44:15+01:00",
+        "at": "2026-10-28T23:52:50+01:00",
         "phase": "verifying",
-        "trend_id": "0c5d9449baf9",
-        "title": "#ObjetivoAccidente",
+        "trend_id": "b7839978cb6c",
+        "title": "Falange",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-28T23:44:20+01:00",
+        "at": "2026-10-28T23:53:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 3 tarjetas recientes; reparación visual solicitada sin bloquear la pasada editorial."
+      },
+      {
+        "at": "2026-10-28T23:53:20+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main · cola 0, sin preparing/update ni reexplicaciones pendientes."
+      },
+      {
+        "at": "2026-10-28T23:53:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -201,7 +223,7 @@
       }
     ],
     "processed_ids": [
-      "0c5d9449baf9"
+      "b7839978cb6c"
     ],
     "partial": false,
     "queue_complete": true,
@@ -209,27 +231,26 @@
     "remaining_problematic_ids": [],
     "final_outcomes": [
       {
-        "id": "0c5d9449baf9",
-        "name": "#ObjetivoAccidente",
+        "id": "b7839978cb6c",
+        "name": "Falange",
         "revision": 0,
         "status": "explained",
-        "explained_at": "2026-10-28T23:43:00+01:00"
+        "explained_at": "2026-10-28T23:51:30+01:00"
       }
-    ],
-    "finished_at": "2026-10-28T23:44:20+01:00"
+    ]
   },
-  "run_id": "tr-chat-20261028T232500+0100",
+  "run_id": "tr-1793227663109-manual",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
+    "attempted": 1,
+    "ready": 1,
+    "explained": 1,
+    "final_resolved": 1,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "inactive_after_retry": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -237,52 +258,143 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 1,
     "remates_selected": 0,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
+    "remates_omitted": 2,
+    "recent_missing_closer_reviewed": 2,
     "pending_visual_candidates_reviewed": 3,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T23:25:00+01:00",
+      "at": "2026-10-28T23:49:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial · cola inicial 0; verificando estado autoritativo y saneamiento pendiente."
+      "message": "Preparando pasada editorial · cola inicial 1; verificando estado autoritativo y saneamiento pendiente."
     },
     {
-      "at": "2026-10-28T23:25:10+01:00",
+      "at": "2026-10-28T23:49:25+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Saneamiento visual de Pendientes solicitado mediante trigger dedicado."
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Releyendo estado autoritativo de Falange"
     },
     {
-      "at": "2026-10-28T23:25:30+01:00",
+      "at": "2026-10-28T23:49:40+01:00",
+      "phase": "investigating",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-28T23:50:05+01:00",
+      "phase": "investigating",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Contrastando fuente 1/2 · EFE/eldiario.es"
+    },
+    {
+      "at": "2026-10-28T23:50:20+01:00",
+      "phase": "investigating",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Contrastando fuente 2/2 · laSexta"
+    },
+    {
+      "at": "2026-10-28T23:50:30+01:00",
+      "phase": "investigating",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Hecho esencial verificado · protesta frente a Transportes tras Urda con participación de Falange y Revuelta y cargas policiales."
+    },
+    {
+      "at": "2026-10-28T23:50:45+01:00",
+      "phase": "drafting",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-28T23:50:55+01:00",
+      "phase": "drafting",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Comprobando límite de X · 245 caracteres"
+    },
+    {
+      "at": "2026-10-28T23:51:05+01:00",
+      "phase": "remate_selection",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Sin remate · tragedia con víctimas; se mantiene cierre factual"
+    },
+    {
+      "at": "2026-10-28T23:51:20+01:00",
+      "phase": "persisting",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-28T23:51:40+01:00",
+      "phase": "persisting",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-28T23:52:05+01:00",
+      "phase": "persisting",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-28T23:52:25+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main · cola 0, sin preparing/update, sin problematic en Top 10 y sin reexplicaciones pendientes."
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Releyendo main"
     },
     {
-      "at": "2026-10-28T23:25:45+01:00",
+      "at": "2026-10-28T23:52:45+01:00",
+      "phase": "verifying",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-28T23:52:50+01:00",
+      "phase": "verifying",
+      "trend_id": "b7839978cb6c",
+      "title": "Falange",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-28T23:53:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Revisando Pendientes · 3 tarjetas recientes; reparación visual solicitada sin bloquear la pasada editorial."
     },
     {
-      "at": "2026-10-28T23:26:00+01:00",
+      "at": "2026-10-28T23:53:20+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main · cola 0, sin preparing/update ni reexplicaciones pendientes."
+    },
+    {
+      "at": "2026-10-28T23:53:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 0/0; cola final 0 y sin reexplicaciones pendientes."
+      "message": "TTendencias cerrada · 1/1; cola final 0 y sin reexplicaciones pendientes."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-1793224860541-manual",
+  "previous_run_id": "tr-chat-20261028T234000+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -290,8 +402,35 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [],
-  "final_outcomes": [],
+  "remate_selections": [
+    {
+      "trend_id": "b7839978cb6c",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "tragedy_with_victims"
+    },
+    {
+      "trend_id": "0c5d9449baf9",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "tragedy_with_victims"
+    }
+  ],
+  "final_outcomes": [
+    {
+      "id": "b7839978cb6c",
+      "name": "Falange",
+      "revision": 0,
+      "status": "explained",
+      "explained_at": "2026-10-28T23:51:30+01:00"
+    }
+  ],
   "pending_delivery_count": 3,
   "apply_workflow": {
     "run_id": 40774303176,
