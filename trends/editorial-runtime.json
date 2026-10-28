@@ -12,15 +12,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T14:15:00+01:00",
-  "last_completed_at": "2026-10-28T14:19:00+01:00",
-  "updated_at": "2026-10-28T14:19:00+01:00",
+  "last_started_at": "2026-10-28T14:45:00+01:00",
+  "last_completed_at": "2026-10-28T14:47:00+01:00",
+  "updated_at": "2026-10-28T14:47:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T1415+0100",
+    "trigger_run_id": "tr-chat-20261028T1445+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,191 +28,124 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T1415+0100",
+    "run_id": "tr-chat-20261028T1445+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T14:15:00+01:00",
-    "updated_at": "2026-10-28T14:19:00+01:00",
-    "finished_at": "2026-10-28T14:19:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-28T14:45:00+01:00",
+    "updated_at": "2026-10-28T14:47:00+01:00",
+    "finished_at": "2026-10-28T14:47:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "ready": 0,
-      "explained": 1,
-      "final_resolved": 1,
-      "explanation_groups": 1,
+      "explained": 0,
+      "final_resolved": 0,
+      "explanation_groups": 0,
       "new_cards": 0,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 1,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 0,
-      "discovered_during_run": 1,
+      "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 3,
-      "pending_cards_reviewed": 3,
+      "remates_omitted": 9,
+      "recent_missing_closer_reviewed": 9,
+      "pending_cards_reviewed": 1,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 1/1 · Fallo reconciliada como explained en el grupo Error; cola y reexplicaciones en 0. Sin ImageGen.",
+    "message": "TTendencias completada 0/0 · cola, preparing/update y reexplicaciones en 0; saneamiento visual solicitado para 1 Pendiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T14:15:00+01:00",
+        "at": "2026-10-28T14:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual · cola inicial vacía; comprobando estado autoritativo, reexplicaciones y frescura del radar."
+        "message": "Inicio de pasada manual · comprobando cola, reexplicaciones, Explicadas recientes y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-28T14:15:20+01:00",
+        "at": "2026-10-28T14:45:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Radar con captura 13:50:56; solicitado refresh por superar 20 minutos y relectura realizada."
+        "message": "Cola autoritativa en 0; 0 preparing/update y 0 rewrite_pending; radar fresco de las 14:40:59."
       },
       {
-        "at": "2026-10-28T14:16:00+01:00",
+        "at": "2026-10-28T14:45:40+01:00",
+        "phase": "verifying",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Revisando Pendientes · 1 tarjeta vigente; texto y remate completos, reparación visual solicitada."
+      },
+      {
+        "at": "2026-10-28T14:46:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "0 preparing/update y 0 rewrite_pending; 3 Explicadas recientes sin remate revisadas y conservadas sin humor por sensibilidad."
+        "message": "Releyendo main antes del cierre para confirmar cola y reexplicaciones."
       },
       {
-        "at": "2026-10-28T14:16:15+01:00",
-        "phase": "verifying",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Releyendo estado autoritativo de Fallo"
-      },
-      {
-        "at": "2026-10-28T14:16:30+01:00",
-        "phase": "investigating",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Contrastando el detonante actual con fuentes de hoy"
-      },
-      {
-        "at": "2026-10-28T14:16:50+01:00",
-        "phase": "investigating",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Hecho esencial verificado: Fallo y Error describen la misma hipótesis sobre señalización/LZB y posible error humano, aún no confirmada por Adif"
-      },
-      {
-        "at": "2026-10-28T14:17:00+01:00",
-        "phase": "drafting",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Reutilizando la explicación factual ya verificada del grupo Error; sin remate por tratarse de una tragedia con víctimas"
-      },
-      {
-        "at": "2026-10-28T14:17:10+01:00",
-        "phase": "persisting",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Guardando vínculo de Fallo en la ficha Explicada del grupo Error"
-      },
-      {
-        "at": "2026-10-28T14:17:50+01:00",
-        "phase": "persisting",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Actualizando Requests y cerrando Fallo r0 como explained"
-      },
-      {
-        "at": "2026-10-28T14:18:45+01:00",
-        "phase": "verifying",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Releyendo main y verificando id+revision, grupo y texto persistido"
-      },
-      {
-        "at": "2026-10-28T14:18:50+01:00",
-        "phase": "verifying",
-        "trend_id": "b1123ab4926a",
-        "title": "Fallo",
-        "message": "Tendencia cerrada y verificada dentro del grupo Error"
-      },
-      {
-        "at": "2026-10-28T14:18:55+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Radar refrescado a 14:18:29; cola final 0, 0 preparing/update y 0 rewrite_pending"
-      },
-      {
-        "at": "2026-10-28T14:19:00+01:00",
+        "at": "2026-10-28T14:47:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 1/1 · Fallo reconciliada como explained en el grupo Error; cola y reexplicaciones en 0. Sin ImageGen."
+        "message": "TTendencias completada 0/0 · cola, preparing/update y reexplicaciones en 0; saneamiento visual solicitado para 1 Pendiente."
       }
     ],
-    "processed_ids": [
-      "b1123ab4926a"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "b1123ab4926a",
-        "name": "Fallo",
-        "revision": 0,
-        "status": "explained",
-        "closer_text": "",
-        "explanation_group_id": "grp-4fc099aeb560-r0"
-      }
-    ],
+    "final_outcomes": [],
     "remaining_problematic_ids": []
   },
-  "run_id": "tr-chat-20261028T1415+0100",
+  "run_id": "tr-chat-20261028T1445+0100",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "ready": 0,
-    "explained": 1,
-    "final_resolved": 1,
-    "explanation_groups": 1,
+    "explained": 0,
+    "final_resolved": 0,
+    "explanation_groups": 0,
     "new_cards": 0,
-    "revisions_updated": 1,
-    "grouped_into_existing_card": 1,
+    "revisions_updated": 0,
+    "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 0,
-    "discovered_during_run": 1,
+    "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
+    "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 3,
-    "pending_cards_reviewed": 3,
+    "remates_omitted": 9,
+    "recent_missing_closer_reviewed": 9,
+    "pending_cards_reviewed": 1,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -220,95 +153,39 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T14:15:00+01:00",
+      "at": "2026-10-28T14:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual · cola inicial vacía; comprobando estado autoritativo, reexplicaciones y frescura del radar."
+      "message": "Inicio de pasada manual · comprobando cola, reexplicaciones, Explicadas recientes y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-28T14:15:20+01:00",
+      "at": "2026-10-28T14:45:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Radar con captura 13:50:56; solicitado refresh por superar 20 minutos y relectura realizada."
+      "message": "Cola autoritativa en 0; 0 preparing/update y 0 rewrite_pending; radar fresco de las 14:40:59."
     },
     {
-      "at": "2026-10-28T14:16:00+01:00",
+      "at": "2026-10-28T14:45:40+01:00",
+      "phase": "verifying",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Revisando Pendientes · 1 tarjeta vigente; texto y remate completos, reparación visual solicitada."
+    },
+    {
+      "at": "2026-10-28T14:46:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "0 preparing/update y 0 rewrite_pending; 3 Explicadas recientes sin remate revisadas y conservadas sin humor por sensibilidad."
+      "message": "Releyendo main antes del cierre para confirmar cola y reexplicaciones."
     },
     {
-      "at": "2026-10-28T14:16:15+01:00",
-      "phase": "verifying",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Releyendo estado autoritativo de Fallo"
-    },
-    {
-      "at": "2026-10-28T14:16:30+01:00",
-      "phase": "investigating",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Contrastando el detonante actual con fuentes de hoy"
-    },
-    {
-      "at": "2026-10-28T14:16:50+01:00",
-      "phase": "investigating",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Hecho esencial verificado: Fallo y Error describen la misma hipótesis sobre señalización/LZB y posible error humano, aún no confirmada por Adif"
-    },
-    {
-      "at": "2026-10-28T14:17:00+01:00",
-      "phase": "drafting",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Reutilizando la explicación factual ya verificada del grupo Error; sin remate por tratarse de una tragedia con víctimas"
-    },
-    {
-      "at": "2026-10-28T14:17:10+01:00",
-      "phase": "persisting",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Guardando vínculo de Fallo en la ficha Explicada del grupo Error"
-    },
-    {
-      "at": "2026-10-28T14:17:50+01:00",
-      "phase": "persisting",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Actualizando Requests y cerrando Fallo r0 como explained"
-    },
-    {
-      "at": "2026-10-28T14:18:45+01:00",
-      "phase": "verifying",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Releyendo main y verificando id+revision, grupo y texto persistido"
-    },
-    {
-      "at": "2026-10-28T14:18:50+01:00",
-      "phase": "verifying",
-      "trend_id": "b1123ab4926a",
-      "title": "Fallo",
-      "message": "Tendencia cerrada y verificada dentro del grupo Error"
-    },
-    {
-      "at": "2026-10-28T14:18:55+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Radar refrescado a 14:18:29; cola final 0, 0 preparing/update y 0 rewrite_pending"
-    },
-    {
-      "at": "2026-10-28T14:19:00+01:00",
+      "at": "2026-10-28T14:47:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 1/1 · Fallo reconciliada como explained en el grupo Error; cola y reexplicaciones en 0. Sin ImageGen."
+      "message": "TTendencias completada 0/0 · cola, preparing/update y reexplicaciones en 0; saneamiento visual solicitado para 1 Pendiente."
     }
   ],
   "partial": false,
@@ -317,7 +194,7 @@
     "captured_at": "2026-10-28T14:18:29+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-28T14:18:29+01:00",
+    "captured_at": "2026-10-28T14:40:59+01:00",
     "queue_count": 0
   },
   "previous_run_id": "tr-1793192422922-manual",
@@ -333,6 +210,6 @@
       "explanation_group_id": "grp-4fc099aeb560-r0"
     }
   ],
-  "pending_delivery_count": 3,
+  "pending_delivery_count": 1,
   "error": null
 }
