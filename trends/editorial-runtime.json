@@ -5,22 +5,23 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "fc1e4bc8ee32"
+    "01be51f2e141",
+    "79ff76a36dc7"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T02:15:00+01:00",
-  "last_completed_at": "2026-10-28T02:21:00+01:00",
-  "updated_at": "2026-10-28T02:21:00+01:00",
+  "last_started_at": "2026-10-28T02:45:00+01:00",
+  "last_completed_at": "2026-10-28T02:55:00+01:00",
+  "updated_at": "2026-10-28T02:55:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T0215+0100",
+    "trigger_run_id": "tr-chat-20261028T0245+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,31 +29,31 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T0215+0100",
+    "run_id": "tr-chat-20261028T0245+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T02:15:00+01:00",
-    "updated_at": "2026-10-28T02:21:00+01:00",
-    "finished_at": "2026-10-28T02:21:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-28T02:45:00+01:00",
+    "updated_at": "2026-10-28T02:55:00+01:00",
+    "finished_at": "2026-10-28T02:55:00+01:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
-      "ready": 1,
-      "explained": 1,
-      "final_resolved": 1,
+      "attempted": 2,
+      "ready": 2,
+      "explained": 2,
+      "final_resolved": 2,
       "explanation_groups": 1,
       "new_cards": 1,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 1,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 2,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -60,114 +61,164 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 2,
       "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "pending_cards_reviewed": 8,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0.",
+    "message": "TTendencias completada 2/2 · cola editorial y reexplicaciones verificadas en 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-28T02:15:00+01:00",
+        "at": "2026-10-28T02:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial directa · 1 entrada activa; activando saneamiento visual y validación JIT."
+        "message": "Iniciando pasada editorial directa · 2 entradas activas; activando saneamiento visual y validación JIT."
       },
       {
-        "at": "2026-10-28T02:16:00+01:00",
+        "at": "2026-10-28T02:46:00+01:00",
         "phase": "verifying",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Releyendo estado autoritativo de #MCCLegends · revisión 0 sigue preparing y ocupa el puesto 9."
+        "trend_id": "01be51f2e141",
+        "title": "Yola",
+        "message": "Releyendo estado autoritativo de Yola · revisión 0 sigue preparing y ocupa el puesto 4."
       },
       {
-        "at": "2026-10-28T02:17:00+01:00",
+        "at": "2026-10-28T02:47:00+01:00",
         "phase": "investigating",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Hecho esencial verificado · corresponde al programa 9 de MasterChef Celebrity Legends, en emisión esta noche en La 1."
+        "trend_id": "01be51f2e141",
+        "title": "Yola",
+        "message": "Contrastando detonante actual · fuentes coinciden en el rapado al cero de Yola en Tierra de nadie."
       },
       {
-        "at": "2026-10-28T02:18:00+01:00",
-        "phase": "drafting",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Redactando explicación factual · programa 9, Cines Callao y duelos de eliminación."
+        "at": "2026-10-28T02:47:30+01:00",
+        "phase": "investigating",
+        "trend_id": "01be51f2e141",
+        "title": "Yola",
+        "message": "Hecho esencial verificado · corresponde al mismo episodio ya explicado en #TierraDeNadie7; se enlaza al grupo existente sin duplicar tarjeta."
       },
       {
-        "at": "2026-10-28T02:18:20+01:00",
-        "phase": "drafting",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Comprobando límite de X · texto completo verificado por debajo de 280 caracteres."
-      },
-      {
-        "at": "2026-10-28T02:18:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Evaluando candidatos con ratings y últimos 30 remates · sin coincidencia cercana."
-      },
-      {
-        "at": "2026-10-28T02:19:00+01:00",
-        "phase": "remate_selection",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Remate seleccionado · «La redención pide repetir plato.»"
-      },
-      {
-        "at": "2026-10-28T02:19:20+01:00",
+        "at": "2026-10-28T02:48:00+01:00",
         "phase": "persisting",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Guardando ficha Explicada de #MCCLegends."
+        "trend_id": "01be51f2e141",
+        "title": "Yola",
+        "message": "Guardando vínculo de Yola con la ficha Explicada de #TierraDeNadie7 y sincronizando requests."
       },
       {
-        "at": "2026-10-28T02:19:40+01:00",
+        "at": "2026-10-28T02:48:20+01:00",
         "phase": "persisting",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
+        "trend_id": "01be51f2e141",
+        "title": "Yola",
+        "message": "Retirando Yola revisión 0 de la cola editorial tras sincronizar grupo y request."
+      },
+      {
+        "at": "2026-10-28T02:48:40+01:00",
+        "phase": "verifying",
+        "trend_id": "01be51f2e141",
+        "title": "Yola",
+        "message": "Tendencia cerrada y verificada · Yola figura en el grupo existente y ya no está en la cola."
+      },
+      {
+        "at": "2026-10-28T02:49:00+01:00",
+        "phase": "verifying",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Releyendo estado autoritativo de #MarlaskaDimision · revisión 0 sigue preparing y ocupa el puesto 9."
+      },
+      {
+        "at": "2026-10-28T02:50:00+01:00",
+        "phase": "investigating",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Contrastando fuentes sobre la protesta por jubilación, la petición de dimisión y el desalojo del encierro en Interior."
+      },
+      {
+        "at": "2026-10-28T02:51:00+01:00",
+        "phase": "investigating",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Hecho esencial verificado · la petición de dimisión coincide con la protesta policial; el encierro en Interior terminó desalojado de madrugada."
+      },
+      {
+        "at": "2026-10-28T02:51:20+01:00",
+        "phase": "drafting",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Redactando explicación factual y políticamente neutral con la novedad del desalojo."
+      },
+      {
+        "at": "2026-10-28T02:51:40+01:00",
+        "phase": "drafting",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Comprobando límite de X · borrador completo queda por debajo de 280 caracteres."
+      },
+      {
+        "at": "2026-10-28T02:52:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Generando y comparando candidatos de remate; descartando fórmulas demasiado próximas al remate ya usado para Ministerio del Interior."
+      },
+      {
+        "at": "2026-10-28T02:52:20+01:00",
+        "phase": "remate_selection",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Remate seleccionado · «La mesa se cerró; el conflicto salió al pasillo.»"
+      },
+      {
+        "at": "2026-10-28T02:53:00+01:00",
+        "phase": "persisting",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Guardando ficha Explicada de #MarlaskaDimision."
+      },
+      {
+        "at": "2026-10-28T02:53:20+01:00",
+        "phase": "persisting",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
         "message": "Actualizando requests · revisión 0 pasa a explained con texto y remate sincronizados."
       },
       {
-        "at": "2026-10-28T02:20:00+01:00",
+        "at": "2026-10-28T02:53:40+01:00",
         "phase": "persisting",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Retirando revisión 0 de la cola editorial tras sincronizar Explicadas y requests."
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Retirando revisión 0 de la cola editorial."
       },
       {
-        "at": "2026-10-28T02:20:20+01:00",
+        "at": "2026-10-28T02:54:00+01:00",
         "phase": "verifying",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Releyendo main para verificar id+revision y texto persistido."
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Releyendo main · cola 0, requests sin preparing/update y sin reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-28T02:20:40+01:00",
+        "at": "2026-10-28T02:54:20+01:00",
         "phase": "verifying",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Tendencia cerrada y verificada · Explicadas y requests coinciden exactamente."
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "message": "Tendencia cerrada y verificada · ficha y request coinciden exactamente; no hay remates recientes pendientes."
       },
       {
-        "at": "2026-10-28T02:21:00+01:00",
+        "at": "2026-10-28T02:55:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0."
+        "message": "TTendencias completada 2/2 · cola editorial y reexplicaciones verificadas en 0."
       }
     ],
     "processed_ids": [
-      "fc1e4bc8ee32"
+      "01be51f2e141",
+      "79ff76a36dc7"
     ],
     "partial": false,
     "queue_complete": true,
@@ -180,35 +231,35 @@
     },
     "remate_selections": [
       {
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "selected": "🌶️ La redención pide repetir plato.",
+        "trend_id": "79ff76a36dc7",
+        "title": "#MarlaskaDimision",
+        "selected": "🌶️ La mesa se cerró; el conflicto salió al pasillo.",
         "candidates": [
-          "🌶️ La redención pide repetir plato.",
-          "🌶️ El pasado volvió a cocina con temporizador.",
-          "🌶️ En Callao, la segunda oportunidad llegó con campana.",
-          "🌶️ El menú de hoy venía con botón de rehacer.",
-          "🌶️ Los errores del pasado regresaron con mise en place."
+          "🌶️ La mesa se cerró; el conflicto salió al pasillo.",
+          "🌶️ Interior pasó de la mesa técnica a la puerta de salida.",
+          "🌶️ El diálogo perdió la silla antes que la jubilación.",
+          "🌶️ La reunión terminó; el pasillo heredó la negociación.",
+          "🌶️ El acuerdo no salió; los encerrados sí."
         ],
-        "rationale": "Seleccionado por concreción con la prueba de redención, claridad y ausencia de coincidencia conceptual cercana en los últimos 30 remates."
+        "rationale": "Seleccionado por concreción con la ruptura de la mesa y el desalojo, neutralidad y distancia conceptual respecto al remate previo sobre el encierro."
       }
     ]
   },
-  "run_id": "tr-chat-20261028T0215+0100",
+  "run_id": "tr-chat-20261028T0245+0100",
   "summary": {
-    "attempted": 1,
-    "ready": 1,
-    "explained": 1,
-    "final_resolved": 1,
+    "attempted": 2,
+    "ready": 2,
+    "explained": 2,
+    "final_resolved": 2,
     "explanation_groups": 1,
     "new_cards": 1,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 0,
+    "grouped_into_existing_card": 1,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 2,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -216,11 +267,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
+    "explanations_verified_under_280": 2,
     "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "pending_cards_reviewed": 8,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -228,107 +279,156 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T02:15:00+01:00",
+      "at": "2026-10-28T02:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial directa · 1 entrada activa; activando saneamiento visual y validación JIT."
+      "message": "Iniciando pasada editorial directa · 2 entradas activas; activando saneamiento visual y validación JIT."
     },
     {
-      "at": "2026-10-28T02:16:00+01:00",
+      "at": "2026-10-28T02:46:00+01:00",
       "phase": "verifying",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Releyendo estado autoritativo de #MCCLegends · revisión 0 sigue preparing y ocupa el puesto 9."
+      "trend_id": "01be51f2e141",
+      "title": "Yola",
+      "message": "Releyendo estado autoritativo de Yola · revisión 0 sigue preparing y ocupa el puesto 4."
     },
     {
-      "at": "2026-10-28T02:17:00+01:00",
+      "at": "2026-10-28T02:47:00+01:00",
       "phase": "investigating",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Hecho esencial verificado · corresponde al programa 9 de MasterChef Celebrity Legends, en emisión esta noche en La 1."
+      "trend_id": "01be51f2e141",
+      "title": "Yola",
+      "message": "Contrastando detonante actual · fuentes coinciden en el rapado al cero de Yola en Tierra de nadie."
     },
     {
-      "at": "2026-10-28T02:18:00+01:00",
-      "phase": "drafting",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Redactando explicación factual · programa 9, Cines Callao y duelos de eliminación."
+      "at": "2026-10-28T02:47:30+01:00",
+      "phase": "investigating",
+      "trend_id": "01be51f2e141",
+      "title": "Yola",
+      "message": "Hecho esencial verificado · corresponde al mismo episodio ya explicado en #TierraDeNadie7; se enlaza al grupo existente sin duplicar tarjeta."
     },
     {
-      "at": "2026-10-28T02:18:20+01:00",
-      "phase": "drafting",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Comprobando límite de X · texto completo verificado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-10-28T02:18:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Evaluando candidatos con ratings y últimos 30 remates · sin coincidencia cercana."
-    },
-    {
-      "at": "2026-10-28T02:19:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Remate seleccionado · «La redención pide repetir plato.»"
-    },
-    {
-      "at": "2026-10-28T02:19:20+01:00",
+      "at": "2026-10-28T02:48:00+01:00",
       "phase": "persisting",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Guardando ficha Explicada de #MCCLegends."
+      "trend_id": "01be51f2e141",
+      "title": "Yola",
+      "message": "Guardando vínculo de Yola con la ficha Explicada de #TierraDeNadie7 y sincronizando requests."
     },
     {
-      "at": "2026-10-28T02:19:40+01:00",
+      "at": "2026-10-28T02:48:20+01:00",
       "phase": "persisting",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
+      "trend_id": "01be51f2e141",
+      "title": "Yola",
+      "message": "Retirando Yola revisión 0 de la cola editorial tras sincronizar grupo y request."
+    },
+    {
+      "at": "2026-10-28T02:48:40+01:00",
+      "phase": "verifying",
+      "trend_id": "01be51f2e141",
+      "title": "Yola",
+      "message": "Tendencia cerrada y verificada · Yola figura en el grupo existente y ya no está en la cola."
+    },
+    {
+      "at": "2026-10-28T02:49:00+01:00",
+      "phase": "verifying",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Releyendo estado autoritativo de #MarlaskaDimision · revisión 0 sigue preparing y ocupa el puesto 9."
+    },
+    {
+      "at": "2026-10-28T02:50:00+01:00",
+      "phase": "investigating",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Contrastando fuentes sobre la protesta por jubilación, la petición de dimisión y el desalojo del encierro en Interior."
+    },
+    {
+      "at": "2026-10-28T02:51:00+01:00",
+      "phase": "investigating",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Hecho esencial verificado · la petición de dimisión coincide con la protesta policial; el encierro en Interior terminó desalojado de madrugada."
+    },
+    {
+      "at": "2026-10-28T02:51:20+01:00",
+      "phase": "drafting",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Redactando explicación factual y políticamente neutral con la novedad del desalojo."
+    },
+    {
+      "at": "2026-10-28T02:51:40+01:00",
+      "phase": "drafting",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Comprobando límite de X · borrador completo queda por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-10-28T02:52:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Generando y comparando candidatos de remate; descartando fórmulas demasiado próximas al remate ya usado para Ministerio del Interior."
+    },
+    {
+      "at": "2026-10-28T02:52:20+01:00",
+      "phase": "remate_selection",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Remate seleccionado · «La mesa se cerró; el conflicto salió al pasillo.»"
+    },
+    {
+      "at": "2026-10-28T02:53:00+01:00",
+      "phase": "persisting",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Guardando ficha Explicada de #MarlaskaDimision."
+    },
+    {
+      "at": "2026-10-28T02:53:20+01:00",
+      "phase": "persisting",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
       "message": "Actualizando requests · revisión 0 pasa a explained con texto y remate sincronizados."
     },
     {
-      "at": "2026-10-28T02:20:00+01:00",
+      "at": "2026-10-28T02:53:40+01:00",
       "phase": "persisting",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Retirando revisión 0 de la cola editorial tras sincronizar Explicadas y requests."
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Retirando revisión 0 de la cola editorial."
     },
     {
-      "at": "2026-10-28T02:20:20+01:00",
+      "at": "2026-10-28T02:54:00+01:00",
       "phase": "verifying",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Releyendo main para verificar id+revision y texto persistido."
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Releyendo main · cola 0, requests sin preparing/update y sin reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-28T02:20:40+01:00",
+      "at": "2026-10-28T02:54:20+01:00",
       "phase": "verifying",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Tendencia cerrada y verificada · Explicadas y requests coinciden exactamente."
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "message": "Tendencia cerrada y verificada · ficha y request coinciden exactamente; no hay remates recientes pendientes."
     },
     {
-      "at": "2026-10-28T02:21:00+01:00",
+      "at": "2026-10-28T02:55:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0."
+      "message": "TTendencias completada 2/2 · cola editorial y reexplicaciones verificadas en 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "not_needed_fresh",
-    "captured_at": "2026-10-28T01:10:50+01:00"
+    "captured_at": "2026-10-28T02:40:55+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-28T01:10:50+01:00",
+    "captured_at": "2026-10-28T02:40:55+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261028T0115+0100",
+  "previous_run_id": "tr-chat-20261028T0215+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -337,28 +437,37 @@
   },
   "remate_selections": [
     {
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "selected": "🌶️ La redención pide repetir plato.",
+      "trend_id": "79ff76a36dc7",
+      "title": "#MarlaskaDimision",
+      "selected": "🌶️ La mesa se cerró; el conflicto salió al pasillo.",
       "candidates": [
-        "🌶️ La redención pide repetir plato.",
-        "🌶️ El pasado volvió a cocina con temporizador.",
-        "🌶️ En Callao, la segunda oportunidad llegó con campana.",
-        "🌶️ El menú de hoy venía con botón de rehacer.",
-        "🌶️ Los errores del pasado regresaron con mise en place."
+        "🌶️ La mesa se cerró; el conflicto salió al pasillo.",
+        "🌶️ Interior pasó de la mesa técnica a la puerta de salida.",
+        "🌶️ El diálogo perdió la silla antes que la jubilación.",
+        "🌶️ La reunión terminó; el pasillo heredó la negociación.",
+        "🌶️ El acuerdo no salió; los encerrados sí."
       ],
-      "rationale": "Seleccionado por concreción con la prueba de redención, claridad y ausencia de coincidencia conceptual cercana en los últimos 30 remates."
+      "rationale": "Seleccionado por concreción con la ruptura de la mesa y el desalojo, neutralidad y distancia conceptual respecto al remate previo sobre el encierro."
     }
   ],
   "final_outcomes": [
     {
-      "id": "fc1e4bc8ee32",
-      "name": "#MCCLegends",
+      "id": "01be51f2e141",
+      "name": "Yola",
       "revision": 0,
       "status": "explained",
-      "explained_at": "2026-10-28T02:19:20+01:00",
+      "explained_at": "2026-10-28T02:48:00+01:00",
+      "verified": true,
+      "grouped_into_existing": "grp-7a43b9748ce3-r0"
+    },
+    {
+      "id": "79ff76a36dc7",
+      "name": "#MarlaskaDimision",
+      "revision": 0,
+      "status": "explained",
+      "explained_at": "2026-10-28T02:53:00+01:00",
       "verified": true
     }
   ],
-  "pending_delivery_count": 6
+  "pending_delivery_count": 8
 }
