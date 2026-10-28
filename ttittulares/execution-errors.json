@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T22:16:08.305842Z",
-      "event_id": "dab5ca1ae833-r1",
-      "phase": "outbox",
-      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T22:16:10.192692Z",
       "event_id": "0ec9b53c91e8-r1",
       "phase": "outbox",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "388cfba43531-r1.json: ValueError: tweet vacío o >256",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 388cfba43531-r1: 388cfba43531-r1.json: ValueError: tweet vacío o >256. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-28T17:05:00Z",
+      "event_id": "6d97fa829cff",
+      "phase": "outbox",
+      "reason": "transport_write_blocked",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 6d97fa829cff: transport_write_blocked. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
