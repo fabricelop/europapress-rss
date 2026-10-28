@@ -274,6 +274,8 @@ class MainWindow(QWidget):
         self.news=[];self.trends=[];self.top30=[];self.published={"ttittulares":0,"ttendencias":0}
         self.selected=None;self.section="Todas las Listas"
         self.refreshing=False;self.sending=False
+        self.pending_action=None
+        self.loaded_image=QPixmap()
         self.events=Events()
         self.events.finished.connect(self.on_finished)
         self.worker=Worker(self.events)
@@ -417,7 +419,7 @@ class MainWindow(QWidget):
         rl.addLayout(edit_actions)
         splitter.addWidget(right)
         splitter.setSizes([475,720])
-        self.notice=label("La información proviene directamente de GitHub. Ninguna acción se confirma antes de verificarse.","small",wrap=True)
+        self.notice=label("GitHub es la autoridad editorial · las órdenes se verifican antes de confirmarse.","small",wrap=True)
         page.addWidget(self.notice)
         self.update_auth_badge()
         self.update_actions()
@@ -482,25 +484,31 @@ class MainWindow(QWidget):
             self.docs,processed=value
             self.news,self.trends,self.top30,self.published=processed
             self.render_list()
-            self.notice.setText("GitHub actualizado · "+dt.datetime.now().strftime("%H:%M:%S"))
+            if self.pending_action:
+                self.confirm_pending()
+            else:
+                self.notice.setText("GitHub actualizado · "+dt.datetime.now().strftime("%H:%M:%S"))
         elif kind=="submit":
             self.sending=False
             if error:
+                self.pending_action=None
+                self.update_actions()
                 self.notice.setText("Acción no enviada: "+error)
                 QMessageBox.warning(self,"Acción no enviada",error)
                 return
-            self.notice.setText("GitHub ha recibido la orden · "+value[:8]+
-                                " · pendiente de confirmación en los archivos editoriales.")
-            QTimer.singleShot(6000,self.refresh)
-            QTimer.singleShot(15000,self.refresh)
+            self.notice.setText("Orden recibida · "+value[:8]+" · esperando confirmación editorial…")
+            for delay in (2000, 6000, 12000, 23000, 40000):
+                QTimer.singleShot(delay,self.refresh)
         elif kind=="image":
             rowkey,data=value if not error else (None,None)
             if error or not data or not self.selected or rowkey!=(self.selected["project"],self.selected["id"]):
                 return
             pix=QPixmap()
             if not pix.loadFromData(data):return
+            self.loaded_image=pix
             self.image_label.setPixmap(pix.scaled(QSize(820,180),Qt.KeepAspectRatio,Qt.SmoothTransformation))
             self.image_label.setFixedHeight(180)
+            self.update_actions()
 
     def list_data(self):
         if self.section=="Todas las Listas":
@@ -567,6 +575,7 @@ class MainWindow(QWidget):
         self.detail_meta.setText("Verás aquí el texto, las fuentes y las acciones disponibles.")
         self.state_tag.setText("SELECCIONA UNA TARJETA")
         self.body.setHtml("<p style='color:#99adc4'>Selecciona un elemento de la bandeja.</p>")
+        self.loaded_image=QPixmap()
         self.image_label.setPixmap(QPixmap())
         self.image_label.setFixedHeight(0)
         self.update_actions()
@@ -575,13 +584,14 @@ class MainWindow(QWidget):
         self.selected=item
         self.state_tag.setText(item["category"].upper()+"   /   "+item["state"].upper())
         self.detail_title.setText(item.get("title") or "Sin título")
-        self.detail_meta.setText("ID "+item["id"]+"  ·  Revisión "+str(item["revision"]))
+        self.detail_meta.setText("ID "+item["id"]+"  ·  Rev. "+str(item["revision"])+("  ·  #"+str(item.get("rank")) if item.get("rank") else "")+("  ·  "+item.get("trend_status","") if item["state"]=="Top 30" else ""))
         body=html.escape(item.get("body") or "Pendiente de texto.").replace("\n","<br>")
         meta=("<p style='font-size:12px;color:#8fa9bf;margin-top:20px'>"
               "Fuente: "+("disponible" if safe_url(item.get("source")) else "no disponible")+
               " · Foto de archivo: "+("disponible" if safe_url(item.get("image")) else "no disponible")+"</p>")
         self.body.setHtml("<div style='font-family:Segoe UI;font-size:15px;"
                           "line-height:155%;color:#e2edf8'>"+body+"</div>"+meta)
+        self.loaded_image=QPixmap()
         self.image_label.setPixmap(QPixmap());self.image_label.setFixedHeight(0)
         self.update_actions()
         url=safe_url(item.get("image"))
@@ -599,18 +609,121 @@ class MainWindow(QWidget):
 
     def update_actions(self):
         row=self.selected
+        ready=bool(row and row["state"]=="Listas")
+        working=bool(row and row["state"]=="En elaboración")
+        top=bool(row and row["state"]=="Top 30")
+        tremending=bool(row and row["state"]=="Tremending")
+        review=bool(row and row["state"] in ("Revisión","Creciendo"))
         has=bool(row)
-        ready=has and row["state"]=="Listas"
-        working=has and row["state"]=="En elaboración"
-        for k in ("copy","x","source","image","rework","discard","deleted","published"):
-            self.actions[k].setEnabled(bool(has))
-        if not has:return
-        self.actions["source"].setEnabled(bool(safe_url(row.get("source"))))
-        self.actions["image"].setEnabled(bool(safe_url(row.get("image"))))
-        self.actions["published"].setEnabled(bool(ready))
-        self.actions["deleted"].setEnabled(bool(ready))
-        self.actions["discard"].setEnabled(bool(working))
-        self.actions["rework"].setEnabled(bool(ready or row["state"]=="Top 30"))
+        enable={
+            "copy":has,"gag":has and (ready or top) and bool(row.get("body")),
+            "chatgpt":True,"x":has and bool(row.get("body")) and (ready or top),
+            "searchx":has,"ttimages":True,
+            "source":has and bool(safe_url(row.get("source"))),
+            "image":has and bool(safe_url(row.get("image"))),
+            "photo_copy":has and not self.loaded_image.isNull(),
+            "rework":has and (ready or review or top),
+            "hints":has and row["project"]=="ttendencias" and ready,
+            "deleted":has and (ready or tremending),
+            "discard":has and (working or (review and row["project"]=="ttittulares")),
+            "published":has and ready
+        }
+        for k,b in self.actions.items():
+            allowed=enable.get(k,False)
+            if self.sending and k in {"rework","hints","deleted","discard","published"}:
+                allowed=False
+            if self.pending_action and row:
+                p=self.pending_action
+                if p["project"]==row["project"] and p["event_id"]==row["id"] and k in {"rework","hints","deleted","discard","published"}:
+                    allowed=False
+            b.setEnabled(bool(allowed))
+        if row:
+            self.actions["rework"].setText(
+                "Preparar" if row["state"] in ("Revisión","Creciendo")
+                or (top and not row.get("body") and row.get("rank",0)>10)
+                else "Reelaborar")
+            self.actions["published"].setToolTip(
+                "Confirma en GitHub que YA la has publicado en X. No envía el tuit.")
+
+    def confirm_pending(self):
+        pending=self.pending_action
+        if not pending:return
+        receipts=(self.docs.get("action_receipts") or {}).get("items") or []
+        found=next((x for x in reversed(receipts)
+                    if x.get("request_id")==pending["request_id"]),None)
+        if found:
+            status=str(found.get("status") or "").lower()
+            if status in {"applied","already_applied"}:
+                self.notice.setText("CONFIRMADO EN GITHUB · "+pending["label"]+
+                                    " · "+pending["event_id"]+" · aplicado.")
+                self.pending_action=None
+                self.update_actions()
+                return
+            self.notice.setText("GitHub rechazó la orden: "+str(found.get("error") or status))
+            self.pending_action=None
+            self.update_actions()
+            return
+        age=time.time()-pending["since"]
+        if age>=55:
+            self.notice.setText("Sin comprobante para «"+pending["label"]+
+                                "». Revisa GitHub Actions; no se ha declarado éxito.")
+            self.pending_action=None
+            self.update_actions()
+        else:
+            self.notice.setText("GitHub recibió «"+pending["label"]+
+                                "»; sigue pendiente de confirmación editorial…")
+
+    def copy_gag(self):
+        row=self.selected
+        if not row or not row.get("body"):return
+        full=row["body"]
+        closer=next((p for p in reversed(full.splitlines()) if p.strip().startswith("🌶")),"")
+        kind="TTendencias" if row["project"]=="ttendencias" else "TTiTTulares"
+        prompt=("\n\n".join([
+            "Genera AHORA UNA SOLA imagen GAG IA para "+kind+".",
+            "TÍTULO:\n"+("#"+str(row["rank"])+" " if row.get("rank") else "")+row["title"],
+            "TEXTO EXACTO CERRADO. NO LO REESCRIBAS:\n"+full,
+            "REMATE EXACTO:\n"+closer,
+            "CONTEXTO DOCUMENTADO:\n"+full,
+            "DIRECCIÓN VISUAL: una sola idea visual fuerte, composición limpia, sin inventar hechos."]))
+        QApplication.clipboard().setText(prompt)
+        self.notice.setText("Prompt de imagen copiado · abre ChatGPT Images para pegarlo.")
+
+    def search_x(self):
+        if not self.selected:return
+        terms=self.selected["title"]
+        url="https://x.com/search?q="+urllib.parse.quote(terms)+"&f=live"
+        webbrowser.open(url)
+
+    def copy_photo(self):
+        if not self.loaded_image.isNull():
+            QApplication.clipboard().setPixmap(self.loaded_image)
+            self.notice.setText("Foto de archivo copiada al portapapeles.")
+
+    def prepare_or_rework(self):
+        row=self.selected
+        if not row:return
+        if row["state"] in ("Revisión","Creciendo"):
+            self.editorial_action("prepare")
+        elif row["state"]=="Top 30" and not row.get("body") and row.get("rank",0)>10:
+            if not row.get("id","").startswith("manual-"):
+                QMessageBox.warning(self,"Top 30","Actualiza: no se puede verificar el identificador manual.")
+                return
+            self.editorial_action("prepare")
+        else:
+            self.editorial_action("rework")
+
+    def add_hints(self):
+        row=self.selected
+        if not row or row["project"]!="ttendencias" or row["state"]!="Listas":return
+        hint,ok=QInputDialog.getMultiLineText(self,"Pistas para la tendencia",
+            "Fuentes, contexto y qué debe cambiar en la explicación de "+row["title"]+":")
+        if not ok:return
+        hint=hint.strip()
+        if not 8<=len(hint)<=6000:
+            QMessageBox.warning(self,"Pistas","Introduce entre 8 y 6000 caracteres.")
+            return
+        self.editorial_action("hints",hint=hint)
 
     def open_link(self,url):
         parsed=safe_url(url.toString())
@@ -635,8 +748,17 @@ class MainWindow(QWidget):
             webbrowser.open("https://twitter.com/intent/tweet?text="+urllib.parse.quote(tweet))
 
     def submit(self,event,payload):
-        if self.sending:return
+        if self.sending or self.pending_action:
+            self.notice.setText("Ya hay una orden pendiente de verificación.")
+            return
         self.sending=True
+        self.pending_action={
+            "request_id":payload["request_id"],"project":payload["project"],
+            "event_id":payload.get("event_id",""),
+            "decision":payload.get("decision"),"label":payload.get("decision","Nueva noticia"),
+            "since":time.time()
+        } if event=="ttactualidad_action_v1" else None
+        self.update_actions()
         self.notice.setText("Enviando la orden a GitHub…")
         def perform():
             token=session_token()
@@ -647,17 +769,26 @@ class MainWindow(QWidget):
             return payload["request_id"]
         self.worker.run("submit",perform)
 
-    def editorial_action(self,action):
+    def editorial_action(self,action,hint=""):
         r=self.selected
         if not r:return
+        if not r.get("id"):
+            QMessageBox.warning(self,"No verificable","Esta tarjeta aún no tiene ID editorial. Actualiza.")
+            return
         if action in ("published","deleted","discard"):
-            msg={"published":"Marcar como publicada","deleted":"Quitar de Listas","discard":"Desestimar"}[action]
-            if QMessageBox.question(self,msg,"¿"+msg+"?\n\n"+r["title"]+
-                "\n\nGitHub volverá a verificar la revisión y el estado editorial.")!=QMessageBox.Yes:
+            prompt={
+                "published":"¿Ya la has publicado en X? Esta orden SOLO registrará la publicación en GitHub; no enviará ningún tuit.",
+                "deleted":"¿Quitar esta tarjeta de Listas?",
+                "discard":"¿Desestimar esta tarjeta en elaboración?"
+            }[action]
+            if QMessageBox.question(self,"Confirmación editorial",prompt+"\n\n"+r["title"]+
+                "\n\nEl resultado se verificará automáticamente en GitHub.")!=QMessageBox.Yes:
                 return
         payload={"project":r["project"],"event_id":r["id"],"revision":r["revision"],
             "decision":action,"request_id":str(uuid.uuid4()),"received_at":stamp(),
             "trend_name":r.get("title"),"trend_rank":r.get("rank",0)}
+        if action=="hints":
+            payload["hints"]=hint
         self.submit("ttactualidad_action_v1",payload)
 
     def new_story(self):
