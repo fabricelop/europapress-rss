@@ -9,12 +9,12 @@
       "active_ids": [
         "manual-93d249bc-bcf2-4ce1-95a1-0682bd12719e"
       ],
-      "observed_at": "2026-10-28T10:51:39.824489+00:00"
+      "observed_at": "2026-10-28T10:55:15.018273+00:00"
     },
     "ttendencias": {
-      "count": 0,
-      "armed": true,
-      "sequence": 3
+      "count": 1,
+      "armed": false,
+      "sequence": 4
     }
   },
   "outbox": [
@@ -73,6 +73,13 @@
       "at": "2026-10-28T10:48:47.857301+00:00",
       "status": "sent",
       "sent_at": "2026-10-28T10:48:49.965637+00:00"
+    },
+    {
+      "id": "ttendencias-4",
+      "project": "ttendencias",
+      "count": 1,
+      "at": "2026-10-28T10:55:15.018273+00:00",
+      "status": "pending"
     }
   ]
 }
