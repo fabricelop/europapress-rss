@@ -60,16 +60,11 @@
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
       "recent_missing_closer_reviewed": 1,
-      "incidents": 1
+      "incidents": 0
     },
-    "message": "Cierre verificado con una incidencia de telemetría; no quedan preparing/update ni rewrite_pending.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "scope": "telemetry",
-        "reason": "La escritura durable de runtime fue reintentada tras un bloqueo del conector."
-      }
-    ],
+    "message": "Cierre verificado: 0 preparing, 0 update y 0 rewrite_pending; queda 1 problematic.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "recent_considered": 30
@@ -155,7 +150,7 @@
     "remaining_problematic": 1,
     "visual_backlog": 0,
     "rewrite_pending_remaining": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
