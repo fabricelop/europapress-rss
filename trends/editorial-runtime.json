@@ -1,10 +1,17 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chatgpt-editorial-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
+    "a522ebec65ad",
+    "270cbb3d6541",
+    "0283810e4423",
+    "3c21fa1e30b5",
+    "3e9a24e29b74",
+    "07ba1b25e2f8",
+    "9c382fd3ffec",
     "df81ddb61398"
   ],
   "remaining_ids": [
@@ -16,15 +23,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T15:41:14+01:00",
-  "last_completed_at": "2026-10-28T15:41:14+01:00",
-  "updated_at": "2026-10-28T15:41:14+01:00",
+  "last_started_at": "2026-10-28T15:38:00+01:00",
+  "last_completed_at": "2026-10-28T15:41:30+01:00",
+  "updated_at": "2026-10-28T15:41:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T1445+0100",
+    "trigger_run_id": "tr-1793198140241-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -32,134 +39,179 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T1515+0100",
+    "run_id": "tr-1793198140241-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T15:15:00+01:00",
-    "updated_at": "2026-10-28T15:19:30+01:00",
-    "finished_at": "2026-10-28T15:19:30+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-28T15:38:00+01:00",
+    "updated_at": "2026-10-28T15:41:30+01:00",
+    "finished_at": "2026-10-28T15:41:30+01:00",
+    "current": 8,
+    "total": 8,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 8,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 1,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "explained": 5,
+      "final_resolved": 8,
+      "explanation_groups": 5,
+      "new_cards": 5,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "problematic_reviewed": 1,
-      "problematic_marked": 1,
+      "problematic_reviewed": 3,
+      "problematic_marked": 3,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
-      "discovered_during_run": 0,
+      "initial_compact_queue": 7,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 5,
       "remates_selected": 0,
-      "remates_omitted": 9,
-      "recent_missing_closer_reviewed": 9,
+      "remates_omitted": 5,
+      "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 1/1 · «Vete» marcada problematic tras dos rondas sin detonante único verificable; 0 preparing/update y 0 reexplicaciones pendientes.",
+    "message": "TTendencias completada 8/8 · 5 explicadas; Ramón, Cállate y Vete sin detonante único verificable; 0 preparing/update y 0 reexplicaciones pendientes. Sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T15:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": "bc3296ccd511",
-        "title": "Vete",
-        "message": "Inicio de pasada manual · 1 tendencia activa en cola; saneamiento visual solicitado en paralelo."
-      },
-      {
-        "at": "2026-10-28T15:16:30+01:00",
-        "phase": "investigating",
-        "trend_id": "bc3296ccd511",
-        "title": "Vete",
-        "message": "Dos búsquedas distintas no aíslan todavía un detonante verificable para «Vete»; contrastando contexto político y conversación del día."
-      },
-      {
-        "at": "2026-10-28T15:18:30+01:00",
-        "phase": "persisting",
-        "trend_id": "bc3296ccd511",
-        "title": "Vete",
-        "message": "Persistido outbox problematic de «Vete»; el aplicador editorial de GitHub está ejecutándose."
-      },
-      {
-        "at": "2026-10-28T15:19:10+01:00",
+        "at": "2026-10-28T15:38:00+01:00",
         "phase": "verifying",
-        "trend_id": "bc3296ccd511",
+        "trend_id": "df81ddb61398",
         "title": "Vete",
-        "message": "Releído main: el aplicador terminó correctamente y Vete quedó status problematic; no quedan preparing/update ni rewrite_pending."
+        "message": "Releyendo estado autoritativo de Vete r0; D.E.P, Carvajal y FEMP ya fueron resueltos por la ejecución concurrente."
       },
       {
-        "at": "2026-10-28T15:19:30+01:00",
+        "at": "2026-10-28T15:39:00+01:00",
+        "phase": "investigating",
+        "trend_id": "df81ddb61398",
+        "title": "Vete",
+        "message": "Dos búsquedas distintas no identifican con fiabilidad el detonante actual de Vete; se prepara estado problematic sin inventar explicación."
+      },
+      {
+        "at": "2026-10-28T15:41:10+01:00",
+        "phase": "verifying",
+        "trend_id": "df81ddb61398",
+        "title": "Vete",
+        "message": "Releído main: Vete df81 r0 quedó problematic; 0 preparing/update y 0 rewrite_pending."
+      },
+      {
+        "at": "2026-10-28T15:41:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: Vete queda problematic por detonante no verificable; no hay trabajo editorial activo pendiente."
+        "message": "TTendencias completada 8/8 · 5 explicadas; Ramón, Cállate y Vete sin detonante único verificable; 0 preparing/update y 0 reexplicaciones pendientes. Sin ImageGen."
       }
-    ],
-    "processed_ids": [
-      "bc3296ccd511"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
-      "bc3296ccd511"
+      "df81ddb61398"
+    ],
+    "processed_ids": [
+      "a522ebec65ad",
+      "270cbb3d6541",
+      "0283810e4423",
+      "3c21fa1e30b5",
+      "3e9a24e29b74",
+      "07ba1b25e2f8",
+      "9c382fd3ffec",
+      "df81ddb61398"
     ],
     "final_outcomes": [
       {
-        "id": "bc3296ccd511",
+        "id": "a522ebec65ad",
+        "name": "Ramón",
+        "revision": 0,
+        "status": "inactive",
+        "resolution": "problematic_no_unique_trigger"
+      },
+      {
+        "id": "270cbb3d6541",
+        "name": "Cállate",
+        "revision": 0,
+        "status": "inactive",
+        "resolution": "problematic_no_unique_trigger"
+      },
+      {
+        "id": "0283810e4423",
+        "name": "ERTMS",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "3c21fa1e30b5",
+        "name": "#trenes",
+        "revision": 0,
+        "status": "deleted",
+        "resolution": "explained_then_downstream_cleanup"
+      },
+      {
+        "id": "3e9a24e29b74",
+        "name": "D.E.P",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "07ba1b25e2f8",
+        "name": "Carvajal",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "9c382fd3ffec",
+        "name": "FEMP",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "df81ddb61398",
         "name": "Vete",
         "revision": 0,
         "status": "problematic"
       }
     ]
   },
-  "run_id": "tr-chat-20261028T1515+0100",
+  "run_id": "tr-1793198140241-manual",
   "summary": {
-    "attempted": 1,
+    "attempted": 8,
     "ready": 0,
-    "explained": 0,
-    "final_resolved": 1,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "explained": 5,
+    "final_resolved": 8,
+    "explanation_groups": 5,
+    "new_cards": 5,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "problematic_reviewed": 1,
-    "problematic_marked": 1,
+    "problematic_reviewed": 3,
+    "problematic_marked": 3,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
-    "discovered_during_run": 0,
+    "initial_compact_queue": 7,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 1,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 5,
     "remates_selected": 0,
-    "remates_omitted": 9,
-    "recent_missing_closer_reviewed": 9,
+    "remates_omitted": 5,
+    "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
@@ -168,39 +220,32 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T15:15:00+01:00",
-      "phase": "preparing",
-      "trend_id": "bc3296ccd511",
-      "title": "Vete",
-      "message": "Inicio de pasada manual · 1 tendencia activa en cola; saneamiento visual solicitado en paralelo."
-    },
-    {
-      "at": "2026-10-28T15:16:30+01:00",
-      "phase": "investigating",
-      "trend_id": "bc3296ccd511",
-      "title": "Vete",
-      "message": "Dos búsquedas distintas no aíslan todavía un detonante verificable para «Vete»; contrastando contexto político y conversación del día."
-    },
-    {
-      "at": "2026-10-28T15:18:30+01:00",
-      "phase": "persisting",
-      "trend_id": "bc3296ccd511",
-      "title": "Vete",
-      "message": "Persistido outbox problematic de «Vete»; el aplicador editorial de GitHub está ejecutándose."
-    },
-    {
-      "at": "2026-10-28T15:19:10+01:00",
+      "at": "2026-10-28T15:38:00+01:00",
       "phase": "verifying",
-      "trend_id": "bc3296ccd511",
+      "trend_id": "df81ddb61398",
       "title": "Vete",
-      "message": "Releído main: el aplicador terminó correctamente y Vete quedó status problematic; no quedan preparing/update ni rewrite_pending."
+      "message": "Releyendo estado autoritativo de Vete r0; D.E.P, Carvajal y FEMP ya fueron resueltos por la ejecución concurrente."
     },
     {
-      "at": "2026-10-28T15:19:30+01:00",
+      "at": "2026-10-28T15:39:00+01:00",
+      "phase": "investigating",
+      "trend_id": "df81ddb61398",
+      "title": "Vete",
+      "message": "Dos búsquedas distintas no identifican con fiabilidad el detonante actual de Vete; se prepara estado problematic sin inventar explicación."
+    },
+    {
+      "at": "2026-10-28T15:41:10+01:00",
+      "phase": "verifying",
+      "trend_id": "df81ddb61398",
+      "title": "Vete",
+      "message": "Releído main: Vete df81 r0 quedó problematic; 0 preparing/update y 0 rewrite_pending."
+    },
+    {
+      "at": "2026-10-28T15:41:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Vete queda problematic por detonante no verificable; no hay trabajo editorial activo pendiente."
+      "message": "TTendencias completada 8/8 · 5 explicadas; Ramón, Cállate y Vete sin detonante único verificable; 0 preparing/update y 0 reexplicaciones pendientes. Sin ImageGen."
     }
   ],
   "partial": false,
@@ -212,12 +257,57 @@
     "captured_at": "2026-10-28T14:40:59+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-1793192422922-manual",
+  "previous_run_id": "tr-chat-20261028T1515+0100",
   "ratings_snapshot": null,
   "remate_selections": [],
   "final_outcomes": [
     {
-      "id": "bc3296ccd511",
+      "id": "a522ebec65ad",
+      "name": "Ramón",
+      "revision": 0,
+      "status": "inactive",
+      "resolution": "problematic_no_unique_trigger"
+    },
+    {
+      "id": "270cbb3d6541",
+      "name": "Cállate",
+      "revision": 0,
+      "status": "inactive",
+      "resolution": "problematic_no_unique_trigger"
+    },
+    {
+      "id": "0283810e4423",
+      "name": "ERTMS",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "3c21fa1e30b5",
+      "name": "#trenes",
+      "revision": 0,
+      "status": "deleted",
+      "resolution": "explained_then_downstream_cleanup"
+    },
+    {
+      "id": "3e9a24e29b74",
+      "name": "D.E.P",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "07ba1b25e2f8",
+      "name": "Carvajal",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "9c382fd3ffec",
+      "name": "FEMP",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "df81ddb61398",
       "name": "Vete",
       "revision": 0,
       "status": "problematic"
