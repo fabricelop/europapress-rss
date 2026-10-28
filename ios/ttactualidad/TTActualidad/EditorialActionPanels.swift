@@ -56,6 +56,13 @@ struct EditorialActions: View {
                         quickLink("Abrir ChatGPT", "arrow.up.right.square",
                                   "https://chatgpt.com/")
                     }
+                    quickButton("URGENTE · Elaborar ya", "bolt.fill", urgent: true) {
+                        launchUrgentEditorial()
+                    }
+                    Text("Copia la orden prioritaria y abre ChatGPT. Solo queda pegarla y enviarla.")
+                        .font(.system(size: 10))
+                        .foregroundStyle(TTTheme.muted)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     quickButton("Suprimir · No pasar a Listas", "trash", danger: true) {
                         request("discard")
                     }
@@ -308,6 +315,7 @@ struct EditorialActions: View {
     }
 
     private func quickButton(_ name: String, _ symbol: String, danger: Bool = false,
+                             urgent: Bool = false,
                              action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(name, systemImage: symbol)
@@ -315,14 +323,18 @@ struct EditorialActions: View {
                 .lineLimit(1).minimumScaleFactor(0.75)
                 .frame(maxWidth: .infinity, minHeight: 42)
                 .foregroundStyle(danger ? Color(red: 1, green: 0.71, blue: 0.76) : .white)
-                .background(danger ? TTTheme.red.opacity(0.65) : Color(red: 0.19, green: 0.31, blue: 0.46),
+                .background(danger ? TTTheme.red.opacity(0.65) :
+                            urgent ? Color(red: 0.57, green: 0.31, blue: 0.08) :
+                            Color(red: 0.19, green: 0.31, blue: 0.46),
                             in: RoundedRectangle(cornerRadius: 10))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(danger ? .red.opacity(0.5) : TTTheme.blue.opacity(0.22)))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(
+                    danger ? .red.opacity(0.5) :
+                    urgent ? .orange.opacity(0.8) : TTTheme.blue.opacity(0.22)))
         }
         .buttonStyle(.plain)
     }
 
-    private func quickLink(_ name: String, _ symbol: String, _ raw: String) -> some View {
+        private func quickLink(_ name: String, _ symbol: String, _ raw: String) -> some View {
         quickButton(name, symbol) {
             guard let url = URL(string: raw) else { return }
             openURL(url)
@@ -377,6 +389,27 @@ struct EditorialActions: View {
             details.append("Motivo de revisión mostrado, sin verificar: \(trend.problemReason)")
         }
         return (common + details).joined(separator: "\n\n")
+    }
+
+    private var urgentEditorialPrompt: String {
+        [
+            "TTITTULARES_URGENTE_MANUAL_V1 | PRIORIDAD EDITORIAL INMEDIATA. Atiende SOLO esta noticia ahora, sin esperar a una ejecución horaria, desde ChatGPT en la nube; no necesitas el PC.",
+            "La prioridad significa investigar y comprobar esta noticia antes que otras entradas de la cola. NO omitas comprobación de hechos, fuentes, umbrales del contrato ni revalidación de ID/revisión; NO marques READY sin publicación verificable en el estado autoritativo.",
+            "Si sigue en PROCESSING/rewrite_pending, elabora y persiste la noticia mediante el transporte GitHub oficial. Si se cerró entretanto, informa del estado real sin duplicarla. Las imágenes NO deben bloquear el texto.",
+            manualEditorialPrompt
+        ].joined(separator: "\n\n")
+    }
+
+    private func launchUrgentEditorial() {
+        guard news?.status == "EN ELABORACIÓN", !editorialID.isEmpty else {
+            outcome = "La noticia no está confirmada En elaboración. Actualiza la tarjeta."
+            return
+        }
+        copy(urgentEditorialPrompt)
+        outcome = "Orden urgente copiada. Pégala y envíala en ChatGPT para iniciar."
+        if let url = URL(string: "https://chatgpt.com/") {
+            openURL(url)
+        }
     }
 
     private func copyManualEditorialPrompt() {
