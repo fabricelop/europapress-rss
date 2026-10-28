@@ -58,6 +58,13 @@ QFrame#panel { background:#121f31; border:1px solid #2a4057; border-radius:18px;
 QFrame#metric { background:#172b3e; border:1px solid #31506a; border-radius:16px; }
 QFrame#rowCard { background:#1c2d42; border:1px solid #34485f; border-radius:13px; }
 QFrame#rowCard:hover { background:#233a50; border-color:#64d8c3; }
+QFrame#rowCard[selected="true"] { background:#243d4e; border:1px solid #74dac6; }
+QMenu { background:#192a3e; border:1px solid #3a566f; border-radius:10px; padding:6px; }
+QMenu::item { padding:9px 18px; color:#eaf2ff; border-radius:6px; }
+QMenu::item:selected { background:#2a554e; color:#9bffe7; }
+QMenu::item:disabled { color:#64798f; }
+QToolTip { background:#243b51; color:white; border:1px solid #57768e; border-radius:6px; padding:7px; }
+
 QLabel#brand { font-size:26px; font-weight:800; color:#83ecd6; }
 QLabel#eyebrow { color:#94adc4; font-size:11px; font-weight:700; }
 QLabel#pageTitle { font-size:24px; font-weight:750; }
@@ -311,6 +318,7 @@ class MainWindow(QWidget):
         self.events.finished.connect(self.on_finished)
         self.worker=Worker(self.events)
         self.nav={}
+        self.card_widgets={}
         self.draw()
         self.timer=QTimer(self)
         self.timer.timeout.connect(self.refresh)
@@ -590,11 +598,16 @@ class MainWindow(QWidget):
         self.metric_labels["working"].setText(str(working))
         self.metric_labels["published"].setText(str(sum(self.published.values())))
         clear_layout(self.list_layout)
+        self.card_widgets={}
         if not chosen:
             msg=label("No hay elementos en esta sección.","small",wrap=True)
             self.list_layout.addWidget(msg)
         for item in chosen[:180]:
             card=frame("rowCard")
+            is_selected=(self.selected and item["id"]==self.selected["id"]
+                         and item["project"]==self.selected["project"])
+            card.setProperty("selected",bool(is_selected))
+            self.card_widgets[(item["project"],item["id"])]=card
             card.setCursor(Qt.PointingHandCursor)
             cc=col_layout(card,7,(13,12,13,11))
             line=row_layout(spacing=8)
@@ -638,6 +651,10 @@ class MainWindow(QWidget):
 
     def select_item(self,item,load_image=True):
         self.selected=item
+        for key,card in self.card_widgets.items():
+            card.setProperty("selected",key==(item["project"],item["id"]))
+            card.style().unpolish(card)
+            card.style().polish(card)
         self.state_tag.setText(item["category"].upper()+"   /   "+item["state"].upper())
         self.detail_title.setText(item.get("title") or "Sin título")
         self.detail_meta.setText("ID "+item["id"]+"  ·  Rev. "+str(item["revision"])+("  ·  #"+str(item.get("rank")) if item.get("rank") else "")+("  ·  "+item.get("trend_status","") if item["state"]=="Top 30" else ""))
