@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "bd2a535275d1"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T22:25:00+01:00",
-  "last_completed_at": "2026-10-28T22:27:30+01:00",
-  "updated_at": "2026-10-28T22:27:30+01:00",
+  "last_started_at": "2026-10-28T22:40:00+01:00",
+  "last_completed_at": "2026-10-28T22:46:50+01:00",
+  "updated_at": "2026-10-28T22:46:50+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T222500+0100",
+    "trigger_run_id": "tr-chat-20261028T224000+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,43 +28,43 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T222500+0100",
+    "run_id": "tr-chat-20261028T224000+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T22:25:00+01:00",
-    "updated_at": "2026-10-28T22:27:30+01:00",
-    "finished_at": "2026-10-28T22:27:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-28T22:40:00+01:00",
+    "updated_at": "2026-10-28T22:46:50+01:00",
+    "finished_at": "2026-10-28T22:46:50+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
+      "explained": 1,
+      "final_resolved": 1,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "inactive_after_retry": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 0,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 3,
+      "pending_visual_candidates_reviewed": 4,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 0/0 · no había preparing/update ni reexplicaciones pendientes; cola final 0.",
+    "message": "TTendencias cerrada 1/1 · Ministerio de Transportes explicado y verificado; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,127 +77,304 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T22:25:00+01:00",
+        "at": "2026-10-28T22:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola inicial 0; verificando requests, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-28T22:26:00+01:00",
+        "at": "2026-10-28T22:41:10+01:00",
+        "phase": "verifying",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Descubierta durante la ejecución · nueva entrada preparing en puesto 10."
+      },
+      {
+        "at": "2026-10-28T22:41:15+01:00",
+        "phase": "verifying",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Releyendo estado autoritativo de Ministerio de Transportes"
+      },
+      {
+        "at": "2026-10-28T22:42:00+01:00",
+        "phase": "investigating",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-28T22:42:25+01:00",
+        "phase": "investigating",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Contrastando fuente 1/2 · protesta frente al Ministerio"
+      },
+      {
+        "at": "2026-10-28T22:42:45+01:00",
+        "phase": "investigating",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Contrastando fuente 2/2 · convocatoria y petición de dimisión"
+      },
+      {
+        "at": "2026-10-28T22:43:00+01:00",
+        "phase": "investigating",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-28T22:43:10+01:00",
+        "phase": "drafting",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-28T22:43:20+01:00",
+        "phase": "drafting",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Comprobando límite de X · 231 caracteres"
+      },
+      {
+        "at": "2026-10-28T22:43:30+01:00",
+        "phase": "drafting",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Sin remate · tragedia con víctimas; explicación factual suficiente"
+      },
+      {
+        "at": "2026-10-28T22:43:40+01:00",
+        "phase": "persisting",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-28T22:44:05+01:00",
+        "phase": "persisting",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Actualizando requests y retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-28T22:46:00+01:00",
+        "phase": "verifying",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-28T22:46:15+01:00",
+        "phase": "verifying",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-28T22:46:25+01:00",
+        "phase": "verifying",
+        "trend_id": "bd2a535275d1",
+        "title": "Ministerio de Transportes",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-28T22:46:35+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, sin preparing/update y sin rewrite_pending."
+        "message": "Revisando Pendientes recientes · 4 tarjetas; sin reparación textual necesaria"
       },
       {
-        "at": "2026-10-28T22:26:30+01:00",
+        "at": "2026-10-28T22:46:45+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes recientes · ninguna tarjeta editorial abierta tras reconciliar estados."
+        "message": "Estado final verificado · cola 0, rewrite_pending 0 y huérfanos 0; reparador visual solicitado"
       },
       {
-        "at": "2026-10-28T22:27:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main y comprobando el disparo del reparador visual."
-      },
-      {
-        "at": "2026-10-28T22:27:15+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Estado final verificado · cola 0, rewrite_pending 0; reparador visual solicitado."
-      },
-      {
-        "at": "2026-10-28T22:27:30+01:00",
+        "at": "2026-10-28T22:46:50+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0 · no había trabajo editorial activo; cola final verificada en 0."
+        "message": "TTendencias cerrada 1/1 · Ministerio de Transportes explicado y verificado; cola final 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "bd2a535275d1"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "bd2a535275d1",
+        "name": "Ministerio de Transportes",
+        "revision": 0,
+        "status": "explained"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261028T222500+0100",
+  "run_id": "tr-chat-20261028T224000+0100",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
+    "explained": 1,
+    "final_resolved": 1,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "inactive_after_retry": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 0,
-    "discovered_during_run": 0,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 1,
     "remates_selected": 0,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 3,
+    "pending_visual_candidates_reviewed": 4,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T22:25:00+01:00",
+      "at": "2026-10-28T22:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial · cola inicial 0; verificando requests, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-28T22:26:00+01:00",
+      "at": "2026-10-28T22:41:10+01:00",
+      "phase": "verifying",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Descubierta durante la ejecución · nueva entrada preparing en puesto 10."
+    },
+    {
+      "at": "2026-10-28T22:41:15+01:00",
+      "phase": "verifying",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Releyendo estado autoritativo de Ministerio de Transportes"
+    },
+    {
+      "at": "2026-10-28T22:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-28T22:42:25+01:00",
+      "phase": "investigating",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Contrastando fuente 1/2 · protesta frente al Ministerio"
+    },
+    {
+      "at": "2026-10-28T22:42:45+01:00",
+      "phase": "investigating",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Contrastando fuente 2/2 · convocatoria y petición de dimisión"
+    },
+    {
+      "at": "2026-10-28T22:43:00+01:00",
+      "phase": "investigating",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-28T22:43:10+01:00",
+      "phase": "drafting",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-28T22:43:20+01:00",
+      "phase": "drafting",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Comprobando límite de X · 231 caracteres"
+    },
+    {
+      "at": "2026-10-28T22:43:30+01:00",
+      "phase": "drafting",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Sin remate · tragedia con víctimas; explicación factual suficiente"
+    },
+    {
+      "at": "2026-10-28T22:43:40+01:00",
+      "phase": "persisting",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-28T22:44:05+01:00",
+      "phase": "persisting",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Actualizando requests y retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-28T22:46:00+01:00",
+      "phase": "verifying",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-28T22:46:15+01:00",
+      "phase": "verifying",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-28T22:46:25+01:00",
+      "phase": "verifying",
+      "trend_id": "bd2a535275d1",
+      "title": "Ministerio de Transportes",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-28T22:46:35+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · cola 0, sin preparing/update y sin rewrite_pending."
+      "message": "Revisando Pendientes recientes · 4 tarjetas; sin reparación textual necesaria"
     },
     {
-      "at": "2026-10-28T22:26:30+01:00",
+      "at": "2026-10-28T22:46:45+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes recientes · ninguna tarjeta editorial abierta tras reconciliar estados."
+      "message": "Estado final verificado · cola 0, rewrite_pending 0 y huérfanos 0; reparador visual solicitado"
     },
     {
-      "at": "2026-10-28T22:27:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main y comprobando el disparo del reparador visual."
-    },
-    {
-      "at": "2026-10-28T22:27:15+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Estado final verificado · cola 0, rewrite_pending 0; reparador visual solicitado."
-    },
-    {
-      "at": "2026-10-28T22:27:30+01:00",
+      "at": "2026-10-28T22:46:50+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 0/0 · no había trabajo editorial activo; cola final verificada en 0."
+      "message": "TTendencias cerrada 1/1 · Ministerio de Transportes explicado y verificado; cola final 0."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261028T221000+0100",
+  "previous_run_id": "tr-chat-20261028T222500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -204,10 +383,17 @@
     "recent_considered": 30
   },
   "remate_selections": [],
-  "final_outcomes": [],
-  "pending_delivery_count": 3,
+  "final_outcomes": [
+    {
+      "id": "bd2a535275d1",
+      "name": "Ministerio de Transportes",
+      "revision": 0,
+      "status": "explained"
+    }
+  ],
+  "pending_delivery_count": 4,
   "apply_workflow": {
-    "run_id": 40740689705,
+    "run_id": 40774303176,
     "status": "completed",
     "conclusion": "success",
     "editorial_blocking": false
