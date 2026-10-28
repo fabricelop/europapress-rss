@@ -2433,7 +2433,9 @@ struct TimeMapView: View {
         }
     }
 
-    private var mapDataEvents: some View {
+    // Keep SwiftUI modifier chains short for predictable type checking.
+    // Dividing the event handlers does not alter their execution or order.
+    private var mapBaseDataEvents: some View {
         mapSheets
         .onChange(of:searchOpen) { _,open in
             if !open,let cell=queuedCellForMap {
@@ -2451,6 +2453,10 @@ struct TimeMapView: View {
         }
         .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
+    }
+
+    private var mapDataEvents: some View {
+        mapBaseDataEvents
         .onChange(of:model.totalsRefreshRevision) { _,_ in
             refreshMapSnapshot(force:true)
         }
