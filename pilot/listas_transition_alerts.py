@@ -85,15 +85,16 @@ def terminal_after(row, when, revision):
     return closed_at is None or (closed_at - when).total_seconds() >= -60
 
 
-def counts(now=None):
+def counts(now=None, with_news=False):
     """Keep the same inclusion/closing rules as iOS LiveCountsSource.load()."""
     now = now or datetime.now(timezone.utc)
     prepared = rows(load("ttittulares/prepared.json"))
     decisions = rows(load("ttittulares/decisions.json"))
     closed_news = {val(x, "event_id") for x in decisions
                    if val(x, "status").lower() in TERMINAL}
-    news = sum(1 for x in prepared if val(x, "event_id")
-               and val(x, "event_id") not in closed_news)
+    active_news = [x for x in prepared if val(x, "event_id")
+                   and val(x, "event_id") not in closed_news]
+    news = len(active_news)
 
     manual = latest(rows(load("trends/telegram-manual-explained.json")), "id")
     requests = latest(rows(load("trends/requests.json"), "requests"), "id")
@@ -134,16 +135,57 @@ def counts(now=None):
         if terminal_after(delivery, explained, revision):
             continue
         trends += 1
-    return {"ttittulares": news, "ttendencias": trends}
+    result = {"ttittulares": news, "ttendencias": trends}
+    return (result, active_news, decisions) if with_news else result
 
 
-def reconcile(state, current, at, enabled):
+def news_gap_between_checks(row, active_news, decisions):
+    """Prove a zero interval when GitHub checks missed the intermediate state.
+
+    Every previously active ID must be terminal *after* our last observation;
+    all currently active IDs must have appeared *after* the last old closure.
+    Missing timestamps or unknown IDs fail closed: never guess a zero.
+    """
+    previous_ids = set(row.get("active_ids") or [])
+    last_observed = dt(row.get("observed_at"))
+    if not previous_ids or last_observed is None:
+        return False
+    current_ids = {val(x, "event_id") for x in active_news}
+    if previous_ids & current_ids or not current_ids:
+        return False
+    last_closed = []
+    for ident in previous_ids:
+        relevant = [x for x in decisions
+                    if val(x, "event_id") == ident
+                    and val(x, "status").lower() in TERMINAL]
+        closed_times = []
+        for x in relevant:
+            closed = next((dt(x.get(k)) for k in
+                          ("deleted_at", "dismissed_at", "published_at",
+                           "removed_at", "updated_at", "decided_at") if dt(x.get(k))), None)
+            if closed is not None and closed >= last_observed:
+                closed_times.append(closed)
+        if not closed_times:
+            return False
+        last_closed.append(min(closed_times))
+    last_exit = max(last_closed)
+    created_times = [dt(x.get("prepared_at")) for x in active_news]
+    return bool(created_times) and all(t is not None and t > last_exit
+                                       for t in created_times)
+
+
+def reconcile(state, current, at, enabled, news_activity=None):
     """Pure state reducer: first read silent, 0 -> 1 alert, >0 -> >0 silent."""
     state = json.loads(json.dumps(state))
     if not state.get("initialized"):
         state.update({"version": 1, "initialized": True,
                       "lists": {k: {"count": v, "armed": v == 0, "sequence": 0}
                                 for k, v in current.items()}, "outbox": []})
+        if news_activity is not None:
+            active_news, _ = news_activity
+            state["lists"]["ttittulares"].update({
+                "active_ids": sorted({val(x, "event_id") for x in active_news}),
+                "observed_at": at.isoformat()})
         return state, []
     new_events = []
     for project, count in current.items():
@@ -151,9 +193,13 @@ def reconcile(state, current, at, enabled):
             project, {"count": count, "armed": count == 0, "sequence": 0})
         previous = int(row.get("count", 0))
         armed = bool(row.get("armed", previous == 0))
+        missed_zero = (project == "ttittulares" and count > 0
+                       and previous > 0 and not armed
+                       and news_activity is not None
+                       and news_gap_between_checks(row, *news_activity))
         if count == 0:
             row["armed"] = True
-        elif previous == 0 and armed:
+        elif (previous == 0 and armed) or missed_zero:
             row["armed"] = False
             row["sequence"] = int(row.get("sequence", 0)) + 1
             if enabled:
@@ -164,6 +210,10 @@ def reconcile(state, current, at, enabled):
         else:
             row["armed"] = False
         row["count"] = count
+        if project == "ttittulares" and news_activity is not None:
+            active_news, _ = news_activity
+            row["active_ids"] = sorted({val(x, "event_id") for x in active_news})
+            row["observed_at"] = at.isoformat()
     state["outbox"] = state.get("outbox", [])[-50:]
     return state, new_events
 
@@ -175,10 +225,11 @@ def persist(state):
 
 
 def prepare():
-    current = counts()
+    current, active_news, decisions = counts(with_news=True)
     old = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
     new, events = reconcile(old, current, datetime.now(timezone.utc),
-                            bool(os.environ.get("TT_ACTUALIDAD_NTFY_TOPIC")))
+                            bool(os.environ.get("TT_ACTUALIDAD_NTFY_TOPIC")),
+                            news_activity=(active_news, decisions))
     if new != old:
         persist(new)
     print("TT_LISTAS_CHECK", json.dumps({
@@ -288,6 +339,48 @@ def selftest():
     state, events = reconcile(state, {"ttittulares": 3, "ttendencias": 5}, at, True)
     assert not events, "Configuring destination cannot notify retroactively"
     assert len(state["outbox"]) == 3
+    # A periodic GitHub check can miss 4 -> 0 -> 2 entirely.
+    # It must still deliver once if the zero interval can be PROVEN.
+    t0 = at
+    old_ids = ["a", "b", "c", "d"]
+    earlier = [{"event_id": ident, "prepared_at": t0.isoformat()}
+               for ident in old_ids]
+    new_rows = [{"event_id": "e", "prepared_at":
+                 (t0 + timedelta(minutes=24)).isoformat()},
+                {"event_id": "f", "prepared_at":
+                 (t0 + timedelta(minutes=26)).isoformat()}]
+    closes = [{"event_id": ident, "status": "published", "updated_at":
+               (t0 + timedelta(minutes=4 + i)).isoformat()}
+              for i, ident in enumerate(old_ids)]
+    base, _ = reconcile({}, {"ttittulares": 4, "ttendencias": 0},
+                        t0, True, news_activity=(earlier, []))
+    after, events = reconcile(base, {"ttittulares": 2, "ttendencias": 0},
+                              t0 + timedelta(minutes=30), True,
+                              news_activity=(new_rows, closes))
+    assert [e["id"] for e in events] == ["ttittulares-1"], (
+        "Missed empty interval must create one alert")
+    after, events = reconcile(after, {"ttittulares": 2, "ttendencias": 0},
+                              t0 + timedelta(minutes=31), True,
+                              news_activity=(new_rows, closes))
+    assert not events, "Do not duplicate recovered transitions"
+    overlap = [{"event_id": "e", "prepared_at":
+                (t0 + timedelta(minutes=5)).isoformat()}]
+    after, events = reconcile(base, {"ttittulares": 1, "ttendencias": 0},
+                              t0 + timedelta(minutes=30), True,
+                              news_activity=(overlap, closes))
+    assert not events, "Overlapping news must not imply an empty Listas"
+    incomplete, events = reconcile(base, {"ttittulares": 2, "ttendencias": 0},
+                                   t0 + timedelta(minutes=30), True,
+                                   news_activity=(new_rows, closes[:-1]))
+    assert not events, "Missing old closure must fail closed"
+    assert incomplete["lists"]["ttittulares"]["count"] == 2
+    legacy, events = reconcile({"initialized": True, "lists": {
+        "ttittulares": {"count": 4, "armed": False, "sequence": 1},
+        "ttendencias": {"count": 0, "armed": True, "sequence": 0}},
+        "outbox": []}, {"ttittulares": 2, "ttendencias": 0},
+        t0 + timedelta(minutes=30), True, news_activity=(new_rows, closes))
+    assert not events, "Legacy checkpoint without IDs must not guess"
+    assert set(legacy["lists"]["ttittulares"]["active_ids"]) == {"e", "f"}
     global ROOT
     old_root = ROOT
     try:
