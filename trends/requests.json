@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-28T15:37:10+01:00",
+  "updated_at": "2026-10-28T15:40:14+01:00",
   "count": 325,
   "requests": [
     {
@@ -21150,7 +21150,7 @@
       "id": "df81ddb61398",
       "name": "Vete",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-28T15:35:36+01:00",
       "revision": 0,
       "reexplain": false,
@@ -21164,7 +21164,11 @@
         "Vete"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "problematic_at": "2026-10-28T15:40:14+01:00",
+      "problem_reason": "Tras dos rondas de búsqueda actuales con consultas distintas no se ha podido identificar un detonante único y verificable para «Vete». Los resultados recuperados se concentran en la cobertura general y la conversación política sobre el accidente de Urda, pero no vinculan de forma fiable ese término concreto a un hecho o protagonista.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
   "items": [
