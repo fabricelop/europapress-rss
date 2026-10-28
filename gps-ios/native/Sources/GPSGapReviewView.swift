@@ -14,11 +14,29 @@ struct GPSGapReviewView:View {
     @State private var message=""
     @State private var showDismissed=false
 
-    private var gaps:[TimeGPSGapReview] {
-        TimeGPSGapReviewIndex.scan(
-            intervals:model.data.intervals,fixes:model.data.fixes,
-            events:model.data.powerEvents,
-            dismissed:showDismissed ? [] : Set(model.data.dismissedGPSGapIDs))
+    @State private var gaps:[TimeGPSGapReview] = []
+    @State private var scanning = false
+    @State private var scanGeneration = UUID()
+
+    /// Gap detection may traverse years of fixes and intervals. Never run it
+    /// repeatedly from a List body or on the navigation gesture's main turn.
+    private func refreshGaps() {
+        let id = UUID()
+        scanGeneration = id
+        if gaps.isEmpty { scanning = true }
+        let intervals = model.data.intervals
+        let fixes = model.data.fixes
+        let events = model.data.powerEvents
+        let excluded = showDismissed ? Set<String>() : Set(model.data.dismissedGPSGapIDs)
+        DispatchQueue.global(qos:.utility).async {
+            let result = TimeGPSGapReviewIndex.scan(intervals:intervals,
+                          fixes:fixes,events:events,dismissed:excluded)
+            DispatchQueue.main.async {
+                guard scanGeneration == id else { return }
+                gaps = result
+                scanning = false
+            }
+        }
     }
     private var pendingCount:Int {
         gaps.filter { !model.data.dismissedGPSGapIDs.contains($0.id) }.count
@@ -43,7 +61,9 @@ struct GPSGapReviewView:View {
                         .accessibilityIdentifier("gpsGapReviewFeedback")
                 }
             }
-            if gaps.isEmpty {
+            if scanning && gaps.isEmpty {
+                Section { ProgressView("Revisando huecos GPS…") }
+            } else if gaps.isEmpty {
                 Section {
                     ContentUnavailableView("Sin huecos pendientes",
                         systemImage:"checkmark.shield",
@@ -73,6 +93,12 @@ struct GPSGapReviewView:View {
             }
         }
         .navigationTitle("Huecos GPS")
+        .onAppear { refreshGaps() }
+        .onChange(of:model.data.intervals.count) { _,_ in refreshGaps() }
+        .onChange(of:model.data.fixes.count) { _,_ in refreshGaps() }
+        .onChange(of:model.data.powerEvents.count) { _,_ in refreshGaps() }
+        .onChange(of:model.data.dismissedGPSGapIDs) { _,_ in refreshGaps() }
+        .onChange(of:showDismissed) { _,_ in refreshGaps() }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item:$selectedMapGap) { gap in
             GPSGapMapDetail(model:model,gap:gap,
