@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T05:45:00+01:00",
-  "last_completed_at": "2026-10-28T05:48:00+01:00",
-  "updated_at": "2026-10-28T05:48:00+01:00",
+  "last_started_at": "2026-10-28T06:15:00+01:00",
+  "last_completed_at": "2026-10-28T06:17:00+01:00",
+  "updated_at": "2026-10-28T06:17:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T0545+0100",
+    "run_id": "tr-chat-20261028T0615+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T05:45:00+01:00",
-    "updated_at": "2026-10-28T05:48:00+01:00",
-    "finished_at": "2026-10-28T05:48:00+01:00",
+    "started_at": "2026-10-28T06:15:00+01:00",
+    "updated_at": "2026-10-28T06:17:00+01:00",
+    "finished_at": "2026-10-28T06:17:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -68,37 +68,30 @@
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0; saneamiento visual solicitado para 8 fichas recientes.",
+    "message": "TTendencias completada 0/0 · cola editorial, reexplicaciones y problematic Top 10 verificados en 0; saneamiento visual solicitado para 8 fichas recientes.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-28T05:45:00+01:00",
+        "at": "2026-10-28T06:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada editorial directa · cola inicial 0; verificando reexplicaciones y saneamiento de fichas recientes."
       },
       {
-        "at": "2026-10-28T05:46:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · comprobando cola, requests, reexplicaciones, remates y Pendientes recientes."
-      },
-      {
-        "at": "2026-10-28T05:47:00+01:00",
+        "at": "2026-10-28T06:16:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento revisado · 8 fichas recientes pendientes de capa visual; 0 remates faltantes. Releyendo cola y requests antes del cierre."
       },
       {
-        "at": "2026-10-28T05:48:00+01:00",
+        "at": "2026-10-28T06:17:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0; saneamiento visual solicitado para 8 fichas recientes."
+        "message": "TTendencias completada 0/0 · cola editorial, reexplicaciones y problematic Top 10 verificados en 0; saneamiento visual solicitado para 8 fichas recientes."
       }
     ],
     "processed_ids": [],
@@ -113,7 +106,7 @@
     },
     "remate_selections": []
   },
-  "run_id": "tr-chat-20261028T0545+0100",
+  "run_id": "tr-chat-20261028T0615+0100",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -147,32 +140,25 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T05:45:00+01:00",
+      "at": "2026-10-28T06:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Iniciando pasada editorial directa · cola inicial 0; verificando reexplicaciones y saneamiento de fichas recientes."
     },
     {
-      "at": "2026-10-28T05:46:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main · comprobando cola, requests, reexplicaciones, remates y Pendientes recientes."
-    },
-    {
-      "at": "2026-10-28T05:47:00+01:00",
+      "at": "2026-10-28T06:16:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Saneamiento revisado · 8 fichas recientes pendientes de capa visual; 0 remates faltantes. Releyendo cola y requests antes del cierre."
     },
     {
-      "at": "2026-10-28T05:48:00+01:00",
+      "at": "2026-10-28T06:17:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0; saneamiento visual solicitado para 8 fichas recientes."
+      "message": "TTendencias completada 0/0 · cola editorial, reexplicaciones y problematic Top 10 verificados en 0; saneamiento visual solicitado para 8 fichas recientes."
     }
   ],
   "partial": false,
@@ -193,6 +179,5 @@
   },
   "remate_selections": [],
   "final_outcomes": [],
-  "pending_delivery_count": 8,
-  "error": null
+  "pending_delivery_count": 8
 }
