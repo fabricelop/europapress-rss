@@ -16,9 +16,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T16:40:00+01:00",
-  "last_completed_at": "2026-10-28T16:47:30+01:00",
-  "updated_at": "2026-10-28T16:47:30+01:00",
+  "last_started_at": "2026-10-28T16:55:00+01:00",
+  "last_completed_at": "2026-10-28T16:58:00+01:00",
+  "updated_at": "2026-10-28T16:58:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -32,13 +32,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261028T1640-chat",
+    "run_id": "tr-20261028T1655-chat",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-28T16:40:00+01:00",
-    "updated_at": "2026-10-28T16:47:30+01:00",
-    "finished_at": "2026-10-28T16:47:30+01:00",
+    "started_at": "2026-10-28T16:55:00+01:00",
+    "updated_at": "2026-10-28T16:58:00+01:00",
+    "finished_at": "2026-10-28T16:58:00+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -62,19 +62,19 @@
       "remaining_active": 0,
       "remaining_problematic": 1,
       "visual_backlog": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 0,
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 2,
+      "recent_missing_closer_reviewed": 0,
+      "pending_cards_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 1
     },
-    "message": "TTendencias cerrada · 0 preparing/update; Vete reintentada y verificada como problematic (intento 8) al no poder atribuirle un detonante único fiable.",
+    "message": "TTendencias cerrada · 0 preparing/update; Vete reintentada y continúa problematic al no poder atribuirle un detonante único fiable.",
     "incident_count": 1,
     "incidents": [
       {
@@ -93,60 +93,39 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T16:40:00+01:00",
+        "at": "2026-10-28T16:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Inicio de pasada manual · 0 preparing/update; 1 problematic en Top 10 para reintento."
       },
       {
-        "at": "2026-10-28T16:41:00+01:00",
+        "at": "2026-10-28T16:55:30+01:00",
         "phase": "verifying",
         "trend_id": "df81ddb61398",
         "title": "Vete",
         "message": "Releyendo estado autoritativo de Vete antes del reintento JIT."
       },
       {
-        "at": "2026-10-28T16:41:20+01:00",
+        "at": "2026-10-28T16:56:00+01:00",
         "phase": "investigating",
         "trend_id": "df81ddb61398",
         "title": "Vete",
         "message": "Buscando un detonante actual verificable para Vete con consultas distintas."
       },
       {
-        "at": "2026-10-28T16:42:20+01:00",
+        "at": "2026-10-28T16:57:15+01:00",
         "phase": "investigating",
         "trend_id": "df81ddb61398",
         "title": "Vete",
-        "message": "No se identifica un detonante único y actual con fiabilidad suficiente; se mantiene problematic para no inventar."
+        "message": "Las fuentes confirman críticas actuales a Óscar Puente, pero no vinculan de forma fiable el término exacto Vete a un detonante único; se mantiene problematic para no inferir."
       },
       {
-        "at": "2026-10-28T16:43:45+01:00",
-        "phase": "persisting",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Outbox problematic persistido; verificando consumo por el aplicador oficial en main."
-      },
-      {
-        "at": "2026-10-28T16:46:55+01:00",
-        "phase": "verifying",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Aplicador oficial completado correctamente; releyendo main para verificar revisión, intento y cola final."
-      },
-      {
-        "at": "2026-10-28T16:47:15+01:00",
-        "phase": "verifying",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Vete r0 verificada en main como problematic; intento 8 persistido y outbox consumido."
-      },
-      {
-        "at": "2026-10-28T16:47:30+01:00",
+        "at": "2026-10-28T16:58:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada · 0 preparing/update; Vete sigue problematic tras reintento verificable; sin ImageGen."
+        "message": "TTendencias cerrada · 0 preparing/update; Vete sigue problematic tras nuevo reintento verificable; sin ImageGen."
       }
     ],
     "processed_ids": [
@@ -167,7 +146,7 @@
       }
     ]
   },
-  "run_id": "tr-20261028T1640-chat",
+  "run_id": "tr-20261028T1655-chat",
   "summary": {
     "attempted": 1,
     "ready": 0,
@@ -187,13 +166,13 @@
     "remaining_active": 0,
     "remaining_problematic": 1,
     "visual_backlog": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
     "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 1,
-    "pending_cards_reviewed": 2,
+    "recent_missing_closer_reviewed": 0,
+    "pending_cards_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -201,64 +180,43 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T16:40:00+01:00",
+      "at": "2026-10-28T16:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual · 0 preparing/update; 1 problematic en Top 10 para reintento."
     },
     {
-      "at": "2026-10-28T16:41:00+01:00",
+      "at": "2026-10-28T16:55:30+01:00",
       "phase": "verifying",
       "trend_id": "df81ddb61398",
       "title": "Vete",
       "message": "Releyendo estado autoritativo de Vete antes del reintento JIT."
     },
     {
-      "at": "2026-10-28T16:41:20+01:00",
+      "at": "2026-10-28T16:56:00+01:00",
       "phase": "investigating",
       "trend_id": "df81ddb61398",
       "title": "Vete",
       "message": "Buscando un detonante actual verificable para Vete con consultas distintas."
     },
     {
-      "at": "2026-10-28T16:42:20+01:00",
+      "at": "2026-10-28T16:57:15+01:00",
       "phase": "investigating",
       "trend_id": "df81ddb61398",
       "title": "Vete",
-      "message": "No se identifica un detonante único y actual con fiabilidad suficiente; se mantiene problematic para no inventar."
+      "message": "Las fuentes confirman críticas actuales a Óscar Puente, pero no vinculan de forma fiable el término exacto Vete a un detonante único; se mantiene problematic para no inferir."
     },
     {
-      "at": "2026-10-28T16:43:45+01:00",
-      "phase": "persisting",
-      "trend_id": "df81ddb61398",
-      "title": "Vete",
-      "message": "Outbox problematic persistido; verificando consumo por el aplicador oficial en main."
-    },
-    {
-      "at": "2026-10-28T16:46:55+01:00",
-      "phase": "verifying",
-      "trend_id": "df81ddb61398",
-      "title": "Vete",
-      "message": "Aplicador oficial completado correctamente; releyendo main para verificar revisión, intento y cola final."
-    },
-    {
-      "at": "2026-10-28T16:47:15+01:00",
-      "phase": "verifying",
-      "trend_id": "df81ddb61398",
-      "title": "Vete",
-      "message": "Vete r0 verificada en main como problematic; intento 8 persistido y outbox consumido."
-    },
-    {
-      "at": "2026-10-28T16:47:30+01:00",
+      "at": "2026-10-28T16:58:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 0 preparing/update; Vete sigue problematic tras reintento verificable; sin ImageGen."
+      "message": "TTendencias cerrada · 0 preparing/update; Vete sigue problematic tras nuevo reintento verificable; sin ImageGen."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-1793201595837-manual",
+  "previous_run_id": "tr-20261028T1640-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
