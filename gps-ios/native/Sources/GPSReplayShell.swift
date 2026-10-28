@@ -11,6 +11,7 @@ struct GPSReplayShell: View {
     @State private var playing = false
     @State private var speed: Double = 60
     @State private var showRoute = true
+    @State private var routeGeometry: [[CLLocationCoordinate2D]] = []
     @State private var camera: MapCameraPosition = .automatic
     private let ticker = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -36,9 +37,14 @@ struct GPSReplayShell: View {
         }
     }
 
-    private var routeSegments: [[CLLocationCoordinate2D]] {
-        GPSRouteSegments.split(episode.points).map { group in
-            group.map { .init(latitude: $0.latitude, longitude: $0.longitude) }
+    private func prepareRouteGeometry() {
+        let points = episode.points
+        DispatchQueue.global(qos:.utility).async {
+            let geometry = GPSRouteSegments.split(points).map { group in
+                group.map { CLLocationCoordinate2D(latitude:$0.latitude,
+                                                   longitude:$0.longitude) }
+            }
+            DispatchQueue.main.async { routeGeometry = geometry }
         }
     }
 
@@ -60,8 +66,8 @@ struct GPSReplayShell: View {
         VStack(spacing: 12) {
             Map(position: $camera) {
                 if showRoute {
-                    ForEach(routeSegments.indices, id: \.self) { index in
-                        MapPolyline(coordinates: routeSegments[index])
+                    ForEach(routeGeometry.indices, id: \.self) { index in
+                        MapPolyline(coordinates: routeGeometry[index])
                             .stroke(.blue, lineWidth: 3)
                     }
                 }
@@ -78,7 +84,10 @@ struct GPSReplayShell: View {
                 }
             }
             .frame(maxHeight: .infinity)
-            .onAppear { camera = .region(initialRegion()) }
+            .onAppear {
+                camera = .region(initialRegion())
+                if routeGeometry.isEmpty { prepareRouteGeometry() }
+            }
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
