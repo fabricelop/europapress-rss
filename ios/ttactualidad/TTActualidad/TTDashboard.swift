@@ -523,10 +523,14 @@ struct TTDashboard: View {
                 Text(String(store.snapshot.news.count))
                     .font(.headline.monospacedDigit()).foregroundStyle(TTTheme.teal)
             }
-            ForEach(store.snapshot.news.filter {
-                search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)
-            }) { story in
-                NewsTile(item: story, github: github, settings: $showSettings)
+            // Combined Listas can contain hundreds of news cards. Building
+            // them eagerly inside a VStack makes tab navigation stutter.
+            LazyVStack(spacing: 5) {
+                ForEach(store.snapshot.news.filter {
+                    search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)
+                }) { story in
+                    NewsTile(item: story, github: github, settings: $showSettings)
+                }
             }
             HStack {
                 Label("TTendencias", systemImage: "chart.bar.fill")
