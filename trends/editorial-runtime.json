@@ -4,21 +4,25 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "f14d2fe3a09a",
+    "54289f350156",
+    "09eff0f84b28"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T18:59:00+01:00",
-  "last_completed_at": "2026-10-28T19:09:00+01:00",
-  "updated_at": "2026-10-28T19:09:00+01:00",
+  "last_started_at": "2026-10-28T18:55:00+01:00",
+  "last_completed_at": "2026-10-28T19:06:30+01:00",
+  "updated_at": "2026-10-28T19:06:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793210328436-manual",
+    "trigger_run_id": "tr-chat-20261028-1855-vete",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,36 +30,42 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793210328436-manual",
+    "run_id": "tr-chat-20261028-1855-vete",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T18:59:00+01:00",
-    "updated_at": "2026-10-28T19:09:00+01:00",
-    "finished_at": "2026-10-28T19:09:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-28T18:55:00+01:00",
+    "updated_at": "2026-10-28T19:06:30+01:00",
+    "finished_at": "2026-10-28T19:06:30+01:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 3,
       "ready": 0,
-      "explained": 0,
-      "externally_resolved": 2,
+      "explained": 2,
       "final_resolved": 2,
+      "problematic_reviewed": 1,
+      "problematic_marked": 1,
+      "inactive_after_retry": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 1,
-      "dynamic_added": 1,
+      "discovered_during_run": 2,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 2,
       "rewrite_pending_remaining": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 0,
+      "remates_omitted": 2,
+      "recent_missing_closer_reviewed": 2,
       "incidents": 0
     },
-    "message": "TTendencias cerrada · YA ESTÁ BIEN y Francino quedaron explicadas y verificadas; sin preparing/update ni reexplicaciones pendientes.",
+    "message": "TTendencias cerrada · YA ESTÁ BIEN y Francino explicadas y verificadas; Vete quedó inactive tras el reintento. Cola activa 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -66,6 +76,15 @@
       "recent_considered": 30
     },
     "remate_selections": [
+      {
+        "trend_id": "54289f350156",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "tragedy_victims"
+      },
       {
         "trend_id": "09eff0f84b28",
         "revision": 0,
@@ -78,271 +97,341 @@
     ],
     "activity": [
       {
-        "at": "2026-10-28T18:59:00+01:00",
+        "at": "2026-10-28T18:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 1 entrada activa: YA ESTÁ BIEN"
+        "message": "Preparando pasada editorial · 1 entrada candidata: Vete"
+      },
+      {
+        "at": "2026-10-28T18:56:00+01:00",
+        "phase": "verifying",
+        "trend_id": "f14d2fe3a09a",
+        "title": "Vete",
+        "message": "Releyendo estado autoritativo de Vete"
+      },
+      {
+        "at": "2026-10-28T18:57:00+01:00",
+        "phase": "investigating",
+        "trend_id": "f14d2fe3a09a",
+        "title": "Vete",
+        "message": "Buscando detonante actual con consultas distintas a los intentos anteriores"
+      },
+      {
+        "at": "2026-10-28T18:58:00+01:00",
+        "phase": "investigating",
+        "trend_id": "f14d2fe3a09a",
+        "title": "Vete",
+        "message": "Contrastando fuente 1/2 · hay críticas a Óscar Puente, pero no vínculo explícito con «Vete»"
+      },
+      {
+        "at": "2026-10-28T18:59:00+01:00",
+        "phase": "investigating",
+        "trend_id": "f14d2fe3a09a",
+        "title": "Vete",
+        "message": "Contrastando fuente 2/2 · sin destinatario verificable; se evita inferir"
+      },
+      {
+        "at": "2026-10-28T19:00:00+01:00",
+        "phase": "persisting",
+        "trend_id": "f14d2fe3a09a",
+        "title": "Vete",
+        "message": "Guardando resultado problematic en outbox"
       },
       {
         "at": "2026-10-28T19:01:00+01:00",
         "phase": "verifying",
         "trend_id": "54289f350156",
         "title": "YA ESTÁ BIEN",
-        "message": "Releyendo estado autoritativo de YA ESTÁ BIEN · resuelta concurrentemente y retirada de la cola"
+        "message": "Nueva entrada descubierta durante la pasada · releyendo estado autoritativo"
+      },
+      {
+        "at": "2026-10-28T19:02:00+01:00",
+        "phase": "investigating",
+        "trend_id": "54289f350156",
+        "title": "YA ESTÁ BIEN",
+        "message": "Hecho esencial verificado · mensaje del PP tras Urda y las explicaciones de Óscar Puente"
+      },
+      {
+        "at": "2026-10-28T19:02:20+01:00",
+        "phase": "drafting",
+        "trend_id": "54289f350156",
+        "title": "YA ESTÁ BIEN",
+        "message": "Redactando explicación factual desde cero"
+      },
+      {
+        "at": "2026-10-28T19:02:35+01:00",
+        "phase": "drafting",
+        "trend_id": "54289f350156",
+        "title": "YA ESTÁ BIEN",
+        "message": "Comprobando límite de X · 249 caracteres"
+      },
+      {
+        "at": "2026-10-28T19:02:45+01:00",
+        "phase": "remate_selection",
+        "trend_id": "54289f350156",
+        "title": "YA ESTÁ BIEN",
+        "message": "Sin remate · accidente con víctimas; se aplica protección editorial"
       },
       {
         "at": "2026-10-28T19:03:30+01:00",
         "phase": "verifying",
         "trend_id": "54289f350156",
         "title": "YA ESTÁ BIEN",
-        "message": "Verificando id+revision y texto persistido · ficha Explicada y request coinciden"
+        "message": "Tendencia cerrada y verificada en Explicadas, requests y cola"
       },
       {
-        "at": "2026-10-28T19:04:00+01:00",
+        "at": "2026-10-28T19:03:50+01:00",
         "phase": "verifying",
         "trend_id": "09eff0f84b28",
         "title": "Francino",
-        "message": "Releyendo estado autoritativo de Francino · r0 sigue preparing y ocupa TT#8"
+        "message": "Nueva entrada descubierta durante el cierre · releyendo estado autoritativo"
       },
       {
-        "at": "2026-10-28T19:05:00+01:00",
+        "at": "2026-10-28T19:04:20+01:00",
         "phase": "investigating",
         "trend_id": "09eff0f84b28",
         "title": "Francino",
-        "message": "Buscando detonante actual"
+        "message": "Hecho esencial verificado · palabras de Carles Francino desde la cobertura de Urda"
       },
       {
-        "at": "2026-10-28T19:05:30+01:00",
-        "phase": "investigating",
-        "trend_id": "09eff0f84b28",
-        "title": "Francino",
-        "message": "Contrastando fuente 1/2 · Cadena SER identifica su intervención desde Urda contra el uso político de la tragedia"
-      },
-      {
-        "at": "2026-10-28T19:06:00+01:00",
-        "phase": "investigating",
-        "trend_id": "09eff0f84b28",
-        "title": "Francino",
-        "message": "Contrastando fuente 2/2 · se confirma la programación especial de La Ventana desde la zona del accidente"
-      },
-      {
-        "at": "2026-10-28T19:06:15+01:00",
-        "phase": "investigating",
-        "trend_id": "09eff0f84b28",
-        "title": "Francino",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-28T19:06:45+01:00",
+        "at": "2026-10-28T19:04:35+01:00",
         "phase": "drafting",
         "trend_id": "09eff0f84b28",
         "title": "Francino",
-        "message": "Redactando explicación factual"
+        "message": "Redactando explicación factual y comprobando límite de X · 226 caracteres"
       },
       {
-        "at": "2026-10-28T19:07:00+01:00",
-        "phase": "drafting",
-        "trend_id": "09eff0f84b28",
-        "title": "Francino",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-28T19:07:10+01:00",
+        "at": "2026-10-28T19:04:45+01:00",
         "phase": "remate_selection",
         "trend_id": "09eff0f84b28",
         "title": "Francino",
-        "message": "Sin remate · tragedia con víctimas; explicación factual suficiente"
+        "message": "Sin remate · accidente con víctimas; se aplica protección editorial"
       },
       {
-        "at": "2026-10-28T19:07:30+01:00",
+        "at": "2026-10-28T19:05:00+01:00",
         "phase": "persisting",
         "trend_id": "09eff0f84b28",
         "title": "Francino",
-        "message": "Guardando ficha Explicada · la revisión fue resuelta concurrentemente antes de la escritura; no se duplica"
+        "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola"
       },
       {
-        "at": "2026-10-28T19:08:00+01:00",
-        "phase": "verifying",
-        "trend_id": "09eff0f84b28",
-        "title": "Francino",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-28T19:08:20+01:00",
-        "phase": "verifying",
-        "trend_id": "09eff0f84b28",
-        "title": "Francino",
-        "message": "Verificando id+revision y texto persistido · ficha Explicada y request coinciden"
-      },
-      {
-        "at": "2026-10-28T19:08:40+01:00",
+        "at": "2026-10-28T19:05:30+01:00",
         "phase": "verifying",
         "trend_id": "09eff0f84b28",
         "title": "Francino",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-28T19:09:00+01:00",
+        "at": "2026-10-28T19:06:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final · cola 0, sin preparing/update ni rewrite_pending; Vete ya está inactive"
+      },
+      {
+        "at": "2026-10-28T19:06:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main · sin preparing/update ni rewrite_pending"
+        "message": "TTendencias cerrada · 2 explicadas, cola activa 0 y reparación visual solicitada"
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "f14d2fe3a09a",
+      "54289f350156",
+      "09eff0f84b28"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "final_outcomes": [
       {
+        "id": "f14d2fe3a09a",
+        "name": "Vete",
+        "revision": 0,
+        "status": "inactive"
+      },
+      {
         "id": "54289f350156",
         "name": "YA ESTÁ BIEN",
         "revision": 0,
-        "status": "explained",
-        "resolution": "concurrent_verified"
+        "status": "explained"
       },
       {
         "id": "09eff0f84b28",
         "name": "Francino",
         "revision": 0,
-        "status": "explained",
-        "resolution": "concurrent_verified"
+        "status": "explained"
       }
     ]
   },
-  "run_id": "tr-1793210328436-manual",
+  "run_id": "tr-chat-20261028-1855-vete",
   "summary": {
-    "attempted": 1,
+    "attempted": 3,
     "ready": 0,
-    "explained": 0,
-    "externally_resolved": 2,
+    "explained": 2,
     "final_resolved": 2,
+    "problematic_reviewed": 1,
+    "problematic_marked": 1,
+    "inactive_after_retry": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 1,
-    "dynamic_added": 1,
+    "discovered_during_run": 2,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 2,
     "rewrite_pending_remaining": 0,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 0,
+    "remates_omitted": 2,
+    "recent_missing_closer_reviewed": 2,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T18:59:00+01:00",
+      "at": "2026-10-28T18:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial · 1 entrada activa: YA ESTÁ BIEN"
+      "message": "Preparando pasada editorial · 1 entrada candidata: Vete"
+    },
+    {
+      "at": "2026-10-28T18:56:00+01:00",
+      "phase": "verifying",
+      "trend_id": "f14d2fe3a09a",
+      "title": "Vete",
+      "message": "Releyendo estado autoritativo de Vete"
+    },
+    {
+      "at": "2026-10-28T18:57:00+01:00",
+      "phase": "investigating",
+      "trend_id": "f14d2fe3a09a",
+      "title": "Vete",
+      "message": "Buscando detonante actual con consultas distintas a los intentos anteriores"
+    },
+    {
+      "at": "2026-10-28T18:58:00+01:00",
+      "phase": "investigating",
+      "trend_id": "f14d2fe3a09a",
+      "title": "Vete",
+      "message": "Contrastando fuente 1/2 · hay críticas a Óscar Puente, pero no vínculo explícito con «Vete»"
+    },
+    {
+      "at": "2026-10-28T18:59:00+01:00",
+      "phase": "investigating",
+      "trend_id": "f14d2fe3a09a",
+      "title": "Vete",
+      "message": "Contrastando fuente 2/2 · sin destinatario verificable; se evita inferir"
+    },
+    {
+      "at": "2026-10-28T19:00:00+01:00",
+      "phase": "persisting",
+      "trend_id": "f14d2fe3a09a",
+      "title": "Vete",
+      "message": "Guardando resultado problematic en outbox"
     },
     {
       "at": "2026-10-28T19:01:00+01:00",
       "phase": "verifying",
       "trend_id": "54289f350156",
       "title": "YA ESTÁ BIEN",
-      "message": "Releyendo estado autoritativo de YA ESTÁ BIEN · resuelta concurrentemente y retirada de la cola"
+      "message": "Nueva entrada descubierta durante la pasada · releyendo estado autoritativo"
+    },
+    {
+      "at": "2026-10-28T19:02:00+01:00",
+      "phase": "investigating",
+      "trend_id": "54289f350156",
+      "title": "YA ESTÁ BIEN",
+      "message": "Hecho esencial verificado · mensaje del PP tras Urda y las explicaciones de Óscar Puente"
+    },
+    {
+      "at": "2026-10-28T19:02:20+01:00",
+      "phase": "drafting",
+      "trend_id": "54289f350156",
+      "title": "YA ESTÁ BIEN",
+      "message": "Redactando explicación factual desde cero"
+    },
+    {
+      "at": "2026-10-28T19:02:35+01:00",
+      "phase": "drafting",
+      "trend_id": "54289f350156",
+      "title": "YA ESTÁ BIEN",
+      "message": "Comprobando límite de X · 249 caracteres"
+    },
+    {
+      "at": "2026-10-28T19:02:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "54289f350156",
+      "title": "YA ESTÁ BIEN",
+      "message": "Sin remate · accidente con víctimas; se aplica protección editorial"
     },
     {
       "at": "2026-10-28T19:03:30+01:00",
       "phase": "verifying",
       "trend_id": "54289f350156",
       "title": "YA ESTÁ BIEN",
-      "message": "Verificando id+revision y texto persistido · ficha Explicada y request coinciden"
+      "message": "Tendencia cerrada y verificada en Explicadas, requests y cola"
     },
     {
-      "at": "2026-10-28T19:04:00+01:00",
+      "at": "2026-10-28T19:03:50+01:00",
       "phase": "verifying",
       "trend_id": "09eff0f84b28",
       "title": "Francino",
-      "message": "Releyendo estado autoritativo de Francino · r0 sigue preparing y ocupa TT#8"
+      "message": "Nueva entrada descubierta durante el cierre · releyendo estado autoritativo"
     },
     {
-      "at": "2026-10-28T19:05:00+01:00",
+      "at": "2026-10-28T19:04:20+01:00",
       "phase": "investigating",
       "trend_id": "09eff0f84b28",
       "title": "Francino",
-      "message": "Buscando detonante actual"
+      "message": "Hecho esencial verificado · palabras de Carles Francino desde la cobertura de Urda"
     },
     {
-      "at": "2026-10-28T19:05:30+01:00",
-      "phase": "investigating",
-      "trend_id": "09eff0f84b28",
-      "title": "Francino",
-      "message": "Contrastando fuente 1/2 · Cadena SER identifica su intervención desde Urda contra el uso político de la tragedia"
-    },
-    {
-      "at": "2026-10-28T19:06:00+01:00",
-      "phase": "investigating",
-      "trend_id": "09eff0f84b28",
-      "title": "Francino",
-      "message": "Contrastando fuente 2/2 · se confirma la programación especial de La Ventana desde la zona del accidente"
-    },
-    {
-      "at": "2026-10-28T19:06:15+01:00",
-      "phase": "investigating",
-      "trend_id": "09eff0f84b28",
-      "title": "Francino",
-      "message": "Hecho esencial verificado"
-    },
-    {
-      "at": "2026-10-28T19:06:45+01:00",
+      "at": "2026-10-28T19:04:35+01:00",
       "phase": "drafting",
       "trend_id": "09eff0f84b28",
       "title": "Francino",
-      "message": "Redactando explicación factual"
+      "message": "Redactando explicación factual y comprobando límite de X · 226 caracteres"
     },
     {
-      "at": "2026-10-28T19:07:00+01:00",
-      "phase": "drafting",
-      "trend_id": "09eff0f84b28",
-      "title": "Francino",
-      "message": "Comprobando límite de X"
-    },
-    {
-      "at": "2026-10-28T19:07:10+01:00",
+      "at": "2026-10-28T19:04:45+01:00",
       "phase": "remate_selection",
       "trend_id": "09eff0f84b28",
       "title": "Francino",
-      "message": "Sin remate · tragedia con víctimas; explicación factual suficiente"
+      "message": "Sin remate · accidente con víctimas; se aplica protección editorial"
     },
     {
-      "at": "2026-10-28T19:07:30+01:00",
+      "at": "2026-10-28T19:05:00+01:00",
       "phase": "persisting",
       "trend_id": "09eff0f84b28",
       "title": "Francino",
-      "message": "Guardando ficha Explicada · la revisión fue resuelta concurrentemente antes de la escritura; no se duplica"
+      "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola"
     },
     {
-      "at": "2026-10-28T19:08:00+01:00",
-      "phase": "verifying",
-      "trend_id": "09eff0f84b28",
-      "title": "Francino",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-28T19:08:20+01:00",
-      "phase": "verifying",
-      "trend_id": "09eff0f84b28",
-      "title": "Francino",
-      "message": "Verificando id+revision y texto persistido · ficha Explicada y request coinciden"
-    },
-    {
-      "at": "2026-10-28T19:08:40+01:00",
+      "at": "2026-10-28T19:05:30+01:00",
       "phase": "verifying",
       "trend_id": "09eff0f84b28",
       "title": "Francino",
       "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-28T19:09:00+01:00",
+      "at": "2026-10-28T19:06:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final · cola 0, sin preparing/update ni rewrite_pending; Vete ya está inactive"
+    },
+    {
+      "at": "2026-10-28T19:06:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main · sin preparing/update ni rewrite_pending"
+      "message": "TTendencias cerrada · 2 explicadas, cola activa 0 y reparación visual solicitada"
     }
   ],
   "partial": false,
@@ -356,6 +445,15 @@
   },
   "remate_selections": [
     {
+      "trend_id": "54289f350156",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "tragedy_victims"
+    },
+    {
       "trend_id": "09eff0f84b28",
       "revision": 0,
       "candidate_count": 0,
@@ -367,26 +465,30 @@
   ],
   "final_outcomes": [
     {
+      "id": "f14d2fe3a09a",
+      "name": "Vete",
+      "revision": 0,
+      "status": "inactive"
+    },
+    {
       "id": "54289f350156",
       "name": "YA ESTÁ BIEN",
       "revision": 0,
-      "status": "explained",
-      "resolution": "concurrent_verified"
+      "status": "explained"
     },
     {
       "id": "09eff0f84b28",
       "name": "Francino",
       "revision": 0,
-      "status": "explained",
-      "resolution": "concurrent_verified"
+      "status": "explained"
     }
   ],
   "pending_delivery_count": 1,
   "error": null,
   "apply_workflow": {
-    "run_id": 40731153558,
-    "status": "in_progress",
-    "conclusion": null,
+    "run_id": 40740689705,
+    "status": "completed",
+    "conclusion": "success",
     "editorial_blocking": false
   }
 }
