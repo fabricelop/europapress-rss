@@ -16,6 +16,11 @@ on:
     paths:
       - 'pilot/listas_transition_alerts.py'
       - '.github/workflows/ttactualidad-listas-alerts.yml'
+  # GITHUB_TOKEN commits do NOT trigger push workflows. Periodic checks
+  # are necessary for editorial writes performed by GitHub Actions.
+  # Deliberately off the hour; delivery is best-effort, not instantaneous.
+  schedule:
+    - cron: '3,13,23,33,43,53 * * * *'
   workflow_dispatch:
 
 permissions:
