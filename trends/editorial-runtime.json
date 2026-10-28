@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T21:23:00+01:00",
-  "last_completed_at": "2026-10-28T21:24:15+01:00",
-  "updated_at": "2026-10-28T21:24:15+01:00",
+  "last_started_at": "2026-10-28T21:25:00+01:00",
+  "last_completed_at": "2026-10-28T21:28:00+01:00",
+  "updated_at": "2026-10-28T21:28:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-autoguard-1793218982",
+    "trigger_run_id": "tr-1793219100000-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-1793218982",
+    "run_id": "tr-1793219100000-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T21:23:00+01:00",
-    "updated_at": "2026-10-28T21:24:15+01:00",
-    "finished_at": "2026-10-28T21:24:15+01:00",
+    "started_at": "2026-10-28T21:25:00+01:00",
+    "updated_at": "2026-10-28T21:28:00+01:00",
+    "finished_at": "2026-10-28T21:28:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -92,42 +92,49 @@
     ],
     "activity": [
       {
-        "at": "2026-10-28T21:23:00+01:00",
+        "at": "2026-10-28T21:25:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola inicial 0; verificando requests y reexplicaciones"
+        "message": "Preparando pasada editorial · cola inicial 0"
       },
       {
-        "at": "2026-10-28T21:23:20+01:00",
+        "at": "2026-10-28T21:25:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola, requests y reexplicaciones"
+        "message": "Releyendo main · cola 0 y sin reexplicaciones pendientes"
       },
       {
-        "at": "2026-10-28T21:23:35+01:00",
+        "at": "2026-10-28T21:25:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 3 tarjetas; reparación visual solicitada"
       },
       {
-        "at": "2026-10-28T21:23:45+01:00",
+        "at": "2026-10-28T21:25:55+01:00",
         "phase": "remate_selection",
         "trend_id": null,
         "title": null,
-        "message": "2 remates omitidos por contexto sensible del accidente"
+        "message": "2 remates omitidos por contexto sensible del accidente de Urda"
       },
       {
-        "at": "2026-10-28T21:24:00+01:00",
+        "at": "2026-10-28T21:26:05+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola final, requests y reexplicaciones"
+        "message": "Reparador visual recogido por GitHub Actions · run 40763317671 pending"
       },
       {
-        "at": "2026-10-28T21:24:15+01:00",
+        "at": "2026-10-28T21:27:35+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main tras ejecución concurrente · cola final 0"
+      },
+      {
+        "at": "2026-10-28T21:28:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -139,9 +146,15 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [],
+    "pending_repair_workflow": {
+      "run_id": 40763317671,
+      "status": "pending",
+      "conclusion": null,
+      "head_sha": "c95ebdb7ceb2be7244a24c78729614c091b27349"
+    }
   },
-  "run_id": "tr-autoguard-1793218982",
+  "run_id": "tr-1793219100000-manual",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -169,42 +182,49 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T21:23:00+01:00",
+      "at": "2026-10-28T21:25:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial · cola inicial 0; verificando requests y reexplicaciones"
+      "message": "Preparando pasada editorial · cola inicial 0"
     },
     {
-      "at": "2026-10-28T21:23:20+01:00",
+      "at": "2026-10-28T21:25:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · cola, requests y reexplicaciones"
+      "message": "Releyendo main · cola 0 y sin reexplicaciones pendientes"
     },
     {
-      "at": "2026-10-28T21:23:35+01:00",
+      "at": "2026-10-28T21:25:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Revisando Pendientes · 3 tarjetas; reparación visual solicitada"
     },
     {
-      "at": "2026-10-28T21:23:45+01:00",
+      "at": "2026-10-28T21:25:55+01:00",
       "phase": "remate_selection",
       "trend_id": null,
       "title": null,
-      "message": "2 remates omitidos por contexto sensible del accidente"
+      "message": "2 remates omitidos por contexto sensible del accidente de Urda"
     },
     {
-      "at": "2026-10-28T21:24:00+01:00",
+      "at": "2026-10-28T21:26:05+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · cola final, requests y reexplicaciones"
+      "message": "Reparador visual recogido por GitHub Actions · run 40763317671 pending"
     },
     {
-      "at": "2026-10-28T21:24:15+01:00",
+      "at": "2026-10-28T21:27:35+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main tras ejecución concurrente · cola final 0"
+    },
+    {
+      "at": "2026-10-28T21:28:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -212,7 +232,7 @@
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-1793218200000-manual",
+  "previous_run_id": "tr-autoguard-1793218982",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
