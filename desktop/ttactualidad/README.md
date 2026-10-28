@@ -25,3 +25,33 @@ Pulsa Conectar GitHub y crea un fine-grained personal access token desde GitHub.
 - No retirar el Worker anterior ni la web antigua hasta verificar completamente la nueva versión en el ordenador.
 - Las consultas JSON se ejecutan fuera del hilo de UI; un fallo de red no sustituye el estado anterior por listas vacías.
 - La versión Windows es una alternativa al iPhone y puede seguir evolucionando sin cambiar su funcionamiento.
+
+
+## Vista de escritorio renovada
+
+La distribución responde al espacio de pantalla: el lector ocupa el panel derecho y
+la fotografía de archivo aparece como miniatura lateral, nunca encima de los
+botones. Las acciones principales permanecen visibles; las secundarias figuran
+en **Más ···**. Se puede cambiar el tamaño de los paneles arrastrando su división.
+
+Para cerrar después de X utiliza **Cerrar · Sí / No**. El diálogo diferencia:
+
+- **Cancelar:** no envía ninguna orden, deja la tarjeta intacta.
+- **Sí · publicada:** aplica la decisión `published`. Si GitHub confirma, retira
+  la tarjeta y añade exactamente una publicación al contador móvil de 24 h.
+- **No · retirar:** aplica `deleted`, retira la tarjeta si GitHub confirma y
+  no aumenta el contador.
+
+**Publicar en X ↗** abre el borrador en el navegador y presenta después estas
+tres opciones; abrir la página NO demuestra que X haya publicado nada.
+
+Las decisiones se contrastan por `request_id` con el comprobante oficial de
+`pilot/ttactualidad-action-receipts.json`. Un HTTP 204 por sí solo solo significa
+que GitHub aceptó el evento para procesarlo. Un estado pendiente o un error no
+puede anunciarse como publicado. La cuenta de 24 h sale de
+`pilot/ttactualidad-publication-events.json`, no de estimaciones locales.
+
+Las Listas y Top 30 leen los mismos JSON y aplican las mismas reglas de cierre
+que el iPhone. **ChatGPT Images ↗** abre la interfaz real de Images en el navegador,
+no genera imágenes desde el proceso Windows. La foto de archivo se resuelve de
+GitHub y no se confunde con imágenes IA.
