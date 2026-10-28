@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-28T16:44:32.757247Z",
+  "updated_at": "2026-10-28T16:47:47.403Z",
   "items": [
     {
       "event_id": "35d061c68486",
@@ -76,7 +76,7 @@
       },
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "none",
@@ -102,7 +102,10 @@
         "generated": false,
         "alt": "Feijóo pide una investigación gubernamental y otra judicial por el accidente de Urda"
       },
-      "archive_image_status": "ready"
+      "archive_image_status": "ready",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-28T16:47:47.403Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false"
     }
   ],
   "count": 2,
