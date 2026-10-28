@@ -26,28 +26,35 @@ import Combine
 
     func refresh(_ intervals:[AssignedInterval]) {
         guard !computing else { return }
-        let fingerprint = BioGridEngine.fingerprint(intervals)
-        let today = Self.madrid.startOfDay(for:.now)
-        if snapshot?.sourceFingerprint == fingerprint && snapshot?.latestProcessed == today { return }
-        if let data = try? Data(contentsOf:cacheURL),
-           let saved = try? JSONDecoder().decode(BioGridSnapshot.self,from:data),
-           saved.sourceFingerprint == fingerprint && saved.latestProcessed == today {
-            snapshot = saved
-            return
-        }
+        // Hashing a growing GPS history and decoding the BIOGRID cache used
+        // to block navigation every 15 seconds on the main thread.
         computing = true
         error = nil
+        let today = Self.madrid.startOfDay(for:.now)
+        let previousFingerprint = snapshot?.sourceFingerprint
+        let previousDate = snapshot?.latestProcessed
         let target = cacheURL
         let zone = TimeZone.current
-        DispatchQueue.global(qos:.userInitiated).async {
-            let result = BioGridEngine.simulate(intervals,timezone:zone)
-            if let bytes = try? JSONEncoder().encode(result) {
-                try? bytes.write(to:target,options:.atomic)
+        DispatchQueue.global(qos:.utility).async {
+            let fingerprint = BioGridEngine.fingerprint(intervals)
+            if previousFingerprint == fingerprint && previousDate == today {
+                DispatchQueue.main.async { self.computing = false }
+                return
+            }
+            let result: BioGridSnapshot
+            if let data = try? Data(contentsOf:target),
+               let saved = try? JSONDecoder().decode(BioGridSnapshot.self,from:data),
+               saved.sourceFingerprint == fingerprint && saved.latestProcessed == today {
+                result = saved
+            } else {
+                result = BioGridEngine.simulate(intervals,timezone:zone)
+                if let bytes = try? JSONEncoder().encode(result) {
+                    try? bytes.write(to:target,options:.atomic)
+                }
             }
             DispatchQueue.main.async {
                 self.snapshot = result
                 self.computing = false
-                // El historial abierto ya no representa los datos corregidos.
                 self.historicalSnapshot = nil
                 self.historicalDate = nil
             }
