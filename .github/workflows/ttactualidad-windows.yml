@@ -1,0 +1,42 @@
+name: TTActualidad Windows - EXE
+on:
+  push:
+    paths:
+      - "desktop/ttactualidad/**"
+      - ".github/workflows/ttactualidad-windows.yml"
+  pull_request:
+    paths:
+      - "desktop/ttactualidad/**"
+      - ".github/workflows/ttactualidad-windows.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ttactualidad-windows-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  package:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install secure Windows credentials and packager
+        run: python -m pip install --disable-pip-version-check keyring pyinstaller
+      - name: Compile and run data-contract tests
+        run: |
+          python -m py_compile desktop/ttactualidad/TTActualidad.py
+          python -m unittest discover -s desktop/ttactualidad -p 'test_*.py' -v
+      - name: Package portable native Windows application
+        run: |
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name TTActualidad --hidden-import=keyring.backends.Windows desktop/ttactualidad/TTActualidad.py
+          if (!(Test-Path dist/TTActualidad.exe)) { throw "Windows executable not produced" }
+          Get-FileHash dist/TTActualidad.exe -Algorithm SHA256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TTActualidad-Windows-Portable-EXE
+          path: dist/TTActualidad.exe
+          if-no-files-found: error
+          retention-days: 30
