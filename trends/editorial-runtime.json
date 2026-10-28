@@ -1,26 +1,31 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "0fdda5e0230c"
+    "0fdda5e0230c",
+    "733a5bf61b40",
+    "0a6a02124ebe",
+    "4fc099aeb560"
   ],
   "remaining_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "0fdda5e0230c"
+  ],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T14:11:21+01:00",
-  "last_completed_at": "2026-10-28T14:11:21+01:00",
-  "updated_at": "2026-10-28T14:11:21+01:00",
+  "last_started_at": "2026-10-28T14:00:22.922+01:00",
+  "last_completed_at": "2026-10-28T14:14:00+01:00",
+  "updated_at": "2026-10-28T14:14:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793192013819-manual",
+    "trigger_run_id": "tr-1793192422922-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,404 +33,433 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793192013819-manual",
+    "run_id": "tr-1793192422922-manual",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-28T13:53:00+01:00",
-    "updated_at": "2026-10-28T14:01:00+01:00",
-    "finished_at": "2026-10-28T14:01:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-28T14:00:22.922+01:00",
+    "updated_at": "2026-10-28T14:14:00+01:00",
+    "finished_at": "2026-10-28T14:14:00+01:00",
+    "current": 4,
+    "total": 4,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 2,
+      "attempted": 4,
       "ready": 0,
-      "explained": 2,
-      "final_resolved": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
-      "revisions_updated": 2,
+      "explained": 3,
+      "final_resolved": 4,
+      "explanation_groups": 3,
+      "new_cards": 3,
+      "revisions_updated": 3,
       "grouped_into_existing_card": 0,
-      "problematic_reviewed": 0,
-      "problematic_marked": 0,
+      "problematic_reviewed": 1,
+      "problematic_marked": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 2,
+      "initial_compact_queue": 4,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
-      "remaining_problematic": 0,
+      "remaining_problematic": 1,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 0,
+      "remates_omitted": 3,
+      "recent_missing_closer_reviewed": 3,
       "pending_cards_reviewed": 3,
       "rewrite_pending_remaining": 0,
-      "skipped_concurrent": 0,
+      "skipped_concurrent": 1,
       "trends_dismissed": 0,
-      "incidents": 0
+      "incidents": 3
     },
-    "message": "TTendencias completada 2/2 · Marcos Llorente y Mazón explicados y verificados; cola editorial y reexplicaciones en 0.",
-    "incident_count": 0,
-    "incidents": [],
-    "ratings_snapshot": null,
-    "remate_selections": [
+    "message": "TTendencias completada: 3 explicadas y 1 problematic (Carroñero); 0 preparing/update y 0 rewrite_pending. Sin ImageGen.",
+    "incident_count": 3,
+    "incidents": [
       {
-        "id": "7873f51ff683",
-        "revision": 0,
-        "selected": "🌶️ La bronca salió del césped y aterrizó en Instagram.",
-        "reason": "Crítica al cruce político en redes; evita humor sobre víctimas y no repite los últimos remates."
+        "at": "2026-10-28T14:10:05+01:00",
+        "phase": "persisting",
+        "trend_id": "0a6a02124ebe",
+        "title": "Miserable",
+        "reason": "Un escritor concurrente cambió Requests a ready y retiró la revisión de la cola entre la ficha Explicada y la sincronización; se releyó main y se reconcilió la revisión exacta al contrato vigente explained."
       },
       {
-        "id": "dbe9e502f10b",
-        "revision": 0,
-        "selected": "🌶️ Dos años después, el escaño sigue en primera fila.",
-        "reason": "Sátira centrada en la continuidad política del escaño; no banaliza a las víctimas ni la DANA."
+        "at": "2026-10-28T14:06:00+01:00",
+        "phase": "verifying",
+        "trend_id": "0fdda5e0230c",
+        "title": "Carroñero",
+        "reason": "La revisión pasó a problematic por un escritor concurrente antes del tratamiento JIT. Se respetó el cambio, se repitieron búsquedas y se completó el outbox problematic faltante sin inventar detonante."
+      },
+      {
+        "at": "2026-10-28T14:10:40+01:00",
+        "phase": "verifying",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
+        "reason": "Un escritor concurrente había cambiado la request a ready y retirado la revisión de la cola sin ficha Explicada. Se reconcilió la revisión exacta al contrato vigente y quedó explained verificada."
       }
     ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T13:56:48+01:00",
-        "phase": "remate_selection",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
-        "message": "Evaluando candidatos con ratings y últimos remates"
-      },
-      {
-        "at": "2026-10-28T13:56:55+01:00",
-        "phase": "remate_selection",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-28T13:57:00+01:00",
+        "at": "2026-10-28T14:10:15+01:00",
         "phase": "persisting",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
-        "message": "Guardando ficha Explicada"
+        "trend_id": "0a6a02124ebe",
+        "title": "Miserable",
+        "message": "Actualizando requests tras carrera concurrente"
       },
       {
-        "at": "2026-10-28T13:57:15+01:00",
-        "phase": "persisting",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-28T13:57:30+01:00",
-        "phase": "persisting",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-28T13:57:45+01:00",
+        "at": "2026-10-28T14:10:25+01:00",
         "phase": "verifying",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
+        "trend_id": "0a6a02124ebe",
+        "title": "Miserable",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-28T13:57:55+01:00",
+        "at": "2026-10-28T14:10:30+01:00",
         "phase": "verifying",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
+        "trend_id": "0a6a02124ebe",
+        "title": "Miserable",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-28T13:58:00+01:00",
+        "at": "2026-10-28T14:10:35+01:00",
         "phase": "verifying",
-        "trend_id": "7873f51ff683",
-        "title": "Marcos Llorente",
+        "trend_id": "0a6a02124ebe",
+        "title": "Miserable",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-28T13:58:05+01:00",
+        "at": "2026-10-28T14:10:40+01:00",
         "phase": "verifying",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
-        "message": "Releyendo estado autoritativo de Mazón"
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
+        "message": "Releyendo estado autoritativo de Error"
       },
       {
-        "at": "2026-10-28T13:58:15+01:00",
+        "at": "2026-10-28T14:10:50+01:00",
         "phase": "investigating",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
         "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-28T13:58:25+01:00",
+        "at": "2026-10-28T14:11:00+01:00",
         "phase": "investigating",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
         "message": "Contrastando fuente 1/2"
       },
       {
-        "at": "2026-10-28T13:58:35+01:00",
+        "at": "2026-10-28T14:11:10+01:00",
         "phase": "investigating",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
         "message": "Contrastando fuente 2/2"
       },
       {
-        "at": "2026-10-28T13:58:40+01:00",
+        "at": "2026-10-28T14:11:20+01:00",
         "phase": "investigating",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
         "message": "Hecho esencial verificado"
       },
       {
-        "at": "2026-10-28T13:58:45+01:00",
+        "at": "2026-10-28T14:11:30+01:00",
         "phase": "drafting",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-28T13:58:50+01:00",
+        "at": "2026-10-28T14:11:40+01:00",
         "phase": "drafting",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
         "message": "Comprobando límite de X"
       },
       {
-        "at": "2026-10-28T13:58:52+01:00",
-        "phase": "remate_selection",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
-        "message": "Generando candidatos de remate"
+        "at": "2026-10-28T14:11:45+01:00",
+        "phase": "drafting",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
+        "message": "Sin remate · tema sensible con víctimas"
       },
       {
-        "at": "2026-10-28T13:58:56+01:00",
-        "phase": "remate_selection",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
-        "message": "Evaluando candidatos con ratings y últimos remates"
-      },
-      {
-        "at": "2026-10-28T13:58:58+01:00",
-        "phase": "remate_selection",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-28T13:59:00+01:00",
+        "at": "2026-10-28T14:11:50+01:00",
         "phase": "persisting",
-        "trend_id": "dbe9e502f10b",
-        "title": "Mazón",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-28T14:01:00+01:00",
+        "at": "2026-10-28T14:12:05+01:00",
+        "phase": "persisting",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
+        "message": "Actualizando requests y reconciliando el ready concurrente"
+      },
+      {
+        "at": "2026-10-28T14:12:15+01:00",
+        "phase": "verifying",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-28T14:12:25+01:00",
+        "phase": "verifying",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-28T14:12:35+01:00",
+        "phase": "verifying",
+        "trend_id": "4fc099aeb560",
+        "title": "Error",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-28T14:12:45+01:00",
+        "phase": "persisting",
+        "trend_id": "0fdda5e0230c",
+        "title": "Carroñero",
+        "message": "Registrando outbox problematic faltante"
+      },
+      {
+        "at": "2026-10-28T14:13:15+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola, Requests, Explicadas y reexplicaciones pendientes"
+      },
+      {
+        "at": "2026-10-28T14:14:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 2/2 · Marcos Llorente y Mazón explicados y verificados; cola editorial y reexplicaciones en 0."
+        "message": "TTendencias completada: 3 explicadas y 1 problematic (Carroñero); 0 preparing/update y 0 rewrite_pending. Sin ImageGen."
       }
     ],
     "processed_ids": [
-      "7873f51ff683",
-      "dbe9e502f10b"
+      "0fdda5e0230c",
+      "733a5bf61b40",
+      "0a6a02124ebe",
+      "4fc099aeb560"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "7873f51ff683",
-        "name": "Marcos Llorente",
+        "id": "0fdda5e0230c",
+        "name": "Carroñero",
         "revision": 0,
-        "status": "explained",
-        "closer_text": "🌶️ La bronca salió del césped y aterrizó en Instagram."
+        "status": "problematic",
+        "closer_text": "",
+        "problem_reason": "No se puede atribuir con fiabilidad el término singular a un detonante único sin especular."
       },
       {
-        "id": "dbe9e502f10b",
-        "name": "Mazón",
+        "id": "733a5bf61b40",
+        "name": "La RFEF",
         "revision": 0,
         "status": "explained",
-        "closer_text": "🌶️ Dos años después, el escaño sigue en primera fila."
+        "closer_text": ""
+      },
+      {
+        "id": "0a6a02124ebe",
+        "name": "Miserable",
+        "revision": 0,
+        "status": "explained",
+        "closer_text": ""
+      },
+      {
+        "id": "4fc099aeb560",
+        "name": "Error",
+        "revision": 0,
+        "status": "explained",
+        "closer_text": ""
       }
+    ],
+    "remaining_problematic_ids": [
+      "0fdda5e0230c"
     ]
   },
-  "run_id": "tr-1793192013819-manual",
+  "run_id": "tr-1793192422922-manual",
   "summary": {
-    "attempted": 2,
+    "attempted": 4,
     "ready": 0,
-    "explained": 2,
-    "final_resolved": 2,
-    "explanation_groups": 2,
-    "new_cards": 2,
-    "revisions_updated": 2,
+    "explained": 3,
+    "final_resolved": 4,
+    "explanation_groups": 3,
+    "new_cards": 3,
+    "revisions_updated": 3,
     "grouped_into_existing_card": 0,
-    "problematic_reviewed": 0,
-    "problematic_marked": 0,
+    "problematic_reviewed": 1,
+    "problematic_marked": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 2,
+    "initial_compact_queue": 4,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
-    "remaining_problematic": 0,
+    "remaining_problematic": 1,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
+    "explanations_verified_under_280": 3,
+    "remates_selected": 0,
+    "remates_omitted": 3,
+    "recent_missing_closer_reviewed": 3,
     "pending_cards_reviewed": 3,
     "rewrite_pending_remaining": 0,
-    "skipped_concurrent": 0,
+    "skipped_concurrent": 1,
     "trends_dismissed": 0,
-    "incidents": 0
+    "incidents": 3
   },
   "activity": [
     {
-      "at": "2026-10-28T13:56:48+01:00",
-      "phase": "remate_selection",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
-      "message": "Evaluando candidatos con ratings y últimos remates"
-    },
-    {
-      "at": "2026-10-28T13:56:55+01:00",
-      "phase": "remate_selection",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
-      "message": "Remate seleccionado"
-    },
-    {
-      "at": "2026-10-28T13:57:00+01:00",
+      "at": "2026-10-28T14:10:15+01:00",
       "phase": "persisting",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
-      "message": "Guardando ficha Explicada"
+      "trend_id": "0a6a02124ebe",
+      "title": "Miserable",
+      "message": "Actualizando requests tras carrera concurrente"
     },
     {
-      "at": "2026-10-28T13:57:15+01:00",
-      "phase": "persisting",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-28T13:57:30+01:00",
-      "phase": "persisting",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-28T13:57:45+01:00",
+      "at": "2026-10-28T14:10:25+01:00",
       "phase": "verifying",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
+      "trend_id": "0a6a02124ebe",
+      "title": "Miserable",
       "message": "Releyendo main"
     },
     {
-      "at": "2026-10-28T13:57:55+01:00",
+      "at": "2026-10-28T14:10:30+01:00",
       "phase": "verifying",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
+      "trend_id": "0a6a02124ebe",
+      "title": "Miserable",
       "message": "Verificando id+revision y texto persistido"
     },
     {
-      "at": "2026-10-28T13:58:00+01:00",
+      "at": "2026-10-28T14:10:35+01:00",
       "phase": "verifying",
-      "trend_id": "7873f51ff683",
-      "title": "Marcos Llorente",
+      "trend_id": "0a6a02124ebe",
+      "title": "Miserable",
       "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-28T13:58:05+01:00",
+      "at": "2026-10-28T14:10:40+01:00",
       "phase": "verifying",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
-      "message": "Releyendo estado autoritativo de Mazón"
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
+      "message": "Releyendo estado autoritativo de Error"
     },
     {
-      "at": "2026-10-28T13:58:15+01:00",
+      "at": "2026-10-28T14:10:50+01:00",
       "phase": "investigating",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
       "message": "Buscando detonante actual"
     },
     {
-      "at": "2026-10-28T13:58:25+01:00",
+      "at": "2026-10-28T14:11:00+01:00",
       "phase": "investigating",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
       "message": "Contrastando fuente 1/2"
     },
     {
-      "at": "2026-10-28T13:58:35+01:00",
+      "at": "2026-10-28T14:11:10+01:00",
       "phase": "investigating",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
       "message": "Contrastando fuente 2/2"
     },
     {
-      "at": "2026-10-28T13:58:40+01:00",
+      "at": "2026-10-28T14:11:20+01:00",
       "phase": "investigating",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
       "message": "Hecho esencial verificado"
     },
     {
-      "at": "2026-10-28T13:58:45+01:00",
+      "at": "2026-10-28T14:11:30+01:00",
       "phase": "drafting",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
       "message": "Redactando explicación factual"
     },
     {
-      "at": "2026-10-28T13:58:50+01:00",
+      "at": "2026-10-28T14:11:40+01:00",
       "phase": "drafting",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
       "message": "Comprobando límite de X"
     },
     {
-      "at": "2026-10-28T13:58:52+01:00",
-      "phase": "remate_selection",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
-      "message": "Generando candidatos de remate"
+      "at": "2026-10-28T14:11:45+01:00",
+      "phase": "drafting",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
+      "message": "Sin remate · tema sensible con víctimas"
     },
     {
-      "at": "2026-10-28T13:58:56+01:00",
-      "phase": "remate_selection",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
-      "message": "Evaluando candidatos con ratings y últimos remates"
-    },
-    {
-      "at": "2026-10-28T13:58:58+01:00",
-      "phase": "remate_selection",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
-      "message": "Remate seleccionado"
-    },
-    {
-      "at": "2026-10-28T13:59:00+01:00",
+      "at": "2026-10-28T14:11:50+01:00",
       "phase": "persisting",
-      "trend_id": "dbe9e502f10b",
-      "title": "Mazón",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
       "message": "Guardando ficha Explicada"
     },
     {
-      "at": "2026-10-28T14:01:00+01:00",
+      "at": "2026-10-28T14:12:05+01:00",
+      "phase": "persisting",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
+      "message": "Actualizando requests y reconciliando el ready concurrente"
+    },
+    {
+      "at": "2026-10-28T14:12:15+01:00",
+      "phase": "verifying",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-28T14:12:25+01:00",
+      "phase": "verifying",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-28T14:12:35+01:00",
+      "phase": "verifying",
+      "trend_id": "4fc099aeb560",
+      "title": "Error",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-28T14:12:45+01:00",
+      "phase": "persisting",
+      "trend_id": "0fdda5e0230c",
+      "title": "Carroñero",
+      "message": "Registrando outbox problematic faltante"
+    },
+    {
+      "at": "2026-10-28T14:13:15+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo cola, Requests, Explicadas y reexplicaciones pendientes"
+    },
+    {
+      "at": "2026-10-28T14:14:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 2/2 · Marcos Llorente y Mazón explicados y verificados; cola editorial y reexplicaciones en 0."
+      "message": "TTendencias completada: 3 explicadas y 1 problematic (Carroñero); 0 preparing/update y 0 rewrite_pending. Sin ImageGen."
     }
   ],
   "partial": false,
@@ -439,34 +473,36 @@
   },
   "previous_run_id": "tr-chat-20261028T1345+0100",
   "ratings_snapshot": null,
-  "remate_selections": [
-    {
-      "id": "7873f51ff683",
-      "revision": 0,
-      "selected": "🌶️ La bronca salió del césped y aterrizó en Instagram.",
-      "reason": "Crítica al cruce político en redes; evita humor sobre víctimas y no repite los últimos remates."
-    },
-    {
-      "id": "dbe9e502f10b",
-      "revision": 0,
-      "selected": "🌶️ Dos años después, el escaño sigue en primera fila.",
-      "reason": "Sátira centrada en la continuidad política del escaño; no banaliza a las víctimas ni la DANA."
-    }
-  ],
+  "remate_selections": [],
   "final_outcomes": [
     {
-      "id": "7873f51ff683",
-      "name": "Marcos Llorente",
+      "id": "0fdda5e0230c",
+      "name": "Carroñero",
       "revision": 0,
-      "status": "explained",
-      "closer_text": "🌶️ La bronca salió del césped y aterrizó en Instagram."
+      "status": "problematic",
+      "closer_text": "",
+      "problem_reason": "No se puede atribuir con fiabilidad el término singular a un detonante único sin especular."
     },
     {
-      "id": "dbe9e502f10b",
-      "name": "Mazón",
+      "id": "733a5bf61b40",
+      "name": "La RFEF",
       "revision": 0,
       "status": "explained",
-      "closer_text": "🌶️ Dos años después, el escaño sigue en primera fila."
+      "closer_text": ""
+    },
+    {
+      "id": "0a6a02124ebe",
+      "name": "Miserable",
+      "revision": 0,
+      "status": "explained",
+      "closer_text": ""
+    },
+    {
+      "id": "4fc099aeb560",
+      "name": "Error",
+      "revision": 0,
+      "status": "explained",
+      "closer_text": ""
     }
   ],
   "pending_delivery_count": 3,
