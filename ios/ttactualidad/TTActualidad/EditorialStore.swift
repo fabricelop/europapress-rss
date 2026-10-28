@@ -245,6 +245,7 @@ final class EditorialStore: ObservableObject {
     }
     private var canonicalSnapshot = EditorialSnapshot()
     private var terminalMarks: [String: EditorialTombstone] = [:]
+    private var terminalMarksNeedSave = false
     private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
     @Published private(set) var isManuallyRefreshing = false
     private var lastCompletedRefresh: Date? = nil
@@ -323,11 +324,12 @@ final class EditorialStore: ObservableObject {
         let key = project + ":" + id
         if let earlier = terminalMarks[key] {
             guard revision > earlier.revision ||
-                  (revision == earlier.revision && at >= earlier.confirmedAt) else { return }
+                  (revision == earlier.revision && at > earlier.confirmedAt) else { return }
         }
         terminalMarks[key] = EditorialTombstone(
             project: project, id: id, revision: revision,
             decision: decision, confirmedAt: at)
+        terminalMarksNeedSave = true
     }
 
     // Prefer confirmation in the decision ledgers or successful receipts.
@@ -380,8 +382,12 @@ final class EditorialStore: ObservableObject {
     }
 
     private func persistTerminals() {
+        // Avoid encoding and writing a potentially large tombstone ledger on
+        // each periodic refresh when GitHub returns no new decisions.
+        guard terminalMarksNeedSave else { return }
         if let saved = try? JSONEncoder().encode(terminalMarks) {
             UserDefaults.standard.set(saved, forKey: tombstoneStorageKey)
+            terminalMarksNeedSave = false
         }
     }
 
