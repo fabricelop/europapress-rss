@@ -1,6 +1,12 @@
 import SwiftUI
 import MapKit
 
+private struct TimeRankedZone: Identifiable {
+    let zone: TimeCustomZone
+    let seconds: TimeInterval
+    var id: UUID { zone.id }
+}
+
 struct TimeZonesPanel: View {
     @ObservedObject var model: TimeModel
     @State private var creating = false
@@ -8,7 +14,17 @@ struct TimeZonesPanel: View {
         model.periodTotals()
     }
     var body: some View {
-        VStack(alignment:.leading,spacing:12) {
+        let totals = values
+        let rankedZones = model.visibleZones.map { zone in
+            TimeRankedZone(zone:zone,seconds:zone.cells.reduce(0) {
+                $0 + (totals[$1] ?? 0)
+            })
+        }.sorted {
+            $0.seconds == $1.seconds
+                ? $0.zone.name.localizedStandardCompare($1.zone.name) == .orderedAscending
+                : $0.seconds > $1.seconds
+        }
+        return VStack(alignment:.leading,spacing:12) {
             HStack {
                 VStack(alignment:.leading,spacing:4) {
                     Text("Mis zonas").font(.headline)
@@ -25,11 +41,8 @@ struct TimeZonesPanel: View {
                     systemImage:"square.3.layers.3d",
                     description:Text("Dibuja un contorno para seleccionar cuadrículas, incluso sin visitar."))
             }
-            ForEach(model.visibleZones.sorted {
-                let a=$0.cells.reduce(0) { $0+(values[$1] ?? 0) }
-                let b=$1.cells.reduce(0) { $0+(values[$1] ?? 0) }
-                return a == b ? $0.name.localizedStandardCompare($1.name) == .orderedAscending : a>b
-            }) { zone in
+            ForEach(rankedZones) { entry in
+                let zone = entry.zone
                 NavigationLink {
                     TimeZoneEditor(model:model,existing:zone)
                 } label: {
@@ -40,9 +53,8 @@ struct TimeZonesPanel: View {
                                 .font(.caption2).foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Text(DurationFormat.full(zone.cells.reduce(0) {
-                            $0 + (values[$1] ?? 0)
-                        })).font(.subheadline.monospacedDigit()).foregroundStyle(.teal)
+                        Text(DurationFormat.full(entry.seconds))
+                            .font(.subheadline.monospacedDigit()).foregroundStyle(.teal)
                     }.padding(10)
                 }
             }
