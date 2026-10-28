@@ -245,6 +245,7 @@ final class EditorialStore: ObservableObject {
     }
     private var canonicalSnapshot = EditorialSnapshot()
     private var terminalMarks: [String: EditorialTombstone] = [:]
+    private var terminalMarksNeedSave = false
     private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
     @Published private(set) var isManuallyRefreshing = false
     private var lastCompletedRefresh: Date? = nil
@@ -323,11 +324,12 @@ final class EditorialStore: ObservableObject {
         let key = project + ":" + id
         if let earlier = terminalMarks[key] {
             guard revision > earlier.revision ||
-                  (revision == earlier.revision && at >= earlier.confirmedAt) else { return }
+                  (revision == earlier.revision && at > earlier.confirmedAt) else { return }
         }
         terminalMarks[key] = EditorialTombstone(
             project: project, id: id, revision: revision,
             decision: decision, confirmedAt: at)
+        terminalMarksNeedSave = true
     }
 
     // Prefer confirmation in the decision ledgers or successful receipts.
@@ -380,8 +382,12 @@ final class EditorialStore: ObservableObject {
     }
 
     private func persistTerminals() {
+        // Avoid encoding and writing a potentially large tombstone ledger on
+        // each periodic refresh when GitHub returns no new decisions.
+        guard terminalMarksNeedSave else { return }
         if let saved = try? JSONEncoder().encode(terminalMarks) {
             UserDefaults.standard.set(saved, forKey: tombstoneStorageKey)
+            terminalMarksNeedSave = false
         }
     }
 
@@ -507,53 +513,13 @@ final class EditorialStore: ObservableObject {
             isManuallyRefreshing = false
             lastCompletedRefresh = Date()
         }
-        var downloaded: [String: Data] = [:]
-        let freshNonce = String(Int(Date().timeIntervalSince1970 * 1000))
-        await withTaskGroup(of: (String, Data?).self) { group in
-            for path in paths {
-                group.addTask {
-                    guard let url = URL(string: "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path + "?check=" + freshNonce) else {
-                        return (path, nil)
-                    }
-                    var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 16)
-                    request.setValue("application/json", forHTTPHeaderField: "Accept")
-                    request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
-                    do {
-                        let (data, response) = try await URLSession.shared.data(for: request)
-                        guard (response as? HTTPURLResponse)?.statusCode == 200,
-                              (try? JSONSerialization.jsonObject(with: data)) is [String: Any] else {
-                            return (path, nil)
-                        }
-                        return (path, data)
-                    } catch {
-                        return (path, nil)
-                    }
-                }
-            }
-            for await (path, data) in group {
-                if let data { downloaded[path] = data }
-            }
-        }
-
-        var docs: [String: [String: Any]] = [:]
-        var partial = false
-        for path in paths {
-            let cacheURL = cacheFile(for: path)
-            var source = downloaded[path]
-            if let data = source {
-                try? FileManager.default.createDirectory(at: cacheURL.deletingLastPathComponent(),
-                                                         withIntermediateDirectories: true)
-                try? data.write(to: cacheURL, options: .atomic)
-            } else {
-                partial = true
-                source = try? Data(contentsOf: cacheURL)
-            }
-            if let source, let dict = (try? JSONSerialization.jsonObject(with: source)) as? [String: Any] {
-                docs[path] = dict
-            } else {
-                partial = true
-            }
-        }
+        // The 14 remote documents may contain megabytes of JSON. Their
+        // validation, disk writes and parsing must not run on MainActor:
+        // doing so freezes tab transitions for 1-2 seconds during refresh.
+        let loaded = await EditorialDocumentLoader.load(paths: paths)
+        let downloaded = loaded.downloaded
+        let docs = loaded.docs
+        let partial = loaded.partial
 
         updatePublicationEvents(
             ledger: downloaded["pilot/ttactualidad-publication-events.json"] != nil ?
@@ -1501,12 +1467,6 @@ final class EditorialStore: ObservableObject {
         }
     }
 
-    private func cacheFile(for path: String) -> URL {
-        FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("TTActualidadGitHub", isDirectory: true)
-            .appendingPathComponent(path.replacingOccurrences(of: "/", with: "_"))
-    }
-
     private static let closed: Set<String> = ["deleted", "dismissed", "published", "removed", "delete_pending"]
 
     private static func rows(_ doc: [String: Any], _ key: String) -> [[String: Any]] {
@@ -1520,16 +1480,27 @@ final class EditorialStore: ObservableObject {
     private static func int(_ row: [String: Any], _ key: String) -> Int {
         (row[key] as? NSNumber)?.intValue ?? Int(str(row, key)) ?? 0
     }
+    // ISO8601DateFormatter construction is expensive and these parsers are
+    // called for every item in multiple ledgers on each refresh. Reuse them
+    // only on the store's MainActor (they are never shared across threads).
+    private static let fractionalISO: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+    private static let standardISO: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter
+    }()
+
     private static func when(_ row: [String: Any], _ keys: [String]) -> Date? {
         for key in keys {
             let text = str(row, key)
-            if text.isEmpty { continue }
-            let fractional = ISO8601DateFormatter()
-            fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            if let date = fractional.date(from: text) { return date }
-            let standard = ISO8601DateFormatter()
-            standard.formatOptions = [.withInternetDateTime]
-            if let date = standard.date(from: text) { return date }
+            guard !text.isEmpty else { continue }
+            if let date = fractionalISO.date(from: text) ?? standardISO.date(from: text) {
+                return date
+            }
         }
         return nil
     }
@@ -1890,5 +1861,74 @@ final class EditorialStore: ObservableObject {
         } catch {
             liveStatus = "No se pudo iniciar la Live Activity: \(error.localizedDescription)"
         }
+    }
+}
+
+
+/// All GitHub bytes are downloaded, validated and cached outside MainActor.
+/// The returned JSON dictionaries are immutable after crossing the actor
+/// boundary; @unchecked Sendable is confined to this single read-only result.
+private struct EditorialDocumentLoad: @unchecked Sendable {
+    let downloaded: [String: Data]
+    let docs: [String: [String: Any]]
+    let partial: Bool
+}
+
+private enum EditorialDocumentLoader {
+    static func load(paths: [String]) async -> EditorialDocumentLoad {
+        var downloaded: [String: Data] = [:]
+        let freshNonce = String(Int(Date().timeIntervalSince1970 * 1000))
+        await withTaskGroup(of: (String, Data?).self) { group in
+            for path in paths {
+                group.addTask {
+                    guard let url = URL(string:
+                        "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" +
+                        path + "?check=" + freshNonce) else { return (path, nil) }
+                    var request = URLRequest(
+                        url: url, cachePolicy: .reloadIgnoringLocalCacheData,
+                        timeoutInterval: 16)
+                    request.setValue("application/json", forHTTPHeaderField: "Accept")
+                    request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+                    do {
+                        let (data, response) = try await URLSession.shared.data(for: request)
+                        guard (response as? HTTPURLResponse)?.statusCode == 200,
+                              (try? JSONSerialization.jsonObject(with: data)) is [String: Any]
+                        else { return (path, nil) }
+                        return (path, data)
+                    } catch { return (path, nil) }
+                }
+            }
+            for await (path, data) in group {
+                if let data { downloaded[path] = data }
+            }
+        }
+
+        let root = FileManager.default.urls(for: .cachesDirectory,
+                                            in: .userDomainMask)[0]
+            .appendingPathComponent("TTActualidadGitHub", isDirectory: true)
+        try? FileManager.default.createDirectory(at: root,
+                                                  withIntermediateDirectories: true)
+        var docs: [String: [String: Any]] = [:]
+        var partial = false
+        for path in paths {
+            let cacheURL = root.appendingPathComponent(
+                path.replacingOccurrences(of: "/", with: "_"))
+            let source: Data?
+            if let data = downloaded[path] {
+                try? data.write(to: cacheURL, options: .atomic)
+                source = data
+            } else {
+                partial = true
+                source = try? Data(contentsOf: cacheURL)
+            }
+            if let source,
+               let parsed = (try? JSONSerialization.jsonObject(with: source)) as? [String: Any] {
+                docs[path] = parsed
+            } else {
+                partial = true
+            }
+        }
+        return EditorialDocumentLoad(downloaded: downloaded, docs: docs,
+                                     partial: partial)
     }
 }

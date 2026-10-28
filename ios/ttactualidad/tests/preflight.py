@@ -171,7 +171,7 @@ assert "now.addingTimeInterval(-86_400)" in store
 assert "$0.confirmedAt > lowerBound && $0.confirmedAt <= now" in store
 assert 'publicationLedgerAvailable = false' in store
 assert 'Self.str(row, "decision") == "published"' in store
-assert 'TimelineView(.periodic(from: .now, by: 1))' in dashboard
+assert 'TimelineView(.periodic(from: .now, by: 60))' in dashboard
 assert 'published24hChip("TTiT", project: "ttittulares"' in dashboard
 assert 'published24hChip("TTen", project: "ttendencias"' in dashboard
 assert '"published" : "deleted"' not in store or 'action.decision == "published"' in store
@@ -224,8 +224,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
-assert 'MARKETING_VERSION: "0.4.19"' in project
-assert 'CURRENT_PROJECT_VERSION: "25"' in project
+assert 'MARKETING_VERSION: "0.4.20"' in project
+assert 'CURRENT_PROJECT_VERSION: "26"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.17: an editorial trend may trigger independent news investigation.
@@ -252,7 +252,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "25"' in project
+assert 'CURRENT_PROJECT_VERSION: "26"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -264,7 +264,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "25"' in project
+assert 'CURRENT_PROJECT_VERSION: "26"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -280,6 +280,28 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.19"' in project
-assert 'CURRENT_PROJECT_VERSION: "25"' in project
+assert 'MARKETING_VERSION: "0.4.20"' in project
+assert 'CURRENT_PROJECT_VERSION: "26"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
+
+
+# 0.4.20: navigation must not block on large GitHub JSON or archive trees.
+assert 'EditorialDocumentLoader.load(paths: paths)' in store
+assert 'private enum EditorialDocumentLoader' in store
+assert 'private struct EditorialDocumentLoad: @unchecked Sendable' in store
+assert 'private static let fractionalISO:' in store
+assert 'private static let standardISO:' in store
+assert 'terminalMarksNeedSave' in store
+catalog = (root / "TTActualidad/ArchivePhotoCatalog.swift").read_text(encoding="utf8")
+assert 'private actor ArchivePhotoMemory' in catalog
+assert 'if let fresh = await memory.fresh()' in catalog
+assert 'Date().timeIntervalSince(modified) < 600' in catalog
+assert 'TimelineView(.periodic(from: .now, by: 60))' in dashboard
+assert 'TimelineView(.periodic(from: .now, by: 1))' not in dashboard
+# Keep urgent/manual ChatGPT and ChatGPT Images navigation unchanged.
+assert 'launchUrgentEditorial()' in actions
+assert 'openChatGPTApp()' in actions
+assert 'TTActualidad.chatGPTProjectLink.v1' not in actions
+assert 'openEditorialChat()' not in actions
+assert 'quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/images")' in actions
+print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
