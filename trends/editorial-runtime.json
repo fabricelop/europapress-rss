@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T09:26:00+01:00",
-  "last_completed_at": "2026-10-28T09:27:00+01:00",
-  "updated_at": "2026-10-28T09:27:00+01:00",
+  "last_started_at": "2026-10-28T09:45:00+01:00",
+  "last_completed_at": "2026-10-28T09:47:00+01:00",
+  "updated_at": "2026-10-28T09:47:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-autoguard-1793175929",
+    "trigger_run_id": "tr-chat-20261028T0945+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-1793175929",
+    "run_id": "tr-chat-20261028T0945+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T09:26:00+01:00",
-    "updated_at": "2026-10-28T09:27:00+01:00",
-    "finished_at": "2026-10-28T09:27:00+01:00",
+    "started_at": "2026-10-28T09:45:00+01:00",
+    "updated_at": "2026-10-28T09:47:00+01:00",
+    "finished_at": "2026-10-28T09:47:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -62,46 +62,51 @@
       "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "pending_cards_reviewed": 1,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0 · sin revisiones activas ni reexplicaciones pendientes; cola final 0; saneamiento visual solicitado; sin ImageGen.",
+    "message": "TTendencias completada 0/0 · sin revisiones activas ni reexplicaciones; Top 10 al día; 1 Pendiente visual (#MCCLegends) enviado al saneamiento; sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-28T09:26:00+01:00",
+        "at": "2026-10-28T09:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada · cola editorial 0; activando saneamiento de Pendientes y revalidación final."
+        "message": "Inicio de pasada · cola editorial 0; revisando Top 10, Explicadas recientes y Pendientes."
       },
       {
-        "at": "2026-10-28T09:26:30+01:00",
+        "at": "2026-10-28T09:46:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · verificando cola, requests y reexplicaciones tras activar saneamiento."
+        "message": "Releyendo main · verificando cola, requests, reexplicaciones y Top 10 antes del cierre."
       },
       {
-        "at": "2026-10-28T09:27:00+01:00",
+        "at": "2026-10-28T09:47:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola final releída en main · 0 preparing/update y 0 rewrite_pending; cerrando ejecución 0/0."
+        "message": "Cola final releída en main · 0 preparing/update, 0 rewrite_pending y Top 10 al día; cerrando ejecución 0/0."
       }
     ],
     "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "recent_considered": 30
+    },
     "remate_selections": []
   },
-  "run_id": "tr-autoguard-1793175929",
+  "run_id": "tr-chat-20261028T0945+0100",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -127,7 +132,7 @@
     "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "pending_cards_reviewed": 1,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -135,37 +140,37 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T09:26:00+01:00",
+      "at": "2026-10-28T09:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada · cola editorial 0; activando saneamiento de Pendientes y revalidación final."
+      "message": "Inicio de pasada · cola editorial 0; revisando Top 10, Explicadas recientes y Pendientes."
     },
     {
-      "at": "2026-10-28T09:26:30+01:00",
+      "at": "2026-10-28T09:46:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · verificando cola, requests y reexplicaciones tras activar saneamiento."
+      "message": "Releyendo main · verificando cola, requests, reexplicaciones y Top 10 antes del cierre."
     },
     {
-      "at": "2026-10-28T09:27:00+01:00",
+      "at": "2026-10-28T09:47:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Cola final releída en main · 0 preparing/update y 0 rewrite_pending; cerrando ejecución 0/0."
+      "message": "Cola final releída en main · 0 preparing/update, 0 rewrite_pending y Top 10 al día; cerrando ejecución 0/0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "not_needed_fresh",
-    "captured_at": "2026-10-28T09:21:06+01:00"
+    "captured_at": "2026-10-28T09:31:16+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-28T09:21:06+01:00",
+    "captured_at": "2026-10-28T09:31:16+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261028T0915+0100",
+  "previous_run_id": "tr-autoguard-1793175929",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
