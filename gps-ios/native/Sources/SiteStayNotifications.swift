@@ -143,6 +143,15 @@ final class SiteStayNotifications: NSObject, UNUserNotificationCenterDelegate {
     private func processAction(_ action: String, stayID: String, siteID: String) {
         guard !stayID.isEmpty, let siteUUID = UUID(uuidString: siteID) else { return }
         guard let model else {
+            // iOS may invoke a background action before the SwiftUI scene
+            // has appeared. Commit Confirmado to local SQLite immediately,
+            // then also replay on next activation in case that scene already
+            // held an older in-memory snapshot.
+            if action == Action.confirm {
+                let backgroundModel = TimeModel()
+                _ = backgroundModel.confirmNotifiedStay(
+                    stayID:stayID, expectedSiteID:siteUUID)
+            }
             var pending = UserDefaults.standard.array(forKey: pendingActionsKey)
                 as? [[String: String]] ?? []
             pending.append(["action":action, "stayID":stayID, "siteID":siteID])
