@@ -28,6 +28,7 @@ class ActionTests(unittest.TestCase):
             "trends/telegram-image-deliveries.json": {"items": []},
             "trends/telegram-manual-explained.json": {"items": []},
             "trends/prepared.json": {"items": []},
+            "trends/prepared.json": {"items": []},
             "trends/requests.json": {"requests": []},
             "trends/editorial-queue.json": {"items": [], "count": 0},
             "trends/mobile-decisions.json": {"items": []},
@@ -290,6 +291,65 @@ class ActionTests(unittest.TestCase):
         self.write("trends/recent.json", {"items": [{"rank": 5, "name": "Bellingham"}]})
         with self.assertRaises(mod.InvalidAction):
             mod.apply_live("ttendencias", "manual-spoofed", "rework", 0, "Bellingham", 5)
+
+
+    def test_tr_prepared_ready_without_manual_ledger_can_be_removed(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id": "orphan-ready", "revision": 0, "status": "ready",
+             "ready_at": "2026-10-28T03:00:30Z", "delivery_confirmation": "prepared_web"}]})
+        self.write("trends/prepared.json", {"items": [
+            {"id": "orphan-ready", "revision": 0, "group_leader_id": "orphan-ready",
+             "explanation": "TT#7 Tendencia explicada."}]})
+        change, result = mod.apply("ttendencias", "orphan-ready", "deleted", 0)
+        self.assertEqual(result, "applied")
+        self.assertEqual(change["trends/requests.json"]["requests"][0]["status"], "deleted")
+        self.assertEqual(change["trends/mobile-decisions.json"]["items"][0]["status"], "deleted")
+        self.assertNotIn("trends/telegram-manual-explained.json", change)
+
+    def test_tr_ready_missing_prepared_can_be_deleted_only_with_proof(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id": "orphan-ready", "revision": 0, "status": "ready",
+             "ready_at": "2026-10-28T03:00:30Z", "delivery_confirmation": "prepared_web"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttendencias", "orphan-ready", "published", 0)
+        changed, status = mod.apply("ttendencias", "orphan-ready", "deleted", 0)
+        self.assertEqual(status, "applied")
+        self.assertEqual(changed["trends/requests.json"]["requests"][0]["status"], "deleted")
+
+    def test_tr_unproven_ready_cannot_be_deleted(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id": "unverified", "revision": 0, "status": "ready"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttendencias", "unverified", "deleted", 0)
+
+    def test_tr_prepared_ready_does_not_override_active_work(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id": "orphan-ready", "revision": 0, "status": "ready",
+             "ready_at": "2026-10-28T03:00:30Z", "delivery_confirmation": "prepared_web"}]})
+        self.write("trends/prepared.json", {"items": [
+            {"id": "orphan-ready", "revision": 0, "explanation": "TT#7 Lista"}]})
+        self.write("trends/editorial-queue.json", {"items": [
+            {"id": "orphan-ready", "revision": 0, "status": "preparing"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttendencias", "orphan-ready", "deleted", 0)
+
+    def test_tr_prepared_ready_rejects_new_revision(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id": "orphan-ready", "revision": 1, "status": "ready",
+             "ready_at": "2026-10-28T03:00:30Z", "delivery_confirmation": "prepared_web"}]})
+        self.write("trends/prepared.json", {"items": [
+            {"id": "orphan-ready", "revision": 0, "explanation": "TT#7 Lista"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttendencias", "orphan-ready", "deleted", 0)
+
+    def test_tr_prepared_ready_cannot_override_published(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id": "orphan-ready", "revision": 0, "status": "published"}]})
+        self.write("trends/prepared.json", {"items": [
+            {"id": "orphan-ready", "revision": 0, "explanation": "TT#7 Lista"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttendencias", "orphan-ready", "deleted", 0)
+
 
 
 if __name__ == "__main__":

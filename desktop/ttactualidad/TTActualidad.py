@@ -20,6 +20,7 @@ FILES = {
     "tremending":"ttittulares/tremending/items.json",
     "recent":"trends/recent.json",
     "manual":"trends/telegram-manual-explained.json",
+    "trend_prepared":"trends/prepared.json",
     "requests":"trends/requests.json",
     "deliveries":"trends/telegram-image-deliveries.json",
     "trend_decisions":"trends/mobile-decisions.json",
@@ -111,6 +112,7 @@ def normalise(docs):
     requests = latest_rows(rows(docs["requests"],"requests"),"id")
     manual = latest_rows(rows(docs["manual"]),"id")
     delivered = latest_rows(rows(docs["deliveries"]),"event_id")
+    staged = latest_rows(rows(docs["trend_prepared"]),"id")
     closures = latest_rows(rows(docs["trend_decisions"]),"id")
     trend_queue = rows(docs["trend_queue"])
     now = dt.datetime.now(dt.timezone.utc)
@@ -139,7 +141,38 @@ def normalise(docs):
         trend_ready.append({"project":"ttendencias","id":ident,"revision":rev,"title":text(x.get("name") or req.get("name")),
             "body":text(x.get("explanation")), "state":"Listas","category":"Tendencias",
             "source":text(x.get("source_url")), "image":text(x.get("archive_image_url")), "rank":int(x.get("rank") or req.get("rank") or 0)})
+    # READY may be saved in trends/prepared.json before the separate manual
+    # explanations ledger is reconciled. Expose only verified, unclosed cards
+    # of the exact revision so users can remove them through the normal action.
     readyIDs = {x["id"] for x in trend_ready}
+    for ident,x in staged.items():
+        if ident in readyIDs:
+            continue
+        req = requests.get(ident,{})
+        rev = int(x.get("revision") or 0)
+        if text(req.get("status")).lower() not in {"ready", "explained"} or int(req.get("revision") or 0) != rev:
+            continue
+        if text(x.get("group_leader_id") or ident) != ident:
+            continue
+        body = text(x.get("explanation") or (x.get("primary") or {}).get("text") or req.get("explanation"))
+        generated = date(x.get("generated_at") or req.get("ready_at"))
+        if not body or not generated or not -3600 <= (now-generated).total_seconds() <= 48*3600:
+            continue
+        if text(req.get("telegram_package_status")).lower() in TERMINAL:
+            continue
+        if any(text(q.get("id"))==ident and text(q.get("status")).lower() in TREND_ACTIVE
+               and int(q.get("revision") or 0)>=rev for q in trend_queue):
+            continue
+        if any(text(k.get("status")).lower() in TERMINAL
+               and int(k.get("revision") or 0)>=rev
+               for k in (closures.get(ident,{}),delivered.get(ident,{}),manual.get(ident,{}))):
+            continue
+        trend_ready.append({"project":"ttendencias","id":ident,"revision":rev,
+            "title":text(x.get("trend_name") or req.get("name") or ident),"body":body,
+            "state":"Listas","category":"Tendencias",
+            "source":text((x.get("sources") or [""])[0]),"image":"",
+            "rank":int(x.get("rank") or req.get("rank") or 0)})
+        readyIDs.add(ident)
     working = []
     for x in trend_queue:
         if text(x.get("status")).lower() not in TREND_ACTIVE:

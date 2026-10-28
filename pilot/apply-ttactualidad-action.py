@@ -159,6 +159,43 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
                          if int(row.get("revision") or 0) == revision]
         same_delivery = [row for row in all_deliveries
                          if int(row.get("revision") or 0) == revision]
+        # A READY request can exist before its explanation is copied to the
+        # manual ledger. Do not mistake that temporary discrepancy for a
+        # non-existent card, but never override an active or newer revision.
+        queue = load("trends/editorial-queue.json", {"items": []})
+        if any(str(row.get("id") or "") == event_id
+               and str(row.get("status") or "").lower() in {"preparing", "update"}
+               and int(row.get("revision") or 0) >= revision
+               for row in queue.get("items", [])):
+            fail("La tendencia sigue en elaboracion; actualiza Listas")
+        if any(str(row.get("status") or "").lower() in TERMINAL
+               and str(row.get("status") or "").lower() != terminal_status
+               for row in same_manual + same_requests + same_delivery):
+            fail("Ya existe una decision final distinta para esta revision")
+        if any(str(row.get("telegram_package_status") or "").lower() in TERMINAL
+               and str(row.get("telegram_package_status") or "").lower() != terminal_status
+               for row in same_manual + same_requests):
+            fail("El paquete editorial tiene una decision final diferente")
+        prepared = load("trends/prepared.json", {"items": []})
+        prepared_ready = any(
+            str(item.get("id") or "") == event_id
+            and int(item.get("revision") or 0) == revision
+            and str(item.get("group_leader_id") or event_id) == event_id
+            and str(item.get("explanation") or (item.get("primary") or {}).get("text") or "").strip()
+            for item in prepared.get("items", [])
+        )
+        ready_requests = [row for row in same_requests
+                          if str(row.get("status") or "").lower() == "ready"]
+        # A signed-off ready request can be removed even when its prepared
+        # snapshot was lost. That exception is DELETE-ONLY, never publication.
+        ready_proof = bool(ready_requests) and (
+            prepared_ready or (
+                decision == "deleted" and
+                any(row.get("ready_at") and
+                    row.get("delivery_confirmation") == "prepared_web"
+                    for row in ready_requests)
+            )
+        )
         legacy_delivery = next(
             (row for row in reversed(same_delivery)
              if str(row.get("status") or "").lower() == "sent"
@@ -175,6 +212,7 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
             or any(str(row.get("status") or "").lower() == terminal_status
                    for row in same_manual + same_requests)
             or legacy_delivery is not None
+            or ready_proof
             or (existing is not None and existing.get("status") == terminal_status
                 and int(existing.get("revision") or 0) == revision)
         )
