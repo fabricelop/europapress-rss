@@ -1,30 +1,24 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "df81ddb61398"
-  ],
-  "remaining_ids": [
-    "df81ddb61398"
-  ],
-  "remaining_problematic_ids": [
-    "df81ddb61398"
-  ],
+  "processed_ids": [],
+  "remaining_ids": [],
+  "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T16:59:51+01:00",
-  "last_completed_at": "2026-10-28T16:59:51+01:00",
-  "updated_at": "2026-10-28T16:59:51+01:00",
+  "last_started_at": "2026-10-28T17:10:00+01:00",
+  "last_completed_at": "2026-10-28T17:12:30+01:00",
+  "updated_at": "2026-10-28T17:12:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261028T1640-chat",
+    "trigger_run_id": "tr-20261028T1710-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -32,19 +26,19 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261028T1655-chat",
+    "run_id": "tr-20261028T1710-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T16:55:00+01:00",
-    "updated_at": "2026-10-28T16:58:00+01:00",
-    "finished_at": "2026-10-28T16:58:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-28T17:10:00+01:00",
+    "updated_at": "2026-10-28T17:12:30+01:00",
+    "finished_at": "2026-10-28T17:12:30+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "ready": 0,
       "explained": 0,
       "final_resolved": 0,
@@ -52,37 +46,31 @@
       "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "problematic_reviewed": 1,
-      "problematic_marked": 1,
+      "problematic_reviewed": 0,
+      "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
-      "remaining_problematic": 1,
+      "remaining_problematic": 0,
       "visual_backlog": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "remates_omitted": 16,
+      "recent_missing_closer_reviewed": 16,
+      "pending_cards_reviewed": 1,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "message": "TTendencias cerrada · 0 preparing/update; Vete reintentada y continúa problematic al no poder atribuirle un detonante único fiable.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "reason": "No se pudo identificar con suficiente fiabilidad un detonante único actual en España tras consultas distintas."
-      }
-    ],
+    "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible en Top 10; #MCCLegends queda en reparación visual no bloqueante.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -93,62 +81,51 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T16:55:00+01:00",
+        "at": "2026-10-28T17:10:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual · 0 preparing/update; 1 problematic en Top 10 para reintento."
+        "message": "Inicio de pasada manual · 0 preparing/update; sin rewrite_pending ni problematic vigente en Top 10."
       },
       {
-        "at": "2026-10-28T16:55:30+01:00",
+        "at": "2026-10-28T17:10:30+01:00",
         "phase": "verifying",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Releyendo estado autoritativo de Vete antes del reintento JIT."
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Explicadas recientes sin remate y Pendientes de menos de 24 horas."
       },
       {
-        "at": "2026-10-28T16:56:00+01:00",
-        "phase": "investigating",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Buscando un detonante actual verificable para Vete con consultas distintas."
+        "at": "2026-10-28T17:11:00+01:00",
+        "phase": "persisting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Reparación visual solicitada por el trigger oficial; el texto y remate ya estaban completos."
       },
       {
-        "at": "2026-10-28T16:57:15+01:00",
-        "phase": "investigating",
-        "trend_id": "df81ddb61398",
-        "title": "Vete",
-        "message": "Las fuentes confirman críticas actuales a Óscar Puente, pero no vinculan de forma fiable el término exacto Vete a un detonante único; se mantiene problematic para no inferir."
+        "at": "2026-10-28T17:11:30+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main antes del cierre 0/0."
       },
       {
-        "at": "2026-10-28T16:58:00+01:00",
+        "at": "2026-10-28T17:12:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada · 0 preparing/update; Vete sigue problematic tras nuevo reintento verificable; sin ImageGen."
+        "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible en Top 10; reparación visual pendiente solicitada."
       }
     ],
-    "processed_ids": [
-      "df81ddb61398"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "df81ddb61398"
-    ],
-    "final_outcomes": [
-      {
-        "id": "df81ddb61398",
-        "name": "Vete",
-        "revision": 0,
-        "status": "problematic"
-      }
-    ]
+    "remaining_problematic_ids": [],
+    "final_outcomes": []
   },
-  "run_id": "tr-20261028T1655-chat",
+  "run_id": "tr-20261028T1710-chat",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "ready": 0,
     "explained": 0,
     "final_resolved": 0,
@@ -156,67 +133,67 @@
     "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "problematic_reviewed": 1,
-    "problematic_marked": 1,
+    "problematic_reviewed": 0,
+    "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
-    "remaining_problematic": 1,
+    "remaining_problematic": 0,
     "visual_backlog": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "remates_omitted": 16,
+    "recent_missing_closer_reviewed": 16,
+    "pending_cards_reviewed": 1,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-28T16:55:00+01:00",
+      "at": "2026-10-28T17:10:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual · 0 preparing/update; 1 problematic en Top 10 para reintento."
+      "message": "Inicio de pasada manual · 0 preparing/update; sin rewrite_pending ni problematic vigente en Top 10."
     },
     {
-      "at": "2026-10-28T16:55:30+01:00",
+      "at": "2026-10-28T17:10:30+01:00",
       "phase": "verifying",
-      "trend_id": "df81ddb61398",
-      "title": "Vete",
-      "message": "Releyendo estado autoritativo de Vete antes del reintento JIT."
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Explicadas recientes sin remate y Pendientes de menos de 24 horas."
     },
     {
-      "at": "2026-10-28T16:56:00+01:00",
-      "phase": "investigating",
-      "trend_id": "df81ddb61398",
-      "title": "Vete",
-      "message": "Buscando un detonante actual verificable para Vete con consultas distintas."
+      "at": "2026-10-28T17:11:00+01:00",
+      "phase": "persisting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Reparación visual solicitada por el trigger oficial; el texto y remate ya estaban completos."
     },
     {
-      "at": "2026-10-28T16:57:15+01:00",
-      "phase": "investigating",
-      "trend_id": "df81ddb61398",
-      "title": "Vete",
-      "message": "Las fuentes confirman críticas actuales a Óscar Puente, pero no vinculan de forma fiable el término exacto Vete a un detonante único; se mantiene problematic para no inferir."
+      "at": "2026-10-28T17:11:30+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main antes del cierre 0/0."
     },
     {
-      "at": "2026-10-28T16:58:00+01:00",
+      "at": "2026-10-28T17:12:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 0 preparing/update; Vete sigue problematic tras nuevo reintento verificable; sin ImageGen."
+      "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible en Top 10; reparación visual pendiente solicitada."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-20261028T1640-chat",
+  "previous_run_id": "tr-20261028T1655-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -225,14 +202,7 @@
     "recent_considered": 30
   },
   "remate_selections": [],
-  "final_outcomes": [
-    {
-      "id": "df81ddb61398",
-      "name": "Vete",
-      "revision": 0,
-      "status": "problematic"
-    }
-  ],
+  "final_outcomes": [],
   "pending_delivery_count": 2,
   "error": null
 }
