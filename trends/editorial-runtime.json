@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T17:10:00+01:00",
-  "last_completed_at": "2026-10-28T17:12:30+01:00",
-  "updated_at": "2026-10-28T17:12:30+01:00",
+  "last_started_at": "2026-10-28T17:25:00+01:00",
+  "last_completed_at": "2026-10-28T17:26:00+01:00",
+  "updated_at": "2026-10-28T17:26:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261028T1710-chat",
+    "trigger_run_id": "tr-20261028T1725-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261028T1710-chat",
+    "run_id": "tr-20261028T1725-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T17:10:00+01:00",
-    "updated_at": "2026-10-28T17:12:30+01:00",
-    "finished_at": "2026-10-28T17:12:30+01:00",
+    "started_at": "2026-10-28T17:25:00+01:00",
+    "updated_at": "2026-10-28T17:26:00+01:00",
+    "finished_at": "2026-10-28T17:26:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -60,15 +60,15 @@
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 16,
-      "recent_missing_closer_reviewed": 16,
+      "remates_omitted": 0,
+      "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 1,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible en Top 10; #MCCLegends queda en reparación visual no bloqueante.",
+    "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible; #MCCLegends sigue en reparación visual no bloqueante.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -81,39 +81,25 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T17:10:00+01:00",
+        "at": "2026-10-28T17:25:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual · 0 preparing/update; sin rewrite_pending ni problematic vigente en Top 10."
+        "message": "Inicio de pasada manual · verificando cola editorial, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-28T17:10:30+01:00",
+        "at": "2026-10-28T17:25:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Explicadas recientes sin remate y Pendientes de menos de 24 horas."
+        "message": "Releyendo main antes del cierre 0/0; comprobando preparing/update y rewrite_pending."
       },
       {
-        "at": "2026-10-28T17:11:00+01:00",
-        "phase": "persisting",
-        "trend_id": "fc1e4bc8ee32",
-        "title": "#MCCLegends",
-        "message": "Reparación visual solicitada por el trigger oficial; el texto y remate ya estaban completos."
-      },
-      {
-        "at": "2026-10-28T17:11:30+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main antes del cierre 0/0."
-      },
-      {
-        "at": "2026-10-28T17:12:30+01:00",
+        "at": "2026-10-28T17:26:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible en Top 10; reparación visual pendiente solicitada."
+        "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible; #MCCLegends sigue en reparación visual no bloqueante."
       }
     ],
     "processed_ids": [],
@@ -123,7 +109,7 @@
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-20261028T1710-chat",
+  "run_id": "tr-20261028T1725-chat",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -147,8 +133,8 @@
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 16,
-    "recent_missing_closer_reviewed": 16,
+    "remates_omitted": 0,
+    "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 1,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
@@ -157,43 +143,29 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T17:10:00+01:00",
+      "at": "2026-10-28T17:25:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual · 0 preparing/update; sin rewrite_pending ni problematic vigente en Top 10."
+      "message": "Inicio de pasada manual · verificando cola editorial, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-28T17:10:30+01:00",
+      "at": "2026-10-28T17:25:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Explicadas recientes sin remate y Pendientes de menos de 24 horas."
+      "message": "Releyendo main antes del cierre 0/0; comprobando preparing/update y rewrite_pending."
     },
     {
-      "at": "2026-10-28T17:11:00+01:00",
-      "phase": "persisting",
-      "trend_id": "fc1e4bc8ee32",
-      "title": "#MCCLegends",
-      "message": "Reparación visual solicitada por el trigger oficial; el texto y remate ya estaban completos."
-    },
-    {
-      "at": "2026-10-28T17:11:30+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main antes del cierre 0/0."
-    },
-    {
-      "at": "2026-10-28T17:12:30+01:00",
+      "at": "2026-10-28T17:26:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible en Top 10; reparación visual pendiente solicitada."
+      "message": "TTendencias cerrada · 0 preparing/update, 0 rewrite_pending y 0 problematic elegible; #MCCLegends sigue en reparación visual no bloqueante."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-20261028T1655-chat",
+  "previous_run_id": "tr-20261028T1710-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
