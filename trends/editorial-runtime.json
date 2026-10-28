@@ -17,8 +17,8 @@
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "last_started_at": "2026-10-28T11:10:10+01:00",
-  "last_completed_at": "2026-10-28T11:15:30+01:00",
-  "updated_at": "2026-10-28T11:15:30+01:00",
+  "last_completed_at": "2026-10-28T11:16:45+01:00",
+  "updated_at": "2026-10-28T11:16:45+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -37,8 +37,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-28T11:10:10+01:00",
-    "updated_at": "2026-10-28T11:15:30+01:00",
-    "finished_at": "2026-10-28T11:15:30+01:00",
+    "updated_at": "2026-10-28T11:16:45+01:00",
+    "finished_at": "2026-10-28T11:16:45+01:00",
     "current": 5,
     "total": 5,
     "trend_id": null,
@@ -51,21 +51,27 @@
       "explanation_groups": 1,
       "new_cards": 1,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 4,
+      "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 5,
+      "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
+      "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 5,
       "remates_selected": 0,
       "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 1,
+      "pending_cards_reviewed": 1,
       "rewrite_pending_remaining": 0,
+      "skipped_concurrent": 0,
+      "trends_dismissed": 0,
       "incidents": 0
     },
     "message": "TTendencias completada 5/5 · cola editorial y reexplicaciones verificadas en 0.",
@@ -171,25 +177,32 @@
         "message": "Actualizando requests · sincronizando las cinco revisiones con la ficha Explicada."
       },
       {
-        "at": "2026-10-28T11:15:05+01:00",
+        "at": "2026-10-28T11:14:10+01:00",
+        "phase": "persisting",
+        "trend_id": "5c4ed0171dad",
+        "title": "Renfe",
+        "message": "Retirando las cinco revisiones verificadas de la cola editorial."
+      },
+      {
+        "at": "2026-10-28T11:15:00+01:00",
         "phase": "verifying",
         "trend_id": "5c4ed0171dad",
         "title": "Renfe",
-        "message": "Releyendo main · ficha Explicada y cinco requests sincronizadas por id+revision."
+        "message": "Releyendo main · ficha, cinco requests y ausencia de cola coherentes."
       },
       {
-        "at": "2026-10-28T11:15:15+01:00",
+        "at": "2026-10-28T11:16:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación final · cola 0 y ningún rewrite_pending vigente."
+        "message": "Verificación final · 0 preparing/update y 0 rewrite_pending en main."
       },
       {
-        "at": "2026-10-28T11:15:30+01:00",
+        "at": "2026-10-28T11:16:45+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 5/5 · grupo Renfe/Asesinos/Dimite/Adif/Consternado cerrado y verificado."
+        "message": "TTendencias completada 5/5 · cola editorial y reexplicaciones verificadas en 0."
       }
     ],
     "processed_ids": [
@@ -203,7 +216,17 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "ratings_snapshot": null,
-    "remate_selections": []
+    "remate_selections": [],
+    "final_outcomes": [
+      {
+        "group_id": "grp-5c4ed0171dad-r0",
+        "leader_id": "5c4ed0171dad",
+        "title": "Accidente AVE–Iryo en Toledo · nuevas reacciones",
+        "resolved_revisions": 5,
+        "status": "explained",
+        "closer_omitted": "sensitive_event"
+      }
+    ]
   },
   "run_id": "tr-mobile-backlog-20261028T101010-tt",
   "summary": {
@@ -214,21 +237,27 @@
     "explanation_groups": 1,
     "new_cards": 1,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 4,
+    "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 5,
+    "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
+    "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 5,
     "remates_selected": 0,
     "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 1,
+    "pending_cards_reviewed": 1,
     "rewrite_pending_remaining": 0,
+    "skipped_concurrent": 0,
+    "trends_dismissed": 0,
     "incidents": 0
   },
   "activity": [
@@ -331,25 +360,32 @@
       "message": "Actualizando requests · sincronizando las cinco revisiones con la ficha Explicada."
     },
     {
-      "at": "2026-10-28T11:15:05+01:00",
+      "at": "2026-10-28T11:14:10+01:00",
+      "phase": "persisting",
+      "trend_id": "5c4ed0171dad",
+      "title": "Renfe",
+      "message": "Retirando las cinco revisiones verificadas de la cola editorial."
+    },
+    {
+      "at": "2026-10-28T11:15:00+01:00",
       "phase": "verifying",
       "trend_id": "5c4ed0171dad",
       "title": "Renfe",
-      "message": "Releyendo main · ficha Explicada y cinco requests sincronizadas por id+revision."
+      "message": "Releyendo main · ficha, cinco requests y ausencia de cola coherentes."
     },
     {
-      "at": "2026-10-28T11:15:15+01:00",
+      "at": "2026-10-28T11:16:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Verificación final · cola 0 y ningún rewrite_pending vigente."
+      "message": "Verificación final · 0 preparing/update y 0 rewrite_pending en main."
     },
     {
-      "at": "2026-10-28T11:15:30+01:00",
+      "at": "2026-10-28T11:16:45+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 5/5 · grupo Renfe/Asesinos/Dimite/Adif/Consternado cerrado y verificado."
+      "message": "TTendencias completada 5/5 · cola editorial y reexplicaciones verificadas en 0."
     }
   ],
   "partial": false,
@@ -362,44 +398,18 @@
     "queue_count": 0
   },
   "previous_run_id": "tr-chat-20261028T1015+0100",
-  "ratings_snapshot": {
-    "path": "trends/remate-ratings.json",
-    "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-    "updated_at": "2026-10-06T21:21:47.927Z",
-    "recent_considered": 30
-  },
-  "remate_selections": [
-    {
-      "trend_id": "f37fc7ae4c66",
-      "title": "#VuelveOcarinaOfTime",
-      "selected": "🌶️ El viaje en el tiempo ya tiene fecha de vuelta.",
-      "candidates": [
-        "🌶️ El viaje en el tiempo ya tiene fecha de vuelta.",
-        "🌶️ Hyrule vuelve a abrir la agenda el 5 de noviembre.",
-        "🌶️ Link vuelve a viajar en el tiempo, ahora con fecha de salida.",
-        "🌶️ La ocarina vuelve a sonar; esta vez en Switch 2.",
-        "🌶️ El calendario de Hyrule ya tiene portal para noviembre."
-      ],
-      "rationale": "Seleccionado por concreción con el viaje temporal del juego, la fecha de lanzamiento y baja similitud con remates recientes."
-    }
-  ],
+  "ratings_snapshot": null,
+  "remate_selections": [],
   "final_outcomes": [
     {
-      "group_id": "grp-24d64469c94e-r0",
-      "leader_id": "24d64469c94e",
-      "title": "Accidente AVE–Iryo en Toledo",
-      "resolved_revisions": 6,
+      "group_id": "grp-5c4ed0171dad-r0",
+      "leader_id": "5c4ed0171dad",
+      "title": "Accidente AVE–Iryo en Toledo · nuevas reacciones",
+      "resolved_revisions": 5,
       "status": "explained",
       "closer_omitted": "sensitive_event"
-    },
-    {
-      "group_id": "grp-f37fc7ae4c66-r0",
-      "leader_id": "f37fc7ae4c66",
-      "title": "#VuelveOcarinaOfTime · regreso de Ocarina of Time",
-      "resolved_revisions": 1,
-      "status": "explained"
     }
   ],
-  "pending_delivery_count": 3,
+  "pending_delivery_count": 1,
   "error": null
 }
