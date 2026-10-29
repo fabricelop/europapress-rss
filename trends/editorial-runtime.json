@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T04:26:30+01:00",
-  "last_completed_at": "2026-10-29T04:27:20+01:00",
-  "updated_at": "2026-10-29T04:27:20+01:00",
+  "last_started_at": "2026-10-29T04:40:00+01:00",
+  "last_completed_at": "2026-10-29T04:44:00+01:00",
+  "updated_at": "2026-10-29T04:44:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
-  "queue_complete": true,
+  "queue_complete": false,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261029T0426+0100",
+    "trigger_run_id": "tr-chat-20261029T0440+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T0426+0100",
+    "run_id": "tr-chat-20261029T0440+0100",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-29T04:26:30+01:00",
-    "updated_at": "2026-10-29T04:27:20+01:00",
-    "finished_at": "2026-10-29T04:27:20+01:00",
+    "started_at": "2026-10-29T04:40:00+01:00",
+    "updated_at": "2026-10-29T04:44:00+01:00",
+    "finished_at": "2026-10-29T04:44:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -61,11 +61,17 @@
       "remates_omitted": 3,
       "recent_missing_closer_reviewed": 3,
       "pending_visual_candidates_reviewed": 3,
-      "incidents": 0
+      "incidents": 1
     },
-    "message": "TTendencias cerrada 0/0; cola final vacía y saneamiento visual solicitado para tres Pendientes recientes.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía, saneamiento visual solicitado para tres Pendientes recientes y requests.json sigue vacío.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "type": "authoritative_state_invalid",
+        "path": "trends/requests.json",
+        "detail": "El archivo existe en main pero contiene 0 bytes; no se pudo validar el estado de solicitudes."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -79,7 +85,7 @@
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "tragedy_with_victims"
+        "no_remate_reason": "sensitive_context"
       },
       {
         "trend_id": "b7839978cb6c",
@@ -97,61 +103,61 @@
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "tragedy_with_victims"
+        "no_remate_reason": "sensitive_context"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-29T04:26:30+01:00",
+        "at": "2026-10-29T04:42:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial; cola inicial 0 y comprobación de estado fresco."
       },
       {
-        "at": "2026-10-29T04:27:17+01:00",
+        "at": "2026-10-29T04:42:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main; captura fresca y sin solicitudes preparing/update/problematic ni reexplicaciones pendientes."
+        "message": "Releyendo main; captura fresca y cola editorial vacía."
       },
       {
-        "at": "2026-10-29T04:27:17+01:00",
+        "at": "2026-10-29T04:42:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando tres Pendientes recientes; reparación visual solicitada mediante pending-repair-trigger."
+        "message": "Revisando tres Pendientes recientes y solicitando reparación visual oficial."
       },
       {
-        "at": "2026-10-29T04:27:17+01:00",
+        "at": "2026-10-29T04:43:00+01:00",
         "phase": "remate_selection",
         "trend_id": null,
         "title": null,
-        "message": "Tres remates omitidos por sensibilidad editorial; no se fuerza humor sobre el accidente ferroviario de Urda."
+        "message": "Tres remates omitidos por sensibilidad editorial."
       },
       {
-        "at": "2026-10-29T04:27:20+01:00",
+        "at": "2026-10-29T04:43:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación final: cola 0, sin preparing/update/problematic ni rewrite_pending activos."
+        "message": "Verificación final: cola 0 y sin rewrite_pending; requests.json sigue vacío e inválido."
       },
       {
-        "at": "2026-10-29T04:27:20+01:00",
+        "at": "2026-10-29T04:44:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0; cola final vacía y saneamiento visual solicitado para tres Pendientes recientes."
+        "message": "TTendencias cerrada 0/0 con incidencia; saneamiento visual solicitado para tres Pendientes recientes."
       }
     ],
     "processed_ids": [],
-    "partial": false,
-    "queue_complete": true,
+    "partial": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261029T0426+0100",
+  "run_id": "tr-chat-20261029T0440+0100",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -176,7 +182,7 @@
     "remates_omitted": 3,
     "recent_missing_closer_reviewed": 3,
     "pending_visual_candidates_reviewed": 3,
-    "incidents": 0
+    "incidents": 1
   },
   "activity": [
     {
@@ -267,5 +273,10 @@
     "status": "completed",
     "conclusion": "success",
     "editorial_blocking": false
+  },
+  "last_incident": {
+    "type": "authoritative_state_invalid",
+    "path": "trends/requests.json",
+    "detail": "El archivo existe en main pero contiene 0 bytes; no se pudo validar el estado de solicitudes."
   }
 }
