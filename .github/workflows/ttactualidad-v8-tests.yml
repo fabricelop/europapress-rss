@@ -59,6 +59,18 @@ jobs:
         run: node pilot/ttactualidad-live/test_worker_live.mjs
       - name: Copiar GAG no incluye texto ni tarjetas (live y Pages)
         run: node pilot/ttactualidad-live/test_gag_prompt.mjs
+      - name: Copiar GAG compartido y accesos alternativos
+        run: |
+          node --test vercel-webhook/test/chatgpt-images-manual.test.js
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('docs/gag.html').read_text(encoding='utf-8')
+          assert 'PROMPT_GAG_VISUAL_V2' in p
+          a=p.index('<script>')+len('<script>')
+          b=p.index('</script>',a)
+          Path('/tmp/ttactualidad-gag-fallback.js').write_text(p[a:b],encoding='utf-8')
+          PY
+          node --check /tmp/ttactualidad-gag-fallback.js
       - name: Validate browser and Worker JS
         run: |
           python3 - <<'PY'
