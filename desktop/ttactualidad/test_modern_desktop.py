@@ -194,8 +194,56 @@ class DesktopModernTests(unittest.TestCase):
         request["since"]-=81
         self.window.confirm_pending()
         self.window.render_list()
+        self.assertEqual(self.window.list_count.text(),"0 elementos",
+            "An accepted GitHub operation must not resurrect after 80 seconds")
+        self.assertNotEqual(self.window.pending_actions,{})
+        request["since"]-=525
+        self.window.confirm_pending()
+        self.window.render_list()
         self.assertEqual(self.window.list_count.text(),"1 elementos")
         self.assertEqual(self.window.pending_actions,{})
+
+    def test_fetch_pins_all_sources_to_one_immutable_commit(self):
+        sha="a"*40
+        paths=[]
+        def fake_request(url,**kwargs):
+            if "/commits/main" in url:
+                return 200,{"sha":sha}
+            paths.append(url)
+            return 200,{"items":[]}
+        with patch.object(appmod,"request",side_effect=fake_request), \\
+             patch.object(appmod,"load_archive_paths",return_value={}), \\
+             patch.object(appmod,"session_token",return_value="github_pat_test"):
+            docs,processed=appmod.fetch_editorial()
+        self.assertEqual(len(paths),len(appmod.FILES))
+        self.assertTrue(all("/"+sha+"/" in url for url in paths))
+        self.assertNotIn("/main/", "".join(paths))
+        self.assertEqual(docs["_commit_sha"],sha)
+
+    def test_confirmed_mobile_action_cannot_resurrect_in_windows(self):
+        closed=self._ready("ttittulares","closed-from-iphone")
+        self.window.news=[closed]
+        self.window.change_section("Noticias · Listas")
+        self.window.docs={"action_receipts":{"items":[{"project":"ttittulares",
+            "event_id":"closed-from-iphone","revision":0,"decision":"deleted",
+            "status":"applied","at":"2026-10-29T09:25:00Z"}]}}
+        marks=appmod.confirmed_terminals(self.window.docs)
+        self.window.verified_terminals.update(marks)
+        self.window.render_list()
+        self.assertEqual(self.window.list_count.text(),"0 elementos")
+        newer={**closed,"revision":1}
+        self.window.news=[newer]
+        self.window.render_list()
+        self.assertEqual(self.window.list_count.text(),"1 elementos",
+            "A genuinely new revision must not be hidden by the old decision")
+
+    def test_top30_is_not_hidden_by_old_listas_closure(self):
+        row={**self._ready("ttendencias","trend-top"),"state":"Top 30"}
+        self.window.top30=[row]
+        self.window.verified_terminals[("ttendencias","trend-top")]={
+            "revision":0,"at":appmod.dt.datetime.now(appmod.dt.timezone.utc)}
+        self.window.change_section("Tendencias · Top 30")
+        self.assertEqual(len(self.window.visible_rows(self.window.list_data())),1)
 
     def test_parity_tools_are_available_without_phone(self):
         row={"project":"ttendencias","id":"t1","revision":0,
