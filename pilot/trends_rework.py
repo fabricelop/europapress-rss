@@ -121,8 +121,21 @@ def rework_top30(event_id, expected_revision, now, current_top30, requests, manu
     old = next((x for x in requests.get("requests", []) if str(x.get("id") or "") == event_id), None)
     name = str((old or {}).get("name") or trend_name or "").strip()
     rank_row = next((x for x in current_top30 if key(x.get("name")) == key(name)), None)
-    if not rank_row or not name:
-        raise ValueError("La tendencia ya no está en el Top 30 actual")
+    if not name:
+        raise ValueError("La tendencia no tiene nombre verificable")
+    if not rank_row:
+        # A user may be acting on a genuine saved trend that already moved
+        # out of today's Top-30. Its EXACT historic id/revision/name proves
+        # provenance, including a previously published explanation; we start
+        # NEW work rather than alter or republish that old version.
+        history = next((x for x in manual.get("items", [])
+                        if str(x.get("id") or "") == str(event_id) and
+                        int(x.get("revision") or 0) == expected_revision and
+                        key(x.get("name")) == key(name) and
+                        str(x.get("status") or "").lower() in {"explained", "published"}), None)
+        if history is None:
+            raise ValueError("La tendencia ya no está en el Top 30 actual y no consta identidad histórica")
+        rank_row = {"name": history["name"], "rank": history.get("rank") or history.get("rank_at_explanation") or 0}
     name = str(rank_row["name"]).strip()
     if old:
         if expected_revision is not None and int(old.get("revision") or 0) != expected_revision:
@@ -133,7 +146,13 @@ def rework_top30(event_id, expected_revision, now, current_top30, requests, manu
         # No previous explanation is required. The client must reference
         # the EXACT current radar name via its deterministic manual ID.
         expected_id = "manual-" + hashlib.sha256(name.encode("utf-8")).hexdigest()[:32]
-        if str(event_id) != expected_id and key(event_id) != key(name):
+        historic_identity = any(
+            str(x.get("id") or "") == str(event_id) and
+            int(x.get("revision") or 0) == expected_revision and
+            key(x.get("name")) == key(name) and
+            str(x.get("status") or "").lower() in {"explained", "published"}
+            for x in manual.get("items", []))
+        if str(event_id) != expected_id and key(event_id) != key(name) and not historic_identity:
             raise ValueError("El identificador no corresponde a esta tendencia")
         if expected_revision not in (None, 0):
             raise ValueError("Revisión inesperada para una tendencia nueva")
