@@ -2153,6 +2153,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     @StateObject private var model = TimeModel()
     @StateObject private var gps = GPSService()
     @Environment(\.scenePhase) private var phase
+    @State private var resumeTask: Task<Void,Never>?
     var body: some Scene {
         WindowGroup {
             RootView(model: model, gps: gps)
@@ -2168,14 +2169,27 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                     if !healthy { gps.haltForStorageFailure(model) }
                 }
                 .onChange(of: phase) { _, state in
-                    if state != .active { model.save(force:true) }
-                    if state == .active {
+                    resumeTask?.cancel()
+                    if state != .active {
+                        // Keep the durable iOS background commit. A delayed
+                        // write could be suspended before finishing.
+                        model.save(force:true)
+                    } else {
+                        // Render the restored SwiftUI frame FIRST. Returning
+                        // from another app should never synchronously run
+                        // location reconfiguration and ActivityKit updates
+                        // on the same UI/navigation frame.
                         GPSStaleWatchdog.shared.refresh(recording:model.recording,
                             resting:model.isResting,latestFix:model.current?.date)
-                        // Restauración global, también cuando el usuario abrió
-                        // directamente el historial o una hoja de detalle.
-                        gps.refreshWhenForeground()
-                        model.restoreLiveActivityIfNeeded()
+                        resumeTask=Task { @MainActor in
+                            try? await Task.sleep(for:.milliseconds(250))
+                            guard !Task.isCancelled else { return }
+                            gps.refreshWhenForeground()
+                            // Allow GPS to resume; activity refresh is secondary.
+                            await Task.yield()
+                            guard !Task.isCancelled else { return }
+                            model.restoreLiveActivityIfNeeded()
+                        }
                     }
                 }
         }
@@ -2495,8 +2509,8 @@ struct TimeMapView: View {
         mapRouteEvents
         .onChange(of:scenePhase) { _,phase in
             if phase == .active {
-                gps.refreshWhenForeground()
-                model.restoreLiveActivityIfNeeded()
+                // App scene owns GPS/ActivityKit restoration. Repeating it
+                // synchronously inside the map caused foreground UI stalls.
                 if followLocation { focusOnCurrentLocation() }
             }
         }
