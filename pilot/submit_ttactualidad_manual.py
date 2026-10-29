@@ -85,12 +85,23 @@ def verified_trend_origin(origin):
                 normalize(actual.get("name")) != normalize(origin["name"])):
             raise ValueError("Tendencia de origen obsoleta; actualiza la aplicación")
     else:
-        recent = json.loads((ROOT / "trends/recent.json").read_text(encoding="utf-8"))
-        actual = next((row for row in (recent.get("items") or [])[:30]
-                       if normalize(row.get("name")) == normalize(origin["name"]) and
-                       "manual-" + hashlib.sha256(str(row.get("name") or "").encode("utf-8")).hexdigest()[:32] == origin["id"]), None)
-        if actual is None or origin["revision"] != 0:
-            raise ValueError("El origen no corresponde a una tendencia real")
+        # Editorial history is immutable evidence of a genuine earlier trend.
+        # The real Top-30 feed can rotate between the iPhone tap and this job.
+        # Only an EXACT stored identity/revision/name qualifies; merely
+        # matching a name, a client rank or a screenshot is insufficient.
+        historical = json.loads((ROOT / "trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
+        archived = next((row for row in historical.get("items", [])
+                         if str(row.get("id") or "") == origin["id"] and
+                         int(row.get("revision") or 0) == origin["revision"] and
+                         normalize(row.get("name")) == normalize(origin["name"]) and
+                         str(row.get("status") or "").lower() in {"explained", "published"}), None)
+        if archived is None:
+            recent = json.loads((ROOT / "trends/recent.json").read_text(encoding="utf-8"))
+            actual = next((row for row in (recent.get("items") or [])[:30]
+                           if normalize(row.get("name")) == normalize(origin["name"]) and
+                           "manual-" + hashlib.sha256(str(row.get("name") or "").encode("utf-8")).hexdigest()[:32] == origin["id"]), None)
+            if actual is None or origin["revision"] != 0:
+                raise ValueError("El origen no corresponde a una tendencia real")
     return origin
 
 
