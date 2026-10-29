@@ -1,0 +1,65 @@
+name: TTActualidad - conciliar recibos manuales automaticamente
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'pilot/reconcile_ttactualidad_manual_receipts.py'
+      - 'pilot/test_ttactualidad_receipt_reconcile.py'
+      - '.github/workflows/ttactualidad-manual-receipt-reconcile.yml'
+  pull_request:
+    paths:
+      - 'pilot/reconcile_ttactualidad_manual_receipts.py'
+      - 'pilot/test_ttactualidad_receipt_reconcile.py'
+      - '.github/workflows/ttactualidad-manual-receipt-reconcile.yml'
+permissions:
+  contents: write
+concurrency:
+  group: ttactualidad-manual-receipt-reconcile
+  cancel-in-progress: false
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify only persisted, unambiguous manual requests are acknowledged
+        run: |
+          python3 -m py_compile pilot/reconcile_ttactualidad_manual_receipts.py
+          python3 -m unittest discover -s pilot -p 'test_ttactualidad_receipt_reconcile.py' -v
+  reconcile:
+    needs: tests
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Reconcile receipts from already committed requests only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ttactualidad-reconciler[bot]'
+          git config user.email 'ttactualidad-reconciler[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4 5; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/reconcile_ttactualidad_manual_receipts.py
+            git add -- pilot/ttactualidad-action-receipts.json
+            if git diff --cached --quiet; then
+              echo 'TT_ACTUALIDAD_RECEIPTS_SYNCED; no changes'
+              exit 0
+            fi
+            git commit -m 'TTActualidad: recuperar comprobantes de noticias manuales'
+            if git push origin HEAD:main; then
+              echo 'TT_ACTUALIDAD_RECEIPTS_RECOVERED'
+              exit 0
+            fi
+            sleep "$((attempt * 3))"
+          done
+          echo 'TT_ACTUALIDAD_RECEIPT_RECONCILE_FAILED'
+          exit 1
