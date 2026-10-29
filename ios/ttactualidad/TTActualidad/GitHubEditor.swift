@@ -3,6 +3,19 @@ import Combine
 import Security
 import UIKit
 
+// A bounded receipt tracker confirms server results instead of leaving accepted
+// requests visible as "pending" indefinitely.
+struct EditorialReceiptPending: Codable, Identifiable {
+    let requestID: String
+    let project: String
+    let eventID: String
+    let revision: Int
+    let decision: String
+    let title: String
+    let sentAt: Date
+    var id: String { requestID }
+}
+
 // Direct GitHub App user authorization. No embedded secret, personal token prompt,
 // Cloudflare Worker or broad GitHub OAuth "repo" scope.
 @MainActor
@@ -13,6 +26,8 @@ final class GitHubEditor: ObservableObject {
     @Published private(set) var isConnecting = false
     @Published private(set) var notice = "Conecta GitHub una vez para activar las acciones editoriales."
     @Published private(set) var activeAction: String? = nil
+    @Published private(set) var pendingReceipts: [EditorialReceiptPending] = []
+    @Published private(set) var receiptChange = 0
 
     private let repoURL = URL(string: "https://api.github.com/repos/fabricelop/europapress-rss/dispatches")!
     private let service = "com.fabricelop.ttactualidad.github"
@@ -20,8 +35,18 @@ final class GitHubEditor: ObservableObject {
     private var refreshToken: String = ""
     private var tokenExpires: Date = .distantPast
     private var deviceTask: Task<Void, Never>?
+    private let pendingKey = "TTActualidad.pendingEditorialReceipts.v1"
+    private var receiptPolling = Set<String>()
+    private var receiptReadInProgress = false
 
-    init() { restoreSession() }
+    init() {
+        restoreSession()
+        if let saved = UserDefaults.standard.data(forKey: pendingKey),
+           let entries = try? JSONDecoder().decode([EditorialReceiptPending].self, from: saved) {
+            pendingReceipts = entries
+        }
+        Task { await resumeReceiptChecks() }
+    }
 
     private func credential(_ key: String) -> String {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -207,12 +232,112 @@ final class GitHubEditor: ObservableObject {
             notice = "La entrada no tiene identificador editorial confirmado. Actualiza primero."
             return false
         }
-        return await dispatch("ttactualidad_action_v1", payload: [
+        let requestID = UUID().uuidString.lowercased()
+        let label = decision == "deleted" ? "Quitar de Listas" :
+                    decision == "published" ? "Marcar publicada" : "Reelaborar / preparar"
+        let accepted = await dispatch("ttactualidad_action_v1", payload: [
             "project": project, "event_id": eventID, "revision": revision,
-            "decision": decision, "request_id": UUID().uuidString.lowercased(),
+            "decision": decision, "request_id": requestID,
             "received_at": ISO8601DateFormatter().string(from: Date()),
             "trend_name": title, "trend_rank": rank
-        ], label: decision == "deleted" ? "Quitar de Listas" : "Reelaborar / preparar")
+        ], label: label)
+        if accepted {
+            let entry = EditorialReceiptPending(requestID: requestID, project: project,
+                eventID: eventID, revision: revision, decision: decision,
+                title: title, sentAt: Date())
+            pendingReceipts.append(entry)
+            persistPendingReceipts()
+            Task { await followReceipt(requestID) }
+        }
+        return accepted
+    }
+
+    private func persistPendingReceipts() {
+        if let data = try? JSONEncoder().encode(pendingReceipts) {
+            UserDefaults.standard.set(data, forKey: pendingKey)
+        }
+    }
+
+    func resumeReceiptChecks() async {
+        for pending in pendingReceipts {
+            if !receiptPolling.contains(pending.requestID) {
+                Task { await followReceipt(pending.requestID) }
+            }
+        }
+    }
+
+    // Called on app launch and return to foreground. No permanent spinner or
+    // indefinite "orden por confirmar": each accepted request has a bounded
+    // check, with a precise result or explicit unverified outcome.
+    private func followReceipt(_ requestID: String) async {
+        guard receiptPolling.insert(requestID).inserted else { return }
+        defer { receiptPolling.remove(requestID) }
+        for attempt in 0..<22 {
+            guard pendingReceipts.contains(where: { $0.requestID == requestID }) else { return }
+            await checkPendingReceipts()
+            guard pendingReceipts.contains(where: { $0.requestID == requestID }) else { return }
+            if attempt < 21 {
+                try? await Task.sleep(for: .seconds(5))
+            }
+        }
+        expireUnverifiedReceipts()
+    }
+
+    private func expireUnverifiedReceipts() {
+        let now = Date()
+        let expired = pendingReceipts.filter { now.timeIntervalSince($0.sentAt) > 110 }
+        guard !expired.isEmpty else { return }
+        let names = expired.map { $0.title }.joined(separator: ", ")
+        pendingReceipts.removeAll { now.timeIntervalSince($0.sentAt) > 110 }
+        persistPendingReceipts()
+        notice = "Sin comprobante de GitHub para: \(names). No se ha declarado éxito; comprueba Acciones."
+        receiptChange += 1
+    }
+
+    func checkPendingReceipts() async {
+        guard !receiptReadInProgress, !pendingReceipts.isEmpty else { return }
+        receiptReadInProgress = true
+        defer { receiptReadInProgress = false }
+        var url = URLComponents(string:
+            "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/pilot/ttactualidad-action-receipts.json")!
+        url.queryItems = [URLQueryItem(name: "check", value: UUID().uuidString)]
+        var request = URLRequest(url: url.url!, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard (response as? HTTPURLResponse)?.statusCode == 200,
+                  let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let items = json["items"] as? [[String: Any]] else { return }
+            var settled = Set<String>()
+            var message = ""
+            for pending in pendingReceipts {
+                guard let receipt = items.last(where: {
+                    ($0["request_id"] as? String) == pending.requestID
+                }) else { continue }
+                // Never accept a receipt for a different item/revision/decision.
+                guard (receipt["project"] as? String) == pending.project,
+                      (receipt["event_id"] as? String) == pending.eventID,
+                      (receipt["decision"] as? String) == pending.decision,
+                      (receipt["revision"] as? Int) == pending.revision
+                else { continue }
+                let state = (receipt["status"] as? String) ?? ""
+                settled.insert(pending.requestID)
+                if ["applied", "already_applied"].contains(state) {
+                    message = "GitHub confirmó «\(pending.title)» (\(pending.decision))."
+                } else {
+                    message = "GitHub no aplicó «\(pending.title)»: \(state)."
+                }
+            }
+            if !settled.isEmpty {
+                pendingReceipts.removeAll { settled.contains($0.requestID) }
+                persistPendingReceipts()
+                notice = message
+                receiptChange += 1
+            }
+        } catch {
+            // Network errors never imply that the editorial action succeeded.
+        }
+        expireUnverifiedReceipts()
     }
 
     func addNews(title: String, url: String, instructions: String) async -> Bool {
