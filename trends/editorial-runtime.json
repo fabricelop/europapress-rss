@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T10:10:00+01:00",
-  "last_completed_at": "2026-10-29T10:13:00+01:00",
-  "updated_at": "2026-10-29T10:13:00+01:00",
+  "last_started_at": "2026-10-29T10:29:08+01:00",
+  "last_completed_at": "2026-10-29T10:30:08+01:00",
+  "updated_at": "2026-10-29T10:30:08+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261029T101000+0100",
+    "trigger_run_id": "tr-chat-20261029T102900+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T101000+0100",
+    "run_id": "tr-chat-20261029T102900+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T10:10:00+01:00",
-    "updated_at": "2026-10-29T10:13:00+01:00",
-    "finished_at": "2026-10-29T10:13:00+01:00",
+    "started_at": "2026-10-29T10:29:08+01:00",
+    "updated_at": "2026-10-29T10:30:08+01:00",
+    "finished_at": "2026-10-29T10:30:08+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -71,35 +71,35 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T10:10:00+01:00",
+        "at": "2026-10-29T10:29:08+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial tras refresco Top 30."
+        "message": "Preparando pasada editorial y releyendo estado autoritativo."
       },
       {
-        "at": "2026-10-29T10:11:11+01:00",
+        "at": "2026-10-29T10:29:35+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial actualizada y verificada en 0."
+        "message": "Cola editorial verificada en 0; sin requests activas ni rewrite_pending."
       },
       {
-        "at": "2026-10-29T10:12:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Sin requests activas ni rewrite_pending; 1 Pendiente reciente (#LaMesa) revisada."
-      },
-      {
-        "at": "2026-10-29T10:12:10+01:00",
+        "at": "2026-10-29T10:29:50+01:00",
         "phase": "remate_selection",
         "trend_id": "6a124636f62f",
         "title": "#LaMesa",
-        "message": "Sin remate · tragedia con víctimas; se mantiene la explicación factual y se solicita reparación visual."
+        "message": "Sin remate · tragedia con víctimas; se mantiene la explicación factual."
       },
       {
-        "at": "2026-10-29T10:13:00+01:00",
+        "at": "2026-10-29T10:30:00+01:00",
+        "phase": "verifying",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Reparación visual solicitada mediante pending-repair-trigger; no bloquea el cierre editorial."
+      },
+      {
+        "at": "2026-10-29T10:30:08+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -113,7 +113,7 @@
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261029T101000+0100",
+  "run_id": "tr-chat-20261029T102900+0100",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -133,35 +133,35 @@
   },
   "activity": [
     {
-      "at": "2026-10-29T10:10:00+01:00",
+      "at": "2026-10-29T10:29:08+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial tras refresco Top 30."
+      "message": "Preparando pasada editorial y releyendo estado autoritativo."
     },
     {
-      "at": "2026-10-29T10:11:11+01:00",
+      "at": "2026-10-29T10:29:35+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Cola editorial actualizada y verificada en 0."
+      "message": "Cola editorial verificada en 0; sin requests activas ni rewrite_pending."
     },
     {
-      "at": "2026-10-29T10:12:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Sin requests activas ni rewrite_pending; 1 Pendiente reciente (#LaMesa) revisada."
-    },
-    {
-      "at": "2026-10-29T10:12:10+01:00",
+      "at": "2026-10-29T10:29:50+01:00",
       "phase": "remate_selection",
       "trend_id": "6a124636f62f",
       "title": "#LaMesa",
-      "message": "Sin remate · tragedia con víctimas; se mantiene la explicación factual y se solicita reparación visual."
+      "message": "Sin remate · tragedia con víctimas; se mantiene la explicación factual."
     },
     {
-      "at": "2026-10-29T10:13:00+01:00",
+      "at": "2026-10-29T10:30:00+01:00",
+      "phase": "verifying",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Reparación visual solicitada mediante pending-repair-trigger; no bloquea el cierre editorial."
+    },
+    {
+      "at": "2026-10-29T10:30:08+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -169,7 +169,7 @@
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261029T0955+0100",
+  "previous_run_id": "tr-chat-20261029T101000+0100",
   "ratings_snapshot": null,
   "remate_selections": [
     {
@@ -193,6 +193,6 @@
   "requests_state": {
     "status": "valid_no_active",
     "blob_sha": "d56461139116d1e5c7888a3800ba5166b4122d03",
-    "updated_at": "2026-10-29T10:13:00+01:00"
+    "updated_at": "2026-10-29T10:30:08+01:00"
   }
 }
