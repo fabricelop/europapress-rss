@@ -32,7 +32,7 @@ jobs:
             git fetch --depth=1 origin main
             git reset --hard origin/main
             python3 pilot/submit_ttactualidad_manual.py
-            git add -- telegram/editorial-processing.json ttittulares/editorial-queue.json
+            git add -- telegram/editorial-processing.json ttittulares/editorial-queue.json pilot/ttactualidad-action-receipts.json
             if git diff --cached --quiet; then
               echo "Solicitud ya registrada o noticia duplicada; sin cambios."
               exit 0
