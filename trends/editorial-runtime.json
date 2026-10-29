@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "6a124636f62f"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T01:55:00+01:00",
-  "last_completed_at": "2026-10-29T01:57:10+01:00",
-  "updated_at": "2026-10-29T01:57:10+01:00",
+  "last_started_at": "2026-10-29T02:10:00+01:00",
+  "last_completed_at": "2026-10-29T02:13:20+01:00",
+  "updated_at": "2026-10-29T02:13:20+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261029T0155+0100",
+    "trigger_run_id": "tr-chat-20261029T0210+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,22 +28,22 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T0155+0100",
+    "run_id": "tr-chat-20261029T0210+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T01:55:00+01:00",
-    "updated_at": "2026-10-29T01:57:10+01:00",
-    "finished_at": "2026-10-29T01:57:10+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-29T02:10:00+01:00",
+    "updated_at": "2026-10-29T02:13:20+01:00",
+    "finished_at": "2026-10-29T02:13:20+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
+      "explained": 1,
+      "final_resolved": 1,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
@@ -49,21 +51,21 @@
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
-      "remates_omitted": 2,
+      "remates_omitted": 3,
       "recent_missing_closer_reviewed": 2,
       "pending_visual_candidates_reviewed": 3,
       "incidents": 0
     },
-    "message": "TTendencias cerrada · 0/0; cola final 0 y saneamiento visual de 3 Pendientes solicitado.",
+    "message": "TTendencias cerrada · 1/1; cola final 0 y saneamiento visual de Pendientes solicitado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,16 +77,7 @@
     },
     "remate_selections": [
       {
-        "trend_id": "0c5d9449baf9",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "tragedy_with_victims"
-      },
-      {
-        "trend_id": "b7839978cb6c",
+        "trend_id": "6a124636f62f",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -95,61 +88,147 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T01:55:00+01:00",
+        "at": "2026-10-29T02:10:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola inicial 0; comprobando requests, reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-29T01:55:40+01:00",
+        "at": "2026-10-29T02:10:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · requests verificado por blob completo; no hay preparing/update/problematic activos."
+        "message": "Releyendo main · comprobando cola, requests, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-29T01:56:10+01:00",
+        "at": "2026-10-29T02:10:59+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 3 tarjetas recientes; 2 sin remate por contexto sensible del accidente de Urda."
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Releyendo estado autoritativo de #LaMesa."
       },
       {
-        "at": "2026-10-29T01:56:20+01:00",
+        "at": "2026-10-29T02:11:05+01:00",
+        "phase": "investigating",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Buscando detonante actual."
+      },
+      {
+        "at": "2026-10-29T02:11:15+01:00",
+        "phase": "investigating",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Contrastando fuente 1/2 · Antena 3, cobertura de La Mesa sobre Urda."
+      },
+      {
+        "at": "2026-10-29T02:11:25+01:00",
+        "phase": "investigating",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Contrastando fuente 2/2 · testimonios emitidos en La Mesa."
+      },
+      {
+        "at": "2026-10-29T02:11:30+01:00",
+        "phase": "investigating",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Hecho esencial verificado."
+      },
+      {
+        "at": "2026-10-29T02:11:35+01:00",
+        "phase": "drafting",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Redactando explicación factual."
+      },
+      {
+        "at": "2026-10-29T02:11:40+01:00",
+        "phase": "drafting",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Comprobando límite de X."
+      },
+      {
+        "at": "2026-10-29T02:11:45+01:00",
+        "phase": "remate_selection",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Sin remate · tragedia con víctimas; explicación factual suficiente."
+      },
+      {
+        "at": "2026-10-29T02:11:50+01:00",
+        "phase": "persisting",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-29T02:12:20+01:00",
+        "phase": "persisting",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-29T02:12:35+01:00",
+        "phase": "persisting",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-29T02:12:45+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado mediante el trigger oficial."
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Releyendo main."
       },
       {
-        "at": "2026-10-29T01:57:00+01:00",
+        "at": "2026-10-29T02:13:05+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final · cola 0; sin preparing/update, problematic ni reexplicaciones pendientes."
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-29T01:57:10+01:00",
+        "at": "2026-10-29T02:13:10+01:00",
+        "phase": "verifying",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-29T02:13:20+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada · 0/0; cola final 0 y saneamiento visual de 3 Pendientes solicitado."
+        "message": "TTendencias cerrada · 1/1; cola final 0 y saneamiento visual de Pendientes solicitado."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "6a124636f62f"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "6a124636f62f",
+        "name": "#LaMesa",
+        "revision": 0,
+        "status": "explained"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261029T0155+0100",
+  "run_id": "tr-chat-20261029T0210+0100",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
+    "explained": 1,
+    "final_resolved": 1,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
@@ -157,66 +236,143 @@
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 0,
-    "discovered_during_run": 0,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 1,
     "remates_selected": 0,
-    "remates_omitted": 2,
+    "remates_omitted": 3,
     "recent_missing_closer_reviewed": 2,
     "pending_visual_candidates_reviewed": 3,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T01:55:00+01:00",
+      "at": "2026-10-29T02:10:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial · cola inicial 0; comprobando requests, reexplicaciones y Pendientes."
     },
     {
-      "at": "2026-10-29T01:55:40+01:00",
+      "at": "2026-10-29T02:10:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · requests verificado por blob completo; no hay preparing/update/problematic activos."
+      "message": "Releyendo main · comprobando cola, requests, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-29T01:56:10+01:00",
+      "at": "2026-10-29T02:10:59+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes · 3 tarjetas recientes; 2 sin remate por contexto sensible del accidente de Urda."
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Releyendo estado autoritativo de #LaMesa."
     },
     {
-      "at": "2026-10-29T01:56:20+01:00",
+      "at": "2026-10-29T02:11:05+01:00",
+      "phase": "investigating",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Buscando detonante actual."
+    },
+    {
+      "at": "2026-10-29T02:11:15+01:00",
+      "phase": "investigating",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Contrastando fuente 1/2 · Antena 3, cobertura de La Mesa sobre Urda."
+    },
+    {
+      "at": "2026-10-29T02:11:25+01:00",
+      "phase": "investigating",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Contrastando fuente 2/2 · testimonios emitidos en La Mesa."
+    },
+    {
+      "at": "2026-10-29T02:11:30+01:00",
+      "phase": "investigating",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Hecho esencial verificado."
+    },
+    {
+      "at": "2026-10-29T02:11:35+01:00",
+      "phase": "drafting",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Redactando explicación factual."
+    },
+    {
+      "at": "2026-10-29T02:11:40+01:00",
+      "phase": "drafting",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Comprobando límite de X."
+    },
+    {
+      "at": "2026-10-29T02:11:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Sin remate · tragedia con víctimas; explicación factual suficiente."
+    },
+    {
+      "at": "2026-10-29T02:11:50+01:00",
+      "phase": "persisting",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Guardando ficha Explicada."
+    },
+    {
+      "at": "2026-10-29T02:12:20+01:00",
+      "phase": "persisting",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Actualizando requests."
+    },
+    {
+      "at": "2026-10-29T02:12:35+01:00",
+      "phase": "persisting",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Retirando revisión de la cola."
+    },
+    {
+      "at": "2026-10-29T02:12:45+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Saneamiento visual de Pendientes solicitado mediante el trigger oficial."
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Releyendo main."
     },
     {
-      "at": "2026-10-29T01:57:00+01:00",
+      "at": "2026-10-29T02:13:05+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final · cola 0; sin preparing/update, problematic ni reexplicaciones pendientes."
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Verificando id+revision y texto persistido."
     },
     {
-      "at": "2026-10-29T01:57:10+01:00",
+      "at": "2026-10-29T02:13:10+01:00",
+      "phase": "verifying",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-29T02:13:20+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 0/0; cola final 0 y saneamiento visual de 3 Pendientes solicitado."
+      "message": "TTendencias cerrada · 1/1; cola final 0 y saneamiento visual de Pendientes solicitado."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261029T0125+0100",
+  "previous_run_id": "tr-chat-20261029T0155+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -226,16 +382,7 @@
   },
   "remate_selections": [
     {
-      "trend_id": "0c5d9449baf9",
-      "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "tragedy_with_victims"
-    },
-    {
-      "trend_id": "b7839978cb6c",
+      "trend_id": "6a124636f62f",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
@@ -244,12 +391,20 @@
       "no_remate_reason": "tragedy_with_victims"
     }
   ],
-  "final_outcomes": [],
-  "pending_delivery_count": 3,
+  "final_outcomes": [
+    {
+      "id": "6a124636f62f",
+      "name": "#LaMesa",
+      "revision": 0,
+      "status": "explained"
+    }
+  ],
+  "pending_delivery_count": 4,
   "apply_workflow": {
     "run_id": 40774303176,
     "status": "completed",
     "conclusion": "success",
     "editorial_blocking": false
-  }
+  },
+  "error": null
 }
