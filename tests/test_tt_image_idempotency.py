@@ -65,6 +65,27 @@ class ImageIdempotencyTests(unittest.TestCase):
         job.pop("pc_picked_up_at")
         self.assertFalse(may_enqueue_image_job(job, 1))
 
+    def test_ttendencias_missing_target_close_is_prelaunch_safe_retry(self):
+        job = {
+            "revision": 0, "status": "ERROR", "phase": "pc_launch_failed",
+            "message": "closeFixedTargetById is not defined",
+            "pc_picked_up_at": "2026-10-29T18:22:42.044Z",
+            "delivery_mode": "launch_only", "auto_repair_attempt": 1,
+        }
+        self.assertTrue(may_enqueue_image_job(job, 0))
+        job["auto_repair_attempt"] = 3
+        self.assertFalse(may_enqueue_image_job(job, 0))
+        for key in ("pc_launched_at", "pc_submitted_at", "image_generated_at"):
+            job["auto_repair_attempt"] = 1
+            job[key] = "2026-10-29T18:23:00Z"
+            self.assertFalse(may_enqueue_image_job(job, 0))
+            del job[key]
+        job["message"] = "ReferenceError: closeFixedTargetById is not defined"
+        self.assertFalse(may_enqueue_image_job(job, 0))
+        job["message"] = "closeFixedTargetById is not defined"
+        del job["pc_picked_up_at"]
+        self.assertFalse(may_enqueue_image_job(job, 0))
+
     def test_archive_repair_must_keep_automatic_ai_eligible(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / ".github/workflows/repair-ttittulares-listas.yml").read_text(encoding="utf8")
