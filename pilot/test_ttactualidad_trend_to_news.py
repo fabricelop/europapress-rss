@@ -3,6 +3,8 @@ import importlib.util
 import json
 import tempfile
 import unittest
+import os
+from unittest.mock import patch
 from pathlib import Path
 
 spec = importlib.util.spec_from_file_location(
@@ -26,6 +28,7 @@ class TrendToNewsTest(unittest.TestCase):
         ]})
         self.save("trends/recent.json", {"items": []})
         self.save("trends/telegram-manual-explained.json", {"items": []})
+        self.save("pilot/ttactualidad-action-receipts.json", {"version":1,"items":[]})
 
     def save(self, path, data):
         dest = mod.ROOT / path
@@ -97,6 +100,32 @@ class TrendToNewsTest(unittest.TestCase):
             payload["origin_trend"]={"id":id,"revision":revision,"name":name}
             with self.assertRaises(ValueError):
                 mod.apply(payload)
+        self.assertEqual(mod.read(mod.COMPACT)["items"],[])
+
+    def test_valid_request_receipt_resolves_confirmation_after_queue_reconciliation(self):
+        payload=self.request()
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_MANUAL_JSON":json.dumps(payload)}):
+            self.assertEqual(mod.main(),0)
+        rows=mod.read("pilot/ttactualidad-action-receipts.json")["items"]
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]["request_id"],payload["request_id"])
+        self.assertEqual(rows[0]["event_id"],"manual-"+payload["request_id"])
+        self.assertEqual(rows[0]["status"],"applied")
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_MANUAL_JSON":json.dumps(payload)}):
+            self.assertEqual(mod.main(),0)
+        rows=mod.read("pilot/ttactualidad-action-receipts.json")["items"]
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]["status"],"already_applied")
+        self.assertEqual(len(mod.read(mod.COMPACT)["items"]),1)
+
+    def test_invalid_origin_writes_rejection_ack_not_ghost_pending(self):
+        payload=self.request()
+        payload["origin_trend"]={"id":"forged123","revision":0,"name":"Unknown"}
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_MANUAL_JSON":json.dumps(payload)}):
+            self.assertEqual(mod.main(),0)
+        rows=mod.read("pilot/ttactualidad-action-receipts.json")["items"]
+        self.assertEqual(rows[-1]["status"],"rejected")
+        self.assertIn("origen",rows[-1]["error"].lower())
         self.assertEqual(mod.read(mod.COMPACT)["items"],[])
 
     def test_legacy_manual_without_origin_still_works(self):
