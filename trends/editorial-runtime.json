@@ -3,23 +3,21 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-29T23:10:00+01:00",
-  "last_completed_at": "2026-10-29T23:14:40+01:00",
-  "updated_at": "2026-10-29T23:14:40+01:00",
+  "last_started_at": "2026-10-29T23:25:00+01:00",
+  "last_completed_at": "2026-10-29T23:27:00+01:00",
+  "updated_at": "2026-10-29T23:27:00+01:00",
   "status": "success",
   "queue_complete": true,
-  "processed_ids": [
-    "d3dfeff552b8"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261029T231000+0100",
-  "previous_run_id": "tr-chat-20261029T225500+0100",
+  "run_id": "tr-chat-20261029T232500+0100",
+  "previous_run_id": "tr-chat-20261029T231000+0100",
   "summary": {
-    "attempted": 1,
-    "explained": 1,
-    "final_resolved": 1,
+    "attempted": 0,
+    "explained": 0,
+    "final_resolved": 0,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
@@ -27,147 +25,77 @@
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
     "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
+    "remates_omitted": 2,
+    "recent_missing_closer_reviewed": 2,
+    "pending_visual_candidates_reviewed": 2,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T23:10:00+01:00",
+      "at": "2026-10-29T23:25:00+01:00",
       "phase": "preparing",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Preparando pasada editorial · 1 tendencia activa"
+      "trend_id": null,
+      "title": null,
+      "message": "Preparando pasada editorial · 0 tendencias activas"
     },
     {
-      "at": "2026-10-29T23:11:00+01:00",
+      "at": "2026-10-29T23:25:20+01:00",
       "phase": "verifying",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Releyendo estado autoritativo de Patrick Stewart"
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 2 tarjetas vigentes recientes"
     },
     {
-      "at": "2026-10-29T23:11:15+01:00",
-      "phase": "investigating",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Buscando detonante actual"
+      "at": "2026-10-29T23:25:40+01:00",
+      "phase": "remate_selection",
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Sin remate · tragedia ferroviaria, tratamiento factual"
     },
     {
-      "at": "2026-10-29T23:12:00+01:00",
-      "phase": "investigating",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Hecho esencial verificado"
-    },
-    {
-      "at": "2026-10-29T23:12:10+01:00",
-      "phase": "drafting",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-29T23:12:20+01:00",
-      "phase": "drafting",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Comprobando límite de X · 196 caracteres"
-    },
-    {
-      "at": "2026-10-29T23:12:25+01:00",
+      "at": "2026-10-29T23:25:50+01:00",
       "phase": "remate_selection",
       "trend_id": "d3dfeff552b8",
       "title": "Patrick Stewart",
       "message": "Sin remate · fallecimiento, tratamiento factual"
     },
     {
-      "at": "2026-10-29T23:12:40+01:00",
-      "phase": "persisting",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-29T23:13:00+01:00",
-      "phase": "persisting",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-29T23:13:20+01:00",
-      "phase": "persisting",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-29T23:14:10+01:00",
+      "at": "2026-10-29T23:26:10+01:00",
       "phase": "verifying",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Releyendo main"
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main y comprobando cola, requests y reexplicaciones"
     },
     {
-      "at": "2026-10-29T23:14:25+01:00",
-      "phase": "verifying",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-29T23:14:30+01:00",
-      "phase": "verifying",
-      "trend_id": "d3dfeff552b8",
-      "title": "Patrick Stewart",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-29T23:14:40+01:00",
+      "at": "2026-10-29T23:27:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 1/1 explicada; cola limpia"
+      "message": "Pasada cerrada: 0/0; cola limpia"
     }
   ],
-  "ratings_snapshot": {
-    "path": "trends/remate-ratings.json",
-    "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-    "updated_at": "2026-10-06T21:21:47.927Z",
-    "total_ratings": 154,
-    "recent_considered": 30
-  },
+  "ratings_snapshot": [],
   "remate_selections": [
+    {
+      "trend_id": "6a124636f62f",
+      "selected": null,
+      "reason": "tragedia ferroviaria; no procede humor"
+    },
     {
       "trend_id": "d3dfeff552b8",
       "selected": null,
       "reason": "fallecimiento; no procede humor"
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "d3dfeff552b8",
-      "name": "Patrick Stewart",
-      "revision": 0,
-      "status": "explained"
-    }
-  ],
-  "incidents": [
-    {
-      "type": "github_conflict",
-      "resolved": true,
-      "message": "Conflicto 409 al retirar la cola; resuelto tras releer main y reintentar"
-    }
-  ],
-  "incident_count": 1,
+  "final_outcomes": [],
+  "incidents": [],
+  "incident_count": 0,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261029T231000+0100",
+    "trigger_run_id": "tr-chat-20261029T232500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -177,28 +105,28 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "c0611b910771b1203b5fb5ce58b232bb5a7b01f2",
-    "updated_at": "2026-10-29T22:57:00+01:00"
+    "blob_sha": "e21908701756dce4e78c7e5ddb423ca50817b194",
+    "updated_at": "2026-10-29T23:27:00+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T231000+0100",
+    "run_id": "tr-chat-20261029T232500+0100",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T23:10:00+01:00",
-    "updated_at": "2026-10-29T23:14:40+01:00",
-    "finished_at": "2026-10-29T23:14:40+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-29T23:25:00+01:00",
+    "updated_at": "2026-10-29T23:27:00+01:00",
+    "finished_at": "2026-10-29T23:27:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
-      "explained": 1,
-      "final_resolved": 1,
+      "attempted": 0,
+      "explained": 0,
+      "final_resolved": 0,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
@@ -206,30 +134,23 @@
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
       "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 0,
+      "remates_omitted": 2,
+      "recent_missing_closer_reviewed": 2,
+      "pending_visual_candidates_reviewed": 2,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "message": "Pasada cerrada: 1/1 explicada; cola limpia",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "github_conflict",
-        "resolved": true,
-        "message": "Conflicto 409 al retirar la cola; resuelto tras releer main y reintentar"
-      }
-    ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
+    "message": "Pasada cerrada: 0/0; cola limpia",
+    "incident_count": 0,
+    "incidents": [],
+    "ratings_snapshot": [],
     "remate_selections": [
+      {
+        "trend_id": "6a124636f62f",
+        "selected": null,
+        "reason": "tragedia ferroviaria; no procede humor"
+      },
       {
         "trend_id": "d3dfeff552b8",
         "selected": null,
@@ -238,122 +159,57 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T23:10:00+01:00",
+        "at": "2026-10-29T23:25:00+01:00",
         "phase": "preparing",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Preparando pasada editorial · 1 tendencia activa"
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial · 0 tendencias activas"
       },
       {
-        "at": "2026-10-29T23:11:00+01:00",
+        "at": "2026-10-29T23:25:20+01:00",
         "phase": "verifying",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Releyendo estado autoritativo de Patrick Stewart"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 2 tarjetas vigentes recientes"
       },
       {
-        "at": "2026-10-29T23:11:15+01:00",
-        "phase": "investigating",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Buscando detonante actual"
+        "at": "2026-10-29T23:25:40+01:00",
+        "phase": "remate_selection",
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Sin remate · tragedia ferroviaria, tratamiento factual"
       },
       {
-        "at": "2026-10-29T23:12:00+01:00",
-        "phase": "investigating",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-29T23:12:10+01:00",
-        "phase": "drafting",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-29T23:12:20+01:00",
-        "phase": "drafting",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Comprobando límite de X · 196 caracteres"
-      },
-      {
-        "at": "2026-10-29T23:12:25+01:00",
+        "at": "2026-10-29T23:25:50+01:00",
         "phase": "remate_selection",
         "trend_id": "d3dfeff552b8",
         "title": "Patrick Stewart",
         "message": "Sin remate · fallecimiento, tratamiento factual"
       },
       {
-        "at": "2026-10-29T23:12:40+01:00",
-        "phase": "persisting",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-29T23:13:00+01:00",
-        "phase": "persisting",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-29T23:13:20+01:00",
-        "phase": "persisting",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-29T23:14:10+01:00",
+        "at": "2026-10-29T23:26:10+01:00",
         "phase": "verifying",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main y comprobando cola, requests y reexplicaciones"
       },
       {
-        "at": "2026-10-29T23:14:25+01:00",
-        "phase": "verifying",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-29T23:14:30+01:00",
-        "phase": "verifying",
-        "trend_id": "d3dfeff552b8",
-        "title": "Patrick Stewart",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-29T23:14:40+01:00",
+        "at": "2026-10-29T23:27:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 1/1 explicada; cola limpia"
+        "message": "Pasada cerrada: 0/0; cola limpia"
       }
     ],
-    "processed_ids": [
-      "d3dfeff552b8"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": [
-      {
-        "id": "d3dfeff552b8",
-        "name": "Patrick Stewart",
-        "revision": 0,
-        "status": "explained"
-      }
-    ]
+    "final_outcomes": []
   },
   "radar": {
-    "captured_at": "2026-10-29T23:14:40+01:00",
+    "captured_at": "2026-10-29T23:20:53+01:00",
     "queue_count": 0
   }
 }
