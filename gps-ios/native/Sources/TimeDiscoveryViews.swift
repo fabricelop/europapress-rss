@@ -59,17 +59,6 @@ struct TimeDiscoveryHome:View {
                             }
                         } icon: { Image(systemName:"globe.europe.africa.fill").foregroundStyle(.teal) }
                     }
-                    NavigationLink {
-                        TimeAchievementsView(model:model)
-                    } label: {
-                        Label {
-                            VStack(alignment:.leading,spacing:4) {
-                                Text("Hitos de exploración").font(.headline)
-                                Text("Tus descubrimientos y próximos objetivos.")
-                                    .font(.caption).foregroundStyle(.secondary)
-                            }
-                        } icon: { Image(systemName:"rosette").foregroundStyle(.teal) }
-                    }
                 } header: {
                     Text("Descubrimientos")
                 }
