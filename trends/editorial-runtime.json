@@ -5,8 +5,7 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "0c9cf0fed086",
-    "3aa06a664400"
+    "0c9cf0fed086"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
@@ -14,8 +13,8 @@
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
   "last_started_at": "2026-10-29T15:40:00+01:00",
-  "last_completed_at": "2026-10-29T15:47:20+01:00",
-  "updated_at": "2026-10-29T15:47:20+01:00",
+  "last_completed_at": "2026-10-29T15:47:30+01:00",
+  "updated_at": "2026-10-29T15:47:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -34,21 +33,23 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-29T15:40:00+01:00",
-    "updated_at": "2026-10-29T15:47:20+01:00",
+    "updated_at": "2026-10-29T15:47:30+01:00",
+    "finished_at": "2026-10-29T15:47:30+01:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
     "title": null,
     "summary": {
       "attempted": 2,
-      "explained": 2,
+      "explained": 1,
       "final_resolved": 2,
+      "skipped_concurrent": 1,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 1,
+      "remates_selected": 0,
       "remates_omitted": 2,
       "recent_missing_closer_reviewed": 1,
       "pending_visual_candidates_reviewed": 1,
@@ -56,9 +57,46 @@
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 2/2: Alvia e Inda persistidas y verificadas; cola final 0.",
+    "message": "TTendencias cerrada: 2 revisiones resueltas; Alvia persistida en esta pasada e Inda respetada tras cierre concurrente. Cola final 0.",
     "incident_count": 0,
     "incidents": [],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 30
+    },
+    "remate_selections": [
+      {
+        "trend_id": "6a124636f62f",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_event"
+      },
+      {
+        "trend_id": "0c9cf0fed086",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_event"
+      },
+      {
+        "trend_id": "3aa06a664400",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c1",
+        "selected_score": 8.8,
+        "no_remate_reason": null,
+        "persisted": false,
+        "superseded_by_concurrent": true
+      }
+    ],
     "activity": [
       {
         "at": "2026-10-29T15:40:00+01:00",
@@ -180,64 +218,57 @@
         "message": "Inda cambió en main durante la persistencia; no se sobrescribe y se valida la revisión ya cerrada."
       },
       {
-        "at": "2026-10-29T15:47:10+01:00",
+        "at": "2026-10-29T15:47:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola, requests, Explicadas, reexplicaciones y huérfanos."
+        "message": "Releyendo main: cola 0, requests activas 0, reexplicaciones 0 y huérfanos 0."
       },
       {
-        "at": "2026-10-29T15:47:20+01:00",
+        "at": "2026-10-29T15:47:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 2/2: Alvia e Inda persistidas y verificadas; cola final 0."
+        "message": "TTendencias cerrada: 2 revisiones resueltas; Alvia persistida en esta pasada e Inda respetada tras cierre concurrente. Cola final 0."
       }
     ],
-    "finished_at": "2026-10-29T15:47:20+01:00",
     "processed_ids": [
-      "0c9cf0fed086",
-      "3aa06a664400"
+      "0c9cf0fed086"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
     "final_outcomes": [
       {
         "id": "0c9cf0fed086",
         "name": "Alvia",
         "revision": 0,
-        "status": "explained",
-        "closer": "omitted_sensitive"
+        "outcome": "explained",
+        "persisted_by": "this_run"
       },
       {
         "id": "3aa06a664400",
         "name": "Inda",
         "revision": 0,
-        "status": "explained",
-        "closer": "selected"
+        "outcome": "explained_concurrently",
+        "persisted_by": "concurrent_write",
+        "overwritten": false
       }
     ]
   },
   "run_id": "tr-20261029T154000+0100-chat",
   "summary": {
     "attempted": 2,
-    "explained": 2,
+    "explained": 1,
     "final_resolved": 2,
+    "skipped_concurrent": 1,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 1,
+    "remates_selected": 0,
     "remates_omitted": 2,
     "recent_missing_closer_reviewed": 1,
     "pending_visual_candidates_reviewed": 1,
@@ -366,22 +397,22 @@
       "message": "Inda cambió en main durante la persistencia; no se sobrescribe y se valida la revisión ya cerrada."
     },
     {
-      "at": "2026-10-29T15:47:10+01:00",
+      "at": "2026-10-29T15:47:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola, requests, Explicadas, reexplicaciones y huérfanos."
+      "message": "Releyendo main: cola 0, requests activas 0, reexplicaciones 0 y huérfanos 0."
     },
     {
-      "at": "2026-10-29T15:47:20+01:00",
+      "at": "2026-10-29T15:47:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 2/2: Alvia e Inda persistidas y verificadas; cola final 0."
+      "message": "TTendencias cerrada: 2 revisiones resueltas; Alvia persistida en esta pasada e Inda respetada tras cierre concurrente. Cola final 0."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-20261029T152500+0100-chat",
+  "previous_run_id": "tr-20261029T154000+0100-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -394,15 +425,16 @@
       "id": "0c9cf0fed086",
       "name": "Alvia",
       "revision": 0,
-      "status": "explained",
-      "closer": "omitted_sensitive"
+      "outcome": "explained",
+      "persisted_by": "this_run"
     },
     {
       "id": "3aa06a664400",
       "name": "Inda",
       "revision": 0,
-      "status": "explained",
-      "closer": "selected"
+      "outcome": "explained_concurrently",
+      "persisted_by": "concurrent_write",
+      "overwritten": false
     }
   ],
   "pending_delivery_count": 0,
@@ -420,5 +452,35 @@
     "recent_sha": "b078d684e9a9ab599de9d95a3973bf9f9838c50c",
     "queue_sha": "bd723f4778e7dadd67bf47fcea525bd9b9435872",
     "queue_count": 0
-  }
+  },
+  "remate_selections": [
+    {
+      "trend_id": "6a124636f62f",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "sensitive_event"
+    },
+    {
+      "trend_id": "0c9cf0fed086",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "sensitive_event"
+    },
+    {
+      "trend_id": "3aa06a664400",
+      "revision": 0,
+      "candidate_count": 5,
+      "selected_candidate": "c1",
+      "selected_score": 8.8,
+      "no_remate_reason": null,
+      "persisted": false,
+      "superseded_by_concurrent": true
+    }
+  ]
 }
