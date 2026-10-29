@@ -1,12 +1,14 @@
 # TTActualidad — memoria operativa integral y manual de rescate
 **Revisión base: 29 de octubre de 2026.** Repositorio: **fabricelop/europapress-rss**. Este documento recoge arquitectura verificada contra código y decisiones de nuestras conversaciones. Es un **documento vivo**, no una garantía de salud en tiempo real.
 
+> **Actualización prioritaria del usuario, 29/10/2026:** ya no se dan estrellas a los comentarios/remates y **sí se pueden pasar tendencias a noticias**. Verificado el botón iPhone «Enviar a TTiTTulares» y el handler `origin_trend` en main. Los JSON y párrafos de estrellas son restos históricos, no un paso actual que deba reactivarse. La prohibición antigua del puente no invalida la acción manual actual. Ver §§11–17 para evidencia, diferencias entre clientes y límites.
+
 **Antes de una avería, abrir primero [LEER PRIMERO](TTActualidad-LEER-PRIMERO.md).** Guardar también [INCIDENTES Y DECISIONES](TTActualidad-INCIDENTES-Y-DECISIONES.md). Este manual se debe actualizar después de cada cambio en los componentes.
 
 ## 1. Principios obligatorios
 
 1. **Identificar el sistema exacto** antes de tocar nada: app **iPhone nativa SwiftUI**, app **Windows nativa Qt**, backend GitHub/Windows/Cloudflare para editorial e imágenes, o la **web antigua**. La última NO es el código de las apps nativas.
-2. **Main de GitHub es la autoridad de datos editoriales**; la rama control es autoridad de triggers y algunos trabajos de imagen; los logs Windows son autoridad sobre lo que realmente ejecutó el PC. Un mensaje antiguo o una captura no sustituyen una relectura actual.
+2. **Main de GitHub es la autoridad de datos editoriales**; las instrucciones actuales del usuario prevalecen sobre contratos o memorias antiguos; la rama control es autoridad de triggers y algunos trabajos de imagen; los logs Windows son autoridad sobre lo que realmente ejecutó el PC. Un mensaje antiguo o una captura no sustituyen una relectura actual.
 3. **Diferenciar estados:** una petición de radar, una cola PROCESSING/preparing, un disparador, un ACK picked_up/launched, un mensaje enviado a ChatGPT, un outbox, una escritura READY/explained, una imagen creada, una imagen capturada y un tuit publicado son **diez resultados diferentes**.
 4. Siempre correlacionar **project + event_id/id + revision + request_id o command_id + fecha y zona Europe/Madrid**. Validar JIT, no sobrescribir decisiones de revisiones nuevas y no resucitar datos terminales.
 5. Separar **texto** de **imagen**. La noticia debe llegar a READY y la tendencia a explained por texto validado; no bloquear por Imagen IA, foto de archivo ni Telegram.
@@ -67,7 +69,7 @@ TTendencias: fuentes públicas de tendencias → update_trends.py → recent.jso
 - Workflow actual **.github/workflows/radar-no-d1.yml**: cron declarado **05,15,25,35,45,55** (UTC), también dispatch y ciertos pushes. Un cron de GitHub Actions puede retrasarse.
 - **telegram/radar_no_d1.py** capta fuentes generales, deportivas y de descubrimiento; trata fallbacks por fuente en paralelo, agrupa ocurrencias de un mismo evento, retiene títulos alternativos, URLs, marcas de primera/última aparición y familias independientes. Persistencia en **telegram/events.json**, **telegram/event-seeds.json** (historia de una fuente) y **telegram/processed-events.json**.
 - **Número de fuentes a considerar:** **familias generales distintas** (source_families/source_count), no cuatro URLs del mismo grupo. La app puede mostrar **1/2 fuentes y variación** sin autorizar elaboración; salud de fuentes y contador van en status.json. Un radar sin fuentes NO debe traducirse a «no hubo noticias».
-- Umbral automático: **mínimo 4 fuentes generales independientes** con evidencia del mismo hecho. Candidato que no crece permanece en radar esperando dentro de la ventana de unas **24 h** del contrato (verificar expiración efectiva en código). Revalidar, no contar titulares copiados como corroboración.
+- Umbral automático: **mínimo 4 fuentes generales independientes** con evidencia del mismo hecho. Candidato WAITING/UPDATE_WAITING que no alcanza el consenso se poda tras **24 h desde first_seen**, según el código contrastado. Esto no caduca las fichas READY por ese plazo. Revalidar, no contar titulares copiados como corroboración.
 - Selección de **ttittulares/auto_queue.py** consulta **ttittulares/treated_news.py** y decisiones: equivalencia semántica, URLs, identidad, alias, acciones/eventos ya tratados y actualidad. Evita que la misma historia entre desde otro medio. **Una novedad material distinta sí puede entrar**; no borrar tarjetas abiertas simplemente por tema parecido.
 - Los filtros de ruido y patrones se hallan en **telegram/content_filters.py**, **ttittulares/auto_queue.py** y tests anti-repetición. No relajar el umbral para «llenar Listas». Noticias aportadas explícitamente por el usuario pueden forzar **investigación con menos de cuatro fuentes**, pero NO inventar hechos.
 - **Registros derivados:** **ttittulares/status.json** para radar, revisión, creciendo y procesando; **telegram/editorial-processing.json** para estados detallados; **ttittulares/editorial-queue.json** espejo compacto que consume el editor. Asegurar consistencia de (event_id, revision).
@@ -83,7 +85,7 @@ TTendencias: fuentes públicas de tendencias → update_trends.py → recent.jso
 3. El script local debe confirmar el envío **real**; un launcher que termina con **ERROR: Target crashed** NO ha elaborado la noticia. Un ACK launched/ventana abierta tampoco demuestra cierre.
 4. El editor lee **ttittulares/editorial-run-prompt.md** y en main **ttittulares/editorial-queue.json**, **ttittulares/status.json**, **telegram/editorial-processing.json**. Procesa TODOS los PROCESSING/rewrite_pending, en orden, con **barrera JIT (event_id,revision)** y antidualidad terminal. No llamar ImageGen en la misma pasada editorial.
 5. Cada tuit listo: **hecho verificable**, salto en blanco, **2 hashtags específicos** (3 si caben), **UN remate 🌶️ en línea final**. **tweet.text completo ≤256 caracteres**; tweet.remate solo remate. El remate es satírico sobre el hecho documentado, no propaganda ni afirmación inventada. Víctimas: respeto.
-6. Persistencia por **TTITTULARES_OUTBOX_V1** en comentario del **issue #164** (también PR #2) o fichero en **ttittulares/editorial-outbox/**. Procesos **ttittulares/ingest_pr_outbox_comment.py**, **ttittulares/apply_editorial_outbox.py**; workflows **ttittulares-outbox-comment-ingest.yml**, **apply-ttittulares-outbox.yml**. Valida revisión, longitud, texto y decisiones terminales antes de actualizar.
+6. Persistencia de nuevos resultados por **TTITTULARES_OUTBOX_V1** en comentario del **issue #164**. El contrato vigente prohíbe nuevos outboxes en PR #2 y escrituras editoriales directas en **ttittulares/editorial-outbox/**; PR #2 conserva control/telemetría. Los aplicadores de archivos son infraestructura existente, no una ruta libre alternativa. Procesos **ttittulares/ingest_pr_outbox_comment.py**, **ttittulares/apply_editorial_outbox.py**; workflows **ttittulares-outbox-comment-ingest.yml**, **apply-ttittulares-outbox.yml**. Valida revisión, longitud, texto y decisiones terminales antes de actualizar.
 7. Cierre real: **ttittulares/prepared.json** contiene READY con factual_summary, tweet, remate, fecha, fuentes y revisión; **editorial-processing.json**, **editorial-queue.json**, **status.json** muestran transición. Comprobar **commit y relectura main** antes de contar salida. READY **NO** espera imagen IA, archivo ni Telegram.
 
 ### 3.4 Fin y decisiones
@@ -98,21 +100,21 @@ TTendencias: fuentes públicas de tendencias → update_trends.py → recent.jso
 ### 4.1 Ranking y frescura
 - Workflow **.github/workflows/ttendencias-refresh.yml** cron declarado **07,17,27,37,47,57** (UTC). **trends/update_trends.py** consulta múltiples fuentes públicas de términos en X, normaliza nombres, compara rankings por fuente, descarta datos sin fecha/antiguos si no hay corroboración; ante fallo conserva último radar con indicación de frescura.
 - Principal: **trends/recent.json**: **top10, top30, items**, captured_at, fuentes, no-stale-source-count, ranking/movimiento/historial. **trends/checkpoint.json** y **ttendencias-refresh-watchdog.yml** respaldan comprobaciones. «Próximas tendencias» de puestos 11–50 son señales, no Top 10 confirmado.
-- La selección Top10 debe atenderse aunque cambie la posición, sin saltarse solicitudes manuales ya registradas.
+- La selección Top10 debe atenderse aunque cambie la posición, sin saltarse solicitudes manuales ya registradas. Tras >48 h desde la última explicación puede abrirse un nuevo episodio con nuevo ID; el anterior conserva su terminal.
 
 ### 4.2 Elección de tendencias
 - **trends/auto_queue_new.py**, **trends/requests.json**, **trends/editorial-queue.json**. **Top 10**: explicar automáticamente las no explicadas y reexplicar cuando caduca la explicación de **48 horas**. **11–30: únicamente Preparar/reexplicación explícita**; nunca seleccionar de oficio la siguiente 11–30.
 - **Fuera del Top 30**: no entrar por ranking automático, pero una petición con pistas hecha por el usuario debe preservar ID, revisión y contexto aunque se mueva o salga del radar.
 - Estados: **preparing**, **update** (nueva versión), **problematic** (bloqueo), **explained**, **grouped**, **inactive**, **deleted**, **published**. Una desaparición del Top 10 no equivale a borrar una petición manual.
 - Agrupar solo tendencias que inequívocamente describen **un mismo hecho**: group_id, group_leader_id, trend_names y trend_context. Se usa explicación canónica, pero **cada request/estado** debe quedar reconciliado y no se borra ficha del usuario por deduplicación automática.
-- Existe función **Tendencia → TTiTTulares** para un acontecimiento noticioso concreto, actual y verificable; no asumir que toda tendencia se transforma en noticia sin decisión o ejecución de handler. Triggers/criterios en **pilot/apply-ttactualidad-action.py** y configuración de puente.
+- Existe función manual **Tendencia → TTiTTulares**, confirmada por el usuario y por el código: botón iPhone **«Enviar a TTiTTulares»** → `GitHubEditor.addNews(originTrend:)` → dispatch **ttactualidad_manual_news_v1** → **pilot/submit_ttactualidad_manual.py**. Crea investigación PROCESSING con origen trazable; conserva la tendencia y no publica automáticamente. No pasa por el handler de decisiones ordinarias. Ver §12.5 para idempotencia, comprobación de origen y diferencias de Windows.
 
 ### 4.3 Elaboración y cierre explicado
 1. Cuando la cola se ha escrito a main, **trends/request_pc_editorial.py --trigger** escribe **trends/run-now-trigger.json** en la rama control y ejecutor **pc_chat_ttendencias_dedicated**.
 2. **windows/TTendenciasDedicatedListener.ps1** lee trigger/ACK, lanza **Ejecutar.js tendencias --enviar** con **TTENDENCIAS_EDITORIAL_JOB_V2**; leer primero **trends/editorial-run-prompt.md**.
 3. El editor trata cada **preparing / update** vigente en orden con barrera JIT **(id,revision)**, investiga hecho verificable y no confunde el nombre de una tendencia con su causa. No generar ImageGen en la pasada editorial.
 4. **explanation** copiable: **TT#N nombre literal es tendencia porque...**, línea de **2–3 hashtags específicos**, y remate único **🌶️** al final salvo casos sensibles que admiten cierre factual sin chiste. Menos de **280 caracteres ponderados según X**. **closer_text** contiene solo la línea 🌶️ (o vacío cuando corresponde). No duplicar cabecera TT#N en la app. Remates originales, un solo concepto, puntuación separada de texto.
-5. Persistir **exactamente la misma explicación y revisión** en **trends/requests.json** y **trends/telegram-manual-explained.json**; eliminar de **trends/editorial-queue.json** solo las revisiones realmente completadas. Aplicadores: **apply-ttendencias-chat-outbox.yml** (PR #7), **ttendencias-editorial-apply.yml** y reconciliador **ttendencias-editorial-reconcile.yml**, **trends/apply_direct_reconcile.py** cuando procede.
+5. Persistir **exactamente la misma explicación y revisión** en **trends/requests.json** y **trends/telegram-manual-explained.json**; en grupos, una ficha líder representa a todos los requests miembros explicados con su revisión propia; eliminar de **trends/editorial-queue.json** solo las revisiones realmente completadas. Aplicadores: **apply-ttendencias-chat-outbox.yml** (PR #7), **ttendencias-editorial-apply.yml** y reconciliador **ttendencias-editorial-reconcile.yml**, **trends/apply_direct_reconcile.py** cuando procede.
 6. **Listas/Explicadas** requiere status **explained**, texto, explained_at coherente con petición, no tombstone ni revisión posterior preparando, no tarjeta grouped no líder, y cumplir filtro temporal de UI cuando aplica (48 h). **NO bloquear por IA/archivo/Telegram**.
 7. **trends/mobile-decisions.json** conserva deleted/published; **trends/explained.json** es historial complementario y **trends/remate-ratings.json** guarda estrellas (no parte del tuit).
 
@@ -175,7 +177,7 @@ TTendencias: fuentes públicas de tendencias → update_trends.py → recent.jso
 
 - **Política editorial de imagen:** escena visual única, estilo detallado y expresivo, gag legible en 1–2 segundos, caricatura/sátira solo sobre hechos comprobados. **🌶️ jamás debe dibujarse** como guindilla/chile/pimiento. Si hay víctimas, tragedias o violencia sexual, ilustración rigurosa y sobria; no banalizar.
 - **Copiar GAG nativo corregido 29/10:** **GAG_VISUAL_NATIVE_V2** dentro de **EditorialActionPanels.swift** (rama iOS actual) y **TTActualidad_Moderno.pyw** (Windows). **Una sola imagen horizontal 16:9, a sangre, SIN texto, subtítulo, hashtags, franja inferior, cartel, tarjeta, rótulo ni maquetación de noticia**. Texto y remate suministrados solo como contexto, nunca a dibujar. No arreglar este problema en la web antigua.
-- Variación de estilos definida de forma determinista por ID/revisión, entre cómic europeo, retro, pop art, cartoon 3D, stop-motion, novela gráfica y caricatura sofisticada. La prueba final es **visual**; un prompt correcto no impide por completo un fallo de ImageGen.
+- Variación de estilos del trabajo automático definida por hash de ID/revisión/intento/command_id, entre cómic europeo, retro, pop art, cartoon 3D, stop-motion, novela gráfica y caricatura sofisticada. La prueba final es **visual**; un prompt correcto no impide por completo un fallo de ImageGen.
 - **Idempotencia:** una imagen por proyecto+ID+revisión+intento. Estado de «generando», job iniciado, error transitorio y fallo de captura **no justifican lanzar varias imágenes simultáneas**. Ante una imagen capturada pero no entregada, reparar la entrega, no pedir otra generación.
 - **Generación IA ≠ foto de archivo.** Derechos, procedencia y validez del raster deben verificarse. Imágenes de archivo opcionales: URL HTTPS, fuente fiable y estado de derechos; si no hay, dejar la ficha textual igualmente.
 - **Comandos manuales ChatGPT Images** y **Copiar GAG** son controles deliberados, independientes del autoenriquecimiento. No restablecer los workflows heredados ttittulares-ai-image-apply.yml / ttendencias-ai-image-apply.yml, ni send-tt-ai-images.yml.
@@ -264,4 +266,241 @@ La versión **instalada** en iPhone/Windows; si la tarea ChatGPT se activó; el 
 - **Workflows:** radar-no-d1, redaccion-ttittulares, ttendencias-refresh, apply-ttittulares-outbox, ttittulares-outbox-comment-ingest, apply-ttendencias-chat-outbox, ttendencias-editorial-reconcile, tt-autorepair, repair-ttittulares-listas, repair-ttendencias-explicadas, ttactualidad-direct-actions, ttactualidad-ios, ttactualidad-windows.
 - **No usar como norma vigente sin comprobar:** README TTiTTulares antiguo (dice sin IA), partes de editorial-config.json antiguas (11–30 «siguiente»), workflows Telegram desactivados, web antigua y copias iOS antiguas en main.
 
-**Fin de memoria. Si algo cambia, actualizar este documento junto con su prueba, no dejar el cambio solo en una conversación.**
+## 11. Revisión contrastada del 29/10/2026: alcance y pruebas
+
+**Corte de código principal:** commit [`0fb2cfbcbd1d1aabb820413b01b6dc451c7aaf20`](https://github.com/fabricelop/europapress-rss/commit/0fb2cfbcbd1d1aabb820413b01b6dc451c7aaf20), 29/10/2026 22:32:26 Madrid. **Fuente iOS contrastada:** `feature/ttactualidad-ios-0.4.12-pistas`, commit `dedcaabf1134be45b16efe482cf67ceec67e4998`, versión **0.4.22, build 28** declarada en `project.yml`. Esto no certifica su instalación; conservar 0.4.21 como última base indicada por el usuario hasta confirmación posterior.
+
+Se han leído las tres memorias previas, código de radar, selección, identidad, contratos editoriales completos, aplicadores, acciones, normalización de Windows, tres componentes SwiftUI de la rama indicada, listeners, puentes, reparadores, vigilancia y Tremending. También se han recuperado conversaciones mediante búsqueda y leído íntegramente `CONTINUIDAD-TTActualidad-20261029.txt` y `ESTADO_MAESTRO_2026-10-16.md`. La recuperación de conversaciones es selectiva: **no es una exportación exhaustiva de todos los chats del proyecto**. No se ha accedido al Windows físico ni a las apps instaladas ni se han ejecutado reparaciones durante esta investigación.
+
+Los archivos principales se contrastaron por su blob SHA entre dos lecturas del árbol; los cambios intermedios observados afectaban a feeds generales, no a los componentes de esta revisión. Los datos posteriores al corte deben releerse antes de intervenir. El estado de una cola no se convierte en garantía de funcionamiento continuado.
+
+### 11.1 Qué se corrigió respecto a la memoria inicial
+
+| Punto | Regla contrastada que debe usarse |
+|---|---|
+| Transporte TTiTTulares | Nuevos `TTITTULARES_OUTBOX_V1` al **issue #164**. El contrato prohíbe nuevos outboxes en PR #2 y escrituras directas en `ttittulares/editorial-outbox/**`. El aplicador sigue existiendo; eso no autoriza usar cualquier entrada histórica. |
+| TTendencias → TTiTTulares | **Sí existe envío manual autorizado**: botón nativo iPhone, dispatch de noticia manual, validación `origin_trend` y PROCESSING. El párrafo de prohibición del contrato está desactualizado respecto a este flujo. |
+| Estrellas | **Ya no se dan estrellas**, confirmado por el usuario y sin controles de puntuación en las 16 fuentes Swift revisadas ni en la UI Qt. Los historiales y obligaciones textuales antiguas se documentan como restos, sin reactivarlos. |
+| Borrado de tendencias | Cierra el episodio/revisión. Tras más de 48 h puede abrirse un **episodio distinto con nuevo ID**; no es resucitar la ficha borrada. |
+| Ventanas temporales | Radar 24 h, explicaciones visibles 48 h y encolado automático IA 24 h son ventanas diferentes. |
+| Windows moderno | La UI es Qt en `.pyw`, pero **importa funciones de `TTActualidad.py`**: sus modelos/filtros comunes también intervienen. No confundir ese uso con abrir su antigua UI Tkinter. |
+| Fotos de archivo | Un `archive_image_status=ready` puede coexistir con derechos `unverified`; disponibilidad técnica no significa autorización de reutilización. |
+
+### 11.2 Jerarquía de evidencias
+
+1. **Decisión vigente del usuario**, aunque un contrato o memoria del repositorio siga diciendo lo contrario.
+2. Evidencia de las acciones disponibles y del handler que las consume. Las reglas del contrato se contrastan con esa decisión y ese código antes de llamarlas vigentes.
+3. Código ejecutable de la rama/versión correcta y workflows productivos.
+4. Estado persistido por ID/revisión, commit, recibo y logs de la ejecución concreta.
+5. Memorias, README y conversaciones anteriores como contexto fechado.
+
+**No resolver contradicciones escogiendo el párrafo más cómodo.** Los contratos conservan secciones antiguas de Telegram, Principal/A/B/C e imágenes; sus encabezados de prioridad las invalidan donde chocan con el flujo actual. Documentar el conflicto y verificar el handler real. Las cadenas `mode:web` y carpetas `telegram/` son nombres históricos y no implican que la interfaz actual sea la web antigua ni que se envíen tarjetas editoriales.
+
+## 12. Catálogo de captación, selección y memoria de repetidos
+
+### 12.1 Radar de noticias: qué entra y qué cuenta
+
+`telegram/radar_no_d1.py` declara **19 medios generales**, **5 deportivos** y **3 entradas de descubrimiento**. Generales: Europa Press, EL PAÍS, La Vanguardia, Cadena SER, RTVE, El HuffPost, 20minutos, ABC, COPE, EFE, Servimedia, elDiario.es, Público, El Mundo, Antena 3 Noticias, laSexta Noticias, Onda Cero, Telecinco Noticias y Noticias Cuatro. Deportivos: AS, MARCA, Mundo Deportivo, SPORT y EFE Deportes. Descubrimiento: Reuters Radar, AP Radar y Público · Tremending.
+
+El código trata Antena 3/laSexta/Onda Cero como **una** familia Atresmedia y Telecinco/Cuatro como **una** familia Mediaset. Por tanto hay **16 familias generales según este mapa**, no 19 fuentes independientes a efectos del umbral. Los deportivos y el descubrimiento ayudan a detectar/agrupar, pero **no cuentan para las cuatro familias generales**. Este mapa es la implementación comprobada, no una auditoría completa de propiedad o independencia editorial de todos los medios.
+
+Captura mediante RSS/HTML y fallbacks por medio, con recuperación Google News por dominio y ventana retrospectiva. Guarda cada aparición, URL, título, tipo de fuente, familia y fechas. Consolida titulares del mismo hecho y depura apariciones discordantes antes de declarar elegible. Un contador cuatro tras agrupar no basta si la evidencia no corresponde al mismo hecho.
+
+`WAITING` / `UPDATE_WAITING` → consenso de ≥4 familias → `ELIGIBLE` / `ELIGIBLE_UPDATE`. Una revalidación puede devolver a WAITING un evento que pierda evidencia al depurar o consolidar. En modo actual `web`, este paso no envía aviso editorial Telegram. El mínimo de salud declarado es **14 medios generales**; no confundirlo con el umbral cuatro ni con el total configurado.
+
+### 12.2 Cuatro barreras contra repetir noticias
+
+| Barrera | Mecanismo | Dónde investigar un rechazo |
+|---|---|---|
+| Captación | URLs, títulos alternativos y agrupación de apariciones del mismo suceso | `radar_no_d1.py`, `events.json`, `event-seeds.json` |
+| Identidad de hechos tratados | URL normalizada sin query, alias léxicos, tokens, similitud y actos concretos; historial de tratados/entregas | `treated_news.py`, `treated-stories.json`, decisiones |
+| Selección automática | Excluye ID terminal, ya preparado, cola existente, historia similar activa/histórica, desactualizada, contenido filtrado o sorteo rutinario | `auto_queue.py`; logs `AUTO_QUEUE_*_SKIPPED` |
+| Persistencia editorial | Revisión vigente JIT, decisión terminal y duplicado de un hecho ya cerrado | contrato, `apply_editorial_outbox.py`, recibo y cola |
+
+El detector de hechos tratados diferencia algunas acciones posteriores: remitir a la Justicia frente a una mera información previa; abrir/incoar frente a archivar/rechazar. **No es un modelo semántico infalible**: usa heurísticas, y `auto_queue.py` contiene además su propio comparador `same_story`. Ante una noticia nueva bloqueada, identificar la referencia concreta y su acto material, no cambiar umbrales a ciegas.
+
+La selección automática exige actualidad de **24 horas**, normalmente desde `first_seen` —ver otra vez la misma pieza no reinicia su edad—. Una actualización material validada puede usar `last_seen`. Para `ELIGIBLE_UPDATE`, deben existir flags/contexto explícitos de cambio material. El mismo ID terminal se conserva cerrado; una novedad real debe mantener su identidad editorial adecuada.
+
+El historial de referencia en `treated_news.eligible_reference()` usa una ventana de **180 días** para sus fechas de entrega/tratamiento/procesamiento; si no hay fecha válida, la referencia sigue siendo elegible. Esto **no es una orden de borrar decisiones a los 180 días**. El mapa terminal por ID se consulta por separado. Borrar una noticia no significa que nunca más pueda publicarse otro acontecimiento sobre la misma persona.
+
+Si durante la pasada se demuestra un duplicado, cerrar por outbox `status:duplicate`, ID original, motivo y `no_material_update:true` cuando corresponda; el aplicador comprueba el original y registra el cierre. Un resumen diciendo «duplicada» sin transición persistida deja trabajo pendiente. No eliminar automáticamente una tarjeta ya materializada por mera similitud temática.
+
+### 12.3 Radar de tendencias: origen y fiabilidad
+
+`trends/update_trends.py` declara **13 agregadores públicos**: trends24, getdaytrends, tweets24, superx, twtdata, snaplytics, whatstrends, cyberkendra, xtrendsiamrohit, trendswe, xtrendssaroj, playersells y fowtools. Son rankings agregados públicos; no asumir que se está leyendo el ranking interno oficial de X por API.
+
+Limpia términos, normaliza para comparar mayúsculas, acentos y `#` inicial conservando el nombre visible. Comprueba fecha/antigüedad de cada fuente, coincidencia entre listas y consenso; una fuente sin fecha necesita corroboración. Ante fallos no debe inventar un Top30 fresco a partir de la última descarga antigua. Revisar `captured_at`, método, fuentes válidas, antigüedad y checkpoint; una descarga reciente puede contener ranking viejo.
+
+Top10 → selección automática. Puestos 11–30 → petición manual explícita. Las señales «Próximas tendencias» fuera del Top30 combinan movimiento/corroboración social y señales de noticias; no equivalen a una explicación comprobada. El usuario sí puede ordenar investigar una tendencia como noticia mediante el envío manual descrito a continuación. Una petición que entró legítimamente desde Top10 sigue pendiente aunque luego cambie de puesto; el código conserva `auto_queue_scope:top10`.
+
+La caducidad de **48 h** se calcula desde la última explicación fechada, no desde el último borrado. Si falta una fecha válida, el selector no reabre masivamente. Un nuevo episodio puede conservar el nombre y obtener un ID nuevo, con `originated_from_prior_id`; la ficha histórica y sus decisiones no se reactivan.
+
+### 12.4 Tremending: circuito propio de lectura
+
+**No confundir con el radar de tendencias ni con noticias autoelaboradas.** `tremending-collect.yml` corre en minutos **07,22,37,52 UTC**, además de dispatch/trigger. `ttittulares/tremending/update_tremending.py` revisa las primeras ocho páginas de Público/Tremending, desde la frontera **30/09/2026 00:00 Madrid** declarada, extrae artículos y tuits incrustados, deduplica URL canónica y persiste `ttittulares/tremending/items.json`.
+
+La app muestra una bandeja de lectura. **No selecciona ni captura automáticamente tuits ni los envía a ninguno de los dos proyectos.** `tremending-capture.yml` es un no-op manual. Al borrar, el handler retira físicamente la entrada de `items.json` y conserva su URL en `scan.seen_urls`, además del registro pertinente de decisión; el recolector no la reintroduce. Si faltan embeds, conserva la pieza para reintentar su extracción.
+
+### 12.5 Pasar una tendencia a noticia: recorrido real comprobado
+
+**Sí está permitido y existe.** En la fuente iPhone contrastada `EditorialActionPanels.swift` muestra **«Enviar a TTiTTulares»** y confirma **«¿Investigar esta tendencia como noticia?» → «Enviar a En elaboración»**. `sendTrendToNews()` calcula un UUID estable desde `ttactualidad-trend-news:<ID>:r<revision>`: repetir el toque/reintento de esa revisión reutiliza la identidad. Crea operación local «De tendencia a noticia», con ID `manual-<UUID>`, y consulta Órdenes pendientes. Una revisión posterior puede generar una solicitud diferente.
+
+`GitHubEditor.addNews()` envía `ttactualidad_manual_news_v1` con proyecto TTiTTulares, título «Investigar noticia: …», instrucciones de contraste y `origin_trend:{id,revision,name}`. **No copia automáticamente la explicación como noticia verificada**: la incluye como contexto preliminar. La tendencia sigue en TTendencias y no se publica ni se borra por esta acción.
+
+En main, `.github/workflows/ttactualidad-manual-news.yml` ejecuta `pilot/submit_ttactualidad_manual.py`. Verifica origen exacto en requests, catálogo histórico explicado/publicado o Top30 real; rechaza ID inventado, nombre distinto y revisión obsoleta. Puede aceptar una tendencia histórica auténtica aunque haya salido del ranking. Guarda `origin_project`, `origin_trend_id`, `origin_trend_revision`, `origin_trend_name` y crea **PROCESSING r1** en **las dos colas de noticias**. Es petición manual con cero fuentes iniciales permitidas para investigar, no permiso para inventar hechos.
+
+El handler evita repetir el mismo event_id y detecta algunos duplicados de URL/título; escribe recibo `applied`, `already_applied` o `rejected`, con `existing_event_id` si hay otra noticia. El workflow persiste primero y después solicita al editor de TTiTTulares; si rechaza, no dispara una elaboración. Correlacionar recibo y cola: `applied` prueba la entrada, **no** el cierre READY posterior.
+
+**Prueba ejecutada durante esta revisión:** ocho tests sintéticos existentes en `pilot/test_ttactualidad_trend_to_news.py`, todos correctos. Cubren ambas colas, conservación de la tendencia, reintento idempotente, origen histórico, rechazos y recibos. No se ha creado una noticia real ni probado el toque en el iPhone físico durante esta investigación.
+
+**Diferencia de clientes:** en el `.pyw` Qt de main revisado no aparece ese botón específico ni el payload `origin_trend`; sí existe «+ Noticia» genérico. No declarar paridad completa por compartir backend. La capacidad de pasar tendencias está comprobada en iPhone y backend; localizar versión/implementación Windows si se investiga su ausencia, sin negar la función global ni añadirla por esta tarea documental.
+
+## 13. Elaboración, progreso y remate único
+
+### 13.1 Dos maneras de iniciar el mismo trabajo editorial
+
+- **Automática/solicitada desde app:** radar/acción → cola persistida → trigger control → listener Windows → `Ejecutar.js` → mensaje real a ChatGPT → investigación → cierre persistido.
+- **Orden explícita «Ejecuta TTiTTulares/TTendencias» en chat:** el editor debe hacer la pasada **en esa conversación**. No basta con cambiar el trigger y decir que está ejecutado; delegar solo sirve si existe consumidor activo y confirmación RUNNING. La ausencia de Windows no impide necesariamente una pasada directa con acceso autorizado a GitHub y fuentes.
+
+Investigar el motivo **actual** con fuentes contrastables, conservar fuentes/atribuciones, aplicar JIT antes de cada entrada y antes de persistir. Las pistas del usuario (`user_pistas`, `rewrite_instruction`) orientan la búsqueda pero no prueban hechos. Si no se verifican, conservar pistas/historial y motivo concreto en revisión/problematic; no rellenar con una causa inventada.
+
+### 13.2 Estrellas retiradas; restos históricos en el repositorio
+
+**El usuario confirma el 29/10 que hace tiempo que ya no da estrellas a los comentarios/remates.** Se ha buscado su UI en las **16 fuentes Swift** de la rama iPhone contrastada y en la UI Qt revisada: no se han encontrado controles de estrellas/valoración. No pedir puntuaciones, reinstalarlas ni incluirlas como eslabón operativo actual.
+
+Siguen existiendo `ttittulares/remate-ratings.json`, `trends/remate-ratings.json` y párrafos de ambos contratos que exigen congelar ratings, cinco candidatos internos y telemetría de puntuación. **Son una discrepancia documental real**, no prueba de uso actual por el usuario ni de que el sistema deba esperar estrellas nuevas. Los históricos no se borran. No se ha demostrado un mecanismo sustituto de valoraciones; no inventar likes, aprendizaje automático ni otro control equivalente.
+
+El resultado actual sigue siendo un texto factual con un único remate pertinente cuando proceda, respetando longitud, veracidad, sensibilidad y las preferencias editoriales explícitas. Las instrucciones antiguas de puntuación deben revisarse aparte si se quiere alinear el contrato de ejecución; esta investigación solo corrige la memoria y no modifica prompts productivos ni sistemas de valoración.
+
+### 13.3 RUNTRACE no sustituye el texto persistido
+
+`TTITTULARES_RUNTRACE_V1` y `TTENDENCIAS_RUNTRACE_V1` muestran fases reales: verificar estado, investigar, redactar, `remate_selection`, persistir, verificar y cerrar. Actualizar el comentario canónico existente, sin crear una traza por cada refresco ni fingir progreso mediante temporizadores. En TTendencias el runtime durable también es `trends/editorial-runtime.json.last_run`.
+
+Los campos históricos `ratings_snapshot` y `remate_selections` aún aparecen en contratos/runtime; no prueban que la app siga pidiendo estrellas. No fingir una selección/puntuación ni inventar datos para rellenarlos. Un DONE global sin cierre por ID/revisión no vacía la cola. El PR #2 conserva control/telemetría, pero el texto nuevo de noticias va por #164.
+
+### 13.4 Cierre agrupado de tendencias
+
+Solo agrupar el **mismo episodio comprobado**, conservando cada `(id,revision)`, aunque las revisiones difieran. El líder es la etiqueta de la emisión o el mejor rank, con desempate por antigüedad. Se guarda una ficha de grupo en `telegram-manual-explained.json`; todos sus miembros quedan `explained` en `requests.json` con explicación/grupo coherentes. Solo el líder aparece en Listas; los demás deben salir de En elaboración y figurar como explicados/cubiertos.
+
+`batch_id`, captura simultánea o nombres de un mismo programa no prueban pertenencia al mismo episodio. No borrar miembros ni crear nueve fichas para un grupo ya demostrado. Para reconciliar, validar IDs/revisiones y vínculo al líder, no solo nombres. El caso de grupo es la excepción a exigir una ficha independiente en el catálogo por cada solicitud.
+
+## 14. Cuándo desaparece cada cosa y qué debe conservarse
+
+| Objeto/acción | Transición o retirada | Conservación y prueba |
+|---|---|---|
+| Noticia WAITING/UPDATE_WAITING sin consenso | Poda tras **24 h desde first_seen** | No equivale a borrar un READY ni una decisión del usuario. |
+| Memoria ligera de una fuente | `event-seeds.json`, 24 h; límite **40.000** | Permite recuperar apariciones que salen del cap operativo; deja de necesitar seed al sumar otra familia. |
+| Registro de procesadas del radar | `processed-events.json`, últimas **2.000** entradas | Cap operativo; no sustituye a decisiones/treated-stories. |
+| Noticia publicable | PROCESSING → READY; aparece en prepared/Listas | Cierre de texto independiente de imágenes. |
+| Noticia no verificable | PROBLEMATIC/revisión con motivo | No tratar como borrada ni como preparada; Check/manual puede abrir investigación válida. |
+| Quitar noticia de Listas | `deleted`; retirada de prepared y decisión | Conservar recibo/ID/revisión, no sumar publicación. |
+| Desestimar noticia en elaboración | `dismissed`/DISMISSED | Decisión terminal, no simple ocultación local. |
+| Marcar publicada | `published` y ledger de publicación | Cuenta móvil de 24 h; no asumir publicación real en X solo por abrirlo. |
+| Reelaborar/Reexplicar | Revisión nueva; tarjeta anterior deja de ser la vigente | Mantener identidad, historial, pistas; no heredar puntuaciones o imagen sin verificar. |
+| Tendencia explicada que deja el Top | Cambio de ranking independiente | No borrar petición manual ni su explicación por caer de puesto. |
+| Tendencia en Listas con >48 h | Filtro temporal de UI la excluye | El histórico no se destruye; selector puede abrir nuevo episodio si corresponde. |
+| Borrar/publicar tendencia | Terminal para episodio/revisión, sincronización de requests/catálogo/decisión | Un JSON explicado viejo no debe revivirla; revisión nueva no se borra desde una ficha antigua. |
+| Miembro de grupo explicado | Sale de elaboración; cubierto por ficha líder | Preservar request explicado y vínculo al grupo. |
+| Borrar Tremending | Retirada física de items + URL en seen_urls | Evita que vuelva a entrar desde Público. |
+| Job IA que sale del índice | LAUNCHED, cancelado o ya no elegible | Consultar `jobs/<id>.json`: índice vacío **no prueba ausencia de generación** ni autoriza repetirla. |
+| Originales TTImages | Política histórica confirmada: limpieza cada hora de originales >**12 h**, incluso no enviados | Verificar que la tarea siga vigente; no borrar huellas, exclusiones, historiales ni decisiones. |
+| Limpieza técnica Telegram | Solo IDs técnicos conocidos, recibidos hace **2 min–47 h** | `shared/tt_technical_cleanup.py`; nunca tarjetas editoriales, fijados o mensajes del usuario. |
+
+**Tres acciones distintas:** copiar texto/foto no publica; abrir el borrador X no publica; la confirmación explícita Sí publicada registra publicación declarada. El ledger de TTActualidad no es por sí solo una auditoría de todo lo publicado fuera de la app en X.
+
+## 15. Imágenes y archivo: diagnóstico sin duplicarlas
+
+### 15.1 Ventana, estado y recibo
+
+Los reparadores actuales encolan IA para textos vigentes sin imagen válida, con fecha de entrada/explicación de **hasta 24 h**, respetando terminales y trabajos anteriores. En noticias el paso comprueba texto **y remate no vacío**; por tanto un READY sensible sin remate puede quedar fuera de esa ruta automática aunque la política general permita imagen sobria. **Registrar esta diferencia de implementación antes de atribuir el fallo a ChatGPT.** No cambiar el texto ni inventar un remate para forzar la imagen.
+
+`shared/tt_image_idempotency.py` gobierna permisos de reencolado. `REQUESTED/RUNNING/GENERATING/PERSISTING/PICKED_UP/UNCERTAIN` y `DONE/LAUNCHED/READY/COMPLETED`, o cualquier marca `pc_submitted_at/pc_launched_at`, impiden repetir el mismo trabajo. Un ERROR tras recogida por PC puede coexistir con generación real: **no es prueba de que no se envió**. Un token de reintento manual no salta un job activo/lanzado.
+
+Solo se permiten reintentos automáticos acotados cuando se demuestra que falló **antes del envío** —por ejemplo, el compositor no utilizable expresamente reconocido—, o una identidad editorial nueva. El límite habitual de reintentos seguros es **tres**. Se distinguen nuevas revisiones y, en tendencias históricas que reutilizaron ID, episodios con fecha posterior **y texto factual diferente**. Revisar contexto, no solo `r0`.
+
+Los trabajos `launch_only` confirmados pueden salir del índice activo aunque el raster siga generándose o esperando captura. El reparador reconcilia algunos jobs con `pc_launched_at` a LAUNCHED. No espera descarga ni certifica TTImages. Encolado y escritura en rama control usan push fast-forward como exclusión entre pasadas; un conflicto exige releer, no forzar un job sobre otro.
+
+### 15.2 Imagen creada, imagen registrada e imagen entregada
+
+| Prueba | Qué demuestra | Qué queda por comprobar |
+|---|---|---|
+| job + command_id | Solicitud persistida | PC la consumió y envió |
+| `pc_picked_up_at` | Listener recogió orden | Prompt realmente enviado |
+| `pc_launched_at` / LAUNCHED | Bridge confirmó lanzamiento | Imagen terminada, calidad y archivo |
+| Imagen visible en ChatGPT Images | Generación disponible en ese contexto | Captura/descarga y envío PC |
+| Fichero raster local con metadatos | Descarga/captura | Entrega TTImages y correspondencia ID/revisión |
+| Recibo de envío del relay | Entrega por PC confirmada | Que una tarjeta/registro de app concreto esté enlazado, si ese flujo lo exige |
+
+La validación de IA registrada comprueba proveedor/origen, URL, dimensiones y huella. Noticias exige metadatos `chat-imagegen`, `executing_chat`, mínimo **1024×576**, URL y SHA no vacíos. Tendencias además valida SHA-256, bytes locales y dimensiones reales de la imagen de repositorio. El canal `launch_only` puede dejar una imagen en Images sin completar esos campos. **No equiparar ninguna de esas pruebas con las demás.**
+
+La selección automática de estilo usa hash de ID/revisión/intento/**command_id**: estable para ese trabajo; un intento nuevo puede variar. El botón nativo Copiar GAG tiene su propio generador. Si salen cartelas/texto, comparar el prompt del job real con el del botón; arreglar uno no prueba que cambió el otro.
+
+### 15.3 Archivo real y sus límites
+
+Noticias: el reparador busca `og:image`, `twitter:image` o `image_src` en páginas fuente y comprueba respuesta de imagen; guarda `source_url`, fuente, `generated:false` y habitualmente `rights_status:unverified`. Tendencias: `trends/enrich_explained_images.py` ordena fuentes y valida raster/fallback; mantiene el canal archivo separado de IA y no debe pisar una IA válida.
+
+**Una foto encontrada no tiene sus derechos comprobados por encontrarla**, ni `ready` corrige ese dato. Hay discrepancia entre las aspiraciones del manual y verificaciones técnicas más laxas —por ejemplo, `valid_archive()` de noticias comprueba URL/no generada y puede aceptar HTTP—. Leer los campos reales antes de declarar una foto apta para uso. Las apps disponen de catálogo de `archive-images/`; Windows admite además algunos fallback HTTPS. Un catálogo vacío no prueba que el texto editorial esté mal.
+
+Histórico confirmado el 16/10: TTImageRelay **V2.6.1**, captura cada 5 min y actualización controlada de galería cada 10 min; solo novedades, con huellas y 38 exclusiones iniciales. Ruta `%LOCALAPPDATA%\TTImageRelay\App_v2\relay-captura.js`; logs `relay-captura-v2.log` y `Telegram\telegram-v2.log`. **Versión/horarios instalados el 29/10 no verificados en esta revisión**. No reinstalar esa versión histórica por el mero hecho de estar documentada.
+
+## 16. Qué sigue sin PC, vigilancia y diagnóstico de atascos
+
+| Operación | Dependencia del Windows local |
+|---|---|
+| Radar, agrupación y selección en GitHub Actions | No requiere PC encendido; sí Actions y fuentes accesibles. |
+| Borrar/desestimar/reelaborar desde iPhone a GitHub | El handler persiste sin listener PC; la redacción posterior es otro tramo. |
+| Pasada directa en una conversación activa | Puede cerrar texto sin el launcher PC si tiene acceso suficiente a GitHub y fuentes. |
+| Trigger inmediato consumido por listeners | Requiere Windows, listener, sesión ChatGPT y Chrome 9223 operativos. |
+| Imagen automática vía ImageBridge | Requiere ese consumidor local y compositor/sesión válidos. |
+| Captura/envío TTImages | Requiere el relay local y Chrome 9234. |
+
+`tt-autorepair.yml` coordina cada **5 min** auditoría, guardia editorial, detección y limpieza técnica. **No redacta, investiga ni arregla por sí solo cualquier pestaña rota.** `shared/tt_editorial_run_guard.py` declara ventana de inicio **5 min**, espera entre solicitudes **15 min**, ACK activo **12 min**, gracia de cierre **5 min**, máximo **tres solicitudes por conjunto de pendientes**. Reporte: `telegram/editorial-run-guard.json`. Autoheal: enfriamiento **15 min**, escalado editorial **20 min**; estado `telegram/tt-autoheal-state.json`. Parte de sus comprobaciones mantiene compatibilidad con ledgers Telegram antiguos; contrastar cualquier alerta con decisiones y flujo nativo.
+
+Los dos listeners dedicados tienen **backoff editorial 10 min** ante fallo de envío; sus estados locales guardan command_id y próximo reintento. No interpretar esa espera como cola perdida. Logs en `C:\TTiTTulares\ttittulares-mobile-trigger.log` y `ttendencias-mobile-trigger.log`; estados `*-mobile-trigger-state.json`. `TT-AutoUpdater.ps1` declara intervalo **120 s**, valida hash/sintaxis y actualiza una lista cerrada de listeners/bridges/watchdog/watcher; **no incluye `Ejecutar.js` ni TTImageRelay ni las apps instaladas**. Tener updater activo no prueba tener actualizado el launcher local.
+
+### 16.1 Primera transición ausente: orden obligatorio de lectura
+
+1. **Un elemento concreto:** proyecto, ID, revisión y episodio, hora Madrid, acción y dispositivo.
+2. **Origen:** aparece en radar/Top30 o existe petición manual; fuentes y frescura válidas.
+3. **Selección:** estado activo en cola y fuente autoritativa; si no entra, motivo preciso de descarte/dedup.
+4. **Solicitud/consumo:** trigger en control, command_id, ACK del mismo comando y log del listener.
+5. **Envío real:** mensaje en conversación correcta; distinguir target accesible de envío confirmado.
+6. **Resultado:** outbox/cierre directo, revisión, validaciones, run aplicador y escritura en main.
+7. **Listas:** preparado/explicación y request coherentes; ningún terminal o revisión posterior que lo oculte.
+8. **Acción app:** request_id → recibo aplicado/rechazado → decisión → refresco de snapshot completo.
+9. **Visual independiente:** job → prompt → raster → fichero PC → envío TTImages.
+
+No empezar por reiniciar todo. Si el texto ya está persistido y la app no lo ve, investigar filtros/versión/lectura. Si no existe outbox, investigar el editor antes del aplicador. Si la imagen está creada, investigar captura/entrega antes de volver a generarla.
+
+### 16.2 GitHub rojo, en cola o «atascado»
+
+El listado de Actions recuperado el 29/10 incluía fallos de `ttittulares-image-enrich.yml` y `ttendencias-image-enrich.yml` y ejecuciones correctas del reparador actual de Explicadas. Los dos primeros contienen definición retirada/no-op; su fallo **no prueba fallo del generador vigente**. No se investigó su error concreto ni se repararon en esta tarea.
+
+Comprobar por **workflow, run_id, rama, SHA, hora, status y conclusion**, además del job/step. Las claves de concurrencia son distintas: radar, refresh, outbox, reparadores y coordinador; muchos declaran `cancel-in-progress:false`. La existencia de concurrencia puede serializar trabajos; **no demuestra por sí sola la causa de un atasco**. Revisar cuál está realmente queued/in_progress y cuánto lleva, sin cancelar lotes o reenviar órdenes en masa.
+
+### 16.3 Ejemplos históricos para evitar falsas reparaciones
+
+- **Orden iPhone publicada pero «por confirmar»:** `7024c36e404e` r1 ya tenía published, recibo applied y ledger; `READY` histórico en processing no la convierte en pendiente. Comparar revisión del recibo, no publicar otra vez.
+- **Fátima:** tendencia `be8d15b587e1` y noticias `ce01210bb2ef`/`7ca2e207fd62` son IDs distintos. No resolver por nombre aproximado.
+- **Imagen sin compositor:** `0372e00a6665`, `0f6c1f39d248`, `e1be1212607a` se documentaron READY con IA fallida y archivo de derechos no verificados el 29/10 por la mañana. Son antecedentes, **no estado actual comprobado**.
+- **Chrome 9223 responde pero el launcher falla:** `ERROR: Target crashed` identifica fallo de interacción/target; no demuestra pérdida del JSON. Un recuperador bloqueado por runner activo actuó correctamente; no forzarlo por defecto.
+- **Usuario dijo «Creo que ya funciona todo»:** confirmación general recuperada en la conversación del 29/10; no certifica versión instalada, cada ruta de imagen ni estabilidad sostenida. Mantener ese matiz al registrar el incidente.
+
+### 16.4 Avisos, badge, lectura y operaciones múltiples
+
+`pilot/listas_transition_alerts.py` + `ttactualidad-listas-alerts.yml` avisa por proyecto cuando Listas pasa **0 → positivo**, con baseline inicial silencioso; no avisa por cada nueva ficha si ya había pendientes. Puede recuperar un intervalo cero perdido si lo demuestra con fechas/decisiones, sin inventarlo desde una lectura parcial. El cron declarado es **03,13,23,33,43,53 UTC**; también hay push/dispatch/workflow_run. Los commits hechos con GITHUB_TOKEN no siempre disparan otros push workflows: comprobar el encadenamiento explícito y el cron.
+
+La entrega utiliza ntfy y enlaces `ttactualidad://noticias` / `ttactualidad://tendencias`; los secretos de tema no se incluyen en esta memoria. Si no se recibe aviso, distinguir: transición realmente ocurrida, estado persistido en `pilot/ttactualidad-listas-alert-state.json`, outbox/ACK de notificación y apertura de app. Aviso/badge/Live Activity no producen elaboración ni publican contenido. En iPhone la actualización de Live Activity depende además de las restricciones de ejecución de iOS.
+
+La fuente iPhone incluye selección múltiple/reelaboración conjunta (`EditorialBatchSheet.swift`, dispatch `ttactualidad_batch_v1`) y conserva estado de leídos/pendientes. **La presencia del botón no demuestra que su workflow receptor esté desplegado en main:** el árbol consultado sitúa `ttactualidad-ios-batch.yml` y `pilot/ttactualidad_batch.py` en la rama iOS, ausentes del árbol principal de este corte. Registrar esa divergencia para diagnóstico, sin afirmar que la operación múltiple funciona en producción ni corregirla durante una investigación documental.
+
+## 17. Cómo mantener esta memoria útil
+
+Tras cada cambio, actualizar **en el mismo trabajo** la ruta, estados, responsable, condición de entrada/salida, archivos y pruebas afectados; añadir incidente con síntoma, causa probada/hipótesis, commit, despliegue/instalación y resultado real. Si solo compiló o se persistió código, escribir eso. Si falta la prueba de PC/iPhone, conservar el pendiente visible.
+
+Para el próximo fallo basta empezar con la ficha LEER-PRIMERO y un ID/captura/error; este manual permite localizar las fuentes. **No promete recordar automáticamente todos los cambios futuros ni diagnosticar un PC sin sus señales actuales.** No es necesario reenviar todas las conversaciones: facilitar el enlace canónico o el archivo completo y la evidencia del nuevo fallo.
+
+**Fuentes de esta ampliación:** los archivos enlazados en el índice de fuentes de la copia completa, los dos documentos históricos leídos y las conversaciones recuperadas. Las afirmaciones de código corresponden al corte indicado; las comprobaciones físicas/producción conservan su fecha y grado de verificación.
+
+
+**Fin de memoria. Actualizar esta referencia junto con la evidencia de cada cambio.**

@@ -109,3 +109,15 @@ Copiar esta ficha al FINAL del documento por cada avería/resolución:
 4. **Cada modificación de automatizaciones:** actualizar horarios reales, tarea, consumidor y método para saber que acabó. Distinguir UTC de Europe/Madrid.
 5. **Cada modificación de imagen:** documentar separación **ImageBridge 9223/ChatGPT Images** y **TTImageRelay 9234/TTImages**, idempotencia y salida raster real.
 6. **Antes de usar una receta:** leer los archivos actuales y cualquier nuevo cambio que sucediera después del presente documento. No dar por hecho que la memoria es un snapshot en tiempo real.
+
+
+## 5. Revisión de memoria y correcciones del usuario — 29/10/2026
+
+- **Problema:** las memorias iniciales y algunos contratos mezclaban flujos heredados con funciones nativas vigentes. La investigación inicialmente reprodujo dos errores al dar prioridad al texto del contrato sobre el flujo real.
+- **Corrección expresa del usuario:** ya no se dan estrellas a comentarios/remates; sí se pueden pasar tendencias a noticias. Estas instrucciones prevalecen sobre la prohibición/valoraciones de párrafos antiguos.
+- **Verificación de estrellas:** sin controles de puntuación encontrados en las 16 fuentes Swift de `dedcaabf1134be45b16efe482cf67ceec67e4998` ni en la UI Qt contrastada. Los ficheros ratings y párrafos antiguos permanecen; no se ha demostrado un sustituto. Se documentan como históricos, no se reactivan.
+- **Verificación del puente:** botón «Enviar a TTiTTulares», `sendTrendToNews()` y `GitHubEditor.addNews(originTrend:)`; main recibe `ttactualidad_manual_news_v1` y `pilot/submit_ttactualidad_manual.py` valida origen y encola PROCESSING r1 con trazabilidad y recibo. La tendencia original se conserva. Ocho tests sintéticos existentes ejecutados correctamente; sin envío real ni publicación.
+- **Diferencia de Windows:** el Qt main consultado carece del botón/payload específico. Esto no niega la función iPhone/backend ni demuestra paridad; no se modificó código de producto.
+- **Otros ajustes documentados:** transporte nuevo de noticias exclusivamente #164, Tremending lectura y seen_urls, límites 24 h/48 h/180 días, imagen launch_only frente a captura/entrega, derechos no verificados de archivo, vigilancia y límites, avisos ntfy y divergencia de operaciones múltiples entre ramas.
+- **Corte:** main `0fb2cfbcbd1d1aabb820413b01b6dc451c7aaf20` (29/10 22:32:26 Madrid); iPhone fuente 0.4.22 build 28, instalación no verificada. Conversaciones recuperadas selectivamente; no se afirma exportación exhaustiva ni acceso al PC físico.
+- **Pendiente separado:** alinear, si se solicita, los contratos productivos que aún hablan de estrellas o prohíben el puente manual. Esta tarea mantiene operativos y sin cambios prompts, automatizaciones, apps y datos editoriales.

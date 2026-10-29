@@ -4,6 +4,8 @@
 
 > **MENSAJE PARA PEGAR EN UN NUEVO CHAT:** «Estamos reparando TTActualidad NATIVA (iPhone SwiftUI y Windows Qt), no la web antigua. Lee primero docs/TTActualidad-LEER-PRIMERO.md y docs/TTActualidad-MEMORIA-OPERATIVA.md en fabricelop/europapress-rss/main, luego consulta el estado LIVE de GitHub, la rama iOS correcta y el eslabón fallido. Respeta los procesos de imágenes, el historial y las decisiones terminales. Diagnostica, corrige, verifica persistencia y actualiza esta memoria. Aquí está el error: [PEGAR SALIDA].»
 
+> **Actualización prioritaria del usuario, 29/10/2026:** ya no se dan estrellas a los comentarios/remates y **sí se pueden pasar tendencias a noticias**. Verificado el botón iPhone «Enviar a TTiTTulares» y el handler `origin_trend` en main. Los JSON y párrafos de estrellas son restos históricos, no un paso actual que deba reactivarse. La prohibición antigua del puente no invalida la acción manual actual. Ver §§11–17 para evidencia, diferencias entre clientes y límites.
+
 ## Identidad: no confundirse de sistema
 - **Fuente de verdad editorial:** archivos JSON de la rama **main** en GitHub. Releer siempre; el dato de una conversación anterior no es estado vivo.
 - **iPhone:** app nativa SwiftUI en **ios/ttactualidad/**, compilación por .github/workflows/ttactualidad-ios.yml, IPA con PlumeImpactor. La familia **0.4.21 → 0.4.22** estaba en **feature/ttactualidad-ios-0.4.12-pistas** el 29/10; **NO modificar main suponiendo que es la versión instalada**. Comprobar rama, versión, build, última IPA y si se instaló antes de actuar.
@@ -23,6 +25,7 @@
 | «En elaboración» se acumula | Ambas colas + prompts editoriales + ramas control + logs locales | Solicitud ≠ envío real ≠ resultado persistido |
 | Windows «Ready» pero no redacta | Get-ScheduledTaskInfo y logs de listeners en C:\TTiTTulares | Último resultado, Ejecutar.js, CDP 9223, ACK |
 | «Target crashed» | ttittulares-mobile-trigger.log / ttendencias-mobile-trigger.log | ChatGPT/CDP 9223, pestañas, memoria, Ejecutar.js |
+| Enviar tendencia a noticia falla | iPhone `sendTrendToNews`, dispatch `ttactualidad_manual_news_v1`, `pilot/submit_ttactualidad_manual.py` | Origen ID/revisión, recibo y PROCESSING en ambas colas de noticias; la tendencia se conserva |
 | Texto elaborado pero no aparece en Listas | ttittulares/prepared.json / trends/telegram-manual-explained.json + requests.json | Outbox/apply, (ID,revision), commit a main |
 | Noticia reaparece tras borrarla | ttittulares/decisions.json y pilot/ttactualidad-action-receipts.json | Decisión terminal + caché iOS/Windows |
 | Tendencia reaparece tras borrarla | trends/mobile-decisions.json, requests.json, telegram-manual-explained.json | Tombstone/revisión y refresco de radar |
@@ -63,8 +66,10 @@ Para memoria y pestañas: windows/Repair-TT-Chrome-Memory-Safe.ps1 **-InspectOnl
 - **TTiTTulares:** automático con **≥4 familias de fuentes generales independientes**, control de duplicados y hecho nuevo; manual puede investigar con menos. Elaboración factual + 2–3 hashtags específicos + **un** remate 🌶️, **≤256 caracteres**, sin generar imagen en la pasada.
 - **TTendencias:** Top 10 automático; puestos 11–30 solo «Preparar» explícito; explicación caduca tras 48 h (sin destruir archivo); texto TT#N + hecho + hashtags + remate, **menos de 280 caracteres ponderados**; cierre coherente en **dos JSON**.
 - **Imagen IA:** etapa independiente del texto. «Copiar GAG» debe producir **solo ilustración sin texto ni tarjeta inferior**; no dibujar 🌶️. Los puentes Chrome 9223 pueden hacer solo **launch_only**. La captura/envío real posterior pertenece a TTImageRelay, Chrome **9234**, PC → TTImages; no mandar imagen desde Actions/Telegram directo.
+- **Estrellas retiradas:** no se piden ni se reactivan; los historiales y párrafos antiguos son contexto histórico. **Sí se permite enviar una tendencia a TTiTTulares por decisión del usuario**, con verificación posterior del hecho.
 - **Acciones de usuario:** evento repository_dispatch → workflow → cambios en GitHub → **recibo por request_id** → lectura de main. No asumir éxito por HTTP 204. Borrados/publicadas/desestimadas son terminales; no resucitar registros por un JSON viejo. No publicar automáticamente en X.
 - Los workflows retirados/no-op, instrucciones editoriales de Telegram anteriores al 17/10 y la web antigua son **HISTÓRICOS**. Ante conflicto, prevalece el flujo nativo real + los handlers productivos + estado main reciente.
 - Tras corregir: probar con elemento real **(id,revision)**, comprobar las dos colas y el destino, los recibos, la imagen por separado, la concordancia iPhone/Windows y registrar el arreglo en la memoria larga y en el historial.
 
 **Importante:** esta ficha es una referencia estructural, **no** un certificado de que toda la infraestructura funciona en este instante. Consultar GitHub y los logs actuales antes de cada diagnóstico.
+
