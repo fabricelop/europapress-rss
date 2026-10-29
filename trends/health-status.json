@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-29T13:42:49.100109+00:00",
-  "ok": true,
+  "checked_at": "2026-10-29T16:02:36.725688+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,8 +42,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 3,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 5,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.6,
-      "run_id": 40884201325,
+      "age_minutes": 2.9,
+      "run_id": 40907117326,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,20 +77,50 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 1,
-      "overdue_count": 0,
-      "oldest_age_minutes": 11.4,
+      "ok": false,
+      "pending_count": 6,
+      "overdue_count": 4,
+      "oldest_age_minutes": 50.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "d0ec9dd0dbf2",
+          "name": "Repsol",
+          "status": "preparing",
+          "age_minutes": 50.4
+        },
+        {
+          "id": "a6845a70bd64",
+          "name": "Eduardo Inda",
+          "status": "preparing",
+          "age_minutes": 50.4
+        },
+        {
+          "id": "8d05be59cfda",
+          "name": "Bruselas",
+          "status": "preparing",
+          "age_minutes": 38.7
+        },
+        {
+          "id": "1ca1648f448a",
+          "name": "El BCE",
+          "status": "preparing",
+          "age_minutes": 38.5
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "b3d4afe964c6"
+        "d0ec9dd0dbf2",
+        "a6845a70bd64",
+        "8d05be59cfda",
+        "1ca1648f448a",
+        "e2d41819d8b4",
+        "e586c5227112"
       ],
       "contradictory_success": false
     },
@@ -101,8 +131,10 @@
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 50.4 min"
+  ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 50.4 min"
 }
