@@ -859,6 +859,11 @@ final class EditorialStore: ObservableObject {
             let stage: String
             if closedAfterRequest || newsTerminal {
                 stage = "Retirada"
+            } else if ["failed", "rejected"].contains(receiptStatus) {
+                // A manual news workflow can reject provenance before a queue
+                // entry is ever written. A matching GitHub receipt is proof
+                // of rejection, not an indefinitely pending write.
+                stage = "Rechazada"
             } else if ["Nueva noticia", "De tendencia a noticia"].contains(operation.kind) {
                 if readyNews.contains(where: { $0.id == id }) { stage = "En Listas" }
                 else if workingNews.contains(where: { $0.id == id }) {
