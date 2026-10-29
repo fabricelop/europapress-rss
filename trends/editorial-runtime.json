@@ -4,28 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "9d50d7492657",
-    "ba460ca68b0b",
-    "99e1d29e5f2e",
-    "6f005a186898",
-    "d7783f7a9db9",
-    "1cb3ab9f8367"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T21:40:00+01:00",
-  "last_completed_at": "2026-10-29T21:49:00+01:00",
-  "updated_at": "2026-10-29T21:49:00+01:00",
+  "last_started_at": "2026-10-29T21:55:00+01:00",
+  "last_completed_at": "2026-10-29T21:58:00+01:00",
+  "updated_at": "2026-10-29T21:58:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261029T214000+0100",
+    "trigger_run_id": "tr-chat-20261029T215500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -33,36 +26,36 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T214000+0100",
+    "run_id": "tr-chat-20261029T215500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T21:40:00+01:00",
-    "updated_at": "2026-10-29T21:49:00+01:00",
-    "finished_at": "2026-10-29T21:49:00+01:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-29T21:55:00+01:00",
+    "updated_at": "2026-10-29T21:58:00+01:00",
+    "finished_at": "2026-10-29T21:58:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 6,
-      "explained": 5,
-      "final_resolved": 6,
-      "skipped_concurrent": 1,
+      "attempted": 0,
+      "explained": 0,
+      "final_resolved": 0,
+      "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 4,
-      "remates_omitted": 2,
+      "remates_selected": 0,
+      "remates_omitted": 19,
       "recent_missing_closer_reviewed": 19,
-      "pending_visual_candidates_reviewed": 6,
+      "pending_visual_candidates_reviewed": 4,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "Pasada editorial cerrada: 6/6 revisiones resueltas y verificadas; cola final 0. Sin ImageGen.",
+    "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests y reexplicaciones verificadas en 0. Sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,414 +65,91 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "9d50d7492657",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": "concurrent_verified",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "ba460ca68b0b",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_event"
-      },
-      {
-        "trend_id": "99e1d29e5f2e",
-        "revision": 0,
-        "candidate_count": 1,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "6f005a186898",
-        "revision": 0,
-        "candidate_count": 1,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "d7783f7a9db9",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_event"
-      },
-      {
-        "trend_id": "1cb3ab9f8367",
-        "revision": 0,
-        "candidate_count": 1,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-29T21:42:40+01:00",
-        "phase": "drafting",
-        "trend_id": "9d50d7492657",
-        "title": "La Junta Electoral",
-        "message": "Comprobando límite de X"
+        "at": "2026-10-29T21:55:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cola editorial 0; iniciando saneamiento y verificación final."
       },
       {
-        "at": "2026-10-29T21:43:00+01:00",
-        "phase": "remate_selection",
-        "trend_id": "9d50d7492657",
-        "title": "La Junta Electoral",
-        "message": "Remate seleccionado tras control de originalidad"
-      },
-      {
-        "at": "2026-10-29T21:43:20+01:00",
-        "phase": "persisting",
-        "trend_id": "9d50d7492657",
-        "title": "La Junta Electoral",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-29T21:43:40+01:00",
-        "phase": "persisting",
-        "trend_id": "9d50d7492657",
-        "title": "La Junta Electoral",
-        "message": "Actualizando requests y retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-29T21:44:00+01:00",
-        "phase": "verifying",
-        "trend_id": "9d50d7492657",
-        "title": "La Junta Electoral",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-29T21:44:30+01:00",
-        "phase": "verifying",
-        "trend_id": "ba460ca68b0b",
-        "title": "Antonio Vázquez",
-        "message": "Releyendo estado autoritativo de Antonio Vázquez"
-      },
-      {
-        "at": "2026-10-29T21:44:50+01:00",
-        "phase": "investigating",
-        "trend_id": "ba460ca68b0b",
-        "title": "Antonio Vázquez",
-        "message": "Hecho esencial verificado · fallecimiento confirmado"
-      },
-      {
-        "at": "2026-10-29T21:45:05+01:00",
-        "phase": "drafting",
-        "trend_id": "ba460ca68b0b",
-        "title": "Antonio Vázquez",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-29T21:45:15+01:00",
-        "phase": "remate_selection",
-        "trend_id": "ba460ca68b0b",
-        "title": "Antonio Vázquez",
-        "message": "Sin remate · tragedia con víctima"
-      },
-      {
-        "at": "2026-10-29T21:46:12+01:00",
-        "phase": "verifying",
-        "trend_id": "ba460ca68b0b",
-        "title": "Antonio Vázquez",
-        "message": "Cierre concurrente detectado y reconciliado"
-      },
-      {
-        "at": "2026-10-29T21:46:14+01:00",
-        "phase": "verifying",
-        "trend_id": "99e1d29e5f2e",
-        "title": "Numancia",
-        "message": "Cierre concurrente detectado · texto y revisión coinciden"
-      },
-      {
-        "at": "2026-10-29T21:46:16+01:00",
-        "phase": "verifying",
-        "trend_id": "6f005a186898",
-        "title": "Morales",
-        "message": "Cierre concurrente detectado · texto y revisión coinciden"
-      },
-      {
-        "at": "2026-10-29T21:46:18+01:00",
-        "phase": "verifying",
-        "trend_id": "d7783f7a9db9",
-        "title": "RTVE",
-        "message": "Cierre concurrente detectado · sin remate por tragedia"
-      },
-      {
-        "at": "2026-10-29T21:46:20+01:00",
-        "phase": "verifying",
-        "trend_id": "1cb3ab9f8367",
-        "title": "Oviedo",
-        "message": "Cierre concurrente detectado · texto y revisión coinciden"
-      },
-      {
-        "at": "2026-10-29T21:47:00+01:00",
+        "at": "2026-10-29T21:56:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificando igualdad exacta en Explicadas y requests"
+        "message": "Revisando Explicadas recientes, Pendientes y estado autoritativo."
       },
       {
-        "at": "2026-10-29T21:47:20+01:00",
+        "at": "2026-10-29T21:57:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando remates ausentes · Antonio Vázquez y RTVE protegidos por sensibilidad"
+        "message": "19 Explicadas recientes sin remate revisadas; sin cambios editoriales por sensibilidad u opcionalidad."
       },
       {
-        "at": "2026-10-29T21:47:40+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola, requests, reexplicaciones y huérfanos en 0"
-      },
-      {
-        "at": "2026-10-29T21:48:00+01:00",
+        "at": "2026-10-29T21:58:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial cerrada: 6/6 revisiones verificadas; cola final 0"
-      },
-      {
-        "at": "2026-10-29T21:48:40+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola 0 y sin preparing/update ni rewrite_pending"
-      },
-      {
-        "at": "2026-10-29T21:49:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada editorial cerrada: 6/6 revisiones resueltas y verificadas; cola final 0. Sin ImageGen."
+        "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests y reexplicaciones verificadas en 0. Sin ImageGen."
       }
     ],
-    "processed_ids": [
-      "9d50d7492657",
-      "ba460ca68b0b",
-      "99e1d29e5f2e",
-      "6f005a186898",
-      "d7783f7a9db9",
-      "1cb3ab9f8367"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": [
-      {
-        "id": "9d50d7492657",
-        "revision": 0,
-        "name": "La Junta Electoral",
-        "status": "explained",
-        "resolution": "concurrent_verified"
-      },
-      {
-        "id": "ba460ca68b0b",
-        "revision": 0,
-        "name": "Antonio Vázquez",
-        "status": "explained",
-        "resolution": "persisted"
-      },
-      {
-        "id": "99e1d29e5f2e",
-        "revision": 0,
-        "name": "Numancia",
-        "status": "explained",
-        "resolution": "persisted"
-      },
-      {
-        "id": "6f005a186898",
-        "revision": 0,
-        "name": "Morales",
-        "status": "explained",
-        "resolution": "persisted"
-      },
-      {
-        "id": "d7783f7a9db9",
-        "revision": 0,
-        "name": "RTVE",
-        "status": "explained",
-        "resolution": "persisted"
-      },
-      {
-        "id": "1cb3ab9f8367",
-        "revision": 0,
-        "name": "Oviedo",
-        "status": "explained",
-        "resolution": "persisted"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-chat-20261029T214000+0100",
+  "run_id": "tr-chat-20261029T215500+0100",
   "summary": {
-    "attempted": 6,
-    "explained": 5,
-    "final_resolved": 6,
-    "skipped_concurrent": 1,
+    "attempted": 0,
+    "explained": 0,
+    "final_resolved": 0,
+    "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 4,
-    "remates_omitted": 2,
+    "remates_selected": 0,
+    "remates_omitted": 19,
     "recent_missing_closer_reviewed": 19,
-    "pending_visual_candidates_reviewed": 6,
+    "pending_visual_candidates_reviewed": 4,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T21:42:40+01:00",
-      "phase": "drafting",
-      "trend_id": "9d50d7492657",
-      "title": "La Junta Electoral",
-      "message": "Comprobando límite de X"
+      "at": "2026-10-29T21:55:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cola editorial 0; iniciando saneamiento y verificación final."
     },
     {
-      "at": "2026-10-29T21:43:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "9d50d7492657",
-      "title": "La Junta Electoral",
-      "message": "Remate seleccionado tras control de originalidad"
-    },
-    {
-      "at": "2026-10-29T21:43:20+01:00",
-      "phase": "persisting",
-      "trend_id": "9d50d7492657",
-      "title": "La Junta Electoral",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-29T21:43:40+01:00",
-      "phase": "persisting",
-      "trend_id": "9d50d7492657",
-      "title": "La Junta Electoral",
-      "message": "Actualizando requests y retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-29T21:44:00+01:00",
-      "phase": "verifying",
-      "trend_id": "9d50d7492657",
-      "title": "La Junta Electoral",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-29T21:44:30+01:00",
-      "phase": "verifying",
-      "trend_id": "ba460ca68b0b",
-      "title": "Antonio Vázquez",
-      "message": "Releyendo estado autoritativo de Antonio Vázquez"
-    },
-    {
-      "at": "2026-10-29T21:44:50+01:00",
-      "phase": "investigating",
-      "trend_id": "ba460ca68b0b",
-      "title": "Antonio Vázquez",
-      "message": "Hecho esencial verificado · fallecimiento confirmado"
-    },
-    {
-      "at": "2026-10-29T21:45:05+01:00",
-      "phase": "drafting",
-      "trend_id": "ba460ca68b0b",
-      "title": "Antonio Vázquez",
-      "message": "Comprobando límite de X"
-    },
-    {
-      "at": "2026-10-29T21:45:15+01:00",
-      "phase": "remate_selection",
-      "trend_id": "ba460ca68b0b",
-      "title": "Antonio Vázquez",
-      "message": "Sin remate · tragedia con víctima"
-    },
-    {
-      "at": "2026-10-29T21:46:12+01:00",
-      "phase": "verifying",
-      "trend_id": "ba460ca68b0b",
-      "title": "Antonio Vázquez",
-      "message": "Cierre concurrente detectado y reconciliado"
-    },
-    {
-      "at": "2026-10-29T21:46:14+01:00",
-      "phase": "verifying",
-      "trend_id": "99e1d29e5f2e",
-      "title": "Numancia",
-      "message": "Cierre concurrente detectado · texto y revisión coinciden"
-    },
-    {
-      "at": "2026-10-29T21:46:16+01:00",
-      "phase": "verifying",
-      "trend_id": "6f005a186898",
-      "title": "Morales",
-      "message": "Cierre concurrente detectado · texto y revisión coinciden"
-    },
-    {
-      "at": "2026-10-29T21:46:18+01:00",
-      "phase": "verifying",
-      "trend_id": "d7783f7a9db9",
-      "title": "RTVE",
-      "message": "Cierre concurrente detectado · sin remate por tragedia"
-    },
-    {
-      "at": "2026-10-29T21:46:20+01:00",
-      "phase": "verifying",
-      "trend_id": "1cb3ab9f8367",
-      "title": "Oviedo",
-      "message": "Cierre concurrente detectado · texto y revisión coinciden"
-    },
-    {
-      "at": "2026-10-29T21:47:00+01:00",
+      "at": "2026-10-29T21:56:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Verificando igualdad exacta en Explicadas y requests"
+      "message": "Revisando Explicadas recientes, Pendientes y estado autoritativo."
     },
     {
-      "at": "2026-10-29T21:47:20+01:00",
+      "at": "2026-10-29T21:57:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando remates ausentes · Antonio Vázquez y RTVE protegidos por sensibilidad"
+      "message": "19 Explicadas recientes sin remate revisadas; sin cambios editoriales por sensibilidad u opcionalidad."
     },
     {
-      "at": "2026-10-29T21:47:40+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: cola, requests, reexplicaciones y huérfanos en 0"
-    },
-    {
-      "at": "2026-10-29T21:48:00+01:00",
+      "at": "2026-10-29T21:58:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada editorial cerrada: 6/6 revisiones verificadas; cola final 0"
-    },
-    {
-      "at": "2026-10-29T21:48:40+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: cola 0 y sin preparing/update ni rewrite_pending"
-    },
-    {
-      "at": "2026-10-29T21:49:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada editorial cerrada: 6/6 revisiones resueltas y verificadas; cola final 0. Sin ImageGen."
+      "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests y reexplicaciones verificadas en 0. Sin ImageGen."
     }
   ],
   "partial": false,
@@ -491,110 +161,22 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "final_outcomes": [
-    {
-      "id": "9d50d7492657",
-      "revision": 0,
-      "name": "La Junta Electoral",
-      "status": "explained"
-    },
-    {
-      "id": "ba460ca68b0b",
-      "revision": 0,
-      "name": "Antonio Vázquez",
-      "status": "explained"
-    },
-    {
-      "id": "99e1d29e5f2e",
-      "revision": 0,
-      "name": "Numancia",
-      "status": "explained"
-    },
-    {
-      "id": "6f005a186898",
-      "revision": 0,
-      "name": "Morales",
-      "status": "explained"
-    },
-    {
-      "id": "d7783f7a9db9",
-      "revision": 0,
-      "name": "RTVE",
-      "status": "explained"
-    },
-    {
-      "id": "1cb3ab9f8367",
-      "revision": 0,
-      "name": "Oviedo",
-      "status": "explained"
-    }
-  ],
-  "pending_delivery_count": 0,
+  "final_outcomes": [],
+  "pending_delivery_count": 4,
   "apply_workflow": {
     "status": "not_required",
     "editorial_blocking": false
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "1363000e1274e0e85a9ad940b4332a09b5b40516",
-    "updated_at": "2026-10-29T21:48:00+01:00"
+    "blob_sha": "1c398b7448266ae426b4aa32c32b0451ce97f467",
+    "updated_at": "2026-10-29T21:58:00+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-29T21:38:18+01:00",
-    "recent_sha": "763970c801f6a845ec9f27a275db809cd4269120",
-    "queue_sha": "d0b1d392226001e4509bed89be93ac6e638507a7",
+    "captured_at": "2026-10-29T21:51:56+01:00",
+    "recent_sha": "def51df822af7c4b016d6bfd6ad5428253328427",
+    "queue_sha": "a1887d86529c0fd8729accad12748762349b71d7",
     "queue_count": 0
   },
-  "remate_selections": [
-    {
-      "trend_id": "9d50d7492657",
-      "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "c1",
-      "selected_score": 8.6,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "ba460ca68b0b",
-      "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "sensitive_event"
-    },
-    {
-      "trend_id": "99e1d29e5f2e",
-      "revision": 0,
-      "candidate_count": null,
-      "selected_candidate": "persisted_concurrent",
-      "selected_score": null,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "6f005a186898",
-      "revision": 0,
-      "candidate_count": null,
-      "selected_candidate": "persisted_concurrent",
-      "selected_score": null,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "d7783f7a9db9",
-      "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "sensitive_event"
-    },
-    {
-      "trend_id": "1cb3ab9f8367",
-      "revision": 0,
-      "candidate_count": null,
-      "selected_candidate": "persisted_concurrent",
-      "selected_score": null,
-      "no_remate_reason": null
-    }
-  ]
+  "remate_selections": []
 }
