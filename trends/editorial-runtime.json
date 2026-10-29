@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T09:10:00+01:00",
-  "last_completed_at": "2026-10-29T09:11:00+01:00",
-  "updated_at": "2026-10-29T09:11:00+01:00",
+  "last_started_at": "2026-10-29T09:40:00+01:00",
+  "last_completed_at": "2026-10-29T09:42:00+01:00",
+  "updated_at": "2026-10-29T09:42:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261029T0910+0100",
+    "trigger_run_id": "tr-chat-20261029T0940+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T0910+0100",
+    "run_id": "tr-chat-20261029T0940+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T09:10:00+01:00",
-    "updated_at": "2026-10-29T09:11:00+01:00",
-    "finished_at": "2026-10-29T09:11:00+01:00",
+    "started_at": "2026-10-29T09:40:00+01:00",
+    "updated_at": "2026-10-29T09:42:00+01:00",
+    "finished_at": "2026-10-29T09:42:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -47,74 +47,39 @@
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
       "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_visual_candidates_reviewed": 2,
+      "remates_omitted": 0,
+      "recent_missing_closer_reviewed": 0,
+      "pending_visual_candidates_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 0/0; cola vacía y saneamiento visual solicitado.",
+    "message": "TTendencias cerrada 0/0; cola verificada vacía y saneamiento visual solicitado.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z"
-    },
-    "remate_selections": [
-      {
-        "trend_id": "6a124636f62f",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "tragedy_with_victims"
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-29T09:10:00+01:00",
+        "at": "2026-10-29T09:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial; cola inicial vacía y comprobando reexplicaciones, Pendientes y huérfanos."
+        "message": "Preparando pasada editorial; cola inicial vacía y comprobando estado fresco, reexplicaciones y huérfanos."
       },
       {
-        "at": "2026-10-29T09:10:20+01:00",
+        "at": "2026-10-29T09:41:41+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 2 tarjetas recientes aún no publicadas/desestimadas."
+        "message": "Relectura final de main: cola 0, sin preparing/update/problematic, reexplicaciones ni huérfanos activos."
       },
       {
-        "at": "2026-10-29T09:10:30+01:00",
-        "phase": "remate_selection",
-        "trend_id": "6a124636f62f",
-        "title": "#LaMesa",
-        "message": "Sin remate · tragedia con víctimas; explicación factual suficiente."
-      },
-      {
-        "at": "2026-10-29T09:10:40+01:00",
-        "phase": "verifying",
-        "trend_id": "2c9d70d716b0",
-        "title": "Isabel Pardo de Vera",
-        "message": "Paquete textual completo; reparación visual solicitada por el flujo automático independiente."
-      },
-      {
-        "at": "2026-10-29T09:10:55+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final: cola 0, sin preparing/update/problematic, reexplicaciones ni huérfanos activos."
-      },
-      {
-        "at": "2026-10-29T09:11:00+01:00",
+        "at": "2026-10-29T09:42:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0; cola vacía y saneamiento visual solicitado."
+        "message": "TTendencias cerrada 0/0; cola verificada vacía y saneamiento visual solicitado."
       }
     ],
     "processed_ids": [],
@@ -124,7 +89,7 @@
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261029T0910+0100",
+  "run_id": "tr-chat-20261029T0940+0100",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -135,75 +100,40 @@
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
     "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_visual_candidates_reviewed": 2,
+    "remates_omitted": 0,
+    "recent_missing_closer_reviewed": 0,
+    "pending_visual_candidates_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T09:10:00+01:00",
+      "at": "2026-10-29T09:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial; cola inicial vacía y comprobando reexplicaciones, Pendientes y huérfanos."
+      "message": "Preparando pasada editorial; cola inicial vacía y comprobando estado fresco, reexplicaciones y huérfanos."
     },
     {
-      "at": "2026-10-29T09:10:20+01:00",
+      "at": "2026-10-29T09:41:41+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 2 tarjetas recientes aún no publicadas/desestimadas."
+      "message": "Relectura final de main: cola 0, sin preparing/update/problematic, reexplicaciones ni huérfanos activos."
     },
     {
-      "at": "2026-10-29T09:10:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "6a124636f62f",
-      "title": "#LaMesa",
-      "message": "Sin remate · tragedia con víctimas; explicación factual suficiente."
-    },
-    {
-      "at": "2026-10-29T09:10:40+01:00",
-      "phase": "verifying",
-      "trend_id": "2c9d70d716b0",
-      "title": "Isabel Pardo de Vera",
-      "message": "Paquete textual completo; reparación visual solicitada por el flujo automático independiente."
-    },
-    {
-      "at": "2026-10-29T09:10:55+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final: cola 0, sin preparing/update/problematic, reexplicaciones ni huérfanos activos."
-    },
-    {
-      "at": "2026-10-29T09:11:00+01:00",
+      "at": "2026-10-29T09:42:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 0/0; cola vacía y saneamiento visual solicitado."
+      "message": "TTendencias cerrada 0/0; cola verificada vacía y saneamiento visual solicitado."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261029T0840+0100",
-  "ratings_snapshot": {
-    "path": "trends/remate-ratings.json",
-    "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-    "updated_at": "2026-10-06T21:21:47.927Z"
-  },
-  "remate_selections": [
-    {
-      "trend_id": "6a124636f62f",
-      "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "tragedy_with_victims"
-    }
-  ],
+  "previous_run_id": "tr-chat-20261029T0910+0100",
+  "ratings_snapshot": null,
+  "remate_selections": [],
   "final_outcomes": [],
   "pending_delivery_count": 2,
   "apply_workflow": {
@@ -214,7 +144,7 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "d2a38d6f2b3203edab0af3bcd57928afc41f0a21",
-    "updated_at": "2026-10-29T09:10:55+01:00"
+    "blob_sha": "d56461139116d1e5c7888a3800ba5166b4122d03",
+    "updated_at": "2026-10-29T09:41:41+01:00"
   }
 }
