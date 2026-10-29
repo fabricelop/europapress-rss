@@ -5,29 +5,27 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "d0ec9dd0dbf2",
-    "a6845a70bd64",
-    "8d05be59cfda",
-    "1ca1648f448a",
-    "e2d41819d8b4",
-    "e586c5227112",
-    "fd7f5d9c9d57",
-    "564215d5cd96"
+    "9d50d7492657",
+    "ba460ca68b0b",
+    "99e1d29e5f2e",
+    "6f005a186898",
+    "d7783f7a9db9",
+    "1cb3ab9f8367"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T17:13:00+01:00",
-  "last_completed_at": "2026-10-29T17:38:15+01:00",
-  "updated_at": "2026-10-29T17:38:15+01:00",
+  "last_started_at": "2026-10-29T21:40:00+01:00",
+  "last_completed_at": "2026-10-29T21:48:00+01:00",
+  "updated_at": "2026-10-29T21:48:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-1793289754931-manual",
+    "trigger_run_id": "tr-chat-20261029T214000+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -35,44 +33,44 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793289754931-manual",
+    "run_id": "tr-chat-20261029T214000+0100",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-29T17:13:00+01:00",
-    "updated_at": "2026-10-29T17:38:15+01:00",
-    "finished_at": "2026-10-29T17:38:15+01:00",
-    "current": 8,
-    "total": 8,
+    "started_at": "2026-10-29T21:40:00+01:00",
+    "updated_at": "2026-10-29T21:48:00+01:00",
+    "finished_at": "2026-10-29T21:48:00+01:00",
+    "current": 6,
+    "total": 6,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 8,
-      "explained": 8,
-      "final_resolved": 8,
-      "skipped_concurrent": 0,
+      "attempted": 6,
+      "explained": 6,
+      "final_resolved": 6,
+      "skipped_concurrent": 5,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 5,
-      "remates_omitted": 4,
-      "recent_missing_closer_reviewed": 1,
-      "pending_visual_candidates_reviewed": 1,
+      "remates_selected": 4,
+      "remates_omitted": 2,
+      "recent_missing_closer_reviewed": 2,
+      "pending_visual_candidates_reviewed": 2,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 1
     },
-    "message": "Pasada editorial cerrada: 8/8 revisiones explicadas y verificadas; cola final 0. Sin ImageGen. Una incidencia técnica transitoria fue reconciliada sin pérdida de estado.",
+    "message": "Pasada editorial cerrada: 6/6 revisiones explicadas y verificadas; cola final 0. Cinco revisiones se cerraron concurrentemente y fueron reconciliadas sin sobrescritura. Sin ImageGen.",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-29T17:18:35+01:00",
+        "at": "2026-10-29T21:46:20+01:00",
         "phase": "verifying",
-        "trend_id": "d0ec9dd0dbf2",
-        "title": "Repsol",
-        "reason": "El orquestador alcanzó el máximo de llamadas en una operación compuesta; se releyó main y se confirmó que la persistencia transaccional había quedado completa antes de continuar."
+        "trend_id": null,
+        "title": null,
+        "reason": "Durante la reconciliación de Antonio Vázquez, otro consumidor editorial cerró cinco revisiones activas. Se releyó main y se verificó igualdad exacta id+revision+explanation+closer_text+explained_at y ausencia de cola para las seis revisiones."
       }
     ],
     "ratings_snapshot": {
@@ -84,7 +82,7 @@
     },
     "remate_selections": [
       {
-        "trend_id": "d0ec9dd0dbf2",
+        "trend_id": "9d50d7492657",
         "revision": 0,
         "candidate_count": 5,
         "selected_candidate": "c1",
@@ -92,39 +90,7 @@
         "no_remate_reason": null
       },
       {
-        "trend_id": "a6845a70bd64",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c2",
-        "selected_score": 8.8,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "8d05be59cfda",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.4,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "1ca1648f448a",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c3",
-        "selected_score": 8.7,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "e2d41819d8b4",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c4",
-        "selected_score": 8.2,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "e586c5227112",
+        "trend_id": "ba460ca68b0b",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -133,7 +99,23 @@
         "no_remate_reason": "sensitive_event"
       },
       {
-        "trend_id": "fd7f5d9c9d57",
+        "trend_id": "99e1d29e5f2e",
+        "revision": 0,
+        "candidate_count": null,
+        "selected_candidate": "persisted_concurrent",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "6f005a186898",
+        "revision": 0,
+        "candidate_count": null,
+        "selected_candidate": "persisted_concurrent",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "d7783f7a9db9",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -142,166 +124,163 @@
         "no_remate_reason": "sensitive_event"
       },
       {
-        "trend_id": "564215d5cd96",
+        "trend_id": "1cb3ab9f8367",
         "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
+        "candidate_count": null,
+        "selected_candidate": "persisted_concurrent",
         "selected_score": null,
-        "no_remate_reason": "sensitive_event"
+        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-29T17:34:00+01:00",
-        "phase": "persisting",
-        "trend_id": "fd7f5d9c9d57",
-        "title": "Toledo",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-29T17:34:15+01:00",
+        "at": "2026-10-29T21:42:00+01:00",
         "phase": "verifying",
-        "trend_id": "fd7f5d9c9d57",
-        "title": "Toledo",
-        "message": "Releyendo main"
+        "trend_id": "9d50d7492657",
+        "title": "La Junta Electoral",
+        "message": "Releyendo estado autoritativo de La Junta Electoral"
       },
       {
-        "at": "2026-10-29T17:34:30+01:00",
-        "phase": "persisting",
-        "trend_id": "fd7f5d9c9d57",
-        "title": "Toledo",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-29T17:34:45+01:00",
-        "phase": "verifying",
-        "trend_id": "fd7f5d9c9d57",
-        "title": "Toledo",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-29T17:34:55+01:00",
-        "phase": "verifying",
-        "trend_id": "fd7f5d9c9d57",
-        "title": "Toledo",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-29T17:35:10+01:00",
-        "phase": "verifying",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Releyendo estado autoritativo de Fátima Báñez"
-      },
-      {
-        "at": "2026-10-29T17:35:25+01:00",
+        "at": "2026-10-29T21:42:20+01:00",
         "phase": "investigating",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Buscando detonante actual"
+        "trend_id": "9d50d7492657",
+        "title": "La Junta Electoral",
+        "message": "Hecho esencial verificado · expediente JEC por vídeo ante el Guernica"
       },
       {
-        "at": "2026-10-29T17:35:40+01:00",
-        "phase": "investigating",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Contrastando fuente 1/2 · Europa Press"
-      },
-      {
-        "at": "2026-10-29T17:35:55+01:00",
-        "phase": "investigating",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Contrastando fuente 2/2 · RTVE"
-      },
-      {
-        "at": "2026-10-29T17:36:10+01:00",
-        "phase": "investigating",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-29T17:36:20+01:00",
+        "at": "2026-10-29T21:42:40+01:00",
         "phase": "drafting",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-29T17:36:30+01:00",
-        "phase": "drafting",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
+        "trend_id": "9d50d7492657",
+        "title": "La Junta Electoral",
         "message": "Comprobando límite de X"
       },
       {
-        "at": "2026-10-29T17:36:40+01:00",
+        "at": "2026-10-29T21:43:00+01:00",
         "phase": "remate_selection",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Sin remate · tragedia con víctimas"
+        "trend_id": "9d50d7492657",
+        "title": "La Junta Electoral",
+        "message": "Remate seleccionado tras control de originalidad"
       },
       {
-        "at": "2026-10-29T17:36:45+01:00",
+        "at": "2026-10-29T21:43:20+01:00",
         "phase": "persisting",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
+        "trend_id": "9d50d7492657",
+        "title": "La Junta Electoral",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-29T17:37:00+01:00",
-        "phase": "verifying",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-29T17:37:15+01:00",
+        "at": "2026-10-29T21:43:40+01:00",
         "phase": "persisting",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Retirando revisión de la cola"
+        "trend_id": "9d50d7492657",
+        "title": "La Junta Electoral",
+        "message": "Actualizando requests y retirando revisión de la cola"
       },
       {
-        "at": "2026-10-29T17:37:30+01:00",
+        "at": "2026-10-29T21:44:00+01:00",
         "phase": "verifying",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-29T17:37:40+01:00",
-        "phase": "verifying",
-        "trend_id": "564215d5cd96",
-        "title": "Fátima Báñez",
+        "trend_id": "9d50d7492657",
+        "title": "La Junta Electoral",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-29T17:38:00+01:00",
+        "at": "2026-10-29T21:44:30+01:00",
+        "phase": "verifying",
+        "trend_id": "ba460ca68b0b",
+        "title": "Antonio Vázquez",
+        "message": "Releyendo estado autoritativo de Antonio Vázquez"
+      },
+      {
+        "at": "2026-10-29T21:44:50+01:00",
+        "phase": "investigating",
+        "trend_id": "ba460ca68b0b",
+        "title": "Antonio Vázquez",
+        "message": "Hecho esencial verificado · fallecimiento confirmado"
+      },
+      {
+        "at": "2026-10-29T21:45:05+01:00",
+        "phase": "drafting",
+        "trend_id": "ba460ca68b0b",
+        "title": "Antonio Vázquez",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-29T21:45:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ba460ca68b0b",
+        "title": "Antonio Vázquez",
+        "message": "Sin remate · tragedia con víctima"
+      },
+      {
+        "at": "2026-10-29T21:46:12+01:00",
+        "phase": "verifying",
+        "trend_id": "ba460ca68b0b",
+        "title": "Antonio Vázquez",
+        "message": "Cierre concurrente detectado y reconciliado"
+      },
+      {
+        "at": "2026-10-29T21:46:14+01:00",
+        "phase": "verifying",
+        "trend_id": "99e1d29e5f2e",
+        "title": "Numancia",
+        "message": "Cierre concurrente detectado · texto y revisión coinciden"
+      },
+      {
+        "at": "2026-10-29T21:46:16+01:00",
+        "phase": "verifying",
+        "trend_id": "6f005a186898",
+        "title": "Morales",
+        "message": "Cierre concurrente detectado · texto y revisión coinciden"
+      },
+      {
+        "at": "2026-10-29T21:46:18+01:00",
+        "phase": "verifying",
+        "trend_id": "d7783f7a9db9",
+        "title": "RTVE",
+        "message": "Cierre concurrente detectado · sin remate por tragedia"
+      },
+      {
+        "at": "2026-10-29T21:46:20+01:00",
+        "phase": "verifying",
+        "trend_id": "1cb3ab9f8367",
+        "title": "Oviedo",
+        "message": "Cierre concurrente detectado · texto y revisión coinciden"
+      },
+      {
+        "at": "2026-10-29T21:47:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificando igualdad exacta en Explicadas y requests"
+      },
+      {
+        "at": "2026-10-29T21:47:20+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando remates ausentes · Antonio Vázquez y RTVE protegidos por sensibilidad"
+      },
+      {
+        "at": "2026-10-29T21:47:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main: cola, requests, reexplicaciones y huérfanos en 0"
       },
       {
-        "at": "2026-10-29T17:38:15+01:00",
+        "at": "2026-10-29T21:48:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial cerrada: 8/8 revisiones explicadas y verificadas; cola final 0."
+        "message": "Pasada editorial cerrada: 6/6 revisiones verificadas; cola final 0"
       }
     ],
     "processed_ids": [
-      "d0ec9dd0dbf2",
-      "a6845a70bd64",
-      "8d05be59cfda",
-      "1ca1648f448a",
-      "e2d41819d8b4",
-      "e586c5227112",
-      "fd7f5d9c9d57",
-      "564215d5cd96"
+      "9d50d7492657",
+      "ba460ca68b0b",
+      "99e1d29e5f2e",
+      "6f005a186898",
+      "d7783f7a9db9",
+      "1cb3ab9f8367"
     ],
     "partial": false,
     "queue_complete": true,
@@ -309,218 +288,206 @@
     "remaining_problematic_ids": [],
     "final_outcomes": [
       {
-        "id": "d0ec9dd0dbf2",
+        "id": "9d50d7492657",
         "revision": 0,
-        "name": "Repsol",
+        "name": "La Junta Electoral",
         "status": "explained"
       },
       {
-        "id": "a6845a70bd64",
+        "id": "ba460ca68b0b",
         "revision": 0,
-        "name": "Eduardo Inda",
+        "name": "Antonio Vázquez",
         "status": "explained"
       },
       {
-        "id": "8d05be59cfda",
+        "id": "99e1d29e5f2e",
         "revision": 0,
-        "name": "Bruselas",
+        "name": "Numancia",
         "status": "explained"
       },
       {
-        "id": "1ca1648f448a",
+        "id": "6f005a186898",
         "revision": 0,
-        "name": "El BCE",
+        "name": "Morales",
         "status": "explained"
       },
       {
-        "id": "e2d41819d8b4",
+        "id": "d7783f7a9db9",
         "revision": 0,
-        "name": "#TEM29O",
+        "name": "RTVE",
         "status": "explained"
       },
       {
-        "id": "e586c5227112",
+        "id": "1cb3ab9f8367",
         "revision": 0,
-        "name": "Descansa",
-        "status": "explained"
-      },
-      {
-        "id": "fd7f5d9c9d57",
-        "revision": 0,
-        "name": "Toledo",
-        "status": "explained"
-      },
-      {
-        "id": "564215d5cd96",
-        "revision": 0,
-        "name": "Fátima Báñez",
+        "name": "Oviedo",
         "status": "explained"
       }
     ]
   },
-  "run_id": "tr-1793289754931-manual",
+  "run_id": "tr-chat-20261029T214000+0100",
   "summary": {
-    "attempted": 8,
-    "explained": 8,
-    "final_resolved": 8,
-    "skipped_concurrent": 0,
+    "attempted": 6,
+    "explained": 6,
+    "final_resolved": 6,
+    "skipped_concurrent": 5,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 5,
-    "remates_omitted": 4,
-    "recent_missing_closer_reviewed": 1,
-    "pending_visual_candidates_reviewed": 1,
+    "remates_selected": 4,
+    "remates_omitted": 2,
+    "recent_missing_closer_reviewed": 2,
+    "pending_visual_candidates_reviewed": 2,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 1
   },
   "activity": [
     {
-      "at": "2026-10-29T17:34:00+01:00",
-      "phase": "persisting",
-      "trend_id": "fd7f5d9c9d57",
-      "title": "Toledo",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-29T17:34:15+01:00",
+      "at": "2026-10-29T21:42:00+01:00",
       "phase": "verifying",
-      "trend_id": "fd7f5d9c9d57",
-      "title": "Toledo",
-      "message": "Releyendo main"
+      "trend_id": "9d50d7492657",
+      "title": "La Junta Electoral",
+      "message": "Releyendo estado autoritativo de La Junta Electoral"
     },
     {
-      "at": "2026-10-29T17:34:30+01:00",
-      "phase": "persisting",
-      "trend_id": "fd7f5d9c9d57",
-      "title": "Toledo",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-29T17:34:45+01:00",
-      "phase": "verifying",
-      "trend_id": "fd7f5d9c9d57",
-      "title": "Toledo",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-29T17:34:55+01:00",
-      "phase": "verifying",
-      "trend_id": "fd7f5d9c9d57",
-      "title": "Toledo",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-29T17:35:10+01:00",
-      "phase": "verifying",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Releyendo estado autoritativo de Fátima Báñez"
-    },
-    {
-      "at": "2026-10-29T17:35:25+01:00",
+      "at": "2026-10-29T21:42:20+01:00",
       "phase": "investigating",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Buscando detonante actual"
+      "trend_id": "9d50d7492657",
+      "title": "La Junta Electoral",
+      "message": "Hecho esencial verificado · expediente JEC por vídeo ante el Guernica"
     },
     {
-      "at": "2026-10-29T17:35:40+01:00",
-      "phase": "investigating",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Contrastando fuente 1/2 · Europa Press"
-    },
-    {
-      "at": "2026-10-29T17:35:55+01:00",
-      "phase": "investigating",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Contrastando fuente 2/2 · RTVE"
-    },
-    {
-      "at": "2026-10-29T17:36:10+01:00",
-      "phase": "investigating",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Hecho esencial verificado"
-    },
-    {
-      "at": "2026-10-29T17:36:20+01:00",
+      "at": "2026-10-29T21:42:40+01:00",
       "phase": "drafting",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-29T17:36:30+01:00",
-      "phase": "drafting",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
+      "trend_id": "9d50d7492657",
+      "title": "La Junta Electoral",
       "message": "Comprobando límite de X"
     },
     {
-      "at": "2026-10-29T17:36:40+01:00",
+      "at": "2026-10-29T21:43:00+01:00",
       "phase": "remate_selection",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Sin remate · tragedia con víctimas"
+      "trend_id": "9d50d7492657",
+      "title": "La Junta Electoral",
+      "message": "Remate seleccionado tras control de originalidad"
     },
     {
-      "at": "2026-10-29T17:36:45+01:00",
+      "at": "2026-10-29T21:43:20+01:00",
       "phase": "persisting",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
+      "trend_id": "9d50d7492657",
+      "title": "La Junta Electoral",
       "message": "Guardando ficha Explicada"
     },
     {
-      "at": "2026-10-29T17:37:00+01:00",
-      "phase": "verifying",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-29T17:37:15+01:00",
+      "at": "2026-10-29T21:43:40+01:00",
       "phase": "persisting",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Retirando revisión de la cola"
+      "trend_id": "9d50d7492657",
+      "title": "La Junta Electoral",
+      "message": "Actualizando requests y retirando revisión de la cola"
     },
     {
-      "at": "2026-10-29T17:37:30+01:00",
+      "at": "2026-10-29T21:44:00+01:00",
       "phase": "verifying",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-29T17:37:40+01:00",
-      "phase": "verifying",
-      "trend_id": "564215d5cd96",
-      "title": "Fátima Báñez",
+      "trend_id": "9d50d7492657",
+      "title": "La Junta Electoral",
       "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-29T17:38:00+01:00",
+      "at": "2026-10-29T21:44:30+01:00",
+      "phase": "verifying",
+      "trend_id": "ba460ca68b0b",
+      "title": "Antonio Vázquez",
+      "message": "Releyendo estado autoritativo de Antonio Vázquez"
+    },
+    {
+      "at": "2026-10-29T21:44:50+01:00",
+      "phase": "investigating",
+      "trend_id": "ba460ca68b0b",
+      "title": "Antonio Vázquez",
+      "message": "Hecho esencial verificado · fallecimiento confirmado"
+    },
+    {
+      "at": "2026-10-29T21:45:05+01:00",
+      "phase": "drafting",
+      "trend_id": "ba460ca68b0b",
+      "title": "Antonio Vázquez",
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-29T21:45:15+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ba460ca68b0b",
+      "title": "Antonio Vázquez",
+      "message": "Sin remate · tragedia con víctima"
+    },
+    {
+      "at": "2026-10-29T21:46:12+01:00",
+      "phase": "verifying",
+      "trend_id": "ba460ca68b0b",
+      "title": "Antonio Vázquez",
+      "message": "Cierre concurrente detectado y reconciliado"
+    },
+    {
+      "at": "2026-10-29T21:46:14+01:00",
+      "phase": "verifying",
+      "trend_id": "99e1d29e5f2e",
+      "title": "Numancia",
+      "message": "Cierre concurrente detectado · texto y revisión coinciden"
+    },
+    {
+      "at": "2026-10-29T21:46:16+01:00",
+      "phase": "verifying",
+      "trend_id": "6f005a186898",
+      "title": "Morales",
+      "message": "Cierre concurrente detectado · texto y revisión coinciden"
+    },
+    {
+      "at": "2026-10-29T21:46:18+01:00",
+      "phase": "verifying",
+      "trend_id": "d7783f7a9db9",
+      "title": "RTVE",
+      "message": "Cierre concurrente detectado · sin remate por tragedia"
+    },
+    {
+      "at": "2026-10-29T21:46:20+01:00",
+      "phase": "verifying",
+      "trend_id": "1cb3ab9f8367",
+      "title": "Oviedo",
+      "message": "Cierre concurrente detectado · texto y revisión coinciden"
+    },
+    {
+      "at": "2026-10-29T21:47:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificando igualdad exacta en Explicadas y requests"
+    },
+    {
+      "at": "2026-10-29T21:47:20+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando remates ausentes · Antonio Vázquez y RTVE protegidos por sensibilidad"
+    },
+    {
+      "at": "2026-10-29T21:47:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main: cola, requests, reexplicaciones y huérfanos en 0"
     },
     {
-      "at": "2026-10-29T17:38:15+01:00",
+      "at": "2026-10-29T21:48:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada editorial cerrada: 8/8 revisiones explicadas y verificadas; cola final 0."
+      "message": "Pasada editorial cerrada: 6/6 revisiones verificadas; cola final 0"
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-20261029T155500+0100-chat",
+  "previous_run_id": "tr-1793289754931-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -530,51 +497,39 @@
   },
   "final_outcomes": [
     {
-      "id": "d0ec9dd0dbf2",
+      "id": "9d50d7492657",
       "revision": 0,
-      "name": "Repsol",
+      "name": "La Junta Electoral",
       "status": "explained"
     },
     {
-      "id": "a6845a70bd64",
+      "id": "ba460ca68b0b",
       "revision": 0,
-      "name": "Eduardo Inda",
+      "name": "Antonio Vázquez",
       "status": "explained"
     },
     {
-      "id": "8d05be59cfda",
+      "id": "99e1d29e5f2e",
       "revision": 0,
-      "name": "Bruselas",
+      "name": "Numancia",
       "status": "explained"
     },
     {
-      "id": "1ca1648f448a",
+      "id": "6f005a186898",
       "revision": 0,
-      "name": "El BCE",
+      "name": "Morales",
       "status": "explained"
     },
     {
-      "id": "e2d41819d8b4",
+      "id": "d7783f7a9db9",
       "revision": 0,
-      "name": "#TEM29O",
+      "name": "RTVE",
       "status": "explained"
     },
     {
-      "id": "e586c5227112",
+      "id": "1cb3ab9f8367",
       "revision": 0,
-      "name": "Descansa",
-      "status": "explained"
-    },
-    {
-      "id": "fd7f5d9c9d57",
-      "revision": 0,
-      "name": "Toledo",
-      "status": "explained"
-    },
-    {
-      "id": "564215d5cd96",
-      "revision": 0,
-      "name": "Fátima Báñez",
+      "name": "Oviedo",
       "status": "explained"
     }
   ],
@@ -585,18 +540,18 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "598c04dcade4bb624a37757aa15d08ab3dc62965",
-    "updated_at": "2026-10-29T17:38:15+01:00"
+    "blob_sha": "1363000e1274e0e85a9ad940b4332a09b5b40516",
+    "updated_at": "2026-10-29T21:48:00+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-29T17:21:38+01:00",
-    "recent_sha": "a5fb272eda85279fba1f4138618c9bfed8d6192e",
-    "queue_sha": "34dd4702eaf4173427d07542d5cf4aaaac1f6730",
+    "captured_at": "2026-10-29T21:38:18+01:00",
+    "recent_sha": "763970c801f6a845ec9f27a275db809cd4269120",
+    "queue_sha": "d0b1d392226001e4509bed89be93ac6e638507a7",
     "queue_count": 0
   },
   "remate_selections": [
     {
-      "trend_id": "d0ec9dd0dbf2",
+      "trend_id": "9d50d7492657",
       "revision": 0,
       "candidate_count": 5,
       "selected_candidate": "c1",
@@ -604,39 +559,7 @@
       "no_remate_reason": null
     },
     {
-      "trend_id": "a6845a70bd64",
-      "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "c2",
-      "selected_score": 8.8,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "8d05be59cfda",
-      "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "c1",
-      "selected_score": 8.4,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "1ca1648f448a",
-      "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "c3",
-      "selected_score": 8.7,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "e2d41819d8b4",
-      "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "c4",
-      "selected_score": 8.2,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "e586c5227112",
+      "trend_id": "ba460ca68b0b",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
@@ -645,7 +568,23 @@
       "no_remate_reason": "sensitive_event"
     },
     {
-      "trend_id": "fd7f5d9c9d57",
+      "trend_id": "99e1d29e5f2e",
+      "revision": 0,
+      "candidate_count": null,
+      "selected_candidate": "persisted_concurrent",
+      "selected_score": null,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "6f005a186898",
+      "revision": 0,
+      "candidate_count": null,
+      "selected_candidate": "persisted_concurrent",
+      "selected_score": null,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "d7783f7a9db9",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
@@ -654,13 +593,12 @@
       "no_remate_reason": "sensitive_event"
     },
     {
-      "trend_id": "564215d5cd96",
+      "trend_id": "1cb3ab9f8367",
       "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
+      "candidate_count": null,
+      "selected_candidate": "persisted_concurrent",
       "selected_score": null,
-      "no_remate_reason": "sensitive_event"
+      "no_remate_reason": null
     }
   ]
 }
