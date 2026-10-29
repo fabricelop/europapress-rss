@@ -10,12 +10,12 @@
         "0372e00a6665",
         "0f6c1f39d248"
       ],
-      "observed_at": "2026-10-29T07:50:51.752204+00:00"
+      "observed_at": "2026-10-29T07:52:26.018637+00:00"
     },
     "ttendencias": {
-      "count": 0,
-      "armed": true,
-      "sequence": 11
+      "count": 1,
+      "armed": false,
+      "sequence": 12
     }
   },
   "outbox": [
@@ -274,6 +274,13 @@
       "at": "2026-10-29T07:50:51.752204+00:00",
       "status": "sent",
       "sent_at": "2026-10-29T07:50:53.711953+00:00"
+    },
+    {
+      "id": "ttendencias-12",
+      "project": "ttendencias",
+      "count": 1,
+      "at": "2026-10-29T07:52:26.018637+00:00",
+      "status": "pending"
     }
   ]
 }
