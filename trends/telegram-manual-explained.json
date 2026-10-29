@@ -12642,16 +12642,17 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "telegram_package_status": "pending",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Toño, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
       "originated_from_prior_id": "manual-0923fbdd8a7284d5ce92ec5f57d71284",
-      "fallback_image_strategy": "existing_web_image"
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-29T12:21:00+01:00",
+  "updated_at": "2026-10-29T11:21:11.156509Z",
   "count": 227
 }
