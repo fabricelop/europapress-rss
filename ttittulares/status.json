@@ -1,105 +1,627 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-29T20:37:24.964839Z",
+  "updated_at": "2026-10-29T20:43:46.018162Z",
   "radar_at": "2026-10-29T20:34:01.042911Z",
-  "processing_count": 6,
+  "processing_count": 5,
   "processing_items": [
     {
-      "event_id": "5728737e36a2",
-      "title": "Feijóo señala a Puente pero evita todavía exigir su dimisión y el PP pide que Sánchez comparezca",
-      "url": "https://www.lavanguardia.com/politica/20261029/11671165/feijoo-senala-puente-evita-todavia-exigir-dimision.html",
-      "selected_at": "2026-10-29T20:25:39.747432Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 5,
-      "sources": [
-        "El Mundo",
-        "La Vanguardia",
-        "Onda Cero",
-        "Público",
-        "Telecinco Noticias"
-      ]
+      "event_id": "manual-4f1806ce-03b5-4a9e-bdb6-c2aeb99b2c06",
+      "title": "Investigar noticia del enlace: www.publico.es",
+      "url": "https://www.publico.es/tremending/redes-comparan-reacciones-borja-iglesias-otros-futbolistas-accidente-toledo-diferencia-estar-altura-embarrar.html",
+      "status": "PROCESSING",
+      "revision": 1,
+      "selected_at": "2026-10-29T19:07:57.615037Z",
+      "requested_at": "2026-10-29T19:07:57.615037Z",
+      "selection_mode": "TTACTUALIDAD_MANUAL",
+      "manual_submission": true,
+      "manual_investigation_requested": true,
+      "force_user_elaborate": true,
+      "allow_zero_initial_sources": true,
+      "source_count": 0,
+      "verified_source_count": 0,
+      "sources": [],
+      "user_instructions": "",
+      "rewrite_request": "",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY."
     },
     {
-      "event_id": "8cf60c613f23",
-      "title": "Muere el actor de 'X-Men' y 'Star Trek' Patrick Stewart a los 86 años",
-      "url": "https://www.abc.es/play/cine/noticias/muere-actor-xmen-star-trek-patrick-stewart-20261029210037-nt.html",
-      "selected_at": "2026-10-29T20:15:17.382840Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 8,
-      "sources": [
-        "20minutos",
-        "ABC",
-        "EL PAÍS",
-        "El Mundo",
-        "Público",
-        "RTVE",
-        "elDiario.es",
-        "laSexta Noticias"
-      ]
-    },
-    {
-      "event_id": "a0160e800693",
-      "title": "Ouigo cancela todos sus trenes el viernes y el lunes por la huelga de maquinistas",
-      "url": "https://www.cope.es/actualidad/espana/noticias/ouigo-cancela-todos-trenes-viernes-30-octubre-proximo-lunes-2-noviembre-huelga-maquinistas-20261029_3465416.html",
-      "selected_at": "2026-10-29T19:24:27.139654Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 7,
-      "sources": [
-        "20minutos",
-        "ABC",
-        "COPE",
-        "El Mundo",
-        "Europa Press",
-        "La Vanguardia",
-        "Telecinco Noticias"
-      ]
-    },
-    {
-      "event_id": "f0458433a9d1",
-      "title": "Varios militares muertos al estrellarse un helicóptero italiano de la EUFOR en Bosnia",
+      "id": "f0458433a9d1",
+      "canonical_title": "Varios militares muertos al estrellarse un helicóptero italiano de la EUFOR en Bosnia",
       "url": "https://www.lavanguardia.com/internacional/20261029/11671423/militares-muertos-estrellarse-helicoptero-italiano-eufor-bosnia.html",
-      "selected_at": "2026-10-29T19:14:11.595603Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 4,
+      "appearances": [
+        {
+          "source": "Europa Press",
+          "source_type": "general",
+          "title": "Un helicóptero italiano de operación EUFOR Althea se estrella en el norte de Bosnia",
+          "url": "https://www.europapress.es/internacional/noticia-helicoptero-italiano-operacion-eufor-althea-estrella-norte-bosnia-20261029184622.html",
+          "first_seen": "2026-10-29T17:52:30.286937Z",
+          "last_seen": "2026-10-29T17:52:30.286937Z"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Varios militares muertos al estrellarse un helicóptero italiano de la EUFOR en Bosnia",
+          "url": "https://www.lavanguardia.com/internacional/20261029/11671423/militares-muertos-estrellarse-helicoptero-italiano-eufor-bosnia.html",
+          "first_seen": "2026-10-29T19:02:56.579040Z",
+          "last_seen": "2026-10-29T19:12:13.615517Z"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "Un helicóptero militar italiano se estrella en Bosnia y deja varios muertos",
+          "url": "https://www.abc.es/internacional/helicoptero-militar-italiano-estrella-bosnia-deja-varios-20261029193927-nt.html",
+          "first_seen": "2026-10-29T19:02:56.579040Z",
+          "last_seen": "2026-10-29T19:02:56.579040Z"
+        },
+        {
+          "source": "EFE",
+          "source_type": "general",
+          "title": "Al menos tres muertos al estrellarse en Bosnia un helicóptero de la EUFOR - EFE - Agencia de noticias",
+          "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPcWJWSGlMVHFyOTN6RGhTVEZVbW8wMlJrbTdXdzYzY3pLcTl1YnQzQmNRWHpnQW9iMVhoLU9jRjJQczRvSUtlcmNsc3RwSnl4UHdiUml5azhIYzgyMzZfeGxRM0JDMjdZV2t0TlVnQXMxVXA0WmMzR0tHMlJ4Sm96SDl3?oc=5",
+          "first_seen": "2026-10-29T19:12:13.615517Z",
+          "last_seen": "2026-10-29T19:12:13.615517Z"
+        }
+      ],
       "sources": [
         "Europa Press",
         "La Vanguardia",
         "ABC",
         "EFE"
-      ]
-    },
-    {
-      "event_id": "manual-4f1806ce-03b5-4a9e-bdb6-c2aeb99b2c06",
-      "title": "Investigar noticia del enlace: www.publico.es",
-      "url": "https://www.publico.es/tremending/redes-comparan-reacciones-borja-iglesias-otros-futbolistas-accidente-toledo-diferencia-estar-altura-embarrar.html",
-      "selected_at": "2026-10-29T19:07:57.615037Z",
-      "selection_mode": "TTACTUALIDAD_MANUAL",
-      "rewrite_version": null,
-      "source_count": 0,
-      "sources": []
-    },
-    {
-      "event_id": "e72c926cbe95",
-      "title": "La reacción de las redes al nuevo vídeo viral de Pedro Sánchez con el 'Guernica': \"Es el Messi de las campañas políticas\"",
-      "url": "https://www.publico.es/tremending/reaccion-redes-nuevo-video-viral-pedro-sanchez-guernica-messi-campanas-politicas.html",
-      "selected_at": "2026-10-29T18:45:21.324293Z",
+      ],
+      "source_count": 4,
+      "percentage": 25.0,
+      "first_seen": "2026-10-29T17:52:30.286937Z",
+      "last_seen": "2026-10-29T19:12:13.615517Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [],
+      "discovery_sources": [],
+      "source_families": [
+        "Europa Press",
+        "La Vanguardia",
+        "ABC",
+        "EFE"
+      ],
+      "outlet_count": 4,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-29T19:12:13.615517Z",
+      "event_id": "f0458433a9d1",
+      "title": "Varios militares muertos al estrellarse un helicóptero italiano de la EUFOR en Bosnia",
       "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 5,
+      "selected_at": "2026-10-29T19:14:11.595603Z",
+      "source_evidence": [
+        {
+          "source": "Europa Press",
+          "source_type": "general",
+          "title": "Un helicóptero italiano de operación EUFOR Althea se estrella en el norte de Bosnia",
+          "url": "https://www.europapress.es/internacional/noticia-helicoptero-italiano-operacion-eufor-althea-estrella-norte-bosnia-20261029184622.html",
+          "first_seen": "2026-10-29T17:52:30.286937Z",
+          "last_seen": "2026-10-29T17:52:30.286937Z",
+          "source_family": "Europa Press"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Varios militares muertos al estrellarse un helicóptero italiano de la EUFOR en Bosnia",
+          "url": "https://www.lavanguardia.com/internacional/20261029/11671423/militares-muertos-estrellarse-helicoptero-italiano-eufor-bosnia.html",
+          "first_seen": "2026-10-29T19:02:56.579040Z",
+          "last_seen": "2026-10-29T19:12:13.615517Z",
+          "source_family": "La Vanguardia"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "Un helicóptero militar italiano se estrella en Bosnia y deja varios muertos",
+          "url": "https://www.abc.es/internacional/helicoptero-militar-italiano-estrella-bosnia-deja-varios-20261029193927-nt.html",
+          "first_seen": "2026-10-29T19:02:56.579040Z",
+          "last_seen": "2026-10-29T19:02:56.579040Z",
+          "source_family": "ABC"
+        },
+        {
+          "source": "EFE",
+          "source_type": "general",
+          "title": "Al menos tres muertos al estrellarse en Bosnia un helicóptero de la EUFOR - EFE - Agencia de noticias",
+          "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPcWJWSGlMVHFyOTN6RGhTVEZVbW8wMlJrbTdXdzYzY3pLcTl1YnQzQmNRWHpnQW9iMVhoLU9jRjJQczRvSUtlcmNsc3RwSnl4UHdiUml5azhIYzgyMzZfeGxRM0JDMjdZV2t0TlVnQXMxVXA0WmMzR0tHMlJ4Sm96SDl3?oc=5",
+          "first_seen": "2026-10-29T19:12:13.615517Z",
+          "last_seen": "2026-10-29T19:12:13.615517Z",
+          "source_family": "EFE"
+        }
+      ],
+      "drafted_source_count": 4,
+      "verified_source_count": 4
+    },
+    {
+      "id": "a0160e800693",
+      "canonical_title": "Ouigo cancela todos sus trenes el viernes y el lunes por la huelga de maquinistas",
+      "url": "https://www.cope.es/actualidad/espana/noticias/ouigo-cancela-todos-trenes-viernes-30-octubre-proximo-lunes-2-noviembre-huelga-maquinistas-20261029_3465416.html",
+      "appearances": [
+        {
+          "source": "Europa Press",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes hasta el lunes para no incrementar el caos por la huelga en pleno puente",
+          "url": "https://www.europapress.es/economia/transportes-00343/noticia-ouigo-cancela-todos-trenes-lunes-no-incrementar-caos-huelga-pleno-puente-20261029183245.html",
+          "first_seen": "2026-10-29T17:33:19.530202Z",
+          "last_seen": "2026-10-29T17:33:19.530202Z"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes de este viernes y el próximo lunes por la huelga de maquinistas",
+          "url": "https://www.lavanguardia.com/vida/20261029/11671448/ouigo-cancela-todos-trenes-manana-proximo-lunes-huelga-maquinistas.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes este viernes y el lunes para evitar el \"caos\" en las estaciones tras anular la AN los servicios mínimos",
+          "url": "https://www.20minutos.es/nacional/ouigo-cancela-todos-sus-trenes-este-viernes-lunes-para-evitar-caos-las-estaciones-tras-anular-an-los-servicios-minimos_7055195_0.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes el 30 de octubre y el 2 de noviembre por la huelga de maquinistas",
+          "url": "https://www.abc.es/economia/ouigo-cancela-trenes-octubre-noviembre-huelga-maquinistas-20261029185355-nt.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z"
+        },
+        {
+          "source": "COPE",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes el viernes y el lunes por la huelga de maquinistas",
+          "url": "https://www.cope.es/actualidad/espana/noticias/ouigo-cancela-todos-trenes-viernes-30-octubre-proximo-lunes-2-noviembre-huelga-maquinistas-20261029_3465416.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Ouigo, obligado a cancelar todos sus trenes el viernes 30 de octubre y el lunes 2 de noviembre ante la huelga de maquinistas",
+          "url": "https://www.elmundo.es/economia/2026/10/29/6ae37e72e9cf4ae2098b4592.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes el 30 de octubre y el 2 de noviembre al no haber servicios mínimos en la huelga - Telecinco",
+          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOSmZ3YVFUak92MHg3VmZSa0JFTE5SeUNiZ29zd2FEVlRyaUZkOWJEME9ja3JRU0NvWHJZRG5rVWEyLVpCMFY0LXlneWJlcDNXVEtqSUpLUlhvb0o1ZXJWd1lXc2hTZlhfM2ZvOVM5U05wbjNrUmx4MUJvVFA4V1owTURzMTVfSjctZ09jNkc0QUJqX09hWXprRVMxRl9KYlhFMFFRYjlENWQ3NVlYVkNxRW9tV3gzclU?oc=5",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z"
+        }
+      ],
       "sources": [
+        "Europa Press",
+        "La Vanguardia",
+        "20minutos",
+        "ABC",
         "COPE",
-        "Cadena SER",
+        "El Mundo",
+        "Telecinco Noticias"
+      ],
+      "source_count": 7,
+      "percentage": 43.8,
+      "first_seen": "2026-10-29T17:33:19.530202Z",
+      "last_seen": "2026-10-29T19:22:11.104366Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [],
+      "discovery_sources": [],
+      "source_families": [
+        "Europa Press",
+        "La Vanguardia",
+        "20minutos",
+        "ABC",
+        "COPE",
+        "El Mundo",
+        "Mediaset"
+      ],
+      "outlet_count": 7,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-29T19:22:11.104366Z",
+      "event_id": "a0160e800693",
+      "title": "Ouigo cancela todos sus trenes el viernes y el lunes por la huelga de maquinistas",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-29T19:24:27.139654Z",
+      "source_evidence": [
+        {
+          "source": "Europa Press",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes hasta el lunes para no incrementar el caos por la huelga en pleno puente",
+          "url": "https://www.europapress.es/economia/transportes-00343/noticia-ouigo-cancela-todos-trenes-lunes-no-incrementar-caos-huelga-pleno-puente-20261029183245.html",
+          "first_seen": "2026-10-29T17:33:19.530202Z",
+          "last_seen": "2026-10-29T17:33:19.530202Z",
+          "source_family": "Europa Press"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes de este viernes y el próximo lunes por la huelga de maquinistas",
+          "url": "https://www.lavanguardia.com/vida/20261029/11671448/ouigo-cancela-todos-trenes-manana-proximo-lunes-huelga-maquinistas.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z",
+          "source_family": "La Vanguardia"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes este viernes y el lunes para evitar el \"caos\" en las estaciones tras anular la AN los servicios mínimos",
+          "url": "https://www.20minutos.es/nacional/ouigo-cancela-todos-sus-trenes-este-viernes-lunes-para-evitar-caos-las-estaciones-tras-anular-an-los-servicios-minimos_7055195_0.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z",
+          "source_family": "20minutos"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes el 30 de octubre y el 2 de noviembre por la huelga de maquinistas",
+          "url": "https://www.abc.es/economia/ouigo-cancela-trenes-octubre-noviembre-huelga-maquinistas-20261029185355-nt.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z",
+          "source_family": "ABC"
+        },
+        {
+          "source": "COPE",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes el viernes y el lunes por la huelga de maquinistas",
+          "url": "https://www.cope.es/actualidad/espana/noticias/ouigo-cancela-todos-trenes-viernes-30-octubre-proximo-lunes-2-noviembre-huelga-maquinistas-20261029_3465416.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z",
+          "source_family": "COPE"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Ouigo, obligado a cancelar todos sus trenes el viernes 30 de octubre y el lunes 2 de noviembre ante la huelga de maquinistas",
+          "url": "https://www.elmundo.es/economia/2026/10/29/6ae37e72e9cf4ae2098b4592.html",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z",
+          "source_family": "El Mundo"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "source_type": "general",
+          "title": "Ouigo cancela todos sus trenes el 30 de octubre y el 2 de noviembre al no haber servicios mínimos en la huelga - Telecinco",
+          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOSmZ3YVFUak92MHg3VmZSa0JFTE5SeUNiZ29zd2FEVlRyaUZkOWJEME9ja3JRU0NvWHJZRG5rVWEyLVpCMFY0LXlneWJlcDNXVEtqSUpLUlhvb0o1ZXJWd1lXc2hTZlhfM2ZvOVM5U05wbjNrUmx4MUJvVFA4V1owTURzMTVfSjctZ09jNkc0QUJqX09hWXprRVMxRl9KYlhFMFFRYjlENWQ3NVlYVkNxRW9tV3gzclU?oc=5",
+          "first_seen": "2026-10-29T19:22:11.104366Z",
+          "last_seen": "2026-10-29T19:22:11.104366Z",
+          "source_family": "Mediaset"
+        }
+      ],
+      "drafted_source_count": 7,
+      "verified_source_count": 7
+    },
+    {
+      "id": "8cf60c613f23",
+      "canonical_title": "Muere el actor de 'X-Men' y 'Star Trek' Patrick Stewart a los 86 años",
+      "url": "https://www.abc.es/play/cine/noticias/muere-actor-xmen-star-trek-patrick-stewart-20261029210037-nt.html",
+      "appearances": [
+        {
+          "source": "EL PAÍS",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, el capitán Picard de ‘Star Trek’ y el profesor Charles Xavier de ‘X-Men’, a los 86 años",
+          "url": "https://elpais.com/us/entretenimiento/2026-10-29/muere-patrick-stewart-el-capitan-picard-de-star-trek-a-los-86-anos.html",
+          "first_seen": "2026-10-29T20:02:45.161587Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, el profesor Xavier de X-Men y el capitn Picard de Star Trek a los 86 aos",
+          "url": "https://www.elmundo.es/cultura/cine/2026/10/29/6ae3a578e9cf4a76238b45a0.html",
+          "first_seen": "2026-10-29T20:02:45.161587Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "RTVE",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, el actor que interpret al capitn Picard de 'Star Trek' y al profesor Charles Xavier de 'X-Men'",
+          "url": "https://www.rtve.es/noticias/20261029/muere-patrick-stewart-star-trek-xmen/17289271.shtml",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, icónico actor de 'Star Trek' y 'X-Men', a los 86 años",
+          "url": "https://www.20minutos.es/cinemania/noticias/muere-patrick-stewart-iconico-actor-star-trek-x-men-los-86-anos_7055231_0.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "Muere el actor de 'X-Men' y 'Star Trek' Patrick Stewart a los 86 años",
+          "url": "https://www.abc.es/play/cine/noticias/muere-actor-xmen-star-trek-patrick-stewart-20261029210037-nt.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "elDiario.es",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, actor de 'Star Trek' y 'X-Men', a los 86 años",
+          "url": "https://www.eldiario.es/cultura/muere-actor-patrick-stewart-86-anos_1_13625869.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "Muere el actor británico de 'Star Trek' Patrick Stewart",
+          "url": "https://www.publico.es/culturas/muere-actor-britanico-star-trek-patrick-stewart.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "laSexta Noticias",
+          "source_type": "general",
+          "title": "Adiós a una leyenda Muere Patrick Stewart a los 86 años, líder de los mutantes de 'X-Men' e inolvidable capitán Picard de 'Star Trek' Maite Martí 29 de octubre de 2026, 21:09",
+          "url": "https://www.lasexta.com/noticias/cultura/muere-patrick-stewart-86-anos-lider-mutantes-xmen-inolvidable-capitan-picard-star-trek_202610296ae3a7ff004b78127ab93c2e.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        },
+        {
+          "source": "Público · Tremending",
+          "source_type": "social",
+          "title": "ÚLTIMA HORA » Muere el actor británico de 'Star Trek' Patrick Stewart",
+          "url": "https://www.publico.es/culturas/muere-actor-britanico-star-trek-patrick-stewart.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z"
+        }
+      ],
+      "sources": [
         "EL PAÍS",
+        "El Mundo",
+        "RTVE",
+        "20minutos",
+        "ABC",
+        "elDiario.es",
         "Público",
-        "elDiario.es"
-      ]
+        "laSexta Noticias"
+      ],
+      "source_count": 8,
+      "percentage": 50.0,
+      "first_seen": "2026-10-29T20:02:45.161587Z",
+      "last_seen": "2026-10-29T20:12:12.764052Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [
+        "Público · Tremending"
+      ],
+      "discovery_sources": [],
+      "source_families": [
+        "EL PAÍS",
+        "El Mundo",
+        "RTVE",
+        "20minutos",
+        "ABC",
+        "elDiario.es",
+        "Público",
+        "Atresmedia"
+      ],
+      "outlet_count": 8,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-29T20:12:12.764052Z",
+      "event_id": "8cf60c613f23",
+      "title": "Muere el actor de 'X-Men' y 'Star Trek' Patrick Stewart a los 86 años",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-29T20:15:17.382840Z",
+      "source_evidence": [
+        {
+          "source": "EL PAÍS",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, el capitán Picard de ‘Star Trek’ y el profesor Charles Xavier de ‘X-Men’, a los 86 años",
+          "url": "https://elpais.com/us/entretenimiento/2026-10-29/muere-patrick-stewart-el-capitan-picard-de-star-trek-a-los-86-anos.html",
+          "first_seen": "2026-10-29T20:02:45.161587Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "EL PAÍS"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, el profesor Xavier de X-Men y el capitn Picard de Star Trek a los 86 aos",
+          "url": "https://www.elmundo.es/cultura/cine/2026/10/29/6ae3a578e9cf4a76238b45a0.html",
+          "first_seen": "2026-10-29T20:02:45.161587Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "El Mundo"
+        },
+        {
+          "source": "RTVE",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, el actor que interpret al capitn Picard de 'Star Trek' y al profesor Charles Xavier de 'X-Men'",
+          "url": "https://www.rtve.es/noticias/20261029/muere-patrick-stewart-star-trek-xmen/17289271.shtml",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "RTVE"
+        },
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, icónico actor de 'Star Trek' y 'X-Men', a los 86 años",
+          "url": "https://www.20minutos.es/cinemania/noticias/muere-patrick-stewart-iconico-actor-star-trek-x-men-los-86-anos_7055231_0.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "20minutos"
+        },
+        {
+          "source": "ABC",
+          "source_type": "general",
+          "title": "Muere el actor de 'X-Men' y 'Star Trek' Patrick Stewart a los 86 años",
+          "url": "https://www.abc.es/play/cine/noticias/muere-actor-xmen-star-trek-patrick-stewart-20261029210037-nt.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "ABC"
+        },
+        {
+          "source": "elDiario.es",
+          "source_type": "general",
+          "title": "Muere Patrick Stewart, actor de 'Star Trek' y 'X-Men', a los 86 años",
+          "url": "https://www.eldiario.es/cultura/muere-actor-patrick-stewart-86-anos_1_13625869.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "elDiario.es"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "Muere el actor británico de 'Star Trek' Patrick Stewart",
+          "url": "https://www.publico.es/culturas/muere-actor-britanico-star-trek-patrick-stewart.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "Público"
+        },
+        {
+          "source": "laSexta Noticias",
+          "source_type": "general",
+          "title": "Adiós a una leyenda Muere Patrick Stewart a los 86 años, líder de los mutantes de 'X-Men' e inolvidable capitán Picard de 'Star Trek' Maite Martí 29 de octubre de 2026, 21:09",
+          "url": "https://www.lasexta.com/noticias/cultura/muere-patrick-stewart-86-anos-lider-mutantes-xmen-inolvidable-capitan-picard-star-trek_202610296ae3a7ff004b78127ab93c2e.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:12:12.764052Z",
+          "source_family": "Atresmedia"
+        }
+      ],
+      "drafted_source_count": 8,
+      "verified_source_count": 8
+    },
+    {
+      "id": "5728737e36a2",
+      "canonical_title": "Feijóo señala a Puente pero evita todavía exigir su dimisión y el PP pide que Sánchez comparezca",
+      "url": "https://www.lavanguardia.com/politica/20261029/11671165/feijoo-senala-puente-evita-todavia-exigir-dimision.html",
+      "appearances": [
+        {
+          "source": "Onda Cero",
+          "source_type": "general",
+          "title": "Feijóo cuestiona el sistema ferroviario, pide \"tomar decisiones\" y carga contra Sánchez: \"Así no se puede seguir\"",
+          "url": "https://www.ondacero.es/noticias/espana/feijoo-cuestiona-sistema-ferroviario-pide-tomar-decisiones-carga-sanchez-asi-puede-seguir_202610296ae34153004b78127ab89582.html",
+          "first_seen": "2026-10-29T12:52:17.764887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Feijóo señala a Puente pero evita todavía exigir su dimisión y el PP pide que Sánchez comparezca",
+          "url": "https://www.lavanguardia.com/politica/20261029/11671165/feijoo-senala-puente-evita-todavia-exigir-dimision.html",
+          "first_seen": "2026-10-29T20:22:05.660887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "CSIF pide la dimisin de Oscar Puente y denuncia que es inaceptable que se \"seale a un trabajador\" como chivo expiatorio",
+          "url": "https://www.elmundo.es/espana/2026/10/29/6ae38acfe4d4d8e8508b45a6-video.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "Feijóo evita pedir la dimisión de Óscar Puente pero la deja entrever: \"Yo sé lo que haría\"",
+          "url": "https://www.publico.es/politica/feijoo-evita-pedir-dimision-oscar-puente-pero-deja-entrever-haria-forma-gestionar-puede-continuar.html",
+          "first_seen": "2026-10-29T20:22:05.660887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "source_type": "general",
+          "title": "Óscar Puente no dimite, pero comparecerá en el Congreso el 3 de noviembre y Sánchez evita imágenes con él - Telecinco",
+          "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNRHRnUzl3dUhuMEtSZ0hVQUZBa2lwanpjcmtGdG1hdEotME8zYXQxZ3pNQWpxYmFEU3ZjaUhJSWpUUmlqRFM2YUpkeUc3MEdueWZvRmNFSm44WnB6NGNpUjB3aHIzNFA2ZVFpS0ZjakxvSlBENTk3NkZBMzBPUG12ZTRlV2JlYTRWZDNuUEpZTUJkYmc1ZkdfU0x1N3JWQml0NGZqZFVxVFVPV29YNkdFZmtkdXFNR3d3LWVkdTNCR3Rsc2tMNk1EZ1lITngwQ2ZmRnNIdnJkSU5nd2RRaU00STJQMV9SZkxF?oc=5",
+          "first_seen": "2026-10-29T20:22:05.660887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z"
+        }
+      ],
+      "sources": [
+        "Onda Cero",
+        "La Vanguardia",
+        "El Mundo",
+        "Público",
+        "Telecinco Noticias"
+      ],
+      "source_count": 5,
+      "percentage": 31.2,
+      "first_seen": "2026-10-29T12:52:17.764887Z",
+      "last_seen": "2026-10-29T20:22:05.660887Z",
+      "status": "PROCESSING",
+      "notified": false,
+      "revision": 1,
+      "sport_sources": [],
+      "social_sources": [],
+      "discovery_sources": [],
+      "source_families": [
+        "Atresmedia",
+        "La Vanguardia",
+        "El Mundo",
+        "Público",
+        "Mediaset"
+      ],
+      "outlet_count": 5,
+      "sport_source_count": 0,
+      "eligible_at": "2026-10-29T20:22:05.660887Z",
+      "event_id": "5728737e36a2",
+      "title": "Feijóo señala a Puente pero evita todavía exigir su dimisión y el PP pide que Sánchez comparezca",
+      "selection_mode": "AUTO_WEB",
+      "selected_at": "2026-10-29T20:25:39.747432Z",
+      "source_evidence": [
+        {
+          "source": "Onda Cero",
+          "source_type": "general",
+          "title": "Feijóo cuestiona el sistema ferroviario, pide \"tomar decisiones\" y carga contra Sánchez: \"Así no se puede seguir\"",
+          "url": "https://www.ondacero.es/noticias/espana/feijoo-cuestiona-sistema-ferroviario-pide-tomar-decisiones-carga-sanchez-asi-puede-seguir_202610296ae34153004b78127ab89582.html",
+          "first_seen": "2026-10-29T12:52:17.764887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z",
+          "source_family": "Atresmedia"
+        },
+        {
+          "source": "La Vanguardia",
+          "source_type": "general",
+          "title": "Feijóo señala a Puente pero evita todavía exigir su dimisión y el PP pide que Sánchez comparezca",
+          "url": "https://www.lavanguardia.com/politica/20261029/11671165/feijoo-senala-puente-evita-todavia-exigir-dimision.html",
+          "first_seen": "2026-10-29T20:22:05.660887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z",
+          "source_family": "La Vanguardia"
+        },
+        {
+          "source": "El Mundo",
+          "source_type": "general",
+          "title": "CSIF pide la dimisin de Oscar Puente y denuncia que es inaceptable que se \"seale a un trabajador\" como chivo expiatorio",
+          "url": "https://www.elmundo.es/espana/2026/10/29/6ae38acfe4d4d8e8508b45a6-video.html",
+          "first_seen": "2026-10-29T20:12:12.764052Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z",
+          "source_family": "El Mundo"
+        },
+        {
+          "source": "Público",
+          "source_type": "general",
+          "title": "Feijóo evita pedir la dimisión de Óscar Puente pero la deja entrever: \"Yo sé lo que haría\"",
+          "url": "https://www.publico.es/politica/feijoo-evita-pedir-dimision-oscar-puente-pero-deja-entrever-haria-forma-gestionar-puede-continuar.html",
+          "first_seen": "2026-10-29T20:22:05.660887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z",
+          "source_family": "Público"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "source_type": "general",
+          "title": "Óscar Puente no dimite, pero comparecerá en el Congreso el 3 de noviembre y Sánchez evita imágenes con él - Telecinco",
+          "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNRHRnUzl3dUhuMEtSZ0hVQUZBa2lwanpjcmtGdG1hdEotME8zYXQxZ3pNQWpxYmFEU3ZjaUhJSWpUUmlqRFM2YUpkeUc3MEdueWZvRmNFSm44WnB6NGNpUjB3aHIzNFA2ZVFpS0ZjakxvSlBENTk3NkZBMzBPUG12ZTRlV2JlYTRWZDNuUEpZTUJkYmc1ZkdfU0x1N3JWQml0NGZqZFVxVFVPV29YNkdFZmtkdXFNR3d3LWVkdTNCR3Rsc2tMNk1EZ1lITngwQ2ZmRnNIdnJkSU5nd2RRaU00STJQMV9SZkxF?oc=5",
+          "first_seen": "2026-10-29T20:22:05.660887Z",
+          "last_seen": "2026-10-29T20:22:05.660887Z",
+          "source_family": "Mediaset"
+        }
+      ],
+      "drafted_source_count": 5,
+      "verified_source_count": 5
     }
   ],
-  "ready_count": 0,
+  "ready_count": 1,
   "problematic_count": 0,
   "problematic_items": [],
   "trend_candidates_count": 0,
