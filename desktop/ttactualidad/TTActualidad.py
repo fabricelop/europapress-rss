@@ -97,14 +97,81 @@ def rows(d, key="items"):
     data = d.get(key, []) if isinstance(d, dict) else []
     return data if isinstance(data, list) else []
 
+def confirmed_terminals(docs):
+    """Only GitHub-confirmed terminal outcomes, never local optimistic actions.
+
+    Receipts cover the brief interval between Actions accepting an operation
+    and the editorial decision ledger being visible. The revision matters:
+    an older closure must never hide a new editorial revision.
+    """
+    marks = {}
+    def add(project, identifier, revision, state, at):
+        if state not in {"published", "deleted", "dismissed", "discard"}:
+            return
+        if project not in {"ttittulares", "ttendencias"}:
+            return
+        identifier = text(identifier)
+        if not identifier:
+            return
+        try:
+            rev = int(revision or 0)
+        except (TypeError, ValueError):
+            return
+        key = (project, identifier)
+        current = marks.get(key)
+        stamp = date(at)
+        if current is None or rev > current["revision"] or (
+                rev == current["revision"] and (stamp or dt.datetime.min.replace(
+                    tzinfo=dt.timezone.utc)) > (current["at"] or dt.datetime.min.replace(
+                        tzinfo=dt.timezone.utc))):
+            marks[key] = {"revision": rev, "at": stamp}
+    for row in rows(docs.get("decisions", {})):
+        add("ttittulares", row.get("event_id"), row.get("revision"),
+            text(row.get("status")).lower(),
+            row.get("published_at") or row.get("deleted_at") or row.get("updated_at"))
+    for row in rows(docs.get("trend_decisions", {})):
+        add("ttendencias", row.get("id") or row.get("event_id"),
+            row.get("revision"), text(row.get("status")).lower(),
+            row.get("published_at") or row.get("deleted_at") or row.get("updated_at"))
+    for doc, list_key in (("manual", "items"), ("requests", "requests")):
+        for row in rows(docs.get(doc, {}), list_key):
+            add("ttendencias", row.get("id"), row.get("revision"),
+                text(row.get("status")).lower(),
+                row.get("published_at") or row.get("deleted_at") or row.get("updated_at"))
+    for row in rows(docs.get("action_receipts", {})):
+        if text(row.get("status")).lower() not in {"applied", "already_applied"}:
+            continue
+        add(text(row.get("project")), row.get("event_id"),
+            row.get("revision"), text(row.get("decision")).lower(), row.get("at"))
+    return marks
+
+
+def terminal_applies(marks, project, identifier, revision, episode_at=None):
+    mark = marks.get((project, text(identifier)))
+    if not mark:
+        return False
+    rev = int(revision or 0)
+    if rev > mark["revision"]:
+        return False
+    # A trend ID/revision may be reused in a new editorial episode.
+    if project == "ttendencias" and rev == mark["revision"]:
+        episode = date(episode_at)
+        if episode and mark["at"] and episode > mark["at"] + dt.timedelta(seconds=60):
+            return False
+    return True
+
+
 def normalise(docs):
     prepared = rows(docs["prepared"])
-    decisions = latest_rows(rows(docs["decisions"]), "event_id")
-    closed = {k for k,v in decisions.items() if text(v.get("status")).lower() in TERMINAL}
+    marks = confirmed_terminals(docs)
+    def is_news_closed(item):
+        return terminal_applies(marks, "ttittulares",
+                                item.get("event_id") or item.get("id"),
+                                item.get("revision"))
     ready_news = []
     for item in prepared:
         ident = text(item.get("event_id"))
-        if not ident or ident in closed or item.get("rewrite_pending") is True:
+        if not ident or is_news_closed(item) or item.get("rewrite_pending") is True:
             continue
         tweet = item.get("tweet") or {}
         archive = item.get("archive_image") or item.get("fallback_image") or {}
@@ -120,7 +187,7 @@ def normalise(docs):
         output = []
         for x in items:
             ident = text(x.get("event_id") or x.get("id"))
-            if not ident or ident in closed or text(x.get("status")).lower() in TERMINAL or (label!="En elaboración" and ident in active_ids):
+            if not ident or is_news_closed(x) or text(x.get("status")).lower() in TERMINAL or (label!="En elaboración" and ident in active_ids):
                 continue
             output.append({"project":"ttittulares","id":ident,"revision":int(x.get("revision") or 0),
                 "title":text(x.get("title") or x.get("name")), "body":text(x.get("explanation") or x.get("factual_summary")),
@@ -146,6 +213,8 @@ def normalise(docs):
         if leader and leader != ident:
             continue
         rev = int(x.get("revision") or 0)
+        if terminal_applies(marks, "ttendencias", ident, rev, x.get("explained_at")):
+            continue
         explained = date(x.get("explained_at"))
         if not explained or not -3600 <= (now - explained).total_seconds() <= 48*3600:
             continue
