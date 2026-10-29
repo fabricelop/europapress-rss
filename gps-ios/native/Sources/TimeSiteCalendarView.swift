@@ -1,6 +1,15 @@
 import SwiftUI
 import MapKit
 
+/// Reusable in-memory snapshot survives tab navigation. No writes to GPS
+/// history; the index is automatically invalidated by new interval metadata.
+struct SiteCalendarMemo {
+    let intervalCount:Int
+    let lastEnd:Date?
+    let stays:[SiteGridStay]
+    let byDay:[Date:[SiteGridStay]]
+}
+
 /// Full-history calendar, built from the canonical recorded GPS intervals.
 /// Every continuous single-cell stay > 5 confirmed minutes can be inspected.
 struct TimeSiteCalendarView: View {
@@ -339,7 +348,17 @@ struct TimeSiteCalendarView: View {
             }
         }
         .onAppear {
-            if allStays.isEmpty || indexedIntervalCount != model.data.intervals.count {
+            // A cached index gives the first frame immediately on returning
+            // from another app or when revisiting this tab.
+            if allStays.isEmpty,let memo=model.siteCalendarMemo {
+                allStays=memo.stays
+                staysByDay=memo.byDay
+                indexedIntervalCount=memo.intervalCount
+                refreshPartsIndex()
+                openRequestedStay()
+            }
+            if allStays.isEmpty || indexedIntervalCount != model.data.intervals.count ||
+               model.siteCalendarMemo?.lastEnd != model.data.intervals.last?.end {
                 rebuild()
             } else {
                 refreshPartsIndex()
@@ -467,6 +486,9 @@ struct TimeSiteCalendarView: View {
                 allStays=computed
                 staysByDay=indexed
                 indexedIntervalCount=original.count
+                model.siteCalendarMemo=SiteCalendarMemo(
+                    intervalCount:original.count,lastEnd:original.last?.end,
+                    stays:computed,byDay:indexed)
                 refreshPartsIndex()
                 preparing=false
                 openRequestedStay()
