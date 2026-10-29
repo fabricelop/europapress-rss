@@ -373,6 +373,18 @@ final class GitHubEditor: ObservableObject {
             if attempt > 0 { try? await Task.sleep(for: .seconds(3)) }
             do {
                 if event == "ttactualidad_manual_news_v1" {
+                    // A manual job may complete or reject before its queue
+                    // entry is read. Check the durable receipt first.
+                    if let status = try await actionReceipt(requestID) {
+                        if ["applied", "already_applied"].contains(status) {
+                            notice = "Verificado en GitHub: noticia añadida a En elaboración."
+                            return true
+                        }
+                        if ["failed", "rejected"].contains(status) {
+                            notice = "GitHub rechazó la solicitud: consulta el historial de órdenes."
+                            return false
+                        }
+                    }
                     if try await manualNewsPersisted(requestID) {
                         notice = "Verificado en GitHub: noticia añadida a En elaboración."
                         return true
