@@ -402,6 +402,46 @@ const BRIDGE_FEATURES="v28-reject-nonconversation-image-targets";
 const BRIDGE_COMPOSER_FIX="v56-atomic-command-scoped-submit";
 const COMPOSER_SELECTOR='[data-tt-image-composer="true"],#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
+// Pre-submit only. ChatGPT can mount a hidden/stale composer while the fixed
+// tab is hydrating; existence alone is NOT readiness to type. Never click a
+// draft or navigate away from an already-generating conversation.
+async function ensureVisibleComposerBeforeInput(cdp,{maxPolls=12,delayMs=750}={}){
+  let last=null;
+  const probe="(()=>{const cands=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];"
+    +"const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'').trim();"
+    +"const good=c=>{try{const r=c.getBoundingClientRect(),s=getComputedStyle(c);return c.isConnected&&!c.disabled&&!c.readOnly&&r.width>12&&r.height>10&&s.display!=='none'&&s.visibility!=='hidden'&&!c.closest('[inert],[aria-hidden=\\\"true\\\"]')}catch{return false}};"
+    +"const c=cands.find(x=>x.getAttribute('data-tt-image-composer')==='true'&&good(x))||cands.find(good);"
+    +"const generating=!!document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]');"
+    +"const title=document.title||'';const blocked=!!document.querySelector('input[type=\\\"password\\\"]')||/log in|sign in|iniciar sesi[oó]n|verify you are human|comprueba que eres humano/i.test(title);"
+    +"const sizes=cands.slice(0,4).map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)]});"
+    +"return {ok:!!c,found:cands.length,sizes,hidden:document.visibilityState==='hidden',generating,blocked,typedDraft:cands.some(x=>read(x).length>0),url:location.href,title:title.slice(0,90)};})()";
+  for(let pass=0;pass<2;pass++){
+    // Only the dedicated ChatGPT tab is affected; neither Chrome itself nor
+    // TTiTTulares or the separate TTImages/CDP 9234 session is touched.
+    try{await cdp.call("Page.bringToFront",{},5000)}catch{}
+    for(let n=0;n<maxPolls;n++){
+      try{last=await cdp.eval(probe)}catch(e){last={error:String(e&&e.message||e).slice(0,140)}}
+      if(last&&last.ok)return last;
+      if(last&&(last.generating||last.typedDraft||last.blocked)){
+        throw Error("Compositor no disponible: sesión ocupada o requiere intervención; "+JSON.stringify(last).slice(0,420));
+      }
+      if(n===0||n===maxPolls-1)console.log("BRIDGE VISIBLE COMPOSER PREFLIGHT pass="+pass+" probe="+n+" "+JSON.stringify(last||{}).slice(0,380));
+      if(n+1<maxPolls)await sleep(delayMs);
+    }
+    if(pass===0){
+      // At this point no text has been typed, no send was attempted and no
+      // active generation or unsent draft is present. Repair only this tab.
+      if(!last||!/^https:\/\/chatgpt\.com(?:\/|$)/.test(String(last.url||""))){
+        throw Error("No hay compositor visible: ruta ajena a ChatGPT; "+JSON.stringify(last||{}).slice(0,400));
+      }
+      console.log("BRIDGE VISIBLE COMPOSER RECOVERY :: same-target home navigation, no prompt sent");
+      await navigateChatBestEffort(cdp);
+      await sleep(delayMs);
+    }
+  }
+  throw Error("No hay compositor visible utilizable tras recuperación aislada; "+JSON.stringify(last||{}).slice(0,450));
+}
+
 async function inspectChat(cdp,job){
   const targetName=String(job&&job.target_name||"").trim();
   return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
@@ -409,6 +449,9 @@ async function inspectChat(cdp,job){
 
 
 async function injectPromptIntoChat(cdp,job){
+  // Hydration may expose stale hidden editors; no prompt is typed until one
+  // real editor becomes visible. Never reload an active generation or draft.
+  await ensureVisibleComposerBeforeInput(cdp);
   const message=buildMessage(job);
   try{
     const before=await domImageCandidates(cdp);
@@ -420,7 +463,12 @@ async function injectPromptIntoChat(cdp,job){
   // in the DOM during SPA navigation. Never type into the first hidden match.
   for(let attempt=1;attempt<=2;attempt++){
     const prep=await cdp.eval("(()=>{const elements=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const visible=c=>{const r=c.getBoundingClientRect();const style=getComputedStyle(c);return c.isConnected&&!c.disabled&&!c.readOnly&&r.width>12&&r.height>10&&style.display!=='none'&&style.visibility!=='hidden'&&!c.closest('[inert],[aria-hidden=\\\"true\\\"]')};const chosen=elements.find(c=>c.getAttribute('data-tt-image-composer')==='true'&&visible(c))||elements.find(visible);if(!chosen)return {ok:false,found:elements.length,url:location.href};elements.forEach(c=>c.removeAttribute('data-tt-image-composer'));chosen.setAttribute('data-tt-image-composer','true');chosen.focus();try{if(chosen.tagName==='TEXTAREA'||chosen.tagName==='INPUT'){chosen.value='';chosen.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection(),r=document.createRange();r.selectNodeContents(chosen);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,found:elements.length,tag:chosen.tagName,url:location.href,focused:document.activeElement===chosen}})()");
-    if(!prep||!prep.ok)throw Error("No hay compositor visible utilizable para fallback found="+String(prep&&prep.found||0));
+    if(!prep||!prep.ok){
+      // React/Lexical remount between preflight and focus can be transient.
+      // There is still no typed prompt or submit at this point.
+      if(attempt===1){await sleep(900);continue}
+      throw Error("No hay compositor visible tras remount, found="+String(prep&&prep.found||0));
+    }
     if(attempt===1){
       try{
         const baseline=await cdp.eval("(()=>({generating:!!document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]')}))()");
