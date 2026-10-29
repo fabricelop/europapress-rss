@@ -47,7 +47,29 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(result, "applied")
         self.assertEqual(changes["ttittulares/prepared.json"]["count"], 0)
         self.assertEqual(changes["ttittulares/decisions.json"]["items"][0]["status"], "deleted")
+        self.assertEqual(changes["ttittulares/decisions.json"]["items"][0]["revision"], 2)
         self.assertNotIn("telegram/delete-message-queue.json", changes)
+
+    def test_tt_published_revision_saved_for_iphone_0421(self):
+        """Without revision, 0.4.21 cannot clear stale 'Sin confirmar' alerts."""
+        self.write("ttittulares/prepared.json", {
+            "items": [{"event_id": "7024c36e404e", "revision": 1}], "count": 1})
+        changes, status = mod.apply("ttittulares", "7024c36e404e", "published", 1)
+        self.assertEqual(status, "applied")
+        final = changes["ttittulares/decisions.json"]["items"][0]
+        self.assertEqual((final["event_id"], final["revision"], final["status"]),
+                         ("7024c36e404e", 1, "published"))
+        self.assertEqual(changes["ttittulares/prepared.json"]["items"], [])
+
+    def test_tt_completed_publication_rejects_conflicting_delete(self):
+        """Do not change an already-published item into an unverified deletion."""
+        self.write("ttittulares/decisions.json", {
+            "items": [{"event_id": "7ca2e207fd62",
+                       "revision": 1, "status": "published"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttittulares", "7ca2e207fd62", "deleted", 1)
+        self.assertEqual(mod.load("ttittulares/decisions.json", {})["items"][0]["status"],
+                         "published")
 
     def test_tt_revision_failure_no_changes(self):
         self.write("ttittulares/prepared.json", {"items": [{"event_id": "abc123", "revision": 3}]})

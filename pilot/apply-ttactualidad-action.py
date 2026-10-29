@@ -95,7 +95,11 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
         if not existing:
             existing = {"event_id": event_id}
             decisions.setdefault("items", []).append(existing)
-        existing.update({"status": status, "updated_at": now, "decision_source": "ttactualidad_direct"})
+        # The 0.4.21 iPhone reconciles terminal outcomes by (event_id, revision).
+        # Never omit revision: a decision without it looks like revision 0 and
+        # leaves a revision-1 action permanently "Sin confirmar".
+        existing.update({"status": status, "revision": revision, "updated_at": now,
+                         "decision_source": "ttactualidad_direct"})
         decisions["updated_at"] = now
         outputs = {state_path: decisions}
         if decision == "discard":
