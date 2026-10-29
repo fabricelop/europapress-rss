@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-29T16:02:36.725688+00:00",
-  "ok": false,
+  "checked_at": "2026-10-29T21:01:58.139878+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,8 +42,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 5,
-      "captured_age_minutes": 0.3,
+      "non_stale_sources": 4,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.9,
-      "run_id": 40907117326,
+      "age_minutes": 2.1,
+      "run_id": 40953900755,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,51 +77,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 6,
-      "overdue_count": 4,
-      "oldest_age_minutes": 50.4,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "d0ec9dd0dbf2",
-          "name": "Repsol",
-          "status": "preparing",
-          "age_minutes": 50.4
-        },
-        {
-          "id": "a6845a70bd64",
-          "name": "Eduardo Inda",
-          "status": "preparing",
-          "age_minutes": 50.4
-        },
-        {
-          "id": "8d05be59cfda",
-          "name": "Bruselas",
-          "status": "preparing",
-          "age_minutes": 38.7
-        },
-        {
-          "id": "1ca1648f448a",
-          "name": "El BCE",
-          "status": "preparing",
-          "age_minutes": 38.5
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "d0ec9dd0dbf2",
-        "a6845a70bd64",
-        "8d05be59cfda",
-        "1ca1648f448a",
-        "e2d41819d8b4",
-        "e586c5227112"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -131,10 +99,8 @@
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 50.4 min"
-  ],
+  "blocking": [],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 50.4 min"
+  "last_alert_signature": ""
 }
