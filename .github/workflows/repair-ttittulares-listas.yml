@@ -400,11 +400,15 @@ jobs:
               if not str(tweet.get("text") or "").strip() or not str(tweet.get("remate") or "").strip():
                   continue
 
-              # La generación IA está retirada. No reactivar sus estrategias.
-              if item.get("image_mode")!="archive_only":
-                  item["image_mode"]="archive_only"; changed=True
-              if item.get("image_strategy")!="archive_only":
-                  item["image_strategy"]="archive_only"; changed=True
+              # La foto de archivo es un respaldo INDEPENDIENTE. Nunca
+              # desactivar ImageGen desde este workflow: impediría que el
+              # consumidor image-outbox admitiera un raster IA ya generado.
+              # Respetar exclusiones editoriales expresas y capturas Tremending.
+              if not item.get("disable_ai_image") and str(item.get("image_mode") or "").lower() != "tweet_capture_only":
+                  if item.get("image_mode")!="ai_plus_fallback":
+                      item["image_mode"]="ai_plus_fallback"; changed=True
+                  if item.get("image_strategy")!="ai_plus_fallback":
+                      item["image_strategy"]="ai_plus_fallback"; changed=True
 
               archive=item.get("archive_image")
               fallback=item.get("fallback_image")
