@@ -14438,7 +14438,6 @@
         {
           "id": "91a96330a3c4",
           "name": "Madrid-Levante",
-          "rank": 23,
           "revision": 0
         }
       ],
@@ -14451,7 +14450,12 @@
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "verification_sources": [
+        "https://www.europapress.es/economia/transportes-00343/noticia-incidencia-tren-ouigo-interrumpe-circulacion-alta-velocidad-levante-20261029115042.html",
+        "https://www.telemadrid.es/noticias/madrid/retrasos-linea-alta-velocidad-madrid-levante_1_2781031.html"
+      ],
+      "disable_ai_image": false
     },
     {
       "id": "011618385c52",
@@ -14506,8 +14510,53 @@
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+    },
+    {
+      "id": "0190daf54b4c",
+      "name": "Rafa Jódar",
+      "revision": 0,
+      "status": "explained",
+      "explained_at": "2026-10-29T22:52:00+01:00",
+      "explanation": "TT#20 Rafa Jódar es tendencia porque perdió en octavos del ATP 500 de Basilea ante Valentin Vacherot por 7-6(4), 2-6 y 7-6(5); la derrota complica sus opciones de llegar a las ATP Finals.\n#RafaJódar #Basilea #ATPFinals\n🌶️ Dos desempates dejaron Turín un poco más lejos.",
+      "closer_text": "🌶️ Dos desempates dejaron Turín un poco más lejos.",
+      "rank": 20,
+      "rank_at_explanation": 20,
+      "category": "Tenis",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://www.europapress.es/deportes/tenis-00166/noticia-jodar-cae-basilea-complica-atp-finals-20261029150653.html",
+        "https://efe.com/deportes/2026-10-29/torneo-basilea-suiza-vacherot-acaba-con-jodar/"
+      ],
+      "news_note": "Rafa Jódar perdió ante Valentin Vacherot en octavos de Basilea por 7-6(4), 2-6 y 7-6(5), resultado que complica su acceso a las ATP Finals.",
+      "group_id": "grp-0190daf54b4c-r0",
+      "explanation_group_id": "grp-0190daf54b4c-r0",
+      "group_title": "Rafa Jódar · derrota en Basilea",
+      "group_leader_id": "0190daf54b4c",
+      "trend_names": [
+        "Rafa Jódar"
+      ],
+      "trend_context": [
+        {
+          "id": "0190daf54b4c",
+          "name": "Rafa Jódar",
+          "rank": 20,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "0190daf54b4c",
+          "name": "Rafa Jódar",
+          "revision": 0
+        }
+      ],
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-29T21:49:33.587358Z",
+  "updated_at": "2026-10-29T22:51:21+01:00",
   "count": 260
 }
