@@ -14454,8 +14454,7 @@
       "verification_sources": [
         "https://www.europapress.es/economia/transportes-00343/noticia-incidencia-tren-ouigo-interrumpe-circulacion-alta-velocidad-levante-20261029115042.html",
         "https://www.telemadrid.es/noticias/madrid/retrasos-linea-alta-velocidad-madrid-levante_1_2781031.html"
-      ],
-      "disable_ai_image": false
+      ]
     },
     {
       "id": "011618385c52",
@@ -14552,11 +14551,15 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none"
     }
   ],
-  "updated_at": "2026-10-29T22:51:21+01:00",
+  "updated_at": "2026-10-29T21:51:25.669881Z",
   "count": 260
 }
