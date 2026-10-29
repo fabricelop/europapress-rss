@@ -224,8 +224,11 @@ class ActionTests(unittest.TestCase):
                     "decision": decision, "request_id": "12345678-1111-1111-1111-123456789012",
                     "revision": 1}
             with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(data)}):
-                with self.assertRaises(mod.InvalidAction):
-                    mod.main()
+                mod.main()
+            ack=mod.load(mod.LEDGER, {"items":[]})["items"][-1]
+            self.assertEqual(ack["status"],"rejected")
+            self.assertEqual(ack["request_id"],data["request_id"])
+            self.assertTrue(ack.get("error"))
 
     def test_live_rejects_missing_revision(self):
         data = {"project": "ttittulares", "event_id": "abcdef123456",
