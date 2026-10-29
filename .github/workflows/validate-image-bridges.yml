@@ -5,8 +5,9 @@ on:
   pull_request:
     paths:
       - "windows/TTiTTularesImageBridge.js"
+      - "windows/TTendenciasImageBridge.js"
+      - "windows/tests/test_trends_composer_preflight.cjs"
       - "windows/tests/test_image_prompt_injection.cjs"
-      - "windows/tests/test_image_composer_preflight.cjs"
       - "windows/tests/test_image_composer_preflight.cjs"
       - "windows/Install-TTiTTulares-Composer-Fix.ps1"
       - ".github/workflows/validate-image-bridges.yml"
@@ -44,6 +45,7 @@ jobs:
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
             /windows/tests/test_image_composer_preflight.cjs
+            /windows/tests/test_trends_composer_preflight.cjs
             /windows/tests/test_image_submission_evidence.cjs
             /windows/tests/test_image_immediate_submit.cjs
             /windows/Install-TTImages-PromptFix-Safe.ps1
@@ -108,6 +110,9 @@ jobs:
 
       - name: Probar reconocimiento del compositor tras hidratación y recuperación segura
         run: node windows/tests/test_image_composer_preflight.cjs
+
+      - name: Probar compositor TTendencias ante hidratación, borradores y generación activa
+        run: node windows/tests/test_trends_composer_preflight.cjs
 
       - name: Probar reconocimiento de generacion activa sin /c/ y sin falsos positivos
         run: node windows/tests/test_image_submission_evidence.cjs
