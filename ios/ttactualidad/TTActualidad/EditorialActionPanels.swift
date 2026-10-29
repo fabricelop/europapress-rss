@@ -107,6 +107,10 @@ struct EditorialActions: View {
         } message: {
             Text("La orden se comprobará contra la revisión vigente de GitHub. Enviar no significa que el cambio ya esté aplicado.")
         }
+        .onChange(of: github.receiptChange) { _, _ in
+            // Replace the old accepted/unchecked label with the verified result.
+            outcome = github.notice
+        }
     }
 
     private func request(_ action: String) {
