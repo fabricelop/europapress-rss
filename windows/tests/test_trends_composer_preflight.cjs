@@ -86,7 +86,7 @@ async function trial({initiallyVisible=false,recoverOnNavigate=false,becomesVisi
   // Regression: previously PC caught a frozen compositor but crashed because
   // closeFixedTargetById was missing, before it could type any prompt.
   const closingStart=source.indexOf('async function closeFixedTargetById(targetId){');
-  const closingEnd=source.indexOf('\\nasync function waitComposer(',closingStart);
+  const closingEnd=source.indexOf('\nasync function waitComposer(',closingStart);
   assert(closingStart>=0&&closingEnd>closingStart,
     'TTendencias must define its own dedicated tab recovery helper');
   assert(source.includes('await closeFixedTargetById(t.id);'),
@@ -102,7 +102,7 @@ async function trial({initiallyVisible=false,recoverOnNavigate=false,becomesVisi
     close(){browserClosed=true}
   }
   const closeFactory=new Function('fetch','BASE_CDP','AbortSignal','CDP','console',
-    source.slice(closingStart,closingEnd)+'\\nreturn closeFixedTargetById;');
+    source.slice(closingStart,closingEnd)+'\nreturn closeFixedTargetById;');
   const closer=closeFactory(async url=>{
        assert.equal(url,'http://127.0.0.1:9223/json/version');
        return {ok:true,json:async()=>({webSocketDebuggerUrl:'ws://local-only/browser'})};
