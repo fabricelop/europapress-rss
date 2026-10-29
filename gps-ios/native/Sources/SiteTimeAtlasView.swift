@@ -334,18 +334,17 @@ struct SiteTimeAtlasView: View {
         .accessibilityLabel("Distribución del tiempo GPS entre \(day.places.count) sitios")
     }
 
+    private func visitsForSelection(_ id:UUID,day:Date?)->[SiteVisitRecord] {
+        let range=day.map { SiteCalendarDay.interval(for:$0) } ?? selectedWindow
+        return (visits[id] ?? []).filter {
+            $0.from < range.end && $0.to > range.start
+        }
+    }
+
     @ViewBuilder private func siteHistory(_ id:UUID,day:Date?=nil)->some View {
         if let site=sites.first(where:{$0.id == id}) {
-            let base=visits[id] ?? []
-            let records: [SiteVisitRecord]
-            if let day {
-                let span=SiteCalendarDay.interval(for:day)
-                records=base.filter{$0.from < span.end && $0.to > span.start}
-            } else {
-                let span=selectedWindow
-                records=base.filter{$0.from < span.end && $0.to > span.start}
-            }
-            TimeSiteVisitHistoryView(model:model,site:site,visits:records)
+            TimeSiteVisitHistoryView(model:model,site:site,
+                                     visits:visitsForSelection(id,day:day))
         } else {
             ContentUnavailableView("Sitio no disponible",systemImage:"mappin.slash")
         }
