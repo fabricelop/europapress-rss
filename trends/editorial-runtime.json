@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T22:10:00+01:00",
-  "last_completed_at": "2026-10-29T22:12:00+01:00",
-  "updated_at": "2026-10-29T22:12:00+01:00",
+  "last_started_at": "2026-10-29T22:25:00+01:00",
+  "last_completed_at": "2026-10-29T22:28:00+01:00",
+  "updated_at": "2026-10-29T22:28:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261029T221000+0100",
+    "trigger_run_id": "tr-chat-20261029T222500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T221000+0100",
+    "run_id": "tr-chat-20261029T222500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T22:10:00+01:00",
-    "updated_at": "2026-10-29T22:12:00+01:00",
-    "finished_at": "2026-10-29T22:12:00+01:00",
+    "started_at": "2026-10-29T22:25:00+01:00",
+    "updated_at": "2026-10-29T22:28:00+01:00",
+    "finished_at": "2026-10-29T22:28:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -50,12 +50,12 @@
       "remates_selected": 0,
       "remates_omitted": 19,
       "recent_missing_closer_reviewed": 19,
-      "pending_visual_candidates_reviewed": 2,
+      "pending_visual_candidates_reviewed": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests y reexplicaciones verificadas en 0. Saneamiento visual solicitado para 2 Pendientes. Sin ImageGen.",
+    "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests, reexplicaciones y huérfanos verificados en 0. Saneamiento visual solicitado para 1 Pendiente. Sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -68,25 +68,25 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-29T22:10:00+01:00",
+        "at": "2026-10-29T22:25:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Cola editorial 0; iniciando saneamiento y verificación autoritativa."
       },
       {
-        "at": "2026-10-29T22:11:00+01:00",
+        "at": "2026-10-29T22:27:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "19 Explicadas recientes sin remate revisadas; 2 Pendientes vigentes detectadas para saneamiento visual, sin cambios editoriales."
+        "message": "19 Explicadas recientes sin remate revisadas; #LaMesa conserva remate vacío por tratar una tragedia con víctimas. 1 Pendiente vigente enviado a saneamiento visual."
       },
       {
-        "at": "2026-10-29T22:12:00+01:00",
+        "at": "2026-10-29T22:28:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests y reexplicaciones verificadas en 0. Saneamiento visual solicitado para 2 Pendientes. Sin ImageGen."
+        "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests, reexplicaciones y huérfanos verificados en 0. Saneamiento visual solicitado para 1 Pendiente. Sin ImageGen."
       }
     ],
     "processed_ids": [],
@@ -96,7 +96,7 @@
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261029T221000+0100",
+  "run_id": "tr-chat-20261029T222500+0100",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -110,36 +110,36 @@
     "remates_selected": 0,
     "remates_omitted": 19,
     "recent_missing_closer_reviewed": 19,
-    "pending_visual_candidates_reviewed": 2,
+    "pending_visual_candidates_reviewed": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T22:10:00+01:00",
+      "at": "2026-10-29T22:25:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Cola editorial 0; iniciando saneamiento y verificación autoritativa."
     },
     {
-      "at": "2026-10-29T22:11:00+01:00",
+      "at": "2026-10-29T22:27:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "19 Explicadas recientes sin remate revisadas; 2 Pendientes vigentes detectadas para saneamiento visual, sin cambios editoriales."
+      "message": "19 Explicadas recientes sin remate revisadas; #LaMesa conserva remate vacío por tratar una tragedia con víctimas. 1 Pendiente vigente enviado a saneamiento visual."
     },
     {
-      "at": "2026-10-29T22:12:00+01:00",
+      "at": "2026-10-29T22:28:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests y reexplicaciones verificadas en 0. Saneamiento visual solicitado para 2 Pendientes. Sin ImageGen."
+      "message": "Pasada editorial cerrada: 0/0 pendientes; cola, requests, reexplicaciones y huérfanos verificados en 0. Saneamiento visual solicitado para 1 Pendiente. Sin ImageGen."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261029T215500+0100",
+  "previous_run_id": "tr-chat-20261029T221000+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -148,20 +148,20 @@
     "recent_considered": 30
   },
   "final_outcomes": [],
-  "pending_delivery_count": 2,
+  "pending_delivery_count": 1,
   "apply_workflow": {
     "status": "not_required",
     "editorial_blocking": false
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "ee0863d649e4088217feb65c3a029bb33ca5b57f",
-    "updated_at": "2026-10-29T22:12:00+01:00"
+    "blob_sha": "daf1aa7061ad28f517d671e1b21bbd8b164ea956",
+    "updated_at": "2026-10-29T21:13:52.542379+00:00"
   },
   "radar": {
-    "captured_at": "2026-10-29T22:11:09+01:00",
-    "recent_sha": "c5e2c46adacaba648285b2cdf8b4846b4bd73703",
-    "queue_sha": "f41f17f3b184f6092af5d3e9550b6c3c77c13034",
+    "captured_at": "2026-10-29T22:20:54+01:00",
+    "recent_sha": "9be70a0007d6ad7c7392597dd838f69634bc3de9",
+    "queue_sha": "ba315c116ebc18efa087585b654c3d545d6b43a9",
     "queue_count": 0
   },
   "remate_selections": []
