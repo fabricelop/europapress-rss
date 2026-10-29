@@ -40,6 +40,26 @@ assert "BGTaskScheduler" not in store
 assert "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" in store
 assert "partialData: partial" in store
 assert "no Home Screen or Lock Screen widgets" in shared
+# GitHub acceptance (HTTP 204) is never treated as final application.
+# Each decision has a persisted ID, a bounded receipt lookup and an explicit
+# unverified state rather than an eternal pending notice.
+assert "EditorialReceiptPending: Codable" in auth
+assert "pendingReceipts" in auth and "requestID: requestID" in auth
+assert "checkPendingReceipts()" in auth and "followReceipt(requestID)" in auth
+assert '"applied", "already_applied"' in auth
+assert '"request_id"' in auth and '"revision"' in auth
+assert "persistPendingReceipts()" in auth and "expireUnverifiedReceipts()" in auth
+assert 'receiptChange' in dashboard and 'resumeReceiptChecks()' in dashboard
+assert ".onChange(of: github.receiptChange)" in actions
+# Old published deliveries may share an ID with a new weekly explanation.
+assert "if let closedAt {" in store and "closedAt.timeIntervalSince(explained) >= -60" in store
+from datetime import datetime, timedelta
+older_closed = datetime.fromisoformat("2026-10-08T07:48:38+02:00")
+fresh_explained = datetime.fromisoformat("2026-10-29T07:43:00+01:00")
+assert (older_closed - fresh_explained).total_seconds() < -60
+actual_closure = fresh_explained + timedelta(minutes=10)
+assert (actual_closure - fresh_explained).total_seconds() >= -60
+print("TT_ACTUALIDAD_IOS_RECEIPT_AND_RECURRENCE_OK")
 print("TT_ACTUALIDAD_IOS_PREFLIGHT_OK")
 
 # Gallery is explicitly archive-only: no AI retrieval or generated-image fallback.

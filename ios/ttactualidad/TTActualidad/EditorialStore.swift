@@ -365,10 +365,17 @@ final class EditorialStore: ObservableObject {
             let closureApplies: ([String: Any]) -> Bool = { event in
                 guard closed.contains(Self.str(event, "status").lowercased()) else { return false }
                 let oldRev = Self.int(event, "revision")
-                if oldRev != rev { return oldRev > rev }
                 let closedAt = Self.when(event, ["deleted_at", "dismissed_at", "published_at",
                                                  "removed_at", "updated_at", "delivered_at", "decided_at"])
-                return !(closedAt != nil && closedAt!.timeIntervalSince(explained) < -60)
+                // A weekly trend can reuse its editorial id with a revision
+                // reset by its producer. A published r2 from 8 October must
+                // not hide a freshly explained r0 from 29 October.
+                // Ordering by a known timestamp takes precedence over
+                // revision; revision is only the fallback for undated events.
+                if let closedAt {
+                    return closedAt.timeIntervalSince(explained) >= -60
+                }
+                return oldRev >= rev
             }
             if closures.contains(where: {
                 [Self.str($0, "id"), Self.str($0, "event_id")].contains(id) && closureApplies($0)
