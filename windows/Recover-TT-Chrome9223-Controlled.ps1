@@ -108,6 +108,21 @@ function FindRunners {
       [string]$_.CommandLine -match '(?i)(?:TTiTTulares|TTendencias)ImageBridge[.]js|[\\/]Ejecutar[.]js|[\\/]TT-Editorial-Tab-Watch[.]js'
     })
 }
+function FindActiveEditorialOrImageJobs {
+  # Rejected before stopping anything; no active sender or image bridge is killed.
+  return @(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { [string]$_.CommandLine -match '(?i)(?:TTiTTulares|TTendencias)ImageBridge[.]js|[\\/]Ejecutar[.]js' })
+}
+function ConfirmRecoverySafe([string]$Gate,[string]$Node) {
+  $busy=@(FindActiveEditorialOrImageJobs)
+  if($busy.Count -gt 0){throw ('RECOVERY_BLOCKED active editorial/image processes='+$busy.Count)}
+  # Inspect all 9223 tabs over CDP without reading any chat content. Unknown/busy => abort.
+  $gateOutput=@(& $Node $Gate 2>&1)
+  $code=$LASTEXITCODE
+  foreach($line in $gateOutput){Note ('GATE '+[string]$line)}
+  if($code -ne 0){throw 'RECOVERY_BLOCKED a Chrome tab is busy, unknown or has an unsent draft'}
+}
+
 function RestartManager([string]$scriptName) {
   $file=Join-Path $base $scriptName
   if(-not(Test-Path -LiteralPath $file)) { Note ('MANAGER MISSING '+$file);return }
@@ -171,6 +186,16 @@ try {
   }
   & $node --check $tmp | Out-Null
   if($LASTEXITCODE -ne 0){throw 'Limpiador JS inválido; sin cambios'}
+  # Never restart a live image generation or ChatGPT reply. Abort before pausing tasks.
+  $gate=Join-Path $dir 'TT-Chrome9223-Recovery-Gate.js'
+  $gateUrl='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TT-Chrome9223-Recovery-Gate.js'
+  Invoke-WebRequest -UseBasicParsing -Uri $gateUrl -OutFile $gate -TimeoutSec 25 -ErrorAction Stop
+  $gateText=[IO.File]::ReadAllText($gate,[Text.Encoding]::UTF8)
+  if(-not $gateText.Contains('TT9223_RECOVERY_GATE_V1') -or
+     -not $gateText.Contains('TT9223_RECOVERY_BLOCKED')){throw 'No se reconoce el validador de pestañas; sin cambios'}
+  & $node --check $gate | Out-Null
+  if($LASTEXITCODE -ne 0){throw 'Validador de pestañas inválido; sin cambios'}
+  ConfirmRecoverySafe $gate $node
   foreach($mgr in @(FindManagers)){
     $cmd=[string]$mgr.CommandLine
     foreach($name in @('TTiTTularesDedicatedListener.ps1','TTendenciasDedicatedListener.ps1','TT-LocalWatchdog.ps1')){
@@ -199,11 +224,16 @@ try {
   Start-Sleep -Seconds 2
   $managersStill=@(FindManagers)
   if($managersStill.Count -gt 0){throw ('TT managers remain active='+$managersStill.Count+'; Chrome not stopped')}
-  foreach($runner in @(FindRunners)){
-    try {
-      Stop-Process -Id ([int]$runner.ProcessId) -Force -ErrorAction Stop
-      Note ('TT RUNNER PAUSED pid='+$runner.ProcessId)
-    }catch{Note ('TT RUNNER STOP FAILED pid='+$runner.ProcessId+' '+$_.Exception.Message)}
+  # Recheck just before affecting the browser. Never stop a live image or send.
+  ConfirmRecoverySafe $gate $node
+  # Only the passive tab watcher may be stopped, never an image bridge or sender.
+  foreach($runner in @(FindRunners)) {
+    if([string]$runner.CommandLine -notmatch '(?i)TT-Editorial-Tab-Watch[.]js') {
+      throw ('RECOVERY_BLOCKED unexpected live runner pid='+$runner.ProcessId)
+    }
+    try { Stop-Process -Id ([int]$runner.ProcessId) -Force -ErrorAction Stop
+          Note ('PASSIVE TAB WATCHER PAUSED pid='+$runner.ProcessId) }
+    catch { throw ('No se pudo pausar tab watcher pid='+$runner.ProcessId) }
   }
   $current=@(FindRoots)
   if($current.Count -ne 1 -or [int]$current[0].ProcessId -ne $chromePid){
