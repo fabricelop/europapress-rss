@@ -12523,16 +12523,18 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "pending",
+      "fallback_image_status": "none",
       "fallback_image_url": "https://fotografias-2.larazon.es/clipping/cmsimages02/2025/06/13/DAA211CB-5EBD-491D-98C0-C032E61B0D4D/69.jpg?crop=1920%2C1080%2Cx0%2Cy100&format=webply&height=720&optimize=low&width=1280",
       "fallback_image_source_url": "https://www.larazon.es/espana/quien-isabel-pardo-vera-expresidenta-adif-punto-mira-uco-caso-koldo_20250626685d6f695e04161fbbbbd70b.html",
-      "image_status": "pending",
-      "image_choice": "pending",
-      "image_pending": true,
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false,
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Isabel Pardo de Vera, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "originated_from_prior_id": "manual-2df00649f549032d3256a4183a3500c3"
+      "originated_from_prior_id": "manual-2df00649f549032d3256a4183a3500c3",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-29T09:03:00+01:00",
+  "updated_at": "2026-10-29T08:06:36.631830Z",
   "count": 225
 }
