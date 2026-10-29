@@ -622,16 +622,28 @@ def main():
         fail("Revision obligatoria, entera y no negativa")
     history = load(LEDGER, {"version": 1, "items": []})
     previous = find(history["items"], "request_id", request_id)
-    if previous:
+    if previous and str(previous.get("status") or "").lower() in {"applied", "already_applied"}:
         print("IDEMPOTENT: recibida anteriormente", previous.get("status"))
         return
-    changes, status = apply_live(project, event_id, decision, revision,
-                                 trend_name, trend_rank if type(trend_rank) is int else 0,
-                                 trend_hints)
+    try:
+        changes, status = apply_live(project, event_id, decision, revision,
+                                     trend_name, trend_rank if type(trend_rank) is int else 0,
+                                     trend_hints)
+        rejection = ""
+    except InvalidAction as exc:
+        # A real validation rejection is a terminal ACK, not a GitHub outage.
+        # Persist the original request_id so iPhone/Windows can stop showing
+        # "Sin confirmar". Do not mutate any editorial records.
+        changes, status, rejection = {}, "rejected", str(exc)[:500]
     stamp = datetime.now(timezone.utc).isoformat()
-    history["items"].append({"request_id": request_id, "project": project,
-                             "event_id": event_id, "revision": revision,
-                             "decision": decision, "status": status, "at": stamp})
+    history["items"] = [row for row in history["items"]
+                         if row.get("request_id") != request_id]
+    receipt = {"request_id": request_id, "project": project,
+               "event_id": event_id, "revision": revision,
+               "decision": decision, "status": status, "at": stamp}
+    if rejection:
+        receipt["error"] = rejection
+    history["items"].append(receipt)
     history["items"] = history["items"][-2000:]
     if decision == "published" and status == "applied":
         # Count ONLY explicit confirmed publication confirmations from this
