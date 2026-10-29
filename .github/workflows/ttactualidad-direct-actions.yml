@@ -30,7 +30,7 @@ jobs:
             echo "Direct action attempt $attempt (read latest main)"
             git fetch --depth=1 origin main
             git reset --hard origin/main
-            python3 pilot/apply-ttactualidad-action.py
+            python3 pilot/apply-ttactualidad-action.py | tee /tmp/ttactualidad-action-result.txt
             git add -- ttittulares/prepared.json ttittulares/decisions.json ttittulares/editorial-queue.json telegram/editorial-processing.json ttittulares/tremending/items.json trends/editorial-queue.json trends/mobile-decisions.json trends/telegram-image-deliveries.json trends/telegram-manual-explained.json trends/prepared.json trends/requests.json pilot/ttactualidad-publication-events.json pilot/ttactualidad-action-receipts.json
             if git diff --cached --quiet; then
               echo "Already processed; no changes to push."
@@ -38,6 +38,10 @@ jobs:
             fi
             git commit -m "TTActualidad: aplicar decision editorial"
             if git push origin HEAD:main; then
+              if grep -qi 'rejected' /tmp/ttactualidad-action-result.txt; then
+                echo "TT_ACTUALIDAD_REJECTION_ACK_ONLY: no se lanzara editorial al rechazar."
+                exit 0
+              fi
               echo "Authoritative GitHub state updated."
               # Solo las órdenes que abren una elaboración provocan trabajo
               # editorial nuevo. El transporte de imágenes es independiente.

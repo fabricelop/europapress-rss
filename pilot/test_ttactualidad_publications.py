@@ -112,8 +112,9 @@ class PublishedConfirmation(unittest.TestCase):
     def test_conflicting_reclassification_is_refused(self):
         self.news()
         self.run_action("ttittulares", "deleted", 1)
-        with self.assertRaises(engine.InvalidAction):
-            self.run_action("ttittulares", "published", 1, "test-request-b2")
+        self.run_action("ttittulares", "published", 1, "test-request-b2")
+        r=self.read("pilot/ttactualidad-action-receipts.json")["items"][-1]
+        self.assertEqual(r["status"],"rejected")
         self.assertEqual(self.read(self.path_publications)["items"], [])
 
 

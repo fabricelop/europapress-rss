@@ -224,8 +224,11 @@ class ActionTests(unittest.TestCase):
                     "decision": decision, "request_id": "12345678-1111-1111-1111-123456789012",
                     "revision": 1}
             with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(data)}):
-                with self.assertRaises(mod.InvalidAction):
-                    mod.main()
+                mod.main()
+            ack=mod.load(mod.LEDGER, {"items":[]})["items"][-1]
+            self.assertEqual(ack["status"],"rejected")
+            self.assertEqual(ack["request_id"],data["request_id"])
+            self.assertTrue(ack.get("error"))
 
     def test_live_rejects_missing_revision(self):
         data = {"project": "ttittulares", "event_id": "abcdef123456",
@@ -308,6 +311,28 @@ class ActionTests(unittest.TestCase):
         self.assertNotIn("explanation", req)
         self.assertEqual(documents["trends/editorial-queue.json"]["count"], 1)
         self.assertEqual(documents["trends/editorial-queue.json"]["items"][0]["id"], req["id"])
+
+    def test_historical_published_trend_rework_when_outside_top30(self):
+        self.write("trends/recent.json", {"items":[]})
+        self.write("trends/telegram-manual-explained.json", {"items":[{
+            "id":"be8d15b587e1","revision":0,"name":"Fatima Banez",
+            "status":"published"}]})
+        changes,status=mod.apply_live("ttendencias","be8d15b587e1",
+            "rework",0,"Fatima Banez",4)
+        self.assertEqual(status,"applied")
+        queued=changes["trends/editorial-queue.json"]["items"]
+        self.assertEqual(len(queued),1)
+        self.assertEqual(queued[0]["originated_from_prior_id"],"be8d15b587e1")
+        self.assertNotEqual(queued[0]["id"],"be8d15b587e1")
+        self.assertEqual(changes["trends/telegram-manual-explained.json"]["items"][0]["status"],"published")
+
+    def test_historical_forgery_still_rejected(self):
+        self.write("trends/recent.json", {"items":[]})
+        self.write("trends/telegram-manual-explained.json", {"items":[{
+            "id":"be8d15b587e1","revision":0,"name":"Fatima Banez",
+            "status":"published"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttendencias","invented-123","rework",0,"Fatima Banez",4)
 
     def test_top30_first_time_rework_rejects_spoofed_identity(self):
         self.write("trends/recent.json", {"items": [{"rank": 5, "name": "Bellingham"}]})

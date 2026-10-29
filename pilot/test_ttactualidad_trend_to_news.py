@@ -3,6 +3,8 @@ import importlib.util
 import json
 import tempfile
 import unittest
+import os
+from unittest.mock import patch
 from pathlib import Path
 
 spec = importlib.util.spec_from_file_location(
@@ -25,6 +27,8 @@ class TrendToNewsTest(unittest.TestCase):
              "revision": 0, "status": "inactive"}
         ]})
         self.save("trends/recent.json", {"items": []})
+        self.save("trends/telegram-manual-explained.json", {"items": []})
+        self.save("pilot/ttactualidad-action-receipts.json", {"version":1,"items":[]})
 
     def save(self, path, data):
         dest = mod.ROOT / path
@@ -73,6 +77,56 @@ class TrendToNewsTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 mod.apply(payload)
         self.assertFalse(mod.read(mod.PROCESSING)["items"])
+
+    def test_historic_published_trend_is_valid_origin(self):
+        payload=self.request()
+        payload["origin_trend"]={"id":"be8d15b587e1","revision":0,"name":"Fátima Báñez"}
+        self.save("trends/telegram-manual-explained.json",{"items":[{
+            "id":"be8d15b587e1","revision":0,"name":"Fátima Báñez",
+            "status":"published","explained_at":"2026-10-29T14:00:00Z"}]})
+        outcome,event_id=mod.apply(payload)
+        self.assertEqual(outcome,"added")
+        self.assertEqual(mod.read(mod.COMPACT)["items"][0]["origin_trend_id"],"be8d15b587e1")
+        self.assertEqual(mod.read(mod.COMPACT)["items"][0]["event_id"],event_id)
+
+    def test_forged_historic_origin_remains_rejected(self):
+        payload=self.request()
+        self.save("trends/telegram-manual-explained.json",{"items":[{
+            "id":"be8d15b587e1","revision":0,"name":"Fátima Báñez","status":"published"}]})
+        for id,revision,name in [
+            ("wrong-identity",0,"Fátima Báñez"),
+            ("be8d15b587e1",1,"Fátima Báñez"),
+            ("be8d15b587e1",0,"Persona distinta")]:
+            payload["origin_trend"]={"id":id,"revision":revision,"name":name}
+            with self.assertRaises(ValueError):
+                mod.apply(payload)
+        self.assertEqual(mod.read(mod.COMPACT)["items"],[])
+
+    def test_valid_request_receipt_resolves_confirmation_after_queue_reconciliation(self):
+        payload=self.request()
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_MANUAL_JSON":json.dumps(payload)}):
+            self.assertEqual(mod.main(),0)
+        rows=mod.read("pilot/ttactualidad-action-receipts.json")["items"]
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]["request_id"],payload["request_id"])
+        self.assertEqual(rows[0]["event_id"],"manual-"+payload["request_id"])
+        self.assertEqual(rows[0]["status"],"applied")
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_MANUAL_JSON":json.dumps(payload)}):
+            self.assertEqual(mod.main(),0)
+        rows=mod.read("pilot/ttactualidad-action-receipts.json")["items"]
+        self.assertEqual(len(rows),1)
+        self.assertEqual(rows[0]["status"],"already_applied")
+        self.assertEqual(len(mod.read(mod.COMPACT)["items"]),1)
+
+    def test_invalid_origin_writes_rejection_ack_not_ghost_pending(self):
+        payload=self.request()
+        payload["origin_trend"]={"id":"forged123","revision":0,"name":"Unknown"}
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_MANUAL_JSON":json.dumps(payload)}):
+            self.assertEqual(mod.main(),0)
+        rows=mod.read("pilot/ttactualidad-action-receipts.json")["items"]
+        self.assertEqual(rows[-1]["status"],"rejected")
+        self.assertIn("origen",rows[-1]["error"].lower())
+        self.assertEqual(mod.read(mod.COMPACT)["items"],[])
 
     def test_legacy_manual_without_origin_still_works(self):
         payload = self.request()
