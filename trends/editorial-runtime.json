@@ -5,28 +5,24 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "4191bd8e40ae",
-    "1ec96b91e745",
-    "7670800aa4c8",
-    "4981a79b1530",
-    "596bc5507784",
-    "296b4043f39a",
-    "122cc9c021ac"
+    "d7ef75f3aa45",
+    "a6c68a1119c5",
+    "ebf0ec344c8e"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T13:55:00+01:00",
-  "last_completed_at": "2026-10-29T13:57:00+01:00",
-  "updated_at": "2026-10-29T13:57:00+01:00",
+  "last_started_at": "2026-10-29T14:10:00+01:00",
+  "last_completed_at": "2026-10-29T14:21:00+01:00",
+  "updated_at": "2026-10-29T14:21:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-20261029T135500+0100-chat",
+    "trigger_run_id": "tr-20261029T141000+0100-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -34,35 +30,35 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261029T135500+0100-chat",
+    "run_id": "tr-20261029T141000+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T13:55:00+01:00",
-    "updated_at": "2026-10-29T13:57:00+01:00",
-    "finished_at": "2026-10-29T13:57:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-29T14:10:00+01:00",
+    "updated_at": "2026-10-29T14:21:00+01:00",
+    "finished_at": "2026-10-29T14:21:00+01:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "explained": 0,
-      "final_resolved": 0,
+      "attempted": 3,
+      "explained": 3,
+      "final_resolved": 3,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 0,
+      "remates_selected": 1,
       "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_visual_candidates_reviewed": 1,
+      "recent_missing_closer_reviewed": 0,
+      "pending_visual_candidates_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 0/0: cola y reexplicaciones pendientes en 0; #LaMesa conservada sin remate por sensibilidad y saneamiento de Pendientes solicitado.",
+    "message": "TTendencias cerrada 3/3: Koldo García y OKDIARIO agrupadas en un único hecho; El CEO de Iryo cerrado sin remate por sensibilidad. Cola y reexplicaciones pendientes en 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -70,11 +66,26 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 100
+      "recent_considered": 30
     },
     "remate_selections": [
       {
-        "trend_id": "6a124636f62f",
+        "trend_id": "d7ef75f3aa45",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          "La incógnita del pagador terminó en dos facturas.",
+          "El secreto profesional salió con dos facturas bajo el brazo.",
+          "El misterio de la defensa acabó con IVA incluido.",
+          "La pregunta era quién pagó; las facturas respondieron con IVA.",
+          "El pagador dejó de ser incógnita cuando apareció el IVA."
+        ],
+        "selected_candidate": "🌶️ El misterio de la defensa acabó con IVA incluido.",
+        "selected_score": 4.4,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "ebf0ec344c8e",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -85,101 +96,237 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T13:55:00+01:00",
+        "at": "2026-10-29T14:10:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola y reexplicaciones pendientes; preparando saneamiento de Pendientes."
+        "message": "Releyendo cola y reexplicaciones pendientes; iniciando saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-29T13:56:00+01:00",
+        "at": "2026-10-29T14:12:00+01:00",
         "phase": "verifying",
-        "trend_id": "6a124636f62f",
-        "title": "#LaMesa",
-        "message": "Revisando Pendientes recientes: #LaMesa r0 sigue factual sin remate por sensibilidad; reparación visual ya solicitada."
+        "trend_id": "d7ef75f3aa45",
+        "title": "Koldo García",
+        "message": "Releyendo estado autoritativo de Koldo García r0 y comprobando posible agrupación con OKDIARIO."
       },
       {
-        "at": "2026-10-29T13:57:00+01:00",
+        "at": "2026-10-29T14:13:00+01:00",
+        "phase": "investigating",
+        "trend_id": "d7ef75f3aa45",
+        "title": "Koldo García / OKDIARIO",
+        "message": "Contrastando fuente 2/2: las dos tendencias remiten al mismo hecho y se agrupan."
+      },
+      {
+        "at": "2026-10-29T14:14:00+01:00",
+        "phase": "drafting",
+        "trend_id": "d7ef75f3aa45",
+        "title": "Koldo García / OKDIARIO",
+        "message": "Redactando explicación factual conjunta y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-29T14:15:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "d7ef75f3aa45",
+        "title": "Koldo García / OKDIARIO",
+        "message": "Evaluando 5 candidatos de remate con ratings y control de originalidad; seleccionado uno no duplicado."
+      },
+      {
+        "at": "2026-10-29T14:16:00+01:00",
+        "phase": "persisting",
+        "trend_id": "d7ef75f3aa45",
+        "title": "Koldo García / OKDIARIO",
+        "message": "Guardando ficha Explicada del grupo Koldo García / OKDIARIO."
+      },
+      {
+        "at": "2026-10-29T14:17:00+01:00",
+        "phase": "verifying",
+        "trend_id": "ebf0ec344c8e",
+        "title": "El CEO de Iryo",
+        "message": "Releyendo estado autoritativo de El CEO de Iryo r0."
+      },
+      {
+        "at": "2026-10-29T14:18:00+01:00",
+        "phase": "investigating",
+        "trend_id": "ebf0ec344c8e",
+        "title": "El CEO de Iryo",
+        "message": "Contrastando fuente 2/2: confirmada la comparecencia del 5 de octubre y la advertencia sobre desconexiones del LZB."
+      },
+      {
+        "at": "2026-10-29T14:18:30+01:00",
+        "phase": "drafting",
+        "trend_id": "ebf0ec344c8e",
+        "title": "El CEO de Iryo",
+        "message": "Redactando explicación factual; sin remate por tratarse de una tragedia con víctimas."
+      },
+      {
+        "at": "2026-10-29T14:20:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola 0, requests activos 0, rewrite_pending 0 y trigger de saneamiento correcto."
+        "message": "Releyendo main y verificando id+revision y texto persistido de las tres tendencias."
       },
       {
-        "at": "2026-10-29T13:57:00+01:00",
+        "at": "2026-10-29T14:21:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial vacía y verificada; saneamiento de Pendientes solicitado."
+        "message": "Cola editorial vacía y verificada; ejecución cerrada 3/3."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "d7ef75f3aa45",
+      "a6c68a1119c5",
+      "ebf0ec344c8e"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "d7ef75f3aa45",
+        "revision": 0,
+        "status": "explained",
+        "group_id": "grp-d7ef75f3aa45-r0"
+      },
+      {
+        "id": "a6c68a1119c5",
+        "revision": 0,
+        "status": "explained",
+        "group_id": "grp-d7ef75f3aa45-r0"
+      },
+      {
+        "id": "ebf0ec344c8e",
+        "revision": 0,
+        "status": "explained",
+        "group_id": "grp-ebf0ec344c8e-r0"
+      }
+    ]
   },
-  "run_id": "tr-20261029T135500+0100-chat",
+  "run_id": "tr-20261029T141000+0100-chat",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
-    "final_resolved": 0,
+    "attempted": 3,
+    "explained": 3,
+    "final_resolved": 3,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 0,
+    "remates_selected": 1,
     "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_visual_candidates_reviewed": 1,
+    "recent_missing_closer_reviewed": 0,
+    "pending_visual_candidates_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T13:55:00+01:00",
+      "at": "2026-10-29T14:10:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo cola y reexplicaciones pendientes; preparando saneamiento de Pendientes."
+      "message": "Releyendo cola y reexplicaciones pendientes; iniciando saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-29T13:56:00+01:00",
+      "at": "2026-10-29T14:12:00+01:00",
       "phase": "verifying",
-      "trend_id": "6a124636f62f",
-      "title": "#LaMesa",
-      "message": "Revisando Pendientes recientes: #LaMesa r0 sigue factual sin remate por sensibilidad; reparación visual ya solicitada."
+      "trend_id": "d7ef75f3aa45",
+      "title": "Koldo García",
+      "message": "Releyendo estado autoritativo de Koldo García r0 y comprobando posible agrupación con OKDIARIO."
     },
     {
-      "at": "2026-10-29T13:57:00+01:00",
+      "at": "2026-10-29T14:13:00+01:00",
+      "phase": "investigating",
+      "trend_id": "d7ef75f3aa45",
+      "title": "Koldo García / OKDIARIO",
+      "message": "Contrastando fuente 2/2: las dos tendencias remiten al mismo hecho y se agrupan."
+    },
+    {
+      "at": "2026-10-29T14:14:00+01:00",
+      "phase": "drafting",
+      "trend_id": "d7ef75f3aa45",
+      "title": "Koldo García / OKDIARIO",
+      "message": "Redactando explicación factual conjunta y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-29T14:15:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "d7ef75f3aa45",
+      "title": "Koldo García / OKDIARIO",
+      "message": "Evaluando 5 candidatos de remate con ratings y control de originalidad; seleccionado uno no duplicado."
+    },
+    {
+      "at": "2026-10-29T14:16:00+01:00",
+      "phase": "persisting",
+      "trend_id": "d7ef75f3aa45",
+      "title": "Koldo García / OKDIARIO",
+      "message": "Guardando ficha Explicada del grupo Koldo García / OKDIARIO."
+    },
+    {
+      "at": "2026-10-29T14:17:00+01:00",
+      "phase": "verifying",
+      "trend_id": "ebf0ec344c8e",
+      "title": "El CEO de Iryo",
+      "message": "Releyendo estado autoritativo de El CEO de Iryo r0."
+    },
+    {
+      "at": "2026-10-29T14:18:00+01:00",
+      "phase": "investigating",
+      "trend_id": "ebf0ec344c8e",
+      "title": "El CEO de Iryo",
+      "message": "Contrastando fuente 2/2: confirmada la comparecencia del 5 de octubre y la advertencia sobre desconexiones del LZB."
+    },
+    {
+      "at": "2026-10-29T14:18:30+01:00",
+      "phase": "drafting",
+      "trend_id": "ebf0ec344c8e",
+      "title": "El CEO de Iryo",
+      "message": "Redactando explicación factual; sin remate por tratarse de una tragedia con víctimas."
+    },
+    {
+      "at": "2026-10-29T14:20:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola 0, requests activos 0, rewrite_pending 0 y trigger de saneamiento correcto."
+      "message": "Releyendo main y verificando id+revision y texto persistido de las tres tendencias."
     },
     {
-      "at": "2026-10-29T13:57:00+01:00",
+      "at": "2026-10-29T14:21:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Cola editorial vacía y verificada; saneamiento de Pendientes solicitado."
+      "message": "Cola editorial vacía y verificada; ejecución cerrada 3/3."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-20261029T134000+0100-chat",
+  "previous_run_id": "tr-20261029T135500+0100-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
     "total_ratings": 154,
-    "recent_considered": 100
+    "recent_considered": 30
   },
   "remate_selections": [
     {
-      "trend_id": "6a124636f62f",
+      "trend_id": "d7ef75f3aa45",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        "La incógnita del pagador terminó en dos facturas.",
+        "El secreto profesional salió con dos facturas bajo el brazo.",
+        "El misterio de la defensa acabó con IVA incluido.",
+        "La pregunta era quién pagó; las facturas respondieron con IVA.",
+        "El pagador dejó de ser incógnita cuando apareció el IVA."
+      ],
+      "selected_candidate": "🌶️ El misterio de la defensa acabó con IVA incluido.",
+      "selected_score": 4.4,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "ebf0ec344c8e",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
@@ -188,21 +335,40 @@
       "no_remate_reason": "sensitive_event"
     }
   ],
-  "final_outcomes": [],
-  "pending_delivery_count": 1,
+  "final_outcomes": [
+    {
+      "id": "d7ef75f3aa45",
+      "revision": 0,
+      "status": "explained",
+      "group_id": "grp-d7ef75f3aa45-r0"
+    },
+    {
+      "id": "a6c68a1119c5",
+      "revision": 0,
+      "status": "explained",
+      "group_id": "grp-d7ef75f3aa45-r0"
+    },
+    {
+      "id": "ebf0ec344c8e",
+      "revision": 0,
+      "status": "explained",
+      "group_id": "grp-ebf0ec344c8e-r0"
+    }
+  ],
+  "pending_delivery_count": 2,
   "apply_workflow": {
     "status": "not_required",
     "editorial_blocking": false
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "629d5fb698c08c3cd3dfdce8f2473334a7f47f5f",
-    "updated_at": "2026-10-29T13:23:00+01:00"
+    "blob_sha": "ed8f296b995bafa1b9fc7fdac49f3d1a5181e0d8",
+    "updated_at": "2026-10-29T14:19:15+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-29T13:40:52+01:00",
-    "recent_sha": "026167770395451b3e9ada55a304c085de3d29ec",
-    "queue_sha": "f73c74c92b989161ab2b1ba515273dfe67246e64",
+    "captured_at": "2026-10-29T14:21:00+01:00",
+    "recent_sha": "aed5f3e190217f0ac67ad664b33c462fb0c6b88f",
+    "queue_sha": "a3d50554f4eac8830f1a9632eab859be5d9d1bf1",
     "queue_count": 0
   }
 }
