@@ -241,6 +241,7 @@ def normalise(docs):
             continue
         trend_ready.append({"project":"ttendencias","id":ident,"revision":rev,"title":text(x.get("name") or req.get("name")),
             "body":text(x.get("explanation")), "state":"Listas","category":"Tendencias",
+            "explained_at":x.get("explained_at"),
             "source":text(x.get("source_url")),
             "image":archive_url(docs,"ttendencias",ident,rev,
                                 (x.get("archive_image") or x.get("fallback_image") or {}).get("url")
