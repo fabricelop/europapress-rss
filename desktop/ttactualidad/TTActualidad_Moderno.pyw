@@ -25,7 +25,7 @@ from PySide6.QtWidgets import (
     QMessageBox, QTextEdit, QInputDialog, QSizePolicy, QSplitter, QMenu
 )
 
-from TTActualidad import FILES, RAW, API, REPO, KEYRING_SERVICE, normalise, request, text
+from TTActualidad import FILES, RAW, API, REPO, KEYRING_SERVICE, normalise, request, text, confirmed_terminals, terminal_applies
 
 SERVICE_KEY = "session"
 SECTIONS = [
@@ -204,10 +204,23 @@ def load_archive_paths():
     return dict(_archive_cache)
 
 def fetch_editorial():
+    """Read all editorial documents from ONE immutable GitHub main commit.
+
+    Reading fourteen independent /main/ RAW files can combine old Listas with
+    new decisions, or the reverse. Such a mixed view resurrects closed cards.
+    Resolve main once and pin every document to its identical commit SHA.
+    Fail closed rather than render partial state from different revisions.
+    """
+    _,head=request("https://api.github.com/repos/"+REPO+"/commits/main?tt_sync="+str(
+        time.time_ns()),token=session_token(),timeout=12)
+    sha=str(head.get("sha") or "")
+    if len(sha)!=40 or any(c not in "0123456789abcdef" for c in sha.lower()):
+        raise RuntimeError("No se pudo identificar una revisión completa de GitHub")
+    base="https://raw.githubusercontent.com/"+REPO+"/"+sha+"/"
     result={}
     def one(pair):
         key,path=pair
-        _,data=request(RAW+path+"?cache="+str(int(time.time())),timeout=17)
+        _,data=request(base+path,timeout=17)
         if not isinstance(data,dict): raise ValueError(path+" no devolvió JSON válido")
         return key,data
     with ThreadPoolExecutor(max_workers=10) as pool:
@@ -219,6 +232,7 @@ def fetch_editorial():
                 result[k]=v
             except Exception as exc:errors.append(jobs[future]+": "+str(exc))
     if errors: raise RuntimeError("Sin actualizar datos incompletos: "+"; ".join(errors[:3]))
+    result["_commit_sha"]=sha
     result["archive_photos"]=load_archive_paths()
     return result,normalise(result)
 
@@ -318,6 +332,9 @@ class MainWindow(QWidget):
         self.refreshing=False;self.sending=False
         self.pending_actions={}  # keyed by GitHub request_id
         self.optimistic_hides={}  # (project, id, revision) -> pending/confirmed closure
+        self.verified_terminals={}  # receipt/decision-backed, never speculative
+        self.verified_revision=None
+        self.refresh_again=False
         self.loaded_image=QPixmap()
         self.events=Events()
         self.events.finished.connect(self.on_finished)
@@ -327,7 +344,9 @@ class MainWindow(QWidget):
         self.draw()
         self.timer=QTimer(self)
         self.timer.timeout.connect(self.refresh)
-        self.timer.start(120000)
+        # Anonymous REST API is limited; a connected GitHub account permits
+        # faster polling while retaining the same write permissions.
+        self.timer.start(45000 if session_token() else 120000)
         QTimer.singleShot(200,self.refresh)
 
     def draw(self):
@@ -531,14 +550,22 @@ class MainWindow(QWidget):
         try:keyring.delete_password(KEYRING_SERVICE,SERVICE_KEY)
         except keyring.errors.PasswordDeleteError:pass
         self.update_auth_badge()
+        self.timer.start(120000)
         self.notice.setText("Sesión cerrada. La lectura pública sigue disponible.")
 
     def refresh(self):
-        if self.refreshing:return
+        if self.refreshing:
+            self.refresh_again=True
+            return
         self.refreshing=True
         self.reload.setEnabled(False)
         self.notice.setText("Sincronizando el estado editorial desde GitHub…")
         self.worker.run("refresh",fetch_editorial)
+
+    def _finish_refresh_if_requested(self):
+        if self.refresh_again and not self.refreshing:
+            self.refresh_again=False
+            QTimer.singleShot(200,self.refresh)
 
     def on_finished(self,kind,value,error):
         if kind=="auth":
@@ -554,14 +581,27 @@ class MainWindow(QWidget):
             except Exception as exc:
                 QMessageBox.warning(self,"Credenciales",str(exc));return
             self.update_auth_badge()
+            self.timer.start(45000)
             self.notice.setText("Conexión verificada con GitHub · @"+login)
         elif kind=="refresh":
             self.refreshing=False;self.reload.setEnabled(True)
             if error:
                 self.notice.setText("No se han sustituido los datos anteriores: "+error)
+                self._finish_refresh_if_requested()
                 return
             self.docs,processed=value
             self.news,self.trends,self.top30,self.published=processed
+            # A confirmed closure from the phone or Windows must remain known
+            # even if GitHub briefly serves an older snapshot later. Never
+            # infer closure solely from an absent card or a 204 dispatch.
+            for key,mark in confirmed_terminals(self.docs).items():
+                earlier=self.verified_terminals.get(key)
+                if earlier is None or mark["revision"]>earlier["revision"] or (
+                        mark["revision"]==earlier["revision"] and
+                        (mark["at"] or dt.datetime.min.replace(tzinfo=dt.timezone.utc)) >
+                        (earlier["at"] or dt.datetime.min.replace(tzinfo=dt.timezone.utc))):
+                    self.verified_terminals[key]=mark
+            self.verified_revision=self.docs.get("_commit_sha")
             # Resolve receipts before rendering; a stale CDN snapshot must not
             # briefly resurrect a card the person has just closed.
             had_pending=bool(self.pending_actions)
@@ -569,7 +609,9 @@ class MainWindow(QWidget):
             self.reconcile_optimistic_closures()
             self.render_list()
             if not had_pending:
-                self.notice.setText("GitHub actualizado · "+dt.datetime.now().strftime("%H:%M:%S"))
+                self.notice.setText("GitHub · revisión "+str(self.verified_revision or "")[:8]+
+                                    " sincronizada · "+dt.datetime.now().strftime("%H:%M:%S"))
+            self._finish_refresh_if_requested()
         elif kind=="submit":
             # Every worker carries its own request_id so multiple cards may
             # be closed without blocking on one another's GitHub workflow.
@@ -592,7 +634,7 @@ class MainWindow(QWidget):
                 self.notice.setText("Tarjeta apartada al instante · GitHub comprueba la orden…")
                 for delay in (1800,4500,9000,16000,28000,45000,70000):
                     QTimer.singleShot(delay,self.refresh)
-                QTimer.singleShot(82000,self.expire_pending)
+                QTimer.singleShot(605000,self.expire_pending)
             else:
                 self.sending=False
                 self.notice.setText("Solicitud enviada a GitHub · "+request_id[:8])
@@ -730,9 +772,16 @@ class MainWindow(QWidget):
                 int(item.get("revision") or 0))
 
     def visible_rows(self,items):
+        # Both the Windows and iPhone actions feed the same verified terminal
+        # journal. Never re-display a closed revision because one RAW edge
+        # temporarily returns an older Listas document.
         return [item for item in items
-                if item.get("state") not in ("Listas","Tremending")
-                or self.item_key(item) not in self.optimistic_hides]
+                if (item.get("state") not in ("Listas","Tremending","En elaboración","Revisión","Creciendo")
+                    or not terminal_applies(self.verified_terminals,
+                        item.get("project"),item.get("id"),item.get("revision"),
+                        item.get("explained_at")))
+                and (item.get("state") not in ("Listas","Tremending")
+                     or self.item_key(item) not in self.optimistic_hides)]
 
     def reconcile_optimistic_closures(self):
         # A successful, receipt-backed closure may remain hidden briefly while
@@ -800,24 +849,26 @@ class MainWindow(QWidget):
                     self.pending_actions.pop(request_id,None)
                     self.notice.setText("GitHub confirmó «"+pending["decision"]+
                                         "» · "+pending["event_id"])
-                else:
+                elif status in {"rejected","failed","error","invalid"}:
                     if pending.get("hide_key"):
                         self.optimistic_hides.pop(pending["hide_key"],None)
                     self.pending_actions.pop(request_id,None)
                     self.notice.setText("GitHub rechazó la orden: "+str(receipt.get("error") or status)+
                                         " · tarjeta restaurada")
+                # queued/processing is NOT a rejection or a confirmed deletion.
                 continue
-            if time.time()-pending["since"]>=80:
-                # No receipt means UNKNOWN, not success. Re-enable the item
-                # rather than hiding it forever; users can inspect Actions.
+            if time.time()-pending["since"]>=600:
+                # A delayed GitHub Actions receipt must not cause a card to
+                # reappear 80 seconds after the user removed it. Ten minutes
+                # without proof is UNCERTAIN, not published or deleted.
                 self.pending_actions.pop(request_id,None)
                 if pending.get("hide_key"):
                     self.optimistic_hides.pop(pending["hide_key"],None)
-                self.notice.setText("Sin comprobante de GitHub: tarjeta restaurada para revisión.")
+                self.notice.setText("Orden SIN CONFIRMAR tras 10 min: verifica GitHub antes de repetirla.")
         self.update_actions()
 
     def expire_pending(self):
-        if any(time.time()-p["since"]>=80 for p in self.pending_actions.values()):
+        if any(time.time()-p["since"]>=600 for p in self.pending_actions.values()):
             self.confirm_pending()
             self.render_list()
 
