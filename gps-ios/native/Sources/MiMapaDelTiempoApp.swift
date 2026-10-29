@@ -273,6 +273,9 @@ struct SavedState: Codable {
         return try? latest.resourceValues(
             forKeys: [.contentModificationDateKey]).contentModificationDate
     }
+    // Fast read-only index preserved while navigating between tabs.
+    // No persistence changes and no loss of underlying GPS samples.
+    var siteCalendarMemo: SiteCalendarMemo?
     private var lastProcessedSample: GPSPoint?
     private var restContinuationStart: Date?
     private var restContinuationCell: Cell?
