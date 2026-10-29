@@ -3,19 +3,20 @@
   "initialized": true,
   "lists": {
     "ttittulares": {
-      "count": 2,
+      "count": 3,
       "armed": false,
       "sequence": 21,
       "active_ids": [
         "0372e00a6665",
-        "0f6c1f39d248"
+        "0f6c1f39d248",
+        "e1be1212607a"
       ],
-      "observed_at": "2026-10-29T08:01:37.959260+00:00"
+      "observed_at": "2026-10-29T08:04:59.707269+00:00"
     },
     "ttendencias": {
-      "count": 0,
-      "armed": true,
-      "sequence": 12
+      "count": 1,
+      "armed": false,
+      "sequence": 13
     }
   },
   "outbox": [
@@ -282,6 +283,13 @@
       "at": "2026-10-29T07:52:26.018637+00:00",
       "status": "sent",
       "sent_at": "2026-10-29T07:52:27.717456+00:00"
+    },
+    {
+      "id": "ttendencias-13",
+      "project": "ttendencias",
+      "count": 1,
+      "at": "2026-10-29T08:04:59.707269+00:00",
+      "status": "pending"
     }
   ]
 }
