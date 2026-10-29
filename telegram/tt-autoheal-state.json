@@ -2,41 +2,133 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-29T11:46:01.760331+00:00",
-      "issue_count": 1,
-      "issues": [
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 1129909,
-          "workflow": "telegram-pinned-index.yml"
-        }
-      ],
-      "actions_started": [
-        "telegram-pinned-index.yml"
-      ],
-      "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
-      "repair_via_workflow_run": false,
-      "escalation_required": 0
-    },
-    "ttendencias": {
-      "checked_at": "2026-10-29T11:46:01.760331+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-29T17:35:29.712908+00:00",
+      "issue_count": 11,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "b04bd0bdb832",
-          "title": "Toño",
-          "seconds": 532,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "id": "eaf9069eb0ba",
+          "title": "Podría ser multado Los Mossos identifican al aficionado que agredió a Camavinga en el Camp Nou laSex",
+          "seconds": 9629,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "14ffd05376b6",
+          "title": "La nueva plaza Duquesa de Osuna ampliará El Capricho con zonas peatonales y recuperará la antigua hu",
+          "seconds": 9058,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "5b2e5508eb23",
+          "title": "Feijóo dice que las responsabilidades políticas no son «opcionales» sino «imprescindibles»",
+          "seconds": 8422,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4b2eac36723e",
+          "title": "Muere a los 85 aos la actriz alemana Elke Sommer, que rod en Hollywood con Newman y Sellers",
+          "seconds": 6953,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "1ecdf4fc9e13",
+          "title": "Rafa Jódar sufre en la muerte súbita y deja su remontada en los octavos de Basilea ante Vacherot a m",
+          "seconds": 6006,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "manual-4edfdbc9-d625-40ae-8d8d-cb43e167209f",
+          "title": "Investigar noticia: Fátima Báñez",
+          "seconds": 4797,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "b2476c2464b1",
+          "title": "Pradas reprocha a Argüeso que le quiera trasladar la \"responsabilidad exclusiva\" de la gestión de la",
+          "seconds": 4136,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4657b3691a2c",
+          "title": "Encuentro imaginario de Munch y Picasso en Málaga",
+          "seconds": 2935,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "b86e180a4648",
+          "title": "Felipe VI señala que es preciso \"estudiar\" las medidas a adoptar para que \"no vuelva a suceder\" un a",
+          "seconds": 1732,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "d3269ecbf584",
+          "title": "Una exministra, un guardia civil o un inspector de Hacienda: las vidas que descarrilaron en el accid",
+          "seconds": 582,
+          "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1129908,
+          "seconds": 1150877,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
+      "repair_errors": [],
+      "open_signature": "974664e2814fa2e5761b9f0f698839d38eb3aa89765df29b34bd5d86816ec010",
+      "repair_via_workflow_run": false,
+      "escalation_required": 9
+    },
+    "ttendencias": {
+      "checked_at": "2026-10-29T17:35:29.712908+00:00",
+      "issue_count": 5,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "aa68216f323e",
+          "title": "Óscar Muerte",
+          "seconds": 867,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "379c43835c7c",
+          "title": "Ana Pastor",
+          "seconds": 857,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "a6c68a1119c5",
+          "title": "OKDIARIO",
+          "seconds": 15863,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "254ccf432967",
+          "title": "Koldo",
+          "seconds": 12705,
+          "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1150876,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -45,16 +137,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "c542e4f47c70672a9df1ff5f34bf55ec8547d7f9756f9a7b4968b49310c4c070",
+      "open_signature": "ec4278fc5c6e722c80f40d61cd57f77f797992823206336bbd6cecf44713ae9b",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 2
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-28T20:23:06.739781+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-29T11:46:01.760331+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-29T11:46:01.760331+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-29T11:46:01.760331+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-29T17:35:29.712908+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-29T17:35:29.712908+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-29T17:35:29.712908+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-29T17:35:29.712908+00:00"
   },
-  "checked_at": "2026-10-29T11:46:01.760331+00:00"
+  "checked_at": "2026-10-29T17:35:29.712908+00:00"
 }
