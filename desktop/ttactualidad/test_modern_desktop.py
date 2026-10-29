@@ -211,9 +211,9 @@ class DesktopModernTests(unittest.TestCase):
                 return 200,{"sha":sha}
             paths.append(url)
             return 200,{"items":[]}
-        with patch.object(appmod,"request",side_effect=fake_request), \\
-             patch.object(appmod,"load_archive_paths",return_value={}), \\
-             patch.object(appmod,"session_token",return_value="github_pat_test"):
+        with (patch.object(appmod,"request",side_effect=fake_request),
+              patch.object(appmod,"load_archive_paths",return_value={}),
+              patch.object(appmod,"session_token",return_value="github_pat_test")):
             docs,processed=appmod.fetch_editorial()
         self.assertEqual(len(paths),len(appmod.FILES))
         self.assertTrue(all("/"+sha+"/" in url for url in paths))
