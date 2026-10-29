@@ -22,17 +22,8 @@ foreach($file in @("ttittulares-image-bridge.lock.json","ttendencias-image-bridg
     $pidText=[string]$lock.pid
     if(-not $pidText){$pidText=[string]$lock.process_id}
     $alive=$false
-    if($pidText -match '^\d+
-    Write-Output ("LOCK {0} pid={1} alive={2} command_id_present={3}" -f $file,$pidText,$alive,([bool]$lock.command_id))
-  }catch{Write-Output "LOCK $file invalid_json"}
-}
-try{
-  $r=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/list" -TimeoutSec 6
-  $targets=@();foreach($item in $r){$targets+= $item}
-  $pages=@($targets | Where-Object { $_.type -eq 'page' })
-  Write-Output ("CDP_9223 pages="+$pages.Count+" targets="+$targets.Count)
-}catch{Write-Output "CDP_9223 inaccessible"}
-Write-Output "READ_ONLY_DONE no processes or tabs modified"){$alive=([bool](Get-Process -Id ([int]$pidText) -ErrorAction SilentlyContinue))}
+
+    if($pidText -match '^\d+$'){$alive=([bool](Get-Process -Id ([int]$pidText) -ErrorAction SilentlyContinue))}
     Write-Output ("LOCK {0} pid={1} alive={2} command_id_present={3}" -f $file,$pidText,$alive,([bool]$lock.command_id))
   }catch{Write-Output "LOCK $file invalid_json"}
 }
