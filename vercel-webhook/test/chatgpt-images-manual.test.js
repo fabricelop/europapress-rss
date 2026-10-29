@@ -9,11 +9,12 @@ test("La copia móvil incorpora alternativa si falla Clipboard API",()=>{assert.
 test("GAG mantiene hechos, remate y varía estilo",()=>{
  const item={event_id:"demo",title:"Una noticia",factual_summary:"Informe confirma dos fuentes.",tweet:{text:"Noticia exacta.\n\n🌶️ Remate exacto.",remate:"🌶️ Remate exacto."}};
  const a=gag.buildPrompt("news",item,item.tweet.text,0),b=gag.buildPrompt("news",item,item.tweet.text,1);
- assert.match(a,/Informe confirma dos fuentes/);assert.ok(a.includes(item.tweet.text));assert.ok(a.includes(item.tweet.remate));assert.notEqual(a,b);assert.match(a,/No inventes declaraciones/);
+ assert.match(a,/Informe confirma dos fuentes/);assert.ok(a.includes("Noticia exacta."));assert.ok(a.includes(item.tweet.remate));assert.notEqual(a,b);assert.match(a,/No inventes declaraciones/);
+ for(const p of [a,b]){assert.match(p,/PROHIBICIÓN ABSOLUTA/);assert.match(p,/NO INCLUIR TEXTO/);assert.match(p,/NO franja inferior/);assert.match(p,/🌶️ es solo un marcador/);}
 });
 test("Tendencia conserva explicación, categoría y closer",()=>{
  const x={id:"t",name:"#Tema",explanation:"TT#3 #Tema se explica.\n\n🌶️ Un remate.",closer_text:"🌶️ Un remate.",category:"Deportes",trend_names:["#Tema","Otro"]};
- const p=gag.buildPrompt("trend",x,x.explanation,0);for(const v of ["TT#3 #Tema","🌶️ Un remate.","CATEGORÍA: Deportes","TENDENCIAS RELACIONADAS: #Tema, Otro"])assert.ok(p.includes(v));
+ const p=gag.buildPrompt("trend",x,x.explanation,0);for(const v of ["TT#3 #Tema","🌶️ Un remate.","CATEGORÍA SOLO DE CONTEXTO: Deportes","TENDENCIAS RELACIONADAS SOLO DE CONTEXTO: #Tema, Otro"])assert.ok(p.includes(v));
 });
 test("Cuatro pantallas usan botones manuales y biblioteca",()=>{
  for(const file of ["../ttittulares/index.html","../ttendencias/index.html","../ttendencias/explicadas/index.html","../ttendencias/historico/index.html"]){
