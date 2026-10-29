@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "38f7dd0dfd23"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T10:29:08+01:00",
-  "last_completed_at": "2026-10-29T10:30:08+01:00",
-  "updated_at": "2026-10-29T10:30:08+01:00",
+  "last_started_at": "2026-10-29T10:55:00+01:00",
+  "last_completed_at": "2026-10-29T11:02:30+01:00",
+  "updated_at": "2026-10-29T11:02:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261029T102900+0100",
+    "trigger_run_id": "tr-chat-20261029T105500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,21 +28,21 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T102900+0100",
+    "run_id": "tr-chat-20261029T105500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T10:29:08+01:00",
-    "updated_at": "2026-10-29T10:30:08+01:00",
-    "finished_at": "2026-10-29T10:30:08+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-29T10:55:00+01:00",
+    "updated_at": "2026-10-29T11:02:30+01:00",
+    "finished_at": "2026-10-29T11:02:30+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "explained": 0,
-      "final_resolved": 0,
+      "attempted": 1,
+      "explained": 1,
+      "final_resolved": 1,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
@@ -48,76 +50,131 @@
       "rewrite_pending_remaining": 0,
       "remates_selected": 0,
       "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_visual_candidates_reviewed": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 0/0; cola verificada vacía y saneamiento visual solicitado.",
+    "message": "TTendencias cerrada 1/1; #LaHora29O explicada y verificada en main. Sin ImageGen ni Telegram; la reparación visual queda en su flujo independiente.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 100
+    },
     "remate_selections": [
       {
-        "trend_id": "6a124636f62f",
+        "trend_id": "38f7dd0dfd23",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "tragedy_with_victims"
+        "no_remate_reason": "sensitive_current_affairs_after_fatal_accident"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-29T10:29:08+01:00",
+        "at": "2026-10-29T10:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial y releyendo estado autoritativo."
+        "message": "Preparando pasada editorial; 1 revisión activa (#LaHora29O)."
       },
       {
-        "at": "2026-10-29T10:29:35+01:00",
+        "at": "2026-10-29T10:56:30+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola editorial verificada en 0; sin requests activas ni rewrite_pending."
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Releído estado autoritativo: revisión 0 sigue preparing en la cola."
       },
       {
-        "at": "2026-10-29T10:29:50+01:00",
-        "phase": "remate_selection",
-        "trend_id": "6a124636f62f",
-        "title": "#LaMesa",
-        "message": "Sin remate · tragedia con víctimas; se mantiene la explicación factual."
+        "at": "2026-10-29T10:57:00+01:00",
+        "phase": "investigating",
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Buscando detonante actual de #LaHora29O y contrastando fecha y contexto de la emisión."
       },
       {
-        "at": "2026-10-29T10:30:00+01:00",
+        "at": "2026-10-29T10:58:30+01:00",
+        "phase": "investigating",
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Hecho esencial verificado: emisión del 29 de octubre, 07:50–10:35, en una mañana informativa marcada por Urda."
+      },
+      {
+        "at": "2026-10-29T10:59:00+01:00",
+        "phase": "drafting",
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Redactando explicación factual y comprobando el límite de X."
+      },
+      {
+        "at": "2026-10-29T11:00:00+01:00",
+        "phase": "persisting",
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-29T11:00:30+01:00",
+        "phase": "persisting",
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Actualizando requests con la revisión exacta."
+      },
+      {
+        "at": "2026-10-29T11:01:00+01:00",
+        "phase": "persisting",
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Retirando revisión de la cola; reconciliador la cerró concurrentemente."
+      },
+      {
+        "at": "2026-10-29T11:01:30+01:00",
         "phase": "verifying",
-        "trend_id": "6a124636f62f",
-        "title": "#LaMesa",
-        "message": "Reparación visual solicitada mediante pending-repair-trigger; no bloquea el cierre editorial."
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-29T10:30:08+01:00",
+        "at": "2026-10-29T11:02:00+01:00",
+        "phase": "verifying",
+        "trend_id": "38f7dd0dfd23",
+        "title": "#LaHora29O",
+        "message": "Tendencia cerrada y verificada; los cinco campos transaccionales coinciden y la cola queda vacía."
+      },
+      {
+        "at": "2026-10-29T11:02:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0; cola verificada vacía y saneamiento visual solicitado."
+        "message": "TTendencias cerrada 1/1; #LaHora29O explicada y verificada en main."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "38f7dd0dfd23"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "38f7dd0dfd23",
+        "revision": 0,
+        "name": "#LaHora29O",
+        "status": "explained"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261029T102900+0100",
+  "run_id": "tr-chat-20261029T105500+0100",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
-    "final_resolved": 0,
+    "attempted": 1,
+    "explained": 1,
+    "final_resolved": 1,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
@@ -125,64 +182,117 @@
     "rewrite_pending_remaining": 0,
     "remates_selected": 0,
     "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_visual_candidates_reviewed": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T10:29:08+01:00",
+      "at": "2026-10-29T10:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial y releyendo estado autoritativo."
+      "message": "Preparando pasada editorial; 1 revisión activa (#LaHora29O)."
     },
     {
-      "at": "2026-10-29T10:29:35+01:00",
+      "at": "2026-10-29T10:56:30+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola editorial verificada en 0; sin requests activas ni rewrite_pending."
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Releído estado autoritativo: revisión 0 sigue preparing en la cola."
     },
     {
-      "at": "2026-10-29T10:29:50+01:00",
-      "phase": "remate_selection",
-      "trend_id": "6a124636f62f",
-      "title": "#LaMesa",
-      "message": "Sin remate · tragedia con víctimas; se mantiene la explicación factual."
+      "at": "2026-10-29T10:57:00+01:00",
+      "phase": "investigating",
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Buscando detonante actual de #LaHora29O y contrastando fecha y contexto de la emisión."
     },
     {
-      "at": "2026-10-29T10:30:00+01:00",
+      "at": "2026-10-29T10:58:30+01:00",
+      "phase": "investigating",
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Hecho esencial verificado: emisión del 29 de octubre, 07:50–10:35, en una mañana informativa marcada por Urda."
+    },
+    {
+      "at": "2026-10-29T10:59:00+01:00",
+      "phase": "drafting",
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Redactando explicación factual y comprobando el límite de X."
+    },
+    {
+      "at": "2026-10-29T11:00:00+01:00",
+      "phase": "persisting",
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Guardando ficha Explicada."
+    },
+    {
+      "at": "2026-10-29T11:00:30+01:00",
+      "phase": "persisting",
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Actualizando requests con la revisión exacta."
+    },
+    {
+      "at": "2026-10-29T11:01:00+01:00",
+      "phase": "persisting",
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Retirando revisión de la cola; reconciliador la cerró concurrentemente."
+    },
+    {
+      "at": "2026-10-29T11:01:30+01:00",
       "phase": "verifying",
-      "trend_id": "6a124636f62f",
-      "title": "#LaMesa",
-      "message": "Reparación visual solicitada mediante pending-repair-trigger; no bloquea el cierre editorial."
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Releyendo main y verificando id+revision y texto persistido."
     },
     {
-      "at": "2026-10-29T10:30:08+01:00",
+      "at": "2026-10-29T11:02:00+01:00",
+      "phase": "verifying",
+      "trend_id": "38f7dd0dfd23",
+      "title": "#LaHora29O",
+      "message": "Tendencia cerrada y verificada; los cinco campos transaccionales coinciden y la cola queda vacía."
+    },
+    {
+      "at": "2026-10-29T11:02:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 0/0; cola verificada vacía y saneamiento visual solicitado."
+      "message": "TTendencias cerrada 1/1; #LaHora29O explicada y verificada en main."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261029T101000+0100",
-  "ratings_snapshot": null,
+  "previous_run_id": "tr-chat-20261029T102900+0100",
+  "ratings_snapshot": {
+    "path": "trends/remate-ratings.json",
+    "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+    "updated_at": "2026-10-06T21:21:47.927Z",
+    "total_ratings": 154,
+    "recent_considered": 100
+  },
   "remate_selections": [
     {
-      "trend_id": "6a124636f62f",
+      "trend_id": "38f7dd0dfd23",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
       "selected_candidate": null,
       "selected_score": null,
-      "no_remate_reason": "tragedy_with_victims"
+      "no_remate_reason": "sensitive_current_affairs_after_fatal_accident"
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "38f7dd0dfd23",
+      "revision": 0,
+      "name": "#LaHora29O",
+      "status": "explained"
+    }
+  ],
   "pending_delivery_count": 1,
   "apply_workflow": {
     "run_id": 40774303176,
@@ -192,7 +302,7 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "d56461139116d1e5c7888a3800ba5166b4122d03",
-    "updated_at": "2026-10-29T10:30:08+01:00"
+    "blob_sha": "789ab2a3a6d9d585b9b071d7debcda4e33710e63",
+    "updated_at": "2026-10-29T11:02:30+01:00"
   }
 }
