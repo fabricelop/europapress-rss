@@ -39,41 +39,24 @@
     "title": null,
     "summary": {
       "attempted": 0,
-      "ready": 0,
       "explained": 0,
       "final_resolved": 0,
-      "grouped_into_existing_card": 0,
-      "problematic_reviewed": 0,
-      "problematic_marked": 0,
-      "inactive_after_retry": 0,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "initial_compact_queue": 0,
-      "discovered_during_run": 0,
-      "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 1,
       "pending_visual_candidates_reviewed": 2,
-      "requests_repaired": 0,
+      "imagegen_calls": 0,
+      "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada · 0/0; cola y reexplicaciones vacías, #LaMesa revisada sin remate por sensibilidad y reparación visual solicitada.",
+    "message": "TTendencias cerrada 0/0; cola vacía y saneamiento visual solicitado.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
     "remate_selections": [],
     "activity": [
       {
@@ -81,28 +64,28 @@
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial; cola textual vacía y saneamiento autoritativo en curso."
+        "message": "Preparando pasada editorial; cola inicial vacía."
       },
       {
         "at": "2026-10-29T07:56:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main; comprobando cola, requests, reexplicaciones y Explicadas/Pendientes recientes."
+        "message": "Releyendo main y comprobando solicitudes y reexplicaciones."
       },
       {
         "at": "2026-10-29T07:56:30+01:00",
         "phase": "verifying",
         "trend_id": "6a124636f62f",
         "title": "#LaMesa",
-        "message": "Sin remate · contenido sensible ligado a víctimas; explicación factual suficiente."
+        "message": "Sin remate por sensibilidad; explicación factual conservada."
       },
       {
         "at": "2026-10-29T07:57:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada · 0/0; cola y reexplicaciones vacías, #LaMesa revisada sin remate por sensibilidad y reparación visual solicitada."
+        "message": "TTendencias cerrada 0/0; cola vacía y saneamiento visual solicitado."
       }
     ],
     "processed_ids": [],
@@ -115,29 +98,19 @@
   "run_id": "tr-chat-20261029T0755+0100",
   "summary": {
     "attempted": 0,
-    "ready": 0,
     "explained": 0,
     "final_resolved": 0,
-    "grouped_into_existing_card": 0,
-    "problematic_reviewed": 0,
-    "problematic_marked": 0,
-    "inactive_after_retry": 0,
-    "imagegen_calls": 0,
-    "telegram_sends": 0,
-    "initial_compact_queue": 0,
-    "discovered_during_run": 0,
-    "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 0,
     "remates_selected": 0,
     "remates_omitted": 1,
     "recent_missing_closer_reviewed": 1,
     "pending_visual_candidates_reviewed": 2,
-    "requests_repaired": 0,
+    "imagegen_calls": 0,
+    "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
@@ -146,32 +119,32 @@
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial; cola textual vacía y saneamiento autoritativo en curso."
+      "message": "Preparando pasada editorial; cola inicial vacía."
     },
     {
       "at": "2026-10-29T07:56:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main; comprobando cola, requests, reexplicaciones y Explicadas/Pendientes recientes."
+      "message": "Releyendo main y comprobando solicitudes y reexplicaciones."
     },
     {
       "at": "2026-10-29T07:56:30+01:00",
       "phase": "verifying",
       "trend_id": "6a124636f62f",
       "title": "#LaMesa",
-      "message": "Sin remate · contenido sensible ligado a víctimas; explicación factual suficiente."
+      "message": "Sin remate por sensibilidad; explicación factual conservada."
     },
     {
       "at": "2026-10-29T07:57:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 0/0; cola y reexplicaciones vacías, #LaMesa revisada sin remate por sensibilidad y reparación visual solicitada."
+      "message": "TTendencias cerrada 0/0; cola vacía y saneamiento visual solicitado."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261029T0740+0100",
+  "previous_run_id": "tr-chat-20261029T0755+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
