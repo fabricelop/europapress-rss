@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "ff7da32ed7b2"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T07:25:00+01:00",
-  "last_completed_at": "2026-10-29T07:26:30+01:00",
-  "updated_at": "2026-10-29T07:26:30+01:00",
+  "last_started_at": "2026-10-29T07:40:00+01:00",
+  "last_completed_at": "2026-10-29T07:44:10+01:00",
+  "updated_at": "2026-10-29T07:44:10+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261029T0725+0100",
+    "trigger_run_id": "tr-chat-20261029T0740+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,22 +28,22 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T0725+0100",
+    "run_id": "tr-chat-20261029T0740+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T07:25:00+01:00",
-    "updated_at": "2026-10-29T07:26:30+01:00",
-    "finished_at": "2026-10-29T07:26:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-29T07:40:00+01:00",
+    "updated_at": "2026-10-29T07:44:10+01:00",
+    "finished_at": "2026-10-29T07:44:10+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
+      "explained": 1,
+      "final_resolved": 1,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
@@ -49,22 +51,22 @@
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 1,
       "pending_visual_candidates_reviewed": 1,
       "requests_repaired": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada · 0/0; cola final vacía, sin reexplicaciones pendientes y saneamiento visual solicitado.",
+    "message": "TTendencias cerrada · 1/1; #FelizJueves explicada y verificada, cola final vacía, sin reexplicaciones pendientes y saneamiento visual solicitado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -76,65 +78,178 @@
     },
     "remate_selections": [
       {
-        "trend_id": "6a124636f62f",
+        "trend_id": "ff7da32ed7b2",
         "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "tragedy_with_victims"
+        "candidate_count": 5,
+        "candidates": [
+          "🌶️ El algoritmo también sabe qué día es.",
+          "🌶️ El jueves vuelve a entrar sin pedir invitación.",
+          "🌶️ El calendario también tiene cuenta en X.",
+          "🌶️ Cambia la fecha; el saludo vuelve con hashtag.",
+          "🌶️ El jueves ya viene con etiqueta de serie."
+        ],
+        "selected_candidate": "🌶️ El algoritmo también sabe qué día es.",
+        "selected_score": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-29T07:25:00+01:00",
+        "at": "2026-10-29T07:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial; cola inicial 0 y validación autoritativa en curso."
       },
       {
-        "at": "2026-10-29T07:25:20+01:00",
+        "at": "2026-10-29T07:40:10+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main; comprobando cola, requests, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-29T07:25:50+01:00",
-        "phase": "remate_selection",
-        "trend_id": "6a124636f62f",
-        "title": "#LaMesa",
-        "message": "Sin remate · tragedia ferroviaria con víctimas y testimonios de supervivientes; explicación factual suficiente."
-      },
-      {
-        "at": "2026-10-29T07:26:10+01:00",
+        "at": "2026-10-29T07:41:15+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main antes del cierre; comprobando cola final, requests, reexplicaciones y saneamiento visual solicitado."
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Releyendo estado autoritativo de #FelizJueves"
       },
       {
-        "at": "2026-10-29T07:26:30+01:00",
+        "at": "2026-10-29T07:41:25+01:00",
+        "phase": "investigating",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-29T07:41:35+01:00",
+        "phase": "investigating",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-29T07:41:45+01:00",
+        "phase": "investigating",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-29T07:41:55+01:00",
+        "phase": "investigating",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-29T07:42:05+01:00",
+        "phase": "drafting",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-29T07:42:15+01:00",
+        "phase": "drafting",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-29T07:42:25+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-29T07:42:35+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-29T07:42:45+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-29T07:43:00+01:00",
+        "phase": "persisting",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-29T07:43:10+01:00",
+        "phase": "persisting",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-29T07:43:20+01:00",
+        "phase": "persisting",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-29T07:43:30+01:00",
+        "phase": "verifying",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-29T07:43:40+01:00",
+        "phase": "verifying",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-29T07:43:50+01:00",
+        "phase": "verifying",
+        "trend_id": "ff7da32ed7b2",
+        "title": "#FelizJueves",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-29T07:44:10+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada · 0/0; cola final vacía, sin reexplicaciones pendientes y saneamiento visual solicitado."
+        "message": "TTendencias cerrada · 1/1; #FelizJueves explicada y verificada, cola final vacía, sin reexplicaciones pendientes y saneamiento visual solicitado."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "ff7da32ed7b2"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "ff7da32ed7b2",
+        "name": "#FelizJueves",
+        "revision": 0,
+        "status": "explained",
+        "verified": true
+      }
+    ]
   },
-  "run_id": "tr-chat-20261029T0725+0100",
+  "run_id": "tr-chat-20261029T0740+0100",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
+    "explained": 1,
+    "final_resolved": 1,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
@@ -142,15 +257,15 @@
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 0,
-    "discovered_during_run": 0,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 1,
     "recent_missing_closer_reviewed": 1,
     "pending_visual_candidates_reviewed": 1,
@@ -159,43 +274,141 @@
   },
   "activity": [
     {
-      "at": "2026-10-29T07:25:00+01:00",
+      "at": "2026-10-29T07:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial; cola inicial 0 y validación autoritativa en curso."
     },
     {
-      "at": "2026-10-29T07:25:20+01:00",
+      "at": "2026-10-29T07:40:10+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main; comprobando cola, requests, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-29T07:25:50+01:00",
-      "phase": "remate_selection",
-      "trend_id": "6a124636f62f",
-      "title": "#LaMesa",
-      "message": "Sin remate · tragedia ferroviaria con víctimas y testimonios de supervivientes; explicación factual suficiente."
-    },
-    {
-      "at": "2026-10-29T07:26:10+01:00",
+      "at": "2026-10-29T07:41:15+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main antes del cierre; comprobando cola final, requests, reexplicaciones y saneamiento visual solicitado."
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Releyendo estado autoritativo de #FelizJueves"
     },
     {
-      "at": "2026-10-29T07:26:30+01:00",
+      "at": "2026-10-29T07:41:25+01:00",
+      "phase": "investigating",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-29T07:41:35+01:00",
+      "phase": "investigating",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Contrastando fuente 1/2"
+    },
+    {
+      "at": "2026-10-29T07:41:45+01:00",
+      "phase": "investigating",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Contrastando fuente 2/2"
+    },
+    {
+      "at": "2026-10-29T07:41:55+01:00",
+      "phase": "investigating",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-29T07:42:05+01:00",
+      "phase": "drafting",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-29T07:42:15+01:00",
+      "phase": "drafting",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-29T07:42:25+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Generando candidatos de remate"
+    },
+    {
+      "at": "2026-10-29T07:42:35+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Evaluando candidatos con ratings"
+    },
+    {
+      "at": "2026-10-29T07:42:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Remate seleccionado"
+    },
+    {
+      "at": "2026-10-29T07:43:00+01:00",
+      "phase": "persisting",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-29T07:43:10+01:00",
+      "phase": "persisting",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-29T07:43:20+01:00",
+      "phase": "persisting",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-29T07:43:30+01:00",
+      "phase": "verifying",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-29T07:43:40+01:00",
+      "phase": "verifying",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-29T07:43:50+01:00",
+      "phase": "verifying",
+      "trend_id": "ff7da32ed7b2",
+      "title": "#FelizJueves",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-29T07:44:10+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada · 0/0; cola final vacía, sin reexplicaciones pendientes y saneamiento visual solicitado."
+      "message": "TTendencias cerrada · 1/1; #FelizJueves explicada y verificada, cola final vacía, sin reexplicaciones pendientes y saneamiento visual solicitado."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-chat-20261029T0655+0100",
+  "previous_run_id": "tr-chat-20261029T0725+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -205,16 +418,29 @@
   },
   "remate_selections": [
     {
-      "trend_id": "6a124636f62f",
+      "trend_id": "ff7da32ed7b2",
       "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "tragedy_with_victims"
+      "candidate_count": 5,
+      "candidates": [
+        "🌶️ El algoritmo también sabe qué día es.",
+        "🌶️ El jueves vuelve a entrar sin pedir invitación.",
+        "🌶️ El calendario también tiene cuenta en X.",
+        "🌶️ Cambia la fecha; el saludo vuelve con hashtag.",
+        "🌶️ El jueves ya viene con etiqueta de serie."
+      ],
+      "selected_candidate": "🌶️ El algoritmo también sabe qué día es.",
+      "selected_score": null
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "ff7da32ed7b2",
+      "name": "#FelizJueves",
+      "revision": 0,
+      "status": "explained",
+      "verified": true
+    }
+  ],
   "pending_delivery_count": 3,
   "apply_workflow": {
     "run_id": 40774303176,
@@ -223,8 +449,8 @@
     "editorial_blocking": false
   },
   "requests_state": {
-    "status": "valid_empty",
-    "blob_sha": "3bd50a01101f4080ccb831b642add20073dbf419",
-    "updated_at": "2026-10-29T07:26:10+01:00"
+    "status": "valid_no_active",
+    "blob_sha": "98f4e93975c7c1f4e0479be04668c6951b117902",
+    "updated_at": "2026-10-29T07:43:10+01:00"
   }
 }
