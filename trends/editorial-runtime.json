@@ -4,23 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "b04bd0bdb832"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T12:38:30+01:00",
-  "last_completed_at": "2026-10-29T12:43:10+01:00",
-  "updated_at": "2026-10-29T12:43:10+01:00",
+  "last_started_at": "2026-10-29T12:55:00+01:00",
+  "last_completed_at": "2026-10-29T12:56:40+01:00",
+  "updated_at": "2026-10-29T12:56:40+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-1793273830825-manual",
+    "trigger_run_id": "tr-chat-20261029T125500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,35 +26,34 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793273830825-manual",
+    "run_id": "tr-chat-20261029T125500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T12:38:30+01:00",
-    "updated_at": "2026-10-29T12:43:10+01:00",
-    "finished_at": "2026-10-29T12:43:10+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-29T12:55:00+01:00",
+    "updated_at": "2026-10-29T12:56:40+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
-      "explained": 1,
-      "final_resolved": 1,
+      "attempted": 0,
+      "explained": 0,
+      "final_resolved": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 1,
+      "remates_selected": 0,
       "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 24,
+      "recent_missing_closer_reviewed": 1,
       "pending_visual_candidates_reviewed": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 1/1: Toño r1 explicado y verificado; cola y reexplicaciones pendientes en 0.",
+    "message": "TTendencias cerrada 0/0: cola, requests, reexplicaciones y huérfanos verificados en 0; saneamiento de Pendientes solicitado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -68,202 +65,73 @@
     },
     "remate_selections": [
       {
-        "trend_id": "b04bd0bdb832",
-        "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "text": "🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-            "score": 9
-          },
-          {
-            "id": "c2",
-            "text": "🌶️ América llamó a gol varias veces; Toño dejó casi todas las llamadas sin respuesta.",
-            "score": 8.2
-          },
-          {
-            "id": "c3",
-            "text": "🌶️ El empate también se firma con guantes.",
-            "score": 7.5
-          },
-          {
-            "id": "c4",
-            "text": "🌶️ América fabricó ocasiones; Toño montó la aduana.",
-            "score": 7.7
-          },
-          {
-            "id": "c5",
-            "text": "🌶️ El 1-1 salió del Banorte con seguro de portero.",
-            "score": 7.4
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 9,
-        "selected_text": "🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-        "originality_check": "No reutiliza el remate de la revisión 0 y no coincide conceptualmente con los últimos 30 remates revisados."
+        "trend_id": "6a124636f62f",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_event"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-29T12:38:30+01:00",
+        "at": "2026-10-29T12:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial; 1 revisión activa. Solicitando saneamiento de Pendientes."
+        "message": "Preparando pasada editorial; cola activa 0. Saneamiento de Pendientes solicitado."
       },
       {
-        "at": "2026-10-29T12:38:45+01:00",
+        "at": "2026-10-29T12:55:20+01:00",
         "phase": "verifying",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Releyendo estado autoritativo de Toño · revisión 1."
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes recientes y exclusiones de publicado, borrado o archivado."
       },
       {
-        "at": "2026-10-29T12:39:00+01:00",
-        "phase": "investigating",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Buscando detonante actual y resultado definitivo del América-Tijuana."
-      },
-      {
-        "at": "2026-10-29T12:39:20+01:00",
-        "phase": "investigating",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Contrastando fuente 1/2 · Fox Sports confirma 1-1 y varias paradas decisivas de Toño Rodríguez."
-      },
-      {
-        "at": "2026-10-29T12:39:35+01:00",
-        "phase": "investigating",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Contrastando fuente 2/2 · RÉCORD confirma el 1-1 y la actuación destacada del portero de Tijuana."
-      },
-      {
-        "at": "2026-10-29T12:39:53+01:00",
-        "phase": "investigating",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Hecho esencial verificado: empate 1-1 del 28 de octubre y Toño Rodríguez fue decisivo con varias intervenciones."
-      },
-      {
-        "at": "2026-10-29T12:40:32+01:00",
-        "phase": "drafting",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Redactando explicación factual nueva con el puesto actual TT#14."
-      },
-      {
-        "at": "2026-10-29T12:40:53+01:00",
-        "phase": "drafting",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Comprobando límite de X · texto completo 250 caracteres."
-      },
-      {
-        "at": "2026-10-29T12:40:53+01:00",
+        "at": "2026-10-29T12:56:00+01:00",
         "phase": "remate_selection",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Generando candidatos de remate nuevos; se excluye el remate de la revisión 0."
+        "trend_id": "6a124636f62f",
+        "title": "#LaMesa",
+        "message": "Sin remate para #LaMesa r0 por sensibilidad de la tragedia ferroviaria; explicación factual conservada."
       },
       {
-        "at": "2026-10-29T12:40:53+01:00",
-        "phase": "remate_selection",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Evaluando candidatos con ratings y los últimos 30 remates para evitar repetición."
-      },
-      {
-        "at": "2026-10-29T12:40:53+01:00",
-        "phase": "remate_selection",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Remate seleccionado: «El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.»"
-      },
-      {
-        "at": "2026-10-29T12:41:26+01:00",
+        "at": "2026-10-29T12:56:20+01:00",
         "phase": "verifying",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Barrera JIT superada: revisión 1 sigue preparing y no existe revisión posterior."
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main para verificar cola, requests, reexplicaciones, huérfanos y trigger de saneamiento."
       },
       {
-        "at": "2026-10-29T12:41:26+01:00",
-        "phase": "persisting",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Guardando ficha Explicada de Toño · revisión 1."
-      },
-      {
-        "at": "2026-10-29T12:41:49+01:00",
-        "phase": "persisting",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Actualizando requests de Toño · revisión 1."
-      },
-      {
-        "at": "2026-10-29T12:42:08+01:00",
-        "phase": "persisting",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Retirando revisión 1 de Toño de la cola editorial."
-      },
-      {
-        "at": "2026-10-29T12:43:04+01:00",
-        "phase": "verifying",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Releyendo main y verificando id+revision y texto persistido de Toño."
-      },
-      {
-        "at": "2026-10-29T12:43:07+01:00",
-        "phase": "verifying",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "Tendencia cerrada y verificada; cola activa 0 y reexplicaciones pendientes 0."
-      },
-      {
-        "at": "2026-10-29T12:43:10+01:00",
+        "at": "2026-10-29T12:56:40+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 1/1: Toño r1 explicado y verificado; cola y reexplicaciones pendientes en 0."
+        "message": "TTendencias cerrada 0/0: cola, requests, reexplicaciones y huérfanos verificados en 0; saneamiento de Pendientes solicitado."
       }
     ],
-    "processed_ids": [
-      "b04bd0bdb832"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": [
-      {
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "revision": 1,
-        "status": "explained",
-        "explanation": "TT#14 Toño es tendencia por Toño Rodríguez, portero de Tijuana, clave en el 1-1 ante América del 28 de octubre: sostuvo a Xolos con varias paradas decisivas.\n#ToñoRodríguez #Xolos #LigaMX\n🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-        "closer_text": "🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-        "visual_status": "pending_non_blocking"
-      }
-    ]
+    "final_outcomes": [],
+    "finished_at": "2026-10-29T12:56:40+01:00"
   },
-  "run_id": "tr-1793273830825-manual",
+  "run_id": "tr-chat-20261029T125500+0100",
   "summary": {
-    "attempted": 1,
-    "explained": 1,
-    "final_resolved": 1,
+    "attempted": 0,
+    "explained": 0,
+    "final_resolved": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 1,
+    "remates_selected": 0,
     "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 24,
+    "recent_missing_closer_reviewed": 1,
     "pending_visual_candidates_reviewed": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -271,130 +139,39 @@
   },
   "activity": [
     {
-      "at": "2026-10-29T12:38:30+01:00",
+      "at": "2026-10-29T12:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial; 1 revisión activa. Solicitando saneamiento de Pendientes."
+      "message": "Preparando pasada editorial; cola activa 0. Saneamiento de Pendientes solicitado."
     },
     {
-      "at": "2026-10-29T12:38:45+01:00",
+      "at": "2026-10-29T12:55:20+01:00",
       "phase": "verifying",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Releyendo estado autoritativo de Toño · revisión 1."
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes recientes y exclusiones de publicado, borrado o archivado."
     },
     {
-      "at": "2026-10-29T12:39:00+01:00",
-      "phase": "investigating",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Buscando detonante actual y resultado definitivo del América-Tijuana."
-    },
-    {
-      "at": "2026-10-29T12:39:20+01:00",
-      "phase": "investigating",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Contrastando fuente 1/2 · Fox Sports confirma 1-1 y varias paradas decisivas de Toño Rodríguez."
-    },
-    {
-      "at": "2026-10-29T12:39:35+01:00",
-      "phase": "investigating",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Contrastando fuente 2/2 · RÉCORD confirma el 1-1 y la actuación destacada del portero de Tijuana."
-    },
-    {
-      "at": "2026-10-29T12:39:53+01:00",
-      "phase": "investigating",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Hecho esencial verificado: empate 1-1 del 28 de octubre y Toño Rodríguez fue decisivo con varias intervenciones."
-    },
-    {
-      "at": "2026-10-29T12:40:32+01:00",
-      "phase": "drafting",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Redactando explicación factual nueva con el puesto actual TT#14."
-    },
-    {
-      "at": "2026-10-29T12:40:53+01:00",
-      "phase": "drafting",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Comprobando límite de X · texto completo 250 caracteres."
-    },
-    {
-      "at": "2026-10-29T12:40:53+01:00",
+      "at": "2026-10-29T12:56:00+01:00",
       "phase": "remate_selection",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Generando candidatos de remate nuevos; se excluye el remate de la revisión 0."
+      "trend_id": "6a124636f62f",
+      "title": "#LaMesa",
+      "message": "Sin remate para #LaMesa r0 por sensibilidad de la tragedia ferroviaria; explicación factual conservada."
     },
     {
-      "at": "2026-10-29T12:40:53+01:00",
-      "phase": "remate_selection",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Evaluando candidatos con ratings y los últimos 30 remates para evitar repetición."
-    },
-    {
-      "at": "2026-10-29T12:40:53+01:00",
-      "phase": "remate_selection",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Remate seleccionado: «El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.»"
-    },
-    {
-      "at": "2026-10-29T12:41:26+01:00",
+      "at": "2026-10-29T12:56:20+01:00",
       "phase": "verifying",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Barrera JIT superada: revisión 1 sigue preparing y no existe revisión posterior."
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main para verificar cola, requests, reexplicaciones, huérfanos y trigger de saneamiento."
     },
     {
-      "at": "2026-10-29T12:41:26+01:00",
-      "phase": "persisting",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Guardando ficha Explicada de Toño · revisión 1."
-    },
-    {
-      "at": "2026-10-29T12:41:49+01:00",
-      "phase": "persisting",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Actualizando requests de Toño · revisión 1."
-    },
-    {
-      "at": "2026-10-29T12:42:08+01:00",
-      "phase": "persisting",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Retirando revisión 1 de Toño de la cola editorial."
-    },
-    {
-      "at": "2026-10-29T12:43:04+01:00",
-      "phase": "verifying",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Releyendo main y verificando id+revision y texto persistido de Toño."
-    },
-    {
-      "at": "2026-10-29T12:43:07+01:00",
-      "phase": "verifying",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "Tendencia cerrada y verificada; cola activa 0 y reexplicaciones pendientes 0."
-    },
-    {
-      "at": "2026-10-29T12:43:10+01:00",
+      "at": "2026-10-29T12:56:40+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 1/1: Toño r1 explicado y verificado; cola y reexplicaciones pendientes en 0."
+      "message": "TTendencias cerrada 0/0: cola, requests, reexplicaciones y huérfanos verificados en 0; saneamiento de Pendientes solicitado."
     }
   ],
   "partial": false,
@@ -408,53 +185,16 @@
   },
   "remate_selections": [
     {
-      "trend_id": "b04bd0bdb832",
-      "revision": 1,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "text": "🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-          "score": 9
-        },
-        {
-          "id": "c2",
-          "text": "🌶️ América llamó a gol varias veces; Toño dejó casi todas las llamadas sin respuesta.",
-          "score": 8.2
-        },
-        {
-          "id": "c3",
-          "text": "🌶️ El empate también se firma con guantes.",
-          "score": 7.5
-        },
-        {
-          "id": "c4",
-          "text": "🌶️ América fabricó ocasiones; Toño montó la aduana.",
-          "score": 7.7
-        },
-        {
-          "id": "c5",
-          "text": "🌶️ El 1-1 salió del Banorte con seguro de portero.",
-          "score": 7.4
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 9,
-      "selected_text": "🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-      "originality_check": "No reutiliza el remate de la revisión 0 y no coincide conceptualmente con los últimos 30 remates revisados."
+      "trend_id": "6a124636f62f",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "sensitive_event"
     }
   ],
-  "final_outcomes": [
-    {
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "revision": 1,
-      "status": "explained",
-      "explanation": "TT#14 Toño es tendencia por Toño Rodríguez, portero de Tijuana, clave en el 1-1 ante América del 28 de octubre: sostuvo a Xolos con varias paradas decisivas.\n#ToñoRodríguez #Xolos #LigaMX\n🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-      "closer_text": "🌶️ El 1-1 quedó en tablas y Toño puso las manos sobre la mesa.",
-      "visual_status": "pending_non_blocking"
-    }
-  ],
+  "final_outcomes": [],
   "pending_delivery_count": 1,
   "apply_workflow": {
     "status": "not_required",
@@ -462,13 +202,13 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "674fad826ca6d500093230d2cfa8fc96a41ba13e",
-    "updated_at": "2026-10-29T12:41:37+01:00"
+    "blob_sha": "ebebe5ce8dc6bd7c70191dd1963607344cb86038",
+    "updated_at": "2026-10-29T12:56:40+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-29T12:33:33+01:00",
-    "recent_sha": "ed72efa9ef0875e82a5e225f8d5b02f60c8de5d6",
-    "queue_sha": "6f876491304fac61f1cdab7ccbbd9a3888bf6f35",
+    "captured_at": "2026-10-29T12:50:55+01:00",
+    "recent_sha": "b33a65a2b4fa5d386e0a9ba8e2398d735587afb8",
+    "queue_sha": "3e09307c1cf1b169e32d532c87f3cb15f83c4cc2",
     "queue_count": 0
   }
 }
