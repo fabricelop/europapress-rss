@@ -63,7 +63,8 @@ function GetCommandArg([string]$command,[string]$name) {
 }
 function PageCounts {
   $response=Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:9223/json/list' -TimeoutSec 8 -ErrorAction Stop
-  $targets=@(ConvertFrom-Json -InputObject ([string]$response.Content))
+  $parsed=ConvertFrom-Json -InputObject ([string]$response.Content)
+  $targets=@(); foreach($target in $parsed) { $targets += $target }
   $pages=@($targets|Where-Object{[string]$_.type -eq 'page'})
   $homes=@($pages|Where-Object{[string]$_.url -eq 'https://chatgpt.com/'})
   $conversations=@($pages|Where-Object{[string]$_.url -match '^https://chatgpt[.]com/c/'})
