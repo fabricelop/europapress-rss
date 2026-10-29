@@ -51,6 +51,12 @@ struct TTDashboard: View {
             search = ""
             UISelectionFeedbackGenerator().selectionChanged()
         }
+        .onChange(of: github.receiptChange) { _, _ in
+            Task { await store.refresh() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            Task { await github.resumeReceiptChecks() }
+        }
     }
 
     private var topBar: some View {
@@ -166,17 +172,28 @@ struct TTDashboard: View {
     }
 
     private var connectedLabel: some View {
-        HStack(spacing: 5) {
-            Image(systemName: store.snapshot.partial ? "exclamationmark.triangle.fill" : "checkmark.circle.fill")
-                .foregroundStyle(store.snapshot.partial ? .orange : TTTheme.teal)
-            Text(store.snapshot.partial ? "Copia local disponible" : "GitHub directo · Sin Cloudflare")
-            Spacer(minLength: 2)
-            if let checked = store.snapshot.updatedAt {
-                Text(checked, format: .dateTime.day().month().hour().minute())
+        VStack(alignment: .leading, spacing: 5) {
+            HStack(spacing: 5) {
+                Image(systemName: store.snapshot.partial ? "exclamationmark.triangle.fill" : "checkmark.circle.fill")
+                    .foregroundStyle(store.snapshot.partial ? .orange : TTTheme.teal)
+                Text(store.snapshot.partial ? "Copia local disponible" : "GitHub directo · Sin Cloudflare")
+                Spacer(minLength: 2)
+                if let checked = store.snapshot.updatedAt {
+                    Text(checked, format: .dateTime.day().month().hour().minute())
+                }
+            }
+            if !github.pendingReceipts.isEmpty {
+                Label("\(github.pendingReceipts.count) órdenes pendientes de confirmación en GitHub",
+                      systemImage: "clock.arrow.circlepath")
+                    .foregroundStyle(.orange)
+            }
+            if github.notice.contains("confirmó") || github.notice.contains("Sin comprobante") ||
+                github.notice.contains("no aplicó") {
+                Text(github.notice).foregroundStyle(TTTheme.muted).lineLimit(3)
             }
         }
         .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
-        .lineLimit(1).minimumScaleFactor(0.8)
+        .minimumScaleFactor(0.8)
     }
 
     private var subTabs: some View {
