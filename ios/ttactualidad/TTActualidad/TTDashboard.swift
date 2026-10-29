@@ -54,6 +54,9 @@ struct TTDashboard: View {
         .onChange(of: github.receiptChange) { _, _ in
             Task { await store.refresh() }
         }
+        .onChange(of: store.snapshot.updatedAt) { _, _ in
+            github.reconcileOptimisticClosures(news: store.snapshot.news, trends: store.snapshot.trendListas)
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
             Task { await github.resumeReceiptChecks() }
         }
@@ -148,11 +151,23 @@ struct TTDashboard: View {
         }
     }
 
+    private var visibleReadyNews: [NewsItem] {
+        store.snapshot.news.filter {
+            !github.isOptimisticallyHidden(project: "ttittulares", eventID: $0.id, revision: $0.revision)
+        }
+    }
+
+    private var visibleReadyTrends: [TrendItem] {
+        store.snapshot.trendListas.filter {
+            !github.isOptimisticallyHidden(project: "ttendencias", eventID: $0.editorialID, revision: $0.revision)
+        }
+    }
+
     private var counters: some View {
         HStack(spacing: 9) {
-            metric(label: "NOTICIAS EN LISTAS", number: store.snapshot.news.count,
+            metric(label: "NOTICIAS EN LISTAS", number: visibleReadyNews.count,
                    icon: "newspaper.fill", tint: TTTheme.teal)
-            metric(label: "TENDENCIAS EN LISTAS", number: store.snapshot.trendListas.count,
+            metric(label: "TENDENCIAS EN LISTAS", number: visibleReadyTrends.count,
                    icon: "chart.bar.fill", tint: TTTheme.blue)
         }
     }
@@ -202,14 +217,14 @@ struct TTDashboard: View {
                 if store.section == .trends {
                     chip("Top 30", number: store.snapshot.top30.count,
                          active: store.trendFilter == .top) { store.trendFilter = .top }
-                    chip("Listas", number: store.snapshot.trendListas.count,
+                    chip("Listas", number: visibleReadyTrends.count,
                          active: store.trendFilter == .listas) { store.trendFilter = .listas }
                     chip("En elaboración", number: store.snapshot.trendsElaboracion.count,
                          active: store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
                     chip("Fotos archivo", number: ArchivePhotoGallery.photos(from: store.snapshot).count,
                          active: false) { showArchivePhotos = true }
                 } else {
-                    chip("Listas", number: store.snapshot.news.count,
+                    chip("Listas", number: visibleReadyNews.count,
                          active: store.newsFilter == .listas) { store.newsFilter = .listas }
                     chip("En elaboración", number: store.snapshot.newsElaboracion.count,
                          active: store.newsFilter == .elaboracion) { store.newsFilter = .elaboracion }
@@ -267,7 +282,7 @@ struct TTDashboard: View {
     @ViewBuilder private var newsContent: some View {
         let category: [NewsItem] = {
             switch store.newsFilter {
-            case .listas: return store.snapshot.news
+            case .listas: return visibleReadyNews
             case .elaboracion: return store.snapshot.newsElaboracion
             case .revision: return store.snapshot.newsRevision
             case .creciendo: return store.snapshot.newsCreciendo
@@ -288,7 +303,7 @@ struct TTDashboard: View {
         let category: [TrendItem] = {
             switch store.trendFilter {
             case .top: return store.snapshot.top30
-            case .listas: return store.snapshot.trendListas
+            case .listas: return visibleReadyTrends
             case .elaboracion: return store.snapshot.trendsElaboracion
             }
         }()
