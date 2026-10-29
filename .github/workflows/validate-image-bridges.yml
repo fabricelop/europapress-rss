@@ -5,10 +5,13 @@ on:
   pull_request:
     paths:
       - "windows/TTiTTularesImageBridge.js"
+      - "windows/TTendenciasImageBridge.js"
+      - "windows/tests/test_trends_composer_preflight.cjs"
+      - "windows/Install-TTendencias-Composer-Fix.ps1"
       - "windows/tests/test_image_prompt_injection.cjs"
       - "windows/tests/test_image_composer_preflight.cjs"
-      - "windows/tests/test_image_composer_preflight.cjs"
       - "windows/Install-TTiTTulares-Composer-Fix.ps1"
+      - "windows/Install-TTendencias-Composer-Fix.ps1"
       - ".github/workflows/validate-image-bridges.yml"
   push:
     branches: [main]
@@ -44,10 +47,12 @@ jobs:
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
             /windows/tests/test_image_composer_preflight.cjs
+            /windows/tests/test_trends_composer_preflight.cjs
             /windows/tests/test_image_submission_evidence.cjs
             /windows/tests/test_image_immediate_submit.cjs
             /windows/Install-TTImages-PromptFix-Safe.ps1
             /windows/Install-TTiTTulares-Composer-Fix.ps1
+            /windows/Install-TTendencias-Composer-Fix.ps1
             /windows/TTendenciasDedicatedListener.ps1
             /windows/Install-ImageBridge-Hotfix.ps1
             /windows/TT-LocalWatchdog.ps1
@@ -64,6 +69,7 @@ jobs:
             "windows/Install-ImageBridge-Hotfix.ps1",
             "windows/Install-TTImages-PromptFix-Safe.ps1",
             "windows/Install-TTiTTulares-Composer-Fix.ps1",
+            "windows/Install-TTendencias-Composer-Fix.ps1",
             "windows/TT-LocalWatchdog.ps1"
           )
           foreach($file in $files){
@@ -100,6 +106,18 @@ jobs:
           if(-not $s.Contains('before-composer-')){throw 'Missing rollback backup'}
           Write-Host 'TT_COMPOSER_ISOLATED_INSTALLER_OK'
 
+      - name: Garantizar que TTendencias tiene despliegue aislado y reversible
+        shell: pwsh
+        run: |
+          $s=Get-Content 'windows/Install-TTendencias-Composer-Fix.ps1' -Raw
+          foreach($forbidden in @('Stop-Process','Start-Process','Restart-Service','Start-ScheduledTask','Set-ScheduledTask')){
+            if($s.Contains($forbidden)){throw ('Unsafe installer marker: '+$forbidden)}
+          }
+          if(-not $s.Contains('if($CheckOnly)')){throw 'Missing read-only mode'}
+          if(-not $s.Contains('before-composer-')){throw 'Missing backup'}
+          if(-not $s.Contains('TTendenciasImageBridge.js')){throw 'Wrong bridge target'}
+          Write-Host 'TRENDS_COMPOSER_ISOLATED_INSTALLER_OK'
+
       - name: Probar reutilizacion SPA de Chrome 9223 sin recargas innecesarias
         run: node windows/tests/test_chrome9223_spa_reuse.cjs
 
@@ -108,6 +126,9 @@ jobs:
 
       - name: Probar reconocimiento del compositor tras hidratación y recuperación segura
         run: node windows/tests/test_image_composer_preflight.cjs
+
+      - name: Probar compositor TTendencias ante hidratación, borradores y generación activa
+        run: node windows/tests/test_trends_composer_preflight.cjs
 
       - name: Probar reconocimiento de generacion activa sin /c/ y sin falsos positivos
         run: node windows/tests/test_image_submission_evidence.cjs
