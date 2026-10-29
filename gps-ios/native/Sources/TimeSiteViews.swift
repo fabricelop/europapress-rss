@@ -318,6 +318,8 @@ struct TimeMySitesView: View {
     @State private var visitsBySite:[UUID:[SiteVisitRecord]] = [:]
     @State private var computing = false
     @State private var generation = UUID()
+    @State private var indexDebounce: Task<Void,Never>?
+    @State private var indexedIntervalCount = -1
     @State private var editingSite: IdentifiedSite?
     @State private var deletingSite: IdentifiedSite?
     @State private var warningText: String?
@@ -338,6 +340,25 @@ struct TimeMySitesView: View {
     var body: some View {
         List {
             Section {
+                NavigationLink {
+                    SiteTimeAtlasView(model:model,visits:visitsBySite,
+                                      sites:model.data.identifiedSites)
+                } label: {
+                    HStack(spacing:13) {
+                        Image(systemName:"circle.hexagongrid.fill")
+                            .font(.system(size:28)).foregroundStyle(.teal)
+                        VStack(alignment:.leading,spacing:4) {
+                            Text("Atlas de estancias")
+                                .font(.headline)
+                            Text("Día · 7 días · 30 días · fechas personalizadas")
+                                .font(.caption).foregroundStyle(.secondary)
+                            Text("Constelación de lugares y ADN de cada día")
+                                .font(.caption2).foregroundStyle(.secondary)
+                        }
+                    }
+                    .padding(.vertical,9)
+                }
+                .disabled(computing && visitsBySite.isEmpty)
                 NavigationLink {
                     TimeSiteCalendarView(model:model)
                 } label: {
@@ -446,10 +467,16 @@ struct TimeMySitesView: View {
         } message: {
             Text(warningText ?? "")
         }
-        .onAppear { rebuild() }
-        .onChange(of:model.data.siteStayParts.count) { _,_ in rebuild() }
-        .onChange(of:model.data.siteStayAssignments.count) { _,_ in rebuild() }
-        .onChange(of:model.data.identifiedSites.count) { _,_ in rebuild() }
+        .onAppear {
+            if indexedIntervalCount != model.data.intervals.count || visitsBySite.isEmpty {
+                scheduleRebuild()
+            }
+        }
+        .onChange(of:model.data.intervals.count) { _,_ in scheduleRebuild() }
+        .onChange(of:model.data.siteStayParts) { _,_ in scheduleRebuild() }
+        .onChange(of:model.data.siteStayAssignments) { _,_ in scheduleRebuild() }
+        .onChange(of:model.data.identifiedSites) { _,_ in scheduleRebuild() }
+        .onDisappear { indexDebounce?.cancel() }
     }
 
     @ViewBuilder private func siteSummary(_ site:IdentifiedSite) -> some View {
@@ -469,10 +496,22 @@ struct TimeMySitesView: View {
         .padding(.vertical,5)
     }
 
+    private func scheduleRebuild() {
+        // Display the previous index immediately on a return from another
+        // app. Coalesce location bursts before starting historical analysis.
+        indexDebounce?.cancel()
+        indexDebounce=Task { @MainActor in
+            try? await Task.sleep(for:.milliseconds(280))
+            guard !Task.isCancelled else { return }
+            rebuild()
+        }
+    }
+
     private func rebuild() {
         let id=UUID()
         generation=id
-        computing=true
+        if visitsBySite.isEmpty { computing=true }
+        let count=model.data.intervals.count
         let raw=model.data.intervals
         let parts=model.data.siteStayParts
         let legacy=model.data.siteStayAssignments
@@ -486,6 +525,7 @@ struct TimeMySitesView: View {
                 guard generation==id else { return }
                 totalsBySite=statistics
                 visitsBySite=records
+                indexedIntervalCount=count
                 computing=false
             }
         }
