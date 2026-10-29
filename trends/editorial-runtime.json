@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T06:40:00+01:00",
-  "last_completed_at": "2026-10-29T06:42:20+01:00",
-  "updated_at": "2026-10-29T06:42:20+01:00",
+  "last_started_at": "2026-10-29T06:55:00+01:00",
+  "last_completed_at": "2026-10-29T06:56:40+01:00",
+  "updated_at": "2026-10-29T06:56:40+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261029T0640+0100",
+    "trigger_run_id": "tr-chat-20261029T0655+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T0640+0100",
+    "run_id": "tr-chat-20261029T0655+0100",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T06:40:00+01:00",
-    "updated_at": "2026-10-29T06:42:20+01:00",
-    "finished_at": "2026-10-29T06:42:20+01:00",
+    "started_at": "2026-10-29T06:55:00+01:00",
+    "updated_at": "2026-10-29T06:56:40+01:00",
+    "finished_at": "2026-10-29T06:56:40+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -61,17 +61,12 @@
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 1,
       "pending_visual_candidates_reviewed": 1,
-      "incidents": 1
+      "requests_repaired": 1,
+      "incidents": 0
     },
-    "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía; requests.json sigue vacío y las reexplicaciones no pueden validarse desde ese archivo.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "authoritative_state_invalid",
-        "path": "trends/requests.json",
-        "detail": "El archivo existe en main pero contiene 0 bytes; no es JSON válido y su estado interno no puede validarse."
-      }
-    ],
+    "message": "TTendencias cerrada · 0/0; requests.json reparado, cola final vacía y saneamiento visual solicitado.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -92,49 +87,56 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T06:40:00+01:00",
+        "at": "2026-10-29T06:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial; cola inicial 0 y validación autoritativa en curso."
       },
       {
-        "at": "2026-10-29T06:40:20+01:00",
+        "at": "2026-10-29T06:55:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main; comprobando cola, requests, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-29T06:41:30+01:00",
+        "at": "2026-10-29T06:55:40+01:00",
         "phase": "remate_selection",
         "trend_id": "6a124636f62f",
         "title": "#LaMesa",
         "message": "Sin remate · tragedia ferroviaria con víctimas y testimonios de supervivientes; explicación factual suficiente."
       },
       {
-        "at": "2026-10-29T06:42:00+01:00",
+        "at": "2026-10-29T06:56:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main antes del cierre; comprobando cola final, requests, huérfanos y saneamiento visual solicitado."
+        "message": "Releyendo main antes del cierre; comprobando cola final, requests, reexplicaciones y saneamiento visual solicitado."
       },
       {
-        "at": "2026-10-29T06:42:20+01:00",
+        "at": "2026-10-29T06:56:20+01:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparando requests.json vacío con la estructura vacía válida que usan los scripts del repositorio."
+      },
+      {
+        "at": "2026-10-29T06:56:40+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía; requests.json sigue vacío y las reexplicaciones no pueden validarse desde ese archivo."
+        "message": "TTendencias cerrada · 0/0; requests.json reparado, cola final vacía y saneamiento visual solicitado."
       }
     ],
     "processed_ids": [],
-    "partial": true,
+    "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261029T0640+0100",
+  "run_id": "tr-chat-20261029T0655+0100",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -159,47 +161,55 @@
     "remates_omitted": 1,
     "recent_missing_closer_reviewed": 1,
     "pending_visual_candidates_reviewed": 1,
-    "incidents": 1
+    "requests_repaired": 1,
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T06:40:00+01:00",
+      "at": "2026-10-29T06:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial; cola inicial 0 y validación autoritativa en curso."
     },
     {
-      "at": "2026-10-29T06:40:20+01:00",
+      "at": "2026-10-29T06:55:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main; comprobando cola, requests, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-29T06:41:30+01:00",
+      "at": "2026-10-29T06:55:40+01:00",
       "phase": "remate_selection",
       "trend_id": "6a124636f62f",
       "title": "#LaMesa",
       "message": "Sin remate · tragedia ferroviaria con víctimas y testimonios de supervivientes; explicación factual suficiente."
     },
     {
-      "at": "2026-10-29T06:42:00+01:00",
+      "at": "2026-10-29T06:56:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main antes del cierre; comprobando cola final, requests, huérfanos y saneamiento visual solicitado."
+      "message": "Releyendo main antes del cierre; comprobando cola final, requests, reexplicaciones y saneamiento visual solicitado."
     },
     {
-      "at": "2026-10-29T06:42:20+01:00",
+      "at": "2026-10-29T06:56:20+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Reparando requests.json vacío con la estructura vacía válida que usan los scripts del repositorio."
+    },
+    {
+      "at": "2026-10-29T06:56:40+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía; requests.json sigue vacío y las reexplicaciones no pueden validarse desde ese archivo."
+      "message": "TTendencias cerrada · 0/0; requests.json reparado, cola final vacía y saneamiento visual solicitado."
     }
   ],
-  "partial": true,
-  "previous_run_id": "tr-1793227663109-manual",
+  "partial": false,
+  "previous_run_id": "tr-chat-20261029T0640+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -226,9 +236,9 @@
     "conclusion": "success",
     "editorial_blocking": false
   },
-  "last_incident": {
-    "type": "authoritative_state_invalid",
-    "path": "trends/requests.json",
-    "detail": "El archivo existe en main pero contiene 0 bytes; no es JSON válido y su estado interno no puede validarse."
+  "requests_state": {
+    "status": "repaired_valid_empty",
+    "blob_sha": "3bd50a01101f4080ccb831b642add20073dbf419",
+    "updated_at": "2026-10-29T06:56:20+01:00"
   }
 }
