@@ -175,10 +175,50 @@ def apply(payload, at=None):
     return "added", eid
 
 
+def save_receipt(payload, status, event_id="", error=""):
+    """Write a durable ACK for every valid manual-news request ID.
+
+    The iPhone's common action-receipts ledger is already downloaded on each
+    refresh; no new endpoint or app format is needed. Failed validation must
+    not leave a permanent ghost command and must never create a news item.
+    """
+    request_id = str(payload.get("request_id") or "").lower()
+    if not UUID.fullmatch(request_id):
+        raise ValueError("Identificador de solicitud inválido")
+    path = ROOT / "pilot/ttactualidad-action-receipts.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    rows = [r for r in data.get("items", []) if r.get("request_id") != request_id]
+    row = {
+        "request_id": request_id, "project": "ttittulares",
+        "event_id": "manual-" + request_id, "revision": 1,
+        "decision": "manual_news", "status": status,
+        "at": datetime.now(timezone.utc).isoformat(),
+    }
+    if error:
+        row["error"] = str(error)[:500]
+    if event_id and event_id != row["event_id"]:
+        row["existing_event_id"] = event_id
+    rows.append(row)
+    data["items"] = rows[-2500:]
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8")
+
+
 def main():
     payload = json.loads(os.environ["TT_ACTUALIDAD_MANUAL_JSON"])
-    outcome, eid = apply(payload)
-    print("TTACTUALIDAD_MANUAL", outcome, eid)
+    try:
+        outcome, eid = apply(payload)
+    except ValueError as exc:
+        # A rejected historical trend is not a service outage. Commit its
+        # explicit rejection under the same idempotency key as the request.
+        save_receipt(payload, "rejected", error=str(exc))
+        print("TTACTUALIDAD_MANUAL REJECTED", str(exc))
+        return 0
+    status = ("applied" if outcome == "added" else
+              "already_applied" if outcome == "already_received" else "rejected")
+    save_receipt(payload, status, event_id=eid,
+                 error="La noticia ya existe con otro identificador" if outcome == "already_exists" else "")
+    print("TTACTUALIDAD_MANUAL", outcome, eid, status)
     return 0
 
 
