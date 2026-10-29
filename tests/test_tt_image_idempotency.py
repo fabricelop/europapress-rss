@@ -45,6 +45,35 @@ class ImageIdempotencyTests(unittest.TestCase):
         job["status"] = "ERROR"
         self.assertFalse(may_enqueue_image_job(job, 0))
 
+    def test_today_seven_ready_news_without_composer_can_retry_safely(self):
+        job = {
+            "revision": 1, "status": "ERROR", "phase": "pc_launch_failed",
+            "pc_picked_up_at": "2026-10-29T08:41:18.675Z",
+            "message": "No hay compositor visible utilizable para fallback found=1",
+            "auto_repair_attempt": 1, "delivery_mode": "launch_only",
+        }
+        self.assertTrue(may_enqueue_image_job(job, 1))
+        job["auto_repair_attempt"] = 3
+        self.assertFalse(may_enqueue_image_job(job, 1))
+        self.assertTrue(may_enqueue_image_job(job, 1, manual_retry_version=1))
+        job["pc_launched_at"] = "2026-10-29T08:41:20Z"
+        self.assertFalse(may_enqueue_image_job(job, 1, manual_retry_version=99))
+        job.pop("pc_launched_at")
+        job["message"] = 'No hubo evidencia suficiente; {"generating":true}'
+        self.assertFalse(may_enqueue_image_job(job, 1, manual_retry_version=99))
+        job["message"] = "No hay compositor visible utilizable para fallback found=1"
+        job.pop("pc_picked_up_at")
+        self.assertFalse(may_enqueue_image_job(job, 1))
+
+    def test_archive_repair_must_keep_automatic_ai_eligible(self):
+        root = Path(__file__).resolve().parents[1]
+        source = (root / ".github/workflows/repair-ttittulares-listas.yml").read_text(encoding="utf8")
+        self.assertNotIn('item["image_mode"]="archive_only"', source)
+        self.assertNotIn('item["image_strategy"]="archive_only"', source)
+        self.assertIn('item["image_mode"]="ai_plus_fallback"', source)
+        self.assertIn('item["image_strategy"]="ai_plus_fallback"', source)
+        self.assertIn('if not item.get("disable_ai_image")', source)
+
     def test_generic_errors_not_automatically_retried(self):
         for phase in ("pc_launch_failed", "expired", "pc_progress", "failed"):
             self.assertFalse(may_enqueue_image_job({"revision": 0, "status": "ERROR", "phase": phase}, 0))
