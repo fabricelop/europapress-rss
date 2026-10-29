@@ -320,6 +320,9 @@ struct TimeMySitesView: View {
     @State private var generation = UUID()
     @State private var indexDebounce: Task<Void,Never>?
     @State private var indexedIntervalCount = -1
+    @State private var indexedParts: [SiteStayPart] = []
+    @State private var indexedAssignments: [SiteStayAssignment] = []
+    @State private var indexedSites: [IdentifiedSite] = []
     @State private var editingSite: IdentifiedSite?
     @State private var deletingSite: IdentifiedSite?
     @State private var warningText: String?
@@ -468,7 +471,11 @@ struct TimeMySitesView: View {
             Text(warningText ?? "")
         }
         .onAppear {
-            if indexedIntervalCount != model.data.intervals.count || visitsBySite.isEmpty {
+            if indexedIntervalCount != model.data.intervals.count ||
+               indexedParts != model.data.siteStayParts ||
+               indexedAssignments != model.data.siteStayAssignments ||
+               indexedSites != model.data.identifiedSites ||
+               visitsBySite.isEmpty {
                 scheduleRebuild()
             }
         }
@@ -527,6 +534,9 @@ struct TimeMySitesView: View {
                 totalsBySite=statistics
                 visitsBySite=records
                 indexedIntervalCount=count
+                indexedParts=parts
+                indexedAssignments=legacy
+                indexedSites=sites
                 computing=false
             }
         }
