@@ -57,6 +57,8 @@ jobs:
         run: node pilot/ttactualidad-live/test_rework_visible.mjs
       - name: Worker actions and safe retry
         run: node pilot/ttactualidad-live/test_worker_live.mjs
+      - name: Copiar GAG no incluye texto ni tarjetas (live y Pages)
+        run: node pilot/ttactualidad-live/test_gag_prompt.mjs
       - name: Validate browser and Worker JS
         run: |
           python3 - <<'PY'
