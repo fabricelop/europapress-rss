@@ -62,7 +62,8 @@ foreach($p in @($chrome | Sort-Object { [double]$_.PrivatePageCount } -Descendin
 foreach($port in @(9223,9234)) {
   try {
     $response = Invoke-WebRequest -UseBasicParsing -Uri ('http://127.0.0.1:'+ $port +'/json/list') -TimeoutSec 6 -ErrorAction Stop
-    $targets = @(ConvertFrom-Json -InputObject ([string]$response.Content))
+    $parsed = ConvertFrom-Json -InputObject ([string]$response.Content)
+    $targets = @(); foreach($target in $parsed) { $targets += $target }
     $pages = @($targets | Where-Object { [string]$_.type -eq 'page' })
     $homePages = @($pages | Where-Object { [string]$_.url -eq 'https://chatgpt.com/' })
     $conv = @($pages | Where-Object { [string]$_.url -match '^https://chatgpt\.com/c/' })
