@@ -18,6 +18,7 @@ struct EditorialActions: View {
     @ObservedObject var github: GitHubEditor
     @Binding var showSettings: Bool
     @State private var confirm = false
+    @State private var confirmPublication = false
     @State private var intent = "deleted"
     @State private var outcome = ""
     @Environment(\.openURL) private var openURL
@@ -60,7 +61,12 @@ struct EditorialActions: View {
                     guard !fullText.isEmpty else { outcome = "Sin texto para publicar"; return }
                     var parts = URLComponents(string: "https://twitter.com/intent/tweet")
                     parts?.queryItems = [URLQueryItem(name: "text", value: fullText)]
-                    if let url = parts?.url { openURL(url) }
+                    if let url = parts?.url {
+                        openURL(url)
+                        // The editor decides after returning from X; opening a compose URL
+                        // is not proof that X published anything.
+                        confirmPublication = true
+                    }
                 }
             }
             HStack(spacing: 7) {
@@ -96,20 +102,37 @@ struct EditorialActions: View {
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" : "¿Preparar otra explicación?",
                             isPresented: $confirm, titleVisibility: .visible) {
             Button("Confirmar", role: intent == "deleted" ? .destructive : nil) {
-                Task {
-                    let dispatched = await github.decide(project: project, eventID: editorialID,
-                                       revision: revision, decision: intent, title: title, rank: rank)
-                    outcome = github.notice
-                    if dispatched { UINotificationFeedbackGenerator().notificationOccurred(.success) }
-                }
+                submitDecision(intent)
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
             Text("La orden se comprobará contra la revisión vigente de GitHub. Enviar no significa que el cambio ya esté aplicado.")
         }
+        .confirmationDialog("¿Se ha publicado en X?", isPresented: $confirmPublication,
+                            titleVisibility: .visible) {
+            Button("Sí, publicada") { submitDecision("published") }
+            Button("No, retirar sin publicar", role: .destructive) { submitDecision("deleted") }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("Sí registra la publicación; No retira de Listas sin sumarla. Cancelar no modifica nada. GitHub debe confirmar la decisión.")
+        }
         .onChange(of: github.receiptChange) { _, _ in
             // Replace the old accepted/unchecked label with the verified result.
             outcome = github.notice
+        }
+    }
+
+    private func submitDecision(_ decision: String) {
+        guard github.authenticated else { showSettings = true; return }
+        guard !editorialID.isEmpty else {
+            outcome = "Identificador editorial no disponible. Actualiza antes."
+            return
+        }
+        Task {
+            let dispatched = await github.decide(project: project, eventID: editorialID,
+                                       revision: revision, decision: decision, title: title, rank: rank)
+            outcome = github.notice
+            if dispatched { UINotificationFeedbackGenerator().notificationOccurred(.success) }
         }
     }
 

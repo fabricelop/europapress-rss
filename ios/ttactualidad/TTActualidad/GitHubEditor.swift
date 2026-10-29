@@ -28,6 +28,8 @@ final class GitHubEditor: ObservableObject {
     @Published private(set) var activeAction: String? = nil
     @Published private(set) var pendingReceipts: [EditorialReceiptPending] = []
     @Published private(set) var receiptChange = 0
+    // Immediate visual closure; GitHub receipts, not HTTP 204, determine success.
+    @Published private(set) var optimisticClosures = Set<String>()
 
     private let repoURL = URL(string: "https://api.github.com/repos/fabricelop/europapress-rss/dispatches")!
     private let service = "com.fabricelop.ttactualidad.github"
@@ -44,6 +46,8 @@ final class GitHubEditor: ObservableObject {
         if let saved = UserDefaults.standard.data(forKey: pendingKey),
            let entries = try? JSONDecoder().decode([EditorialReceiptPending].self, from: saved) {
             pendingReceipts = entries
+            optimisticClosures = Set(entries.filter { ["published", "deleted"].contains($0.decision) }
+                .map { Self.closureKey(project: $0.project, eventID: $0.eventID, revision: $0.revision) })
         }
         Task { await resumeReceiptChecks() }
     }
@@ -246,10 +250,31 @@ final class GitHubEditor: ObservableObject {
                 eventID: eventID, revision: revision, decision: decision,
                 title: title, sentAt: Date())
             pendingReceipts.append(entry)
+            if ["published", "deleted"].contains(decision) {
+                optimisticClosures.insert(Self.closureKey(project: project, eventID: eventID, revision: revision))
+            }
             persistPendingReceipts()
             Task { await followReceipt(requestID) }
         }
         return accepted
+    }
+
+    private static func closureKey(project: String, eventID: String, revision: Int) -> String {
+        "\(project):\(eventID):r\(revision)"
+    }
+
+    func isOptimisticallyHidden(project: String, eventID: String, revision: Int) -> Bool {
+        optimisticClosures.contains(Self.closureKey(project: project, eventID: eventID, revision: revision))
+    }
+
+    // Keep a confirmed closure hidden across a stale GitHub read. Remove its
+    // overlay only once the canonical Listas snapshot no longer contains it.
+    func reconcileOptimisticClosures(news: [NewsItem], trends: [TrendItem]) {
+        let visible = Set(news.map { Self.closureKey(project: "ttittulares", eventID: $0.id, revision: $0.revision) }
+            + trends.map { Self.closureKey(project: "ttendencias", eventID: $0.editorialID, revision: $0.revision) })
+        let pending = Set(pendingReceipts.filter { ["published", "deleted"].contains($0.decision) }
+            .map { Self.closureKey(project: $0.project, eventID: $0.eventID, revision: $0.revision) })
+        optimisticClosures.formIntersection(visible.union(pending))
     }
 
     private func persistPendingReceipts() {
@@ -288,6 +313,9 @@ final class GitHubEditor: ObservableObject {
         let expired = pendingReceipts.filter { now.timeIntervalSince($0.sentAt) > 120 }
         guard !expired.isEmpty else { return }
         let names = expired.map { $0.title }.joined(separator: ", ")
+        for entry in expired {
+            optimisticClosures.remove(Self.closureKey(project: entry.project, eventID: entry.eventID, revision: entry.revision))
+        }
         pendingReceipts.removeAll { now.timeIntervalSince($0.sentAt) > 110 }
         persistPendingReceipts()
         notice = "Sin comprobante de GitHub para: \(names). No se ha declarado éxito; comprueba Acciones."
@@ -309,6 +337,7 @@ final class GitHubEditor: ObservableObject {
                   let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                   let items = json["items"] as? [[String: Any]] else { return }
             var settled = Set<String>()
+            var failed = Set<String>()
             var message = ""
             for pending in pendingReceipts {
                 guard let receipt = items.last(where: {
@@ -325,10 +354,14 @@ final class GitHubEditor: ObservableObject {
                 if ["applied", "already_applied"].contains(state) {
                     message = "GitHub confirmó «\(pending.title)» (\(pending.decision))."
                 } else {
+                    failed.insert(pending.requestID)
                     message = "GitHub no aplicó «\(pending.title)»: \(state)."
                 }
             }
             if !settled.isEmpty {
+                for entry in pendingReceipts where failed.contains(entry.requestID) {
+                    optimisticClosures.remove(Self.closureKey(project: entry.project, eventID: entry.eventID, revision: entry.revision))
+                }
                 pendingReceipts.removeAll { settled.contains($0.requestID) }
                 persistPendingReceipts()
                 notice = message

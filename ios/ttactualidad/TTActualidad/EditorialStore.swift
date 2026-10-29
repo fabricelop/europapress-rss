@@ -345,12 +345,19 @@ final class EditorialStore: ObservableObject {
                   explained.timeIntervalSince(now) <= 3600,
                   str(row, "group_leader_id").isEmpty || str(row, "group_leader_id") == id
             else { return nil }
-            let rev = int(row, "revision")
+            let rowRev = int(row, "revision")
             let req = latestRequests[id] ?? [:]
             let delivery = latestDeliveries[id] ?? [:]
             let reqRev = int(req, "revision"), reqStatus = str(req, "status").lowercased()
+            // A radar revision may advance while the same explanation is
+            // already persisted, as happened with #FelizJueves on 29 October.
+            // Only link revisions when both the timestamp and exact text match.
+            let sameEditorialEpisode = reqStatus == "explained"
+                && abs((when(req, ["explained_at"]) ?? .distantPast).timeIntervalSince(explained)) <= 60
+                && str(req, "explanation") == str(row, "explanation")
+            let rev = reqRev > rowRev && sameEditorialEpisode ? reqRev : rowRev
             let readyAfterRequest = explained.timeIntervalSince(when(req, ["requested_at"]) ?? .distantPast) >= -60
-            if !req.isEmpty && reqRev > rev { return nil }
+            if !req.isEmpty && reqRev > rowRev && !sameEditorialEpisode { return nil }
             if ["preparing", "update", "ready"].contains(reqStatus) &&
                 reqRev >= rev && !readyAfterRequest { return nil }
             if activeQueue.contains(where: {
