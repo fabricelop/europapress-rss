@@ -37,8 +37,8 @@
     "finished_at": "2026-10-29T12:43:10+01:00",
     "current": 1,
     "total": 1,
-    "trend_id": "b04bd0bdb832",
-    "title": "Toño",
+    "trend_id": null,
+    "title": null,
     "summary": {
       "attempted": 1,
       "explained": 1,
@@ -49,14 +49,14 @@
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
       "remates_selected": 1,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 0,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 24,
+      "pending_visual_candidates_reviewed": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 1/1; no quedan preparing/update ni reexplicaciones pendientes.",
+    "message": "TTendencias cerrada 1/1: Toño r1 explicado y verificado; cola y reexplicaciones pendientes en 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -211,25 +211,25 @@
         "message": "Retirando revisión 1 de Toño de la cola editorial."
       },
       {
-        "at": "2026-10-29T12:42:45+01:00",
+        "at": "2026-10-29T12:43:04+01:00",
         "phase": "verifying",
         "trend_id": "b04bd0bdb832",
         "title": "Toño",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
+        "message": "Releyendo main y verificando id+revision y texto persistido de Toño."
       },
       {
-        "at": "2026-10-29T12:42:55+01:00",
+        "at": "2026-10-29T12:43:07+01:00",
         "phase": "verifying",
         "trend_id": "b04bd0bdb832",
         "title": "Toño",
-        "message": "Tendencia cerrada y verificada: explained y requests coinciden exactamente; cola activa 0."
+        "message": "Tendencia cerrada y verificada; cola activa 0 y reexplicaciones pendientes 0."
       },
       {
         "at": "2026-10-29T12:43:10+01:00",
         "phase": "closing",
-        "trend_id": "b04bd0bdb832",
-        "title": "Toño",
-        "message": "TTendencias cerrada 1/1; no quedan preparing/update ni reexplicaciones pendientes."
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias cerrada 1/1: Toño r1 explicado y verificado; cola y reexplicaciones pendientes en 0."
       }
     ],
     "processed_ids": [
@@ -262,9 +262,9 @@
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
     "remates_selected": 1,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 24,
+    "pending_visual_candidates_reviewed": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
@@ -376,29 +376,29 @@
       "message": "Retirando revisión 1 de Toño de la cola editorial."
     },
     {
-      "at": "2026-10-29T12:42:45+01:00",
+      "at": "2026-10-29T12:43:04+01:00",
       "phase": "verifying",
       "trend_id": "b04bd0bdb832",
       "title": "Toño",
-      "message": "Releyendo main y verificando id+revision y texto persistido."
+      "message": "Releyendo main y verificando id+revision y texto persistido de Toño."
     },
     {
-      "at": "2026-10-29T12:42:55+01:00",
+      "at": "2026-10-29T12:43:07+01:00",
       "phase": "verifying",
       "trend_id": "b04bd0bdb832",
       "title": "Toño",
-      "message": "Tendencia cerrada y verificada: explained y requests coinciden exactamente; cola activa 0."
+      "message": "Tendencia cerrada y verificada; cola activa 0 y reexplicaciones pendientes 0."
     },
     {
       "at": "2026-10-29T12:43:10+01:00",
       "phase": "closing",
-      "trend_id": "b04bd0bdb832",
-      "title": "Toño",
-      "message": "TTendencias cerrada 1/1; no quedan preparing/update ni reexplicaciones pendientes."
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias cerrada 1/1: Toño r1 explicado y verificado; cola y reexplicaciones pendientes en 0."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-1793272602593-manual",
+  "previous_run_id": "tr-1793273830825-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -463,12 +463,12 @@
   "requests_state": {
     "status": "valid_no_active",
     "blob_sha": "674fad826ca6d500093230d2cfa8fc96a41ba13e",
-    "updated_at": "2026-10-29T12:43:10+01:00"
+    "updated_at": "2026-10-29T12:41:37+01:00"
   },
   "radar": {
     "captured_at": "2026-10-29T12:33:33+01:00",
     "recent_sha": "ed72efa9ef0875e82a5e225f8d5b02f60c8de5d6",
-    "queue_sha": "9de9a89c0ad44123853a81eefb47f7029b7f0c3e",
+    "queue_sha": "6f876491304fac61f1cdab7ccbbd9a3888bf6f35",
     "queue_count": 0
   }
 }
