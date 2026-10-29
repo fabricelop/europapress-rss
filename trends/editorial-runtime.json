@@ -5,33 +5,33 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "b3d4afe964c6"
+    "254ccf432967"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T14:55:00+01:00",
-  "last_completed_at": "2026-10-29T14:59:30+01:00",
-  "updated_at": "2026-10-29T14:59:30+01:00",
+  "last_started_at": "2026-10-29T15:10:00+01:00",
+  "last_completed_at": "2026-10-29T15:17:30+01:00",
+  "updated_at": "2026-10-29T15:17:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-20261029T142500+0100-chat",
+    "trigger_run_id": "tr-20261029T151000+0100-chat",
     "status": "requested",
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-20261029T145500+0100-chat",
+    "run_id": "tr-20261029T151000+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T14:55:00+01:00",
-    "updated_at": "2026-10-29T14:59:30+01:00",
-    "finished_at": "2026-10-29T14:59:30+01:00",
+    "started_at": "2026-10-29T15:10:00+01:00",
+    "updated_at": "2026-10-29T15:17:30+01:00",
+    "finished_at": "2026-10-29T15:17:30+01:00",
     "current": 1,
     "total": 1,
     "summary": {
@@ -44,14 +44,15 @@
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
       "remates_selected": 0,
+      "remates_reused": 1,
       "remates_omitted": 2,
-      "recent_missing_closer_reviewed": 1,
-      "pending_visual_candidates_reviewed": 2,
+      "recent_missing_closer_reviewed": 2,
+      "pending_visual_candidates_reviewed": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 1/1; cola y reexplicaciones en 0.",
+    "message": "TTendencias cerrada 1/1; cola y reexplicaciones pendientes en 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -63,7 +64,16 @@
     },
     "remate_selections": [
       {
-        "trend_id": "b3d4afe964c6",
+        "trend_id": "254ccf432967",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": "🌶️ El misterio de la defensa acabó con IVA incluido.",
+        "selected_score": null,
+        "no_remate_reason": "reused_existing_group_remate"
+      },
+      {
+        "trend_id": "6a124636f62f",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -72,7 +82,7 @@
         "no_remate_reason": "sensitive_event"
       },
       {
-        "trend_id": "6a124636f62f",
+        "trend_id": "b3d4afe964c6",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
@@ -83,113 +93,134 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T14:55:00+01:00",
+        "at": "2026-10-29T15:10:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial; 1 tendencia activa."
       },
       {
-        "at": "2026-10-29T14:55:20+01:00",
+        "at": "2026-10-29T15:11:00+01:00",
         "phase": "verifying",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Releyendo estado autoritativo de Julieta Gallego."
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Releyendo estado autoritativo de Koldo."
       },
       {
-        "at": "2026-10-29T14:55:40+01:00",
+        "at": "2026-10-29T15:11:20+01:00",
         "phase": "investigating",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Buscando detonante actual."
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Buscando detonante actual y posible coincidencia con Koldo García / OKDIARIO."
       },
       {
-        "at": "2026-10-29T14:56:30+01:00",
+        "at": "2026-10-29T15:12:20+01:00",
         "phase": "investigating",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Dos fuentes contrastadas."
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Dos fuentes actuales contrastadas; el detonante coincide con el pago de 242.000 € de Dos Mil Palabras."
       },
       {
-        "at": "2026-10-29T14:56:40+01:00",
+        "at": "2026-10-29T15:12:30+01:00",
         "phase": "investigating",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Hecho esencial verificado."
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Hecho esencial verificado; misma noticia ya explicada en el grupo Koldo García / OKDIARIO."
       },
       {
-        "at": "2026-10-29T14:56:50+01:00",
+        "at": "2026-10-29T15:12:40+01:00",
         "phase": "drafting",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Redactando explicación factual."
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Reutilizando la explicación factual del grupo para evitar duplicados."
       },
       {
-        "at": "2026-10-29T14:57:00+01:00",
+        "at": "2026-10-29T15:12:50+01:00",
         "phase": "drafting",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Comprobando límite de X: 202 caracteres."
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Comprobando límite de X: 222 caracteres."
       },
       {
-        "at": "2026-10-29T14:57:10+01:00",
-        "phase": "drafting",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Sin remate por asunto sensible."
+        "at": "2026-10-29T15:13:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Conservando el remate ya publicado del mismo grupo; no se genera un duplicado."
       },
       {
-        "at": "2026-10-29T14:57:40+01:00",
-        "phase": "persisting",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Guardando ficha Explicada."
-      },
-      {
-        "at": "2026-10-29T14:58:10+01:00",
-        "phase": "persisting",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Actualizando requests."
-      },
-      {
-        "at": "2026-10-29T14:58:40+01:00",
+        "at": "2026-10-29T15:13:10+01:00",
         "phase": "verifying",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
-        "message": "Explicadas y requests coinciden."
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Releyendo estado autoritativo antes de persistir el enlace al grupo."
       },
       {
-        "at": "2026-10-29T14:58:50+01:00",
+        "at": "2026-10-29T15:14:00+01:00",
         "phase": "persisting",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Guardando Koldo como miembro del grupo ya explicado."
+      },
+      {
+        "at": "2026-10-29T15:14:40+01:00",
+        "phase": "persisting",
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Actualizando requests con la explicación y el grupo existentes."
+      },
+      {
+        "at": "2026-10-29T15:15:00+01:00",
+        "phase": "verifying",
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-29T15:15:20+01:00",
+        "phase": "persisting",
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
         "message": "Retirando revisión de la cola."
       },
       {
-        "at": "2026-10-29T14:59:05+01:00",
+        "at": "2026-10-29T15:15:40+01:00",
         "phase": "verifying",
-        "trend_id": "b3d4afe964c6",
-        "title": "Julieta Gallego",
+        "trend_id": "254ccf432967",
+        "title": "Koldo",
         "message": "Tendencia cerrada y verificada."
       },
       {
-        "at": "2026-10-29T14:59:15+01:00",
+        "at": "2026-10-29T15:16:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola, reexplicaciones y Explicadas recientes antes del cierre."
+      },
+      {
+        "at": "2026-10-29T15:16:30+01:00",
         "phase": "verifying",
         "trend_id": "6a124636f62f",
         "title": "#LaMesa",
-        "message": "Pendiente reciente revisada; sin remate por sensibilidad."
+        "message": "Pendiente reciente revisada; sin remate por sensibilidad del accidente y testimonios de supervivientes."
       },
       {
-        "at": "2026-10-29T14:59:30+01:00",
+        "at": "2026-10-29T15:16:45+01:00",
+        "phase": "verifying",
+        "trend_id": "b3d4afe964c6",
+        "title": "Julieta Gallego",
+        "message": "Pendiente reciente revisada; sin remate por fallecimiento en el accidente."
+      },
+      {
+        "at": "2026-10-29T15:17:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 1/1; cola y reexplicaciones en 0."
+        "message": "TTendencias cerrada 1/1; cola y reexplicaciones pendientes en 0."
       }
     ],
     "processed_ids": [
-      "b3d4afe964c6"
+      "254ccf432967"
     ],
     "partial": false,
     "queue_complete": true,
@@ -197,15 +228,15 @@
     "remaining_problematic_ids": [],
     "final_outcomes": [
       {
-        "id": "b3d4afe964c6",
+        "id": "254ccf432967",
         "revision": 0,
-        "name": "Julieta Gallego",
+        "name": "Koldo",
         "status": "explained",
-        "explained_at": "2026-10-29T14:58:00+01:00"
+        "explained_at": "2026-10-29T14:16:00+01:00"
       }
     ]
   },
-  "run_id": "tr-20261029T145500+0100-chat",
+  "run_id": "tr-20261029T151000+0100-chat",
   "summary": {
     "attempted": 1,
     "explained": 1,
@@ -216,122 +247,144 @@
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
     "remates_selected": 0,
+    "remates_reused": 1,
     "remates_omitted": 2,
-    "recent_missing_closer_reviewed": 1,
-    "pending_visual_candidates_reviewed": 2,
+    "recent_missing_closer_reviewed": 2,
+    "pending_visual_candidates_reviewed": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T14:55:00+01:00",
+      "at": "2026-10-29T15:10:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial; 1 tendencia activa."
     },
     {
-      "at": "2026-10-29T14:55:20+01:00",
+      "at": "2026-10-29T15:11:00+01:00",
       "phase": "verifying",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Releyendo estado autoritativo de Julieta Gallego."
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Releyendo estado autoritativo de Koldo."
     },
     {
-      "at": "2026-10-29T14:55:40+01:00",
+      "at": "2026-10-29T15:11:20+01:00",
       "phase": "investigating",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Buscando detonante actual."
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Buscando detonante actual y posible coincidencia con Koldo García / OKDIARIO."
     },
     {
-      "at": "2026-10-29T14:56:30+01:00",
+      "at": "2026-10-29T15:12:20+01:00",
       "phase": "investigating",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Dos fuentes contrastadas."
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Dos fuentes actuales contrastadas; el detonante coincide con el pago de 242.000 € de Dos Mil Palabras."
     },
     {
-      "at": "2026-10-29T14:56:40+01:00",
+      "at": "2026-10-29T15:12:30+01:00",
       "phase": "investigating",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Hecho esencial verificado."
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Hecho esencial verificado; misma noticia ya explicada en el grupo Koldo García / OKDIARIO."
     },
     {
-      "at": "2026-10-29T14:56:50+01:00",
+      "at": "2026-10-29T15:12:40+01:00",
       "phase": "drafting",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Redactando explicación factual."
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Reutilizando la explicación factual del grupo para evitar duplicados."
     },
     {
-      "at": "2026-10-29T14:57:00+01:00",
+      "at": "2026-10-29T15:12:50+01:00",
       "phase": "drafting",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Comprobando límite de X: 202 caracteres."
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Comprobando límite de X: 222 caracteres."
     },
     {
-      "at": "2026-10-29T14:57:10+01:00",
-      "phase": "drafting",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Sin remate por asunto sensible."
+      "at": "2026-10-29T15:13:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Conservando el remate ya publicado del mismo grupo; no se genera un duplicado."
     },
     {
-      "at": "2026-10-29T14:57:40+01:00",
-      "phase": "persisting",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Guardando ficha Explicada."
-    },
-    {
-      "at": "2026-10-29T14:58:10+01:00",
-      "phase": "persisting",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Actualizando requests."
-    },
-    {
-      "at": "2026-10-29T14:58:40+01:00",
+      "at": "2026-10-29T15:13:10+01:00",
       "phase": "verifying",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
-      "message": "Explicadas y requests coinciden."
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Releyendo estado autoritativo antes de persistir el enlace al grupo."
     },
     {
-      "at": "2026-10-29T14:58:50+01:00",
+      "at": "2026-10-29T15:14:00+01:00",
       "phase": "persisting",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Guardando Koldo como miembro del grupo ya explicado."
+    },
+    {
+      "at": "2026-10-29T15:14:40+01:00",
+      "phase": "persisting",
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Actualizando requests con la explicación y el grupo existentes."
+    },
+    {
+      "at": "2026-10-29T15:15:00+01:00",
+      "phase": "verifying",
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
+      "message": "Releyendo main y verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-29T15:15:20+01:00",
+      "phase": "persisting",
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
       "message": "Retirando revisión de la cola."
     },
     {
-      "at": "2026-10-29T14:59:05+01:00",
+      "at": "2026-10-29T15:15:40+01:00",
       "phase": "verifying",
-      "trend_id": "b3d4afe964c6",
-      "title": "Julieta Gallego",
+      "trend_id": "254ccf432967",
+      "title": "Koldo",
       "message": "Tendencia cerrada y verificada."
     },
     {
-      "at": "2026-10-29T14:59:15+01:00",
+      "at": "2026-10-29T15:16:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo cola, reexplicaciones y Explicadas recientes antes del cierre."
+    },
+    {
+      "at": "2026-10-29T15:16:30+01:00",
       "phase": "verifying",
       "trend_id": "6a124636f62f",
       "title": "#LaMesa",
-      "message": "Pendiente reciente revisada; sin remate por sensibilidad."
+      "message": "Pendiente reciente revisada; sin remate por sensibilidad del accidente y testimonios de supervivientes."
     },
     {
-      "at": "2026-10-29T14:59:30+01:00",
+      "at": "2026-10-29T15:16:45+01:00",
+      "phase": "verifying",
+      "trend_id": "b3d4afe964c6",
+      "title": "Julieta Gallego",
+      "message": "Pendiente reciente revisada; sin remate por fallecimiento en el accidente."
+    },
+    {
+      "at": "2026-10-29T15:17:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 1/1; cola y reexplicaciones en 0."
+      "message": "TTendencias cerrada 1/1; cola y reexplicaciones pendientes en 0."
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-20261029T141000+0100-chat",
+  "previous_run_id": "tr-20261029T145500+0100-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -341,7 +394,16 @@
   },
   "remate_selections": [
     {
-      "trend_id": "b3d4afe964c6",
+      "trend_id": "254ccf432967",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": "🌶️ El misterio de la defensa acabó con IVA incluido.",
+      "selected_score": null,
+      "no_remate_reason": "reused_existing_group_remate"
+    },
+    {
+      "trend_id": "6a124636f62f",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
@@ -350,7 +412,7 @@
       "no_remate_reason": "sensitive_event"
     },
     {
-      "trend_id": "6a124636f62f",
+      "trend_id": "b3d4afe964c6",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
@@ -361,11 +423,11 @@
   ],
   "final_outcomes": [
     {
-      "id": "b3d4afe964c6",
+      "id": "254ccf432967",
       "revision": 0,
-      "name": "Julieta Gallego",
+      "name": "Koldo",
       "status": "explained",
-      "explained_at": "2026-10-29T14:58:00+01:00"
+      "explained_at": "2026-10-29T14:16:00+01:00"
     }
   ],
   "pending_delivery_count": 1,
@@ -375,13 +437,13 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "7921d78a3c33d535a3154282f0ad8af43d458b99",
-    "updated_at": "2026-10-29T14:27:00+01:00"
+    "blob_sha": "77f0349cf7877481809c2271e4119e05f87d05af",
+    "updated_at": "2026-10-29T15:14:30+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-29T14:20:51+01:00",
-    "recent_sha": "70a510cb4dbd4e4a5b8055795b5228e5de8b8d1c",
-    "queue_sha": "d3d43814820207cea4e06eeca5b4bbd95e52ce0a",
+    "captured_at": "2026-10-29T15:03:17+01:00",
+    "recent_sha": "b078d684e9a9ab599de9d95a3973bf9f9838c50c",
+    "queue_sha": "bd723f4778e7dadd67bf47fcea525bd9b9435872",
     "queue_count": 0
   }
 }
