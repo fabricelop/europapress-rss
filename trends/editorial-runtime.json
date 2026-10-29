@@ -18,15 +18,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T13:40:00+01:00",
-  "last_completed_at": "2026-10-29T13:42:00+01:00",
-  "updated_at": "2026-10-29T13:42:00+01:00",
+  "last_started_at": "2026-10-29T13:55:00+01:00",
+  "last_completed_at": "2026-10-29T13:57:00+01:00",
+  "updated_at": "2026-10-29T13:57:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-20261029T134000+0100-chat",
+    "trigger_run_id": "tr-20261029T135500+0100-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -34,13 +34,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261029T134000+0100-chat",
+    "run_id": "tr-20261029T135500+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T13:40:00+01:00",
-    "updated_at": "2026-10-29T13:42:00+01:00",
-    "finished_at": "2026-10-29T13:42:00+01:00",
+    "started_at": "2026-10-29T13:55:00+01:00",
+    "updated_at": "2026-10-29T13:57:00+01:00",
+    "finished_at": "2026-10-29T13:57:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -62,10 +62,16 @@
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 0/0: cola y reexplicaciones pendientes en 0; #LaMesa revisada sin remate por sensibilidad y saneamiento de Pendientes solicitado.",
+    "message": "TTendencias cerrada 0/0: cola y reexplicaciones pendientes en 0; #LaMesa conservada sin remate por sensibilidad y saneamiento de Pendientes solicitado.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 100
+    },
     "remate_selections": [
       {
         "trend_id": "6a124636f62f",
@@ -79,35 +85,28 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T13:40:00+01:00",
+        "at": "2026-10-29T13:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Releyendo cola y reexplicaciones pendientes; preparando saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-29T13:40:52+01:00",
+        "at": "2026-10-29T13:56:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes recientes y releyendo main; cola activa 0 y reexplicaciones 0."
-      },
-      {
-        "at": "2026-10-29T13:41:20+01:00",
-        "phase": "remate_selection",
         "trend_id": "6a124636f62f",
         "title": "#LaMesa",
-        "message": "Sin remate para #LaMesa r0: la explicación trata una tragedia ferroviaria con supervivientes y víctimas; se conserva factual."
+        "message": "Revisando Pendientes recientes: #LaMesa r0 sigue factual sin remate por sensibilidad; reparación visual ya solicitada."
       },
       {
-        "at": "2026-10-29T13:42:00+01:00",
+        "at": "2026-10-29T13:57:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main: cola 0, requests activos 0, rewrite_pending 0 y trigger de saneamiento correcto."
       },
       {
-        "at": "2026-10-29T13:42:00+01:00",
+        "at": "2026-10-29T13:57:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -121,7 +120,7 @@
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-20261029T134000+0100-chat",
+  "run_id": "tr-20261029T135500+0100-chat",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -141,35 +140,28 @@
   },
   "activity": [
     {
-      "at": "2026-10-29T13:40:00+01:00",
+      "at": "2026-10-29T13:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Releyendo cola y reexplicaciones pendientes; preparando saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-29T13:40:52+01:00",
+      "at": "2026-10-29T13:56:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes recientes y releyendo main; cola activa 0 y reexplicaciones 0."
-    },
-    {
-      "at": "2026-10-29T13:41:20+01:00",
-      "phase": "remate_selection",
       "trend_id": "6a124636f62f",
       "title": "#LaMesa",
-      "message": "Sin remate para #LaMesa r0: la explicación trata una tragedia ferroviaria con supervivientes y víctimas; se conserva factual."
+      "message": "Revisando Pendientes recientes: #LaMesa r0 sigue factual sin remate por sensibilidad; reparación visual ya solicitada."
     },
     {
-      "at": "2026-10-29T13:42:00+01:00",
+      "at": "2026-10-29T13:57:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main: cola 0, requests activos 0, rewrite_pending 0 y trigger de saneamiento correcto."
     },
     {
-      "at": "2026-10-29T13:42:00+01:00",
+      "at": "2026-10-29T13:57:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -177,7 +169,7 @@
     }
   ],
   "partial": false,
-  "previous_run_id": "tr-1793273830825-manual",
+  "previous_run_id": "tr-20261029T134000+0100-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -204,13 +196,13 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "0e495c1da54a26f986c6481a8e7997d496d0d879",
+    "blob_sha": "629d5fb698c08c3cd3dfdce8f2473334a7f47f5f",
     "updated_at": "2026-10-29T13:23:00+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-29T12:50:55+01:00",
-    "recent_sha": "b33a65a2b4fa5d386e0a9ba8e2398d735587afb8",
-    "queue_sha": "85b2389f53928302ca9230c5f4cc1ec28c44da42",
+    "captured_at": "2026-10-29T13:40:52+01:00",
+    "recent_sha": "026167770395451b3e9ada55a304c085de3d29ec",
+    "queue_sha": "f73c74c92b989161ab2b1ba515273dfe67246e64",
     "queue_count": 0
   }
 }
