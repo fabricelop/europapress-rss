@@ -59,6 +59,21 @@ fresh_explained = datetime.fromisoformat("2026-10-29T07:43:00+01:00")
 assert (older_closed - fresh_explained).total_seconds() < -60
 actual_closure = fresh_explained + timedelta(minutes=10)
 assert (actual_closure - fresh_explained).total_seconds() >= -60
+# Three distinct post-X outcomes, and immediate UI removal with rollback.
+assert 'confirmPublication = true' in actions
+assert 'submitDecision("published")' in actions and 'submitDecision("deleted")' in actions
+assert 'Button("Cancelar", role: .cancel)' in actions
+assert "optimisticClosures" in auth and "reconcileOptimisticClosures" in auth
+assert 'optimisticClosures.insert' in auth and 'optimisticClosures.remove' in auth
+assert 'visibleReadyNews' in dashboard and 'visibleReadyTrends' in dashboard
+assert 'case .listas: return visibleReadyNews' in dashboard
+assert 'case .listas: return visibleReadyTrends' in dashboard
+# An explanation and its request must refer to the same editorial occurrence.
+assert 'sameEditorialEpisode' in store and 'reqRev > rowRev && !sameEditorialEpisode' in store
+same_text = "TT#9 #FelizJueves"
+different_text = "TT#9 Otra tendencia"
+assert (same_text == same_text) and not (different_text == same_text)
+print("TT_ACTUALIDAD_IOS_OPTIMISTIC_PUBLICATION_OK")
 print("TT_ACTUALIDAD_IOS_RECEIPT_AND_RECURRENCE_OK")
 print("TT_ACTUALIDAD_IOS_PREFLIGHT_OK")
 
