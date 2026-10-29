@@ -500,6 +500,7 @@ struct TimeMySitesView: View {
         // Display the previous index immediately on a return from another
         // app. Coalesce location bursts before starting historical analysis.
         indexDebounce?.cancel()
+        if visitsBySite.isEmpty { computing = true }
         indexDebounce=Task { @MainActor in
             try? await Task.sleep(for:.milliseconds(280))
             guard !Task.isCancelled else { return }
