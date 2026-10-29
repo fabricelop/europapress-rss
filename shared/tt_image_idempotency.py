@@ -96,6 +96,22 @@ def may_enqueue_image_job(
     if status not in FAILED:
         return False  # Unknown phases fail closed.
 
+    # One precisely classified PC failure is provably pre-submission:
+    # ChatGPT Images had no usable composer, so the bridge could not type the
+    # prompt. This is NOT a generic CDP/timeout error. Never replay a job
+    # with any launch/submission marker or evidence that generation began.
+    if (status == "ERROR"
+            and str(old.get("phase") or "").lower() == "pc_launch_failed"
+            and str(old.get("message") or "").strip()
+                == "No hay compositor visible utilizable para fallback found=1"
+            and old.get("pc_picked_up_at")
+            and not any(old.get(key) for key in (
+                "pc_launched_at", "pc_submitted_at", "pc_image_submitted_at",
+                "image_generated_at"))):
+        consumed = int(old.get("manual_retry_version") or 0)
+        return (int(old.get("auto_repair_attempt") or 0) < max_automatic_safe_retries
+                or int(manual_retry_version or 0) > consumed)
+
     # A PC ERROR (including "No hubo evidencia suficiente" and CDP errors)
     # must not be equated with failure before image generation.
     if old.get("retry_safe_before_submit") is not True:
