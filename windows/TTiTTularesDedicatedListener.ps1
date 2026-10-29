@@ -16,6 +16,8 @@ $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $WatchdogPath = Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
+$EditorialRetryBackoffMinutes = 10
+# Crash-loop guard: a failed ChatGPT CDP target must not be relaunched every 15s.
 $StatusBase = [Environment]::GetEnvironmentVariable("TTITTULARES_SERVICE_BASE", "User")
 if (-not $StatusBase -or $StatusBase.TrimEnd("/") -eq "https://ttittulares-no-vercel-test.fabricelop.workers.dev") {
   $StatusBase = "https://tt-control.fabricelop.workers.dev"
@@ -347,6 +349,8 @@ function New-ListenerState {
     image_scan_cursor = 0
     last_chrome_recovery_command_id = ""
     last_chrome_recovery_at = ""
+    editorial_retry_command_id = ""
+    editorial_retry_after = ""
   }
 }
 
@@ -417,7 +421,7 @@ function Ensure-StateFields($State) {
     throw "STATE INVALID: expected object, got "+$(if($null -eq $State){"null"}else{$State.GetType().FullName})
   }
   $names=@($State.PSObject.Properties.Name)
-  foreach($n in @("last_command_id","conflict_command_id","conflict_first_at","last_chrome_recovery_command_id","last_chrome_recovery_at")){
+  foreach($n in @("last_command_id","conflict_command_id","conflict_first_at","last_chrome_recovery_command_id","last_chrome_recovery_at","editorial_retry_command_id","editorial_retry_after")){
     if($names -notcontains $n){
       Add-Member -InputObject $State -MemberType NoteProperty -Name $n -Value "" -Force
     }
@@ -431,6 +435,23 @@ function Ensure-StateFields($State) {
     }
     if($null -eq $State.$n){$State.$n=@()}
   }
+}
+
+function Test-EditorialRetryBackoff($State,[string]$CommandId) {
+  if ([string]$State.editorial_retry_command_id -ne $CommandId) { return $false }
+  try {
+    $until=[DateTimeOffset]::Parse([string]$State.editorial_retry_after)
+    return ([DateTimeOffset]::UtcNow -lt $until)
+  } catch { return $false }
+}
+
+function Set-EditorialRetryBackoff($State,[string]$CommandId) {
+  # Never consume a failed command; only defer this precise ID while preserving
+  # other image jobs, newer commands and the rest of the main loop.
+  $State.editorial_retry_command_id=$CommandId
+  $State.editorial_retry_after=[DateTimeOffset]::UtcNow.AddMinutes($EditorialRetryBackoffMinutes).ToString("o")
+  Save-State $State
+  Write-Log "EDITORIAL RETRY DEFERRED command=$CommandId until=$($State.editorial_retry_after) reason=failed_chat_target"
 }
 
 function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "",[string]$UploadSecretHash = "",[string]$UploadSecret = "") {
@@ -1276,6 +1297,7 @@ while ($true) {
       $project = [string]$doc.project
 
       if ($commandId -ne [string]$state.last_command_id -and
+          -not (Test-EditorialRetryBackoff $state $commandId) -and
           $executor -eq "pc_chat_ttittulares_dedicated" -and
           $project -eq "ttittulares" -and
           ($task -eq "editorial" -or -not $task)) {
@@ -1338,11 +1360,15 @@ while ($true) {
               $state.last_command_id = $commandId
               $state.conflict_command_id = ""
               $state.conflict_first_at = ""
+              $state.editorial_retry_command_id = ""
+              $state.editorial_retry_after = ""
               Save-State $state
             } else {
+              Set-EditorialRetryBackoff $state $commandId
               Write-Log "LAUNCH FAILED command=$commandId via=direct-node; command remains retryable"
             }
           } catch {
+            Set-EditorialRetryBackoff $state $commandId
             Write-Log "LAUNCH ERROR command=$commandId :: $($_.Exception.Message)"
           }
         } elseif ($ack -eq "CONFLICT") {
