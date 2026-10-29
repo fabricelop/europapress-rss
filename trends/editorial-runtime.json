@@ -18,8 +18,8 @@
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
   "last_started_at": "2026-10-29T21:40:00+01:00",
-  "last_completed_at": "2026-10-29T21:48:00+01:00",
-  "updated_at": "2026-10-29T21:48:00+01:00",
+  "last_completed_at": "2026-10-29T21:49:00+01:00",
+  "updated_at": "2026-10-29T21:49:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -35,20 +35,20 @@
     "project": "TTendencias",
     "run_id": "tr-chat-20261029T214000+0100",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-29T21:40:00+01:00",
-    "updated_at": "2026-10-29T21:48:00+01:00",
-    "finished_at": "2026-10-29T21:48:00+01:00",
+    "updated_at": "2026-10-29T21:49:00+01:00",
+    "finished_at": "2026-10-29T21:49:00+01:00",
     "current": 6,
     "total": 6,
     "trend_id": null,
     "title": null,
     "summary": {
       "attempted": 6,
-      "explained": 6,
+      "explained": 5,
       "final_resolved": 6,
-      "skipped_concurrent": 5,
+      "skipped_concurrent": 1,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
@@ -56,23 +56,15 @@
       "rewrite_pending_remaining": 0,
       "remates_selected": 4,
       "remates_omitted": 2,
-      "recent_missing_closer_reviewed": 2,
-      "pending_visual_candidates_reviewed": 2,
+      "recent_missing_closer_reviewed": 19,
+      "pending_visual_candidates_reviewed": 6,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "message": "Pasada editorial cerrada: 6/6 revisiones explicadas y verificadas; cola final 0. Cinco revisiones se cerraron concurrentemente y fueron reconciliadas sin sobrescritura. Sin ImageGen.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-29T21:46:20+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "reason": "Durante la reconciliación de Antonio Vázquez, otro consumidor editorial cerró cinco revisiones activas. Se releyó main y se verificó igualdad exacta id+revision+explanation+closer_text+explained_at y ausencia de cola para las seis revisiones."
-      }
-    ],
+    "message": "Pasada editorial cerrada: 6/6 revisiones resueltas y verificadas; cola final 0. Sin ImageGen.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -84,16 +76,15 @@
       {
         "trend_id": "9d50d7492657",
         "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.6,
+        "candidate_count": 0,
+        "selected_candidate": "concurrent_verified",
+        "selected_score": null,
         "no_remate_reason": null
       },
       {
         "trend_id": "ba460ca68b0b",
         "revision": 0,
         "candidate_count": 0,
-        "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
         "no_remate_reason": "sensitive_event"
@@ -101,16 +92,16 @@
       {
         "trend_id": "99e1d29e5f2e",
         "revision": 0,
-        "candidate_count": null,
-        "selected_candidate": "persisted_concurrent",
+        "candidate_count": 1,
+        "selected_candidate": "c1",
         "selected_score": null,
         "no_remate_reason": null
       },
       {
         "trend_id": "6f005a186898",
         "revision": 0,
-        "candidate_count": null,
-        "selected_candidate": "persisted_concurrent",
+        "candidate_count": 1,
+        "selected_candidate": "c1",
         "selected_score": null,
         "no_remate_reason": null
       },
@@ -118,7 +109,6 @@
         "trend_id": "d7783f7a9db9",
         "revision": 0,
         "candidate_count": 0,
-        "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
         "no_remate_reason": "sensitive_event"
@@ -126,27 +116,13 @@
       {
         "trend_id": "1cb3ab9f8367",
         "revision": 0,
-        "candidate_count": null,
-        "selected_candidate": "persisted_concurrent",
+        "candidate_count": 1,
+        "selected_candidate": "c1",
         "selected_score": null,
         "no_remate_reason": null
       }
     ],
     "activity": [
-      {
-        "at": "2026-10-29T21:42:00+01:00",
-        "phase": "verifying",
-        "trend_id": "9d50d7492657",
-        "title": "La Junta Electoral",
-        "message": "Releyendo estado autoritativo de La Junta Electoral"
-      },
-      {
-        "at": "2026-10-29T21:42:20+01:00",
-        "phase": "investigating",
-        "trend_id": "9d50d7492657",
-        "title": "La Junta Electoral",
-        "message": "Hecho esencial verificado · expediente JEC por vídeo ante el Guernica"
-      },
       {
         "at": "2026-10-29T21:42:40+01:00",
         "phase": "drafting",
@@ -272,6 +248,20 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada editorial cerrada: 6/6 revisiones verificadas; cola final 0"
+      },
+      {
+        "at": "2026-10-29T21:48:40+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola 0 y sin preparing/update ni rewrite_pending"
+      },
+      {
+        "at": "2026-10-29T21:49:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada editorial cerrada: 6/6 revisiones resueltas y verificadas; cola final 0. Sin ImageGen."
       }
     ],
     "processed_ids": [
@@ -291,46 +281,52 @@
         "id": "9d50d7492657",
         "revision": 0,
         "name": "La Junta Electoral",
-        "status": "explained"
+        "status": "explained",
+        "resolution": "concurrent_verified"
       },
       {
         "id": "ba460ca68b0b",
         "revision": 0,
         "name": "Antonio Vázquez",
-        "status": "explained"
+        "status": "explained",
+        "resolution": "persisted"
       },
       {
         "id": "99e1d29e5f2e",
         "revision": 0,
         "name": "Numancia",
-        "status": "explained"
+        "status": "explained",
+        "resolution": "persisted"
       },
       {
         "id": "6f005a186898",
         "revision": 0,
         "name": "Morales",
-        "status": "explained"
+        "status": "explained",
+        "resolution": "persisted"
       },
       {
         "id": "d7783f7a9db9",
         "revision": 0,
         "name": "RTVE",
-        "status": "explained"
+        "status": "explained",
+        "resolution": "persisted"
       },
       {
         "id": "1cb3ab9f8367",
         "revision": 0,
         "name": "Oviedo",
-        "status": "explained"
+        "status": "explained",
+        "resolution": "persisted"
       }
     ]
   },
   "run_id": "tr-chat-20261029T214000+0100",
   "summary": {
     "attempted": 6,
-    "explained": 6,
+    "explained": 5,
     "final_resolved": 6,
-    "skipped_concurrent": 5,
+    "skipped_concurrent": 1,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
@@ -338,27 +334,13 @@
     "rewrite_pending_remaining": 0,
     "remates_selected": 4,
     "remates_omitted": 2,
-    "recent_missing_closer_reviewed": 2,
-    "pending_visual_candidates_reviewed": 2,
+    "recent_missing_closer_reviewed": 19,
+    "pending_visual_candidates_reviewed": 6,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
-    {
-      "at": "2026-10-29T21:42:00+01:00",
-      "phase": "verifying",
-      "trend_id": "9d50d7492657",
-      "title": "La Junta Electoral",
-      "message": "Releyendo estado autoritativo de La Junta Electoral"
-    },
-    {
-      "at": "2026-10-29T21:42:20+01:00",
-      "phase": "investigating",
-      "trend_id": "9d50d7492657",
-      "title": "La Junta Electoral",
-      "message": "Hecho esencial verificado · expediente JEC por vídeo ante el Guernica"
-    },
     {
       "at": "2026-10-29T21:42:40+01:00",
       "phase": "drafting",
@@ -484,6 +466,20 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada editorial cerrada: 6/6 revisiones verificadas; cola final 0"
+    },
+    {
+      "at": "2026-10-29T21:48:40+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main: cola 0 y sin preparing/update ni rewrite_pending"
+    },
+    {
+      "at": "2026-10-29T21:49:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada editorial cerrada: 6/6 revisiones resueltas y verificadas; cola final 0. Sin ImageGen."
     }
   ],
   "partial": false,
