@@ -272,11 +272,11 @@ final class GitHubEditor: ObservableObject {
     private func followReceipt(_ requestID: String) async {
         guard receiptPolling.insert(requestID).inserted else { return }
         defer { receiptPolling.remove(requestID) }
-        for attempt in 0..<22 {
+        for attempt in 0..<26 {
             guard pendingReceipts.contains(where: { $0.requestID == requestID }) else { return }
             await checkPendingReceipts()
             guard pendingReceipts.contains(where: { $0.requestID == requestID }) else { return }
-            if attempt < 21 {
+            if attempt < 25 {
                 try? await Task.sleep(for: .seconds(5))
             }
         }
@@ -285,7 +285,7 @@ final class GitHubEditor: ObservableObject {
 
     private func expireUnverifiedReceipts() {
         let now = Date()
-        let expired = pendingReceipts.filter { now.timeIntervalSince($0.sentAt) > 110 }
+        let expired = pendingReceipts.filter { now.timeIntervalSince($0.sentAt) > 120 }
         guard !expired.isEmpty else { return }
         let names = expired.map { $0.title }.joined(separator: ", ")
         pendingReceipts.removeAll { now.timeIntervalSince($0.sentAt) > 110 }
