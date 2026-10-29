@@ -559,6 +559,11 @@ class MainWindow(QWidget):
         self.notice.setText("Sincronizando el estado editorial desde GitHub…")
         self.worker.run("refresh",fetch_editorial)
 
+    def _finish_refresh_if_requested(self):
+        if self.refresh_again and not self.refreshing:
+            self.refresh_again=False
+            QTimer.singleShot(200,self.refresh)
+
     def on_finished(self,kind,value,error):
         if kind=="auth":
             if error:
@@ -578,6 +583,7 @@ class MainWindow(QWidget):
             self.refreshing=False;self.reload.setEnabled(True)
             if error:
                 self.notice.setText("No se han sustituido los datos anteriores: "+error)
+                self._finish_refresh_if_requested()
                 return
             self.docs,processed=value
             self.news,self.trends,self.top30,self.published=processed
@@ -599,7 +605,9 @@ class MainWindow(QWidget):
             self.reconcile_optimistic_closures()
             self.render_list()
             if not had_pending:
-                self.notice.setText("GitHub actualizado · "+dt.datetime.now().strftime("%H:%M:%S"))
+                self.notice.setText("GitHub · revisión "+str(self.verified_revision or "")[:8]+
+                                    " sincronizada · "+dt.datetime.now().strftime("%H:%M:%S"))
+            self._finish_refresh_if_requested()
         elif kind=="submit":
             # Every worker carries its own request_id so multiple cards may
             # be closed without blocking on one another's GitHub workflow.
@@ -622,7 +630,7 @@ class MainWindow(QWidget):
                 self.notice.setText("Tarjeta apartada al instante · GitHub comprueba la orden…")
                 for delay in (1800,4500,9000,16000,28000,45000,70000):
                     QTimer.singleShot(delay,self.refresh)
-                QTimer.singleShot(82000,self.expire_pending)
+                QTimer.singleShot(605000,self.expire_pending)
             else:
                 self.sending=False
                 self.notice.setText("Solicitud enviada a GitHub · "+request_id[:8])
@@ -764,9 +772,10 @@ class MainWindow(QWidget):
         # journal. Never re-display a closed revision because one RAW edge
         # temporarily returns an older Listas document.
         return [item for item in items
-                if not terminal_applies(self.verified_terminals,
-                    item.get("project"),item.get("id"),item.get("revision"),
-                    item.get("explained_at"))
+                if (item.get("state") not in ("Listas","Tremending","En elaboración","Revisión","Creciendo")
+                    or not terminal_applies(self.verified_terminals,
+                        item.get("project"),item.get("id"),item.get("revision"),
+                        item.get("explained_at")))
                 and (item.get("state") not in ("Listas","Tremending")
                      or self.item_key(item) not in self.optimistic_hides)]
 
@@ -836,24 +845,26 @@ class MainWindow(QWidget):
                     self.pending_actions.pop(request_id,None)
                     self.notice.setText("GitHub confirmó «"+pending["decision"]+
                                         "» · "+pending["event_id"])
-                else:
+                elif status in {"rejected","failed","error","invalid"}:
                     if pending.get("hide_key"):
                         self.optimistic_hides.pop(pending["hide_key"],None)
                     self.pending_actions.pop(request_id,None)
                     self.notice.setText("GitHub rechazó la orden: "+str(receipt.get("error") or status)+
                                         " · tarjeta restaurada")
+                # queued/processing is NOT a rejection or a confirmed deletion.
                 continue
-            if time.time()-pending["since"]>=80:
-                # No receipt means UNKNOWN, not success. Re-enable the item
-                # rather than hiding it forever; users can inspect Actions.
+            if time.time()-pending["since"]>=600:
+                # A delayed GitHub Actions receipt must not cause a card to
+                # reappear 80 seconds after the user removed it. Ten minutes
+                # without proof is UNCERTAIN, not published or deleted.
                 self.pending_actions.pop(request_id,None)
                 if pending.get("hide_key"):
                     self.optimistic_hides.pop(pending["hide_key"],None)
-                self.notice.setText("Sin comprobante de GitHub: tarjeta restaurada para revisión.")
+                self.notice.setText("Orden SIN CONFIRMAR tras 10 min: verifica GitHub antes de repetirla.")
         self.update_actions()
 
     def expire_pending(self):
-        if any(time.time()-p["since"]>=80 for p in self.pending_actions.values()):
+        if any(time.time()-p["since"]>=600 for p in self.pending_actions.values()):
             self.confirm_pending()
             self.render_list()
 
