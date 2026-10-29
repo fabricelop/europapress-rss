@@ -1,7 +1,7 @@
 """No network or GitHub credentials are needed for these data-contract tests."""
 import datetime as dt
 import unittest
-from TTActualidad import FILES, normalise, date
+from TTActualidad import FILES, normalise, date, confirmed_terminals, terminal_applies
 
 def documents():
     return {key:{"items":[]} for key in FILES}
@@ -23,6 +23,54 @@ class EditorialDesktopTests(unittest.TestCase):
         docs["requests"]={"requests":[]}
         news,trends,top,pubs=normalise(docs)
         self.assertEqual([n["id"] for n in news if n["state"]=="Listas"],["n1"])
+
+    def test_mobile_publication_receipt_closes_stale_windows_ready(self):
+        docs=documents()
+        docs["prepared"]={"items":[
+          {"event_id":"closed-on-iphone","revision":1,"title":"Ya publicada desde móvil"},
+          {"event_id":"open","revision":1,"title":"Sigue en Listas"}]}
+        # The receipt can reach a read before the decisions JSON does.
+        docs["decisions"]={"items":[]}
+        docs["action_receipts"]={"items":[{
+            "request_id":"mobile-123","project":"ttittulares","event_id":"closed-on-iphone",
+            "revision":1,"decision":"published","status":"applied",
+            "at":"2026-10-29T09:00:00Z"}]}
+        news=normalise(docs)[0]
+        self.assertEqual([x["id"] for x in news if x["state"]=="Listas"],["open"])
+        self.assertTrue(terminal_applies(confirmed_terminals(docs),
+            "ttittulares","closed-on-iphone",1))
+
+    def test_terminal_revision_never_closes_new_news_revision(self):
+        docs=documents()
+        docs["prepared"]={"items":[{"event_id":"reused","revision":2,"title":"Texto nuevo"}]}
+        docs["decisions"]={"items":[{"event_id":"reused","revision":1,
+            "status":"deleted","updated_at":"2026-10-29T09:00:00Z"}]}
+        news=normalise(docs)[0]
+        self.assertEqual([x["revision"] for x in news if x["state"]=="Listas"],[2])
+
+    def test_trend_receipt_closes_old_listas_but_not_new_episode(self):
+        docs=documents()
+        at=dt.datetime.now(dt.timezone.utc)
+        old=(at-dt.timedelta(hours=1)).isoformat()
+        closed=(at-dt.timedelta(minutes=30)).isoformat()
+        docs["manual"]={"items":[{"id":"trend-reused","revision":0,
+            "status":"explained","explained_at":old,"explanation":"Texto antiguo"}]}
+        docs["action_receipts"]={"items":[{"project":"ttendencias",
+            "event_id":"trend-reused","revision":0,"decision":"deleted",
+            "status":"already_applied","at":closed}]}
+        self.assertEqual(normalise(docs)[1],[])
+        docs["manual"]={"items":[{"id":"trend-reused","revision":0,
+            "status":"explained","explained_at":at.isoformat(),"explanation":"Nuevo episodio"}]}
+        trends=normalise(docs)[1]
+        self.assertEqual([x["id"] for x in trends if x["state"]=="Listas"],["trend-reused"])
+        self.assertEqual(trends[0]["explained_at"],at.isoformat())
+
+    def test_dispatch_is_never_a_confirmed_deletion(self):
+        docs=documents()
+        docs["prepared"]={"items":[{"event_id":"news","revision":1,"title":"Noticia"}]}
+        docs["action_receipts"]={"items":[{"project":"ttittulares","event_id":"news",
+            "revision":1,"decision":"deleted","status":"queued"}]}
+        self.assertEqual([n["id"] for n in normalise(docs)[0]],["news"])
 
     def test_working_and_trends(self):
         docs=documents()
