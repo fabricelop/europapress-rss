@@ -115,7 +115,15 @@ function FindActiveEditorialOrImageJobs {
 }
 function ConfirmRecoverySafe([string]$Gate,[string]$Node) {
   $busy=@(FindActiveEditorialOrImageJobs)
-  if($busy.Count -gt 0){throw ('RECOVERY_BLOCKED active editorial/image processes='+$busy.Count)}
+  if($busy.Count -gt 0){
+    foreach($p in $busy) {
+      $cmd=[string]$p.CommandLine
+      $kind=if($cmd -match 'TTiTTularesImageBridge[.]js'){'TTiTTularesImageBridge'}elseif($cmd -match 'TTendenciasImageBridge[.]js'){'TTendenciasImageBridge'}elseif($cmd -match 'Ejecutar[.]js'){'EditorialEjecutar'}else{'UnknownNode'}
+      $born=try{[Management.ManagementDateTimeConverter]::ToDateTime([string]$p.CreationDate).ToString('yyyy-MM-dd HH:mm:ss')}catch{'unknown'}
+      Note ('RECOVERY_ACTIVE_PROCESS type='+$kind+' pid='+$p.ProcessId+' started='+$born)
+    }
+    throw ('RECOVERY_BLOCKED active editorial/image processes='+$busy.Count)
+  }
   # Inspect all 9223 tabs over CDP without reading any chat content. Unknown/busy => abort.
   $gateOutput=@(& $Node $Gate 2>&1)
   $code=$LASTEXITCODE
