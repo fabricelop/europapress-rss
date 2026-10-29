@@ -281,7 +281,8 @@ class DesktopModernTests(unittest.TestCase):
         self.assertTrue(self.window.actions["chatgpt"].isEnabled())
         self.assertTrue(self.window.actions["hints"].isEnabled())
         self.window.copy_gag()
-        self.assertIn("TEXTO EXACTO",appmod.QApplication.clipboard().text())
+        self.assertIn("HECHOS EDITORIALES (SOLO CONTEXTO)",appmod.QApplication.clipboard().text())
+        self.assertIn("SOLO IMAGEN, SIN NINGÚN TEXTO",appmod.QApplication.clipboard().text())
 
     def test_tremending_removed_with_delete_not_publication(self):
         row={"project":"ttittulares","id":"tremending-abc","revision":0,
