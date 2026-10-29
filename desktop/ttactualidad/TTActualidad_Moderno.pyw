@@ -212,7 +212,7 @@ def fetch_editorial():
     Fail closed rather than render partial state from different revisions.
     """
     _,head=request("https://api.github.com/repos/"+REPO+"/commits/main?tt_sync="+str(
-        time.time_ns()),timeout=12)
+        time.time_ns()),token=session_token(),timeout=12)
     sha=str(head.get("sha") or "")
     if len(sha)!=40 or any(c not in "0123456789abcdef" for c in sha.lower()):
         raise RuntimeError("No se pudo identificar una revisión completa de GitHub")
@@ -344,7 +344,9 @@ class MainWindow(QWidget):
         self.draw()
         self.timer=QTimer(self)
         self.timer.timeout.connect(self.refresh)
-        self.timer.start(45000)  # remote iPhone actions become visible without pressing Refresh
+        # Anonymous REST API is limited; a connected GitHub account permits
+        # faster polling while retaining the same write permissions.
+        self.timer.start(45000 if session_token() else 120000)
         QTimer.singleShot(200,self.refresh)
 
     def draw(self):
@@ -548,6 +550,7 @@ class MainWindow(QWidget):
         try:keyring.delete_password(KEYRING_SERVICE,SERVICE_KEY)
         except keyring.errors.PasswordDeleteError:pass
         self.update_auth_badge()
+        self.timer.start(120000)
         self.notice.setText("Sesión cerrada. La lectura pública sigue disponible.")
 
     def refresh(self):
@@ -578,6 +581,7 @@ class MainWindow(QWidget):
             except Exception as exc:
                 QMessageBox.warning(self,"Credenciales",str(exc));return
             self.update_auth_badge()
+            self.timer.start(45000)
             self.notice.setText("Conexión verificada con GitHub · @"+login)
         elif kind=="refresh":
             self.refreshing=False;self.reload.setEnabled(True)
