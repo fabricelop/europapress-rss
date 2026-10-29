@@ -27,6 +27,33 @@ class DesktopModernTests(unittest.TestCase):
         self.window=appmod.MainWindow()
         self.addCleanup(self.window.close)
 
+    def test_native_copy_gag_is_pure_image_for_news_and_trends(self):
+        for project in ("ttittulares","ttendencias"):
+            row={"project":project,"id":"test-gag","revision":1,"state":"Listas",
+                 "rank":4,"title":"Factura y márgenes",
+                 "body":"La empresa publicó sus resultados.\n\n#Empresa #Resultados\n🌶️ El balance pasó por caja.",
+                 "category":"Noticias","source":"","image":""}
+            self.window.select_item(row,load_image=False)
+            self.window.copy_gag()
+            prompt=QApplication.clipboard().text()
+            for marker in ("GAG IA","SOLO IMAGEN","SIN NINGÚN TEXTO","franja inferior",
+                           "CONTEXTO NO VISIBLE","Más gag, menos barroquismo","guindillas"):
+                self.assertIn(marker,prompt)
+            self.assertIn("El balance pasó por caja.",prompt)
+            self.assertNotIn("TEXTO EXACTO CERRADO. NO LO REESCRIBAS",prompt)
+
+    def test_native_copy_gag_sensitive_news_no_satire(self):
+        row={"project":"ttittulares","id":"test-tragedia","revision":1,"state":"Listas",
+             "title":"Accidente con víctimas",
+             "body":"Un accidente ha dejado víctimas confirmadas.\n\n#Accidente #Víctimas\n🌶️ Respeto a las familias.",
+             "category":"Noticias","source":"","image":""}
+        self.window.select_item(row,load_image=False)
+        self.window.copy_gag()
+        prompt=QApplication.clipboard().text()
+        self.assertIn("PERIODÍSTICA RIGUROSA Y RESPETUOSA",prompt)
+        self.assertIn("sin humor",prompt)
+        self.assertIn("SIN NINGÚN TEXTO",prompt)
+
     def test_layout_has_metric_cards_sidebar_and_actions(self):
         self.assertEqual(len(self.window.nav),9)
         self.assertEqual(len(self.window.metric_labels),5)
