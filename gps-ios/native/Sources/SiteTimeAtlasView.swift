@@ -237,7 +237,7 @@ struct SiteTimeAtlasView: View {
                             .frame(height:7)
                         }
                         Spacer(minLength:3)
-                        Text(DurationFormat.short(entry.seconds))
+                        Text(DurationFormat.small(entry.seconds))
                             .font(.caption.monospacedDigit())
                             .foregroundStyle(.secondary)
                     }
@@ -280,7 +280,7 @@ struct SiteTimeAtlasView: View {
                             Text(entry.name).lineLimit(1)
                                 .foregroundStyle(.primary)
                             Spacer(minLength:4)
-                            Text(DurationFormat.short(entry.seconds))
+                            Text(DurationFormat.small(entry.seconds))
                                 .monospacedDigit().foregroundStyle(.secondary)
                             Image(systemName:"chevron.right")
                                 .font(.caption2).foregroundStyle(.tertiary)
@@ -295,7 +295,7 @@ struct SiteTimeAtlasView: View {
                     Text(day.date,format:.dateTime.weekday(.wide).day().month())
                         .font(.subheadline.weight(.bold)).foregroundStyle(.primary)
                     Spacer()
-                    Text(DurationFormat.short(day.seconds))
+                    Text(DurationFormat.small(day.seconds))
                         .font(.caption.monospacedDigit())
                         .foregroundStyle(.secondary)
                 }
