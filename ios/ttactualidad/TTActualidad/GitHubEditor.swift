@@ -463,6 +463,128 @@ final class GitHubEditor: ObservableObject {
         }
     }
 
+    // Request the REAL existing editorial runners, not a GitHub Actions build.
+    // Both PC/Work listeners watch dedicated control branches for committed
+    // run-now-trigger.json changes. A confirmed write is NOT editorial DONE.
+    func requestEditorialRun(project: String) async -> WriteResult {
+        guard ["ttittulares", "ttendencias"].contains(project) else {
+            notice = "Proyecto editorial no reconocido."
+            return .failed
+        }
+        guard authenticated else {
+            notice = "Conecta la cuenta GitHub antes de solicitar una pasada."
+            return .failed
+        }
+        let key = "run-editorial:" + project
+        guard !inFlightKeys.contains(key) else {
+            notice = "Ya se está registrando una solicitud para " + project + "."
+            return .pending
+        }
+        inFlightKeys.insert(key)
+        activeAction = "Procesar " + project
+        defer {
+            inFlightKeys.remove(key)
+            if inFlightKeys.isEmpty { activeAction = nil }
+        }
+        do {
+            let access = try await authorizedToken()
+            var branch = "control/ttendencias-run-trigger"
+            var filename = "trends/run-now-trigger.json"
+            if project == "ttittulares" {
+                // The permanent PR #2 is the live listener target. Older
+                // control/ttittulares-run-trigger is NOT the PR head anymore.
+                let prURL = URL(string:
+                    "https://api.github.com/repos/fabricelop/europapress-rss/pulls/2")!
+                var prRequest = URLRequest(url: prURL, timeoutInterval: 20)
+                prRequest.setValue("Bearer " + access,
+                                   forHTTPHeaderField: "Authorization")
+                let (prData, prResponse) = try await URLSession.shared.data(for: prRequest)
+                guard (prResponse as? HTTPURLResponse)?.statusCode == 200,
+                      let pr = (try JSONSerialization.jsonObject(with: prData)) as? [String: Any],
+                      let head = pr["head"] as? [String: Any],
+                      let headName = head["ref"] as? String,
+                      headName.hasPrefix("control/ttittulares-run-trigger"),
+                      let headRepo = head["repo"] as? [String: Any],
+                      (headRepo["full_name"] as? String) == "fabricelop/europapress-rss",
+                      (pr["state"] as? String) == "open" else {
+                    throw GitHubError.message("No se puede verificar la rama activa del PR #2.")
+                }
+                branch = headName
+                filename = "ttittulares/run-now-trigger.json"
+            }
+            var components = URLComponents(string:
+                "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + filename)!
+            components.queryItems = [URLQueryItem(name: "ref", value: branch)]
+            let apiURL = components.url!
+            var getRequest = URLRequest(url: apiURL, timeoutInterval: 20)
+            getRequest.setValue("Bearer " + access,
+                                forHTTPHeaderField: "Authorization")
+            getRequest.setValue("application/vnd.github+json",
+                                forHTTPHeaderField: "Accept")
+            let (existing, getResponse) = try await URLSession.shared.data(for: getRequest)
+            guard (getResponse as? HTTPURLResponse)?.statusCode == 200,
+                  let file = (try JSONSerialization.jsonObject(with: existing)) as? [String: Any],
+                  let fileSHA = file["sha"] as? String,
+                  let base64 = file["content"] as? String else {
+                throw GitHubError.message("No se encuentra el disparador editorial vigente.")
+            }
+            // Deduplicate manual taps close to an existing manual/auto request.
+            if let raw = Data(base64Encoded: base64.filter { !$0.isWhitespace }),
+               let old = (try? JSONSerialization.jsonObject(with: raw)) as? [String: Any],
+               let previous = old["requested_at"] as? String,
+               let timestamp = ISO8601DateFormatter().date(from: previous),
+               Date().timeIntervalSince(timestamp) >= 0,
+               Date().timeIntervalSince(timestamp) < 90 {
+                notice = "Ya hay una pasada reciente solicitada. No se ha duplicado."
+                return .verified
+            }
+            let moment = Date()
+            let prefix = project == "ttittulares" ? "tt" : "tr"
+            let commandID = prefix + "-ios-" +
+                String(Int(moment.timeIntervalSince1970 * 1000)) + "-" +
+                String(UUID().uuidString.prefix(8)).lowercased()
+            let payload: [String: Any] = [
+                "version": 2, "command_id": commandID,
+                "requested_at": ISO8601DateFormatter().string(from: moment),
+                "mode": "manual_pc_chat",
+                "executor": project == "ttittulares" ?
+                    "pc_chat_ttittulares_dedicated" : "pc_chat_ttendencias_dedicated",
+                "project": project,
+                "launcher_arg": project == "ttittulares" ? "titulares" : "tendencias",
+                "task": "editorial", "auto_image_followup": false,
+                "source": "ttactualidad_ios"
+            ]
+            let document = try JSONSerialization.data(withJSONObject: payload,
+                                                       options: [.prettyPrinted, .sortedKeys])
+            let body: [String: Any] = [
+                "branch": branch, "sha": fileSHA,
+                "message": "TTActualidad: solicitar pasada editorial " + commandID,
+                "content": document.base64EncodedString()
+            ]
+            var putRequest = URLRequest(url: URL(string:
+                "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + filename)!,
+                                        timeoutInterval: 25)
+            putRequest.httpMethod = "PUT"
+            putRequest.setValue("Bearer " + access, forHTTPHeaderField: "Authorization")
+            putRequest.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            putRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            putRequest.httpBody = try JSONSerialization.data(withJSONObject: body)
+            let (written, response) = try await URLSession.shared.data(for: putRequest)
+            guard [200, 201].contains((response as? HTTPURLResponse)?.statusCode ?? 0),
+                  let result = (try JSONSerialization.jsonObject(with: written)) as? [String: Any],
+                  let commit = result["commit"] as? [String: Any],
+                  (commit["sha"] as? String)?.isEmpty == false else {
+                throw GitHubError.message("GitHub no confirmó el disparador. Comprueba el PR y reintenta.")
+            }
+            notice = "Solicitud " + commandID +
+                     " confirmada en GitHub. El procesador debe recogerla; aún no significa DONE."
+            return .verified
+        } catch {
+            notice = error.localizedDescription
+            return .failed
+        }
+    }
+
     func decide(project: String, eventID: String, revision: Int, decision: String,
                 title: String, rank: Int = 0,
                 requestID: String = UUID().uuidString.lowercased()) async -> WriteResult {
@@ -478,6 +600,25 @@ final class GitHubEditor: ObservableObject {
         ], label: decision == "published" ? "Publicado · quitar de Listas" :
                   decision == "deleted" ? "No publicado · quitar de Listas" :
                   "Reelaborar / preparar")
+    }
+
+    // Uses the existing direct action + exact GitHub receipt; never a second queue.
+    // The editor's information is unverified until investigated independently.
+    func submitTrendHints(eventID: String, revision: Int, title: String,
+                          rank: Int, hints: String, requestID: String) async -> WriteResult {
+        let text = hints.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard text.count >= 8 && text.count <= 6000,
+              !eventID.isEmpty && revision >= 0 else {
+            notice = "Escribe entre 8 y 6000 caracteres de pistas y comprueba la tendencia."
+            return .failed
+        }
+        return await dispatch("ttactualidad_action_v1", payload: [
+            "project": "ttendencias", "event_id": eventID, "revision": revision,
+            "decision": "hints", "request_id": requestID,
+            "received_at": ISO8601DateFormatter().string(from: Date()),
+            "trend_name": title, "trend_rank": rank,
+            "hints": text
+        ], label: "Aportar pistas · nueva investigación")
     }
 
     // Batch operations carry the original ID and expected revision of every item.
@@ -500,7 +641,8 @@ final class GitHubEditor: ObservableObject {
     }
 
     func addNews(title: String, url: String, instructions: String,
-                 requestID: String? = nil) async -> WriteResult {
+                 requestID: String? = nil,
+                 originTrend: TrendItem? = nil) async -> WriteResult {
         guard !title.isEmpty || !url.isEmpty else { notice = "Añade un enlace o una descripción."; return .failed }
         if !title.isEmpty && title.count < 5 { notice = "La descripción debe tener al menos 5 caracteres."; return .failed }
         if !url.isEmpty {
@@ -508,10 +650,19 @@ final class GitHubEditor: ObservableObject {
                 notice = "El enlace debe empezar por https://"; return .failed
             }
         }
-        return await dispatch("ttactualidad_manual_news_v1", payload: [
+        var payload: [String: Any] = [
             "project": "ttittulares", "request_id": requestID ?? UUID().uuidString.lowercased(),
             "title": String(title.prefix(240)), "url": String(url.prefix(2000)),
             "instructions": String(instructions.prefix(1000))
-        ], label: "Añadir noticia")
+        ]
+        if let origin = originTrend {
+            payload["origin_trend"] = [
+                "id": origin.editorialID, "revision": origin.revision,
+                "name": origin.name
+            ]
+        }
+        return await dispatch("ttactualidad_manual_news_v1", payload: payload,
+                              label: originTrend == nil ? "Añadir noticia" :
+                                     "Enviar tendencia a TTiTTulares")
     }
 }

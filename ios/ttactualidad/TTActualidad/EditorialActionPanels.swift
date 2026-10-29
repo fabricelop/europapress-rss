@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import CryptoKit
 
 enum TTTheme {
     static let base = Color(red: 0.035, green: 0.065, blue: 0.13)
@@ -24,6 +25,8 @@ struct EditorialActions: View {
     @State private var confirm = false
     @State private var intent = "deleted"
     @State private var outcome = ""
+    @State private var showHints = false
+    @State private var confirmTrendToNews = false
     @Environment(\.openURL) private var openURL
 
     private var title: String { news?.title ?? trend?.name ?? "" }
@@ -43,6 +46,26 @@ struct EditorialActions: View {
                         parts?.queryItems = [URLQueryItem(name: "q", value: news.title),
                                              URLQueryItem(name: "f", value: "live")]
                         if let link = parts?.url { openURL(link) }
+                    }
+                }
+                if news.status == "EN ELABORACIÓN" {
+                    HStack(spacing: 7) {
+                        quickButton("Copiar orden editorial", "doc.on.doc") {
+                            copyManualEditorialPrompt()
+                        }
+                        quickButton("Abrir ChatGPT", "arrow.up.right.square") {
+                            openChatGPTApp()
+                        }
+                    }
+                    quickButton("URGENTE · Elaborar ya", "bolt.fill", urgent: true) {
+                        launchUrgentEditorial()
+                    }
+                    Text("Copia la orden prioritaria y abre ChatGPT. Solo queda pegarla y enviarla.")
+                        .font(.system(size: 10))
+                        .foregroundStyle(TTTheme.muted)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    quickButton("Suprimir · No pasar a Listas", "trash", danger: true) {
+                        request("discard")
                     }
                 }
                 if ["CRECIENDO", "REVISIÓN"].contains(news.status) {
@@ -70,7 +93,14 @@ struct EditorialActions: View {
             } else if trend?.status == "EN ELABORACIÓN" {
                 Text("Elaboración solicitada en GitHub; pendiente de cierre editorial.")
                     .font(.caption).foregroundStyle(TTTheme.muted)
-                quickButton("Copiar nombre", "doc.on.doc") { copy(title) }
+                HStack(spacing: 7) {
+                    quickButton("Copiar orden editorial", "doc.on.doc") {
+                        copyManualEditorialPrompt()
+                    }
+                    quickButton("Abrir ChatGPT", "arrow.up.right.square") {
+                        openChatGPTApp()
+                    }
+                }
             } else {
             HStack(spacing: 7) {
                 quickLink("TTImages", "photo.stack", "https://t.me/TTImages_bot")
@@ -109,6 +139,15 @@ struct EditorialActions: View {
                     }
                 }
             }
+            if let trend, trend.status != "EN ELABORACIÓN" {
+                quickButton("Aportar pistas", "lightbulb") {
+                    if github.authenticated {
+                        showHints = true
+                    } else {
+                        showSettings = true
+                    }
+                }
+            }
             if news != nil {
                 quickButton("Buscar en X", "magnifyingglass") {
                     var parts = URLComponents(string: "https://x.com/search")
@@ -118,11 +157,38 @@ struct EditorialActions: View {
                 }
             }
             }
+            if trend != nil {
+                quickButton("Enviar a TTiTTulares", "newspaper") {
+                    if github.authenticated {
+                        confirmTrendToNews = true
+                    } else {
+                        showSettings = true
+                    }
+                }
+            }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        .sheet(isPresented: $showHints) {
+            if let trend {
+                TrendHintsSheet(trend: trend, github: github)
+                    .environmentObject(store)
+                    .presentationDetents([.medium, .large])
+            }
+        }
+        .alert("¿Investigar esta tendencia como noticia?",
+               isPresented: $confirmTrendToNews) {
+            Button("Enviar a En elaboración") {
+                if let trend { sendTrendToNews(trend) }
+            }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("TTiTTulares investigará el posible hecho noticioso con fuentes independientes. La tendencia seguirá en TTendencias. No se publicará automáticamente.")
+        }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
+                            intent == "discard" && news?.status == "EN ELABORACIÓN" ?
+                            "¿Suprimir esta noticia en elaboración?" :
                             intent == "discard" ? "¿Desestimar esta entrada?" :
                             "¿Investigar y redactar desde cero?",
                             isPresented: $confirm, titleVisibility: .visible) {
@@ -143,7 +209,51 @@ struct EditorialActions: View {
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
+                 : intent == "discard" && news?.status == "EN ELABORACIÓN"
+                 ? "Se cancelará la investigación en GitHub y no se añadirá a Listas. Si ya terminó mientras confirmabas, se te avisará para que la quites desde Listas."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
+        }
+    }
+
+    private func sendTrendToNews(_ trend: TrendItem) {
+        // Stable UUID makes repeated taps/retries idempotent for the exact
+        // original editorial ID + revision. A later trend revision can be sent.
+        let bytes = SHA256.hash(data: Data(
+            ("ttactualidad-trend-news:" + trend.editorialID +
+             ":r" + String(trend.revision)).utf8))
+        var digits = Array(bytes.map { String(format: "%02x", $0) }.joined().prefix(32))
+        digits[12] = "4"
+        digits[16] = "8"
+        let requestID = [
+            String(digits[0..<8]), String(digits[8..<12]),
+            String(digits[12..<16]), String(digits[16..<20]),
+            String(digits[20..<32])
+        ].joined(separator: "-")
+        let manualID = "manual-" + requestID
+        if store.operationHistory.contains(where: {
+            $0.id == manualID && $0.status != "Rechazada"
+        }) {
+            outcome = "Esta tendencia ya se ha enviado a TTiTTulares. Consulta Órdenes pendientes."
+            return
+        }
+        let headline = String(("Investigar noticia: " + trend.name).prefix(240))
+        let context = String(trend.explanation.prefix(280))
+        var instructions = "Origen TTendencias: ID \(trend.editorialID), revisión \(trend.revision), nombre \(trend.name), puesto \(trend.rank). "
+        instructions += "Investiga si hay un hecho noticioso reciente detrás de esta tendencia. "
+        instructions += "Comprueba fechas y fuentes independientes; el hashtag no demuestra que haya ocurrido. "
+        instructions += "Sin pruebas suficientes, no inventes una noticia ni la presentes como verificada."
+        if !context.isEmpty {
+            instructions += " Contexto preliminar, pendiente de contrastar: " + context
+        }
+        store.beginManualNews(requestID: requestID, title: headline,
+                              url: "", fromTrend: true)
+        outcome = "Solicitud provisional enviada a TTiTTulares. Consultar Órdenes pendientes."
+        Task {
+            let result = await github.addNews(
+                title: headline, url: "", instructions: instructions,
+                requestID: requestID, originTrend: trend)
+            store.completeManualNews(requestID: requestID, result: result,
+                                     detail: github.notice)
         }
     }
 
@@ -166,7 +276,7 @@ struct EditorialActions: View {
                                              title: requestedTitle, rank: requestedRank,
                                              requestID: requestID)
             store.completeEditorialAction(project: requestedProject, id: requestedID,
-                                          revision: requestedRevision,
+                                          revision: requestedRevision, requestID: requestID,
                                           result: result, detail: github.notice)
         }
     }
@@ -184,8 +294,22 @@ struct EditorialActions: View {
     private func request(_ action: String) {
         guard github.authenticated else { showSettings = true; return }
         guard !editorialID.isEmpty else { outcome = "Identificador editorial no disponible. Actualiza antes."; return }
-        guard !store.isActionInProgress(project: project, id: editorialID, revision: revision) else {
-            outcome = "La orden ya está registrada y pendiente de confirmación."
+        if store.isActionInProgress(project: project, id: editorialID, revision: revision) {
+            // A stale request was previously a permanent lock. Check the
+            // authoritative remote receipts/decisions before refusing a new
+            // deletion. Never silently issue a duplicate on stale cached data.
+            outcome = "Comprobando la orden anterior en GitHub…"
+            Task {
+                await store.refreshIfStale(minInterval: 0)
+                if !store.isActionInProgress(project: project, id: editorialID,
+                                              revision: revision) {
+                    outcome = ""
+                    intent = action
+                    confirm = true
+                } else {
+                    outcome = "La orden anterior sigue sin resolverse en GitHub. Comprueba Órdenes por confirmar."
+                }
+            }
             return
         }
         intent = action
@@ -193,6 +317,7 @@ struct EditorialActions: View {
     }
 
     private func quickButton(_ name: String, _ symbol: String, danger: Bool = false,
+                             urgent: Bool = false,
                              action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(name, systemImage: symbol)
@@ -200,9 +325,13 @@ struct EditorialActions: View {
                 .lineLimit(1).minimumScaleFactor(0.75)
                 .frame(maxWidth: .infinity, minHeight: 42)
                 .foregroundStyle(danger ? Color(red: 1, green: 0.71, blue: 0.76) : .white)
-                .background(danger ? TTTheme.red.opacity(0.65) : Color(red: 0.19, green: 0.31, blue: 0.46),
+                .background(danger ? TTTheme.red.opacity(0.65) :
+                            urgent ? Color(red: 0.57, green: 0.31, blue: 0.08) :
+                            Color(red: 0.19, green: 0.31, blue: 0.46),
                             in: RoundedRectangle(cornerRadius: 10))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(danger ? .red.opacity(0.5) : TTTheme.blue.opacity(0.22)))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(
+                    danger ? .red.opacity(0.5) :
+                    urgent ? .orange.opacity(0.8) : TTTheme.blue.opacity(0.22)))
         }
         .buttonStyle(.plain)
     }
@@ -214,18 +343,148 @@ struct EditorialActions: View {
         }
     }
 
+    // GAG_VISUAL_NATIVE_V2: misma dirección artística de la elaboración automática,
+    // sin las tarjetas de texto que se producían al copiar el prompt antiguo.
     private var gagPrompt: String {
         let closer = news?.closer ?? fullText.components(separatedBy: "\n")
             .last(where: { $0.trimmingCharacters(in: .whitespaces).hasPrefix("🌶") }) ?? ""
+        let confirmedFacts = fullText.components(separatedBy: "\n")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty && !$0.hasPrefix("🌶") && !$0.hasPrefix("#") }
+            .joined(separator: "\n")
+        let factual = news?.factual ?? confirmedFacts
+        let folded = (title + " " + confirmedFacts + " " + factual)
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "es_ES"))
+        let sensitiveTerms = [
+            "victim", "fallec", "muert", "murio", "traged", "accident",
+            "agresion sexual", "violacion", "asesinat", "atentad",
+            "desaparecid", "herid", "catastrof", "suicid"
+        ]
+        let sensitive = sensitiveTerms.contains { folded.contains($0) }
+        // Banco de estilos del reparador editorial TT, para imágenes únicas
+        // con acabado cuidado, sin encuadres de tarjeta ni tipografía.
+        let styles = [
+            "Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+            "Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+            "Póster gráfico editorial sofisticado, formas contundentes, geometría limpia y textura de impresión; SIN tipografía ni rótulos.",
+            "Escena absurda semirrealista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+            "Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+            "Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.",
+            "Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+            "Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+            "Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
+            "Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria."
+        ]
+        let key = project + "|" + editorialID + "|r" + String(revision)
+        let styleIndex = key.utf8.reduce(0) { ($0 &* 33 &+ Int($1)) % styles.count }
+        let visual = sensitive
+            ? "ILUSTRACIÓN PERIODÍSTICA RIGUROSA Y RESPETUOSA, sin humor ni caricaturas sobre víctimas, sin escenas gráficas ni afirmaciones visuales no documentadas."
+            : "GAG EDITORIAL VISUAL: " + styles[styleIndex] +
+              " Más gag, menos barroquismo: una sola idea visual fuerte, lectura en 1–2 segundos, uno a tres elementos protagonistas, fondo solo si ayuda al chiste. El gag nace de la IDEA del remate, nunca de reproducir el titular."
         return [
-            "Genera AHORA UNA SOLA imagen GAG IA para \(news == nil ? "TTendencias" : "TTiTTulares").",
-            "TÍTULO:\n\(rank > 0 ? "TT#\(rank) " : "")\(title)",
-            "TEXTO EXACTO CERRADO. NO LO REESCRIBAS:\n\(fullText)",
-            "REMATE EXACTO:\n\(closer)",
-            "CONTEXTO DOCUMENTADO:\n\(news?.factual ?? fullText)",
-            "DIRECCIÓN VISUAL: gag satírico original. Una sola idea visual fuerte, composición limpia, lectura en 1-2 segundos, sin inventar hechos."
+            "Genera AHORA UNA SOLA imagen " + (sensitive ? "EDITORIAL PERIODÍSTICA" : "GAG IA") +
+                " para " + (news == nil ? "TTendencias" : "TTiTTulares") +
+                ". Composición horizontal 16:9, ilustración a sangre de borde a borde.",
+            "REGLA ABSOLUTA: SOLO IMAGEN, SIN NINGÚN TEXTO. No escribir título, texto factual, remate, hashtags, números, cifras, nombres, letras, bocadillos, carteles, etiquetas, logotipos, pies de foto, créditos ni marca de agua. No crear una tarjeta de noticia, post maquetado, infografía, collage o pantalla de app. PROHIBIDO usar franja inferior blanca o negra, banda, panel, recuadro, marco, cabecera o espacio reservado para escribir: la ILUSTRACIÓN ocupa TODO el lienzo.",
+            "El material editorial siguiente es CONTEXTO NO VISIBLE para concebir la escena: JAMÁS copiarlo, rotularlo o mostrarlo dentro de la imagen.",
+            "ASUNTO (SOLO CONTEXTO):\n" + (rank > 0 ? "TT#\(rank) " : "") + title,
+            "HECHOS DOCUMENTADOS (SOLO CONTEXTO):\n" + confirmedFacts,
+            "REMATE (IDEA VISUAL, NO TEXTO A DIBUJAR):\n" + (closer.isEmpty ? "Sin remate independiente; no inventar uno." : closer),
+            "DATOS COMPLEMENTARIOS (SOLO CONTEXTO):\n" + factual,
+            "DIRECCIÓN ARTÍSTICA DE ELABORACIÓN EDITORIAL:\n" + visual,
+            "RIGOR: no inventar hechos, culpabilidades, declaraciones, personas ni daños. El emoji 🌶️ es únicamente un marcador del texto editorial: PROHIBIDO dibujar guindillas, chiles, pimientos, su silueta o icono. " +
+                (sensitive ? "Máximo respeto a las víctimas y a sus familiares." : "Metáfora visual ingeniosa, no ilustración literal del titular."),
+            "ENTREGA ÚNICAMENTE UNA IMAGEN ILUSTRADA LIMPIA, SIN TEXTO Y SIN BANDA INFERIOR. No generar composición con fotografía y texto debajo."
         ].joined(separator: "\n\n")
     }
+    /// Manual cloud-only fallback when Windows editorial listeners are offline.
+    /// The prompt is a REQUEST, not a GitHub dispatch or a claim of completion.
+    /// A fresh GitHub read and the official outbox are mandatory for success.
+    private var manualEditorialPrompt: String {
+        let common = [
+            "TT_ACTUALIDAD_MANUAL_EDITORIAL_V1 | Ejecuta AHORA la elaboración editorial REAL de este elemento desde ChatGPT, SIN depender del ordenador Windows.",
+            "Repositorio autoritativo: fabricelop/europapress-rss, rama main. Utiliza el conector GitHub y búsqueda web para investigar y persistir. Si no puedes acceder o escribir en GitHub, indícalo y NO declares que has terminado.",
+            "Proyecto: \(project). Elemento: \(title). ID exacto: \(editorialID). Revisión solicitada: \(revision).",
+            "ANTES DE EMPEZAR, lee el contrato editorial vigente del proyecto en main y su cola y estado autoritativos. Relee el ID y revisión justo antes de investigar y antes de escribir. Si ya está explicado, READY, publicado, desestimado, eliminado, agrupado bajo una explicación vigente, o sustituido por otra revisión, NO lo reelabores ni lo dupliques; comprueba el cierre y explícalo.",
+            "Trata solamente la revisión indicada y las relaciones editoriales imprescindibles para cerrar su grupo, sin reprocesar indiscriminadamente toda la cola. El título y los datos copiados del móvil son pistas, NO hechos verificados. Investiga con fuentes actuales e independientes; si no hay pruebas suficientes, conserva el estado pendiente o problemático y explica por qué.",
+            "No llames a ImageGen, no generes imágenes, no envíes mensajes editoriales a Telegram, no publiques en X y no uses listeners, scripts ni tareas del PC. Nunca bloquees READY/explicada por falta de imagen.",
+            "Aplica el resultado SOLO mediante el transporte/aplicador oficial de GitHub para este proyecto, sin modificar PR de control #2/#7, FabCalendar, SeLoRecordamos ni otros proyectos. El resultado no es válido por haber redactado un texto en el chat: verifica su persistencia real releyendo main y el estado final.",
+            "AL TERMINAR informa del estado exacto, enlace al commit o aplicación, y si el elemento ha desaparecido de En elaboración y está en Listas. Si la escritura falla o sigue pendiente, dilo expresamente, sin afirmar éxito."
+        ]
+        if let news {
+            var details = [
+                "CONTRATO TTiTTulares: ttittulares/editorial-run-prompt.md.",
+                "ESTADO TTiTTulares: ttittulares/editorial-queue.json, ttittulares/status.json, telegram/editorial-processing.json, ttittulares/prepared.json y ttittulares/decisions.json.",
+                "Investiga y elabora el texto factual, 2–3 hashtags concretos y UN remate conforme al contrato. El tuit completo debe medir como máximo 256 caracteres. Si es publicable, materializa esta misma revisión en READY/Listas mediante el outbox oficial transportado por issue #164 y verifica el aplicador; no basta publicar un comentario.",
+                "Fuentes detectadas en la tarjeta: \(news.sources)."
+            ]
+            if let url = news.sourceURL {
+                details.append("Enlace de referencia para verificar, no prueba suficiente: \(url.absoluteString)")
+            }
+            return (common + details).joined(separator: "\n\n")
+        }
+        var details = [
+            "CONTRATO TTendencias: trends/editorial-run-prompt.md.",
+            "ESTADO TTendencias: trends/editorial-queue.json, trends/requests.json, trends/telegram-manual-explained.json y trends/mobile-decisions.json.",
+            "Investiga la tendencia y redacta UNA explicación común si forma parte de un grupo lógico. Reutiliza el grupo si ya está explicado; no crees tarjetas duplicadas. Persiste el estado explained para el ID y revisión originales y sus miembros válidos mediante el outbox/aplicador oficial ttendencias-editorial-apply.yml. Comprueba que desaparece de preparing/update; en Listas puede figurar una sola tarjeta líder del grupo.",
+            "Posición registrada en el móvil: \(rank)."
+        ]
+        if let trend, !trend.problemReason.isEmpty {
+            details.append("Motivo de revisión mostrado, sin verificar: \(trend.problemReason)")
+        }
+        return (common + details).joined(separator: "\n\n")
+    }
+
+    private var urgentEditorialPrompt: String {
+        [
+            "TTITTULARES_URGENTE_MANUAL_V1 | PRIORIDAD EDITORIAL INMEDIATA. Atiende SOLO esta noticia ahora, sin esperar a una ejecución horaria, desde ChatGPT en la nube; no necesitas el PC.",
+            "La prioridad significa investigar y comprobar esta noticia antes que otras entradas de la cola. NO omitas comprobación de hechos, fuentes, umbrales del contrato ni revalidación de ID/revisión; NO marques READY sin publicación verificable en el estado autoritativo.",
+            "Si sigue en PROCESSING/rewrite_pending, elabora y persiste la noticia mediante el transporte GitHub oficial. Si se cerró entretanto, informa del estado real sin duplicarla. Las imágenes NO deben bloquear el texto.",
+            manualEditorialPrompt
+        ].joined(separator: "\n\n")
+    }
+
+    private func launchUrgentEditorial() {
+        guard news?.status == "EN ELABORACIÓN", !editorialID.isEmpty else {
+            outcome = "La noticia no está confirmada En elaboración. Actualiza la tarjeta."
+            return
+        }
+        copy(urgentEditorialPrompt)
+        outcome = "Orden urgente copiada. Pégala y envíala en ChatGPT para iniciar."
+        openChatGPTApp()
+    }
+
+    /// Open ChatGPT's installed iOS app, not the separate Safari web session.
+    /// Both schemes have been used by ChatGPT iOS; never fall back to the
+    /// unauthenticated web homepage. Keep the editorial prompt on clipboard.
+    private func openChatGPTApp() {
+        guard let primary = URL(string: "chatgpt://"),
+              let secondary = URL(string: "com.openai.chat://") else {
+            outcome = "Orden copiada. Abre la app ChatGPT instalada y pega la orden."
+            return
+        }
+        UIApplication.shared.open(primary, options: [:]) { opened in
+            guard !opened else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.open(secondary, options: [:]) { alternativeOpened in
+                    guard !alternativeOpened else { return }
+                    DispatchQueue.main.async {
+                        outcome = "No se pudo abrir ChatGPT automáticamente. La orden sigue copiada; abre la app desde el iPhone."
+                    }
+                }
+            }
+        }
+    }
+
+    private func copyManualEditorialPrompt() {
+        guard !editorialID.isEmpty else {
+            outcome = "Falta el ID editorial. Actualiza la tarjeta antes de copiar."
+            return
+        }
+        copy(manualEditorialPrompt)
+        outcome = "Orden copiada. Abre ChatGPT en el móvil, pega y envía. No necesita el PC."
+    }
+
     private func copy(_ value: String) {
         guard !value.isEmpty else { outcome = "No hay texto disponible."; return }
         UIPasteboard.general.string = value

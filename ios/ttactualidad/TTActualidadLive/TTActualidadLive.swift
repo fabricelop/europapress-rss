@@ -3,8 +3,8 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
-// Live Activity only. ActivityKit controls lifetime and foreground refreshes;
-// the widget never claims a push-based background feed that does not exist.
+// Only a Live Activity: no unsupported Home Screen widgets in signed IPA.
+// Contents refresh when the native app syncs or the user taps Update.
 @main
 struct TTActualidadLiveBundle: WidgetBundle {
     var body: some Widget {
@@ -42,13 +42,44 @@ struct TTActualidadLiveWidget: Widget {
                                working: context.state.trendsWorking, color: .cyan)
                     }
                 }
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark.seal")
+                        .foregroundStyle(.white.opacity(0.75))
+                    Text("PUBLICADAS · ÚLTIMAS 24 H")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(.white.opacity(0.7))
+                    Spacer(minLength: 0)
+                    Text(context.state.publishedCountsAvailable ?
+                         "N \(context.state.newsPublished24h)  ·  T \(context.state.trendsPublished24h)" :
+                         "Sin verificar")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(context.state.publishedCountsAvailable ? Color.white : Color.orange)
+                        .monospacedDigit()
+                }
+                if !context.state.recentHeadline.isEmpty {
+                    Link(destination: URL(string: "ttactualidad://noticias")!) {
+                        HStack(alignment: .top, spacing: 7) {
+                            Image(systemName: "newspaper")
+                                .foregroundStyle(.mint)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("ÚLTIMA NOTICIA LISTA")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.mint)
+                                Text(context.state.recentHeadline)
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundStyle(.white)
+                                    .lineLimit(2)
+                            }
+                        }
+                    }
+                }
                 HStack(spacing: 8) {
                     Image(systemName: context.state.pendingActions > 0 ?
                           "clock.badge.exclamationmark" : "checkmark.shield.fill")
                         .foregroundStyle(context.state.pendingActions > 0 ? Color.orange : Color.mint)
                     Text(context.state.pendingActions > 0 ?
                          "\(context.state.pendingActions) orden(es) por confirmar" :
-                         "Consulta desde GitHub")
+                         "Toca Actualizar · GitHub")
                         .font(.system(size: 10, weight: .medium))
                         .foregroundStyle(.white.opacity(0.78))
                     Spacer(minLength: 0)
@@ -89,7 +120,29 @@ struct TTActualidadLiveWidget: Widget {
                     }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    VStack(spacing: 7) {
+                    VStack(alignment: .leading, spacing: 7) {
+                        if !context.state.recentHeadline.isEmpty {
+                            Link(destination: URL(string: "ttactualidad://noticias")!) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("ÚLTIMA NOTICIA LISTA")
+                                        .font(.system(size: 9, weight: .semibold))
+                                        .foregroundStyle(.mint)
+                                    Text(context.state.recentHeadline)
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .lineLimit(2)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        HStack {
+                            Label(context.state.publishedCountsAvailable ?
+                                  "24 h publicadas: N \(context.state.newsPublished24h) · T \(context.state.trendsPublished24h)" :
+                                  "24 h publicadas: sin verificar",
+                                  systemImage: "checkmark.seal")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundStyle(context.state.publishedCountsAvailable ? Color.mint : Color.orange)
+                            Spacer(minLength: 0)
+                        }
                         HStack {
                             Label("\(context.state.newsWorking) noticias · \(context.state.trendsWorking) tendencias en elaboración",
                                   systemImage: "pencil.line")
@@ -118,18 +171,34 @@ struct TTActualidadLiveWidget: Widget {
                     }
                 }
             } compactLeading: {
-                Text("N\(context.state.newsReady)")
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(.mint)
+                compactCounts(
+                    prefix: "N", ready: context.state.newsReady,
+                    working: context.state.newsWorking,
+                    published24h: context.state.newsPublished24h,
+                    publishedAvailable: context.state.publishedCountsAvailable,
+                    color: .mint, alignment: .leading,
+                    attention: context.isStale || context.state.partialData)
+                .accessibilityLabel(
+                    "Noticias: \(context.state.newsReady) en Listas, " +
+                    "\(context.state.newsWorking) en elaboración, " +
+                    (context.state.publishedCountsAvailable ?
+                     "\(context.state.newsPublished24h) publicadas en 24 horas" :
+                     "publicaciones de 24 horas sin verificar"))
             } compactTrailing: {
-                HStack(spacing: 2) {
-                    Text("T\(context.state.trendsReady)")
-                    if context.state.pendingActions > 0 {
-                        Circle().fill(Color.orange).frame(width: 4, height: 4)
-                    }
-                }
-                .font(.caption.weight(.bold))
-                .foregroundStyle(.cyan)
+                compactCounts(
+                    prefix: "T", ready: context.state.trendsReady,
+                    working: context.state.trendsWorking,
+                    published24h: context.state.trendsPublished24h,
+                    publishedAvailable: context.state.publishedCountsAvailable,
+                    color: .cyan, alignment: .trailing,
+                    attention: context.isStale || context.state.partialData ||
+                               context.state.pendingActions > 0)
+                .accessibilityLabel(
+                    "Tendencias: \(context.state.trendsReady) en Listas, " +
+                    "\(context.state.trendsWorking) en elaboración, " +
+                    (context.state.publishedCountsAvailable ?
+                     "\(context.state.trendsPublished24h) publicadas en 24 horas" :
+                     "publicaciones de 24 horas sin verificar"))
             } minimal: {
                 Image(systemName: context.state.pendingActions > 0 ?
                       "clock.badge.exclamationmark" : "newspaper")
@@ -140,11 +209,49 @@ struct TTActualidadLiveWidget: Widget {
         }
     }
 
+    // The compact Island has just two very narrow regions. Keep the six
+    // editorial figures visible using two short lines per project:
+    // N7 +2 / 24h12 (news) and T4 +3 / 24h8 (trends).
+    // The last-check time stays in the expanded view: there is no reliable
+    // space for a seventh text field on the compact presentation.
+    private func compactCounts(
+        prefix: String, ready: Int, working: Int,
+        published24h: Int, publishedAvailable: Bool,
+        color: Color, alignment: HorizontalAlignment, attention: Bool
+    ) -> some View {
+        VStack(alignment: alignment, spacing: 0) {
+            HStack(spacing: 2) {
+                Text("\(prefix)\(ready)")
+                    .foregroundStyle(color)
+                Text("+\(working)")
+                    .foregroundStyle(.orange)
+            }
+            .font(.system(size: 11, weight: .bold, design: .rounded))
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+            HStack(spacing: 2) {
+                Text("24h")
+                    .foregroundStyle(.white.opacity(0.67))
+                Text(publishedAvailable ? String(published24h) : "—")
+                    .foregroundStyle(publishedAvailable ? Color.white : Color.orange)
+                if attention {
+                    Circle().fill(Color.orange).frame(width: 3, height: 3)
+                }
+            }
+            .font(.system(size: 9, weight: .semibold, design: .rounded))
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
     private func statusText(_ context: ActivityViewContext<LiveCountsAttributes>) -> some View {
         Group {
             if context.isStale { Text("Desactualizado") }
             else if context.state.partialData { Text("Datos parciales") }
-            else { Text("Sincronizado") }
+            else { Text("Verificado") }
         }
     }
 

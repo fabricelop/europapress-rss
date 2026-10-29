@@ -1,4 +1,4 @@
-"""Preflight: native app, real GitHub Listas, no Cloudflare or home widgets."""
+"""Preflight: native iPhone editor and PlumeImpactor Live Activity (no Home widgets)."""
 from pathlib import Path
 import re
 
@@ -6,6 +6,7 @@ root = Path(__file__).resolve().parents[1]
 project = (root / "project.yml").read_text(encoding="utf8")
 store = (root / "TTActualidad/EditorialStore.swift").read_text(encoding="utf8")
 activity = (root / "TTActualidadLive/TTActualidadLive.swift").read_text(encoding="utf8")
+widget_source = (root / "Shared/RefreshLiveCountsIntent.swift").read_text(encoding="utf8")
 shared = (root / "Shared/LiveCountsAttributes.swift").read_text(encoding="utf8")
 app = (root / "TTActualidad/TTActualidadApp.swift").read_text(encoding="utf8")
 dashboard = (root / "TTActualidad/TTDashboard.swift").read_text(encoding="utf8")
@@ -39,7 +40,7 @@ for source in (project, store, activity, shared, app):
 assert "BGTaskScheduler" not in store
 assert "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" in store
 assert "partialData: partial" in store
-assert "no Home Screen or Lock Screen widgets" in shared
+assert "recentHeadline" in shared and "latestHeadline" in widget_source
 print("TT_ACTUALIDAD_IOS_PREFLIGHT_OK")
 
 # Gallery is explicitly archive-only: no AI retrieval or generated-image fallback.
@@ -57,6 +58,17 @@ assert 'lineLimit(expanded ? nil : 2)' in dashboard
 assert 'movementLabel' in dashboard and 'rankColor' in dashboard
 assert 'Copiar foto de archivo' in gallery
 assert 'ChatGPT Images' in actions
+
+# Urgent/manual editor must open the already signed-in ChatGPT iOS app,
+# never the unauthenticated browser homepage. Keep Images unchanged.
+assert 'quickButton("URGENTE · Elaborar ya"' in actions
+assert actions.count('quickButton("Abrir ChatGPT"') == 2
+assert 'URL(string: "chatgpt://")' in actions
+assert 'URL(string: "com.openai.chat://")' in actions
+assert 'UIApplication.shared.open(primary, options: [:])' in actions
+assert 'openChatGPTApp()' in actions
+assert 'URL(string: "https://chatgpt.com/")' not in actions
+assert 'https://chatgpt.com/images' in actions
 
 # Editorial UX and durable GitHub session contract.
 assert "SecureSession" in auth and 'save("session", value: saved)' in auth
@@ -101,13 +113,13 @@ assert "reconcileOperationHistory(" in store
 assert 'pilot/ttactualidad-action-receipts.json' in store
 assert '"Sin confirmar"' in store and '"Esperando GitHub"' in store
 assert "Comprobar GitHub ahora" in pending_panel
-assert "Pendiente de GitHub" in pending_panel or "Esperando GitHub" in pending_panel
+assert "Órdenes por confirmar" in pending_panel
 assert "requestID: requestID" in actions and "requestID: requestID" in auth
 
 # A terminal GitHub deletion must remove BOTH canonical and optimistic work.
 assert 'closedTrends(manual: manual, requests: requests' in store
 assert 'retireClosedTrendOverlays(' in store
-assert 'if closedAfterRequest {' in store
+assert 'if closedAfterRequest || newsTerminal {' in store
 assert 'stage = "Retirada"' in store
 assert '"deleted_at", "dismissed_at", "updated_at"' in store
 assert 'finishedByName[norm(name)]' in store
@@ -159,7 +171,7 @@ assert "now.addingTimeInterval(-86_400)" in store
 assert "$0.confirmedAt > lowerBound && $0.confirmedAt <= now" in store
 assert 'publicationLedgerAvailable = false' in store
 assert 'Self.str(row, "decision") == "published"' in store
-assert 'TimelineView(.periodic(from: .now, by: 1))' in dashboard
+assert 'TimelineView(.periodic(from: .now, by: 60))' in dashboard
 assert 'published24hChip("TTiT", project: "ttittulares"' in dashboard
 assert 'published24hChip("TTen", project: "ttendencias"' in dashboard
 assert '"published" : "deleted"' not in store or 'action.decision == "published"' in store
@@ -196,3 +208,125 @@ assert 'GitHub directo · Sin Cloudflare' not in dashboard
 assert 'Última actualización' in dashboard
 assert 'Desliza para actualizar' not in dashboard
 assert 'Pulsa el botón de actualizar arriba' in dashboard
+
+# 0.4.12 editor hints: request provenance + old investigations remain visible.
+hints_sheet = (root / "TTActualidad" / "TrendHintsSheet.swift").read_text()
+assert 'TextEditor(text: $hints)' in hints_sheet
+assert 'submitTrendHints(' in hints_sheet and 'requestID: requestID' in hints_sheet
+assert 'decision: "hints"' in hints_sheet
+assert 'quickButton("Aportar pistas"' in actions
+assert 'case "hints": return "Aportar pistas e investigar"' in store
+assert 'var unexplainedTrends: [TrendItem]' in store
+assert 'buildUnexplainedTrends(' in store
+assert 'SIN EXPLICACIÓN' in store and 'SIN EXPLICACIÓN' in dashboard
+assert 'store.snapshot.unexplainedTrends' in dashboard
+assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
+assert 'decision == "hints"' in store
+assert '"hints": text' in auth
+assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
+assert 'MARKETING_VERSION: "0.4.22"' in project
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
+print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
+
+# 0.4.17: an editorial trend may trigger independent news investigation.
+assert 'quickButton("Enviar a TTiTTulares"' in actions
+assert 'sendTrendToNews(_ trend: TrendItem)' in actions
+assert 'originTrend: trend' in actions
+assert 'beginManualNews(requestID: requestID, title: headline,' in actions
+assert 'fromTrend: true' in actions
+assert 'originTrend: TrendItem? = nil' in auth
+assert 'payload["origin_trend"]' in auth
+assert 'case "De tendencia a noticia": return "Tendencia → TTiTTulares"' in store
+assert 'operation.kind == "De tendencia a noticia"' not in store or 'De tendencia a noticia' in store
+assert '["Nueva noticia", "De tendencia a noticia"].contains(operation.kind)' in store
+print("TT_ACTUALIDAD_IOS_TREND_TO_NEWS_PREFLIGHT_OK")
+
+# 0.4.17: stale GitHub-inactive orders recover and the verified publish counter
+# increments without blocking the rest of the interface.
+assert "retireAbandonedTrendOperations(" in store
+assert "await store.refreshIfStale(minInterval: 0)" in hints_sheet
+assert '["inactive", "problem", "failed"].contains(' in store
+assert 'publicationEvents.append(PublicationEvent(' in store
+assert 'func requestEditorialRun(project: String)' in auth
+assert '"control/ttendencias-run-trigger"' in auth
+assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
+assert 'requestEditorialRun(project: project)' in dashboard
+assert 'Solicitar procesamiento de' in dashboard
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
+print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
+
+# 0.4.17: cancel PROCESSING without adding to Listas, and separate
+# unacknowledged GitHub commands from already registered editorial work.
+assert 'quickButton("Suprimir · No pasar a Listas"' in actions
+assert '"¿Suprimir esta noticia en elaboración?"' in actions
+assert 'intent == "discard" && news?.status == "EN ELABORACIÓN"' in actions
+assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin confirmar"].contains(status)' in store
+assert 'operationHistory.filter(\\.isOutstanding).count' in store
+assert 'Text("Órdenes por confirmar")' in pending_panel
+assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
+print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
+
+# 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
+assert not (root / "TTActualidadLive/TTActualidadHomeWidgets.swift").exists()
+assert "TTActualidadHomeWidget()" not in activity
+assert "StaticConfiguration" not in activity and "AppIntentConfiguration" not in activity
+assert "WidgetCenter.shared" not in store
+assert 'recentHeadline' in shared and 'recentHeadline: source.latestHeadline' in widget_source
+assert "ÚLTIMA NOTICIA LISTA" in activity
+assert "PUBLICADAS · ÚLTIMAS 24 H" in activity
+assert "newsPublished24h" in activity and "trendsPublished24h" in activity
+assert 'publishedCountsAvailable' in shared
+assert 'pilot/ttactualidad-publication-events.json' in widget_source
+assert "retireAbandonedNewsOperations(" in store
+assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
+assert 'MARKETING_VERSION: "0.4.22"' in project
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
+print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
+
+
+# 0.4.20: navigation must not block on large GitHub JSON or archive trees.
+assert 'EditorialDocumentLoader.load(paths: paths)' in store
+assert 'private enum EditorialDocumentLoader' in store
+assert 'private struct EditorialDocumentLoad: @unchecked Sendable' in store
+assert 'private static let fractionalISO:' in store
+assert 'private static let standardISO:' in store
+assert 'terminalMarksNeedSave' in store
+catalog = (root / "TTActualidad/ArchivePhotoCatalog.swift").read_text(encoding="utf8")
+assert 'private actor ArchivePhotoMemory' in catalog
+assert 'if let fresh = await memory.fresh()' in catalog
+assert 'Date().timeIntervalSince(modified) < 600' in catalog
+assert 'TimelineView(.periodic(from: .now, by: 60))' in dashboard
+assert 'TimelineView(.periodic(from: .now, by: 1))' not in dashboard
+# Keep urgent/manual ChatGPT and ChatGPT Images navigation unchanged.
+assert 'launchUrgentEditorial()' in actions
+assert 'openChatGPTApp()' in actions
+assert 'TTActualidad.chatGPTProjectLink.v1' not in actions
+assert 'openEditorialChat()' not in actions
+assert 'quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/images")' in actions
+print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
+
+
+# 0.4.21: the compact Dynamic Island itself exposes all six verified metrics.
+# +working is not a GitHub write receipt; it counts editorial work in progress.
+assert 'private func compactCounts(' in activity
+assert 'prefix: "N", ready: context.state.newsReady' in activity
+assert 'working: context.state.newsWorking' in activity
+assert 'published24h: context.state.newsPublished24h' in activity
+assert 'prefix: "T", ready: context.state.trendsReady' in activity
+assert 'working: context.state.trendsWorking' in activity
+assert 'published24h: context.state.trendsPublished24h' in activity
+assert 'publishedAvailable: context.state.publishedCountsAvailable' in activity
+assert 'Text("24h")' in activity
+assert 'publishedAvailable ? String(published24h) : "—"' in activity
+assert 'context.isStale || context.state.partialData' in activity
+assert 'Text(context.state.checkedAt, format: .dateTime.hour().minute())' in activity
+assert 'openChatGPTApp()' in actions and 'openEditorialChat()' not in actions
+print("TT_ACTUALIDAD_IOS_0421_COMPACT_ISLAND_PREFLIGHT_OK")
+
+# Copiar GAG real del iPhone: ilustración pura, no tarjeta de noticia.
+assert 'GAG_VISUAL_NATIVE_V2' in actions
+for token in ('SOLO IMAGEN', 'SIN NINGÚN TEXTO', 'franja inferior', 'SIN BANDA INFERIOR', 'Más gag, menos barroquismo', 'PROHIBIDO dibujar guindillas'):
+    assert token in actions, token
+assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
+print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")

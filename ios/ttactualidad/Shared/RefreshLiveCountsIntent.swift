@@ -19,7 +19,11 @@ struct RefreshLiveCountsIntent: AppIntent {
             let state = LiveCountsAttributes.ContentState(
                 newsReady: source.news, trendsReady: source.trends,
                 newsWorking: source.newsWorking, trendsWorking: source.trendsWorking,
-                pendingActions: awaiting, checkedAt: now, partialData: awaiting > 0)
+                pendingActions: awaiting, checkedAt: now, partialData: false,
+                recentHeadline: source.latestHeadline,
+                newsPublished24h: source.newsPublished24h,
+                trendsPublished24h: source.trendsPublished24h,
+                publishedCountsAvailable: true)
             let content = ActivityContent(state: state,
                                           staleDate: now.addingTimeInterval(1800))
             await activity.update(content)
@@ -35,13 +39,21 @@ private enum LiveCountsSource {
         "ttittulares/editorial-queue.json",
         "trends/telegram-manual-explained.json", "trends/requests.json",
         "trends/telegram-image-deliveries.json", "trends/mobile-decisions.json",
-        "trends/editorial-queue.json"
+        "trends/editorial-queue.json",
+        "pilot/ttactualidad-publication-events.json"
     ]
     private static let terminal: Set<String> =
         ["deleted", "dismissed", "published", "removed", "delete_pending"]
 
-    struct Counts { let news: Int; let trends: Int
-                    let newsWorking: Int; let trendsWorking: Int }
+    struct Counts {
+        let news: Int
+        let trends: Int
+        let newsWorking: Int
+        let trendsWorking: Int
+        let latestHeadline: String
+        let newsPublished24h: Int
+        let trendsPublished24h: Int
+    }
 
     static func load() async throws -> Counts {
         var docs: [String: [String: Any]] = [:]
@@ -73,10 +85,18 @@ private enum LiveCountsSource {
         let closedNews = Set(decisions.filter {
             terminal.contains(str($0, "status").lowercased())
         }.map { str($0, "event_id") })
-        let news = prepared.filter {
+        let openNews = prepared.filter {
             let id = str($0, "event_id")
             return !id.isEmpty && !closedNews.contains(id)
-        }.count
+        }
+        let news = openNews.count
+        // The headline comes only from authoritative, non-terminal Listas.
+        // Avoid presenting a recycled radar item as newly verified.
+        let latest = openNews.max {
+            (date(str($0, "prepared_at")) ?? .distantPast) <
+            (date(str($1, "prepared_at")) ?? .distantPast)
+        }
+        let latestHeadline = String(str(latest ?? [:], "title").prefix(140))
 
         var latestManual: [String: [String: Any]] = [:]
         var latestRequests: [String: [String: Any]] = [:]
@@ -152,8 +172,29 @@ private enum LiveCountsSource {
             str(row, "status").lowercased() == "explained" ? key : nil
         })
         let trendsWorking = activeTrendIDs.subtracting(readyTrendIDs).count
+        // Count ONLY confirmed publications from the canonical ledger,
+        // not editorial preparation, delivery attempts or local taps.
+        let lowerBound = now.addingTimeInterval(-86_400)
+        var published = Set<String>()
+        var newsPublished24h = 0
+        var trendsPublished24h = 0
+        for row in rows(docs["pilot/ttactualidad-publication-events.json"], "items") {
+            guard let publishedAt = date(str(row, "at")),
+                  publishedAt > lowerBound, publishedAt <= now else { continue }
+            let project = str(row, "project")
+            guard ["ttittulares", "ttendencias"].contains(project) else { continue }
+            let id = str(row, "event_id")
+            guard !id.isEmpty else { continue }
+            let key = project + ":" + id + ":r" + String(integer(row, "revision"))
+            guard published.insert(key).inserted else { continue }
+            if project == "ttittulares" { newsPublished24h += 1 }
+            else { trendsPublished24h += 1 }
+        }
         return Counts(news: news, trends: trends,
-                      newsWorking: newsWorking, trendsWorking: trendsWorking)
+                      newsWorking: newsWorking, trendsWorking: trendsWorking,
+                      latestHeadline: latestHeadline,
+                      newsPublished24h: newsPublished24h,
+                      trendsPublished24h: trendsPublished24h)
     }
 
     private static func rows(_ doc: [String: Any]?, _ field: String) -> [[String: Any]] {

@@ -16,7 +16,7 @@ struct PendingOperationsPanel: View {
                 HStack(alignment: .top, spacing: 8) {
                     Image(systemName: "info.circle")
                         .foregroundStyle(TTTheme.muted)
-                    Text("La tarjeta cambia al pulsar, pero GitHub tarda en guardar. «Esperando GitHub» no significa completado. «En elaboración» significa que la orden está registrada y espera el texto final.")
+                    Text("Aquí se cuentan solo órdenes pendientes de confirmar en GitHub. Los trabajos ya aceptados se consultan en En elaboración; el historial no aumenta este contador.")
                         .font(.system(size: 11))
                         .foregroundStyle(TTTheme.muted)
                         .fixedSize(horizontal: false, vertical: true)
@@ -36,7 +36,7 @@ struct PendingOperationsPanel: View {
                 }
 
                 if !store.recentOperations.isEmpty {
-                    Text("ÚLTIMOS RESULTADOS")
+                    Text("HISTORIAL · ÓRDENES REGISTRADAS")
                         .font(.system(size: 10, weight: .heavy))
                         .tracking(1.3).foregroundStyle(TTTheme.muted)
                     ForEach(store.recentOperations) { operation in
@@ -66,12 +66,12 @@ struct PendingOperationsPanel: View {
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(store.pendingOperationsCount > 0 ? .orange : TTTheme.teal)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Órdenes pendientes")
+                    Text("Órdenes por confirmar")
                         .font(.system(size: 13, weight: .bold))
                         .foregroundStyle(.white)
                     Text(store.outstandingOperations.isEmpty ?
-                         "Sin cambios en curso · Toca para ver historial" :
-                         "Toca para ver qué espera GitHub y qué se está elaborando")
+                         "Ninguna orden sin confirmar · Ver historial" :
+                         "Solicitudes aún sin comprobante de GitHub")
                         .font(.system(size: 10))
                         .foregroundStyle(TTTheme.muted)
                         .lineLimit(2)

@@ -16,6 +16,8 @@ struct TTDashboard: View {
     @State private var showSettings = false
     @State private var showCombinedListas = false
     @State private var publicationSheet: PublicationSheetRoute?
+    @State private var requestingEditorialRun = false
+    @State private var editorialRunMessage = ""
 
     var body: some View {
         ZStack {
@@ -38,6 +40,11 @@ struct TTDashboard: View {
                             editorialActionBanner
                         }
                         subTabs
+                        if !showCombinedListas &&
+                           ((store.section == .trends && store.trendFilter == .elaboracion) ||
+                            (store.section == .news && store.newsFilter == .elaboracion)) {
+                            editorialRunControl
+                        }
                         searchField
                         if showCombinedListas { combinedListasContent }
                         else if store.section == .trends { trendsContent }
@@ -51,6 +58,17 @@ struct TTDashboard: View {
         }
         .preferredColorScheme(.dark)
         .task { await github.renewOnForeground() }
+        // Keep pending receipts reconciled without blocking scrolling or
+        // making the user tap refresh after the GitHub workflow finishes.
+        .task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(75))
+                if Task.isCancelled { break }
+                if store.pendingOperationsCount > 0 {
+                    await store.refreshIfStale(minInterval: 60)
+                }
+            }
+        }
         .onOpenURL { url in
             if url.scheme == "ttactualidad" {
                 showCombinedListas = url.host == "listas"
@@ -169,7 +187,7 @@ struct TTDashboard: View {
                     .font(.caption).foregroundStyle(TTTheme.muted)
             }
             Spacer(minLength: 4)
-            TimelineView(.periodic(from: .now, by: 1)) { context in
+            TimelineView(.periodic(from: .now, by: 60)) { context in
                 HStack(spacing: 4) {
                     if showCombinedListas {
                         published24hChip("TTiT", project: "ttittulares",
@@ -388,6 +406,59 @@ struct TTDashboard: View {
         }
     }
 
+    // An explicit manual run of the existing dedicated PC/Work editorial
+    // queue. Creating the trigger does NOT imply that any item is finished.
+    private var editorialRunControl: some View {
+        let project = store.section == .trends ? "ttendencias" : "ttittulares"
+        let count = store.section == .trends ?
+            store.snapshot.trendsElaboracion.count : store.snapshot.newsElaboracion.count
+        return VStack(alignment: .leading, spacing: 5) {
+            Button {
+                guard github.authenticated else {
+                    showSettings = true
+                    return
+                }
+                guard !requestingEditorialRun else { return }
+                requestingEditorialRun = true
+                editorialRunMessage = "Registrando petición en GitHub…"
+                Task {
+                    let result = await github.requestEditorialRun(project: project)
+                    switch result {
+                    case .verified: editorialRunMessage = github.notice
+                    case .pending: editorialRunMessage =
+                        "Solicitud todavía sin confirmar. " + github.notice
+                    case .failed: editorialRunMessage =
+                        "No se ha podido verificar la solicitud. " + github.notice
+                    }
+                    requestingEditorialRun = false
+                }
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: "play.circle.fill")
+                    Text("Solicitar procesamiento de \(count) en elaboración")
+                    Spacer(minLength: 3)
+                    if requestingEditorialRun { ProgressView().tint(TTTheme.teal) }
+                }
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(TTTheme.teal)
+                .padding(.horizontal, 13)
+                .frame(minHeight: 44)
+                .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 11))
+            }
+            .buttonStyle(.plain)
+            .disabled(requestingEditorialRun || count == 0)
+            if !editorialRunMessage.isEmpty {
+                Text(editorialRunMessage)
+                    .font(.system(size: 10))
+                    .foregroundStyle(TTTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Text("GitHub confirma la petición. El procesamiento real lo realiza el editor del PC; no es inmediato.")
+                .font(.system(size: 10))
+                .foregroundStyle(TTTheme.muted)
+        }
+    }
+
     private func filterChip(_ name: String, _ count: Int, _ active: Bool,
                             onTap: @escaping () -> Void) -> some View {
         Button {
@@ -452,10 +523,14 @@ struct TTDashboard: View {
                 Text(String(store.snapshot.news.count))
                     .font(.headline.monospacedDigit()).foregroundStyle(TTTheme.teal)
             }
-            ForEach(store.snapshot.news.filter {
-                search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)
-            }) { story in
-                NewsTile(item: story, github: github, settings: $showSettings)
+            // Combined Listas can contain hundreds of news cards. Building
+            // them eagerly inside a VStack makes tab navigation stutter.
+            LazyVStack(spacing: 5) {
+                ForEach(store.snapshot.news.filter {
+                    search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)
+                }) { story in
+                    NewsTile(item: story, github: github, settings: $showSettings)
+                }
             }
             HStack {
                 Label("TTendencias", systemImage: "chart.bar.fill")
@@ -513,7 +588,14 @@ struct TTDashboard: View {
             return items.filter { $0.lastExplained.map {
                 Date().timeIntervalSince($0) >= 0 && Date().timeIntervalSince($0) < 12 * 3600
             } ?? false }
-        case .pendientes: return items.filter { $0.explanation.isEmpty }
+        case .pendientes:
+            // Failed investigations remain findable even after leaving Top 30.
+            var names = Set<String>()
+            return (items.filter { $0.explanation.isEmpty } +
+                    store.snapshot.unexplainedTrends).filter {
+                names.insert($0.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                                             locale: .current)).inserted
+            }
         case .antiguas: return items.filter { $0.ageBand() == 3 }
         }
     }
@@ -680,6 +762,7 @@ private struct TrendTile: View {
         case "PREPARACIÓN MANUAL": return "MANUAL"
         case "EXPLICADA": return "EXPL."
         case "PENDIENTE": return "PEND."
+        case "SIN EXPLICACIÓN": return "PISTAS"
         default: return item.status
         }
     }
@@ -714,8 +797,10 @@ private struct TrendTile: View {
                     }
                 }
                 if item.explanation.isEmpty {
-                    Text("Aún no hay explicación editorial.")
+                    Text(item.problemReason.isEmpty ? "Aún no hay explicación editorial." :
+                         "Sin explicación verificada: " + item.problemReason)
                         .font(.subheadline).foregroundStyle(TTTheme.muted)
+                        .textSelection(.enabled)
                 } else {
                     Text(item.explanation)
                         .font(.system(size: 14)).lineSpacing(3)
