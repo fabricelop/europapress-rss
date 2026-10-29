@@ -224,8 +224,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
-assert 'MARKETING_VERSION: "0.4.21"' in project
-assert 'CURRENT_PROJECT_VERSION: "27"' in project
+assert 'MARKETING_VERSION: "0.4.22"' in project
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.17: an editorial trend may trigger independent news investigation.
@@ -252,7 +252,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "27"' in project
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -264,7 +264,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "27"' in project
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -280,8 +280,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.21"' in project
-assert 'CURRENT_PROJECT_VERSION: "27"' in project
+assert 'MARKETING_VERSION: "0.4.22"' in project
+assert 'CURRENT_PROJECT_VERSION: "28"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -307,7 +307,7 @@ assert 'quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/image
 print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
 
 
-# 0.4.21: the compact Dynamic Island itself exposes all six verified metrics.
+# 0.4.22: the compact Dynamic Island itself exposes all six verified metrics.
 # +working is not a GitHub write receipt; it counts editorial work in progress.
 assert 'private func compactCounts(' in activity
 assert 'prefix: "N", ready: context.state.newsReady' in activity
