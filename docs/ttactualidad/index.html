@@ -604,17 +604,42 @@ function itemData(x){
  return {tweet,expl,displayExpl,closer,editorial,title:String(x.title||x.name||'Noticia'),factual:String(x.factual_summary||'').trim()};
 }
 function manualPrompt(x){
+ // PROMPT_GAG_VISUAL_V2: mismo criterio visual que los reparadores editoriales automáticos.
  const c=itemData(x),kind=x._kind==='tti'?'TTiTTulares':'TTendencias';
- const content=c.editorial||c.title,rank=x.rank?'TT#'+x.rank+' ':'';
+ const subject=c.title,news=x._kind==='tti';
+ const source=String(c.tweet||c.expl||c.editorial||c.factual||subject).split('\n')
+   .filter(line=>!/^🌶(?:\uFE0F)?(?:\s|$)/u.test(line.trim())).join('\n').trim();
+ const factual=c.factual&&c.factual!==source?c.factual:'';
+ const styles=[
+  'Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.',
+  'Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.',
+  'Ilustración editorial semirrealista sofisticada, personajes expresivos, textura cuidada e iluminación cinematográfica.',
+  'Escena absurda semirrealista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.',
+  'Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.',
+  'Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.',
+  'Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.',
+  'Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.',
+  'Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.',
+  'Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.'
+ ];
+ const key=String(x._id||x.event_id||x.id||subject)+'|r'+String(x.revision||0);
+ let hash=2166136261;for(const ch of key){hash=Math.imul(hash^ch.codePointAt(0),16777619)>>>0}
+ const sensitive=/víctim|fallec|muert|muri[oó]|traged|accidente|agresi[oó]n sexual|violaci[oó]n|asesinat|atentad|desaparecid|cat[aá]strof|herid/i.test(subject+' '+source);
+ const direction=sensitive
+   ?'ILUSTRACIÓN PERIODÍSTICA SOBRIA Y RESPETUOSA: escena ilustrada de calidad, realista, sin humor, sin caricaturizar víctimas ni representar sufrimiento o sucesos no acreditados.'
+   :'GAG EDITORIAL VISUAL: '+styles[hash%styles.length]+' Una sola metáfora satírica potente y original, personajes expresivos, acabado rico y cuidado, uno a tres protagonistas y lectura en 1–2 segundos. Más gag, menos barroquismo.';
  return [
-  'Genera AHORA UNA SOLA imagen GAG IA original para '+kind+'. Usa la herramienta de imágenes de ChatGPT.',
-  'TÍTULO / '+(x._kind==='tti'?'NOTICIA':'TENDENCIA')+':\n'+rank+c.title,
-  'TEXTO EXACTO YA CERRADO (NO LO REESCRIBAS):\n'+content,
-  'REMATE EXACTO (INSPIRA EL GAG, NO LO REESCRIBAS):\n'+(c.closer||'Sin remate separado: utiliza exclusivamente el texto cerrado.'),
-  'EXPLICACIÓN EDITORIAL COMPLETA (NO OMITIR NI REESCRIBIR):\n'+(c.expl||'Utiliza el texto exacto como explicación, sin inventar contexto.'),
-  'CONTEXTO FACTUAL COMPLEMENTARIO (NO INVESTIGUES DE NUEVO):\n'+(c.factual||'Utiliza exclusivamente los hechos del texto exacto, sin completar datos.'),
-  'DIRECCIÓN VISUAL:\nViñeta satírica original, ingeniosa, expresiva y exagerada, con gag visual y metáfora humorística. No ilustrar literalmente la noticia. No inventar hechos ni atribuir acciones no verificadas. Entregar una sola imagen, sin reescribir el texto.'
- ].join('\n\n')
+  'GENERA AHORA UNA SOLA IMAGEN PARA '+kind+'. FORMATO HORIZONTAL 16:9, ILUSTRACIÓN A SANGRE DE BORDE A BORDE.',
+  'REGLA DE SALIDA ABSOLUTA: SOLO IMAGEN. PROHIBIDO TODO TEXTO DENTRO DE LA IMAGEN, incluso letras sueltas, números, carteles, bocadillos, subtítulos, hashtags, titular, remate, pie de foto, etiquetas, marcas de agua y logotipos. NO diseñes una tarjeta de noticia, post, infografía, póster con tipografía ni publicación maquetada. NO incluyas recuadro, franja, banda inferior, panel oscuro o blanco, cabecera ni zona reservada para texto. La ilustración debe llenar TODA la superficie.',
+  'REFERENCIA EDITORIAL SOLO PARA ENTENDER LOS HECHOS Y CONCEBIR LA ESCENA. NO COPIAR, ESCRIBIR, ROTULAR NI REPRESENTAR ESTE TEXTO EN LA IMAGEN.',
+  'ASUNTO ('+(news?'NOTICIA':'TENDENCIA')+', SOLO CONTEXTO): '+subject,
+  'HECHOS EDITORIALES CONFIRMADOS (CONTEXTO NO VISIBLE):\n'+source,
+  factual?'DETALLE FACTUAL (CONTEXTO NO VISIBLE):\n'+factual:'',
+  'IDEA DEL REMATE (SOLO INSPIRACIÓN VISUAL, JAMÁS TEXTO EN LA IMAGEN):\n'+(c.closer||'Sin remate separado: basar la escena solo en los hechos confirmados.'),
+  'DIRECCIÓN VISUAL VIGENTE DE ELABORACIÓN EDITORIAL:\n'+direction,
+  'El emoji 🌶️ es solamente un marcador tipográfico del remate: no dibujar guindillas, chiles, pimientos, su silueta o icono. No inventar datos, declaraciones, culpabilidades ni episodios. '+(sensitive?'No banalizar víctimas o daños; mantener rigor y respeto.':'El gag debe basarse en la IDEA del remate, no ser una imagen literal del titular.'),
+  'RESULTADO OBLIGATORIO: UNA ÚNICA ILUSTRACIÓN LIMPIA, SIN NINGÚN TEXTO NI MAQUETACIÓN, sin bordes ni panel inferior. NO respondas con una tarjeta o diseño que incluya el contenido editorial.'
+ ].filter(Boolean).join('\n\n');
 }
 async function copyText(value,label){
  try{await navigator.clipboard.writeText(value)}catch(e){
