@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-29T04:27:50.682745+00:00",
+  "checked_at": "2026-10-29T04:43:29.775901+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -40,11 +40,12 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
-      "non_stale_sources": 5,
-      "captured_age_minutes": 6.8,
-      "noise_count": 0
+      "non_stale_sources": 2,
+      "captured_age_minutes": 12.3,
+      "noise_count": 0,
+      "repair_started": true
     },
     "listener": {
       "ok": true,
@@ -53,10 +54,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": null,
-      "age_minutes": 1.5,
-      "run_id": 40817744010,
+      "age_minutes": 0.0,
+      "run_id": 40819338466,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -98,7 +99,9 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [],
+  "repairs_started": [
+    "relanzado refresco Top 10"
+  ],
   "blocking": [],
   "warnings": [],
   "alert_sent": false,
