@@ -102,8 +102,13 @@ def may_enqueue_image_job(
     # with any launch/submission marker or evidence that generation began.
     if (status == "ERROR"
             and str(old.get("phase") or "").lower() == "pc_launch_failed"
-            and str(old.get("message") or "").strip()
-                == "No hay compositor visible utilizable para fallback found=1"
+            and str(old.get("message") or "").strip() in {
+                "No hay compositor visible utilizable para fallback found=1",
+                # Known missing helper in the TTendencias fixed-tab recovery:
+                # called exclusively from openFreshDedicatedConversation()
+                # BEFORE the prompt can be typed or submitted.
+                "closeFixedTargetById is not defined",
+            }
             and old.get("pc_picked_up_at")
             and not any(old.get(key) for key in (
                 "pc_launched_at", "pc_submitted_at", "pc_image_submitted_at",

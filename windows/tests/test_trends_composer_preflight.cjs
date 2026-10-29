@@ -83,5 +83,36 @@ async function trial({initiallyVisible=false,recoverOnNavigate=false,becomesVisi
   assert.match(invisible.error,/No hay compositor visible utilizable/);
   assert.equal(invisible.navigations,1,'one recovery only, never a loop of tabs');
   assert.equal(invisible.inserts,0);
+  // Regression: previously PC caught a frozen compositor but crashed because
+  // closeFixedTargetById was missing, before it could type any prompt.
+  const closingStart=source.indexOf('async function closeFixedTargetById(targetId){');
+  const closingEnd=source.indexOf('\nasync function waitComposer(',closingStart);
+  assert(closingStart>=0&&closingEnd>closingStart,
+    'TTendencias must define its own dedicated tab recovery helper');
+  assert(source.includes('await closeFixedTargetById(t.id);'),
+    'The recovery path must use the exact pinned tab ID');
+  let closedID='', targetOpened='', browserClosed=false;
+  class BrowserStub {
+    constructor(url){targetOpened=url}
+    async open(){}
+    async call(method,args){
+      assert.equal(method,'Target.closeTarget');
+      closedID=args.targetId;
+    }
+    close(){browserClosed=true}
+  }
+  const closeFactory=new Function('fetch','BASE_CDP','AbortSignal','CDP','console',
+    source.slice(closingStart,closingEnd)+'\nreturn closeFixedTargetById;');
+  const closer=closeFactory(async url=>{
+       assert.equal(url,'http://127.0.0.1:9223/json/version');
+       return {ok:true,json:async()=>({webSocketDebuggerUrl:'ws://local-only/browser'})};
+    },'http://127.0.0.1:9223',{timeout:()=>({})},BrowserStub,{log(){}});
+  await closer('pinned-ttendencias-target');
+  assert.equal(closedID,'pinned-ttendencias-target');
+  assert.equal(targetOpened,'ws://local-only/browser');
+  assert(browserClosed);
+  closedID='';
+  await closer('');
+  assert.equal(closedID,'','empty ID must never close any tab');
   console.log('PASS TTendencias visible editor hydration, same-tab recovery, no unsafe navigation or input');
 })().catch(e=>{console.error(e);process.exitCode=1});

@@ -176,6 +176,21 @@ async function fixedTarget(createIfMissing=true){
   if(!createIfMissing)return null;
   return createFixedTarget()
 }
+async function closeFixedTargetById(targetId){
+  const id=String(targetId||"").trim();
+  if(!id)return;
+  try{
+    const vr=await fetch(BASE_CDP+"/json/version",{cache:"no-store",signal:AbortSignal.timeout(5000)});
+    if(!vr.ok)return;
+    const vd=await vr.json();
+    const ws=String(vd&&vd.webSocketDebuggerUrl||"");
+    if(!ws)return;
+    const browser=new CDP(ws);
+    await browser.open();
+    try{await browser.call("Target.closeTarget",{targetId:id},5000)}finally{browser.close()}
+    console.log("BRIDGE FROZEN FIXED TAB CLOSED target="+id)
+  }catch(e){console.log("BRIDGE FIXED TAB CLOSE WARNING :: "+String(e&&e.message||e))}
+}
 async function waitComposer(cdp,timeoutMs=60000){
   const deadline=Date.now()+timeoutMs;
   let last=null;
