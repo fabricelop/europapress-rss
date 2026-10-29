@@ -299,11 +299,6 @@ struct TimeSiteCalendarView: View {
 
     private var historyList: some View {
         List {
-            Section {
-                Text("Se muestran estancias continuas de más de cinco minutos GPS confirmados por cuadrícula. No se contabiliza el tiempo sin mediciones.")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
             if !preparing && !visible.isEmpty {
                 dayClockSection
                 dayOverviewSection
