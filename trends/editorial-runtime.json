@@ -3,89 +3,70 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-29T22:44:00+01:00",
-  "last_completed_at": "2026-10-29T22:55:00+01:00",
-  "updated_at": "2026-10-29T22:55:00+01:00",
+  "last_started_at": "2026-10-29T21:52:49.220Z",
+  "last_completed_at": "2026-10-29T21:53:52.997Z",
+  "updated_at": "2026-10-29T21:53:52.997Z",
   "status": "success",
   "queue_complete": true,
-  "processed_ids": [
-    "eaefae2cc9e5",
-    "91a96330a3c4",
-    "011618385c52",
-    "0190daf54b4c"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793310232920-manual",
-  "previous_run_id": "tr-chat-20261029T224000+0100",
+  "run_id": "tr-ios-1793310585880-b3f7abc7",
+  "previous_run_id": "tr-1793310232920-manual",
   "summary": {
-    "attempted": 4,
-    "explained": 4,
-    "final_resolved": 4,
+    "attempted": 0,
+    "explained": 0,
+    "final_resolved": 0,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 3,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
+    "remates_selected": 0,
+    "remates_omitted": 19,
+    "recent_missing_closer_reviewed": 19,
     "pending_visual_candidates_reviewed": 4,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 2
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T22:44:30+01:00",
+      "at": "2026-10-29T21:52:49.220Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Cola inicial 3; reparación visual solicitada."
+      "message": "Cola editorial 0; revalidando cola, requests y reexplicaciones antes del cierre."
     },
     {
-      "at": "2026-10-29T22:47:00+01:00",
-      "phase": "verifying",
-      "trend_id": "eaefae2cc9e5",
-      "title": "Antonio Acedo",
-      "message": "Revisión cerrada y verificada."
-    },
-    {
-      "at": "2026-10-29T22:49:00+01:00",
-      "phase": "persisting",
-      "trend_id": "91a96330a3c4",
-      "title": "Madrid-Levante",
-      "message": "Persistencia derivada al reconciliador oficial."
-    },
-    {
-      "at": "2026-10-29T22:50:00+01:00",
-      "phase": "verifying",
-      "trend_id": "011618385c52",
-      "title": "Albert Sánchez",
-      "message": "Revisión cerrada y verificada."
-    },
-    {
-      "at": "2026-10-29T22:51:00+01:00",
-      "phase": "verifying",
-      "trend_id": "0190daf54b4c",
-      "title": "Rafa Jódar",
-      "message": "Nueva entrada concurrente detectada y validada."
-    },
-    {
-      "at": "2026-10-29T22:54:00+01:00",
+      "at": "2026-10-29T21:53:52.997Z",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Main releído: cuatro revisiones consistentes y cola activa 0."
+      "message": "Relectura final de main: 0 preparing/update y 0 rewrite_pending."
     },
     {
-      "at": "2026-10-29T22:55:00+01:00",
+      "at": "2026-10-29T21:53:52.997Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "19 Explicadas recientes sin remate revisadas; sin cambios por sensibilidad o porque el factual es suficiente."
+    },
+    {
+      "at": "2026-10-29T21:53:52.997Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "4 Pendientes visuales revisados; saneamiento solicitado mediante pending-repair-trigger, sin ImageGen."
+    },
+    {
+      "at": "2026-10-29T21:53:52.997Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 4/4; 0 preparing/update y 0 reexplicaciones. Sin ImageGen."
+      "message": "Pasada iOS cerrada 0/0: cola activa 0 y reexplicaciones pendientes 0. Sin ImageGen."
     }
   ],
   "ratings_snapshot": {
@@ -95,58 +76,8 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [
-    {
-      "trend_id": "eaefae2cc9e5",
-      "revision": 0,
-      "selected_candidate": null,
-      "no_remate_reason": "sensitive_event"
-    },
-    {
-      "trend_id": "91a96330a3c4",
-      "revision": 0,
-      "selected_candidate": "selected",
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "011618385c52",
-      "revision": 0,
-      "selected_candidate": "selected",
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "0190daf54b4c",
-      "revision": 0,
-      "selected_candidate": "selected",
-      "no_remate_reason": null
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "eaefae2cc9e5",
-      "revision": 0,
-      "name": "Antonio Acedo",
-      "status": "published"
-    },
-    {
-      "id": "91a96330a3c4",
-      "revision": 0,
-      "name": "Madrid-Levante",
-      "status": "explained"
-    },
-    {
-      "id": "011618385c52",
-      "revision": 0,
-      "name": "Albert Sánchez",
-      "status": "explained"
-    },
-    {
-      "id": "0190daf54b4c",
-      "revision": 0,
-      "name": "Rafa Jódar",
-      "status": "explained"
-    }
-  ],
+  "remate_selections": [],
+  "final_outcomes": [],
   "incidents": [
     {
       "type": "write_recovery",
@@ -161,7 +92,7 @@
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-1793310232920-manual",
+    "trigger_run_id": "tr-ios-1793310585880-b3f7abc7",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -172,53 +103,44 @@
   "requests_state": {
     "status": "valid_no_active",
     "blob_sha": "9b84e304cd7726287ee9915a4d7473c6060174b6",
-    "updated_at": "2026-10-29T22:55:00+01:00"
+    "updated_at": "2026-10-29T21:53:52.997Z"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793310232920-manual",
+    "run_id": "tr-ios-1793310585880-b3f7abc7",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T22:44:00+01:00",
-    "updated_at": "2026-10-29T22:55:00+01:00",
-    "finished_at": "2026-10-29T22:55:00+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-29T21:52:49.220Z",
+    "updated_at": "2026-10-29T21:53:52.997Z",
+    "finished_at": "2026-10-29T21:53:52.997Z",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 4,
-      "explained": 4,
-      "final_resolved": 4,
+      "attempted": 0,
+      "explained": 0,
+      "final_resolved": 0,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 3,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
+      "remates_selected": 0,
+      "remates_omitted": 19,
+      "recent_missing_closer_reviewed": 19,
       "pending_visual_candidates_reviewed": 4,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 2
+      "incidents": 0
     },
-    "message": "Pasada cerrada 4/4; 0 preparing/update y 0 reexplicaciones. Sin ImageGen.",
-    "incident_count": 2,
-    "incidents": [
-      {
-        "type": "write_recovery",
-        "message": "Escrituras directas parciales se recuperaron con el reconciliador oficial y verificación final."
-      },
-      {
-        "type": "runtrace_partial",
-        "message": "Actualizaciones intermedias del RUNTRACE fueron bloqueadas; se conserva telemetría durable."
-      }
-    ],
+    "message": "Pasada iOS cerrada 0/0: cola activa 0 y reexplicaciones pendientes 0. Sin ImageGen.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -226,118 +148,54 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "eaefae2cc9e5",
-        "revision": 0,
-        "selected_candidate": null,
-        "no_remate_reason": "sensitive_event"
-      },
-      {
-        "trend_id": "91a96330a3c4",
-        "revision": 0,
-        "selected_candidate": "selected",
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "011618385c52",
-        "revision": 0,
-        "selected_candidate": "selected",
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "0190daf54b4c",
-        "revision": 0,
-        "selected_candidate": "selected",
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-29T22:44:30+01:00",
+        "at": "2026-10-29T21:52:49.220Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola inicial 3; reparación visual solicitada."
+        "message": "Cola editorial 0; revalidando cola, requests y reexplicaciones antes del cierre."
       },
       {
-        "at": "2026-10-29T22:47:00+01:00",
-        "phase": "verifying",
-        "trend_id": "eaefae2cc9e5",
-        "title": "Antonio Acedo",
-        "message": "Revisión cerrada y verificada."
-      },
-      {
-        "at": "2026-10-29T22:49:00+01:00",
-        "phase": "persisting",
-        "trend_id": "91a96330a3c4",
-        "title": "Madrid-Levante",
-        "message": "Persistencia derivada al reconciliador oficial."
-      },
-      {
-        "at": "2026-10-29T22:50:00+01:00",
-        "phase": "verifying",
-        "trend_id": "011618385c52",
-        "title": "Albert Sánchez",
-        "message": "Revisión cerrada y verificada."
-      },
-      {
-        "at": "2026-10-29T22:51:00+01:00",
-        "phase": "verifying",
-        "trend_id": "0190daf54b4c",
-        "title": "Rafa Jódar",
-        "message": "Nueva entrada concurrente detectada y validada."
-      },
-      {
-        "at": "2026-10-29T22:54:00+01:00",
+        "at": "2026-10-29T21:53:52.997Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Main releído: cuatro revisiones consistentes y cola activa 0."
+        "message": "Relectura final de main: 0 preparing/update y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-29T22:55:00+01:00",
+        "at": "2026-10-29T21:53:52.997Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "19 Explicadas recientes sin remate revisadas; sin cambios por sensibilidad o porque el factual es suficiente."
+      },
+      {
+        "at": "2026-10-29T21:53:52.997Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "4 Pendientes visuales revisados; saneamiento solicitado mediante pending-repair-trigger, sin ImageGen."
+      },
+      {
+        "at": "2026-10-29T21:53:52.997Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 4/4; 0 preparing/update y 0 reexplicaciones. Sin ImageGen."
+        "message": "Pasada iOS cerrada 0/0: cola activa 0 y reexplicaciones pendientes 0. Sin ImageGen."
       }
     ],
-    "processed_ids": [
-      "eaefae2cc9e5",
-      "91a96330a3c4",
-      "011618385c52",
-      "0190daf54b4c"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": [
-      {
-        "id": "eaefae2cc9e5",
-        "revision": 0,
-        "name": "Antonio Acedo",
-        "status": "published"
-      },
-      {
-        "id": "91a96330a3c4",
-        "revision": 0,
-        "name": "Madrid-Levante",
-        "status": "explained"
-      },
-      {
-        "id": "011618385c52",
-        "revision": 0,
-        "name": "Albert Sánchez",
-        "status": "explained"
-      },
-      {
-        "id": "0190daf54b4c",
-        "revision": 0,
-        "name": "Rafa Jódar",
-        "status": "explained"
-      }
-    ]
+    "final_outcomes": []
+  },
+  "radar": {
+    "captured_at": "2026-10-29T21:53:52.997Z",
+    "queue_sha": "33ce316fe86428ea15d247b33d9c7edef48ba69a",
+    "queue_count": 0
   }
 }
