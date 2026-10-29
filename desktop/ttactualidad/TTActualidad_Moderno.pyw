@@ -873,20 +873,61 @@ class MainWindow(QWidget):
             self.render_list()
 
     def copy_gag(self):
+        """GAG_VISUAL_NATIVE_V2: hechos y remate solo como contexto, no como texto gráfico."""
         row=self.selected
         if not row or not row.get("body"):return
-        full=row["body"]
-        closer=next((p for p in reversed(full.splitlines()) if p.strip().startswith("🌶")),"")
+        full=str(row["body"])
+        title=str(row.get("title") or "")
+        closer=next((p.strip() for p in reversed(full.splitlines()) if p.strip().startswith("🌶")),"")
+        factual="\n".join(p.strip() for p in full.splitlines()
+                          if p.strip() and not p.strip().startswith(("🌶","#")))
         kind="TTendencias" if row["project"]=="ttendencias" else "TTiTTulares"
-        prompt=("\n\n".join([
-            "Genera AHORA UNA SOLA imagen GAG IA para "+kind+".",
-            "TÍTULO:\n"+("#"+str(row["rank"])+" " if row.get("rank") else "")+row["title"],
-            "TEXTO EXACTO CERRADO. NO LO REESCRIBAS:\n"+full,
-            "REMATE EXACTO:\n"+closer,
-            "CONTEXTO DOCUMENTADO:\n"+full,
-            "DIRECCIÓN VISUAL: una sola idea visual fuerte, composición limpia, sin inventar hechos."]))
+        styles=[
+            "Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+            "Cómic europeo contemporáneo, entintado preciso, volumen sólido y expresiones fuertes.",
+            "Póster gráfico editorial sofisticado, formas contundentes y textura de impresión, SIN tipografía.",
+            "Escena absurda semirrealista, iluminación natural y situación imposible tratada con precisión visual.",
+            "Diorama editorial tipo stop-motion/clay, miniaturas artesanales y detalle selectivo.",
+            "Ilustración publicitaria retro de los años 60 reinterpretada con dibujo elegante e ironía visual.",
+            "Grabado/linograbado moderno, textura rica y un único foco narrativo.",
+            "Pop art editorial refinado, serigrafía y energía gráfica sin saturación.",
+            "Cartoon 3D editorial estilizado, modelado cuidado y expresiones claras.",
+            "Novela gráfica satírica, dibujo detallado y composición sobria."
+        ]
+        low=(title+" "+factual).lower()
+        sensitive=any(w in low for w in (
+            "víctim","victim","fallec","muert","murió","murio","traged","accident",
+            "agresión sexual","agresion sexual","violaci","asesinat","atentad",
+            "desaparecid","herid","catástrof","suicid"))
+        key=kind+"|"+str(row.get("id") or title)+"|r"+str(row.get("revision") or 0)
+        index=0
+        for b in key.encode("utf-8"):index=(index*33+b)%len(styles)
+        visual=("ILUSTRACIÓN PERIODÍSTICA RIGUROSA Y RESPETUOSA, sin humor ni caricatura de las víctimas, sin escenas gráficas ni datos inventados."
+                if sensitive else "GAG EDITORIAL VISUAL: "+styles[index]+
+                " Más gag, menos barroquismo: una sola idea fuerte, lectura en 1–2 segundos, uno a tres protagonistas y fondo mínimo. "
+                "El gag nace de la IDEA del remate, nunca de reproducir el titular.")
+        prompt="\n\n".join([
+            "Genera AHORA UNA SOLA imagen "+("EDITORIAL PERIODÍSTICA" if sensitive else "GAG IA")+
+            " para "+kind+". Formato horizontal 16:9; ilustración a sangre, de borde a borde.",
+            "REGLA ABSOLUTA: SOLO IMAGEN, SIN NINGÚN TEXTO. No dibujar titular, explicación, remate, hashtags, cifras, "
+            "nombres, números, letras, bocadillos, carteles, etiquetas, logotipos, créditos ni pie de foto. "
+            "NO crear una tarjeta de noticia, publicación maquetada, infografía, collage o interfaz. "
+            "PROHIBIDA la franja inferior blanca o negra, panel, banda, marco, cabecera o espacio para escribir. "
+            "La ilustración ocupa TODO el lienzo.",
+            "Los hechos siguientes son CONTEXTO NO VISIBLE. No escribir, copiar ni rotular su contenido.",
+            "ASUNTO (SOLO CONTEXTO):\n"+("#"+str(row["rank"])+" " if row.get("rank") else "")+title,
+            "HECHOS EDITORIALES (SOLO CONTEXTO):\n"+factual,
+            "REMATE (SOLO INSPIRACIÓN VISUAL, NUNCA TEXTO EN LA IMAGEN):\n"+(
+                closer or "Sin remate separado; no inventar uno."),
+            "DIRECCIÓN ARTÍSTICA DE ELABORACIÓN EDITORIAL:\n"+visual,
+            "No inventar hechos, declaraciones, culpabilidades ni daños. El emoji 🌶️ solo marca el remate: "
+            "PROHIBIDO dibujar guindillas, chiles, pimientos o sus iconos. "+
+            ("Tratar con respeto a las víctimas y familiares." if sensitive else
+             "Metáfora visual ingeniosa, no representación literal del titular."),
+            "ENTREGAR EXACTAMENTE UNA ILUSTRACIÓN LIMPIA, SIN TEXTO, SIN FRANJA INFERIOR NI TARJETA."
+        ])
         QApplication.clipboard().setText(prompt)
-        self.notice.setText("Prompt de imagen copiado · abre ChatGPT Images para pegarlo.")
+        self.notice.setText("Prompt de imagen pura copiado · abre ChatGPT Images para pegarlo.")
 
     def search_x(self):
         if not self.selected:return
