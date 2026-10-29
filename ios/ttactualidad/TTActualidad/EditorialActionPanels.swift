@@ -343,16 +343,58 @@ struct EditorialActions: View {
         }
     }
 
+    // GAG_VISUAL_NATIVE_V2: misma dirección artística de la elaboración automática,
+    // sin las tarjetas de texto que se producían al copiar el prompt antiguo.
     private var gagPrompt: String {
         let closer = news?.closer ?? fullText.components(separatedBy: "\n")
             .last(where: { $0.trimmingCharacters(in: .whitespaces).hasPrefix("🌶") }) ?? ""
+        let confirmedFacts = fullText.components(separatedBy: "\n")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty && !$0.hasPrefix("🌶") && !$0.hasPrefix("#") }
+            .joined(separator: "\n")
+        let factual = news?.factual ?? confirmedFacts
+        let folded = (title + " " + confirmedFacts + " " + factual)
+            .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "es_ES"))
+        let sensitiveTerms = [
+            "victim", "fallec", "muert", "murio", "traged", "accident",
+            "agresion sexual", "violacion", "asesinat", "atentad",
+            "desaparecid", "herid", "catastrof", "suicid"
+        ]
+        let sensitive = sensitiveTerms.contains { folded.contains($0) }
+        // Banco de estilos del reparador editorial TT, para imágenes únicas
+        // con acabado cuidado, sin encuadres de tarjeta ni tipografía.
+        let styles = [
+            "Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+            "Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+            "Póster gráfico editorial sofisticado, formas contundentes, geometría limpia y textura de impresión; SIN tipografía ni rótulos.",
+            "Escena absurda semirrealista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+            "Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+            "Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.",
+            "Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+            "Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+            "Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
+            "Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria."
+        ]
+        let key = project + "|" + editorialID + "|r" + String(revision)
+        let styleIndex = key.utf8.reduce(0) { ($0 &* 33 &+ Int($1)) % styles.count }
+        let visual = sensitive
+            ? "ILUSTRACIÓN PERIODÍSTICA RIGUROSA Y RESPETUOSA, sin humor ni caricaturas sobre víctimas, sin escenas gráficas ni afirmaciones visuales no documentadas."
+            : "GAG EDITORIAL VISUAL: " + styles[styleIndex] +
+              " Más gag, menos barroquismo: una sola idea visual fuerte, lectura en 1–2 segundos, uno a tres elementos protagonistas, fondo solo si ayuda al chiste. El gag nace de la IDEA del remate, nunca de reproducir el titular."
         return [
-            "Genera AHORA UNA SOLA imagen GAG IA para \(news == nil ? "TTendencias" : "TTiTTulares").",
-            "TÍTULO:\n\(rank > 0 ? "TT#\(rank) " : "")\(title)",
-            "TEXTO EXACTO CERRADO. NO LO REESCRIBAS:\n\(fullText)",
-            "REMATE EXACTO:\n\(closer)",
-            "CONTEXTO DOCUMENTADO:\n\(news?.factual ?? fullText)",
-            "DIRECCIÓN VISUAL: gag satírico original. Una sola idea visual fuerte, composición limpia, lectura en 1-2 segundos, sin inventar hechos."
+            "Genera AHORA UNA SOLA imagen " + (sensitive ? "EDITORIAL PERIODÍSTICA" : "GAG IA") +
+                " para " + (news == nil ? "TTendencias" : "TTiTTulares") +
+                ". Composición horizontal 16:9, ilustración a sangre de borde a borde.",
+            "REGLA ABSOLUTA: SOLO IMAGEN, SIN NINGÚN TEXTO. No escribir título, texto factual, remate, hashtags, números, cifras, nombres, letras, bocadillos, carteles, etiquetas, logotipos, pies de foto, créditos ni marca de agua. No crear una tarjeta de noticia, post maquetado, infografía, collage o pantalla de app. PROHIBIDO usar franja inferior blanca o negra, banda, panel, recuadro, marco, cabecera o espacio reservado para escribir: la ILUSTRACIÓN ocupa TODO el lienzo.",
+            "El material editorial siguiente es CONTEXTO NO VISIBLE para concebir la escena: JAMÁS copiarlo, rotularlo o mostrarlo dentro de la imagen.",
+            "ASUNTO (SOLO CONTEXTO):\n" + (rank > 0 ? "TT#\(rank) " : "") + title,
+            "HECHOS DOCUMENTADOS (SOLO CONTEXTO):\n" + confirmedFacts,
+            "REMATE (IDEA VISUAL, NO TEXTO A DIBUJAR):\n" + (closer.isEmpty ? "Sin remate independiente; no inventar uno." : closer),
+            "DATOS COMPLEMENTARIOS (SOLO CONTEXTO):\n" + factual,
+            "DIRECCIÓN ARTÍSTICA DE ELABORACIÓN EDITORIAL:\n" + visual,
+            "RIGOR: no inventar hechos, culpabilidades, declaraciones, personas ni daños. El emoji 🌶️ es únicamente un marcador del texto editorial: PROHIBIDO dibujar guindillas, chiles, pimientos, su silueta o icono. " +
+                (sensitive ? "Máximo respeto a las víctimas y a sus familiares." : "Metáfora visual ingeniosa, no ilustración literal del titular."),
+            "ENTREGA ÚNICAMENTE UNA IMAGEN ILUSTRADA LIMPIA, SIN TEXTO Y SIN BANDA INFERIOR. No generar composición con fotografía y texto debajo."
         ].joined(separator: "\n\n")
     }
     /// Manual cloud-only fallback when Windows editorial listeners are offline.
