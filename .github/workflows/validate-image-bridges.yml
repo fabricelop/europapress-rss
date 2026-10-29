@@ -2,6 +2,14 @@ name: Validar bridges de imagen
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - "windows/TTiTTularesImageBridge.js"
+      - "windows/tests/test_image_prompt_injection.cjs"
+      - "windows/tests/test_image_composer_preflight.cjs"
+      - "windows/tests/test_image_composer_preflight.cjs"
+      - "windows/Install-TTiTTulares-Composer-Fix.ps1"
+      - ".github/workflows/validate-image-bridges.yml"
   push:
     branches: [main]
     paths:
@@ -14,6 +22,7 @@ on:
       - "windows/tests/test_image_submission_evidence.cjs"
       - "windows/tests/test_image_immediate_submit.cjs"
       - "windows/Install-TTImages-PromptFix-Safe.ps1"
+      - "windows/Install-TTiTTulares-Composer-Fix.ps1"
       - ".github/workflows/validate-image-bridges.yml"
 
 permissions:
@@ -34,9 +43,11 @@ jobs:
             /windows/TTendenciasImageBridge.js
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
+            /windows/tests/test_image_composer_preflight.cjs
             /windows/tests/test_image_submission_evidence.cjs
             /windows/tests/test_image_immediate_submit.cjs
             /windows/Install-TTImages-PromptFix-Safe.ps1
+            /windows/Install-TTiTTulares-Composer-Fix.ps1
             /windows/TTendenciasDedicatedListener.ps1
             /windows/Install-ImageBridge-Hotfix.ps1
             /windows/TT-LocalWatchdog.ps1
@@ -52,6 +63,7 @@ jobs:
             "windows/TTendenciasDedicatedListener.ps1",
             "windows/Install-ImageBridge-Hotfix.ps1",
             "windows/Install-TTImages-PromptFix-Safe.ps1",
+            "windows/Install-TTiTTulares-Composer-Fix.ps1",
             "windows/TT-LocalWatchdog.ps1"
           )
           foreach($file in $files){
@@ -77,11 +89,25 @@ jobs:
             throw 'REGRESSION: TTendencias debe omitir prompts launch_only ya enviados'
           }
 
+      - name: Comprobar que el instalador aislado no reinicia servicios
+        shell: pwsh
+        run: |
+          $s=Get-Content 'windows/Install-TTiTTulares-Composer-Fix.ps1' -Raw
+          foreach($forbidden in @('Stop-Process','Start-Process','Restart-Service','Start-ScheduledTask','Set-ScheduledTask','TTendenciasImageBridge.js','TTImages-Repair-Gallery9234.js')){
+            if($s.Contains($forbidden)){throw ('Unsafe installer marker: '+$forbidden)}
+          }
+          if(-not $s.Contains('if($CheckOnly)')){throw 'Missing read-only mode'}
+          if(-not $s.Contains('before-composer-')){throw 'Missing rollback backup'}
+          Write-Host 'TT_COMPOSER_ISOLATED_INSTALLER_OK'
+
       - name: Probar reutilizacion SPA de Chrome 9223 sin recargas innecesarias
         run: node windows/tests/test_chrome9223_spa_reuse.cjs
 
       - name: Probar compositor visible, reintento sin prompts duplicados
         run: node windows/tests/test_image_prompt_injection.cjs
+
+      - name: Probar reconocimiento del compositor tras hidratación y recuperación segura
+        run: node windows/tests/test_image_composer_preflight.cjs
 
       - name: Probar reconocimiento de generacion activa sin /c/ y sin falsos positivos
         run: node windows/tests/test_image_submission_evidence.cjs
