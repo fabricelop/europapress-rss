@@ -8,6 +8,7 @@ on:
       - 'windows/Repair-TT-Chrome-Memory-Safe.ps1'
       - 'windows/TT-Chrome9223-Recovery-Gate.js'
       - 'windows/TTiTTularesDedicatedListener.ps1'
+      - 'windows/Diagnose-TT-Active-Runner.ps1'
       - '.github/workflows/tt-chrome9223-recovery-safety.yml'
 permissions:
   contents: read
@@ -28,7 +29,8 @@ jobs:
           foreach ($path in @(
             'windows/Recover-TT-Chrome9223-Controlled.ps1',
             'windows/Repair-TT-Chrome-Memory-Safe.ps1',
-            'windows/TTiTTularesDedicatedListener.ps1'
+            'windows/TTiTTularesDedicatedListener.ps1',
+            'windows/Diagnose-TT-Active-Runner.ps1'
           )) {
             $tokens = $null
             $errors = $null
