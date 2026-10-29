@@ -3,20 +3,23 @@
  "use strict";
  const IMAGES_URL="https://chatgpt.com/images";
  const STYLES=[
-  "caricatura editorial de prensa, personajes expresivos y objetos simbólicos desproporcionados",
-  "collage fotográfico surrealista, montaje imposible y contraste visual absurdo",
-  "pop art satírico, colores intensos y composición de cómic",
-  "viñeta de humor gráfico con metáfora visual ingeniosa y líneas expresivas",
-  "escena cinematográfica de comedia absurda, iluminación teatral y atrezo exagerado",
-  "maqueta 3D satírica artesanal con miniaturas y objetos gigantes",
-  "cartel retro de sátira ilustrada, composición contundente y textura impresa",
-  "ilustración conceptual surrealista, perspectiva imposible y humor inteligente"
+  "Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero",
+  "Cómic europeo contemporáneo, entintado preciso, volumen sólido y composición cinematográfica despejada",
+  "Ilustración editorial semirrealista sofisticada, personajes expresivos e iluminación cinematográfica",
+  "Escena absurda semirrealista de materiales cuidados, iluminación natural y situación imposible visualmente precisa",
+  "Diorama artesanal editorial tipo stop-motion/clay, personajes y objetos con volumen e iluminación de estudio",
+  "Ilustración publicitaria retro de los años 60 reinterpretada con dibujo elegante e ironía visual",
+  "Grabado/linograbado moderno de alta calidad, textura rica, contraste controlado y foco narrativo único",
+  "Pop art editorial refinado, serigrafía elegante, energía gráfica y muy pocos elementos",
+  "Cartoon 3D editorial pulido, expresivo, con escena sencilla pero no simplona",
+  "Novela gráfica satírica, dibujo detallado, sombras contenidas y puesta en escena sobria"
  ];
  const copies=new Map();
  function value(v){return String(v==null?"":v).trim()}
  function numberHash(v){let n=2166136261;for(const c of value(v)){n^=c.codePointAt(0);n=Math.imul(n,16777619)}return n>>>0}
  function readableCloser(t,c){const m=value(t).match(/(?:^|\n)\s*(🌶️[^\n]+)/u);return m?m[1].trim():value(c)}
  function buildPrompt(kind,item,xText,variation=0){
+  // PROMPT_GAG_VISUAL_V2: igual que la elaboración editorial, nunca una tarjeta maquetada.
   const news=kind==="news";
   const title=value(news?item.title:(item.group_title||item.name||item.display_name||item.term_normalized));
   const ready=value(xText||(news?item.tweet?.text:item.explanation));
@@ -27,17 +30,24 @@
   const savedDirection=value(item.visual_direction||item.image_direction||item.ai_image_direction);
   const id=value(item.event_id||item.id||item.term_normalized||title);
   const style=STYLES[(numberHash(id)+Math.max(0,Number(variation)||0))%STYLES.length];
+  const sensitive=/víctim|fallec|muert|muri[oó]|traged|accidente|agresi[oó]n sexual|violaci[oó]n|asesinat|atentad|desaparecid|cat[aá]strof|herid/i.test(title+" "+ready);
+  const pureContext=ready.split("\n").filter(line=>!/^🌶(?:\uFE0F)?(?:\s|$)/u.test(line.trim())).join("\n").trim();
   const parts=[
-   "Genera AHORA UNA SOLA imagen GAG IA original para "+(news?"TTiTTulares":"TTendencias")+". Usa la herramienta de imágenes de ChatGPT.",
-   "TÍTULO / "+(news?"NOTICIA":"TENDENCIA")+":\n"+title,
-   "TEXTO EXACTO YA CERRADO (NO LO REESCRIBAS):\n"+ready,
-   "REMATE EXACTO (INSPIRA EL GAG, NO LO REESCRIBAS):\n"+(closer||"No consta un remate separado; respeta el texto exacto."),
-   "CONTEXTO FACTUAL COMPLEMENTARIO (NO INVESTIGUES DE NUEVO):\n"+(factual||"No hay resumen complementario: utiliza exclusivamente los hechos del texto exacto, sin completar datos.")
+   "Genera AHORA UNA SOLA imagen "+(sensitive?"EDITORIAL PERIODÍSTICA":"GAG IA")+" para "+(news?"TTiTTulares":"TTendencias")+". Formato horizontal 16:9, escena ilustrada a sangre de borde a borde.",
+   "PROHIBICIÓN ABSOLUTA: NO INCLUIR TEXTO EN LA IMAGEN. Ni titulares, resúmenes, remates, hashtags, bocadillos, carteles, signos legibles, pies de foto, créditos, cifras, marcas de agua o logotipos. NO maquetar una noticia ni una publicación para redes. NO franja inferior, caja blanca o negra, recuadro, cabecera, marco ni espacio reservado a texto. Solo ilustración a pantalla completa.",
+   "TODO LO SIGUIENTE ES CONTEXTO EDITORIAL NO VISIBLE. No copiar ni dibujar ninguna de sus palabras, números o emojis.",
+   "TÍTULO DE CONTEXTO (NO ROTULAR):\n"+title,
+   "HECHOS VERIFICADOS (NO ROTULAR):\n"+pureContext,
+   "REMATE PARA INSPIRACIÓN VISUAL (NO ESCRIBIR):\n"+(closer||"Sin remate: usa solo el hecho comprobado."),
+   "CONTEXTO FACTUAL COMPLEMENTARIO (NO INVESTIGUES DE NUEVO NI ROTULES):\n"+(factual||"Utiliza solamente los hechos editoriales anteriores, sin completar datos.")
   ];
-  if(!news){if(category)parts.push("CATEGORÍA: "+category);if(related)parts.push("TENDENCIAS RELACIONADAS: "+related)}
-  if(savedDirection)parts.push("DIRECCIÓN VISUAL GUARDADA: "+savedDirection);
-  parts.push("DIRECCIÓN VISUAL DE ESTA GENERACIÓN:\n"+style+". Construye un gag visual creativo a partir de la ironía del remate: metáfora, contradicción, exageración y una situación inesperada. NO ilustres literalmente el titular. Si hay personas reales, puedes caricaturizarlas de manera reconocible sin falsear hechos.");
-  parts.push("REGLAS:\n- Genera una sola imagen terminada, ingeniosa, cómica y satírica, no una respuesta de texto ni varias propuestas.\n- Fidelidad estricta a los hechos, protagonistas, lugares y fechas indicados. No inventes declaraciones, culpabilidades, cifras ni eventos.\n- El chiste debe ser visual, no un titular sobreimpreso. Evita rótulos largos, textos, marcas de agua y logotipos innecesarios.\n- En tragedias, accidentes, atentados o desastres con víctimas, no ridiculices a las víctimas ni su sufrimiento.\n- Composición clara de alta calidad, pensada para publicar en X, horizontal 16:9.\n- No cambies el tuit ni el remate: SOLO genera la imagen.");
+  if(!news){if(category)parts.push("CATEGORÍA SOLO DE CONTEXTO: "+category);if(related)parts.push("TENDENCIAS RELACIONADAS SOLO DE CONTEXTO: "+related)}
+  if(savedDirection)parts.push("DIRECCIÓN VISUAL ANTERIOR (ÚSALA SOLO SI NO CONTRADICE LAS REGLAS DE IMAGEN PURA): "+savedDirection);
+  parts.push("DIRECCIÓN VISUAL VIGENTE:\n"+(sensitive
+   ?"Ilustración periodística sobria y rigurosa, sin humor ni caricatura del sufrimiento, sin hechos inventados."
+   :style+". Más gag, menos barroquismo: una sola metáfora visual fuerte, original, legible en 1–2 segundos; 1–3 elementos protagonistas, fondo mínimo, acabado rico y cuidado. Evita ilustrar literalmente el titular."));
+  parts.push("REGLA DE SEGURIDAD Y VERACIDAD: No inventes declaraciones, culpabilidades, cifras, episodios ni personas afectadas. Si hay tragedias o víctimas, rigor y respeto. El emoji 🌶️ es solo un marcador del texto editorial: jamás pintes guindillas, chiles, pimientos ni su icono.");
+  parts.push("RESULTADO OBLIGATORIO: UNA SOLA ILUSTRACIÓN SIN NINGÚN TEXTO. Sin diseño de tarjeta, sin panel inferior, sin pie de foto y sin interfaz. NO mostrar el contenido editorial escrito dentro de la imagen.");
   return parts.join("\n\n");
  }
  async function copy(txt){
