@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T05:55:00+01:00",
-  "last_completed_at": "2026-10-29T05:56:00+01:00",
-  "updated_at": "2026-10-29T05:56:00+01:00",
+  "last_started_at": "2026-10-29T06:27:00+01:00",
+  "last_completed_at": "2026-10-29T06:28:45+01:00",
+  "updated_at": "2026-10-29T06:28:45+01:00",
   "status": "success",
   "remaining_active_ids": [],
-  "queue_complete": false,
+  "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793249700000-manual",
+    "trigger_run_id": "tr-20261029T052615Z-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793249700000-manual",
+    "run_id": "tr-20261029T052615Z-manual",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-29T05:55:00+01:00",
-    "updated_at": "2026-10-29T05:56:00+01:00",
-    "finished_at": "2026-10-29T05:56:00+01:00",
+    "started_at": "2026-10-29T06:27:00+01:00",
+    "updated_at": "2026-10-29T06:28:45+01:00",
+    "finished_at": "2026-10-29T06:28:45+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -63,13 +63,13 @@
       "pending_visual_candidates_reviewed": 3,
       "incidents": 1
     },
-    "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía, sin rewrite_pending ni huérfanos; saneamiento visual solicitado para tres Pendientes recientes y requests.json sigue vacío.",
+    "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía y sin reexplicaciones; requests.json sigue vacío.",
     "incident_count": 1,
     "incidents": [
       {
         "type": "authoritative_state_invalid",
         "path": "trends/requests.json",
-        "detail": "El archivo existe en main pero contiene 0 bytes; no se pudo validar el estado de solicitudes."
+        "detail": "El archivo existe en main pero contiene 0 bytes; no es JSON válido y su estado interno no puede validarse."
       }
     ],
     "ratings_snapshot": {
@@ -110,70 +110,70 @@
     ],
     "activity": [
       {
-        "at": "2026-10-29T05:55:00+01:00",
+        "at": "2026-10-29T06:27:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial; cola inicial 0 y comprobación de estado autoritativo."
+        "message": "Preparando pasada editorial; cola inicial 0 y comprobación autoritativa en curso."
       },
       {
-        "at": "2026-10-29T05:55:20+01:00",
+        "at": "2026-10-29T06:27:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main; comprobando cola, requests, reexplicaciones, Pendientes y huérfanos."
+        "message": "Releyendo main; comprobando cola, requests y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-29T05:55:30+01:00",
+        "at": "2026-10-29T06:28:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes recientes; 3 tarjetas requieren saneamiento visual y 0 reexplicaciones están pendientes."
+        "message": "Revisando Pendientes recientes; 3 fichas explained no eliminadas requieren saneamiento visual independiente."
       },
       {
-        "at": "2026-10-29T05:55:35+01:00",
+        "at": "2026-10-29T06:28:10+01:00",
         "phase": "remate_selection",
         "trend_id": "0c5d9449baf9",
         "title": "#ObjetivoAccidente",
         "message": "Sin remate · accidente con víctimas; explicación factual suficiente."
       },
       {
-        "at": "2026-10-29T05:55:40+01:00",
+        "at": "2026-10-29T06:28:15+01:00",
         "phase": "remate_selection",
         "trend_id": "b7839978cb6c",
         "title": "Falange",
-        "message": "Sin remate · protesta ligada a una tragedia y cargas policiales; se evita humor sensible."
+        "message": "Sin remate · protesta vinculada a una tragedia y cargas policiales; se evita humor sensible."
       },
       {
-        "at": "2026-10-29T05:55:45+01:00",
+        "at": "2026-10-29T06:28:20+01:00",
         "phase": "remate_selection",
         "trend_id": "6a124636f62f",
         "title": "#LaMesa",
-        "message": "Sin remate · tragedia con víctimas; explicación factual suficiente."
+        "message": "Sin remate · tragedia con víctimas y testimonios de supervivientes; explicación factual suficiente."
       },
       {
-        "at": "2026-10-29T05:55:50+01:00",
+        "at": "2026-10-29T06:28:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación final; cola 0, sin rewrite_pending ni huérfanos activos; requests.json sigue vacío."
+        "message": "Releyendo main; cola 0 y ninguna reexplicación pendiente."
       },
       {
-        "at": "2026-10-29T05:56:00+01:00",
+        "at": "2026-10-29T06:28:45+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía, sin rewrite_pending ni huérfanos; saneamiento visual solicitado para tres Pendientes recientes y requests.json sigue vacío."
+        "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía y sin reexplicaciones; requests.json sigue vacío."
       }
     ],
     "processed_ids": [],
     "partial": true,
-    "queue_complete": false,
+    "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-1793249700000-manual",
+  "run_id": "tr-20261029T052615Z-manual",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -202,64 +202,64 @@
   },
   "activity": [
     {
-      "at": "2026-10-29T05:55:00+01:00",
+      "at": "2026-10-29T06:27:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial; cola inicial 0 y comprobación de estado autoritativo."
+      "message": "Preparando pasada editorial; cola inicial 0 y comprobación autoritativa en curso."
     },
     {
-      "at": "2026-10-29T05:55:20+01:00",
+      "at": "2026-10-29T06:27:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main; comprobando cola, requests, reexplicaciones, Pendientes y huérfanos."
+      "message": "Releyendo main; comprobando cola, requests y reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-29T05:55:30+01:00",
+      "at": "2026-10-29T06:28:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes recientes; 3 tarjetas requieren saneamiento visual y 0 reexplicaciones están pendientes."
+      "message": "Revisando Pendientes recientes; 3 fichas explained no eliminadas requieren saneamiento visual independiente."
     },
     {
-      "at": "2026-10-29T05:55:35+01:00",
+      "at": "2026-10-29T06:28:10+01:00",
       "phase": "remate_selection",
       "trend_id": "0c5d9449baf9",
       "title": "#ObjetivoAccidente",
       "message": "Sin remate · accidente con víctimas; explicación factual suficiente."
     },
     {
-      "at": "2026-10-29T05:55:40+01:00",
+      "at": "2026-10-29T06:28:15+01:00",
       "phase": "remate_selection",
       "trend_id": "b7839978cb6c",
       "title": "Falange",
-      "message": "Sin remate · protesta ligada a una tragedia y cargas policiales; se evita humor sensible."
+      "message": "Sin remate · protesta vinculada a una tragedia y cargas policiales; se evita humor sensible."
     },
     {
-      "at": "2026-10-29T05:55:45+01:00",
+      "at": "2026-10-29T06:28:20+01:00",
       "phase": "remate_selection",
       "trend_id": "6a124636f62f",
       "title": "#LaMesa",
-      "message": "Sin remate · tragedia con víctimas; explicación factual suficiente."
+      "message": "Sin remate · tragedia con víctimas y testimonios de supervivientes; explicación factual suficiente."
     },
     {
-      "at": "2026-10-29T05:55:50+01:00",
+      "at": "2026-10-29T06:28:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Verificación final; cola 0, sin rewrite_pending ni huérfanos activos; requests.json sigue vacío."
+      "message": "Releyendo main; cola 0 y ninguna reexplicación pendiente."
     },
     {
-      "at": "2026-10-29T05:56:00+01:00",
+      "at": "2026-10-29T06:28:45+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía, sin rewrite_pending ni huérfanos; saneamiento visual solicitado para tres Pendientes recientes y requests.json sigue vacío."
+      "message": "TTendencias cerrada 0/0 con incidencia: cola final vacía y sin reexplicaciones; requests.json sigue vacío."
     }
   ],
   "partial": true,
-  "previous_run_id": "tr-chat-20261029T051209+0100",
+  "previous_run_id": "tr-1793249700000-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -307,6 +307,6 @@
   "last_incident": {
     "type": "authoritative_state_invalid",
     "path": "trends/requests.json",
-    "detail": "El archivo existe en main pero contiene 0 bytes; no se pudo validar el estado de solicitudes."
+    "detail": "El archivo existe en main pero contiene 0 bytes; no es JSON válido y su estado interno no puede validarse."
   }
 }
