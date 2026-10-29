@@ -1,0 +1,59 @@
+name: TT Chrome9223 recovery safety (no execution)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'windows/Recover-TT-Chrome9223-Controlled.ps1'
+      - 'windows/Repair-TT-Chrome-Memory-Safe.ps1'
+      - 'windows/TT-Chrome9223-Recovery-Gate.js'
+      - 'windows/TTiTTularesDedicatedListener.ps1'
+      - '.github/workflows/tt-chrome9223-recovery-safety.yml'
+permissions:
+  contents: read
+jobs:
+  syntax:
+    runs-on: windows-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JS gate syntax
+        run: node --check windows/TT-Chrome9223-Recovery-Gate.js
+      - name: PowerShell syntax and protected invariants (no automation invoked)
+        shell: pwsh
+        run: |
+          foreach ($path in @(
+            'windows/Recover-TT-Chrome9223-Controlled.ps1',
+            'windows/Repair-TT-Chrome-Memory-Safe.ps1',
+            'windows/TTiTTularesDedicatedListener.ps1'
+          )) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              $path, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) { throw "$path : $($errors[0].Message)" }
+          }
+          $recover = Get-Content windows/Recover-TT-Chrome9223-Controlled.ps1 -Raw
+          $listener = Get-Content windows/TTiTTularesDedicatedListener.ps1 -Raw
+          $gate = Get-Content windows/TT-Chrome9223-Recovery-Gate.js -Raw
+          if ($recover -notmatch 'ConfirmRecoverySafe' -or
+              $recover -notmatch 'RECOVERY_BLOCKED' -or
+              $recover -notmatch 'PASSIVE TAB WATCHER PAUSED') {
+              throw 'Missing fail-closed gate'
+          }
+          if ($recover -match "TT RUNNER PAUSED") {
+              throw 'Old unconditional runner kill still exists'
+          }
+          if ($listener -notmatch 'Test-EditorialRetryBackoff' -or
+              $listener -notmatch 'Set-EditorialRetryBackoff') {
+              throw 'Editorial crash retry backoff missing'
+          }
+          if ($gate -notmatch 'draftChars' -or
+              $gate -notmatch 'TT9223_RECOVERY_BLOCKED' -or
+              $gate -notmatch 'aria-busy') {
+              throw 'Image / draft safeguards missing'
+          }
+          Write-Output 'TT_CHROME9223_RECOVERY_SAFETY_OK'
