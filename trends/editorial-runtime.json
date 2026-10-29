@@ -4,21 +4,29 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "4191bd8e40ae",
+    "1ec96b91e745",
+    "7670800aa4c8",
+    "4981a79b1530",
+    "596bc5507784",
+    "296b4043f39a",
+    "122cc9c021ac"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-29T12:55:00+01:00",
-  "last_completed_at": "2026-10-29T12:56:40+01:00",
-  "updated_at": "2026-10-29T12:56:40+01:00",
+  "last_started_at": "2026-10-29T13:12:00+01:00",
+  "last_completed_at": "2026-10-29T13:23:00+01:00",
+  "updated_at": "2026-10-29T13:23:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261029T125500+0100",
+    "trigger_run_id": "tr-chat-20261029T131200+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,34 +34,32 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261029T125500+0100",
+    "run_id": "tr-chat-20261029T131200+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-29T12:55:00+01:00",
-    "updated_at": "2026-10-29T12:56:40+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-29T13:12:00+01:00",
+    "updated_at": "2026-10-29T13:23:00+01:00",
+    "current": 7,
+    "total": 7,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "explained": 0,
-      "final_resolved": 0,
+      "attempted": 7,
+      "explained": 7,
+      "final_resolved": 7,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_visual_candidates_reviewed": 1,
+      "remates_selected": 3,
+      "remates_omitted": 4,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "TTendencias cerrada 0/0: cola, requests, reexplicaciones y huérfanos verificados en 0; saneamiento de Pendientes solicitado.",
+    "message": "TTendencias cerrada 7/7: cola y reexplicaciones pendientes en 0; saneamiento de Pendientes solicitado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -65,113 +71,528 @@
     },
     "remate_selections": [
       {
-        "trend_id": "6a124636f62f",
+        "trend_id": "4191bd8e40ae",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "text": "🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+            "score": 8.7
+          },
+          {
+            "id": "c2",
+            "text": "🌶️ La convocatoria acabó antes en comisaría que en el calendario.",
+            "score": 7.2
+          },
+          {
+            "id": "c3",
+            "text": "🌶️ El canal prometía saqueos y terminó con el chat cerrado.",
+            "score": 8.4
+          },
+          {
+            "id": "c4",
+            "text": "🌶️ La cita del sábado se quedó sin canal de coordinación.",
+            "score": 8
+          },
+          {
+            "id": "c5",
+            "text": "🌶️ Halloween se quedó sin este grupo antes de empezar.",
+            "score": 7.3
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.7,
+        "selected_text": "🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+        "originality_check": "Sin coincidencia exacta con remates recientes; el humor se centra en el cierre de los canales."
+      },
+      {
+        "trend_id": "1ec96b91e745",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
         "no_remate_reason": "sensitive_event"
+      },
+      {
+        "trend_id": "7670800aa4c8",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "text": "🌶️ La Pokédex también ha estrenado edición completa.",
+            "score": 8.8
+          },
+          {
+            "id": "c2",
+            "text": "🌶️ El cartucho ha venido con expansión incluida y la mochila con 100 Ultra Balls.",
+            "score": 8.2
+          },
+          {
+            "id": "c3",
+            "text": "🌶️ Ciudad Luminalia estrena versión todo incluido.",
+            "score": 8.1
+          },
+          {
+            "id": "c4",
+            "text": "🌶️ El DLC dejó de vivir en la letra pequeña de la caja.",
+            "score": 7.9
+          },
+          {
+            "id": "c5",
+            "text": "🌶️ Switch 2 ha metido Megadimensión dentro del equipaje.",
+            "score": 7.7
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.8,
+        "selected_text": "🌶️ La Pokédex también ha estrenado edición completa.",
+        "originality_check": "Sin coincidencia exacta con remates recientes."
+      },
+      {
+        "trend_id": "4981a79b1530",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_event"
+      },
+      {
+        "trend_id": "596bc5507784",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_transport_context"
+      },
+      {
+        "trend_id": "296b4043f39a",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "text": "🌶️ El calendario del BCE acaba de adelantar una casilla.",
+            "score": 8.6
+          },
+          {
+            "id": "c2",
+            "text": "🌶️ Fráncfort acaba de mover la fecha de salida en su propio calendario.",
+            "score": 8.1
+          },
+          {
+            "id": "c3",
+            "text": "🌶️ El mandato tenía octubre; la agenda ha elegido febrero.",
+            "score": 8
+          },
+          {
+            "id": "c4",
+            "text": "🌶️ El BCE ya tiene una fecha marcada antes de tiempo.",
+            "score": 7.6
+          },
+          {
+            "id": "c5",
+            "text": "🌶️ La sucesión ha empezado nueve meses antes de lo previsto.",
+            "score": 7.5
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.6,
+        "selected_text": "🌶️ El calendario del BCE acaba de adelantar una casilla.",
+        "originality_check": "Sin coincidencia exacta con los remates recientes revisados."
+      },
+      {
+        "trend_id": "122cc9c021ac",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_transport_context"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-29T12:55:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial; cola activa 0. Saneamiento de Pendientes solicitado."
+        "at": "2026-10-29T13:19:15+01:00",
+        "phase": "drafting",
+        "trend_id": "596bc5507784",
+        "title": "Ouigo",
+        "message": "Redactando explicación factual TT#6 y comprobando límite de X · 228 caracteres."
       },
       {
-        "at": "2026-10-29T12:55:20+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes recientes y exclusiones de publicado, borrado o archivado."
-      },
-      {
-        "at": "2026-10-29T12:56:00+01:00",
+        "at": "2026-10-29T13:19:18+01:00",
         "phase": "remate_selection",
-        "trend_id": "6a124636f62f",
-        "title": "#LaMesa",
-        "message": "Sin remate para #LaMesa r0 por sensibilidad de la tragedia ferroviaria; explicación factual conservada."
+        "trend_id": "596bc5507784",
+        "title": "Ouigo",
+        "message": "Sin remate · explicación factual suficiente en una incidencia ferroviaria un día después de Urda."
       },
       {
-        "at": "2026-10-29T12:56:20+01:00",
+        "at": "2026-10-29T13:19:43+01:00",
+        "phase": "persisting",
+        "trend_id": "7670800aa4c8",
+        "title": "#LeyendasPokemonZA",
+        "message": "Guardando fichas Explicadas de #LeyendasPokemonZA, #Mañaneros29O y Ouigo."
+      },
+      {
+        "at": "2026-10-29T13:19:50+01:00",
+        "phase": "persisting",
+        "trend_id": "4981a79b1530",
+        "title": "#Mañaneros29O",
+        "message": "Actualizando requests de #LeyendasPokemonZA, #Mañaneros29O y Ouigo."
+      },
+      {
+        "at": "2026-10-29T13:20:16+01:00",
+        "phase": "persisting",
+        "trend_id": "596bc5507784",
+        "title": "Ouigo",
+        "message": "Retirando las tres revisiones cerradas de la cola editorial."
+      },
+      {
+        "at": "2026-10-29T13:20:21+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main para verificar cola, requests, reexplicaciones, huérfanos y trigger de saneamiento."
+        "message": "Releyendo main y verificando id+revision y texto persistido de las tres tendencias."
       },
       {
-        "at": "2026-10-29T12:56:40+01:00",
+        "at": "2026-10-29T13:20:27+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Tres tendencias cerradas y verificadas; quedan 2 revisiones activas."
+      },
+      {
+        "at": "2026-10-29T13:20:47+01:00",
+        "phase": "verifying",
+        "trend_id": "296b4043f39a",
+        "title": "Lagarde",
+        "message": "Releyendo estado autoritativo de Lagarde · revisión 0."
+      },
+      {
+        "at": "2026-10-29T13:20:50+01:00",
+        "phase": "investigating",
+        "trend_id": "296b4043f39a",
+        "title": "Lagarde",
+        "message": "Hecho verificado: Christine Lagarde comunicó hoy que dejará la presidencia del BCE el 7 de febrero de 2027, antes del final previsto de su mandato."
+      },
+      {
+        "at": "2026-10-29T13:20:52+01:00",
+        "phase": "drafting",
+        "trend_id": "296b4043f39a",
+        "title": "Lagarde",
+        "message": "Redactando explicación factual TT#7 y comprobando límite de X · 265 caracteres."
+      },
+      {
+        "at": "2026-10-29T13:20:54+01:00",
+        "phase": "remate_selection",
+        "trend_id": "296b4043f39a",
+        "title": "Lagarde",
+        "message": "Remate seleccionado: «El calendario del BCE acaba de adelantar una casilla.»"
+      },
+      {
+        "at": "2026-10-29T13:20:57+01:00",
+        "phase": "verifying",
+        "trend_id": "122cc9c021ac",
+        "title": "Aranjuez",
+        "message": "Releyendo estado autoritativo de Aranjuez · revisión 0."
+      },
+      {
+        "at": "2026-10-29T13:21:00+01:00",
+        "phase": "investigating",
+        "trend_id": "122cc9c021ac",
+        "title": "Aranjuez",
+        "message": "Hecho verificado: un enganchón de catenaria dejó detenido un Ouigo Murcia-Valladolid en un túnel a la altura de Aranjuez y provocó retrasos Madrid-Levante."
+      },
+      {
+        "at": "2026-10-29T13:21:02+01:00",
+        "phase": "drafting",
+        "trend_id": "122cc9c021ac",
+        "title": "Aranjuez",
+        "message": "Redactando explicación factual TT#8 y comprobando límite de X · 222 caracteres."
+      },
+      {
+        "at": "2026-10-29T13:21:05+01:00",
+        "phase": "remate_selection",
+        "trend_id": "122cc9c021ac",
+        "title": "Aranjuez",
+        "message": "Sin remate · explicación factual suficiente en el contexto ferroviario posterior a Urda."
+      },
+      {
+        "at": "2026-10-29T13:21:27+01:00",
+        "phase": "persisting",
+        "trend_id": "296b4043f39a",
+        "title": "Lagarde",
+        "message": "Guardando fichas Explicadas de Lagarde y Aranjuez."
+      },
+      {
+        "at": "2026-10-29T13:21:34+01:00",
+        "phase": "persisting",
+        "trend_id": "122cc9c021ac",
+        "title": "Aranjuez",
+        "message": "Actualizando requests de Lagarde y Aranjuez."
+      },
+      {
+        "at": "2026-10-29T13:21:39+01:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Retirando Lagarde r0 y Aranjuez r0 de la cola editorial."
+      },
+      {
+        "at": "2026-10-29T13:22:57+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola activa 0, rewrite_pending 0 y siete revisiones consistentes."
+      },
+      {
+        "at": "2026-10-29T13:23:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 0/0: cola, requests, reexplicaciones y huérfanos verificados en 0; saneamiento de Pendientes solicitado."
+        "message": "TTendencias cerrada 7/7: cola y reexplicaciones pendientes en 0; saneamiento de Pendientes solicitado."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "4191bd8e40ae",
+      "1ec96b91e745",
+      "7670800aa4c8",
+      "4981a79b1530",
+      "596bc5507784",
+      "296b4043f39a",
+      "122cc9c021ac"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": [],
-    "finished_at": "2026-10-29T12:56:40+01:00"
+    "final_outcomes": [
+      {
+        "trend_id": "4191bd8e40ae",
+        "title": "Blocus Vlc",
+        "revision": 0,
+        "status": "explained",
+        "explanation": "TT#9 Blocus Vlc es tendencia por la detención en València de un menor de 17 años, presunto creador de canales que instigaban a saquear comercios el 31 de octubre; uno superó 400 usuarios.\n#València #PolicíaNacional\n🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+        "closer_text": "🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+        "visual_status": "pending_non_blocking"
+      },
+      {
+        "trend_id": "1ec96b91e745",
+        "title": "ASFA",
+        "revision": 0,
+        "status": "explained",
+        "explanation": "TT#16 ASFA es tendencia por el sistema ferroviario de respaldo que entró en juego tras fallar el LZB antes del accidente de Urda; actúa en puntos concretos y no ofrece la misma supervisión continua.\n#Urda #SeguridadFerroviaria #ASFA",
+        "closer_text": "",
+        "visual_status": "pending_non_blocking"
+      },
+      {
+        "trend_id": "7670800aa4c8",
+        "title": "#LeyendasPokemonZA",
+        "revision": 0,
+        "status": "explained",
+        "explanation": "TT#1 #LeyendasPokemonZA es tendencia porque hoy sale el pack físico de Switch 2 con el juego y el DLC Megadimensión en una sola tarjeta; incluye un código para 100 Ultra Balls.\n#PokemonZA #NintendoSwitch2 #Megadimensión\n🌶️ La Pokédex también ha estrenado edición completa.",
+        "closer_text": "🌶️ La Pokédex también ha estrenado edición completa.",
+        "visual_status": "pending_non_blocking"
+      },
+      {
+        "trend_id": "4981a79b1530",
+        "title": "#Mañaneros29O",
+        "revision": 0,
+        "status": "explained",
+        "explanation": "TT#4 #Mañaneros29O es tendencia por la emisión de Mañaneros 360 de este jueves en La 1, en una mañana informativa todavía marcada por el accidente ferroviario de Urda y su investigación.\n#RTVE #Mañaneros360 #Urda",
+        "closer_text": "",
+        "visual_status": "pending_non_blocking"
+      },
+      {
+        "trend_id": "596bc5507784",
+        "title": "Ouigo",
+        "revision": 0,
+        "status": "explained",
+        "explanation": "TT#6 Ouigo es tendencia porque su tren 6775 Murcia-Valladolid quedó detenido en un túnel a la altura de Aranjuez por un enganchón de catenaria; la compañía informó de que no hubo daños personales.\n#Ouigo #Aranjuez #AltaVelocidad",
+        "closer_text": "",
+        "visual_status": "pending_non_blocking"
+      },
+      {
+        "trend_id": "296b4043f39a",
+        "title": "Lagarde",
+        "revision": 0,
+        "status": "explained",
+        "explanation": "TT#7 Lagarde es tendencia porque Christine Lagarde ha anunciado que dejará la presidencia del BCE el 7 de febrero de 2027, antes del final de su mandato previsto para octubre.\n#ChristineLagarde #BCE #Eurozona\n🌶️ El calendario del BCE acaba de adelantar una casilla.",
+        "closer_text": "🌶️ El calendario del BCE acaba de adelantar una casilla.",
+        "visual_status": "pending_non_blocking"
+      },
+      {
+        "trend_id": "122cc9c021ac",
+        "title": "Aranjuez",
+        "revision": 0,
+        "status": "explained",
+        "explanation": "TT#8 Aranjuez es tendencia por la avería de catenaria que dejó detenido en un túnel a la altura del municipio un Ouigo Murcia-Valladolid y causó retrasos en la alta velocidad Madrid-Levante.\n#Aranjuez #Ouigo #AltaVelocidad",
+        "closer_text": "",
+        "visual_status": "pending_non_blocking"
+      }
+    ],
+    "finished_at": "2026-10-29T13:23:00+01:00"
   },
-  "run_id": "tr-chat-20261029T125500+0100",
+  "run_id": "tr-chat-20261029T131200+0100",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
-    "final_resolved": 0,
+    "attempted": 7,
+    "explained": 7,
+    "final_resolved": 7,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_visual_candidates_reviewed": 1,
+    "remates_selected": 3,
+    "remates_omitted": 4,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-29T12:55:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Preparando pasada editorial; cola activa 0. Saneamiento de Pendientes solicitado."
+      "at": "2026-10-29T13:19:15+01:00",
+      "phase": "drafting",
+      "trend_id": "596bc5507784",
+      "title": "Ouigo",
+      "message": "Redactando explicación factual TT#6 y comprobando límite de X · 228 caracteres."
     },
     {
-      "at": "2026-10-29T12:55:20+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes recientes y exclusiones de publicado, borrado o archivado."
-    },
-    {
-      "at": "2026-10-29T12:56:00+01:00",
+      "at": "2026-10-29T13:19:18+01:00",
       "phase": "remate_selection",
-      "trend_id": "6a124636f62f",
-      "title": "#LaMesa",
-      "message": "Sin remate para #LaMesa r0 por sensibilidad de la tragedia ferroviaria; explicación factual conservada."
+      "trend_id": "596bc5507784",
+      "title": "Ouigo",
+      "message": "Sin remate · explicación factual suficiente en una incidencia ferroviaria un día después de Urda."
     },
     {
-      "at": "2026-10-29T12:56:20+01:00",
+      "at": "2026-10-29T13:19:43+01:00",
+      "phase": "persisting",
+      "trend_id": "7670800aa4c8",
+      "title": "#LeyendasPokemonZA",
+      "message": "Guardando fichas Explicadas de #LeyendasPokemonZA, #Mañaneros29O y Ouigo."
+    },
+    {
+      "at": "2026-10-29T13:19:50+01:00",
+      "phase": "persisting",
+      "trend_id": "4981a79b1530",
+      "title": "#Mañaneros29O",
+      "message": "Actualizando requests de #LeyendasPokemonZA, #Mañaneros29O y Ouigo."
+    },
+    {
+      "at": "2026-10-29T13:20:16+01:00",
+      "phase": "persisting",
+      "trend_id": "596bc5507784",
+      "title": "Ouigo",
+      "message": "Retirando las tres revisiones cerradas de la cola editorial."
+    },
+    {
+      "at": "2026-10-29T13:20:21+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main para verificar cola, requests, reexplicaciones, huérfanos y trigger de saneamiento."
+      "message": "Releyendo main y verificando id+revision y texto persistido de las tres tendencias."
     },
     {
-      "at": "2026-10-29T12:56:40+01:00",
+      "at": "2026-10-29T13:20:27+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Tres tendencias cerradas y verificadas; quedan 2 revisiones activas."
+    },
+    {
+      "at": "2026-10-29T13:20:47+01:00",
+      "phase": "verifying",
+      "trend_id": "296b4043f39a",
+      "title": "Lagarde",
+      "message": "Releyendo estado autoritativo de Lagarde · revisión 0."
+    },
+    {
+      "at": "2026-10-29T13:20:50+01:00",
+      "phase": "investigating",
+      "trend_id": "296b4043f39a",
+      "title": "Lagarde",
+      "message": "Hecho verificado: Christine Lagarde comunicó hoy que dejará la presidencia del BCE el 7 de febrero de 2027, antes del final previsto de su mandato."
+    },
+    {
+      "at": "2026-10-29T13:20:52+01:00",
+      "phase": "drafting",
+      "trend_id": "296b4043f39a",
+      "title": "Lagarde",
+      "message": "Redactando explicación factual TT#7 y comprobando límite de X · 265 caracteres."
+    },
+    {
+      "at": "2026-10-29T13:20:54+01:00",
+      "phase": "remate_selection",
+      "trend_id": "296b4043f39a",
+      "title": "Lagarde",
+      "message": "Remate seleccionado: «El calendario del BCE acaba de adelantar una casilla.»"
+    },
+    {
+      "at": "2026-10-29T13:20:57+01:00",
+      "phase": "verifying",
+      "trend_id": "122cc9c021ac",
+      "title": "Aranjuez",
+      "message": "Releyendo estado autoritativo de Aranjuez · revisión 0."
+    },
+    {
+      "at": "2026-10-29T13:21:00+01:00",
+      "phase": "investigating",
+      "trend_id": "122cc9c021ac",
+      "title": "Aranjuez",
+      "message": "Hecho verificado: un enganchón de catenaria dejó detenido un Ouigo Murcia-Valladolid en un túnel a la altura de Aranjuez y provocó retrasos Madrid-Levante."
+    },
+    {
+      "at": "2026-10-29T13:21:02+01:00",
+      "phase": "drafting",
+      "trend_id": "122cc9c021ac",
+      "title": "Aranjuez",
+      "message": "Redactando explicación factual TT#8 y comprobando límite de X · 222 caracteres."
+    },
+    {
+      "at": "2026-10-29T13:21:05+01:00",
+      "phase": "remate_selection",
+      "trend_id": "122cc9c021ac",
+      "title": "Aranjuez",
+      "message": "Sin remate · explicación factual suficiente en el contexto ferroviario posterior a Urda."
+    },
+    {
+      "at": "2026-10-29T13:21:27+01:00",
+      "phase": "persisting",
+      "trend_id": "296b4043f39a",
+      "title": "Lagarde",
+      "message": "Guardando fichas Explicadas de Lagarde y Aranjuez."
+    },
+    {
+      "at": "2026-10-29T13:21:34+01:00",
+      "phase": "persisting",
+      "trend_id": "122cc9c021ac",
+      "title": "Aranjuez",
+      "message": "Actualizando requests de Lagarde y Aranjuez."
+    },
+    {
+      "at": "2026-10-29T13:21:39+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Retirando Lagarde r0 y Aranjuez r0 de la cola editorial."
+    },
+    {
+      "at": "2026-10-29T13:22:57+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola activa 0, rewrite_pending 0 y siete revisiones consistentes."
+    },
+    {
+      "at": "2026-10-29T13:23:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 0/0: cola, requests, reexplicaciones y huérfanos verificados en 0; saneamiento de Pendientes solicitado."
+      "message": "TTendencias cerrada 7/7: cola y reexplicaciones pendientes en 0; saneamiento de Pendientes solicitado."
     }
   ],
   "partial": false,
@@ -185,16 +606,215 @@
   },
   "remate_selections": [
     {
-      "trend_id": "6a124636f62f",
+      "trend_id": "4191bd8e40ae",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "id": "c1",
+          "text": "🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+          "score": 8.7
+        },
+        {
+          "id": "c2",
+          "text": "🌶️ La convocatoria acabó antes en comisaría que en el calendario.",
+          "score": 7.2
+        },
+        {
+          "id": "c3",
+          "text": "🌶️ El canal prometía saqueos y terminó con el chat cerrado.",
+          "score": 8.4
+        },
+        {
+          "id": "c4",
+          "text": "🌶️ La cita del sábado se quedó sin canal de coordinación.",
+          "score": 8
+        },
+        {
+          "id": "c5",
+          "text": "🌶️ Halloween se quedó sin este grupo antes de empezar.",
+          "score": 7.3
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.7,
+      "selected_text": "🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+      "originality_check": "Sin coincidencia exacta con remates recientes; el humor se centra en el cierre de los canales."
+    },
+    {
+      "trend_id": "1ec96b91e745",
       "revision": 0,
       "candidate_count": 0,
       "candidates": [],
       "selected_candidate": null,
       "selected_score": null,
       "no_remate_reason": "sensitive_event"
+    },
+    {
+      "trend_id": "7670800aa4c8",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "id": "c1",
+          "text": "🌶️ La Pokédex también ha estrenado edición completa.",
+          "score": 8.8
+        },
+        {
+          "id": "c2",
+          "text": "🌶️ El cartucho ha venido con expansión incluida y la mochila con 100 Ultra Balls.",
+          "score": 8.2
+        },
+        {
+          "id": "c3",
+          "text": "🌶️ Ciudad Luminalia estrena versión todo incluido.",
+          "score": 8.1
+        },
+        {
+          "id": "c4",
+          "text": "🌶️ El DLC dejó de vivir en la letra pequeña de la caja.",
+          "score": 7.9
+        },
+        {
+          "id": "c5",
+          "text": "🌶️ Switch 2 ha metido Megadimensión dentro del equipaje.",
+          "score": 7.7
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.8,
+      "selected_text": "🌶️ La Pokédex también ha estrenado edición completa.",
+      "originality_check": "Sin coincidencia exacta con remates recientes."
+    },
+    {
+      "trend_id": "4981a79b1530",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "sensitive_event"
+    },
+    {
+      "trend_id": "596bc5507784",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "sensitive_transport_context"
+    },
+    {
+      "trend_id": "296b4043f39a",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "id": "c1",
+          "text": "🌶️ El calendario del BCE acaba de adelantar una casilla.",
+          "score": 8.6
+        },
+        {
+          "id": "c2",
+          "text": "🌶️ Fráncfort acaba de mover la fecha de salida en su propio calendario.",
+          "score": 8.1
+        },
+        {
+          "id": "c3",
+          "text": "🌶️ El mandato tenía octubre; la agenda ha elegido febrero.",
+          "score": 8
+        },
+        {
+          "id": "c4",
+          "text": "🌶️ El BCE ya tiene una fecha marcada antes de tiempo.",
+          "score": 7.6
+        },
+        {
+          "id": "c5",
+          "text": "🌶️ La sucesión ha empezado nueve meses antes de lo previsto.",
+          "score": 7.5
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.6,
+      "selected_text": "🌶️ El calendario del BCE acaba de adelantar una casilla.",
+      "originality_check": "Sin coincidencia exacta con los remates recientes revisados."
+    },
+    {
+      "trend_id": "122cc9c021ac",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "sensitive_transport_context"
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "trend_id": "4191bd8e40ae",
+      "title": "Blocus Vlc",
+      "revision": 0,
+      "status": "explained",
+      "explanation": "TT#9 Blocus Vlc es tendencia por la detención en València de un menor de 17 años, presunto creador de canales que instigaban a saquear comercios el 31 de octubre; uno superó 400 usuarios.\n#València #PolicíaNacional\n🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+      "closer_text": "🌶️ El plan tenía fecha; los canales no llegaron al sábado.",
+      "visual_status": "pending_non_blocking"
+    },
+    {
+      "trend_id": "1ec96b91e745",
+      "title": "ASFA",
+      "revision": 0,
+      "status": "explained",
+      "explanation": "TT#16 ASFA es tendencia por el sistema ferroviario de respaldo que entró en juego tras fallar el LZB antes del accidente de Urda; actúa en puntos concretos y no ofrece la misma supervisión continua.\n#Urda #SeguridadFerroviaria #ASFA",
+      "closer_text": "",
+      "visual_status": "pending_non_blocking"
+    },
+    {
+      "trend_id": "7670800aa4c8",
+      "title": "#LeyendasPokemonZA",
+      "revision": 0,
+      "status": "explained",
+      "explanation": "TT#1 #LeyendasPokemonZA es tendencia porque hoy sale el pack físico de Switch 2 con el juego y el DLC Megadimensión en una sola tarjeta; incluye un código para 100 Ultra Balls.\n#PokemonZA #NintendoSwitch2 #Megadimensión\n🌶️ La Pokédex también ha estrenado edición completa.",
+      "closer_text": "🌶️ La Pokédex también ha estrenado edición completa.",
+      "visual_status": "pending_non_blocking"
+    },
+    {
+      "trend_id": "4981a79b1530",
+      "title": "#Mañaneros29O",
+      "revision": 0,
+      "status": "explained",
+      "explanation": "TT#4 #Mañaneros29O es tendencia por la emisión de Mañaneros 360 de este jueves en La 1, en una mañana informativa todavía marcada por el accidente ferroviario de Urda y su investigación.\n#RTVE #Mañaneros360 #Urda",
+      "closer_text": "",
+      "visual_status": "pending_non_blocking"
+    },
+    {
+      "trend_id": "596bc5507784",
+      "title": "Ouigo",
+      "revision": 0,
+      "status": "explained",
+      "explanation": "TT#6 Ouigo es tendencia porque su tren 6775 Murcia-Valladolid quedó detenido en un túnel a la altura de Aranjuez por un enganchón de catenaria; la compañía informó de que no hubo daños personales.\n#Ouigo #Aranjuez #AltaVelocidad",
+      "closer_text": "",
+      "visual_status": "pending_non_blocking"
+    },
+    {
+      "trend_id": "296b4043f39a",
+      "title": "Lagarde",
+      "revision": 0,
+      "status": "explained",
+      "explanation": "TT#7 Lagarde es tendencia porque Christine Lagarde ha anunciado que dejará la presidencia del BCE el 7 de febrero de 2027, antes del final de su mandato previsto para octubre.\n#ChristineLagarde #BCE #Eurozona\n🌶️ El calendario del BCE acaba de adelantar una casilla.",
+      "closer_text": "🌶️ El calendario del BCE acaba de adelantar una casilla.",
+      "visual_status": "pending_non_blocking"
+    },
+    {
+      "trend_id": "122cc9c021ac",
+      "title": "Aranjuez",
+      "revision": 0,
+      "status": "explained",
+      "explanation": "TT#8 Aranjuez es tendencia por la avería de catenaria que dejó detenido en un túnel a la altura del municipio un Ouigo Murcia-Valladolid y causó retrasos en la alta velocidad Madrid-Levante.\n#Aranjuez #Ouigo #AltaVelocidad",
+      "closer_text": "",
+      "visual_status": "pending_non_blocking"
+    }
+  ],
   "pending_delivery_count": 1,
   "apply_workflow": {
     "status": "not_required",
@@ -202,13 +822,13 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "ebebe5ce8dc6bd7c70191dd1963607344cb86038",
-    "updated_at": "2026-10-29T12:56:40+01:00"
+    "blob_sha": "0e495c1da54a26f986c6481a8e7997d496d0d879",
+    "updated_at": "2026-10-29T13:23:00+01:00"
   },
   "radar": {
     "captured_at": "2026-10-29T12:50:55+01:00",
     "recent_sha": "b33a65a2b4fa5d386e0a9ba8e2398d735587afb8",
-    "queue_sha": "3e09307c1cf1b169e32d532c87f3cb15f83c4cc2",
+    "queue_sha": "85b2389f53928302ca9230c5f4cc1ec28c44da42",
     "queue_count": 0
   }
 }
