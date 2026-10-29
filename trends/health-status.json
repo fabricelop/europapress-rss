@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "checked_at": "2026-10-29T11:29:20.336555+00:00",
-=======
-  "checked_at": "2026-10-29T11:30:55.790382+00:00",
->>>>>>> Stashed changes
+  "checked_at": "2026-10-29T11:34:05.212936+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -44,16 +40,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
       "non_stale_sources": 3,
-<<<<<<< Updated upstream
-      "captured_age_minutes": 27.4,
-=======
-      "captured_age_minutes": 29.0,
->>>>>>> Stashed changes
-      "noise_count": 0,
-      "repair_started": true
+      "captured_age_minutes": 0.5,
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
@@ -62,14 +53,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
-<<<<<<< Updated upstream
-      "run_id": 40865762757,
-=======
+      "age_minutes": 3.0,
       "run_id": 40865972664,
->>>>>>> Stashed changes
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -111,9 +98,7 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [],
   "warnings": [],
   "alert_sent": false,
