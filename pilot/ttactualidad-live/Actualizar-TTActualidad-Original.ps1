@@ -92,7 +92,8 @@ try {
     $html = [IO.File]::ReadAllText($nextHtml,[Text.Encoding]::UTF8)
     $js = [IO.File]::ReadAllText($nextWorker,[Text.Encoding]::UTF8)
     foreach ($marker in @('Volver a En elabora','Top 30','Listas','TTImages',
-                           'Copiar Foto Archivo','id="manual-open"','function trendRows()',
+                           'Copiar Foto Archivo','PROMPT_GAG_VISUAL_V2','PROHIBIDO TODO TEXTO',
+                           'id="manual-open"','function trendRows()',
                            'source_app:state.app,source_tab:state.tab',
                            'op.source_tab!==state.tab||op.source_app!==state.app',
                            'disponible en Listas sin cambiar de',
@@ -147,6 +148,8 @@ try {
                 $remote.Contains('Volver a En elabora') -and
                 $remote.Contains('function trendRows()') -and
                 $remote.Contains('TTImages') -and
+                $remote.Contains('PROMPT_GAG_VISUAL_V2') -and
+                $remote.Contains('PROHIBIDO TODO TEXTO') -and
                 $remote.Contains('source_app:state.app,source_tab:state.tab') -and
                 $remote.Contains('op.source_tab!==state.tab||op.source_app!==state.app') -and
                 $remote.Contains('disponible en Listas sin cambiar de') -and
