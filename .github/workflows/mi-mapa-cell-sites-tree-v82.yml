@@ -1,0 +1,82 @@
+name: "Mi Mapa Sitios: Árbol de sitios por años y meses v82 - iPhone"
+on:
+  push:
+    branches:
+      - feature/mimapa-cell-sites-year-month-v82
+    paths:
+      - 'gps-ios/native/Sources/**'
+      - 'gps-ios/native/Tests/**'
+      - 'gps-ios/native/project.yml'
+      - '.github/workflows/mi-mapa-cell-sites-tree-v82.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mimapa-cell-sites-tree-v82
+  cancel-in-progress: true
+jobs:
+  test-and-ipa:
+    runs-on: macos-15
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The monorepo contains large unrelated editorial assets. Only the
+          # iOS native project is necessary for compilation and simulator tests.
+          sparse-checkout: |
+            gps-ios/native
+          sparse-checkout-cone-mode: true
+          fetch-depth: 1
+      - name: Parseo Swift y XcodeGen
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Pruebas iOS simulador
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          obj=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))
+          phones=[d for rt,ds in obj["devices"].items() if "iOS" in rt
+                    for d in ds if "iPhone" in d["name"] and d["state"]!="Unavailable"]
+          assert phones,"No iOS simulator"
+          open("/tmp/mimapa-v82-udid","w").write(phones[0]["udid"])
+          PY
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/mimapa-v82-udid)" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Generar IPA iPhone sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/mimapa-cell-sites-tree-v82" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/mimapa-cell-sites-tree-v82/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"]);assert app.is_dir()
+          info=plistlib.loads((app/"Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert info["CFBundleShortVersionString"]=="1.0.82"
+          assert info["CFBundleVersion"]=="83"
+          assert info["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").is_dir()
+          assert "mimapadeltiempoprueba" in str(info["CFBundleURLTypes"])
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Sitios-Arbol-1.0.82.ipa Payload
+          unzip -t MiMapaDelTiempo-Sitios-Arbol-1.0.82.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Sitios-Arbol-1.0.82-build83-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Sitios-Arbol-1.0.82.ipa
+          retention-days: 14
+          if-no-files-found: error
