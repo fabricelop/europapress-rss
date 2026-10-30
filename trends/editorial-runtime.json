@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T16:25:00+01:00",
   "last_completed_at": "2026-10-30T16:19:30+01:00",
-  "updated_at": "2026-10-30T16:25:00+01:00",
+  "updated_at": "2026-10-30T16:26:00+01:00",
   "status": "running",
   "queue_complete": false,
   "processed_ids": [],
@@ -43,6 +43,13 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio: 2 investigaciones nuevas preparing vigentes (#TEM30O y Blanca), de antiguas a recientes. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T16:26:00+01:00",
+      "phase": "investigating",
+      "trend_id": "9e3ff09b8b1c",
+      "title": "#TEM30O",
+      "message": "Sigue preparing r0 y TT#14. Contexto televisivo verificado; detonante exacto no confirmado."
     }
   ],
   "incidents": [],
@@ -54,14 +61,14 @@
     "run_id": "tr-1793373900000-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "preparing",
+    "phase": "investigating",
     "started_at": "2026-10-30T16:25:00+01:00",
-    "updated_at": "2026-10-30T16:25:00+01:00",
+    "updated_at": "2026-10-30T16:26:00+01:00",
     "finished_at": null,
     "current": 0,
     "total": 2,
-    "trend_id": null,
-    "title": null,
+    "trend_id": "9e3ff09b8b1c",
+    "title": "#TEM30O",
     "queue_complete": false,
     "remaining_active_ids": [
       "9e3ff09b8b1c",
@@ -70,7 +77,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Investigando 2 tendencias nuevas: #TEM30O y Blanca. Sin ImageGen.",
+    "message": "Investigando #TEM30O; causa exacta no confirmada.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -96,6 +103,13 @@
         "trend_id": null,
         "title": null,
         "message": "Inicio: 2 investigaciones nuevas preparing vigentes (#TEM30O y Blanca), de antiguas a recientes. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T16:26:00+01:00",
+        "phase": "investigating",
+        "trend_id": "9e3ff09b8b1c",
+        "title": "#TEM30O",
+        "message": "Sigue preparing r0 y TT#14. Contexto televisivo verificado; detonante exacto no confirmado."
       }
     ],
     "final_outcomes": []
