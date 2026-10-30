@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T22:44:49.760366+00:00",
+  "updated_at": "2026-10-30T23:46:18+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -40029,7 +40029,7 @@
       "id": "f90cc5271f93",
       "name": "Villarreal",
       "rank": 13,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-10-30T23:41:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -40044,13 +40044,16 @@
         "Lawson"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "ready_at": "2026-10-30T23:46:00+01:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "9950fd2c5b18",
       "name": "Lawson",
       "rank": 27,
-      "status": "preparing",
+      "status": "ready",
       "requested_at": "2026-10-30T23:41:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -40065,7 +40068,10 @@
         "Lawson"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "ready_at": "2026-10-30T23:47:00+01:00",
+      "delivery_confirmation": "prepared_web",
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
   "count": 205
