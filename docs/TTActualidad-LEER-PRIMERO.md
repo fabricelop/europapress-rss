@@ -12,7 +12,7 @@ Para empezar un chat de reparación:
 - **iPhone de esta entrega:** 0.4.28 build34, `feature/ttactualidad-ios-0.4.28-revision-y-grupos`. La fuente iOS de main puede ser anterior. Confirmar qué IPA está instalada antes de editar.
 - **Windows:** `desktop/ttactualidad/TTActualidad_Moderno.pyw`, Qt; preferencia ZIP sin EXE. No confundir con la web anterior ni con Tkinter.
 - **Todas las pendientes del Top30 entran automáticamente**; no seleccionar 31+. No hay filtro Nuevas.
-- **Rojas (>24h):** revisión condicional de novedades, como máximo una por origen/hora y con Top30 fresco. Sin novedades conserva texto, fecha y color. Una actualización continuada usa «sigue siendo tendencia por…»; un episodio distinto requiere verificación y otra identidad.
+- **Revisión de novedades:** primero rojas (>24h), después amarillas (12–24h) y verdes (<12h). Máximo dos comprobaciones automáticas por ventana móvil de15min, máximo dos activas y una por origen/hora, con Top30 fresco. Las revisiones manuales tienen prioridad y no consumen ese cupo. Sin novedades conserva texto, fecha y color. Una actualización continuada usa «sigue siendo tendencia por…»; un episodio distinto requiere verificación y otra identidad.
 - **Agrupación automática:** al cerrar texto y antes de pedir IA, comparar el mismo acontecimiento y cobertura ya publicada. Conservar originales, marcadas Agrupada en…; ambigüedad significa mantener separadas.
 - **Agrupar manual:** seleccionar ≥2 tarjetas de Listas; solo se revisan esas. **Quitar de Listas** sigue permitiendo indicar publicada/no publicada. **Retirar agrupadas** conserva conjuntas y no suma publicación.
 - **Publicación manual y contador:** solo published confirmado suma al ledger de24h móviles. Límite declarado por el usuario:51 publicaciones por cuenta en esa ventana. Abrir X, copiar o crear imágenes no suma.
@@ -28,7 +28,7 @@ Para empezar un chat de reparación:
 | Tendencias pendientes no entran | recent fresco, requests/queue, auto_queue_new | Rango1–30, fuente fiable, terminal/revisión |
 | Se acumula elaboración | Cola viva y trigger del mismo command_id | ACK → log listener → mensaje real → outbox → apply |
 | Botón procesamiento parece inerte | Main fresco frente a pantalla | Si main tiene READY, consulta/overlay; si no, editor |
-| Roja sin revisión | Fecha explicación, Top30, último checked_at | Prioridad del trabajo nuevo, job review_red, consumidor |
+| Tendencia sin revisión | Fecha explicación, Top30, último checked_at | Color, cupo2/15min, máximo2 activas, prioridad de nuevas/manuales, job review_red, consumidor |
 | Roja revisada sigue roja | red_review_outcome/checked_at | Sin novedades no renueva explained_at: es correcto |
 | Agrupación atascada | grouping job/outbox/error | Candidatas snapshot, fuentes, revisiones y aplicación |
 | Texto sin imagen | grouping_state/fingerprint/covered | Luego job → prompt → raster → relay → TTImages |

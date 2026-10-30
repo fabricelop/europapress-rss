@@ -100,7 +100,7 @@ Una explicación vieja no se renueva solo por cumplir 48h. La revisión de noved
 
 La cola autoritativa es `trends/editorial-queue.json`, coordinada con `requests.json`. `trends/request_pc_editorial.py --trigger` solicita la misma pasada en la rama control, con ejecutor `pc_chat_ttendencias_dedicated`. El listener `windows/TTendenciasDedicatedListener.ps1` lanza `Ejecutar.js tendencias --enviar` con `TTENDENCIAS_EDITORIAL_JOB_V2` y el contrato `trends/editorial-run-prompt.md`.
 
-Orden de trabajo: investigaciones nuevas y reelaboraciones manuales vigentes primero; agrupaciones después; revisiones rojas después. Las problemáticas ordinarias se reintentan al final mientras sigan en Top30. Cada paso relee ID/revisión y respeta cierres concurrentes. Un job especial de agrupación/revisión no es una tendencia llamada como su título.
+Orden de trabajo: investigaciones nuevas y reelaboraciones manuales vigentes primero; agrupaciones después; revisiones de novedades después. Las problemáticas ordinarias se reintentan al final mientras sigan en Top30. Cada paso relee ID/revisión y respeta cierres concurrentes. Un job especial de agrupación/revisión no es una tendencia llamada como su título.
 
 Investigar el detonante actual con fuentes verificables. `user_pistas` e `hints_verification_status:unverified` se conservan como hipótesis; mantener `investigation_history`. No asumir que una pista del editor está comprobada. Tras dos búsquedas distintas sin detonante verificable, guardar problematic con razón concreta y continuar; nunca inventar causa, actualidad o remate para vaciar la cola.
 
@@ -112,13 +112,13 @@ Transporte: cierre directo verificado, comentarios `TTENDENCIAS_CHAT_OUTBOX_V1` 
 
 La pasada deja RUNTRACE canónico `TTENDENCIAS_RUNTRACE_V1` en PR#7 y runtime durable en `trends/editorial-runtime.json`, con run_id, fase, mensaje, IDs/revisiones y resultado real. Delegar a un trigger sin consumidor/RUNNING no equivale a ejecutar la investigación. La IA tiene lifecycle separado y no forma parte del cómputo de texto cerrado.
 
-## 7. Revisión automática de tendencias rojas
+## 7. Revisión automática de tendencias por prioridad
 
 El color depende de **explained_at**, no de la última comprobación: verde menos de12h, amarillo de12h a24h inclusive, rojo más de24h. Una comprobación sin novedades no vuelve verde una explicación antigua.
 
-`pilot/trend_maintenance.py`, invocado por `pilot/listas_grouping.py` en `ttactualidad-group-listas.yml`, selecciona las rojas que siguen en un Top30 fresco. La captura debe tener como máximo una hora de antigüedad y no estar marcada insegura. Cada origen admite una revisión activa y un intervalo mínimo de una hora desde la última comprobación. Las nuevas investigaciones tienen prioridad; una cola ordinaria activa aplaza el mantenimiento.
+`pilot/trend_maintenance.py`, invocado por `pilot/listas_grouping.py` en `ttactualidad-group-listas.yml`, selecciona tendencias explicadas que siguen en un Top30 fresco, por este orden: **rojas, amarillas y verdes**. La captura debe tener como máximo una hora de antigüedad y no estar marcada insegura. Dentro de cada color, prioriza las no revisadas y las que llevan más tiempo sin comprobar. El cupo global es de **dos comprobaciones automáticas como máximo en cualquier ventana móvil de15min**, con **dos pendientes/en curso como máximo**; completar una no permite rellenar el cupo antes de que transcurran15min. Cada origen admite una revisión activa y un intervalo mínimo de una hora desde la última comprobación. Las nuevas investigaciones y las revisiones manuales tienen prioridad; una cola ordinaria activa aplaza el mantenimiento. El cupo no limita las revisiones solicitadas expresamente por el editor.
 
-El job conserva el origen intacto en `review_source` (ID, revisión, explicación, fecha, fingerprint), tiene `red_review_request:true`, `task:review_red` y viaja por la misma cola, trigger y editor habituales. Las publicadas pueden servir de origen para novedades, conservando su terminal. Las retiradas/desestimadas no se reabren automáticamente por antigüedad.
+El job conserva el origen intacto en `review_source` (ID, revisión, explicación, fecha, fingerprint), tiene `red_review_request:true`, `task:review_red` y viaja por la misma cola, trigger y editor habituales. Esos nombres técnicos y los campos red_review_* se conservan por compatibilidad, aunque cubren los tres colores. Cada job guarda además review_color y review_priority. Una verde puede requerir actualización por un nuevo hecho contrastado —como una rueda de prensa— sin esperar a cambiar de color. Las publicadas pueden servir de origen para novedades, conservando su terminal. Las retiradas/desestimadas no se reabren automáticamente por antigüedad.
 
 | Resultado de investigación | Persistencia | Efecto visible/publicación |
 |---|---|---|
@@ -341,7 +341,7 @@ La lectura de fuentes, selección, aplicación de decisiones y planificación de
 | Azul1–30 sin elaborar | auto_queue_new, requests, queue | Captura fiable, terminal/revisión y run selector |
 | Muchas en elaboración | Cola viva → trigger/ACK | Listener → envío real → texto/outbox → aplicación |
 | Solicitar procesamiento no cambia pantalla | Main fresco y revisión objetivo | Si ya hay READY, cliente/consulta/overlay; si no, tramo editorial real |
-| Roja sin revisar | explained_at, recent actualizado, requests | >24h, sigueTop30, última revisión≥1h, trabajo nuevo prioritario, consumidor |
+| Tendencia sin revisar | explained_at, recent actualizado, requests | Prioridad roja→amarilla→verde, cupo2/15min, máximo2 activas, última revisión≥1h, trabajo nuevo/manual prioritario, consumidor |
 | Revisión marcada sin novedades | red_review_outcome/checked_at/sources | Color conserva edad original; no es fallo por seguir roja |
 | Actualización no aparece | maintenance-outbox, review_error/job | JIT, superseded/stale, review_created_id, ficha explicada real |
 | Agrupar no acaba | grouping job/outbox/grouping_error | Snapshot, miembros, fuentes, revisión aplicada, runner real |
@@ -361,7 +361,7 @@ Si falta outbox, revisar editor antes de aplicador. Si el texto ya está en main
 
 ## 16. Verificación y mantenimiento de esta memoria
 
-Los tests de agrupación y mantenimiento usan estados sintéticos: conservación de originales, selección exacta, revisiones obsoletas, cierres concurrentes, idempotencia, cobertura por una publicación, cooldown horario y bloqueo visual antes de clearance. Los tests Top30 comprueban puestos1–30, exclusión31+, manuales, cierres, radar inseguro y que edad sola no crea publicaciones. Los tests nativos cubren menú y seguimiento; el build compila app y extensión. Estas pruebas no acreditan instalación física ni una generación real de IA.
+Los tests de agrupación y mantenimiento usan estados sintéticos: conservación de originales, selección exacta, revisiones obsoletas, cierres concurrentes, idempotencia, cobertura por una publicación, cooldown horario, prioridad de colores, cupo móvil2/15min, límite de2 activas y bloqueo visual antes de clearance. Los tests Top30 comprueban puestos1–30, exclusión31+, manuales, cierres, radar inseguro y que edad sola no crea publicaciones. Los tests nativos cubren menú y seguimiento; el build compila app y extensión. Estas pruebas no acreditan instalación física ni una generación real de IA.
 
 Después de cada cambio, integrar las reglas en sus apartados de proceso, responsables, entradas/salidas, rutas y diagnóstico. No añadir parches normativos contradictorios al final. Registrar síntoma, causa comprobada/hipótesis, commit, build e instalación en el historial separado. Verificar mediante relectura del ID/revisión real; distinguir código probado, persistencia, ejecución PC y prueba física.
 

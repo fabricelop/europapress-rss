@@ -160,3 +160,9 @@ La decisión de agrupación precede a nuevos jobs IA y se valida contra el finge
 Pruebas:13 casos de agrupación, nueve iniciales de mantenimiento y regresiones Top30, más preflight iOS. La compilación nativa se verifica en su run específico. No se ha instalado físicamente el IPA ni ejecutado una generación real de IA como prueba de esta modificación. El despliegue guarda código y solicitudes; la investigación depende del consumidor editorial habitual.
 
 La memoria y la guía se reescriben como descripción integrada por procesos, sin parches normativos al final. La copia completa conserva su identidad en ChatGPT. Los antecedentes quedan únicamente en este historial.
+
+## 13. 30/10/2026 — revisión de los tres colores con cupo reducido
+
+El usuario pide comprobar también amarillas y verdes porque un acontecimiento nuevo puede exigir actualizar una explicación aún reciente (ejemplo aportado: rueda de prensa de Óscar Puente). Se amplía el selector a los tres colores, con prioridad roja→amarilla→verde y rotación por última comprobación dentro del color. El máximo es dos solicitudes automáticas en15min móviles, con dos pendientes/en curso simultáneas; no se rellena al cerrar rápido un job. Se conserva el intervalo de una hora por origen y la prioridad del trabajo nuevo/manual. Los nombres técnicos red_review_* y review_red se conservan para compatibilidad; no cambia el transporte ni hace falta otro IPA.
+
+Validación:14 pruebas de mantenimiento, incluyendo prioridad de colores, no rellenar el cupo a1/5/14min, siguiente tanda a15min, límite activo entre periodos, actualización verificada de una verde y prioridad de reelaboración manual. La memoria y guía incorporan estas reglas en sus apartados; el historial queda separado. Los resultados investigados siguen requiriendo fuentes y novedades sustanciales; no se publican automáticamente.

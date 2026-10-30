@@ -29,7 +29,7 @@ class MaintenanceTests(unittest.TestCase):
         return dict(job_id=job['id'], outcome=outcome, reason='Comprobación de los hechos actuales',
                     verification_sources=[{'url': 'https://example.org/comunicado'}])
 
-    def test_only_fresh_top30_reds_and_no_hourly_duplicate(self):
+    def test_only_fresh_top30_and_no_hourly_duplicate(self):
         self.assertEqual(len(self.schedule()), 1)
         self.assertEqual(len(self.schedule()), 1)
         for changes in [{'items': [{'name': 'Adif', 'rank': 31}]},
@@ -42,6 +42,61 @@ class MaintenanceTests(unittest.TestCase):
                 s[m.RECENT].update(changes)
                 m.schedule_reviews(s, self.now, g.grouping_api())
                 self.assertFalse(any(x.get('red_review_request') for x in s[g.QUEUE]['items']))
+
+    def colors(self):
+        self.state[g.MANUAL]['items'] = []
+        self.state[g.REQUESTS]['requests'] = []
+        self.state[m.RECENT]['items'] = []
+        for ident, hours in [('green', 2), ('yellow', 12), ('red', 25)]:
+            self.add({**self.row, 'id': ident, 'name': ident,
+                      'explained_at': (self.now-timedelta(hours=hours)).isoformat()})
+            self.state[m.RECENT]['items'].append({'name': ident, 'rank': 2})
+
+    def review_jobs(self):
+        return [x for x in self.state[g.REQUESTS]['requests'] if x.get('red_review_request')]
+
+    def test_priority_red_then_yellow_then_green_with_two_per_period(self):
+        self.colors()
+        m.schedule_reviews(self.state, self.now, g.grouping_api())
+        jobs = self.review_jobs()
+        self.assertEqual([x['review_source']['id'] for x in jobs], ['red', 'yellow'])
+        self.assertEqual([x['review_color'] for x in jobs], ['roja', 'amarilla'])
+
+    def test_completed_batch_does_not_refill_before_fifteen_minutes(self):
+        self.colors()
+        m.schedule_reviews(self.state, self.now, g.grouping_api())
+        for job in self.review_jobs():
+            command = dict(job_id=job['id'], outcome='unchanged', reason='Sin cambios comprobados',
+                           verification_sources=[{'url': 'https://example.org/fuente'}])
+            self.state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        for minutes in [1, 5, 14]:
+            m.schedule_reviews(self.state, self.now+timedelta(minutes=minutes), g.grouping_api())
+            self.assertEqual(len(self.review_jobs()), 2)
+        m.schedule_reviews(self.state, self.now+timedelta(minutes=15), g.grouping_api())
+        self.assertEqual([x['review_source']['id'] for x in self.review_jobs()], ['red', 'yellow', 'green'])
+
+    def test_active_reviews_occupy_slots_even_in_a_later_period(self):
+        self.colors()
+        m.schedule_reviews(self.state, self.now, g.grouping_api())
+        m.schedule_reviews(self.state, self.now+timedelta(minutes=30), g.grouping_api())
+        self.assertEqual(len(self.review_jobs()), 2)
+
+    def test_green_can_receive_verified_update_without_waiting_to_turn_red(self):
+        for path, field in [(g.MANUAL, 'items'), (g.REQUESTS, 'requests')]:
+            self.state[path][field][0]['explained_at'] = (self.now-timedelta(hours=1)).isoformat()
+        command = self.result('updated')
+        command.update(explanation='TT#30 Adif sigue siendo tendencia por el anuncio de su rueda de prensa.\n#Adif #Trenes',
+                       new_facts='Anuncio verificado durante una nueva rueda de prensa')
+        state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertEqual(state[g.REQUESTS]['requests'][-2]['review_color'], 'verde')
+        self.assertTrue(state[g.MANUAL]['items'][-1]['continuity_update'])
+
+    def test_manual_rework_precedes_automatic_reviews_of_every_color(self):
+        self.colors()
+        self.state[g.REQUESTS]['requests'].append(dict(id='manual', revision=2, status='update',
+                                                      name='Óscar Puente', auto_queued=False))
+        self.schedule()
+        self.assertFalse(self.review_jobs())
 
     def test_unchanged_preserves_text_date_and_color_age(self):
         command = self.result()

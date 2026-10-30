@@ -1,4 +1,4 @@
-"""Conditional red-trend research and the text-before-images grouping gate.
+"""Conditional trend research and the text-before-images grouping gate.
 
 Research is performed by the existing editorial chat, never by this scheduler.
 All result application is on a fresh state with exact revision/text guards.
@@ -16,6 +16,9 @@ QUEUE = 'trends/editorial-queue.json'
 RECENT = 'trends/recent.json'
 ACTIVE = {'preparing', 'update'}
 TERMINAL = {'published', 'deleted', 'dismissed', 'removed', 'delete_pending', 'delete_failed'}
+REVIEW_PERIOD = timedelta(minutes=15)
+REVIEWS_PER_PERIOD = 2
+REVIEW_COOLDOWN = timedelta(hours=1)
 
 
 def key(value):
@@ -59,7 +62,7 @@ def add_job(state, job, at):
 
 
 def schedule(state, now, grouping):
-    """Call after applying results. New explanations, grouping, then red reviews."""
+    """Call after applying results. New explanations, grouping, then reviews."""
     at = now.isoformat()
     if state[QUEUE].get('maintenance_pause'):
         return
@@ -132,7 +135,17 @@ def schedule_reviews(state, now, grouping):
     reqs = grouping.latest(state[REQUESTS]['requests'])
     active_reviews = {x.get('review_source', {}).get('id') for x in reqs.values()
                       if x.get('red_review_request') and x.get('status') in ACTIVE}
+    review_jobs = [x for x in reqs.values() if x.get('red_review_request')]
+    active_count = sum(x.get('status') in ACTIVE for x in review_jobs)
+    # A rolling window prevents every five-minute tick (or a quick completion)
+    # from refilling the batch. Pending work also occupies the two global slots.
+    recent_count = sum(0 <= (now-at).total_seconds() < REVIEW_PERIOD.total_seconds()
+                       for x in review_jobs if (at := grouping.moment(x.get('requested_at'))))
+    budget = min(REVIEWS_PER_PERIOD-active_count, REVIEWS_PER_PERIOD-recent_count)
+    if budget <= 0:
+        return
     seen = set()
+    candidates = []
     for name, row in latest.items():
         ident = row['id']
         if ident in seen or ident in active_reviews or grouping.is_covered(row):
@@ -148,24 +161,35 @@ def schedule_reviews(state, now, grouping):
             continue
         explained = grouping.moment(row.get('explained_at'))
         checked = grouping.moment(row.get('red_review_checked_at'))
-        if not explained or now-explained <= timedelta(hours=24) or checked and now-checked < timedelta(hours=1):
+        if not explained or now < explained or checked and now-checked < REVIEW_COOLDOWN:
             continue
+        age = now-explained
+        priority, color = ((0, 'roja') if age > timedelta(hours=24) else
+                           (1, 'amarilla') if age >= timedelta(hours=12) else (2, 'verde'))
+        # Within each color prefer those least recently checked, then the
+        # oldest explanation, using IDs for deterministic ordering.
+        candidates.append((priority, checked is not None, checked or explained, explained, ident, name, row, color))
+    for priority, _, _, _, ident, name, row, color in sorted(candidates, key=lambda x: x[:5]):
+        if budget <= 0:
+            break
         review_id = 'red-review-'+hashlib.sha256((fingerprint(row)+'|'+str(int(now.timestamp())//3600)).encode()).hexdigest()[:20]
         if review_id in reqs:
             continue
         job = dict(id=review_id, revision=0, name='Revisar novedades: '+str(row.get('name')), rank=int(top[name]['rank']),
                    status='preparing', requested_at=now.isoformat(), task='review_red', red_review_request=True,
+                   review_color=color, review_priority=priority,
                    review_source={**grouping.snapshot(row), 'fingerprint': fingerprint(row)},
                    with_image=False, disable_ai_image=True, auto_queued=False,
                    rewrite_instruction='Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.')
         add_job(state, job, now.isoformat())
+        budget -= 1
 
 
 def apply_review(state, command, now, grouping):
     state = copy.deepcopy(state)
     job = next((x for x in state[REQUESTS]['requests'] if x.get('id') == command.get('job_id') and x.get('red_review_request')), None)
     if not job:
-        raise ValueError('Revisión roja inexistente')
+        raise ValueError('Revisión de tendencia inexistente')
     if job.get('status') not in ACTIVE:
         return state, False
     snap = job['review_source']
