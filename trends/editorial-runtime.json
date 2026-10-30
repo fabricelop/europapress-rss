@@ -3,40 +3,35 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T06:10:00+01:00",
-  "last_completed_at": "2026-10-30T06:13:00+01:00",
-  "updated_at": "2026-10-30T06:13:00+01:00",
+  "last_started_at": "2026-10-30T06:25:00+01:00",
+  "last_completed_at": "2026-10-30T06:28:00+01:00",
+  "updated_at": "2026-10-30T06:28:00+01:00",
   "status": "success",
   "queue_complete": true,
-  "processed_ids": [
-    "bff9314ae61b",
-    "6e5758e5d6fa",
-    "2e51a7a10dd3",
-    "b59fd3a871a0",
-    "59935abe8014",
-    "e949f15efed7"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T061000+0100",
-  "previous_run_id": "tr-chat-20261030T055500+0100",
+  "run_id": "tr-chat-20261030T062500+0100",
+  "previous_run_id": "tr-chat-20261030T061000+0100",
   "summary": {
-    "attempted": 6,
-    "explained": 6,
-    "explanation_groups": 6,
-    "new_cards": 6,
+    "attempted": 0,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "problematic": 0,
-    "final_resolved": 6,
+    "final_resolved": 0,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 6,
+    "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 6,
+    "remates_omitted": 15,
+    "recent_missing_closer_reviewed": 15,
+    "pending_visual_candidates_reviewed": 24,
     "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -44,109 +39,46 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T06:10:00+01:00",
+      "at": "2026-10-30T06:25:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Seleccionando 6 Top 10 sin explicación vigente: Urda, Adif, Óscar Puente, Iryo, Angrois y Atocha."
+      "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes recientes."
     },
     {
-      "at": "2026-10-30T06:11:00+01:00",
-      "phase": "verifying",
-      "trend_id": "bff9314ae61b",
-      "title": "Urda",
-      "message": "Releyendo estado autoritativo de Urda"
-    },
-    {
-      "at": "2026-10-30T06:11:00+01:00",
-      "phase": "investigating",
-      "trend_id": "bff9314ae61b",
-      "title": "Urda",
-      "message": "Hecho esencial verificado · accidente del 28 de octubre y balance oficial de 69 fallecidos"
-    },
-    {
-      "at": "2026-10-30T06:11:00+01:00",
-      "phase": "drafting",
-      "trend_id": "bff9314ae61b",
-      "title": "Urda",
-      "message": "Redactando explicación factual y comprobando límite de X · 228 caracteres"
-    },
-    {
-      "at": "2026-10-30T06:11:00+01:00",
-      "phase": "drafting",
-      "trend_id": "bff9314ae61b",
-      "title": "Urda",
-      "message": "Sin remate · tragedia con víctimas; explicación factual suficiente"
-    },
-    {
-      "at": "2026-10-30T06:11:00+01:00",
+      "at": "2026-10-30T06:26:44+01:00",
       "phase": "persisting",
-      "trend_id": "bff9314ae61b",
-      "title": "Urda",
-      "message": "Guardando ficha Explicada de Urda"
+      "trend_id": null,
+      "title": null,
+      "message": "Reparación visual solicitada mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-30T06:11:00+01:00",
-      "phase": "persisting",
-      "trend_id": "bff9314ae61b",
-      "title": "Urda",
-      "message": "Actualizando requests y retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-30T06:11:00+01:00",
-      "phase": "verifying",
-      "trend_id": "bff9314ae61b",
-      "title": "Urda",
-      "message": "Releyendo main y verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-30T06:11:20+01:00",
-      "phase": "verifying",
-      "trend_id": "6e5758e5d6fa",
-      "title": "Adif",
-      "message": "Releyendo estado autoritativo de Adif antes de persistir"
-    },
-    {
-      "at": "2026-10-30T06:11:40+01:00",
-      "phase": "verifying",
-      "trend_id": "2e51a7a10dd3",
-      "title": "Óscar Puente",
-      "message": "Releyendo estado autoritativo de Óscar Puente antes de persistir"
-    },
-    {
-      "at": "2026-10-30T06:12:00+01:00",
-      "phase": "verifying",
-      "trend_id": "b59fd3a871a0",
-      "title": "Iryo",
-      "message": "Releyendo estado autoritativo de Iryo antes de persistir"
-    },
-    {
-      "at": "2026-10-30T06:12:20+01:00",
-      "phase": "verifying",
-      "trend_id": "59935abe8014",
-      "title": "Angrois",
-      "message": "Releyendo estado autoritativo de Angrois antes de persistir"
-    },
-    {
-      "at": "2026-10-30T06:12:40+01:00",
-      "phase": "verifying",
-      "trend_id": "e949f15efed7",
-      "title": "Atocha",
-      "message": "Releyendo estado autoritativo de Atocha antes de persistir"
-    },
-    {
-      "at": "2026-10-30T06:13:00+01:00",
+      "at": "2026-10-30T06:27:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · 6/6 id+revision con texto idéntico en requests y Explicadas; cola 0 y rewrite_pending 0."
+      "message": "Revisando Pendientes · 24 tarjetas recientes."
     },
     {
-      "at": "2026-10-30T06:13:00+01:00",
+      "at": "2026-10-30T06:27:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": null,
+      "title": null,
+      "message": "15 Pendientes sin remate ligados a fallecimientos, accidente, lesión o salud; se mantienen factuales y no se fuerza humor sensible."
+    },
+    {
+      "at": "2026-10-30T06:27:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main · cola 0; 0 requests activos; rewrite_pending 0."
+    },
+    {
+      "at": "2026-10-30T06:28:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias cerrada 6/6 · Urda, Adif, Óscar Puente, Iryo, Angrois y Atocha explicadas y verificadas; cola final 0."
+      "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; 24 Pendientes revisados; reparación visual solicitada."
     }
   ],
   "ratings_snapshot": {
@@ -157,50 +89,13 @@
     "recent_considered": 100
   },
   "remate_selections": [],
-  "final_outcomes": [
-    {
-      "id": "bff9314ae61b",
-      "name": "Urda",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "6e5758e5d6fa",
-      "name": "Adif",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "2e51a7a10dd3",
-      "name": "Óscar Puente",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "b59fd3a871a0",
-      "name": "Iryo",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "59935abe8014",
-      "name": "Angrois",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "e949f15efed7",
-      "name": "Atocha",
-      "revision": 0,
-      "status": "explained"
-    }
-  ],
+  "final_outcomes": [],
   "incidents": [],
   "incident_count": 0,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T061000+0100",
+    "trigger_run_id": "tr-chat-20261030T062500+0100",
     "status": "triggered",
     "editorial_blocking": false
   },
@@ -210,39 +105,42 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "updated_at": "2026-10-30T06:13:00+01:00"
+    "updated_at": "2026-10-30T06:28:00+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T061000+0100",
+    "run_id": "tr-chat-20261030T062500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T06:10:00+01:00",
-    "updated_at": "2026-10-30T06:13:00+01:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-30T06:25:00+01:00",
+    "updated_at": "2026-10-30T06:28:00+01:00",
+    "finished_at": "2026-10-30T06:28:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias cerrada 6/6 · Urda, Adif, Óscar Puente, Iryo, Angrois y Atocha explicadas y verificadas; cola final 0.",
+    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; 24 Pendientes revisados; reparación visual solicitada.",
     "summary": {
-      "attempted": 6,
-      "explained": 6,
-      "explanation_groups": 6,
-      "new_cards": 6,
+      "attempted": 0,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "problematic": 0,
-      "final_resolved": 6,
+      "final_resolved": 0,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 6,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 6,
+      "remates_omitted": 15,
+      "recent_missing_closer_reviewed": 15,
+      "pending_visual_candidates_reviewed": 24,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -253,172 +151,64 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T06:10:00+01:00",
+        "at": "2026-10-30T06:25:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Seleccionando 6 Top 10 sin explicación vigente: Urda, Adif, Óscar Puente, Iryo, Angrois y Atocha."
+        "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes recientes."
       },
       {
-        "at": "2026-10-30T06:11:00+01:00",
-        "phase": "verifying",
-        "trend_id": "bff9314ae61b",
-        "title": "Urda",
-        "message": "Releyendo estado autoritativo de Urda"
-      },
-      {
-        "at": "2026-10-30T06:11:00+01:00",
-        "phase": "investigating",
-        "trend_id": "bff9314ae61b",
-        "title": "Urda",
-        "message": "Hecho esencial verificado · accidente del 28 de octubre y balance oficial de 69 fallecidos"
-      },
-      {
-        "at": "2026-10-30T06:11:00+01:00",
-        "phase": "drafting",
-        "trend_id": "bff9314ae61b",
-        "title": "Urda",
-        "message": "Redactando explicación factual y comprobando límite de X · 228 caracteres"
-      },
-      {
-        "at": "2026-10-30T06:11:00+01:00",
-        "phase": "drafting",
-        "trend_id": "bff9314ae61b",
-        "title": "Urda",
-        "message": "Sin remate · tragedia con víctimas; explicación factual suficiente"
-      },
-      {
-        "at": "2026-10-30T06:11:00+01:00",
+        "at": "2026-10-30T06:26:44+01:00",
         "phase": "persisting",
-        "trend_id": "bff9314ae61b",
-        "title": "Urda",
-        "message": "Guardando ficha Explicada de Urda"
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual solicitada mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-30T06:11:00+01:00",
-        "phase": "persisting",
-        "trend_id": "bff9314ae61b",
-        "title": "Urda",
-        "message": "Actualizando requests y retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-30T06:11:00+01:00",
-        "phase": "verifying",
-        "trend_id": "bff9314ae61b",
-        "title": "Urda",
-        "message": "Releyendo main y verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-30T06:11:20+01:00",
-        "phase": "verifying",
-        "trend_id": "6e5758e5d6fa",
-        "title": "Adif",
-        "message": "Releyendo estado autoritativo de Adif antes de persistir"
-      },
-      {
-        "at": "2026-10-30T06:11:40+01:00",
-        "phase": "verifying",
-        "trend_id": "2e51a7a10dd3",
-        "title": "Óscar Puente",
-        "message": "Releyendo estado autoritativo de Óscar Puente antes de persistir"
-      },
-      {
-        "at": "2026-10-30T06:12:00+01:00",
-        "phase": "verifying",
-        "trend_id": "b59fd3a871a0",
-        "title": "Iryo",
-        "message": "Releyendo estado autoritativo de Iryo antes de persistir"
-      },
-      {
-        "at": "2026-10-30T06:12:20+01:00",
-        "phase": "verifying",
-        "trend_id": "59935abe8014",
-        "title": "Angrois",
-        "message": "Releyendo estado autoritativo de Angrois antes de persistir"
-      },
-      {
-        "at": "2026-10-30T06:12:40+01:00",
-        "phase": "verifying",
-        "trend_id": "e949f15efed7",
-        "title": "Atocha",
-        "message": "Releyendo estado autoritativo de Atocha antes de persistir"
-      },
-      {
-        "at": "2026-10-30T06:13:00+01:00",
+        "at": "2026-10-30T06:27:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · 6/6 id+revision con texto idéntico en requests y Explicadas; cola 0 y rewrite_pending 0."
+        "message": "Revisando Pendientes · 24 tarjetas recientes."
       },
       {
-        "at": "2026-10-30T06:13:00+01:00",
+        "at": "2026-10-30T06:27:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": null,
+        "title": null,
+        "message": "15 Pendientes sin remate ligados a fallecimientos, accidente, lesión o salud; se mantienen factuales y no se fuerza humor sensible."
+      },
+      {
+        "at": "2026-10-30T06:27:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0; 0 requests activos; rewrite_pending 0."
+      },
+      {
+        "at": "2026-10-30T06:28:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias cerrada 6/6 · Urda, Adif, Óscar Puente, Iryo, Angrois y Atocha explicadas y verificadas; cola final 0."
+        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; 24 Pendientes revisados; reparación visual solicitada."
       }
     ],
-    "finished_at": "2026-10-30T06:13:00+01:00",
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
+    "processed_ids": [],
+    "partial": false,
+    "final_outcomes": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": null,
       "recent_considered": 100
-    },
-    "processed_ids": [
-      "bff9314ae61b",
-      "6e5758e5d6fa",
-      "2e51a7a10dd3",
-      "b59fd3a871a0",
-      "59935abe8014",
-      "e949f15efed7"
-    ],
-    "partial": false,
-    "final_outcomes": [
-      {
-        "id": "bff9314ae61b",
-        "name": "Urda",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "6e5758e5d6fa",
-        "name": "Adif",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "2e51a7a10dd3",
-        "name": "Óscar Puente",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "b59fd3a871a0",
-        "name": "Iryo",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "59935abe8014",
-        "name": "Angrois",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "e949f15efed7",
-        "name": "Atocha",
-        "revision": 0,
-        "status": "explained"
-      }
-    ]
+    }
   },
   "radar": {
-    "captured_at": "2026-10-30T06:10:53+01:00",
+    "captured_at": "2026-10-30T06:21:06+01:00",
     "queue_count": 0,
     "top10": [
       "Urda",
