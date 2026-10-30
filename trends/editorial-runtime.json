@@ -3,29 +3,35 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T18:25:00+01:00",
+  "last_started_at": "2026-10-30T18:29:00+01:00",
   "last_completed_at": "2026-10-30T18:28:00+01:00",
-  "updated_at": "2026-10-30T18:28:00+01:00",
-  "status": "DONE",
-  "queue_complete": true,
-  "processed_ids": [
-    "83aa70bdac40"
+  "updated_at": "2026-10-30T18:29:00+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-fbd62020f199c2c1dc63",
+    "red-review-1b3be58ccb9ccda8ce7e",
+    "red-review-7fead06672aa4e9624f1"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-fbd62020f199c2c1dc63",
+    "red-review-1b3be58ccb9ccda8ce7e",
+    "red-review-7fead06672aa4e9624f1"
+  ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-20261030T182500-manual",
-  "previous_run_id": "tr-20261030T181000-manual",
+  "run_id": "tr-1793381257350-manual",
+  "previous_run_id": "tr-20261030T182500-manual",
   "summary": {
-    "attempted": 1,
-    "explained": 1,
+    "attempted": 0,
+    "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 0,
+    "remaining_active": 3,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -34,53 +40,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T18:25:00+01:00",
+      "at": "2026-10-30T18:29:00+01:00",
       "phase": "preparing",
-      "trend_id": "83aa70bdac40",
-      "title": "Día de Todos",
-      "message": "Pasada manual iniciada. Cola inicial 1; revisión 0 validada en main. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T18:25:00+01:00",
-      "phase": "investigating",
-      "trend_id": "83aa70bdac40",
-      "title": "Día de Todos",
-      "message": "Investigando el detonante actual de la tendencia y contrastando el contexto de Todos los Santos 2026."
-    },
-    {
-      "at": "2026-10-30T18:27:00+01:00",
-      "phase": "drafting",
-      "trend_id": "83aa70bdac40",
-      "title": "Día de Todos",
-      "message": "Detonante identificado: proximidad de Todos los Santos y traslado del festivo al lunes 2 en nueve comunidades."
-    },
-    {
-      "at": "2026-10-30T18:27:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "83aa70bdac40",
-      "title": "Día de Todos",
-      "message": "Remate único seleccionado y texto completo validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-10-30T18:27:00+01:00",
-      "phase": "persisting",
-      "trend_id": "83aa70bdac40",
-      "title": "Día de Todos",
-      "message": "Persistiendo revisión 0 en requests y en el registro de explicadas."
-    },
-    {
-      "at": "2026-10-30T18:28:00+01:00",
-      "phase": "verifying",
-      "trend_id": "83aa70bdac40",
-      "title": "Día de Todos",
-      "message": "Verificación final: request y ficha explicada coinciden en revisión 0; cola main sin preparing/update ni rewrite_pending."
-    },
-    {
-      "at": "2026-10-30T18:28:00+01:00",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada 1/1. Día de Todos cerrada; cola final 0. Sin ImageGen."
+      "message": "Pasada manual iniciada. Cola inicial 3: una agrupación automática y dos revisiones de novedades. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -89,35 +53,37 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261030T182500-manual",
+    "run_id": "tr-1793381257350-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T18:25:00+01:00",
-    "updated_at": "2026-10-30T18:28:00+01:00",
-    "finished_at": "2026-10-30T18:28:00+01:00",
-    "current": 1,
-    "total": 1,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T18:29:00+01:00",
+    "updated_at": "2026-10-30T18:29:00+01:00",
+    "finished_at": null,
+    "current": 0,
+    "total": 3,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
-    "processed_ids": [
-      "83aa70bdac40"
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "listas-auto-fbd62020f199c2c1dc63",
+      "red-review-1b3be58ccb9ccda8ce7e",
+      "red-review-7fead06672aa4e9624f1"
     ],
+    "remaining_problematic_ids": [],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 1/1: Día de Todos r0 explicada y persistida; cola final 0. Sin ImageGen.",
+    "message": "Procesando 0/3: agrupación automática y revisiones de Blocus y Alvia. Sin ImageGen.",
     "summary": {
-      "attempted": 1,
-      "explained": 1,
+      "attempted": 0,
+      "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 0,
+      "remaining_active": 3,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -128,72 +94,22 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T18:25:00+01:00",
+        "at": "2026-10-30T18:29:00+01:00",
         "phase": "preparing",
-        "trend_id": "83aa70bdac40",
-        "title": "Día de Todos",
-        "message": "Pasada manual iniciada. Cola inicial 1; revisión 0 validada en main. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T18:25:00+01:00",
-        "phase": "investigating",
-        "trend_id": "83aa70bdac40",
-        "title": "Día de Todos",
-        "message": "Investigando el detonante actual de la tendencia y contrastando el contexto de Todos los Santos 2026."
-      },
-      {
-        "at": "2026-10-30T18:27:00+01:00",
-        "phase": "drafting",
-        "trend_id": "83aa70bdac40",
-        "title": "Día de Todos",
-        "message": "Detonante identificado: proximidad de Todos los Santos y traslado del festivo al lunes 2 en nueve comunidades."
-      },
-      {
-        "at": "2026-10-30T18:27:00+01:00",
-        "phase": "remate_selection",
-        "trend_id": "83aa70bdac40",
-        "title": "Día de Todos",
-        "message": "Remate único seleccionado y texto completo validado por debajo de 280 caracteres."
-      },
-      {
-        "at": "2026-10-30T18:27:00+01:00",
-        "phase": "persisting",
-        "trend_id": "83aa70bdac40",
-        "title": "Día de Todos",
-        "message": "Persistiendo revisión 0 en requests y en el registro de explicadas."
-      },
-      {
-        "at": "2026-10-30T18:28:00+01:00",
-        "phase": "verifying",
-        "trend_id": "83aa70bdac40",
-        "title": "Día de Todos",
-        "message": "Verificación final: request y ficha explicada coinciden en revisión 0; cola main sin preparing/update ni rewrite_pending."
-      },
-      {
-        "at": "2026-10-30T18:28:00+01:00",
-        "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada 1/1. Día de Todos cerrada; cola final 0. Sin ImageGen."
+        "message": "Pasada manual iniciada. Cola inicial 3: una agrupación automática y dos revisiones de novedades. Sin ImageGen."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "83aa70bdac40",
-        "revision": 0,
-        "name": "Día de Todos",
-        "outcome": "explained",
-        "explanation": "TT#30 Día de Todos es tendencia por la cercanía de Todos los Santos: este año el 1 de noviembre cae en domingo y nueve comunidades trasladan el festivo al lunes 2.\n#TodosLosSantos #Festivos\n🌶️ Este año el puente viene con mapa autonómico."
-      }
-    ]
+    "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T18:25:00+01:00",
-  "finished_at": "2026-10-30T18:28:00+01:00",
-  "current": 1,
-  "total": 1,
+  "phase": "preparing",
+  "started_at": "2026-10-30T18:29:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null
 }
