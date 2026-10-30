@@ -3,17 +3,17 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T20:10:59.000Z",
+  "last_started_at": "2026-10-30T20:27:24.953Z",
   "last_completed_at": "2026-10-30T20:11:35.000Z",
-  "updated_at": "2026-10-30T20:11:35.000Z",
-  "status": "DONE",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T20:27:24.953Z",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-20261030T211059-manual",
-  "previous_run_id": "tr-1793390223935-manual",
+  "run_id": "tr-20261030T212724-manual",
+  "previous_run_id": "tr-20261030T211059-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -33,34 +33,20 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T20:10:59.000Z",
+      "at": "2026-10-30T20:27:24.953Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio manual: cola autoritativa 0/0; se valida ranking fresco, reexplicaciones y trabajos especiales. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T20:11:20.000Z",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": "Calvario",
-      "message": "El ranking fresco marca Calvario como nueva entrada, pero su ficha está terminal/cubierta por la conjunta publicada del accidente de Urda; no existe revisión nueva ni trabajo activo que reabrir."
-    },
-    {
-      "at": "2026-10-30T20:11:35.000Z",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final superada: main sigue 0/0, sin preparing/update, rewrite_pending, group_listas, anticipate, review_red ni problematic activos. Sin ImageGen ni envíos."
+      "message": "Inicio manual: cola autoritativa 0/0; se validan reexplicaciones, agrupaciones, Radar y revisiones de novedades. Sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T20:10:59.000Z",
-  "finished_at": "2026-10-30T20:11:35.000Z",
+  "phase": "preparing",
+  "started_at": "2026-10-30T20:27:24.953Z",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -69,23 +55,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261030T211059-manual",
+    "run_id": "tr-20261030T212724-manual",
     "source": "manual",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T20:10:59.000Z",
-    "updated_at": "2026-10-30T20:11:35.000Z",
-    "finished_at": "2026-10-30T20:11:35.000Z",
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T20:27:24.953Z",
+    "updated_at": "2026-10-30T20:27:24.953Z",
+    "finished_at": null,
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 0/0: cola autoritativa vacía tras relectura JIT. Calvario reaparece en el Top 30, pero ya está cubierto por una ficha conjunta publicada y no hay revisión nueva activa. Sin ImageGen ni envíos.",
+    "message": "Pasada manual iniciada; cola autoritativa 0/0, validación de trabajos especiales en curso.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -107,25 +93,11 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T20:10:59.000Z",
+        "at": "2026-10-30T20:27:24.953Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio manual: cola autoritativa 0/0; se valida ranking fresco, reexplicaciones y trabajos especiales. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T20:11:20.000Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": "Calvario",
-        "message": "El ranking fresco marca Calvario como nueva entrada, pero su ficha está terminal/cubierta por la conjunta publicada del accidente de Urda; no existe revisión nueva ni trabajo activo que reabrir."
-      },
-      {
-        "at": "2026-10-30T20:11:35.000Z",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Barrera final superada: main sigue 0/0, sin preparing/update, rewrite_pending, group_listas, anticipate, review_red ni problematic activos. Sin ImageGen ni envíos."
+        "message": "Inicio manual: cola autoritativa 0/0; se validan reexplicaciones, agrupaciones, Radar y revisiones de novedades. Sin ImageGen."
       }
     ],
     "final_outcomes": []
