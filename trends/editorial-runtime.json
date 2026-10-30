@@ -3,37 +3,35 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T19:34:00+01:00",
+  "last_started_at": "2026-10-30T19:39:00+01:00",
   "last_completed_at": "2026-10-30T19:39:00+01:00",
-  "updated_at": "2026-10-30T19:40:00+01:00",
+  "updated_at": "2026-10-30T19:43:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [
-    "e40be8e866b4"
+    "listas-auto-1646815220710d414202"
   ],
   "remaining_ids": [
-    "listas-auto-1646815220710d414202",
     "red-review-0d7c83cb2690e08e5487",
     "red-review-65a59d5cd9f39243ff92"
   ],
   "remaining_active_ids": [
-    "listas-auto-1646815220710d414202",
     "red-review-0d7c83cb2690e08e5487",
     "red-review-65a59d5cd9f39243ff92"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793385193006-manual",
-  "previous_run_id": "tr-1793385006307-manual",
+  "run_id": "tr-1793385503396-manual",
+  "previous_run_id": "tr-1793385193006-manual",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "explained": 0,
-    "updates": 1,
-    "stale_reviews": 0,
+    "updates": 0,
+    "stale_reviews": 1,
     "unchanged_reviews": 0,
     "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 3,
+    "remaining_active": 2,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -42,46 +40,25 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T19:34:00+01:00",
-      "phase": "preparing",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Pasada manual iniciada con 1 reelaboración activa. Revalidación JIT de id/revisión antes de investigar. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:36:00+01:00",
-      "phase": "investigating",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Investigación nueva desde cero del reto social y contraste independiente de la trayectoria por los cuatro clubes."
-    },
-    {
-      "at": "2026-10-30T19:37:00+01:00",
-      "phase": "persisting",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Revisión 2 explicada con detonante verificado; texto y remate persistidos en requests y ficha espejo."
-    },
-    {
-      "at": "2026-10-30T19:38:00+01:00",
-      "phase": "verifying",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Comprobación exacta de id/revisión, explanation, closer_text y explained_at en ambos registros; retirada exclusiva de r2 de la cola."
-    },
-    {
       "at": "2026-10-30T19:39:00+01:00",
-      "phase": "closing",
+      "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada 1/1; cola releída en main a 0 y sin preparing/update ni rewrite_pending. Sin ImageGen."
+      "message": "Inicio de la pasada manual: 3 encargos observados en main. Sin ImageGen."
     },
     {
-      "at": "2026-10-30T19:40:00+01:00",
-      "phase": "preparing",
+      "at": "2026-10-30T19:40:04+01:00",
+      "phase": "verifying",
       "trend_id": "listas-auto-1646815220710d414202",
       "title": "Agrupación automática de Listas",
-      "message": "Entraron 3 encargos nuevos tras la relectura final; se reabre la misma pasada y se procesan agrupación y dos revisiones. Sin ImageGen."
+      "message": "Al revalidar JIT, el encargo ya había sido retirado de la cola por la pasada concurrente anterior; no se duplica."
+    },
+    {
+      "at": "2026-10-30T19:43:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-0d7c83cb2690e08e5487",
+      "title": "Revisar novedades: Binance",
+      "message": "Revisión de novedades sustanciales del incidente de seguridad de Binance con fuentes oficiales y prensa actual."
     }
   ],
   "incidents": [],
@@ -90,39 +67,38 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793385193006-manual",
+    "run_id": "tr-1793385503396-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "preparing",
-    "started_at": "2026-10-30T19:34:00+01:00",
-    "updated_at": "2026-10-30T19:40:00+01:00",
+    "phase": "investigating",
+    "started_at": "2026-10-30T19:39:00+01:00",
+    "updated_at": "2026-10-30T19:43:00+01:00",
     "finished_at": null,
     "current": 1,
-    "total": 4,
-    "trend_id": "listas-auto-1646815220710d414202",
-    "title": "Agrupación automática de Listas",
+    "total": 3,
+    "trend_id": "red-review-0d7c83cb2690e08e5487",
+    "title": "Revisar novedades: Binance",
     "queue_complete": false,
     "remaining_active_ids": [
-      "listas-auto-1646815220710d414202",
       "red-review-0d7c83cb2690e08e5487",
       "red-review-65a59d5cd9f39243ff92"
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [
-      "e40be8e866b4"
+      "listas-auto-1646815220710d414202"
     ],
     "partial": false,
-    "message": "Continúa la pasada: 3 encargos nuevos detectados al releer main. Sin ImageGen.",
+    "message": "La agrupación inicial quedó completada concurrentemente antes de su tratamiento JIT en esta pasada; se procesan las dos revisiones aún vigentes. Sin ImageGen.",
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "explained": 0,
-      "updates": 1,
-      "stale_reviews": 0,
+      "updates": 0,
+      "stale_reviews": 1,
       "unchanged_reviews": 0,
       "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 3,
+      "remaining_active": 2,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -133,64 +109,43 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T19:34:00+01:00",
-        "phase": "preparing",
-        "trend_id": "e40be8e866b4",
-        "title": "Ronaldo Nazário",
-        "message": "Pasada manual iniciada con 1 reelaboración activa. Revalidación JIT de id/revisión antes de investigar. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:36:00+01:00",
-        "phase": "investigating",
-        "trend_id": "e40be8e866b4",
-        "title": "Ronaldo Nazário",
-        "message": "Investigación nueva desde cero del reto social y contraste independiente de la trayectoria por los cuatro clubes."
-      },
-      {
-        "at": "2026-10-30T19:37:00+01:00",
-        "phase": "persisting",
-        "trend_id": "e40be8e866b4",
-        "title": "Ronaldo Nazário",
-        "message": "Revisión 2 explicada con detonante verificado; texto y remate persistidos en requests y ficha espejo."
-      },
-      {
-        "at": "2026-10-30T19:38:00+01:00",
-        "phase": "verifying",
-        "trend_id": "e40be8e866b4",
-        "title": "Ronaldo Nazário",
-        "message": "Comprobación exacta de id/revisión, explanation, closer_text y explained_at en ambos registros; retirada exclusiva de r2 de la cola."
-      },
-      {
         "at": "2026-10-30T19:39:00+01:00",
-        "phase": "closing",
+        "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada 1/1; cola releída en main a 0 y sin preparing/update ni rewrite_pending. Sin ImageGen."
+        "message": "Inicio de la pasada manual: 3 encargos observados en main. Sin ImageGen."
       },
       {
-        "at": "2026-10-30T19:40:00+01:00",
-        "phase": "preparing",
+        "at": "2026-10-30T19:40:04+01:00",
+        "phase": "verifying",
         "trend_id": "listas-auto-1646815220710d414202",
         "title": "Agrupación automática de Listas",
-        "message": "Entraron 3 encargos nuevos tras la relectura final; se reabre la misma pasada y se procesan agrupación y dos revisiones. Sin ImageGen."
+        "message": "Al revalidar JIT, el encargo ya había sido retirado de la cola por la pasada concurrente anterior; no se duplica."
+      },
+      {
+        "at": "2026-10-30T19:43:00+01:00",
+        "phase": "investigating",
+        "trend_id": "red-review-0d7c83cb2690e08e5487",
+        "title": "Revisar novedades: Binance",
+        "message": "Revisión de novedades sustanciales del incidente de seguridad de Binance con fuentes oficiales y prensa actual."
       }
     ],
     "final_outcomes": [
       {
-        "id": "e40be8e866b4",
-        "revision": 2,
-        "status": "explained",
-        "name": "Ronaldo Nazário"
+        "id": "listas-auto-1646815220710d414202",
+        "revision": 0,
+        "status": "stale_jit",
+        "name": "Agrupación automática de Listas"
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
-  "started_at": "2026-10-30T19:34:00+01:00",
+  "phase": "investigating",
+  "started_at": "2026-10-30T19:39:00+01:00",
   "finished_at": null,
   "current": 1,
-  "total": 4,
-  "trend_id": "listas-auto-1646815220710d414202",
-  "title": "Agrupación automática de Listas"
+  "total": 3,
+  "trend_id": "red-review-0d7c83cb2690e08e5487",
+  "title": "Revisar novedades: Binance"
 }
