@@ -3,32 +3,31 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T14:34:15+01:00",
-  "last_completed_at": "2026-10-30T14:40:20+01:00",
-  "updated_at": "2026-10-30T14:40:20+01:00",
+  "last_started_at": "2026-10-30T14:35:22+01:00",
+  "last_completed_at": "2026-10-30T14:40:30+01:00",
+  "updated_at": "2026-10-30T14:40:30+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
+    "8d550038a24d",
     "0433e054949e",
     "374938d3ad87"
   ],
-  "remaining_ids": [
-    "8d550038a24d"
-  ],
+  "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "8d550038a24d"
   ],
-  "run_id": "tr-1793367216923-manual",
-  "previous_run_id": "tr-chat-20261030T142530+0100-manual",
+  "run_id": "tr-1793367322709-manual",
+  "previous_run_id": "tr-1793367216923-manual",
   "summary": {
     "attempted": 3,
     "explained": 2,
-    "explanation_groups": 0,
+    "explanation_groups": 2,
     "new_cards": 2,
     "problematic": 1,
     "final_resolved": 2,
-    "skipped_concurrent": 0,
+    "skipped_concurrent": 3,
     "remaining_active": 0,
     "remaining_problematic": 1,
     "visual_backlog": 0,
@@ -36,10 +35,9 @@
     "rewrite_pending_remaining": 0,
     "explanations_verified_under_280": 2,
     "remates_selected": 1,
-    "remates_omitted": 3,
-    "recent_missing_closer_reviewed": 3,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 1,
     "pending_visual_candidates_reviewed": 0,
-    "top30_fresh_coverage": 30,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0,
@@ -49,144 +47,144 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T14:35:35+01:00",
-      "phase": "investigating",
-      "trend_id": "8d550038a24d",
-      "title": "#30OctubrESP",
-      "message": "Contrastando fuente 2/2: PP pide hoy la dimisión de Puente, pero no se prueba vínculo con la etiqueta."
+      "at": "2026-10-30T14:35:22+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada iniciada: 3 revisiones preparing; verificando estado antes de investigar."
     },
     {
-      "at": "2026-10-30T14:35:45+01:00",
-      "phase": "investigating",
-      "trend_id": "8d550038a24d",
-      "title": "#30OctubrESP",
-      "message": "Detonante no verificado: no hay evidencia pública suficiente para atribuir #30OctubrESP a la campaña contra Puente."
-    },
-    {
-      "at": "2026-10-30T14:36:05+01:00",
-      "phase": "persisting",
-      "trend_id": "8d550038a24d",
-      "title": "#30OctubrESP",
-      "message": "Resultado problematic guardado; pistas del editor conservadas."
-    },
-    {
-      "at": "2026-10-30T14:36:40+01:00",
+      "at": "2026-10-30T14:36:00+01:00",
       "phase": "verifying",
-      "trend_id": "0433e054949e",
-      "title": "#MalasLenguasN",
-      "message": "Releyendo estado autoritativo de #MalasLenguasN."
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Releyendo estado autoritativo de #30OctubrESP"
     },
     {
-      "at": "2026-10-30T14:37:00+01:00",
+      "at": "2026-10-30T14:36:10+01:00",
       "phase": "investigating",
-      "trend_id": "0433e054949e",
-      "title": "#MalasLenguasN",
-      "message": "Buscando detonante actual: especial de Malas Lenguas Noche."
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Buscando detonante actual de #30OctubrESP"
+    },
+    {
+      "at": "2026-10-30T14:36:45+01:00",
+      "phase": "investigating",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Contrastando fuente 1/2: tendencia y coocurrencias verificadas"
+    },
+    {
+      "at": "2026-10-30T14:37:10+01:00",
+      "phase": "investigating",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Contrastando fuente 2/2: peticiones de dimisión verificadas; vínculo causal del hashtag no verificado"
     },
     {
       "at": "2026-10-30T14:37:20+01:00",
-      "phase": "investigating",
-      "trend_id": "0433e054949e",
-      "title": "#MalasLenguasN",
-      "message": "Contrastando fuente 1/2: RTVE anunció el especial nocturno sobre Urda."
+      "phase": "verifying",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Sin explicación verificada · se preparará estado problematic"
     },
     {
-      "at": "2026-10-30T14:37:35+01:00",
-      "phase": "investigating",
-      "trend_id": "0433e054949e",
-      "title": "#MalasLenguasN",
-      "message": "Contrastando fuente 2/2: publicaciones del programa confirman la cobertura de Urda con #MalasLenguasN."
-    },
-    {
-      "at": "2026-10-30T14:37:45+01:00",
-      "phase": "investigating",
-      "trend_id": "0433e054949e",
-      "title": "#MalasLenguasN",
-      "message": "Hecho esencial verificado: la etiqueta corresponde al especial nocturno sobre el accidente de Urda."
-    },
-    {
-      "at": "2026-10-30T14:37:55+01:00",
-      "phase": "drafting",
-      "trend_id": "0433e054949e",
-      "title": "#MalasLenguasN",
-      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
-    },
-    {
-      "at": "2026-10-30T14:38:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "0433e054949e",
-      "title": "#MalasLenguasN",
-      "message": "Sin remate · cobertura de una tragedia con víctimas."
-    },
-    {
-      "at": "2026-10-30T14:38:10+01:00",
+      "at": "2026-10-30T14:37:30+01:00",
       "phase": "verifying",
       "trend_id": "0433e054949e",
       "title": "#MalasLenguasN",
-      "message": "Tendencia cerrada y verificada en main."
+      "message": "Releyendo estado autoritativo de #MalasLenguasN"
     },
     {
-      "at": "2026-10-30T14:38:30+01:00",
+      "at": "2026-10-30T14:37:40+01:00",
+      "phase": "investigating",
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
+      "message": "Buscando detonante actual de #MalasLenguasN"
+    },
+    {
+      "at": "2026-10-30T14:38:40+01:00",
       "phase": "verifying",
       "trend_id": "374938d3ad87",
       "title": "FANTASMA OUT NOW",
-      "message": "Releyendo estado autoritativo de FANTASMA OUT NOW."
+      "message": "Releyendo estado autoritativo de FANTASMA OUT NOW"
     },
     {
       "at": "2026-10-30T14:38:50+01:00",
       "phase": "investigating",
       "trend_id": "374938d3ad87",
       "title": "FANTASMA OUT NOW",
-      "message": "Buscando detonante actual y el lanzamiento musical asociado."
-    },
-    {
-      "at": "2026-10-30T14:39:05+01:00",
-      "phase": "investigating",
-      "trend_id": "374938d3ad87",
-      "title": "FANTASMA OUT NOW",
-      "message": "Contrastando fuente 1/2: videoclip oficial de «fantasma» publicado por Chiara Oliver."
-    },
-    {
-      "at": "2026-10-30T14:39:15+01:00",
-      "phase": "investigating",
-      "trend_id": "374938d3ad87",
-      "title": "FANTASMA OUT NOW",
-      "message": "Contrastando fuente 2/2: prensa musical confirma el estreno del single y su vínculo con el deluxe."
+      "message": "Buscando detonante actual de FANTASMA OUT NOW"
     },
     {
       "at": "2026-10-30T14:39:20+01:00",
       "phase": "investigating",
       "trend_id": "374938d3ad87",
       "title": "FANTASMA OUT NOW",
-      "message": "Hecho esencial verificado: la frase promociona el estreno de «fantasma» de Chiara Oliver."
+      "message": "Hecho esencial verificado: estreno de «fantasma» de Chiara Oliver"
     },
     {
-      "at": "2026-10-30T14:39:34+01:00",
-      "phase": "remate_selection",
+      "at": "2026-10-30T14:39:30+01:00",
+      "phase": "drafting",
       "trend_id": "374938d3ad87",
       "title": "FANTASMA OUT NOW",
-      "message": "Evaluando candidatos con ratings y evitando muletillas repetidas."
+      "message": "Redactando explicación factual"
     },
     {
-      "at": "2026-10-30T14:39:36+01:00",
-      "phase": "remate_selection",
+      "at": "2026-10-30T14:39:35+01:00",
+      "phase": "drafting",
       "trend_id": "374938d3ad87",
       "title": "FANTASMA OUT NOW",
-      "message": "Remate seleccionado: juego literal con el estreno nocturno de «fantasma»."
+      "message": "Comprobando límite de X"
     },
     {
       "at": "2026-10-30T14:39:40+01:00",
+      "phase": "remate_selection",
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Generando candidatos de remate"
+    },
+    {
+      "at": "2026-10-30T14:39:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Evaluando candidatos con ratings y últimas publicaciones"
+    },
+    {
+      "at": "2026-10-30T14:40:10+01:00",
+      "phase": "verifying",
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
+      "message": "Verificando id+revision y texto persistido de #MalasLenguasN"
+    },
+    {
+      "at": "2026-10-30T14:40:15+01:00",
       "phase": "verifying",
       "trend_id": "374938d3ad87",
       "title": "FANTASMA OUT NOW",
-      "message": "Tendencia cerrada y verificada en main."
+      "message": "Verificando id+revision y texto persistido de FANTASMA OUT NOW"
     },
     {
       "at": "2026-10-30T14:40:20+01:00",
+      "phase": "verifying",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Verificando estado problematic y motivo de #30OctubrESP"
+    },
+    {
+      "at": "2026-10-30T14:40:25+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main: sin preparing/update, rewrite_pending ni agrupaciones abiertas"
+    },
+    {
+      "at": "2026-10-30T14:40:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada: 2 explicadas, 1 problematic; sin preparing/update ni rewrite_pending."
+      "message": "Pasada completada: 2 explicadas y 1 problematic; sin trabajo editorial activo restante."
     }
   ],
   "ratings_snapshot": {
@@ -194,34 +192,30 @@
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
     "total_ratings": 154,
-    "recent_considered": 0
+    "recent_considered": 30
   },
-  "remate_selections": [
-    {
-      "id": "374938d3ad87",
-      "revision": 1,
-      "selected": "🌶️ El fantasma salió a medianoche y apareció hasta en tendencias.",
-      "reason": "Específico del título y del estreno a medianoche; sin hechos inventados."
-    }
-  ],
+  "remate_selections": [],
   "final_outcomes": [
     {
       "id": "8d550038a24d",
       "revision": 1,
+      "name": "#30OctubrESP",
       "status": "problematic",
-      "name": "#30OctubrESP"
+      "concurrent_persisted": true
     },
     {
       "id": "0433e054949e",
       "revision": 1,
+      "name": "#MalasLenguasN",
       "status": "explained",
-      "name": "#MalasLenguasN"
+      "concurrent_persisted": true
     },
     {
       "id": "374938d3ad87",
       "revision": 1,
+      "name": "FANTASMA OUT NOW",
       "status": "explained",
-      "name": "FANTASMA OUT NOW"
+      "concurrent_persisted": true
     }
   ],
   "incidents": [],
@@ -229,7 +223,7 @@
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-1793367216923-manual",
+    "trigger_run_id": "tr-1793367322709-manual",
     "status": "triggered",
     "editorial_blocking": false
   },
@@ -240,19 +234,19 @@
   },
   "requests_state": {
     "status": "valid",
-    "updated_at": "2026-10-30T14:40:20+01:00"
+    "updated_at": "2026-10-30T14:40:30+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793367216923-manual",
+    "run_id": "tr-1793367322709-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T14:34:15+01:00",
-    "updated_at": "2026-10-30T14:40:20+01:00",
-    "finished_at": "2026-10-30T14:40:20+01:00",
+    "started_at": "2026-10-30T14:35:22+01:00",
+    "updated_at": "2026-10-30T14:40:30+01:00",
+    "finished_at": "2026-10-30T14:40:30+01:00",
     "current": 3,
     "total": 3,
     "trend_id": null,
@@ -263,19 +257,20 @@
       "8d550038a24d"
     ],
     "processed_ids": [
+      "8d550038a24d",
       "0433e054949e",
       "374938d3ad87"
     ],
     "partial": false,
-    "message": "Pasada completada: 2 explicadas, 1 problematic; sin preparing/update ni rewrite_pending.",
+    "message": "Pasada completada: 2 explicadas y 1 problematic; sin work editorial activo restante.",
     "summary": {
       "attempted": 3,
       "explained": 2,
-      "explanation_groups": 0,
+      "explanation_groups": 2,
       "new_cards": 2,
       "problematic": 1,
       "final_resolved": 2,
-      "skipped_concurrent": 0,
+      "skipped_concurrent": 3,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "visual_backlog": 0,
@@ -283,10 +278,9 @@
       "rewrite_pending_remaining": 0,
       "explanations_verified_under_280": 2,
       "remates_selected": 1,
-      "remates_omitted": 3,
-      "recent_missing_closer_reviewed": 3,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 1,
       "pending_visual_candidates_reviewed": 0,
-      "top30_fresh_coverage": 30,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0,
@@ -296,183 +290,179 @@
     },
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 0
-    },
-    "remate_selections": [
-      {
-        "id": "374938d3ad87",
-        "revision": 1,
-        "selected": "🌶️ El fantasma salió a medianoche y apareció hasta en tendencias.",
-        "reason": "Específico del título y del estreno a medianoche; sin hechos inventados."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T14:35:35+01:00",
-        "phase": "investigating",
-        "trend_id": "8d550038a24d",
-        "title": "#30OctubrESP",
-        "message": "Contrastando fuente 2/2: PP pide hoy la dimisión de Puente, pero no se prueba vínculo con la etiqueta."
+        "at": "2026-10-30T14:35:22+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada iniciada: 3 revisiones preparing; verificando estado antes de investigar."
       },
       {
-        "at": "2026-10-30T14:35:45+01:00",
-        "phase": "investigating",
-        "trend_id": "8d550038a24d",
-        "title": "#30OctubrESP",
-        "message": "Detonante no verificado: no hay evidencia pública suficiente para atribuir #30OctubrESP a la campaña contra Puente."
-      },
-      {
-        "at": "2026-10-30T14:36:05+01:00",
-        "phase": "persisting",
-        "trend_id": "8d550038a24d",
-        "title": "#30OctubrESP",
-        "message": "Resultado problematic guardado; pistas del editor conservadas."
-      },
-      {
-        "at": "2026-10-30T14:36:40+01:00",
+        "at": "2026-10-30T14:36:00+01:00",
         "phase": "verifying",
-        "trend_id": "0433e054949e",
-        "title": "#MalasLenguasN",
-        "message": "Releyendo estado autoritativo de #MalasLenguasN."
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Releyendo estado autoritativo de #30OctubrESP"
       },
       {
-        "at": "2026-10-30T14:37:00+01:00",
+        "at": "2026-10-30T14:36:10+01:00",
         "phase": "investigating",
-        "trend_id": "0433e054949e",
-        "title": "#MalasLenguasN",
-        "message": "Buscando detonante actual: especial de Malas Lenguas Noche."
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Buscando detonante actual de #30OctubrESP"
+      },
+      {
+        "at": "2026-10-30T14:36:45+01:00",
+        "phase": "investigating",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Contrastando fuente 1/2: tendencia y coocurrencias verificadas"
+      },
+      {
+        "at": "2026-10-30T14:37:10+01:00",
+        "phase": "investigating",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Contrastando fuente 2/2: peticiones de dimisión verificadas; vínculo causal del hashtag no verificado"
       },
       {
         "at": "2026-10-30T14:37:20+01:00",
-        "phase": "investigating",
-        "trend_id": "0433e054949e",
-        "title": "#MalasLenguasN",
-        "message": "Contrastando fuente 1/2: RTVE anunció el especial nocturno sobre Urda."
+        "phase": "verifying",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Sin explicación verificada · se preparará estado problematic"
       },
       {
-        "at": "2026-10-30T14:37:35+01:00",
-        "phase": "investigating",
-        "trend_id": "0433e054949e",
-        "title": "#MalasLenguasN",
-        "message": "Contrastando fuente 2/2: publicaciones del programa confirman la cobertura de Urda con #MalasLenguasN."
-      },
-      {
-        "at": "2026-10-30T14:37:45+01:00",
-        "phase": "investigating",
-        "trend_id": "0433e054949e",
-        "title": "#MalasLenguasN",
-        "message": "Hecho esencial verificado: la etiqueta corresponde al especial nocturno sobre el accidente de Urda."
-      },
-      {
-        "at": "2026-10-30T14:37:55+01:00",
-        "phase": "drafting",
-        "trend_id": "0433e054949e",
-        "title": "#MalasLenguasN",
-        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
-      },
-      {
-        "at": "2026-10-30T14:38:00+01:00",
-        "phase": "remate_selection",
-        "trend_id": "0433e054949e",
-        "title": "#MalasLenguasN",
-        "message": "Sin remate · cobertura de una tragedia con víctimas."
-      },
-      {
-        "at": "2026-10-30T14:38:10+01:00",
+        "at": "2026-10-30T14:37:30+01:00",
         "phase": "verifying",
         "trend_id": "0433e054949e",
         "title": "#MalasLenguasN",
-        "message": "Tendencia cerrada y verificada en main."
+        "message": "Releyendo estado autoritativo de #MalasLenguasN"
       },
       {
-        "at": "2026-10-30T14:38:30+01:00",
+        "at": "2026-10-30T14:37:40+01:00",
+        "phase": "investigating",
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
+        "message": "Buscando detonante actual de #MalasLenguasN"
+      },
+      {
+        "at": "2026-10-30T14:38:40+01:00",
         "phase": "verifying",
         "trend_id": "374938d3ad87",
         "title": "FANTASMA OUT NOW",
-        "message": "Releyendo estado autoritativo de FANTASMA OUT NOW."
+        "message": "Releyendo estado autoritativo de FANTASMA OUT NOW"
       },
       {
         "at": "2026-10-30T14:38:50+01:00",
         "phase": "investigating",
         "trend_id": "374938d3ad87",
         "title": "FANTASMA OUT NOW",
-        "message": "Buscando detonante actual y el lanzamiento musical asociado."
-      },
-      {
-        "at": "2026-10-30T14:39:05+01:00",
-        "phase": "investigating",
-        "trend_id": "374938d3ad87",
-        "title": "FANTASMA OUT NOW",
-        "message": "Contrastando fuente 1/2: videoclip oficial de «fantasma» publicado por Chiara Oliver."
-      },
-      {
-        "at": "2026-10-30T14:39:15+01:00",
-        "phase": "investigating",
-        "trend_id": "374938d3ad87",
-        "title": "FANTASMA OUT NOW",
-        "message": "Contrastando fuente 2/2: prensa musical confirma el estreno del single y su vínculo con el deluxe."
+        "message": "Buscando detonante actual de FANTASMA OUT NOW"
       },
       {
         "at": "2026-10-30T14:39:20+01:00",
         "phase": "investigating",
         "trend_id": "374938d3ad87",
         "title": "FANTASMA OUT NOW",
-        "message": "Hecho esencial verificado: la frase promociona el estreno de «fantasma» de Chiara Oliver."
+        "message": "Hecho esencial verificado: estreno de «fantasma» de Chiara Oliver"
       },
       {
-        "at": "2026-10-30T14:39:34+01:00",
-        "phase": "remate_selection",
+        "at": "2026-10-30T14:39:30+01:00",
+        "phase": "drafting",
         "trend_id": "374938d3ad87",
         "title": "FANTASMA OUT NOW",
-        "message": "Evaluando candidatos con ratings y evitando muletillas repetidas."
+        "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-30T14:39:36+01:00",
-        "phase": "remate_selection",
+        "at": "2026-10-30T14:39:35+01:00",
+        "phase": "drafting",
         "trend_id": "374938d3ad87",
         "title": "FANTASMA OUT NOW",
-        "message": "Remate seleccionado: juego literal con el estreno nocturno de «fantasma»."
+        "message": "Comprobando límite de X"
       },
       {
         "at": "2026-10-30T14:39:40+01:00",
+        "phase": "remate_selection",
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-30T14:39:45+01:00",
+        "phase": "remate_selection",
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Evaluando candidatos con ratings y últimas publicaciones"
+      },
+      {
+        "at": "2026-10-30T14:40:10+01:00",
+        "phase": "verifying",
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
+        "message": "Verificando id+revision y texto persistido de #MalasLenguasN"
+      },
+      {
+        "at": "2026-10-30T14:40:15+01:00",
         "phase": "verifying",
         "trend_id": "374938d3ad87",
         "title": "FANTASMA OUT NOW",
-        "message": "Tendencia cerrada y verificada en main."
+        "message": "Verificando id+revision y texto persistido de FANTASMA OUT NOW"
       },
       {
         "at": "2026-10-30T14:40:20+01:00",
+        "phase": "verifying",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Verificando estado problematic y motivo de #30OctubrESP"
+      },
+      {
+        "at": "2026-10-30T14:40:25+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: sin preparing/update, rewrite_pending ni agrupaciones abiertas"
+      },
+      {
+        "at": "2026-10-30T14:40:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada: 2 explicadas, 1 problematic; sin preparing/update ni rewrite_pending."
+        "message": "Pasada completada: 2 explicadas y 1 problematic; sin trabajo editorial activo restante."
       }
     ],
     "final_outcomes": [
       {
         "id": "8d550038a24d",
         "revision": 1,
+        "name": "#30OctubrESP",
         "status": "problematic",
-        "name": "#30OctubrESP"
+        "concurrent_persisted": true
       },
       {
         "id": "0433e054949e",
         "revision": 1,
+        "name": "#MalasLenguasN",
         "status": "explained",
-        "name": "#MalasLenguasN"
+        "concurrent_persisted": true
       },
       {
         "id": "374938d3ad87",
         "revision": 1,
+        "name": "FANTASMA OUT NOW",
         "status": "explained",
-        "name": "FANTASMA OUT NOW"
+        "concurrent_persisted": true
       }
-    ]
+    ],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 30
+    }
   },
   "radar": {
     "captured_at": "2026-10-30T14:21:52+01:00",
