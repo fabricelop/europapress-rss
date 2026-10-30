@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T09:03:00+01:00",
-  "last_completed_at": "2026-10-30T09:06:00+01:00",
-  "updated_at": "2026-10-30T09:06:00+01:00",
+  "last_started_at": "2026-10-30T09:10:00+01:00",
+  "last_completed_at": "2026-10-30T09:12:00+01:00",
+  "updated_at": "2026-10-30T09:12:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
@@ -144,131 +144,78 @@
     "updated_at": "2026-10-30T09:06:00+01:00"
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-1793347358168-manual",
+    "run_id": "tr-chat-20261030T0910+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T09:03:00+01:00",
-    "updated_at": "2026-10-30T09:06:00+01:00",
-    "finished_at": "2026-10-30T09:06:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-30T09:10:00+01:00",
+    "updated_at": "2026-10-30T09:12:00+01:00",
+    "finished_at": "2026-10-30T09:12:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: cola 0; sin preparing/update ni reexplicaciones pendientes; agrupación verificada 2 grupos / 6 cubiertas.",
+    "message": "Pasada cerrada: cola 0; sin preparing/update, reexplicaciones, agrupaciones ni problematic pendientes.",
     "summary": {
-      "attempted": 1,
-      "explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "attempted": 0,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "problematic": 0,
-      "final_resolved": 1,
+      "final_resolved": 0,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 1,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 0,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0,
+      "recent_missing_closer_reviewed": 1,
       "pending_visual_candidates_reviewed": 0,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0,
-      "grouping_requests": 1,
-      "groups_created": 2,
-      "members_covered": 6,
-      "untouched_candidates": 4
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "members_covered": 0,
+      "untouched_candidates": 0
     },
     "incident_count": 0,
     "incidents": [],
-    "remate_selections": [
-      {
-        "trend_id": "listas-joint-1c0000339de79528",
-        "name": "Supervivientes All Stars · Gala 8 y expulsión de Arkano",
-        "closer_text": "🌶️ La gala cerró la rima con el televoto."
-      }
-    ],
+    "ratings_snapshot": [],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T09:03:00+01:00",
+        "at": "2026-10-30T09:10:00+01:00",
         "phase": "preparing",
-        "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Solicitud de agrupación detectada; revalidando snapshot completo antes de comparar acontecimientos."
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola, requests y reexplicaciones antes de cerrar una pasada sin trabajo activo."
       },
       {
-        "at": "2026-10-30T09:04:00+01:00",
-        "phase": "investigating",
-        "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Contrastadas fuentes: dos grupos concretos comparten acontecimiento; el resto son hechos distintos."
-      },
-      {
-        "at": "2026-10-30T09:05:00+01:00",
+        "at": "2026-10-30T09:11:00+01:00",
         "phase": "verifying",
-        "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Relectura JIT: solicitud sigue preparing, revisión 0 y 10 candidatas vigentes."
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main para confirmar que no aparecieron preparing/update, reexplicaciones ni agrupaciones pendientes."
       },
       {
-        "at": "2026-10-30T09:05:20+01:00",
-        "phase": "drafting",
-        "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Redactadas 2 fichas conjuntas; 221 y 252 caracteres, sin modificar explicaciones originales."
-      },
-      {
-        "at": "2026-10-30T09:05:40+01:00",
-        "phase": "persisting",
-        "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Outbox persistido en main con 2 grupos y 6 miembros; aplicador de Listas activado."
-      },
-      {
-        "at": "2026-10-30T09:05:53+01:00",
-        "phase": "verifying",
-        "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Aplicador completado con éxito: job grouping_completed, 2 fichas joint y 6 originales covered con textos intactos."
-      },
-      {
-        "at": "2026-10-30T09:06:00+01:00",
+        "at": "2026-10-30T09:12:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: cola 0; sin preparing/update ni reexplicaciones pendientes; agrupación verificada 2 grupos / 6 cubiertas."
+        "message": "Pasada cerrada: cola 0; sin preparing/update, reexplicaciones, agrupaciones ni problematic pendientes."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "final_outcomes": [
-      {
-        "id": "listas-joint-0813c505b8b24820",
-        "name": "Patrick Stewart · Picard / Star Trek / Charles Xavier",
-        "status": "explained",
-        "listas_group_role": "joint",
-        "members": 4
-      },
-      {
-        "id": "listas-joint-1c0000339de79528",
-        "name": "Supervivientes All Stars · Gala 8 y expulsión de Arkano",
-        "status": "explained",
-        "listas_group_role": "joint",
-        "members": 2
-      }
-    ]
+    "final_outcomes": []
   },
   "radar": {
     "captured_at": "2026-10-30T08:51:02+01:00",
