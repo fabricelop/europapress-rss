@@ -132,19 +132,19 @@ struct TTDashboard: View {
                         if quickOverview == .working {
                             quickWorkingContent
                         } else if quickOverview == nil {
-                        subTabs
-                        if !showCombinedListas &&
-                           ((store.section == .trends && store.trendFilter == .elaboracion) ||
-                            (store.section == .news && store.newsFilter == .elaboracion)) {
-                            editorialRunControl
-                        }
-                        if showCombinedListas || (store.section == .trends && store.trendFilter == .listas) {
-                            ListasGroupingControls(github: github, settings: $showSettings)
-                        }
-                        searchField
-                        if showCombinedListas { combinedListasContent }
-                        else if store.section == .trends { trendsContent }
-                        else { newsContent }
+                            subTabs
+                            if !showCombinedListas &&
+                               ((store.section == .trends && store.trendFilter == .elaboracion) ||
+                                (store.section == .news && store.newsFilter == .elaboracion)) {
+                                editorialRunControl
+                            }
+                            if showCombinedListas || (store.section == .trends && store.trendFilter == .listas) {
+                                ListasGroupingControls(github: github, settings: $showSettings)
+                            }
+                            searchField
+                            if showCombinedListas { combinedListasContent }
+                            else if store.section == .trends { trendsContent }
+                            else { newsContent }
                         }
                         Color.clear.frame(height: 18)
                     }
@@ -416,6 +416,7 @@ struct TTDashboard: View {
     private var counters: some View {
         HStack(spacing: 9) {
             Button {
+                quickOverview = nil
                 showCombinedListas = false
                 store.section = .news
                 store.newsFilter = .listas
@@ -428,6 +429,7 @@ struct TTDashboard: View {
             .buttonStyle(.plain)
             .accessibilityLabel("Abrir noticias en Listas")
             Button {
+                quickOverview = nil
                 showCombinedListas = false
                 store.section = .trends
                 store.trendFilter = .listas

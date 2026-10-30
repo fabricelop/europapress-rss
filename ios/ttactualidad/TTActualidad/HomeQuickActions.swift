@@ -117,7 +117,6 @@ final class TTQuickActionAppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      configurationForConnecting session: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        if let item = options.shortcutItem { HomeQuickActionRouter.shared.handle(item) }
         let configuration = UISceneConfiguration(name: nil, sessionRole: session.role)
         configuration.delegateClass = TTQuickActionSceneDelegate.self
         return configuration
@@ -126,6 +125,16 @@ final class TTQuickActionAppDelegate: NSObject, UIApplicationDelegate {
 
 @MainActor
 final class TTQuickActionSceneDelegate: NSObject, UIWindowSceneDelegate {
+    // Also runs when iOS reconnects an existing scene after terminating the
+    // process. A restored scene may reuse its configuration, so cold-launch
+    // delivery belongs here rather than only in the app configuration method.
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
+        if let item = connectionOptions.shortcutItem {
+            HomeQuickActionRouter.shared.handle(item)
+        }
+    }
+
     func windowScene(_ windowScene: UIWindowScene,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void) {
