@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T16:55:30+01:00",
   "last_completed_at": "2026-10-30T16:54:30+01:00",
-  "updated_at": "2026-10-30T16:56:00+01:00",
+  "updated_at": "2026-10-30T17:00:30+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -41,6 +41,13 @@
       "trend_id": "37073f5f219f",
       "title": "Pepiño Blanco",
       "message": "Inicio 1/1: revalidando revisión 1 e investigando desde cero la pista editorial. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T17:00:30+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-92e9987cb568328a7e10",
+      "title": "Agrupación automática de Listas",
+      "message": "1/2: Pepiño Blanco r1 ya verificado; comprobando agrupación con Pepe Blanco r0 por mismo acontecimiento."
     }
   ],
   "incidents": [],
@@ -52,22 +59,24 @@
     "run_id": "tr-1793375721801-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "preparing",
+    "phase": "investigating",
     "started_at": "2026-10-30T16:56:00+01:00",
-    "updated_at": "2026-10-30T16:56:00+01:00",
+    "updated_at": "2026-10-30T17:00:30+01:00",
     "finished_at": null,
-    "current": 0,
-    "total": 1,
-    "trend_id": "37073f5f219f",
-    "title": "Pepiño Blanco",
+    "current": 1,
+    "total": 2,
+    "trend_id": "listas-auto-92e9987cb568328a7e10",
+    "title": "Agrupación automática de Listas",
     "queue_complete": false,
     "remaining_active_ids": [
-      "37073f5f219f"
+      "listas-auto-92e9987cb568328a7e10"
     ],
     "remaining_problematic_ids": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "37073f5f219f"
+    ],
     "partial": false,
-    "message": "Investigando Pepiño Blanco r1 desde cero. Sin ImageGen.",
+    "message": "Pepiño Blanco r1 verificado; procesando agrupación con Pepe Blanco r0. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -93,16 +102,23 @@
         "trend_id": "37073f5f219f",
         "title": "Pepiño Blanco",
         "message": "Inicio 1/1: revalidando revisión 1 e investigando desde cero la pista editorial. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T17:00:30+01:00",
+        "phase": "investigating",
+        "trend_id": "listas-auto-92e9987cb568328a7e10",
+        "title": "Agrupación automática de Listas",
+        "message": "1/2: Pepiño Blanco r1 ya verificado; comprobando agrupación con Pepe Blanco r0 por mismo acontecimiento."
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-30T16:56:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "37073f5f219f",
-  "title": "Pepiño Blanco"
+  "current": 1,
+  "total": 2,
+  "trend_id": "listas-auto-92e9987cb568328a7e10",
+  "title": "Agrupación automática de Listas"
 }
