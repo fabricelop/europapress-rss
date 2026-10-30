@@ -10,6 +10,8 @@ struct CellSiteHistorySection:View {
     @State private var loaded=false
     @State private var generation=UUID()
     @State private var expandedSites:Set<UUID>=[]
+    @State private var expandedYears:Set<String>=[]
+    @State private var expandedMonths:Set<String>=[]
     @State private var expandedDays:Set<String>=[]
 
     var body:some View {
@@ -45,8 +47,8 @@ struct CellSiteHistorySection:View {
             set:{ if $0 { expandedSites.insert(item.id) }
                   else { expandedSites.remove(item.id) } }
         )) {
-            ForEach(item.days) { day in
-                dayGroup(day,siteID:item.id)
+            ForEach(item.years) { year in
+                yearGroup(year,siteID:item.id)
             }
         } label: {
             VStack(alignment:.leading,spacing:5) {
@@ -60,10 +62,55 @@ struct CellSiteHistorySection:View {
                     Text(DurationFormat.full(item.seconds))
                         .font(.caption.monospacedDigit()).foregroundStyle(.teal)
                 }
-                Text("\(item.days.count) días · confirmados: \(DurationFormat.small(item.verifiedSeconds))")
+                Text("\(item.years.count) años · \(item.days.count) días · confirmados: \(DurationFormat.small(item.verifiedSeconds))")
                     .font(.caption2).foregroundStyle(.secondary)
             }
             .contentShape(Rectangle())
+        }
+    }
+
+    /// Keep the same progressive navigation as Histórico:
+    /// site → year → month → day → individual recorded periods.
+    private func yearGroup(_ year:CellSiteYear,siteID:UUID)->some View {
+        let key=siteID.uuidString + "|" + String(year.number)
+        return DisclosureGroup(isExpanded:Binding(
+            get:{expandedYears.contains(key)},
+            set:{ if $0 { expandedYears.insert(key) }
+                  else { expandedYears.remove(key) } }
+        )) {
+            ForEach(year.months) { month in
+                monthGroup(month,siteID:siteID)
+            }
+        } label: {
+            HStack(spacing:6) {
+                Text(String(year.number)).font(.subheadline.weight(.semibold))
+                Spacer(minLength:5)
+                Text(DurationFormat.full(year.seconds))
+                    .font(.caption.monospacedDigit()).foregroundStyle(.teal)
+            }
+        }
+    }
+
+    private func monthGroup(_ month:CellSiteMonth,siteID:UUID)->some View {
+        let key=siteID.uuidString + "|" + month.id
+        return DisclosureGroup(isExpanded:Binding(
+            get:{expandedMonths.contains(key)},
+            set:{ if $0 { expandedMonths.insert(key) }
+                  else { expandedMonths.remove(key) } }
+        )) {
+            ForEach(month.days) { day in
+                dayGroup(day,siteID:siteID)
+            }
+        } label: {
+            HStack(spacing:6) {
+                Text(month.title)
+                    .font(.subheadline)
+                Spacer(minLength:5)
+                Text("\(month.days.count) días")
+                    .font(.caption).foregroundStyle(.secondary)
+                Text(DurationFormat.small(month.seconds))
+                    .font(.caption.monospacedDigit()).foregroundStyle(.teal)
+            }
         }
     }
 
@@ -98,7 +145,9 @@ struct CellSiteHistorySection:View {
             }
         } label: {
             HStack {
-                Text(day.date,format:.dateTime.weekday(.wide).day().month().year())
+                Text(day.date.formatted(
+                    .dateTime.day().weekday(.wide)
+                        .locale(Locale(identifier:"es_ES"))))
                     .font(.caption.weight(.medium))
                 Spacer()
                 Text(DurationFormat.full(day.seconds))
