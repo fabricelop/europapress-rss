@@ -38,6 +38,16 @@ struct EditorialActions: View {
 
     var body: some View {
         VStack(spacing: 7) {
+            // Search is useful in every trend state, especially when research
+            // needs clues. It never depends on Listas, text or GitHub login.
+            if let trend {
+                quickButton("Buscar en X", "magnifyingglass") {
+                    var parts = URLComponents(string: "https://x.com/search")
+                    parts?.queryItems = [URLQueryItem(name: "q", value: trend.name),
+                                         URLQueryItem(name: "f", value: "live")]
+                    if let url = parts?.url { openURL(url) }
+                }
+            }
             if let trend, trend.isCovered {
                 Text("Agrupada en: " + trend.coveredByName)
                     .font(.caption.weight(.semibold)).foregroundStyle(.orange)
