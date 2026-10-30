@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:35:00Z",
   "last_completed_at": "2026-10-30T21:28:47Z",
-  "updated_at": "2026-10-30T21:48:00.000Z",
+  "updated_at": "2026-10-30T21:45:45.186Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [
@@ -26,7 +26,7 @@
   "remaining_problematic_ids": [],
   "run_id": "tr-1793396029532-manual",
   "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada reabierta 3/6: llegaron 3 trabajos de mantenimiento antes de la barrera final; procesándolos sin ImageGen.",
+  "summary": "Pasada en curso: ordinarias cerradas; persistiendo agrupación automática. Sin ImageGen.",
   "activity": [
     {
       "at": "2026-10-30T21:35:00Z",
@@ -111,13 +111,20 @@
       "trend_id": "listas-auto-393aee72db721c540b63",
       "title": "Agrupación automática de Listas",
       "message": "Barrera final detectó 3 trabajos pendientes; se reabre la misma pasada para procesarlos en orden contractual."
+    },
+    {
+      "at": "2026-10-30T21:45:45.186Z",
+      "phase": "persisting",
+      "trend_id": "listas-auto-393aee72db721c540b63",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación automática JIT: OkDiario queda cubierta por la publicación vigente de Inda al tratarse del mismo episodio sin novedades materiales; el resto de candidatas permanece separado."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-10-30T21:35:00Z",
   "finished_at": null,
   "current": 3,
@@ -131,9 +138,9 @@
     "run_id": "tr-1793396029532-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "preparing",
+    "phase": "persisting",
     "started_at": "2026-10-30T21:35:00Z",
-    "updated_at": "2026-10-30T21:48:00.000Z",
+    "updated_at": "2026-10-30T21:45:45.186Z",
     "finished_at": null,
     "current": 3,
     "total": 6,
@@ -152,7 +159,7 @@
       "19d3c8965a38"
     ],
     "partial": false,
-    "message": "Reabierta: 3 trabajos de mantenimiento pendientes tras la barrera final.",
+    "message": "Ordinarias cerradas; persistiendo agrupación automática.",
     "summary": {
       "attempted": 3,
       "explained": 3,
@@ -256,6 +263,13 @@
         "trend_id": "listas-auto-393aee72db721c540b63",
         "title": "Agrupación automática de Listas",
         "message": "Barrera final detectó 3 trabajos pendientes; se reabre la misma pasada para procesarlos en orden contractual."
+      },
+      {
+        "at": "2026-10-30T21:45:45.186Z",
+        "phase": "persisting",
+        "trend_id": "listas-auto-393aee72db721c540b63",
+        "title": "Agrupación automática de Listas",
+        "message": "Agrupación automática JIT: OkDiario queda cubierta por la publicación vigente de Inda al tratarse del mismo episodio sin novedades materiales; el resto de candidatas permanece separado."
       }
     ]
   },
