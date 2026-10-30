@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T21:35:00Z",
-  "last_completed_at": "2026-10-30T21:48:30.000Z",
-  "updated_at": "2026-10-30T21:48:30.000Z",
+  "last_completed_at": "2026-10-30T21:49:33.693Z",
+  "updated_at": "2026-10-30T21:49:33.693Z",
   "status": "DONE",
   "queue_complete": true,
   "processed_ids": [
@@ -22,7 +22,7 @@
   "remaining_problematic_ids": [],
   "run_id": "tr-1793396029532-manual",
   "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada completada 7/7: OkDiario, #FirstDates30O y Golpe de Estado explicadas; 2 agrupaciones aplicadas; Alvia actualizada y cubierta por Angrois; revisión Koldo cerrada stale por barrera JIT. Cola final 0. Sin ImageGen.",
+  "summary": "Pasada editorial real completada 7/7: OkDiario y #FirstDates30O explicadas; Golpe de Estado respetada como cierre concurrente; dos agrupaciones aplicadas con cobertura OkDiario→Inda y Alvia→Angrois; revisiones Koldo García y Alvia consumidas. Cola final 0/0 tras releer main, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
   "activity": [
     {
       "at": "2026-10-30T21:35:00Z",
@@ -156,6 +156,48 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada completa 7/7: 3 explicaciones, 2 agrupaciones y 2 revisiones de mantenimiento. Cola final 0. Sin ImageGen ni envíos/publicaciones."
+    },
+    {
+      "at": "2026-10-30T21:49:33.693Z",
+      "phase": "verifying",
+      "trend_id": "19d3c8965a38",
+      "title": "Golpe de Estado",
+      "message": "Barrera JIT respetada: la revisión 0 había sido explicada concurrentemente antes de persistir nuestro borrador; no se sobrescribió el estado terminal."
+    },
+    {
+      "at": "2026-10-30T21:49:33.693Z",
+      "phase": "verifying",
+      "trend_id": "listas-auto-393aee72db721c540b63",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación aplicada: OkDiario cubierta por la publicación vigente de Inda; sin grupo nuevo."
+    },
+    {
+      "at": "2026-10-30T21:49:33.693Z",
+      "phase": "verifying",
+      "trend_id": "red-review-c7cf10c5fed262f115c4",
+      "title": "Revisar novedades: Koldo García",
+      "message": "Revisión consumida por la barrera de mantenimiento sin crear una nueva ficha vigente; no se reabrió el snapshot anterior."
+    },
+    {
+      "at": "2026-10-30T21:49:33.693Z",
+      "phase": "verifying",
+      "trend_id": "red-review-a8c83f33c1e906879add",
+      "title": "Revisar novedades: Alvia",
+      "message": "Revisión aplicada concurrentemente con actualización material sobre recomendaciones a las víctimas de Urda."
+    },
+    {
+      "at": "2026-10-30T21:49:33.693Z",
+      "phase": "verifying",
+      "trend_id": "listas-auto-fe4896d0f65b1e521101",
+      "title": "Agrupación automática de Listas",
+      "message": "Segunda agrupación aplicada: actualización Alvia cubierta por la publicación vigente de Angrois; sin grupo nuevo."
+    },
+    {
+      "at": "2026-10-30T21:49:33.693Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni reexplain/rewrite_pending. Cierre sin ImageGen."
     }
   ],
   "incidents": [],
@@ -164,7 +206,7 @@
   "api_failover_enabled": false,
   "phase": "closing",
   "started_at": "2026-10-30T21:35:00Z",
-  "finished_at": "2026-10-30T21:48:30.000Z",
+  "finished_at": "2026-10-30T21:49:33.693Z",
   "current": 7,
   "total": 7,
   "trend_id": null,
@@ -178,8 +220,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-30T21:35:00Z",
-    "updated_at": "2026-10-30T21:48:30.000Z",
-    "finished_at": "2026-10-30T21:48:30.000Z",
+    "updated_at": "2026-10-30T21:49:33.693Z",
+    "finished_at": "2026-10-30T21:49:33.693Z",
     "current": 7,
     "total": 7,
     "trend_id": null,
@@ -197,14 +239,13 @@
       "listas-auto-fe4896d0f65b1e521101"
     ],
     "partial": false,
-    "message": "Pasada completada 7/7; cola editorial final 0.",
+    "message": "Pasada editorial real completada 7/7: OkDiario y #FirstDates30O explicadas; Golpe de Estado respetada como cierre concurrente; dos agrupaciones aplicadas con cobertura OkDiario→Inda y Alvia→Angrois; revisiones Koldo García y Alvia consumidas. Cola final 0/0 tras releer main, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
     "summary": {
       "attempted": 7,
-      "explained": 3,
+      "explained": 2,
+      "concurrent_terminal_respected": 1,
       "updates": 1,
-      "stale_reviews": 1,
-      "stale_jobs": 0,
-      "unchanged_reviews": 0,
+      "stale_or_consumed_reviews": 1,
       "grouping_requests": 2,
       "groups_created": 0,
       "members_covered": 2,
@@ -350,6 +391,99 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada completa 7/7: 3 explicaciones, 2 agrupaciones y 2 revisiones de mantenimiento. Cola final 0. Sin ImageGen ni envíos/publicaciones."
+      },
+      {
+        "at": "2026-10-30T21:49:33.693Z",
+        "phase": "verifying",
+        "trend_id": "19d3c8965a38",
+        "title": "Golpe de Estado",
+        "message": "Barrera JIT respetada: la revisión 0 había sido explicada concurrentemente antes de persistir nuestro borrador; no se sobrescribió el estado terminal."
+      },
+      {
+        "at": "2026-10-30T21:49:33.693Z",
+        "phase": "verifying",
+        "trend_id": "listas-auto-393aee72db721c540b63",
+        "title": "Agrupación automática de Listas",
+        "message": "Agrupación aplicada: OkDiario cubierta por la publicación vigente de Inda; sin grupo nuevo."
+      },
+      {
+        "at": "2026-10-30T21:49:33.693Z",
+        "phase": "verifying",
+        "trend_id": "red-review-c7cf10c5fed262f115c4",
+        "title": "Revisar novedades: Koldo García",
+        "message": "Revisión consumida por la barrera de mantenimiento sin crear una nueva ficha vigente; no se reabrió el snapshot anterior."
+      },
+      {
+        "at": "2026-10-30T21:49:33.693Z",
+        "phase": "verifying",
+        "trend_id": "red-review-a8c83f33c1e906879add",
+        "title": "Revisar novedades: Alvia",
+        "message": "Revisión aplicada concurrentemente con actualización material sobre recomendaciones a las víctimas de Urda."
+      },
+      {
+        "at": "2026-10-30T21:49:33.693Z",
+        "phase": "verifying",
+        "trend_id": "listas-auto-fe4896d0f65b1e521101",
+        "title": "Agrupación automática de Listas",
+        "message": "Segunda agrupación aplicada: actualización Alvia cubierta por la publicación vigente de Angrois; sin grupo nuevo."
+      },
+      {
+        "at": "2026-10-30T21:49:33.693Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni reexplain/rewrite_pending. Cierre sin ImageGen."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "6870df351c7a",
+        "revision": 0,
+        "name": "OkDiario",
+        "outcome": "explained"
+      },
+      {
+        "id": "2d465a770610",
+        "revision": 0,
+        "name": "#FirstDates30O",
+        "outcome": "explained"
+      },
+      {
+        "id": "19d3c8965a38",
+        "revision": 0,
+        "name": "Golpe de Estado",
+        "outcome": "concurrent_terminal_respected"
+      },
+      {
+        "id": "listas-auto-393aee72db721c540b63",
+        "revision": 0,
+        "name": "Agrupación automática de Listas",
+        "outcome": "grouping_completed",
+        "groups_created": 0,
+        "members_covered": 1,
+        "note": "OkDiario cubierta por Inda."
+      },
+      {
+        "id": "red-review-c7cf10c5fed262f115c4",
+        "revision": 0,
+        "name": "Revisar novedades: Koldo García",
+        "outcome": "consumed_without_new_current_card"
+      },
+      {
+        "id": "red-review-a8c83f33c1e906879add",
+        "revision": 0,
+        "name": "Revisar novedades: Alvia",
+        "outcome": "updated_concurrently",
+        "created_id": "trend-update-b10cd3817682fdcfdc84"
+      },
+      {
+        "id": "listas-auto-fe4896d0f65b1e521101",
+        "revision": 0,
+        "name": "Agrupación automática de Listas",
+        "outcome": "grouping_completed",
+        "groups_created": 0,
+        "members_covered": 1,
+        "note": "Actualización Alvia cubierta por Angrois."
       }
     ]
   },
@@ -358,44 +492,40 @@
       "id": "6870df351c7a",
       "revision": 0,
       "name": "OkDiario",
-      "outcome": "explained",
-      "explained_at": "2026-10-30T21:38:36.912Z"
+      "outcome": "explained"
     },
     {
       "id": "2d465a770610",
       "revision": 0,
       "name": "#FirstDates30O",
-      "outcome": "explained",
-      "explained_at": "2026-10-30T21:42:20.177Z"
+      "outcome": "explained"
     },
     {
       "id": "19d3c8965a38",
       "revision": 0,
       "name": "Golpe de Estado",
-      "outcome": "explained",
-      "explained_at": "2026-10-30T21:45:30.000Z"
+      "outcome": "concurrent_terminal_respected"
     },
     {
       "id": "listas-auto-393aee72db721c540b63",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "outcome": "grouping_completed",
-      "covered": [
-        "6870df351c7a"
-      ],
-      "covered_by": "trend-update-b21dd8ce3b234ff81e52"
+      "groups_created": 0,
+      "members_covered": 1,
+      "note": "OkDiario cubierta por Inda."
     },
     {
       "id": "red-review-c7cf10c5fed262f115c4",
       "revision": 0,
       "name": "Revisar novedades: Koldo García",
-      "outcome": "stale"
+      "outcome": "consumed_without_new_current_card"
     },
     {
       "id": "red-review-a8c83f33c1e906879add",
       "revision": 0,
       "name": "Revisar novedades: Alvia",
-      "outcome": "updated",
+      "outcome": "updated_concurrently",
       "created_id": "trend-update-b10cd3817682fdcfdc84"
     },
     {
@@ -403,10 +533,9 @@
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "outcome": "grouping_completed",
-      "covered": [
-        "trend-update-b10cd3817682fdcfdc84"
-      ],
-      "covered_by": "trend-update-607ecdd2b7d2e6f993f5"
+      "groups_created": 0,
+      "members_covered": 1,
+      "note": "Actualización Alvia cubierta por Angrois."
     }
   ]
 }
