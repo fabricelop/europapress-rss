@@ -18214,12 +18214,15 @@
       "editorial_engine": "chat-direct",
       "image_strategy": "ai_plus_fallback",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "hints_verification_status": "partially_verified"
+      "fallback_image_status": "none",
+      "hints_verification_status": "partially_verified",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none"
     }
   ],
-  "updated_at": "2026-10-30T16:59:30+01:00",
+  "updated_at": "2026-10-30T15:59:00.856738Z",
   "count": 326
 }
