@@ -3,29 +3,31 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T15:40:00+01:00",
+  "last_started_at": "2026-10-30T15:55:00+01:00",
   "last_completed_at": "2026-10-30T15:46:30+01:00",
-  "updated_at": "2026-10-30T15:46:30+01:00",
-  "status": "done",
-  "queue_complete": true,
-  "processed_ids": [
+  "updated_at": "2026-10-30T15:55:00+01:00",
+  "status": "running",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
     "d3361acf73b6"
   ],
-  "remaining_ids": [],
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T154000+0100-manual",
-  "previous_run_id": "tr-chat-20261030T152500+0100-manual",
+  "remaining_problematic_ids": [
+    "d3361acf73b6"
+  ],
+  "run_id": "tr-chat-20261030T155500+0100-manual",
+  "previous_run_id": "tr-chat-20261030T154000+0100-manual",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "explained": 0,
     "explanation_groups": 0,
     "new_cards": 0,
-    "problematic": 1,
-    "final_resolved": 1,
-    "skipped_concurrent": 2,
+    "problematic": 0,
+    "final_resolved": 0,
+    "skipped_concurrent": 0,
     "remaining_active": 0,
-    "remaining_problematic": 0,
+    "remaining_problematic": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -36,46 +38,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T15:40:00+01:00",
-      "phase": "preparing",
-      "trend_id": "dc90fe5a413e",
-      "title": "#30OctubrESP",
-      "message": "Inicio: dos revisiones problemáticas estaban aún en la cola; se revalidan contra estado fresco."
-    },
-    {
-      "at": "2026-10-30T15:41:15+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "La actualización del radar retiró #30OctubrESP del Top 30 y de la cola autoritativa; ambas revisiones se omiten por estado obsoleto."
-    },
-    {
-      "at": "2026-10-30T15:41:15+01:00",
+      "at": "2026-10-30T15:55:00+01:00",
       "phase": "preparing",
       "trend_id": "d3361acf73b6",
       "title": "Pobrecito",
-      "message": "Entró una nueva investigación TT#23 y pasó a ser la única revisión activa."
-    },
-    {
-      "at": "2026-10-30T15:44:00+01:00",
-      "phase": "investigating",
-      "trend_id": "d3361acf73b6",
-      "title": "Pobrecito",
-      "message": "Tras búsquedas independientes no se verifica un detonante único y actual; los usos públicos recuperables son dispersos."
-    },
-    {
-      "at": "2026-10-30T15:45:56+01:00",
-      "phase": "persisting",
-      "trend_id": "d3361acf73b6",
-      "title": "Pobrecito",
-      "message": "Resultado problemático aplicado en requests.json mediante el outbox editorial oficial; no se crea explicación."
-    },
-    {
-      "at": "2026-10-30T15:46:30+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final: cola autoritativa vacía, 0 preparing/update, 0 rewrite_pending; sin ImageGen ni Telegram."
+      "message": "Inicio de pasada manual: se revalida el único problematic vigente del Top 30 contra el radar y fuentes actuales."
     }
   ],
   "incidents": [],
@@ -84,35 +51,35 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T154000+0100-manual",
+    "run_id": "tr-chat-20261030T155500+0100-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T15:40:00+01:00",
-    "updated_at": "2026-10-30T15:46:30+01:00",
-    "finished_at": "2026-10-30T15:46:30+01:00",
-    "current": 1,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T15:55:00+01:00",
+    "updated_at": "2026-10-30T15:55:00+01:00",
+    "finished_at": null,
+    "current": 0,
     "total": 1,
-    "trend_id": null,
-    "title": null,
-    "queue_complete": true,
+    "trend_id": "d3361acf73b6",
+    "title": "Pobrecito",
+    "queue_complete": false,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
-    "processed_ids": [
+    "remaining_problematic_ids": [
       "d3361acf73b6"
     ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada: Pobrecito queda problemático por falta de detonante verificable; #30OctubrESP salió del Top 30 antes de tratarse y sus dos revisiones quedaron fuera de la cola. Cola final 0.",
+    "message": "Reintentando la única tendencia problemática vigente: Pobrecito.",
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "explained": 0,
       "explanation_groups": 0,
       "new_cards": 0,
-      "problematic": 1,
-      "final_resolved": 1,
-      "skipped_concurrent": 2,
+      "problematic": 0,
+      "final_resolved": 0,
+      "skipped_concurrent": 0,
       "remaining_active": 0,
-      "remaining_problematic": 0,
+      "remaining_problematic": 1,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -125,68 +92,14 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T15:40:00+01:00",
-        "phase": "preparing",
-        "trend_id": "dc90fe5a413e",
-        "title": "#30OctubrESP",
-        "message": "Inicio: dos revisiones problemáticas estaban aún en la cola; se revalidan contra estado fresco."
-      },
-      {
-        "at": "2026-10-30T15:41:15+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "La actualización del radar retiró #30OctubrESP del Top 30 y de la cola autoritativa; ambas revisiones se omiten por estado obsoleto."
-      },
-      {
-        "at": "2026-10-30T15:41:15+01:00",
+        "at": "2026-10-30T15:55:00+01:00",
         "phase": "preparing",
         "trend_id": "d3361acf73b6",
         "title": "Pobrecito",
-        "message": "Entró una nueva investigación TT#23 y pasó a ser la única revisión activa."
-      },
-      {
-        "at": "2026-10-30T15:44:00+01:00",
-        "phase": "investigating",
-        "trend_id": "d3361acf73b6",
-        "title": "Pobrecito",
-        "message": "Tras búsquedas independientes no se verifica un detonante único y actual; los usos públicos recuperables son dispersos."
-      },
-      {
-        "at": "2026-10-30T15:45:56+01:00",
-        "phase": "persisting",
-        "trend_id": "d3361acf73b6",
-        "title": "Pobrecito",
-        "message": "Resultado problemático aplicado en requests.json mediante el outbox editorial oficial; no se crea explicación."
-      },
-      {
-        "at": "2026-10-30T15:46:30+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Barrera final: cola autoritativa vacía, 0 preparing/update, 0 rewrite_pending; sin ImageGen ni Telegram."
+        "message": "Inicio de pasada manual: se revalida el único problematic vigente del Top 30 contra el radar y fuentes actuales."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "d3361acf73b6",
-        "revision": 0,
-        "status": "problematic",
-        "name": "Pobrecito"
-      },
-      {
-        "id": "dc90fe5a413e",
-        "revision": 0,
-        "status": "stale_out_of_top30",
-        "name": "#30OctubrESP"
-      },
-      {
-        "id": "8d550038a24d",
-        "revision": 2,
-        "status": "stale_out_of_top30",
-        "name": "#30OctubrESP"
-      }
-    ]
+    "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false
