@@ -5,26 +5,23 @@
   "canonical": true,
   "last_started_at": "2026-10-30T23:48:36+01:00",
   "last_completed_at": "2026-10-30T23:48:36+01:00",
-  "updated_at": "2026-10-30T23:48:36+01:00",
-  "status": "success",
-  "queue_complete": true,
-  "processed_ids": [
-    "9950fd2c5b18",
-    "f90cc5271f93"
-  ],
+  "updated_at": "2026-10-30T22:48:40.000Z",
+  "status": "RUNNING",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793400249710-manual",
-  "previous_run_id": "tr-1793400009396-manual",
-  "summary": "0/2. Villarreal y Lawson pendientes; se procesan por orden de cola con revalidación JIT. Sin ImageGen.",
+  "run_id": "tr-1793400450000-manual",
+  "previous_run_id": "tr-1793400249710-manual",
+  "summary": "Pasada editorial real iniciada: 0/0. Cola main releída; comprobando reexplicaciones y barrera final. Sin ImageGen.",
   "activity": [
     {
-      "at": "2026-10-30T22:45:00.000Z",
+      "at": "2026-10-30T22:48:40.000Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de tr-1793400249710-manual: cola autoritativa releída en main con Villarreal y Lawson, ambas revisión 0. Sin ImageGen."
+      "message": "Inicio de tr-1793400450000-manual: cola autoritativa releída en main con 0 preparing/update. Comprobando reexplicaciones y concurrencia. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -32,10 +29,10 @@
   "error": null,
   "api_failover_enabled": false,
   "phase": "preparing",
-  "started_at": "2026-10-30T22:45:00.000Z",
+  "started_at": "2026-10-30T22:48:40.000Z",
   "finished_at": null,
   "current": 0,
-  "total": 2,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "last_run": {
