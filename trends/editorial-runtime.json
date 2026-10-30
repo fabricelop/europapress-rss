@@ -5,19 +5,15 @@
   "canonical": true,
   "last_started_at": "2026-10-30T16:15:25+01:00",
   "last_completed_at": "2026-10-30T16:22:00+01:00",
-  "updated_at": "2026-10-30T16:15:25+01:00",
+  "updated_at": "2026-10-30T16:27:00+01:00",
   "status": "running",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-0fb03df99bc50868ef11",
-    "red-review-9ace783f017fef1af669",
-    "red-review-71bcb3a0a60b8d335425"
+    "listas-auto-ad379c8325402443ca11"
   ],
   "remaining_active_ids": [
-    "listas-auto-0fb03df99bc50868ef11",
-    "red-review-9ace783f017fef1af669",
-    "red-review-71bcb3a0a60b8d335425"
+    "listas-auto-ad379c8325402443ca11"
   ],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793373325099-manual",
@@ -42,6 +38,34 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio: 3 preparing vigentes; prioridad contractual: agrupación de Listas y después revisiones de novedades. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T16:25:00+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-0fb03df99bc50868ef11",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado aplicado: Dimitir y AVE Madrid quedan cubiertos por publicaciones existentes; no se fuerzan grupos dudosos."
+    },
+    {
+      "at": "2026-10-30T16:25:30+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-9ace783f017fef1af669",
+      "title": "Revisar novedades: Toledo",
+      "message": "El aplicador descarta la actualización por estado stale del origen; se conserva la ficha publicada y no se sobreescribe."
+    },
+    {
+      "at": "2026-10-30T16:26:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-71bcb3a0a60b8d335425",
+      "title": "Revisar novedades: Más de 100",
+      "message": "Actualización material aplicada con velocidad preliminar 160–200 km/h y gestión tras el fallo del LZB."
+    },
+    {
+      "at": "2026-10-30T16:27:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-ad379c8325402443ca11",
+      "title": "Agrupación automática de Listas",
+      "message": "Se procesa el chequeo de agrupación generado por la nueva ficha de Más de 100."
     }
   ],
   "incidents": [],
@@ -55,22 +79,20 @@
     "status": "RUNNING",
     "phase": "preparing",
     "started_at": "2026-10-30T16:15:25+01:00",
-    "updated_at": "2026-10-30T16:15:25+01:00",
+    "updated_at": "2026-10-30T16:27:00+01:00",
     "finished_at": null,
-    "current": 0,
-    "total": 3,
+    "current": 18,
+    "total": 19,
     "trend_id": null,
     "title": null,
     "queue_complete": false,
     "remaining_active_ids": [
-      "listas-auto-0fb03df99bc50868ef11",
-      "red-review-9ace783f017fef1af669",
-      "red-review-71bcb3a0a60b8d335425"
+      "listas-auto-ad379c8325402443ca11"
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
-    "partial": false,
-    "message": "Pasada manual iniciada con 3 tareas vigentes: 1 agrupación automática de Listas y 2 revisiones de novedades; sin ImageGen.",
+    "partial": true,
+    "message": "Queda un único chequeo automático de agrupación generado por la actualización de Más de 100.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -93,6 +115,34 @@
         "trend_id": null,
         "title": null,
         "message": "Inicio: 3 preparing vigentes; prioridad contractual: agrupación de Listas y después revisiones de novedades. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T16:25:00+01:00",
+        "phase": "persisting",
+        "trend_id": "listas-auto-0fb03df99bc50868ef11",
+        "title": "Agrupación automática de Listas",
+        "message": "Resultado aplicado: Dimitir y AVE Madrid quedan cubiertos por publicaciones existentes; no se fuerzan grupos dudosos."
+      },
+      {
+        "at": "2026-10-30T16:25:30+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-9ace783f017fef1af669",
+        "title": "Revisar novedades: Toledo",
+        "message": "El aplicador descarta la actualización por estado stale del origen; se conserva la ficha publicada y no se sobreescribe."
+      },
+      {
+        "at": "2026-10-30T16:26:00+01:00",
+        "phase": "persisting",
+        "trend_id": "red-review-71bcb3a0a60b8d335425",
+        "title": "Revisar novedades: Más de 100",
+        "message": "Actualización material aplicada con velocidad preliminar 160–200 km/h y gestión tras el fallo del LZB."
+      },
+      {
+        "at": "2026-10-30T16:27:00+01:00",
+        "phase": "preparing",
+        "trend_id": "listas-auto-ad379c8325402443ca11",
+        "title": "Agrupación automática de Listas",
+        "message": "Se procesa el chequeo de agrupación generado por la nueva ficha de Más de 100."
       }
     ]
   },
