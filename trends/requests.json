@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T20:33:35.441578+00:00",
+  "updated_at": "2026-10-30T21:40:57+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -31740,6 +31740,72 @@
       "grouping_created_ids": [],
       "grouping_skipped_stale": [],
       "grouping_result_digest": "c0a30ddd30da63e10a2089e35b8573ef30d4e95b9f9a2f3189446755f6652d61"
+    },
+    {
+      "id": "4e9df6831ab7",
+      "name": "Tusk",
+      "rank": 19,
+      "status": "preparing",
+      "requested_at": "2026-10-30T21:40:57+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "27d243904bb0",
+      "requested_together": [
+        "Tusk"
+      ],
+      "captured_with": [
+        "Tusk",
+        "Dibu",
+        "Tribunal Constitucional"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "9fee4d7386fb",
+      "name": "Dibu",
+      "rank": 23,
+      "status": "preparing",
+      "requested_at": "2026-10-30T21:40:57+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "27d243904bb0",
+      "requested_together": [
+        "Dibu"
+      ],
+      "captured_with": [
+        "Tusk",
+        "Dibu",
+        "Tribunal Constitucional"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "b0c76a2bacab",
+      "name": "Tribunal Constitucional",
+      "rank": 24,
+      "status": "preparing",
+      "requested_at": "2026-10-30T21:40:57+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "27d243904bb0",
+      "requested_together": [
+        "Tribunal Constitucional"
+      ],
+      "captured_with": [
+        "Tusk",
+        "Dibu",
+        "Tribunal Constitucional"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 184
