@@ -112,6 +112,8 @@ El borrador caduca una hora después del encargo. Cuando la candidata aparece en
 
 `trends/anticipation-metrics.json` guarda hasta200 episodios: primera detección, encargo, borrador verificado, primera entrada observada en Top30, destino de promoción y estados. Separa **adelanto de detección** de **minutos que el borrador ya estaba preparado antes de entrar** y su promedio. Una preparación caducada no cuenta como útil. No confundir observación propia del ranking con la hora oficial de X, ni con publicación. Los indicadores cuantifican la ventaja real; presupuesto externo configurado:0€.
 
+**Criterio editorial vigente de causalidad:** explicar directamente el motivo predominante cuando los hechos actuales y las fuentes lo respaldan razonablemente, sin exigir confirmación del algoritmo de X ni añadir coletillas defensivas. Usar incertidumbre explícita solo cuando exista duda sustancial (varios detonantes plausibles sin predominante, identidad o hecho desconocido, o riesgo de atribución perjudicial). Modular la certeza si procede; no convertir coincidencias o rumores en hechos. Revisar selectivamente fichas vigentes de Listas con coletillas innecesarias, investigando y respetando ID/revisión, ambos registros, fechas, agrupación y terminales. Esta regla prevalece sobre los ejemplos antiguos de causa no confirmada.
+
 ## 6. Elaboración ordinaria de tendencias
 
 La cola autoritativa es `trends/editorial-queue.json`, coordinada con `requests.json`. `trends/request_pc_editorial.py --trigger` solicita la misma pasada en la rama control, con ejecutor `pc_chat_ttendencias_dedicated`. El listener `windows/TTendenciasDedicatedListener.ps1` lanza `Ejecutar.js tendencias --enviar` con `TTENDENCIAS_EDITORIAL_JOB_V2` y el contrato `trends/editorial-run-prompt.md`.
