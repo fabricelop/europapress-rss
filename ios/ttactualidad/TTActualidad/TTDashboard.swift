@@ -886,7 +886,7 @@ private struct TrendTile: View {
                 if item.isCovered {
                     Label("Agrupada en: " + item.coveredByName, systemImage: "rectangle.3.group.fill")
                         .font(.caption.weight(.semibold)).foregroundStyle(.orange)
-                    Text("Conserva su explicación original. Publica la ficha conjunta y retira esta tarjeta sin contar otra publicación.")
+                    Text("Conserva su explicación original. Puedes quitarla de Listas indicando si la publicaste o no; la ficha conjunta se mantiene.")
                         .font(.caption2).foregroundStyle(TTTheme.muted)
                 }
                 if item.explanation.isEmpty {

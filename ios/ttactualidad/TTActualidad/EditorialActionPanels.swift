@@ -42,7 +42,7 @@ struct EditorialActions: View {
                 Text("Agrupada en: " + trend.coveredByName)
                     .font(.caption.weight(.semibold)).foregroundStyle(.orange)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                quickButton("Retirar agrupada", "trash", danger: true) { request("deleted") }
+                quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                 quickButton("Copiar explicación original", "doc.on.doc") { copy(fullText) }
                 if let joint = store.snapshot.trendListas.first(where: { $0.editorialID == trend.coveredByID }) {
                     quickButton("Copiar publicación conjunta", "rectangle.3.group") { copy(joint.explanation) }
@@ -203,10 +203,8 @@ struct EditorialActions: View {
                             isPresented: $confirm, titleVisibility: .visible) {
             if intent == "deleted" && (news?.status == "LISTA" ||
                                         trend?.inListas == true) {
-                if trend?.isCovered != true {
-                    Button("Publicado · Quitar de Listas") { submit("published") }
-                }
-                Button(trend?.isCovered == true ? "Retirar agrupada · Sin publicar" : "No publicado · Quitar de Listas", role: .destructive) {
+                Button("Publicado · Quitar de Listas") { submit("published") }
+                Button("No publicado · Quitar de Listas", role: .destructive) {
                     submit("deleted")
                 }
             } else {
@@ -216,7 +214,7 @@ struct EditorialActions: View {
             Button("Cancelar", role: .cancel) {}
         } message: {
             Text(trend?.isCovered == true && intent == "deleted"
-                 ? "Solo se retirará esta original. La publicación conjunta se conserva y no se sumará otra publicación."
+                 ? "Ambas opciones retiran solo esta original; la ficha conjunta se conserva. Solo «Publicado» suma una publicación, después de la confirmación de GitHub."
                  : intent == "deleted" && (news?.status == "LISTA" ||
                                          trend?.inListas == true)
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
