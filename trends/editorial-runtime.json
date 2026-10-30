@@ -4,30 +4,28 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T15:55:00+01:00",
-  "last_completed_at": "2026-10-30T15:46:30+01:00",
-  "updated_at": "2026-10-30T15:55:00+01:00",
-  "status": "running",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T15:58:00+01:00",
+  "updated_at": "2026-10-30T15:58:00+01:00",
+  "status": "done",
+  "queue_complete": true,
+  "processed_ids": [
     "d3361acf73b6"
   ],
+  "remaining_ids": [],
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "d3361acf73b6"
-  ],
+  "remaining_problematic_ids": [],
   "run_id": "tr-chat-20261030T155500+0100-manual",
   "previous_run_id": "tr-chat-20261030T154000+0100-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "explained": 0,
     "explanation_groups": 0,
     "new_cards": 0,
-    "problematic": 0,
-    "final_resolved": 0,
+    "problematic": 1,
+    "final_resolved": 1,
     "skipped_concurrent": 0,
     "remaining_active": 0,
-    "remaining_problematic": 1,
+    "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -43,6 +41,34 @@
       "trend_id": "d3361acf73b6",
       "title": "Pobrecito",
       "message": "Inicio de pasada manual: se revalida el único problematic vigente del Top 30 contra el radar y fuentes actuales."
+    },
+    {
+      "at": "2026-10-30T15:56:00+01:00",
+      "phase": "investigating",
+      "trend_id": "d3361acf73b6",
+      "title": "Pobrecito",
+      "message": "Revisión con búsquedas independientes: se confirma presencia en tendencias, pero no un detonante único y actual; los usos recuperables son dispersos."
+    },
+    {
+      "at": "2026-10-30T15:57:00+01:00",
+      "phase": "persisting",
+      "trend_id": "d3361acf73b6",
+      "title": "Pobrecito",
+      "message": "Se actualiza requests.json a problematic_attempts=2 con historial de investigación y sin explicación inventada."
+    },
+    {
+      "at": "2026-10-30T15:57:20+01:00",
+      "phase": "verifying",
+      "trend_id": "d3361acf73b6",
+      "title": "Pobrecito",
+      "message": "La revisión exacta r0 se retira de editorial-queue.json tras confirmar su persistencia problemática."
+    },
+    {
+      "at": "2026-10-30T15:58:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: cola autoritativa 0, 0 preparing/update/problematic, 0 rewrite_pending; sin ImageGen ni Telegram."
     }
   ],
   "incidents": [],
@@ -53,33 +79,33 @@
     "project": "TTendencias",
     "run_id": "tr-chat-20261030T155500+0100-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T15:55:00+01:00",
-    "updated_at": "2026-10-30T15:55:00+01:00",
-    "finished_at": null,
-    "current": 0,
+    "updated_at": "2026-10-30T15:58:00+01:00",
+    "finished_at": "2026-10-30T15:58:00+01:00",
+    "current": 1,
     "total": 1,
-    "trend_id": "d3361acf73b6",
-    "title": "Pobrecito",
-    "queue_complete": false,
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
+    "remaining_problematic_ids": [],
+    "processed_ids": [
       "d3361acf73b6"
     ],
-    "processed_ids": [],
     "partial": false,
-    "message": "Reintentando la única tendencia problemática vigente: Pobrecito.",
+    "message": "Pasada completada: Pobrecito se reintentó y permanece problemático por falta de detonante único y verificable; cola final 0.",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "explained": 0,
       "explanation_groups": 0,
       "new_cards": 0,
-      "problematic": 0,
-      "final_resolved": 0,
+      "problematic": 1,
+      "final_resolved": 1,
       "skipped_concurrent": 0,
       "remaining_active": 0,
-      "remaining_problematic": 1,
+      "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -97,9 +123,44 @@
         "trend_id": "d3361acf73b6",
         "title": "Pobrecito",
         "message": "Inicio de pasada manual: se revalida el único problematic vigente del Top 30 contra el radar y fuentes actuales."
+      },
+      {
+        "at": "2026-10-30T15:56:00+01:00",
+        "phase": "investigating",
+        "trend_id": "d3361acf73b6",
+        "title": "Pobrecito",
+        "message": "Revisión con búsquedas independientes: se confirma presencia en tendencias, pero no un detonante único y actual; los usos recuperables son dispersos."
+      },
+      {
+        "at": "2026-10-30T15:57:00+01:00",
+        "phase": "persisting",
+        "trend_id": "d3361acf73b6",
+        "title": "Pobrecito",
+        "message": "Se actualiza requests.json a problematic_attempts=2 con historial de investigación y sin explicación inventada."
+      },
+      {
+        "at": "2026-10-30T15:57:20+01:00",
+        "phase": "verifying",
+        "trend_id": "d3361acf73b6",
+        "title": "Pobrecito",
+        "message": "La revisión exacta r0 se retira de editorial-queue.json tras confirmar su persistencia problemática."
+      },
+      {
+        "at": "2026-10-30T15:58:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final: cola autoritativa 0, 0 preparing/update/problematic, 0 rewrite_pending; sin ImageGen ni Telegram."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "d3361acf73b6",
+        "revision": 0,
+        "status": "problematic",
+        "name": "Pobrecito"
+      }
+    ]
   },
   "error": null,
   "api_failover_enabled": false
