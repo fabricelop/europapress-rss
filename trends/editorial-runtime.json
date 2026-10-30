@@ -4,32 +4,56 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T16:15:25+01:00",
-  "last_completed_at": "2026-10-30T16:22:00+01:00",
-  "updated_at": "2026-10-30T16:27:00+01:00",
-  "status": "running",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T16:29:00+01:00",
+  "updated_at": "2026-10-30T16:29:00+01:00",
+  "status": "done",
+  "queue_complete": true,
+  "processed_ids": [
+    "49a475a6cbe6",
+    "c4dc5b3c94df",
+    "3c351b316504",
+    "e4cbbbc106e8",
+    "9a03904860ef",
+    "37073f5f219f",
+    "198ebafff410",
+    "08679ae5188c",
+    "422046c8767b",
+    "ddfa2db39e43",
+    "f8b727626ba7",
+    "beccc79aea5d",
+    "0ecf2a36f589",
+    "a025df62fa96",
+    "d3361acf73b6",
+    "listas-auto-0fb03df99bc50868ef11",
+    "red-review-9ace783f017fef1af669",
+    "red-review-71bcb3a0a60b8d335425",
     "listas-auto-ad379c8325402443ca11"
   ],
-  "remaining_active_ids": [
-    "listas-auto-ad379c8325402443ca11"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793373325099-manual",
   "previous_run_id": "tr-chat-20261030T161000+0100-manual",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
-    "updates": 0,
-    "unchanged_reviews": 0,
-    "grouping_requests": 1,
-    "groups_created": 0,
-    "members_covered": 0,
-    "remaining_active": 3,
+    "attempted": 19,
+    "explained": 16,
+    "explanation_groups": 0,
+    "new_cards": 16,
+    "problematic": 0,
+    "final_resolved": 19,
+    "skipped_concurrent": 0,
+    "remaining_active": 0,
+    "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
-    "incidents": 0
+    "telegram_sends": 0,
+    "incidents": 0,
+    "grouping_requests": 2,
+    "groups_created": 0,
+    "members_covered": 2,
+    "maintenance_reviews": 2,
+    "maintenance_updates": 1,
+    "maintenance_stale": 1
   },
   "activity": [
     {
@@ -66,6 +90,20 @@
       "trend_id": "listas-auto-ad379c8325402443ca11",
       "title": "Agrupación automática de Listas",
       "message": "Se procesa el chequeo de agrupación generado por la nueva ficha de Más de 100."
+    },
+    {
+      "at": "2026-10-30T16:28:30+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-ad379c8325402443ca11",
+      "title": "Agrupación automática de Listas",
+      "message": "Segundo chequeo aplicado: no hay coincidencias inequívocas adicionales; la actualización de Más de 100 queda cleared."
+    },
+    {
+      "at": "2026-10-30T16:29:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final confirmada: editorial-queue.json vacío; 0 preparing/update/problematic, 0 rewrite_pending. Sin ImageGen, Telegram ni publicación en X."
     }
   ],
   "incidents": [],
@@ -74,37 +112,63 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793373325099-manual",
+    "run_id": "tr-chat-20261030T161000+0100-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
-    "started_at": "2026-10-30T16:15:25+01:00",
-    "updated_at": "2026-10-30T16:27:00+01:00",
-    "finished_at": null,
-    "current": 18,
+    "status": "DONE",
+    "phase": "closing",
+    "started_at": "2026-10-30T16:10:00+01:00",
+    "updated_at": "2026-10-30T16:29:00+01:00",
+    "finished_at": "2026-10-30T16:29:00+01:00",
+    "current": 19,
     "total": 19,
     "trend_id": null,
     "title": null,
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "processed_ids": [
+      "49a475a6cbe6",
+      "c4dc5b3c94df",
+      "3c351b316504",
+      "e4cbbbc106e8",
+      "9a03904860ef",
+      "37073f5f219f",
+      "198ebafff410",
+      "08679ae5188c",
+      "422046c8767b",
+      "ddfa2db39e43",
+      "f8b727626ba7",
+      "beccc79aea5d",
+      "0ecf2a36f589",
+      "a025df62fa96",
+      "d3361acf73b6",
+      "listas-auto-0fb03df99bc50868ef11",
+      "red-review-9ace783f017fef1af669",
+      "red-review-71bcb3a0a60b8d335425",
       "listas-auto-ad379c8325402443ca11"
     ],
-    "remaining_problematic_ids": [],
-    "processed_ids": [],
-    "partial": true,
-    "message": "Queda un único chequeo automático de agrupación generado por la actualización de Más de 100.",
+    "partial": false,
+    "message": "Pasada completada 19/19: 15 investigaciones ordinarias cerradas, 2 agrupaciones procesadas y 2 revisiones de novedades resueltas. Más de 100 se actualizó; Toledo quedó protegido como stale. Cola final 0.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
-      "updates": 0,
-      "unchanged_reviews": 0,
-      "grouping_requests": 1,
-      "groups_created": 0,
-      "members_covered": 0,
-      "remaining_active": 3,
+      "attempted": 19,
+      "explained": 16,
+      "explanation_groups": 0,
+      "new_cards": 16,
+      "problematic": 0,
+      "final_resolved": 19,
+      "skipped_concurrent": 0,
+      "remaining_active": 0,
+      "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
-      "incidents": 0
+      "telegram_sends": 0,
+      "incidents": 0,
+      "grouping_requests": 2,
+      "groups_created": 0,
+      "members_covered": 2,
+      "maintenance_reviews": 2,
+      "maintenance_updates": 1,
+      "maintenance_stale": 1
     },
     "incident_count": 0,
     "incidents": [],
@@ -143,6 +207,137 @@
         "trend_id": "listas-auto-ad379c8325402443ca11",
         "title": "Agrupación automática de Listas",
         "message": "Se procesa el chequeo de agrupación generado por la nueva ficha de Más de 100."
+      },
+      {
+        "at": "2026-10-30T16:28:30+01:00",
+        "phase": "verifying",
+        "trend_id": "listas-auto-ad379c8325402443ca11",
+        "title": "Agrupación automática de Listas",
+        "message": "Segundo chequeo aplicado: no hay coincidencias inequívocas adicionales; la actualización de Más de 100 queda cleared."
+      },
+      {
+        "at": "2026-10-30T16:29:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final confirmada: editorial-queue.json vacío; 0 preparing/update/problematic, 0 rewrite_pending. Sin ImageGen, Telegram ni publicación en X."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "49a475a6cbe6",
+        "revision": 0,
+        "status": "explained",
+        "name": "Picanya"
+      },
+      {
+        "id": "c4dc5b3c94df",
+        "revision": 0,
+        "status": "explained",
+        "name": "#OscarMuerte"
+      },
+      {
+        "id": "3c351b316504",
+        "revision": 0,
+        "status": "explained",
+        "name": "#30OctubrESP"
+      },
+      {
+        "id": "e4cbbbc106e8",
+        "revision": 0,
+        "status": "explained",
+        "name": "Gaspar"
+      },
+      {
+        "id": "9a03904860ef",
+        "revision": 0,
+        "status": "explained",
+        "name": "Adamuz y Urda"
+      },
+      {
+        "id": "37073f5f219f",
+        "revision": 0,
+        "status": "explained",
+        "name": "Pepiño Blanco"
+      },
+      {
+        "id": "198ebafff410",
+        "revision": 0,
+        "status": "explained",
+        "name": "Pepe Blanco"
+      },
+      {
+        "id": "08679ae5188c",
+        "revision": 0,
+        "status": "explained",
+        "name": "CECOPI"
+      },
+      {
+        "id": "422046c8767b",
+        "revision": 0,
+        "status": "covered",
+        "name": "Dimitir"
+      },
+      {
+        "id": "ddfa2db39e43",
+        "revision": 0,
+        "status": "covered",
+        "name": "AVE Madrid"
+      },
+      {
+        "id": "f8b727626ba7",
+        "revision": 0,
+        "status": "explained",
+        "name": "David Sánchez"
+      },
+      {
+        "id": "beccc79aea5d",
+        "revision": 0,
+        "status": "explained",
+        "name": "Miguel Hernández"
+      },
+      {
+        "id": "0ecf2a36f589",
+        "revision": 0,
+        "status": "explained",
+        "name": "La UCO"
+      },
+      {
+        "id": "a025df62fa96",
+        "revision": 0,
+        "status": "explained",
+        "name": "Cáncer"
+      },
+      {
+        "id": "d3361acf73b6",
+        "revision": 0,
+        "status": "explained",
+        "name": "Pobrecito"
+      },
+      {
+        "id": "red-review-9ace783f017fef1af669",
+        "revision": 0,
+        "status": "review_completed_stale",
+        "name": "Toledo"
+      },
+      {
+        "id": "red-review-71bcb3a0a60b8d335425",
+        "revision": 0,
+        "status": "updated",
+        "name": "Más de 100",
+        "created_id": "trend-update-507b5ec78596c95d9800"
+      },
+      {
+        "id": "listas-auto-0fb03df99bc50868ef11",
+        "revision": 0,
+        "status": "grouping_completed",
+        "name": "Agrupación automática de Listas"
+      },
+      {
+        "id": "listas-auto-ad379c8325402443ca11",
+        "revision": 0,
+        "status": "grouping_completed",
+        "name": "Agrupación automática de Listas"
       }
     ]
   },
