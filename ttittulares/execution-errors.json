@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:16:10.192692Z",
-      "event_id": "0ec9b53c91e8-r1",
-      "phase": "outbox",
-      "reason": "0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 0ec9b53c91e8-r1: 0ec9b53c91e8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:16:10.192692Z",
       "event_id": "3e4fa144266f-r1",
       "phase": "outbox",
       "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "transport_write_blocked",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 6d97fa829cff: transport_write_blocked. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-30T13:05:57.131040Z",
+      "event_id": "ddf80bd9a786-r1",
+      "phase": "outbox",
+      "reason": "ddf80bd9a786-r1.json: ValueError: tweet vacío o >256",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento ddf80bd9a786-r1: ddf80bd9a786-r1.json: ValueError: tweet vacío o >256. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
