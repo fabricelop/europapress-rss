@@ -3,17 +3,17 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T19:55:30+01:00",
+  "last_started_at": "2026-10-30T20:10:00+01:00",
   "last_completed_at": "2026-10-30T19:57:45+01:00",
-  "updated_at": "2026-10-30T19:57:45+01:00",
-  "status": "DONE",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T20:10:00+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-20261030T195530-manual",
-  "previous_run_id": "tr-1793385744403-manual",
+  "run_id": "tr-20261030T201000-manual",
+  "previous_run_id": "tr-20261030T195530-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -33,25 +33,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T19:55:30+01:00",
+      "at": "2026-10-30T20:10:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada manual iniciada desde chat; disparador de refresco actualizado y estado autoritativo en relectura. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:57:45+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main tras el refresco manual: cola autoritativa 0 y sin rewrite_pending localizable. Cierre limpio, sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:57:45+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main tras el refresco manual: cola autoritativa 0. Cierre limpio, sin ImageGen."
+      "message": "Pasada manual iniciada desde chat; leyendo main y cola autoritativa. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -60,23 +46,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261030T195530-manual",
+    "run_id": "tr-20261030T201000-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T19:55:30+01:00",
-    "updated_at": "2026-10-30T19:57:45+01:00",
-    "finished_at": "2026-10-30T19:57:45+01:00",
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T20:10:00+01:00",
+    "updated_at": "2026-10-30T20:10:00+01:00",
+    "finished_at": null,
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada manual ejecutada: se forzó el refresco, se releyó el estado autoritativo y la cola final sigue en 0. Sin ImageGen.",
+    "message": "Pasada manual en curso: verificando estado editorial autoritativo en main. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -98,34 +84,20 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T19:55:30+01:00",
+        "at": "2026-10-30T20:10:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada manual iniciada desde chat; disparador de refresco actualizado y estado autoritativo en relectura. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:57:45+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main tras el refresco manual: cola autoritativa 0 y sin rewrite_pending localizable. Cierre limpio, sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:57:45+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main tras el refresco manual: cola autoritativa 0. Cierre limpio, sin ImageGen."
+        "message": "Pasada manual iniciada desde chat; leyendo main y cola autoritativa. Sin ImageGen."
       }
     ],
     "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T19:55:30+01:00",
-  "finished_at": "2026-10-30T19:57:45+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-30T20:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
