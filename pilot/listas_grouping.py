@@ -41,6 +41,11 @@ def revision(row):
     return int(row.get('revision') or 0)
 
 
+def is_covered(row):
+    return (row.get('listas_group_role') == 'covered' and bool(row.get('covered_by_id'))
+            and int(row.get('covered_source_revision', revision(row))) == revision(row))
+
+
 def latest(rows, key='id'):
     result = {}
     for row in rows:
@@ -66,7 +71,7 @@ def eligible(state, now, include_covered=False):
                 or str(row.get('group_leader_id') or ident) != ident
                 or revision(req) > rev):
             continue
-        if not include_covered and row.get('listas_group_role') == 'covered':
+        if not include_covered and is_covered(row):
             continue
         if any(str(x.get('status') or '').lower() in CLOSED or
                str(x.get('telegram_package_status') or '').lower() in CLOSED
@@ -127,7 +132,7 @@ def request(state, payload, now):
                 continue
             seen.add(ident)
             row = current.get(ident)
-            if not row or revision(row) != member.get('revision') or row.get('listas_group_role') != 'covered':
+            if not row or revision(row) != member.get('revision') or not is_covered(row):
                 continue
             for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
                 for original in state[path][field]:
@@ -254,11 +259,11 @@ def apply_result(state, command, now):
         for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
             for original in state[path][field]:
                 direct = any(original.get('id') == x['id'] and revision(original) == x['revision'] for x in refs)
-                descendant = original.get('covered_by_id') in direct_ids
+                descendant = is_covered(original) and original.get('covered_by_id') in direct_ids
                 if (direct or descendant) and original.get('status') == 'explained':
                     original.update(listas_group_role='covered', covered_by_id=ident,
                                     covered_by_revision=0, covered_by_name=row['name'],
-                                    covered_at=at, grouping_request_id=job_id)
+                                    covered_source_revision=revision(original), covered_at=at, grouping_request_id=job_id)
             state[path][field].append(copy.deepcopy(row))
             state[path]['updated_at'] = at
         created.append(ident)

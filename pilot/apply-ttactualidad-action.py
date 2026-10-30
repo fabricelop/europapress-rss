@@ -161,7 +161,8 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
                        if int(row.get("revision") or 0) == revision]
         same_requests = [row for row in all_requests
                          if int(row.get("revision") or 0) == revision]
-        if decision == "published" and any(row.get("listas_group_role") == "covered"
+        if decision == "published" and any(row.get("listas_group_role") == "covered" and
+                                           int(row.get("covered_source_revision", row.get("revision") or 0)) == revision
                                            for row in same_manual + same_requests):
             fail("Esta tendencia ya está agrupada; publica la ficha conjunta o retira la original sin publicar")
         same_delivery = [row for row in all_deliveries

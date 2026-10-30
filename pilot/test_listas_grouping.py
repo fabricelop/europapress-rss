@@ -136,4 +136,17 @@ class ListasGroupingTests(unittest.TestCase):
             self.assertEqual(row['explanation'],self.state[m.MANUAL]['items'][0]['explanation'])
             self.assertEqual(row['status'],'deleted')
 
+    def test_new_revision_does_not_inherit_prior_coverage(self):
+        state,_=m.apply_result(self.requested(),self.result(),self.now)
+        for path,field in [(m.MANUAL,'items'),(m.REQUESTS,'requests')]:
+            row=next(x for x in state[path][field] if x['id']=='a123')
+            row.update(revision=2,explanation='Noticia nueva y comprobada')
+        current=m.eligible(state,self.now)
+        self.assertIn('a123',current)
+        command={**self.payload,'decision':'remove_covered','request_id':'42345678-1234-4234-8234-123456789abc',
+                 'items':[{'id':'a123','revision':2}]}
+        cleaned,_=m.request(state,command,self.now)
+        self.assertEqual(next(x for x in cleaned[m.MANUAL]['items'] if x['id']=='a123')['status'],'explained')
+        self.assertEqual(cleaned[m.RECEIPTS]['items'][-1]['status'],'rejected')
+
 if __name__=='__main__':unittest.main()

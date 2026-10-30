@@ -161,6 +161,11 @@ def terminal_applies(marks, project, identifier, revision, episode_at=None):
     return True
 
 
+def is_listas_covered(row):
+    return (row.get("listas_group_role")=="covered" and bool(row.get("covered_by_id"))
+            and int(row.get("covered_source_revision",row.get("revision") or 0))==int(row.get("revision") or 0))
+
+
 def normalise(docs):
     prepared = rows(docs["prepared"])
     marks = confirmed_terminals(docs)
@@ -247,8 +252,8 @@ def normalise(docs):
                                 (x.get("archive_image") or x.get("fallback_image") or {}).get("url")
                                 or x.get("archive_image_url")),
             "rank":int(x.get("rank") or req.get("rank") or 0),
-            "covered_by_id":text(x.get("covered_by_id")),
-            "covered_by_name":text(x.get("covered_by_name")),
+            "covered_by_id":text(x.get("covered_by_id")) if is_listas_covered(x) else "",
+            "covered_by_name":text(x.get("covered_by_name")) if is_listas_covered(x) else "",
             "is_joint_group":x.get("listas_group_role")=="joint"})
     trend_ready.sort(key=lambda row: (bool(row.get('covered_by_id')),
                                      -(date(row.get('explained_at')) or now).timestamp()))
@@ -339,8 +344,8 @@ def normalise(docs):
             "source":text(req.get("source_url") or exp.get("source_url")),
             "image":archive_url(docs,"ttendencias",ident,int(req.get("revision") or exp.get("revision") or 0),archive.get("url")),
             "trend_status":status,"inListas":key in ready_names,
-            "covered_by_id":text(req.get("covered_by_id")),
-            "covered_by_name":text(req.get("covered_by_name"))})
+            "covered_by_id":text(req.get("covered_by_id")) if is_listas_covered(req) else "",
+            "covered_by_name":text(req.get("covered_by_name")) if is_listas_covered(req) else ""})
     lb = now - dt.timedelta(hours=24)
     published = set()
     totals = {"ttittulares":0,"ttendencias":0}

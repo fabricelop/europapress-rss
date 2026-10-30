@@ -27,6 +27,9 @@ class EditorialDesktopTests(unittest.TestCase):
         self.assertEqual(covered['state'],'Listas')
         self.assertEqual(covered['covered_by_id'],'joint')
         self.assertEqual(top[0]['body'],'Explicación original de Adif')
+        original.update(revision=1,covered_source_revision=0,explanation='Otra noticia posterior')
+        _,new_trends,_,_=normalise(docs)
+        self.assertFalse(next(x for x in new_trends if x['id']=='adif')['covered_by_id'])
 
     def test_source_paths_are_canonical(self):
         self.assertEqual(FILES["news_queue"], "ttittulares/editorial-queue.json")
