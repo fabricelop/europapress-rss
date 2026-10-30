@@ -17150,7 +17150,7 @@
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
       "editorial_grouping_fingerprint": "5c967460f51c49785454c32e9d8a38cfa816f52b01d3ad62142b10389765ab79",
-      "editorial_grouping_checked_at": "2026-10-30T13:57:59.290024+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T14:09:13.158533+00:00"
     },
     {
       "id": "trend-update-158c1e414518a44b837b",
@@ -17205,7 +17205,14 @@
       "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_fingerprint": "8a9be194af947a9a5776cab395b1702763d56130d830fb9e14e5d96098409ee8",
-      "editorial_grouping_checked_at": "2026-10-30T13:57:59.290024+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T14:09:13.158533+00:00",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-b1f50a83f66ab63a",
+      "covered_by_revision": 0,
+      "covered_by_name": "Urda · corte Madrid-Andalucía y ERTMS",
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-30T14:09:13.158533+00:00",
+      "grouping_request_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
     },
     {
       "id": "trend-update-541b493b13fef8cf3662",
@@ -17246,7 +17253,14 @@
       "image_choice": "none",
       "image_pending": false,
       "editorial_grouping_fingerprint": "5ea5681a3155b354bda9218cbba31e27629bdc4b4ccea3c0bba0d85916f08db2",
-      "editorial_grouping_checked_at": "2026-10-30T13:57:59.290024+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T14:09:13.158533+00:00",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-b1f50a83f66ab63a",
+      "covered_by_revision": 0,
+      "covered_by_name": "Urda · corte Madrid-Andalucía y ERTMS",
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-30T14:09:13.158533+00:00",
+      "grouping_request_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
     },
     {
       "id": "trend-update-00d605f035c100a5c6a3",
@@ -17305,8 +17319,58 @@
       "telegram_package_status": "published",
       "published_at": "2026-10-30T14:04:32.681705+00:00",
       "decision_source": "ttactualidad_direct"
+    },
+    {
+      "id": "listas-joint-b1f50a83f66ab63a",
+      "revision": 0,
+      "name": "Urda · corte Madrid-Andalucía y ERTMS",
+      "rank": 2,
+      "status": "explained",
+      "explanation": "TT#2 Renfe y ERTMS siguen siendo tendencia por las consecuencias de Urda: Renfe aplaza el plan alternativo Madrid-Andalucía al 3 de noviembre y Puente sitúa el ERTMS de Madrid-Sevilla a comienzos de 2027.\n#Urda #Renfe #ERTMS",
+      "closer_text": "",
+      "explained_at": "2026-10-30T14:09:13.158533+00:00",
+      "requested_at": "2026-10-30T14:09:13.158533+00:00",
+      "updated_at": "2026-10-30T14:09:13.158533+00:00",
+      "listas_group_role": "joint",
+      "listas_group_members": [
+        {
+          "id": "trend-update-541b493b13fef8cf3662",
+          "revision": 0
+        },
+        {
+          "id": "trend-update-158c1e414518a44b837b",
+          "revision": 0
+        }
+      ],
+      "trend_names": [
+        "Renfe",
+        "ERTMS"
+      ],
+      "group_title": "Urda · corte Madrid-Andalucía y ERTMS",
+      "verification_sources": [
+        {
+          "url": "https://grupo.renfe.com/es/es/sala-de-prensa/noticias/2026/10/suspension-pat-madrid-andalucia"
+        },
+        {
+          "url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/"
+        },
+        {
+          "url": "https://maldita.es/desinfo/20261030/adif-adjudico-contratos-para-sustituir-el-sistema-de-seguridad-lzb-por-ertms-de-la-lav-madrid-sevilla-en-2021-que-no-se-ejecutaron/"
+        }
+      ],
+      "grouping_reason": "Ambas tarjetas derivan directamente del mismo accidente de Urda y de sus consecuencias operativas y técnicas en el corredor Madrid-Andalucía. Madrid-Barcelona queda fuera porque trata una renovación distinta.",
+      "grouping_request_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+      "source": "listas_grouping_editorial",
+      "auto_queued": false,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "4a67a8d21ef0f88c3121108efe969165b41efadad79ab6450a3706de2c959e33",
+      "editorial_grouping_checked_at": "2026-10-30T14:09:13.158533+00:00"
     }
   ],
-  "updated_at": "2026-10-30T14:05:50.914376+00:00",
+  "updated_at": "2026-10-30T14:09:13.158533+00:00",
   "count": 304
 }
