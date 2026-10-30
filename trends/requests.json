@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T14:09:13.158533+00:00",
+  "updated_at": "2026-10-30T15:09:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -3483,9 +3483,9 @@
       "rank": 20,
       "created_at": "2026-10-30T14:07:12.005954+00:00",
       "revision": 2,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-30T14:07:12.005954+00:00",
-      "updated_at": "2026-10-30T14:07:12.005954+00:00",
+      "updated_at": "2026-10-30T15:09:00+01:00",
       "auto_queued": false,
       "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
@@ -3536,10 +3536,26 @@
           "status": "inactive",
           "problem_reason": "La etiqueta #30OctubrESP está activa en tendencias y hoy existe una petición política pública de dimisión de Óscar Puente, pero las búsquedas independientes no aportan evidencia verificable de que esa campaña sea el detonante concreto de la etiqueta. Se conserva la pista editorial sin publicarla como hecho.",
           "last_attempt_at": ""
+        },
+        {
+          "revision": 2,
+          "status": "problematic",
+          "problem_reason": "La pista editorial indica que #30OctubrESP se usa para criticar a Óscar Puente. Las búsquedas independientes confirman que la etiqueta está activa y que hoy existe presión pública para que Puente dimita, pero no aportan publicaciones o fuentes verificables que demuestren que esa crítica sea el detonante concreto del hashtag. La pista se conserva sin convertirla en hecho.",
+          "last_attempt_at": "2026-10-30T15:09:00+01:00",
+          "verification_sources": [
+            "https://twitter-trends.snaplytics.io/spain/",
+            "https://trends24.in/spain/madrid/",
+            "https://www.20minutos.es/nacional/accidente-tren-toledo-directo-los-institutos-forenses-han-recibido-ya-los-69-cuerpos-han-practicado-48-autopsias_7055282_6.html"
+          ]
         }
       ],
       "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nTodo lo que veo con ese hashtag se está usando para criticar a Oscar Puente\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
-      "hints_verification_status": "unverified"
+      "hints_verification_status": "unverified",
+      "problematic_at": "2026-10-30T15:09:00+01:00",
+      "last_attempt_at": "2026-10-30T15:09:00+01:00",
+      "problem_reason": "La pista editorial indica que #30OctubrESP se usa para criticar a Óscar Puente. Las búsquedas independientes confirman que la etiqueta está activa y que hoy existe presión pública para que Puente dimita, pero no aportan publicaciones o fuentes verificables que demuestren que esa crítica sea el detonante concreto del hashtag. La pista se conserva sin convertirla en hecho.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chat-direct"
     },
     {
       "id": "5728ff97c00d",
