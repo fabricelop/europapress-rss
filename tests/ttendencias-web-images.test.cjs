@@ -43,6 +43,10 @@ test('se rechaza la imagen de una revisión o ID distintos aunque la URL parezca
   m.items[0].ai_image.target_id=ID;m.items[0].ai_image.revision=1;
   await withDocuments(t,job(),m,async()=>assert.equal((await consume(task())).status,'waiting'));
 });
+test('un raster anterior sin prueba positiva de comando o SHA no se atribuye al nuevo job',async t=>{
+  const m=manual();delete m.items[0].ai_image.command_id;delete m.items[0].ai_image.sha256;
+  await withDocuments(t,job(),m,async()=>assert.equal((await consume(task())).status,'waiting'));
+});
 test('un upload aceptado se puede confirmar aunque el estado del job siga LAUNCHED',async t=>{
   const j=job();j.status='LAUNCHED';delete j.upload_sha256;
   const q=task();q.sha256=IMAGE_HASH;
