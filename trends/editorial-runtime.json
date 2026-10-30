@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:17:26.700Z",
   "last_completed_at": "2026-10-30T21:04:00Z",
-  "updated_at": "2026-10-30T21:17:26.700Z",
+  "updated_at": "2026-10-30T21:18:05.482Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -18,7 +18,7 @@
   "remaining_problematic_ids": [],
   "run_id": "tr-1793394948517-manual",
   "previous_run_id": "tr-1793393362927-manual",
-  "summary": "Pasada editorial en curso 0/1: revalidando Koldo r0.",
+  "summary": "Pasada editorial en curso 0/1: investigando Koldo r0.",
   "activity": [
     {
       "at": "2026-10-30T21:17:26.700Z",
@@ -26,13 +26,20 @@
       "trend_id": "20c655cb3655",
       "title": "Koldo",
       "message": "Inicio tr-1793394948517-manual: cola inicial 1/1. Revalidando Koldo r0 y registros persistidos antes de investigar. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T21:18:05.482Z",
+      "phase": "investigating",
+      "trend_id": "20c655cb3655",
+      "title": "Koldo",
+      "message": "Koldo r0 sigue JIT en cola y TT#11. Investigación desde cero del detonante actual, fecha y posibles novedades frente al episodio del 29/10; sin reutilizar su texto anterior."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-30T21:17:26.700Z",
   "finished_at": null,
   "current": 0,
@@ -46,9 +53,9 @@
     "run_id": "tr-1793394948517-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "preparing",
+    "phase": "investigating",
     "started_at": "2026-10-30T21:17:26.700Z",
-    "updated_at": "2026-10-30T21:17:26.700Z",
+    "updated_at": "2026-10-30T21:18:05.482Z",
     "finished_at": null,
     "current": 0,
     "total": 1,
@@ -61,7 +68,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada editorial en curso 0/1: revalidando Koldo r0.",
+    "message": "Pasada editorial en curso 0/1: investigando Koldo r0.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -88,6 +95,13 @@
         "trend_id": "20c655cb3655",
         "title": "Koldo",
         "message": "Inicio tr-1793394948517-manual: cola inicial 1/1. Revalidando Koldo r0 y registros persistidos antes de investigar. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T21:18:05.482Z",
+        "phase": "investigating",
+        "trend_id": "20c655cb3655",
+        "title": "Koldo",
+        "message": "Koldo r0 sigue JIT en cola y TT#11. Investigación desde cero del detonante actual, fecha y posibles novedades frente al episodio del 29/10; sin reutilizar su texto anterior."
       }
     ],
     "final_outcomes": []
