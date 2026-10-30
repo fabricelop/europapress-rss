@@ -1,16 +1,22 @@
 {
   "project": "TTendencias",
-  "engine": "chat-direct",
+  "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T13:40:00+01:00",
+  "last_started_at": "2026-10-30T13:57:11+01:00",
   "last_completed_at": "2026-10-30T13:44:00+01:00",
-  "updated_at": "2026-10-30T13:44:00+01:00",
-  "status": "success",
-  "queue_complete": true,
-  "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "updated_at": "2026-10-30T13:57:11+01:00",
+  "status": "waiting",
+  "queue_complete": false,
+  "processed_ids": [
+    "22601009b977"
+  ],
+  "remaining_ids": [
+    "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6"
+  ],
+  "remaining_active_ids": [
+    "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6"
+  ],
   "remaining_problematic_ids": [],
   "run_id": "tr-chat-20261030T134000+0100-manual",
   "previous_run_id": "tr-chat-20261030T132500+0100-manual",
@@ -204,5 +210,6 @@
       "Atocha"
     ]
   },
-  "api_failover_enabled": false
+  "api_failover_enabled": false,
+  "error": null
 }
