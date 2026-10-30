@@ -3,40 +3,35 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T19:13:17+01:00",
+  "last_started_at": "2026-10-30T19:19:00+01:00",
   "last_completed_at": "2026-10-30T18:58:00+01:00",
-  "updated_at": "2026-10-30T19:18:00+01:00",
+  "updated_at": "2026-10-30T19:19:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
-  "processed_ids": [
-    "808846a26299",
-    "fa530f914299"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
-    "6dcd1bfd7fda",
-    "e40be8e866b4",
-    "9dbe1a97a6b4",
-    "2524fcda47bf"
+    "listas-auto-0d3447858f6c0149f1d2",
+    "red-review-257d9d047ee2c6174779",
+    "red-review-6427e924df3f8918dc96"
   ],
   "remaining_active_ids": [
-    "6dcd1bfd7fda",
-    "e40be8e866b4",
-    "9dbe1a97a6b4",
-    "2524fcda47bf"
+    "listas-auto-0d3447858f6c0149f1d2",
+    "red-review-257d9d047ee2c6174779",
+    "red-review-6427e924df3f8918dc96"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793383800000-manual",
+  "run_id": "tr-1793384313662-manual",
   "previous_run_id": "tr-1793383800000-manual",
   "summary": {
-    "attempted": 2,
-    "explained": 2,
+    "attempted": 0,
+    "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 4,
+    "remaining_active": 3,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -45,53 +40,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T19:13:17+01:00",
+      "at": "2026-10-30T19:19:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada manual iniciada. Cola inicial 6: Alcaraz, Capitalismo, Viena, Ronaldo Nazário, Intel, Gracias Ministro. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:16:00+01:00",
-      "phase": "investigating",
-      "trend_id": "808846a26299",
-      "title": "Alcaraz",
-      "message": "Resultado y cruce de semifinales contrastados con fuentes actuales."
-    },
-    {
-      "at": "2026-10-30T19:16:00+01:00",
-      "phase": "persisting",
-      "trend_id": "808846a26299",
-      "title": "Alcaraz",
-      "message": "Texto y remate persistidos en requests y Listas; sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:16:00+01:00",
-      "phase": "verifying",
-      "trend_id": "808846a26299",
-      "title": "Alcaraz",
-      "message": "ID/revisión y texto coinciden en ambos registros; revisión retirada de la cola."
-    },
-    {
-      "at": "2026-10-30T19:18:00+01:00",
-      "phase": "investigating",
-      "trend_id": "fa530f914299",
-      "title": "Capitalismo",
-      "message": "Dos fuentes actuales confirman el discurso viral de Javier Barrio y la expresión «capitalismo con prisas»."
-    },
-    {
-      "at": "2026-10-30T19:18:00+01:00",
-      "phase": "persisting",
-      "trend_id": "fa530f914299",
-      "title": "Capitalismo",
-      "message": "Explicación factual persistida sin remate por sensibilidad; sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:18:00+01:00",
-      "phase": "verifying",
-      "trend_id": "fa530f914299",
-      "title": "Capitalismo",
-      "message": "ID/revisión y texto coinciden en requests y Listas; revisión retirada de la cola."
+      "message": "Pasada manual iniciada. Cola inicial 3: agrupación automática de Listas, revisión Ana Pastor y revisión Repsol. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -100,41 +53,37 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793383800000-manual",
+    "run_id": "tr-1793384313662-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "verifying",
-    "started_at": "2026-10-30T19:13:17+01:00",
-    "updated_at": "2026-10-30T19:18:00+01:00",
+    "phase": "preparing",
+    "started_at": "2026-10-30T19:19:00+01:00",
+    "updated_at": "2026-10-30T19:19:00+01:00",
     "finished_at": null,
-    "current": 2,
-    "total": 6,
+    "current": 0,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "queue_complete": false,
     "remaining_active_ids": [
-      "6dcd1bfd7fda",
-      "e40be8e866b4",
-      "9dbe1a97a6b4",
-      "2524fcda47bf"
+      "listas-auto-0d3447858f6c0149f1d2",
+      "red-review-257d9d047ee2c6174779",
+      "red-review-6427e924df3f8918dc96"
     ],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "808846a26299",
-      "fa530f914299"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada manual en curso 2/6. Sin ImageGen.",
+    "message": "Pasada manual iniciada 0/3. Sin ImageGen.",
     "summary": {
-      "attempted": 2,
-      "explained": 2,
+      "attempted": 0,
+      "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 4,
+      "remaining_active": 3,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -145,77 +94,22 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T19:13:17+01:00",
+        "at": "2026-10-30T19:19:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada manual iniciada. Cola inicial 6: Alcaraz, Capitalismo, Viena, Ronaldo Nazário, Intel, Gracias Ministro. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:16:00+01:00",
-        "phase": "investigating",
-        "trend_id": "808846a26299",
-        "title": "Alcaraz",
-        "message": "Resultado y cruce de semifinales contrastados con fuentes actuales."
-      },
-      {
-        "at": "2026-10-30T19:16:00+01:00",
-        "phase": "persisting",
-        "trend_id": "808846a26299",
-        "title": "Alcaraz",
-        "message": "Texto y remate persistidos en requests y Listas; sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:16:00+01:00",
-        "phase": "verifying",
-        "trend_id": "808846a26299",
-        "title": "Alcaraz",
-        "message": "ID/revisión y texto coinciden en ambos registros; revisión retirada de la cola."
-      },
-      {
-        "at": "2026-10-30T19:18:00+01:00",
-        "phase": "investigating",
-        "trend_id": "fa530f914299",
-        "title": "Capitalismo",
-        "message": "Dos fuentes actuales confirman el discurso viral de Javier Barrio y la expresión «capitalismo con prisas»."
-      },
-      {
-        "at": "2026-10-30T19:18:00+01:00",
-        "phase": "persisting",
-        "trend_id": "fa530f914299",
-        "title": "Capitalismo",
-        "message": "Explicación factual persistida sin remate por sensibilidad; sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:18:00+01:00",
-        "phase": "verifying",
-        "trend_id": "fa530f914299",
-        "title": "Capitalismo",
-        "message": "ID/revisión y texto coinciden en requests y Listas; revisión retirada de la cola."
+        "message": "Pasada manual iniciada. Cola inicial 3: agrupación automática de Listas, revisión Ana Pastor y revisión Repsol. Sin ImageGen."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "808846a26299",
-        "revision": 0,
-        "status": "explained",
-        "title": "Alcaraz"
-      },
-      {
-        "id": "fa530f914299",
-        "revision": 0,
-        "status": "explained",
-        "title": "Capitalismo"
-      }
-    ]
+    "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "verifying",
-  "started_at": "2026-10-30T19:13:17+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-30T19:19:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 6,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null
 }
