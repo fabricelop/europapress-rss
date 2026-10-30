@@ -19607,10 +19607,15 @@
       "distinct_episode": false,
       "new_facts": "Binance estima un impacto de unos 6.300 millones de dólares, apunta preliminarmente a un portátil de un ingeniero DevOps comprometido, afirma que no hay evidencia de fuga de claves privadas y dice que unos 3.000 millones han sido congelados; cubrirá las pérdidas con SAFU y fondos de la compañía.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "trend-update-607ecdd2b7d2e6f993f5",
@@ -19640,12 +19645,32 @@
       "distinct_episode": false,
       "new_facts": "Manuel Alonso Ferrezuelo, abogado de la plataforma de víctimas de Angrois, recomienda a los afectados de Urda conservar informes médicos y justificantes de gastos, no firmar acuerdos precipitadamente y personarse pronto con abogado y procurador en la vía penal.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261030141422_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/sociedad/noticia-accidente-abogados-victimas-angrois-adamuz-recomiendan-documentar-lesiones-personarse-via-penal-20261030141422.html",
+        "alt": "Imagen de archivo relacionada con Angrois",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261030141422_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/sociedad/noticia-accidente-abogados-victimas-angrois-adamuz-recomiendan-documentar-lesiones-personarse-via-penal-20261030141422.html",
+        "alt": "Imagen de archivo relacionada con Angrois",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-30T18:42:17.107968+00:00",
+  "updated_at": "2026-10-30T18:43:06.930802Z",
   "count": 347
 }
