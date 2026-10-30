@@ -4,15 +4,15 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T15:11:20+01:00",
-  "last_completed_at": "2026-10-30T15:11:00+01:00",
-  "updated_at": "2026-10-30T15:11:20+01:00",
-  "status": "running",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T15:12:10+01:00",
+  "updated_at": "2026-10-30T15:12:10+01:00",
+  "status": "done",
+  "queue_complete": true,
+  "processed_ids": [
     "dc90fe5a413e",
     "8d550038a24d"
   ],
+  "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "dc90fe5a413e",
@@ -21,12 +21,12 @@
   "run_id": "tr-chat-20261030T151120+0100-manual",
   "previous_run_id": "tr-1793369233599-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "explained": 0,
     "explanation_groups": 0,
     "new_cards": 0,
-    "problematic": 0,
-    "final_resolved": 0,
+    "problematic": 2,
+    "final_resolved": 2,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 2,
@@ -45,6 +45,27 @@
       "trend_id": "dc90fe5a413e",
       "title": "#30OctubrESP",
       "message": "Nueva pasada manual: 0 preparing/update y 0 rewrite_pending; reintentando los dos problematic vigentes del Top 30."
+    },
+    {
+      "at": "2026-10-30T15:11:45+01:00",
+      "phase": "investigating",
+      "trend_id": "dc90fe5a413e",
+      "title": "#30OctubrESP",
+      "message": "Reintento r0: tendencia confirmada, sin detonante causal verificable."
+    },
+    {
+      "at": "2026-10-30T15:11:55+01:00",
+      "phase": "investigating",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Reintento r2: la pista sobre críticas a Puente no queda corroborada como causa del hashtag."
+    },
+    {
+      "at": "2026-10-30T15:12:10+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: 0 preparing/update y 0 rewrite_pending; permanecen 2 problematic sin explicación verificable. Sin ImageGen."
     }
   ],
   "ratings_snapshot": {
@@ -159,31 +180,34 @@
     "project": "TTendencias",
     "run_id": "tr-chat-20261030T151120+0100-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T15:11:20+01:00",
-    "updated_at": "2026-10-30T15:11:20+01:00",
-    "finished_at": null,
-    "current": 0,
+    "updated_at": "2026-10-30T15:12:10+01:00",
+    "finished_at": "2026-10-30T15:12:10+01:00",
+    "current": 2,
     "total": 2,
-    "trend_id": "dc90fe5a413e",
-    "title": "#30OctubrESP",
-    "queue_complete": false,
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
       "dc90fe5a413e",
       "8d550038a24d"
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "dc90fe5a413e",
+      "8d550038a24d"
+    ],
     "partial": false,
-    "message": "Reintentando los dos casos problematic de #30OctubrESP con revalidación JIT.",
+    "message": "Pasada completada: 0 preparing/update y 0 rewrite_pending; #30OctubrESP sigue sin causa verificable en sus dos revisiones.",
     "summary": {
-      "attempted": 0,
+      "attempted": 2,
       "explained": 0,
       "explanation_groups": 0,
       "new_cards": 0,
-      "problematic": 0,
-      "final_resolved": 0,
+      "problematic": 2,
+      "final_resolved": 2,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 2,
@@ -204,9 +228,43 @@
         "trend_id": "dc90fe5a413e",
         "title": "#30OctubrESP",
         "message": "Nueva pasada manual: 0 preparing/update y 0 rewrite_pending; reintentando los dos problematic vigentes del Top 30."
+      },
+      {
+        "at": "2026-10-30T15:11:45+01:00",
+        "phase": "investigating",
+        "trend_id": "dc90fe5a413e",
+        "title": "#30OctubrESP",
+        "message": "Reintento r0: tendencia confirmada, sin detonante causal verificable."
+      },
+      {
+        "at": "2026-10-30T15:11:55+01:00",
+        "phase": "investigating",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Reintento r2: la pista sobre críticas a Puente no queda corroborada como causa del hashtag."
+      },
+      {
+        "at": "2026-10-30T15:12:10+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final: 0 preparing/update y 0 rewrite_pending; permanecen 2 problematic sin explicación verificable. Sin ImageGen."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "dc90fe5a413e",
+        "revision": 0,
+        "status": "problematic",
+        "name": "#30OctubrESP"
+      },
+      {
+        "id": "8d550038a24d",
+        "revision": 2,
+        "status": "problematic",
+        "name": "#30OctubrESP"
+      }
+    ]
   },
   "radar": {
     "captured_at": "2026-10-30T14:29:14+01:00",
