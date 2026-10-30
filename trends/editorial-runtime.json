@@ -3,28 +3,24 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T16:31:30+01:00",
+  "last_started_at": "2026-10-30T16:34:47.387+01:00",
   "last_completed_at": "2026-10-30T16:34:10+01:00",
-  "updated_at": "2026-10-30T16:34:10+01:00",
-  "status": "done",
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-db9fb6c63f89ac444f77",
-    "red-review-ecba76c4274e57ce9970",
-    "red-review-cf6acca8b418ced525e5"
-  ],
+  "updated_at": "2026-10-30T16:34:47.387+01:00",
+  "status": "running",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793374254132-manual",
+  "run_id": "tr-1793374370299-manual",
   "previous_run_id": "tr-1793374254132-manual",
   "summary": {
-    "attempted": 3,
+    "attempted": 0,
     "explained": 0,
     "updates": 0,
-    "stale_reviews": 1,
-    "unchanged_reviews": 1,
-    "grouping_requests": 1,
+    "stale_reviews": 0,
+    "unchanged_reviews": 0,
+    "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
     "remaining_active": 0,
@@ -36,53 +32,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T16:31:30+01:00",
+      "at": "2026-10-30T16:34:47.387+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio: 3 encargos vigentes en main; agrupación primero y después revisiones de novedades. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T16:33:26+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-cf6acca8b418ced525e5",
-      "title": "Renfe",
-      "message": "Revisión updated aplicada y retirada de la cola; Alvia quedó unchanged y la agrupación terminó sin grupos."
-    },
-    {
-      "at": "2026-10-30T16:34:10+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completada: 3/3 encargos cerrados; cola 0, sin rewrite_pending. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T16:32:35+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-db9fb6c63f89ac444f77",
-      "title": "Agrupación automática de Listas",
-      "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
-    },
-    {
-      "at": "2026-10-30T16:32:46+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-ecba76c4274e57ce9970",
-      "title": "Alvia",
-      "message": "Revisión aplicada sin novedades sustanciales; se conserva texto y fecha."
-    },
-    {
-      "at": "2026-10-30T16:33:26+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-cf6acca8b418ced525e5",
-      "title": "Renfe",
-      "message": "Se detectó novedad material, pero el origen quedó stale al existir cobertura posterior más reciente; no se creó duplicado."
-    },
-    {
-      "at": "2026-10-30T16:34:10+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completada: 3/3 mantenimientos cerrados; sin preparing/update ni rewrite_pending. Sin ImageGen."
+      "message": "Inicio de pasada manual: cola vigente 0 tras relectura de main; comprobando preparing/update y rewrite_pending. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -91,34 +45,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793374254132-manual",
+    "run_id": "tr-1793374370299-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T16:31:30+01:00",
-    "updated_at": "2026-10-30T16:34:10+01:00",
-    "finished_at": "2026-10-30T16:34:10+01:00",
-    "current": 3,
-    "total": 3,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T16:34:47.387+01:00",
+    "updated_at": "2026-10-30T16:34:47.387+01:00",
+    "finished_at": null,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "listas-auto-db9fb6c63f89ac444f77",
-      "red-review-ecba76c4274e57ce9970",
-      "red-review-cf6acca8b418ced525e5"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada: 1 agrupación sin grupos, Alvia sin novedades, Renfe stale por cobertura posterior; sin preparing/update ni rewrite_pending. Sin ImageGen.",
+    "message": "Verificando cierre 0/0 contra main; sin ImageGen.",
     "summary": {
-      "attempted": 3,
+      "attempted": 0,
       "explained": 0,
       "updates": 0,
-      "stale_reviews": 1,
-      "unchanged_reviews": 1,
-      "grouping_requests": 1,
+      "stale_reviews": 0,
+      "unchanged_reviews": 0,
+      "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
       "remaining_active": 0,
@@ -132,77 +82,14 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T16:31:30+01:00",
+        "at": "2026-10-30T16:34:47.387+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio: 3 encargos vigentes en main; agrupación primero y después revisiones de novedades. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T16:33:26+01:00",
-        "phase": "verifying",
-        "trend_id": "red-review-cf6acca8b418ced525e5",
-        "title": "Renfe",
-        "message": "Revisión updated aplicada y retirada de la cola; Alvia quedó unchanged y la agrupación terminó sin grupos."
-      },
-      {
-        "at": "2026-10-30T16:34:10+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada completada: 3/3 encargos cerrados; cola 0, sin rewrite_pending. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T16:32:35+01:00",
-        "phase": "persisting",
-        "trend_id": "listas-auto-db9fb6c63f89ac444f77",
-        "title": "Agrupación automática de Listas",
-        "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
-      },
-      {
-        "at": "2026-10-30T16:32:46+01:00",
-        "phase": "verifying",
-        "trend_id": "red-review-ecba76c4274e57ce9970",
-        "title": "Alvia",
-        "message": "Revisión aplicada sin novedades sustanciales; se conserva texto y fecha."
-      },
-      {
-        "at": "2026-10-30T16:33:26+01:00",
-        "phase": "verifying",
-        "trend_id": "red-review-cf6acca8b418ced525e5",
-        "title": "Renfe",
-        "message": "Se detectó novedad material, pero el origen quedó stale al existir cobertura posterior más reciente; no se creó duplicado."
-      },
-      {
-        "at": "2026-10-30T16:34:10+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada completada: 3/3 mantenimientos cerrados; sin preparing/update ni rewrite_pending. Sin ImageGen."
+        "message": "Inicio de pasada manual: cola vigente 0 tras relectura de main; comprobando preparing/update y rewrite_pending. Sin ImageGen."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "listas-auto-db9fb6c63f89ac444f77",
-        "revision": 0,
-        "status": "grouping_completed",
-        "name": "Agrupación automática de Listas"
-      },
-      {
-        "id": "red-review-ecba76c4274e57ce9970",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: Alvia",
-        "outcome": "unchanged"
-      },
-      {
-        "id": "red-review-cf6acca8b418ced525e5",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: Renfe",
-        "outcome": "stale"
-      }
-    ]
+    "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false
