@@ -3,14 +3,18 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T13:55:00+01:00",
-  "last_completed_at": "2026-10-30T14:03:00+01:00",
-  "updated_at": "2026-10-30T14:03:00+01:00",
+  "last_started_at": "2026-10-30T13:46:00+01:00",
+  "last_completed_at": "2026-10-30T14:04:00+01:00",
+  "updated_at": "2026-10-30T14:04:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
-    "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-    "22601009b977"
+    "1d009d35b4f9",
+    "f1fe0e54a4d5",
+    "524f7ecb7b46",
+    "a7db60a725f4",
+    "281a5360a665",
+    "09fb9ff32c5a"
   ],
   "remaining_ids": [
     "22601009b977"
@@ -19,30 +23,30 @@
   "remaining_problematic_ids": [
     "22601009b977"
   ],
-  "run_id": "tr-chat-20261030T135500+0100-manual",
-  "previous_run_id": "tr-chat-20261030T134000+0100-manual",
+  "run_id": "tr-1793364317490-manual",
+  "previous_run_id": "tr-chat-20261030T135500+0100-manual",
   "summary": {
-    "attempted": 2,
-    "explained": 0,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "attempted": 8,
+    "explained": 6,
+    "explanation_groups": 7,
+    "new_cards": 7,
     "problematic": 1,
-    "final_resolved": 1,
+    "final_resolved": 6,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 1,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 1,
+    "explanations_verified_under_280": 7,
     "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
-    "top30_fresh_coverage": 0,
+    "remates_omitted": 7,
+    "recent_missing_closer_reviewed": 21,
+    "pending_visual_candidates_reviewed": 7,
+    "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1,
+    "incidents": 2,
     "grouping_requests": 1,
     "groups_created": 1,
     "members_covered": 5,
@@ -50,74 +54,144 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T13:55:00+01:00",
+      "at": "2026-10-30T13:46:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Cola editorial 2: preparando agrupación de Listas y #30OctubrESP."
+      "message": "Cola inicial 5; reparación visual solicitada y pasada editorial iniciada."
+    },
+    {
+      "at": "2026-10-30T13:48:00+01:00",
+      "phase": "verifying",
+      "trend_id": "1d009d35b4f9",
+      "title": "Calvario",
+      "message": "Releyendo estado autoritativo de Calvario."
+    },
+    {
+      "at": "2026-10-30T13:49:25+01:00",
+      "phase": "verifying",
+      "trend_id": "1d009d35b4f9",
+      "title": "Calvario",
+      "message": "Tendencia cerrada y verificada sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-10-30T13:50:00+01:00",
+      "phase": "verifying",
+      "trend_id": "f1fe0e54a4d5",
+      "title": "#Mañaneros30O",
+      "message": "Releyendo estado autoritativo de #Mañaneros30O."
+    },
+    {
+      "at": "2026-10-30T13:51:20+01:00",
+      "phase": "verifying",
+      "trend_id": "f1fe0e54a4d5",
+      "title": "#Mañaneros30O",
+      "message": "Tendencia cerrada y verificada sin remate por cobertura de una tragedia."
+    },
+    {
+      "at": "2026-10-30T13:52:00+01:00",
+      "phase": "verifying",
+      "trend_id": "524f7ecb7b46",
+      "title": "Transportes",
+      "message": "Releyendo estado autoritativo de Transportes."
+    },
+    {
+      "at": "2026-10-30T13:53:20+01:00",
+      "phase": "verifying",
+      "trend_id": "524f7ecb7b46",
+      "title": "Transportes",
+      "message": "Tendencia cerrada y verificada; sin sátira por contexto de víctimas."
+    },
+    {
+      "at": "2026-10-30T13:54:00+01:00",
+      "phase": "verifying",
+      "trend_id": "a7db60a725f4",
+      "title": "Madrid-Sevilla",
+      "message": "Releyendo estado autoritativo de Madrid-Sevilla."
+    },
+    {
+      "at": "2026-10-30T13:55:20+01:00",
+      "phase": "verifying",
+      "trend_id": "a7db60a725f4",
+      "title": "Madrid-Sevilla",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-30T13:55:30+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura de cola: entraron concurrentemente Dana y #30OctubrESP."
     },
     {
       "at": "2026-10-30T13:56:00+01:00",
       "phase": "verifying",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Releyendo estado autoritativo de las candidatas de Listas."
-    },
-    {
-      "at": "2026-10-30T13:56:00+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Releyendo estado autoritativo de las candidatas de Listas."
-    },
-    {
-      "at": "2026-10-30T13:57:00+01:00",
-      "phase": "investigating",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Hecho común verificado: accidente de Urda y sus consecuencias ferroviarias actuales."
+      "trend_id": "281a5360a665",
+      "title": "Alta Velocidad",
+      "message": "Releyendo estado autoritativo de Alta Velocidad."
     },
     {
       "at": "2026-10-30T13:57:20+01:00",
-      "phase": "drafting",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Redactando explicación conjunta factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-30T13:57:40+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Guardando outbox transaccional de agrupación; las explicaciones originales se conservan intactas."
+      "phase": "verifying",
+      "trend_id": "281a5360a665",
+      "title": "Alta Velocidad",
+      "message": "Tendencia cerrada y verificada."
     },
     {
       "at": "2026-10-30T13:58:00+01:00",
       "phase": "verifying",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Outbox de agrupación guardado; releyendo main y esperando aplicación transaccional."
+      "trend_id": "09fb9ff32c5a",
+      "title": "Dana",
+      "message": "Releyendo estado autoritativo de Dana."
     },
     {
-      "at": "2026-10-30T14:02:00+01:00",
+      "at": "2026-10-30T13:59:35+01:00",
       "phase": "verifying",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Aplicación verificada: ficha conjunta creada y cinco originales conservadas con marcas de cobertura."
+      "trend_id": "09fb9ff32c5a",
+      "title": "Dana",
+      "message": "Ficha actual y request coinciden; registrada colisión histórica de id+revision con una ficha publicada del 28/10."
     },
     {
-      "at": "2026-10-30T14:02:30+01:00",
+      "at": "2026-10-30T14:00:00+01:00",
       "phase": "verifying",
       "trend_id": "22601009b977",
       "title": "#30OctubrESP",
-      "message": "Estado verificado: problematic; no hay explicación publicada ni detonante único suficientemente fiable."
+      "message": "Releyendo estado autoritativo de #30OctubrESP."
     },
     {
-      "at": "2026-10-30T14:03:00+01:00",
+      "at": "2026-10-30T14:00:10+01:00",
+      "phase": "investigating",
+      "trend_id": "22601009b977",
+      "title": "#30OctubrESP",
+      "message": "Búsqueda 1/2 sin detonante verificable."
+    },
+    {
+      "at": "2026-10-30T14:00:30+01:00",
+      "phase": "investigating",
+      "trend_id": "22601009b977",
+      "title": "#30OctubrESP",
+      "message": "Búsqueda 2/2 sin detonante verificable."
+    },
+    {
+      "at": "2026-10-30T14:01:10+01:00",
+      "phase": "verifying",
+      "trend_id": "22601009b977",
+      "title": "#30OctubrESP",
+      "message": "Problematic persistido y verificado para reintento."
+    },
+    {
+      "at": "2026-10-30T14:02:45+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
+      "title": "Agrupar tendencias de Listas",
+      "message": "Agrupación de Urda aplicada: 1 ficha conjunta, 5 miembros cubiertos, Yola y Dana intactas."
+    },
+    {
+      "at": "2026-10-30T14:04:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 0 preparing/update/reexplain; agrupación aplicada y #30OctubrESP queda problematic para un nuevo intento."
+      "message": "Relectura final de main: 0 preparing/update, 0 reexplicaciones pendientes y agrupación completada."
     }
   ],
   "ratings_snapshot": {
@@ -125,64 +199,170 @@
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
     "total_ratings": 154,
-    "recent_considered": 0
+    "recent_considered": 30
   },
-  "remate_selections": [],
+  "remate_selections": [
+    {
+      "trend_id": "1d009d35b4f9",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "victim_or_tragedy_sensitivity"
+    },
+    {
+      "trend_id": "f1fe0e54a4d5",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "victim_or_tragedy_sensitivity"
+    },
+    {
+      "trend_id": "524f7ecb7b46",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "victim_or_tragedy_sensitivity"
+    },
+    {
+      "trend_id": "a7db60a725f4",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "victim_or_tragedy_sensitivity"
+    },
+    {
+      "trend_id": "281a5360a665",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "victim_or_tragedy_sensitivity"
+    },
+    {
+      "trend_id": "09fb9ff32c5a",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "victim_or_tragedy_sensitivity"
+    },
+    {
+      "trend_id": "listas-joint-d700cc8fe741c186",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "victim_or_tragedy_sensitivity"
+    }
+  ],
   "final_outcomes": [
     {
-      "id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "status": "grouping_completed",
-      "joint_id": "listas-joint-d700cc8fe741c186",
-      "groups_created": 1,
-      "members_covered": 5
+      "id": "1d009d35b4f9",
+      "title": "Calvario",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "f1fe0e54a4d5",
+      "title": "#Mañaneros30O",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "524f7ecb7b46",
+      "title": "Transportes",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "a7db60a725f4",
+      "title": "Madrid-Sevilla",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "281a5360a665",
+      "title": "Alta Velocidad",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "09fb9ff32c5a",
+      "title": "Dana",
+      "revision": 0,
+      "status": "explained"
     },
     {
       "id": "22601009b977",
       "title": "#30OctubrESP",
-      "status": "problematic",
-      "reason": "Tras dos búsquedas independientes no se pudo verificar un detonante único, concreto y actual; se evita inventar una explicación."
+      "revision": 0,
+      "status": "problematic"
+    },
+    {
+      "id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
+      "title": "Agrupar tendencias de Listas",
+      "revision": 0,
+      "status": "grouping_completed",
+      "created_id": "listas-joint-d700cc8fe741c186"
     }
   ],
   "incidents": [
     {
-      "id": "22601009b977",
+      "trend_id": "09fb9ff32c5a",
+      "title": "Dana",
+      "reason": "La revisión actual se cerró y verificó, pero existe una ficha histórica published del 28/10 con el mismo id+revision; se preservó la histórica y se registró la ficha actual sin reescribir la publicada."
+    },
+    {
+      "trend_id": "22601009b977",
       "title": "#30OctubrESP",
-      "type": "problematic_unverified_trigger",
-      "message": "Tras dos búsquedas independientes no se pudo verificar un detonante único, concreto y actual; se evita inventar una explicación."
+      "reason": "Dos búsquedas independientes no localizaron un detonante único, concreto y actual verificable; queda status problematic para reintento sin inventar explicación."
     }
   ],
-  "incident_count": 1,
+  "incident_count": 2,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T135500+0100-manual",
+    "trigger_run_id": "tr-1793364317490-manual",
     "status": "triggered",
     "editorial_blocking": false
   },
   "apply_workflow": {
     "workflow": "ttactualidad-group-listas",
-    "status": "success",
-    "run_id": 41059277875,
-    "editorial_blocking": false
+    "status": "applied",
+    "editorial_blocking": false,
+    "grouping_request_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
+    "created_ids": [
+      "listas-joint-d700cc8fe741c186"
+    ]
   },
   "requests_state": {
     "status": "valid_no_active",
-    "updated_at": "2026-10-30T14:03:00+01:00"
+    "updated_at": "2026-10-30T14:04:00+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T135500+0100-manual",
+    "run_id": "tr-1793364317490-manual",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-30T13:55:00+01:00",
-    "updated_at": "2026-10-30T14:03:00+01:00",
-    "finished_at": "2026-10-30T14:03:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-30T13:46:00+01:00",
+    "updated_at": "2026-10-30T14:04:00+01:00",
+    "finished_at": "2026-10-30T14:04:00+01:00",
+    "current": 8,
+    "total": 8,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
@@ -191,45 +371,53 @@
       "22601009b977"
     ],
     "processed_ids": [
-      "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "22601009b977"
+      "1d009d35b4f9",
+      "f1fe0e54a4d5",
+      "524f7ecb7b46",
+      "a7db60a725f4",
+      "281a5360a665",
+      "09fb9ff32c5a"
     ],
     "partial": false,
-    "message": "Pasada cerrada: 0 preparing/update/reexplain; agrupación aplicada y #30OctubrESP queda problematic para un nuevo intento.",
+    "message": "Pasada completada: 6 tendencias explicadas y verificadas; 1 agrupación de Listas aplicada; #30OctubrESP queda problematic tras dos búsquedas sin detonante verificable. Relectura final: 0 preparing/update y 0 reexplicaciones pendientes. Sin ImageGen.",
     "summary": {
-      "attempted": 2,
-      "explained": 0,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "attempted": 8,
+      "explained": 6,
+      "explanation_groups": 7,
+      "new_cards": 7,
       "problematic": 1,
-      "final_resolved": 1,
+      "final_resolved": 6,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 7,
       "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 0,
-      "top30_fresh_coverage": 0,
+      "remates_omitted": 7,
+      "recent_missing_closer_reviewed": 21,
+      "pending_visual_candidates_reviewed": 7,
+      "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1,
+      "incidents": 2,
       "grouping_requests": 1,
       "groups_created": 1,
       "members_covered": 5,
       "untouched_candidates": 2
     },
-    "incident_count": 1,
+    "incident_count": 2,
     "incidents": [
       {
-        "id": "22601009b977",
+        "trend_id": "09fb9ff32c5a",
+        "title": "Dana",
+        "reason": "La revisión actual se cerró y verificó, pero existe una ficha histórica published del 28/10 con el mismo id+revision; se preservó la histórica y se registró la ficha actual sin reescribir la publicada."
+      },
+      {
+        "trend_id": "22601009b977",
         "title": "#30OctubrESP",
-        "type": "problematic_unverified_trigger",
-        "message": "Tras dos búsquedas independientes no se pudo verificar un detonante único, concreto y actual; se evita inventar una explicación."
+        "reason": "Dos búsquedas independientes no localizaron un detonante único, concreto y actual verificable; queda status problematic para reintento sin inventar explicación."
       }
     ],
     "ratings_snapshot": {
@@ -237,114 +425,282 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "1d009d35b4f9",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "victim_or_tragedy_sensitivity"
+      },
+      {
+        "trend_id": "f1fe0e54a4d5",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "victim_or_tragedy_sensitivity"
+      },
+      {
+        "trend_id": "524f7ecb7b46",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "victim_or_tragedy_sensitivity"
+      },
+      {
+        "trend_id": "a7db60a725f4",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "victim_or_tragedy_sensitivity"
+      },
+      {
+        "trend_id": "281a5360a665",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "victim_or_tragedy_sensitivity"
+      },
+      {
+        "trend_id": "09fb9ff32c5a",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "victim_or_tragedy_sensitivity"
+      },
+      {
+        "trend_id": "listas-joint-d700cc8fe741c186",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "victim_or_tragedy_sensitivity"
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-30T13:55:00+01:00",
+        "at": "2026-10-30T13:46:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial 2: preparando agrupación de Listas y #30OctubrESP."
+        "message": "Cola inicial 5; reparación visual solicitada y pasada editorial iniciada."
+      },
+      {
+        "at": "2026-10-30T13:48:00+01:00",
+        "phase": "verifying",
+        "trend_id": "1d009d35b4f9",
+        "title": "Calvario",
+        "message": "Releyendo estado autoritativo de Calvario."
+      },
+      {
+        "at": "2026-10-30T13:49:25+01:00",
+        "phase": "verifying",
+        "trend_id": "1d009d35b4f9",
+        "title": "Calvario",
+        "message": "Tendencia cerrada y verificada sin remate por sensibilidad."
+      },
+      {
+        "at": "2026-10-30T13:50:00+01:00",
+        "phase": "verifying",
+        "trend_id": "f1fe0e54a4d5",
+        "title": "#Mañaneros30O",
+        "message": "Releyendo estado autoritativo de #Mañaneros30O."
+      },
+      {
+        "at": "2026-10-30T13:51:20+01:00",
+        "phase": "verifying",
+        "trend_id": "f1fe0e54a4d5",
+        "title": "#Mañaneros30O",
+        "message": "Tendencia cerrada y verificada sin remate por cobertura de una tragedia."
+      },
+      {
+        "at": "2026-10-30T13:52:00+01:00",
+        "phase": "verifying",
+        "trend_id": "524f7ecb7b46",
+        "title": "Transportes",
+        "message": "Releyendo estado autoritativo de Transportes."
+      },
+      {
+        "at": "2026-10-30T13:53:20+01:00",
+        "phase": "verifying",
+        "trend_id": "524f7ecb7b46",
+        "title": "Transportes",
+        "message": "Tendencia cerrada y verificada; sin sátira por contexto de víctimas."
+      },
+      {
+        "at": "2026-10-30T13:54:00+01:00",
+        "phase": "verifying",
+        "trend_id": "a7db60a725f4",
+        "title": "Madrid-Sevilla",
+        "message": "Releyendo estado autoritativo de Madrid-Sevilla."
+      },
+      {
+        "at": "2026-10-30T13:55:20+01:00",
+        "phase": "verifying",
+        "trend_id": "a7db60a725f4",
+        "title": "Madrid-Sevilla",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-30T13:55:30+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura de cola: entraron concurrentemente Dana y #30OctubrESP."
       },
       {
         "at": "2026-10-30T13:56:00+01:00",
         "phase": "verifying",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Releyendo estado autoritativo de las candidatas de Listas."
-      },
-      {
-        "at": "2026-10-30T13:56:00+01:00",
-        "phase": "verifying",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Releyendo estado autoritativo de las candidatas de Listas."
-      },
-      {
-        "at": "2026-10-30T13:57:00+01:00",
-        "phase": "investigating",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Hecho común verificado: accidente de Urda y sus consecuencias ferroviarias actuales."
+        "trend_id": "281a5360a665",
+        "title": "Alta Velocidad",
+        "message": "Releyendo estado autoritativo de Alta Velocidad."
       },
       {
         "at": "2026-10-30T13:57:20+01:00",
-        "phase": "drafting",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Redactando explicación conjunta factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-30T13:57:40+01:00",
-        "phase": "persisting",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Guardando outbox transaccional de agrupación; las explicaciones originales se conservan intactas."
+        "phase": "verifying",
+        "trend_id": "281a5360a665",
+        "title": "Alta Velocidad",
+        "message": "Tendencia cerrada y verificada."
       },
       {
         "at": "2026-10-30T13:58:00+01:00",
         "phase": "verifying",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Outbox de agrupación guardado; releyendo main y esperando aplicación transaccional."
+        "trend_id": "09fb9ff32c5a",
+        "title": "Dana",
+        "message": "Releyendo estado autoritativo de Dana."
       },
       {
-        "at": "2026-10-30T14:02:00+01:00",
+        "at": "2026-10-30T13:59:35+01:00",
         "phase": "verifying",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Aplicación verificada: ficha conjunta creada y cinco originales conservadas con marcas de cobertura."
+        "trend_id": "09fb9ff32c5a",
+        "title": "Dana",
+        "message": "Ficha actual y request coinciden; registrada colisión histórica de id+revision con una ficha publicada del 28/10."
       },
       {
-        "at": "2026-10-30T14:02:30+01:00",
+        "at": "2026-10-30T14:00:00+01:00",
         "phase": "verifying",
         "trend_id": "22601009b977",
         "title": "#30OctubrESP",
-        "message": "Estado verificado: problematic; no hay explicación publicada ni detonante único suficientemente fiable."
+        "message": "Releyendo estado autoritativo de #30OctubrESP."
       },
       {
-        "at": "2026-10-30T14:03:00+01:00",
+        "at": "2026-10-30T14:00:10+01:00",
+        "phase": "investigating",
+        "trend_id": "22601009b977",
+        "title": "#30OctubrESP",
+        "message": "Búsqueda 1/2 sin detonante verificable."
+      },
+      {
+        "at": "2026-10-30T14:00:30+01:00",
+        "phase": "investigating",
+        "trend_id": "22601009b977",
+        "title": "#30OctubrESP",
+        "message": "Búsqueda 2/2 sin detonante verificable."
+      },
+      {
+        "at": "2026-10-30T14:01:10+01:00",
+        "phase": "verifying",
+        "trend_id": "22601009b977",
+        "title": "#30OctubrESP",
+        "message": "Problematic persistido y verificado para reintento."
+      },
+      {
+        "at": "2026-10-30T14:02:45+01:00",
+        "phase": "verifying",
+        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
+        "title": "Agrupar tendencias de Listas",
+        "message": "Agrupación de Urda aplicada: 1 ficha conjunta, 5 miembros cubiertos, Yola y Dana intactas."
+      },
+      {
+        "at": "2026-10-30T14:04:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 0 preparing/update/reexplain; agrupación aplicada y #30OctubrESP queda problematic para un nuevo intento."
+        "message": "Relectura final de main: 0 preparing/update, 0 reexplicaciones pendientes y agrupación completada."
       }
     ],
     "final_outcomes": [
       {
-        "id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "status": "grouping_completed",
-        "joint_id": "listas-joint-d700cc8fe741c186",
-        "groups_created": 1,
-        "members_covered": 5
+        "id": "1d009d35b4f9",
+        "title": "Calvario",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "f1fe0e54a4d5",
+        "title": "#Mañaneros30O",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "524f7ecb7b46",
+        "title": "Transportes",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "a7db60a725f4",
+        "title": "Madrid-Sevilla",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "281a5360a665",
+        "title": "Alta Velocidad",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "09fb9ff32c5a",
+        "title": "Dana",
+        "revision": 0,
+        "status": "explained"
       },
       {
         "id": "22601009b977",
         "title": "#30OctubrESP",
-        "status": "problematic",
-        "reason": "Tras dos búsquedas independientes no se pudo verificar un detonante único, concreto y actual; se evita inventar una explicación."
+        "revision": 0,
+        "status": "problematic"
+      },
+      {
+        "id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
+        "title": "Agrupar tendencias de Listas",
+        "revision": 0,
+        "status": "grouping_completed",
+        "created_id": "listas-joint-d700cc8fe741c186"
       }
     ]
   },
   "radar": {
-    "captured_at": "2026-10-30T13:40:57+01:00",
+    "captured_at": "2026-10-30T13:51:02+01:00",
     "queue_count": 0,
     "top10": [
       "Urda",
       "Adif",
       "Óscar Puente",
       "Angrois",
-      "Mazón",
+      "#SVGala8",
       "Iryo",
       "Dana",
-      "#svgala8",
+      "Mazón",
       "Koldo",
-      "Atocha"
+      "#eShopOfertasHalloween"
     ]
   },
-  "api_failover_enabled": false,
-  "error": null
+  "api_failover_enabled": false
 }
