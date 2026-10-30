@@ -1,277 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T18:30:02.967286+00:00",
+  "updated_at": "2026-10-30T19:31:19+01:00",
   "count": 1,
   "items": [
     {
       "id": "listas-auto-ffce6a027692670cc4d1",
-      "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
       "requested_at": "2026-10-30T18:30:02.967286+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "group_listas",
-      "listas_grouping_request": true,
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
       "automatic_grouping": true,
-      "grouping_state": "pending",
-      "grouping_candidates": [
-        {
-          "id": "6edd382e5ca7",
-          "revision": 0,
-          "name": "Yola",
-          "rank": 2,
-          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
-          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
-          "explained_at": "2026-10-30T01:21:30+01:00",
-          "verification_sources": [
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
-          ]
-        },
-        {
-          "id": "09fb9ff32c5a",
-          "revision": 0,
-          "name": "Dana",
-          "rank": 7,
-          "explanation": "TT#7 Dana es tendencia por el segundo aniversario de la dana del 29 de octubre de 2024 en Valencia, que dejó 233 fallecidos; continúan los homenajes y actos de memoria.\n#DANA #Valencia #29Octubre",
-          "explanation_sha256": "17b2b984332d798de0a24fe78edfc972462127626e0a370be708e9abc3b0e8ab",
-          "explained_at": "2026-10-30T13:59:00+01:00",
-          "verification_sources": [
-            "https://efe.com/espana/2026-10-29/segundo-aniversario-dana-valencia/",
-            "https://www.valencia.es/es/-/luto-oficial-segundo-aniversario-dana-valencia?redirect=%2Fes%2Fcas%2Fpagina-de-categoria%3Fp_p_id%3Dcom_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_JzpZn9jBadjS%26p_p_lifecycle%3D0%26p_p_mode%3Dview%26p_p_state%3Dnormal%26p_r_p_assetEntryId%3D33468321%26p_r_p_categoryId%3D379821"
-          ]
-        },
-        {
-          "id": "0ecf2a36f589",
-          "revision": 0,
-          "name": "La UCO",
-          "rank": 29,
-          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
-          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
-            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
-          ]
-        },
-        {
-          "id": "83aa70bdac40",
-          "revision": 0,
-          "name": "Día de Todos",
-          "rank": 30,
-          "explanation": "TT#30 Día de Todos es tendencia por la cercanía de Todos los Santos: este año el 1 de noviembre cae en domingo y nueve comunidades trasladan el festivo al lunes 2.\n#TodosLosSantos #Festivos\n🌶️ Este año el puente viene con mapa autonómico.",
-          "explanation_sha256": "05950cbc45d9df4bb1902d08ae0b45a7e82e8bc3515f226ca2cf905649ef76bb",
-          "explained_at": "2026-10-30T18:27:00+01:00",
-          "verification_sources": [
-            "https://www.europapress.es/economia/noticia-donde-festivo-novimebre-comunidades-tendran-puente-lunes-20261030111011.html",
-            "https://www.dgt.es/comunicacion/notas-de-prensa/20261029-dispositivo-especial-festividad-todos-los-santos"
-          ]
-        },
-        {
-          "id": "trend-update-2df2da6392aab5777fba",
-          "revision": 0,
-          "name": "Blocus",
-          "rank": 11,
-          "explanation": "TT#11 Blocus es tendencia por una nueva oleada de detenciones vinculadas al movimiento: diez arrestos en 24 horas en varias provincias, incluido el presunto fundador en Picanya, ante convocatorias para el 31-O.\n#Blocus #Picanya #València",
-          "explanation_sha256": "7ceb5454a157dc1c7193a99bb670c83711f7fb24a6accc64be847f31a8dca16c",
-          "explained_at": "2026-10-30T17:31:07.063802+00:00",
-          "verification_sources": [
-            {
-              "url": "https://web.guardiacivil.es/es/destacados/noticias/Detenido-en-Picanya-Valencia-el-presunto-fundador-e-impulsor-del-movimiento-Blocus-en-Espana/"
-            },
-            {
-              "url": "https://efe.com/espana/2026-10-30/blocus-detenidos-disturbios/"
-            }
-          ]
-        },
-        {
-          "id": "758e5b76d3c2",
-          "revision": 0,
-          "name": "Ryanair",
-          "rank": 25,
-          "explanation": "TT#25 Ryanair es tendencia porque anuncia dos vuelos diarios Málaga-Madrid entre el 14 de noviembre y el 10 de enero para ofrecer una alternativa al corte ferroviario tras Urda.\n#Ryanair #Málaga #Madrid",
-          "explanation_sha256": "0848baf3715f66296cb8ec1c5ee5f86dcd13efbb899e3266697f72a4f7edd4d1",
-          "explained_at": "2026-10-30T18:34:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-ryanair-lanza-vuelos-diarios-malaga-madrid-facilitar-movilidad-viajeros-accidente-urda-20261030124540.html"
-            },
-            {
-              "url": "https://www.granadahoy.com/granada/volar-madrid-granada-accidente-tren-urda-viajes-refuerzo-caro-malaga_0_2008385132.html"
-            }
-          ]
-        },
-        {
-          "id": "5a686142c7b1",
-          "revision": 0,
-          "name": "Raúl Triguero",
-          "rank": 18,
-          "explanation": "TT#18 Raúl Triguero es tendencia porque se ha confirmado la muerte del reportero de ¡De viernes! y ex de Sálvame en el accidente ferroviario de Urda.\n#RaúlTriguero #Urda #Telecinco",
-          "explanation_sha256": "f60ebd3701099fa3c579870de62ee68b0a8e13b6dc4ec15eefed4d86cd5b956e",
-          "explained_at": "2026-10-30T18:34:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.heraldo.es/noticias/nacional/2026/10/30/muere-raul-triguero-reportero-telecinco-accidente-tren-toledo-2064453.html"
-            },
-            {
-              "url": "https://www.eldiario.es/vertele/noticias/muere-raul-triguero-reportero-viernes-ex-salvame-accidente-tren-urda_1_13627029.html"
-            }
-          ]
-        },
-        {
-          "id": "6512dc3c1c70",
-          "revision": 0,
-          "name": "Tiago Polo",
-          "rank": 16,
-          "explanation": "TT#16 Tiago Polo es tendencia porque abrió el marcador en el 0-3 de España ante República Checa en la final del Mundial sub-15 de Bakú, primer título español del torneo.\n#EspañaSub15 #Bakú #RFEF\n🌶️ La final empezó con su disparo a la escuadra.",
-          "explanation_sha256": "c6007c4e8e85769538b10242464d098d753c8e7195b7b4cc0c9c327a65bc8daf",
-          "explained_at": "2026-10-30T18:34:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://rfef.es/es/noticias/espana-campeona-del-mundial-de-baku"
-            },
-            {
-              "url": "https://www.eldesmarque.com/futbol/liga-1a-division/20261030/espana-mundial-sub15-final-resumen-cantera-betis_18_020584229.html"
-            }
-          ]
-        },
-        {
-          "id": "bca6c0fa6e21",
-          "revision": 0,
-          "name": "Empatía",
-          "rank": 20,
-          "explanation": "TT#20 Empatía aparece entre las tendencias mientras el trato a las víctimas de Urda centra parte del debate público, con elogios a Page y críticas a Puente. No se ha podido confirmar qué conversación concreta impulsa el término.\n#Urda",
-          "explanation_sha256": "c6e28dc55c2bf1533e1650784270dfef51339df60a392418f82fc578d25eb766",
-          "explained_at": "2026-10-30T18:34:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.elespanol.com/espana/politica/20261030/page-liderazgo-empatia-consuela-victimas-tragedia-urda-arropa-sanchez-feijoo/1003744440366_0.html"
-            },
-            {
-              "url": "https://www.antena3.com/programas/espejo-publico/noticias/superviviente-accidente-urda-pide-dimision-oscar-puente-que-necesitas-mas-muertos_202610306ae45924a5f83c2fb8e94690.html"
-            }
-          ]
-        },
-        {
-          "id": "c30dcc5b0f65",
-          "revision": 0,
-          "name": "#PresupuestosCM2027",
-          "rank": 21,
-          "explanation": "TT#21 #PresupuestosCM2027 es tendencia porque la Comunidad de Madrid ha aprobado y registrado su proyecto de cuentas para 2027: 32.911,5 millones, un 7,3% más que en 2026.\n#ComunidadDeMadrid #Presupuestos\n🌶️ La cifra récord ya tiene que pasar por el hemiciclo.",
-          "explanation_sha256": "14b5bd4c45c60e026758f4a59717c2da90167564e5c76a5e9b0f5058d82be38a",
-          "explained_at": "2026-10-30T18:34:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.comunidad.madrid/noticias/2026/10/30/comunidad-madrid-registra-asamblea-cuartos-ultimos-presupuestos-legislatura-altos-su-historia"
-            },
-            {
-              "url": "https://www.servimedia.es/noticias/gobierno-ayuso-registra-asamblea-cuartos-ultimos-presupuestos-legislatura/1413502674"
-            }
-          ]
-        },
-        {
-          "id": "a7fdce166d35",
-          "revision": 0,
-          "name": "#ElSótano30O",
-          "rank": 9,
-          "explanation": "TT#9 #ElSótano30O es tendencia por la edición de hoy de El Sótano en Ten, con María Patiño al frente y Marta Riesco entre sus colaboradoras.\n#TenTV #MaríaPatiño #MartaRiesco\n🌶️ La etiqueta subió del sótano a tendencias.",
-          "explanation_sha256": "bb734d3ddb3a036b864727568f2235a452cbbfa3ff98546bdfd4daa5d8d90678",
-          "explained_at": "2026-10-30T18:34:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://elpais.com/television/2026-10-22/maria-patino-regresa-a-ten-para-sustituir-a-alba-carrillo-en-el-sotano-club.html"
-            },
-            {
-              "url": "https://www.lasexta.com/programas/arusitys/dardo-marta-riesco-maria-patino-llamarla-rebelde-que-dictadora_202610306ae47e24004b78127ab9ff24.html"
-            }
-          ]
-        },
-        {
-          "id": "fa530f914299",
-          "revision": 0,
-          "name": "Capitalismo",
-          "rank": 29,
-          "explanation": "TT#29 Capitalismo es tendencia por el discurso viral de Javier Barrio, marido de una desaparecida tras el accidente de Urda, que denunció «la peor época del capitalismo con prisas».\n#Urda #AccidenteFerroviario",
-          "explanation_sha256": "eaf257dce33314d6f42ab873eaf42262390f1281080447dac737fa9672cbe67f",
-          "explained_at": "2026-10-30T19:17:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.lavanguardia.com/gente/20261030/11672257/viral-discurso-tren-accidente-toledo-urda.html"
-            },
-            {
-              "url": "https://www.huffingtonpost.es/virales/el-marido-victimas-estos-son-muertos-peor-epoca-capitalismo-prisas-f202610.html"
-            }
-          ]
-        },
-        {
-          "id": "listas-joint-abb1a972c8b5afbd",
-          "revision": 0,
-          "name": "Alcaraz / Tommy Paul · ATP 500 de Viena",
-          "rank": 14,
-          "explanation": "TT#14 Alcaraz, Tommy Paul y Viena son tendencia por los cuartos del ATP 500: el español ganó 6-4 y 7-6(2) y jugará la semifinal ante Daniil Medvedev.\n#CarlosAlcaraz #ATP500 #Viena\n🌶️ El desempate dejó servido el Alcaraz-Medvedev.",
-          "explanation_sha256": "e44b9bc4db46b220b029b798b3ec9de295364e376bb7e3a8ee57d118c69d6b56",
-          "explained_at": "2026-10-30T18:20:22.218273+00:00",
-          "verification_sources": [
-            {
-              "url": "https://www.reuters.com/sports/soccer/medvedev-clinches-atp-finals-berth-by-reaching-vienna-semi-finals-2026-10-30/"
-            },
-            {
-              "url": "https://www.lavanguardia.com/deportes/tenis/20261030/11672337/solido-alcaraz-esta-semifinales-viena.amp.html"
-            }
-          ]
-        },
-        {
-          "id": "trend-update-635300762891ee06e043",
-          "revision": 0,
-          "name": "Ana Pastor",
-          "rank": 15,
-          "explanation": "TT#15 Ana Pastor sigue siendo tendencia por sus críticas a Óscar Puente tras Urda y porque laSexta ha trasladado al 10 de noviembre el debate electoral que moderará.\n#AnaPastor #ÓscarPuente #laSexta\n🌶️ El debate volvió a mover una casilla.",
-          "explanation_sha256": "403c2d5d172ce02de6b27daf0d49d7fa1732009aad3623e74a2138781e5ed3cd",
-          "explained_at": "2026-10-30T18:21:14.959869+00:00",
-          "verification_sources": [
-            {
-              "url": "https://www.lasexta.com/noticias/sociedad/ana-pastor-oscar-puente-impresentable-que-ministro-68-muertos-mas-adamuz-administracion-permita-lujo-atacar-prensa_202610286ae24bd4a5f83c2fb8e6e630.html"
-            },
-            {
-              "url": "https://www.lasexta.com/elecciones/generales/lasexta-traslada-debate-electoral-2-9-noviembre-accidente-ferroviario-urda_202610296ae3597602501232156c9ed7.html"
-            }
-          ]
-        },
-        {
-          "id": "trend-update-8abd13e39488aa1cbefc",
-          "revision": 0,
-          "name": "Repsol",
-          "rank": 21,
-          "explanation": "TT#21 Repsol sigue siendo tendencia por la reacción a sus resultados: varias firmas han elevado hoy sus precios objetivo y la acción subía un 2,38% tras ganar 5.006 M€ hasta septiembre.\n#Repsol #Resultados #Ibex35\n🌶️ Las cuentas pasaron del balance al parqué.",
-          "explanation_sha256": "d9477965925dcbff6753743b2aac27be1b17e395e9aedcb7e8c41619d2a49c0a",
-          "explained_at": "2026-10-30T18:23:24.473382+00:00",
-          "verification_sources": [
-            {
-              "url": "https://www.repsol.com/es/sala-prensa/notas-prensa/2026/repsol-redobla-compromiso-espana-11500-millones-proyectos-hasta-2030/index.cshtml"
-            },
-            {
-              "url": "https://www.europapress.es/economia/noticia-analistas-impulsan-expectativa-precio-objetivo-repsol-resultados-septiembre-20261030143249.html"
-            }
-          ]
-        },
-        {
-          "id": "e40be8e866b4",
-          "revision": 1,
-          "name": "Ronaldo Nazário",
-          "rank": 5,
-          "explanation": "TT#5 Ronaldo Nazário aparece entre las tendencias. Está verificado que jugó en Barcelona, Inter, Real Madrid y Milan, pero no se ha podido confirmar qué ha impulsado ahora su nombre.\n#RonaldoNazário #Fútbol",
-          "explanation_sha256": "679fd1da068e58d407dba0cd3863b17fea3777bd92457eda5c9970e438c8daa6",
-          "explained_at": "2026-10-30T19:27:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.sofascore.com/es/football/player/ronaldo-nazario/4761"
-            },
-            {
-              "url": "https://www.lavanguardia.com/deportes/futbol/20200212/473502084898/ronaldo-nazario-deseo-era-quedarse-barca-entrevista.html"
-            }
-          ]
-        }
-      ],
       "published_context": [
         {
           "id": "09fb9ff32c5a",
@@ -1272,11 +1027,285 @@
           ]
         }
       ],
-      "with_image": false,
-      "disable_ai_image": true,
+      "listas_grouping_request": true,
+      "grouping_candidates": [
+        {
+          "id": "6edd382e5ca7",
+          "revision": 0,
+          "name": "Yola",
+          "rank": 2,
+          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
+          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
+          "explained_at": "2026-10-30T01:21:30+01:00",
+          "verification_sources": [
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
+          ]
+        },
+        {
+          "id": "09fb9ff32c5a",
+          "revision": 0,
+          "name": "Dana",
+          "rank": 7,
+          "explanation": "TT#7 Dana es tendencia por el segundo aniversario de la dana del 29 de octubre de 2024 en Valencia, que dejó 233 fallecidos; continúan los homenajes y actos de memoria.\n#DANA #Valencia #29Octubre",
+          "explanation_sha256": "17b2b984332d798de0a24fe78edfc972462127626e0a370be708e9abc3b0e8ab",
+          "explained_at": "2026-10-30T13:59:00+01:00",
+          "verification_sources": [
+            "https://efe.com/espana/2026-10-29/segundo-aniversario-dana-valencia/",
+            "https://www.valencia.es/es/-/luto-oficial-segundo-aniversario-dana-valencia?redirect=%2Fes%2Fcas%2Fpagina-de-categoria%3Fp_p_id%3Dcom_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_JzpZn9jBadjS%26p_p_lifecycle%3D0%26p_p_mode%3Dview%26p_p_state%3Dnormal%26p_r_p_assetEntryId%3D33468321%26p_r_p_categoryId%3D379821"
+          ]
+        },
+        {
+          "id": "0ecf2a36f589",
+          "revision": 0,
+          "name": "La UCO",
+          "rank": 29,
+          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
+          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
+          ]
+        },
+        {
+          "id": "83aa70bdac40",
+          "revision": 0,
+          "name": "Día de Todos",
+          "rank": 30,
+          "explanation": "TT#30 Día de Todos es tendencia por la cercanía de Todos los Santos: este año el 1 de noviembre cae en domingo y nueve comunidades trasladan el festivo al lunes 2.\n#TodosLosSantos #Festivos\n🌶️ Este año el puente viene con mapa autonómico.",
+          "explanation_sha256": "05950cbc45d9df4bb1902d08ae0b45a7e82e8bc3515f226ca2cf905649ef76bb",
+          "explained_at": "2026-10-30T18:27:00+01:00",
+          "verification_sources": [
+            "https://www.europapress.es/economia/noticia-donde-festivo-novimebre-comunidades-tendran-puente-lunes-20261030111011.html",
+            "https://www.dgt.es/comunicacion/notas-de-prensa/20261029-dispositivo-especial-festividad-todos-los-santos"
+          ]
+        },
+        {
+          "id": "trend-update-2df2da6392aab5777fba",
+          "revision": 0,
+          "name": "Blocus",
+          "rank": 11,
+          "explanation": "TT#11 Blocus es tendencia por una nueva oleada de detenciones vinculadas al movimiento: diez arrestos en 24 horas en varias provincias, incluido el presunto fundador en Picanya, ante convocatorias para el 31-O.\n#Blocus #Picanya #València",
+          "explanation_sha256": "7ceb5454a157dc1c7193a99bb670c83711f7fb24a6accc64be847f31a8dca16c",
+          "explained_at": "2026-10-30T17:31:07.063802+00:00",
+          "verification_sources": [
+            {
+              "url": "https://web.guardiacivil.es/es/destacados/noticias/Detenido-en-Picanya-Valencia-el-presunto-fundador-e-impulsor-del-movimiento-Blocus-en-Espana/"
+            },
+            {
+              "url": "https://efe.com/espana/2026-10-30/blocus-detenidos-disturbios/"
+            }
+          ]
+        },
+        {
+          "id": "758e5b76d3c2",
+          "revision": 0,
+          "name": "Ryanair",
+          "rank": 25,
+          "explanation": "TT#25 Ryanair es tendencia porque anuncia dos vuelos diarios Málaga-Madrid entre el 14 de noviembre y el 10 de enero para ofrecer una alternativa al corte ferroviario tras Urda.\n#Ryanair #Málaga #Madrid",
+          "explanation_sha256": "0848baf3715f66296cb8ec1c5ee5f86dcd13efbb899e3266697f72a4f7edd4d1",
+          "explained_at": "2026-10-30T18:34:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-ryanair-lanza-vuelos-diarios-malaga-madrid-facilitar-movilidad-viajeros-accidente-urda-20261030124540.html"
+            },
+            {
+              "url": "https://www.granadahoy.com/granada/volar-madrid-granada-accidente-tren-urda-viajes-refuerzo-caro-malaga_0_2008385132.html"
+            }
+          ]
+        },
+        {
+          "id": "5a686142c7b1",
+          "revision": 0,
+          "name": "Raúl Triguero",
+          "rank": 18,
+          "explanation": "TT#18 Raúl Triguero es tendencia porque se ha confirmado la muerte del reportero de ¡De viernes! y ex de Sálvame en el accidente ferroviario de Urda.\n#RaúlTriguero #Urda #Telecinco",
+          "explanation_sha256": "f60ebd3701099fa3c579870de62ee68b0a8e13b6dc4ec15eefed4d86cd5b956e",
+          "explained_at": "2026-10-30T18:34:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.heraldo.es/noticias/nacional/2026/10/30/muere-raul-triguero-reportero-telecinco-accidente-tren-toledo-2064453.html"
+            },
+            {
+              "url": "https://www.eldiario.es/vertele/noticias/muere-raul-triguero-reportero-viernes-ex-salvame-accidente-tren-urda_1_13627029.html"
+            }
+          ]
+        },
+        {
+          "id": "6512dc3c1c70",
+          "revision": 0,
+          "name": "Tiago Polo",
+          "rank": 16,
+          "explanation": "TT#16 Tiago Polo es tendencia porque abrió el marcador en el 0-3 de España ante República Checa en la final del Mundial sub-15 de Bakú, primer título español del torneo.\n#EspañaSub15 #Bakú #RFEF\n🌶️ La final empezó con su disparo a la escuadra.",
+          "explanation_sha256": "c6007c4e8e85769538b10242464d098d753c8e7195b7b4cc0c9c327a65bc8daf",
+          "explained_at": "2026-10-30T18:34:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://rfef.es/es/noticias/espana-campeona-del-mundial-de-baku"
+            },
+            {
+              "url": "https://www.eldesmarque.com/futbol/liga-1a-division/20261030/espana-mundial-sub15-final-resumen-cantera-betis_18_020584229.html"
+            }
+          ]
+        },
+        {
+          "id": "bca6c0fa6e21",
+          "revision": 0,
+          "name": "Empatía",
+          "rank": 20,
+          "explanation": "TT#20 Empatía aparece entre las tendencias mientras el trato a las víctimas de Urda centra parte del debate público, con elogios a Page y críticas a Puente. No se ha podido confirmar qué conversación concreta impulsa el término.\n#Urda",
+          "explanation_sha256": "c6e28dc55c2bf1533e1650784270dfef51339df60a392418f82fc578d25eb766",
+          "explained_at": "2026-10-30T18:34:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.elespanol.com/espana/politica/20261030/page-liderazgo-empatia-consuela-victimas-tragedia-urda-arropa-sanchez-feijoo/1003744440366_0.html"
+            },
+            {
+              "url": "https://www.antena3.com/programas/espejo-publico/noticias/superviviente-accidente-urda-pide-dimision-oscar-puente-que-necesitas-mas-muertos_202610306ae45924a5f83c2fb8e94690.html"
+            }
+          ]
+        },
+        {
+          "id": "c30dcc5b0f65",
+          "revision": 0,
+          "name": "#PresupuestosCM2027",
+          "rank": 21,
+          "explanation": "TT#21 #PresupuestosCM2027 es tendencia porque la Comunidad de Madrid ha aprobado y registrado su proyecto de cuentas para 2027: 32.911,5 millones, un 7,3% más que en 2026.\n#ComunidadDeMadrid #Presupuestos\n🌶️ La cifra récord ya tiene que pasar por el hemiciclo.",
+          "explanation_sha256": "14b5bd4c45c60e026758f4a59717c2da90167564e5c76a5e9b0f5058d82be38a",
+          "explained_at": "2026-10-30T18:34:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.comunidad.madrid/noticias/2026/10/30/comunidad-madrid-registra-asamblea-cuartos-ultimos-presupuestos-legislatura-altos-su-historia"
+            },
+            {
+              "url": "https://www.servimedia.es/noticias/gobierno-ayuso-registra-asamblea-cuartos-ultimos-presupuestos-legislatura/1413502674"
+            }
+          ]
+        },
+        {
+          "id": "a7fdce166d35",
+          "revision": 0,
+          "name": "#ElSótano30O",
+          "rank": 9,
+          "explanation": "TT#9 #ElSótano30O es tendencia por la edición de hoy de El Sótano en Ten, con María Patiño al frente y Marta Riesco entre sus colaboradoras.\n#TenTV #MaríaPatiño #MartaRiesco\n🌶️ La etiqueta subió del sótano a tendencias.",
+          "explanation_sha256": "bb734d3ddb3a036b864727568f2235a452cbbfa3ff98546bdfd4daa5d8d90678",
+          "explained_at": "2026-10-30T18:34:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://elpais.com/television/2026-10-22/maria-patino-regresa-a-ten-para-sustituir-a-alba-carrillo-en-el-sotano-club.html"
+            },
+            {
+              "url": "https://www.lasexta.com/programas/arusitys/dardo-marta-riesco-maria-patino-llamarla-rebelde-que-dictadora_202610306ae47e24004b78127ab9ff24.html"
+            }
+          ]
+        },
+        {
+          "id": "fa530f914299",
+          "revision": 0,
+          "name": "Capitalismo",
+          "rank": 29,
+          "explanation": "TT#29 Capitalismo es tendencia por el discurso viral de Javier Barrio, marido de una desaparecida tras el accidente de Urda, que denunció «la peor época del capitalismo con prisas».\n#Urda #AccidenteFerroviario",
+          "explanation_sha256": "eaf257dce33314d6f42ab873eaf42262390f1281080447dac737fa9672cbe67f",
+          "explained_at": "2026-10-30T19:17:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.lavanguardia.com/gente/20261030/11672257/viral-discurso-tren-accidente-toledo-urda.html"
+            },
+            {
+              "url": "https://www.huffingtonpost.es/virales/el-marido-victimas-estos-son-muertos-peor-epoca-capitalismo-prisas-f202610.html"
+            }
+          ]
+        },
+        {
+          "id": "listas-joint-abb1a972c8b5afbd",
+          "revision": 0,
+          "name": "Alcaraz / Tommy Paul · ATP 500 de Viena",
+          "rank": 14,
+          "explanation": "TT#14 Alcaraz, Tommy Paul y Viena son tendencia por los cuartos del ATP 500: el español ganó 6-4 y 7-6(2) y jugará la semifinal ante Daniil Medvedev.\n#CarlosAlcaraz #ATP500 #Viena\n🌶️ El desempate dejó servido el Alcaraz-Medvedev.",
+          "explanation_sha256": "e44b9bc4db46b220b029b798b3ec9de295364e376bb7e3a8ee57d118c69d6b56",
+          "explained_at": "2026-10-30T18:20:22.218273+00:00",
+          "verification_sources": [
+            {
+              "url": "https://www.reuters.com/sports/soccer/medvedev-clinches-atp-finals-berth-by-reaching-vienna-semi-finals-2026-10-30/"
+            },
+            {
+              "url": "https://www.lavanguardia.com/deportes/tenis/20261030/11672337/solido-alcaraz-esta-semifinales-viena.amp.html"
+            }
+          ]
+        },
+        {
+          "id": "trend-update-635300762891ee06e043",
+          "revision": 0,
+          "name": "Ana Pastor",
+          "rank": 15,
+          "explanation": "TT#15 Ana Pastor sigue siendo tendencia por sus críticas a Óscar Puente tras Urda y porque laSexta ha trasladado al 10 de noviembre el debate electoral que moderará.\n#AnaPastor #ÓscarPuente #laSexta\n🌶️ El debate volvió a mover una casilla.",
+          "explanation_sha256": "403c2d5d172ce02de6b27daf0d49d7fa1732009aad3623e74a2138781e5ed3cd",
+          "explained_at": "2026-10-30T18:21:14.959869+00:00",
+          "verification_sources": [
+            {
+              "url": "https://www.lasexta.com/noticias/sociedad/ana-pastor-oscar-puente-impresentable-que-ministro-68-muertos-mas-adamuz-administracion-permita-lujo-atacar-prensa_202610286ae24bd4a5f83c2fb8e6e630.html"
+            },
+            {
+              "url": "https://www.lasexta.com/elecciones/generales/lasexta-traslada-debate-electoral-2-9-noviembre-accidente-ferroviario-urda_202610296ae3597602501232156c9ed7.html"
+            }
+          ]
+        },
+        {
+          "id": "trend-update-8abd13e39488aa1cbefc",
+          "revision": 0,
+          "name": "Repsol",
+          "rank": 21,
+          "explanation": "TT#21 Repsol sigue siendo tendencia por la reacción a sus resultados: varias firmas han elevado hoy sus precios objetivo y la acción subía un 2,38% tras ganar 5.006 M€ hasta septiembre.\n#Repsol #Resultados #Ibex35\n🌶️ Las cuentas pasaron del balance al parqué.",
+          "explanation_sha256": "d9477965925dcbff6753743b2aac27be1b17e395e9aedcb7e8c41619d2a49c0a",
+          "explained_at": "2026-10-30T18:23:24.473382+00:00",
+          "verification_sources": [
+            {
+              "url": "https://www.repsol.com/es/sala-prensa/notas-prensa/2026/repsol-redobla-compromiso-espana-11500-millones-proyectos-hasta-2030/index.cshtml"
+            },
+            {
+              "url": "https://www.europapress.es/economia/noticia-analistas-impulsan-expectativa-precio-objetivo-repsol-resultados-septiembre-20261030143249.html"
+            }
+          ]
+        },
+        {
+          "id": "e40be8e866b4",
+          "revision": 1,
+          "name": "Ronaldo Nazário",
+          "rank": 5,
+          "explanation": "TT#5 Ronaldo Nazário aparece entre las tendencias. Está verificado que jugó en Barcelona, Inter, Real Madrid y Milan, pero no se ha podido confirmar qué ha impulsado ahora su nombre.\n#RonaldoNazário #Fútbol",
+          "explanation_sha256": "679fd1da068e58d407dba0cd3863b17fea3777bd92457eda5c9970e438c8daa6",
+          "explained_at": "2026-10-30T19:27:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.sofascore.com/es/football/player/ronaldo-nazario/4761"
+            },
+            {
+              "url": "https://www.lavanguardia.com/deportes/futbol/20200212/473502084898/ronaldo-nazario-deseo-era-quedarse-barca-entrevista.html"
+            }
+          ]
+        }
+      ],
+      "grouping_state": "pending",
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Agrupación automática de Listas"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
