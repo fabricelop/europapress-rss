@@ -5,31 +5,24 @@
   "canonical": true,
   "last_started_at": "2026-10-30T17:05:45+01:00",
   "last_completed_at": "2026-10-30T17:08:10+01:00",
-  "updated_at": "2026-10-30T17:08:10+01:00",
-  "status": "DONE",
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-92e9987cb568328a7e10",
-    "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
-    "b3d64fecfa82",
-    "listas-auto-8e9e02118275642763d2",
-    "red-review-3777a6c4d696d3cae706",
-    "red-review-2713bd95a48b107da047"
-  ],
+  "updated_at": "2026-10-30T17:10:00+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793376255512-manual",
-  "previous_run_id": "tr-1793375927357-manual",
+  "run_id": "tr-1793376600000-manual",
+  "previous_run_id": "tr-1793376255512-manual",
   "summary": {
-    "attempted": 1,
-    "explained": 1,
+    "attempted": 0,
+    "explained": 0,
     "updates": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 3,
-    "groups_created": 1,
-    "members_covered": 2,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "members_covered": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
@@ -39,39 +32,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T17:05:45+01:00",
+      "at": "2026-10-30T17:10:00+01:00",
       "phase": "preparing",
-      "trend_id": "red-review-3777a6c4d696d3cae706",
-      "title": "Revisar novedades: Toledo",
-      "message": "Inicio de pasada: releídos contrato y estado autoritativo; dos revisiones rojas activas (Toledo y Renfe), del más antiguo al más reciente. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T17:06:00+01:00",
-      "phase": "grouping",
-      "trend_id": "listas-auto-8e9e02118275642763d2",
-      "title": "Agrupación automática de Listas",
-      "message": "Agrupación automática posterior a Ignacio Relaño completada sin grupos: compartir el contexto de Urda no bastaba para considerar mismo acontecimiento."
-    },
-    {
-      "at": "2026-10-30T17:07:32+01:00",
-      "phase": "reviewing",
-      "trend_id": "red-review-3777a6c4d696d3cae706",
-      "title": "Revisar novedades: Toledo",
-      "message": "Revisión roja completada como stale: la ficha original ya estaba superada por explicaciones posteriores del mismo grupo; se conservan texto y fecha."
-    },
-    {
-      "at": "2026-10-30T17:07:32+01:00",
-      "phase": "reviewing",
-      "trend_id": "red-review-2713bd95a48b107da047",
-      "title": "Revisar novedades: Renfe",
-      "message": "Revisión roja completada como stale: la ficha original ya estaba superada por explicaciones posteriores; se conservan texto y fecha."
-    },
-    {
-      "at": "2026-10-30T17:08:10+01:00",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: editorial-queue.json count 0; no quedan preparing/update ni rewrite_pending. Sin ImageGen ni publicación en X."
+      "message": "Nueva pasada manual iniciada. Relectura autoritativa de main y comprobación de cola/rewrite_pending; sin ImageGen."
     }
   ],
   "incidents": [],
@@ -80,39 +45,32 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793376255512-manual",
+    "run_id": "tr-1793376600000-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T17:05:45+01:00",
-    "updated_at": "2026-10-30T17:08:10+01:00",
-    "finished_at": "2026-10-30T17:08:10+01:00",
-    "current": 6,
-    "total": 6,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T17:10:00+01:00",
+    "updated_at": "2026-10-30T17:10:00+01:00",
+    "finished_at": null,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "listas-auto-92e9987cb568328a7e10",
-      "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
-      "b3d64fecfa82",
-      "listas-auto-8e9e02118275642763d2",
-      "red-review-3777a6c4d696d3cae706",
-      "red-review-2713bd95a48b107da047"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 6/6: agrupación Pepiño Blanco/Pepe Blanco aplicada; Ignacio Relaño r0 explicado y materializado en Listas; su agrupación automática no encontró coincidencias; revisiones rojas de Toledo y Renfe cerradas como stale. Cola final 0, sin rewrite_pending y sin ImageGen.",
+    "message": "Comprobando cola editorial y reelaboraciones vigentes en main.",
     "summary": {
-      "attempted": 1,
-      "explained": 1,
+      "attempted": 0,
+      "explained": 0,
       "updates": 0,
-      "stale_reviews": 2,
+      "stale_reviews": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 3,
-      "groups_created": 1,
-      "members_covered": 2,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "members_covered": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
@@ -124,100 +82,22 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T17:05:45+01:00",
+        "at": "2026-10-30T17:10:00+01:00",
         "phase": "preparing",
-        "trend_id": "red-review-3777a6c4d696d3cae706",
-        "title": "Revisar novedades: Toledo",
-        "message": "Inicio de pasada: releídos contrato y estado autoritativo; dos revisiones rojas activas (Toledo y Renfe), del más antiguo al más reciente. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T17:06:00+01:00",
-        "phase": "grouping",
-        "trend_id": "listas-auto-8e9e02118275642763d2",
-        "title": "Agrupación automática de Listas",
-        "message": "Agrupación automática posterior a Ignacio Relaño completada sin grupos: compartir el contexto de Urda no bastaba para considerar mismo acontecimiento."
-      },
-      {
-        "at": "2026-10-30T17:07:32+01:00",
-        "phase": "reviewing",
-        "trend_id": "red-review-3777a6c4d696d3cae706",
-        "title": "Revisar novedades: Toledo",
-        "message": "Revisión roja completada como stale: la ficha original ya estaba superada por explicaciones posteriores del mismo grupo; se conservan texto y fecha."
-      },
-      {
-        "at": "2026-10-30T17:07:32+01:00",
-        "phase": "reviewing",
-        "trend_id": "red-review-2713bd95a48b107da047",
-        "title": "Revisar novedades: Renfe",
-        "message": "Revisión roja completada como stale: la ficha original ya estaba superada por explicaciones posteriores; se conservan texto y fecha."
-      },
-      {
-        "at": "2026-10-30T17:08:10+01:00",
-        "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: editorial-queue.json count 0; no quedan preparing/update ni rewrite_pending. Sin ImageGen ni publicación en X."
+        "message": "Nueva pasada manual iniciada. Relectura autoritativa de main y comprobación de cola/rewrite_pending; sin ImageGen."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "listas-auto-92e9987cb568328a7e10",
-        "revision": 0,
-        "status": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "grouping_created_ids": [
-          "listas-joint-8df76ba72c6ae8b7"
-        ]
-      },
-      {
-        "id": "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
-        "revision": 0,
-        "status": "grouping_completed",
-        "name": "Agrupar tendencias de Listas",
-        "grouping_created_ids": [],
-        "grouping_skipped_stale": [
-          [
-            "37073f5f219f",
-            "198ebafff410"
-          ]
-        ]
-      },
-      {
-        "id": "b3d64fecfa82",
-        "revision": 0,
-        "status": "explained",
-        "name": "Ignacio Relaño"
-      },
-      {
-        "id": "listas-auto-8e9e02118275642763d2",
-        "revision": 0,
-        "status": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "grouping_created_ids": []
-      },
-      {
-        "id": "red-review-3777a6c4d696d3cae706",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: Toledo",
-        "review_outcome": "stale"
-      },
-      {
-        "id": "red-review-2713bd95a48b107da047",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: Renfe",
-        "review_outcome": "stale"
-      }
-    ]
+    "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T17:05:45+01:00",
-  "finished_at": "2026-10-30T17:08:10+01:00",
-  "current": 6,
-  "total": 6,
+  "phase": "preparing",
+  "started_at": "2026-10-30T17:10:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null
 }
