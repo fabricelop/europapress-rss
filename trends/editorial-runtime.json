@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:40:00+01:00",
   "last_completed_at": "2026-10-30T20:28:49.860Z",
-  "updated_at": "2026-10-30T21:40:00+01:00",
+  "updated_at": "2026-10-30T21:41:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -38,17 +38,24 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio manual: cola autoritativa 0/0; se validan reexplicaciones, agrupaciones, Radar y revisiones de novedades. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T21:41:00+01:00",
+      "phase": "investigating",
+      "trend_id": "4e9df6831ab7",
+      "title": "Tusk",
+      "message": "Entraron 3 nuevas investigaciones durante la pasada; se procesa Tusk primero y después Dibu y Tribunal Constitucional, por orden de cola."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-30T21:40:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "last_run": {
