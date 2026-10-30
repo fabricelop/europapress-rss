@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:35:00Z",
   "last_completed_at": "2026-10-30T21:28:47Z",
-  "updated_at": "2026-10-30T21:37:00Z",
+  "updated_at": "2026-10-30T21:38:36.912Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -18,7 +18,7 @@
   "remaining_problematic_ids": [],
   "run_id": "tr-1793396029532-manual",
   "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada en curso 0/1: OkDiario r0 investigada con fuentes actuales; redactando texto nuevo y remate. Sin ImageGen.",
+  "summary": "Pasada en curso 0/1: OkDiario r0 redactada y validada; persistiendo con barrera JIT. Sin ImageGen.",
   "activity": [
     {
       "at": "2026-10-30T21:35:00Z",
@@ -33,13 +33,20 @@
       "trend_id": "6870df351c7a",
       "title": "OkDiario",
       "message": "Detonante actual corroborado: polémica por 242.000 € pagados por Dos Mil Palabras al despacho de la abogada de Koldo; facturas judiciales y versión contractual del medio divergen; FAPE/APM respaldan hoy a Escolar por su denuncia de intimidación."
+    },
+    {
+      "at": "2026-10-30T21:38:36.912Z",
+      "phase": "drafting",
+      "trend_id": "6870df351c7a",
+      "title": "OkDiario",
+      "message": "Texto nuevo redactado desde cero y verificado <280: refleja pagos de 242.000 €, versión contractual de OkDiario y amparo FAPE/APM a Escolar; remate nuevo y neutral."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
+  "phase": "drafting",
   "started_at": "2026-10-30T21:35:00Z",
   "finished_at": null,
   "current": 0,
@@ -53,9 +60,9 @@
     "run_id": "tr-1793396029532-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "investigating",
+    "phase": "drafting",
     "started_at": "2026-10-30T21:35:00Z",
-    "updated_at": "2026-10-30T21:37:00Z",
+    "updated_at": "2026-10-30T21:38:36.912Z",
     "finished_at": null,
     "current": 0,
     "total": 1,
@@ -68,7 +75,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "OkDiario r0 investigada con fuentes actuales; redactando texto nuevo y remate.",
+    "message": "OkDiario r0 redactada y validada; persistiendo con barrera JIT.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -102,6 +109,13 @@
         "trend_id": "6870df351c7a",
         "title": "OkDiario",
         "message": "Detonante actual corroborado: polémica por 242.000 € pagados por Dos Mil Palabras al despacho de la abogada de Koldo; facturas judiciales y versión contractual del medio divergen; FAPE/APM respaldan hoy a Escolar por su denuncia de intimidación."
+      },
+      {
+        "at": "2026-10-30T21:38:36.912Z",
+        "phase": "drafting",
+        "trend_id": "6870df351c7a",
+        "title": "OkDiario",
+        "message": "Texto nuevo redactado desde cero y verificado <280: refleja pagos de 242.000 €, versión contractual de OkDiario y amparo FAPE/APM a Escolar; remate nuevo y neutral."
       }
     ]
   },
