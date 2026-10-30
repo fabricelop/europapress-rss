@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T20:40:00+01:00",
   "last_completed_at": "2026-10-30T20:26:00+01:00",
-  "updated_at": "2026-10-30T20:43:00+01:00",
+  "updated_at": "2026-10-30T20:44:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -57,13 +57,20 @@
       "trend_id": "eb60196e7671",
       "title": "Jacobo",
       "message": "Detonante contrastado: trama vigente de La Promesa; preparando texto y fuentes."
+    },
+    {
+      "at": "2026-10-30T20:44:00+01:00",
+      "phase": "drafting",
+      "trend_id": "eb60196e7671",
+      "title": "Jacobo",
+      "message": "Texto verificado 1/5; revisión 0 vigente. Preparando persistencia sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
+  "phase": "drafting",
   "started_at": "2026-10-30T20:40:00+01:00",
   "finished_at": null,
   "current": 0,
@@ -77,9 +84,9 @@
     "run_id": "tr-autoguard-1793389175",
     "source": "autoguard",
     "status": "RUNNING",
-    "phase": "investigating",
+    "phase": "drafting",
     "started_at": "2026-10-30T20:40:00+01:00",
-    "updated_at": "2026-10-30T20:43:00+01:00",
+    "updated_at": "2026-10-30T20:44:00+01:00",
     "finished_at": null,
     "current": 0,
     "total": 5,
@@ -96,7 +103,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Investigando 1/5 · Jacobo.",
+    "message": "Preparando 1/5 · Jacobo.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -130,6 +137,13 @@
         "trend_id": "eb60196e7671",
         "title": "Jacobo",
         "message": "Detonante contrastado: trama vigente de La Promesa; preparando texto y fuentes."
+      },
+      {
+        "at": "2026-10-30T20:44:00+01:00",
+        "phase": "drafting",
+        "trend_id": "eb60196e7671",
+        "title": "Jacobo",
+        "message": "Texto verificado 1/5; revisión 0 vigente. Preparando persistencia sin ImageGen."
       }
     ],
     "final_outcomes": []
