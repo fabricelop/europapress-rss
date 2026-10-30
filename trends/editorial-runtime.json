@@ -4,34 +4,30 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T16:51:00+01:00",
-  "last_completed_at": "2026-10-30T16:41:45+01:00",
-  "updated_at": "2026-10-30T16:51:00+01:00",
-  "status": "running",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T16:54:30+01:00",
+  "updated_at": "2026-10-30T16:54:30+01:00",
+  "status": "done",
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-13a61a13d71463aa9a63",
     "red-review-d53297bbc76bdb6b68ee",
     "red-review-4af0c56479660f4a3a12"
   ],
-  "remaining_active_ids": [
-    "listas-auto-13a61a13d71463aa9a63",
-    "red-review-d53297bbc76bdb6b68ee",
-    "red-review-4af0c56479660f4a3a12"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793375430582-manual",
   "previous_run_id": "tr-1793374875000-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 3,
+    "remaining_active": 0,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -44,7 +40,35 @@
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual: 3 trabajos vigentes en main; 1 agrupación automática y 2 revisiones de novedades. Sin ImageGen."
+      "message": "Inicio: 3 encargos vigentes; agrupación primero y después revisiones de novedades. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T16:53:07+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-13a61a13d71463aa9a63",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
+    },
+    {
+      "at": "2026-10-30T16:53:30+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-d53297bbc76bdb6b68ee",
+      "title": "Marcos Llorente",
+      "message": "Sin novedades sustanciales: se conserva texto y fecha."
+    },
+    {
+      "at": "2026-10-30T16:53:35+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-4af0c56479660f4a3a12",
+      "title": "#LeyendasPokemonZA",
+      "message": "Sin novedades sustanciales: se conserva texto y fecha."
+    },
+    {
+      "at": "2026-10-30T16:54:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre verificado 3/3: main sin preparing/update ni rewrite_pending. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -55,35 +79,35 @@
     "project": "TTendencias",
     "run_id": "tr-1793375430582-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T16:51:00+01:00",
-    "updated_at": "2026-10-30T16:51:00+01:00",
-    "finished_at": null,
-    "current": 0,
+    "updated_at": "2026-10-30T16:54:30+01:00",
+    "finished_at": "2026-10-30T16:54:30+01:00",
+    "current": 3,
     "total": 3,
     "trend_id": null,
     "title": null,
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "processed_ids": [
       "listas-auto-13a61a13d71463aa9a63",
       "red-review-d53297bbc76bdb6b68ee",
       "red-review-4af0c56479660f4a3a12"
     ],
-    "remaining_problematic_ids": [],
-    "processed_ids": [],
     "partial": false,
-    "message": "Procesando agrupación automática y dos revisiones de novedades; sin ImageGen.",
+    "message": "Pasada completada 3/3: agrupación sin grupos; Marcos Llorente y #LeyendasPokemonZA sin novedades sustanciales. Cola final 0 y sin rewrite_pending. Sin ImageGen.",
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
-      "unchanged_reviews": 0,
+      "unchanged_reviews": 2,
       "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 3,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -99,9 +123,58 @@
         "trend_id": null,
         "title": null,
         "message": "Inicio: 3 encargos vigentes; agrupación primero y después revisiones de novedades. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T16:53:07+01:00",
+        "phase": "persisting",
+        "trend_id": "listas-auto-13a61a13d71463aa9a63",
+        "title": "Agrupación automática de Listas",
+        "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
+      },
+      {
+        "at": "2026-10-30T16:53:30+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-d53297bbc76bdb6b68ee",
+        "title": "Marcos Llorente",
+        "message": "Sin novedades sustanciales: se conserva texto y fecha."
+      },
+      {
+        "at": "2026-10-30T16:53:35+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-4af0c56479660f4a3a12",
+        "title": "#LeyendasPokemonZA",
+        "message": "Sin novedades sustanciales: se conserva texto y fecha."
+      },
+      {
+        "at": "2026-10-30T16:54:30+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre verificado 3/3: main sin preparing/update ni rewrite_pending. Sin ImageGen."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "listas-auto-13a61a13d71463aa9a63",
+        "revision": 0,
+        "status": "grouping_completed",
+        "name": "Agrupación automática de Listas"
+      },
+      {
+        "id": "red-review-d53297bbc76bdb6b68ee",
+        "revision": 0,
+        "status": "review_completed",
+        "name": "Revisar novedades: Marcos Llorente",
+        "outcome": "unchanged"
+      },
+      {
+        "id": "red-review-4af0c56479660f4a3a12",
+        "revision": 0,
+        "status": "review_completed",
+        "name": "Revisar novedades: #LeyendasPokemonZA",
+        "outcome": "unchanged"
+      }
+    ]
   },
   "error": null,
   "api_failover_enabled": false
