@@ -4,7 +4,11 @@ import SwiftUI
 /// receipts. Never labels optimistic changes as persisted.
 struct PendingOperationsPanel: View {
     @EnvironmentObject private var store: EditorialStore
-    @State private var expanded = false
+    @State private var expanded: Bool
+
+    init(initiallyExpanded: Bool = false) {
+        _expanded = State(initialValue: initiallyExpanded)
+    }
 
     private var background: Color {
         Color(red: 0.115, green: 0.178, blue: 0.275)

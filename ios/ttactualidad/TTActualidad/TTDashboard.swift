@@ -91,6 +91,9 @@ private struct PublicationSheetRoute: Identifiable {
 struct TTDashboard: View {
     @EnvironmentObject private var store: EditorialStore
     @StateObject private var github = GitHubEditor()
+    @ObservedObject private var quickActions = HomeQuickActionRouter.shared
+    @State private var quickOverview: TTQuickAction?
+    @State private var quickNavigationID = UUID()
     @State private var search = ""
     @State private var showNewStory = false
     @State private var showSettings = false
@@ -111,14 +114,24 @@ struct TTDashboard: View {
                 topSections
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 14) {
-                        heading
+                        if let quickOverview {
+                            Text(quickOverview.title)
+                                .font(.title2.bold()).foregroundStyle(.white)
+                        } else { heading }
                         counters
-                        if store.section == .news && !showCombinedListas { sourceCounters }
+                        if quickOverview == nil && store.section == .news && !showCombinedListas { sourceCounters }
                         connectedLabel
-                        PendingOperationsPanel().environmentObject(store)
+                        if quickOverview == .pending {
+                            PendingOperationsPanel(initiallyExpanded: true).environmentObject(store)
+                        } else {
+                            PendingOperationsPanel().environmentObject(store)
+                        }
                         if store.actionIsError && !store.actionMessage.isEmpty {
                             editorialActionBanner
                         }
+                        if quickOverview == .working {
+                            quickWorkingContent
+                        } else if quickOverview == nil {
                         subTabs
                         if !showCombinedListas &&
                            ((store.section == .trends && store.trendFilter == .elaboracion) ||
@@ -132,14 +145,21 @@ struct TTDashboard: View {
                         if showCombinedListas { combinedListasContent }
                         else if store.section == .trends { trendsContent }
                         else { newsContent }
+                        }
                         Color.clear.frame(height: 18)
                     }
                     .padding(.horizontal, 15)
                     .padding(.top, 18)
                 }
+                .id(quickNavigationID)
             }
         }
         .preferredColorScheme(.dark)
+        .onReceive(quickActions.$request) { request in
+            guard let request else { return }
+            openQuickAction(request.action)
+            quickActions.consume(request)
+        }
         .task { await github.renewOnForeground() }
         // Keep pending receipts reconciled without blocking scrolling or
         // making the user tap refresh after the GitHub workflow finishes.
@@ -156,11 +176,13 @@ struct TTDashboard: View {
         }
         .onOpenURL { url in
             if url.scheme == "ttactualidad" {
+                quickOverview = nil
                 showCombinedListas = url.host == "listas"
             }
         }
         .sheet(isPresented: $showNewStory) {
             NewsSubmissionSheet(github: github, onQueued: {
+                quickOverview = nil
                 showCombinedListas = false
                 store.section = .news
                 store.newsFilter = .elaboracion
@@ -180,6 +202,48 @@ struct TTDashboard: View {
         .onChange(of: store.section) { _, _ in
             search = ""
             UISelectionFeedbackGenerator().selectionChanged()
+        }
+    }
+
+    private func openQuickAction(_ action: TTQuickAction) {
+        showNewStory = false
+        showSettings = false
+        publicationSheet = nil
+        showCombinedListas = false
+        search = ""
+        quickNavigationID = UUID()
+        switch action {
+        case .news:
+            quickOverview = nil
+            store.section = .news
+            store.newsFilter = .listas
+        case .trends:
+            quickOverview = nil
+            store.section = .trends
+            store.trendFilter = .listas
+        case .working, .pending:
+            quickOverview = action
+        }
+        Task { await store.refreshIfStale(minInterval: 0) }
+    }
+
+    @ViewBuilder private var quickWorkingContent: some View {
+        Label("TTiTTulares · \(store.snapshot.newsElaboracion.count)", systemImage: "newspaper")
+            .font(.headline).foregroundStyle(TTTheme.teal)
+        if store.snapshot.newsElaboracion.isEmpty {
+            Text("No hay noticias en elaboración.").font(.caption).foregroundStyle(TTTheme.muted)
+        }
+        ForEach(store.snapshot.newsElaboracion) { item in
+            NewsTile(item: item, github: github, settings: $showSettings)
+        }
+        Label("TTendencias · \(store.snapshot.trendsElaboracion.count)", systemImage: "chart.bar")
+            .font(.headline).foregroundStyle(TTTheme.blue)
+        if store.snapshot.trendsElaboracion.isEmpty {
+            Text("No hay tendencias en elaboración.").font(.caption).foregroundStyle(TTTheme.muted)
+        }
+        ForEach(store.snapshot.trendsElaboracion) { item in
+            TrendTile(item: item, showRank: item.rank > 0,
+                      github: github, settings: $showSettings)
         }
     }
 
@@ -234,13 +298,18 @@ struct TTDashboard: View {
 
     private var topSections: some View {
         HStack(spacing: 4) {
-            tab("TTiTTulares", active: !showCombinedListas && store.section == .news) {
+            tab("TTiTTulares", active: quickOverview == nil && !showCombinedListas && store.section == .news) {
+                quickOverview = nil
                 showCombinedListas = false; store.section = .news
             }
-            tab("TTendencias", active: !showCombinedListas && store.section == .trends) {
+            tab("TTendencias", active: quickOverview == nil && !showCombinedListas && store.section == .trends) {
+                quickOverview = nil
                 showCombinedListas = false; store.section = .trends
             }
-            tab("Listas", active: showCombinedListas) { showCombinedListas = true }
+            tab("Listas", active: showCombinedListas) {
+                quickOverview = nil
+                showCombinedListas = true
+            }
         }
         .padding(5)
         .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 16))

@@ -40,6 +40,16 @@ jobs:
       - name: Generate Xcode project
         working-directory: ios/ttactualidad
         run: xcodegen generate
+      - name: Test Home Screen quick action routing and counters
+        working-directory: ios/ttactualidad
+        run: |
+          set -o pipefail
+          DEVICE_ID=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for v in d["devices"].values() for x in v if x["name"].startswith("iPhone")))')
+          xcodebuild -project TTActualidad.xcodeproj \
+            -scheme TTQuickActions -configuration Debug \
+            -destination "platform=iOS Simulator,id=$DEVICE_ID" \
+            -derivedDataPath .test-build \
+            CODE_SIGNING_ALLOWED=NO test | tee /tmp/ttactualidad-quick-actions-tests.log
       - name: Build native iPhone app and Live Activity
         working-directory: ios/ttactualidad
         run: |
@@ -64,14 +74,14 @@ jobs:
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr TTActualidad-0.4.24-PlumeImpactor-unsigned.ipa Payload
-          unzip -l TTActualidad-0.4.24-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
-          shasum -a 256 TTActualidad-0.4.24-PlumeImpactor-unsigned.ipa
+          zip -qr TTActualidad-0.4.25-PlumeImpactor-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.25-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.25-PlumeImpactor-unsigned.ipa
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: TTActualidad-0.4.24-PlumeImpactor-IPA
-          path: ios/ttactualidad/dist/TTActualidad-0.4.24-PlumeImpactor-unsigned.ipa
+          name: TTActualidad-0.4.25-PlumeImpactor-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.25-PlumeImpactor-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
 

@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct TTActualidadApp: App {
+    @UIApplicationDelegateAdaptor(TTQuickActionAppDelegate.self) private var appDelegate
     @StateObject private var store = EditorialStore()
     @Environment(\.scenePhase) private var scenePhase
 
@@ -9,7 +10,10 @@ struct TTActualidadApp: App {
         WindowGroup {
             TTDashboard()
                 .environmentObject(store)
-                .task { await store.refreshIfStale(minInterval: 0) }
+                .task {
+                    store.updateHomeQuickActions()
+                    await store.refreshIfStale(minInterval: 0)
+                }
                 .onOpenURL { url in
                     guard url.scheme == "ttactualidad" else { return }
                     if url.host == "noticias" { store.section = .news }
@@ -21,6 +25,7 @@ struct TTActualidadApp: App {
                     if newPhase == .active {
                         Task { await store.refreshIfStale(minInterval: 120) }
                     } else if newPhase == .background {
+                        store.updateHomeQuickActions()
                         store.markVisitComplete()
                     }
                 }

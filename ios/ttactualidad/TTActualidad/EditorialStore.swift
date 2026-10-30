@@ -255,6 +255,23 @@ final class EditorialStore: ObservableObject {
     private var lastCompletedRefresh: Date? = nil
     private var currentVisitSnapshot: [String: String]?
 
+    func updateHomeQuickActions() {
+        // Use canonical data, excluding provisional optimistic additions.
+        // Preserve the previous read on a cold launch or a failed refresh.
+        var summary = HomeQuickActions.savedSummary() ?? TTQuickActionSummary()
+        if let checkedAt = canonicalSnapshot.updatedAt {
+            let current = applyConfirmedTerminals(canonicalSnapshot)
+            summary = TTQuickActionSummary(
+                newsReady: current.news.count, trendsReady: current.trendListas.count,
+                newsWorking: current.newsElaboracion.count,
+                trendsWorking: current.trendsElaboracion.count,
+                pending: pendingOperationsCount, checkedAt: checkedAt,
+                partial: current.partial)
+        }
+        summary.pending = pendingOperationsCount
+        HomeQuickActions.update(summary)
+    }
+
     init() {
         if let saved = UserDefaults.standard.data(forKey: tombstoneStorageKey),
            let tombstones = try? JSONDecoder().decode(
@@ -516,6 +533,7 @@ final class EditorialStore: ObservableObject {
             isLoading = false
             isManuallyRefreshing = false
             lastCompletedRefresh = Date()
+            updateHomeQuickActions()
         }
         // The 14 remote documents may contain megabytes of JSON. Their
         // validation, disk writes and parsing must not run on MainActor:

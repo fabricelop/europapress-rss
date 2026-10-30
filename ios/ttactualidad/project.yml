@@ -20,14 +20,14 @@ targets:
         PRODUCT_NAME: TTActualidad
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_STYLE: Automatic
-        MARKETING_VERSION: "0.4.24"
-        CURRENT_PROJECT_VERSION: "30"
+        MARKETING_VERSION: "0.4.25"
+        CURRENT_PROJECT_VERSION: "31"
     info:
       path: TTActualidad/Info.plist
       properties:
         CFBundleDisplayName: TTActualidad
-        CFBundleShortVersionString: "0.4.24"
-        CFBundleVersion: "30"
+        CFBundleShortVersionString: "0.4.25"
+        CFBundleVersion: "31"
         ITSAppUsesNonExemptEncryption: false
         NSSupportsLiveActivities: true
         UILaunchScreen: {}
@@ -49,17 +49,34 @@ targets:
         PRODUCT_NAME: TTActualidadLive
         SKIP_INSTALL: YES
         CODE_SIGN_STYLE: Automatic
-        MARKETING_VERSION: "0.4.24"
-        CURRENT_PROJECT_VERSION: "30"
+        MARKETING_VERSION: "0.4.25"
+        CURRENT_PROJECT_VERSION: "31"
     info:
       path: TTActualidadLive/Info.plist
       properties:
         CFBundleDisplayName: TTActualidad Live Activity
-        CFBundleShortVersionString: "0.4.24"
-        CFBundleVersion: "30"
+        CFBundleShortVersionString: "0.4.25"
+        CFBundleVersion: "31"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
+  TTQuickActionTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: tests/Native
+      - path: TTActualidad/HomeQuickActions.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.fabricelop.ttactualidad.quick-action-tests
+        GENERATE_INFOPLIST_FILE: YES
 schemes:
+  TTQuickActions:
+    build:
+      targets:
+        TTQuickActionTests: all
+    test:
+      targets:
+        - TTQuickActionTests
   TTActualidad:
     build:
       targets:
