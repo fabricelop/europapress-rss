@@ -5,243 +5,104 @@
   "canonical": true,
   "last_started_at": "2026-10-30T19:27:30+01:00",
   "last_completed_at": "2026-10-30T19:31:10+01:00",
-  "updated_at": "2026-10-30T19:31:10+01:00",
-  "status": "DONE_WITH_INCIDENTS",
-  "queue_complete": true,
-  "processed_ids": [
-    "e40be8e866b4"
-  ],
+  "updated_at": "2026-10-30T19:30:06.307+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [
-    "e40be8e866b4"
+    "listas-auto-ffce6a027692670cc4d1"
   ],
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "e40be8e866b4"
+  "remaining_active_ids": [
+    "listas-auto-ffce6a027692670cc4d1"
   ],
-  "run_id": "tr-1793384695746-manual",
-  "previous_run_id": "tr-1793383997307-manual",
+  "remaining_problematic_ids": [],
+  "run_id": "tr-1793385006307-manual",
+  "previous_run_id": "tr-1793384695746-manual",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 0,
-    "remaining_problematic": 1,
+    "remaining_active": 1,
+    "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T19:13:17+01:00",
+      "at": "2026-10-30T19:30:06.307+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada manual iniciada con 6 trabajos activos. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:15:00+01:00",
-      "phase": "verifying",
-      "trend_id": "808846a26299",
-      "title": "Alcaraz",
-      "message": "La revisión dejó de estar activa durante la validación JIT y se verificó ya explicada por una escritura concurrente; no se sobrescribió."
-    },
-    {
-      "at": "2026-10-30T19:17:00+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Capitalismo, Viena, Ronaldo Nazário r0, Intel y Gracias Ministro persistidos y verificados en requests y Listas."
-    },
-    {
-      "at": "2026-10-30T19:20:22+01:00",
-      "phase": "grouping",
-      "trend_id": "listas-auto-0d3447858f6c0149f1d2",
+      "trend_id": "listas-auto-ffce6a027692670cc4d1",
       "title": "Agrupación automática de Listas",
-      "message": "Alcaraz, Tommy Paul y Viena agrupados por corresponder al mismo partido; originales conservados y marcados como cubiertos."
-    },
-    {
-      "at": "2026-10-30T19:21:14+01:00",
-      "phase": "reviewing",
-      "trend_id": "red-review-257d9d047ee2c6174779",
-      "title": "Ana Pastor",
-      "message": "Revisión materializada como actualización; nueva ficha verificada en requests y Listas."
-    },
-    {
-      "at": "2026-10-30T19:23:24+01:00",
-      "phase": "reviewing",
-      "trend_id": "red-review-6427e924df3f8918dc96",
-      "title": "Repsol",
-      "message": "Revisión materializada como actualización por reacción de mercado y nuevas valoraciones de analistas; nueva ficha verificada."
-    },
-    {
-      "at": "2026-10-30T19:24:05+01:00",
-      "phase": "grouping",
-      "trend_id": null,
-      "title": null,
-      "message": "Agrupaciones derivadas de Ana Pastor y Repsol completadas sin coincidencias adicionales."
-    },
-    {
-      "at": "2026-10-30T19:26:00+01:00",
-      "phase": "investigating",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Entró revisión 1 durante la barrera final. Investigación nueva desde cero de la pista editorial."
-    },
-    {
-      "at": "2026-10-30T19:29:10+01:00",
-      "phase": "verifying",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "La revisión quedó problematic por no poder corroborar el detonante concreto de la encuesta; se respetó el cierre concurrente y no se forzó una explicación."
-    },
-    {
-      "at": "2026-10-30T19:30:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final: 0 preparing/update, 0 reexplicaciones pendientes y 1 problematic (Ronaldo Nazário r1). ImageGen 0."
-    },
-    {
-      "at": "2026-10-30T19:27:30+01:00",
-      "phase": "preparing",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Revalidación JIT: r1 estaba problematic tras una escritura concurrente y seguía en Top 30; se abrió reintento ordinario. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:28:00+01:00",
-      "phase": "investigating",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Investigación desde cero de la pista editorial mediante búsquedas actuales en español e inglés y contraste de la trayectoria por los cuatro clubes."
-    },
-    {
-      "at": "2026-10-30T19:29:10+01:00",
-      "phase": "persisting",
-      "trend_id": "e40be8e866b4",
-      "title": "Ronaldo Nazário",
-      "message": "Segundo intento persistido en requests.json; status problematic, pista sin verificar y sin explicación nueva."
-    },
-    {
-      "at": "2026-10-30T19:31:10+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final: no quedan preparing/update ni rewrite_pending/reexplain activos. Ronaldo Nazário r1 permanece problematic para futuro reintento. ImageGen 0."
+      "message": "Pasada manual iniciada con 1 trabajo activo de agrupación. Revalidación JIT de candidatos y contexto publicado. Sin ImageGen."
     }
   ],
-  "incidents": [
-    {
-      "trend_id": "e40be8e866b4",
-      "revision": 1,
-      "title": "Ronaldo Nazário",
-      "reason": "La encuesta concreta con cuatro escudos no pudo corroborarse de forma independiente. La trayectoria por FC Barcelona, Inter, Real Madrid y AC Milan sí está verificada, pero no se atribuye la tendencia a la pista editorial sin prueba."
-    }
-  ],
-  "incident_count": 1,
+  "incidents": [],
+  "incident_count": 0,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793384695746-manual",
+    "run_id": "tr-1793385006307-manual",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
-    "phase": "closing",
-    "started_at": "2026-10-30T19:27:30+01:00",
-    "updated_at": "2026-10-30T19:31:10+01:00",
-    "finished_at": "2026-10-30T19:31:10+01:00",
-    "current": 1,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T19:30:06.307+01:00",
+    "updated_at": "2026-10-30T19:30:06.307+01:00",
+    "finished_at": null,
+    "current": 0,
     "total": 1,
-    "trend_id": null,
-    "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "e40be8e866b4"
+    "trend_id": "listas-auto-ffce6a027692670cc4d1",
+    "title": "Agrupación automática de Listas",
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "listas-auto-ffce6a027692670cc4d1"
     ],
-    "processed_ids": [
-      "e40be8e866b4"
-    ],
+    "remaining_problematic_ids": [],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 1/1 con incidencia: Ronaldo Nazário r1 sigue problematic porque la encuesta concreta no pudo corroborarse de forma independiente. Sin ImageGen.",
+    "message": "Procesando agrupación automática de Listas con validación JIT. Sin ImageGen.",
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 0,
+      "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 0,
-      "remaining_problematic": 1,
+      "remaining_active": 1,
+      "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "trend_id": "e40be8e866b4",
-        "revision": 1,
-        "title": "Ronaldo Nazário",
-        "reason": "La encuesta concreta con cuatro escudos no pudo corroborarse de forma independiente. La trayectoria por FC Barcelona, Inter, Real Madrid y AC Milan sí está verificada, pero no se atribuye la tendencia a la pista editorial sin prueba."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T19:27:30+01:00",
+        "at": "2026-10-30T19:30:06.307+01:00",
         "phase": "preparing",
-        "trend_id": "e40be8e866b4",
-        "title": "Ronaldo Nazário",
-        "message": "Revalidación JIT: r1 estaba problematic tras una escritura concurrente y seguía en Top 30; se abrió reintento ordinario. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:28:00+01:00",
-        "phase": "investigating",
-        "trend_id": "e40be8e866b4",
-        "title": "Ronaldo Nazário",
-        "message": "Investigación desde cero de la pista editorial mediante búsquedas actuales en español e inglés y contraste de la trayectoria por los cuatro clubes."
-      },
-      {
-        "at": "2026-10-30T19:29:10+01:00",
-        "phase": "persisting",
-        "trend_id": "e40be8e866b4",
-        "title": "Ronaldo Nazário",
-        "message": "Segundo intento persistido en requests.json; status problematic, pista sin verificar y sin explicación nueva."
-      },
-      {
-        "at": "2026-10-30T19:31:10+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Barrera final: no quedan preparing/update ni rewrite_pending/reexplain activos. Ronaldo Nazário r1 permanece problematic para futuro reintento. ImageGen 0."
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "e40be8e866b4",
-        "revision": 1,
-        "title": "Ronaldo Nazário",
-        "status": "problematic",
-        "note": "Segundo intento registrado; detonante social no verificado y sin explicación nueva."
+        "trend_id": "listas-auto-ffce6a027692670cc4d1",
+        "title": "Agrupación automática de Listas",
+        "message": "Pasada manual iniciada con 1 trabajo activo de agrupación. Revalidación JIT de candidatos y contexto publicado. Sin ImageGen."
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T19:27:30+01:00",
-  "finished_at": "2026-10-30T19:31:10+01:00",
-  "current": 1,
+  "phase": "preparing",
+  "started_at": "2026-10-30T19:30:06.307+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 1,
-  "trend_id": null,
-  "title": null
+  "trend_id": "listas-auto-ffce6a027692670cc4d1",
+  "title": "Agrupación automática de Listas"
 }
