@@ -3,72 +3,44 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T16:51:00+01:00",
+  "last_started_at": "2026-10-30T16:55:30+01:00",
   "last_completed_at": "2026-10-30T16:54:30+01:00",
-  "updated_at": "2026-10-30T16:54:30+01:00",
-  "status": "done",
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-13a61a13d71463aa9a63",
-    "red-review-d53297bbc76bdb6b68ee",
-    "red-review-4af0c56479660f4a3a12"
+  "updated_at": "2026-10-30T16:55:30+01:00",
+  "status": "running",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "37073f5f219f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "37073f5f219f"
+  ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793375430582-manual",
-  "previous_run_id": "tr-1793374875000-manual",
+  "run_id": "tr-1793375730000-manual",
+  "previous_run_id": "tr-1793375430582-manual",
   "summary": {
-    "attempted": 3,
+    "attempted": 0,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
-    "unchanged_reviews": 2,
-    "grouping_requests": 1,
+    "unchanged_reviews": 0,
+    "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 0,
+    "remaining_active": 1,
     "remaining_problematic": 0,
-    "rewrite_pending_remaining": 0,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T16:51:00+01:00",
+      "at": "2026-10-30T16:55:30+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio: 3 encargos vigentes; agrupación primero y después revisiones de novedades. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T16:53:07+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-13a61a13d71463aa9a63",
-      "title": "Agrupación automática de Listas",
-      "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
-    },
-    {
-      "at": "2026-10-30T16:53:30+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-d53297bbc76bdb6b68ee",
-      "title": "Marcos Llorente",
-      "message": "Sin novedades sustanciales: se conserva texto y fecha."
-    },
-    {
-      "at": "2026-10-30T16:53:35+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-4af0c56479660f4a3a12",
-      "title": "#LeyendasPokemonZA",
-      "message": "Sin novedades sustanciales: se conserva texto y fecha."
-    },
-    {
-      "at": "2026-10-30T16:54:30+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cierre verificado 3/3: main sin preparing/update ni rewrite_pending. Sin ImageGen."
+      "trend_id": "37073f5f219f",
+      "title": "Pepiño Blanco",
+      "message": "Inicio 0/1: reelaboración manual vigente. Investigación nueva desde cero y validación JIT de la revisión 1. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -77,39 +49,37 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793375430582-manual",
+    "run_id": "tr-1793375730000-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T16:51:00+01:00",
-    "updated_at": "2026-10-30T16:54:30+01:00",
-    "finished_at": "2026-10-30T16:54:30+01:00",
-    "current": 3,
-    "total": 3,
-    "trend_id": null,
-    "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
-    "processed_ids": [
-      "listas-auto-13a61a13d71463aa9a63",
-      "red-review-d53297bbc76bdb6b68ee",
-      "red-review-4af0c56479660f4a3a12"
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T16:55:30+01:00",
+    "updated_at": "2026-10-30T16:55:30+01:00",
+    "finished_at": null,
+    "current": 0,
+    "total": 1,
+    "trend_id": "37073f5f219f",
+    "title": "Pepiño Blanco",
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "37073f5f219f"
     ],
+    "remaining_problematic_ids": [],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 3/3: agrupación sin grupos; Marcos Llorente y #LeyendasPokemonZA sin novedades sustanciales. Cola final 0 y sin rewrite_pending. Sin ImageGen.",
+    "message": "Investigando Pepiño Blanco (revisión 1) desde cero; pistas del editor aún no verificadas. Sin ImageGen.",
     "summary": {
-      "attempted": 3,
+      "attempted": 0,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
-      "unchanged_reviews": 2,
-      "grouping_requests": 1,
+      "unchanged_reviews": 0,
+      "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 0,
+      "remaining_active": 1,
       "remaining_problematic": 0,
-      "rewrite_pending_remaining": 0,
+      "rewrite_pending_remaining": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
@@ -118,63 +88,14 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T16:51:00+01:00",
+        "at": "2026-10-30T16:55:30+01:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio: 3 encargos vigentes; agrupación primero y después revisiones de novedades. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T16:53:07+01:00",
-        "phase": "persisting",
-        "trend_id": "listas-auto-13a61a13d71463aa9a63",
-        "title": "Agrupación automática de Listas",
-        "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
-      },
-      {
-        "at": "2026-10-30T16:53:30+01:00",
-        "phase": "verifying",
-        "trend_id": "red-review-d53297bbc76bdb6b68ee",
-        "title": "Marcos Llorente",
-        "message": "Sin novedades sustanciales: se conserva texto y fecha."
-      },
-      {
-        "at": "2026-10-30T16:53:35+01:00",
-        "phase": "verifying",
-        "trend_id": "red-review-4af0c56479660f4a3a12",
-        "title": "#LeyendasPokemonZA",
-        "message": "Sin novedades sustanciales: se conserva texto y fecha."
-      },
-      {
-        "at": "2026-10-30T16:54:30+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre verificado 3/3: main sin preparing/update ni rewrite_pending. Sin ImageGen."
+        "trend_id": "37073f5f219f",
+        "title": "Pepiño Blanco",
+        "message": "Inicio 0/1: reelaboración manual vigente. Investigación nueva desde cero y validación JIT de la revisión 1. Sin ImageGen."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "listas-auto-13a61a13d71463aa9a63",
-        "revision": 0,
-        "status": "grouping_completed",
-        "name": "Agrupación automática de Listas"
-      },
-      {
-        "id": "red-review-d53297bbc76bdb6b68ee",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: Marcos Llorente",
-        "outcome": "unchanged"
-      },
-      {
-        "id": "red-review-4af0c56479660f4a3a12",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: #LeyendasPokemonZA",
-        "outcome": "unchanged"
-      }
-    ]
+    "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false
