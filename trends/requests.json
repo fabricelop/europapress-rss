@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T13:48:50.396092+00:00",
+  "updated_at": "2026-10-30T14:50:07+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -3444,7 +3444,7 @@
       "rank": 20,
       "created_at": "2026-10-30T13:33:35.142451+00:00",
       "revision": 1,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-30T13:33:35.142451+00:00",
       "updated_at": "2026-10-30T14:36:05+01:00",
       "auto_queued": false,
@@ -3492,7 +3492,9 @@
       "problematic_at": "2026-10-30T14:36:05+01:00",
       "problem_reason": "La etiqueta #30OctubrESP está activa en tendencias y hoy existe una petición política pública de dimisión de Óscar Puente, pero las búsquedas independientes no aportan evidencia verificable de que esa campaña sea el detonante concreto de la etiqueta. Se conserva la pista editorial sin publicarla como hecho.",
       "problematic_attempts": 1,
-      "editorial_engine": "chat-direct"
+      "editorial_engine": "chat-direct",
+      "inactive_at": "2026-10-30T14:50:07+01:00",
+      "inactive_reason": "left-top30-radar"
     },
     {
       "id": "5728ff97c00d",
@@ -5228,6 +5230,48 @@
       ],
       "originated_from_prior_id": "2e51a7a10dd3",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Óscar Puente, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+    },
+    {
+      "id": "0151e1be35f5",
+      "name": "Madrid-Barcelona",
+      "rank": 21,
+      "status": "preparing",
+      "requested_at": "2026-10-30T14:50:07+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "6baac5a3a61a",
+      "requested_together": [
+        "Madrid-Barcelona"
+      ],
+      "captured_with": [
+        "Madrid-Barcelona",
+        "Pobrecito"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "c6e758d97041",
+      "name": "Pobrecito",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-10-30T14:50:07+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "6baac5a3a61a",
+      "requested_together": [
+        "Pobrecito"
+      ],
+      "captured_with": [
+        "Madrid-Barcelona",
+        "Pobrecito"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ]
 }
