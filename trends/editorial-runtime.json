@@ -4,21 +4,19 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T21:17:26.700Z",
-  "last_completed_at": "2026-10-30T21:04:00Z",
-  "updated_at": "2026-10-30T21:19:24.972Z",
-  "status": "RUNNING",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T21:23:15.381Z",
+  "updated_at": "2026-10-30T21:23:15.381Z",
+  "status": "DONE",
+  "queue_complete": true,
+  "processed_ids": [
     "20c655cb3655"
   ],
-  "remaining_active_ids": [
-    "20c655cb3655"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793394948517-manual",
   "previous_run_id": "tr-1793393362927-manual",
-  "summary": "Pasada editorial en curso 0/1: persistiendo Koldo r0.",
+  "summary": "Pasada editorial real completada 1/1: Koldo r0 explicado y sincronizado; cola final 0/0 tras releer main, sin reexplicaciones pendientes.",
   "activity": [
     {
       "at": "2026-10-30T21:17:26.700Z",
@@ -54,45 +52,59 @@
       "trend_id": "20c655cb3655",
       "title": "Koldo",
       "message": "Persistiendo Koldo r0 mediante TTENDENCIAS_CHAT_OUTBOX_V1 con barrera JIT ya superada; sincronización esperada en requests, Listas y cola."
+    },
+    {
+      "at": "2026-10-30T21:23:15.381Z",
+      "phase": "verifying",
+      "trend_id": "20c655cb3655",
+      "title": "Koldo",
+      "message": "Verificación final: Koldo r0 coincide entre requests.json y telegram-manual-explained.json; editorial_grouping_state=pending en ambos; aplicador completado con éxito. Cola 0, sin preparing/update ni rewrite_pending vigente."
+    },
+    {
+      "at": "2026-10-30T21:23:15.381Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre tr-1793394948517-manual: barrera final sobre main superada 1/1. Koldo r0 explicado y sincronizado; cola 0/0, sin reexplicaciones pendientes. 0 llamadas a ImageGen y 0 imágenes generadas por esta pasada."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "persisting",
+  "phase": "closing",
   "started_at": "2026-10-30T21:17:26.700Z",
-  "finished_at": null,
-  "current": 0,
+  "finished_at": "2026-10-30T21:23:15.381Z",
+  "current": 1,
   "total": 1,
-  "trend_id": "20c655cb3655",
-  "title": "Koldo",
+  "trend_id": null,
+  "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
     "run_id": "tr-1793394948517-manual",
     "source": "manual",
-    "status": "RUNNING",
-    "phase": "persisting",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T21:17:26.700Z",
-    "updated_at": "2026-10-30T21:19:24.972Z",
-    "finished_at": null,
-    "current": 0,
+    "updated_at": "2026-10-30T21:23:15.381Z",
+    "finished_at": "2026-10-30T21:23:15.381Z",
+    "current": 1,
     "total": 1,
-    "trend_id": "20c655cb3655",
-    "title": "Koldo",
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "processed_ids": [
       "20c655cb3655"
     ],
-    "remaining_problematic_ids": [],
-    "processed_ids": [],
     "partial": false,
-    "message": "Pasada editorial en curso 0/1: persistiendo Koldo r0.",
+    "message": "Pasada editorial real completada 1/1: Koldo r0 explicado y sincronizado; cola final 0/0 tras releer main, sin reexplicaciones pendientes.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 1,
+      "explained": 1,
       "updates": 0,
       "stale_reviews": 0,
       "stale_jobs": 0,
@@ -100,7 +112,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 1,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -144,9 +156,41 @@
         "trend_id": "20c655cb3655",
         "title": "Koldo",
         "message": "Persistiendo Koldo r0 mediante TTENDENCIAS_CHAT_OUTBOX_V1 con barrera JIT ya superada; sincronización esperada en requests, Listas y cola."
+      },
+      {
+        "at": "2026-10-30T21:23:15.381Z",
+        "phase": "verifying",
+        "trend_id": "20c655cb3655",
+        "title": "Koldo",
+        "message": "Verificación final: Koldo r0 coincide entre requests.json y telegram-manual-explained.json; editorial_grouping_state=pending en ambos; aplicador completado con éxito. Cola 0, sin preparing/update ni rewrite_pending vigente."
+      },
+      {
+        "at": "2026-10-30T21:23:15.381Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre tr-1793394948517-manual: barrera final sobre main superada 1/1. Koldo r0 explicado y sincronizado; cola 0/0, sin reexplicaciones pendientes. 0 llamadas a ImageGen y 0 imágenes generadas por esta pasada."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "20c655cb3655",
+        "name": "Koldo",
+        "revision": 0,
+        "outcome": "explained",
+        "rank": 11,
+        "explained_at": "2026-10-30T21:19:24.972Z"
+      }
+    ]
   },
-  "final_outcomes": []
+  "final_outcomes": [
+    {
+      "id": "20c655cb3655",
+      "name": "Koldo",
+      "revision": 0,
+      "outcome": "explained",
+      "rank": 11,
+      "explained_at": "2026-10-30T21:19:24.972Z"
+    }
+  ]
 }
