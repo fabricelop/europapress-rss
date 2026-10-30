@@ -1692,8 +1692,14 @@ final class EditorialStore: ObservableObject {
                              reviewReason: str(row, "red_review_reason"))
         }
         .sorted {
+            let leftRank = $0.rank > 0 ? $0.rank : Int.max
+            let rightRank = $1.rank > 0 ? $1.rank : Int.max
+            if leftRank != rightRank { return leftRank < rightRank }
             if $0.isCovered != $1.isCovered { return !$0.isCovered }
-            return ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast)
+            let leftDate = $0.lastExplained ?? .distantPast
+            let rightDate = $1.lastExplained ?? .distantPast
+            if leftDate != rightDate { return leftDate > rightDate }
+            return $0.id < $1.id
         }
         .prefix(500)
         .map { $0 }
