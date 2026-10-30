@@ -1,0 +1,30 @@
+name: Test imagenes web TTendencias
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "windows/TTendenciasWebImages.cjs"
+      - "windows/TTendenciasImageBridge.js"
+      - "tests/ttendencias-web-images.test.cjs"
+      - ".github/workflows/test-ttendencias-web-images.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  web-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validar sintaxis de los dos componentes
+        run: |
+          node --check windows/TTendenciasWebImages.cjs
+          node --check windows/TTendenciasImageBridge.js
+      - name: Probar asociacion, revisiones, idempotencia y cola
+        run: node --test tests/ttendencias-web-images.test.cjs
