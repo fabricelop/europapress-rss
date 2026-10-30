@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T12:08:00+01:00",
-  "last_completed_at": "2026-10-30T12:12:00+01:00",
-  "updated_at": "2026-10-30T12:12:00+01:00",
+  "last_completed_at": "2026-10-30T12:13:00+01:00",
+  "updated_at": "2026-10-30T12:13:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
@@ -155,34 +155,6 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada: 1/1 explicado y verificado; cola final 0; Top 10 cubierto/terminal 10/10."
-    },
-    {
-      "at": "2026-10-30T12:11:20+01:00",
-      "phase": "persisting",
-      "trend_id": "eebd7eeea00c",
-      "title": "El Fargue",
-      "message": "Persistencia detectada en main: ficha Explicada y request coinciden; la revisión ya fue retirada de la cola."
-    },
-    {
-      "at": "2026-10-30T12:11:40+01:00",
-      "phase": "verifying",
-      "trend_id": "eebd7eeea00c",
-      "title": "El Fargue",
-      "message": "Releyendo main: cola, requests y Explicadas tras la persistencia."
-    },
-    {
-      "at": "2026-10-30T12:11:50+01:00",
-      "phase": "verifying",
-      "trend_id": "eebd7eeea00c",
-      "title": "El Fargue",
-      "message": "Verificando id+revision y texto persistido: revisión 0 consistente y cola editorial vacía."
-    },
-    {
-      "at": "2026-10-30T12:12:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada cerrada: El Fargue explicado y verificado; cola final 0 y ninguna reexplicación pendiente."
     }
   ],
   "ratings_snapshot": {
@@ -237,8 +209,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-30T12:08:00+01:00",
-    "updated_at": "2026-10-30T12:12:00+01:00",
-    "finished_at": "2026-10-30T12:12:00+01:00",
+    "updated_at": "2026-10-30T12:13:00+01:00",
+    "finished_at": "2026-10-30T12:13:00+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -250,7 +222,7 @@
       "eebd7eeea00c"
     ],
     "partial": false,
-    "message": "Pasada cerrada: El Fargue explicado y verificado; cola final 0 y ninguna reexplicación pendiente.",
+    "message": "Pasada cerrada: 1/1 explicado y verificado; cola final 0; Top 10 cubierto/terminal 10/10.",
     "summary": {
       "attempted": 1,
       "explained": 1,
@@ -408,34 +380,6 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada cerrada: 1/1 explicado y verificado; cola final 0; Top 10 cubierto/terminal 10/10."
-      },
-      {
-        "at": "2026-10-30T12:11:20+01:00",
-        "phase": "persisting",
-        "trend_id": "eebd7eeea00c",
-        "title": "El Fargue",
-        "message": "Persistencia detectada en main: ficha Explicada y request coinciden; la revisión ya fue retirada de la cola."
-      },
-      {
-        "at": "2026-10-30T12:11:40+01:00",
-        "phase": "verifying",
-        "trend_id": "eebd7eeea00c",
-        "title": "El Fargue",
-        "message": "Releyendo main: cola, requests y Explicadas tras la persistencia."
-      },
-      {
-        "at": "2026-10-30T12:11:50+01:00",
-        "phase": "verifying",
-        "trend_id": "eebd7eeea00c",
-        "title": "El Fargue",
-        "message": "Verificando id+revision y texto persistido: revisión 0 consistente y cola editorial vacía."
-      },
-      {
-        "at": "2026-10-30T12:12:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada cerrada: El Fargue explicado y verificado; cola final 0 y ninguna reexplicación pendiente."
       }
     ],
     "final_outcomes": [
