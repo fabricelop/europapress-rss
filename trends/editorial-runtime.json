@@ -5,40 +5,29 @@
   "canonical": true,
   "last_started_at": "2026-10-30T22:40:00.000Z",
   "last_completed_at": "2026-10-30T22:10:58.000Z",
-  "updated_at": "2026-10-30T22:41:10.000Z",
+  "updated_at": "2026-10-30T22:42:00.000Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "f90cc5271f93",
-    "9950fd2c5b18",
     "red-review-2e5909232e97bfecd690",
     "red-review-3def540ee0135f135f7a"
   ],
   "remaining_active_ids": [
-    "f90cc5271f93",
-    "9950fd2c5b18",
     "red-review-2e5909232e97bfecd690",
     "red-review-3def540ee0135f135f7a"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-20261030T234000+0100-manual",
-  "previous_run_id": "tr-1793398200000-manual",
-  "summary": "Pasada editorial en curso: 0/4. Han entrado Villarreal y Lawson; se procesan antes que las revisiones de Toledo y Renfe.",
+  "run_id": "tr-1793400009396-manual",
+  "previous_run_id": "tr-20261030T234000+0100-manual",
+  "summary": "Pasada editorial real en curso: 0/2. Validación JIT de revisiones Toledo y Renfe; sin ImageGen.",
   "activity": [
     {
-      "at": "2026-10-30T22:40:00.000Z",
+      "at": "2026-10-30T22:42:00.000Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada editorial real: cola autoritativa releída en main con 2 revisiones de mantenimiento vigentes (Toledo y Renfe). Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T22:41:10.000Z",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "La cola creció de 2 a 4: nuevas investigaciones Villarreal y Lawson pasan por delante de las revisiones de mantenimiento."
+      "message": "Inicio de tr-1793400009396-manual: cola autoritativa releída en main con 2 revisiones de mantenimiento. Se validará ID+revisión y estado sustituido antes de aplicar cada resultado. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -46,10 +35,10 @@
   "error": null,
   "api_failover_enabled": false,
   "phase": "preparing",
-  "started_at": "2026-10-30T22:40:00.000Z",
+  "started_at": "2026-10-30T22:42:00.000Z",
   "finished_at": null,
   "current": 0,
-  "total": 4,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "last_run": {
