@@ -3,24 +3,20 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T02:11:00+01:00",
-  "last_completed_at": "2026-10-30T02:22:00+01:00",
-  "updated_at": "2026-10-30T02:22:00+01:00",
+  "last_started_at": "2026-10-30T02:25:00+01:00",
+  "last_completed_at": "2026-10-30T02:27:00+01:00",
+  "updated_at": "2026-10-30T02:27:00+01:00",
   "status": "success",
   "queue_complete": true,
-  "processed_ids": [
-    "9fe941942b67",
-    "b7af662ac839",
-    "2e70108a529b"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T021100+0100",
-  "previous_run_id": "tr-chat-20261030T015500+0100",
+  "run_id": "tr-chat-20261030T022500+0100",
+  "previous_run_id": "tr-chat-20261030T021100+0100",
   "summary": {
-    "attempted": 3,
-    "explained": 3,
+    "attempted": 0,
+    "explained": 0,
     "problematic": 0,
     "final_resolved": 0,
     "skipped_concurrent": 0,
@@ -29,297 +25,67 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 2,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
+    "remates_selected": 0,
+    "remates_omitted": 8,
+    "recent_missing_closer_reviewed": 8,
+    "pending_visual_candidates_reviewed": 18,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T02:14:40+01:00",
-      "phase": "investigating",
-      "trend_id": "9fe941942b67",
-      "title": "FANTASMA OUT NOW",
-      "message": "Hecho esencial verificado · estreno del primer adelanto del deluxe de «no fue real»"
+      "at": "2026-10-30T02:25:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo cola y estados autoritativos"
     },
     {
-      "at": "2026-10-30T02:15:10+01:00",
-      "phase": "drafting",
-      "trend_id": "9fe941942b67",
-      "title": "FANTASMA OUT NOW",
-      "message": "Comprobando límite de X · texto final 239 caracteres Unicode"
-    },
-    {
-      "at": "2026-10-30T02:15:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "9fe941942b67",
-      "title": "FANTASMA OUT NOW",
-      "message": "Remate seleccionado"
-    },
-    {
-      "at": "2026-10-30T02:16:20+01:00",
+      "at": "2026-10-30T02:25:20+01:00",
       "phase": "verifying",
-      "trend_id": "9fe941942b67",
-      "title": "FANTASMA OUT NOW",
-      "message": "Tendencia cerrada y verificada"
+      "trend_id": null,
+      "title": null,
+      "message": "Cola editorial vacía · 0 preparing/update, 0 problematic Top 10 y 0 reexplicaciones"
     },
     {
-      "at": "2026-10-30T02:16:30+01:00",
+      "at": "2026-10-30T02:25:40+01:00",
       "phase": "verifying",
-      "trend_id": "b7af662ac839",
-      "title": "#MalasLenguasN",
-      "message": "Releyendo estado autoritativo de #MalasLenguasN"
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 18 tarjetas recientes; reparación visual solicitada"
     },
     {
-      "at": "2026-10-30T02:17:10+01:00",
-      "phase": "investigating",
-      "trend_id": "b7af662ac839",
-      "title": "#MalasLenguasN",
-      "message": "Hecho esencial verificado · especial nocturno de Malas lenguas en sustitución de La Revuelta"
-    },
-    {
-      "at": "2026-10-30T02:17:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "b7af662ac839",
-      "title": "#MalasLenguasN",
-      "message": "Sin remate · asunto sensible ligado al accidente ferroviario de Urda"
-    },
-    {
-      "at": "2026-10-30T02:18:20+01:00",
-      "phase": "persisting",
-      "trend_id": "b7af662ac839",
-      "title": "#MalasLenguasN",
-      "message": "Conflicto SHA detectado; releyendo main para reconciliar"
-    },
-    {
-      "at": "2026-10-30T02:18:50+01:00",
+      "at": "2026-10-30T02:26:00+01:00",
       "phase": "verifying",
-      "trend_id": "b7af662ac839",
-      "title": "#MalasLenguasN",
-      "message": "Tendencia cerrada y verificada"
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando 8 explicaciones sin remate · omitido por muerte, accidente o salud/lesión"
     },
     {
-      "at": "2026-10-30T02:19:00+01:00",
+      "at": "2026-10-30T02:26:30+01:00",
       "phase": "verifying",
-      "trend_id": "2e70108a529b",
-      "title": "Arkano",
-      "message": "Releyendo estado autoritativo de Arkano"
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main · 0 reexplicaciones pendientes y 0 huérfanos"
     },
     {
-      "at": "2026-10-30T02:19:40+01:00",
-      "phase": "investigating",
-      "trend_id": "2e70108a529b",
-      "title": "Arkano",
-      "message": "Hecho esencial verificado · Arkano expulsado y Omar salvado con más del 70%"
-    },
-    {
-      "at": "2026-10-30T02:20:00+01:00",
-      "phase": "drafting",
-      "trend_id": "2e70108a529b",
-      "title": "Arkano",
-      "message": "Comprobando límite de X · texto final 242 caracteres Unicode"
-    },
-    {
-      "at": "2026-10-30T02:20:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "2e70108a529b",
-      "title": "Arkano",
-      "message": "Remate seleccionado"
-    },
-    {
-      "at": "2026-10-30T02:21:00+01:00",
-      "phase": "persisting",
-      "trend_id": "2e70108a529b",
-      "title": "Arkano",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-30T02:21:10+01:00",
-      "phase": "verifying",
-      "trend_id": "2e70108a529b",
-      "title": "Arkano",
-      "message": "Releyendo main y auditando cierre global"
-    },
-    {
-      "at": "2026-10-30T02:22:00+01:00",
+      "at": "2026-10-30T02:27:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 3 explicadas, cola vacía, 0 reexplicaciones pendientes y 0 huérfanos"
+      "message": "Pasada cerrada: 0 nuevas explicaciones, cola vacía y saneamiento visual solicitado"
     }
   ],
-  "ratings_snapshot": {
-    "path": "trends/remate-ratings.json",
-    "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-    "updated_at": "2026-10-06T21:21:47.927Z",
-    "total_ratings": 154,
-    "recent_considered": 100
-  },
-  "remate_selections": [
-    {
-      "trend_id": "9fe941942b67",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "total": 8.8,
-          "ratings_affinity": 2.2,
-          "trend_specificity": 1.8,
-          "punch": 1.7,
-          "originality": 1.3,
-          "length_fit": 1,
-          "repetition_penalty": 0
-        },
-        {
-          "id": "c2",
-          "total": 7.9,
-          "ratings_affinity": 2,
-          "trend_specificity": 1.7,
-          "punch": 1.5,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.5
-        },
-        {
-          "id": "c3",
-          "total": 7.4,
-          "ratings_affinity": 1.9,
-          "trend_specificity": 1.6,
-          "punch": 1.4,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.6
-        },
-        {
-          "id": "c4",
-          "total": 6.9,
-          "ratings_affinity": 1.7,
-          "trend_specificity": 1.5,
-          "punch": 1.3,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.7
-        },
-        {
-          "id": "c5",
-          "total": 6.5,
-          "ratings_affinity": 1.6,
-          "trend_specificity": 1.5,
-          "punch": 1.2,
-          "originality": 1,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 8.8,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "b7af662ac839",
-      "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "sensitive_event_rail_accident"
-    },
-    {
-      "trend_id": "2e70108a529b",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "total": 9,
-          "ratings_affinity": 2.3,
-          "trend_specificity": 1.9,
-          "punch": 1.8,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.2
-        },
-        {
-          "id": "c2",
-          "total": 8.2,
-          "ratings_affinity": 2.1,
-          "trend_specificity": 1.8,
-          "punch": 1.6,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.5
-        },
-        {
-          "id": "c3",
-          "total": 7.7,
-          "ratings_affinity": 2,
-          "trend_specificity": 1.7,
-          "punch": 1.5,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.6
-        },
-        {
-          "id": "c4",
-          "total": 7.1,
-          "ratings_affinity": 1.8,
-          "trend_specificity": 1.6,
-          "punch": 1.4,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        },
-        {
-          "id": "c5",
-          "total": 6.8,
-          "ratings_affinity": 1.7,
-          "trend_specificity": 1.5,
-          "punch": 1.3,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 9,
-      "no_remate_reason": null
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "9fe941942b67",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "b7af662ac839",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "2e70108a529b",
-      "revision": 0,
-      "status": "explained"
-    }
-  ],
-  "incidents": [
-    {
-      "at": "2026-10-30T02:18:20+01:00",
-      "phase": "persisting",
-      "trend_id": "b7af662ac839",
-      "title": "#MalasLenguasN",
-      "reason": "Conflicto SHA al guardar la ficha por actualización concurrente; reconciliado tras releer main sin perder cambios ajenos."
-    }
-  ],
-  "incident_count": 1,
+  "ratings_snapshot": null,
+  "remate_selections": [],
+  "final_outcomes": [],
+  "incidents": [],
+  "incident_count": 0,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T021100+0100",
+    "trigger_run_id": "tr-chat-20261030T022500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -331,26 +97,26 @@
   "requests_state": {
     "status": "valid_no_active",
     "blob_sha": "68db7a5e9b04a1f33b504056950f70c5a1f0074f",
-    "updated_at": "2026-10-30T02:22:00+01:00"
+    "updated_at": "2026-10-30T02:20:40+01:00"
   },
   "last_run": {
     "project": "TTendencias",
     "canonical": true,
-    "run_id": "tr-chat-20261030T021100+0100",
+    "run_id": "tr-chat-20261030T022500+0100",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T02:11:00+01:00",
-    "updated_at": "2026-10-30T02:22:00+01:00",
-    "finished_at": "2026-10-30T02:22:00+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-30T02:25:00+01:00",
+    "updated_at": "2026-10-30T02:27:00+01:00",
+    "finished_at": "2026-10-30T02:27:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: 3 explicadas, cola vacía, 0 reexplicaciones pendientes y 0 huérfanos",
+    "message": "Pasada cerrada: 0 nuevas explicaciones, cola vacía y saneamiento visual solicitado",
     "summary": {
-      "attempted": 3,
-      "explained": 3,
+      "attempted": 0,
+      "explained": 0,
       "problematic": 0,
       "final_resolved": 0,
       "skipped_concurrent": 0,
@@ -359,307 +125,73 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 2,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 0,
+      "remates_selected": 0,
+      "remates_omitted": 8,
+      "recent_missing_closer_reviewed": 8,
+      "pending_visual_candidates_reviewed": 18,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-30T02:18:20+01:00",
-        "phase": "persisting",
-        "trend_id": "b7af662ac839",
-        "title": "#MalasLenguasN",
-        "reason": "Conflicto SHA al guardar la ficha por actualización concurrente; reconciliado tras releer main sin perder cambios ajenos."
-      }
-    ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 100
-    },
-    "remate_selections": [
-      {
-        "trend_id": "9fe941942b67",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.9,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c3",
-            "total": 7.4,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c4",
-            "total": 6.9,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.5,
-            "punch": 1.3,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c5",
-            "total": 6.5,
-            "ratings_affinity": 1.6,
-            "trend_specificity": 1.5,
-            "punch": 1.2,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.8,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "b7af662ac839",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_event_rail_accident"
-      },
-      {
-        "trend_id": "2e70108a529b",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 9,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c2",
-            "total": 8.2,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c3",
-            "total": 7.7,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c4",
-            "total": 7.1,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c5",
-            "total": 6.8,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.5,
-            "punch": 1.3,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 9,
-        "no_remate_reason": null
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T02:14:40+01:00",
-        "phase": "investigating",
-        "trend_id": "9fe941942b67",
-        "title": "FANTASMA OUT NOW",
-        "message": "Hecho esencial verificado · estreno del primer adelanto del deluxe de «no fue real»"
+        "at": "2026-10-30T02:25:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola y estados autoritativos"
       },
       {
-        "at": "2026-10-30T02:15:10+01:00",
-        "phase": "drafting",
-        "trend_id": "9fe941942b67",
-        "title": "FANTASMA OUT NOW",
-        "message": "Comprobando límite de X · texto final 239 caracteres Unicode"
-      },
-      {
-        "at": "2026-10-30T02:15:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "9fe941942b67",
-        "title": "FANTASMA OUT NOW",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-30T02:16:20+01:00",
+        "at": "2026-10-30T02:25:20+01:00",
         "phase": "verifying",
-        "trend_id": "9fe941942b67",
-        "title": "FANTASMA OUT NOW",
-        "message": "Tendencia cerrada y verificada"
+        "trend_id": null,
+        "title": null,
+        "message": "Cola editorial vacía · 0 preparing/update, 0 problematic Top 10 y 0 reexplicaciones"
       },
       {
-        "at": "2026-10-30T02:16:30+01:00",
+        "at": "2026-10-30T02:25:40+01:00",
         "phase": "verifying",
-        "trend_id": "b7af662ac839",
-        "title": "#MalasLenguasN",
-        "message": "Releyendo estado autoritativo de #MalasLenguasN"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 18 tarjetas recientes; reparación visual solicitada"
       },
       {
-        "at": "2026-10-30T02:17:10+01:00",
-        "phase": "investigating",
-        "trend_id": "b7af662ac839",
-        "title": "#MalasLenguasN",
-        "message": "Hecho esencial verificado · especial nocturno de Malas lenguas en sustitución de La Revuelta"
-      },
-      {
-        "at": "2026-10-30T02:17:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "b7af662ac839",
-        "title": "#MalasLenguasN",
-        "message": "Sin remate · asunto sensible ligado al accidente ferroviario de Urda"
-      },
-      {
-        "at": "2026-10-30T02:18:20+01:00",
-        "phase": "persisting",
-        "trend_id": "b7af662ac839",
-        "title": "#MalasLenguasN",
-        "message": "Conflicto SHA detectado; releyendo main para reconciliar"
-      },
-      {
-        "at": "2026-10-30T02:18:50+01:00",
+        "at": "2026-10-30T02:26:00+01:00",
         "phase": "verifying",
-        "trend_id": "b7af662ac839",
-        "title": "#MalasLenguasN",
-        "message": "Tendencia cerrada y verificada"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando 8 explicaciones sin remate · omitido por muerte, accidente o salud/lesión"
       },
       {
-        "at": "2026-10-30T02:19:00+01:00",
+        "at": "2026-10-30T02:26:30+01:00",
         "phase": "verifying",
-        "trend_id": "2e70108a529b",
-        "title": "Arkano",
-        "message": "Releyendo estado autoritativo de Arkano"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · 0 reexplicaciones pendientes y 0 huérfanos"
       },
       {
-        "at": "2026-10-30T02:19:40+01:00",
-        "phase": "investigating",
-        "trend_id": "2e70108a529b",
-        "title": "Arkano",
-        "message": "Hecho esencial verificado · Arkano expulsado y Omar salvado con más del 70%"
-      },
-      {
-        "at": "2026-10-30T02:20:00+01:00",
-        "phase": "drafting",
-        "trend_id": "2e70108a529b",
-        "title": "Arkano",
-        "message": "Comprobando límite de X · texto final 242 caracteres Unicode"
-      },
-      {
-        "at": "2026-10-30T02:20:30+01:00",
-        "phase": "remate_selection",
-        "trend_id": "2e70108a529b",
-        "title": "Arkano",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-30T02:21:00+01:00",
-        "phase": "persisting",
-        "trend_id": "2e70108a529b",
-        "title": "Arkano",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-30T02:21:10+01:00",
-        "phase": "verifying",
-        "trend_id": "2e70108a529b",
-        "title": "Arkano",
-        "message": "Releyendo main y auditando cierre global"
-      },
-      {
-        "at": "2026-10-30T02:22:00+01:00",
+        "at": "2026-10-30T02:27:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 3 explicadas, cola vacía, 0 reexplicaciones pendientes y 0 huérfanos"
+        "message": "Pasada cerrada: 0 nuevas explicaciones, cola vacía y saneamiento visual solicitado"
       }
     ],
-    "processed_ids": [
-      "9fe941942b67",
-      "b7af662ac839",
-      "2e70108a529b"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "final_outcomes": [
-      {
-        "id": "9fe941942b67",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "b7af662ac839",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "2e70108a529b",
-        "revision": 0,
-        "status": "explained"
-      }
-    ]
+    "final_outcomes": []
   },
   "radar": {
-    "captured_at": "2026-10-30T02:10:51+01:00",
+    "captured_at": "2026-10-30T02:20:52+01:00",
     "queue_count": 0,
-    "queue_sha": "c13faa22d7381d79177fc4a15de888f5f5cf96f1"
+    "queue_sha": "0637c56a41b67372ba30a89a616430ba9758170c"
   },
   "error": null,
   "api_failover_enabled": false
