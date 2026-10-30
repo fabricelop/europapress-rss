@@ -3,147 +3,186 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T13:55:00+01:00",
-  "last_completed_at": "2026-10-30T14:03:00+01:00",
-  "updated_at": "2026-10-30T14:03:00+01:00",
+  "last_started_at": "2026-10-30T14:11:20+01:00",
+  "last_completed_at": "2026-10-30T14:18:30+01:00",
+  "updated_at": "2026-10-30T14:18:30+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
-    "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-    "22601009b977"
+    "10aaa9a5458f",
+    "6977961651a2"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "22601009b977"
-  ],
-  "run_id": "tr-chat-20261030T135500+0100-manual",
-  "previous_run_id": "tr-1793364317490-manual",
+  "remaining_problematic_ids": [],
+  "run_id": "tr-chat-20261030T141120+0100-manual",
+  "previous_run_id": "tr-chat-20261030T135500+0100-manual",
   "summary": {
     "attempted": 2,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "problematic": 1,
-    "final_resolved": 1,
-    "skipped_concurrent": 1,
+    "explained": 2,
+    "explanation_groups": 0,
+    "new_cards": 2,
+    "problematic": 0,
+    "final_resolved": 2,
+    "skipped_concurrent": 0,
     "remaining_active": 0,
-    "remaining_problematic": 1,
+    "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 1,
+    "explanations_verified_under_280": 2,
     "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 6,
+    "remates_omitted": 3,
+    "recent_missing_closer_reviewed": 3,
     "pending_visual_candidates_reviewed": 0,
-    "top30_fresh_coverage": 29,
+    "top30_fresh_coverage": 30,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1,
-    "grouping_requests": 1,
-    "groups_created": 1,
-    "members_covered": 5,
-    "untouched_candidates": 2
+    "incidents": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "members_covered": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T13:55:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola editorial 2: preparando agrupación de Listas y #30OctubrESP."
-    },
-    {
-      "at": "2026-10-30T13:56:00+01:00",
+      "at": "2026-10-30T14:14:40+01:00",
       "phase": "verifying",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Releyendo estado autoritativo de las candidatas de Listas."
+      "trend_id": "10aaa9a5458f",
+      "title": "#EnBocaDeTodos",
+      "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
     },
     {
-      "at": "2026-10-30T13:57:00+01:00",
+      "at": "2026-10-30T14:14:45+01:00",
+      "phase": "verifying",
+      "trend_id": "10aaa9a5458f",
+      "title": "#EnBocaDeTodos",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-30T14:14:55+01:00",
+      "phase": "verifying",
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Releyendo estado autoritativo de Mazón."
+    },
+    {
+      "at": "2026-10-30T14:15:15+01:00",
       "phase": "investigating",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Hecho común verificado: accidente de Urda y sus consecuencias ferroviarias actuales."
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Buscando detonante actual de Mazón."
     },
     {
-      "at": "2026-10-30T13:57:20+01:00",
+      "at": "2026-10-30T14:15:35+01:00",
+      "phase": "investigating",
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Contrastando fuente 1/2: aniversario y reclamaciones actuales de las víctimas."
+    },
+    {
+      "at": "2026-10-30T14:15:55+01:00",
+      "phase": "investigating",
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Contrastando fuente 2/2: manifestación convocada para el 31 de octubre."
+    },
+    {
+      "at": "2026-10-30T14:16:05+01:00",
+      "phase": "investigating",
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Hecho esencial verificado: el aniversario y la protesta mantienen a Mazón en el foco."
+    },
+    {
+      "at": "2026-10-30T14:16:15+01:00",
       "phase": "drafting",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Redactando explicación conjunta factual y comprobando límite de X."
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Redactando explicación factual."
     },
     {
-      "at": "2026-10-30T13:57:30+01:00",
+      "at": "2026-10-30T14:16:25+01:00",
+      "phase": "drafting",
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
+    },
+    {
+      "at": "2026-10-30T14:16:35+01:00",
       "phase": "remate_selection",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Sin remate: tragedia ferroviaria y víctimas; explicación factual suficiente."
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Sin remate · aniversario de una tragedia con víctimas; explicación factual suficiente."
     },
     {
-      "at": "2026-10-30T13:57:40+01:00",
+      "at": "2026-10-30T14:16:45+01:00",
       "phase": "persisting",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Guardando outbox transaccional de agrupación sin reescribir originales."
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Guardando ficha Explicada."
     },
     {
-      "at": "2026-10-30T13:58:00+01:00",
+      "at": "2026-10-30T14:17:10+01:00",
+      "phase": "persisting",
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Actualizando requests."
+    },
+    {
+      "at": "2026-10-30T14:17:20+01:00",
+      "phase": "persisting",
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Retirando revisión de la cola."
+    },
+    {
+      "at": "2026-10-30T14:17:30+01:00",
       "phase": "verifying",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Releyendo main y verificando aplicación transaccional."
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Releyendo main."
     },
     {
-      "at": "2026-10-30T13:59:00+01:00",
+      "at": "2026-10-30T14:17:40+01:00",
       "phase": "verifying",
-      "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Agrupación cerrada: ficha conjunta creada y cinco textos originales preservados exactamente."
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
     },
     {
-      "at": "2026-10-30T14:00:00+01:00",
+      "at": "2026-10-30T14:17:45+01:00",
       "phase": "verifying",
-      "trend_id": "22601009b977",
-      "title": "#30OctubrESP",
-      "message": "Releyendo estado autoritativo de #30OctubrESP."
+      "trend_id": "6977961651a2",
+      "title": "Mazón",
+      "message": "Tendencia cerrada y verificada."
     },
     {
-      "at": "2026-10-30T14:00:10+01:00",
-      "phase": "investigating",
-      "trend_id": "22601009b977",
-      "title": "#30OctubrESP",
-      "message": "Buscando detonante actual con consultas exactas y fuentes sociales indexadas."
-    },
-    {
-      "at": "2026-10-30T14:00:40+01:00",
-      "phase": "investigating",
-      "trend_id": "22601009b977",
-      "title": "#30OctubrESP",
-      "message": "Segunda búsqueda independiente: no aparece un origen fiable y concreto del hashtag."
-    },
-    {
-      "at": "2026-10-30T14:01:00+01:00",
-      "phase": "verifying",
-      "trend_id": "22601009b977",
-      "title": "#30OctubrESP",
-      "message": "Se conserva problematic: el hashtag sigue en Top 30, pero no hay detonante verificable sin especular."
-    },
-    {
-      "at": "2026-10-30T14:02:00+01:00",
+      "at": "2026-10-30T14:17:55+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola vacía, agrupación aplicada y estado problematic confirmado."
+      "message": "Revisando Explicadas recientes sin remate."
     },
     {
-      "at": "2026-10-30T14:03:00+01:00",
+      "at": "2026-10-30T14:18:05+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Tres fichas recientes sin remate revisadas; se mantienen sin humor por víctimas o tragedia."
+    },
+    {
+      "at": "2026-10-30T14:18:15+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final: sin preparing/update, reexplicaciones, agrupaciones ni problematic vigentes en Top 30."
+    },
+    {
+      "at": "2026-10-30T14:18:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada con incidencia editorial: 1 agrupación creada y #30OctubrESP permanece problematic por falta de detonante verificable."
+      "message": "Pasada completada: 2/2 tendencias explicadas y verificadas; cola vacía."
     }
   ],
   "ratings_snapshot": {
@@ -156,105 +195,88 @@
   "remate_selections": [],
   "final_outcomes": [
     {
-      "id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "status": "grouping_completed",
-      "created_id": "listas-joint-d700cc8fe741c186",
-      "members_covered": 5
+      "id": "10aaa9a5458f",
+      "revision": 0,
+      "status": "explained",
+      "name": "#EnBocaDeTodos"
     },
     {
-      "id": "22601009b977",
+      "id": "6977961651a2",
       "revision": 0,
-      "status": "problematic",
-      "problem_reason": "Tras dos búsquedas independientes no se ha podido verificar un detonante único, concreto y actual para #30OctubrESP. No aparecen fuentes fiables que permitan atribuir con rigor el origen de la tendencia; se evita inventar una explicación."
+      "status": "explained",
+      "name": "Mazón"
     }
   ],
-  "incidents": [
-    {
-      "type": "unverified_trend_trigger",
-      "trend_id": "22601009b977",
-      "title": "#30OctubrESP",
-      "message": "Tras búsquedas independientes no se encontró una fuente fiable que permita atribuir un detonante único y actual; se mantiene status problematic para evitar inventar una explicación."
-    }
-  ],
-  "incident_count": 1,
+  "incidents": [],
+  "incident_count": 0,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T135500+0100-manual",
+    "trigger_run_id": "tr-chat-20261030T141120+0100-manual",
     "status": "triggered",
     "editorial_blocking": false
   },
   "apply_workflow": {
-    "workflow": "ttactualidad-group-listas",
-    "status": "applied",
+    "workflow": "direct-main-persistence",
+    "status": "verified",
     "editorial_blocking": false
   },
   "requests_state": {
-    "status": "valid_with_problematic",
-    "updated_at": "2026-10-30T14:03:00+01:00"
+    "status": "valid",
+    "updated_at": "2026-10-30T14:18:30+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T135500+0100-manual",
+    "run_id": "tr-chat-20261030T141120+0100-manual",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T13:55:00+01:00",
-    "updated_at": "2026-10-30T14:03:00+01:00",
-    "finished_at": "2026-10-30T14:03:00+01:00",
+    "started_at": "2026-10-30T14:11:20+01:00",
+    "updated_at": "2026-10-30T14:18:30+01:00",
+    "finished_at": "2026-10-30T14:18:30+01:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "22601009b977"
-    ],
+    "remaining_problematic_ids": [],
     "processed_ids": [
-      "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-      "22601009b977"
+      "10aaa9a5458f",
+      "6977961651a2"
     ],
     "partial": false,
-    "message": "Pasada cerrada con incidencia editorial: 1 agrupación creada y #30OctubrESP permanece problematic por falta de detonante verificable.",
+    "message": "Pasada completada: 2/2 tendencias explicadas y verificadas; cola vacía.",
     "summary": {
       "attempted": 2,
-      "explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "problematic": 1,
-      "final_resolved": 1,
-      "skipped_concurrent": 1,
+      "explained": 2,
+      "explanation_groups": 0,
+      "new_cards": 2,
+      "problematic": 0,
+      "final_resolved": 2,
+      "skipped_concurrent": 0,
       "remaining_active": 0,
-      "remaining_problematic": 1,
+      "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 2,
       "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 6,
+      "remates_omitted": 3,
+      "recent_missing_closer_reviewed": 3,
       "pending_visual_candidates_reviewed": 0,
-      "top30_fresh_coverage": 29,
+      "top30_fresh_coverage": 30,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1,
-      "grouping_requests": 1,
-      "groups_created": 1,
-      "members_covered": 5,
-      "untouched_candidates": 2
+      "incidents": 0,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "members_covered": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "unverified_trend_trigger",
-        "trend_id": "22601009b977",
-        "title": "#30OctubrESP",
-        "message": "Tras búsquedas independientes no se encontró una fuente fiable que permita atribuir un detonante único y actual; se mantiene status problematic para evitar inventar una explicación."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -265,133 +287,175 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T13:55:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola editorial 2: preparando agrupación de Listas y #30OctubrESP."
-      },
-      {
-        "at": "2026-10-30T13:56:00+01:00",
+        "at": "2026-10-30T14:14:40+01:00",
         "phase": "verifying",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Releyendo estado autoritativo de las candidatas de Listas."
+        "trend_id": "10aaa9a5458f",
+        "title": "#EnBocaDeTodos",
+        "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
       },
       {
-        "at": "2026-10-30T13:57:00+01:00",
+        "at": "2026-10-30T14:14:45+01:00",
+        "phase": "verifying",
+        "trend_id": "10aaa9a5458f",
+        "title": "#EnBocaDeTodos",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-30T14:14:55+01:00",
+        "phase": "verifying",
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Releyendo estado autoritativo de Mazón."
+      },
+      {
+        "at": "2026-10-30T14:15:15+01:00",
         "phase": "investigating",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Hecho común verificado: accidente de Urda y sus consecuencias ferroviarias actuales."
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Buscando detonante actual de Mazón."
       },
       {
-        "at": "2026-10-30T13:57:20+01:00",
+        "at": "2026-10-30T14:15:35+01:00",
+        "phase": "investigating",
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Contrastando fuente 1/2: aniversario y reclamaciones actuales de las víctimas."
+      },
+      {
+        "at": "2026-10-30T14:15:55+01:00",
+        "phase": "investigating",
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Contrastando fuente 2/2: manifestación convocada para el 31 de octubre."
+      },
+      {
+        "at": "2026-10-30T14:16:05+01:00",
+        "phase": "investigating",
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Hecho esencial verificado: el aniversario y la protesta mantienen a Mazón en el foco."
+      },
+      {
+        "at": "2026-10-30T14:16:15+01:00",
         "phase": "drafting",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Redactando explicación conjunta factual y comprobando límite de X."
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Redactando explicación factual."
       },
       {
-        "at": "2026-10-30T13:57:30+01:00",
+        "at": "2026-10-30T14:16:25+01:00",
+        "phase": "drafting",
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
+      },
+      {
+        "at": "2026-10-30T14:16:35+01:00",
         "phase": "remate_selection",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Sin remate: tragedia ferroviaria y víctimas; explicación factual suficiente."
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Sin remate · aniversario de una tragedia con víctimas; explicación factual suficiente."
       },
       {
-        "at": "2026-10-30T13:57:40+01:00",
+        "at": "2026-10-30T14:16:45+01:00",
         "phase": "persisting",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Guardando outbox transaccional de agrupación sin reescribir originales."
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Guardando ficha Explicada."
       },
       {
-        "at": "2026-10-30T13:58:00+01:00",
+        "at": "2026-10-30T14:17:10+01:00",
+        "phase": "persisting",
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-30T14:17:20+01:00",
+        "phase": "persisting",
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-30T14:17:30+01:00",
         "phase": "verifying",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Releyendo main y verificando aplicación transaccional."
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Releyendo main."
       },
       {
-        "at": "2026-10-30T13:59:00+01:00",
+        "at": "2026-10-30T14:17:40+01:00",
         "phase": "verifying",
-        "trend_id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "title": "Agrupar tendencias de Listas",
-        "message": "Agrupación cerrada: ficha conjunta creada y cinco textos originales preservados exactamente."
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
       },
       {
-        "at": "2026-10-30T14:00:00+01:00",
+        "at": "2026-10-30T14:17:45+01:00",
         "phase": "verifying",
-        "trend_id": "22601009b977",
-        "title": "#30OctubrESP",
-        "message": "Releyendo estado autoritativo de #30OctubrESP."
+        "trend_id": "6977961651a2",
+        "title": "Mazón",
+        "message": "Tendencia cerrada y verificada."
       },
       {
-        "at": "2026-10-30T14:00:10+01:00",
-        "phase": "investigating",
-        "trend_id": "22601009b977",
-        "title": "#30OctubrESP",
-        "message": "Buscando detonante actual con consultas exactas y fuentes sociales indexadas."
-      },
-      {
-        "at": "2026-10-30T14:00:40+01:00",
-        "phase": "investigating",
-        "trend_id": "22601009b977",
-        "title": "#30OctubrESP",
-        "message": "Segunda búsqueda independiente: no aparece un origen fiable y concreto del hashtag."
-      },
-      {
-        "at": "2026-10-30T14:01:00+01:00",
-        "phase": "verifying",
-        "trend_id": "22601009b977",
-        "title": "#30OctubrESP",
-        "message": "Se conserva problematic: el hashtag sigue en Top 30, pero no hay detonante verificable sin especular."
-      },
-      {
-        "at": "2026-10-30T14:02:00+01:00",
+        "at": "2026-10-30T14:17:55+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola vacía, agrupación aplicada y estado problematic confirmado."
+        "message": "Revisando Explicadas recientes sin remate."
       },
       {
-        "at": "2026-10-30T14:03:00+01:00",
+        "at": "2026-10-30T14:18:05+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Tres fichas recientes sin remate revisadas; se mantienen sin humor por víctimas o tragedia."
+      },
+      {
+        "at": "2026-10-30T14:18:15+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final: sin preparing/update, reexplicaciones, agrupaciones ni problematic vigentes en Top 30."
+      },
+      {
+        "at": "2026-10-30T14:18:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada con incidencia editorial: 1 agrupación creada y #30OctubrESP permanece problematic por falta de detonante verificable."
+        "message": "Pasada completada: 2/2 tendencias explicadas y verificadas; cola vacía."
       }
     ],
     "final_outcomes": [
       {
-        "id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
-        "status": "grouping_completed",
-        "created_id": "listas-joint-d700cc8fe741c186",
-        "members_covered": 5
+        "id": "10aaa9a5458f",
+        "revision": 0,
+        "status": "explained",
+        "name": "#EnBocaDeTodos"
       },
       {
-        "id": "22601009b977",
+        "id": "6977961651a2",
         "revision": 0,
-        "status": "problematic",
-        "problem_reason": "Tras dos búsquedas independientes no se ha podido verificar un detonante único, concreto y actual para #30OctubrESP. No aparecen fuentes fiables que permitan atribuir con rigor el origen de la tendencia; se evita inventar una explicación."
+        "status": "explained",
+        "name": "Mazón"
       }
     ]
   },
   "radar": {
-    "captured_at": "2026-10-30T13:51:02+01:00",
+    "captured_at": "2026-10-30T14:10:55+01:00",
     "queue_count": 0,
     "top10": [
       "Urda",
       "Adif",
       "Óscar Puente",
       "Angrois",
-      "#SVGala8",
-      "Iryo",
-      "Dana",
+      "#EnBocaDeTodos",
+      "Calvario",
       "Mazón",
-      "Koldo",
-      "#eShopOfertasHalloween"
+      "DANA",
+      "Iryo",
+      "Koldo"
     ]
   },
   "api_failover_enabled": false,
