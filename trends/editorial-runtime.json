@@ -5,34 +5,32 @@
   "canonical": true,
   "last_started_at": "2026-10-30T20:46:26.237Z",
   "last_completed_at": "2026-10-30T20:46:30Z",
-  "updated_at": "2026-10-30T20:46:26.237Z",
+  "updated_at": "2026-10-30T20:50:30Z",
   "status": "RUNNING",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "listas-auto-4de6de991fd044685208"
+  ],
   "remaining_ids": [
-    "listas-auto-4de6de991fd044685208",
-    "red-review-20b16a02ea5bcc6b9a5c",
-    "red-review-e152bac20e9cf171794d"
+    "listas-auto-10cd74e7d8ac692b7799"
   ],
   "remaining_active_ids": [
-    "listas-auto-4de6de991fd044685208",
-    "red-review-20b16a02ea5bcc6b9a5c",
-    "red-review-e152bac20e9cf171794d"
+    "listas-auto-10cd74e7d8ac692b7799"
   ],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793393186237-manual",
   "previous_run_id": "tr-20261030T214000-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "explained": 0,
-    "updates": 0,
+    "updates": 2,
     "stale_reviews": 0,
     "stale_jobs": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "members_covered": 0,
-    "remaining_active": 3,
+    "grouping_requests": 1,
+    "groups_created": 1,
+    "members_covered": 2,
+    "remaining_active": 1,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -109,19 +107,33 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio tr-1793393186237-manual: 3 trabajos activos; agrupación primero y revisiones de novedades después. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T20:49:18Z",
+      "phase": "persisting",
+      "trend_id": "listas-auto-4de6de991fd044685208",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado aplicado: Tusk + Tribunal Constitucional agrupados en una ficha conjunta; originales conservados y cubiertos."
+    },
+    {
+      "at": "2026-10-30T20:50:30Z",
+      "phase": "verifying",
+      "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
+      "title": "Revisar novedades: Toledo",
+      "message": "Resultados de Toledo y Fátima Báñez persistidos como updated; verificando que el aplicador los materialice y retire los jobs exactos."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-10-30T20:46:26.237Z",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 3,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
+  "title": "Revisar novedades: Toledo",
   "last_run": {
     "version": 1,
     "canonical": true,
@@ -129,35 +141,35 @@
     "run_id": "tr-1793393186237-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "preparing",
+    "phase": "verifying",
     "started_at": "2026-10-30T20:46:26.237Z",
-    "updated_at": "2026-10-30T20:46:26.237Z",
+    "updated_at": "2026-10-30T20:50:30Z",
     "finished_at": null,
-    "current": 0,
+    "current": 1,
     "total": 3,
-    "trend_id": null,
-    "title": null,
+    "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
+    "title": "Revisar novedades: Toledo",
     "queue_complete": false,
     "remaining_active_ids": [
-      "listas-auto-4de6de991fd044685208",
-      "red-review-20b16a02ea5bcc6b9a5c",
-      "red-review-e152bac20e9cf171794d"
+      "listas-auto-10cd74e7d8ac692b7799"
     ],
     "remaining_problematic_ids": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "listas-auto-4de6de991fd044685208"
+    ],
     "partial": false,
-    "message": "Pasada iniciada con 3 trabajos activos.",
+    "message": "Agrupación aplicada; dos actualizaciones de mantenimiento persistidas y pendientes de verificación del aplicador.",
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "explained": 0,
-      "updates": 0,
+      "updates": 2,
       "stale_reviews": 0,
       "stale_jobs": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 0,
-      "groups_created": 0,
-      "members_covered": 0,
-      "remaining_active": 3,
+      "grouping_requests": 1,
+      "groups_created": 1,
+      "members_covered": 2,
+      "remaining_active": 1,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -236,6 +248,20 @@
         "trend_id": null,
         "title": null,
         "message": "Inicio tr-1793393186237-manual: 3 trabajos activos; agrupación primero y revisiones de novedades después. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T20:49:18Z",
+        "phase": "persisting",
+        "trend_id": "listas-auto-4de6de991fd044685208",
+        "title": "Agrupación automática de Listas",
+        "message": "Resultado aplicado: Tusk + Tribunal Constitucional agrupados en una ficha conjunta; originales conservados y cubiertos."
+      },
+      {
+        "at": "2026-10-30T20:50:30Z",
+        "phase": "verifying",
+        "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
+        "title": "Revisar novedades: Toledo",
+        "message": "Resultados de Toledo y Fátima Báñez persistidos como updated; verificando que el aplicador los materialice y retire los jobs exactos."
       }
     ],
     "final_outcomes": []
