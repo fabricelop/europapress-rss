@@ -86,6 +86,26 @@ class ImageIdempotencyTests(unittest.TestCase):
         del job["pc_picked_up_at"]
         self.assertFalse(may_enqueue_image_job(job, 0))
 
+    def test_trends_frozen_tab_is_pre_submit_and_bounded(self):
+        job = {"project":"ttendencias", "revision":0, "status":"ERROR",
+               "delivery_mode":"launch_only", "phase":"pc_launch_failed",
+               "pc_picked_up_at":"2026-10-30T21:52:25Z", "auto_repair_attempt":1}
+        messages = [
+            'La pestaña dedicada no mostró compositor en 60000 ms; {"error":"CDP timeout Runtime.evaluate"}',
+            "El target dedicado sigue abierto; no se creará otra pestaña",
+            "TTENDENCIAS_PRE_SUBMIT_FAILED CDP timeout Runtime.evaluate",
+        ]
+        for message in messages:
+            candidate = {**job, "message":message}
+            self.assertTrue(may_enqueue_image_job(candidate, 0))
+            self.assertFalse(may_enqueue_image_job({**candidate,"auto_repair_attempt":3},0,manual_retry_version=99))
+            self.assertFalse(may_enqueue_image_job({**candidate,"project":"ttittulares"},0))
+            for marker in ["pc_launched_at","pc_submitted_at","pc_image_submitted_at","image_generated_at","upload_sha256"]:
+                self.assertFalse(may_enqueue_image_job({**candidate,marker:"evidence"},0))
+        self.assertFalse(may_enqueue_image_job({**job,"message":"CDP timeout Runtime.evaluate"},0))
+        self.assertFalse(may_enqueue_image_job({**job,"message":"No hubo evidencia suficiente de envío del prompt ImageGen"},0))
+        self.assertFalse(may_enqueue_image_job({**job,"message":messages[0],"status":"RUNNING"},0))
+
     def test_archive_repair_must_keep_automatic_ai_eligible(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / ".github/workflows/repair-ttittulares-listas.yml").read_text(encoding="utf8")

@@ -20,6 +20,7 @@ on:
       - "windows/TTiTTularesDedicatedListener.ps1"
       - "windows/TTendenciasDedicatedListener.ps1"
       - "windows/TTendenciasImageBridge.js"
+      - "windows/tests/test_trends_target_close.cjs"
       - "windows/tests/test_chrome9223_spa_reuse.cjs"
       - "windows/tests/test_image_prompt_injection.cjs"
       - "windows/tests/test_image_submission_evidence.cjs"
@@ -44,6 +45,7 @@ jobs:
             /windows/TTiTTularesImageBridge.js
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/TTendenciasImageBridge.js
+            /windows/tests/test_trends_target_close.cjs
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
             /windows/tests/test_image_composer_preflight.cjs
@@ -120,6 +122,9 @@ jobs:
 
       - name: Probar reutilizacion SPA de Chrome 9223 sin recargas innecesarias
         run: node windows/tests/test_chrome9223_spa_reuse.cjs
+
+      - name: Probar cierre aislado y recuperación de la pestaña congelada
+        run: node windows/tests/test_trends_target_close.cjs
 
       - name: Probar compositor visible, reintento sin prompts duplicados
         run: node windows/tests/test_image_prompt_injection.cjs

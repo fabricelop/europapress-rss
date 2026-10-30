@@ -96,6 +96,25 @@ def may_enqueue_image_job(
     if status not in FAILED:
         return False  # Unknown phases fail closed.
 
+    # TTendencias' initial openFreshDedicatedConversation boundary is before
+    # prompt injection. v31 labels it explicitly; the two legacy diagnostics
+    # below also originate exclusively in that initial composer/tab preflight.
+    # Do not classify arbitrary Runtime.evaluate timeouts after sending as safe.
+    message = str(old.get("message") or "").strip()
+    trends_preflight = (
+        old.get("project") == "ttendencias"
+        and old.get("delivery_mode") == "launch_only"
+        and str(old.get("phase") or "").lower() == "pc_launch_failed"
+        and old.get("pc_picked_up_at")
+        and not any(old.get(key) for key in (
+            "pc_submitted_at", "pc_image_submitted_at", "image_generated_at", "upload_sha256"))
+        and (message.startswith("TTENDENCIAS_PRE_SUBMIT_FAILED ")
+             or message == "El target dedicado sigue abierto; no se creará otra pestaña"
+             or message.startswith("La pestaña dedicada no mostró compositor en 60000 ms; "))
+    )
+    if trends_preflight:
+        return int(old.get("auto_repair_attempt") or 0) < max_automatic_safe_retries
+
     # One precisely classified PC failure is provably pre-submission:
     # ChatGPT Images had no usable composer, so the bridge could not type the
     # prompt. This is NOT a generic CDP/timeout error. Never replay a job

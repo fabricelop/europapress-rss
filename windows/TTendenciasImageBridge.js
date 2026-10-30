@@ -80,7 +80,7 @@ async function hintedTarget(){
 }
 
 async function targets(){
-  const r=await fetch(BASE_CDP+"/json/list",{cache:"no-store"});
+  const r=await fetch(BASE_CDP+"/json/list",{cache:"no-store",signal:AbortSignal.timeout(5000)});
   if(!r.ok)throw Error("CDP /json/list "+r.status);
   return r.json()
 }
@@ -181,15 +181,39 @@ async function closeFixedTargetById(targetId){
   if(!id)return;
   try{
     const vr=await fetch(BASE_CDP+"/json/version",{cache:"no-store",signal:AbortSignal.timeout(5000)});
-    if(!vr.ok)return;
+    if(!vr.ok)throw Error("CDP browser version "+vr.status);
     const vd=await vr.json();
     const ws=String(vd&&vd.webSocketDebuggerUrl||"");
-    if(!ws)return;
+    if(!ws)throw Error("CDP browser websocket missing");
     const browser=new CDP(ws);
     await browser.open();
-    try{await browser.call("Target.closeTarget",{targetId:id},5000)}finally{browser.close()}
-    console.log("BRIDGE FROZEN FIXED TAB CLOSED target="+id)
-  }catch(e){console.log("BRIDGE FIXED TAB CLOSE WARNING :: "+String(e&&e.message||e))}
+    try{const result=await browser.call("Target.closeTarget",{targetId:id},5000);if(result&&result.success===false)throw Error("Target.closeTarget refused")}finally{browser.close()}
+    console.log("BRIDGE FIXED TAB CLOSE REQUESTED target="+id)
+  }catch(e){
+    console.log("BRIDGE FIXED TAB CLOSE WARNING :: "+String(e&&e.message||e));
+    await closeFixedTargetHttp(id);
+  }
+}
+async function closeFixedTargetHttp(targetId){
+  const id=String(targetId||"").trim();if(!id)return false;
+  // Independent Chrome discovery endpoint, scoped to the exact pinned tab.
+  // A close acknowledgement is not proof of closure: caller polls /json/list.
+  try{
+    const r=await fetch(BASE_CDP+"/json/close/"+encodeURIComponent(id),{cache:"no-store",signal:AbortSignal.timeout(5000)});
+    console.log("BRIDGE FIXED TAB HTTP CLOSE target="+id+" status="+r.status);
+    return r.ok||r.status===404;
+  }catch(e){console.log("BRIDGE FIXED TAB HTTP CLOSE WARNING target="+id);return false;}
+}
+async function waitFixedTargetClosed(targetId){
+  for(let n=0;n<20;n++){
+    await sleep(500);
+    const living=await targets();
+    if(!living.some(x=>x.type==="page"&&String(x.id||"")===String(targetId)))return true;
+    // Some frozen renderers never complete the browser websocket close call.
+    // Retry only this tab through HTTP, never open a replacement while it lives.
+    if(n===4)await closeFixedTargetHttp(targetId);
+  }
+  return false;
 }
 async function waitComposer(cdp,timeoutMs=60000){
   const deadline=Date.now()+timeoutMs;
@@ -307,12 +331,7 @@ async function openFreshDedicatedConversation(){
       }
       console.log("BRIDGE FIXED TAB UNRESPONSIVE target="+String(t.id)+" isolated-tab-recovery");
       await closeFixedTargetById(t.id);
-      let closed=false;
-      for(let n=0;n<5;n++){
-        await sleep(600);
-        const living=await targets();
-        if(!living.some(x=>x.type==="page"&&String(x.id||"")===String(t.id||""))){closed=true;break}
-      }
+      const closed=await waitFixedTargetClosed(t.id);
       if(!closed)throw Error("El target dedicado sigue abierto; no se creará otra pestaña");
       console.log("BRIDGE FIXED TAB ISOLATED RECOVERY CLOSED target="+String(t.id));
     }
@@ -859,12 +878,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttendencias-image-bridge-v29-raw-job-recovery",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",upload_secret:secret,worker_id:"ttendencias-image-bridge-v31-isolated-tab-recovery",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v29-raw-job-recovery",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v31-isolated-tab-recovery",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 // The prompt must be confirmed in GitHub before claiming launch success.
 // Retrying an ACK never resubmits the prompt or opens a second chat.
@@ -918,7 +937,9 @@ async function uploadImage(image){
     // Safety invariant: this bridge may submit prompts only, never capture,
     // download, rasterize, upload, or forward generated images.
     if(!launchOnly)throw Error("legacy_raster_mode_disabled_request_launch_only_job");
-    cdp=await openFreshDedicatedConversation();
+    // Only this boundary is provably before typing or submitting this job.
+    try{cdp=await openFreshDedicatedConversation();}
+    catch(e){throw Error("TTENDENCIAS_PRE_SUBMIT_FAILED "+String(e&&e.message||e));}
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
     for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
