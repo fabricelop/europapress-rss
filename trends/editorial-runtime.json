@@ -4,88 +4,49 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T22:40:00.000Z",
-  "last_completed_at": "2026-10-30T22:52:00.000Z",
-  "updated_at": "2026-10-30T22:52:00.000Z",
-  "status": "DONE_WITH_INCIDENTS",
+  "last_completed_at": "2026-10-30T22:51:30.000Z",
+  "updated_at": "2026-10-30T22:51:30.000Z",
+  "status": "DONE",
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-2e5909232e97bfecd690",
-    "red-review-3def540ee0135f135f7a",
-    "f90cc5271f93",
-    "9950fd2c5b18"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793400450000-manual",
   "previous_run_id": "tr-1793400249710-manual",
-  "summary": "Pasada editorial real completada 4/4: 2 explicaciones nuevas persistidas y 2 revisiones de mantenimiento cerradas como stale. Cola final 0. Incidencia del aplicador heredado reparada. Sin ImageGen, Telegram editorial ni publicación en X.",
+  "summary": "Pasada editorial real completada 0/0: cola final releída en main y verificada vacía; sin preparing/update ni reexplicaciones pendientes vigentes. Sin ImageGen.",
   "activity": [
     {
-      "at": "2026-10-30T22:40:00.000Z",
+      "at": "2026-10-30T22:48:40.000Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de la pasada editorial solicitada por el usuario; cola autoritativa releída en main."
+      "message": "Inicio de tr-1793400450000-manual: cola autoritativa releída en main con 0 preparing/update. Comprobando reexplicaciones y concurrencia. Sin ImageGen."
     },
     {
-      "at": "2026-10-30T22:43:00.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-2e5909232e97bfecd690",
-      "title": "Toledo",
-      "message": "Revisión de mantenimiento cerrada como stale: el snapshot estaba sustituido por información editorial posterior; no se sobrescribió texto más nuevo."
-    },
-    {
-      "at": "2026-10-30T22:44:00.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-3def540ee0135f135f7a",
-      "title": "Renfe",
-      "message": "Revisión de mantenimiento cerrada como stale: el snapshot estaba sustituido por una ficha posterior; no se reabrió la versión antigua."
-    },
-    {
-      "at": "2026-10-30T22:50:00.000Z",
-      "phase": "persisting",
-      "trend_id": "f90cc5271f93",
-      "title": "Villarreal",
-      "message": "Explicación verificada persistida como explained en requests y telegram-manual-explained."
-    },
-    {
-      "at": "2026-10-30T22:50:00.000Z",
-      "phase": "persisting",
-      "trend_id": "9950fd2c5b18",
-      "title": "Lawson",
-      "message": "Explicación verificada persistida como explained en requests y telegram-manual-explained con el detonante actual de FP2."
-    },
-    {
-      "at": "2026-10-30T22:52:00.000Z",
+      "at": "2026-10-30T22:51:30.000Z",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Barrera final: editorial-queue.json releído en main con count=0; los dos textos nuevos constan en ambos registros."
+      "message": "Barrera final sobre main: editorial-queue.json (2026-10-30T23:49:52+01:00) sigue con count=0; las reexplicaciones estaban a 0 antes de los últimos commits y esos cambios no introdujeron rewrite_pending. Sin trabajo editorial activo."
     },
     {
-      "at": "2026-10-30T22:52:00.000Z",
+      "at": "2026-10-30T22:51:30.000Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+      "message": "Pasada editorial real completada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
     }
   ],
-  "incidents": [
-    {
-      "code": "legacy_ready_without_explained",
-      "status": "repaired",
-      "message": "El aplicador heredado cerró inicialmente Villarreal y Lawson como ready/prepared sin ficha explained. Se corrigió el aplicador y se reconciliaron ambos IDs en los dos registros requeridos."
-    }
-  ],
-  "incident_count": 1,
+  "incidents": [],
+  "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
   "phase": "closing",
   "started_at": "2026-10-30T22:40:00.000Z",
-  "finished_at": "2026-10-30T22:52:00.000Z",
-  "current": 4,
-  "total": 4,
+  "finished_at": "2026-10-30T22:51:30.000Z",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "last_run": {
@@ -94,31 +55,26 @@
     "project": "TTendencias",
     "run_id": "tr-1793400450000-manual",
     "source": "manual",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T22:40:00.000Z",
-    "updated_at": "2026-10-30T22:52:00.000Z",
-    "finished_at": "2026-10-30T22:52:00.000Z",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-30T22:48:40.000Z",
+    "updated_at": "2026-10-30T22:51:30.000Z",
+    "finished_at": "2026-10-30T22:51:30.000Z",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "red-review-2e5909232e97bfecd690",
-      "red-review-3def540ee0135f135f7a",
-      "f90cc5271f93",
-      "9950fd2c5b18"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada editorial real completada 4/4: 2 explicaciones nuevas persistidas y 2 revisiones de mantenimiento cerradas como stale. Cola final 0. Incidencia del aplicador heredado reparada. Sin ImageGen, Telegram editorial ni publicación en X.",
+    "message": "Pasada editorial real completada 0/0: cola final releída en main y verificada vacía; sin preparing/update ni reexplicaciones pendientes vigentes. Sin ImageGen.",
     "summary": {
-      "attempted": 4,
-      "explained": 2,
+      "attempted": 0,
+      "explained": 0,
       "updates": 0,
-      "maintenance_stale": 2,
+      "unchanged_reviews": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
@@ -127,95 +83,34 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "code": "legacy_ready_without_explained",
-        "status": "repaired",
-        "message": "El aplicador heredado cerró inicialmente Villarreal y Lawson como ready/prepared sin ficha explained. Se corrigió el aplicador y se reconciliaron ambos IDs en los dos registros requeridos."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T22:40:00.000Z",
+        "at": "2026-10-30T22:48:40.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de la pasada editorial solicitada por el usuario; cola autoritativa releída en main."
+        "message": "Inicio de tr-1793400450000-manual: cola autoritativa releída en main con 0 preparing/update. Comprobando reexplicaciones y concurrencia. Sin ImageGen."
       },
       {
-        "at": "2026-10-30T22:43:00.000Z",
-        "phase": "verifying",
-        "trend_id": "red-review-2e5909232e97bfecd690",
-        "title": "Toledo",
-        "message": "Revisión de mantenimiento cerrada como stale: el snapshot estaba sustituido por información editorial posterior; no se sobrescribió texto más nuevo."
-      },
-      {
-        "at": "2026-10-30T22:44:00.000Z",
-        "phase": "verifying",
-        "trend_id": "red-review-3def540ee0135f135f7a",
-        "title": "Renfe",
-        "message": "Revisión de mantenimiento cerrada como stale: el snapshot estaba sustituido por una ficha posterior; no se reabrió la versión antigua."
-      },
-      {
-        "at": "2026-10-30T22:50:00.000Z",
-        "phase": "persisting",
-        "trend_id": "f90cc5271f93",
-        "title": "Villarreal",
-        "message": "Explicación verificada persistida como explained en requests y telegram-manual-explained."
-      },
-      {
-        "at": "2026-10-30T22:50:00.000Z",
-        "phase": "persisting",
-        "trend_id": "9950fd2c5b18",
-        "title": "Lawson",
-        "message": "Explicación verificada persistida como explained en requests y telegram-manual-explained con el detonante actual de FP2."
-      },
-      {
-        "at": "2026-10-30T22:52:00.000Z",
+        "at": "2026-10-30T22:51:30.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Barrera final: editorial-queue.json releído en main con count=0; los dos textos nuevos constan en ambos registros."
+        "message": "Barrera final sobre main: editorial-queue.json (2026-10-30T23:49:52+01:00) sigue con count=0; las reexplicaciones estaban a 0 antes de los últimos commits y esos cambios no introdujeron rewrite_pending. Sin trabajo editorial activo."
       },
       {
-        "at": "2026-10-30T22:52:00.000Z",
+        "at": "2026-10-30T22:51:30.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+        "message": "Pasada editorial real completada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "red-review-2e5909232e97bfecd690",
-        "revision": 0,
-        "title": "Toledo",
-        "outcome": "stale",
-        "changed": false
-      },
-      {
-        "id": "red-review-3def540ee0135f135f7a",
-        "revision": 0,
-        "title": "Renfe",
-        "outcome": "stale",
-        "changed": false
-      },
-      {
-        "id": "f90cc5271f93",
-        "revision": 0,
-        "title": "Villarreal",
-        "outcome": "explained"
-      },
-      {
-        "id": "9950fd2c5b18",
-        "revision": 0,
-        "title": "Lawson",
-        "outcome": "explained"
-      }
-    ]
+    "final_outcomes": []
   },
   "final_outcomes": [
     {
