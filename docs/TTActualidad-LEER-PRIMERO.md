@@ -94,3 +94,8 @@ El usuario confirmó finalmente que **Quitar de Listas de 0.4.24 funciona**; se 
 
 
 **Nueva regla prioritaria del usuario, 30/10/2026:** toda pendiente del Top 30 (puestos 1–30) pasa automáticamente a En elaboración. Sustituye la restricción histórica de 11–30 manuales. Se conservan frescura de captura, cierres y explicaciones vigentes; el filtro Nuevas se elimina en iPhone 0.4.26. Ver §22.
+
+
+## Buscar una tendencia en X (30/10/2026)
+
+Última fuente iPhone **0.4.27 build33**, rama `fix/ttactualidad-ios-0.4.27-buscar-tendencias-x`. Todas las tendencias muestran **Buscar en X** al comienzo de sus acciones, también Sin explicación, En elaboración, Listas y originales agrupadas. Busca el nombre literal de la tarjeta con URLComponents, conservando hashtags y acentos. Ver §23.

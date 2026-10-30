@@ -165,3 +165,10 @@ El usuario amplió explícitamente la selección automática de puestos 1–10 a
 
 
 **Verificación en producción, 30/10/2026 a las 13:45 Madrid:** el workflow https://github.com/fabricelop/europapress-rss/actions/runs/41057441931 terminó correctamente y persistió cinco nuevas solicitudes `preparing`: Calvario (#14, `1d009d35b4f9`), #Mañaneros30O (#17, `f1fe0e54a4d5`), Transportes (#19, `524f7ecb7b46`), Madrid-Sevilla (#24, `a7db60a725f4`) y Alta Velocidad (#28, `281a5360a665`). El runner recibió la solicitud `tr-1793364317490-manual`. Esto confirma encolado y petición, no explicaciones terminadas. El IPA final 0.4.26 build32 corresponde a `6ec79d5e3d28b1cef8dda200498b50790e39334f`; https://github.com/fabricelop/europapress-rss/actions/runs/41057142681 superó 15 pruebas nativas y compiló app + Live Activity. Backend: tests Top30 y 13 pruebas de agrupación correctas. No se ha probado el IPA físicamente en el iPhone durante esta reparación.
+
+
+## 11. 30/10/2026 — faltaba Buscar en X en las tendencias
+
+Captura del usuario: #30OctubrESP, Sin explicación, con Aportar pistas y Elaborar desde cero pero sin acceso a búsqueda. La acción existía para noticias y no para tendencias. Se añade al bloque común de tendencias en iPhone 0.4.27 build33, por delante de cualquier condición de estado. Query literal del nombre/hashtag y resultados recientes; sin cambios editoriales ni publicación. Fuente `fix/ttactualidad-ios-0.4.27-buscar-tendencias-x`, código `b33adad585dd6103d2b0fc7deb0212692097a3e4`. Ver §23.
+
+**Validación:** build 41060302999 correcto, 15 pruebas nativas existentes superadas y app/Live Activity verificadas como 0.4.27 build33. Pendiente de comprobación física del botón en el iPhone del usuario.
