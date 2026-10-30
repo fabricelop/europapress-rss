@@ -801,6 +801,47 @@ function Restart-DedicatedChromeCdp([string]$CommandId,[string]$Reason) {
   return $false
 }
 
+# Separate read-only consumer of already generated images; no prompts or Telegram.
+$script:WebPublisherCheckedAt=[DateTimeOffset]::MinValue
+$script:WebPublisherLastRun=[DateTimeOffset]::MinValue
+function Ensure-WebPublisherLatest([string]$NodePath) {
+  $file=Join-Path $BaseDir "TTendenciasWebImages.cjs"
+  if((Test-Path -LiteralPath $file) -and (([DateTimeOffset]::UtcNow-$script:WebPublisherCheckedAt).TotalMinutes -lt 10)){return $true}
+  $script:WebPublisherCheckedAt=[DateTimeOffset]::UtcNow
+  $tmp=$file+".new.cjs"
+  try {
+    $url="https://api.github.com/repos/fabricelop/europapress-rss/contents/windows/TTendenciasWebImages.cjs?ref=main"
+    $doc=Invoke-RestMethod -Uri $url -Headers @{"User-Agent"="TTendencias-web-image-consumer";"Cache-Control"="no-cache"} -TimeoutSec 15 -ErrorAction Stop
+    [byte[]]$raw=[Convert]::FromBase64String(([string]$doc.content -replace "\s",""))
+    [byte[]]$header=[Text.Encoding]::UTF8.GetBytes("blob "+$raw.Length+[char]0)
+    $hash=[Security.Cryptography.SHA1]::Create()
+    try {$actual=([BitConverter]::ToString($hash.ComputeHash([byte[]]($header+$raw)))).Replace("-","").ToLowerInvariant()} finally {$hash.Dispose()}
+    if($actual -ne [string]$doc.sha){throw "publisher source hash mismatch"}
+    [IO.File]::WriteAllBytes($tmp,$raw)
+    & $NodePath --check $tmp *> $null
+    if($LASTEXITCODE -ne 0){throw "publisher syntax invalid"}
+    Move-Item -LiteralPath $tmp -Destination $file -Force -ErrorAction Stop
+    Write-Log "WEB IMAGE PUBLISHER UPDATED sha=$actual"
+    return $true
+  } catch {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+    Write-Log "WEB IMAGE PUBLISHER REFRESH DEFERRED"
+    return (Test-Path -LiteralPath $file)
+  }
+}
+function Start-WebImagePublisher {
+  if((([DateTimeOffset]::UtcNow)-$script:WebPublisherLastRun).TotalSeconds -lt 60){return}
+  $script:WebPublisherLastRun=[DateTimeOffset]::UtcNow
+  try {
+    $node=Get-Command node.exe -ErrorAction Stop
+    if(-not (Ensure-WebPublisherLatest $node.Source)){return}
+    $file=Join-Path $BaseDir "TTendenciasWebImages.cjs"
+    $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue | Where-Object {[string]$_.CommandLine -like ("*"+$file+"*")})
+    if($busy.Count -gt 0){return}
+    Start-Process -FilePath $node.Source -ArgumentList @($file) -WindowStyle Hidden -RedirectStandardOutput (Join-Path $BaseDir "ttendencias-web-images.log") -RedirectStandardError (Join-Path $BaseDir "ttendencias-web-images.err.log") -ErrorAction Stop | Out-Null
+  } catch { Write-Log "WEB IMAGE PUBLISHER START DEFERRED" }
+}
+
 function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret,[string]$TargetSnapshot = "[]",[string]$TargetHintPath = "") {
   if (-not (Test-Path -LiteralPath $ImageBridge)) {
     Write-Log "IMAGE BRIDGE ERROR missing=$ImageBridge"
@@ -815,6 +856,7 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   if (-not (Ensure-ImageBridgeLatest $node.Source)) {
     return $false
   }
+  Ensure-WebPublisherLatest $node.Source | Out-Null
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
   $out = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".log")
   $err = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".err.log")
@@ -1096,6 +1138,7 @@ $loopCount = 0
 
 while ($true) {
   $loopCount++
+  Start-WebImagePublisher
 
   # 1) Editorial
   try {

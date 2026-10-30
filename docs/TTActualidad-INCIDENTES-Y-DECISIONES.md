@@ -192,3 +192,9 @@ Caso de referencia: `#30OctubrESP`, puesto20 en una captura anterior, se había 
 - **Windows:** `TTActualidad.py` comparte el normalizador con la interfaz Qt; pasan 18 pruebas de datos, incluida la prioridad numérica ante fechas y agrupadas, y la colocación de puestos no válidos. El run `41108828744` supera las pruebas de interfaz y produce ZIP Sin EXE y ejecutable.
 - **Límite de evidencia:** código y pruebas no acreditan instalación en el iPhone ni en el PC. El usuario debe actualizar la distribución instalada.
 - **Manual:** orden de Listas integrado en la sección 9.
+
+### 30/10/2026 — enlace automático de imágenes existentes al sitio Top30
+
+Petición: que el generador habitual asigne automáticamente su imagen a la tendencia adecuada del sitio, sin generar desde Work. Se añade registro cifrado por comando al terminar el envío y un consumidor separado de solo lectura para el resultado existente en Chrome9234. Usa image_upload ya disponible; no cambia la captura/envío TTImages ni las sesiones Chrome. La web valida identidad, revisión y explicación exacta, comparte solo las conjuntas explícitas y conserva texto/estado pendiente si falta raster. No recupera jobs antiguos sin secreto local ni regenera para completar el sitio.
+
+Validación local: siete pruebas del modelo web, tres del consumidor (identidad y selección de raster original) y regresiones de envío/evidencia/inyección del bridge superadas. Se añade comprobación Windows PowerShell de sintaxis y cifrado DPAPI en CI. Límite: pendiente evidencia de que el PC descargó esta versión y completó una recepción nueva; no confundir despliegue con ejecución física.

@@ -19,7 +19,7 @@ Para empezar un chat de reparación:
 - **Publicación manual y contador:** solo published confirmado suma al ledger de24h móviles. Límite declarado por el usuario:51 publicaciones por cuenta en esa ventana. Abrir X, copiar o crear imágenes no suma.
 - **Sin estrellas.** **Sí se puede enviar una tendencia a TTiTTulares** manualmente para investigar otra noticia con origen trazable.
 - **Texto e imágenes separados:** READY/explained no espera foto ni IA. Una tendencia necesita grouping cleared del texto exacto para un nuevo job visual; covered no pide otra imagen.
-- **Transporte IA:** image-runs → listener/ImageBridge CDP9223 launch_only → ChatGPT Images → relay CDP9234 → descarga PC → TTImages. Conservar FabCalendar, SeLoRecordamos, URGENTE, sesiones y credenciales.
+- **Transporte IA:** image-runs → listener/ImageBridge CDP9223 launch_only → ChatGPT Images → relay CDP9234 → descarga PC → TTImages. La web Top30 recibe el mismo raster mediante TTendenciasWebImages.cjs, con ID/revisión/command_id/texto exactos; no genera desde Work. Conservar FabCalendar, SeLoRecordamos, URGENTE, sesiones y credenciales.
 
 ## Encontrar la transición que falta
 

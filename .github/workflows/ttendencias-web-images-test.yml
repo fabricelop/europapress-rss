@@ -1,0 +1,40 @@
+name: TTendencias web image association
+on:
+  push:
+    branches: [main]
+    paths:
+      - windows/TTendenciasWebImages.cjs
+      - windows/TTendenciasImageBridge.js
+      - windows/TTendenciasDedicatedListener.ps1
+      - windows/tests/test_web_images.cjs
+      - windows/tests/test_web_images_dpapi.cjs
+      - .github/workflows/ttendencias-web-images-test.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  association:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Identity and raster selection
+        run: node --test windows/tests/test_web_images.cjs
+      - name: Bridge launch regressions
+        run: |
+          node windows/tests/test_image_submission_evidence.cjs
+          node windows/tests/test_image_prompt_injection.cjs
+          node windows/tests/test_image_immediate_submit.cjs
+      - name: Windows PowerShell 5.1 syntax
+        shell: powershell
+        run: |
+          $tokens=$null; $errors=$null
+          [Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD 'windows/TTendenciasDedicatedListener.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count){$errors | Format-List; exit 1}
+      - name: DPAPI enrollment round trip
+        shell: powershell
+        run: |
+          node windows/tests/test_web_images_dpapi.cjs

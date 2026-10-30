@@ -281,6 +281,16 @@ La validación de IA registrada comprueba proveedor/origen, URL, dimensiones y h
 
 La selección automática de estilo usa hash de ID/revisión/intento/**command_id**: estable para ese trabajo; un intento nuevo puede variar. El botón nativo Copiar GAG tiene su propio generador. Si salen cartelas/texto, comparar el prompt del job real con el del botón; arreglar uno no prueba que cambió el otro.
 
+### Imágenes del sitio de consulta Top30
+
+El sitio `https://ttactualidad-tendencias.rainyraven22.chatgpt.site/` consulta los mismos textos y muestra únicamente IA generada y vinculada a la ficha. No genera imágenes desde Work ni usa una API de pago. Mantiene Top30, orden numérico, modo oscuro y fichas desplegables de una fila completa.
+
+Después de confirmar el envío, `TTendenciasImageBridge.js` registra command_id, target_id, revisión, conversación exacta y huella del texto en `C:\TTiTTulares\ttendencias-web-images`. El secreto existente se conserva cifrado con DPAPI del usuario de Windows. El bridge sigue siendo launch_only: no captura ni sube el raster. El listener instala/valida `windows/TTendenciasWebImages.cjs` y ejecuta una pasada por minuto; lo recibe mediante el actual TT-AutoUpdater, sin reinstalar el relay.
+
+Ese consumidor abre y cierra solo su propia pestaña temporal en Chrome9234, lee el resultado ya generado de la conversación registrada y comprueba el último turno con el command_id exacto. No envía prompts, no captura pantallas, no modifica la galería ni las tareas de TTImages. Descarga los bytes del elemento imagen y usa `task:image_upload` del servicio de control existente: el servidor verifica secreto, identidad, revisión, dimensiones y SHA y materializa el raster y ai_image en main. La cola local reintenta la lectura hasta dos horas; contextos sustituidos se descartan y no se vuelven a generar por esta vía.
+
+La web exige generated:true, URL del catálogo generated-images, guardia ID/revisión/command_id y texto exactamente igual al snapshot del job. Solo los miembros explícitos de una conjunta comparten su imagen. Cambiar el puesto no cambia el enlace; no se reutilizan fotos de archivo como IA. Si falta prueba, muestra imagen pendiente y conserva el texto. Los jobs anteriores sin registro local del secreto no se recuperan automáticamente: se incorporan las nuevas imágenes que produzca el generador habitual tras actualizarse. Una publicación del código no certifica actualización del PC ni recepción real; comprobar ai_image y job DONE de una generación posterior.
+
 ### Foto de archivo y relay
 
 Noticias: el reparador busca `og:image`, `twitter:image` o `image_src` en páginas fuente y comprueba respuesta de imagen; guarda `source_url`, fuente, `generated:false` y habitualmente `rights_status:unverified`. Tendencias: `trends/enrich_explained_images.py` ordena fuentes y valida raster/fallback; mantiene el canal archivo separado de IA y no debe pisar una IA válida.

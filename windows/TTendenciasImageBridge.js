@@ -938,6 +938,19 @@ async function uploadImage(image){
         await confirmPromptLaunched();
       }
       if(launchOnly){
+        // Export only the exact conversation identity. Raster handling belongs
+        // to the separate web consumer on the relay browser, never this bridge.
+        try{
+          let conversationUrl="";
+          const exporter=require("./TTendenciasWebImages.cjs");
+          for(let n=0;n<8;n++){
+            conversationUrl=String(await cdp.eval("location.href"));
+            if(exporter.chatURL(conversationUrl))break;
+            await sleep(500);
+          }
+          exporter.enroll({job,commandId,targetId,conversationUrl,secret});
+          console.log("TTENDENCIAS WEB IMAGE REGISTERED target="+targetId);
+        }catch(_){console.log("TTENDENCIAS WEB IMAGE REGISTRATION DEFERRED target="+targetId);}
         console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED; ChatGPT Images, sin captura ni subida");
         return;
       }
