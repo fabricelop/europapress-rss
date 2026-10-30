@@ -74,14 +74,14 @@ jobs:
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr TTActualidad-0.4.27-PlumeImpactor-unsigned.ipa Payload
-          unzip -l TTActualidad-0.4.27-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
-          shasum -a 256 TTActualidad-0.4.27-PlumeImpactor-unsigned.ipa
+          zip -qr TTActualidad-0.4.28-PlumeImpactor-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.28-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.28-PlumeImpactor-unsigned.ipa
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: TTActualidad-0.4.27-PlumeImpactor-IPA
-          path: ios/ttactualidad/dist/TTActualidad-0.4.27-PlumeImpactor-unsigned.ipa
+          name: TTActualidad-0.4.28-PlumeImpactor-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.28-PlumeImpactor-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
 

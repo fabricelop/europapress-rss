@@ -1,12 +1,14 @@
 import SwiftUI
 import UIKit
 
-// The server snapshots all current Listas, not just the rows matching Search.
+// Manual override: submit exactly the selected IDs and revisions.
 private struct ListasGroupingControls: View {
     @EnvironmentObject private var store: EditorialStore
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
-    @State private var confirmGroup = false
+    @State private var showSelection = false
+    @State private var selectedIDs = Set<String>()
+    @State private var submittedGroup: [TrendItem]? = nil
     @State private var confirmCleanup = false
     @State private var busy = false
     @State private var message = ""
@@ -20,7 +22,11 @@ private struct ListasGroupingControls: View {
         VStack(alignment: .leading, spacing: 7) {
             HStack(spacing: 8) {
                 Button {
-                    if github.authenticated { confirmGroup = true } else { settings = true }
+                    if github.authenticated {
+                        selectedIDs = []
+                        groupRequestID = UUID().uuidString.lowercased()
+                        showSelection = true
+                    } else { settings = true }
                 } label: {
                     Label("Agrupar", systemImage: "rectangle.3.group")
                         .frame(maxWidth: .infinity).padding(.vertical, 10)
@@ -41,11 +47,43 @@ private struct ListasGroupingControls: View {
                 Text(message).font(.caption2).foregroundStyle(TTTheme.muted)
             }
         }
-        .alert("¿Agrupar tendencias de Listas?", isPresented: $confirmGroup) {
-            Button("Revisar y agrupar") { submit(cleanup: false) }
-            Button("Cancelar", role: .cancel) {}
-        } message: {
-            Text("Se revisarán todas las tendencias de Listas. Se creará una publicación por acontecimiento y las originales conservarán su explicación, marcadas como agrupadas. No se publica en X.")
+        .sheet(isPresented: $showSelection) {
+            NavigationStack {
+                List(ungrouped) { trend in
+                    Button {
+                        if selectedIDs.contains(trend.editorialID) { selectedIDs.remove(trend.editorialID) }
+                        else { selectedIDs.insert(trend.editorialID) }
+                    } label: {
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(systemName: selectedIDs.contains(trend.editorialID) ? "checkmark.circle.fill" : "circle")
+                                .foregroundStyle(TTTheme.teal)
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(trend.name).font(.headline)
+                                Text(trend.explanation).font(.caption).foregroundStyle(.secondary).lineLimit(4)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(trend.name + (selectedIDs.contains(trend.editorialID) ? ", seleccionada" : ", sin seleccionar"))
+                }
+                .navigationTitle("Seleccionar tendencias")
+                .safeAreaInset(edge: .bottom) {
+                    Text("Selecciona al menos dos. Solo se agruparán estas tarjetas; las originales conservarán su explicación.")
+                        .font(.caption).padding().frame(maxWidth: .infinity).background(.regularMaterial)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancelar") { showSelection = false }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Agrupar (\(selectedIDs.count))") {
+                            submittedGroup = ungrouped.filter { selectedIDs.contains($0.editorialID) }
+                            showSelection = false
+                            submit(cleanup: false)
+                        }.disabled(selectedIDs.count < 2 || busy)
+                    }
+                }
+            }.preferredColorScheme(.dark)
         }
         .alert("¿Retirar las agrupadas?", isPresented: $confirmCleanup) {
             Button("Retirar sin publicar", role: .destructive) { submit(cleanup: true) }
@@ -57,19 +95,21 @@ private struct ListasGroupingControls: View {
 
     private func submit(cleanup: Bool) {
         guard !busy else { return }
-        let selected = covered
+        let selected = cleanup ? covered : (submittedGroup ?? [])
+        guard cleanup || selected.count >= 2 else { return }
         busy = true
         message = "Registrando la solicitud en GitHub…"
         Task {
             let result = await github.groupListas(
                 requestID: cleanup ? cleanupRequestID : groupRequestID,
-                removeCovered: cleanup ? selected : nil)
+                removeCovered: cleanup ? selected : nil,
+                selected: cleanup ? nil : selected)
             switch result {
             case .verified:
                 if cleanup { cleanupRequestID = UUID().uuidString.lowercased() }
-                else { groupRequestID = UUID().uuidString.lowercased() }
+                else { groupRequestID = UUID().uuidString.lowercased(); submittedGroup = nil }
                 message = cleanup ? "Retirada confirmada en GitHub." :
-                    "Revisión solicitada. Consulta En elaboración; las originales se conservan mientras se prepara la conjunta."
+                    "Agrupación de la selección solicitada. Consulta En elaboración; las originales se conservan."
             case .pending:
                 message = "Solicitud pendiente de confirmación. Se conservará el mismo identificador si reintentas."
             case .failed:
@@ -971,6 +1011,16 @@ private struct TrendTile: View {
                     if let date = item.lastExplained {
                         Text(date, format: .dateTime.day().month().hour().minute())
                             .font(.caption2).foregroundStyle(TTTheme.muted)
+                    }
+                }
+                if let checked = item.lastReviewed {
+                    HStack(spacing: 4) {
+                        Text(item.reviewOutcome == "unchanged" ? "Revisada · sin novedades" :
+                             item.reviewOutcome == "unverified" ? "Revisión sin verificar" : "Revisada · actualización creada")
+                        Text(checked, format: .dateTime.day().month().hour().minute())
+                    }.font(.caption2).foregroundStyle(TTTheme.muted)
+                    if item.reviewOutcome == "unverified" && !item.reviewReason.isEmpty {
+                        Text(item.reviewReason).font(.caption2).foregroundStyle(.orange)
                     }
                 }
                 if item.isCovered {

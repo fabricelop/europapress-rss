@@ -640,13 +640,13 @@ final class GitHubEditor: ObservableObject {
         ], label: decision == "rework" ? "Reelaborar tendencias relacionadas" : "Acción múltiple") == .verified
     }
 
-    func groupListas(requestID: String, removeCovered: [TrendItem]? = nil) async -> WriteResult {
+    func groupListas(requestID: String, removeCovered: [TrendItem]? = nil, selected: [TrendItem]? = nil) async -> WriteResult {
         var payload: [String: Any] = [
             "project": "ttendencias", "event_id": "listas-grouping",
             "request_id": requestID,
             "decision": removeCovered == nil ? "group_listas" : "remove_covered"
         ]
-        if let items = removeCovered {
+        if let items = removeCovered ?? selected {
             payload["items"] = items.map { ["id": $0.editorialID, "revision": $0.revision] as [String: Any] }
         }
         return await dispatch("ttactualidad_group_listas_v1", payload: payload,

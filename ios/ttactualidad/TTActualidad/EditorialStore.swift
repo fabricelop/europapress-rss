@@ -62,6 +62,9 @@ struct TrendItem: Identifiable {
     var coveredByID: String = ""
     var coveredByName: String = ""
     var isJointGroup: Bool = false
+    var lastReviewed: Date? = nil
+    var reviewOutcome: String = ""
+    var reviewReason: String = ""
     var isCovered: Bool { !coveredByID.isEmpty }
 
     func ageBand(now: Date = Date()) -> Int {
@@ -1343,7 +1346,10 @@ final class EditorialStore: ObservableObject {
                   editorialID: trend.editorialID, revision: trend.revision,
                   imageURL: trend.imageURL, sourceURL: trend.sourceURL,
                   rankDelta: trend.rankDelta, movement: trend.movement,
-                  enteredAt: trend.enteredAt, problemReason: trend.problemReason)
+                  enteredAt: trend.enteredAt, problemReason: trend.problemReason,
+                  coveredByID: trend.coveredByID, coveredByName: trend.coveredByName,
+                  isJointGroup: trend.isJointGroup, lastReviewed: trend.lastReviewed,
+                  reviewOutcome: trend.reviewOutcome, reviewReason: trend.reviewReason)
     }
 
     private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
@@ -1680,7 +1686,10 @@ final class EditorialStore: ObservableObject {
                              sourceURL: URL(string: str(row, "source_url")),
                              coveredByID: isListasCovered(row) ? str(row, "covered_by_id") : "",
                              coveredByName: isListasCovered(row) ? str(row, "covered_by_name") : "",
-                             isJointGroup: str(row, "listas_group_role") == "joint")
+                             isJointGroup: str(row, "listas_group_role") == "joint",
+                             lastReviewed: when(row, ["red_review_checked_at"]),
+                             reviewOutcome: str(row, "red_review_outcome"),
+                             reviewReason: str(row, "red_review_reason"))
         }
         .sorted {
             if $0.isCovered != $1.isCovered { return !$0.isCovered }
@@ -1859,7 +1868,10 @@ final class EditorialStore: ObservableObject {
                              problemReason: str(request, "problem_reason"),
                              coveredByID: isListasCovered(request) ? str(request, "covered_by_id") : "",
                              coveredByName: isListasCovered(request) ? str(request, "covered_by_name") : "",
-                             isJointGroup: str(request, "listas_group_role") == "joint")
+                             isJointGroup: str(request, "listas_group_role") == "joint",
+                             lastReviewed: when(explanation, ["red_review_checked_at"]),
+                             reviewOutcome: str(explanation, "red_review_outcome"),
+                             reviewReason: str(explanation, "red_review_reason"))
         }
     }
 
