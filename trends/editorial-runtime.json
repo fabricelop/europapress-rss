@@ -5,9 +5,9 @@
   "canonical": true,
   "last_started_at": "2026-10-30T19:13:17+01:00",
   "last_completed_at": "2026-10-30T19:25:00+01:00",
-  "updated_at": "2026-10-30T19:25:00+01:00",
-  "status": "DONE",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T19:26:00+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [
     "808846a26299",
     "fa530f914299",
@@ -21,8 +21,12 @@
     "listas-auto-43e8f2cb893e845c8975",
     "listas-auto-037ee0e9f898242a9a8a"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "e40be8e866b4"
+  ],
+  "remaining_active_ids": [
+    "e40be8e866b4"
+  ],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793383997307-manual",
   "previous_run_id": "tr-1793384313662-manual",
@@ -35,7 +39,7 @@
     "grouping_requests": 3,
     "groups_created": 1,
     "members_covered": 3,
-    "remaining_active": 0,
+    "remaining_active": 1,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -98,6 +102,13 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final: cola 0, sin preparing/update ni reexplicaciones pendientes; integridad requests/Listas verificada. ImageGen 0."
+    },
+    {
+      "at": "2026-10-30T19:26:00+01:00",
+      "phase": "investigating",
+      "trend_id": "e40be8e866b4",
+      "title": "Ronaldo Nazário",
+      "message": "Entró revisión 1 durante la barrera final. Investigación nueva desde cero de la pista editorial; detonante de encuesta no corroborado de forma independiente."
     }
   ],
   "incidents": [],
@@ -108,17 +119,19 @@
     "project": "TTendencias",
     "run_id": "tr-1793383997307-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
+    "status": "RUNNING",
+    "phase": "investigating",
     "started_at": "2026-10-30T19:13:17+01:00",
-    "updated_at": "2026-10-30T19:25:00+01:00",
-    "finished_at": "2026-10-30T19:25:00+01:00",
+    "updated_at": "2026-10-30T19:26:00+01:00",
+    "finished_at": null,
     "current": 11,
-    "total": 11,
+    "total": 12,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "e40be8e866b4"
+    ],
     "remaining_problematic_ids": [],
     "processed_ids": [
       "808846a26299",
@@ -134,7 +147,7 @@
       "listas-auto-037ee0e9f898242a9a8a"
     ],
     "partial": false,
-    "message": "Pasada editorial completada 11/11. Cola final 0; sin preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
+    "message": "Pasada reabierta 11/12: Ronaldo Nazário r1 entró durante la barrera final; investigación en curso. Sin ImageGen.",
     "summary": {
       "attempted": 11,
       "explained": 6,
@@ -144,7 +157,7 @@
       "grouping_requests": 3,
       "groups_created": 1,
       "members_covered": 3,
-      "remaining_active": 0,
+      "remaining_active": 1,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -209,6 +222,13 @@
         "trend_id": null,
         "title": null,
         "message": "Barrera final: cola 0, sin preparing/update ni reexplicaciones pendientes; integridad requests/Listas verificada. ImageGen 0."
+      },
+      {
+        "at": "2026-10-30T19:26:00+01:00",
+        "phase": "investigating",
+        "trend_id": "e40be8e866b4",
+        "title": "Ronaldo Nazário",
+        "message": "Entró revisión 1 durante la barrera final. Investigación nueva desde cero de la pista editorial; detonante de encuesta no corroborado de forma independiente."
       }
     ],
     "final_outcomes": [
@@ -291,11 +311,11 @@
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
+  "phase": "investigating",
   "started_at": "2026-10-30T19:13:17+01:00",
-  "finished_at": "2026-10-30T19:25:00+01:00",
+  "finished_at": null,
   "current": 11,
-  "total": 11,
+  "total": 12,
   "trend_id": null,
   "title": null
 }
