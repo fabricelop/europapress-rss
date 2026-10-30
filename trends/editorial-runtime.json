@@ -4,34 +4,32 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T15:07:30+01:00",
-  "last_completed_at": "2026-10-30T15:00:00+01:00",
-  "updated_at": "2026-10-30T15:09:30+01:00",
-  "status": "running",
-  "queue_complete": false,
+  "last_completed_at": "2026-10-30T15:11:00+01:00",
+  "updated_at": "2026-10-30T15:11:00+01:00",
+  "status": "done",
+  "queue_complete": true,
   "processed_ids": [
-    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
-  ],
-  "remaining_ids": [
+    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
     "8d550038a24d"
   ],
-  "remaining_active_ids": [
-    "8d550038a24d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [
-    "dc90fe5a413e"
+    "dc90fe5a413e",
+    "8d550038a24d"
   ],
   "run_id": "tr-1793369233599-manual",
   "previous_run_id": "tr-1793369096516-manual",
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "problematic": 0,
-    "final_resolved": 1,
-    "skipped_concurrent": 1,
-    "remaining_active": 1,
-    "remaining_problematic": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "problematic": 1,
+    "final_resolved": 2,
+    "skipped_concurrent": 2,
+    "remaining_active": 0,
+    "remaining_problematic": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -61,6 +59,20 @@
       "trend_id": "8d550038a24d",
       "title": "#30OctubrESP",
       "message": "Revisión 2 JIT válida. Investigación desde cero: se confirma tendencia y presión política sobre Puente, pero no el vínculo causal de la etiqueta."
+    },
+    {
+      "at": "2026-10-30T15:10:40+01:00",
+      "phase": "verifying",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Relectura JIT: la revisión 2 ya quedó problematic en main con la pista no corroborada; no se sobrescribe el cierre concurrente."
+    },
+    {
+      "at": "2026-10-30T15:11:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final superada: 0 preparing/update y 0 rewrite_pending; agrupación aplicada y #30OctubrESP r2 cerrada como problematic. Sin ImageGen."
     }
   ],
   "ratings_snapshot": {
@@ -137,6 +149,18 @@
       "status": "grouping_completed",
       "review_outcome": null,
       "grouping_state": "completed"
+    },
+    {
+      "id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+      "revision": 0,
+      "status": "grouping_completed",
+      "grouping_state": "completed"
+    },
+    {
+      "id": "8d550038a24d",
+      "revision": 2,
+      "status": "problematic",
+      "name": "#30OctubrESP"
     }
   ],
   "incidents": [],
@@ -163,36 +187,36 @@
     "project": "TTendencias",
     "run_id": "tr-1793369233599-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "investigating",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T15:07:30+01:00",
-    "updated_at": "2026-10-30T15:09:30+01:00",
-    "finished_at": null,
-    "current": 1,
+    "updated_at": "2026-10-30T15:11:00+01:00",
+    "finished_at": "2026-10-30T15:11:00+01:00",
+    "current": 2,
     "total": 2,
-    "trend_id": "8d550038a24d",
-    "title": "#30OctubrESP",
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [
+      "dc90fe5a413e",
       "8d550038a24d"
     ],
-    "remaining_problematic_ids": [
-      "dc90fe5a413e"
-    ],
     "processed_ids": [
-      "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+      "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+      "8d550038a24d"
     ],
     "partial": false,
-    "message": "1/2 cerrado por aplicación concurrente verificada; investigando #30OctubrESP r2.",
+    "message": "Pasada completada: agrupación aplicada, #30OctubrESP r2 cerrada como problematic; 0 preparing/update y 0 rewrite_pending.",
     "summary": {
-      "attempted": 1,
+      "attempted": 2,
       "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "problematic": 0,
-      "final_resolved": 1,
-      "skipped_concurrent": 1,
-      "remaining_active": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "problematic": 1,
+      "final_resolved": 2,
+      "skipped_concurrent": 2,
+      "remaining_active": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -224,6 +248,34 @@
         "trend_id": "8d550038a24d",
         "title": "#30OctubrESP",
         "message": "Dos búsquedas independientes no prueban que la etiqueta esté impulsada por la petición de dimisión de Puente."
+      },
+      {
+        "at": "2026-10-30T15:10:40+01:00",
+        "phase": "verifying",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Cierre concurrente verificado; no se sobrescribe."
+      },
+      {
+        "at": "2026-10-30T15:11:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final: sin preparing/update ni reexplicaciones pendientes."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+        "revision": 0,
+        "status": "grouping_completed",
+        "grouping_state": "completed"
+      },
+      {
+        "id": "8d550038a24d",
+        "revision": 2,
+        "status": "problematic",
+        "name": "#30OctubrESP"
       }
     ]
   },
