@@ -3,17 +3,17 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T13:25:00+01:00",
-  "last_completed_at": "2026-10-30T13:29:00+01:00",
-  "updated_at": "2026-10-30T13:29:00+01:00",
+  "last_started_at": "2026-10-30T13:40:00+01:00",
+  "last_completed_at": "2026-10-30T13:44:00+01:00",
+  "updated_at": "2026-10-30T13:44:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T132500+0100-manual",
-  "previous_run_id": "tr-chat-20261030T125500+0100",
+  "run_id": "tr-chat-20261030T134000+0100-manual",
+  "previous_run_id": "tr-chat-20261030T132500+0100-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -29,8 +29,8 @@
     "rewrite_pending_remaining": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
+    "remates_omitted": 26,
+    "recent_missing_closer_reviewed": 26,
     "pending_visual_candidates_reviewed": 0,
     "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
@@ -43,25 +43,32 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T13:25:00+01:00",
+      "at": "2026-10-30T13:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Cola editorial 0; iniciando verificación autoritativa de requests, reexplicaciones, agrupaciones y Explicadas recientes."
+      "message": "Cola editorial 0; verificando requests, reexplicaciones, agrupaciones y Explicadas recientes antes del cierre."
     },
     {
-      "at": "2026-10-30T13:27:00+01:00",
+      "at": "2026-10-30T13:42:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main y comprobando que el Top 10 actual no tenga revisiones editoriales activas."
+      "message": "Releyendo main: cola, requests, reexplicaciones, agrupaciones y cobertura del Top 10."
     },
     {
-      "at": "2026-10-30T13:29:00+01:00",
+      "at": "2026-10-30T13:43:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisión de Explicadas recientes sin remate completada; se preservan sin humor las fichas ligadas a accidente, víctimas o duelo."
+    },
+    {
+      "at": "2026-10-30T13:44:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; sin reexplicaciones ni agrupaciones pendientes; Top 10 cubierto 10/10; reparación visual solicitada."
+      "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; sin reexplicaciones, agrupaciones ni problematic del Top 10; cobertura 10/10."
     }
   ],
   "ratings_snapshot": {
@@ -78,7 +85,7 @@
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T132500+0100-manual",
+    "trigger_run_id": "tr-chat-20261030T134000+0100-manual",
     "status": "triggered",
     "editorial_blocking": false
   },
@@ -89,19 +96,19 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "updated_at": "2026-10-30T13:29:00+01:00"
+    "updated_at": "2026-10-30T13:44:00+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T132500+0100-manual",
+    "run_id": "tr-chat-20261030T134000+0100-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T13:25:00+01:00",
-    "updated_at": "2026-10-30T13:29:00+01:00",
-    "finished_at": "2026-10-30T13:29:00+01:00",
+    "started_at": "2026-10-30T13:40:00+01:00",
+    "updated_at": "2026-10-30T13:44:00+01:00",
+    "finished_at": "2026-10-30T13:44:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -111,7 +118,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; sin reexplicaciones ni agrupaciones pendientes; Top 10 cubierto 10/10; reparación visual solicitada.",
+    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; sin reexplicaciones, agrupaciones ni problematic del Top 10; cobertura 10/10.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -127,8 +134,8 @@
       "rewrite_pending_remaining": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
+      "remates_omitted": 26,
+      "recent_missing_closer_reviewed": 26,
       "pending_visual_candidates_reviewed": 0,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
@@ -151,31 +158,38 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T13:25:00+01:00",
+        "at": "2026-10-30T13:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial 0; iniciando verificación autoritativa de requests, reexplicaciones, agrupaciones y Explicadas recientes."
+        "message": "Cola editorial 0; verificando requests, reexplicaciones, agrupaciones y Explicadas recientes antes del cierre."
       },
       {
-        "at": "2026-10-30T13:27:00+01:00",
+        "at": "2026-10-30T13:42:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y comprobando que el Top 10 actual no tenga revisiones editoriales activas."
+        "message": "Releyendo main: cola, requests, reexplicaciones, agrupaciones y cobertura del Top 10."
       },
       {
-        "at": "2026-10-30T13:29:00+01:00",
+        "at": "2026-10-30T13:43:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisión de Explicadas recientes sin remate completada; se preservan sin humor las fichas ligadas a accidente, víctimas o duelo."
+      },
+      {
+        "at": "2026-10-30T13:44:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; sin reexplicaciones ni agrupaciones pendientes; Top 10 cubierto 10/10; reparación visual solicitada."
+        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; sin reexplicaciones, agrupaciones ni problematic del Top 10; cobertura 10/10."
       }
     ],
     "final_outcomes": []
   },
   "radar": {
-    "captured_at": "2026-10-30T13:20:52+01:00",
+    "captured_at": "2026-10-30T13:40:57+01:00",
     "queue_count": 0,
     "top10": [
       "Urda",
@@ -184,8 +198,8 @@
       "Angrois",
       "Mazón",
       "Iryo",
-      "DANA",
-      "#SVGala8",
+      "Dana",
+      "#svgala8",
       "Koldo",
       "Atocha"
     ]
