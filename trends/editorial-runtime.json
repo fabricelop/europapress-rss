@@ -5,33 +5,34 @@
   "canonical": true,
   "last_started_at": "2026-10-30T19:39:00+01:00",
   "last_completed_at": "2026-10-30T19:39:00+01:00",
-  "updated_at": "2026-10-30T19:43:00+01:00",
+  "updated_at": "2026-10-30T19:44:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [
-    "listas-auto-1646815220710d414202"
+    "e40be8e866b4",
+    "listas-auto-1646815220710d414202",
+    "red-review-0d7c83cb2690e08e5487",
+    "red-review-65a59d5cd9f39243ff92"
   ],
   "remaining_ids": [
-    "red-review-0d7c83cb2690e08e5487",
-    "red-review-65a59d5cd9f39243ff92"
+    "listas-auto-0a8d33da787286785470"
   ],
   "remaining_active_ids": [
-    "red-review-0d7c83cb2690e08e5487",
-    "red-review-65a59d5cd9f39243ff92"
+    "listas-auto-0a8d33da787286785470"
   ],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793385503396-manual",
   "previous_run_id": "tr-1793385193006-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 4,
     "explained": 0,
-    "updates": 0,
+    "updates": 3,
     "stale_reviews": 1,
     "unchanged_reviews": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 2,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 2,
+    "remaining_active": 1,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -59,6 +60,27 @@
       "trend_id": "red-review-0d7c83cb2690e08e5487",
       "title": "Revisar novedades: Binance",
       "message": "Revisión de novedades sustanciales del incidente de seguridad de Binance con fuentes oficiales y prensa actual."
+    },
+    {
+      "at": "2026-10-30T19:42:17+01:00",
+      "phase": "reviewing",
+      "trend_id": "red-review-0d7c83cb2690e08e5487",
+      "title": "Binance",
+      "message": "Revisión aplicada con novedades materiales verificadas; creada ficha de continuidad trend-update-82cef9ab6366bc06b863."
+    },
+    {
+      "at": "2026-10-30T19:42:17+01:00",
+      "phase": "reviewing",
+      "trend_id": "red-review-65a59d5cd9f39243ff92",
+      "title": "Angrois",
+      "message": "Revisión aplicada con novedades materiales verificadas; creada ficha de continuidad trend-update-607ecdd2b7d2e6f993f5."
+    },
+    {
+      "at": "2026-10-30T19:44:00+01:00",
+      "phase": "grouping",
+      "trend_id": "listas-auto-0a8d33da787286785470",
+      "title": "Agrupación automática de Listas",
+      "message": "Segundo control de agrupación: sin coincidencias inequívocas; outbox 0 grupos materializado."
     }
   ],
   "incidents": [],
@@ -70,35 +92,37 @@
     "run_id": "tr-1793385503396-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "investigating",
+    "phase": "grouping",
     "started_at": "2026-10-30T19:39:00+01:00",
-    "updated_at": "2026-10-30T19:43:00+01:00",
+    "updated_at": "2026-10-30T19:44:00+01:00",
     "finished_at": null,
-    "current": 1,
-    "total": 3,
-    "trend_id": "red-review-0d7c83cb2690e08e5487",
-    "title": "Revisar novedades: Binance",
+    "current": 4,
+    "total": 5,
+    "trend_id": "listas-auto-0a8d33da787286785470",
+    "title": "Agrupación automática de Listas",
     "queue_complete": false,
     "remaining_active_ids": [
-      "red-review-0d7c83cb2690e08e5487",
-      "red-review-65a59d5cd9f39243ff92"
+      "listas-auto-0a8d33da787286785470"
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [
-      "listas-auto-1646815220710d414202"
+      "e40be8e866b4",
+      "listas-auto-1646815220710d414202",
+      "red-review-0d7c83cb2690e08e5487",
+      "red-review-65a59d5cd9f39243ff92"
     ],
     "partial": false,
-    "message": "La agrupación inicial quedó completada concurrentemente antes de su tratamiento JIT en esta pasada; se procesan las dos revisiones aún vigentes. Sin ImageGen.",
+    "message": "Procesando el control final de agrupación posterior a las dos revisiones. Sin ImageGen.",
     "summary": {
-      "attempted": 0,
+      "attempted": 4,
       "explained": 0,
-      "updates": 0,
+      "updates": 3,
       "stale_reviews": 1,
       "unchanged_reviews": 0,
-      "grouping_requests": 1,
+      "grouping_requests": 2,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 2,
+      "remaining_active": 1,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -128,6 +152,27 @@
         "trend_id": "red-review-0d7c83cb2690e08e5487",
         "title": "Revisar novedades: Binance",
         "message": "Revisión de novedades sustanciales del incidente de seguridad de Binance con fuentes oficiales y prensa actual."
+      },
+      {
+        "at": "2026-10-30T19:42:17+01:00",
+        "phase": "reviewing",
+        "trend_id": "red-review-0d7c83cb2690e08e5487",
+        "title": "Binance",
+        "message": "Revisión aplicada con novedades materiales verificadas; creada ficha de continuidad trend-update-82cef9ab6366bc06b863."
+      },
+      {
+        "at": "2026-10-30T19:42:17+01:00",
+        "phase": "reviewing",
+        "trend_id": "red-review-65a59d5cd9f39243ff92",
+        "title": "Angrois",
+        "message": "Revisión aplicada con novedades materiales verificadas; creada ficha de continuidad trend-update-607ecdd2b7d2e6f993f5."
+      },
+      {
+        "at": "2026-10-30T19:44:00+01:00",
+        "phase": "grouping",
+        "trend_id": "listas-auto-0a8d33da787286785470",
+        "title": "Agrupación automática de Listas",
+        "message": "Segundo control de agrupación: sin coincidencias inequívocas; outbox 0 grupos materializado."
       }
     ],
     "final_outcomes": [
@@ -141,11 +186,11 @@
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
+  "phase": "grouping",
   "started_at": "2026-10-30T19:39:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "red-review-0d7c83cb2690e08e5487",
-  "title": "Revisar novedades: Binance"
+  "current": 4,
+  "total": 5,
+  "trend_id": "listas-auto-0a8d33da787286785470",
+  "title": "Agrupación automática de Listas"
 }
