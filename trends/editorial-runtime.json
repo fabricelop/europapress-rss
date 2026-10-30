@@ -3,39 +3,29 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T14:51:00+01:00",
+  "last_started_at": "2026-10-30T14:52:30+01:00",
   "last_completed_at": "2026-10-30T14:40:45+01:00",
-  "updated_at": "2026-10-30T14:51:00+01:00",
+  "updated_at": "2026-10-30T14:52:30+01:00",
   "status": "running",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "0151e1be35f5",
-    "c6e758d97041",
-    "listas-auto-fc632ae8435ee7ca7518",
-    "red-review-e5ce7866b17650cf6a98",
-    "red-review-b00db6420f77a5793f55",
-    "red-review-6c75d38f9afd25004f2d",
     "red-review-57995fbed045dc251683",
     "red-review-85fc60c70503123bd2d9",
-    "red-review-4430193b76380af83f7f"
+    "red-review-4430193b76380af83f7f",
+    "listas-auto-fc658ba836ce6ad59bf9"
   ],
   "remaining_active_ids": [
-    "0151e1be35f5",
-    "c6e758d97041",
-    "listas-auto-fc632ae8435ee7ca7518",
-    "red-review-e5ce7866b17650cf6a98",
-    "red-review-b00db6420f77a5793f55",
-    "red-review-6c75d38f9afd25004f2d",
     "red-review-57995fbed045dc251683",
     "red-review-85fc60c70503123bd2d9",
-    "red-review-4430193b76380af83f7f"
+    "red-review-4430193b76380af83f7f",
+    "listas-auto-fc658ba836ce6ad59bf9"
   ],
   "remaining_problematic_ids": [
-    "8d550038a24d"
+    "c6e758d97041"
   ],
-  "run_id": "tr-1793368209710-manual",
-  "previous_run_id": "tr-1793368071270-manual",
+  "run_id": "tr-1793368303148-manual",
+  "previous_run_id": "tr-1793368209710-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -43,8 +33,8 @@
     "new_cards": 0,
     "problematic": 0,
     "final_resolved": 0,
-    "skipped_concurrent": 0,
-    "remaining_active": 9,
+    "skipped_concurrent": 2,
+    "remaining_active": 4,
     "remaining_problematic": 1,
     "visual_backlog": 0,
     "pending_repair_triggered": 0,
@@ -52,26 +42,31 @@
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
     "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0,
     "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
-    "red_reviews": 6,
+    "red_reviews": 3,
     "red_reviews_updated": 0,
     "red_reviews_unchanged": 0,
     "red_reviews_unverified": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T14:51:00+01:00",
+      "at": "2026-10-30T14:52:30+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada: 9 trabajos autoritativos; primero Madrid-Barcelona y Pobrecito, después agrupación automática y 6 revisiones rojas."
+      "message": "Pasada tr-1793368303148-manual toma el estado autoritativo: 4 trabajos preparing/update; 2 resultados concurrentes previos respetados (Madrid-Barcelona explicado y Pobrecito problematic)."
+    },
+    {
+      "at": "2026-10-30T14:53:00+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-fc632ae8435ee7ca7518",
+      "title": "Agrupación automática de Listas",
+      "message": "Outbox existente verificado: sin grupos ni coberturas; pendiente de aplicación."
     }
   ],
   "ratings_snapshot": {
@@ -105,35 +100,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793368209710-manual",
+    "run_id": "tr-1793368303148-manual",
     "source": "chat",
     "status": "RUNNING",
     "phase": "preparing",
-    "started_at": "2026-10-30T14:51:00+01:00",
-    "updated_at": "2026-10-30T14:51:00+01:00",
+    "started_at": "2026-10-30T14:52:30+01:00",
+    "updated_at": "2026-10-30T14:52:30+01:00",
     "finished_at": null,
     "current": 0,
-    "total": 9,
+    "total": 4,
     "trend_id": null,
     "title": null,
     "queue_complete": false,
     "remaining_active_ids": [
-      "0151e1be35f5",
-      "c6e758d97041",
-      "listas-auto-fc632ae8435ee7ca7518",
-      "red-review-e5ce7866b17650cf6a98",
-      "red-review-b00db6420f77a5793f55",
-      "red-review-6c75d38f9afd25004f2d",
       "red-review-57995fbed045dc251683",
       "red-review-85fc60c70503123bd2d9",
-      "red-review-4430193b76380af83f7f"
+      "red-review-4430193b76380af83f7f",
+      "listas-auto-fc658ba836ce6ad59bf9"
     ],
     "remaining_problematic_ids": [
-      "8d550038a24d"
+      "c6e758d97041"
     ],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada iniciada: 9 trabajos autoritativos; primero Madrid-Barcelona y Pobrecito, después agrupación automática y 6 revisiones rojas.",
+    "message": "Estado autoritativo revalidado: 4 trabajos preparing/update. Se respetan dos cambios concurrentes más nuevos.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -141,16 +131,22 @@
       "new_cards": 0,
       "problematic": 0,
       "final_resolved": 0,
-      "skipped_concurrent": 0,
-      "remaining_active": 9,
+      "skipped_concurrent": 2,
+      "remaining_active": 4,
+      "remaining_problematic": 1,
+      "visual_backlog": 0,
+      "pending_repair_triggered": 0,
       "rewrite_pending_remaining": 0,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0,
       "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
-      "red_reviews": 6,
+      "red_reviews": 3,
       "red_reviews_updated": 0,
       "red_reviews_unchanged": 0,
       "red_reviews_unverified": 0
@@ -159,11 +155,18 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T14:51:00+01:00",
+        "at": "2026-10-30T14:52:30+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada: 9 trabajos autoritativos; primero Madrid-Barcelona y Pobrecito, después agrupación automática y 6 revisiones rojas."
+        "message": "Pasada tr-1793368303148-manual toma el estado autoritativo: 4 trabajos preparing/update; 2 resultados concurrentes previos respetados (Madrid-Barcelona explicado y Pobrecito problematic)."
+      },
+      {
+        "at": "2026-10-30T14:53:00+01:00",
+        "phase": "verifying",
+        "trend_id": "listas-auto-fc632ae8435ee7ca7518",
+        "title": "Agrupación automática de Listas",
+        "message": "Outbox existente verificado: sin grupos ni coberturas; pendiente de aplicación."
       }
     ]
   },
