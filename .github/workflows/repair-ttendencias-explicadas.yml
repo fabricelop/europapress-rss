@@ -110,6 +110,7 @@ jobs:
           from datetime import datetime, timezone
           from urllib.parse import unquote
           from PIL import Image
+          from pilot.trend_maintenance import image_allowed
           from shared.tt_image_idempotency import may_enqueue_image_job, is_new_editorial_episode
 
           MAIN=pathlib.Path(".")
@@ -240,6 +241,8 @@ jobs:
               print("TTENDENCIAS_AI_ACK_RECONCILED",str(old_job.get("target_id") or ""),str(old_job.get("command_id") or ""))
           leaders=[]
           for row in explained.get("items",[]):
+              if not image_allowed(row):
+                  continue
               if str(row.get("status") or "").lower()!="explained":
                   continue
               if archived_this_episode(row):

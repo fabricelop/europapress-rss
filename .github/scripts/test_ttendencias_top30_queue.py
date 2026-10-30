@@ -118,26 +118,14 @@ with tempfile.TemporaryDirectory() as foldername:
         assert result.returncode==0,(result.stdout,result.stderr)
         return load(folder/"requests.json")["requests"]
     first=update()
-    assert len(first)==2,first
+    assert len(first)==1,first
     assert first[0]["status"]=="deleted" and first[0]["id"]=="pubill-old",first
-    assert first[1]["name"]=="Pubill" and first[1]["status"]=="preparing",first
-    assert first[1]["id"]!="pubill-old" and first[1]["revision"]==0,first
-    assert "explanation" not in first[1],first
-    assert len(update())==2,"No duplicate Top30 reopen on second refresh"
-    assert load(folder/"editorial-queue.json")["count"]==1
-    # Rank volatility cannot silently remove an already accepted investigation.
-    snapshot=load(folder/"recent.json")
-    snapshot["items"][0]={"name":"Otra tendencia","rank":1}
-    put(folder/"recent.json",snapshot)
-    after_rank_change=update()
-    assert any(x["id"]==first[1]["id"] and x["status"]=="preparing" for x in after_rank_change)
-    pending=load(folder/"editorial-queue.json")["items"]
-    assert any(x["id"]==first[1]["id"] and x["name"]=="Pubill" for x in pending),pending
-    print("TT_TOP30_REENTRY_OK: old closure retained, new episode and queue continuity")
+    assert len(update())==1,"Age alone must not revive a deleted episode"
+    assert load(folder/"editorial-queue.json")["count"]==0
+    print("TT_TOP30_TERMINAL_HISTORY_RETAINED_OK")
 
 
-# Fresh Top-30 explanation older than 48h must become a distinct, image-enabled
-# episode even if its prior revision was grouped. A 47h explanation stays put.
+# Explanation age alone never opens a new publication; maintenance verifies new facts.
 with tempfile.TemporaryDirectory() as foldername:
     from datetime import datetime, timedelta
     from zoneinfo import ZoneInfo
@@ -167,12 +155,10 @@ with tempfile.TemporaryDirectory() as foldername:
     assert result.returncode==0,(result.stdout,result.stderr)
     current=load(folder/"requests.json")["requests"]
     fresh=[r for r in current if r["name"]=="Tendencia antigua" and r["id"]!="ancient-r0"]
-    assert len(fresh)==1,current
-    assert fresh[0]["status"]=="preparing" and fresh[0]["revision"]==0,fresh
-    assert fresh[0]["with_image"] is True and fresh[0]["ai_image_status"]=="pending",fresh
+    assert not fresh,current
     assert len([r for r in current if r["name"]=="Tendencia vigente"])==1,current
-    assert load(folder/"editorial-queue.json")["count"]==1
-    print("TT_TOP30_48H_NEW_AI_EPISODE_OK")
+    assert load(folder/"editorial-queue.json")["count"]==0
+    print("TT_TOP30_AGE_REQUIRES_CONDITIONAL_REVIEW_OK")
 
 # Existing narrow-topic closure and stale manual-group regressions still apply.
 with tempfile.TemporaryDirectory() as foldername:

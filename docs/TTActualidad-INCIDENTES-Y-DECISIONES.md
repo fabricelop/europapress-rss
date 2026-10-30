@@ -4,31 +4,9 @@
 
 > **Regla de trazabilidad:** agregar entrada cuando se modifica el comportamiento de un proceso, se detecta un fallo o se demuestra una reparación. Cada entrada debe distinguir: síntoma, causa verificada (o hipótesis), componente, versión/rama, acciones, evidencia, resultado y pendientes. No afirmar que algo está instalado o funciona solo porque un commit/CI exista. Evitar credenciales, IDs de usuario o contenido de sesiones.
 
-## 1. Decisiones operativas que deben sobrevivir a futuros chats
+## 1. Cómo leer este historial
 
-### Interfaz y propiedad del sistema
-- **TTActualidad es una app NATIVA en iPhone y Windows**, no la antigua web. iPhone es SwiftUI, código en ios/ttactualidad, con sus IPA en GitHub Actions; Windows es Qt, código desktop/ttactualidad/TTActualidad_Moderno.pyw, con ZIP Sin-EXE/EXE. Las interfaces consultan **GitHub main** y aplican decisiones autenticadas contra GitHub. Actualizar la vieja web de Cloudflare no corrige la app instalada.
-- Las versiones fuente pueden divergir: a 29/10/2026, la serie **iOS 0.4.21→0.4.22** se trabajó en la rama feature/ttactualidad-ios-0.4.12-pistas. Ante cambios futuros, identificar commit que generó la IPA *realmente instalada*; main no es automáticamente esa versión.
-- Los datos editoriales están en **fabricelop/europapress-rss/main**. Las **ramas control** de TTiTTulares y TTendencias transportan triggers/ACK e image-runs. No sustituir una por otra.
-- Se retiró Telegram como **panel editorial** de noticias y tendencias hacia 16–17/10/2026. No confundir con **TTImages**, que permanece como destino específico de imágenes generado/capturado mediante PC.
-- No tocar **SeLoRecordamos, FabCalendar, URGENTE** ni otros proyectos por reparar TTActualidad. Mantener la infraestructura sin volver a depender de Vercel o servicios de pago innecesarios.
-
-### Reglas editoriales
-- **Noticias automáticas:** mínimo **4 familias de fuentes generales independientes**, evidencia del mismo acontecimiento, anti-repetidos y frescura, con capacidad para detectar novedad material. Candidatos de una/dos fuentes permanecen en radar. Las solicitudes MANUALES pueden ordenar investigar aunque aún no lleguen a 4 fuentes, pero no autorizan inventar hechos.
-- **Tendencias:** Top 10 entra automáticamente si no se ha explicado o ha vencido su explicación (~48 h). Puestos 11–30 **solo por decisión manual Preparar/reexplicar**. No seleccionar sin permiso «la siguiente 11–30» aunque una descripción histórica lo sugiera.
-- **Salida noticia:** texto factual verificable, 2–3 hashtags específicos, un único remate 🌶️ al final; todo el tuit ≤256 caracteres; tweet.remate separado. **Salida tendencia:** TT#N + hecho verificado + 2–3 hashtags + remate si es adecuado, <280 caracteres ponderados X, explanation idéntica en requests y telegram-manual-explained para misma revisión.
-- Texto se persiste primero en READY/Listas o explained/Explicadas **sin bloquearlo por imágenes**; la revisión de hechos y la barrera de revisión (ID, revision) son obligatorias. No declarar cola 0/0 hasta releer main y confirmar no hay solicitudes, revisiones ni reexplicaciones activas.
-- Solo el usuario publica, desestima o quita de Listas. **No inferir publicación por abrir X**, ni borrar una tarjeta recibida por considerarla duplicado si ya está bajo control del usuario. Las decisiones finales deben impedir reapariciones.
-
-### Imágenes
-- La IA es un **proceso separado**: generación solicitada en image-runs de rama control → listener de Windows → bridge Chrome 9223 en modo **launch_only** → ChatGPT Images → captura/descarga local TTImageRelay, Chrome 9234 → bot **TTImages**, desde el PC. No usar los workflows directos de Telegram retirados.
-- **Copiar GAG** de la app nativa debe ofrecer imagen 16:9 con ilustración rica, una sola idea visual, **sin texto, titular, remate, hashtags ni franja inferior de noticia**; el texto factual es *solo contexto* y el emoji 🌶️ no se dibuja. En tragedias, ilustración seria y sin banalización.
-- No duplicar imágenes si hay un job activo o una captura pendiente. Un ACK launched no prueba que se haya capturado una imagen. Tratar las fotografías de archivo como un canal diferente, sujeto a derechos.
-
-### Fiabilidad y seguridad
-- Una tarea Windows con estado **Ready** y un run de GitHub en verde **no demuestra** que el editor haya escrito en Listas. Distinguir trigger, ACK, envío real del mensaje de ChatGPT, outbox, apply y verificación en main.
-- Antes de reparar Chrome, verificar exactamente qué proceso/tabs están ocupados. No matar indiscriminadamente Node, Chrome ni los puentes de imagen, ni eliminar locks de trabajo. Con incertidumbre, **abort** y preservar imágenes/sesiones/colas.
-- iOS y Windows tienen credenciales y cachés propias. **GitHub main + recibos por request_id** resuelven divergencias. Nunca sobrescribir decisiones terminales con datos descargados parcialmente.
+Las reglas vigentes están integradas en la memoria operativa y la guía rápida. Las entradas siguientes describen decisiones, síntomas y pruebas en su fecha: sus políticas históricas no prevalecen sobre el funcionamiento actual. Comprobar siempre main, versión instalada y evidencia viva. No tratar un commit, un build o una petición como prueba de instalación o ejecución física.
 
 ## 2. Cronología de incidentes y reparaciones
 
@@ -172,3 +150,13 @@ El usuario amplió explícitamente la selección automática de puestos 1–10 a
 Captura del usuario: #30OctubrESP, Sin explicación, con Aportar pistas y Elaborar desde cero pero sin acceso a búsqueda. La acción existía para noticias y no para tendencias. Se añade al bloque común de tendencias en iPhone 0.4.27 build33, por delante de cualquier condición de estado. Query literal del nombre/hashtag y resultados recientes; sin cambios editoriales ni publicación. Fuente `fix/ttactualidad-ios-0.4.27-buscar-tendencias-x`, código `b33adad585dd6103d2b0fc7deb0212692097a3e4`. Ver §23.
 
 **Validación:** build 41060302999 correcto, 15 pruebas nativas existentes superadas y app/Live Activity verificadas como 0.4.27 build33. Pendiente de comprobación física del botón en el iPhone del usuario.
+
+## 12. 30/10/2026 — revisión condicional y agrupación antes de IA
+
+Petición: revisar novedades de tendencias rojas y agrupar automáticamente el mismo acontecimiento, conservando un selector manual en Listas. Implementación: `pilot/trend_maintenance.py`, extensión de `listas_grouping.py`, workflow de mantenimiento de5min y contrato editorial coherente. Reviews usan snapshot/revisión/hash y outcomes unchanged/updated/unverified; sin novedades conserva fecha. Actualizaciones generan otra identidad, sin reabrir publicadas. La edad de48h sola deja de crear otra publicación.
+
+La decisión de agrupación precede a nuevos jobs IA y se valida contra el fingerprint del texto. Las originales se conservan; se permite cobertura por una publicación reciente comprobada sin crear otro tuit. La app iPhone0.4.28 build34 añade selección exacta de≥2 tendencias para Agrupar y muestra última revisión separada de explained_at. La retirada publicada/no publicada permanece.
+
+Pruebas:13 casos de agrupación, nueve iniciales de mantenimiento y regresiones Top30, más preflight iOS. La compilación nativa se verifica en su run específico. No se ha instalado físicamente el IPA ni ejecutado una generación real de IA como prueba de esta modificación. El despliegue guarda código y solicitudes; la investigación depende del consumidor editorial habitual.
+
+La memoria y la guía se reescriben como descripción integrada por procesos, sin parches normativos al final. La copia completa conserva su identidad en ChatGPT. Los antecedentes quedan únicamente en este historial.

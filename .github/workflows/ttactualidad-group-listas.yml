@@ -6,6 +6,11 @@ on:
     branches: [main]
     paths:
       - 'trends/listas-grouping-outbox/**'
+      - 'trends/maintenance-outbox/**'
+      - 'trends/telegram-manual-explained.json'
+      - 'trends/recent.json'
+      - 'pilot/trend_maintenance.py'
+      - 'pilot/test_trend_maintenance.py'
       - 'pilot/listas_grouping.py'
       - 'pilot/test_listas_grouping.py'
       - '.github/workflows/ttactualidad-group-listas.yml'
@@ -14,6 +19,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: ttactualidad-listas-grouping
   cancel-in-progress: false
@@ -26,7 +32,9 @@ jobs:
         with:
           ref: main
       - name: Probar agrupación y protección de originales
-        run: python3 -m unittest discover -s pilot -p 'test_listas_grouping.py' -v
+        run: |
+          python3 -m unittest discover -s pilot -p 'test_listas_grouping.py' -v
+          python3 -m unittest discover -s pilot -p 'test_trend_maintenance.py' -v
       - name: Persistir solicitud o resultado editorial
         env:
           TT_LISTAS_GROUP_JSON: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload) || '{}' }}
@@ -44,19 +52,23 @@ jobs:
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'TTActualidad: agrupar Listas sin reescribir originales'
             if git push origin HEAD:main; then
-              if python3 - <<'PY'
-          import json, os, sys
-          payload=json.loads(os.environ.get('TT_LISTAS_GROUP_JSON') or '{}')
-          receipts=json.load(open('pilot/ttactualidad-action-receipts.json'))['items']
-          ok=any(x.get('request_id')==payload.get('request_id') and x.get('status') in {'applied','already_applied'} for x in receipts)
-          sys.exit(0 if ok and payload.get('decision')=='group_listas' else 1)
-          PY
-              then
-                python3 trends/request_pc_editorial.py --trigger || echo 'Solicitud persistida; revisar consumidor editorial'
-              fi
+              gh workflow run repair-ttendencias-explicadas.yml --repo "$GITHUB_REPOSITORY" --ref main
               exit 0
             fi
             sleep "$((attempt * 2))"
           done
           echo 'No se pudo persistir sin pisar cambios concurrentes' >&2
           exit 1
+
+      - name: Solicitar la pasada editorial habitual si hay mantenimiento pendiente
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if python3 - <<'PY'
+          import json, sys
+          jobs=json.load(open('trends/editorial-queue.json')).get('items',[])
+          sys.exit(0 if any(x.get('status') in {'preparing','update'} and (x.get('listas_grouping_request') or x.get('red_review_request')) for x in jobs) else 1)
+          PY
+          then
+            python3 trends/request_pc_editorial.py --trigger
+          fi

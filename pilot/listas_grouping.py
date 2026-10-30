@@ -11,10 +11,13 @@ import hashlib
 import json
 import os
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from pilot import trend_maintenance as maintenance
 MANUAL = 'trends/telegram-manual-explained.json'
 REQUESTS = 'trends/requests.json'
 QUEUE = 'trends/editorial-queue.json'
@@ -166,9 +169,18 @@ def request(state, payload, now):
     active = next((x for x in state[REQUESTS]['requests'] if x.get('listas_grouping_request')
                    and x.get('status') in {'preparing', 'update'}), None)
     if active:
-        receipt(state, payload, 'already_applied', at, grouping_job_id=active['id'])
+        receipt(state, payload, 'rejected', at, error='Ya hay una agrupación en curso; espera a que termine antes de enviar tu selección')
         return state, True
     current = eligible(state, now)
+    selected = payload.get('items')
+    if not isinstance(selected, list) or not 2 <= len(selected) <= 500:
+        receipt(state, payload, 'rejected', at, error='Selecciona al menos dos tendencias concretas de Listas')
+        return state, True
+    ids = [str(x.get('id') or '') for x in selected]
+    if len(set(ids)) != len(ids) or any(x['id'] not in current or revision(current[x['id']]) != x.get('revision') for x in selected):
+        receipt(state, payload, 'rejected', at, error='La selección ha cambiado; actualiza Listas y selecciona de nuevo')
+        return state, True
+    current = {ident: current[ident] for ident in ids}
     if len(current) < 2:
         receipt(state, payload, 'rejected', at, error='Se necesitan al menos dos tendencias en Listas sin cubrir')
         return state, True
@@ -181,7 +193,7 @@ def request(state, payload, now):
            'listas_grouping_request': True, 'grouping_state': 'pending',
            'grouping_candidates': [snapshot(x) for x in current.values()],
            'auto_queued': False, 'with_image': False, 'disable_ai_image': True,
-           'rewrite_instruction': 'Inspecciona todas las candidatas de Listas. Crea UNA ficha conjunta por acontecimiento comprobado. Conserva íntegros los textos de las originales; solo marca su cobertura. No publiques.'}
+           'rewrite_instruction': 'Agrupa exclusivamente las tarjetas seleccionadas en grouping_candidates. Crea UNA ficha conjunta por acontecimiento comprobado. Conserva íntegros los textos de las originales; solo marca su cobertura. No publiques.'}
     state[REQUESTS]['requests'].append(job)
     state[REQUESTS]['updated_at'] = at
     state[QUEUE]['items'].append(copy.deepcopy(job))
@@ -242,13 +254,35 @@ def apply_result(state, command, now):
             used.add(ident)
             old = candidates[ident]
             row = current.get(ident)
-            if not row or revision(row) != old['revision'] or digest(row['explanation']) != old['explanation_sha256']:
+            if (not row or revision(row) != old['revision'] or row.get('explained_at') != old.get('explained_at')
+                    or digest(row['explanation']) != old['explanation_sha256']):
                 stale = True
             refs.append(old)
         if stale:
             skipped.append([x['id'] for x in refs])
             continue  # Never partially cover a group after a deletion/rework.
         planned.append((group, refs))
+    coverage = []
+    published = {x['id']: x for x in maintenance.published_context(state, now, grouping_api())} if job.get('automatic_grouping') else {}
+    historical = {x['id']: x for x in job.get('published_context', [])}
+    for link in command.get('covered_by_existing', []):
+        member = link.get('member') or {}
+        ident = member.get('id')
+        target = str(link.get('published_id') or '')
+        if ident in used or ident not in candidates or member.get('revision') != candidates[ident]['revision']:
+            raise ValueError('Cobertura publicada fuera de la solicitud o repetida')
+        if (target not in published or target not in historical
+                or published[target]['revision'] != historical[target]['revision']
+                or published[target].get('explained_at') != historical[target].get('explained_at')
+                or published[target]['explanation_sha256'] != historical[target]['explanation_sha256']):
+            raise ValueError('Publicación de cobertura obsoleta o inexistente')
+        if not str(link.get('reason') or '').strip() or link.get('no_material_changes') is not True:
+            raise ValueError('La cobertura previa requiere motivo y ausencia explícita de novedades')
+        row = current.get(ident)
+        if (row and revision(row) == member['revision'] and row.get('explained_at') == candidates[ident].get('explained_at')
+                and digest(row['explanation']) == candidates[ident]['explanation_sha256']):
+            coverage.append((row, published[target]))
+        used.add(ident)
     at = now.isoformat()
     created = []
     for group, refs in planned:
@@ -267,6 +301,7 @@ def apply_result(state, command, now):
                'grouping_request_id': job_id, 'source': 'listas_grouping_editorial',
                'auto_queued': False, 'with_image': True, 'disable_ai_image': False,
                'image_strategy': 'ai_plus_fallback', 'ai_image_status': 'pending'}
+        maintenance.clear({MANUAL: {'items': [row]}, REQUESTS: {'requests': []}}, row, at)
         direct_ids = {x['id'] for x in refs}
         for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
             for original in state[path][field]:
@@ -279,6 +314,17 @@ def apply_result(state, command, now):
             state[path][field].append(copy.deepcopy(row))
             state[path]['updated_at'] = at
         created.append(ident)
+    for row, target in coverage:
+        maintenance.stamp_rows(state, row, listas_group_role='covered', covered_by_id=target['id'],
+                               covered_by_name=target['name'], covered_by_revision=target['revision'],
+                               covered_source_revision=revision(row), covered_at=at,
+                               coverage_reason='already_published_same_event', grouping_request_id=job_id)
+    # Release only unchanged snapshot rows. New arrivals wait for the next pass.
+    for ident, old in candidates.items():
+        row = current.get(ident)
+        if (row and revision(row) == old['revision'] and row.get('explained_at') == old.get('explained_at')
+                and digest(row['explanation']) == old['explanation_sha256']):
+            maintenance.clear(state, row, at)
     # No changes to source explanations, dates, revision, publication history.
     job.update(status='grouping_completed', grouping_state='completed', completed_at=at,
                grouping_created_ids=created, grouping_skipped_stale=skipped,
@@ -290,6 +336,13 @@ def apply_result(state, command, now):
     return state, True
 
 
+def grouping_api():
+    from types import SimpleNamespace
+    return SimpleNamespace(**{name: globals()[name] for name in (
+        'eligible', 'latest', 'moment', 'snapshot', 'revision', 'is_covered',
+        'terminal_applies', 'digest', 'weighted_length')})
+
+
 def load_state():
     result = {}
     for path in (MANUAL, REQUESTS, QUEUE, DECISIONS, DELIVERIES, RECEIPTS):
@@ -297,6 +350,7 @@ def load_state():
         field = 'requests' if path == REQUESTS else 'items'
         if not isinstance(result[path].get(field), list):
             raise ValueError('Estado obligatorio no válido: '+path)
+    result[maintenance.RECENT] = json.loads((ROOT/maintenance.RECENT).read_text(encoding='utf-8'))
     return result
 
 
@@ -328,6 +382,16 @@ def main():
             job['grouping_state'] = 'needs_correction'
             job['grouping_error'] = str(error)
             job['grouping_error_digest'] = command_digest
+    for path in sorted((ROOT/'trends/maintenance-outbox').glob('*.json')):
+        command = json.loads(path.read_text(encoding='utf-8'))
+        job = next((x for x in state[REQUESTS]['requests'] if x.get('id') == command.get('job_id')), {})
+        if job.get('status') not in {'preparing', 'update'}:
+            continue
+        try:
+            state, _ = maintenance.apply_review(state, command, now, grouping_api())
+        except ValueError as error:
+            job['review_error'] = str(error)
+    maintenance.schedule(state, now, grouping_api())
     changed = []
     for path, doc in state.items():
         if doc != before[path]:

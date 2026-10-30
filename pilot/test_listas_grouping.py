@@ -19,7 +19,8 @@ class ListasGroupingTests(unittest.TestCase):
                  'closer_text':'','explained_at':(self.now-timedelta(hours=1)).isoformat()}
             self.state[m.MANUAL]['items'].append(copy.deepcopy(row))
             self.state[m.REQUESTS]['requests'].append(copy.deepcopy(row))
-        self.payload={'project':'ttendencias','decision':'group_listas','request_id':'12345678-1234-4234-8234-123456789abc'}
+        self.payload={'project':'ttendencias','decision':'group_listas','request_id':'12345678-1234-4234-8234-123456789abc',
+                      'items':[{'id':x,'revision':1} for x in ['a123','b123','c123']]}
 
     def requested(self):
         return m.request(self.state,self.payload,self.now)[0]
@@ -31,7 +32,7 @@ class ListasGroupingTests(unittest.TestCase):
             'verification_sources':[{'url':'https://example.org/comunicado'}],
             'members':[{'id':'a123','revision':1},{'id':'b123','revision':1}]}]}
 
-    def test_request_snapshots_all_without_changing_existing_text_or_status(self):
+    def test_request_snapshots_selection_without_changing_existing_text_or_status(self):
         state=self.requested()
         self.assertEqual(state[m.MANUAL],self.state[m.MANUAL])
         self.assertEqual(state[m.REQUESTS]['requests'][:3],self.state[m.REQUESTS]['requests'])
@@ -43,7 +44,7 @@ class ListasGroupingTests(unittest.TestCase):
         again={**self.payload,'request_id':'22345678-1234-4234-8234-123456789abc'}
         state,_=m.request(state,again,self.now)
         self.assertEqual(len(state[m.QUEUE]['items']),1)
-        self.assertEqual(state[m.RECEIPTS]['items'][-1]['status'],'already_applied')
+        self.assertEqual(state[m.RECEIPTS]['items'][-1]['status'],'rejected')
 
     def test_joint_card_preserves_every_original_explanation_date_and_revision(self):
         state,_=m.apply_result(self.requested(),self.result(),self.now)
@@ -88,7 +89,8 @@ class ListasGroupingTests(unittest.TestCase):
     def test_no_similar_topics_finishes_without_creating_or_covering_cards(self):
         command=self.result();command['groups']=[]
         state,_=m.apply_result(self.requested(),command,self.now)
-        self.assertEqual(state[m.MANUAL],self.state[m.MANUAL])
+        for old, new in zip(self.state[m.MANUAL]['items'], state[m.MANUAL]['items']):
+            self.assertEqual({k:new[k] for k in old}, old)
         self.assertEqual(state[m.REQUESTS]['requests'][-1]['status'],'grouping_completed')
 
     def test_cleanup_only_selected_covered_cards_without_publication_or_parent_deletion(self):

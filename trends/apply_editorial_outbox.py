@@ -293,6 +293,16 @@ def sync_queue(requests_doc):
         if status == "problematic" and norm(req.get("name")) not in top10_names:
             continue
         items.append({
+            "red_review_request": req.get("red_review_request"),
+            "review_source": req.get("review_source"),
+            "review_error": req.get("review_error"),
+            "automatic_grouping": req.get("automatic_grouping"),
+            "published_context": req.get("published_context"),
+            "task": req.get("task"),
+            "listas_grouping_request": req.get("listas_grouping_request"),
+            "grouping_candidates": req.get("grouping_candidates"),
+            "grouping_state": req.get("grouping_state"),
+            "grouping_error": req.get("grouping_error"),
             "id": req.get("id"),
             "name": req.get("name"),
             "rank": req.get("rank"),
@@ -318,6 +328,7 @@ def sync_queue(requests_doc):
     # Evita starvation: trabajo nuevo/revisiones primero; problematic al final.
     items.sort(key=lambda x: (
         1 if str(x.get("status") or "") == "problematic" else 0,
+        1 if x.get("red_review_request") else 0,
         str(x.get("requested_at") or ""),
     ))
     save(TRENDS / "editorial-queue.json", {

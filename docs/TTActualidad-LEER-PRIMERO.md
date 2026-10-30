@@ -1,101 +1,61 @@
-# TTActualidad — LEER PRIMERO ante una avería
-**Edición:** 2026-10-29 · **Proyecto:** fabricelop/europapress-rss · **Documento vivo**  
-**Manual extenso:** [TTActualidad-MEMORIA-OPERATIVA.md](TTActualidad-MEMORIA-OPERATIVA.md) · **Historial:** [TTActualidad-INCIDENTES-Y-DECISIONES.md](TTActualidad-INCIDENTES-Y-DECISIONES.md)
+# TTActualidad — guía rápida de contexto y averías
 
-> **MENSAJE PARA PEGAR EN UN NUEVO CHAT:** «Estamos reparando TTActualidad NATIVA (iPhone SwiftUI y Windows Qt), no la web antigua. Lee primero docs/TTActualidad-LEER-PRIMERO.md y docs/TTActualidad-MEMORIA-OPERATIVA.md en fabricelop/europapress-rss/main, luego consulta el estado LIVE de GitHub, la rama iOS correcta y el eslabón fallido. Respeta los procesos de imágenes, el historial y las decisiones terminales. Diagnostica, corrige, verifica persistencia y actualiza esta memoria. Aquí está el error: [PEGAR SALIDA].»
+Referencia funcional: **30/10/2026**. Repositorio **fabricelop/europapress-rss**. Manual: [TTActualidad-MEMORIA-OPERATIVA.md](TTActualidad-MEMORIA-OPERATIVA.md). Antecedentes: [TTActualidad-INCIDENTES-Y-DECISIONES.md](TTActualidad-INCIDENTES-Y-DECISIONES.md).
 
-> **Actualización prioritaria del usuario, 29/10/2026:** ya no se dan estrellas a los comentarios/remates y **sí se pueden pasar tendencias a noticias**. Verificado el botón iPhone «Enviar a TTiTTulares» y el handler `origin_trend` en main. Los JSON y párrafos de estrellas son restos históricos, no un paso actual que deba reactivarse. La prohibición antigua del puente no invalida la acción manual actual. Ver §§11–17 para evidencia, diferencias entre clientes y límites.
+Para empezar un chat de reparación:
 
-## Identidad: no confundirse de sistema
-- **Fuente de verdad editorial:** archivos JSON de la rama **main** en GitHub. Releer siempre; el dato de una conversación anterior no es estado vivo.
-- **iPhone:** app nativa SwiftUI en **ios/ttactualidad/**, compilación por .github/workflows/ttactualidad-ios.yml, IPA con PlumeImpactor. La familia **0.4.21 → 0.4.22** estaba en **feature/ttactualidad-ios-0.4.12-pistas** el 29/10; **NO modificar main suponiendo que es la versión instalada**. Comprobar rama, versión, build, última IPA y si se instaló antes de actuar.
-- **Windows:** app nativa Qt **desktop/ttactualidad/TTActualidad_Moderno.pyw**, workflow ttactualidad-windows.yml, preferencia ZIP sin EXE; GitHub directo.
-- **NO son estas apps:** antigua interfaz en docs/ttactualidad/index.html y pilot/ttactualidad-live/ desplegada en ttactualidad-decisions-pilot.fabricelop.workers.dev. Actualizar Cloudflare **NO** actualiza iPhone/Windows.
-- **Backend distinto:** Cloudflare **tt-control.fabricelop.workers.dev** atiende comandos/ACK de los listeners editoriales e imágenes; esto NO convierte el Worker web antiguo en la app nativa. Telegram de noticias/tendencias como panel editorial **retirado**. **TTImages** sigue como canal independiente para imágenes.
-- Preservar **FabCalendar, SeLoRecordamos, TTImages, URGENTE** y otros servicios. No reiniciar Chrome, alterar tokens, credenciales, sesiones, imagen activa ni borrar colas sin identificar sus propietarios.
+> Estamos reparando TTActualidad nativa (iPhone SwiftUI y Windows Qt). Lee esta guía y la memoria operativa de fabricelop/europapress-rss/main, comprueba la rama que produjo el IPA instalado y relee el estado remoto del ID/revisión afectado. Localiza el primer eslabón sin resultado, corrige y verifica persistencia. Conserva decisiones, originales agrupadas e imágenes ya lanzadas. El síntoma actual es: [error, proyecto, ID/revisión, dispositivo y hora Madrid].
 
-## Localizar el eslabón en 60 segundos
+## Identidad y reglas
 
-| Síntoma | Primer archivo o prueba | Eslabón que revisar |
+- **Datos editoriales:** main. **Triggers/ACK/jobs:** ramas control. **Ejecución del PC:** logs Windows. Una de esas pruebas no sustituye a las otras.
+- **iPhone de esta entrega:** 0.4.28 build34, `feature/ttactualidad-ios-0.4.28-revision-y-grupos`. La fuente iOS de main puede ser anterior. Confirmar qué IPA está instalada antes de editar.
+- **Windows:** `desktop/ttactualidad/TTActualidad_Moderno.pyw`, Qt; preferencia ZIP sin EXE. No confundir con la web anterior ni con Tkinter.
+- **Todas las pendientes del Top30 entran automáticamente**; no seleccionar 31+. No hay filtro Nuevas.
+- **Rojas (>24h):** revisión condicional de novedades, como máximo una por origen/hora y con Top30 fresco. Sin novedades conserva texto, fecha y color. Una actualización continuada usa «sigue siendo tendencia por…»; un episodio distinto requiere verificación y otra identidad.
+- **Agrupación automática:** al cerrar texto y antes de pedir IA, comparar el mismo acontecimiento y cobertura ya publicada. Conservar originales, marcadas Agrupada en…; ambigüedad significa mantener separadas.
+- **Agrupar manual:** seleccionar ≥2 tarjetas de Listas; solo se revisan esas. **Quitar de Listas** sigue permitiendo indicar publicada/no publicada. **Retirar agrupadas** conserva conjuntas y no suma publicación.
+- **Publicación manual y contador:** solo published confirmado suma al ledger de24h móviles. Límite declarado por el usuario:51 publicaciones por cuenta en esa ventana. Abrir X, copiar o crear imágenes no suma.
+- **Sin estrellas.** **Sí se puede enviar una tendencia a TTiTTulares** manualmente para investigar otra noticia con origen trazable.
+- **Texto e imágenes separados:** READY/explained no espera foto ni IA. Una tendencia necesita grouping cleared del texto exacto para un nuevo job visual; covered no pide otra imagen.
+- **Transporte IA:** image-runs → listener/ImageBridge CDP9223 launch_only → ChatGPT Images → relay CDP9234 → descarga PC → TTImages. Conservar FabCalendar, SeLoRecordamos, URGENTE, sesiones y credenciales.
+
+## Encontrar la transición que falta
+
+| Síntoma | Primera comprobación | Recorrido posterior |
 |---|---|---|
-| No hay novedades/noticias nuevas | telegram/events.json, ttittulares/status.json, radar-no-d1.yml | Radar TTiTTulares, fuentes, agrupación y frescura |
-| Noticias con 4+ fuentes no pasan a elaboración | telegram/editorial-processing.json, ttittulares/editorial-queue.json, ttittulares/auto_queue.py | Umbral, anti-duplicación y selección |
-| Top 30 vacío/antiguo | trends/recent.json, ttendencias-refresh.yml | Captura y consenso de tendencias |
-| Pendientes del Top 30 no pasan a elaboración | trends/requests.json, trends/editorial-queue.json, trends/auto_queue_new.py | Selección automática Top 30; excluir 31+ |
-| «En elaboración» se acumula | Ambas colas + prompts editoriales + ramas control + logs locales | Solicitud ≠ envío real ≠ resultado persistido |
-| Windows «Ready» pero no redacta | Get-ScheduledTaskInfo y logs de listeners en C:\TTiTTulares | Último resultado, Ejecutar.js, CDP 9223, ACK |
-| «Target crashed» | ttittulares-mobile-trigger.log / ttendencias-mobile-trigger.log | ChatGPT/CDP 9223, pestañas, memoria, Ejecutar.js |
-| Enviar tendencia a noticia falla | iPhone `sendTrendToNews`, dispatch `ttactualidad_manual_news_v1`, `pilot/submit_ttactualidad_manual.py` | Origen ID/revisión, recibo y PROCESSING en ambas colas de noticias; la tendencia se conserva |
-| Texto elaborado pero no aparece en Listas | ttittulares/prepared.json / trends/telegram-manual-explained.json + requests.json | Outbox/apply, (ID,revision), commit a main |
-| Noticia reaparece tras borrarla | ttittulares/decisions.json y pilot/ttactualidad-action-receipts.json | Decisión terminal + caché iOS/Windows |
-| Tendencia reaparece tras borrarla | trends/mobile-decisions.json, requests.json, telegram-manual-explained.json | Tombstone/revisión y refresco de radar |
-| Imagen IA no llega | image-runs (en rama control), listeners, ImageBridge, TTImageRelay | Job → envío ChatGPT Images → descarga PC → TTImages |
-| Imagen en tarjeta con texto y banda inferior | Copiar GAG en SwiftUI/Qt y generador de prompt | No usar la antigua web; solo escena 16:9 sin texto |
-| X se abrió pero no está publicada | pilot/ttactualidad-publication-events.json | Apertura de X no equivale a publicación; confirmar decisión |
-| Móvil y Windows no coinciden | main JSON + recibos por request_id + cachés | Lectura fresca, terminales y acciones optimistas |
+| Noticias no entran | events, consenso≥4 familias, auto_queue/treated-stories | Elegibilidad y referencia concreta que bloquea |
+| Tendencias pendientes no entran | recent fresco, requests/queue, auto_queue_new | Rango1–30, fuente fiable, terminal/revisión |
+| Se acumula elaboración | Cola viva y trigger del mismo command_id | ACK → log listener → mensaje real → outbox → apply |
+| Botón procesamiento parece inerte | Main fresco frente a pantalla | Si main tiene READY, consulta/overlay; si no, editor |
+| Roja sin revisión | Fecha explicación, Top30, último checked_at | Prioridad del trabajo nuevo, job review_red, consumidor |
+| Roja revisada sigue roja | red_review_outcome/checked_at | Sin novedades no renueva explained_at: es correcto |
+| Agrupación atascada | grouping job/outbox/error | Candidatas snapshot, fuentes, revisiones y aplicación |
+| Texto sin imagen | grouping_state/fingerprint/covered | Luego job → prompt → raster → relay → TTImages |
+| Actualización ausente | maintenance-outbox y review_error | review_completed/created_id o stale por cambio concurrente |
+| Borrada/publicada reaparece | decisions/mobile-decisions/recibo | ID/revisión/episodio y caché, sin destruir terminales |
+| Tendencia→noticia falla | origin_trend y recibo manual-news | PROCESSING en ambas colas noticias; tendencia se conserva |
+| Contador o menú difiere | publication-events y hora última lectura | Ventana móvil, canónico frente a provisional, órdenes locales |
 
-## Estado mínimo que debe adjuntarse a un incidente
-1. **Proyecto:** TTiTTulares o TTendencias; **elemento:** event_id/id; **revision:** número; **fecha/hora Madrid**.
-2. **Acción exacta:** preparar, reelaborar, copiar GAG, publicar, quitar, borrar, imagen, etc.; dispositivo iPhone/Windows/servidor.
-3. **Resultado visible** y, si existe, **request_id, command_id o run_id**, sin compartir tokens.
-4. **Archivos main relevantes** y estado JIT por el mismo (id,revision); **no basta un contador 0/0**, no basta HTTP 204, no basta «Ready» del Programador de tareas.
-5. **Comprobación de persistencia:** noticia READY en prepared.json y no terminal; tendencia explained en **requests.json y telegram-manual-explained.json**, sin revisión posterior activa; imágenes fuera del bloqueo editorial.
+## Archivos que resuelven el contexto
 
-## Diagnóstico Windows, SOLO LECTURA
-Ejecutar en PowerShell normal; estas pruebas no modifican navegador ni colas:
+| Proceso | Archivos |
+|---|---|
+| Noticias | telegram/events.json; editorial-processing.json; ttittulares/editorial-queue.json, prepared.json, decisions.json |
+| Tendencias | trends/recent.json, requests.json, editorial-queue.json, telegram-manual-explained.json, mobile-decisions.json |
+| Mantenimiento | pilot/trend_maintenance.py, listas_grouping.py; trends/maintenance-outbox/, listas-grouping-outbox/ |
+| Aplicación y recibos | pilot/apply-ttactualidad-action.py; ttactualidad-action-receipts.json; ttactualidad-publication-events.json |
+| Contratos | ttittulares/editorial-run-prompt.md; trends/editorial-run-prompt.md |
+| Noticias texto final | TTITTULARES_OUTBOX_V1 en **issue164**; PR2 solo control/telemetría |
+| Tendencias transporte/control | PR7, TTENDENCIAS_CHAT_OUTBOX_V1 y RUNTRACE canónico |
+| PC | C:\TTiTTulares\ttittulares-mobile-trigger.log, ttendencias-mobile-trigger.log; Ejecutar.js local |
+| IA | repair-ttittulares-listas.yml, repair-ttendencias-explicadas.yml; image-runs en control; ImageBridge; TTImageRelay |
+| Cliente | EditorialStore.swift, GitHubEditor.swift, TTDashboard.swift, EditorialActionPanels.swift, HomeQuickActions.swift |
 
-~~~powershell
-$base = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/'
-$p = Join-Path $env:TEMP 'Diagnose-TT-Editorial-Local.ps1'
-Invoke-WebRequest -UseBasicParsing -Uri ($base + 'Diagnose-TT-Editorial-Local.ps1') -OutFile $p
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File $p
+## Qué acredita una reparación
 
-$p = Join-Path $env:TEMP 'TT-Editorial-Tab-Diagnose.js'
-Invoke-WebRequest -UseBasicParsing -Uri ($base + 'TT-Editorial-Tab-Diagnose.js') -OutFile $p
-node $p
+Releer el **mismo ID/revisión** en main y comprobar texto real, estado, cola y recibo, según el eslabón reparado. Para imágenes, distinguir lanzamiento, raster, descarga y entrega. Para UI, distinguir compilación/pruebas de instalación y uso físico. HTTP204, Windows Ready, ACK launched, Actions verde o contador0/0 no bastan por sí solos.
 
-$p = Join-Path $env:TEMP 'Diagnosticar-TTImages-Relay.ps1'
-Invoke-WebRequest -UseBasicParsing -Uri ($base + 'Diagnosticar-TTImages-Relay.ps1') -OutFile $p
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File $p
-~~~
+No reiniciar todo para probar. Si falta outbox, comprobar editor antes del aplicador. Si el texto ya está guardado, comprobar cliente antes de reenviar. Si una imagen ya fue lanzada, comprobar relay antes de regenerarla.
 
-Para memoria y pestañas: windows/Repair-TT-Chrome-Memory-Safe.ps1 **-InspectOnly**. Para identificar un runner que bloquea una recuperación: windows/Diagnose-TT-Active-Runner.ps1 (comprobar que su CI esté en verde). **No ejecutar Recover-TT-Chrome9223-Controlled.ps1 automáticamente.** Necesita administrador, identifica el perfil dedicado y debe ABORTAR si hay cualquier runner/imagen/conversación ocupada o incierta. No matar node.exe ni Chrome a ciegas.
-
-## Reglas de oro
-- El radar **capta y selecciona**; GitHub Actions **encola o solicita**, pero no investiga/redacta por sí solo. El editor de ChatGPT debe trabajar y **persistir en main**; un trigger y un ACK «launched» NO demuestran READY/explained.
-- **TTiTTulares:** automático con **≥4 familias de fuentes generales independientes**, control de duplicados y hecho nuevo; manual puede investigar con menos. Elaboración factual + 2–3 hashtags específicos + **un** remate 🌶️, **≤256 caracteres**, sin generar imagen en la pasada.
-- **TTendencias:** todas las pendientes del Top 30 entran automáticamente en elaboración; excluir puestos 31+; explicación caduca tras 48 h (sin destruir archivo); texto TT#N + hecho + hashtags + remate, **menos de 280 caracteres ponderados**; cierre coherente en **dos JSON**.
-- **Imagen IA:** etapa independiente del texto. «Copiar GAG» debe producir **solo ilustración sin texto ni tarjeta inferior**; no dibujar 🌶️. Los puentes Chrome 9223 pueden hacer solo **launch_only**. La captura/envío real posterior pertenece a TTImageRelay, Chrome **9234**, PC → TTImages; no mandar imagen desde Actions/Telegram directo.
-- **Estrellas retiradas:** no se piden ni se reactivan; los historiales y párrafos antiguos son contexto histórico. **Sí se permite enviar una tendencia a TTiTTulares por decisión del usuario**, con verificación posterior del hecho.
-- **Acciones de usuario:** evento repository_dispatch → workflow → cambios en GitHub → **recibo por request_id** → lectura de main. No asumir éxito por HTTP 204. Borrados/publicadas/desestimadas son terminales; no resucitar registros por un JSON viejo. No publicar automáticamente en X.
-- Los workflows retirados/no-op, instrucciones editoriales de Telegram anteriores al 17/10 y la web antigua son **HISTÓRICOS**. Ante conflicto, prevalece el flujo nativo real + los handlers productivos + estado main reciente.
-- Tras corregir: probar con elemento real **(id,revision)**, comprobar las dos colas y el destino, los recibos, la imagen por separado, la concordancia iPhone/Windows y registrar el arreglo en la memoria larga y en el historial.
-
-**Importante:** esta ficha es una referencia estructural, **no** un certificado de que toda la infraestructura funciona en este instante. Consultar GitHub y los logs actuales antes de cada diagnóstico.
-
-
-## Agrupar Listas (30/10/2026)
-
-Agrupar → dispatch `ttactualidad_group_listas_v1` → `pilot/listas_grouping.py` → request `task:group_listas` → runner editorial → `trends/listas-grouping-outbox/<job_id>.json` → workflow aplicador → ficha conjunta y originales marcadas **Agrupada en…**. **No cambiar las explicaciones originales.** Retirar agrupadas solo elimina originales cubiertas, no la conjunta ni suma publicaciones. Ver §18 del manual para estados/JIT/pruebas. Fuente iPhone nueva: `feature/ttactualidad-ios-0.4.23-agrupar-listas`, 0.4.23 build29; comprobar instalación.
-
-**Corrección 30/10 tras prueba en iPhone:** originales agrupadas conservan **Quitar de Listas → Publicado / No publicado**. Solo Publicado suma esa original una vez; la conjunta no cambia. Fuente iPhone **0.4.24 build30**, rama `feature/ttactualidad-ios-0.4.24-quitar-agrupadas`. No confundirlo con Retirar agrupadas en bloque, que es limpieza sin publicación.
-
-
-## Menú del icono del iPhone (30/10/2026)
-
-Última fuente nativa: **0.4.25 build31**, rama `feature/ttactualidad-ios-0.4.25-menu-icono`, basada en 0.4.24. Tras abrir una vez la app, mantener pulsado el icono ofrece Noticias listas, Tendencias listas, En elaboración y Órdenes por confirmar. Cada acceso abre su destino y solicita una consulta. Contadores de la última lectura, con fecha/hora y aviso de datos parciales; no son información en tiempo real. Ver §20 del manual y `ios/ttactualidad/HOME-SCREEN-QUICK-ACTIONS.md` en esa rama.
-
-El usuario confirmó finalmente que **Quitar de Listas de 0.4.24 funciona**; se descartó una nueva modificación del diálogo.
-
-
-## Seguimiento de En elaboración (30/10/2026)
-
-Última fuente iPhone: **0.4.26 build32**, rama `fix/ttactualidad-ios-0.4.26-seguimiento-editorial`, basada en 0.4.25. Corrige consultas periódicas cuando hay noticias/tendencias aceptadas en elaboración, comprobación de cola antes/después del botón, fallback de cola vacía y overlays de reelaboración ya READY. Ver §21. No confundir una pantalla sin refrescar con un trigger no registrado ni con una redacción no ejecutada.
-
-
-**Nueva regla prioritaria del usuario, 30/10/2026:** toda pendiente del Top 30 (puestos 1–30) pasa automáticamente a En elaboración. Sustituye la restricción histórica de 11–30 manuales. Se conservan frescura de captura, cierres y explicaciones vigentes; el filtro Nuevas se elimina en iPhone 0.4.26. Ver §22.
-
-
-## Buscar una tendencia en X (30/10/2026)
-
-Última fuente iPhone **0.4.27 build33**, rama `fix/ttactualidad-ios-0.4.27-buscar-tendencias-x`. Todas las tendencias muestran **Buscar en X** al comienzo de sus acciones, también Sin explicación, En elaboración, Listas y originales agrupadas. Busca el nombre literal de la tarjeta con URLComponents, conservando hashtags y acentos. Ver §23.
+Al cambiar el sistema, **reescribir los apartados afectados de la memoria**, manteniendo una descripción coherente del funcionamiento vigente; registrar cambios y pruebas en el historial separado. La copia `TTActualidad-Memoria-Completa-2026-10-29.md` conserva nombre e identidad para adjuntarla desde cualquier chat.

@@ -10,7 +10,6 @@ from reconcile_prepared_ready import reconcile_prepared_ready
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
-EXPLANATION_TTL = timedelta(hours=48)
 
 def load(name, default):
     path = ROOT / name
@@ -83,6 +82,11 @@ def save_editorial_queue(requests_doc):
             "image_strategy": req.get("image_strategy"),
             "selected_tweet_image": req.get("selected_tweet_image"),
             "task": req.get("task") or "explain",
+            "red_review_request": req.get("red_review_request"),
+            "review_source": req.get("review_source"),
+            "review_error": req.get("review_error"),
+            "automatic_grouping": req.get("automatic_grouping"),
+            "published_context": req.get("published_context"),
             "listas_grouping_request": bool(req.get("listas_grouping_request")),
             "grouping_candidates": req.get("grouping_candidates") or [],
             "grouping_state": req.get("grouping_state"),
@@ -108,6 +112,7 @@ def save_editorial_queue(requests_doc):
     # Evita starvation: trabajo nuevo/revisiones primero; problematic al final.
     active.sort(key=lambda x: (
         1 if str(x.get("status") or "") == "problematic" else 0,
+        1 if x.get("red_review_request") else 0,
         str(x.get("requested_at") or ""),
     ))
     save("editorial-queue.json", {
@@ -558,78 +563,24 @@ if retired_problematic:
     reconciled = True
     print("Problemáticas antiguas retiradas:", retired_problematic)
 
-def explanation_expired(key):
-    """Solo reabre una tendencia con una explicación fechada de hace >48 h.
-
-    Si falta o no se puede interpretar la fecha, se conserva la deduplicación
-    anterior: una fecha desconocida no debe provocar reexplicaciones masivas.
-    """
-    explained_at = latest_explanation.get(key)
-    return bool(explained_at and now_dt - explained_at > EXPLANATION_TTL)
-
-def closed_name_eligible_for_new_event(req, item):
-    """A deleted old package must not block a genuinely new Top-30 occurrence.
-
-    Re-entry after 48h opens a separate ID; the old deleted revision stays
-    terminal. The rule also applies to repeated calendar or grouped topics.
-    """
-    if str((req or {}).get("status") or "").lower() not in CLOSED:
-        return False
-    # Apply 48h uniformly; a newer archive/delete time does not renew an
-    # editorial explanation and must not block a genuinely new Top-30 event.
-    last_explanation = latest_explanation.get(norm(item["name"]))
-    return bool(last_explanation and now_dt - last_explanation > EXPLANATION_TTL)
-
 to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
-    # The user's 48h Top-30 rule overrides old close/topic deduplication.
-    # Never override a newer active preparing/update or a manual correction.
-    status_before = str((req or {}).get("status") or "")
-    renewal_due = (
-        status_before in {"explained", "grouped", "inactive", *CLOSED}
-        and explanation_expired(key)
-    )
-    if key in recently_closed_names and not renewal_due:
-        continue
-    if (editorial_topic(item["name"]) in recently_closed_topics and
-            (req is None or req.get("auto_queued") is True) and
-            str((req or {}).get("request_source") or "") not in {
-              "github_pages_authorized_issue", "telegram_reexplain",
-              "telegram_private_deeplink_native"}
-            and not renewal_due):
-        continue
+    # Existing dated explanations are conditionally reviewed by editorial maintenance.
+    # Neither 24h nor 48h alone permits a duplicate publication or ID resurrection.
     status = str((req or {}).get("status") or "")
-    # A genuinely resurfaced Top-30 trend must be researched as a NEW event,
-    # never silently reuse the old deleted request or revive its media.
-    if status in CLOSED and closed_name_eligible_for_new_event(req, item):
-        print("Nuevo episodio Top 30 tras cierre anterior:", item["name"])
-        status = "new_event"
-    if req:
-        if item["rank"] <= 30 and status in {"explained", "grouped"} and explanation_expired(key):
-            reopened_at = now_dt.isoformat(timespec="seconds")
-            # Every new sports match / event needs an independent editorial ID.
-            # Reusing a historical ID or incrementing its revision can cause
-            # the AI bridge to treat a brand-new story as deleted/archived.
-            new_id = hashlib.sha256(
-                ("top10-fresh-episode|" + key + "|" + reopened_at + "|" + str(req.get("id") or "")).encode("utf-8")
-            ).hexdigest()[:12]
-            fresh = {
-                "id": new_id, "name": item["name"], "rank": item["rank"],
-                "status": "preparing", "revision": 0, "requested_at": reopened_at,
-                "updated_at": reopened_at, "reexplain": False, "with_image": True,
-                "disable_ai_image": False, "image_strategy": "ai_plus_fallback",
-                "ai_image_status": "pending", "auto_queued": True,
-                "auto_queue_scope": "top30", "originated_from_prior_id": req.get("id"),
-                "requested_together": [item["name"]],
-                "captured_with": [x["name"] for x in current],
-            }
-            requests.append(fresh)
-            by_name[key] = fresh
-            reconciled = True
-            print("Nuevo episodio Top 30 en elaboración:", item["name"], new_id)
+    if key in explained or key in latest_explanation:
+        if status not in {"preparing", "update", "problematic", "ready"}:
             continue
+    if key in recently_closed_names:
+        continue
+    if (editorial_topic(item["name"]) in recently_closed_topics
+            and (req is None or req.get("auto_queued") is True)
+            and str((req or {}).get("request_source") or "") not in {
+                "github_pages_authorized_issue", "telegram_reexplain", "telegram_private_deeplink_native"}):
+        continue
+    if req:
         # Una solicitud ready sin tarjeta prepared es un estado imposible:
         # normalmente indica una carrera o borrado parcial. Se reabre de forma
         # idempotente para que el siguiente pase editorial la reconstruya.
@@ -680,10 +631,6 @@ for item in current:
         if status in {"preparing", "update", "explained", "grouped", "dismissed",
                        "published", "removed", "deleted"}:
             continue
-        if status == "inactive" and key in explained and not explanation_expired(key):
-            continue
-    elif key in explained and not explanation_expired(key):
-        continue
     to_queue.append(item)
 
 if not to_queue:
@@ -704,9 +651,8 @@ for item in to_queue:
     name = item["name"]
     key = norm(name)
     req = by_name.get(key)
-    closed_reentry = closed_name_eligible_for_new_event(req, item)
     inactive_reentry = bool(req and str(req.get("status") or "") == "inactive")
-    independent_episode = closed_reentry or inactive_reentry
+    independent_episode = inactive_reentry
     req_id = (
         hashlib.sha256(("top10-reentry|" + key + "|" + now + "|" +
                         str((req or {}).get("id") or "")).encode("utf-8")).hexdigest()[:12]
