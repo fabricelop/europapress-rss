@@ -3,23 +3,25 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T16:25:00+01:00",
+  "last_started_at": "2026-10-30T16:31:30+01:00",
   "last_completed_at": "2026-10-30T16:19:30+01:00",
-  "updated_at": "2026-10-30T16:26:00+01:00",
+  "updated_at": "2026-10-30T16:31:30+01:00",
   "status": "running",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "9e3ff09b8b1c",
-    "58e2ff7f9b16"
+    "listas-auto-db9fb6c63f89ac444f77",
+    "red-review-ecba76c4274e57ce9970",
+    "red-review-cf6acca8b418ced525e5"
   ],
   "remaining_active_ids": [
-    "9e3ff09b8b1c",
-    "58e2ff7f9b16"
+    "listas-auto-db9fb6c63f89ac444f77",
+    "red-review-ecba76c4274e57ce9970",
+    "red-review-cf6acca8b418ced525e5"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793373900000-manual",
-  "previous_run_id": "tr-1793373479613-manual",
+  "run_id": "tr-1793374254132-manual",
+  "previous_run_id": "tr-1793373900000-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -29,7 +31,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 2,
+    "remaining_active": 3,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -38,18 +40,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T16:25:00+01:00",
+      "at": "2026-10-30T16:31:30+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio: 2 investigaciones nuevas preparing vigentes (#TEM30O y Blanca), de antiguas a recientes. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T16:26:00+01:00",
-      "phase": "investigating",
-      "trend_id": "9e3ff09b8b1c",
-      "title": "#TEM30O",
-      "message": "Sigue preparing r0 y TT#14. Contexto televisivo verificado; detonante exacto no confirmado."
+      "message": "Inicio: 3 trabajos preparing vigentes: agrupación automática de Listas, revisión de Alvia y revisión de Renfe. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -58,26 +53,27 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793373900000-manual",
+    "run_id": "tr-1793374254132-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "investigating",
-    "started_at": "2026-10-30T16:25:00+01:00",
-    "updated_at": "2026-10-30T16:26:00+01:00",
+    "phase": "preparing",
+    "started_at": "2026-10-30T16:31:30+01:00",
+    "updated_at": "2026-10-30T16:31:30+01:00",
     "finished_at": null,
     "current": 0,
-    "total": 2,
-    "trend_id": "9e3ff09b8b1c",
-    "title": "#TEM30O",
+    "total": 3,
+    "trend_id": null,
+    "title": null,
     "queue_complete": false,
     "remaining_active_ids": [
-      "9e3ff09b8b1c",
-      "58e2ff7f9b16"
+      "listas-auto-db9fb6c63f89ac444f77",
+      "red-review-ecba76c4274e57ce9970",
+      "red-review-cf6acca8b418ced525e5"
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Investigando #TEM30O; causa exacta no confirmada.",
+    "message": "Procesando 3 trabajos preparing vigentes. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -87,7 +83,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 2,
+      "remaining_active": 3,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -98,18 +94,11 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T16:25:00+01:00",
+        "at": "2026-10-30T16:31:30+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio: 2 investigaciones nuevas preparing vigentes (#TEM30O y Blanca), de antiguas a recientes. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T16:26:00+01:00",
-        "phase": "investigating",
-        "trend_id": "9e3ff09b8b1c",
-        "title": "#TEM30O",
-        "message": "Sigue preparing r0 y TT#14. Contexto televisivo verificado; detonante exacto no confirmado."
+        "message": "Inicio: 3 trabajos preparing vigentes: agrupación automática de Listas, revisión de Alvia y revisión de Renfe. Sin ImageGen."
       }
     ],
     "final_outcomes": []
