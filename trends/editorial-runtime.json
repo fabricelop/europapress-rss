@@ -3,17 +3,17 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T18:40:00+01:00",
-  "last_completed_at": "2026-10-30T18:41:15+01:00",
-  "updated_at": "2026-10-30T18:41:15+01:00",
+  "last_started_at": "2026-10-30T18:55:00+01:00",
+  "last_completed_at": "2026-10-30T18:58:00+01:00",
+  "updated_at": "2026-10-30T18:58:00+01:00",
   "status": "DONE",
   "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793382000000-manual",
-  "previous_run_id": "tr-1793381257350-manual",
+  "run_id": "tr-1793382900000-manual",
+  "previous_run_id": "tr-1793382000000-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -32,18 +32,25 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T18:40:00+01:00",
+      "at": "2026-10-30T18:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada manual iniciada. Cola inicial 0. Sin ImageGen."
     },
     {
-      "at": "2026-10-30T18:41:15+01:00",
+      "at": "2026-10-30T18:56:37+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Top 30 vigente capturado a las 18:50:55; sin preparing/update ni rewrite_pending. Se solicitó refresco manual adicional del radar."
+    },
+    {
+      "at": "2026-10-30T18:58:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Verificación final en main: editorial-queue 0, sin preparing/update ni rewrite_pending en requests. Sin ImageGen."
+      "message": "Verificación final en main: editorial-queue 0, sin preparing/update ni reexplicación pendiente. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -52,13 +59,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793382000000-manual",
+    "run_id": "tr-1793382900000-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T18:40:00+01:00",
-    "updated_at": "2026-10-30T18:41:15+01:00",
-    "finished_at": "2026-10-30T18:41:15+01:00",
+    "started_at": "2026-10-30T18:55:00+01:00",
+    "updated_at": "2026-10-30T18:58:00+01:00",
+    "finished_at": "2026-10-30T18:58:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -89,18 +96,25 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T18:40:00+01:00",
+        "at": "2026-10-30T18:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada manual iniciada. Cola inicial 0. Sin ImageGen."
       },
       {
-        "at": "2026-10-30T18:41:15+01:00",
+        "at": "2026-10-30T18:56:37+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Top 30 vigente capturado a las 18:50:55; sin preparing/update ni rewrite_pending. Se solicitó refresco manual adicional del radar."
+      },
+      {
+        "at": "2026-10-30T18:58:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Verificación final en main: editorial-queue 0, sin preparing/update ni rewrite_pending en requests. Sin ImageGen."
+        "message": "Verificación final en main: editorial-queue 0, sin preparing/update ni reexplicación pendiente. Sin ImageGen."
       }
     ],
     "final_outcomes": []
@@ -108,8 +122,8 @@
   "error": null,
   "api_failover_enabled": false,
   "phase": "closing",
-  "started_at": "2026-10-30T18:40:00+01:00",
-  "finished_at": "2026-10-30T18:41:15+01:00",
+  "started_at": "2026-10-30T18:55:00+01:00",
+  "finished_at": "2026-10-30T18:58:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
