@@ -9,8 +9,9 @@ Para empezar un chat de reparación:
 ## Identidad y reglas
 
 - **Datos editoriales:** main. **Triggers/ACK/jobs:** ramas control. **Ejecución del PC:** logs Windows. Una de esas pruebas no sustituye a las otras.
-- **iPhone de esta entrega:** 0.4.28 build34, `feature/ttactualidad-ios-0.4.28-revision-y-grupos`. La fuente iOS de main puede ser anterior. Confirmar qué IPA está instalada antes de editar.
+- **Última entrega iPhone compilada:** 0.4.29 build35, `feature/ttactualidad-ios-0.4.29-orden-listas`. La instalación física no está acreditada. La fuente iOS de main puede ser anterior. Confirmar qué IPA está instalada antes de editar.
 - **Windows:** `desktop/ttactualidad/TTActualidad_Moderno.pyw`, Qt; preferencia ZIP sin EXE. No confundir con la web anterior ni con Tkinter.
+- **Orden de tendencias en Listas:** número ascendente; sin número válido al final.
 - **Todas las pendientes del Top30 entran automáticamente**. Fuera del ranking, el Radar solo encarga hasta dos borradores fuertes: sin puesto inventado, Listas, IA ni publicación; al entrar en Top30 se revalidan y reutilizan. No hay filtro Nuevas. Presupuesto externo0€; mismas fuentes y captura paralela de cuatro workers, sin aumentar frecuencia.
 - **Revisión de novedades:** primero rojas (>24h), después amarillas (12–24h) y verdes (<12h). Máximo dos comprobaciones automáticas por ventana móvil de15min, máximo dos activas y una por origen/hora, con Top30 fresco. Las revisiones manuales tienen prioridad y no consumen ese cupo. Sin novedades conserva texto, fecha y color. Una actualización continuada usa «sigue siendo tendencia por…»; un episodio distinto requiere verificación y otra identidad.
 - **Agrupación automática:** al cerrar texto y antes de pedir IA, comparar el mismo acontecimiento y cobertura ya publicada. Conservar originales, marcadas Agrupada en…; ambigüedad significa mantener separadas.
