@@ -17006,7 +17006,6 @@
       "updated_at": "2026-10-30T14:49:30+01:00",
       "auto_queued": false,
       "with_image": true,
-      "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "ready",
@@ -17074,18 +17073,20 @@
       "rewrite_pending": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "last_attempt_at": "2026-10-30T14:52:30+01:00",
       "rank_at_explanation": 21,
       "source": "editorial_chat_direct",
       "news_disposition": "ignored",
       "news_note": "Tendencia ligada al anuncio de que Transportes valora suspender temporalmente la línea Madrid-Barcelona durante su renovación.",
-      "telegram_package_status": "explained"
+      "telegram_package_status": "explained",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-30T14:52:30+01:00",
+  "updated_at": "2026-10-30T13:53:08.620623Z",
   "count": 304
 }
