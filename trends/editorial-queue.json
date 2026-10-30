@@ -1,33 +1,47 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T18:24:53.507313+00:00",
+  "updated_at": "2026-10-30T19:26:10+01:00",
   "count": 1,
   "items": [
     {
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "task": "explain",
+      "anticipation_request": null,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "listas_grouping_request": null,
+      "grouping_candidates": null,
+      "grouping_state": null,
+      "grouping_error": null,
       "id": "e40be8e866b4",
       "name": "Ronaldo Nazário",
       "rank": 5,
-      "revision": 1,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-30T18:24:53.507313+00:00",
-      "task": "explain",
-      "auto_queued": false,
-      "request_source": "ttactualidad_editor_hints",
-      "with_image": true,
-      "disable_ai_image": false,
-      "rewrite_with_image": true,
-      "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
+      "revision": 1,
       "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nEs por una encuesta de un usuario que pone 4 escudos y pregunta quien ha jugado en los cuatro equipos.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
-      "user_pistas": [
-        {
-          "at": "2026-10-30T18:24:53.507313+00:00",
-          "source_revision": 0,
-          "text": "Es por una encuesta de un usuario que pone 4 escudos y pregunta quien ha jugado en los cuatro equipos.",
-          "verification": "unverified_editor_context"
-        }
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_instruction": "La ejecución editorial NO genera IA. Para todo item explicado que no sea Tremending ni tenga un bloqueo explícito actual, deja la IA pendiente para un chat de imagen independiente por item. No marques disable_ai_image solo por separar las ejecuciones. Un failed/none/disabled heredado sin ai_image_block_reason explícito se considera pendiente/reintentable.",
+      "batch_id": null,
+      "requested_together": [
+        "Ronaldo Nazário"
       ],
-      "hints_verification_status": "unverified"
+      "captured_with": [],
+      "auto_queued": false,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
