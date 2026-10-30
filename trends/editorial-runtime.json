@@ -3,29 +3,24 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T14:56:00+01:00",
+  "last_started_at": "2026-10-30T15:05:00+01:00",
   "last_completed_at": "2026-10-30T15:00:00+01:00",
-  "updated_at": "2026-10-30T15:00:00+01:00",
-  "status": "done",
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-fc632ae8435ee7ca7518",
-    "red-review-e5ce7866b17650cf6a98",
-    "red-review-b00db6420f77a5793f55",
-    "red-review-6c75d38f9afd25004f2d",
-    "red-review-57995fbed045dc251683",
-    "red-review-85fc60c70503123bd2d9",
-    "red-review-4430193b76380af83f7f",
-    "0151e1be35f5",
-    "listas-auto-fc658ba836ce6ad59bf9",
-    "listas-auto-bb6e636bf571c9bb23f5"
+  "updated_at": "2026-10-30T15:05:00+01:00",
+  "status": "running",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "dc90fe5a413e",
+    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "dc90fe5a413e",
+    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+  ],
   "remaining_problematic_ids": [
     "c6e758d97041"
   ],
-  "run_id": "tr-1793368303148-manual",
+  "run_id": "tr-1793369096516-manual",
   "previous_run_id": "tr-1793368303148-manual",
   "summary": {
     "attempted": 11,
@@ -56,60 +51,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T14:56:00+01:00",
+      "at": "2026-10-30T15:05:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada tr-1793368559980-manual: relectura inicial; el único group_listas observado cambió concurrentemente antes de su validación JIT."
-    },
-    {
-      "at": "2026-10-30T14:56:30+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-bb6e636bf571c9bb23f5",
-      "title": "Agrupación automática de Listas",
-      "message": "Validación JIT: la revisión ya no estaba en preparing/update. Se respetó el resultado concurrente; outbox verificado con groups:[] y covered_by_existing:[]."
-    },
-    {
-      "at": "2026-10-30T14:57:30+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: 0 preparing/update y 0 reexplicaciones/rewrite_pending. Se conserva Pobrecito como problematic; no se reabre ni se cuenta como trabajo activo."
-    },
-    {
-      "at": "2026-10-30T14:58:00+01:00",
-      "phase": "closing",
-      "trend_id": "c6e758d97041",
-      "title": "Pobrecito",
-      "message": "Reintento completado: permanece en Top 30, pero no hay detonante concreto y actual corroborado tras búsquedas generales y contextuales."
-    },
-    {
-      "at": "2026-10-30T14:58:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cierre autoritativo: 0 preparing/update y 0 rewrite_pending; queda 1 problemática no resuelta. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-30T14:57:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": "Revisiones rojas",
-      "message": "Aplicación concurrente revalidada: Renfe, ERTMS y ASFA actualizadas; #LeyendasPokemonZA y Koldo García sin cambios; Toledo cerrada stale."
-    },
-    {
-      "at": "2026-10-30T14:59:00+01:00",
-      "phase": "investigating",
-      "trend_id": "c6e758d97041",
-      "title": "Pobrecito",
-      "message": "Reintento final con búsquedas independientes: señal social confirmada, sin detonante concreto verificable."
-    },
-    {
-      "at": "2026-10-30T15:00:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cierre verificado en main: 0 preparing/update y 0 rewrite_pending; queda 1 problematic (Pobrecito)."
+      "message": "Pasada tr-1793369096516-manual: cola inicial 2; validando #30OctubrESP r0 y agrupación manual de Listas."
     }
   ],
   "ratings_snapshot": {
@@ -210,121 +156,54 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793368303148-manual",
+    "run_id": "tr-1793369096516-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T14:52:30+01:00",
-    "updated_at": "2026-10-30T15:00:00+01:00",
-    "finished_at": "2026-10-30T15:00:00+01:00",
-    "current": 11,
-    "total": 11,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T15:05:00+01:00",
+    "updated_at": "2026-10-30T15:05:00+01:00",
+    "finished_at": null,
+    "current": 0,
+    "total": 2,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "dc90fe5a413e",
+      "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+    ],
     "remaining_problematic_ids": [
       "c6e758d97041"
     ],
-    "processed_ids": [
-      "listas-auto-fc632ae8435ee7ca7518",
-      "red-review-e5ce7866b17650cf6a98",
-      "red-review-b00db6420f77a5793f55",
-      "red-review-6c75d38f9afd25004f2d",
-      "red-review-57995fbed045dc251683",
-      "red-review-85fc60c70503123bd2d9",
-      "red-review-4430193b76380af83f7f",
-      "0151e1be35f5",
-      "listas-auto-fc658ba836ce6ad59bf9",
-      "listas-auto-bb6e636bf571c9bb23f5"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada y revalidada: Madrid-Barcelona explicado; Pobrecito sigue problematic tras reintento; 6 revisiones rojas cerradas (3 updated, 2 unchanged, 1 stale) y 3 agrupaciones automáticas completadas sin crear grupos. Sin preparing/update ni rewrite_pending.",
+    "message": "Preparando pasada editorial real: 2 trabajos activos.",
     "summary": {
-      "attempted": 11,
-      "explained": 1,
+      "attempted": 0,
+      "explained": 0,
       "explanation_groups": 0,
-      "new_cards": 1,
-      "problematic": 1,
-      "final_resolved": 10,
-      "skipped_concurrent": 2,
-      "remaining_active": 0,
-      "remaining_problematic": 1,
-      "visual_backlog": 0,
-      "pending_repair_triggered": 0,
+      "new_cards": 0,
+      "problematic": 0,
+      "final_resolved": 0,
+      "skipped_concurrent": 0,
+      "remaining_active": 2,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
-      "remates_omitted": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0,
-      "grouping_requests": 3,
+      "grouping_requests": 1,
       "groups_created": 0,
-      "members_covered": 0,
-      "red_reviews": 6,
-      "red_reviews_updated": 3,
-      "red_reviews_unchanged": 2,
-      "red_reviews_unverified": 1
+      "members_covered": 0
     },
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T14:56:00+01:00",
+        "at": "2026-10-30T15:05:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada tr-1793368559980-manual: relectura inicial; el único group_listas observado cambió concurrentemente antes de su validación JIT."
-      },
-      {
-        "at": "2026-10-30T14:56:30+01:00",
-        "phase": "verifying",
-        "trend_id": "listas-auto-bb6e636bf571c9bb23f5",
-        "title": "Agrupación automática de Listas",
-        "message": "Validación JIT: la revisión ya no estaba en preparing/update. Se respetó el resultado concurrente; outbox verificado con groups:[] y covered_by_existing:[]."
-      },
-      {
-        "at": "2026-10-30T14:57:30+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main: 0 preparing/update y 0 reexplicaciones/rewrite_pending. Se conserva Pobrecito como problematic; no se reabre ni se cuenta como trabajo activo."
-      },
-      {
-        "at": "2026-10-30T14:58:00+01:00",
-        "phase": "closing",
-        "trend_id": "c6e758d97041",
-        "title": "Pobrecito",
-        "message": "Reintento completado: permanece en Top 30, pero no hay detonante concreto y actual corroborado tras búsquedas generales y contextuales."
-      },
-      {
-        "at": "2026-10-30T14:58:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre autoritativo: 0 preparing/update y 0 rewrite_pending; queda 1 problemática no resuelta. Sin ImageGen ni publicación."
-      },
-      {
-        "at": "2026-10-30T14:57:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": "Revisiones rojas",
-        "message": "Aplicación concurrente revalidada: Renfe, ERTMS y ASFA actualizadas; #LeyendasPokemonZA y Koldo García sin cambios; Toledo cerrada stale."
-      },
-      {
-        "at": "2026-10-30T14:59:00+01:00",
-        "phase": "investigating",
-        "trend_id": "c6e758d97041",
-        "title": "Pobrecito",
-        "message": "Reintento final con búsquedas independientes: señal social confirmada, sin detonante concreto verificable."
-      },
-      {
-        "at": "2026-10-30T15:00:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre verificado en main: 0 preparing/update y 0 rewrite_pending; queda 1 problematic (Pobrecito)."
+        "message": "Pasada tr-1793369096516-manual: cola inicial 2; validando #30OctubrESP r0 y agrupación manual de Listas."
       }
     ]
   },
