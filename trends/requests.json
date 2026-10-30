@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T15:51:05+01:00",
+  "updated_at": "2026-10-30T15:57:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -7737,10 +7737,28 @@
       ],
       "auto_queued": true,
       "auto_queue_scope": "top30",
-      "problematic_at": "2026-10-30T15:45:56+01:00",
-      "problem_reason": "Tras búsquedas independientes se confirma que «Pobrecito» ha entrado en tendencias, pero no aparece una fuente pública verificable que permita identificar un detonante único y actual. Los usos recuperables son dispersos y no bastan para atribuir causalmente la tendencia; se mantiene sin explicación para no inventarla.",
-      "problematic_attempts": 1,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "problematic_at": "2026-10-30T15:57:00+01:00",
+      "problem_reason": "Reintento manual con búsquedas independientes actuales: «Pobrecito» sigue apareciendo en el radar, pero no se verifica un detonante único y actual. Hay usos dispersos relacionados con Urda y con comentarios políticos, sin corroboración suficiente para atribuir causalmente la tendencia.",
+      "problematic_attempts": 2,
+      "editorial_engine": "chat-direct",
+      "updated_at": "2026-10-30T15:57:00+01:00",
+      "investigation_history": [
+        {
+          "at": "2026-10-30T15:56:00+01:00",
+          "query": "«Pobrecito» tendencia España 30 octubre 2026",
+          "result": "confirma presencia en tendencias, sin detonante único verificable"
+        },
+        {
+          "at": "2026-10-30T15:56:00+01:00",
+          "query": "«Pobrecito» Urda / operario ADIF / Óscar Puente",
+          "result": "usos dispersos; no permiten atribuir causalmente la tendencia"
+        },
+        {
+          "at": "2026-10-30T15:56:00+01:00",
+          "query": "«Pobrecito» Paco Castañares Pedro Sánchez",
+          "result": "existe una pieza del 23 de octubre, demasiado antigua y sin señal suficiente para explicar la entrada actual"
+        }
+      ]
     }
   ]
 }
