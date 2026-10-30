@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T15:53:50.018478+00:00",
+  "updated_at": "2026-10-30T15:55:19.509609+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8093,41 +8093,35 @@
       "id": "37073f5f219f",
       "name": "Pepiño Blanco",
       "rank": 19,
-      "status": "explained",
-      "requested_at": "2026-10-30T16:01:29+01:00",
-      "revision": 0,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-30T15:55:19.509609+00:00",
+      "updated_at": "2026-10-30T15:55:19.509609+00:00",
       "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
-      "alternatives_target": 0,
-      "batch_id": "ce9b276a1ab6",
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "image_choice": "none",
+      "image_pending": true,
+      "fallback_image_status": "pending",
+      "ai_image_status": "pending",
       "requested_together": [
         "Pepiño Blanco"
       ],
-      "captured_with": [
-        "Picanya",
-        "#OscarMuerte",
-        "#30OctubrESP",
-        "Gaspar",
-        "Adamuz y Urda",
-        "Pepiño Blanco",
-        "Pepe Blanco",
-        "CECOPI",
-        "Dimitir",
-        "AVE Madrid",
-        "David Sánchez",
-        "Miguel Hernández",
-        "La UCO",
-        "Cáncer"
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nPepiño blanco y Pepe blanco son la misma persona. Lo culpan de ser el responsable de seguridad durante el accidente de anglois. Verifícalo, y agrupa las dos tendencias.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
+        {
+          "at": "2026-10-30T15:55:19.509609+00:00",
+          "source_revision": 0,
+          "text": "Pepiño blanco y Pepe blanco son la misma persona. Lo culpan de ser el responsable de seguridad durante el accidente de anglois. Verifícalo, y agrupa las dos tendencias.",
+          "verification": "unverified_editor_context"
+        }
       ],
-      "auto_queued": true,
-      "auto_queue_scope": "top30",
-      "updated_at": "2026-10-30T16:20:00+01:00",
-      "explained_at": "2026-10-30T16:20:00+01:00",
-      "explanation": "TT#19 Pepiño Blanco aparece entre las tendencias, pero no se ha podido confirmar un detonante actual y verificable que explique el término.",
-      "closer_text": "",
-      "category": "Redes/Política",
-      "editorial_engine": "chat-direct",
-      "verification_sources": [],
       "investigation_history": [
         {
           "at": "2026-10-30T16:20:00+01:00",
@@ -8138,12 +8132,15 @@
           "at": "2026-10-30T16:20:00+01:00",
           "query": "Pepiño Blanco Urda accidente tren 2026",
           "result": "No se obtiene evidencia independiente para vincular causalmente el término con el debate ferroviario actual."
+        },
+        {
+          "revision": 0,
+          "status": "explained",
+          "problem_reason": "",
+          "last_attempt_at": ""
         }
       ],
-      "editorial_grouping_state": "cleared",
-      "uncertainty_reason": "Detonante actual no confirmado.",
-      "editorial_grouping_fingerprint": "6ba1188aa70fe80d4eed734aee4ec4487378f4ef7b301aa800f9bf80a1fa12fe",
-      "editorial_grouping_checked_at": "2026-10-30T15:53:50.018478+00:00"
+      "hints_verification_status": "unverified"
     },
     {
       "id": "198ebafff410",
