@@ -15,10 +15,27 @@ struct CellSiteDay:Identifiable {
     var seconds:TimeInterval { portions.reduce(0) {$0+$1.seconds} }
 }
 
+struct CellSiteMonth:Identifiable {
+    let year:Int
+    let number:Int
+    let title:String
+    let days:[CellSiteDay]
+    var id:String { String(year) + "-" + String(number) }
+    var seconds:TimeInterval { days.reduce(0) {$0+$1.seconds} }
+}
+
+struct CellSiteYear:Identifiable {
+    let number:Int
+    let months:[CellSiteMonth]
+    var id:Int { number }
+    var seconds:TimeInterval { months.reduce(0) {$0+$1.seconds} }
+}
+
 struct CellSiteRecord: Identifiable {
     let site:IdentifiedSite
     let visits:[SiteVisitRecord]
     let days:[CellSiteDay]
+    let years:[CellSiteYear]
     var id:UUID { site.id }
     var seconds:TimeInterval { visits.reduce(0) {$0+$1.gpsSeconds} }
     var verifiedSeconds:TimeInterval {
@@ -52,6 +69,38 @@ enum CellSiteHistoryIndex {
         }.sorted {$0.date > $1.date}
     }
 
+    /// Mirrors Histórico's year → month → day tree. Build once alongside
+    /// the existing site index, never during a SwiftUI disclosure animation.
+    /// Days use the device's calendar, including local DST transitions.
+    static func years(for days:[CellSiteDay],
+                      calendar:Calendar = .current)->[CellSiteYear] {
+        var grouped:[Int:[Int:[CellSiteDay]]]=[:]
+        for day in days {
+            let components=calendar.dateComponents([.year,.month],from:day.date)
+            guard let year=components.year,let month=components.month else { continue }
+            grouped[year,default:[:]][month,default:[]].append(day)
+        }
+
+        let formatter=DateFormatter()
+        formatter.locale=Locale(identifier:"es_ES")
+        formatter.calendar=calendar
+        formatter.timeZone=calendar.timeZone
+        formatter.dateFormat="LLLL"
+
+        return grouped.keys.sorted(by:>).map { year in
+            let months=(grouped[year] ?? [:]).keys.sorted(by:>).map { month in
+                let ordered=(grouped[year]?[month] ?? [])
+                    .sorted {$0.date < $1.date}
+                let title=ordered.first.map {
+                    formatter.string(from:$0.date).capitalized
+                } ?? ""
+                return CellSiteMonth(year:year,number:month,
+                                     title:title,days:ordered)
+            }
+            return CellSiteYear(number:year,months:months)
+        }
+    }
+
     static func ranked(cell:Cell, intervals:[AssignedInterval],
                        parts:[SiteStayPart],
                        assignments:[SiteStayAssignment],
@@ -63,8 +112,9 @@ enum CellSiteHistoryIndex {
             guard let site=known[siteID] else { return nil }
             let sameGrid=all.filter { $0.cell.id == cell.id }
             guard !sameGrid.isEmpty else { return nil }
+            let dated=days(for:sameGrid)
             return CellSiteRecord(site:site,visits:sameGrid,
-                                  days:days(for:sameGrid))
+                                  days:dated,years:years(for:dated))
         }.sorted {
             $0.seconds == $1.seconds
                 ? $0.site.name.localizedStandardCompare($1.site.name) == .orderedAscending
