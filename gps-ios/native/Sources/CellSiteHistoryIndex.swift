@@ -22,7 +22,7 @@ struct CellSiteRecord: Identifiable {
     var id:UUID { site.id }
     var seconds:TimeInterval { visits.reduce(0) {$0+$1.gpsSeconds} }
     var verifiedSeconds:TimeInterval {
-        visits.filter(\\.confirmed).reduce(0) {$0+$1.gpsSeconds}
+        visits.filter(\.confirmed).reduce(0) {$0+$1.gpsSeconds}
     }
 }
 
