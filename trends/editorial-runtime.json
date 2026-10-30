@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T17:25:05+01:00",
-  "last_completed_at": "2026-10-30T17:30:40+01:00",
-  "updated_at": "2026-10-30T17:30:40+01:00",
+  "last_completed_at": "2026-10-30T17:31:00+01:00",
+  "updated_at": "2026-10-30T17:31:00+01:00",
   "status": "DONE",
   "queue_complete": true,
   "processed_ids": [
@@ -89,6 +89,20 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada completada 2/2. Repsol y Koldo García revisados sin novedades sustanciales; cola final 0 y sin rewrite_pending. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T17:31:00+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-f62ec3ed348cf7a88824",
+      "title": "Koldo García",
+      "message": "Resultado aplicado y verificado en main: unchanged; se conserva texto y fecha."
+    },
+    {
+      "at": "2026-10-30T17:31:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Pasada completada sin ImageGen."
     }
   ],
   "incidents": [],
@@ -102,8 +116,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-30T17:25:05+01:00",
-    "updated_at": "2026-10-30T17:30:40+01:00",
-    "finished_at": "2026-10-30T17:30:40+01:00",
+    "updated_at": "2026-10-30T17:31:00+01:00",
+    "finished_at": "2026-10-30T17:31:00+01:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
@@ -116,7 +130,7 @@
       "red-review-f62ec3ed348cf7a88824"
     ],
     "partial": false,
-    "message": "Pasada completada 2/2: Repsol y Koldo García sin novedades sustanciales; se conservan texto y fecha. Cola final 0, sin preparing/update ni rewrite_pending. Sin ImageGen.",
+    "message": "Pasada completada 2/2: Repsol y Koldo García revisadas sin novedades sustanciales; textos y fechas conservados. Cola final 0. Sin ImageGen.",
     "summary": {
       "attempted": 2,
       "explained": 0,
@@ -191,6 +205,20 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada completada 2/2. Repsol y Koldo García revisados sin novedades sustanciales; cola final 0 y sin rewrite_pending. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T17:31:00+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-f62ec3ed348cf7a88824",
+        "title": "Koldo García",
+        "message": "Resultado aplicado y verificado en main: unchanged; se conserva texto y fecha."
+      },
+      {
+        "at": "2026-10-30T17:31:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Pasada completada sin ImageGen."
       }
     ],
     "final_outcomes": [
@@ -212,7 +240,7 @@
   "api_failover_enabled": false,
   "phase": "closing",
   "started_at": "2026-10-30T17:25:05+01:00",
-  "finished_at": "2026-10-30T17:30:40+01:00",
+  "finished_at": "2026-10-30T17:31:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
