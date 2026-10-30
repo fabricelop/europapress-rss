@@ -14,6 +14,7 @@ struct CellHistoryView: View {
     @State private var generation = UUID()
     @State private var showGrid = false
     @State private var showTerritories = false
+    @State private var showSites = false
     @State private var showHistory = false
 
     var body: some View {
@@ -42,6 +43,10 @@ struct CellHistoryView: View {
                 } label: {
                     Label("Ver en el mapa", systemImage: "map")
                 }
+            }
+
+            DisclosureGroup("Sitios", isExpanded: $showSites) {
+                CellSiteHistorySection(model:model,cell:cell)
             }
 
             DisclosureGroup("Territorios", isExpanded: $showTerritories) {
