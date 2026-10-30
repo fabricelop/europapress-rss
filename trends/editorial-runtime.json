@@ -3,31 +3,33 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T16:58:47.357000+01:00",
+  "last_started_at": "2026-10-30T17:05:45+01:00",
   "last_completed_at": "2026-10-30T17:04:16.569573+01:00",
-  "updated_at": "2026-10-30T17:04:16.569573+01:00",
-  "status": "DONE",
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-92e9987cb568328a7e10",
-    "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
-    "b3d64fecfa82"
+  "updated_at": "2026-10-30T17:05:45+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-3777a6c4d696d3cae706",
+    "red-review-2713bd95a48b107da047"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-3777a6c4d696d3cae706",
+    "red-review-2713bd95a48b107da047"
+  ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793375927357-manual",
-  "previous_run_id": "tr-1793375721801-manual",
+  "run_id": "tr-1793376255512-manual",
+  "previous_run_id": "tr-1793375927357-manual",
   "summary": {
-    "attempted": 1,
-    "explained": 1,
+    "attempted": 0,
+    "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 2,
-    "groups_created": 1,
-    "members_covered": 2,
-    "remaining_active": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "members_covered": 0,
+    "remaining_active": 2,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -36,46 +38,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T16:58:47.357000+01:00",
+      "at": "2026-10-30T17:05:45+01:00",
       "phase": "preparing",
-      "trend_id": "listas-auto-92e9987cb568328a7e10",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio de la pasada: releídos contrato y cola; detectada una agrupación automática pendiente. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T17:00:30+01:00",
-      "phase": "investigating",
-      "trend_id": "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Apareció una segunda solicitud manual para Pepiño Blanco + Pepe Blanco; se mantuvo validación JIT y se evitó duplicar trabajo."
-    },
-    {
-      "at": "2026-10-30T17:01:20+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-92e9987cb568328a7e10",
-      "title": "Agrupación automática de Listas",
-      "message": "Verificado en main: la automática creó listas-joint-8df76ba72c6ae8b7 y cubrió Pepiño Blanco r1 + Pepe Blanco r0; la manual quedó grouping_completed con ambos miembros stale tras esa cobertura."
-    },
-    {
-      "at": "2026-10-30T17:04:15+01:00",
-      "phase": "investigating",
-      "trend_id": "b3d64fecfa82",
-      "title": "Ignacio Relaño",
-      "message": "La relectura detectó una entrada nueva en cola: Ignacio Relaño r0. Se reabrió la pasada y se investigó el detonante actual. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T17:04:30+01:00",
-      "phase": "persisting",
-      "trend_id": "b3d64fecfa82",
-      "title": "Ignacio Relaño",
-      "message": "Ignacio Relaño r0 quedó persistido en requests y telegram-manual-explained con el mismo explained_at, texto factual y sin remate por tratarse de una tragedia."
-    },
-    {
-      "at": "2026-10-30T17:04:16.569573+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: editorial-queue.json count 0; no quedan preparing/update ni rewrite_pending. Sin ImageGen ni envíos."
+      "trend_id": "red-review-3777a6c4d696d3cae706",
+      "title": "Revisar novedades: Toledo",
+      "message": "Inicio de pasada: releídos contrato y estado autoritativo; dos revisiones rojas activas (Toledo y Renfe), del más antiguo al más reciente. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -170,11 +137,11 @@
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T16:58:47.357000+01:00",
-  "finished_at": "2026-10-30T17:04:16.569573+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null
+  "phase": "preparing",
+  "started_at": "2026-10-30T17:05:45+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-3777a6c4d696d3cae706",
+  "title": "Revisar novedades: Toledo"
 }
