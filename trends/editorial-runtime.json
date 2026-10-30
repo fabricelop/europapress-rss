@@ -5,20 +5,24 @@
   "canonical": true,
   "last_started_at": "2026-10-30T16:58:47.357000+01:00",
   "last_completed_at": "2026-10-30T17:01:51.380650+01:00",
-  "updated_at": "2026-10-30T17:01:51.380650+01:00",
-  "status": "DONE",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T17:04:15+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [
     "listas-auto-92e9987cb568328a7e10",
     "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "b3d64fecfa82"
+  ],
+  "remaining_active_ids": [
+    "b3d64fecfa82"
+  ],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793375927357-manual",
   "previous_run_id": "tr-1793375721801-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
@@ -26,7 +30,7 @@
     "grouping_requests": 2,
     "groups_created": 1,
     "members_covered": 2,
-    "remaining_active": 0,
+    "remaining_active": 1,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -61,6 +65,13 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: editorial-queue.json count 0; no quedan preparing/update ni rewrite_pending. Sin ImageGen ni envíos."
+    },
+    {
+      "at": "2026-10-30T17:04:15+01:00",
+      "phase": "investigating",
+      "trend_id": "b3d64fecfa82",
+      "title": "Ignacio Relaño",
+      "message": "La relectura detectó una entrada nueva en cola: Ignacio Relaño r0. Se reabre la pasada y se investiga el detonante actual. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -71,26 +82,28 @@
     "project": "TTendencias",
     "run_id": "tr-1793375927357-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
+    "status": "RUNNING",
+    "phase": "investigating",
     "started_at": "2026-10-30T16:58:47.357000+01:00",
-    "updated_at": "2026-10-30T17:01:51.380650+01:00",
-    "finished_at": "2026-10-30T17:01:51.380650+01:00",
+    "updated_at": "2026-10-30T17:04:15+01:00",
+    "finished_at": null,
     "current": 2,
-    "total": 2,
-    "trend_id": null,
-    "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "total": 3,
+    "trend_id": "b3d64fecfa82",
+    "title": "Ignacio Relaño",
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "b3d64fecfa82"
+    ],
     "remaining_problematic_ids": [],
     "processed_ids": [
       "listas-auto-92e9987cb568328a7e10",
       "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82"
     ],
     "partial": false,
-    "message": "Pasada cerrada tras revalidación JIT: Pepiño Blanco r1 y Pepe Blanco r0 quedaron agrupados en listas-joint-8df76ba72c6ae8b7; la solicitud manual solapada se cerró como stale para evitar duplicado. Cola final 0. Sin ImageGen.",
+    "message": "Entrada nueva detectada durante el cierre: investigando Ignacio Relaño r0 antes de terminar. Sin ImageGen.",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
@@ -98,7 +111,7 @@
       "grouping_requests": 2,
       "groups_created": 1,
       "members_covered": 2,
-      "remaining_active": 0,
+      "remaining_active": 1,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -135,16 +148,23 @@
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main: editorial-queue.json count 0; no quedan preparing/update ni rewrite_pending. Sin ImageGen ni envíos."
+      },
+      {
+        "at": "2026-10-30T17:04:15+01:00",
+        "phase": "investigating",
+        "trend_id": "b3d64fecfa82",
+        "title": "Ignacio Relaño",
+        "message": "La relectura detectó una entrada nueva en cola: Ignacio Relaño r0. Se reabre la pasada y se investiga el detonante actual. Sin ImageGen."
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
+  "phase": "investigating",
   "started_at": "2026-10-30T16:58:47.357000+01:00",
-  "finished_at": "2026-10-30T17:01:51.380650+01:00",
+  "finished_at": null,
   "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null
+  "total": 3,
+  "trend_id": "b3d64fecfa82",
+  "title": "Ignacio Relaño"
 }
