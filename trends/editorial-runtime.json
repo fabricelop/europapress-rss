@@ -3,17 +3,17 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T10:40:00+01:00",
-  "last_completed_at": "2026-10-30T10:44:00+01:00",
-  "updated_at": "2026-10-30T10:44:00+01:00",
+  "last_started_at": "2026-10-30T10:55:00+01:00",
+  "last_completed_at": "2026-10-30T10:59:00+01:00",
+  "updated_at": "2026-10-30T10:59:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T104000+0100",
-  "previous_run_id": "tr-chat-20261030T102500+0100",
+  "run_id": "tr-chat-20261030T105500+0100",
+  "previous_run_id": "tr-chat-20261030T104000+0100",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -29,8 +29,8 @@
     "rewrite_pending_remaining": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 18,
-    "recent_missing_closer_reviewed": 18,
+    "remates_omitted": 0,
+    "recent_missing_closer_reviewed": 0,
     "pending_visual_candidates_reviewed": 2,
     "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
@@ -43,46 +43,39 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T10:40:00+01:00",
+      "at": "2026-10-30T10:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Cola editorial 0; comprobando saneamientos, cobertura fresca del Top 10 y estado de Pendientes."
+      "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes y verificación de estado autoritativo."
     },
     {
-      "at": "2026-10-30T10:41:00+01:00",
+      "at": "2026-10-30T10:56:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Radar refrescado a las 10:40:52; releída la cola sobre el nuevo snapshot: sigue en 0."
+      "message": "Estado fresco: cola 0; no hay preparing/update, rewrite_pending, problematic Top 10 ni agrupaciones activas."
     },
     {
-      "at": "2026-10-30T10:42:00+01:00",
+      "at": "2026-10-30T10:57:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Top 10 cubierto 10/10; no hay preparing/update, rewrite_pending, problematic Top 10 ni agrupaciones activas."
+      "message": "No hay Explicadas de menos de 24 h sin remate; Yola y Maledon siguen Pendientes solo por reparación visual automática."
     },
     {
-      "at": "2026-10-30T10:43:00+01:00",
+      "at": "2026-10-30T10:58:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "18 explicaciones recientes sin remate se mantienen sin cambios por contexto sensible de fallecimientos, víctimas o accidente de Urda."
+      "message": "Top 10 sin trabajo activo: todas las entradas tienen cobertura reciente o estado terminal vigente; la cola permanece en 0."
     },
     {
-      "at": "2026-10-30T10:43:30+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Reconciliando Pendientes: 2 tarjetas vigentes, Yola y Maledon; ambas conservan remate y requieren solo reparación visual automática ya solicitada."
-    },
-    {
-      "at": "2026-10-30T10:44:00+01:00",
+      "at": "2026-10-30T10:59:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; 2 Pendientes derivados al reparador visual."
+      "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto/terminal 10/10; 2 Pendientes derivados al reparador visual."
     }
   ],
   "ratings_snapshot": {
@@ -99,7 +92,7 @@
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T104000+0100",
+    "trigger_run_id": "tr-chat-20261030T105500+0100",
     "status": "triggered",
     "editorial_blocking": false
   },
@@ -111,24 +104,24 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "updated_at": "2026-10-30T10:44:00+01:00"
+    "updated_at": "2026-10-30T10:59:00+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T104000+0100",
+    "run_id": "tr-chat-20261030T105500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T10:40:00+01:00",
-    "updated_at": "2026-10-30T10:44:00+01:00",
-    "finished_at": "2026-10-30T10:44:00+01:00",
+    "started_at": "2026-10-30T10:55:00+01:00",
+    "updated_at": "2026-10-30T10:59:00+01:00",
+    "finished_at": "2026-10-30T10:59:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; 2 Pendientes derivados al reparador visual.",
+    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto/terminal 10/10; 2 Pendientes derivados al reparador visual.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -144,8 +137,8 @@
       "rewrite_pending_remaining": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 18,
-      "recent_missing_closer_reviewed": 18,
+      "remates_omitted": 0,
+      "recent_missing_closer_reviewed": 0,
       "pending_visual_candidates_reviewed": 2,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
@@ -168,46 +161,39 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T10:40:00+01:00",
+        "at": "2026-10-30T10:55:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial 0; comprobando saneamientos, cobertura fresca del Top 10 y estado de Pendientes."
+        "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes y verificación de estado autoritativo."
       },
       {
-        "at": "2026-10-30T10:41:00+01:00",
+        "at": "2026-10-30T10:56:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Radar refrescado a las 10:40:52; releída la cola sobre el nuevo snapshot: sigue en 0."
+        "message": "Estado fresco: cola 0; no hay preparing/update, rewrite_pending, problematic Top 10 ni agrupaciones activas."
       },
       {
-        "at": "2026-10-30T10:42:00+01:00",
+        "at": "2026-10-30T10:57:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 cubierto 10/10; no hay preparing/update, rewrite_pending, problematic Top 10 ni agrupaciones activas."
+        "message": "No hay Explicadas de menos de 24 h sin remate; Yola y Maledon siguen Pendientes solo por reparación visual automática."
       },
       {
-        "at": "2026-10-30T10:43:00+01:00",
+        "at": "2026-10-30T10:58:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "18 explicaciones recientes sin remate se mantienen sin cambios por contexto sensible de fallecimientos, víctimas o accidente de Urda."
+        "message": "Top 10 sin trabajo activo: todas las entradas tienen cobertura reciente o estado terminal vigente; la cola permanece en 0."
       },
       {
-        "at": "2026-10-30T10:43:30+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reconciliando Pendientes: 2 tarjetas vigentes, Yola y Maledon; ambas conservan remate y requieren solo reparación visual automática ya solicitada."
-      },
-      {
-        "at": "2026-10-30T10:44:00+01:00",
+        "at": "2026-10-30T10:59:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; 2 Pendientes derivados al reparador visual."
+        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto/terminal 10/10; 2 Pendientes derivados al reparador visual."
       }
     ],
     "queue_complete": true,
@@ -218,7 +204,7 @@
     "final_outcomes": []
   },
   "radar": {
-    "captured_at": "2026-10-30T10:40:52+01:00",
+    "captured_at": "2026-10-30T10:51:00+01:00",
     "queue_count": 0,
     "top10": [
       "Urda",
