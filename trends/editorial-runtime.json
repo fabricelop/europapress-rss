@@ -3,78 +3,68 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T21:24:00Z",
+  "last_started_at": "2026-10-30T21:26:30Z",
   "last_completed_at": "2026-10-30T21:23:15.381Z",
-  "updated_at": "2026-10-30T21:25:00Z",
+  "updated_at": "2026-10-30T21:26:30Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-7ac3b680c3a7d284da44",
     "red-review-f5f10eee0721052558cd",
     "red-review-ac68524d6bf93e75895c"
   ],
   "remaining_active_ids": [
-    "listas-auto-7ac3b680c3a7d284da44",
     "red-review-f5f10eee0721052558cd",
     "red-review-ac68524d6bf93e75895c"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793395410731-manual",
-  "previous_run_id": "tr-1793394948517-manual",
-  "summary": "Inicio de pasada editorial real 0/3 sobre main: 1 agrupación automática y 2 revisiones rojas. Sin ImageGen.",
+  "run_id": "tr-1793395581539-manual",
+  "previous_run_id": "tr-1793395410731-manual",
+  "summary": "Inicio de pasada editorial real 0/2 sobre main: Toledo y Renfe en revisión de novedades. Sin ImageGen.",
   "activity": [
     {
-      "at": "2026-10-30T21:24:00Z",
+      "at": "2026-10-30T21:26:30Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio tr-1793395410731-manual: cola inicial 3/3. Procesando group_listas y después review_red, con barrera JIT por id/revisión. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T21:25:00Z",
-      "phase": "investigating",
-      "trend_id": "listas-auto-7ac3b680c3a7d284da44",
-      "title": "Agrupación automática de Listas",
-      "message": "JIT confirmado. Comparados Yola, Dana, La UCO y Koldo con published_context: no hay coincidencia inequívoca entre candidatos; Koldo contiene cambios materiales frente a cobertura previa."
+      "message": "Inicio tr-1793395581539-manual: cola JIT 2/2, dos revisiones de novedades (Toledo y Renfe). Sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
-  "started_at": "2026-10-30T21:24:00Z",
+  "phase": "preparing",
+  "started_at": "2026-10-30T21:26:30Z",
   "finished_at": null,
   "current": 0,
-  "total": 3,
-  "trend_id": "listas-auto-7ac3b680c3a7d284da44",
-  "title": "Agrupación automática de Listas",
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793395410731-manual",
+    "run_id": "tr-1793395581539-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "investigating",
-    "started_at": "2026-10-30T21:24:00Z",
-    "updated_at": "2026-10-30T21:25:00Z",
+    "phase": "preparing",
+    "started_at": "2026-10-30T21:26:30Z",
+    "updated_at": "2026-10-30T21:26:30Z",
     "finished_at": null,
     "current": 0,
-    "total": 3,
-    "trend_id": "listas-auto-7ac3b680c3a7d284da44",
-    "title": "Agrupación automática de Listas",
+    "total": 2,
+    "trend_id": null,
+    "title": null,
     "queue_complete": false,
     "remaining_active_ids": [
-      "listas-auto-7ac3b680c3a7d284da44",
       "red-review-f5f10eee0721052558cd",
       "red-review-ac68524d6bf93e75895c"
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Inicio de pasada editorial real 0/3 sobre main: 1 agrupación automática y 2 revisiones rojas. Sin ImageGen.",
+    "message": "Inicio de pasada editorial real 0/2 sobre main: Toledo y Renfe en revisión de novedades. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -82,10 +72,10 @@
       "stale_reviews": 0,
       "stale_jobs": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 1,
+      "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 3,
+      "remaining_active": 2,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -96,18 +86,11 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T21:24:00Z",
+        "at": "2026-10-30T21:26:30Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio tr-1793395410731-manual: cola inicial 3/3. Procesando group_listas y después review_red, con barrera JIT por id/revisión. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T21:25:00Z",
-        "phase": "investigating",
-        "trend_id": "listas-auto-7ac3b680c3a7d284da44",
-        "title": "Agrupación automática de Listas",
-        "message": "JIT confirmado. Comparados Yola, Dana, La UCO y Koldo con published_context: no hay coincidencia inequívoca entre candidatos; Koldo contiene cambios materiales frente a cobertura previa."
+        "message": "Inicio tr-1793395581539-manual: cola JIT 2/2, dos revisiones de novedades (Toledo y Renfe). Sin ImageGen."
       }
     ],
     "final_outcomes": []
