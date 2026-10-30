@@ -186,6 +186,9 @@ struct SavedState: Codable {
     @Published var minimized = false
     @Published var routePeriod: RouteDisplayPeriod = .today
     @Published var selectedTab = 0
+    // The map view is recreated on tab changes. Keep follow mode in the
+    // long-lived GPS model rather than resetting it every time.
+    @Published var mapFollowLocation = false
     // A specific stay requested from an interactive notification.
     @Published var requestedSiteStayID: String?
     private var mapNavigation = MapNavigationOnce()
@@ -2018,14 +2021,28 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         lastPosition = nil
     }
 
+    private var lastOnDemandFixRequest = Date.distantPast
+
+    @MainActor func requestFreshFixIfNeeded() {
+        guard let model,model.recording,!model.isResting,
+              manager.authorizationStatus == .authorizedAlways ||
+              manager.authorizationStatus == .authorizedWhenInUse else { return }
+        let now=Date()
+        let age=now.timeIntervalSince(model.current?.date ?? .distantPast)
+        guard age >= 5,now.timeIntervalSince(lastOnDemandFixRequest) >= 4 else { return }
+        lastOnDemandFixRequest=now
+        // Uses the EXISTING CLLocationManager; no second GPS session or
+        // expensive configuration on the navigation gesture.
+        manager.requestLocation()
+    }
+
     @MainActor func refreshWhenForeground() {
         guard let model,model.recording,!model.isResting,
               manager.authorizationStatus == .authorizedAlways ||
               manager.authorizationStatus == .authorizedWhenInUse else { return }
-        // startUpdatingLocation es idempotente; no depende de CoreMotion.
         configureContinuous()
         manager.startUpdatingLocation()
-        manager.requestLocation()
+        requestFreshFixIfNeeded()
         GPSStaleWatchdog.shared.refresh(recording:model.recording,
             resting:model.isResting,latestFix:model.current?.date)
     }
@@ -2364,7 +2381,7 @@ struct TimeMapView: View {
     @State private var expandedZoneLabelID: UUID?
     @State private var searchOpen = false
     @State private var queuedCellForMap: Cell?
-    @State private var followLocation = false
+    @State private var followLocation:Bool
     // Presentación local: nunca se persiste ni altera los intervalos GPS.
     @State private var cardSize: TimeMapCardSize = .compact
     @State private var cardBeforeDragging: TimeMapCardSize?
@@ -2394,6 +2411,7 @@ struct TimeMapView: View {
         let saved = model.data.camera.region
         _camera = State(initialValue: .region(saved))
         _region = State(initialValue: saved)
+        _followLocation = State(initialValue: model.mapFollowLocation)
     }
 
     func paint(_ sec: TimeInterval, maximum: TimeInterval) -> Color {
@@ -2492,7 +2510,13 @@ struct TimeMapView: View {
         .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
         .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
         .onChange(of:model.selectedTab) { _,tab in
-            if tab == 0 { refreshRenderedRoutes() }
+            if tab == 0 {
+                refreshRenderedRoutes()
+                gps.requestFreshFixIfNeeded()
+            }
+        }
+        .onChange(of:followLocation) { _, enabled in
+            model.mapFollowLocation = enabled
         }
         .onChange(of:model.current?.date) { _,_ in
             refreshRenderedRoutes()
@@ -2517,7 +2541,17 @@ struct TimeMapView: View {
                 if followLocation { focusOnCurrentLocation() }
             }
         }
-        .onAppear { refreshRenderedRoutes(); refreshMapSnapshot(force: true) }
+        .onAppear {
+            // First paint may use a stored position; request a fresh GPS fix
+            // without reinitializing CoreLocation or blocking navigation.
+            refreshRenderedRoutes()
+            refreshMapSnapshot(force:true)
+            Task { @MainActor in
+                await Task.yield()
+                gps.requestFreshFixIfNeeded()
+                if followLocation { focusOnCurrentLocation() }
+            }
+        }
         .onDisappear {
             deferredCameraSave?.cancel()
             // Preserve the user's last viewpoint when leaving the map.

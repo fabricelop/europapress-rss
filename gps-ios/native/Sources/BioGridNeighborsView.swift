@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Las cuatro celdas son siempre independientes y no se agrupan con el zoom.
+/// Las ocho celdas vecinas son independientes; las diagonales son solo visuales.
 /// Muestra la población al cierre del día elegido; en el día actual el último
 /// cálculo confirmado por GPS. Tocar una vecina abre su ficha con la misma fecha.
 struct BioGridNeighborsView: View {
@@ -46,12 +46,14 @@ struct BioGridNeighborsView: View {
     }
 
     private func tile(_ direction:Int) -> some View {
-        let target=BioGridEngine.neighbor(cell,direction:direction)
+        let target=BioGridNeighborhood.cell(near:cell,direction:direction)
         let values=counts(target)
         let total=values.reduce(0,+)
         let leader=winner(target)
-        let compass=["NORTE","SUR","ESTE","OESTE"]
-        let selected=validTargets.contains(direction)
+        let compass=["NORTE","SUR","ESTE","OESTE","NOROESTE","NORESTE","SUROESTE","SURESTE"]
+        // BioGrid emigration remains cardinal-only (N/S/E/O): diagonals
+        // show population and open details without changing simulation rules.
+        let selected=direction < 4 && validTargets.contains(direction)
         let reinforcement=leader == family && total > 0
         return Button {
             onSelect(target)
@@ -126,29 +128,31 @@ struct BioGridNeighborsView: View {
             Label("Alrededor de esta cuadrícula",
                   systemImage:"square.grid.3x3")
                 .font(.headline)
-            Text("Población y familia dominante de las cuatro vecinas al terminar el día elegido. Toca una para explorarla.")
+            Text("Población y familia dominante de las ocho vecinas al terminar el día elegido. Toca una para explorarla.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal:false,vertical:true)
-            HStack {
-                Spacer(minLength:0)
-                tile(0).frame(maxWidth:125)
-                Spacer(minLength:0)
-            }
-            HStack(spacing:7) {
-                tile(3)
-                centerTile
-                tile(2)
-            }
-            HStack {
-                Spacer(minLength:0)
-                tile(1).frame(maxWidth:125)
-                Spacer(minLength:0)
+            VStack(spacing:7) {
+                HStack(spacing:7) {
+                    tile(4)  // NO
+                    tile(0)  // N
+                    tile(5)  // NE
+                }
+                HStack(spacing:7) {
+                    tile(3)  // O
+                    centerTile
+                    tile(2)  // E
+                }
+                HStack(spacing:7) {
+                    tile(6)  // SO
+                    tile(1)  // S
+                    tile(7)  // SE
+                }
             }
             if canEmigrate {
                 Text(validTargets.isEmpty ?
                     "La familia dominante tiene reserva suficiente, pero ninguna vecina necesita refuerzo ni es un objetivo de conquista." :
-                    "En verde: destinos preferentes de la próxima emigración, si se mantiene el doble de bacterias que la segunda familia (máximo 20 % emigrante).")
+                    "En verde: destinos cardinales de la próxima emigración (N/S/E/O); las diagonales solo muestran población y permiten explorar.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
         }
