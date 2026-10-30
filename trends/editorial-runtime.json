@@ -3,50 +3,42 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T22:10:58.000Z",
+  "last_started_at": "2026-10-30T22:40:00.000Z",
   "last_completed_at": "2026-10-30T22:10:58.000Z",
-  "updated_at": "2026-10-30T22:10:58.000Z",
-  "status": "DONE",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T22:40:00.000Z",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-2e5909232e97bfecd690",
+    "red-review-3def540ee0135f135f7a"
+  ],
+  "remaining_active_ids": [
+    "red-review-2e5909232e97bfecd690",
+    "red-review-3def540ee0135f135f7a"
+  ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793398200000-manual",
-  "previous_run_id": "tr-1793396843728-manual",
-  "summary": "Pasada editorial real completada 0/0: cola releída en main y verificada vacía tras la actualización de las 23:10:58, sin preparing/update ni reexplicaciones pendientes en la cola autoritativa. Sin ImageGen.",
+  "run_id": "tr-20261030T234000+0100-manual",
+  "previous_run_id": "tr-1793398200000-manual",
+  "summary": "Pasada editorial en curso: 0/2. Revisando novedades sustanciales de Toledo y Renfe.",
   "activity": [
     {
-      "at": "2026-10-30T22:10:58.000Z",
+      "at": "2026-10-30T22:40:00.000Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada editorial real: cola compacta releída en main tras la actualización del radar; verificando preparing/update, reexplicaciones y concurrencia. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T22:10:58.000Z",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final sobre main: editorial-queue.json actualizado a las 23:10:58+01:00 con count=0; sin trabajo editorial activo en la cola autoritativa."
-    },
-    {
-      "at": "2026-10-30T22:10:58.000Z",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada editorial real completada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+      "message": "Inicio de pasada editorial real: cola autoritativa releída en main con 2 revisiones de mantenimiento vigentes (Toledo y Renfe). Sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T22:10:58.000Z",
-  "finished_at": "2026-10-30T22:10:58.000Z",
+  "phase": "preparing",
+  "started_at": "2026-10-30T22:40:00.000Z",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "last_run": {
