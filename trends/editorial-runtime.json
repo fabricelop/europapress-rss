@@ -1,47 +1,44 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T12:43:19+01:00",
-  "last_completed_at": "2026-10-30T12:27:00+01:00",
-  "updated_at": "2026-10-30T12:43:19+01:00",
-  "status": "waiting",
-  "queue_complete": false,
+  "last_started_at": "2026-10-30T12:40:30+01:00",
+  "last_completed_at": "2026-10-30T12:48:30+01:00",
+  "updated_at": "2026-10-30T12:48:30+01:00",
+  "status": "success",
+  "queue_complete": true,
   "processed_ids": [
-    "8d550038a24d"
-  ],
-  "remaining_ids": [
+    "8d550038a24d",
     "5728ff97c00d"
   ],
-  "remaining_active_ids": [
-    "5728ff97c00d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T122500+0100",
-  "previous_run_id": "tr-1793358479858-manual",
+  "run_id": "tr-chat-20261030T124030+0100",
+  "previous_run_id": "tr-chat-20261030T122500+0100",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "problematic": 0,
-    "final_resolved": 0,
+    "attempted": 2,
+    "explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "problematic": 1,
+    "final_resolved": 1,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 1,
     "remates_selected": 0,
-    "remates_omitted": 0,
+    "remates_omitted": 1,
     "recent_missing_closer_reviewed": 0,
     "pending_visual_candidates_reviewed": 0,
     "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 0,
+    "incidents": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
@@ -49,25 +46,81 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T12:25:00+01:00",
+      "at": "2026-10-30T12:40:30+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes y verificación final de Top 10, requests y reexplicaciones."
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Solicitud preparing detectada; iniciando pasada editorial y saneamiento visual independiente."
     },
     {
-      "at": "2026-10-30T12:26:00+01:00",
+      "at": "2026-10-30T12:41:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: cola, requests, reexplicaciones, agrupaciones y cobertura Top 10 antes de cerrar 0/0."
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Releyendo estado autoritativo de #30OctubrESP; revisión 0 sigue preparing y figura en la cola."
     },
     {
-      "at": "2026-10-30T12:27:00+01:00",
+      "at": "2026-10-30T12:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Buscando detonante actual y contrastando consultas exactas y variantes de la etiqueta."
+    },
+    {
+      "at": "2026-10-30T12:44:00+01:00",
+      "phase": "investigating",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Sin detonante verificable tras búsquedas independientes; no se inventa explicación."
+    },
+    {
+      "at": "2026-10-30T12:44:15+01:00",
+      "phase": "persisting",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Guardando resultado problematic con razón explícita para la revisión 0."
+    },
+    {
+      "at": "2026-10-30T12:45:00+01:00",
+      "phase": "verifying",
+      "trend_id": "5728ff97c00d",
+      "title": "Descanse",
+      "message": "Nueva solicitud concurrente detectada; releyendo estado autoritativo de Descanse r0."
+    },
+    {
+      "at": "2026-10-30T12:46:00+01:00",
+      "phase": "investigating",
+      "trend_id": "5728ff97c00d",
+      "title": "Descanse",
+      "message": "Contrastando el detonante con el radar y fuentes sobre el fallecimiento de Patrick Stewart."
+    },
+    {
+      "at": "2026-10-30T12:46:40+01:00",
+      "phase": "drafting",
+      "trend_id": "5728ff97c00d",
+      "title": "Descanse",
+      "message": "Redactando explicación factual y comprobando límite de X; sin humor por tratarse de un fallecimiento."
+    },
+    {
+      "at": "2026-10-30T12:47:00+01:00",
+      "phase": "persisting",
+      "trend_id": "5728ff97c00d",
+      "title": "Descanse",
+      "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión de la cola."
+    },
+    {
+      "at": "2026-10-30T12:48:00+01:00",
+      "phase": "verifying",
+      "trend_id": "5728ff97c00d",
+      "title": "Descanse",
+      "message": "Releyendo main y verificando id+revision y texto persistido en requests y Explicadas."
+    },
+    {
+      "at": "2026-10-30T12:48:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 0/0: cola final 0, sin preparing/update, rewrite_pending, agrupaciones ni problematic en Top 10; cobertura terminal 10/10."
+      "message": "Pasada cerrada: 1 explicación verificada, 1 problematic por falta de detonante verificable y cola final 0."
     }
   ],
   "ratings_snapshot": {
@@ -78,9 +131,30 @@
     "recent_considered": 30
   },
   "remate_selections": [],
-  "final_outcomes": [],
-  "incidents": [],
-  "incident_count": 0,
+  "final_outcomes": [
+    {
+      "id": "8d550038a24d",
+      "name": "#30OctubrESP",
+      "revision": 0,
+      "status": "problematic"
+    },
+    {
+      "id": "5728ff97c00d",
+      "name": "Descanse",
+      "revision": 0,
+      "status": "explained"
+    }
+  ],
+  "incidents": [
+    {
+      "at": "2026-10-30T12:44:00+01:00",
+      "phase": "investigating",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "reason": "No se pudo verificar un detonante único, concreto y actual tras varias búsquedas independientes; se conservó como problematic sin inventar explicación."
+    }
+  ],
+  "incident_count": 1,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
@@ -102,52 +176,63 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T122500+0100",
+    "run_id": "tr-chat-20261030T124030+0100",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-30T12:25:00+01:00",
-    "updated_at": "2026-10-30T12:27:00+01:00",
-    "finished_at": "2026-10-30T12:27:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-30T12:40:30+01:00",
+    "updated_at": "2026-10-30T12:48:30+01:00",
+    "finished_at": "2026-10-30T12:48:30+01:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "8d550038a24d",
+      "5728ff97c00d"
+    ],
     "partial": false,
-    "message": "Pasada cerrada 0/0: cola final 0, sin preparing/update, rewrite_pending, agrupaciones ni problematic en Top 10; cobertura terminal 10/10.",
+    "message": "Pasada cerrada: Descanse explicada y verificada; #30OctubrESP queda problematic por falta de detonante verificable; cola final 0.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "problematic": 0,
-      "final_resolved": 0,
+      "attempted": 2,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "problematic": 1,
+      "final_resolved": 1,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
-      "remates_omitted": 0,
+      "remates_omitted": 1,
       "recent_missing_closer_reviewed": 0,
       "pending_visual_candidates_reviewed": 0,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 0,
+      "incidents": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
       "untouched_candidates": 0
     },
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-30T12:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "reason": "No se pudo verificar un detonante único, concreto y actual tras varias búsquedas independientes; se conservó como problematic sin inventar explicación."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -158,28 +243,97 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T12:25:00+01:00",
+        "at": "2026-10-30T12:40:30+01:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes y verificación final de Top 10, requests y reexplicaciones."
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Solicitud preparing detectada; iniciando pasada editorial y saneamiento visual independiente."
       },
       {
-        "at": "2026-10-30T12:26:00+01:00",
+        "at": "2026-10-30T12:41:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola, requests, reexplicaciones, agrupaciones y cobertura Top 10 antes de cerrar 0/0."
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Releyendo estado autoritativo de #30OctubrESP; revisión 0 sigue preparing y figura en la cola."
       },
       {
-        "at": "2026-10-30T12:27:00+01:00",
+        "at": "2026-10-30T12:42:00+01:00",
+        "phase": "investigating",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Buscando detonante actual y contrastando consultas exactas y variantes de la etiqueta."
+      },
+      {
+        "at": "2026-10-30T12:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Sin detonante verificable tras búsquedas independientes; no se inventa explicación."
+      },
+      {
+        "at": "2026-10-30T12:44:15+01:00",
+        "phase": "persisting",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Guardando resultado problematic con razón explícita para la revisión 0."
+      },
+      {
+        "at": "2026-10-30T12:45:00+01:00",
+        "phase": "verifying",
+        "trend_id": "5728ff97c00d",
+        "title": "Descanse",
+        "message": "Nueva solicitud concurrente detectada; releyendo estado autoritativo de Descanse r0."
+      },
+      {
+        "at": "2026-10-30T12:46:00+01:00",
+        "phase": "investigating",
+        "trend_id": "5728ff97c00d",
+        "title": "Descanse",
+        "message": "Contrastando el detonante con el radar y fuentes sobre el fallecimiento de Patrick Stewart."
+      },
+      {
+        "at": "2026-10-30T12:46:40+01:00",
+        "phase": "drafting",
+        "trend_id": "5728ff97c00d",
+        "title": "Descanse",
+        "message": "Redactando explicación factual y comprobando límite de X; sin humor por tratarse de un fallecimiento."
+      },
+      {
+        "at": "2026-10-30T12:47:00+01:00",
+        "phase": "persisting",
+        "trend_id": "5728ff97c00d",
+        "title": "Descanse",
+        "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión de la cola."
+      },
+      {
+        "at": "2026-10-30T12:48:00+01:00",
+        "phase": "verifying",
+        "trend_id": "5728ff97c00d",
+        "title": "Descanse",
+        "message": "Releyendo main y verificando id+revision y texto persistido en requests y Explicadas."
+      },
+      {
+        "at": "2026-10-30T12:48:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0/0: cola final 0, sin preparing/update, rewrite_pending, agrupaciones ni problematic en Top 10; cobertura terminal 10/10."
+        "message": "Pasada cerrada: 1 explicación verificada, 1 problematic por falta de detonante verificable y cola final 0."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "8d550038a24d",
+        "name": "#30OctubrESP",
+        "revision": 0,
+        "status": "problematic"
+      },
+      {
+        "id": "5728ff97c00d",
+        "name": "Descanse",
+        "revision": 0,
+        "status": "explained"
+      }
+    ]
   },
   "radar": {
     "captured_at": "2026-10-30T12:21:03+01:00",
@@ -197,6 +351,5 @@
       "#eShopOfertasHalloween"
     ]
   },
-  "api_failover_enabled": false,
-  "error": null
+  "api_failover_enabled": false
 }
