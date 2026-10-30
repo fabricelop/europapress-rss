@@ -16,13 +16,13 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793374155026-manual",
+  "run_id": "tr-1793374254132-manual",
   "previous_run_id": "tr-1793374254132-manual",
   "summary": {
     "attempted": 3,
     "explained": 0,
-    "updates": 1,
-    "stale_reviews": 0,
+    "updates": 0,
+    "stale_reviews": 1,
     "unchanged_reviews": 1,
     "grouping_requests": 1,
     "groups_created": 0,
@@ -55,6 +55,34 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada completada: 3/3 encargos cerrados; cola 0, sin rewrite_pending. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T16:32:35+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-db9fb6c63f89ac444f77",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
+    },
+    {
+      "at": "2026-10-30T16:32:46+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-ecba76c4274e57ce9970",
+      "title": "Alvia",
+      "message": "Revisión aplicada sin novedades sustanciales; se conserva texto y fecha."
+    },
+    {
+      "at": "2026-10-30T16:33:26+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-cf6acca8b418ced525e5",
+      "title": "Renfe",
+      "message": "Se detectó novedad material, pero el origen quedó stale al existir cobertura posterior más reciente; no se creó duplicado."
+    },
+    {
+      "at": "2026-10-30T16:34:10+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada completada: 3/3 mantenimientos cerrados; sin preparing/update ni rewrite_pending. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -63,7 +91,7 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793374155026-manual",
+    "run_id": "tr-1793374254132-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
@@ -83,12 +111,12 @@
       "red-review-cf6acca8b418ced525e5"
     ],
     "partial": false,
-    "message": "Pasada completada: agrupación sin grupos, Alvia unchanged y Renfe updated; cola 0 y sin rewrite_pending.",
+    "message": "Pasada completada: 1 agrupación sin grupos, Alvia sin novedades, Renfe stale por cobertura posterior; sin preparing/update ni rewrite_pending. Sin ImageGen.",
     "summary": {
       "attempted": 3,
       "explained": 0,
-      "updates": 1,
-      "stale_reviews": 0,
+      "updates": 0,
+      "stale_reviews": 1,
       "unchanged_reviews": 1,
       "grouping_requests": 1,
       "groups_created": 0,
@@ -123,6 +151,34 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada completada: 3/3 encargos cerrados; cola 0, sin rewrite_pending. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T16:32:35+01:00",
+        "phase": "persisting",
+        "trend_id": "listas-auto-db9fb6c63f89ac444f77",
+        "title": "Agrupación automática de Listas",
+        "message": "Resultado aplicado: sin grupos ni coberturas inequívocas."
+      },
+      {
+        "at": "2026-10-30T16:32:46+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-ecba76c4274e57ce9970",
+        "title": "Alvia",
+        "message": "Revisión aplicada sin novedades sustanciales; se conserva texto y fecha."
+      },
+      {
+        "at": "2026-10-30T16:33:26+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-cf6acca8b418ced525e5",
+        "title": "Renfe",
+        "message": "Se detectó novedad material, pero el origen quedó stale al existir cobertura posterior más reciente; no se creó duplicado."
+      },
+      {
+        "at": "2026-10-30T16:34:10+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada completada: 3/3 mantenimientos cerrados; sin preparing/update ni rewrite_pending. Sin ImageGen."
       }
     ],
     "final_outcomes": [
@@ -130,23 +186,21 @@
         "id": "listas-auto-db9fb6c63f89ac444f77",
         "revision": 0,
         "status": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "groups_created": 0,
-        "members_covered": 0
+        "name": "Agrupación automática de Listas"
       },
       {
         "id": "red-review-ecba76c4274e57ce9970",
         "revision": 0,
         "status": "review_completed",
-        "name": "Alvia",
+        "name": "Revisar novedades: Alvia",
         "outcome": "unchanged"
       },
       {
         "id": "red-review-cf6acca8b418ced525e5",
         "revision": 0,
         "status": "review_completed",
-        "name": "Renfe",
-        "outcome": "updated"
+        "name": "Revisar novedades: Renfe",
+        "outcome": "stale"
       }
     ]
   },
