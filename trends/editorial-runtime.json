@@ -4,10 +4,10 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T14:56:00+01:00",
-  "last_completed_at": "2026-10-30T14:57:30+01:00",
-  "updated_at": "2026-10-30T14:57:30+01:00",
-  "status": "done",
-  "queue_complete": true,
+  "last_completed_at": "2026-10-30T14:58:00+01:00",
+  "updated_at": "2026-10-30T14:58:00+01:00",
+  "status": "done_with_incidents",
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -17,11 +17,11 @@
   "run_id": "tr-1793368559980-manual",
   "previous_run_id": "tr-1793368303148-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "explained": 0,
     "explanation_groups": 0,
     "new_cards": 0,
-    "problematic": 0,
+    "problematic": 1,
     "final_resolved": 0,
     "skipped_concurrent": 1,
     "remaining_active": 0,
@@ -34,7 +34,7 @@
     "remates_omitted": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 0,
+    "incidents": 1,
     "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
@@ -64,6 +64,20 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: 0 preparing/update y 0 reexplicaciones/rewrite_pending. Se conserva Pobrecito como problematic; no se reabre ni se cuenta como trabajo activo."
+    },
+    {
+      "at": "2026-10-30T14:58:00+01:00",
+      "phase": "closing",
+      "trend_id": "c6e758d97041",
+      "title": "Pobrecito",
+      "message": "Reintento completado: permanece en Top 30, pero no hay detonante concreto y actual corroborado tras búsquedas generales y contextuales."
+    },
+    {
+      "at": "2026-10-30T14:58:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre autoritativo: 0 preparing/update y 0 rewrite_pending; queda 1 problemática no resuelta. Sin ImageGen ni publicación."
     }
   ],
   "ratings_snapshot": {
@@ -75,8 +89,15 @@
   },
   "remate_selections": [],
   "final_outcomes": [],
-  "incidents": [],
-  "incident_count": 0,
+  "incidents": [
+    {
+      "id": "c6e758d97041",
+      "revision": 0,
+      "type": "problematic",
+      "reason": "Reintentado al final de la pasada mientras seguía en Top 30: no se ha podido verificar un detonante concreto y actual para «Pobrecito» tras búsquedas independientes adicionales."
+    }
+  ],
+  "incident_count": 1,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
@@ -99,29 +120,29 @@
     "project": "TTendencias",
     "run_id": "tr-1793368559980-manual",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-30T14:56:00+01:00",
-    "updated_at": "2026-10-30T14:57:30+01:00",
-    "finished_at": "2026-10-30T14:57:30+01:00",
+    "updated_at": "2026-10-30T14:58:00+01:00",
+    "finished_at": "2026-10-30T14:58:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
       "c6e758d97041"
     ],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada cerrada 0/0 tras relectura final: no queda ningún preparing/update ni reexplicación pendiente. Un group_listas observado al inicio fue resuelto concurrentemente antes de la validación JIT y se respetó su resultado. Pobrecito permanece problematic.",
+    "message": "Cierre 0/0 de trabajo preparing/update; Pobrecito sigue problemática tras reintento y permanece en Top 30.",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "explained": 0,
       "explanation_groups": 0,
       "new_cards": 0,
-      "problematic": 0,
+      "problematic": 1,
       "final_resolved": 0,
       "skipped_concurrent": 1,
       "remaining_active": 0,
@@ -134,7 +155,7 @@
       "remates_omitted": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 0,
+      "incidents": 1,
       "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
@@ -143,8 +164,15 @@
       "red_reviews_unchanged": 0,
       "red_reviews_unverified": 0
     },
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 1,
+    "incidents": [
+      {
+        "id": "c6e758d97041",
+        "revision": 0,
+        "type": "problematic",
+        "reason": "Reintentado al final de la pasada mientras seguía en Top 30: no se ha podido verificar un detonante concreto y actual para «Pobrecito» tras búsquedas independientes adicionales."
+      }
+    ],
     "activity": [
       {
         "at": "2026-10-30T14:56:00+01:00",
@@ -166,6 +194,20 @@
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main: 0 preparing/update y 0 reexplicaciones/rewrite_pending. Se conserva Pobrecito como problematic; no se reabre ni se cuenta como trabajo activo."
+      },
+      {
+        "at": "2026-10-30T14:58:00+01:00",
+        "phase": "closing",
+        "trend_id": "c6e758d97041",
+        "title": "Pobrecito",
+        "message": "Reintento completado: permanece en Top 30, pero no hay detonante concreto y actual corroborado tras búsquedas generales y contextuales."
+      },
+      {
+        "at": "2026-10-30T14:58:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre autoritativo: 0 preparing/update y 0 rewrite_pending; queda 1 problemática no resuelta. Sin ImageGen ni publicación."
       }
     ]
   },
