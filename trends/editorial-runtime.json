@@ -5,20 +5,24 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:35:00Z",
   "last_completed_at": "2026-10-30T21:28:47Z",
-  "updated_at": "2026-10-30T21:38:36.912Z",
+  "updated_at": "2026-10-30T21:42:05.210Z",
   "status": "RUNNING",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "6870df351c7a"
   ],
+  "remaining_ids": [
+    "2d465a770610",
+    "19d3c8965a38"
+  ],
   "remaining_active_ids": [
-    "6870df351c7a"
+    "2d465a770610",
+    "19d3c8965a38"
   ],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793396029532-manual",
   "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada en curso 0/1: OkDiario r0 redactada y validada; persistiendo con barrera JIT. Sin ImageGen.",
+  "summary": "Pasada en curso 1/3: OkDiario r0 persistida; investigando #FirstDates30O y después Golpe de Estado. Sin ImageGen.",
   "activity": [
     {
       "at": "2026-10-30T21:35:00Z",
@@ -40,19 +44,26 @@
       "trend_id": "6870df351c7a",
       "title": "OkDiario",
       "message": "Texto nuevo redactado desde cero y verificado <280: refleja pagos de 242.000 €, versión contractual de OkDiario y amparo FAPE/APM a Escolar; remate nuevo y neutral."
+    },
+    {
+      "at": "2026-10-30T21:42:05.210Z",
+      "phase": "verifying",
+      "trend_id": "6870df351c7a",
+      "title": "OkDiario",
+      "message": "Persistencia verificada en telegram-manual-explained.json; revisión 0 retirada de la cola. Continúan #FirstDates30O y Golpe de Estado."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "drafting",
+  "phase": "investigating",
   "started_at": "2026-10-30T21:35:00Z",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "6870df351c7a",
-  "title": "OkDiario",
+  "current": 1,
+  "total": 3,
+  "trend_id": "2d465a770610",
+  "title": "#FirstDates30O",
   "last_run": {
     "version": 1,
     "canonical": true,
@@ -60,25 +71,28 @@
     "run_id": "tr-1793396029532-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "drafting",
+    "phase": "investigating",
     "started_at": "2026-10-30T21:35:00Z",
-    "updated_at": "2026-10-30T21:38:36.912Z",
+    "updated_at": "2026-10-30T21:42:05.210Z",
     "finished_at": null,
-    "current": 0,
-    "total": 1,
-    "trend_id": "6870df351c7a",
-    "title": "OkDiario",
+    "current": 1,
+    "total": 3,
+    "trend_id": "2d465a770610",
+    "title": "#FirstDates30O",
     "queue_complete": false,
     "remaining_active_ids": [
-      "6870df351c7a"
+      "2d465a770610",
+      "19d3c8965a38"
     ],
     "remaining_problematic_ids": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "6870df351c7a"
+    ],
     "partial": false,
-    "message": "OkDiario r0 redactada y validada; persistiendo con barrera JIT.",
+    "message": "OkDiario r0 persistida; investigando #FirstDates30O y después Golpe de Estado.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 1,
+      "explained": 1,
       "updates": 0,
       "stale_reviews": 0,
       "stale_jobs": 0,
@@ -86,7 +100,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 1,
+      "remaining_active": 2,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -116,6 +130,13 @@
         "trend_id": "6870df351c7a",
         "title": "OkDiario",
         "message": "Texto nuevo redactado desde cero y verificado <280: refleja pagos de 242.000 €, versión contractual de OkDiario y amparo FAPE/APM a Escolar; remate nuevo y neutral."
+      },
+      {
+        "at": "2026-10-30T21:42:05.210Z",
+        "phase": "verifying",
+        "trend_id": "6870df351c7a",
+        "title": "OkDiario",
+        "message": "Persistencia verificada en telegram-manual-explained.json; revisión 0 retirada de la cola. Continúan #FirstDates30O y Golpe de Estado."
       }
     ]
   },
