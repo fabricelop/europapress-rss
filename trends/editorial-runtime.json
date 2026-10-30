@@ -4,31 +4,25 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T20:40:00+01:00",
-  "last_completed_at": "2026-10-30T20:26:00+01:00",
-  "updated_at": "2026-10-30T20:48:00+01:00",
-  "status": "RUNNING",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T20:52:00+01:00",
+  "updated_at": "2026-10-30T20:52:00+01:00",
+  "status": "DONE",
+  "queue_complete": true,
+  "processed_ids": [
     "eb60196e7671",
     "ad14b739c935",
     "906f09c316d3",
     "9f812088f7ae",
     "41b5d26595bb"
   ],
-  "remaining_active_ids": [
-    "eb60196e7671",
-    "ad14b739c935",
-    "906f09c316d3",
-    "9f812088f7ae",
-    "41b5d26595bb"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-autoguard-1793389175",
   "previous_run_id": "tr-20261030T204000-manual",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 5,
+    "explained": 5,
     "updates": 0,
     "stale_reviews": 0,
     "stale_jobs": 0,
@@ -36,7 +30,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 5,
+    "remaining_active": 0,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -92,49 +86,70 @@
       "trend_id": "41b5d26595bb",
       "title": "Cesar",
       "message": "Texto verificado 5/5; revisión 0 vigente. Preparando persistencia sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T20:49:00+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Aplicador confirmó 5/5 explicaciones en requests y Listas; revisiones exactas retiradas de la cola."
+    },
+    {
+      "at": "2026-10-30T20:51:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Sincronizado editorial_grouping_state=pending en las 5 fichas; textos, remates y fechas idénticos en ambos registros."
+    },
+    {
+      "at": "2026-10-30T20:52:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola 0, cinco revisiones explicadas y sincronizadas. Sin ImageGen, Telegram ni publicación en X."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "drafting",
+  "phase": "closing",
   "started_at": "2026-10-30T20:40:00+01:00",
-  "finished_at": null,
-  "current": 4,
+  "finished_at": "2026-10-30T20:52:00+01:00",
+  "current": 5,
   "total": 5,
-  "trend_id": "41b5d26595bb",
-  "title": "Cesar",
+  "trend_id": null,
+  "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-1793389175",
-    "source": "autoguard",
-    "status": "RUNNING",
-    "phase": "drafting",
+    "run_id": "tr-20261030T204000-manual",
+    "source": "chat",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T20:40:00+01:00",
-    "updated_at": "2026-10-30T20:48:00+01:00",
-    "finished_at": null,
-    "current": 4,
+    "updated_at": "2026-10-30T20:52:00+01:00",
+    "finished_at": "2026-10-30T20:52:00+01:00",
+    "current": 5,
     "total": 5,
-    "trend_id": "41b5d26595bb",
-    "title": "Cesar",
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "processed_ids": [
       "eb60196e7671",
       "ad14b739c935",
       "906f09c316d3",
       "9f812088f7ae",
       "41b5d26595bb"
     ],
-    "remaining_problematic_ids": [],
-    "processed_ids": [],
     "partial": false,
-    "message": "Preparando 5/5 · Cesar.",
+    "message": "Pasada manual completada: 5/5 explicaciones persistidas y verificadas; cola final 0. Sin ImageGen.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 5,
+      "explained": 5,
       "updates": 0,
       "stale_reviews": 0,
       "stale_jobs": 0,
@@ -142,7 +157,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 5,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -200,8 +215,60 @@
         "trend_id": "41b5d26595bb",
         "title": "Cesar",
         "message": "Texto verificado 5/5; revisión 0 vigente. Preparando persistencia sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T20:49:00+01:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Aplicador confirmó 5/5 explicaciones en requests y Listas; revisiones exactas retiradas de la cola."
+      },
+      {
+        "at": "2026-10-30T20:51:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Sincronizado editorial_grouping_state=pending en las 5 fichas; textos, remates y fechas idénticos en ambos registros."
+      },
+      {
+        "at": "2026-10-30T20:52:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola 0, cinco revisiones explicadas y sincronizadas. Sin ImageGen, Telegram ni publicación en X."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "eb60196e7671",
+        "revision": 0,
+        "name": "Jacobo",
+        "outcome": "explained"
+      },
+      {
+        "id": "ad14b739c935",
+        "revision": 0,
+        "name": "#ElSótano29O",
+        "outcome": "explained"
+      },
+      {
+        "id": "906f09c316d3",
+        "revision": 0,
+        "name": "Felipe VI",
+        "outcome": "explained"
+      },
+      {
+        "id": "9f812088f7ae",
+        "revision": 0,
+        "name": "CEOE",
+        "outcome": "explained"
+      },
+      {
+        "id": "41b5d26595bb",
+        "revision": 0,
+        "name": "Cesar",
+        "outcome": "explained"
+      }
+    ]
   }
 }
