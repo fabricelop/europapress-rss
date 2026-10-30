@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-f8b727626ba7-r0-a1-1791471320377",
-  "requested_at": "2026-10-08T14:55:20.367383Z",
-  "updated_at": "2026-10-08T14:57:03.916Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-f8b727626ba7-r0-a1-1793373602434",
+  "requested_at": "2026-10-30T15:20:02.397899Z",
+  "updated_at": "2026-10-30T15:20:02.397899Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -23,39 +25,29 @@
   "context_snapshot": {
     "name": "David Sánchez",
     "revision": 0,
-    "explanation": "TT#14 David Sánchez es tendencia porque su defensa ha recurrido la condena a nueve años de inhabilitación por prevaricación y pide su absolución, alegando falta de prueba y sesgo por ser hermano del presidente.",
+    "explanation": "TT#27 David Sánchez aparece entre las tendencias mientras sigue pendiente su recurso contra la condena de nueve años de inhabilitación por prevaricación. No está confirmado que ese recurso explique el impulso de hoy.\n#Badajoz #Tribunales",
     "closer_text": "",
     "trend_names": [
       "David Sánchez"
     ],
-    "group_title": "David Sánchez",
-    "rank_at_explanation": 14,
-    "explained_at": "2026-10-08T16:52:00+02:00",
+    "group_title": "",
+    "rank_at_explanation": 27,
+    "explained_at": "2026-10-30T16:20:00+01:00",
     "verification_sources": [
       "https://www.rtve.es/noticias/20261008/defensa-david-sanchez-recurre-apelacion-sentencia-audiencia-provincial-badajoz-pide-su-absolucion/17258265.shtml",
-      "https://elpais.com/espana/2026-10-08/david-sanchez-recurre-su-condena-y-acusa-al-tribunal-de-sentenciarle-por-ser-el-hermano-del-presidente-no-hay-prueba.html"
+      "https://efe.com/extremadura/2026-10-09/fiscalia-recurre-condena-david-sanchez/"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
-    "image_style_name": "absurdo_semirrealista",
-    "image_style_index": 3
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
-    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "1b981eba1b4eae611d450f548669c67c66dcccaf73aff6dbd0ed2f6fed44f806",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-08T14:55:36.555Z",
-  "bridge_version": null,
-  "target_handoff_id": "1006D704473B6DCFBA740D315E2C7E63",
-  "target_handoff_at": "2026-10-08T14:55:46.989Z",
-  "pc_launched_at": "2026-10-08T14:55:48.481Z",
-  "upload_received_at": "2026-10-08T14:56:51.214Z",
-  "upload_sha256": "1beb52fb956d450ec6d780168a5dd0cc5ea7ef2f143f53661f1bae41b129f451",
-  "upload_bytes": 2521812,
-  "finished_at": "2026-10-08T14:57:03.916Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }

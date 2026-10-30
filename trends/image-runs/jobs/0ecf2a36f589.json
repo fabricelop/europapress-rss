@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-0ecf2a36f589-r0-a1-1791388307351",
-  "requested_at": "2026-10-07T15:51:47.332200Z",
-  "updated_at": "2026-10-07T15:53:40.774Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-0ecf2a36f589-r0-a1-1793373602435",
+  "requested_at": "2026-10-30T15:20:02.397899Z",
+  "updated_at": "2026-10-30T15:20:02.397899Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -23,45 +25,29 @@
   "context_snapshot": {
     "name": "La UCO",
     "revision": 0,
-    "explanation": "TT#7 La UCO es tendencia porque un informe de la Guardia Civil recoge el testimonio de una mujer que afirma que un exjuez vinculado al caso Leire Díez habló de «eliminar» a la jueza Beatriz Biedma, que investigó a David Sánchez.",
+    "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
     "closer_text": "",
     "trend_names": [
       "La UCO"
     ],
-    "group_title": "La UCO",
-    "rank_at_explanation": 7,
-    "explained_at": "2026-10-07T17:36:00+02:00",
+    "group_title": "",
+    "rank_at_explanation": 29,
+    "explained_at": "2026-10-30T16:20:00+01:00",
     "verification_sources": [
-      {
-        "source": "Cadena SER · 7/10/2026",
-        "url": "https://cadenaser.com/nacional/2026/10/07/una-testigo-declara-a-la-uco-que-el-contacto-de-leire-diez-queria-eliminar-a-la-juez-que-investigo-a-david-sanchez-cadena-ser/"
-      },
-      {
-        "source": "El País · 7/10/2026",
-        "url": "https://elpais.com/espana/2026-10-07/una-testigo-afirma-que-la-trama-de-leire-diez-quiso-acabar-con-la-jueza-del-caso-david-sanchez-es-un-puto-grano-en-el-culo.html"
-      }
+      "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+      "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
     "image_style_name": "poster_grafico",
     "image_style_index": 2
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
-    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "45ccf5d5e5ba2a7a77190003c50d776148572c370d0eefda5bf6129c681d6a23",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-07T15:52:21.748Z",
-  "bridge_version": null,
-  "target_handoff_id": "A206032A35FC72D8E985F52508B2E327",
-  "target_handoff_at": "2026-10-07T15:52:33.346Z",
-  "pc_launched_at": "2026-10-07T15:52:34.524Z",
-  "upload_received_at": "2026-10-07T15:53:35.056Z",
-  "upload_sha256": "b0b19ac32c31ff67924096ada64f9f1f48b076f2e49a1fce2e3b83fae2bac44e",
-  "upload_bytes": 705841,
-  "finished_at": "2026-10-07T15:53:40.774Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
