@@ -3,252 +3,66 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T21:35:00Z",
+  "last_started_at": "2026-10-30T21:55:00.000Z",
   "last_completed_at": "2026-10-30T21:49:33.693Z",
-  "updated_at": "2026-10-30T21:49:33.693Z",
-  "status": "DONE",
-  "queue_complete": true,
-  "processed_ids": [
-    "6870df351c7a",
-    "2d465a770610",
-    "19d3c8965a38",
-    "listas-auto-393aee72db721c540b63",
-    "red-review-c7cf10c5fed262f115c4",
-    "red-review-a8c83f33c1e906879add",
-    "listas-auto-fe4896d0f65b1e521101"
-  ],
+  "updated_at": "2026-10-30T21:55:00.000Z",
+  "status": "RUNNING",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793396029532-manual",
-  "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada editorial real completada 7/7: OkDiario y #FirstDates30O explicadas; Golpe de Estado respetada como cierre concurrente; dos agrupaciones aplicadas con cobertura OkDiario→Inda y Alvia→Angrois; revisiones Koldo García y Alvia consumidas. Cola final 0/0 tras releer main, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
+  "run_id": "tr-1793397300000-manual",
+  "previous_run_id": "tr-1793396029532-manual",
+  "summary": "Pasada editorial real iniciada; verificando cola y reexplicaciones pendientes. Sin ImageGen.",
   "activity": [
     {
-      "at": "2026-10-30T21:35:00Z",
+      "at": "2026-10-30T21:55:00.000Z",
       "phase": "preparing",
-      "trend_id": "6870df351c7a",
-      "title": "OkDiario",
-      "message": "Inicio de pasada real: reelaboración manual OkDiario r0 revalidada en main; investigación desde cero. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T21:37:00Z",
-      "phase": "investigating",
-      "trend_id": "6870df351c7a",
-      "title": "OkDiario",
-      "message": "Detonante actual corroborado: polémica por 242.000 € pagados por Dos Mil Palabras al despacho de la abogada de Koldo; facturas judiciales y versión contractual del medio divergen; FAPE/APM respaldan hoy a Escolar por su denuncia de intimidación."
-    },
-    {
-      "at": "2026-10-30T21:38:36.912Z",
-      "phase": "drafting",
-      "trend_id": "6870df351c7a",
-      "title": "OkDiario",
-      "message": "Texto nuevo redactado desde cero y verificado <280: refleja pagos de 242.000 €, versión contractual de OkDiario y amparo FAPE/APM a Escolar; remate nuevo y neutral."
-    },
-    {
-      "at": "2026-10-30T21:42:05.210Z",
-      "phase": "verifying",
-      "trend_id": "6870df351c7a",
-      "title": "OkDiario",
-      "message": "Persistencia verificada en telegram-manual-explained.json; revisión 0 retirada de la cola. Continúan #FirstDates30O y Golpe de Estado."
-    },
-    {
-      "at": "2026-10-30T21:42:20.177Z",
-      "phase": "persisting",
-      "trend_id": "2d465a770610",
-      "title": "#FirstDates30O",
-      "message": "#FirstDates30O r0 revalidada JIT; especial de Halloween en emisión corroborado. Texto y remate verificados <280; persistiendo."
-    },
-    {
-      "at": "2026-10-30T21:43:30.000Z",
-      "phase": "verifying",
-      "trend_id": "2d465a770610",
-      "title": "#FirstDates30O",
-      "message": "#FirstDates30O r0 persistida en ambos registros y retirada de la cola tras revalidación JIT."
-    },
-    {
-      "at": "2026-10-30T21:44:10.000Z",
-      "phase": "investigating",
-      "trend_id": "19d3c8965a38",
-      "title": "Golpe de Estado",
-      "message": "Contexto postelectoral de Brasil contrastado con fuentes actuales: el Gobierno de Lula alerta ante nuevas tentativas golpistas y Flávio Bolsonaro cuestiona el resultado desde EE UU."
-    },
-    {
-      "at": "2026-10-30T21:45:30.000Z",
-      "phase": "drafting",
-      "trend_id": "19d3c8965a38",
-      "title": "Golpe de Estado",
-      "message": "Texto factual verificado <280; sin remate por contexto político."
-    },
-    {
-      "at": "2026-10-30T21:46:15.000Z",
-      "phase": "persisting",
-      "trend_id": "19d3c8965a38",
-      "title": "Golpe de Estado",
-      "message": "Golpe de Estado r0 persistida con el mismo texto y explained_at en requests y telegram-manual-explained."
-    },
-    {
-      "at": "2026-10-30T21:47:00.000Z",
-      "phase": "verifying",
-      "trend_id": "19d3c8965a38",
-      "title": "Golpe de Estado",
-      "message": "Revisión 0 verificada en ambos registros y retirada de la cola; cola editorial releída en 0."
-    },
-    {
-      "at": "2026-10-30T21:47:30.000Z",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada 3/3. Cola final 0. Sin ImageGen ni envíos/publicaciones."
-    },
-    {
-      "at": "2026-10-30T21:48:00.000Z",
-      "phase": "preparing",
-      "trend_id": "listas-auto-393aee72db721c540b63",
-      "title": "Agrupación automática de Listas",
-      "message": "Barrera final detectó 3 trabajos pendientes; se reabre la misma pasada para procesarlos en orden contractual."
-    },
-    {
-      "at": "2026-10-30T21:45:45.186Z",
-      "phase": "persisting",
-      "trend_id": "listas-auto-393aee72db721c540b63",
-      "title": "Agrupación automática de Listas",
-      "message": "Agrupación automática JIT: OkDiario queda cubierta por la publicación vigente de Inda al tratarse del mismo episodio sin novedades materiales; el resto de candidatas permanece separado."
-    },
-    {
-      "at": "2026-10-30T21:46:36.153Z",
-      "phase": "persisting",
-      "trend_id": "red-review-c7cf10c5fed262f115c4",
-      "title": "Revisar novedades: Koldo García",
-      "message": "Revisión Koldo García JIT: novedad material confirmada; el contrato publicado por OkDiario añade una versión distinta a las facturas judiciales. Resultado updated persistido."
-    },
-    {
-      "at": "2026-10-30T21:47:46.486Z",
-      "phase": "persisting",
-      "trend_id": "listas-auto-fe4896d0f65b1e521101",
-      "title": "Agrupación automática de Listas",
-      "message": "Agrupación JIT: actualización Alvia cubierta por la publicación vigente de Angrois al describir el mismo desarrollo tras Urda; resto sin coincidencias inequívocas."
-    },
-    {
-      "at": "2026-10-30T21:48:15.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-c7cf10c5fed262f115c4",
-      "title": "Revisar novedades: Koldo García",
-      "message": "Aplicador JIT cerró la revisión como stale: la novedad era material, pero la fuente ya no era la revisión vigente; no se reabrió ni duplicó una ficha terminal."
-    },
-    {
-      "at": "2026-10-30T21:48:20.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-a8c83f33c1e906879add",
-      "title": "Revisar novedades: Alvia",
-      "message": "Revisión aplicada como updated; creó trend-update-b10cd3817682fdcfdc84 y la agrupación posterior la cubrió con Angrois por tratarse del mismo desarrollo."
-    },
-    {
-      "at": "2026-10-30T21:48:25.000Z",
-      "phase": "verifying",
-      "trend_id": "listas-auto-fe4896d0f65b1e521101",
-      "title": "Agrupación automática de Listas",
-      "message": "Segunda agrupación aplicada con estado grouping_completed; Alvia queda cubierta por Angrois y la cola editorial se relee en 0."
-    },
-    {
-      "at": "2026-10-30T21:48:30.000Z",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completa 7/7: 3 explicaciones, 2 agrupaciones y 2 revisiones de mantenimiento. Cola final 0. Sin ImageGen ni envíos/publicaciones."
-    },
-    {
-      "at": "2026-10-30T21:49:33.693Z",
-      "phase": "verifying",
-      "trend_id": "19d3c8965a38",
-      "title": "Golpe de Estado",
-      "message": "Barrera JIT respetada: la revisión 0 había sido explicada concurrentemente antes de persistir nuestro borrador; no se sobrescribió el estado terminal."
-    },
-    {
-      "at": "2026-10-30T21:49:33.693Z",
-      "phase": "verifying",
-      "trend_id": "listas-auto-393aee72db721c540b63",
-      "title": "Agrupación automática de Listas",
-      "message": "Agrupación aplicada: OkDiario cubierta por la publicación vigente de Inda; sin grupo nuevo."
-    },
-    {
-      "at": "2026-10-30T21:49:33.693Z",
-      "phase": "verifying",
-      "trend_id": "red-review-c7cf10c5fed262f115c4",
-      "title": "Revisar novedades: Koldo García",
-      "message": "Revisión consumida por la barrera de mantenimiento sin crear una nueva ficha vigente; no se reabrió el snapshot anterior."
-    },
-    {
-      "at": "2026-10-30T21:49:33.693Z",
-      "phase": "verifying",
-      "trend_id": "red-review-a8c83f33c1e906879add",
-      "title": "Revisar novedades: Alvia",
-      "message": "Revisión aplicada concurrentemente con actualización material sobre recomendaciones a las víctimas de Urda."
-    },
-    {
-      "at": "2026-10-30T21:49:33.693Z",
-      "phase": "verifying",
-      "trend_id": "listas-auto-fe4896d0f65b1e521101",
-      "title": "Agrupación automática de Listas",
-      "message": "Segunda agrupación aplicada: actualización Alvia cubierta por la publicación vigente de Angrois; sin grupo nuevo."
-    },
-    {
-      "at": "2026-10-30T21:49:33.693Z",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni reexplain/rewrite_pending. Cierre sin ImageGen."
+      "message": "Inicio de pasada editorial real: cola compacta releída en main; verificando reexplicaciones, estados concurrentes y cierre. Sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T21:35:00Z",
-  "finished_at": "2026-10-30T21:49:33.693Z",
-  "current": 7,
-  "total": 7,
+  "phase": "preparing",
+  "started_at": "2026-10-30T21:55:00.000Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793396029532-manual",
+    "run_id": "tr-1793397300000-manual",
     "source": "manual",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T21:35:00Z",
-    "updated_at": "2026-10-30T21:49:33.693Z",
-    "finished_at": "2026-10-30T21:49:33.693Z",
-    "current": 7,
-    "total": 7,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T21:55:00.000Z",
+    "updated_at": "2026-10-30T21:55:00.000Z",
+    "finished_at": null,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "6870df351c7a",
-      "2d465a770610",
-      "19d3c8965a38",
-      "listas-auto-393aee72db721c540b63",
-      "red-review-c7cf10c5fed262f115c4",
-      "red-review-a8c83f33c1e906879add",
-      "listas-auto-fe4896d0f65b1e521101"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada editorial real completada 7/7: OkDiario y #FirstDates30O explicadas; Golpe de Estado respetada como cierre concurrente; dos agrupaciones aplicadas con cobertura OkDiario→Inda y Alvia→Angrois; revisiones Koldo García y Alvia consumidas. Cola final 0/0 tras releer main, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
+    "message": "Pasada editorial real iniciada; verificando cola y reexplicaciones pendientes. Sin ImageGen.",
     "summary": {
-      "attempted": 7,
-      "explained": 2,
-      "concurrent_terminal_respected": 1,
-      "updates": 1,
-      "stale_or_consumed_reviews": 1,
-      "grouping_requests": 2,
+      "attempted": 0,
+      "explained": 0,
+      "updates": 0,
+      "grouping_requests": 0,
       "groups_created": 0,
-      "members_covered": 2,
+      "members_covered": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
@@ -260,282 +74,13 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T21:35:00Z",
+        "at": "2026-10-30T21:55:00.000Z",
         "phase": "preparing",
-        "trend_id": "6870df351c7a",
-        "title": "OkDiario",
-        "message": "Inicio de pasada real: reelaboración manual OkDiario r0 revalidada en main; investigación desde cero. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T21:37:00Z",
-        "phase": "investigating",
-        "trend_id": "6870df351c7a",
-        "title": "OkDiario",
-        "message": "Detonante actual corroborado: polémica por 242.000 € pagados por Dos Mil Palabras al despacho de la abogada de Koldo; facturas judiciales y versión contractual del medio divergen; FAPE/APM respaldan hoy a Escolar por su denuncia de intimidación."
-      },
-      {
-        "at": "2026-10-30T21:38:36.912Z",
-        "phase": "drafting",
-        "trend_id": "6870df351c7a",
-        "title": "OkDiario",
-        "message": "Texto nuevo redactado desde cero y verificado <280: refleja pagos de 242.000 €, versión contractual de OkDiario y amparo FAPE/APM a Escolar; remate nuevo y neutral."
-      },
-      {
-        "at": "2026-10-30T21:42:05.210Z",
-        "phase": "verifying",
-        "trend_id": "6870df351c7a",
-        "title": "OkDiario",
-        "message": "Persistencia verificada en telegram-manual-explained.json; revisión 0 retirada de la cola. Continúan #FirstDates30O y Golpe de Estado."
-      },
-      {
-        "at": "2026-10-30T21:42:20.177Z",
-        "phase": "persisting",
-        "trend_id": "2d465a770610",
-        "title": "#FirstDates30O",
-        "message": "#FirstDates30O r0 revalidada JIT; especial de Halloween en emisión corroborado. Texto y remate verificados <280; persistiendo."
-      },
-      {
-        "at": "2026-10-30T21:43:30.000Z",
-        "phase": "verifying",
-        "trend_id": "2d465a770610",
-        "title": "#FirstDates30O",
-        "message": "#FirstDates30O r0 persistida en ambos registros y retirada de la cola tras revalidación JIT."
-      },
-      {
-        "at": "2026-10-30T21:44:10.000Z",
-        "phase": "investigating",
-        "trend_id": "19d3c8965a38",
-        "title": "Golpe de Estado",
-        "message": "Contexto postelectoral de Brasil contrastado con fuentes actuales: el Gobierno de Lula alerta ante nuevas tentativas golpistas y Flávio Bolsonaro cuestiona el resultado desde EE UU."
-      },
-      {
-        "at": "2026-10-30T21:45:30.000Z",
-        "phase": "drafting",
-        "trend_id": "19d3c8965a38",
-        "title": "Golpe de Estado",
-        "message": "Texto factual verificado <280; sin remate por contexto político."
-      },
-      {
-        "at": "2026-10-30T21:46:15.000Z",
-        "phase": "persisting",
-        "trend_id": "19d3c8965a38",
-        "title": "Golpe de Estado",
-        "message": "Golpe de Estado r0 persistida con el mismo texto y explained_at en requests y telegram-manual-explained."
-      },
-      {
-        "at": "2026-10-30T21:47:00.000Z",
-        "phase": "verifying",
-        "trend_id": "19d3c8965a38",
-        "title": "Golpe de Estado",
-        "message": "Revisión 0 verificada en ambos registros y retirada de la cola; cola editorial releída en 0."
-      },
-      {
-        "at": "2026-10-30T21:47:30.000Z",
-        "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada 3/3. Cola final 0. Sin ImageGen ni envíos/publicaciones."
-      },
-      {
-        "at": "2026-10-30T21:48:00.000Z",
-        "phase": "preparing",
-        "trend_id": "listas-auto-393aee72db721c540b63",
-        "title": "Agrupación automática de Listas",
-        "message": "Barrera final detectó 3 trabajos pendientes; se reabre la misma pasada para procesarlos en orden contractual."
-      },
-      {
-        "at": "2026-10-30T21:45:45.186Z",
-        "phase": "persisting",
-        "trend_id": "listas-auto-393aee72db721c540b63",
-        "title": "Agrupación automática de Listas",
-        "message": "Agrupación automática JIT: OkDiario queda cubierta por la publicación vigente de Inda al tratarse del mismo episodio sin novedades materiales; el resto de candidatas permanece separado."
-      },
-      {
-        "at": "2026-10-30T21:46:36.153Z",
-        "phase": "persisting",
-        "trend_id": "red-review-c7cf10c5fed262f115c4",
-        "title": "Revisar novedades: Koldo García",
-        "message": "Revisión Koldo García JIT: novedad material confirmada; el contrato publicado por OkDiario añade una versión distinta a las facturas judiciales. Resultado updated persistido."
-      },
-      {
-        "at": "2026-10-30T21:47:46.486Z",
-        "phase": "persisting",
-        "trend_id": "listas-auto-fe4896d0f65b1e521101",
-        "title": "Agrupación automática de Listas",
-        "message": "Agrupación JIT: actualización Alvia cubierta por la publicación vigente de Angrois al describir el mismo desarrollo tras Urda; resto sin coincidencias inequívocas."
-      },
-      {
-        "at": "2026-10-30T21:48:15.000Z",
-        "phase": "verifying",
-        "trend_id": "red-review-c7cf10c5fed262f115c4",
-        "title": "Revisar novedades: Koldo García",
-        "message": "Aplicador JIT cerró la revisión como stale: la novedad era material, pero la fuente ya no era la revisión vigente; no se reabrió ni duplicó una ficha terminal."
-      },
-      {
-        "at": "2026-10-30T21:48:20.000Z",
-        "phase": "verifying",
-        "trend_id": "red-review-a8c83f33c1e906879add",
-        "title": "Revisar novedades: Alvia",
-        "message": "Revisión aplicada como updated; creó trend-update-b10cd3817682fdcfdc84 y la agrupación posterior la cubrió con Angrois por tratarse del mismo desarrollo."
-      },
-      {
-        "at": "2026-10-30T21:48:25.000Z",
-        "phase": "verifying",
-        "trend_id": "listas-auto-fe4896d0f65b1e521101",
-        "title": "Agrupación automática de Listas",
-        "message": "Segunda agrupación aplicada con estado grouping_completed; Alvia queda cubierta por Angrois y la cola editorial se relee en 0."
-      },
-      {
-        "at": "2026-10-30T21:48:30.000Z",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada completa 7/7: 3 explicaciones, 2 agrupaciones y 2 revisiones de mantenimiento. Cola final 0. Sin ImageGen ni envíos/publicaciones."
-      },
-      {
-        "at": "2026-10-30T21:49:33.693Z",
-        "phase": "verifying",
-        "trend_id": "19d3c8965a38",
-        "title": "Golpe de Estado",
-        "message": "Barrera JIT respetada: la revisión 0 había sido explicada concurrentemente antes de persistir nuestro borrador; no se sobrescribió el estado terminal."
-      },
-      {
-        "at": "2026-10-30T21:49:33.693Z",
-        "phase": "verifying",
-        "trend_id": "listas-auto-393aee72db721c540b63",
-        "title": "Agrupación automática de Listas",
-        "message": "Agrupación aplicada: OkDiario cubierta por la publicación vigente de Inda; sin grupo nuevo."
-      },
-      {
-        "at": "2026-10-30T21:49:33.693Z",
-        "phase": "verifying",
-        "trend_id": "red-review-c7cf10c5fed262f115c4",
-        "title": "Revisar novedades: Koldo García",
-        "message": "Revisión consumida por la barrera de mantenimiento sin crear una nueva ficha vigente; no se reabrió el snapshot anterior."
-      },
-      {
-        "at": "2026-10-30T21:49:33.693Z",
-        "phase": "verifying",
-        "trend_id": "red-review-a8c83f33c1e906879add",
-        "title": "Revisar novedades: Alvia",
-        "message": "Revisión aplicada concurrentemente con actualización material sobre recomendaciones a las víctimas de Urda."
-      },
-      {
-        "at": "2026-10-30T21:49:33.693Z",
-        "phase": "verifying",
-        "trend_id": "listas-auto-fe4896d0f65b1e521101",
-        "title": "Agrupación automática de Listas",
-        "message": "Segunda agrupación aplicada: actualización Alvia cubierta por la publicación vigente de Angrois; sin grupo nuevo."
-      },
-      {
-        "at": "2026-10-30T21:49:33.693Z",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni reexplain/rewrite_pending. Cierre sin ImageGen."
+        "message": "Inicio de pasada editorial real: cola compacta releída en main; verificando reexplicaciones, estados concurrentes y cierre. Sin ImageGen."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "6870df351c7a",
-        "revision": 0,
-        "name": "OkDiario",
-        "outcome": "explained"
-      },
-      {
-        "id": "2d465a770610",
-        "revision": 0,
-        "name": "#FirstDates30O",
-        "outcome": "explained"
-      },
-      {
-        "id": "19d3c8965a38",
-        "revision": 0,
-        "name": "Golpe de Estado",
-        "outcome": "concurrent_terminal_respected"
-      },
-      {
-        "id": "listas-auto-393aee72db721c540b63",
-        "revision": 0,
-        "name": "Agrupación automática de Listas",
-        "outcome": "grouping_completed",
-        "groups_created": 0,
-        "members_covered": 1,
-        "note": "OkDiario cubierta por Inda."
-      },
-      {
-        "id": "red-review-c7cf10c5fed262f115c4",
-        "revision": 0,
-        "name": "Revisar novedades: Koldo García",
-        "outcome": "consumed_without_new_current_card"
-      },
-      {
-        "id": "red-review-a8c83f33c1e906879add",
-        "revision": 0,
-        "name": "Revisar novedades: Alvia",
-        "outcome": "updated_concurrently",
-        "created_id": "trend-update-b10cd3817682fdcfdc84"
-      },
-      {
-        "id": "listas-auto-fe4896d0f65b1e521101",
-        "revision": 0,
-        "name": "Agrupación automática de Listas",
-        "outcome": "grouping_completed",
-        "groups_created": 0,
-        "members_covered": 1,
-        "note": "Actualización Alvia cubierta por Angrois."
-      }
-    ]
-  },
-  "final_outcomes": [
-    {
-      "id": "6870df351c7a",
-      "revision": 0,
-      "name": "OkDiario",
-      "outcome": "explained"
-    },
-    {
-      "id": "2d465a770610",
-      "revision": 0,
-      "name": "#FirstDates30O",
-      "outcome": "explained"
-    },
-    {
-      "id": "19d3c8965a38",
-      "revision": 0,
-      "name": "Golpe de Estado",
-      "outcome": "concurrent_terminal_respected"
-    },
-    {
-      "id": "listas-auto-393aee72db721c540b63",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "members_covered": 1,
-      "note": "OkDiario cubierta por Inda."
-    },
-    {
-      "id": "red-review-c7cf10c5fed262f115c4",
-      "revision": 0,
-      "name": "Revisar novedades: Koldo García",
-      "outcome": "consumed_without_new_current_card"
-    },
-    {
-      "id": "red-review-a8c83f33c1e906879add",
-      "revision": 0,
-      "name": "Revisar novedades: Alvia",
-      "outcome": "updated_concurrently",
-      "created_id": "trend-update-b10cd3817682fdcfdc84"
-    },
-    {
-      "id": "listas-auto-fe4896d0f65b1e521101",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "members_covered": 1,
-      "note": "Actualización Alvia cubierta por Angrois."
-    }
-  ]
+    "final_outcomes": []
+  }
 }
