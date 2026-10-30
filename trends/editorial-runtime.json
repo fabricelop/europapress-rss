@@ -3,17 +3,17 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T03:55:00+01:00",
-  "last_completed_at": "2026-10-30T03:59:40+01:00",
-  "updated_at": "2026-10-30T03:59:40+01:00",
+  "last_started_at": "2026-10-30T04:40:00+01:00",
+  "last_completed_at": "2026-10-30T04:43:00+01:00",
+  "updated_at": "2026-10-30T04:43:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T035500+0100",
-  "previous_run_id": "tr-chat-20261030T034000+0100",
+  "run_id": "tr-chat-20261030T044000+0100",
+  "previous_run_id": "tr-chat-20261030T035500+0100",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -28,7 +28,7 @@
     "remates_selected": 0,
     "remates_omitted": 8,
     "recent_missing_closer_reviewed": 8,
-    "pending_visual_candidates_reviewed": 16,
+    "pending_visual_candidates_reviewed": 14,
     "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -36,42 +36,42 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T03:55:00+01:00",
+      "at": "2026-10-30T04:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Releyendo cola y estados autoritativos"
     },
     {
-      "at": "2026-10-30T03:58:45+01:00",
+      "at": "2026-10-30T04:41:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Cola editorial vacía · 0 preparing/update, 0 problematic y 0 reexplicaciones"
+      "message": "Cola editorial vacía · 0 preparing/update y 0 reexplicaciones"
     },
     {
-      "at": "2026-10-30T03:58:50+01:00",
+      "at": "2026-10-30T04:41:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 16 tarjetas recientes; reparación visual solicitada"
+      "message": "Revisando Pendientes · 14 tarjetas recientes; reparación visual solicitada"
     },
     {
-      "at": "2026-10-30T03:58:55+01:00",
+      "at": "2026-10-30T04:41:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Revisando 8 Pendientes sin remate · omisión mantenida por fallecimiento, accidente, lesión o estado médico"
     },
     {
-      "at": "2026-10-30T03:59:05+01:00",
+      "at": "2026-10-30T04:42:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Radar fresco · Top 10 cubierto por fichas/grupos vigentes de menos de 48 h; 0 revisiones nuevas"
+      "message": "Radar 04:40 · Top 10 cubierto por fichas/grupos vigentes de menos de 48 h"
     },
     {
-      "at": "2026-10-30T03:59:40+01:00",
+      "at": "2026-10-30T04:43:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -92,9 +92,8 @@
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T035500+0100",
-    "status": "started",
-    "workflow_run_id": 40994744729,
+    "trigger_run_id": "tr-chat-20261030T044000+0100",
+    "status": "triggered",
     "editorial_blocking": false
   },
   "apply_workflow": {
@@ -109,13 +108,13 @@
   "last_run": {
     "project": "TTendencias",
     "canonical": true,
-    "run_id": "tr-chat-20261030T035500+0100",
+    "run_id": "tr-chat-20261030T044000+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T03:55:00+01:00",
-    "updated_at": "2026-10-30T03:59:40+01:00",
-    "finished_at": "2026-10-30T03:59:40+01:00",
+    "started_at": "2026-10-30T04:40:00+01:00",
+    "updated_at": "2026-10-30T04:43:00+01:00",
+    "finished_at": "2026-10-30T04:43:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -135,7 +134,7 @@
       "remates_selected": 0,
       "remates_omitted": 8,
       "recent_missing_closer_reviewed": 8,
-      "pending_visual_candidates_reviewed": 16,
+      "pending_visual_candidates_reviewed": 14,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -153,42 +152,42 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T03:55:00+01:00",
+        "at": "2026-10-30T04:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Releyendo cola y estados autoritativos"
       },
       {
-        "at": "2026-10-30T03:58:45+01:00",
+        "at": "2026-10-30T04:41:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial vacía · 0 preparing/update, 0 problematic y 0 reexplicaciones"
+        "message": "Cola editorial vacía · 0 preparing/update y 0 reexplicaciones"
       },
       {
-        "at": "2026-10-30T03:58:50+01:00",
+        "at": "2026-10-30T04:41:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 16 tarjetas recientes; reparación visual solicitada"
+        "message": "Revisando Pendientes · 14 tarjetas recientes; reparación visual solicitada"
       },
       {
-        "at": "2026-10-30T03:58:55+01:00",
+        "at": "2026-10-30T04:41:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando 8 Pendientes sin remate · omisión mantenida por fallecimiento, accidente, lesión o estado médico"
       },
       {
-        "at": "2026-10-30T03:59:05+01:00",
+        "at": "2026-10-30T04:42:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Radar fresco · Top 10 cubierto por fichas/grupos vigentes de menos de 48 h; 0 revisiones nuevas"
+        "message": "Radar 04:40 · Top 10 cubierto por fichas/grupos vigentes de menos de 48 h"
       },
       {
-        "at": "2026-10-30T03:59:40+01:00",
+        "at": "2026-10-30T04:43:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -203,9 +202,9 @@
     "final_outcomes": []
   },
   "radar": {
-    "captured_at": "2026-10-30T03:50:53+01:00",
+    "captured_at": "2026-10-30T04:40:53+01:00",
     "queue_count": 0,
-    "queue_sha": "e8083422c32f9ac818d25908dc547fd43c434847",
+    "queue_sha": "ea44a486f50110522a0247c0ea6ef2d8b7fe2059",
     "top10": [
       "Urda",
       "#SVGala8",
@@ -213,10 +212,10 @@
       "Óscar Puente",
       "Iryo",
       "Yola",
-      "Ivana",
       "Dana",
       "Angrois",
-      "Mazón"
+      "Mazón",
+      "Atocha"
     ]
   },
   "error": null,
