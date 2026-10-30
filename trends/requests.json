@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T14:41:02.055151+00:00",
+  "updated_at": "2026-10-30T15:41:14+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -3483,7 +3483,7 @@
       "rank": 20,
       "created_at": "2026-10-30T14:07:12.005954+00:00",
       "revision": 2,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-30T14:07:12.005954+00:00",
       "updated_at": "2026-10-30T15:11:55+01:00",
       "auto_queued": false,
@@ -3571,7 +3571,9 @@
         "https://twitter-trends.snaplytics.io/spain/",
         "https://trends24.in/spain/madrid/",
         "https://www.notimerica.com/politica/noticia-puente-rechaza-dimitir-forma-asumir-responsabilidades-dar-cara-20261030123155.html"
-      ]
+      ],
+      "inactive_at": "2026-10-30T15:41:14+01:00",
+      "inactive_reason": "left-top30-radar"
     },
     {
       "id": "5728ff97c00d",
@@ -7543,7 +7545,7 @@
       "id": "dc90fe5a413e",
       "name": "#30OctubrESP",
       "rank": 20,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-30T15:02:11+01:00",
       "revision": 0,
       "reexplain": false,
@@ -7591,7 +7593,9 @@
             "https://www.notimerica.com/politica/noticia-puente-rechaza-dimitir-forma-asumir-responsabilidades-dar-cara-20261030123155.html"
           ]
         }
-      ]
+      ],
+      "inactive_at": "2026-10-30T15:41:14+01:00",
+      "inactive_reason": "left-top30-radar"
     },
     {
       "id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
@@ -7713,6 +7717,26 @@
       "telegram_package_status": "published",
       "published_at": "2026-10-30T14:15:43.993624+00:00",
       "decision_source": "ttactualidad_direct"
+    },
+    {
+      "id": "d3361acf73b6",
+      "name": "Pobrecito",
+      "rank": 23,
+      "status": "preparing",
+      "requested_at": "2026-10-30T15:41:14+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "379cc1a1d0fc",
+      "requested_together": [
+        "Pobrecito"
+      ],
+      "captured_with": [
+        "Pobrecito"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ]
 }
