@@ -4,10 +4,10 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T16:41:15+01:00",
-  "last_completed_at": "2026-10-30T16:35:06.140+01:00",
-  "updated_at": "2026-10-30T16:41:15+01:00",
-  "status": "running",
-  "queue_complete": false,
+  "last_completed_at": "2026-10-30T16:41:45+01:00",
+  "updated_at": "2026-10-30T16:41:45+01:00",
+  "status": "done",
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -37,6 +37,13 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual: relectura vigente de main con cola 0; comprobando preparing/update, rewrite_pending y tareas editoriales. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T16:41:45+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre verificado 0/0: main sigue sin preparing/update, rewrite_pending, problemáticas ni tareas editoriales en cola. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -47,21 +54,21 @@
     "project": "TTendencias",
     "run_id": "tr-1793374875000-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T16:41:15+01:00",
-    "updated_at": "2026-10-30T16:41:15+01:00",
-    "finished_at": null,
+    "updated_at": "2026-10-30T16:41:45+01:00",
+    "finished_at": "2026-10-30T16:41:45+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": false,
+    "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada manual en curso: verificando main antes de cerrar una cola inicialmente vacía. Sin ImageGen.",
+    "message": "Pasada completada 0/0 tras relectura final de main: no quedan preparing/update, rewrite_pending, problemáticas ni tareas editoriales pendientes. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -87,6 +94,13 @@
         "trend_id": null,
         "title": null,
         "message": "Inicio de pasada manual: relectura vigente de main con cola 0; comprobando preparing/update, rewrite_pending y tareas editoriales. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T16:41:45+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre verificado 0/0: main sigue sin preparing/update, rewrite_pending, problemáticas ni tareas editoriales en cola. Sin ImageGen."
       }
     ],
     "final_outcomes": []
