@@ -5,9 +5,9 @@
   "canonical": true,
   "last_started_at": "2026-10-30T16:10:00+01:00",
   "last_completed_at": "2026-10-30T16:22:00+01:00",
-  "updated_at": "2026-10-30T16:22:00+01:00",
-  "status": "done",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T16:23:00+01:00",
+  "status": "running",
+  "queue_complete": false,
   "processed_ids": [
     "49a475a6cbe6",
     "c4dc5b3c94df",
@@ -25,8 +25,16 @@
     "a025df62fa96",
     "d3361acf73b6"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-0fb03df99bc50868ef11",
+    "red-review-9ace783f017fef1af669",
+    "red-review-71bcb3a0a60b8d335425"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-0fb03df99bc50868ef11",
+    "red-review-9ace783f017fef1af669",
+    "red-review-71bcb3a0a60b8d335425"
+  ],
   "remaining_problematic_ids": [],
   "run_id": "tr-chat-20261030T161000+0100-manual",
   "previous_run_id": "tr-chat-20261030T155500+0100-manual",
@@ -202,6 +210,13 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final: 0 preparing/update/problematic, 0 rewrite_pending y ninguna tarea de agrupación, Radar o mantenimiento presente en la cola al cierre."
+    },
+    {
+      "at": "2026-10-30T16:23:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "La barrera final detecta 3 trabajos nuevos: 1 agrupación automática y 2 revisiones de novedades. Se reabre la misma pasada."
     }
   ],
   "incidents": [],
@@ -212,17 +227,21 @@
     "project": "TTendencias",
     "run_id": "tr-chat-20261030T161000+0100-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
+    "status": "RUNNING",
+    "phase": "preparing",
     "started_at": "2026-10-30T16:10:00+01:00",
-    "updated_at": "2026-10-30T16:22:00+01:00",
-    "finished_at": "2026-10-30T16:22:00+01:00",
+    "updated_at": "2026-10-30T16:23:00+01:00",
+    "finished_at": null,
     "current": 15,
-    "total": 15,
+    "total": 18,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "listas-auto-0fb03df99bc50868ef11",
+      "red-review-9ace783f017fef1af669",
+      "red-review-71bcb3a0a60b8d335425"
+    ],
     "remaining_problematic_ids": [],
     "processed_ids": [
       "49a475a6cbe6",
@@ -241,8 +260,8 @@
       "a025df62fa96",
       "d3361acf73b6"
     ],
-    "partial": false,
-    "message": "Pasada completada 15/15: todas las revisiones vigentes quedaron explicadas y verificadas; las causas no demostrables se cerraron con redacción prudente y explícitamente incierta. Cola final 0.",
+    "partial": true,
+    "message": "La pasada continúa: entraron 1 agrupación automática y 2 revisiones de novedades durante la barrera final.",
     "summary": {
       "attempted": 15,
       "explained": 15,
@@ -417,6 +436,13 @@
         "trend_id": null,
         "title": null,
         "message": "Barrera final: 0 preparing/update/problematic, 0 rewrite_pending y ninguna tarea de agrupación, Radar o mantenimiento presente en la cola al cierre."
+      },
+      {
+        "at": "2026-10-30T16:23:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "La barrera final detecta 3 trabajos nuevos: 1 agrupación automática y 2 revisiones de novedades. Se reabre la misma pasada."
       }
     ],
     "final_outcomes": [
