@@ -17176,10 +17176,30 @@
       "distinct_episode": false,
       "new_facts": "Puente sitúa la implantación del ERTMS en Madrid-Sevilla a comienzos de 2027, con alrededor de 12 meses de retraso, y afirma que las pruebas del sistema no causaron el choque de Urda.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/DNYVT7EL6VOGBKJUM36KPCMPWU.jpg?auth=aa7cbadb738db9ef8fafa57457003928decad02e0ceaedf73b89ebafdbb35b45&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con ERTMS",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/DNYVT7EL6VOGBKJUM36KPCMPWU.jpg?auth=aa7cbadb738db9ef8fafa57457003928decad02e0ceaedf73b89ebafdbb35b45&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con ERTMS",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "trend-update-541b493b13fef8cf3662",
@@ -17210,10 +17230,15 @@
       "distinct_episode": false,
       "new_facts": "Renfe comunica que el plan alternativo para el corredor Madrid-Andalucía no podrá comenzar antes del 3 de noviembre por el plazo de 96 horas de preaviso exigido por SEMAF.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "trend-update-00d605f035c100a5c6a3",
@@ -17243,12 +17268,32 @@
       "distinct_episode": false,
       "new_facts": "La investigación sigue sin determinar si la continuación de la marcha bajo ASFA obedeció a una actuación del maquinista o a un fallo técnico; el punto está expresamente bajo análisis.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/23-minutos-69-victimas-muchas-preguntas-fallos-detras-del-choque-dos-trenes-alta-velocidad/01793314472012.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261030/23-minutos-69-victimas-muchas-preguntas-fallos-detras-del-choque-dos-trenes-alta-velocidad/17289394.shtml",
+        "alt": "Imagen de archivo relacionada con ASFA",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/23-minutos-69-victimas-muchas-preguntas-fallos-detras-del-choque-dos-trenes-alta-velocidad/01793314472012.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261030/23-minutos-69-victimas-muchas-preguntas-fallos-detras-del-choque-dos-trenes-alta-velocidad/17289394.shtml",
+        "alt": "Imagen de archivo relacionada con ASFA",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-30T13:56:30.942712+00:00",
+  "updated_at": "2026-10-30T13:57:20.446837Z",
   "count": 304
 }
