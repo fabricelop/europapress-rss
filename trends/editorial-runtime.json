@@ -3,24 +3,24 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T09:55:00+01:00",
-  "last_completed_at": "2026-10-30T09:57:00+01:00",
-  "updated_at": "2026-10-30T09:57:00+01:00",
+  "last_started_at": "2026-10-30T10:10:00+01:00",
+  "last_completed_at": "2026-10-30T10:13:30+01:00",
+  "updated_at": "2026-10-30T10:13:30+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
-    "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430"
+    "33182d7dacdf"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793347358168-manual",
-  "previous_run_id": "tr-chat-20261030T084000+0100",
+  "run_id": "tr-chat-20261030T101000+0100",
+  "previous_run_id": "tr-1793347358168-manual",
   "summary": {
     "attempted": 1,
-    "explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 2,
+    "explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "problematic": 0,
     "final_resolved": 1,
     "skipped_concurrent": 0,
@@ -29,69 +29,83 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 2,
+    "explanations_verified_under_280": 1,
     "remates_selected": 1,
-    "remates_omitted": 1,
+    "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
+    "pending_visual_candidates_reviewed": 3,
     "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0,
-    "grouping_requests": 1,
-    "groups_created": 2,
-    "members_covered": 6,
-    "untouched_candidates": 4
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "members_covered": 0,
+    "untouched_candidates": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T09:03:00+01:00",
+      "at": "2026-10-30T10:10:00+01:00",
       "phase": "preparing",
-      "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Solicitud de agrupación detectada; revalidando snapshot completo antes de comparar acontecimientos."
+      "trend_id": null,
+      "title": null,
+      "message": "Cola editorial 0; iniciando saneamiento obligatorio de 3 Pendientes y revalidación completa de requests, reexplicaciones, agrupaciones, problematic y Top 10."
     },
     {
-      "at": "2026-10-30T09:04:00+01:00",
+      "at": "2026-10-30T10:11:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main tras el trigger: 3 Pendientes visuales conservan texto/remate; verificando cola, reexplicaciones y cobertura fresca del Top 10."
+    },
+    {
+      "at": "2026-10-30T10:11:20+01:00",
+      "phase": "verifying",
+      "trend_id": "33182d7dacdf",
+      "title": "#LaHora30O",
+      "message": "Releyendo estado autoritativo de #LaHora30O antes de tratar la revisión 0."
+    },
+    {
+      "at": "2026-10-30T10:11:40+01:00",
       "phase": "investigating",
-      "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Contrastadas fuentes: dos grupos concretos comparten acontecimiento; el resto son hechos distintos."
+      "trend_id": "33182d7dacdf",
+      "title": "#LaHora30O",
+      "message": "Detonante verificado: emisión de hoy de La Hora de La 1, 07:50–10:35, magacín de actualidad política y social de TVE."
     },
     {
-      "at": "2026-10-30T09:05:00+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Relectura JIT: solicitud sigue preparing, revisión 0 y 10 candidatas vigentes."
-    },
-    {
-      "at": "2026-10-30T09:05:20+01:00",
+      "at": "2026-10-30T10:12:00+01:00",
       "phase": "drafting",
-      "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Redactadas 2 fichas conjuntas; 221 y 252 caracteres, sin modificar explicaciones originales."
+      "trend_id": "33182d7dacdf",
+      "title": "#LaHora30O",
+      "message": "Explicación factual redactada y comprobada: 229 caracteres."
     },
     {
-      "at": "2026-10-30T09:05:40+01:00",
+      "at": "2026-10-30T10:12:10+01:00",
+      "phase": "remate_selection",
+      "trend_id": "33182d7dacdf",
+      "title": "#LaHora30O",
+      "message": "Evaluados candidatos de remate con el patrón de ratings; seleccionado un cierre breve ligado al hashtag del programa."
+    },
+    {
+      "at": "2026-10-30T10:12:30+01:00",
       "phase": "persisting",
-      "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Outbox persistido en main con 2 grupos y 6 miembros; aplicador de Listas activado."
+      "trend_id": "33182d7dacdf",
+      "title": "#LaHora30O",
+      "message": "Ficha Explicada, request y retirada de cola persistidas en main."
     },
     {
-      "at": "2026-10-30T09:05:53+01:00",
+      "at": "2026-10-30T10:13:00+01:00",
       "phase": "verifying",
-      "trend_id": "listas-grouping-945fd93e-ba1f-464c-a19a-6341d748d430",
-      "title": "Agrupar tendencias de Listas",
-      "message": "Aplicador completado con éxito: job grouping_completed, 2 fichas joint y 6 originales covered con textos intactos."
+      "trend_id": "33182d7dacdf",
+      "title": "#LaHora30O",
+      "message": "Relectura verificada: id+revision y texto coinciden; cola 0; Top 10 cubierto 10/10."
     },
     {
-      "at": "2026-10-30T09:06:00+01:00",
+      "at": "2026-10-30T10:13:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: cola 0; sin preparing/update ni reexplicaciones pendientes; agrupación verificada 2 grupos / 6 cubiertas."
+      "message": "Pasada cerrada: 1 nueva explicación verificada; cola final 0; Top 10 cubierto 10/10; saneamiento visual de 3 Pendientes solicitado."
     }
   ],
   "ratings_snapshot": {
@@ -103,25 +117,18 @@
   },
   "remate_selections": [
     {
-      "trend_id": "listas-joint-1c0000339de79528",
-      "name": "Supervivientes All Stars · Gala 8 y expulsión de Arkano",
-      "closer_text": "🌶️ La gala cerró la rima con el televoto."
+      "trend_id": "33182d7dacdf",
+      "name": "#LaHora30O",
+      "closer_text": "🌶️ La mañana de TVE ya viene con etiqueta propia."
     }
   ],
   "final_outcomes": [
     {
-      "id": "listas-joint-0813c505b8b24820",
-      "name": "Patrick Stewart · Picard / Star Trek / Charles Xavier",
+      "id": "33182d7dacdf",
+      "name": "#LaHora30O",
+      "revision": 0,
       "status": "explained",
-      "listas_group_role": "joint",
-      "members": 4
-    },
-    {
-      "id": "listas-joint-1c0000339de79528",
-      "name": "Supervivientes All Stars · Gala 8 y expulsión de Arkano",
-      "status": "explained",
-      "listas_group_role": "joint",
-      "members": 2
+      "rank": 6
     }
   ],
   "incidents": [],
@@ -129,7 +136,7 @@
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-1793347358168-manual",
+    "trigger_run_id": "tr-chat-20261030T101000+0100",
     "status": "triggered",
     "editorial_blocking": false
   },
@@ -141,42 +148,42 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "updated_at": "2026-10-30T09:06:00+01:00"
+    "updated_at": "2026-10-30T10:13:30+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T095500+0100",
+    "run_id": "tr-chat-20261030T101000+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T09:55:00+01:00",
-    "updated_at": "2026-10-30T09:57:00+01:00",
-    "finished_at": "2026-10-30T09:57:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-30T10:10:00+01:00",
+    "updated_at": "2026-10-30T10:13:30+01:00",
+    "finished_at": "2026-10-30T10:13:30+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; reparación de Pendientes solicitada.",
+    "message": "Pasada cerrada: 1 nueva explicación verificada; cola final 0; Top 10 cubierto 10/10; saneamiento visual de 3 Pendientes solicitado.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 1,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "problematic": 0,
-      "final_resolved": 0,
+      "final_resolved": 1,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 0,
+      "pending_visual_candidates_reviewed": 3,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -188,40 +195,104 @@
     },
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": [],
-    "remate_selections": [],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 30
+    },
+    "remate_selections": [
+      {
+        "trend_id": "33182d7dacdf",
+        "name": "#LaHora30O",
+        "closer_text": "🌶️ La mañana de TVE ya viene con etiqueta propia."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-30T09:55:00+01:00",
+        "at": "2026-10-30T10:10:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial 0; revalidando requests, reexplicaciones, agrupaciones, problematic y cobertura fresca del Top 10."
+        "message": "Cola editorial 0; iniciando saneamiento obligatorio de 3 Pendientes y revalidación completa de requests, reexplicaciones, agrupaciones, problematic y Top 10."
       },
       {
-        "at": "2026-10-30T09:56:00+01:00",
+        "at": "2026-10-30T10:11:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola 0, sin preparing/update/rewrite_pending/problematic activos, agrupación de Listas ya completada y Top 10 cubierto 10/10."
+        "message": "Releyendo main tras el trigger: 3 Pendientes visuales conservan texto/remate; verificando cola, reexplicaciones y cobertura fresca del Top 10."
       },
       {
-        "at": "2026-10-30T09:57:00+01:00",
+        "at": "2026-10-30T10:11:20+01:00",
+        "phase": "verifying",
+        "trend_id": "33182d7dacdf",
+        "title": "#LaHora30O",
+        "message": "Releyendo estado autoritativo de #LaHora30O antes de tratar la revisión 0."
+      },
+      {
+        "at": "2026-10-30T10:11:40+01:00",
+        "phase": "investigating",
+        "trend_id": "33182d7dacdf",
+        "title": "#LaHora30O",
+        "message": "Detonante verificado: emisión de hoy de La Hora de La 1, 07:50–10:35, magacín de actualidad política y social de TVE."
+      },
+      {
+        "at": "2026-10-30T10:12:00+01:00",
+        "phase": "drafting",
+        "trend_id": "33182d7dacdf",
+        "title": "#LaHora30O",
+        "message": "Explicación factual redactada y comprobada: 229 caracteres."
+      },
+      {
+        "at": "2026-10-30T10:12:10+01:00",
+        "phase": "remate_selection",
+        "trend_id": "33182d7dacdf",
+        "title": "#LaHora30O",
+        "message": "Evaluados candidatos de remate con el patrón de ratings; seleccionado un cierre breve ligado al hashtag del programa."
+      },
+      {
+        "at": "2026-10-30T10:12:30+01:00",
+        "phase": "persisting",
+        "trend_id": "33182d7dacdf",
+        "title": "#LaHora30O",
+        "message": "Ficha Explicada, request y retirada de cola persistidas en main."
+      },
+      {
+        "at": "2026-10-30T10:13:00+01:00",
+        "phase": "verifying",
+        "trend_id": "33182d7dacdf",
+        "title": "#LaHora30O",
+        "message": "Relectura verificada: id+revision y texto coinciden; cola 0; Top 10 cubierto 10/10."
+      },
+      {
+        "at": "2026-10-30T10:13:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; reparación de Pendientes solicitada."
+        "message": "Pasada cerrada: 1 nueva explicación verificada; cola final 0; Top 10 cubierto 10/10; saneamiento visual de 3 Pendientes solicitado."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "33182d7dacdf"
+    ],
     "partial": false,
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "33182d7dacdf",
+        "name": "#LaHora30O",
+        "revision": 0,
+        "status": "explained",
+        "rank": 6
+      }
+    ]
   },
   "radar": {
-    "captured_at": "2026-10-30T09:51:10+01:00",
+    "captured_at": "2026-10-30T10:13:30+01:00",
     "queue_count": 0,
     "top10": [
       "Urda",
@@ -229,11 +300,11 @@
       "Óscar Puente",
       "#SVGala8",
       "Iryo",
-      "Dana",
+      "#LaHora30O",
+      "DANA",
       "Angrois",
       "Mazón",
-      "Koldo",
-      "Atocha"
+      "Koldo"
     ]
   },
   "api_failover_enabled": false
