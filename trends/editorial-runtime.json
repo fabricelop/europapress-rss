@@ -4,30 +4,28 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T19:34:00+01:00",
-  "last_completed_at": "2026-10-30T19:31:10+01:00",
-  "updated_at": "2026-10-30T19:34:00+01:00",
-  "status": "RUNNING",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T19:39:00+01:00",
+  "updated_at": "2026-10-30T19:39:00+01:00",
+  "status": "DONE",
+  "queue_complete": true,
+  "processed_ids": [
     "e40be8e866b4"
   ],
-  "remaining_active_ids": [
-    "e40be8e866b4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793385193006-manual",
   "previous_run_id": "tr-1793385006307-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 1,
+    "remaining_active": 0,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -41,6 +39,34 @@
       "trend_id": "e40be8e866b4",
       "title": "Ronaldo Nazário",
       "message": "Pasada manual iniciada con 1 reelaboración activa. Revalidación JIT de id/revisión antes de investigar. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T19:36:00+01:00",
+      "phase": "investigating",
+      "trend_id": "e40be8e866b4",
+      "title": "Ronaldo Nazário",
+      "message": "Investigación nueva desde cero del reto social y contraste independiente de la trayectoria por los cuatro clubes."
+    },
+    {
+      "at": "2026-10-30T19:37:00+01:00",
+      "phase": "persisting",
+      "trend_id": "e40be8e866b4",
+      "title": "Ronaldo Nazário",
+      "message": "Revisión 2 explicada con detonante verificado; texto y remate persistidos en requests y ficha espejo."
+    },
+    {
+      "at": "2026-10-30T19:38:00+01:00",
+      "phase": "verifying",
+      "trend_id": "e40be8e866b4",
+      "title": "Ronaldo Nazário",
+      "message": "Comprobación exacta de id/revisión, explanation, closer_text y explained_at en ambos registros; retirada exclusiva de r2 de la cola."
+    },
+    {
+      "at": "2026-10-30T19:39:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada completada 1/1; cola releída en main a 0 y sin preparing/update ni rewrite_pending. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -51,33 +77,33 @@
     "project": "TTendencias",
     "run_id": "tr-1793385193006-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T19:34:00+01:00",
-    "updated_at": "2026-10-30T19:34:00+01:00",
-    "finished_at": null,
-    "current": 0,
+    "updated_at": "2026-10-30T19:39:00+01:00",
+    "finished_at": "2026-10-30T19:39:00+01:00",
+    "current": 1,
     "total": 1,
-    "trend_id": "e40be8e866b4",
-    "title": "Ronaldo Nazário",
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "processed_ids": [
       "e40be8e866b4"
     ],
-    "remaining_problematic_ids": [],
-    "processed_ids": [],
     "partial": false,
-    "message": "Procesando Ronaldo Nazário r2 con investigación nueva desde cero y validación JIT. Sin ImageGen.",
+    "message": "Pasada completada: Ronaldo Nazário r2 reelaborada desde cero, detonante verificado y sincronizado en ambos registros; cola final vacía. Sin ImageGen.",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "explained": 0,
-      "updates": 0,
+      "updates": 1,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 1,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -93,16 +119,52 @@
         "trend_id": "e40be8e866b4",
         "title": "Ronaldo Nazário",
         "message": "Pasada manual iniciada con 1 reelaboración activa. Revalidación JIT de id/revisión antes de investigar. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T19:36:00+01:00",
+        "phase": "investigating",
+        "trend_id": "e40be8e866b4",
+        "title": "Ronaldo Nazário",
+        "message": "Investigación nueva desde cero del reto social y contraste independiente de la trayectoria por los cuatro clubes."
+      },
+      {
+        "at": "2026-10-30T19:37:00+01:00",
+        "phase": "persisting",
+        "trend_id": "e40be8e866b4",
+        "title": "Ronaldo Nazário",
+        "message": "Revisión 2 explicada con detonante verificado; texto y remate persistidos en requests y ficha espejo."
+      },
+      {
+        "at": "2026-10-30T19:38:00+01:00",
+        "phase": "verifying",
+        "trend_id": "e40be8e866b4",
+        "title": "Ronaldo Nazário",
+        "message": "Comprobación exacta de id/revisión, explanation, closer_text y explained_at en ambos registros; retirada exclusiva de r2 de la cola."
+      },
+      {
+        "at": "2026-10-30T19:39:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada completada 1/1; cola releída en main a 0 y sin preparing/update ni rewrite_pending. Sin ImageGen."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "e40be8e866b4",
+        "revision": 2,
+        "status": "explained",
+        "name": "Ronaldo Nazário"
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
+  "phase": "closing",
   "started_at": "2026-10-30T19:34:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "finished_at": "2026-10-30T19:39:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "e40be8e866b4",
-  "title": "Ronaldo Nazário"
+  "trend_id": null,
+  "title": null
 }
