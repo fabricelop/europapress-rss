@@ -1,63 +1,104 @@
 {
   "version": 1,
-  "checked_at": "2026-10-30T14:34:32.329061+00:00",
+  "checked_at": "2026-10-30T19:39:35.531123+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-10-30T14:34:32.329061+00:00",
+      "checked_at": "2026-10-30T19:39:35.531123+00:00",
       "pending_count": 1,
       "pending_ids": [
-        "b936529ca377"
+        "7db40b862a2f"
       ],
-      "oldest_at": "2026-10-30T14:24:49.026216Z",
+      "oldest_at": "2026-10-30T19:36:54.386096Z",
       "latest_run": {
-        "id": "tt-chat-20261030-1530",
-        "status": "RUNNING",
-        "started_at": "2026-10-30T14:30:00Z",
-        "updated_at": "2026-10-30T14:31:30+00:00",
-        "finished_at": null,
+        "id": "tt-manual-20261030T2030",
+        "status": "DONE",
+        "started_at": "2026-10-30T19:30:00Z",
+        "updated_at": "2026-10-30T19:30:00+00:00",
+        "finished_at": "2026-10-30T19:30:00Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-urgent-1793366935680",
-      "last_command_at": "2026-10-30T13:28:55.680Z",
-      "status": "editor_running_acknowledged",
+      "control_command": "tt-urgent-1793378547354",
+      "last_command_at": "2026-10-30T16:42:27.354Z",
+      "status": "within_start_window",
       "should_dispatch": false,
       "item_execution": [
         {
-          "id": "b936529ca377",
-          "entered_at": "2026-10-30T14:24:49.026216Z",
-          "should_start_by": "2026-10-30T14:29:49.026216+00:00",
-          "global_run_after_entry": true,
+          "id": "7db40b862a2f",
+          "entered_at": "2026-10-30T19:36:54.386096Z",
+          "should_start_by": "2026-10-30T19:41:54.386096+00:00",
+          "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "a76fb02e63107b18",
-      "expected_start_by": "2026-10-30T14:29:49.026216+00:00",
+      "backlog_signature": "ee172a9d70fee36a",
+      "expected_start_by": "2026-10-30T19:41:54.386096+00:00",
       "attempts": 0,
-      "actual_start_at": "2026-10-30T14:30:00+00:00",
-      "start_delay_seconds": 311,
       "last_request_at": "2026-10-30T07:45:44.079112+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-10-30T14:34:32.329061+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-10-30T19:39:35.531123+00:00",
+      "pending_count": 4,
+      "pending_ids": [
+        "eb60196e7671",
+        "ad14b739c935",
+        "9f812088f7ae",
+        "41b5d26595bb"
+      ],
+      "oldest_at": "2026-10-30T20:31:13+01:00",
       "latest_run": {
-        "id": "tr-chat-20261030T152500+0100-manual",
-        "status": "DONE_WITH_INCIDENTS",
-        "started_at": "2026-10-30T15:25:00+01:00",
-        "updated_at": "2026-10-30T14:28:00+00:00",
-        "finished_at": "2026-10-30T15:28:00+01:00",
+        "id": "tr-20261030T202500-manual",
+        "status": "DONE",
+        "started_at": "2026-10-30T20:25:00+01:00",
+        "updated_at": "2026-10-30T19:26:00+00:00",
+        "finished_at": "2026-10-30T20:26:00+01:00",
         "source": "editorial_runtime"
       },
-      "control_command": "tr-1793369233599-manual",
-      "last_command_at": "2026-10-30T14:07:13.599Z",
-      "status": "no_work",
-      "should_dispatch": false,
-      "attempts": 0,
-      "last_request_at": "2026-10-28T20:23:02.508042+00:00"
+      "control_command": "tr-1793385744403-manual",
+      "last_command_at": "2026-10-30T18:42:24.403Z",
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
+      "item_execution": [
+        {
+          "id": "eb60196e7671",
+          "entered_at": "2026-10-30T20:31:13+01:00",
+          "should_start_by": "2026-10-30T19:36:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "ad14b739c935",
+          "entered_at": "2026-10-30T20:31:13+01:00",
+          "should_start_by": "2026-10-30T19:36:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "9f812088f7ae",
+          "entered_at": "2026-10-30T20:31:13+01:00",
+          "should_start_by": "2026-10-30T19:36:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "41b5d26595bb",
+          "entered_at": "2026-10-30T20:31:13+01:00",
+          "should_start_by": "2026-10-30T19:36:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "7fd8710f85546fd7",
+      "expected_start_by": "2026-10-30T19:36:13+00:00",
+      "attempts": 1,
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1793389175",
+        "requested_at": "2026-10-30T19:39:35.531123Z"
+      },
+      "last_request_at": "2026-10-30T19:39:35.531123+00:00",
+      "last_requested_command_id": "tr-autoguard-1793389175"
     }
   },
   "policy": {
