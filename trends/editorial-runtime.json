@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:17:26.700Z",
   "last_completed_at": "2026-10-30T21:04:00Z",
-  "updated_at": "2026-10-30T21:18:05.482Z",
+  "updated_at": "2026-10-30T21:19:24.972Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -18,7 +18,7 @@
   "remaining_problematic_ids": [],
   "run_id": "tr-1793394948517-manual",
   "previous_run_id": "tr-1793393362927-manual",
-  "summary": "Pasada editorial en curso 0/1: investigando Koldo r0.",
+  "summary": "Pasada editorial en curso 0/1: persistiendo Koldo r0.",
   "activity": [
     {
       "at": "2026-10-30T21:17:26.700Z",
@@ -33,13 +33,34 @@
       "trend_id": "20c655cb3655",
       "title": "Koldo",
       "message": "Koldo r0 sigue JIT en cola y TT#11. Investigación desde cero del detonante actual, fecha y posibles novedades frente al episodio del 29/10; sin reutilizar su texto anterior."
+    },
+    {
+      "at": "2026-10-30T21:19:24.972Z",
+      "phase": "drafting",
+      "trend_id": "20c655cb3655",
+      "title": "Koldo",
+      "message": "Redacción nueva desde cero: se incorpora la novedad del contrato publicado el 30/10 y se mantiene como hecho controvertido la finalidad de los 242.000 €."
+    },
+    {
+      "at": "2026-10-30T21:19:24.972Z",
+      "phase": "remate_selection",
+      "trend_id": "20c655cb3655",
+      "title": "Koldo",
+      "message": "Remate seleccionado sin añadir hechos: «Factura y contrato cuentan versiones distintas.» Texto completo: 275 caracteres."
+    },
+    {
+      "at": "2026-10-30T21:19:24.972Z",
+      "phase": "persisting",
+      "trend_id": "20c655cb3655",
+      "title": "Koldo",
+      "message": "Persistiendo Koldo r0 mediante TTENDENCIAS_CHAT_OUTBOX_V1 con barrera JIT ya superada; sincronización esperada en requests, Listas y cola."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-10-30T21:17:26.700Z",
   "finished_at": null,
   "current": 0,
@@ -53,9 +74,9 @@
     "run_id": "tr-1793394948517-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "investigating",
+    "phase": "persisting",
     "started_at": "2026-10-30T21:17:26.700Z",
-    "updated_at": "2026-10-30T21:18:05.482Z",
+    "updated_at": "2026-10-30T21:19:24.972Z",
     "finished_at": null,
     "current": 0,
     "total": 1,
@@ -68,7 +89,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada editorial en curso 0/1: investigando Koldo r0.",
+    "message": "Pasada editorial en curso 0/1: persistiendo Koldo r0.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -102,6 +123,27 @@
         "trend_id": "20c655cb3655",
         "title": "Koldo",
         "message": "Koldo r0 sigue JIT en cola y TT#11. Investigación desde cero del detonante actual, fecha y posibles novedades frente al episodio del 29/10; sin reutilizar su texto anterior."
+      },
+      {
+        "at": "2026-10-30T21:19:24.972Z",
+        "phase": "drafting",
+        "trend_id": "20c655cb3655",
+        "title": "Koldo",
+        "message": "Redacción nueva desde cero: se incorpora la novedad del contrato publicado el 30/10 y se mantiene como hecho controvertido la finalidad de los 242.000 €."
+      },
+      {
+        "at": "2026-10-30T21:19:24.972Z",
+        "phase": "remate_selection",
+        "trend_id": "20c655cb3655",
+        "title": "Koldo",
+        "message": "Remate seleccionado sin añadir hechos: «Factura y contrato cuentan versiones distintas.» Texto completo: 275 caracteres."
+      },
+      {
+        "at": "2026-10-30T21:19:24.972Z",
+        "phase": "persisting",
+        "trend_id": "20c655cb3655",
+        "title": "Koldo",
+        "message": "Persistiendo Koldo r0 mediante TTENDENCIAS_CHAT_OUTBOX_V1 con barrera JIT ya superada; sincronización esperada en requests, Listas y cola."
       }
     ],
     "final_outcomes": []
