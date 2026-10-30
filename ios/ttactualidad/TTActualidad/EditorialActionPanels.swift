@@ -38,7 +38,16 @@ struct EditorialActions: View {
 
     var body: some View {
         VStack(spacing: 7) {
-            if let news, news.status != "LISTA" {
+            if let trend, trend.isCovered {
+                Text("Agrupada en: " + trend.coveredByName)
+                    .font(.caption.weight(.semibold)).foregroundStyle(.orange)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                quickButton("Retirar agrupada", "trash", danger: true) { request("deleted") }
+                quickButton("Copiar explicación original", "doc.on.doc") { copy(fullText) }
+                if let joint = store.snapshot.trendListas.first(where: { $0.editorialID == trend.coveredByID }) {
+                    quickButton("Copiar publicación conjunta", "rectangle.3.group") { copy(joint.explanation) }
+                }
+            } else if let news, news.status != "LISTA" {
                 HStack(spacing: 7) {
                     quickButton("Copiar título", "doc.on.doc") { copy(news.title) }
                     quickButton("Buscar en X", "magnifyingglass") {
@@ -194,8 +203,10 @@ struct EditorialActions: View {
                             isPresented: $confirm, titleVisibility: .visible) {
             if intent == "deleted" && (news?.status == "LISTA" ||
                                         trend?.inListas == true) {
-                Button("Publicado · Quitar de Listas") { submit("published") }
-                Button("No publicado · Quitar de Listas", role: .destructive) {
+                if trend?.isCovered != true {
+                    Button("Publicado · Quitar de Listas") { submit("published") }
+                }
+                Button(trend?.isCovered == true ? "Retirar agrupada · Sin publicar" : "No publicado · Quitar de Listas", role: .destructive) {
                     submit("deleted")
                 }
             } else {
@@ -627,3 +638,4 @@ struct GitHubConnectionSheet: View {
         .preferredColorScheme(.dark)
     }
 }
+

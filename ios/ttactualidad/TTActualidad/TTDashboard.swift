@@ -1,6 +1,86 @@
 import SwiftUI
 import UIKit
 
+// The server snapshots all current Listas, not just the rows matching Search.
+private struct ListasGroupingControls: View {
+    @EnvironmentObject private var store: EditorialStore
+    @ObservedObject var github: GitHubEditor
+    @Binding var settings: Bool
+    @State private var confirmGroup = false
+    @State private var confirmCleanup = false
+    @State private var busy = false
+    @State private var message = ""
+    @State private var groupRequestID = UUID().uuidString.lowercased()
+    @State private var cleanupRequestID = UUID().uuidString.lowercased()
+
+    private var covered: [TrendItem] { store.snapshot.trendListas.filter { $0.isCovered } }
+    private var ungrouped: [TrendItem] { store.snapshot.trendListas.filter { !$0.isCovered } }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            HStack(spacing: 8) {
+                Button {
+                    if github.authenticated { confirmGroup = true } else { settings = true }
+                } label: {
+                    Label("Agrupar", systemImage: "rectangle.3.group")
+                        .frame(maxWidth: .infinity).padding(.vertical, 10)
+                }
+                .disabled(busy || ungrouped.count < 2)
+                .background(TTTheme.teal.opacity(0.16), in: RoundedRectangle(cornerRadius: 10))
+                Button {
+                    if github.authenticated { confirmCleanup = true } else { settings = true }
+                } label: {
+                    Text("Retirar agrupadas (\(covered.count))")
+                        .frame(maxWidth: .infinity).padding(.vertical, 10)
+                }
+                .disabled(busy || covered.isEmpty)
+                .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 10))
+            }
+            .font(.system(size: 12, weight: .semibold)).foregroundStyle(TTTheme.teal)
+            if !message.isEmpty {
+                Text(message).font(.caption2).foregroundStyle(TTTheme.muted)
+            }
+        }
+        .alert("¿Agrupar tendencias de Listas?", isPresented: $confirmGroup) {
+            Button("Revisar y agrupar") { submit(cleanup: false) }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("Se revisarán todas las tendencias de Listas. Se creará una publicación por acontecimiento y las originales conservarán su explicación, marcadas como agrupadas. No se publica en X.")
+        }
+        .alert("¿Retirar las agrupadas?", isPresented: $confirmCleanup) {
+            Button("Retirar sin publicar", role: .destructive) { submit(cleanup: true) }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("Se retirarán únicamente las tarjetas originales marcadas como agrupadas. Las publicaciones conjuntas se conservan y no se incrementa el contador de publicados.")
+        }
+    }
+
+    private func submit(cleanup: Bool) {
+        guard !busy else { return }
+        let selected = covered
+        busy = true
+        message = "Registrando la solicitud en GitHub…"
+        Task {
+            let result = await github.groupListas(
+                requestID: cleanup ? cleanupRequestID : groupRequestID,
+                removeCovered: cleanup ? selected : nil)
+            switch result {
+            case .verified:
+                if cleanup { cleanupRequestID = UUID().uuidString.lowercased() }
+                else { groupRequestID = UUID().uuidString.lowercased() }
+                message = cleanup ? "Retirada confirmada en GitHub." :
+                    "Revisión solicitada. Consulta En elaboración; las originales se conservan mientras se prepara la conjunta."
+            case .pending:
+                message = "Solicitud pendiente de confirmación. Se conservará el mismo identificador si reintentas."
+            case .failed:
+                message = github.notice
+            }
+            await store.refreshIfStale(minInterval: 0)
+            busy = false
+        }
+    }
+}
+
 // Each counter opens only its own project's confirmed publications.
 private struct PublicationSheetRoute: Identifiable {
     let project: String
@@ -45,6 +125,9 @@ struct TTDashboard: View {
                             (store.section == .news && store.newsFilter == .elaboracion)) {
                             editorialRunControl
                         }
+                        if showCombinedListas || (store.section == .trends && store.trendFilter == .listas) {
+                            ListasGroupingControls(github: github, settings: $showSettings)
+                        }
                         searchField
                         if showCombinedListas { combinedListasContent }
                         else if store.section == .trends { trendsContent }
@@ -64,7 +147,9 @@ struct TTDashboard: View {
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(75))
                 if Task.isCancelled { break }
-                if store.pendingOperationsCount > 0 {
+                if store.pendingOperationsCount > 0 || store.snapshot.trendsElaboracion.contains(where: {
+                    $0.editorialID.hasPrefix("listas-grouping-")
+                }) {
                     await store.refreshIfStale(minInterval: 60)
                 }
             }
@@ -761,6 +846,8 @@ private struct TrendTile: View {
         case "EN ELABORACIÓN": return "ELAB."
         case "PREPARACIÓN MANUAL": return "MANUAL"
         case "EXPLICADA": return "EXPL."
+        case "AGRUPADA": return "AGRUP."
+        case "CONJUNTA": return "GRUPO"
         case "PENDIENTE": return "PEND."
         case "SIN EXPLICACIÓN": return "PISTAS"
         default: return item.status
@@ -795,6 +882,12 @@ private struct TrendTile: View {
                         Text(date, format: .dateTime.day().month().hour().minute())
                             .font(.caption2).foregroundStyle(TTTheme.muted)
                     }
+                }
+                if item.isCovered {
+                    Label("Agrupada en: " + item.coveredByName, systemImage: "rectangle.3.group.fill")
+                        .font(.caption.weight(.semibold)).foregroundStyle(.orange)
+                    Text("Conserva su explicación original. Publica la ficha conjunta y retira esta tarjeta sin contar otra publicación.")
+                        .font(.caption2).foregroundStyle(TTTheme.muted)
                 }
                 if item.explanation.isEmpty {
                     Text(item.problemReason.isEmpty ? "Aún no hay explicación editorial." :
@@ -887,3 +980,4 @@ private struct TrendTile: View {
         }
     }
 }
+

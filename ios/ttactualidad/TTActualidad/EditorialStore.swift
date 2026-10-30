@@ -60,6 +60,10 @@ struct TrendItem: Identifiable {
     var movement: String = ""
     var enteredAt: Date? = nil
     var problemReason: String = ""
+    var coveredByID: String = ""
+    var coveredByName: String = ""
+    var isJointGroup: Bool = false
+    var isCovered: Bool { !coveredByID.isEmpty }
 
     func ageBand(now: Date = Date()) -> Int {
         guard let lastExplained else { return 0 }
@@ -1613,16 +1617,23 @@ final class EditorialStore: ObservableObject {
                           row["fallback_image"] as? [String: Any] ?? [:]
             return TrendItem(id: id, rank: int(row, "rank"), name: str(row, "name"),
                              explanation: str(row, "explanation"), lastExplained: explained,
-                             status: "EXPLICADA", inListas: true,
+                             status: str(row, "listas_group_role") == "covered" ? "AGRUPADA" :
+                                (str(row, "listas_group_role") == "joint" ? "CONJUNTA" : "EXPLICADA"), inListas: true,
                              editorialID: id, revision: rev,
                              imageURL: ArchivePhotoCatalog.resolved(
                                  project: "ttendencias", id: id, revision: rev,
                                  image: URL(string: str(archive, "url")),
                                  catalog: archivePhotos),
-                             sourceURL: URL(string: str(row, "source_url")))
+                             sourceURL: URL(string: str(row, "source_url")),
+                             coveredByID: str(row, "covered_by_id"),
+                             coveredByName: str(row, "covered_by_name"),
+                             isJointGroup: str(row, "listas_group_role") == "joint")
         }
-        .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
-        .prefix(100)
+        .sorted {
+            if $0.isCovered != $1.isCovered { return !$0.isCovered }
+            return ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast)
+        }
+        .prefix(500)
         .map { $0 }
     }
 
@@ -1731,8 +1742,10 @@ final class EditorialStore: ObservableObject {
         var explanations: [String: [String: Any]] = [:]
         for row in histories where !str(row, "explanation").isEmpty {
             var names = [str(row, "name"), str(row, "display_name")]
-            names += row["trend_names"] as? [String] ?? []
-            names += (row["trend_context"] as? [[String: Any]] ?? []).map { str($0, "name") }
+            if str(row, "listas_group_role") != "joint" {
+                names += row["trend_names"] as? [String] ?? []
+                names += (row["trend_context"] as? [[String: Any]] ?? []).map { str($0, "name") }
+            }
             for value in names where !value.isEmpty {
                 let key = norm(value)
                 let existing = explanations[key]
@@ -1790,7 +1803,10 @@ final class EditorialStore: ObservableObject {
                              rankDelta: int(trendMovement, "rank_delta"),
                              movement: str(trendMovement, "movement"),
                              enteredAt: when(trendMovement, ["entered_top10_at", "entered_at"]),
-                             problemReason: str(request, "problem_reason"))
+                             problemReason: str(request, "problem_reason"),
+                             coveredByID: str(request, "covered_by_id"),
+                             coveredByName: str(request, "covered_by_name"),
+                             isJointGroup: str(request, "listas_group_role") == "joint")
         }
     }
 
@@ -1932,3 +1948,4 @@ private enum EditorialDocumentLoader {
                                      partial: partial)
     }
 }
+

@@ -640,6 +640,19 @@ final class GitHubEditor: ObservableObject {
         ], label: decision == "rework" ? "Reelaborar tendencias relacionadas" : "Acción múltiple") == .verified
     }
 
+    func groupListas(requestID: String, removeCovered: [TrendItem]? = nil) async -> WriteResult {
+        var payload: [String: Any] = [
+            "project": "ttendencias", "event_id": "listas-grouping",
+            "request_id": requestID,
+            "decision": removeCovered == nil ? "group_listas" : "remove_covered"
+        ]
+        if let items = removeCovered {
+            payload["items"] = items.map { ["id": $0.editorialID, "revision": $0.revision] as [String: Any] }
+        }
+        return await dispatch("ttactualidad_group_listas_v1", payload: payload,
+                              label: removeCovered == nil ? "Agrupar Listas" : "Retirar agrupadas")
+    }
+
     func addNews(title: String, url: String, instructions: String,
                  requestID: String? = nil,
                  originTrend: TrendItem? = nil) async -> WriteResult {
@@ -666,3 +679,4 @@ final class GitHubEditor: ObservableObject {
                                      "Enviar tendencia a TTiTTulares")
     }
 }
+
