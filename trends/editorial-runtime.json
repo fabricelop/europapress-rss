@@ -71,6 +71,20 @@
       "trend_id": "red-review-f62ec3ed348cf7a88824",
       "title": "Koldo García",
       "message": "Revisando novedades posteriores: la cobertura del 30/10 repite las mismas facturas y el mismo requerimiento judicial."
+    },
+    {
+      "at": "2026-10-30T17:29:20+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-49cc6ffce6867a4bcaf5",
+      "title": "Repsol",
+      "message": "Sin novedades sustanciales; resultado unchanged aplicado y verificado."
+    },
+    {
+      "at": "2026-10-30T17:30:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-f62ec3ed348cf7a88824",
+      "title": "Koldo García",
+      "message": "Revisando novedades posteriores a la ficha vigente; ID/revisión revalidados en main."
     }
   ],
   "incidents": [],
@@ -84,31 +98,32 @@
     "status": "RUNNING",
     "phase": "investigating",
     "started_at": "2026-10-30T17:25:05+01:00",
-    "updated_at": "2026-10-30T17:25:25+01:00",
+    "updated_at": "2026-10-30T17:30:00+01:00",
     "finished_at": null,
-    "current": 0,
+    "current": 1,
     "total": 2,
-    "trend_id": "red-review-49cc6ffce6867a4bcaf5",
-    "title": "Repsol",
+    "trend_id": "red-review-f62ec3ed348cf7a88824",
+    "title": "Koldo García",
     "queue_complete": false,
     "remaining_active_ids": [
-      "red-review-49cc6ffce6867a4bcaf5",
       "red-review-f62ec3ed348cf7a88824"
     ],
     "remaining_problematic_ids": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-49cc6ffce6867a4bcaf5"
+    ],
     "partial": false,
-    "message": "Revisando novedades: Repsol.",
+    "message": "Revisando novedades 1/2. Repsol unchanged; ahora Koldo García.",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
-      "unchanged_reviews": 0,
+      "unchanged_reviews": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 2,
+      "remaining_active": 1,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -131,9 +146,30 @@
         "trend_id": "red-review-49cc6ffce6867a4bcaf5",
         "title": "Repsol",
         "message": "Revisando novedades posteriores a la explicación del 29/10; origen y revisión revalidados en main."
+      },
+      {
+        "at": "2026-10-30T17:29:20+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-49cc6ffce6867a4bcaf5",
+        "title": "Repsol",
+        "message": "Sin novedades sustanciales; resultado unchanged aplicado y verificado."
+      },
+      {
+        "at": "2026-10-30T17:30:00+01:00",
+        "phase": "investigating",
+        "trend_id": "red-review-f62ec3ed348cf7a88824",
+        "title": "Koldo García",
+        "message": "Revisando novedades posteriores a la ficha vigente; ID/revisión revalidados en main."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "red-review-49cc6ffce6867a4bcaf5",
+        "source_id": "d0ec9dd0dbf2",
+        "name": "Repsol",
+        "outcome": "unchanged"
+      }
+    ]
   },
   "error": null,
   "api_failover_enabled": false,
