@@ -526,6 +526,19 @@ final class EditorialStore: ObservableObject {
         await refresh()
     }
 
+    // A button must await an already-running download rather than read the
+    // previous snapshot when refreshIfStale's exclusivity guard returns early.
+    func refreshForEditorialRequest() async {
+        if isLoading {
+            while isLoading {
+                do { try await Task.sleep(for: .milliseconds(100)) }
+                catch { return }
+            }
+        } else {
+            await refreshIfStale(minInterval: 0)
+        }
+    }
+
     func refresh(manual: Bool = false) async {
         guard !isLoading else { return }
         isLoading = true

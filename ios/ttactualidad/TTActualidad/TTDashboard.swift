@@ -586,7 +586,7 @@ struct TTDashboard: View {
                 Task {
                     // The visible count may predate a completed editorial run.
                     // Read main before creating a new command for that count.
-                    await store.refreshIfStale(minInterval: 0)
+                    await store.refreshForEditorialRequest()
                     let currentCount = project == "ttittulares" ?
                         store.snapshot.newsElaboracion.count : store.snapshot.trendsElaboracion.count
                     guard currentCount > 0 else {
@@ -599,7 +599,7 @@ struct TTDashboard: View {
                     editorialRunMessage = "Registrando petición para \(currentCount) entradas…"
                     let result = await github.requestEditorialRun(project: project)
                     let requestNotice = github.notice
-                    await store.refreshIfStale(minInterval: 0)
+                    await store.refreshForEditorialRequest()
                     let remaining = project == "ttittulares" ?
                         store.snapshot.newsElaboracion.count : store.snapshot.trendsElaboracion.count
                     switch result {
