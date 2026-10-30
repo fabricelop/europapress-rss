@@ -3,133 +3,79 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T22:42:00.000Z",
-  "last_completed_at": "2026-10-30T22:53:00.000Z",
-  "updated_at": "2026-10-30T22:53:00.000Z",
-  "status": "DONE_WITH_INCIDENTS",
+  "last_started_at": "2026-10-30T22:55:52.000Z",
+  "last_completed_at": "2026-10-30T22:58:31.000Z",
+  "updated_at": "2026-10-30T22:58:31.000Z",
+  "status": "DONE",
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-2e5909232e97bfecd690",
-    "red-review-3def540ee0135f135f7a",
-    "f90cc5271f93",
-    "9950fd2c5b18",
-    "listas-auto-c6b21348c9cdf879fb9f"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793400009396-manual",
-  "previous_run_id": "tr-1793400450000-manual",
-  "summary": "Pasada editorial real completada 5/5: 2 revisiones stale, 2 explicaciones nuevas y 1 revisión automática de agrupación sin coincidencias. Cola final 0. Incidencia de cierre heredado reparada. Sin ImageGen.",
+  "run_id": "tr-chat-20261030T235552+0100-manual",
+  "previous_run_id": "tr-1793400009396-manual",
+  "summary": "Pasada editorial real completada 0/0 tras refresco manual del Top 30: no aparecieron nuevas explicaciones ni revisiones; cola final 0 y sin rewrite_pending vigente. Sin ImageGen.",
   "activity": [
     {
-      "at": "2026-10-30T22:42:00.000Z",
+      "at": "2026-10-30T22:55:52.000Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de tr-1793400009396-manual: cola autoritativa releída en main; sin ImageGen."
+      "message": "Inicio de tr-chat-20261030T235552+0100-manual: refresco manual del Top 30 lanzado y cola autoritativa releída en main. Sin ImageGen."
     },
     {
-      "at": "2026-10-30T22:43:00.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-2e5909232e97bfecd690",
-      "title": "Toledo",
-      "message": "Barrera JIT: revisión obsoleta por explicaciones posteriores del mismo acontecimiento; cerrada como stale sin reabrir la ficha antigua."
-    },
-    {
-      "at": "2026-10-30T22:44:00.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-3def540ee0135f135f7a",
-      "title": "Renfe",
-      "message": "Barrera JIT: revisión obsoleta por una ficha conjunta posterior de Renfe/ERTMS; cerrada como stale sin sobrescribir texto más nuevo."
-    },
-    {
-      "at": "2026-10-30T22:50:00.000Z",
-      "phase": "persisting",
-      "trend_id": "f90cc5271f93",
-      "title": "Villarreal",
-      "message": "Explicación verificada persistida como explained en requests y telegram-manual-explained."
-    },
-    {
-      "at": "2026-10-30T22:50:00.000Z",
-      "phase": "persisting",
-      "trend_id": "9950fd2c5b18",
-      "title": "Lawson",
-      "message": "Explicación verificada persistida como explained con el detonante más reciente de FP2 (toque con Verstappen y bandera roja)."
-    },
-    {
-      "at": "2026-10-30T22:52:10.940578Z",
-      "phase": "verifying",
-      "trend_id": "listas-auto-c6b21348c9cdf879fb9f",
-      "title": "Agrupación automática de Listas",
-      "message": "Yola, Dana, La UCO, Villarreal y Lawson no comparten acontecimiento verificable. groups=[]; originales conservados y agrupación marcada completed."
-    },
-    {
-      "at": "2026-10-30T22:53:00.000Z",
+      "at": "2026-10-30T22:58:25.783Z",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Barrera final: editorial-queue.json releído en main con count=0; sin preparing/update ni reexplicaciones pendientes en la cola autoritativa."
+      "message": "Refresco TTendencias completado: nuevas explicaciones pendientes = []; no se activó elaboración editorial adicional."
     },
     {
-      "at": "2026-10-30T22:53:00.000Z",
+      "at": "2026-10-30T22:58:31.000Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada 5/5. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+      "message": "Barrera final: editorial-queue.json count=0 y sin rewrite_pending vigente. Pasada 0/0 completada; sin ImageGen, Telegram editorial ni publicación en X."
     }
   ],
-  "incidents": [
-    {
-      "code": "legacy_ready_without_explained",
-      "status": "repaired",
-      "message": "Villarreal y Lawson pasaron inicialmente por ready/prepared sin ficha final. Una ejecución concurrente sobre las mismas revisiones reparó el cierre explained; esta pasada respetó la versión más nueva y verificó ambos registros antes de continuar."
-    }
-  ],
-  "incident_count": 1,
+  "incidents": [],
+  "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
   "phase": "closing",
-  "started_at": "2026-10-30T22:42:00.000Z",
-  "finished_at": "2026-10-30T22:53:00.000Z",
-  "current": 5,
-  "total": 5,
+  "started_at": "2026-10-30T22:55:52.000Z",
+  "finished_at": "2026-10-30T22:58:31.000Z",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793400009396-manual",
+    "run_id": "tr-chat-20261030T235552+0100-manual",
     "source": "manual",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T22:42:00.000Z",
-    "updated_at": "2026-10-30T22:53:00.000Z",
-    "finished_at": "2026-10-30T22:53:00.000Z",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-30T22:55:52.000Z",
+    "updated_at": "2026-10-30T22:58:31.000Z",
+    "finished_at": "2026-10-30T22:58:31.000Z",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "red-review-2e5909232e97bfecd690",
-      "red-review-3def540ee0135f135f7a",
-      "f90cc5271f93",
-      "9950fd2c5b18",
-      "listas-auto-c6b21348c9cdf879fb9f"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada editorial real completada 5/5: 2 revisiones stale, 2 explicaciones nuevas y 1 revisión automática de agrupación sin coincidencias. Cola final 0. Incidencia de cierre heredado reparada. Sin ImageGen.",
+    "message": "Pasada editorial real completada 0/0 tras refresco manual del Top 30: no aparecieron nuevas explicaciones ni revisiones; cola final 0 y sin rewrite_pending vigente. Sin ImageGen.",
     "summary": {
-      "attempted": 5,
-      "explained": 2,
+      "attempted": 0,
+      "explained": 0,
       "updates": 0,
-      "stale_reviews": 2,
       "unchanged_reviews": 0,
-      "grouping_requests": 1,
+      "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
       "remaining_active": 0,
@@ -137,143 +83,34 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "code": "legacy_ready_without_explained",
-        "status": "repaired",
-        "message": "Villarreal y Lawson pasaron inicialmente por ready/prepared sin ficha final. Una ejecución concurrente sobre las mismas revisiones reparó el cierre explained; esta pasada respetó la versión más nueva y verificó ambos registros antes de continuar."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T22:42:00.000Z",
+        "at": "2026-10-30T22:55:52.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de tr-1793400009396-manual: cola autoritativa releída en main; sin ImageGen."
+        "message": "Inicio de tr-chat-20261030T235552+0100-manual: refresco manual del Top 30 lanzado y cola autoritativa releída en main. Sin ImageGen."
       },
       {
-        "at": "2026-10-30T22:43:00.000Z",
-        "phase": "verifying",
-        "trend_id": "red-review-2e5909232e97bfecd690",
-        "title": "Toledo",
-        "message": "Barrera JIT: revisión obsoleta por explicaciones posteriores del mismo acontecimiento; cerrada como stale sin reabrir la ficha antigua."
-      },
-      {
-        "at": "2026-10-30T22:44:00.000Z",
-        "phase": "verifying",
-        "trend_id": "red-review-3def540ee0135f135f7a",
-        "title": "Renfe",
-        "message": "Barrera JIT: revisión obsoleta por una ficha conjunta posterior de Renfe/ERTMS; cerrada como stale sin sobrescribir texto más nuevo."
-      },
-      {
-        "at": "2026-10-30T22:50:00.000Z",
-        "phase": "persisting",
-        "trend_id": "f90cc5271f93",
-        "title": "Villarreal",
-        "message": "Explicación verificada persistida como explained en requests y telegram-manual-explained."
-      },
-      {
-        "at": "2026-10-30T22:50:00.000Z",
-        "phase": "persisting",
-        "trend_id": "9950fd2c5b18",
-        "title": "Lawson",
-        "message": "Explicación verificada persistida como explained con el detonante más reciente de FP2 (toque con Verstappen y bandera roja)."
-      },
-      {
-        "at": "2026-10-30T22:52:10.940578Z",
-        "phase": "verifying",
-        "trend_id": "listas-auto-c6b21348c9cdf879fb9f",
-        "title": "Agrupación automática de Listas",
-        "message": "Yola, Dana, La UCO, Villarreal y Lawson no comparten acontecimiento verificable. groups=[]; originales conservados y agrupación marcada completed."
-      },
-      {
-        "at": "2026-10-30T22:53:00.000Z",
+        "at": "2026-10-30T22:58:25.783Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Barrera final: editorial-queue.json releído en main con count=0; sin preparing/update ni reexplicaciones pendientes en la cola autoritativa."
+        "message": "Refresco TTendencias completado: nuevas explicaciones pendientes = []; no se activó elaboración editorial adicional."
       },
       {
-        "at": "2026-10-30T22:53:00.000Z",
+        "at": "2026-10-30T22:58:31.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada 5/5. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+        "message": "Barrera final: editorial-queue.json count=0 y sin rewrite_pending vigente. Pasada 0/0 completada; sin ImageGen, Telegram editorial ni publicación en X."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "red-review-2e5909232e97bfecd690",
-        "revision": 0,
-        "title": "Toledo",
-        "outcome": "stale",
-        "changed": false
-      },
-      {
-        "id": "red-review-3def540ee0135f135f7a",
-        "revision": 0,
-        "title": "Renfe",
-        "outcome": "stale",
-        "changed": false
-      },
-      {
-        "id": "f90cc5271f93",
-        "revision": 0,
-        "title": "Villarreal",
-        "outcome": "explained"
-      },
-      {
-        "id": "9950fd2c5b18",
-        "revision": 0,
-        "title": "Lawson",
-        "outcome": "explained"
-      },
-      {
-        "id": "listas-auto-c6b21348c9cdf879fb9f",
-        "revision": 0,
-        "title": "Agrupación automática de Listas",
-        "outcome": "grouping_completed",
-        "groups_created": 0
-      }
-    ]
+    "final_outcomes": []
   },
-  "final_outcomes": [
-    {
-      "id": "red-review-2e5909232e97bfecd690",
-      "revision": 0,
-      "title": "Toledo",
-      "outcome": "stale",
-      "changed": false
-    },
-    {
-      "id": "red-review-3def540ee0135f135f7a",
-      "revision": 0,
-      "title": "Renfe",
-      "outcome": "stale",
-      "changed": false
-    },
-    {
-      "id": "f90cc5271f93",
-      "revision": 0,
-      "title": "Villarreal",
-      "outcome": "explained"
-    },
-    {
-      "id": "9950fd2c5b18",
-      "revision": 0,
-      "title": "Lawson",
-      "outcome": "explained"
-    },
-    {
-      "id": "listas-auto-c6b21348c9cdf879fb9f",
-      "revision": 0,
-      "title": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": 0
-    }
-  ]
+  "final_outcomes": []
 }
