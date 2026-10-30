@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T21:26:30Z",
-  "last_completed_at": "2026-10-30T21:27:27.622162+00:00",
-  "updated_at": "2026-10-30T21:27:27.622162+00:00",
+  "last_completed_at": "2026-10-30T21:28:47Z",
+  "updated_at": "2026-10-30T21:28:47Z",
   "status": "DONE",
   "queue_complete": true,
   "processed_ids": [
@@ -16,9 +16,9 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793395581539-manual",
+  "run_id": "tr-1793395410731-manual",
   "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada editorial real completada 3/3 sobre main: 1 agrupación automática cerrada sin grupos nuevos y 2 revisiones de novedades cerradas como stale por existir estado posterior. Cola final 0; rewrite_pending 0; sin ImageGen.",
+  "summary": "Pasada editorial real completada 3/3: agrupación sin grupos; Toledo y Renfe cerradas stale por barrera JIT. Cola final 0/0 tras releer main, sin preparing/update ni reexplicaciones pendientes.",
   "activity": [
     {
       "at": "2026-10-30T21:26:30Z",
@@ -47,6 +47,41 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: 0 preparing/update, 0 rewrite_pending. Pasada cerrada sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T21:25:45Z",
+      "phase": "persisting",
+      "trend_id": "listas-auto-7ac3b680c3a7d284da44",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado persistido: groups=[] y covered_by_existing=[]. No hay acontecimiento común inequívoco entre Yola, Dana, La UCO y Koldo."
+    },
+    {
+      "at": "2026-10-30T21:26:16.220963Z",
+      "phase": "verifying",
+      "trend_id": "listas-auto-7ac3b680c3a7d284da44",
+      "title": "Agrupación automática de Listas",
+      "message": "Aplicador completado: Yola, Dana y La UCO quedan cleared; Koldo fue eliminado por una decisión terminal concurrente y su snapshot no se reabrió."
+    },
+    {
+      "at": "2026-10-30T21:27:27.622162Z",
+      "phase": "verifying",
+      "trend_id": "red-review-f5f10eee0721052558cd",
+      "title": "Revisar novedades: Toledo",
+      "message": "Resultado aplicado con barrera JIT: review_completed / stale. Toledo ya no figura en el Top 30 fresco y no se crea una ficha nueva."
+    },
+    {
+      "at": "2026-10-30T21:27:27.622162Z",
+      "phase": "verifying",
+      "trend_id": "red-review-ac68524d6bf93e75895c",
+      "title": "Revisar novedades: Renfe",
+      "message": "Resultado aplicado con barrera JIT: review_completed / stale. Renfe ya no figura en el Top 30 fresco y no se crea una ficha nueva."
+    },
+    {
+      "at": "2026-10-30T21:28:47Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni rewrite_pending; workflows de aplicación completados con éxito. Cierre 3/3 sin ImageGen."
     }
   ],
   "incidents": [],
@@ -55,7 +90,7 @@
   "api_failover_enabled": false,
   "phase": "closing",
   "started_at": "2026-10-30T21:26:30Z",
-  "finished_at": "2026-10-30T21:27:27.622162+00:00",
+  "finished_at": "2026-10-30T21:28:47Z",
   "current": 3,
   "total": 3,
   "trend_id": null,
@@ -64,13 +99,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793395581539-manual",
+    "run_id": "tr-1793395410731-manual",
     "source": "manual",
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-30T21:26:30Z",
-    "updated_at": "2026-10-30T21:27:27.622162+00:00",
-    "finished_at": "2026-10-30T21:27:27.622162+00:00",
+    "updated_at": "2026-10-30T21:28:47Z",
+    "finished_at": "2026-10-30T21:28:47Z",
     "current": 3,
     "total": 3,
     "trend_id": null,
@@ -84,7 +119,7 @@
       "red-review-ac68524d6bf93e75895c"
     ],
     "partial": false,
-    "message": "Pasada completada 3/3; cola final 0 y rewrite_pending 0. Sin ImageGen.",
+    "message": "Pasada editorial real completada 3/3: agrupación sin grupos; Toledo y Renfe cerradas stale por barrera JIT. Cola final 0/0 tras releer main, sin preparing/update ni reexplicaciones pendientes.",
     "summary": {
       "attempted": 3,
       "explained": 0,
@@ -132,30 +167,66 @@
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main: 0 preparing/update, 0 rewrite_pending. Pasada cerrada sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T21:25:45Z",
+        "phase": "persisting",
+        "trend_id": "listas-auto-7ac3b680c3a7d284da44",
+        "title": "Agrupación automática de Listas",
+        "message": "Resultado persistido: groups=[] y covered_by_existing=[]. No hay acontecimiento común inequívoco entre Yola, Dana, La UCO y Koldo."
+      },
+      {
+        "at": "2026-10-30T21:26:16.220963Z",
+        "phase": "verifying",
+        "trend_id": "listas-auto-7ac3b680c3a7d284da44",
+        "title": "Agrupación automática de Listas",
+        "message": "Aplicador completado: Yola, Dana y La UCO quedan cleared; Koldo fue eliminado por una decisión terminal concurrente y su snapshot no se reabrió."
+      },
+      {
+        "at": "2026-10-30T21:27:27.622162Z",
+        "phase": "verifying",
+        "trend_id": "red-review-f5f10eee0721052558cd",
+        "title": "Revisar novedades: Toledo",
+        "message": "Resultado aplicado con barrera JIT: review_completed / stale. Toledo ya no figura en el Top 30 fresco y no se crea una ficha nueva."
+      },
+      {
+        "at": "2026-10-30T21:27:27.622162Z",
+        "phase": "verifying",
+        "trend_id": "red-review-ac68524d6bf93e75895c",
+        "title": "Revisar novedades: Renfe",
+        "message": "Resultado aplicado con barrera JIT: review_completed / stale. Renfe ya no figura en el Top 30 fresco y no se crea una ficha nueva."
+      },
+      {
+        "at": "2026-10-30T21:28:47Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni rewrite_pending; workflows de aplicación completados con éxito. Cierre 3/3 sin ImageGen."
       }
     ],
     "final_outcomes": [
       {
         "id": "listas-auto-7ac3b680c3a7d284da44",
         "revision": 0,
-        "task": "group_listas",
+        "name": "Agrupación automática de Listas",
         "outcome": "grouping_completed",
         "groups_created": 0,
-        "covered_by_existing": 0
+        "members_covered": 0,
+        "note": "Yola, Dana y La UCO cleared; Koldo respetado como deleted concurrente."
       },
       {
         "id": "red-review-f5f10eee0721052558cd",
         "revision": 0,
-        "task": "review_red",
+        "name": "Revisar novedades: Toledo",
         "outcome": "stale",
-        "reason": "Existía estado posterior; no se sobrescribió la ficha vigente."
+        "review_outcome": "stale"
       },
       {
         "id": "red-review-ac68524d6bf93e75895c",
         "revision": 0,
-        "task": "review_red",
+        "name": "Revisar novedades: Renfe",
         "outcome": "stale",
-        "reason": "Existía estado posterior; no se sobrescribió la ficha vigente."
+        "review_outcome": "stale"
       }
     ]
   },
@@ -163,24 +234,25 @@
     {
       "id": "listas-auto-7ac3b680c3a7d284da44",
       "revision": 0,
-      "task": "group_listas",
+      "name": "Agrupación automática de Listas",
       "outcome": "grouping_completed",
       "groups_created": 0,
-      "covered_by_existing": 0
+      "members_covered": 0,
+      "note": "Yola, Dana y La UCO cleared; Koldo respetado como deleted concurrente."
     },
     {
       "id": "red-review-f5f10eee0721052558cd",
       "revision": 0,
-      "task": "review_red",
+      "name": "Revisar novedades: Toledo",
       "outcome": "stale",
-      "reason": "Existía estado posterior; no se sobrescribió la ficha vigente."
+      "review_outcome": "stale"
     },
     {
       "id": "red-review-ac68524d6bf93e75895c",
       "revision": 0,
-      "task": "review_red",
+      "name": "Revisar novedades: Renfe",
       "outcome": "stale",
-      "reason": "Existía estado posterior; no se sobrescribió la ficha vigente."
+      "review_outcome": "stale"
     }
   ]
 }
