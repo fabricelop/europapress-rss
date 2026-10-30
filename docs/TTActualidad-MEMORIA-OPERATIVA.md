@@ -22,7 +22,7 @@ TTActualidad permite al editor controlar noticias y tendencias, investigar su ca
 | Componente | Fuente / lugar | Función y prueba |
 |---|---|---|
 | iPhone | `ios/ttactualidad/TTActualidad/*.swift` | Lectura GitHub, UI, acciones y caché; no sustituye decisiones remotas |
-| Fuente iOS de esta entrega | `feature/ttactualidad-ios-0.4.28-revision-y-grupos`, 0.4.28 build34 | Comprobar IPA e instalación; main puede contener una fuente iOS anterior |
+| Fuente iOS de esta entrega | `feature/ttactualidad-ios-0.4.29-orden-listas`, 0.4.29 build35 | Comprobar IPA e instalación; main puede contener una fuente iOS anterior |
 | Compilación | `.github/workflows/ttactualidad-ios.yml` | Pruebas nativas y build app + Live Activity; IPA sin firmar para PlumeImpactor |
 | Windows Qt | `desktop/ttactualidad/TTActualidad_Moderno.pyw` | GitHub directo; distribución preferida ZIP sin EXE, distinta del antiguo Tkinter |
 | Decisiones | JSON de `main`, `pilot/ttactualidad-action-receipts.json` | Estado aplicado y recibos por petición |
