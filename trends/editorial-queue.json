@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T15:02:11+01:00",
-  "count": 1,
+  "updated_at": "2026-10-30T14:04:52.858277+00:00",
+  "count": 2,
   "items": [
     {
       "id": "dc90fe5a413e",
@@ -47,6 +47,68 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+      "revision": 0,
+      "name": "Agrupar tendencias de Listas",
+      "rank": 0,
+      "status": "preparing",
+      "requested_at": "2026-10-30T14:04:52.858277+00:00",
+      "request_source": "ttactualidad_group_listas",
+      "task": "group_listas",
+      "listas_grouping_request": true,
+      "grouping_state": "pending",
+      "grouping_candidates": [
+        {
+          "id": "trend-update-541b493b13fef8cf3662",
+          "revision": 0,
+          "name": "Renfe",
+          "rank": 2,
+          "explanation": "TT#2 Renfe sigue siendo tendencia por el corte Madrid-Andalucía: su plan alternativo de transporte no podrá empezar antes del 3 de noviembre por el plazo de 96 horas exigido por SEMAF.\n#Renfe #MadridAndalucía #SEMAF",
+          "explanation_sha256": "62919f641c710428755e9ac6bf6a167188760ad7b423dc39a79a59ca17174a17",
+          "explained_at": "2026-10-30T13:55:56.097999+00:00",
+          "verification_sources": [
+            {
+              "url": "https://grupo.renfe.com/es/es/sala-de-prensa/noticias/2026/10/suspension-pat-madrid-andalucia"
+            }
+          ]
+        },
+        {
+          "id": "trend-update-158c1e414518a44b837b",
+          "revision": 0,
+          "name": "ERTMS",
+          "rank": 17,
+          "explanation": "TT#17 ERTMS sigue siendo tendencia porque Puente sitúa su implantación en la línea Madrid-Sevilla a comienzos de 2027, con unos 12 meses de retraso, y descarta que las pruebas del sistema causaran el choque de Urda.\n#ERTMS #Urda #Adif",
+          "explanation_sha256": "6abd364364e349e2d5af5a72001ebeed3519cd461ef1dc1818f14f46f9e4e905",
+          "explained_at": "2026-10-30T13:55:56.097999+00:00",
+          "verification_sources": [
+            {
+              "url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/"
+            },
+            {
+              "url": "https://maldita.es/desinfo/20261030/adif-adjudico-contratos-para-sustituir-el-sistema-de-seguridad-lzb-por-ertms-de-la-lav-madrid-sevilla-en-2021-que-no-se-ejecutaron/"
+            }
+          ]
+        },
+        {
+          "id": "0151e1be35f5",
+          "revision": 0,
+          "name": "Madrid-Barcelona",
+          "rank": 21,
+          "explanation": "TT#21 Madrid-Barcelona es tendencia porque Transportes valora cerrar temporalmente la alta velocidad durante la renovación para reducir unas obras que podrían durar cinco años.\n#AltaVelocidad #Transportes\n🌶️ La obra podría ir más rápido si el tren deja de hacerlo.",
+          "explanation_sha256": "4569c339f8eef20141b6b9ffe7c45f2f60664b11ce8dabe7534be630b83beadd",
+          "explained_at": "2026-10-30T14:52:30+01:00",
+          "verification_sources": [
+            "https://elpais.com/economia/2026-10-30/puente-valora-parar-la-linea-de-ave-madrid-barcelona-durante-las-obras-de-remodelacion.html",
+            "https://www.europapress.es/economia/transportes-00343/noticia-gobierno-valora-cerrar-linea-tren-madrid-barcelona-dos-anos-ejecutar-obras-programadas-20261030130203.html"
+          ]
+        }
+      ],
+      "auto_queued": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "rewrite_instruction": "Agrupa exclusivamente las tarjetas seleccionadas en grouping_candidates. Crea UNA ficha conjunta por acontecimiento comprobado. Conserva íntegros los textos de las originales; solo marca su cobertura. No publiques."
     }
   ]
 }
