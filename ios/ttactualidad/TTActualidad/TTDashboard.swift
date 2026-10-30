@@ -533,15 +533,13 @@ struct TTDashboard: View {
             if !showCombinedListas {
                 if store.section == .trends {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 5),
-                                             count: 4), spacing: 5) {
+                                             count: 3), spacing: 5) {
                         filterChip("Top 30", store.snapshot.top30.count,
                                    store.trendFilter == .top) { store.trendFilter = .top }
                         filterChip("Listas", store.snapshot.trendListas.count,
                                    store.trendFilter == .listas) { store.trendFilter = .listas }
                         filterChip("En elaboración", store.snapshot.trendsElaboracion.count,
                                    store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
-                        filterChip("Nuevas", filteredTrends(.nuevas).count,
-                                   store.trendFilter == .nuevas) { store.trendFilter = .nuevas }
                         filterChip("Recientes", filteredTrends(.recientes).count,
                                    store.trendFilter == .recientes) { store.trendFilter = .recientes }
                         filterChip("Pendientes", filteredTrends(.pendientes).count,
@@ -761,10 +759,6 @@ struct TTDashboard: View {
         case .top: return items
         case .listas: return store.snapshot.trendListas
         case .elaboracion: return store.snapshot.trendsElaboracion
-        case .nuevas:
-            // Compare observed radar snapshots on this device, not "new"
-            // from a rank aggregator (which can classify 25 old labels as new).
-            return items.filter { store.radarNewNames.contains($0.name) }
         case .recientes:
             return items.filter { $0.lastExplained.map {
                 Date().timeIntervalSince($0) >= 0 && Date().timeIntervalSince($0) < 12 * 3600

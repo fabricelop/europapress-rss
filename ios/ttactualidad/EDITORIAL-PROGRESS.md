@@ -38,3 +38,17 @@ el trigger, el listener PC, el envío efectivo del mensaje y la persistencia del
 outbox. El ACK histórico `run-ack.json` de octubre no confirma comandos actuales.
 No repetir órdenes indefinidamente ni modificar imágenes o decisiones para
 simular que una noticia se ha elaborado.
+
+## Selección y filtros de tendencias, ampliación solicitada por el usuario
+
+Todas las tendencias pendientes del Top 30 se seleccionan automáticamente, con
+el mismo control de frescura del radar, explicaciones vigentes, decisiones y
+episodios independientes de 48 horas. Se sustituye la regla de Top 10 automático
+y puestos 11–30 manuales. No se seleccionan puestos 31+. La captura y selección
+se aplica en main mediante `trends/auto_queue_new.py`; el runner editorial sigue
+investigando y persistiendo cada resultado mediante el flujo existente.
+
+El filtro Nuevas se elimina. Los seis filtros de tendencias quedan en dos filas
+de tres: Top 30, Listas, En elaboración, Recientes, Pendientes y Antiguas. Una
+tendencia sin explicación se etiqueta Pendiente en cualquier puesto del Top 30;
+ya no se presenta una posición 11–30 como Preparación manual.

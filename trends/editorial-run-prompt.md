@@ -1,5 +1,44 @@
 # TTendencias · flujo editorial común
 
+## Agrupar tendencias de Listas — orden explícita de la app (30/10/2026)
+
+Antes del trabajo normal, atiende las entradas vigentes `listas_grouping_request:true`
+(`task:group_listas`) en requests/cola. SON SOLICITUDES DE REVISIÓN, no tendencias
+llamadas «Agrupar tendencias de Listas». Inspecciona TODAS sus `grouping_candidates`,
+relee el estado real por ID/revisión y compara el texto con su snapshot.
+
+Busca grupos que compartan un mismo acontecimiento o contexto noticioso concreto
+y actual. No agrupes solo por persona, palabra, partido o tema genérico. Puedes
+crear varios grupos independientes. Investiga y contrasta el motivo común; redacta
+UNA nueva explicación publicable por grupo, TT#N + nombre/tema + hechos, hashtags
+y un único remate cuando sea pertinente (<280 caracteres ponderados X).
+
+**Instrucción expresa del usuario: NO CAMBIAR las explicaciones originales**, ni
+su remate, fecha, revisión o imágenes. Se conservarán en Listas con metadatos
+`listas_group_role:covered`, `covered_by_id` y `covered_by_name`, para retirarlas
+fácilmente. La ficha nueva es `listas_group_role:joint` y es la única publicable.
+No escribas esas marcas a mano y no uses el reconciliador de grupos ordinario
+para este caso: copiaría textos o retiraría miembros sin el estado solicitado.
+
+Persiste exclusivamente el resultado en
+`trends/listas-grouping-outbox/<job_id>.json` con:
+
+```json
+{"job_id":"listas-grouping-UUID","groups":[{"name":"Tema común concreto","explanation":"TT#2 ...\n#Etiqueta1 #Etiqueta2","closer_text":"","reason":"Motivo comprobado por el que estas fichas cubren el mismo acontecimiento","verification_sources":[{"url":"https://fuente-verificada.example/documento"}],"members":[{"id":"ID1","revision":0},{"id":"ID2","revision":1}]}]}
+```
+
+El ejemplo de URL es un marcador de formato: usa fuentes reales verificadas.
+Cada grupo necesita al menos dos miembros vigentes del snapshot, sin solaparse;
+las tendencias sin relación se conservan intactas. Si no hay coincidencias, guarda
+`groups:[]`. Ante `grouping_error`, corrige el MISMO outbox, no dupliques el job.
+El workflow `ttactualidad-group-listas.yml` aplica el resultado transaccionalmente
+con JIT y preserva los textos. Relee requests/catálogo/cola: solo está terminado
+cuando el job es `grouping_completed` y cada ficha creada/cubierta está persistida.
+Los grupos cuyos miembros fueron borrados o reelaborados se omiten enteros y se
+registran en `grouping_skipped_stale`; no los resucites ni inventes revisiones.
+No generes imágenes en esta pasada ni publiques en X. No pidas estrellas.
+
+
 > **OPERATIVA VIGENTE · 17/10/2026 · PRIORIDAD ABSOLUTA**: TTActualidad es la interfaz editorial (móvil y alternativa GitHub Pages). Se han retirado las entregas de noticias y tendencias a Telegram: cualquier párrafo antiguo de este documento que exija enviar, editar o verificar tarjetas editoriales de Telegram queda OBSOLETO y NO se ejecuta. El cierre editorial real es la persistencia y relectura en GitHub main del texto factual, hashtags y remate, con READY/Listas en TTiTTulares o explained/Explicadas en TTendencias. Nunca bloquear ese cierre por foto de archivo, imagen IA o entrega Telegram. No invocar ImageGen durante la pasada editorial. Las imágenes se generan individualmente en ChatGPT Images y un proceso Windows las descarga al PC y las envía de forma independiente a TTImages; esta pasada no modifica ni activa ese transporte. Mantener intactos SeLoRecordamos, TTImages y FabCalendar. El trabajo PROCESSING/preparing sigue pendiente hasta persistencia verificada, no solo solicitud de ejecución.
 
 
@@ -19,7 +58,7 @@ Los corchetes son solo notación de opción, no texto literal. El remate va **si
 
 Prevalece sobre cualquier instrucción heredada de excluir revisiones agrupadas o archivadas de la auditoría. **Ninguna tarjeta de Telegram o app puede borrarse por deduplicación sin una decisión explícita del usuario sobre esa tarjeta.** Una explicación conjunta no autoriza borrar otros avisos existentes: reutiliza el texto factual verificado para cerrar **cada `telegram_message_id` provisional** editando ese mismo mensaje. Conserva el motivo del agrupamiento y evita inventar hechos o remates.
 
-Al abrir CADA pasada, y otra vez antes de cerrar 0/0, consulta `trends/telegram-image-deliveries.json`, `telegram/orphan-audit-ttendencias.json`, `trends/requests.json`, `trends/editorial-queue.json` y las explicaciones. **Todo `status:"sent",final:false` sin borrar expresamente es trabajo de reparación editorial**, incluso si un job anterior marcó `explained`, `inactive` o `grouped` y retiró su ID de la cola. Top 10 sin explicar y peticiones manuales 11–30 siguen el flujo habitual. Elaborar con la información verificable disponible; si falta, buscar fuentes, no inventar ni ocultar la tarjeta.
+Al abrir CADA pasada, y otra vez antes de cerrar 0/0, consulta `trends/telegram-image-deliveries.json`, `telegram/orphan-audit-ttendencias.json`, `trends/requests.json`, `trends/editorial-queue.json` y las explicaciones. **Todo `status:"sent",final:false` sin borrar expresamente es trabajo de reparación editorial**, incluso si un job anterior marcó `explained`, `inactive` o `grouped` y retiró su ID de la cola. Todas las pendientes del Top 30 siguen el flujo automático habitual. Elaborar con la información verificable disponible; si falta, buscar fuentes, no inventar ni ocultar la tarjeta.
 
 Tras cada ejecución, despacha/verifica `send-ttendencias-explained-telegram.yml`; coteja identificadores y el estado postenvío con `telegram/orphan-audit-ttendencias.json`. Una cola editorial vacía **no significa** que Telegram esté limpio. Si la actualización no es posible, conserva el provisional y documenta la causa para el aviso Telegram de la auditoría; no cierres en falso. La API Bot Telegram no permite leer retrospectivamente el chat entero, de modo que valida confirmaciones API y ledger, sin afirmar inspección literal del historial.
 
@@ -29,7 +68,7 @@ Este archivo es la ÚNICA fuente de verdad para la elaboración editorial de TTe
 
 ## Selección obligatoria para cada pasada (Top 30)
 
-Antes de investigar, relee `trends/recent.json`, `trends/editorial-queue.json`, `trends/requests.json` y los registros de explicaciones. **Prioridad 1:** explica las pendientes de los puestos 1-10 y revisa solo las explicaciones de esa franja que superen 48 h. **Prioridad 2:** procesa las tendencias de puestos 11-30 **solo si el usuario ha pulsado «Preparar» o solicitado expresamente su reexplicación**. Una petición manual 11-30 pasa a `preparing` y se investiga exactamente igual que una Top 10; no tiene menos prioridad funcional, ni queda solo marcada en el panel. NO elijas automáticamente la siguiente 11-30 ni conviertas en trabajo editorial una tendencia simplemente por aparecer en Top 30. No selecciones rangos 31+ ni «Próximas tendencias». El panel Top 30 presenta la explicación y el estado de cada posición. Los procesos de captura pueden preparar la cola pero **no equivalen a la ejecución editorial**. Mantén las imágenes IA como solicitud manual independiente.
+Antes de investigar, relee `trends/recent.json`, `trends/editorial-queue.json`, `trends/requests.json` y los registros de explicaciones. **Regla vigente del usuario, 30/10/2026:** todas las tendencias pendientes de los puestos **1–30** entran automáticamente en `preparing`/En elaboración, incluidas las de los puestos 11–30; ya no requieren pulsar Preparar. Procesa los `preparing`/`update` del más antiguo al más reciente y reintenta después las `problematic` que sigan en el Top 30. Conserva cierres del usuario, explicaciones vigentes y revisiones; una explicación caducada de más de 48 horas abre un episodio con ID independiente según el aplicador. No selecciones rangos 31+ ni «Próximas tendencias». Una captura sin respaldo actual no autoriza a encolar tendencias históricas. Capturar y encolar no equivalen a ejecutar investigación ni a persistir una explicación. No invocar ImageGen en esta pasada.
 
 ## Ejecución directa desde el chat (incluido el PC)
 
@@ -234,9 +273,9 @@ Una ejecución normal `Ejecuta TTendencias` NO llama directamente a ImageGen, NO
 2. Lee `trends/recent.json` y `trends/editorial-config.json`.
 3. Si `trends/recent.json.captured_at` supera 20 minutos, actualiza `trends/refresh-trigger.txt` en `main` para pedir una captura fresca y después relee `trends/editorial-queue.json`, `trends/recent.json` y `trends/editorial-config.json`.
 4. Antes de considerar la pasada vacía, relee `trends/editorial-queue.json` y `trends/requests.json`. Si existe cualquier revisión activa `preparing` o `update`, la pasada NO está vacía. Las solicitudes de imagen no forman parte de esta ejecución editorial.
-5. Si hay pendientes, usa DOS fases de prioridad: primero TODOS los `preparing`/`update` del más antiguo al más reciente; solo después reintenta los `problematic` que sigan en Top 10. Un problematic antiguo NUNCA puede hacer starvation de tendencias nuevas.
+5. Si hay pendientes, usa DOS fases de prioridad: primero TODOS los `preparing`/`update` del más antiguo al más reciente; solo después reintenta los `problematic` que sigan en Top 30. Un problematic antiguo NUNCA puede hacer starvation de tendencias nuevas.
 6. PROCESAMIENTO EDITORIAL SECUENCIAL: para cada tendencia/grupo investiga → redacta/verifica → persiste y cierra el TEXTO → confirma requests/cola. NO registres intentos visuales, NO llames a ImageGen y NO generes `trends/image-outbox/**` durante esta pasada. La imagen IA se gestiona después de `explained` mediante el reparador automático y, opcionalmente, overrides manuales.
-7. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 10, pero siempre al final de la pasada. Si ya salió del Top 10, no se fuerza otro intento.
+7. Una tendencia `problematic` se reintenta automáticamente mientras siga en el Top 30, pero siempre al final de la pasada. Si ya salió del Top 30, no se fuerza otro intento.
 8. Un fallo de un item no debe bloquear los siguientes: registra ese item pendiente/problematic según corresponda y continúa con el siguiente.
 9. Relee estado fresco antes de cada escritura. Ante conflicto, relee SHA y reintenta de forma segura.
 
@@ -257,6 +296,8 @@ Si la relación no es inequívoca, no agrupes; verifica primero el detonante con
 ## Contexto aportado por el usuario
 
 Si un item trae `rewrite_instruction`, trátalo como CONTEXTO APORTADO POR EL USUARIO para explicar por qué la tendencia está activa. Debes leerlo antes de investigar y usarlo como pista prioritaria para orientar las búsquedas y la reelaboración. No lo ignores ni lo sustituyas por la explicación anterior problemática. Verifica con fuentes actuales todo dato factual verificable antes de publicarlo; si el texto del usuario contiene una interpretación u opinión, úsala como contexto editorial sin presentarla como hecho no comprobado.
+**TTActualidad / Aportar pistas (obligatorio):** si la solicitud incluye `user_pistas` y `hints_verification_status:"unverified"`, la entrada es una NUEVA investigación de la revisión exacta `id+revision`, aunque haya abandonado el Top 30. Conserva las pistas en `trends/requests.json`, úsalas solamente como hipótesis y posibles enlaces para localizar fuentes independientes y comprobar fechas y hechos. No conviertas una pista en afirmación verificable por el simple hecho de que la aporte el editor. Si la comprobación falla, conserva `user_pistas` e `investigation_history`, registra `problem_reason` claramente y no publiques explicación ni remate falsamente concluyentes. Si funciona, escribe el texto factual completo y un remate nuevo según las reglas editoriales vigentes. El reencolado usa únicamente la cola habitual `trends/editorial-queue.json`, sin canal ni transporte alternativo.
+
 
 ## Recuperación de Reexplicar desde la app
 
@@ -280,7 +321,7 @@ Investiga por qué es tendencia AHORA en España con búsquedas web actuales y f
 - Política/controversia: factual y neutral.
 - Deportes: confirma expresamente el estado/resultado justo antes de redactar. Nunca presentes como final algo que siga en curso o cuyo resultado no hayas confirmado.
 - Si el item llega como `problematic`, trata la ejecución como un NUEVO intento: cambia las consultas y usa el contexto acumulado, no te limites a repetir exactamente las búsquedas anteriores.
-- Si tras DOS búsquedas distintas no puedes determinar el detonante con suficiente fiabilidad, escribe `trends/editorial-outbox/<id>-r<revision>.json` con `id,name,revision,status:"problematic"` y un `problem_reason` concreto. Continúa con los demás. Ese estado NO elimina la tendencia del Top 10: mientras siga allí, el radar la mantendrá visible y volverá a incluirla para otro intento en una ejecución posterior.
+- Si tras DOS búsquedas distintas no puedes determinar el detonante con suficiente fiabilidad, escribe `trends/editorial-outbox/<id>-r<revision>.json` con `id,name,revision,status:"problematic"` y un `problem_reason` concreto. Continúa con los demás. Ese estado NO elimina la tendencia del Top 30: mientras siga allí, el radar la mantendrá visible y volverá a incluirla para otro intento en una ejecución posterior.
 - Nunca inventes una explicación solo para sacar una tendencia de `problematic`.
 
 En modo `explanation_only`, usa el puesto ACTUAL de `trends/recent.json` como `N` en el prefijo obligatorio `TT#N`; para una tendencia anticipada usa su mejor puesto observado (`anticipated_best_rank`/`rank`) sin convertirlo en `Rn`. El antiguo formato `Tn/Rn` solo corresponde al modo legado que genere textos Principal/A/B/C.
@@ -401,7 +442,7 @@ Para cada item tratado exige consistencia del texto/estado y ausencia de cola. V
 
 Solo considera el item completado cuando todo lo anterior esté verificado. Si persiste un fallo de aplicación, deja constancia técnica y el item pendiente.
 
-La ejecución completa NO puede declararse satisfactoria si cualquiera de los items que intentó tratar sigue en `preparing` o `update` por falta de outbox o aplicación editorial. En ese caso el estado operativo debe quedar como pendiente/waiting o failure según corresponda, nunca como success. Las tendencias `problematic` que sigan en Top 10 son la única excepción: pueden permanecer visibles para un nuevo intento posterior sin convertir el ciclo en fallo.
+La ejecución completa NO puede declararse satisfactoria si cualquiera de los items que intentó tratar sigue en `preparing` o `update` por falta de outbox o aplicación editorial. En ese caso el estado operativo debe quedar como pendiente/waiting o failure según corresponda, nunca como success. Las tendencias `problematic` que sigan en Top 30 son la única excepción: pueden permanecer visibles para un nuevo intento posterior sin convertir el ciclo en fallo.
 
 Nunca uses una rama o PR como sustituto silencioso de `main`.
 
@@ -413,3 +454,4 @@ Antes de publicar cualquier línea 🌶️, generar internamente hasta cinco enf
 **Antimuletillas:** rechazar «el calendario se ha vestido/salido de gala», «ha tomado nota», «no estaba en el guion», «ha llegado tarde a la fiesta» y variaciones triviales. Evitar repetir en noticias próximas la misma imagen mental, estructura sintáctica o mecanismo humorístico, aunque cambien las palabras. Contrastar, cuando haya registros disponibles, con los últimos 30 remates publicados/explicados del propio proyecto y, si son accesibles, del proyecto hermano. Si hay coincidencia conceptual, regenerar candidatos distintos. No inventar hechos, no hacer chistes sobre víctimas y mantener neutralidad política. Si ningún remate supera este filtro, aplicar las reglas existentes de remate obligatorio/opcional según categoría; nunca rellenar con un cliché.
 
 En la fase `remate_selection` dejar constancia de la evaluación de originalidad y repetición en la telemetría existente, sin alterar formatos de salida ni flujos de Telegram.
+

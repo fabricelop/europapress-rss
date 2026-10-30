@@ -13,7 +13,6 @@ enum TrendFilter: String, CaseIterable, Identifiable {
     case top = "Top 30"
     case listas = "Listas"
     case elaboracion = "En elaboración"
-    case nuevas = "Nuevas"
     case recientes = "Recientes"
     case pendientes = "Pendientes"
     case antiguas = "Antiguas"
@@ -1832,7 +1831,7 @@ final class EditorialStore: ObservableObject {
             let text = str(explanation, "explanation")
             let date = when(explanation, ["explained_at"])
             let status: String = statuses[key] ??
-                (text.isEmpty ? (rank > 10 ? "PREPARACIÓN MANUAL" : "PENDIENTE") : "EXPLICADA")
+                (text.isEmpty ? "PENDIENTE" : "EXPLICADA")
             let request = requestByName[key] ?? [:]
             let knownID = str(request, "id").isEmpty ? str(explanation, "id") : str(request, "id")
             // Backend accepts a stable manual ID for a Top 30 entry without any

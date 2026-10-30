@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from reconcile_prepared_ready import reconcile_prepared_ready
+
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
 EXPLANATION_TTL = timedelta(hours=48)
@@ -49,7 +51,6 @@ def parse_timestamp(value):
 
 def save_editorial_queue(requests_doc):
     recent_now = load("recent.json", {"items": []})
-    top10_names = {norm(x.get("name")) for x in (recent_now.get("items") or [])[:10] if x.get("name")}
     top30_names = {norm(x.get("name")) for x in (recent_now.get("items") or [])[:30] if x.get("name")}
     active = []
     for req in requests_doc.get("requests", []) or []:
@@ -61,14 +62,11 @@ def save_editorial_queue(requests_doc):
         # in the editorial work queue once they leave the displayed window.
         if status == "problematic" and req_name not in top30_names:
             continue
-        # Only positions 1-10 may be automatically prepared. A position
-        # 11-30 MUST come from explicit "Preparar novedad" or reexplanation.
-        # Eligibility is checked WHEN the request enters from Top 10.
-        # It must not disappear from 'En elaboración' just because the live
-        # ranking changes while research or image enrichment is underway.
-        # Legacy requests that originated outside Top 10 remain excluded.
-        if (req.get("auto_queued") and int(req.get("rank") or 999) > 10
-                and req.get("auto_queue_scope") != "top10"):
+        # User policy 30/10: every unexplained Top 30 entry is automatic.
+        # Keep accepted research when ranks move; exclude only unrelated
+        # legacy automatic work that never originated inside the Top 30.
+        if (req.get("auto_queued") and int(req.get("rank") or 999) > 30
+                and req.get("auto_queue_scope") not in {"top10", "top30"}):
             continue
         active.append({
             "id": req.get("id"),
@@ -84,7 +82,11 @@ def save_editorial_queue(requests_doc):
             "disable_ai_image": bool(req.get("disable_ai_image")),
             "image_strategy": req.get("image_strategy"),
             "selected_tweet_image": req.get("selected_tweet_image"),
-            "task": "explain",
+            "task": req.get("task") or "explain",
+            "listas_grouping_request": bool(req.get("listas_grouping_request")),
+            "grouping_candidates": req.get("grouping_candidates") or [],
+            "grouping_state": req.get("grouping_state"),
+            "grouping_error": req.get("grouping_error"),
             "tremending_origin": bool(req.get("tremending_origin")),
             "tremending_id": req.get("tremending_id"),
             "article_title": req.get("article_title"),
@@ -102,8 +104,7 @@ def save_editorial_queue(requests_doc):
             "anticipated_news_title": req.get("anticipated_news_title") or "",
             "anticipated_entered_top10_at": req.get("anticipated_entered_top10_at"),
         })
-    # A maximum of ONE automatic outside-Top-10 request is kept active.
-    # Existing manually requested work is preserved.
+    # Preserve all accepted automatic and manual research.
     # Evita starvation: trabajo nuevo/revisiones primero; problematic al final.
     active.sort(key=lambda x: (
         1 if str(x.get("status") or "") == "problematic" else 0,
@@ -386,6 +387,16 @@ def reconcile_persisted_explanations():
 
     return repaired
 
+# The old prepared.json pipeline already has verified editorial text. Its
+# READY entries must become Listas independently of missing AI images/Telegram.
+# Ignore terminal/newer revisions; the helper is idempotent.
+repaired_ready = reconcile_prepared_ready(
+    requests_doc, prepared_doc, explained_doc, now_dt.isoformat(timespec="seconds"))
+if repaired_ready:
+    reconciled = True
+    save("telegram-manual-explained.json", explained_doc)
+    print("READY de texto reconciliados en Listas:", repaired_ready)
+
 repaired_explanations = reconcile_persisted_explanations()
 if repaired_explanations:
     reconciled = True
@@ -512,33 +523,16 @@ if not capture_is_safe(recent):
     raise SystemExit(0)
 
 current = []
-for item in (recent.get("items") or [])[:10]:
+for item in (recent.get("items") or [])[:30]:
     name = str(item.get("name") or "").strip()
     rank = int(item.get("rank") or 0)
-    if name and 1 <= rank <= 10:
+    if name and 1 <= rank <= 30:
         current.append({"name": name, "rank": rank})
-# Top 30 is a DISPLAY, not an automatic editorial queue.
-# Ranks 11-30 enter "preparing" ONLY when explicitly requested by the editor
-# using Preparar novedad; rank <=10 is eligible for automatic investigation.
-# Retire mistakenly automatic outside-Top-10 work without erasing explanations.
-retired_outside = 0
-for req in requests:
-    if (req.get("auto_queued") is True and
-            int(req.get("rank") or 999) > 10 and
-            str(req.get("status") or "") in {"preparing", "update", "problematic", "ready"} and
-            str(req.get("request_source") or "") not in
-              {"telegram_reexplain", "github_pages_authorized_issue", "telegram_private_deeplink"}):
-        req["status"] = "inactive"
-        req["inactive_at"] = now_dt.isoformat(timespec="seconds")
-        req["inactive_reason"] = "top11_30_manual_only"
-        req["auto_queue_scope"] = "retired"
-        retired_outside += 1
-if retired_outside:
-    reconciled = True
-    print("Fuera de Top 10 automático: retiradas", retired_outside,
-          "solicitudes de posiciones 11-30; preparar novedad es manual")
+# User policy 30/10: all pending Top 30 entries enter the same queue.
+# Positions outside that window are not selected automatically. Existing
+# manual work and investigations already accepted keep their continuity.
 
-# Las problemáticas solo son trabajo vivo mientras sigan en Top 10 o Radar.
+# Las problemáticas solo son trabajo vivo mientras sigan en Top 30 o Radar.
 # Si salen de ambos, se retiran a un estado inerte. Si vuelven a aparecer,
 # se abrirá una revisión nueva para evitar que un listener atrasado resucite
 # la revisión problemática antigua.
@@ -557,7 +551,7 @@ for req in requests:
         continue
     req["status"] = "inactive"
     req["inactive_at"] = now_dt.isoformat(timespec="seconds")
-    req["inactive_reason"] = "left-top10-radar"
+    req["inactive_reason"] = "left-top30-radar"
     retired_problematic += 1
 
 if retired_problematic:
@@ -574,7 +568,7 @@ def explanation_expired(key):
     return bool(explained_at and now_dt - explained_at > EXPLANATION_TTL)
 
 def closed_name_eligible_for_new_event(req, item):
-    """A deleted old package must not block a genuinely new Top-10 occurrence.
+    """A deleted old package must not block a genuinely new Top-30 occurrence.
 
     Re-entry after 48h opens a separate ID; the old deleted revision stays
     terminal. The rule also applies to repeated calendar or grouped topics.
@@ -582,7 +576,7 @@ def closed_name_eligible_for_new_event(req, item):
     if str((req or {}).get("status") or "").lower() not in CLOSED:
         return False
     # Apply 48h uniformly; a newer archive/delete time does not renew an
-    # editorial explanation and must not block a genuinely new Top-10 event.
+    # editorial explanation and must not block a genuinely new Top-30 event.
     last_explanation = latest_explanation.get(norm(item["name"]))
     return bool(last_explanation and now_dt - last_explanation > EXPLANATION_TTL)
 
@@ -590,7 +584,7 @@ to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
-    # The user's 48h Top-10 rule overrides old close/topic deduplication.
+    # The user's 48h Top-30 rule overrides old close/topic deduplication.
     # Never override a newer active preparing/update or a manual correction.
     status_before = str((req or {}).get("status") or "")
     renewal_due = (
@@ -607,13 +601,13 @@ for item in current:
             and not renewal_due):
         continue
     status = str((req or {}).get("status") or "")
-    # A genuinely resurfaced Top-10 trend must be researched as a NEW event,
+    # A genuinely resurfaced Top-30 trend must be researched as a NEW event,
     # never silently reuse the old deleted request or revive its media.
     if status in CLOSED and closed_name_eligible_for_new_event(req, item):
-        print("Nuevo episodio Top 10 tras cierre anterior:", item["name"])
+        print("Nuevo episodio Top 30 tras cierre anterior:", item["name"])
         status = "new_event"
     if req:
-        if item["rank"] <= 10 and status in {"explained", "grouped"} and explanation_expired(key):
+        if item["rank"] <= 30 and status in {"explained", "grouped"} and explanation_expired(key):
             reopened_at = now_dt.isoformat(timespec="seconds")
             # Every new sports match / event needs an independent editorial ID.
             # Reusing a historical ID or incrementing its revision can cause
@@ -627,14 +621,14 @@ for item in current:
                 "updated_at": reopened_at, "reexplain": False, "with_image": True,
                 "disable_ai_image": False, "image_strategy": "ai_plus_fallback",
                 "ai_image_status": "pending", "auto_queued": True,
-                "auto_queue_scope": "top10", "originated_from_prior_id": req.get("id"),
+                "auto_queue_scope": "top30", "originated_from_prior_id": req.get("id"),
                 "requested_together": [item["name"]],
                 "captured_with": [x["name"] for x in current],
             }
             requests.append(fresh)
             by_name[key] = fresh
             reconciled = True
-            print("Nuevo episodio Top 10 en elaboración:", item["name"], new_id)
+            print("Nuevo episodio Top 30 en elaboración:", item["name"], new_id)
             continue
         # Una solicitud ready sin tarjeta prepared es un estado imposible:
         # normalmente indica una carrera o borrado parcial. Se reabre de forma
@@ -642,7 +636,7 @@ for item in current:
         if status == "ready":
             represented = str(req.get("id") or "") in prepared_ids or key in prepared_names
             if represented:
-                if bool(req.get("anticipated")):
+                if bool(req.get("anticipated")) and item["rank"] <= 10:
                     now_entered = datetime.now(MADRID).isoformat(timespec="seconds")
                     req["rank"] = item["rank"]
                     req["status"] = "update"
@@ -669,9 +663,9 @@ for item in current:
             continue
         # Cualquier otra decisión/estado vigente se conserva. Las problemáticas
         # no se convierten a preparing: permanecen como problemáticas, pero
-        # save_editorial_queue las vuelve a exponer mientras sigan en el Top 10
+        # save_editorial_queue las vuelve a exponer mientras sigan en el Top 30
         # para que la siguiente ejecución editorial haga un nuevo intento.
-        if status in {"preparing", "update"} and bool(req.get("anticipated")):
+        if status in {"preparing", "update"} and bool(req.get("anticipated")) and item["rank"] <= 10:
             now_entered = datetime.now(MADRID).isoformat(timespec="seconds")
             if int(req.get("rank") or 0) != item["rank"] or not req.get("anticipated_entered_top10_at"):
                 req["rank"] = item["rank"]
@@ -735,7 +729,7 @@ for item in to_queue:
         "requested_together": [name],
         "captured_with": names,
         "auto_queued": True,
-        "auto_queue_scope": "top10",
+        "auto_queue_scope": "top30",
     }
     if req is None or independent_episode:
         # Keep historical episodes, their decisions and image jobs untouched.
@@ -749,3 +743,4 @@ requests_doc["updated_at"] = now
 save("requests.json", requests_doc)
 save_editorial_queue(requests_doc)
 print("Encoladas automáticamente:", ", ".join(names))
+

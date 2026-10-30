@@ -81,18 +81,18 @@ assert "newsWorking" in shared and "trendsWorking" in shared and "pendingActions
 assert "RefreshLiveCountsIntent()" in activity
 assert "partialData: partial" in store
 
-# Compact Top 30: exactly eight visible filters in two rows of four.
+# Top 30: six trend filters in two rows of three; Nuevas removed.
 assert "case movimientos" not in store
 assert 'filterChip("↑↓ Cambios"' not in dashboard
-assert "count: 4), spacing: 5)" in dashboard
-assert dashboard.count('filterChip("') == 12  # 7 trends and 5 news
+assert "count: 3), spacing: 5)" in dashboard
+assert dashboard.count('filterChip("') == 11  # 6 trends and 5 news
 assert "softCardColor" in dashboard and "colors: [softCardColor, TTTheme.cardInterior]" in dashboard
 assert "rankColor, in: RoundedRectangle" in dashboard
 
 # Direct navigation, real radar entrants and durable unread state.
 assert 'Abrir noticias en Listas' in dashboard
 assert 'Abrir tendencias en Listas' in dashboard
-assert 'store.radarNewNames.contains($0.name)' in dashboard
+assert 'store.radarNewNames.contains(item.name)' in dashboard
 assert 'updateRadarEntrants(' in store and 'TTActualidad.radar.lastVersion.v1' in store
 assert 'TTActualidad.unread.news.v1' in store and 'TTActualidad.unread.trends.v1' in store
 assert 'quickButton("Preparar novedad"' not in actions
@@ -334,3 +334,6 @@ for token in ('SOLO IMAGEN', 'SIN NINGÚN TEXTO', 'franja inferior', 'SIN BANDA 
 assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
 print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
 
+
+assert 'filterChip("Nuevas"' not in dashboard
+assert 'case nuevas = "Nuevas"' not in store
