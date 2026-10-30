@@ -1,159 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T15:50:26.563610+00:00",
+  "updated_at": "2026-10-30T16:51:04+01:00",
   "count": 3,
   "items": [
     {
       "id": "listas-auto-13a61a13d71463aa9a63",
-      "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
       "requested_at": "2026-10-30T15:50:26.563610+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "group_listas",
-      "listas_grouping_request": true,
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
       "automatic_grouping": true,
-      "grouping_state": "pending",
-      "grouping_candidates": [
-        {
-          "id": "6edd382e5ca7",
-          "revision": 0,
-          "name": "Yola",
-          "rank": 2,
-          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
-          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
-          "explained_at": "2026-10-30T01:21:30+01:00",
-          "verification_sources": [
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
-          ]
-        },
-        {
-          "id": "09fb9ff32c5a",
-          "revision": 0,
-          "name": "Dana",
-          "rank": 7,
-          "explanation": "TT#7 Dana es tendencia por el segundo aniversario de la dana del 29 de octubre de 2024 en Valencia, que dejó 233 fallecidos; continúan los homenajes y actos de memoria.\n#DANA #Valencia #29Octubre",
-          "explanation_sha256": "17b2b984332d798de0a24fe78edfc972462127626e0a370be708e9abc3b0e8ab",
-          "explained_at": "2026-10-30T13:59:00+01:00",
-          "verification_sources": [
-            "https://efe.com/espana/2026-10-29/segundo-aniversario-dana-valencia/",
-            "https://www.valencia.es/es/-/luto-oficial-segundo-aniversario-dana-valencia?redirect=%2Fes%2Fcas%2Fpagina-de-categoria%3Fp_p_id%3Dcom_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_JzpZn9jBadjS%26p_p_lifecycle%3D0%26p_p_mode%3Dview%26p_p_state%3Dnormal%26p_r_p_assetEntryId%3D33468321%26p_r_p_categoryId%3D379821"
-          ]
-        },
-        {
-          "id": "3c351b316504",
-          "revision": 0,
-          "name": "#30OctubrESP",
-          "rank": 14,
-          "explanation": "TT#14 #30OctubrESP es tendencia como etiqueta de conversación sobre el 30 de octubre, utilizada para agrupar publicaciones y comentarios relacionados con la fecha.\n#30Octubre",
-          "explanation_sha256": "2c676cf479af3bcbc6de785513544bab0da12131a601d81f24c3a9d19d34bacd",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://twitter-trends.snaplytics.io/spain/",
-            "https://trends24.in/spain/madrid/"
-          ]
-        },
-        {
-          "id": "37073f5f219f",
-          "revision": 0,
-          "name": "Pepiño Blanco",
-          "rank": 19,
-          "explanation": "TT#19 Pepiño Blanco aparece entre las tendencias, pero no se ha podido confirmar un detonante actual y verificable que explique el término.",
-          "explanation_sha256": "22a92ae2f370362ba4385decf1e76a1841b1cd74d4ebf1f7e80f16c5746a3904",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": []
-        },
-        {
-          "id": "198ebafff410",
-          "revision": 0,
-          "name": "Pepe Blanco",
-          "rank": 21,
-          "explanation": "TT#21 Pepe Blanco aparece entre las tendencias, pero no se ha podido confirmar un detonante actual y verificable que explique el término.",
-          "explanation_sha256": "d4ccfca1935f2ce6a5235b9d8a820fb31fecc904189fb99b4d023641f331cc85",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": []
-        },
-        {
-          "id": "f8b727626ba7",
-          "revision": 0,
-          "name": "David Sánchez",
-          "rank": 27,
-          "explanation": "TT#27 David Sánchez es tendencia en el contexto de su proceso judicial en Badajoz y del recurso pendiente contra la condena de nueve años de inhabilitación por prevaricación.\n#Badajoz #Tribunales",
-          "explanation_sha256": "bfda4ece6b030d92c91272bca822b75235121aa6ab74389050fc60daaf9e2ee8",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.rtve.es/noticias/20261008/defensa-david-sanchez-recurre-apelacion-sentencia-audiencia-provincial-badajoz-pide-su-absolucion/17258265.shtml",
-            "https://efe.com/extremadura/2026-10-09/fiscalia-recurre-condena-david-sanchez/"
-          ]
-        },
-        {
-          "id": "beccc79aea5d",
-          "revision": 0,
-          "name": "Miguel Hernández",
-          "rank": 28,
-          "explanation": "TT#28 Miguel Hernández es tendencia en el 116.º aniversario de su nacimiento, con homenajes y actos en Orihuela, Jaén y otros puntos para recordar su vida y obra.\n#Poesía #Orihuela\n🌶️ 116 años después, sus versos siguen encontrando lectores.",
-          "explanation_sha256": "adf7b3292549277d403e1d10b8431f11da5e4fcb2a5c5252eecdc1227d8df175",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.dipujaen.es/agenda/detalle-evento-dipujaen.html?uid=7c1fe67b-d2cd-11f1-9f2e-005056b0675f",
-            "https://vegabajadigital.com/esmeralda-grao-homenajeara-en-orihuela-a-miguel-hernandez-de-la-mano-de-la-fundacion-del-poeta/"
-          ]
-        },
-        {
-          "id": "0ecf2a36f589",
-          "revision": 0,
-          "name": "La UCO",
-          "rank": 29,
-          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
-          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
-            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
-          ]
-        },
-        {
-          "id": "a025df62fa96",
-          "revision": 0,
-          "name": "Cáncer",
-          "rank": 30,
-          "explanation": "TT#30 Cáncer es tendencia coincidiendo con el Día Mundial del Cáncer de Hígado y las advertencias de especialistas españoles sobre el aumento previsto de casos y mortalidad.\n#CáncerDeHígado #Prevención",
-          "explanation_sha256": "ef544b1b261cfbd141685625f0b595ecd17ef27b7d4b79f062aa7bf90fadd426",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.redaccionmedica.com/profesionales/sociedades-cientificas/20261030/de-sintomas-tardios-falta-de-consenso-en-el-cribado-las-barreras-la-deteccion-precoz-del-cancer-higado/363731_0.html",
-            "https://www.infosalus.com/asistencia/noticia-feh-aeehh-advierten-aumento-mortalidad-cancer-higado-reclaman-reforzar-prevencion-20261030112210.html"
-          ]
-        },
-        {
-          "id": "d3361acf73b6",
-          "revision": 0,
-          "name": "Pobrecito",
-          "rank": 23,
-          "explanation": "TT#23 Pobrecito aparece entre las tendencias, pero tras nuevas búsquedas no se ha podido confirmar qué hecho concreto está impulsando el término ahora.",
-          "explanation_sha256": "0c152fcbbc336a0d59d75d5d30c2d6ba7266882be132cf91b8d9400a5a601037",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": []
-        },
-        {
-          "id": "trend-update-507b5ec78596c95d9800",
-          "revision": 0,
-          "name": "Más de 100",
-          "rank": 30,
-          "explanation": "TT#30 Más de 100 sigue siendo tendencia porque nuevas informaciones sitúan entre 160 y 200 km/h la velocidad del AVE que alcanzó al Iryo detenido en Urda, mientras se investiga la gestión tras el fallo del LZB.\n#Urda #AVE #LZB",
-          "explanation_sha256": "685491476b7ffc0018eeaeb64096ee36788262d62a5e3e8e922e53d56ed457de",
-          "explained_at": "2026-10-30T15:17:56.223768+00:00",
-          "verification_sources": [
-            {
-              "url": "https://www.antena3.com/noticias/sociedad/ave-choco-detras-iryo-urda-velocidad-160-200-kilometros-hora_202610306ae44c416973466c29e2ead0.html"
-            },
-            {
-              "url": "https://www.infobae.com/espana/2026/10/30/asi-funciona-el-centro-de-regulacion-y-control-de-atocha-el-cerebro-ferroviario-de-adif-que-habria-autorizado-al-ave-de-urde-a-reanudar-en-marcha-normal/"
-            }
-          ]
-        }
-      ],
       "published_context": [
         {
           "id": "09fb9ff32c5a",
@@ -1058,23 +931,189 @@
           ]
         }
       ],
-      "with_image": false,
-      "disable_ai_image": true,
+      "listas_grouping_request": true,
+      "grouping_candidates": [
+        {
+          "id": "6edd382e5ca7",
+          "revision": 0,
+          "name": "Yola",
+          "rank": 2,
+          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
+          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
+          "explained_at": "2026-10-30T01:21:30+01:00",
+          "verification_sources": [
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
+          ]
+        },
+        {
+          "id": "09fb9ff32c5a",
+          "revision": 0,
+          "name": "Dana",
+          "rank": 7,
+          "explanation": "TT#7 Dana es tendencia por el segundo aniversario de la dana del 29 de octubre de 2024 en Valencia, que dejó 233 fallecidos; continúan los homenajes y actos de memoria.\n#DANA #Valencia #29Octubre",
+          "explanation_sha256": "17b2b984332d798de0a24fe78edfc972462127626e0a370be708e9abc3b0e8ab",
+          "explained_at": "2026-10-30T13:59:00+01:00",
+          "verification_sources": [
+            "https://efe.com/espana/2026-10-29/segundo-aniversario-dana-valencia/",
+            "https://www.valencia.es/es/-/luto-oficial-segundo-aniversario-dana-valencia?redirect=%2Fes%2Fcas%2Fpagina-de-categoria%3Fp_p_id%3Dcom_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_JzpZn9jBadjS%26p_p_lifecycle%3D0%26p_p_mode%3Dview%26p_p_state%3Dnormal%26p_r_p_assetEntryId%3D33468321%26p_r_p_categoryId%3D379821"
+          ]
+        },
+        {
+          "id": "3c351b316504",
+          "revision": 0,
+          "name": "#30OctubrESP",
+          "rank": 14,
+          "explanation": "TT#14 #30OctubrESP es tendencia como etiqueta de conversación sobre el 30 de octubre, utilizada para agrupar publicaciones y comentarios relacionados con la fecha.\n#30Octubre",
+          "explanation_sha256": "2c676cf479af3bcbc6de785513544bab0da12131a601d81f24c3a9d19d34bacd",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://twitter-trends.snaplytics.io/spain/",
+            "https://trends24.in/spain/madrid/"
+          ]
+        },
+        {
+          "id": "37073f5f219f",
+          "revision": 0,
+          "name": "Pepiño Blanco",
+          "rank": 19,
+          "explanation": "TT#19 Pepiño Blanco aparece entre las tendencias, pero no se ha podido confirmar un detonante actual y verificable que explique el término.",
+          "explanation_sha256": "22a92ae2f370362ba4385decf1e76a1841b1cd74d4ebf1f7e80f16c5746a3904",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": []
+        },
+        {
+          "id": "198ebafff410",
+          "revision": 0,
+          "name": "Pepe Blanco",
+          "rank": 21,
+          "explanation": "TT#21 Pepe Blanco aparece entre las tendencias, pero no se ha podido confirmar un detonante actual y verificable que explique el término.",
+          "explanation_sha256": "d4ccfca1935f2ce6a5235b9d8a820fb31fecc904189fb99b4d023641f331cc85",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": []
+        },
+        {
+          "id": "f8b727626ba7",
+          "revision": 0,
+          "name": "David Sánchez",
+          "rank": 27,
+          "explanation": "TT#27 David Sánchez es tendencia en el contexto de su proceso judicial en Badajoz y del recurso pendiente contra la condena de nueve años de inhabilitación por prevaricación.\n#Badajoz #Tribunales",
+          "explanation_sha256": "bfda4ece6b030d92c91272bca822b75235121aa6ab74389050fc60daaf9e2ee8",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.rtve.es/noticias/20261008/defensa-david-sanchez-recurre-apelacion-sentencia-audiencia-provincial-badajoz-pide-su-absolucion/17258265.shtml",
+            "https://efe.com/extremadura/2026-10-09/fiscalia-recurre-condena-david-sanchez/"
+          ]
+        },
+        {
+          "id": "beccc79aea5d",
+          "revision": 0,
+          "name": "Miguel Hernández",
+          "rank": 28,
+          "explanation": "TT#28 Miguel Hernández es tendencia en el 116.º aniversario de su nacimiento, con homenajes y actos en Orihuela, Jaén y otros puntos para recordar su vida y obra.\n#Poesía #Orihuela\n🌶️ 116 años después, sus versos siguen encontrando lectores.",
+          "explanation_sha256": "adf7b3292549277d403e1d10b8431f11da5e4fcb2a5c5252eecdc1227d8df175",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.dipujaen.es/agenda/detalle-evento-dipujaen.html?uid=7c1fe67b-d2cd-11f1-9f2e-005056b0675f",
+            "https://vegabajadigital.com/esmeralda-grao-homenajeara-en-orihuela-a-miguel-hernandez-de-la-mano-de-la-fundacion-del-poeta/"
+          ]
+        },
+        {
+          "id": "0ecf2a36f589",
+          "revision": 0,
+          "name": "La UCO",
+          "rank": 29,
+          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
+          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
+          ]
+        },
+        {
+          "id": "a025df62fa96",
+          "revision": 0,
+          "name": "Cáncer",
+          "rank": 30,
+          "explanation": "TT#30 Cáncer es tendencia coincidiendo con el Día Mundial del Cáncer de Hígado y las advertencias de especialistas españoles sobre el aumento previsto de casos y mortalidad.\n#CáncerDeHígado #Prevención",
+          "explanation_sha256": "ef544b1b261cfbd141685625f0b595ecd17ef27b7d4b79f062aa7bf90fadd426",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.redaccionmedica.com/profesionales/sociedades-cientificas/20261030/de-sintomas-tardios-falta-de-consenso-en-el-cribado-las-barreras-la-deteccion-precoz-del-cancer-higado/363731_0.html",
+            "https://www.infosalus.com/asistencia/noticia-feh-aeehh-advierten-aumento-mortalidad-cancer-higado-reclaman-reforzar-prevencion-20261030112210.html"
+          ]
+        },
+        {
+          "id": "d3361acf73b6",
+          "revision": 0,
+          "name": "Pobrecito",
+          "rank": 23,
+          "explanation": "TT#23 Pobrecito aparece entre las tendencias, pero tras nuevas búsquedas no se ha podido confirmar qué hecho concreto está impulsando el término ahora.",
+          "explanation_sha256": "0c152fcbbc336a0d59d75d5d30c2d6ba7266882be132cf91b8d9400a5a601037",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": []
+        },
+        {
+          "id": "trend-update-507b5ec78596c95d9800",
+          "revision": 0,
+          "name": "Más de 100",
+          "rank": 30,
+          "explanation": "TT#30 Más de 100 sigue siendo tendencia porque nuevas informaciones sitúan entre 160 y 200 km/h la velocidad del AVE que alcanzó al Iryo detenido en Urda, mientras se investiga la gestión tras el fallo del LZB.\n#Urda #AVE #LZB",
+          "explanation_sha256": "685491476b7ffc0018eeaeb64096ee36788262d62a5e3e8e922e53d56ed457de",
+          "explained_at": "2026-10-30T15:17:56.223768+00:00",
+          "verification_sources": [
+            {
+              "url": "https://www.antena3.com/noticias/sociedad/ave-choco-detras-iryo-urda-velocidad-160-200-kilometros-hora_202610306ae44c416973466c29e2ead0.html"
+            },
+            {
+              "url": "https://www.infobae.com/espana/2026/10/30/asi-funciona-el-centro-de-regulacion-y-control-de-atocha-el-cerebro-ferroviario-de-adif-que-habria-autorizado-al-ave-de-urde-a-reanudar-en-marcha-normal/"
+            }
+          ]
+        }
+      ],
+      "grouping_state": "pending",
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Agrupación automática de Listas"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     },
     {
       "id": "red-review-d53297bbc76bdb6b68ee",
-      "revision": 0,
       "name": "Revisar novedades: Marcos Llorente",
       "rank": 28,
       "status": "preparing",
       "requested_at": "2026-10-30T15:50:26.563610+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "review_red",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
       "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
       "review_source": {
         "id": "7873f51ff683",
         "revision": 0,
@@ -1089,22 +1128,53 @@
         ],
         "fingerprint": "6a75aa860805a72ff3d06b62d187c508da1a1d28df5df6b4237768cc320a07fb"
       },
-      "with_image": false,
-      "disable_ai_image": true,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Revisar novedades: Marcos Llorente"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     },
     {
       "id": "red-review-4af0c56479660f4a3a12",
-      "revision": 0,
       "name": "Revisar novedades: #LeyendasPokemonZA",
       "rank": 18,
       "status": "preparing",
       "requested_at": "2026-10-30T15:50:26.563610+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "review_red",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
       "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
       "review_source": {
         "id": "7670800aa4c8",
         "revision": 0,
@@ -1119,10 +1189,31 @@
         ],
         "fingerprint": "b047dbf63a831a328c02253a11e30b7d6dccd38bf1b9a620343c947ab08379b8"
       },
-      "with_image": false,
-      "disable_ai_image": true,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Revisar novedades: #LeyendasPokemonZA"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
