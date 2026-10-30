@@ -1,0 +1,62 @@
+name: TTActualidad - agrupar tendencias de Listas
+on:
+  repository_dispatch:
+    types: [ttactualidad_group_listas_v1]
+  push:
+    branches: [main]
+    paths:
+      - 'trends/listas-grouping-outbox/**'
+      - 'pilot/listas_grouping.py'
+      - 'pilot/test_listas_grouping.py'
+      - '.github/workflows/ttactualidad-group-listas.yml'
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ttactualidad-listas-grouping
+  cancel-in-progress: false
+jobs:
+  group:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Probar agrupación y protección de originales
+        run: python3 -m unittest discover -s pilot -p 'test_listas_grouping.py' -v
+      - name: Persistir solicitud o resultado editorial
+        env:
+          TT_LISTAS_GROUP_JSON: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload) || '{}' }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'ttactualidad-actions[bot]'
+          git config user.email 'ttactualidad-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4 5 6 7; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/listas_grouping.py
+            git add -- trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json trends/mobile-decisions.json pilot/ttactualidad-action-receipts.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'TTActualidad: agrupar Listas sin reescribir originales'
+            if git push origin HEAD:main; then
+              if python3 - <<'PY'
+          import json, os, sys
+          payload=json.loads(os.environ.get('TT_LISTAS_GROUP_JSON') or '{}')
+          receipts=json.load(open('pilot/ttactualidad-action-receipts.json'))['items']
+          ok=any(x.get('request_id')==payload.get('request_id') and x.get('status') in {'applied','already_applied'} for x in receipts)
+          sys.exit(0 if ok and payload.get('decision')=='group_listas' else 1)
+          PY
+              then
+                python3 trends/request_pc_editorial.py --trigger || echo 'Solicitud persistida; revisar consumidor editorial'
+              fi
+              exit 0
+            fi
+            sleep "$((attempt * 2))"
+          done
+          echo 'No se pudo persistir sin pisar cambios concurrentes' >&2
+          exit 1

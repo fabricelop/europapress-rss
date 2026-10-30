@@ -246,7 +246,12 @@ def normalise(docs):
             "image":archive_url(docs,"ttendencias",ident,rev,
                                 (x.get("archive_image") or x.get("fallback_image") or {}).get("url")
                                 or x.get("archive_image_url")),
-            "rank":int(x.get("rank") or req.get("rank") or 0)})
+            "rank":int(x.get("rank") or req.get("rank") or 0),
+            "covered_by_id":text(x.get("covered_by_id")),
+            "covered_by_name":text(x.get("covered_by_name")),
+            "is_joint_group":x.get("listas_group_role")=="joint"})
+    trend_ready.sort(key=lambda row: (bool(row.get('covered_by_id')),
+                                     -(date(row.get('explained_at')) or now).timestamp()))
     # Listas uses the SAME authoritative manual ledger as iPhone.
     # Staged-only prepared snapshots are intentionally not promoted to Listas.
     readyIDs = {x["id"] for x in trend_ready}
@@ -288,8 +293,9 @@ def normalise(docs):
         if not text(record.get("explanation")):
             continue
         names=[record.get("name"),record.get("display_name")]
-        names+=(record.get("trend_names") or [])
-        names +=[x.get("name") for x in (record.get("trend_context") or []) if isinstance(x,dict)]
+        if record.get("listas_group_role") != "joint":
+            names+=(record.get("trend_names") or [])
+            names +=[x.get("name") for x in (record.get("trend_context") or []) if isinstance(x,dict)]
         for name in names:
             key=norm(name)
             if key:
@@ -332,7 +338,9 @@ def normalise(docs):
             "title":name,"body":explanation,"state":"Top 30","category":"Top 30","rank":rank,
             "source":text(req.get("source_url") or exp.get("source_url")),
             "image":archive_url(docs,"ttendencias",ident,int(req.get("revision") or exp.get("revision") or 0),archive.get("url")),
-            "trend_status":status,"inListas":key in ready_names})
+            "trend_status":status,"inListas":key in ready_names,
+            "covered_by_id":text(req.get("covered_by_id")),
+            "covered_by_name":text(req.get("covered_by_name"))})
     lb = now - dt.timedelta(hours=24)
     published = set()
     totals = {"ttittulares":0,"ttendencias":0}
@@ -624,3 +632,4 @@ class TTActualidad(tk.Tk):
 
 if __name__=="__main__":
     TTActualidad().mainloop()
+

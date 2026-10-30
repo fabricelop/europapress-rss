@@ -86,7 +86,11 @@ def save_editorial_queue(requests_doc):
             "disable_ai_image": bool(req.get("disable_ai_image")),
             "image_strategy": req.get("image_strategy"),
             "selected_tweet_image": req.get("selected_tweet_image"),
-            "task": "explain",
+            "task": req.get("task") or "explain",
+            "listas_grouping_request": bool(req.get("listas_grouping_request")),
+            "grouping_candidates": req.get("grouping_candidates") or [],
+            "grouping_state": req.get("grouping_state"),
+            "grouping_error": req.get("grouping_error"),
             "tremending_origin": bool(req.get("tremending_origin")),
             "tremending_id": req.get("tremending_id"),
             "article_title": req.get("article_title"),
@@ -761,3 +765,4 @@ requests_doc["updated_at"] = now
 save("requests.json", requests_doc)
 save_editorial_queue(requests_doc)
 print("Encoladas automáticamente:", ", ".join(names))
+

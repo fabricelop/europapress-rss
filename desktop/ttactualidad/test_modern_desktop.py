@@ -17,6 +17,37 @@ appmod=importlib.util.module_from_spec(spec)
 loader.exec_module(appmod)
 
 class DesktopModernTests(unittest.TestCase):
+    def test_covered_card_is_recognizable_removable_and_not_publishable(self):
+        row={'project':'ttendencias','id':'covered','revision':1,'state':'Listas',
+             'title':'Adif','body':'Texto original que se conserva','category':'Tendencias',
+             'source':'','image':'','covered_by_id':'joint','covered_by_name':'Investigación ferroviaria'}
+        self.window.trends=[row]
+        self.window.select_item(row,load_image=False)
+        self.assertIn('AGRUPADA EN',self.window.state_tag.text())
+        self.assertIn('Investigación ferroviaria',self.window.state_tag.text())
+        self.assertFalse(self.window.actions['x'].isEnabled())
+        self.assertFalse(self.window.actions['published'].isEnabled())
+        self.assertTrue(self.window.actions['deleted'].isEnabled())
+        self.assertIn('Texto original',self.window.body.toPlainText())
+
+    def test_group_button_requests_editorial_review_without_rewriting_local_cards(self):
+        from PySide6.QtWidgets import QMessageBox
+        row={'project':'ttendencias','id':'first','revision':1,'state':'Listas',
+             'title':'Adif','body':'Texto conservado','category':'Tendencias','source':'','image':''}
+        self.window.trends=[row,dict(row,id='second')]
+        with patch.object(appmod,'session_token',return_value='fake'), \
+             patch.object(appmod.QMessageBox,'question',return_value=QMessageBox.Yes), \
+             patch.object(self.window,'submit') as send:
+            self.window.group_listas(False)
+        event,payload=send.call_args.args
+        self.assertEqual(event,'ttactualidad_group_listas_v1')
+        self.assertEqual(payload['decision'],'group_listas')
+        self.assertEqual(self.window.trends[0]['body'],'Texto conservado')
+        self.assertFalse(self.window.optimistic_hides)
+        self.window.sending=True
+        self.window.on_finished('submit',(payload['request_id'],None),None)
+        self.assertFalse(self.window.sending)
+
     @classmethod
     def setUpClass(cls):
         cls.app=QApplication.instance() or QApplication([])
@@ -320,3 +351,4 @@ class DesktopModernTests(unittest.TestCase):
 
 if __name__=="__main__":
     unittest.main()
+

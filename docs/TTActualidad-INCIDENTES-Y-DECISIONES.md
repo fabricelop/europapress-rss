@@ -121,3 +121,12 @@ Copiar esta ficha al FINAL del documento por cada avería/resolución:
 - **Otros ajustes documentados:** transporte nuevo de noticias exclusivamente #164, Tremending lectura y seen_urls, límites 24 h/48 h/180 días, imagen launch_only frente a captura/entrega, derechos no verificados de archivo, vigilancia y límites, avisos ntfy y divergencia de operaciones múltiples entre ramas.
 - **Corte:** main `0fb2cfbcbd1d1aabb820413b01b6dc451c7aaf20` (29/10 22:32:26 Madrid); iPhone fuente 0.4.22 build 28, instalación no verificada. Conversaciones recuperadas selectivamente; no se afirma exportación exhaustiva ni acceso al PC físico.
 - **Pendiente separado:** alinear, si se solicita, los contratos productivos que aún hablan de estrellas o prohíben el puente manual. Esta tarea mantiene operativos y sin cambios prompts, automatizaciones, apps y datos editoriales.
+
+
+## 6. 30/10/2026 — Agrupar Listas sin cambiar explicaciones originales
+
+**Decisión:** nueva ficha conjunta; originales conservadas con estado visual de cobertura y retirada rápida. La aclaración del usuario sustituye la idea inicial de copiar la explicación conjunta a todas.
+
+**Componentes:** `pilot/listas_grouping.py`, `ttactualidad-group-listas.yml`, cola/contrato de tendencias, protección de publicación en `apply-ttactualidad-action.py`, UI Qt y SwiftUI 0.4.23 build29. No publicar, borrar ni agrupar datos reales solo por instalar el cambio: la revisión se solicita con el botón.
+
+**Validación:** pruebas sintéticas de persistencia y carreras; UI Windows y preflight iPhone. Distinguir solicitud aplicada, revisión editorial completada, build compilado e instalación en dispositivo. Ruta y diagnóstico detallados en §18 del manual.

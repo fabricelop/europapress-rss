@@ -1,5 +1,44 @@
 # TTendencias · flujo editorial común
 
+## Agrupar tendencias de Listas — orden explícita de la app (30/10/2026)
+
+Antes del trabajo normal, atiende las entradas vigentes `listas_grouping_request:true`
+(`task:group_listas`) en requests/cola. SON SOLICITUDES DE REVISIÓN, no tendencias
+llamadas «Agrupar tendencias de Listas». Inspecciona TODAS sus `grouping_candidates`,
+relee el estado real por ID/revisión y compara el texto con su snapshot.
+
+Busca grupos que compartan un mismo acontecimiento o contexto noticioso concreto
+y actual. No agrupes solo por persona, palabra, partido o tema genérico. Puedes
+crear varios grupos independientes. Investiga y contrasta el motivo común; redacta
+UNA nueva explicación publicable por grupo, TT#N + nombre/tema + hechos, hashtags
+y un único remate cuando sea pertinente (<280 caracteres ponderados X).
+
+**Instrucción expresa del usuario: NO CAMBIAR las explicaciones originales**, ni
+su remate, fecha, revisión o imágenes. Se conservarán en Listas con metadatos
+`listas_group_role:covered`, `covered_by_id` y `covered_by_name`, para retirarlas
+fácilmente. La ficha nueva es `listas_group_role:joint` y es la única publicable.
+No escribas esas marcas a mano y no uses el reconciliador de grupos ordinario
+para este caso: copiaría textos o retiraría miembros sin el estado solicitado.
+
+Persiste exclusivamente el resultado en
+`trends/listas-grouping-outbox/<job_id>.json` con:
+
+```json
+{"job_id":"listas-grouping-UUID","groups":[{"name":"Tema común concreto","explanation":"TT#2 ...\n#Etiqueta1 #Etiqueta2","closer_text":"","reason":"Motivo comprobado por el que estas fichas cubren el mismo acontecimiento","verification_sources":[{"url":"https://fuente-verificada.example/documento"}],"members":[{"id":"ID1","revision":0},{"id":"ID2","revision":1}]}]}
+```
+
+El ejemplo de URL es un marcador de formato: usa fuentes reales verificadas.
+Cada grupo necesita al menos dos miembros vigentes del snapshot, sin solaparse;
+las tendencias sin relación se conservan intactas. Si no hay coincidencias, guarda
+`groups:[]`. Ante `grouping_error`, corrige el MISMO outbox, no dupliques el job.
+El workflow `ttactualidad-group-listas.yml` aplica el resultado transaccionalmente
+con JIT y preserva los textos. Relee requests/catálogo/cola: solo está terminado
+cuando el job es `grouping_completed` y cada ficha creada/cubierta está persistida.
+Los grupos cuyos miembros fueron borrados o reelaborados se omiten enteros y se
+registran en `grouping_skipped_stale`; no los resucites ni inventes revisiones.
+No generes imágenes en esta pasada ni publiques en X. No pidas estrellas.
+
+
 > **OPERATIVA VIGENTE · 17/10/2026 · PRIORIDAD ABSOLUTA**: TTActualidad es la interfaz editorial (móvil y alternativa GitHub Pages). Se han retirado las entregas de noticias y tendencias a Telegram: cualquier párrafo antiguo de este documento que exija enviar, editar o verificar tarjetas editoriales de Telegram queda OBSOLETO y NO se ejecuta. El cierre editorial real es la persistencia y relectura en GitHub main del texto factual, hashtags y remate, con READY/Listas en TTiTTulares o explained/Explicadas en TTendencias. Nunca bloquear ese cierre por foto de archivo, imagen IA o entrega Telegram. No invocar ImageGen durante la pasada editorial. Las imágenes se generan individualmente en ChatGPT Images y un proceso Windows las descarga al PC y las envía de forma independiente a TTImages; esta pasada no modifica ni activa ese transporte. Mantener intactos SeLoRecordamos, TTImages y FabCalendar. El trabajo PROCESSING/preparing sigue pendiente hasta persistencia verificada, no solo solicitud de ejecución.
 
 
@@ -415,3 +454,4 @@ Antes de publicar cualquier línea 🌶️, generar internamente hasta cinco enf
 **Antimuletillas:** rechazar «el calendario se ha vestido/salido de gala», «ha tomado nota», «no estaba en el guion», «ha llegado tarde a la fiesta» y variaciones triviales. Evitar repetir en noticias próximas la misma imagen mental, estructura sintáctica o mecanismo humorístico, aunque cambien las palabras. Contrastar, cuando haya registros disponibles, con los últimos 30 remates publicados/explicados del propio proyecto y, si son accesibles, del proyecto hermano. Si hay coincidencia conceptual, regenerar candidatos distintos. No inventar hechos, no hacer chistes sobre víctimas y mantener neutralidad política. Si ningún remate supera este filtro, aplicar las reglas existentes de remate obligatorio/opcional según categoría; nunca rellenar con un cliché.
 
 En la fase `remate_selection` dejar constancia de la evaluación de originalidad y repetición en la telemetría existente, sin alterar formatos de salida ni flujos de Telegram.
+

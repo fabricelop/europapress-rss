@@ -80,6 +80,7 @@ QPushButton:pressed { background:#314963; }
 QPushButton:disabled { background:#1a2536; color:#708094; border-color:#27384b; }
 QPushButton#primary { background:#56cbb1; color:#0c2630; border:1px solid #56cbb1; }
 QPushButton#primary:hover { background:#83ead3; }
+QPushButton#primary:disabled { background:#1a2536; color:#708094; border-color:#27384b; }
 QPushButton#danger { border-color:#915a67; color:#ffd3db; }
 QPushButton#danger:hover { background:#4c2a38; }
 QPushButton#nav { border:0; background:transparent; padding:11px 14px; text-align:left;
@@ -427,6 +428,13 @@ class MainWindow(QWidget):
         self.list_count=label("0 elementos","small")
         lhead.addStretch();lhead.addWidget(self.list_count)
         ll.addLayout(lhead)
+        grouping=row_layout(spacing=7)
+        self.group_listas_button=button("Agrupar",lambda:self.group_listas(False),"primary")
+        self.remove_grouped_button=button("Retirar agrupadas",lambda:self.group_listas(True))
+        grouping.addWidget(self.group_listas_button)
+        grouping.addWidget(self.remove_grouped_button)
+        ll.addLayout(grouping)
+        self.grouping_request_ids={}
         self.search=QLineEdit()
         self.search.setPlaceholderText("Buscar por titular, tema o texto…")
         self.search.textChanged.connect(self.render_list)
@@ -630,8 +638,10 @@ class MainWindow(QWidget):
                 QMessageBox.warning(self,"Acción no enviada",send_error)
                 return
             if pending:
+                if pending["decision"] in {"group_listas","remove_covered"}:
+                    self.sending=False
                 pending["dispatched"]=True
-                self.notice.setText("Tarjeta apartada al instante · GitHub comprueba la orden…")
+                self.notice.setText("GitHub comprueba la solicitud de agrupación…" if pending["decision"] in {"group_listas","remove_covered"} else "Tarjeta apartada al instante · GitHub comprueba la orden…")
                 for delay in (1800,4500,9000,16000,28000,45000,70000):
                     QTimer.singleShot(delay,self.refresh)
                 QTimer.singleShot(605000,self.expire_pending)
@@ -698,7 +708,8 @@ class MainWindow(QWidget):
             cc=col_layout(card,7,(13,12,13,11))
             line=row_layout(spacing=8)
             kind="NOTICIA" if item["project"]=="ttittulares" else "TENDENCIA"
-            cap=label(kind+"  ·  "+item["state"].upper(),"eyebrow")
+            group_badge=(" · AGRUPADA EN: "+item.get("covered_by_name", "")) if item.get("covered_by_id") else (" · PUBLICACIÓN CONJUNTA" if item.get("is_joint_group") else "")
+            cap=label(kind+"  ·  "+item["state"].upper()+group_badge,"eyebrow",wrap=True)
             line.addWidget(cap)
             line.addStretch()
             if item.get("rank"):line.addWidget(label("#"+str(item["rank"]),"eyebrow"))
@@ -742,6 +753,10 @@ class MainWindow(QWidget):
             card.style().unpolish(card)
             card.style().polish(card)
         self.state_tag.setText(item["category"].upper()+"   /   "+item["state"].upper())
+        if item.get("covered_by_id"):
+            self.state_tag.setText("AGRUPADA EN: "+item.get("covered_by_name", ""))
+        elif item.get("is_joint_group"):
+            self.state_tag.setText("PUBLICACIÓN CONJUNTA")
         self.detail_title.setText(item.get("title") or "Sin título")
         self.detail_meta.setText("ID "+item["id"]+"  ·  Rev. "+str(item["revision"])+("  ·  #"+str(item.get("rank")) if item.get("rank") else "")+("  ·  "+item.get("trend_status","") if item["state"]=="Top 30" else ""))
         body=html.escape(item.get("body") or "Pendiente de texto.").replace("\n","<br>")
@@ -802,6 +817,13 @@ class MainWindow(QWidget):
         tremending=bool(row and row["state"]=="Tremending")
         review=bool(row and row["state"] in ("Revisión","Creciendo"))
         has=bool(row)
+        covered=bool(row and row.get("covered_by_id"))
+        listas_view=self.section in {"Todas las Listas","Tendencias · Listas"}
+        self.group_listas_button.setVisible(listas_view)
+        self.remove_grouped_button.setVisible(listas_view)
+        grouping_pending=any(x["decision"] in {"group_listas","remove_covered"} for x in self.pending_actions.values())
+        self.group_listas_button.setEnabled(not self.sending and not grouping_pending)
+        self.remove_grouped_button.setEnabled(not self.sending and not grouping_pending and any(x.get("covered_by_id") for x in self.trends))
         pending_key=self.item_key(row) if has else None
         action_pending=any(p["project"]==row["project"] and p["event_id"]==row["id"] and
                            p["revision"]==int(row.get("revision") or 0)
@@ -819,18 +841,43 @@ class MainWindow(QWidget):
             "discard":has and (working or (review and row["project"]=="ttittulares")),
             "published":has and ready
         }
+        if covered:
+            for key in ("x","published","rework","hints","gag"):
+                enable[key]=False
         for k,b in self.actions.items():
             allowed=enable.get(k,False)
             if (action_pending or self.sending) and k in {"rework","hints","deleted","discard","published"}:
                 allowed=False
             b.setEnabled(bool(allowed))
         if row:
+            self.actions["deleted"].setText("Retirar agrupada" if covered else "Quitar de Listas")
             self.actions["rework"].setText(
                 "Preparar" if row["state"] in ("Revisión","Creciendo")
                 or (top and not row.get("body") and row.get("rank",0)>10)
                 else "Reelaborar")
             self.actions["published"].setToolTip(
                 "Elegir Cancelar / Sí publicada (+1) / No sin publicar (+0).")
+
+    def group_listas(self, cleanup=False):
+        if not session_token():
+            QMessageBox.warning(self,"Conectar GitHub","Conecta GitHub antes de agrupar.")
+            return
+        covered=[x for x in self.trends if x.get("state")=="Listas" and x.get("covered_by_id")]
+        candidates=[x for x in self.trends if x.get("state")=="Listas" and not x.get("covered_by_id")]
+        if (cleanup and not covered) or (not cleanup and len(candidates)<2):
+            self.notice.setText("No hay agrupadas para retirar." if cleanup else "Se necesitan dos tendencias en Listas sin cubrir.")
+            return
+        message=("Retirar las "+str(len(covered))+" tarjetas cubiertas, sin publicar ni borrar sus fichas conjuntas?" if cleanup else
+                 "Revisar todas las tendencias de Listas y preparar una ficha conjunta por acontecimiento? Las explicaciones originales se conservarán y quedarán marcadas como agrupadas.")
+        if QMessageBox.question(self,"Retirar agrupadas" if cleanup else "Agrupar Listas",message)!=QMessageBox.Yes:
+            return
+        decision="remove_covered" if cleanup else "group_listas"
+        rid=self.grouping_request_ids.setdefault(decision,str(uuid.uuid4()))
+        payload={"project":"ttendencias","event_id":"listas-grouping","request_id":rid,"decision":decision}
+        if cleanup:payload["items"]=[{"id":x["id"],"revision":x["revision"]} for x in covered]
+        self.pending_actions[rid]={"request_id":rid,"project":"ttendencias","event_id":"listas-grouping",
+            "revision":0,"decision":decision,"since":time.time(),"hide_key":None,"dispatched":False}
+        self.submit("ttactualidad_group_listas_v1",payload)
 
     def confirm_pending(self):
         if not self.pending_actions:
@@ -847,6 +894,8 @@ class MainWindow(QWidget):
                     if pending.get("hide_key"):
                         self.optimistic_hides[pending["hide_key"]]="confirmed"
                     self.pending_actions.pop(request_id,None)
+                    if pending["decision"] in self.grouping_request_ids:
+                        self.grouping_request_ids.pop(pending["decision"],None)
                     self.notice.setText("GitHub confirmó «"+pending["decision"]+
                                         "» · "+pending["event_id"])
                 elif status in {"rejected","failed","error","invalid"}:
@@ -1110,3 +1159,4 @@ def main():
 
 if __name__=="__main__":
     main()
+

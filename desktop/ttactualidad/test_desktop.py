@@ -7,6 +7,27 @@ def documents():
     return {key:{"items":[]} for key in FILES}
 
 class EditorialDesktopTests(unittest.TestCase):
+    def test_joint_summary_never_replaces_original_or_disables_its_cleanup(self):
+        import datetime as dt
+        docs=documents()
+        at=dt.datetime.now(dt.timezone.utc).isoformat()
+        original={'id':'adif','revision':0,'name':'Adif','rank':2,'status':'explained',
+            'explanation':'Explicación original de Adif','explained_at':at,
+            'listas_group_role':'covered','covered_by_id':'joint','covered_by_name':'Investigación'}
+        joint={'id':'joint','revision':0,'name':'Investigación','rank':2,'status':'explained',
+            'explanation':'Explicación conjunta nueva','explained_at':at,
+            'listas_group_role':'joint','trend_names':['Adif','Atocha']}
+        docs['manual']['items']=[original,joint]
+        docs['requests']={'requests':[original,joint]}
+        docs['recent']={'items':[{'name':'Adif','rank':2}]}
+        _,trends,top,_=normalise(docs)
+        self.assertEqual(trends[0]['id'],'joint')
+        covered=next(x for x in trends if x['id']=='adif')
+        self.assertEqual(covered['body'],'Explicación original de Adif')
+        self.assertEqual(covered['state'],'Listas')
+        self.assertEqual(covered['covered_by_id'],'joint')
+        self.assertEqual(top[0]['body'],'Explicación original de Adif')
+
     def test_source_paths_are_canonical(self):
         self.assertEqual(FILES["news_queue"], "ttittulares/editorial-queue.json")
         self.assertEqual(FILES["trend_queue"], "trends/editorial-queue.json")
@@ -161,3 +182,4 @@ class EditorialDesktopTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

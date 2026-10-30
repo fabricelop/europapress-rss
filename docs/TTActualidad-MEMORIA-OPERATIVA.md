@@ -504,3 +504,16 @@ Para el próximo fallo basta empezar con la ficha LEER-PRIMERO y un ID/captura/e
 
 
 **Fin de memoria. Actualizar esta referencia junto con la evidencia de cada cambio.**
+
+
+## 18. Agrupar tendencias de Listas — 30/10/2026
+
+- **Petición del usuario:** botón Agrupar revisa todas las tendencias de Listas; crea una ficha publicable por acontecimiento concreto. La aclaración posterior exige **conservar intactas las explicaciones originales**, sin copiarles el texto nuevo.
+- **UI:** iPhone 0.4.23 build 29, basada en 0.4.22, rama `feature/ttactualidad-ios-0.4.23-agrupar-listas`; Windows Qt también incorpora Agrupar y Retirar agrupadas. La instalación en dispositivos debe confirmarse aparte de compilar.
+- **Solicitud:** dispatch `ttactualidad_group_listas_v1`, decisión `group_listas`, UUID. `pilot/listas_grouping.py` valida Listas vivas, guarda snapshots exactos y crea un request `listas_grouping_request:true`, `task:group_listas` en requests/cola normal. Conserva textos y estado de las candidatas mientras se investiga; recibo estándar por request_id. Repetir una solicitud no abre dos trabajos simultáneos.
+- **Investigación:** mismo runner editorial TTendencias. El nuevo bloque del contrato prioriza estas solicitudes y exige acontecimiento común comprobado, no similitud de nombres. Resultado en `trends/listas-grouping-outbox/<job_id>.json`; workflow `ttactualidad-group-listas.yml` consume push/cron */5/dispatch.
+- **Aplicación:** revalida ID/revisión y hash del texto de cada miembro. Crea otra ficha `listas_group_role:joint` con texto nuevo; originales siguen explained y reciben solo `listas_group_role:covered`, `covered_by_id`, `covered_by_name`, fecha/vínculo de agrupación. No modifica su explicación, remate, explained_at, revisión o imágenes. Una edición/borrado concurrente invalida el grupo completo, sin resurrecciones.
+- **Visibilidad y publicación:** Listas muestra la conjunta y las originales con distintivo Agrupada en…; las originales quedan al final en iPhone/Windows y se desactiva su publicación. El backend rechaza marcar una cubierta como published, también desde un cliente anterior. No existe publicación automática en X.
+- **Limpieza:** Retirar agrupadas envía `remove_covered` con los IDs/revisiones seleccionados; solo cierra originales cubiertas vigentes como deleted, conserva la conjunta y no incrementa publicaciones. También se puede retirar cada original con su botón habitual.
+- **Cierre:** job `grouping_completed`, IDs conjuntos y grupos omitidos por cambios en `grouping_skipped_stale`. Si no hay relaciones, groups:[] cierra la revisión sin tocar fichas. Un resultado inválido deja `needs_correction`/error y permite corregir el mismo outbox; no representa éxito.
+- **Pruebas:** 11 pruebas sintéticas de backend (texto preservado, JIT, deduplicación, limpieza y protección del handler); 44 pruebas de datos/UI Windows; preflight iOS. La suite histórica `test-ttactualidad-direct-actions.py` conserva cuatro errores de fixtures/interfaces que se reprodujeron también con el código base sin cambios; no se alteró ese legado para ocultarlos. Ver compilaciones de la entrega para la validación de binarios.

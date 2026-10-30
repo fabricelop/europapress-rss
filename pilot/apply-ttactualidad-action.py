@@ -161,6 +161,9 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
                        if int(row.get("revision") or 0) == revision]
         same_requests = [row for row in all_requests
                          if int(row.get("revision") or 0) == revision]
+        if decision == "published" and any(row.get("listas_group_role") == "covered"
+                                           for row in same_manual + same_requests):
+            fail("Esta tendencia ya está agrupada; publica la ficha conjunta o retira la original sin publicar")
         same_delivery = [row for row in all_deliveries
                          if int(row.get("revision") or 0) == revision]
         # A READY request can exist before its explanation is copied to the
@@ -677,3 +680,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
