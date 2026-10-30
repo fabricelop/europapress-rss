@@ -221,6 +221,7 @@ final class EditorialStore: ObservableObject {
         }
     }
     @Published private(set) var isLoading = false
+    private(set) var editorialReadFreshness: [String: Bool] = [:]
     @Published private(set) var message = "Sin sincronizar"
     @Published private(set) var liveStatus = "Sin iniciar"
     @Published private(set) var novedades: [String] = []
@@ -542,6 +543,13 @@ final class EditorialStore: ObservableObject {
         let downloaded = loaded.downloaded
         let docs = loaded.docs
         let partial = loaded.partial
+        editorialReadFreshness = [
+            "ttittulares": ["ttittulares/editorial-queue.json", "ttittulares/prepared.json",
+                            "ttittulares/decisions.json"].allSatisfy { downloaded[$0] != nil },
+            "ttendencias": ["trends/editorial-queue.json", "trends/requests.json",
+                            "trends/telegram-manual-explained.json", "trends/mobile-decisions.json"]
+                .allSatisfy { downloaded[$0] != nil }
+        ]
 
         updatePublicationEvents(
             ledger: downloaded["pilot/ttactualidad-publication-events.json"] != nil ?
@@ -615,8 +623,14 @@ final class EditorialStore: ObservableObject {
         let processing = Self.rows(newsQueue, "items").filter {
             ["PROCESSING", "UPDATE_PROCESSING"].contains(Self.str($0, "status").uppercased())
         }
-        let queueNews = sectionNews(processing.isEmpty ? Self.rows(status, "processing_items") : processing,
-                                    "EN ELABORACIÓN")
+        // A valid empty queue is authoritative. Falling back merely because
+        // it is empty resurrects a stale status.json after the run finishes.
+        let readyRevisions = Dictionary(news.map { ($0.id, $0.revision) },
+                                        uniquingKeysWith: max)
+        let workingRows = EditorialProgressPolicy.workingNewsRows(
+            queue: newsQueue["items"] is [[String: Any]] ? processing : nil,
+            fallback: Self.rows(status, "processing_items"), readyRevisions: readyRevisions)
+        let queueNews = sectionNews(workingRows, "EN ELABORACIÓN")
         let problematic = sectionNews(Self.rows(status, "problematic_items").filter {
             !activeIDs.contains(Self.str($0, "event_id"))
         }, "REVISIÓN")
@@ -1276,7 +1290,11 @@ final class EditorialStore: ObservableObject {
                     $0.id == action.id && $0.revision == action.revision
                 }
                 if action.decision == "prepare" || action.decision == "rework" {
-                    if canonicalSnapshot.newsElaboracion.contains(where: {
+                    let readyRevision = canonicalSnapshot.news.filter { $0.id == action.id }
+                        .map(\.revision).max()
+                    if EditorialProgressPolicy.finishedNewsAction(
+                        decision: action.decision, originalRevision: action.revision,
+                        readyRevision: readyRevision) || canonicalSnapshot.newsElaboracion.contains(where: {
                         $0.id == action.id &&
                         $0.revision >= action.revision + (action.decision == "rework" ? 1 : 0)
                     }) {

@@ -165,12 +165,18 @@ struct TTDashboard: View {
         // making the user tap refresh after the GitHub workflow finishes.
         .task {
             while !Task.isCancelled {
-                try? await Task.sleep(for: .seconds(75))
+                try? await Task.sleep(for: .seconds(60))
                 if Task.isCancelled { break }
-                if store.pendingOperationsCount > 0 || store.snapshot.trendsElaboracion.contains(where: {
-                    $0.editorialID.hasPrefix("listas-grouping-")
-                }) {
-                    await store.refreshIfStale(minInterval: 60)
+                let viewingWorking = quickOverview == .working ||
+                    (!showCombinedListas &&
+                     ((store.section == .news && store.newsFilter == .elaboracion) ||
+                      (store.section == .trends && store.trendFilter == .elaboracion)))
+                if EditorialProgressPolicy.shouldPoll(
+                    pendingOrders: store.pendingOperationsCount,
+                    newsWorking: store.snapshot.newsElaboracion.count,
+                    trendsWorking: store.snapshot.trendsElaboracion.count,
+                    viewingWorking: viewingWorking) {
+                    await store.refreshIfStale(minInterval: 45)
                 }
             }
         }
@@ -576,15 +582,34 @@ struct TTDashboard: View {
                 }
                 guard !requestingEditorialRun else { return }
                 requestingEditorialRun = true
-                editorialRunMessage = "Registrando petición en GitHub…"
+                editorialRunMessage = "Comprobando qué sigue en elaboración…"
                 Task {
+                    // The visible count may predate a completed editorial run.
+                    // Read main before creating a new command for that count.
+                    await store.refreshIfStale(minInterval: 0)
+                    let currentCount = project == "ttittulares" ?
+                        store.snapshot.newsElaboracion.count : store.snapshot.trendsElaboracion.count
+                    guard currentCount > 0 else {
+                        editorialRunMessage = store.editorialReadFreshness[project] == true ?
+                            "Actualizado: no quedan entradas en elaboración. Consulta Listas." :
+                            "No se pudo comprobar la cola actual. Se conserva la última lectura; pulsa Actualizar antes de reintentar."
+                        requestingEditorialRun = false
+                        return
+                    }
+                    editorialRunMessage = "Registrando petición para \(currentCount) entradas…"
                     let result = await github.requestEditorialRun(project: project)
+                    let requestNotice = github.notice
+                    await store.refreshIfStale(minInterval: 0)
+                    let remaining = project == "ttittulares" ?
+                        store.snapshot.newsElaboracion.count : store.snapshot.trendsElaboracion.count
                     switch result {
-                    case .verified: editorialRunMessage = github.notice
+                    case .verified: editorialRunMessage = remaining == 0 && store.editorialReadFreshness[project] == true ?
+                        "Actualizado: ya no quedan entradas en elaboración. Consulta Listas." :
+                        requestNotice + " Última lectura: \(remaining) en elaboración; la vista se consulta automáticamente cada minuto mientras la app está abierta."
                     case .pending: editorialRunMessage =
-                        "Solicitud todavía sin confirmar. " + github.notice
+                        "Solicitud todavía sin confirmar. " + requestNotice
                     case .failed: editorialRunMessage =
-                        "No se ha podido verificar la solicitud. " + github.notice
+                        "No se ha podido verificar la solicitud. " + requestNotice
                     }
                     requestingEditorialRun = false
                 }
@@ -609,7 +634,7 @@ struct TTDashboard: View {
                     .foregroundStyle(TTTheme.muted)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Text("GitHub confirma la petición. El procesamiento real lo realiza el editor del PC; no es inmediato.")
+            Text("El botón comprueba la cola y solicita al editor del PC que la procese. La lista se actualiza automáticamente cada minuto mientras la app está abierta; registrar la petición no significa que la redacción haya terminado.")
                 .font(.system(size: 10))
                 .foregroundStyle(TTTheme.muted)
         }
