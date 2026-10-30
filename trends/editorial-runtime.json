@@ -5,17 +5,21 @@
   "canonical": true,
   "last_started_at": "2026-10-30T18:10:00+01:00",
   "last_completed_at": "2026-10-30T18:10:40+01:00",
-  "updated_at": "2026-10-30T18:10:40+01:00",
-  "status": "DONE",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T18:25:00+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "83aa70bdac40"
+  ],
+  "remaining_active_ids": [
+    "83aa70bdac40"
+  ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-20261030T181000-manual",
-  "previous_run_id": "tr-1793379376312-manual",
+  "run_id": "tr-20261030T182500-manual",
+  "previous_run_id": "tr-20261030T181000-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
@@ -23,7 +27,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 0,
+    "remaining_active": 1,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -32,25 +36,18 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T18:10:00+01:00",
+      "at": "2026-10-30T18:25:00+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada manual iniciada. Cola inicial 0; se verificará de nuevo main antes de cerrar. Sin ImageGen."
+      "trend_id": "83aa70bdac40",
+      "title": "Día de Todos",
+      "message": "Pasada manual iniciada. Cola inicial 1; revisión 0 validada en main. Sin ImageGen."
     },
     {
-      "at": "2026-10-30T18:10:30+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura JIT de main: cola 0, sin preparing/update y sin rewrite_pending."
-    },
-    {
-      "at": "2026-10-30T18:10:40+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main confirmada: pasada completada 0/0. Sin ImageGen."
+      "at": "2026-10-30T18:25:00+01:00",
+      "phase": "investigating",
+      "trend_id": "83aa70bdac40",
+      "title": "Día de Todos",
+      "message": "Investigando el detonante actual de la tendencia y contrastando el contexto de Todos los Santos 2026."
     }
   ],
   "incidents": [],
@@ -59,25 +56,27 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261030T181000-manual",
+    "run_id": "tr-20261030T182500-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T18:10:00+01:00",
-    "updated_at": "2026-10-30T18:10:40+01:00",
-    "finished_at": "2026-10-30T18:10:40+01:00",
+    "status": "RUNNING",
+    "phase": "investigating",
+    "started_at": "2026-10-30T18:25:00+01:00",
+    "updated_at": "2026-10-30T18:25:00+01:00",
+    "finished_at": null,
     "current": 0,
-    "total": 0,
-    "trend_id": null,
-    "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "total": 1,
+    "trend_id": "83aa70bdac40",
+    "title": "Día de Todos",
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "83aa70bdac40"
+    ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 0/0: relectura final de main con cola 0, sin preparing/update ni rewrite_pending. Sin ImageGen.",
+    "message": "Procesando 1/1: Día de Todos (r0). Sin ImageGen.",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
@@ -85,7 +84,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 0,
+      "remaining_active": 1,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -96,36 +95,29 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T18:10:00+01:00",
+        "at": "2026-10-30T18:25:00+01:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada manual iniciada. Cola inicial 0; se verificará de nuevo main antes de cerrar. Sin ImageGen."
+        "trend_id": "83aa70bdac40",
+        "title": "Día de Todos",
+        "message": "Pasada manual iniciada. Cola inicial 1; revisión 0 validada en main. Sin ImageGen."
       },
       {
-        "at": "2026-10-30T18:10:30+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura JIT de main: cola 0, sin preparing/update y sin rewrite_pending."
-      },
-      {
-        "at": "2026-10-30T18:10:40+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main confirmada: pasada completada 0/0. Sin ImageGen."
+        "at": "2026-10-30T18:25:00+01:00",
+        "phase": "investigating",
+        "trend_id": "83aa70bdac40",
+        "title": "Día de Todos",
+        "message": "Investigando el detonante actual de la tendencia y contrastando el contexto de Todos los Santos 2026."
       }
     ],
     "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T18:10:00+01:00",
-  "finished_at": "2026-10-30T18:10:40+01:00",
+  "phase": "investigating",
+  "started_at": "2026-10-30T18:25:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null
+  "total": 1,
+  "trend_id": "83aa70bdac40",
+  "title": "Día de Todos"
 }
