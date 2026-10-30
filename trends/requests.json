@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T18:33:37.136137+00:00",
+  "updated_at": "2026-10-30T19:37:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -20140,9 +20140,9 @@
       "name": "Ronaldo Nazário",
       "rank": 5,
       "revision": 2,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-30T18:33:10.739190+00:00",
-      "updated_at": "2026-10-30T18:33:10.739190+00:00",
+      "updated_at": "2026-10-30T19:37:00+01:00",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
@@ -20166,13 +20166,14 @@
           "source_revision": 0,
           "text": "Es por una encuesta de un usuario que pone 4 escudos y pregunta quien ha jugado en los cuatro equipos.",
           "verification": "verified_current_trigger",
-          "verified_at": "2026-10-30T19:34:00+01:00"
+          "verified_at": "2026-10-30T19:37:00+01:00"
         },
         {
           "at": "2026-10-30T18:33:10.739190+00:00",
           "source_revision": 1,
           "text": "Es por la encuesta de este usuario en este tuit: https://x.com/_utdimole/status/2116169291720724662?a=cW6v9YCD0ZUeQBJj6Kc&s=46",
-          "verification": "unverified_editor_context"
+          "verification": "verified_current_trigger",
+          "verified_at": "2026-10-30T19:37:00+01:00"
         }
       ],
       "investigation_history": [
@@ -20238,9 +20239,81 @@
           "status": "explained",
           "problem_reason": "",
           "last_attempt_at": "2026-10-30T19:34:00+01:00"
+        },
+        {
+          "revision": 2,
+          "at": "2026-10-30T19:37:00+01:00",
+          "status": "explained",
+          "run_id": "tr-1793385193006-manual",
+          "trigger_verification": "verified",
+          "result": "Investigación nueva desde cero: el post de @_UTDIMole plantea un reto con los escudos de AC Milan, Barcelona, Inter y Real Madrid; el espejo público muestra gran difusión y una respuesta actual identifica a Ronaldo Nazário. La biografía oficial confirma que jugó en los cuatro.",
+          "verification_sources": [
+            {
+              "url": "https://x.com/_utdimole/status/2116169291720724662?a=cW6v9YCD0ZUeQBJj6Kc&s=46",
+              "note": "Tuit exacto aportado por el editor; su contenido coincide con el post vigente del mismo usuario localizado en espejo público."
+            },
+            {
+              "url": "https://www.sotwe.com/_UTDIMole",
+              "note": "Espejo público del post actual: reto con AC Milan, Barcelona, Inter y Real Madrid; alrededor de 2 millones de visualizaciones al verificar."
+            },
+            {
+              "url": "https://www.sotwe.com/J0s3s1ll0_0312",
+              "note": "Respuesta actual al mismo reto identificando a Ronaldo Luis Nazario Da Lima."
+            },
+            {
+              "url": "https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ronaldo-luis-nazario-de-lima",
+              "note": "Biografía oficial que confirma sus etapas en Barcelona, Inter, Real Madrid y AC Milan."
+            }
+          ]
         }
       ],
-      "hints_verification_status": "unverified"
+      "hints_verification_status": "verified",
+      "explained_at": "2026-10-30T19:37:00+01:00",
+      "last_attempt_at": "2026-10-30T19:37:00+01:00",
+      "explanation": "TT#5 Ronaldo Nazário es tendencia por un reto viral en X: un usuario muestra los escudos de AC Milan, Barcelona, Inter y Real Madrid y pide citar a alguien que haya jugado en los cuatro. Ronaldo encaja.\n#RonaldoNazário #Fútbol\n🌶️ Cuatro camisetas, un Fenómeno.",
+      "closer_text": "🌶️ Cuatro camisetas, un Fenómeno.",
+      "rank_at_explanation": 5,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "url": "https://x.com/_utdimole/status/2116169291720724662?a=cW6v9YCD0ZUeQBJj6Kc&s=46",
+          "note": "Tuit exacto aportado por el editor; su contenido coincide con el post vigente del mismo usuario localizado en espejo público."
+        },
+        {
+          "url": "https://www.sotwe.com/_UTDIMole",
+          "note": "Espejo público del post actual: reto con AC Milan, Barcelona, Inter y Real Madrid; alrededor de 2 millones de visualizaciones al verificar."
+        },
+        {
+          "url": "https://www.sotwe.com/J0s3s1ll0_0312",
+          "note": "Respuesta actual al mismo reto identificando a Ronaldo Luis Nazario Da Lima."
+        },
+        {
+          "url": "https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ronaldo-luis-nazario-de-lima",
+          "note": "Biografía oficial que confirma sus etapas en Barcelona, Inter, Real Madrid y AC Milan."
+        }
+      ],
+      "problem_reason": "",
+      "problematic_at": null,
+      "group_id": "grp-e40be8e866b4",
+      "explanation_group_id": "grp-e40be8e866b4",
+      "group_title": "Ronaldo Nazário",
+      "group_leader_id": "e40be8e866b4",
+      "trend_names": [
+        "Ronaldo Nazário"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "e40be8e866b4",
+          "name": "Ronaldo Nazário",
+          "revision": 2
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Detonante actual verificado: reto viral de @_UTDIMole con los cuatro clubes.",
+      "image_status": "pending",
+      "editorial_grouping_state": "pending",
+      "editorial_engine": "chatgpt-editorial-job-v2"
     },
     {
       "id": "9dbe1a97a6b4",
