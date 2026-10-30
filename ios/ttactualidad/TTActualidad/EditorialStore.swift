@@ -1554,6 +1554,11 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    private static func isListasCovered(_ row: [String: Any]) -> Bool {
+        str(row, "listas_group_role") == "covered" && !str(row, "covered_by_id").isEmpty &&
+            (row["covered_source_revision"] == nil || int(row, "covered_source_revision") == int(row, "revision"))
+    }
+
     private static func buildTrendListas(
         manual: [String: Any], requests: [String: Any], deliveries: [String: Any],
         decisions: [String: Any], queue: [String: Any], now: Date,
@@ -1617,7 +1622,7 @@ final class EditorialStore: ObservableObject {
                           row["fallback_image"] as? [String: Any] ?? [:]
             return TrendItem(id: id, rank: int(row, "rank"), name: str(row, "name"),
                              explanation: str(row, "explanation"), lastExplained: explained,
-                             status: str(row, "listas_group_role") == "covered" ? "AGRUPADA" :
+                             status: isListasCovered(row) ? "AGRUPADA" :
                                 (str(row, "listas_group_role") == "joint" ? "CONJUNTA" : "EXPLICADA"), inListas: true,
                              editorialID: id, revision: rev,
                              imageURL: ArchivePhotoCatalog.resolved(
@@ -1625,8 +1630,8 @@ final class EditorialStore: ObservableObject {
                                  image: URL(string: str(archive, "url")),
                                  catalog: archivePhotos),
                              sourceURL: URL(string: str(row, "source_url")),
-                             coveredByID: str(row, "covered_by_id"),
-                             coveredByName: str(row, "covered_by_name"),
+                             coveredByID: isListasCovered(row) ? str(row, "covered_by_id") : "",
+                             coveredByName: isListasCovered(row) ? str(row, "covered_by_name") : "",
                              isJointGroup: str(row, "listas_group_role") == "joint")
         }
         .sorted {
@@ -1804,8 +1809,8 @@ final class EditorialStore: ObservableObject {
                              movement: str(trendMovement, "movement"),
                              enteredAt: when(trendMovement, ["entered_top10_at", "entered_at"]),
                              problemReason: str(request, "problem_reason"),
-                             coveredByID: str(request, "covered_by_id"),
-                             coveredByName: str(request, "covered_by_name"),
+                             coveredByID: isListasCovered(request) ? str(request, "covered_by_id") : "",
+                             coveredByName: isListasCovered(request) ? str(request, "covered_by_name") : "",
                              isJointGroup: str(request, "listas_group_role") == "joint")
         }
     }
