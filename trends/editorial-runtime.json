@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T17:10:00+01:00",
+  "last_started_at": "2026-10-30T17:25:05+01:00",
   "last_completed_at": "2026-10-30T17:11:30+01:00",
-  "updated_at": "2026-10-30T17:25:00+01:00",
+  "updated_at": "2026-10-30T17:25:05+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -18,8 +18,8 @@
     "red-review-f62ec3ed348cf7a88824"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793377500000-manual",
-  "previous_run_id": "tr-1793376255512-manual",
+  "run_id": "tr-1793377503717-manual",
+  "previous_run_id": "tr-1793377500000-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -38,11 +38,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T17:25:00+01:00",
+      "at": "2026-10-30T17:25:05+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada manual iniciada. Cola autoritativa revalidada: 2 revisiones de novedades; sin ImageGen."
+      "message": "Pasada manual iniciada. Cola autoritativa: 2 revisiones de novedades; se procesan de antigua a reciente, con revalidación JIT y sin ImageGen."
     }
   ],
   "incidents": [],
@@ -51,23 +51,26 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793376600000-manual",
+    "run_id": "tr-1793377503717-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T17:10:00+01:00",
-    "updated_at": "2026-10-30T17:11:30+01:00",
-    "finished_at": "2026-10-30T17:11:30+01:00",
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T17:25:05+01:00",
+    "updated_at": "2026-10-30T17:25:05+01:00",
+    "finished_at": null,
     "current": 0,
-    "total": 0,
+    "total": 2,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "red-review-49cc6ffce6867a4bcaf5",
+      "red-review-f62ec3ed348cf7a88824"
+    ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 0/0: cola final 0, sin preparing/update ni rewrite_pending. Sin ImageGen.",
+    "message": "Revisando novedades 0/2. Siguiente: Repsol.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -77,7 +80,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 0,
+      "remaining_active": 2,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -88,11 +91,11 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T17:10:00+01:00",
+        "at": "2026-10-30T17:25:05+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Nueva pasada manual iniciada. Relectura autoritativa de main y comprobación de cola/rewrite_pending; sin ImageGen."
+        "message": "Pasada manual iniciada. Cola autoritativa: 2 revisiones de novedades; se procesan de antigua a reciente, con revalidación JIT y sin ImageGen."
       }
     ],
     "final_outcomes": []
@@ -100,7 +103,7 @@
   "error": null,
   "api_failover_enabled": false,
   "phase": "preparing",
-  "started_at": "2026-10-30T17:25:00+01:00",
+  "started_at": "2026-10-30T17:25:05+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
