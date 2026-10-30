@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T19:28:00+01:00",
+  "updated_at": "2026-10-30T19:29:10+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -20134,9 +20134,9 @@
       "name": "Ronaldo Nazário",
       "rank": 5,
       "revision": 1,
-      "status": "explained",
+      "status": "problematic",
       "requested_at": "2026-10-30T18:24:53.507313+00:00",
-      "updated_at": "2026-10-30T19:28:00+01:00",
+      "updated_at": "2026-10-30T19:29:10+01:00",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
@@ -20179,12 +20179,30 @@
           "at": "2026-10-30T19:28:00+01:00",
           "query": "Ronaldo Nazário clubes AC Milan Barcelona Inter Real Madrid",
           "result": "La trayectoria oficial de Ronaldo confirma etapas en Barcelona, Inter, Real Madrid y AC Milan; además se localizó una respuesta actual a la publicación con «Ronaldo Luis Nazario Da Lima»."
+        },
+        {
+          "revision": 1,
+          "status": "problematic",
+          "problem_reason": "No se ha podido verificar en fuentes abiertas la encuesta concreta con cuatro escudos que, según la pista editorial, habría impulsado hoy «Ronaldo Nazário». La trayectoria por FC Barcelona, Inter, Real Madrid y AC Milan sí está verificada, pero no el detonante social actual; se mantiene sin explicación verificada para no presentar la pista como hecho.",
+          "last_attempt_at": "2026-10-30T19:29:10+01:00",
+          "run_id": "tr-1793384695746-manual",
+          "verification_sources": [
+            {
+              "url": "https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ronaldo-luis-nazario-de-lima",
+              "note": "Confirma Barcelona, Inter, Real Madrid y posterior AC Milan."
+            },
+            {
+              "url": "https://www.sofascore.com/es/football/player/ronaldo-nazario/4761",
+              "note": "Historial de transferencias confirma la secuencia Barcelona-Inter-Real Madrid-AC Milan."
+            }
+          ],
+          "trigger_verification": "unverified"
         }
       ],
-      "hints_verification_status": "verified",
-      "problematic_at": null,
-      "problem_reason": "",
-      "problematic_attempts": 1,
+      "hints_verification_status": "unverified",
+      "problematic_at": "2026-10-30T19:29:10+01:00",
+      "problem_reason": "No se ha podido verificar en fuentes abiertas la encuesta concreta con cuatro escudos que, según la pista editorial, habría impulsado hoy «Ronaldo Nazário». La trayectoria por FC Barcelona, Inter, Real Madrid y AC Milan sí está verificada, pero no el detonante social actual; se mantiene sin explicación verificada para no presentar la pista como hecho.",
+      "problematic_attempts": 2,
       "editorial_engine": "chatgpt-editorial-job-v2",
       "explained_at": "2026-10-30T19:28:00+01:00",
       "last_attempt_at": "2026-10-30T19:28:00+01:00",
