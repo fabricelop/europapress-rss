@@ -3,13 +3,12 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T19:39:00+01:00",
-  "last_completed_at": "2026-10-30T19:44:00+01:00",
-  "updated_at": "2026-10-30T19:44:00+01:00",
+  "last_started_at": "2026-10-30T19:40:08+01:00",
+  "last_completed_at": "2026-10-30T19:44:30+01:00",
+  "updated_at": "2026-10-30T19:44:30+01:00",
   "status": "DONE",
   "queue_complete": true,
   "processed_ids": [
-    "listas-auto-1646815220710d414202",
     "red-review-0d7c83cb2690e08e5487",
     "red-review-65a59d5cd9f39243ff92",
     "listas-auto-0a8d33da787286785470"
@@ -17,16 +16,15 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793385503396-manual",
-  "previous_run_id": "tr-1793385193006-manual",
+  "run_id": "tr-1793385608126-manual",
+  "previous_run_id": "tr-1793385503396-manual",
   "summary": {
-    "attempted": 4,
+    "attempted": 3,
     "explained": 0,
     "updates": 2,
     "stale_reviews": 0,
-    "stale_jobs": 1,
     "unchanged_reviews": 0,
-    "grouping_requests": 2,
+    "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
     "remaining_active": 0,
@@ -38,53 +36,39 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T19:39:00+01:00",
+      "at": "2026-10-30T19:40:08+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de la pasada manual: 3 encargos observados en main. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T19:40:04+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-1646815220710d414202",
-      "title": "Agrupación automática de Listas",
-      "message": "Al revalidar JIT, el encargo ya había sido retirado por la pasada concurrente anterior; no se duplicó."
-    },
-    {
-      "at": "2026-10-30T19:41:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-0d7c83cb2690e08e5487",
-      "title": "Revisar novedades: Binance",
-      "message": "Novedad material verificada: Binance confirmó el incidente, cuantificó el impacto y comunicó causa preliminar y medidas de cobertura."
+      "message": "Inicio de la pasada solicitada: 2 revisiones preparing observadas en main. Se revalidará cada ID+revisión y no se usará ImageGen."
     },
     {
       "at": "2026-10-30T19:42:17+01:00",
-      "phase": "persisting",
+      "phase": "verifying",
       "trend_id": "red-review-0d7c83cb2690e08e5487",
       "title": "Binance",
-      "message": "Revisión updated aplicada; creada trend-update-82cef9ab6366bc06b863."
+      "message": "La revisión vigente quedó aplicada durante la ejecución concurrente; JIT confirma review_completed y ficha de continuidad persistida en ambos registros."
     },
     {
       "at": "2026-10-30T19:42:17+01:00",
-      "phase": "persisting",
+      "phase": "verifying",
       "trend_id": "red-review-65a59d5cd9f39243ff92",
       "title": "Angrois",
-      "message": "Novedad material verificada: el abogado de la plataforma de víctimas trasladó recomendaciones legales concretas a afectados de Urda. Revisión updated aplicada; creada trend-update-607ecdd2b7d2e6f993f5."
+      "message": "La revisión vigente quedó aplicada durante la ejecución concurrente; JIT confirma review_completed y ficha de continuidad persistida en ambos registros."
     },
     {
       "at": "2026-10-30T19:43:36+01:00",
       "phase": "verifying",
       "trend_id": "listas-auto-0a8d33da787286785470",
       "title": "Agrupación automática de Listas",
-      "message": "Agrupación automática aplicada sin grupos ni coberturas; ambas actualizaciones quedan cleared."
+      "message": "El control posterior quedó grouping_completed con groups=[] y covered_by_existing=[]; las dos actualizaciones quedan editorial_grouping_state=cleared."
     },
     {
-      "at": "2026-10-30T19:44:00+01:00",
+      "at": "2026-10-30T19:44:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Cola autoritativa releída en main: 0 items; búsqueda de rewrite_pending:true en requests: 0. Sin ImageGen."
+      "message": "Cierre verificado en main: cola 0, ningún preparing/update y ningún rewrite_pending vigente. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -93,36 +77,34 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793385503396-manual",
+    "run_id": "tr-1793385608126-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T19:39:00+01:00",
-    "updated_at": "2026-10-30T19:44:00+01:00",
-    "finished_at": "2026-10-30T19:44:00+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-30T19:40:08+01:00",
+    "updated_at": "2026-10-30T19:44:30+01:00",
+    "finished_at": "2026-10-30T19:44:30+01:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [
-      "listas-auto-1646815220710d414202",
       "red-review-0d7c83cb2690e08e5487",
       "red-review-65a59d5cd9f39243ff92",
       "listas-auto-0a8d33da787286785470"
     ],
     "partial": false,
-    "message": "Pasada completada: Binance y Angrois actualizadas por novedades materiales; agrupación final sin grupos ni coberturas. Cola final 0, sin rewrite_pending. Sin ImageGen.",
+    "message": "Pasada completada: Binance y Angrois actualizadas con novedades materiales verificadas; control posterior de agrupación sin grupos; cola final 0 y sin reexplicaciones pendientes. Sin ImageGen.",
     "summary": {
-      "attempted": 4,
+      "attempted": 3,
       "explained": 0,
       "updates": 2,
       "stale_reviews": 0,
-      "stale_jobs": 1,
       "unchanged_reviews": 0,
-      "grouping_requests": 2,
+      "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
       "remaining_active": 0,
@@ -136,62 +118,42 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T19:39:00+01:00",
+        "at": "2026-10-30T19:40:08+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de la pasada manual: 3 encargos observados en main. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T19:40:04+01:00",
-        "phase": "verifying",
-        "trend_id": "listas-auto-1646815220710d414202",
-        "title": "Agrupación automática de Listas",
-        "message": "Al revalidar JIT, el encargo ya había sido retirado por la pasada concurrente anterior; no se duplicó."
-      },
-      {
-        "at": "2026-10-30T19:41:00+01:00",
-        "phase": "investigating",
-        "trend_id": "red-review-0d7c83cb2690e08e5487",
-        "title": "Revisar novedades: Binance",
-        "message": "Novedad material verificada: Binance confirmó el incidente, cuantificó el impacto y comunicó causa preliminar y medidas de cobertura."
+        "message": "Inicio de la pasada solicitada: 2 revisiones preparing observadas en main. Se revalidará cada ID+revisión y no se usará ImageGen."
       },
       {
         "at": "2026-10-30T19:42:17+01:00",
-        "phase": "persisting",
+        "phase": "verifying",
         "trend_id": "red-review-0d7c83cb2690e08e5487",
         "title": "Binance",
-        "message": "Revisión updated aplicada; creada trend-update-82cef9ab6366bc06b863."
+        "message": "La revisión vigente quedó aplicada durante la ejecución concurrente; JIT confirma review_completed y ficha de continuidad persistida en ambos registros."
       },
       {
         "at": "2026-10-30T19:42:17+01:00",
-        "phase": "persisting",
+        "phase": "verifying",
         "trend_id": "red-review-65a59d5cd9f39243ff92",
         "title": "Angrois",
-        "message": "Novedad material verificada: el abogado de la plataforma de víctimas trasladó recomendaciones legales concretas a afectados de Urda. Revisión updated aplicada; creada trend-update-607ecdd2b7d2e6f993f5."
+        "message": "La revisión vigente quedó aplicada durante la ejecución concurrente; JIT confirma review_completed y ficha de continuidad persistida en ambos registros."
       },
       {
         "at": "2026-10-30T19:43:36+01:00",
         "phase": "verifying",
         "trend_id": "listas-auto-0a8d33da787286785470",
         "title": "Agrupación automática de Listas",
-        "message": "Agrupación automática aplicada sin grupos ni coberturas; ambas actualizaciones quedan cleared."
+        "message": "El control posterior quedó grouping_completed con groups=[] y covered_by_existing=[]; las dos actualizaciones quedan editorial_grouping_state=cleared."
       },
       {
-        "at": "2026-10-30T19:44:00+01:00",
+        "at": "2026-10-30T19:44:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola autoritativa releída en main: 0 items; búsqueda de rewrite_pending:true en requests: 0. Sin ImageGen."
+        "message": "Cierre verificado en main: cola 0, ningún preparing/update y ningún rewrite_pending vigente. Sin ImageGen."
       }
     ],
     "final_outcomes": [
-      {
-        "id": "listas-auto-1646815220710d414202",
-        "revision": 0,
-        "status": "completed_concurrently",
-        "name": "Agrupación automática de Listas"
-      },
       {
         "id": "red-review-0d7c83cb2690e08e5487",
         "revision": 0,
@@ -221,10 +183,10 @@
   "error": null,
   "api_failover_enabled": false,
   "phase": "closing",
-  "started_at": "2026-10-30T19:39:00+01:00",
-  "finished_at": "2026-10-30T19:44:00+01:00",
-  "current": 4,
-  "total": 4,
+  "started_at": "2026-10-30T19:40:08+01:00",
+  "finished_at": "2026-10-30T19:44:30+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null
 }
