@@ -964,14 +964,14 @@ async function uploadImage(image){
         try{
           let conversationUrl="";
           const exporter=require("./TTendenciasWebImages.cjs");
-          for(let n=0;n<8;n++){
+          for(let n=0;n<30;n++){
             conversationUrl=String(await cdp.eval("location.href"));
             if(exporter.chatURL(conversationUrl))break;
-            await sleep(500);
+            await sleep(700);
           }
           exporter.enroll({job,commandId,targetId,conversationUrl,secret});
           console.log("TTENDENCIAS WEB IMAGE REGISTERED target="+targetId);
-        }catch(_){console.log("TTENDENCIAS WEB IMAGE REGISTRATION DEFERRED target="+targetId);}
+        }catch(e){console.log("TTENDENCIAS WEB IMAGE REGISTRATION DEFERRED target="+targetId+" reason="+String(e&&e.message||e).slice(0,160));}
         console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED; ChatGPT Images, sin captura ni subida");
         return;
       }
