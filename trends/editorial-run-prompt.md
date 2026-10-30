@@ -28,7 +28,9 @@ Al terminar persistir DONE/DONE_WITH_INCIDENTS o ERROR conforme al resultado rea
 
 Investigar por qué el término es tendencia AHORA. Contrastar fuentes actuales y fechas; distinguir el acontecimiento del que habla la gente del nombre de una persona, equipo o etiqueta. No usar capturas simultáneas, `batch_id`, palabras compartidas o partido político como prueba de un mismo acontecimiento. Las pistas `user_pistas` son hipótesis sin verificar; conservarlas con `investigation_history` y buscar corroboración independiente. No convertir una pista o rumor en hecho.
 
-Tras dos búsquedas distintas sin poder verificar un detonante concreto, guardar `problematic` con motivo claro; no redactar una explicación inventada ni llenar con una definición genérica del término. Conservar el historial y continuar con otros trabajos. Las problemáticas del Top 30 pueden reintentarse en una pasada posterior, sin ocultarlas como resueltas.
+Tras dos búsquedas independientes, si no se demuestra el detonante preciso pero SÍ está comprobado que el término figura en una captura fiable y actual del Top 30, redactar de todos modos una **explicación con causa no confirmada** para Listas. La falta de prueba causal NO bloquea por sí sola el cierre editorial. Describir únicamente el ranking observado, los hechos de contexto acreditados y el límite de certeza: «coincide con…», «podría estar relacionado, pero no está confirmado» (esta última fórmula solo con indicios públicos verificables de relación) o «no se ha podido confirmar qué ha impulsado la etiqueta». Nunca atribuir el movimiento a un partido, grupo o campaña solo por una pista del editor, correlación temporal o parecido textual; el matiz «parece» no convierte una acusación sin pruebas en publicable. Guardar las búsquedas, fuentes y la incertidumbre en `investigation_history`/`verification_sources`.
+
+Si ni siquiera puede verificarse una aparición actual fiable, falta el contexto mínimo o hay riesgo de difundir acusaciones/rumores sin fundamento, conservar `problematic` con motivo preciso y continuar. Las problemáticas activas del Top 30 pueden reintentarse; no reabrir fichas `inactive`/terminales ni reconstruir un puesto histórico como si fuera actual. Una explicación prudente finalizada pasa a `status:explained` como las demás, sin publicación automática.
 
 Tremending conserva su prefijo `TT 🗯️`, origen trazable y circuito de tuit/foto real. No sustituir esa captura por una imagen inventada ni confundir este flujo con tendencias ordinarias.
 
@@ -42,6 +44,15 @@ TT#N <nombre literal> es tendencia porque <hecho actual verificado>.
 🌶️ <remate único>
 ```
 
+Cuando la causa no esté confirmada, evitar «es tendencia porque»: usar la misma cabecera y longitud, pero distinguir explícitamente contexto comprobado de hipótesis. Por ejemplo:
+
+```text
+TT#N <nombre literal> aparece entre las tendencias mientras <hecho contextual contrastado>. No está confirmado que ese hecho haya impulsado la etiqueta.
+#EtiquetaEspecifica1 #EtiquetaEspecifica2
+```
+
+Si solo consta el ranking, informar «se desconoce el motivo concreto» sin inventar un contexto. Evitar remates que insinúen como cierta una causa dudosa; `closer_text:""` es válido en estos casos.
+
 Se admiten tres hashtags si aportan precisión y caben. No repetir un hashtag ya usado como nombre literal de cabecera. Evitar etiquetas genéricas, propaganda, especulación y hechos añadidos por el chiste. El tuit COMPLETO, con cabecera, hashtags, saltos y remate, debe tener menos de 280 caracteres ponderados X (URLs: 23). `closer_text` contiene únicamente la última línea `🌶️ ...`, o vacío cuando la omisión sea apropiada; no incluir hashtags en ese campo. No duplicar remate ni cabecera. El campo `explanation` es el tuit completo copiable.
 
 Elegir un solo remate breve, concreto, original y ligado a hechos documentados, sin puntuaciones ni estrellas. Evitar repetir fórmulas recientes: consultar las últimas explicaciones y remates cuando sea necesario. **NORMA VISUAL PRIORITARIA 16/10/2026:** el emoji 🌶️ es únicamente un marcador tipográfico. Prohibido dibujar guindillas, chiles, pimientos picantes, su icono, silueta, logotipo o mascota; representar la idea del remate, nunca el emoji. Política: el remate seguro es obligatorio para completar la revisión, debe ser imparcial y sobre circunstancias verificadas; no convertirlo en consigna. No usar humor sobre víctimas, tragedias o sufrimiento. En asuntos sensibles y en los supuestos no políticos permitidos, cuando no corresponda o no exista uno adecuado, cerrar el texto factual con hashtags y `closer_text:""`; no bloquear indefinidamente un hecho verificado solo por el chiste. Mantener las reglas editoriales de sensibilidad del usuario.
@@ -50,7 +61,7 @@ Elegir un solo remate breve, concreto, original y ligado a hechos documentados, 
 
 Para cada tendencia redactar y guardar su propia explicación. La comparación semántica posterior crea las conjuntas sin reescribir originales. No usar el antiguo mecanismo que copia una explicación canónica a todas las requests o marca `grouped` y oculta miembros.
 
-Persistir atómicamente en main la ficha `status:explained` en `telegram-manual-explained.json` y su request, con ID, revisión, explanation, closer_text y explained_at idénticos. Conservar fuentes verificadas y `editorial_grouping_state:"pending"`. El mismo contrato se aplica a una nueva revisión manual. Retirar solo el mismo ID/revisión de la cola después de releer ambos registros. Un texto en requests sin ficha no está terminado. Si falla una escritura, releer SHA y reparar la misma revisión sin redactar otra ni resucitar estados cerrados.
+Persistir atómicamente en main tanto una explicación de causa confirmada como una explicación prudente de causa no confirmada con ficha `status:explained` en `telegram-manual-explained.json` y su request, con ID, revisión, explanation, closer_text y explained_at idénticos. Conservar fuentes verificadas y `editorial_grouping_state:"pending"`. El mismo contrato se aplica a una nueva revisión manual. Retirar solo el mismo ID/revisión de la cola después de releer ambos registros. Un texto en requests sin ficha no está terminado. Si falla una escritura, releer SHA y reparar la misma revisión sin redactar otra ni resucitar estados cerrados.
 
 La ruta de transporte existente por comentarios `TTENDENCIAS_CHAT_OUTBOX_V1` en PR #7 y los reconciliadores siguen disponibles. En el modo heredado de `trends/editorial-outbox/<id>-r<revision>.json`, guardar texto/metadatos (`status:ready`, `prepared_item`) y comprobar que el aplicador `ttendencias-editorial-apply.yml` lo ha convertido en la ficha real. No incluir IA inline ni asumir que crear el outbox cierra el trabajo.
 
@@ -102,7 +113,7 @@ El borrador caduca una hora después de solicitarse. Cuando el término entra en
 
 `red_review_request:true`, `task:review_red` es una investigación de novedades, NO una orden de reescribir. El snapshot `review_source` contiene ID, revisión, explicación, fecha y fingerprint originales. El planificador selecciona explicaciones que siguen en Top 30 fresco, con prioridad rojas (>24h), después amarillas (12–24h inclusive) y después verdes (<12h). En cada color atiende primero las menos revisadas y las que llevan más tiempo sin comprobar. Crea como máximo DOS comprobaciones automáticas en cualquier ventana móvil de15 minutos y mantiene como máximo DOS pendientes/en curso; terminar una no rellena el cupo antes de15min. Cada origen admite como máximo una comprobación por hora. Las investigaciones nuevas y revisiones manuales tienen prioridad y no están sujetas a este cupo automático. No revisar por debajo de Top 30 ni interpretar un color como prueba de un hecho nuevo. Los nombres técnicos red_review_request, task:review_red y red_review_* se conservan por compatibilidad y se aplican a los tres colores.
 
-Contrastar información posterior con el hecho que explicaba la tendencia. Una subida de puesto, sinónimos, otro hashtag, artículos que repiten lo conocido o seguir hablando del mismo asunto no bastan. Hace falta un cambio material que cambie la explicación actual: resolución, resultado, confirmación, anuncio o desarrollo concreto. No renovar `explained_at` para aparentar frescura.
+Contrastar información posterior con el hecho que explicaba la tendencia. Si el texto anterior declaraba la causa no confirmada, la aparición de evidencia posterior que la confirme o descarte y cambie sustancialmente la explicación es una novedad material; una mera hipótesis repetida no lo es. Una subida de puesto, sinónimos, otro hashtag, artículos que repiten lo conocido o seguir hablando del mismo asunto no bastan. Hace falta un cambio material que cambie la explicación actual: resolución, resultado, confirmación, anuncio o desarrollo concreto. No renovar `explained_at` para aparentar frescura.
 
 Guardar SOLO `trends/maintenance-outbox/<job_id>.json` con uno de estos resultados:
 
