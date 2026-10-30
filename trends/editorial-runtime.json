@@ -3,59 +3,50 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T15:05:00+01:00",
+  "last_started_at": "2026-10-30T15:07:30+01:00",
   "last_completed_at": "2026-10-30T15:00:00+01:00",
-  "updated_at": "2026-10-30T15:05:00+01:00",
+  "updated_at": "2026-10-30T15:07:30+01:00",
   "status": "running",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "dc90fe5a413e",
-    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+    "8d550038a24d"
   ],
   "remaining_active_ids": [
-    "dc90fe5a413e",
-    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+    "8d550038a24d"
   ],
   "remaining_problematic_ids": [
-    "c6e758d97041"
+    "dc90fe5a413e"
   ],
-  "run_id": "tr-1793369096516-manual",
-  "previous_run_id": "tr-1793368303148-manual",
+  "run_id": "tr-1793369233599-manual",
+  "previous_run_id": "tr-1793369096516-manual",
   "summary": {
-    "attempted": 11,
-    "explained": 1,
+    "attempted": 0,
+    "explained": 0,
     "explanation_groups": 0,
-    "new_cards": 1,
-    "problematic": 1,
-    "final_resolved": 10,
-    "skipped_concurrent": 2,
-    "remaining_active": 0,
+    "new_cards": 0,
+    "problematic": 0,
+    "final_resolved": 0,
+    "skipped_concurrent": 0,
+    "remaining_active": 2,
     "remaining_problematic": 1,
-    "visual_backlog": 0,
-    "pending_repair_triggered": 0,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
-    "remates_omitted": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0,
-    "grouping_requests": 3,
+    "grouping_requests": 1,
     "groups_created": 0,
-    "members_covered": 0,
-    "red_reviews": 6,
-    "red_reviews_updated": 3,
-    "red_reviews_unchanged": 2,
-    "red_reviews_unverified": 1
+    "members_covered": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T15:05:00+01:00",
+      "at": "2026-10-30T15:07:30+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada tr-1793369096516-manual: cola inicial 2; validando #30OctubrESP r0 y agrupación manual de Listas."
+      "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+      "title": "Agrupar tendencias de Listas",
+      "message": "Pasada tr-1793369233599-manual: 2 trabajos activos; revalidando primero el agrupado manual más antiguo."
     }
   ],
   "ratings_snapshot": {
@@ -156,28 +147,28 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793369096516-manual",
+    "run_id": "tr-1793369233599-manual",
     "source": "chat",
     "status": "RUNNING",
     "phase": "preparing",
-    "started_at": "2026-10-30T15:05:00+01:00",
-    "updated_at": "2026-10-30T15:05:00+01:00",
+    "started_at": "2026-10-30T15:07:30+01:00",
+    "updated_at": "2026-10-30T15:07:30+01:00",
     "finished_at": null,
     "current": 0,
     "total": 2,
-    "trend_id": null,
-    "title": null,
+    "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+    "title": "Agrupar tendencias de Listas",
     "queue_complete": false,
     "remaining_active_ids": [
-      "dc90fe5a413e",
-      "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+      "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+      "8d550038a24d"
     ],
     "remaining_problematic_ids": [
-      "c6e758d97041"
+      "dc90fe5a413e"
     ],
     "processed_ids": [],
     "partial": false,
-    "message": "Preparando pasada editorial real: 2 trabajos activos.",
+    "message": "Revalidando agrupación manual 1/2.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -199,11 +190,11 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T15:05:00+01:00",
+        "at": "2026-10-30T15:07:30+01:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada tr-1793369096516-manual: cola inicial 2; validando #30OctubrESP r0 y agrupación manual de Listas."
+        "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+        "title": "Agrupar tendencias de Listas",
+        "message": "Pasada tr-1793369233599-manual: 2 trabajos activos; revalidando primero el agrupado manual más antiguo."
       }
     ]
   },
