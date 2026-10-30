@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T15:58:43.687141+00:00",
+  "updated_at": "2026-10-30T17:02:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -15578,6 +15578,50 @@
       "auto_queued": false,
       "request_source": "editorial_maintenance",
       "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+    },
+    {
+      "id": "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
+      "revision": 0,
+      "name": "Agrupar tendencias de Listas",
+      "rank": 0,
+      "status": "preparing",
+      "requested_at": "2026-10-30T17:02:00+01:00",
+      "request_source": "ttactualidad_editor_hints",
+      "task": "group_listas",
+      "listas_grouping_request": true,
+      "grouping_state": "pending",
+      "grouping_candidates": [
+        {
+          "id": "37073f5f219f",
+          "revision": 1,
+          "name": "Pepiño Blanco",
+          "rank": 19,
+          "explanation": "TT#19 Pepiño Blanco es tendencia junto a Pepe Blanco por las comparaciones entre Urda y Angrois. José Blanco era ministro de Fomento cuando se inauguró en 2011 la línea Ourense-Santiago; no era director de Seguridad de Adif.\n#Angrois #Urda\n🌶️ La hemeroteca vuelve al debate.",
+          "explanation_sha256": "39ac0f692dd2c5ce17e313507d8e76c2357d2a78a413fe6d89c3e01ba742d141",
+          "explained_at": "2026-10-30T16:59:30+01:00",
+          "verification_sources": [
+            "https://www.sotwe.com/jorge_m_sadia",
+            "https://www.galiciaunica.es/edicion-824-viernes-30-de-octubre-2026/",
+            "https://maldita.es/malditobulo/20260119/en-el-accidente-de-tren-de-angrois-de-2013-los-sistemas-de-seguridad-de-la-linea-no-estaban-activados-porque-el-pp-tenia-prisa-en-inaugurarla/",
+            "https://www.rtve.es/noticias/20260123/accidente-angrois-absuelto-exdirector-seguridad-circulacion-adif/16906807.shtml",
+            "https://www.congreso.es/es/publicaciones-organo?_publicaciones_id_texto=DS_C_15_237.CODI.&_publicaciones_legislatura=XV&_publicaciones_mode=mostrarTextoIntegro"
+          ]
+        },
+        {
+          "id": "198ebafff410",
+          "revision": 0,
+          "name": "Pepe Blanco",
+          "rank": 21,
+          "explanation": "TT#21 Pepe Blanco aparece entre las tendencias, pero no se ha podido confirmar un detonante actual y verificable que explique el término.",
+          "explanation_sha256": "d4ccfca1935f2ce6a5235b9d8a820fb31fecc904189fb99b4d023641f331cc85",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": []
+        }
+      ],
+      "auto_queued": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "rewrite_instruction": "Agrupa exclusivamente las tarjetas seleccionadas en grouping_candidates. Crea UNA ficha conjunta por acontecimiento comprobado. Conserva íntegros los textos de las originales; solo marca su cobertura. No publiques."
     }
   ]
 }
