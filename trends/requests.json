@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T18:32:12.313367+00:00",
+  "updated_at": "2026-10-30T19:34:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -20139,7 +20139,7 @@
       "revision": 1,
       "status": "explained",
       "requested_at": "2026-10-30T18:24:53.507313+00:00",
-      "updated_at": "2026-10-30T19:32:00+01:00",
+      "updated_at": "2026-10-30T19:34:00+01:00",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
@@ -20149,10 +20149,10 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "image_choice": null,
-      "image_pending": false,
-      "fallback_image_status": "none",
-      "ai_image_status": "not_requested",
+      "image_choice": "none",
+      "image_pending": true,
+      "fallback_image_status": "pending",
+      "ai_image_status": "pending",
       "requested_together": [
         "Ronaldo Nazário"
       ],
@@ -20163,7 +20163,7 @@
           "source_revision": 0,
           "text": "Es por una encuesta de un usuario que pone 4 escudos y pregunta quien ha jugado en los cuatro equipos.",
           "verification": "verified_current_trigger",
-          "verified_at": "2026-10-30T19:32:00+01:00"
+          "verified_at": "2026-10-30T19:34:00+01:00"
         }
       ],
       "investigation_history": [
@@ -20230,19 +20230,25 @@
       "problem_reason": "",
       "problematic_attempts": 2,
       "editorial_engine": "chatgpt-editorial-job-v2",
-      "explained_at": "2026-10-30T19:27:00+01:00",
-      "last_attempt_at": "2026-10-30T19:27:00+01:00",
-      "explanation": "TT#5 Ronaldo Nazário aparece entre las tendencias. Está verificado que jugó en Barcelona, Inter, Real Madrid y Milan, pero no se ha podido confirmar qué ha impulsado ahora su nombre.\n#RonaldoNazário #Fútbol",
-      "closer_text": "",
+      "explained_at": "2026-10-30T19:34:00+01:00",
+      "last_attempt_at": "2026-10-30T19:34:00+01:00",
+      "explanation": "TT#5 Ronaldo Nazário es tendencia por una publicación viral que reta a citar a un jugador que haya militado en AC Milan, Barcelona, Inter y Real Madrid; el brasileño pasó por los cuatro.\n#RonaldoNazário #Fútbol\n🌶️ Cuatro escudos, una respuesta: O Fenômeno.",
+      "closer_text": "🌶️ Cuatro escudos, una respuesta: O Fenômeno.",
       "rank_at_explanation": 5,
       "category": "Deportes",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "url": "https://www.sofascore.com/es/football/player/ronaldo-nazario/4761"
+          "url": "https://www.sotwe.com/_UTDIMole",
+          "note": "Publicación vigente de @_UTDIMole: reto sobre cuatro clubes, ~2 millones de visualizaciones al verificar."
         },
         {
-          "url": "https://www.lavanguardia.com/deportes/futbol/20200212/473502084898/ronaldo-nazario-deseo-era-quedarse-barca-entrevista.html"
+          "url": "https://www.sotwe.com/J0s3s1ll0_0312",
+          "note": "Respuesta actual a esa publicación identificando a Ronaldo Luis Nazario Da Lima."
+        },
+        {
+          "url": "https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ronaldo-luis-nazario-de-lima",
+          "note": "Biografía oficial que confirma sus etapas en Barcelona, Inter, Real Madrid y AC Milan."
         }
       ],
       "group_id": "grp-e40be8e866b4",
@@ -20259,10 +20265,10 @@
           "revision": 1
         }
       ],
-      "image_status": "none",
-      "editorial_grouping_state": "cleared",
+      "image_status": "pending",
+      "editorial_grouping_state": "pending",
       "news_disposition": "ignored",
-      "news_note": "La pista editorial sobre una encuesta con cuatro escudos no pudo corroborarse con búsquedas independientes. Sí se verificó el paso de Ronaldo por Barcelona, Inter, Real Madrid y Milan. Se cierra con causa no confirmada, sin convertir la pista en hecho.",
+      "news_note": "Detonante social verificado: publicación viral de @_UTDIMole con los escudos de AC Milan, Barcelona, Inter y Real Madrid; se localizaron respuestas actuales que identifican a Ronaldo Nazário.",
       "editorial_grouping_fingerprint": "bc57a6a2faf379bda84675df2c4539309b7a34b128d312a1d9065424c6afad96",
       "editorial_grouping_checked_at": "2026-10-30T18:32:12.313367+00:00"
     },
@@ -25621,5 +25627,5 @@
       "grouping_result_digest": "b6a97ff840e941ccce4fd5822ef13e1dc43a916c90ff0815a60ca7473a346714"
     }
   ],
-  "count": 172
+  "count": 173
 }
