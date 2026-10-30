@@ -3,103 +3,25 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T18:29:00+01:00",
+  "last_started_at": "2026-10-30T18:40:00+01:00",
   "last_completed_at": "2026-10-30T18:39:13+01:00",
-  "updated_at": "2026-10-30T18:39:13+01:00",
-  "status": "DONE",
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-fbd62020f199c2c1dc63",
-    "red-review-1b3be58ccb9ccda8ce7e",
-    "red-review-7fead06672aa4e9624f1",
-    "listas-auto-821def214a316707de0d",
-    "2524fcda47bf",
-    "a7fdce166d35",
-    "2763404ce3c1",
-    "6512dc3c1c70",
-    "5a686142c7b1",
-    "bca6c0fa6e21",
-    "c30dcc5b0f65",
-    "758e5b76d3c2",
-    "3c784df1c429"
-  ],
+  "updated_at": "2026-10-30T18:40:00+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793381257350-manual",
-  "previous_run_id": "tr-1793381402277-manual",
-  "summary": {
-    "attempted": 13,
-    "explained": 9,
-    "updates": 1,
-    "stale_reviews": 0,
-    "unchanged_reviews": 1,
-    "grouping_requests": 2,
-    "groups_created": 0,
-    "members_covered": 0,
-    "remaining_active": 0,
-    "remaining_problematic": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "telegram_sends": 0,
-    "incidents": 0
-  },
+  "run_id": "tr-1793382000000-manual",
+  "previous_run_id": "tr-1793381257350-manual",
+  "summary": null,
   "activity": [
     {
-      "at": "2026-10-30T18:29:00+01:00",
+      "at": "2026-10-30T18:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada manual iniciada. Cola inicial 3: una agrupación automática y dos revisiones de novedades. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T18:30:00+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-fbd62020f199c2c1dc63",
-      "title": "Agrupación automática de Listas",
-      "message": "Agrupación inicial aplicada sin grupos ni coberturas inequívocas."
-    },
-    {
-      "at": "2026-10-30T18:31:00+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-1b3be58ccb9ccda8ce7e",
-      "title": "Blocus",
-      "message": "Novedad material verificada: nueva oleada de detenciones; revisión updated aplicada."
-    },
-    {
-      "at": "2026-10-30T18:31:00+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-7fead06672aa4e9624f1",
-      "title": "Alvia",
-      "message": "Revisión unchanged: la cobertura posterior mantiene el mismo motivo explicado."
-    },
-    {
-      "at": "2026-10-30T18:32:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "La cola creció durante la pasada: entraron nueve investigaciones nuevas y una nueva agrupación automática; se absorbieron en la misma ejecución."
-    },
-    {
-      "at": "2026-10-30T18:34:57+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": "Lote de nueve tendencias",
-      "message": "Nueve explicaciones r0 validadas JIT y persistidas por la ruta editorial directa; todas por debajo de 280 caracteres. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T18:37:00+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-821def214a316707de0d",
-      "title": "Agrupación automática de Listas",
-      "message": "Segundo mantenimiento de agrupación consumido sin producir tarjeta conjunta."
-    },
-    {
-      "at": "2026-10-30T18:39:13+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final en main: cola 0, sin preparing/update ni rewrite_pending; requests y Explicadas sincronizados para las nueve fichas. Sin ImageGen."
+      "message": "Pasada manual iniciada. Cola inicial 0. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -108,214 +30,43 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793381257350-manual",
+    "run_id": "tr-1793382000000-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T18:29:00+01:00",
-    "updated_at": "2026-10-30T18:39:13+01:00",
-    "finished_at": "2026-10-30T18:39:13+01:00",
-    "current": 13,
-    "total": 13,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T18:40:00+01:00",
+    "updated_at": "2026-10-30T18:40:00+01:00",
+    "finished_at": null,
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "listas-auto-fbd62020f199c2c1dc63",
-      "red-review-1b3be58ccb9ccda8ce7e",
-      "red-review-7fead06672aa4e9624f1",
-      "listas-auto-821def214a316707de0d",
-      "2524fcda47bf",
-      "a7fdce166d35",
-      "2763404ce3c1",
-      "6512dc3c1c70",
-      "5a686142c7b1",
-      "bca6c0fa6e21",
-      "c30dcc5b0f65",
-      "758e5b76d3c2",
-      "3c784df1c429"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 13/13: 9 tendencias explicadas, Blocus actualizado, Alvia sin cambio y 2 mantenimientos de agrupación cerrados sin grupos. Cola final 0. Sin ImageGen.",
-    "summary": {
-      "attempted": 13,
-      "explained": 9,
-      "updates": 1,
-      "stale_reviews": 0,
-      "unchanged_reviews": 1,
-      "grouping_requests": 2,
-      "groups_created": 0,
-      "members_covered": 0,
-      "remaining_active": 0,
-      "remaining_problematic": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "incidents": 0
-    },
+    "message": "Pasada manual en ejecución. Cola inicial 0. Sin ImageGen.",
+    "summary": null,
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T18:29:00+01:00",
+        "at": "2026-10-30T18:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada manual iniciada. Cola inicial 3: una agrupación automática y dos revisiones de novedades. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T18:30:00+01:00",
-        "phase": "persisting",
-        "trend_id": "listas-auto-fbd62020f199c2c1dc63",
-        "title": "Agrupación automática de Listas",
-        "message": "Agrupación inicial aplicada sin grupos ni coberturas inequívocas."
-      },
-      {
-        "at": "2026-10-30T18:31:00+01:00",
-        "phase": "verifying",
-        "trend_id": "red-review-1b3be58ccb9ccda8ce7e",
-        "title": "Blocus",
-        "message": "Novedad material verificada: nueva oleada de detenciones; revisión updated aplicada."
-      },
-      {
-        "at": "2026-10-30T18:31:00+01:00",
-        "phase": "verifying",
-        "trend_id": "red-review-7fead06672aa4e9624f1",
-        "title": "Alvia",
-        "message": "Revisión unchanged: la cobertura posterior mantiene el mismo motivo explicado."
-      },
-      {
-        "at": "2026-10-30T18:32:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "La cola creció durante la pasada: entraron nueve investigaciones nuevas y una nueva agrupación automática; se absorbieron en la misma ejecución."
-      },
-      {
-        "at": "2026-10-30T18:34:57+01:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": "Lote de nueve tendencias",
-        "message": "Nueve explicaciones r0 validadas JIT y persistidas por la ruta editorial directa; todas por debajo de 280 caracteres. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T18:37:00+01:00",
-        "phase": "verifying",
-        "trend_id": "listas-auto-821def214a316707de0d",
-        "title": "Agrupación automática de Listas",
-        "message": "Segundo mantenimiento de agrupación consumido sin producir tarjeta conjunta."
-      },
-      {
-        "at": "2026-10-30T18:39:13+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final en main: cola 0, sin preparing/update ni rewrite_pending; requests y Explicadas sincronizados para las nueve fichas. Sin ImageGen."
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "listas-auto-fbd62020f199c2c1dc63",
-        "revision": 0,
-        "status": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "outcome": "no_groups"
-      },
-      {
-        "id": "red-review-1b3be58ccb9ccda8ce7e",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: Blocus",
-        "outcome": "updated"
-      },
-      {
-        "id": "red-review-7fead06672aa4e9624f1",
-        "revision": 0,
-        "status": "review_completed",
-        "name": "Revisar novedades: Alvia",
-        "outcome": "unchanged"
-      },
-      {
-        "id": "listas-auto-821def214a316707de0d",
-        "revision": 0,
-        "status": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "outcome": "no_groups"
-      },
-      {
-        "id": "2524fcda47bf",
-        "revision": 0,
-        "status": "explained",
-        "name": "Gracias Ministro",
-        "outcome": "explained"
-      },
-      {
-        "id": "a7fdce166d35",
-        "revision": 0,
-        "status": "explained",
-        "name": "#ElSótano30O",
-        "outcome": "explained"
-      },
-      {
-        "id": "2763404ce3c1",
-        "revision": 0,
-        "status": "explained",
-        "name": "Tommy Paul",
-        "outcome": "explained"
-      },
-      {
-        "id": "6512dc3c1c70",
-        "revision": 0,
-        "status": "explained",
-        "name": "Tiago Polo",
-        "outcome": "explained"
-      },
-      {
-        "id": "5a686142c7b1",
-        "revision": 0,
-        "status": "explained",
-        "name": "Raúl Triguero",
-        "outcome": "explained"
-      },
-      {
-        "id": "bca6c0fa6e21",
-        "revision": 0,
-        "status": "explained",
-        "name": "Empatía",
-        "outcome": "explained"
-      },
-      {
-        "id": "c30dcc5b0f65",
-        "revision": 0,
-        "status": "explained",
-        "name": "#PresupuestosCM2027",
-        "outcome": "explained"
-      },
-      {
-        "id": "758e5b76d3c2",
-        "revision": 0,
-        "status": "explained",
-        "name": "Ryanair",
-        "outcome": "explained"
-      },
-      {
-        "id": "3c784df1c429",
-        "revision": 0,
-        "status": "explained",
-        "name": "Impecable",
-        "outcome": "explained"
+        "message": "Pasada manual iniciada. Cola inicial 0. Sin ImageGen."
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T18:29:00+01:00",
-  "finished_at": "2026-10-30T18:39:13+01:00",
-  "current": 13,
-  "total": 13,
+  "phase": "preparing",
+  "started_at": "2026-10-30T18:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null
 }
