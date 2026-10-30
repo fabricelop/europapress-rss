@@ -3,11 +3,13 @@
   "initialized": true,
   "lists": {
     "ttittulares": {
-      "count": 0,
-      "armed": true,
-      "sequence": 42,
-      "active_ids": [],
-      "observed_at": "2026-10-30T12:10:13.997079+00:00"
+      "count": 1,
+      "armed": false,
+      "sequence": 43,
+      "active_ids": [
+        "a11894cf7186"
+      ],
+      "observed_at": "2026-10-30T12:23:52.600138+00:00"
     },
     "ttendencias": {
       "count": 2,
@@ -16,14 +18,6 @@
     }
   },
   "outbox": [
-    {
-      "id": "ttittulares-10",
-      "project": "ttittulares",
-      "count": 1,
-      "at": "2026-10-28T15:07:20.150240+00:00",
-      "status": "sent",
-      "sent_at": "2026-10-28T15:07:21.981550+00:00"
-    },
     {
       "id": "ttendencias-8",
       "project": "ttendencias",
@@ -414,6 +408,13 @@
       "at": "2026-10-30T10:10:36.741000+00:00",
       "status": "sent",
       "sent_at": "2026-10-30T10:10:38.611602+00:00"
+    },
+    {
+      "id": "ttittulares-43",
+      "project": "ttittulares",
+      "count": 1,
+      "at": "2026-10-30T12:23:52.600138+00:00",
+      "status": "pending"
     }
   ]
 }
