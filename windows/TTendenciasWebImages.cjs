@@ -73,8 +73,9 @@ async function confirmedInMain(task,job){
   const sha=String(ai.sha256||ai.content_sha256||current.ai_image_sha256||'');
   const command=String(ai.command_id||current.ai_image_command_id||'');
   const expected=String(job.upload_sha256||task.sha256||'');
+  const provenanceMatch=(!!sha&&sha===expected)||(!!command&&command===task.command_id);
   if((job.status==='DONE'||task.upload_accepted_at)&&expected&&ai.generated===true&&/^https:\/\//i.test(url)&&
-     /\/generated-images\//i.test(url)&&(!sha||sha===expected)&&(!command||command===task.command_id)&&
+     /\/generated-images\//i.test(url)&&provenanceMatch&&(!sha||sha===expected)&&(!command||command===task.command_id)&&
      (!ai.target_id||String(ai.target_id)===task.target_id)&&
      (ai.revision==null||Number(ai.revision)===task.revision)){
     return {status:'published',sha256:expected,image_path:String(job.image_path||''),image_url:url};
