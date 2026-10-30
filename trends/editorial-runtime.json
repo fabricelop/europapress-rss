@@ -3,25 +3,31 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T19:10:00+01:00",
+  "last_started_at": "2026-10-30T19:13:17+01:00",
   "last_completed_at": "2026-10-30T18:58:00+01:00",
-  "updated_at": "2026-10-30T19:10:00+01:00",
+  "updated_at": "2026-10-30T19:13:17+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
     "808846a26299",
     "fa530f914299",
-    "6dcd1bfd7fda"
+    "6dcd1bfd7fda",
+    "e40be8e866b4",
+    "9dbe1a97a6b4",
+    "2524fcda47bf"
   ],
   "remaining_active_ids": [
     "808846a26299",
     "fa530f914299",
-    "6dcd1bfd7fda"
+    "6dcd1bfd7fda",
+    "e40be8e866b4",
+    "9dbe1a97a6b4",
+    "2524fcda47bf"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793383800000-manual",
-  "previous_run_id": "tr-1793382900000-manual",
+  "run_id": "tr-1793383997307-manual",
+  "previous_run_id": "tr-1793383800000-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -31,7 +37,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 3,
+    "remaining_active": 6,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -40,11 +46,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T19:10:00+01:00",
+      "at": "2026-10-30T19:13:17+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada manual iniciada. Cola inicial 3: Alcaraz, Capitalismo y Viena. Sin ImageGen."
+      "message": "Pasada manual iniciada. Cola inicial 6: Alcaraz, Capitalismo, Viena, Ronaldo Nazário, Intel, Gracias Ministro. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -53,27 +59,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793383800000-manual",
+    "run_id": "tr-1793383997307-manual",
     "source": "chat",
     "status": "RUNNING",
     "phase": "preparing",
-    "started_at": "2026-10-30T19:10:00+01:00",
-    "updated_at": "2026-10-30T19:10:00+01:00",
+    "started_at": "2026-10-30T19:13:17+01:00",
+    "updated_at": "2026-10-30T19:13:17+01:00",
     "finished_at": null,
     "current": 0,
-    "total": 3,
+    "total": 6,
     "trend_id": null,
     "title": null,
     "queue_complete": false,
     "remaining_active_ids": [
       "808846a26299",
       "fa530f914299",
-      "6dcd1bfd7fda"
+      "6dcd1bfd7fda",
+      "e40be8e866b4",
+      "9dbe1a97a6b4",
+      "2524fcda47bf"
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada manual en curso 0/3. Sin ImageGen.",
+    "message": "Pasada manual en curso 0/6. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -83,7 +92,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 3,
+      "remaining_active": 6,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -94,11 +103,11 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T19:10:00+01:00",
+        "at": "2026-10-30T19:13:17+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada manual iniciada. Cola inicial 3: Alcaraz, Capitalismo y Viena. Sin ImageGen."
+        "message": "Pasada manual iniciada. Cola inicial 6: Alcaraz, Capitalismo, Viena, Ronaldo Nazário, Intel, Gracias Ministro. Sin ImageGen."
       }
     ],
     "final_outcomes": []
@@ -106,10 +115,10 @@
   "error": null,
   "api_failover_enabled": false,
   "phase": "preparing",
-  "started_at": "2026-10-30T19:10:00+01:00",
+  "started_at": "2026-10-30T19:13:17+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
+  "total": 6,
   "trend_id": null,
   "title": null
 }
