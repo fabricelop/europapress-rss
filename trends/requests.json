@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T13:32:11.675458+00:00",
+  "updated_at": "2026-10-30T13:33:35.142451+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -3393,31 +3393,43 @@
       "id": "8d550038a24d",
       "name": "#30OctubrESP",
       "rank": 20,
-      "revision": 0,
-      "status": "inactive",
-      "created_at": "2026-10-30T11:40:27.320473+00:00",
-      "requested_at": "2026-10-30T11:40:27.320473+00:00",
-      "updated_at": "2026-10-30T11:40:27.320473+00:00",
-      "task": "explain",
+      "created_at": "2026-10-30T13:33:35.142451+00:00",
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-30T13:33:35.142451+00:00",
+      "updated_at": "2026-10-30T13:33:35.142451+00:00",
       "auto_queued": false,
-      "request_source": "ttactualidad_direct_rework",
+      "request_source": "ttactualidad_editor_hints",
+      "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
       "with_image": true,
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
       "ai_image_status": "pending",
+      "fallback_image_status": "pending",
       "requested_together": [
         "#30OctubrESP"
       ],
-      "originated_from_prior_id": "manual-4b27644af9e2585146f3c859562fe077",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de #30OctubrESP, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "problematic_at": "2026-10-30T12:43:19+01:00",
-      "problem_reason": "No se ha podido verificar un detonante único, concreto y actual para #30OctubrESP tras varias búsquedas independientes. Las fuentes abiertas confirman el patrón de etiquetas diarias similares, pero no permiten atribuir con rigor el motivo de esta tendencia; se evita inventar una explicación.",
-      "problematic_attempts": 1,
-      "editorial_engine": "chatgpt-automation-outbox",
-      "inactive_at": "2026-10-30T12:51:07+01:00",
-      "inactive_reason": "left-top10-radar"
+      "user_pistas": [
+        {
+          "at": "2026-10-30T13:33:35.142451+00:00",
+          "source_revision": 0,
+          "text": "Lo mueven las cuentas de derecha para pedir la dimisión de Puente",
+          "verification": "unverified_editor_context"
+        }
+      ],
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "inactive",
+          "problem_reason": "No se ha podido verificar un detonante único, concreto y actual para #30OctubrESP tras varias búsquedas independientes. Las fuentes abiertas confirman el patrón de etiquetas diarias similares, pero no permiten atribuir con rigor el motivo de esta tendencia; se evita inventar una explicación.",
+          "last_attempt_at": ""
+        }
+      ],
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nLo mueven las cuentas de derecha para pedir la dimisión de Puente\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "hints_verification_status": "unverified"
     },
     {
       "id": "5728ff97c00d",
