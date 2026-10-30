@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T22:40:05.521647+00:00",
+  "updated_at": "2026-10-30T23:41:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -40018,6 +40018,48 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "f90cc5271f93",
+      "name": "Villarreal",
+      "rank": 13,
+      "status": "preparing",
+      "requested_at": "2026-10-30T23:41:00+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "23c156a53575",
+      "requested_together": [
+        "Villarreal"
+      ],
+      "captured_with": [
+        "Villarreal",
+        "Lawson"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "9950fd2c5b18",
+      "name": "Lawson",
+      "rank": 27,
+      "status": "preparing",
+      "requested_at": "2026-10-30T23:41:00+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "23c156a53575",
+      "requested_together": [
+        "Lawson"
+      ],
+      "captured_with": [
+        "Villarreal",
+        "Lawson"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 205
