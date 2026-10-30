@@ -215,7 +215,9 @@ struct EditorialActions: View {
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text(intent == "deleted" && (news?.status == "LISTA" ||
+            Text(trend?.isCovered == true && intent == "deleted"
+                 ? "Solo se retirará esta original. La publicación conjunta se conserva y no se sumará otra publicación."
+                 : intent == "deleted" && (news?.status == "LISTA" ||
                                          trend?.inListas == true)
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
