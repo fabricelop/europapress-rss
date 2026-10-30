@@ -34,6 +34,12 @@ Si ni siquiera puede verificarse una aparición actual fiable, falta el contexto
 
 Tremending conserva su prefijo `TT 🗯️`, origen trazable y circuito de tuit/foto real. No sustituir esa captura por una imagen inventada ni confundir este flujo con tendencias ordinarias.
 
+## Criterio de causalidad editorial (prioritario)
+
+La incertidumbre explícita es EXCEPCIONAL, no una coletilla automática. No exigir una prueba imposible de causalidad algorítmica en X. Si fuentes actuales y hechos contrastados permiten identificar razonablemente el motivo predominante, redactar directamente «es tendencia por/porque…», sin añadir «no está confirmado que ese hecho explique el impulso» ni similares. Si hay indicios suficientes pero no certeza plena, modular con «en medio de», «tras» o «en relación con» sin afirmar una causalidad no acreditada. Reservar «no se ha podido confirmar el motivo» para ambigüedad real: varias causas incompatibles sin predominante, identidad desconocida, falta de indicios actuales o atribución potencialmente perjudicial. El simple hecho de no disponer de métricas internas de X NO constituye duda sustancial. Mantener la distinción entre hechos comprobados e hipótesis, sin inventar detonantes. Esta regla prevalece sobre ejemplos anteriores de causa no confirmada y se aplica también a revisión manual y mantenimiento.
+
+Cuando una ficha ya explicada de Listas contenga una coletilla defensiva innecesaria, investigar de nuevo la actualidad y fuentes antes de corregirla. Cambiar solo fichas vigentes y justificadas, mediante revisión ID/revisión JIT y persistencia sincronizada en ambos registros; no cambiar fechas por mera edición estilística, no alterar publicadas/terminales ni regenerar imágenes por defecto. Si hay cambio material de explicación, usar el circuito de actualización existente y sus comprobaciones.
+
 ## Redacción y remate
 
 Mantener el estilo habitual del usuario. Para una primera explicación ordinaria:
