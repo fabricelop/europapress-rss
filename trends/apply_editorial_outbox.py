@@ -14,6 +14,7 @@ TRENDS = ROOT / "trends"
 OUTBOX = TRENDS / "editorial-outbox"
 MADRID = ZoneInfo("Europe/Madrid")
 ACTIVE = {"preparing", "update", "problematic"}
+APPLYABLE = ACTIVE | {"ready"}
 
 def load(path: Path, default):
     try:
@@ -347,10 +348,12 @@ def sync_queue(requests_doc):
 def main():
     requests_path = TRENDS / "requests.json"
     prepared_path = TRENDS / "prepared.json"
+    manual_path = TRENDS / "telegram-manual-explained.json"
     runtime_path = TRENDS / "editorial-runtime.json"
 
     requests_doc = load(requests_path, {"requests": []})
     prepared_doc = load(prepared_path, {"project": "TTendencias", "items": []})
+    manual_doc = load(manual_path, {"project": "TTendencias", "items": []})
     runtime = load(runtime_path, {"project": "TTendencias"})
     processed = []
     errors = []
@@ -392,7 +395,7 @@ def main():
                 path.unlink()
                 continue
 
-            if str(req.get("status") or "") not in ACTIVE:
+            if str(req.get("status") or "") not in APPLYABLE:
                 print(f"Ignorado {path.name}: estado actual {req.get('status')}")
                 path.unlink()
                 continue
@@ -428,32 +431,102 @@ def main():
                 prepared_doc["items"] = kept
                 prepared_doc["updated_at"] = item.get("generated_at") or now
 
-                # Marcar como ready todos los requests activos representados
-                # inequívocamente por related_trends y con la misma revisión.
-                target_requests = []
-                for candidate in requests_doc.get("requests", []) or []:
-                    if str(candidate.get("status") or "") not in ACTIVE:
-                        continue
-                    if int(candidate.get("revision") or 0) != revision:
-                        continue
-                    if str(candidate.get("id") or "") == req_id or norm(candidate.get("name")) in related_norm:
-                        target_requests.append(candidate)
+                # El contrato vigente cierra TEXTO como explained en ambos
+                # registros. No copiar una explicación a otros términos por
+                # related_trends: las agrupaciones se resuelven después.
+                explained_at = str(item.get("generated_at") or now)
+                explanation = str(item.get("explanation") or (item.get("primary") or {}).get("text") or "").strip()
+                closer_text = str(item.get("closer_text") or "").strip()
+                raw_sources = item.get("verification_sources") or item.get("sources") or []
+                verification_sources = []
+                for source in raw_sources:
+                    if isinstance(source, dict):
+                        url = str(source.get("url") or "").strip()
+                    else:
+                        url = str(source or "").strip()
+                    if url:
+                        verification_sources.append({"url": url})
 
-                if not target_requests:
-                    target_requests = [req]
+                manual_item = {
+                    "id": req_id,
+                    "name": str(item.get("trend_name") or req.get("name") or ""),
+                    "revision": revision,
+                    "status": "explained",
+                    "explained_at": explained_at,
+                    "updated_at": explained_at,
+                    "explanation": explanation,
+                    "closer_text": closer_text,
+                    "rank": int(item.get("rank") or req.get("rank") or 0),
+                    "rank_at_explanation": int(item.get("rank") or req.get("rank") or 0),
+                    "category": str(item.get("category") or req.get("category") or "Actualidad"),
+                    "source": "editorial_outbox_applied",
+                    "editorial_engine": "chatgpt-automation-outbox",
+                    "verification_sources": verification_sources,
+                    "news_note": str(item.get("news_note") or ""),
+                    "group_id": str(item.get("group_id") or f"grp-{req_id}"),
+                    "explanation_group_id": str(item.get("explanation_group_id") or item.get("group_id") or f"grp-{req_id}"),
+                    "group_title": str(item.get("group_title") or item.get("trend_name") or req.get("name") or ""),
+                    "group_leader_id": str(item.get("group_leader_id") or req_id),
+                    "trend_names": item.get("trend_names") or [str(item.get("trend_name") or req.get("name") or "")],
+                    "grouped_member_revisions": item.get("grouped_member_revisions") or [{"id": req_id, "revision": revision}],
+                    "with_image": bool(req.get("with_image") or item.get("with_image")),
+                    "image_strategy": str(item.get("image_strategy") or "ai_plus_fallback"),
+                    "ai_image_status": "pending" if bool(req.get("with_image") or item.get("with_image")) else "none",
+                    "fallback_image_status": "pending" if bool(req.get("with_image") or item.get("with_image")) else "none",
+                    "image_status": "pending" if bool(req.get("with_image") or item.get("with_image")) else "none",
+                    "image_choice": "none",
+                    "image_pending": bool(req.get("with_image") or item.get("with_image")),
+                    "editorial_grouping_state": "pending",
+                    "telegram_package_status": "pending",
+                }
 
-                for target in target_requests:
-                    target["status"] = "ready"
-                    target["ready_at"] = item.get("generated_at") or now
-                    target["delivery_confirmation"] = "prepared_web"
-                    target["editorial_engine"] = "chatgpt-automation-outbox"
-                    if int(target.get("problematic_attempts") or 0):
-                        item.setdefault("problematic_attempts_before_ready", int(target.get("problematic_attempts") or 0))
-                    target.pop("problem_reason", None)
-                    target.pop("problematic_at", None)
-                    target.pop("problematic_attempts", None)
-                    if str(target.get("id") or "") not in processed:
-                        processed.append(str(target.get("id") or ""))
+                manual_items = [
+                    existing for existing in (manual_doc.get("items") or [])
+                    if not (
+                        str(existing.get("id") or "") == req_id
+                        and int(existing.get("revision") or 0) == revision
+                    )
+                ]
+                manual_items.append(manual_item)
+                manual_doc["items"] = manual_items
+                manual_doc["updated_at"] = explained_at
+                manual_doc["count"] = len(manual_items)
+
+                req.update({
+                    "status": "explained",
+                    "updated_at": explained_at,
+                    "explained_at": explained_at,
+                    "last_attempt_at": explained_at,
+                    "explanation": explanation,
+                    "closer_text": closer_text,
+                    "rank_at_explanation": manual_item["rank_at_explanation"],
+                    "category": manual_item["category"],
+                    "source": manual_item["source"],
+                    "editorial_engine": manual_item["editorial_engine"],
+                    "verification_sources": verification_sources,
+                    "news_note": manual_item["news_note"],
+                    "group_id": manual_item["group_id"],
+                    "explanation_group_id": manual_item["explanation_group_id"],
+                    "group_title": manual_item["group_title"],
+                    "group_leader_id": manual_item["group_leader_id"],
+                    "trend_names": manual_item["trend_names"],
+                    "grouped_member_revisions": manual_item["grouped_member_revisions"],
+                    "editorial_grouping_state": "pending",
+                    "image_strategy": manual_item["image_strategy"],
+                    "fallback_image_status": manual_item["fallback_image_status"],
+                    "ai_image_status": manual_item["ai_image_status"],
+                    "image_status": manual_item["image_status"],
+                    "image_choice": "none",
+                    "image_pending": manual_item["image_pending"],
+                    "telegram_package_status": "pending",
+                })
+                req.pop("ready_at", None)
+                req.pop("delivery_confirmation", None)
+                req.pop("problem_reason", None)
+                req.pop("problematic_at", None)
+                req.pop("problematic_attempts", None)
+                if req_id not in processed:
+                    processed.append(req_id)
 
             elif result_status == "image_checkpoint":
                 image = checkpoint_image(payload, req_id, revision)
@@ -491,6 +564,7 @@ def main():
     requests_doc["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
     save(requests_path, requests_doc)
     save(prepared_path, prepared_doc)
+    save(manual_path, manual_doc)
     remaining = sync_queue(requests_doc)
 
     done = datetime.now(MADRID).isoformat(timespec="seconds")
