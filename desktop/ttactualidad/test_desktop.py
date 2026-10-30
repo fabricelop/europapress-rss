@@ -7,6 +7,20 @@ def documents():
     return {key:{"items":[]} for key in FILES}
 
 class EditorialDesktopTests(unittest.TestCase):
+    def test_listas_numeric_rank_precedes_date_and_grouping(self):
+        docs=documents()
+        at=dt.datetime.now(dt.timezone.utc)
+        def item(ident,rank,hours=0,**extra):
+            return dict(id=ident,name=ident,rank=rank,status='explained',
+                        explanation='Texto '+ident,
+                        explained_at=(at-dt.timedelta(hours=hours)).isoformat(),**extra)
+        docs['manual']['items']=[item('ten',10),item('unranked',0),
+            item('covered-two',2,3,listas_group_role='covered',covered_by_id='group'),
+            item('one',1,5),item('two',2,2),item('negative',-1)]
+        ready=[row for row in normalise(docs)[1] if row['state']=='Listas']
+        self.assertEqual([row['id'] for row in ready],
+                         ['one','two','covered-two','ten','negative','unranked'])
+
     def test_joint_summary_never_replaces_original_or_disables_its_cleanup(self):
         import datetime as dt
         docs=documents()

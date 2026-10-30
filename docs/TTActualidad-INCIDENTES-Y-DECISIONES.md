@@ -182,3 +182,13 @@ El editor autoriza cerrar en Listas una tendencia aun sin poder demostrar su det
 Cambio de contrato en `trends/editorial-run-prompt.md`, integración en la memoria operativa y corrección del antiguo filtro Top10 de `trends/apply_editorial_outbox.py`: las problemáticas activas de los puestos1–30 siguen visibles para reintento, sujeto a captura fresca. El mantenimiento por colores podrá actualizar un texto incierto cuando aparezca una prueba material nueva. Imagen, agrupación y control manual de X mantienen su funcionamiento anterior.
 
 Caso de referencia: `#30OctubrESP`, puesto20 en una captura anterior, se había quedado problematic por no poder demostrar que las críticas a Óscar Puente fueran causa de la etiqueta. Al releer main, sus solicitudes figuran `inactive` por salida del Top30; **no se reabrieron ni se llevó a Listas una ficha inactiva**, para evitar inventar que sigue hoy en el ranking. El cambio define el comportamiento para investigaciones activas y revisiones expresas nuevas. Verificación: se releyeron el contrato, el aplicador y la memoria después de escribirlos; no constituye prueba de ejecución física de PC/iPhone ni de una entrega visual.
+
+
+### 30/10/2026 — orden numérico de tendencias en Listas
+- **Petición:** presentar las tendencias de Listas de menor a mayor número.
+- **Causa comprobada:** iPhone 0.4.28 priorizaba las no cubiertas y la fecha descendente; Windows usaba el mismo criterio.
+- **Cambio:** número positivo ascendente como primera clave; sin número al final. Cobertura, fecha descendente e ID solo desempatan. El filtro propio y la sección conjunta consumen el mismo listado ya ordenado.
+- **iPhone:** fuente basada en el build válido de 0.4.28; nueva rama `feature/ttactualidad-ios-0.4.29-orden-listas`, 0.4.29 build35, commit `0182b9ca7c7ae119fe6ca5c6f9eed17e68bd87df`. Preflight y siete pruebas de rework pasan; compilación nativa solicitada en el run `41108619677`.
+- **Windows:** `TTActualidad.py` comparte el normalizador con la interfaz Qt; pasan 18 pruebas de datos, incluida la prioridad numérica ante fechas y agrupadas, y la colocación de puestos no válidos.
+- **Límite de evidencia:** código y pruebas no acreditan instalación en el iPhone ni en el PC. El usuario debe actualizar la distribución instalada.
+- **Manual:** orden de Listas integrado en la sección 9.

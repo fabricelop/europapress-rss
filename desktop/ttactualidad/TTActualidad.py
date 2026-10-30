@@ -255,8 +255,10 @@ def normalise(docs):
             "covered_by_id":text(x.get("covered_by_id")) if is_listas_covered(x) else "",
             "covered_by_name":text(x.get("covered_by_name")) if is_listas_covered(x) else "",
             "is_joint_group":x.get("listas_group_role")=="joint"})
-    trend_ready.sort(key=lambda row: (bool(row.get('covered_by_id')),
-                                     -(date(row.get('explained_at')) or now).timestamp()))
+    trend_ready.sort(key=lambda row: (
+        row['rank'] if row['rank'] > 0 else float('inf'),
+        bool(row.get('covered_by_id')),
+        -(date(row.get('explained_at')) or now).timestamp(), row['id']))
     # Listas uses the SAME authoritative manual ledger as iPhone.
     # Staged-only prepared snapshots are intentionally not promoted to Listas.
     readyIDs = {x["id"] for x in trend_ready}
