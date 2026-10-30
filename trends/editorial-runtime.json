@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T08:25:00+01:00",
-  "last_completed_at": "2026-10-30T08:28:00+01:00",
-  "updated_at": "2026-10-30T08:28:00+01:00",
+  "last_started_at": "2026-10-30T08:40:00+01:00",
+  "last_completed_at": "2026-10-30T08:43:00+01:00",
+  "updated_at": "2026-10-30T08:43:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [],
@@ -104,13 +104,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T082500+0100",
+    "run_id": "tr-chat-20261030T084000+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T08:25:00+01:00",
-    "updated_at": "2026-10-30T08:28:00+01:00",
-    "finished_at": "2026-10-30T08:28:00+01:00",
+    "started_at": "2026-10-30T08:40:00+01:00",
+    "updated_at": "2026-10-30T08:43:00+01:00",
+    "finished_at": "2026-10-30T08:43:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -133,7 +133,7 @@
       "remates_selected": 0,
       "remates_omitted": 6,
       "recent_missing_closer_reviewed": 6,
-      "pending_visual_candidates_reviewed": 11,
+      "pending_visual_candidates_reviewed": 43,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -151,35 +151,35 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T08:25:00+01:00",
+        "at": "2026-10-30T08:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes y verificación autoritativa de Top 10, reexplicaciones y agrupaciones."
       },
       {
-        "at": "2026-10-30T08:26:00+01:00",
+        "at": "2026-10-30T08:41:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cobertura Top 10 por id+revision/grupo, Pendientes vigentes y Explicadas recientes sin remate."
+        "message": "Releyendo main: cobertura Top 10 por nombre/revisión, Pendientes vigentes y Explicadas recientes sin remate."
       },
       {
-        "at": "2026-10-30T08:27:00+01:00",
+        "at": "2026-10-30T08:42:00+01:00",
         "phase": "remate_selection",
         "trend_id": null,
         "title": null,
         "message": "6 Explicadas recientes sin remate se mantienen factuales por fallecimiento, accidente con víctimas o salud; no se fuerza humor sensible."
       },
       {
-        "at": "2026-10-30T08:27:30+01:00",
+        "at": "2026-10-30T08:42:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main completada: cola 0, sin preparing/update, reexplicaciones ni agrupaciones; Top 10 cubierto 10/10 y trigger visual verificado."
       },
       {
-        "at": "2026-10-30T08:28:00+01:00",
+        "at": "2026-10-30T08:43:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -209,5 +209,6 @@
       "Koldo"
     ]
   },
-  "api_failover_enabled": false
+  "api_failover_enabled": false,
+  "error": null
 }
