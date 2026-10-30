@@ -5,23 +5,23 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T002500+0100-manual",
   "previous_run_id": "tr-chat-20261031T001000+0100-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-30T23:25:00.000Z",
-  "updated_at": "2026-10-30T23:25:00.000Z",
-  "finished_at": null,
+  "updated_at": "2026-10-30T23:26:30.000Z",
+  "finished_at": "2026-10-30T23:26:30.000Z",
   "last_started_at": "2026-10-30T23:25:00.000Z",
-  "last_completed_at": "2026-10-30T23:10:59.000Z",
+  "last_completed_at": "2026-10-30T23:26:30.000Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial manual iniciada; cola autoritativa inicial 0, verificando barrera final.",
+  "summary": "Pasada editorial real completada 0/0: cola final 0 y sin reexplicaciones vigentes.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -33,19 +33,33 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio: cola autoritativa inicial 0; verificando reexplicaciones y resultados de mantenimiento."
+    },
+    {
+      "at": "2026-10-30T23:26:00.000Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: cola 0; sin preparing/update ni rewrite_pending vigente; últimos resultados de mantenimiento revisados."
+    },
+    {
+      "at": "2026-10-30T23:26:30.000Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada editorial 0/0 completada sin incidencias."
     }
   ],
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261031T001000+0100-manual",
+    "run_id": "tr-chat-20261031T002500+0100-manual",
     "source": "manual",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T23:10:00.000Z",
-    "updated_at": "2026-10-30T23:10:59.000Z",
-    "finished_at": "2026-10-30T23:10:59.000Z",
+    "started_at": "2026-10-30T23:25:00.000Z",
+    "updated_at": "2026-10-30T23:26:30.000Z",
+    "finished_at": "2026-10-30T23:26:30.000Z",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -75,25 +89,25 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T23:10:00.000Z",
+        "at": "2026-10-30T23:25:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio: cola autoritativa inicial 0."
+        "message": "Inicio: cola autoritativa inicial 0; verificando reexplicaciones y resultados de mantenimiento."
       },
       {
-        "at": "2026-10-30T23:10:59.000Z",
+        "at": "2026-10-30T23:26:00.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Barrera final: cola 0; sin preparing/update ni rewrite_pending vigente."
+        "message": "Barrera final: cola 0; sin preparing/update ni rewrite_pending vigente; últimos resultados de mantenimiento revisados."
       },
       {
-        "at": "2026-10-30T23:10:59.000Z",
+        "at": "2026-10-30T23:26:30.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial 0/0 completada."
+        "message": "Pasada editorial 0/0 completada sin incidencias."
       }
     ],
     "final_outcomes": []
