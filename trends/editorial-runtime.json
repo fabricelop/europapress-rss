@@ -3,27 +3,35 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T16:41:15+01:00",
+  "last_started_at": "2026-10-30T16:51:00+01:00",
   "last_completed_at": "2026-10-30T16:41:45+01:00",
-  "updated_at": "2026-10-30T16:41:45+01:00",
-  "status": "done",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T16:51:00+01:00",
+  "status": "running",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-13a61a13d71463aa9a63",
+    "red-review-d53297bbc76bdb6b68ee",
+    "red-review-4af0c56479660f4a3a12"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-13a61a13d71463aa9a63",
+    "red-review-d53297bbc76bdb6b68ee",
+    "red-review-4af0c56479660f4a3a12"
+  ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793374875000-manual",
-  "previous_run_id": "tr-1793374370299-manual",
+  "run_id": "tr-1793375430582-manual",
+  "previous_run_id": "tr-1793374875000-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 0,
+    "remaining_active": 3,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -32,18 +40,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T16:41:15+01:00",
+      "at": "2026-10-30T16:51:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual: relectura vigente de main con cola 0; comprobando preparing/update, rewrite_pending y tareas editoriales. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T16:41:45+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cierre verificado 0/0: main sigue sin preparing/update, rewrite_pending, problemáticas ni tareas editoriales en cola. Sin ImageGen."
+      "message": "Inicio de pasada manual: 3 trabajos vigentes en main; 1 agrupación automática y 2 revisiones de novedades. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -52,33 +53,37 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793374875000-manual",
+    "run_id": "tr-1793375430582-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T16:41:15+01:00",
-    "updated_at": "2026-10-30T16:41:45+01:00",
-    "finished_at": "2026-10-30T16:41:45+01:00",
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T16:51:00+01:00",
+    "updated_at": "2026-10-30T16:51:00+01:00",
+    "finished_at": null,
     "current": 0,
-    "total": 0,
+    "total": 3,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "listas-auto-13a61a13d71463aa9a63",
+      "red-review-d53297bbc76bdb6b68ee",
+      "red-review-4af0c56479660f4a3a12"
+    ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 0/0 tras relectura final de main: no quedan preparing/update, rewrite_pending, problemáticas ni tareas editoriales pendientes. Sin ImageGen.",
+    "message": "Procesando agrupación automática y dos revisiones de novedades; sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 0,
+      "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 0,
+      "remaining_active": 3,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -89,18 +94,11 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T16:41:15+01:00",
+        "at": "2026-10-30T16:51:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual: relectura vigente de main con cola 0; comprobando preparing/update, rewrite_pending y tareas editoriales. Sin ImageGen."
-      },
-      {
-        "at": "2026-10-30T16:41:45+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre verificado 0/0: main sigue sin preparing/update, rewrite_pending, problemáticas ni tareas editoriales en cola. Sin ImageGen."
+        "message": "Inicio: 3 encargos vigentes; agrupación primero y después revisiones de novedades. Sin ImageGen."
       }
     ],
     "final_outcomes": []
