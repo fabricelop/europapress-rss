@@ -3,19 +3,37 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T14:40:30+01:00",
+  "last_started_at": "2026-10-30T14:48:00+01:00",
   "last_completed_at": "2026-10-30T14:40:45+01:00",
-  "updated_at": "2026-10-30T14:40:45+01:00",
-  "status": "success",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T14:48:00+01:00",
+  "status": "running",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "4c7de84bfc7c",
+    "listas-auto-fc632ae8435ee7ca7518",
+    "red-review-e5ce7866b17650cf6a98",
+    "red-review-b00db6420f77a5793f55",
+    "red-review-6c75d38f9afd25004f2d",
+    "red-review-57995fbed045dc251683",
+    "red-review-85fc60c70503123bd2d9",
+    "red-review-4430193b76380af83f7f"
+  ],
+  "remaining_active_ids": [
+    "4c7de84bfc7c",
+    "listas-auto-fc632ae8435ee7ca7518",
+    "red-review-e5ce7866b17650cf6a98",
+    "red-review-b00db6420f77a5793f55",
+    "red-review-6c75d38f9afd25004f2d",
+    "red-review-57995fbed045dc251683",
+    "red-review-85fc60c70503123bd2d9",
+    "red-review-4430193b76380af83f7f"
+  ],
   "remaining_problematic_ids": [
     "8d550038a24d"
   ],
-  "run_id": "tr-chat-20261030T144030+0100-manual",
-  "previous_run_id": "tr-1793367322709-manual",
+  "run_id": "tr-1793368071270-manual",
+  "previous_run_id": "tr-chat-20261030T144030+0100-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -43,32 +61,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T14:40:30+01:00",
+      "at": "2026-10-30T14:48:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada: relectura autoritativa de cola, reexplicaciones y saneamientos."
-    },
-    {
-      "at": "2026-10-30T14:40:38+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final: 0 preparing/update, 0 rewrite_pending, 0 agrupaciones pendientes y 0 problematic vigente en Top 30."
-    },
-    {
-      "at": "2026-10-30T14:40:42+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisadas 3 fichas explicadas recientes sin remate; 3 se mantienen sin humor por sensibilidad editorial."
-    },
-    {
-      "at": "2026-10-30T14:40:45+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completada 0/0: sin preparing/update, rewrite_pending ni agrupaciones pendientes; 1 problematic fuera del Top 30 conservado sin reintento."
+      "message": "Pasada iniciada: 8 trabajos autoritativos; prioridad a Óscar Puente, después agrupación automática y revisiones rojas."
     }
   ],
   "ratings_snapshot": {
@@ -124,25 +121,32 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T144030+0100-manual",
+    "run_id": "tr-1793368071270-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-30T14:40:30+01:00",
-    "updated_at": "2026-10-30T14:40:45+01:00",
-    "finished_at": "2026-10-30T14:40:45+01:00",
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T14:48:00+01:00",
+    "updated_at": "2026-10-30T14:48:00+01:00",
+    "finished_at": null,
     "current": 0,
-    "total": 0,
+    "total": 8,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "8d550038a24d"
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "4c7de84bfc7c",
+      "listas-auto-fc632ae8435ee7ca7518",
+      "red-review-e5ce7866b17650cf6a98",
+      "red-review-b00db6420f77a5793f55",
+      "red-review-6c75d38f9afd25004f2d",
+      "red-review-57995fbed045dc251683",
+      "red-review-85fc60c70503123bd2d9",
+      "red-review-4430193b76380af83f7f"
     ],
+    "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 0/0: sin preparing/update, rewrite_pending ni agrupaciones pendientes; 1 problematic fuera del Top 30 conservado sin reintento.",
+    "message": "Pasada iniciada: 8 trabajos autoritativos; prioridad a Óscar Puente, después agrupación automática y revisiones rojas.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -151,57 +155,30 @@
       "problematic": 0,
       "final_resolved": 0,
       "skipped_concurrent": 0,
-      "remaining_active": 0,
-      "remaining_problematic": 1,
-      "visual_backlog": 0,
-      "pending_repair_triggered": 1,
+      "remaining_active": 8,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 3,
-      "recent_missing_closer_reviewed": 3,
-      "pending_visual_candidates_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0,
-      "grouping_requests": 0,
+      "grouping_requests": 1,
       "groups_created": 0,
-      "members_covered": 0
+      "members_covered": 0,
+      "red_reviews": 6,
+      "red_reviews_updated": 0,
+      "red_reviews_unchanged": 0,
+      "red_reviews_unverified": 0
     },
     "incident_count": 0,
     "incidents": [],
-    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T14:40:30+01:00",
+        "at": "2026-10-30T14:48:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada: relectura autoritativa de cola, reexplicaciones y saneamientos."
-      },
-      {
-        "at": "2026-10-30T14:40:38+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final: 0 preparing/update, 0 rewrite_pending, 0 agrupaciones pendientes y 0 problematic vigente en Top 30."
-      },
-      {
-        "at": "2026-10-30T14:40:42+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisadas 3 fichas explicadas recientes sin remate; 3 se mantienen sin humor por sensibilidad editorial."
-      },
-      {
-        "at": "2026-10-30T14:40:45+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada completada 0/0: sin preparing/update, rewrite_pending ni agrupaciones pendientes; 1 problematic fuera del Top 30 conservado sin reintento."
+        "message": "Pasada iniciada: 8 trabajos autoritativos; prioridad a Óscar Puente, después agrupación automática y revisiones rojas."
       }
-    ],
-    "final_outcomes": []
+    ]
   },
   "radar": {
     "captured_at": "2026-10-30T14:29:14+01:00",
