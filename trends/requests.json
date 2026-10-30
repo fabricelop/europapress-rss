@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T13:55:56.097999+00:00",
+  "updated_at": "2026-10-30T13:56:30.942712+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -220,7 +220,18 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-10-29T12:29:08.410870+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-10-30T13:56:30.942712+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "La investigación ha concretado una cuestión nueva sobre el funcionamiento del sistema de respaldo: por qué el ASFA no detuvo el AVE tras la caída del LZB.",
+      "red_review_sources": [
+        {
+          "url": "https://www.rtve.es/noticias/20261030/23-minutos-69-victimas-muchas-preguntas-fallos-detras-del-choque-dos-trenes-alta-velocidad/17289394.shtml"
+        },
+        {
+          "url": "https://elpais.com/espana/2026-10-30/las-claves-del-accidente-ferroviario-de-urda-que-se-sabe-y-que-falta-por-aclarar.html"
+        }
+      ]
     },
     {
       "id": "7670800aa4c8",
@@ -262,7 +273,18 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-10-29T12:29:40.276552+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-10-30T13:56:30.942712+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "Las fuentes oficiales mantienen el mismo motivo: el lanzamiento del pack físico con Leyendas Pokémon Z-A, Megadimensión y el bono de 100 Ultra Balls; no se verifica un desarrollo posterior sustancial.",
+      "red_review_sources": [
+        {
+          "url": "https://www.pokemon.com/es/noticias/el-pack-leyendas-pokemon-z-a-nintendo-switch-2-edition-megadimension-llegara-proximamente"
+        },
+        {
+          "url": "https://legends.pokemon.com/es-es/news/ultraball_bonus"
+        }
+      ]
     },
     {
       "id": "4981a79b1530",
@@ -471,7 +493,18 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-10-29T13:18:40.408035+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-10-30T13:56:30.942712+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "La cobertura disponible sigue remitiendo a las mismas dos facturas por 242.000 euros vinculadas a la defensa de Koldo García; no se ha verificado un hecho posterior que cambie la explicación.",
+      "red_review_sources": [
+        {
+          "url": "https://efe.com/espana/2026-10-29/abogada-koldo-garcia-pago-honorarios-psoe/"
+        },
+        {
+          "url": "https://elpais.com/espana/2026-10-29/la-editora-de-okdiario-pago-242000-euros-para-costear-honorarios-y-gastos-de-la-defensa-de-koldo-garcia.html"
+        }
+      ]
     },
     {
       "id": "a6c68a1119c5",
@@ -5148,7 +5181,7 @@
       "revision": 0,
       "name": "Revisar novedades: ASFA",
       "rank": 28,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-30T13:47:47.791157+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -5170,14 +5203,18 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-00d605f035c100a5c6a3",
+      "review_outcome": "updated",
+      "completed_at": "2026-10-30T13:56:30.942712+00:00",
+      "review_reason": "La investigación ha concretado una cuestión nueva sobre el funcionamiento del sistema de respaldo: por qué el ASFA no detuvo el AVE tras la caída del LZB."
     },
     {
       "id": "red-review-85fc60c70503123bd2d9",
       "revision": 0,
       "name": "Revisar novedades: #LeyendasPokemonZA",
       "rank": 22,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-30T13:47:47.791157+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -5198,14 +5235,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-10-30T13:56:30.942712+00:00",
+      "review_reason": "Las fuentes oficiales mantienen el mismo motivo: el lanzamiento del pack físico con Leyendas Pokémon Z-A, Megadimensión y el bono de 100 Ultra Balls; no se verifica un desarrollo posterior sustancial."
     },
     {
       "id": "red-review-4430193b76380af83f7f",
       "revision": 0,
       "name": "Revisar novedades: Koldo García",
       "rank": 21,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-30T13:47:47.791157+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -5226,7 +5266,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-10-30T13:56:30.942712+00:00",
+      "review_reason": "La cobertura disponible sigue remitiendo a las mismas dos facturas por 242.000 euros vinculadas a la defensa de Koldo García; no se ha verificado un hecho posterior que cambie la explicación."
     },
     {
       "id": "4c7de84bfc7c",
@@ -6357,6 +6400,39 @@
       "continuity_update": true,
       "distinct_episode": false,
       "new_facts": "Renfe comunica que el plan alternativo para el corredor Madrid-Andalucía no podrá comenzar antes del 3 de noviembre por el plazo de 96 horas de preaviso exigido por SEMAF.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-00d605f035c100a5c6a3",
+      "revision": 0,
+      "name": "ASFA",
+      "rank": 28,
+      "status": "explained",
+      "requested_at": "2026-10-30T13:56:30.942712+00:00",
+      "explained_at": "2026-10-30T13:56:30.942712+00:00",
+      "updated_at": "2026-10-30T13:56:30.942712+00:00",
+      "explanation": "TT#28 ASFA sigue siendo tendencia porque la investigación de Urda trata de aclarar por qué no detuvo al AVE tras caer el LZB; aún no se sabe si intervino una acción del maquinista o un fallo técnico.\n#ASFA #Urda #SeguridadFerroviaria",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://www.rtve.es/noticias/20261030/23-minutos-69-victimas-muchas-preguntas-fallos-detras-del-choque-dos-trenes-alta-velocidad/17289394.shtml"
+        },
+        {
+          "url": "https://elpais.com/espana/2026-10-30/las-claves-del-accidente-ferroviario-de-urda-que-se-sabe-y-que-falta-por-aclarar.html"
+        }
+      ],
+      "originated_from_prior_id": "1ec96b91e745",
+      "trend_names": [
+        "ASFA"
+      ],
+      "red_review_job_id": "red-review-57995fbed045dc251683",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "La investigación sigue sin determinar si la continuación de la marcha bajo ASFA obedeció a una actuación del maquinista o a un fallo técnico; el punto está expresamente bajo análisis.",
       "with_image": true,
       "disable_ai_image": false,
       "editorial_grouping_state": "pending",
