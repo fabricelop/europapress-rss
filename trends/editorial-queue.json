@@ -1,6 +1,70 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T23:31:11+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-10-30T22:40:05.521647+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-2e5909232e97bfecd690",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-30T22:40:05.521647+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "24d64469c94e",
+        "revision": 0,
+        "name": "Toledo",
+        "rank": 1,
+        "explanation": "TT#1 Toledo es tendencia junto a Iryo, Urda, Óscar Puente, Madrid-Andalucía y Adamuz por el choque de un AVE y un Iryo en Toledo: dos vagones del Iryo descarrilaron y la línea quedó cortada. Adamuz reaparece por el accidente de enero.\n#Toledo #Iryo #AltaVelocidad",
+        "explanation_sha256": "4e81418da48b6422cdb75cce371cc7c14f1b1d17a476421ec238d7f5633cfacd",
+        "explained_at": "2026-10-28T10:52:00+01:00",
+        "verification_sources": [
+          "https://www.reuters.com/world/two-high-speed-trains-rear-end-spain-rail-operator-says-2026-10-28/",
+          "https://www.lasexta.com/noticias/sociedad/choque-trenes-directo_202610286ae1b2e502501232156a9847.html",
+          "https://www.rtve.es/noticias/20260119/bulos-desinformacion-contexto-sobre-accidente-tren-adamuz-cordoba/16900413.shtml"
+        ],
+        "fingerprint": "112eb948a5c209b81fac07a180a1b5789fc24256ce3abff36bf0287e6e4c4ffd"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-3def540ee0135f135f7a",
+      "revision": 0,
+      "name": "Revisar novedades: Renfe",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-30T22:40:05.521647+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "5c4ed0171dad",
+        "revision": 0,
+        "name": "Renfe",
+        "rank": 6,
+        "explanation": "TT#6 Renfe es tendencia junto a Adif, Dimite, Asesinos y Consternado tras el choque de un AVE de Renfe y un Iryo en Urda (Toledo). Adif cortó la línea Madrid-Andalucía; Sánchez dijo estar «consternado». Dimite y Asesinos recogen reacciones en redes.\n#Urda #Renfe #Adif",
+        "explanation_sha256": "c21b1058389207d4665fb0a548fac170d02fda2a9ef4286fa4e24a43572028d4",
+        "explained_at": "2026-10-28T11:13:30+01:00",
+        "verification_sources": [
+          "https://elpais.com/espana/2026-10-28/ultima-hora-del-choque-entre-dos-trenes-en-los-yebenes-toledo-en-directo.html",
+          "https://www.europapress.es/economia/transportes-00343/noticia-dos-vagones-tren-iryo-siniestrado-urda-toledo-descarrilaron-ser-alcanzados-tren-renfe-20261028095818.html",
+          "https://www.lasexta.com/noticias/nacional/sanchez-accidente-tren-toledo-carino-solidaridad-apoyo-todas-victimas-sus-familias_202610286ae1c1cba5f83c2fb8e63b93.html",
+          "https://www.elespanol.com/espana/politica/20261028/pedro-pide-dimision-puente-dedicado-hacer-politica-peor-lugar-mejorar-infraestructuras/1003744437565_0.html"
+        ],
+        "fingerprint": "07e90f6d52480ff5de29fcec5d473f922cc2e9166f0bc6abcd32e91d763554d5"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    }
+  ]
 }
