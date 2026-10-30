@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:35:00Z",
   "last_completed_at": "2026-10-30T21:28:47Z",
-  "updated_at": "2026-10-30T21:46:36.153Z",
+  "updated_at": "2026-10-30T21:47:46.486Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [
@@ -26,7 +26,7 @@
   "remaining_problematic_ids": [],
   "run_id": "tr-1793396029532-manual",
   "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada en curso: agrupación resuelta; revisión Koldo García actualizada; queda Alvia. Sin ImageGen.",
+  "summary": "Pasada en curso: segunda agrupación persistida; verificando mantenimiento y cola final. Sin ImageGen.",
   "activity": [
     {
       "at": "2026-10-30T21:35:00Z",
@@ -125,6 +125,13 @@
       "trend_id": "red-review-c7cf10c5fed262f115c4",
       "title": "Revisar novedades: Koldo García",
       "message": "Revisión Koldo García JIT: novedad material confirmada; el contrato publicado por OkDiario añade una versión distinta a las facturas judiciales. Resultado updated persistido."
+    },
+    {
+      "at": "2026-10-30T21:47:46.486Z",
+      "phase": "persisting",
+      "trend_id": "listas-auto-fe4896d0f65b1e521101",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación JIT: actualización Alvia cubierta por la publicación vigente de Angrois al describir el mismo desarrollo tras Urda; resto sin coincidencias inequívocas."
     }
   ],
   "incidents": [],
@@ -134,10 +141,10 @@
   "phase": "persisting",
   "started_at": "2026-10-30T21:35:00Z",
   "finished_at": null,
-  "current": 4,
-  "total": 6,
-  "trend_id": "red-review-c7cf10c5fed262f115c4",
-  "title": "Revisar novedades: Koldo García",
+  "current": 5,
+  "total": 7,
+  "trend_id": "listas-auto-fe4896d0f65b1e521101",
+  "title": "Agrupación automática de Listas",
   "last_run": {
     "version": 1,
     "canonical": true,
@@ -147,12 +154,12 @@
     "status": "RUNNING",
     "phase": "persisting",
     "started_at": "2026-10-30T21:35:00Z",
-    "updated_at": "2026-10-30T21:46:36.153Z",
+    "updated_at": "2026-10-30T21:47:46.486Z",
     "finished_at": null,
-    "current": 4,
-    "total": 6,
-    "trend_id": "red-review-c7cf10c5fed262f115c4",
-    "title": "Revisar novedades: Koldo García",
+    "current": 5,
+    "total": 7,
+    "trend_id": "listas-auto-fe4896d0f65b1e521101",
+    "title": "Agrupación automática de Listas",
     "queue_complete": false,
     "remaining_active_ids": [
       "listas-auto-393aee72db721c540b63",
@@ -166,7 +173,7 @@
       "19d3c8965a38"
     ],
     "partial": false,
-    "message": "Agrupación resuelta; revisión Koldo García actualizada; queda Alvia.",
+    "message": "Segunda agrupación persistida; verificando mantenimiento y cola final.",
     "summary": {
       "attempted": 3,
       "explained": 3,
@@ -284,6 +291,13 @@
         "trend_id": "red-review-c7cf10c5fed262f115c4",
         "title": "Revisar novedades: Koldo García",
         "message": "Revisión Koldo García JIT: novedad material confirmada; el contrato publicado por OkDiario añade una versión distinta a las facturas judiciales. Resultado updated persistido."
+      },
+      {
+        "at": "2026-10-30T21:47:46.486Z",
+        "phase": "persisting",
+        "trend_id": "listas-auto-fe4896d0f65b1e521101",
+        "title": "Agrupación automática de Listas",
+        "message": "Agrupación JIT: actualización Alvia cubierta por la publicación vigente de Angrois al describir el mismo desarrollo tras Urda; resto sin coincidencias inequívocas."
       }
     ]
   },
