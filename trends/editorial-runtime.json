@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T18:10:00+01:00",
   "last_completed_at": "2026-10-30T18:10:40+01:00",
-  "updated_at": "2026-10-30T18:25:00+01:00",
+  "updated_at": "2026-10-30T18:27:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
@@ -48,6 +48,27 @@
       "trend_id": "83aa70bdac40",
       "title": "Día de Todos",
       "message": "Investigando el detonante actual de la tendencia y contrastando el contexto de Todos los Santos 2026."
+    },
+    {
+      "at": "2026-10-30T18:27:00+01:00",
+      "phase": "drafting",
+      "trend_id": "83aa70bdac40",
+      "title": "Día de Todos",
+      "message": "Detonante identificado: proximidad de Todos los Santos y traslado del festivo al lunes 2 en nueve comunidades."
+    },
+    {
+      "at": "2026-10-30T18:27:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "83aa70bdac40",
+      "title": "Día de Todos",
+      "message": "Remate único seleccionado y texto completo validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-10-30T18:27:00+01:00",
+      "phase": "persisting",
+      "trend_id": "83aa70bdac40",
+      "title": "Día de Todos",
+      "message": "Persistiendo revisión 0 en requests y en el registro de explicadas."
     }
   ],
   "incidents": [],
@@ -59,9 +80,9 @@
     "run_id": "tr-20261030T182500-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "investigating",
+    "phase": "persisting",
     "started_at": "2026-10-30T18:25:00+01:00",
-    "updated_at": "2026-10-30T18:25:00+01:00",
+    "updated_at": "2026-10-30T18:27:00+01:00",
     "finished_at": null,
     "current": 0,
     "total": 1,
@@ -74,7 +95,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Procesando 1/1: Día de Todos (r0). Sin ImageGen.",
+    "message": "Persistiendo 1/1: Día de Todos (r0).",
     "summary": {
       "attempted": 1,
       "explained": 0,
@@ -107,13 +128,34 @@
         "trend_id": "83aa70bdac40",
         "title": "Día de Todos",
         "message": "Investigando el detonante actual de la tendencia y contrastando el contexto de Todos los Santos 2026."
+      },
+      {
+        "at": "2026-10-30T18:27:00+01:00",
+        "phase": "drafting",
+        "trend_id": "83aa70bdac40",
+        "title": "Día de Todos",
+        "message": "Detonante identificado: proximidad de Todos los Santos y traslado del festivo al lunes 2 en nueve comunidades."
+      },
+      {
+        "at": "2026-10-30T18:27:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "83aa70bdac40",
+        "title": "Día de Todos",
+        "message": "Remate único seleccionado y texto completo validado por debajo de 280 caracteres."
+      },
+      {
+        "at": "2026-10-30T18:27:00+01:00",
+        "phase": "persisting",
+        "trend_id": "83aa70bdac40",
+        "title": "Día de Todos",
+        "message": "Persistiendo revisión 0 en requests y en el registro de explicadas."
       }
     ],
     "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-10-30T18:25:00+01:00",
   "finished_at": null,
   "current": 0,
