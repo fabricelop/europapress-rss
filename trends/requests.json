@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T13:34:47.514360+00:00",
+  "updated_at": "2026-10-30T13:35:20.517505+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2255,28 +2255,43 @@
       "id": "374938d3ad87",
       "name": "FANTASMA OUT NOW",
       "rank": 7,
-      "status": "inactive",
-      "requested_at": "2026-10-30T01:01:34+01:00",
-      "revision": 0,
+      "created_at": "2026-10-30T13:35:20.517505+00:00",
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-30T13:35:20.517505+00:00",
+      "updated_at": "2026-10-30T13:35:20.517505+00:00",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
       "with_image": true,
-      "alternatives_target": 0,
-      "batch_id": "d66792654b87",
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
       "requested_together": [
         "FANTASMA OUT NOW"
       ],
-      "captured_with": [
-        "FANTASMA OUT NOW",
-        "#MalasLenguasN"
+      "user_pistas": [
+        {
+          "at": "2026-10-30T13:35:20.517505+00:00",
+          "source_revision": 0,
+          "text": "Por una canción de no sé qué grupo",
+          "verification": "unverified_editor_context"
+        }
       ],
-      "auto_queued": true,
-      "auto_queue_scope": "top10",
-      "problematic_at": "2026-10-30T01:28:55+01:00",
-      "problem_reason": "Segundo intento editorial: se confirma que «FANTASMA OUT NOW» figura como tendencia en varias ubicaciones, pero las búsquedas independientes no permiten atribuir con fiabilidad la frase a un artista, canción o lanzamiento concreto. Se evita publicar una identificación inferida sin fuente verificable.",
-      "problematic_attempts": 2,
-      "editorial_engine": "chatgpt-automation-outbox",
-      "inactive_at": "2026-10-30T01:41:17+01:00",
-      "inactive_reason": "left-top10-radar"
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "inactive",
+          "problem_reason": "Segundo intento editorial: se confirma que «FANTASMA OUT NOW» figura como tendencia en varias ubicaciones, pero las búsquedas independientes no permiten atribuir con fiabilidad la frase a un artista, canción o lanzamiento concreto. Se evita publicar una identificación inferida sin fuente verificable.",
+          "last_attempt_at": ""
+        }
+      ],
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nPor una canción de no sé qué grupo\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "hints_verification_status": "unverified"
     },
     {
       "id": "03e6546dc5f6",
