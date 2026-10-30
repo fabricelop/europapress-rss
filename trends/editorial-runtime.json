@@ -4,38 +4,40 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T20:46:26.237Z",
-  "last_completed_at": "2026-10-30T20:46:30Z",
-  "updated_at": "2026-10-30T20:50:30Z",
-  "status": "RUNNING",
-  "queue_complete": false,
+  "last_completed_at": "2026-10-30T20:51:30Z",
+  "updated_at": "2026-10-30T20:51:30Z",
+  "status": "DONE",
+  "queue_complete": true,
   "processed_ids": [
-    "listas-auto-4de6de991fd044685208"
-  ],
-  "remaining_ids": [
+    "4e9df6831ab7",
+    "9fee4d7386fb",
+    "b0c76a2bacab",
+    "listas-auto-4de6de991fd044685208",
+    "red-review-20b16a02ea5bcc6b9a5c",
+    "red-review-e152bac20e9cf171794d",
     "listas-auto-10cd74e7d8ac692b7799"
   ],
-  "remaining_active_ids": [
-    "listas-auto-10cd74e7d8ac692b7799"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793393186237-manual",
   "previous_run_id": "tr-20261030T214000-manual",
   "summary": {
     "attempted": 3,
-    "explained": 0,
-    "updates": 2,
-    "stale_reviews": 0,
+    "explained": 3,
+    "updates": 1,
+    "stale_reviews": 1,
     "stale_jobs": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 2,
     "groups_created": 1,
     "members_covered": 2,
-    "remaining_active": 1,
+    "remaining_active": 0,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 0
+    "incidents": 2
   },
   "activity": [
     {
@@ -121,63 +123,124 @@
       "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
       "title": "Revisar novedades: Toledo",
       "message": "Resultados de Toledo y Fátima Báñez persistidos como updated; verificando que el aplicador los materialice y retire los jobs exactos."
+    },
+    {
+      "at": "2026-10-30T20:49:18.716696+00:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-4de6de991fd044685208",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación aplicada: Tusk y Tribunal Constitucional quedan cubiertos por la ficha conjunta Crisis del Tribunal Constitucional de Polonia."
+    },
+    {
+      "at": "2026-10-30T20:50:25.840258+00:00",
+      "phase": "verifying",
+      "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
+      "title": "Toledo",
+      "message": "Revisión cerrada como stale: la fuente ya no seguía siendo aplicable al contexto vigente; no se reabrió ni publicó una ficha antigua."
+    },
+    {
+      "at": "2026-10-30T20:50:25.840258+00:00",
+      "phase": "persisting",
+      "trend_id": "red-review-e152bac20e9cf171794d",
+      "title": "Fátima Báñez",
+      "message": "Revisión actualizada con novedades de despedida y funeral; nueva identidad editorial trend-update-c6c3a71d447e3717c870."
+    },
+    {
+      "at": "2026-10-30T20:50:59.015042+00:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-10cd74e7d8ac692b7799",
+      "title": "Agrupación automática de Listas",
+      "message": "Segunda comparación semántica completada sin coincidencias adicionales; ninguna agrupación indebida creada."
+    },
+    {
+      "at": "2026-10-30T20:51:30Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final superada: cola autoritativa 0/0. Sin ImageGen, Telegram ni publicación en X."
     }
   ],
-  "incidents": [],
-  "incident_count": 0,
+  "incidents": [
+    {
+      "at": "2026-10-30T20:48:28Z",
+      "type": "github_connector_transient",
+      "message": "Error transitorio al confirmar escritura conjunta de outboxes; se releyó main y no se asumió éxito."
+    },
+    {
+      "at": "2026-10-30T20:49:28Z",
+      "type": "github_connector_transient",
+      "message": "Segundo error transitorio de confirmación; la relectura posterior confirmó que los outboxes se habían persistido y fueron aplicados."
+    }
+  ],
+  "incident_count": 2,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "verifying",
+  "phase": "closing",
   "started_at": "2026-10-30T20:46:26.237Z",
-  "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
-  "title": "Revisar novedades: Toledo",
+  "finished_at": "2026-10-30T20:51:30Z",
+  "current": 7,
+  "total": 7,
+  "trend_id": null,
+  "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
     "run_id": "tr-1793393186237-manual",
     "source": "manual",
-    "status": "RUNNING",
-    "phase": "verifying",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T20:46:26.237Z",
-    "updated_at": "2026-10-30T20:50:30Z",
-    "finished_at": null,
-    "current": 1,
-    "total": 3,
-    "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
-    "title": "Revisar novedades: Toledo",
-    "queue_complete": false,
-    "remaining_active_ids": [
-      "listas-auto-10cd74e7d8ac692b7799"
-    ],
+    "updated_at": "2026-10-30T20:51:30Z",
+    "finished_at": "2026-10-30T20:51:30Z",
+    "current": 7,
+    "total": 7,
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
+    "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [
-      "listas-auto-4de6de991fd044685208"
+      "4e9df6831ab7",
+      "9fee4d7386fb",
+      "b0c76a2bacab",
+      "listas-auto-4de6de991fd044685208",
+      "red-review-20b16a02ea5bcc6b9a5c",
+      "red-review-e152bac20e9cf171794d",
+      "listas-auto-10cd74e7d8ac692b7799"
     ],
     "partial": false,
-    "message": "Agrupación aplicada; dos actualizaciones de mantenimiento persistidas y pendientes de verificación del aplicador.",
+    "message": "Pasada completada: 3 tendencias explicadas, 1 agrupación real creada, 1 revisión actualizada, 1 revisión obsoleta descartada y una segunda comprobación de agrupación sin coincidencias. Cola final 0/0. Sin ImageGen, envíos ni publicación en X.",
     "summary": {
       "attempted": 3,
-      "explained": 0,
-      "updates": 2,
-      "stale_reviews": 0,
+      "explained": 3,
+      "updates": 1,
+      "stale_reviews": 1,
       "stale_jobs": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 1,
+      "grouping_requests": 2,
       "groups_created": 1,
       "members_covered": 2,
-      "remaining_active": 1,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 0
+      "incidents": 2
     },
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 2,
+    "incidents": [
+      {
+        "at": "2026-10-30T20:48:28Z",
+        "type": "github_connector_transient",
+        "message": "Error transitorio al confirmar escritura conjunta de outboxes; se releyó main y no se asumió éxito."
+      },
+      {
+        "at": "2026-10-30T20:49:28Z",
+        "type": "github_connector_transient",
+        "message": "Segundo error transitorio de confirmación; la relectura posterior confirmó que los outboxes se habían persistido y fueron aplicados."
+      }
+    ],
     "activity": [
       {
         "at": "2026-10-30T21:40:00+01:00",
@@ -262,9 +325,140 @@
         "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
         "title": "Revisar novedades: Toledo",
         "message": "Resultados de Toledo y Fátima Báñez persistidos como updated; verificando que el aplicador los materialice y retire los jobs exactos."
+      },
+      {
+        "at": "2026-10-30T20:49:18.716696+00:00",
+        "phase": "persisting",
+        "trend_id": "listas-auto-4de6de991fd044685208",
+        "title": "Agrupación automática de Listas",
+        "message": "Agrupación aplicada: Tusk y Tribunal Constitucional quedan cubiertos por la ficha conjunta Crisis del Tribunal Constitucional de Polonia."
+      },
+      {
+        "at": "2026-10-30T20:50:25.840258+00:00",
+        "phase": "verifying",
+        "trend_id": "red-review-20b16a02ea5bcc6b9a5c",
+        "title": "Toledo",
+        "message": "Revisión cerrada como stale: la fuente ya no seguía siendo aplicable al contexto vigente; no se reabrió ni publicó una ficha antigua."
+      },
+      {
+        "at": "2026-10-30T20:50:25.840258+00:00",
+        "phase": "persisting",
+        "trend_id": "red-review-e152bac20e9cf171794d",
+        "title": "Fátima Báñez",
+        "message": "Revisión actualizada con novedades de despedida y funeral; nueva identidad editorial trend-update-c6c3a71d447e3717c870."
+      },
+      {
+        "at": "2026-10-30T20:50:59.015042+00:00",
+        "phase": "verifying",
+        "trend_id": "listas-auto-10cd74e7d8ac692b7799",
+        "title": "Agrupación automática de Listas",
+        "message": "Segunda comparación semántica completada sin coincidencias adicionales; ninguna agrupación indebida creada."
+      },
+      {
+        "at": "2026-10-30T20:51:30Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final superada: cola autoritativa 0/0. Sin ImageGen, Telegram ni publicación en X."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "4e9df6831ab7",
+        "revision": 0,
+        "status": "explained",
+        "name": "Tusk",
+        "covered_by_id": "listas-joint-f6486e28f95ce346"
+      },
+      {
+        "id": "9fee4d7386fb",
+        "revision": 0,
+        "status": "explained",
+        "name": "Dibu"
+      },
+      {
+        "id": "b0c76a2bacab",
+        "revision": 0,
+        "status": "explained",
+        "name": "Tribunal Constitucional",
+        "covered_by_id": "listas-joint-f6486e28f95ce346"
+      },
+      {
+        "id": "listas-auto-4de6de991fd044685208",
+        "revision": 0,
+        "status": "grouping_completed",
+        "created_id": "listas-joint-f6486e28f95ce346"
+      },
+      {
+        "id": "red-review-20b16a02ea5bcc6b9a5c",
+        "revision": 0,
+        "status": "review_completed",
+        "outcome": "stale",
+        "name": "Toledo"
+      },
+      {
+        "id": "red-review-e152bac20e9cf171794d",
+        "revision": 0,
+        "status": "review_completed",
+        "outcome": "updated",
+        "name": "Fátima Báñez",
+        "created_id": "trend-update-c6c3a71d447e3717c870"
+      },
+      {
+        "id": "listas-auto-10cd74e7d8ac692b7799",
+        "revision": 0,
+        "status": "grouping_completed",
+        "created_ids": []
+      }
+    ]
   },
-  "final_outcomes": []
+  "final_outcomes": [
+    {
+      "id": "4e9df6831ab7",
+      "revision": 0,
+      "status": "explained",
+      "name": "Tusk",
+      "covered_by_id": "listas-joint-f6486e28f95ce346"
+    },
+    {
+      "id": "9fee4d7386fb",
+      "revision": 0,
+      "status": "explained",
+      "name": "Dibu"
+    },
+    {
+      "id": "b0c76a2bacab",
+      "revision": 0,
+      "status": "explained",
+      "name": "Tribunal Constitucional",
+      "covered_by_id": "listas-joint-f6486e28f95ce346"
+    },
+    {
+      "id": "listas-auto-4de6de991fd044685208",
+      "revision": 0,
+      "status": "grouping_completed",
+      "created_id": "listas-joint-f6486e28f95ce346"
+    },
+    {
+      "id": "red-review-20b16a02ea5bcc6b9a5c",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "stale",
+      "name": "Toledo"
+    },
+    {
+      "id": "red-review-e152bac20e9cf171794d",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "updated",
+      "name": "Fátima Báñez",
+      "created_id": "trend-update-c6c3a71d447e3717c870"
+    },
+    {
+      "id": "listas-auto-10cd74e7d8ac692b7799",
+      "revision": 0,
+      "status": "grouping_completed",
+      "created_ids": []
+    }
+  ]
 }
