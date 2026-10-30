@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T20:40:00+01:00",
-  "last_completed_at": "2026-10-30T20:52:00+01:00",
-  "updated_at": "2026-10-30T20:52:00+01:00",
+  "last_completed_at": "2026-10-30T20:50:00+01:00",
+  "updated_at": "2026-10-30T20:50:00+01:00",
   "status": "DONE",
   "queue_complete": true,
   "processed_ids": [
@@ -107,6 +107,20 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: cola 0, cinco revisiones explicadas y sincronizadas. Sin ImageGen, Telegram ni publicación en X."
+    },
+    {
+      "at": "2026-10-30T20:49:00+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Las 5 revisiones 0 quedaron persistidas en requests.json y telegram-manual-explained.json y retiradas de la cola."
+    },
+    {
+      "at": "2026-10-30T20:50:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Cierre 5/5. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -115,7 +129,7 @@
   "api_failover_enabled": false,
   "phase": "closing",
   "started_at": "2026-10-30T20:40:00+01:00",
-  "finished_at": "2026-10-30T20:52:00+01:00",
+  "finished_at": "2026-10-30T20:50:00+01:00",
   "current": 5,
   "total": 5,
   "trend_id": null,
@@ -124,13 +138,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261030T204000-manual",
-    "source": "chat",
+    "run_id": "tr-autoguard-1793389175",
+    "source": "autoguard",
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-30T20:40:00+01:00",
-    "updated_at": "2026-10-30T20:52:00+01:00",
-    "finished_at": "2026-10-30T20:52:00+01:00",
+    "updated_at": "2026-10-30T20:50:00+01:00",
+    "finished_at": "2026-10-30T20:50:00+01:00",
     "current": 5,
     "total": 5,
     "trend_id": null,
@@ -146,7 +160,7 @@
       "41b5d26595bb"
     ],
     "partial": false,
-    "message": "Pasada manual completada: 5/5 explicaciones persistidas y verificadas; cola final 0. Sin ImageGen.",
+    "message": "Pasada autoguard completada: 5/5 revisiones explicadas y persistidas; cola final 0, sin preparing/update ni rewrite_pending. Sin ImageGen.",
     "summary": {
       "attempted": 5,
       "explained": 5,
@@ -236,6 +250,20 @@
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main: cola 0, cinco revisiones explicadas y sincronizadas. Sin ImageGen, Telegram ni publicación en X."
+      },
+      {
+        "at": "2026-10-30T20:49:00+01:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Las 5 revisiones 0 quedaron persistidas en requests.json y telegram-manual-explained.json y retiradas de la cola."
+      },
+      {
+        "at": "2026-10-30T20:50:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Cierre 5/5. Sin ImageGen."
       }
     ],
     "final_outcomes": [
@@ -243,31 +271,36 @@
         "id": "eb60196e7671",
         "revision": 0,
         "name": "Jacobo",
-        "outcome": "explained"
+        "status": "explained",
+        "explained_at": "2026-10-30T20:49:00+01:00"
       },
       {
         "id": "ad14b739c935",
         "revision": 0,
         "name": "#ElSótano29O",
-        "outcome": "explained"
+        "status": "explained",
+        "explained_at": "2026-10-30T20:49:00+01:00"
       },
       {
         "id": "906f09c316d3",
         "revision": 0,
         "name": "Felipe VI",
-        "outcome": "explained"
+        "status": "explained",
+        "explained_at": "2026-10-30T20:49:00+01:00"
       },
       {
         "id": "9f812088f7ae",
         "revision": 0,
         "name": "CEOE",
-        "outcome": "explained"
+        "status": "explained",
+        "explained_at": "2026-10-30T20:49:00+01:00"
       },
       {
         "id": "41b5d26595bb",
         "revision": 0,
         "name": "Cesar",
-        "outcome": "explained"
+        "status": "explained",
+        "explained_at": "2026-10-30T20:49:00+01:00"
       }
     ]
   }
