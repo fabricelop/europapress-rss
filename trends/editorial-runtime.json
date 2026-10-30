@@ -5,16 +5,24 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:40:00+01:00",
   "last_completed_at": "2026-10-30T20:46:30Z",
-  "updated_at": "2026-10-30T20:46:30Z",
-  "status": "DONE",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T20:47:00Z",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [
     "4e9df6831ab7",
     "9fee4d7386fb",
     "b0c76a2bacab"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-4de6de991fd044685208",
+    "red-review-20b16a02ea5bcc6b9a5c",
+    "red-review-e152bac20e9cf171794d"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-4de6de991fd044685208",
+    "red-review-20b16a02ea5bcc6b9a5c",
+    "red-review-e152bac20e9cf171794d"
+  ],
   "remaining_problematic_ids": [],
   "run_id": "tr-20261030T214000-manual",
   "previous_run_id": "tr-20261030T212724-manual",
@@ -91,17 +99,24 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final superada: 3/3 explicadas, cola autoritativa vacía. Agrupación editorial queda en pending para el selector posterior; sin ImageGen, Telegram ni publicación en X."
+    },
+    {
+      "at": "2026-10-30T20:47:00Z",
+      "phase": "investigating",
+      "trend_id": "listas-auto-4de6de991fd044685208",
+      "title": "Agrupación automática de Listas",
+      "message": "La barrera final añadió 1 agrupación y 2 revisiones de novedades; se reabre la misma pasada y se procesan en orden contractual."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
+  "phase": "investigating",
   "started_at": "2026-10-30T21:40:00+01:00",
-  "finished_at": "2026-10-30T20:46:30Z",
+  "finished_at": null,
   "current": 3,
-  "total": 3,
+  "total": 6,
   "trend_id": null,
   "title": null,
   "last_run": {
@@ -110,17 +125,21 @@
     "project": "TTendencias",
     "run_id": "tr-20261030T214000-manual",
     "source": "manual",
-    "status": "DONE",
-    "phase": "closing",
+    "status": "RUNNING",
+    "phase": "investigating",
     "started_at": "2026-10-30T21:40:00+01:00",
-    "updated_at": "2026-10-30T20:46:30Z",
-    "finished_at": "2026-10-30T20:46:30Z",
+    "updated_at": "2026-10-30T20:47:00Z",
+    "finished_at": null,
     "current": 3,
-    "total": 3,
+    "total": 6,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "listas-auto-4de6de991fd044685208",
+      "red-review-20b16a02ea5bcc6b9a5c",
+      "red-review-e152bac20e9cf171794d"
+    ],
     "remaining_problematic_ids": [],
     "processed_ids": [
       "4e9df6831ab7",
@@ -128,7 +147,7 @@
       "b0c76a2bacab"
     ],
     "partial": false,
-    "message": "Pasada completada 3/3: Tusk, Dibu y Tribunal Constitucional explicadas y sincronizadas por id/revisión; cola final 0/0. Sin ImageGen, envíos ni publicación en X.",
+    "message": "La barrera final creó 3 trabajos de mantenimiento; continúa la misma pasada.",
     "summary": {
       "attempted": 3,
       "explained": 3,
@@ -204,6 +223,13 @@
         "trend_id": null,
         "title": null,
         "message": "Barrera final superada: 3/3 explicadas, cola autoritativa vacía. Agrupación editorial queda en pending para el selector posterior; sin ImageGen, Telegram ni publicación en X."
+      },
+      {
+        "at": "2026-10-30T20:47:00Z",
+        "phase": "investigating",
+        "trend_id": "listas-auto-4de6de991fd044685208",
+        "title": "Agrupación automática de Listas",
+        "message": "La barrera final añadió 1 agrupación y 2 revisiones de novedades; se reabre la misma pasada y se procesan en orden contractual."
       }
     ],
     "final_outcomes": [
