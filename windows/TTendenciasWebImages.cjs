@@ -72,8 +72,8 @@ async function confirmedInMain(task,job){
   const url=String(ai.url||'');
   const sha=String(ai.sha256||ai.content_sha256||current.ai_image_sha256||'');
   const command=String(ai.command_id||current.ai_image_command_id||'');
-  const expected=String(job.upload_sha256||'');
-  if(job.status==='DONE'&&expected&&ai.generated===true&&/^https:\/\//i.test(url)&&
+  const expected=String(job.upload_sha256||task.sha256||'');
+  if((job.status==='DONE'||task.upload_accepted_at)&&expected&&ai.generated===true&&/^https:\/\//i.test(url)&&
      /\/generated-images\//i.test(url)&&(!sha||sha===expected)&&(!command||command===task.command_id)){
     return {status:'published',sha256:expected,image_path:String(job.image_path||''),image_url:url};
   }
@@ -81,8 +81,9 @@ async function confirmedInMain(task,job){
 }
 async function consume(task){
   const job=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/'+encodeURIComponent(task.target_id)+'.json?t='+Date.now());
-  if(!sameContext(task,job)||['CANCELLED','SUPERSEDED','ERROR'].includes(String(job.status).toUpperCase()))return {status:'obsolete'};
-  if(job.status==='DONE'&&job.upload_sha256)return confirmedInMain(task,job);
+  if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
+  if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at)return confirmedInMain(task,job);
+  if(['CANCELLED','SUPERSEDED','ERROR'].includes(String(job.status).toUpperCase()))return {status:'obsolete',reason:'image_job_terminal'};
   // Verify the existing relay browser is reachable; never start or restart Chrome.
   await http(BASE+'/json/version');
   const pages=await http(BASE+'/json/list');
@@ -108,7 +109,7 @@ async function consume(task){
     if(!current||Number(current.revision||0)!==task.revision||crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')!==task.explanation_sha256)return {status:'obsolete'};
     const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),body:JSON.stringify({task:'image_upload',target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),image_data_url:raster.dataUrl,capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
     const result=await response.json();
-    if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',sha256:String(result.sha256||''),image_path:String(result.image_path||'')};
+    if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',sha256:String(result.sha256||''),image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString()};
     if([401,409,422].includes(response.status))return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
     throw Error('image_upload_HTTP_'+response.status);
   }finally{
@@ -117,6 +118,9 @@ async function consume(task){
     browserCDP?.close();
   }
 }
+function dueTasks(tasks,now){return tasks.filter(x=>x.task.status==='waiting')
+  .filter(x=>!Number.isFinite(Date.parse(x.task.next_check_at||''))||Date.parse(x.task.next_check_at)<=now)
+  .sort((a,b)=>Date.parse(a.task.checked_at||a.task.created_at||0)-Date.parse(b.task.checked_at||b.task.created_at||0));}
 async function once(){
   fs.mkdirSync(ROOT,{recursive:true});const lock=path.join(ROOT,'publisher.lock');
   try{const fd=fs.openSync(lock,'wx');fs.writeSync(fd,JSON.stringify({pid:process.pid,at:Date.now()}));fs.closeSync(fd);}catch{
@@ -128,10 +132,9 @@ async function once(){
     // own backoff; process the oldest due check, not the oldest original job.
     const tasks=fs.readdirSync(ROOT).filter(x=>x.endsWith('.json')).flatMap(name=>{
       try{return [{file:path.join(ROOT,name),task:JSON.parse(fs.readFileSync(path.join(ROOT,name),'utf8'))}];}catch{return [];}
-    }).filter(x=>x.task.status==='waiting')
-      .filter(x=>!Number.isFinite(Date.parse(x.task.next_check_at||''))||Date.parse(x.task.next_check_at)<=now)
-      .sort((a,b)=>Date.parse(a.task.checked_at||a.task.created_at||0)-Date.parse(b.task.checked_at||b.task.created_at||0));
-    for(const {file,task} of tasks.slice(0,1)){
+    });
+    const due=dueTasks(tasks,now);
+    for(const {file,task} of due.slice(0,1)){
       if(!safeID(task.target_id)||!safeID(task.command_id)||!chatURL(task.conversation_url)||
         !/^[a-f0-9]{64}$/.test(String(task.explanation_sha256||''))||
         !task.secret_dpapi){
@@ -159,5 +162,5 @@ async function once(){
     }
   }finally{try{fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rasterProbe,sameContext,consume};
+module.exports={chatURL,enroll,rasterProbe,sameContext,confirmedInMain,dueTasks,consume};
 if(require.main===module)once().catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
