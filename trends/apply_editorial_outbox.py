@@ -284,13 +284,13 @@ def image_queue_policy():
 def sync_queue(requests_doc):
     image_mode, image_instruction = image_queue_policy()
     recent = load(TRENDS / "recent.json", {})
-    top10_names = {norm(x.get("name")) for x in (recent.get("items") or recent.get("top10") or []) if int(x.get("rank") or 0) <= 10 and x.get("name")}
+    top30_names = {norm(x.get("name")) for x in (recent.get("items") or recent.get("top10") or []) if 1 <= int(x.get("rank") or 0) <= 30 and x.get("name")}
     items = []
     for req in requests_doc.get("requests", []) or []:
         status = str(req.get("status") or "")
         if status not in ACTIVE:
             continue
-        if status == "problematic" and norm(req.get("name")) not in top10_names:
+        if status == "problematic" and norm(req.get("name")) not in top30_names:
             continue
         items.append({
             "red_review_request": req.get("red_review_request"),
