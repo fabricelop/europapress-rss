@@ -1,6 +1,16 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const source=fs.readFileSync('windows/TTendenciasImageBridge.js','utf8');
+const listener=fs.readFileSync('windows/TTendenciasDedicatedListener.ps1','utf8');
+const extension=listener.match(/\$tmp = \$ImageBridge \+ "([^\"]+)"/);
+assert.ok(extension,'refresh path must be explicit');
+assert.equal(extension[1],'.new.js','Node syntax check needs a JavaScript suffix');
+const temporary=fs.mkdtempSync(require('node:path').join(require('node:os').tmpdir(),'tt-refresh-test-'));
+try{
+ const candidate=require('node:path').join(temporary,'TTendenciasImageBridge.js'+extension[1]);
+ fs.writeFileSync(candidate,source);
+ require('node:child_process').execFileSync(process.execPath,['--check',candidate]);
+}finally{fs.rmSync(temporary,{recursive:true,force:true});}
 const start=source.indexOf('async function closeFixedTargetById(targetId){');
 const end=source.indexOf('\nasync function waitComposer(',start);
 const factory=Function('fetch','BASE_CDP','AbortSignal','CDP','console','sleep','targets',source.slice(start,end)+'\nreturn {closeFixedTargetById,waitFixedTargetClosed};');

@@ -515,7 +515,9 @@ function Get-Sha256Hex([string]$Text) {
 }
 
 function Ensure-ImageBridgeLatest([string]$NodePath) {
-  $tmp = $ImageBridge + ".new"
+  # Node --check rejects an unknown .new suffix before parsing JavaScript.
+  # Keep a JavaScript extension so refresh can actually replace the old bridge.
+  $tmp = $ImageBridge + ".new.js"
   try {
     $api = "https://api.github.com/repos/fabricelop/europapress-rss/contents/windows/TTendenciasImageBridge.js?ref=main&t=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     $doc = Invoke-RestMethod -Uri $api -Headers @{
@@ -540,7 +542,10 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'async function submitVerifiedDraft(',
       'v56-atomic-command-scoped-submit',
       'BRIDGE FIXED TAB UNRESPONSIVE',
-      'async function closeFixedTargetById(targetId){'
+      'async function closeFixedTargetById(targetId){',
+      'async function closeFixedTargetHttp(targetId){',
+      'TTENDENCIAS_PRE_SUBMIT_FAILED',
+      'TTENDENCIAS WEB IMAGE REGISTERED'
     )) {
       if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
     }
@@ -558,7 +563,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING') -and $txt.Contains('data-tt-image-composer') -and $txt.Contains('prompt_not_in_visible_editor') -and $txt.Contains('function submissionEvidence(') -and $txt.Contains('post-send-generation') -and $txt.Contains('async function submitVerifiedDraft(') -and $txt.Contains('v56-atomic-command-scoped-submit') -and $txt.Contains('BRIDGE FIXED TAB UNRESPONSIVE') -and $txt.Contains('async function closeFixedTargetById(targetId){')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING') -and $txt.Contains('data-tt-image-composer') -and $txt.Contains('prompt_not_in_visible_editor') -and $txt.Contains('function submissionEvidence(') -and $txt.Contains('post-send-generation') -and $txt.Contains('async function submitVerifiedDraft(') -and $txt.Contains('v56-atomic-command-scoped-submit') -and $txt.Contains('BRIDGE FIXED TAB UNRESPONSIVE') -and $txt.Contains('async function closeFixedTargetById(targetId){') -and $txt.Contains('async function closeFixedTargetHttp(targetId){') -and $txt.Contains('TTENDENCIAS_PRE_SUBMIT_FAILED') -and $txt.Contains('TTENDENCIAS WEB IMAGE REGISTERED')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) {
           Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK version=v28"
