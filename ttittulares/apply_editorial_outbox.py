@@ -659,6 +659,7 @@ def main():
             record_error(ledger.setdefault("items",[]),path.stem,"outbox",errors[-1],now)
             ledger["items"]=ledger["items"][-200:];save(ERRORS,ledger)
     _enrich_prepared_images(p,q,events)
+    p["count"]=len(p.get("items",[]) or [])
     q["updated_at"]=now
     save(QUEUE,q);save(PREP,p);sync_compact(q)
     st=load(STATUS,{})
