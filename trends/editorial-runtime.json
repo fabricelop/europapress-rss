@@ -3,40 +3,32 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T19:13:17+01:00",
-  "last_completed_at": "2026-10-30T19:30:00+01:00",
-  "updated_at": "2026-10-30T19:30:00+01:00",
+  "last_started_at": "2026-10-30T19:27:30+01:00",
+  "last_completed_at": "2026-10-30T19:31:10+01:00",
+  "updated_at": "2026-10-30T19:31:10+01:00",
   "status": "DONE_WITH_INCIDENTS",
   "queue_complete": true,
   "processed_ids": [
-    "808846a26299",
-    "fa530f914299",
-    "6dcd1bfd7fda",
-    "e40be8e866b4",
-    "9dbe1a97a6b4",
-    "2524fcda47bf",
-    "listas-auto-0d3447858f6c0149f1d2",
-    "red-review-257d9d047ee2c6174779",
-    "red-review-6427e924df3f8918dc96",
-    "listas-auto-43e8f2cb893e845c8975",
-    "listas-auto-037ee0e9f898242a9a8a"
+    "e40be8e866b4"
   ],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "e40be8e866b4"
+  ],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "e40be8e866b4"
   ],
-  "run_id": "tr-1793383997307-manual",
-  "previous_run_id": "tr-1793384549054-manual",
+  "run_id": "tr-1793384695746-manual",
+  "previous_run_id": "tr-1793383997307-manual",
   "summary": {
-    "attempted": 12,
-    "explained": 6,
-    "updates": 2,
+    "attempted": 1,
+    "explained": 0,
+    "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 3,
-    "groups_created": 1,
-    "members_covered": 3,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "members_covered": 0,
     "remaining_active": 0,
     "remaining_problematic": 1,
     "rewrite_pending_remaining": 0,
@@ -114,6 +106,34 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final: 0 preparing/update, 0 reexplicaciones pendientes y 1 problematic (Ronaldo Nazário r1). ImageGen 0."
+    },
+    {
+      "at": "2026-10-30T19:27:30+01:00",
+      "phase": "preparing",
+      "trend_id": "e40be8e866b4",
+      "title": "Ronaldo Nazário",
+      "message": "Revalidación JIT: r1 estaba problematic tras una escritura concurrente y seguía en Top 30; se abrió reintento ordinario. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T19:28:00+01:00",
+      "phase": "investigating",
+      "trend_id": "e40be8e866b4",
+      "title": "Ronaldo Nazário",
+      "message": "Investigación desde cero de la pista editorial mediante búsquedas actuales en español e inglés y contraste de la trayectoria por los cuatro clubes."
+    },
+    {
+      "at": "2026-10-30T19:29:10+01:00",
+      "phase": "persisting",
+      "trend_id": "e40be8e866b4",
+      "title": "Ronaldo Nazário",
+      "message": "Segundo intento persistido en requests.json; status problematic, pista sin verificar y sin explicación nueva."
+    },
+    {
+      "at": "2026-10-30T19:31:10+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: no quedan preparing/update ni rewrite_pending/reexplain activos. Ronaldo Nazário r1 permanece problematic para futuro reintento. ImageGen 0."
     }
   ],
   "incidents": [
@@ -121,7 +141,7 @@
       "trend_id": "e40be8e866b4",
       "revision": 1,
       "title": "Ronaldo Nazário",
-      "reason": "No se pudo corroborar de forma independiente que la encuesta concreta con cuatro escudos fuera el detonante actual. Se respeta la instrucción de dejar la revisión sin explicación verificada."
+      "reason": "La encuesta concreta con cuatro escudos no pudo corroborarse de forma independiente. La trayectoria por FC Barcelona, Inter, Real Madrid y AC Milan sí está verificada, pero no se atribuye la tendencia a la pista editorial sin prueba."
     }
   ],
   "incident_count": 1,
@@ -129,15 +149,15 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793383997307-manual",
+    "run_id": "tr-1793384695746-manual",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-30T19:13:17+01:00",
-    "updated_at": "2026-10-30T19:30:00+01:00",
-    "finished_at": "2026-10-30T19:30:00+01:00",
-    "current": 12,
-    "total": 12,
+    "started_at": "2026-10-30T19:27:30+01:00",
+    "updated_at": "2026-10-30T19:31:10+01:00",
+    "finished_at": "2026-10-30T19:31:10+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
@@ -146,29 +166,19 @@
       "e40be8e866b4"
     ],
     "processed_ids": [
-      "808846a26299",
-      "fa530f914299",
-      "6dcd1bfd7fda",
-      "e40be8e866b4",
-      "9dbe1a97a6b4",
-      "2524fcda47bf",
-      "listas-auto-0d3447858f6c0149f1d2",
-      "red-review-257d9d047ee2c6174779",
-      "red-review-6427e924df3f8918dc96",
-      "listas-auto-43e8f2cb893e845c8975",
-      "listas-auto-037ee0e9f898242a9a8a"
+      "e40be8e866b4"
     ],
     "partial": false,
-    "message": "Pasada editorial completada 12/12. No quedan preparing/update ni reexplicaciones pendientes; Ronaldo Nazário r1 queda problematic sin explicación verificada. Sin ImageGen.",
+    "message": "Pasada completada 1/1 con incidencia: Ronaldo Nazário r1 sigue problematic porque la encuesta concreta no pudo corroborarse de forma independiente. Sin ImageGen.",
     "summary": {
-      "attempted": 12,
-      "explained": 6,
-      "updates": 2,
+      "attempted": 1,
+      "explained": 0,
+      "updates": 0,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 3,
-      "groups_created": 1,
-      "members_covered": 3,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "members_covered": 0,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "rewrite_pending_remaining": 0,
@@ -182,173 +192,56 @@
         "trend_id": "e40be8e866b4",
         "revision": 1,
         "title": "Ronaldo Nazário",
-        "reason": "No se pudo corroborar de forma independiente que la encuesta concreta con cuatro escudos fuera el detonante actual. Se respeta la instrucción de dejar la revisión sin explicación verificada."
+        "reason": "La encuesta concreta con cuatro escudos no pudo corroborarse de forma independiente. La trayectoria por FC Barcelona, Inter, Real Madrid y AC Milan sí está verificada, pero no se atribuye la tendencia a la pista editorial sin prueba."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-30T19:13:17+01:00",
+        "at": "2026-10-30T19:27:30+01:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada manual iniciada con 6 trabajos activos. Sin ImageGen."
+        "trend_id": "e40be8e866b4",
+        "title": "Ronaldo Nazário",
+        "message": "Revalidación JIT: r1 estaba problematic tras una escritura concurrente y seguía en Top 30; se abrió reintento ordinario. Sin ImageGen."
       },
       {
-        "at": "2026-10-30T19:15:00+01:00",
-        "phase": "verifying",
-        "trend_id": "808846a26299",
-        "title": "Alcaraz",
-        "message": "La revisión dejó de estar activa durante la validación JIT y se verificó ya explicada por una escritura concurrente; no se sobrescribió."
-      },
-      {
-        "at": "2026-10-30T19:17:00+01:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Capitalismo, Viena, Ronaldo Nazário r0, Intel y Gracias Ministro persistidos y verificados en requests y Listas."
-      },
-      {
-        "at": "2026-10-30T19:20:22+01:00",
-        "phase": "grouping",
-        "trend_id": "listas-auto-0d3447858f6c0149f1d2",
-        "title": "Agrupación automática de Listas",
-        "message": "Alcaraz, Tommy Paul y Viena agrupados por corresponder al mismo partido; originales conservados y marcados como cubiertos."
-      },
-      {
-        "at": "2026-10-30T19:21:14+01:00",
-        "phase": "reviewing",
-        "trend_id": "red-review-257d9d047ee2c6174779",
-        "title": "Ana Pastor",
-        "message": "Revisión materializada como actualización; nueva ficha verificada en requests y Listas."
-      },
-      {
-        "at": "2026-10-30T19:23:24+01:00",
-        "phase": "reviewing",
-        "trend_id": "red-review-6427e924df3f8918dc96",
-        "title": "Repsol",
-        "message": "Revisión materializada como actualización por reacción de mercado y nuevas valoraciones de analistas; nueva ficha verificada."
-      },
-      {
-        "at": "2026-10-30T19:24:05+01:00",
-        "phase": "grouping",
-        "trend_id": null,
-        "title": null,
-        "message": "Agrupaciones derivadas de Ana Pastor y Repsol completadas sin coincidencias adicionales."
-      },
-      {
-        "at": "2026-10-30T19:26:00+01:00",
+        "at": "2026-10-30T19:28:00+01:00",
         "phase": "investigating",
         "trend_id": "e40be8e866b4",
         "title": "Ronaldo Nazário",
-        "message": "Entró revisión 1 durante la barrera final. Investigación nueva desde cero de la pista editorial."
+        "message": "Investigación desde cero de la pista editorial mediante búsquedas actuales en español e inglés y contraste de la trayectoria por los cuatro clubes."
       },
       {
         "at": "2026-10-30T19:29:10+01:00",
-        "phase": "verifying",
+        "phase": "persisting",
         "trend_id": "e40be8e866b4",
         "title": "Ronaldo Nazário",
-        "message": "La revisión quedó problematic por no poder corroborar el detonante concreto de la encuesta; se respetó el cierre concurrente y no se forzó una explicación."
+        "message": "Segundo intento persistido en requests.json; status problematic, pista sin verificar y sin explicación nueva."
       },
       {
-        "at": "2026-10-30T19:30:00+01:00",
+        "at": "2026-10-30T19:31:10+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Barrera final: 0 preparing/update, 0 reexplicaciones pendientes y 1 problematic (Ronaldo Nazário r1). ImageGen 0."
+        "message": "Barrera final: no quedan preparing/update ni rewrite_pending/reexplain activos. Ronaldo Nazário r1 permanece problematic para futuro reintento. ImageGen 0."
       }
     ],
     "final_outcomes": [
-      {
-        "id": "808846a26299",
-        "revision": 0,
-        "title": "Alcaraz",
-        "status": "explained",
-        "note": "Cerrada por escritura concurrente tras validación JIT; no se sobrescribió."
-      },
-      {
-        "id": "fa530f914299",
-        "revision": 0,
-        "title": "Capitalismo",
-        "status": "explained"
-      },
-      {
-        "id": "6dcd1bfd7fda",
-        "revision": 0,
-        "title": "Viena",
-        "status": "explained"
-      },
-      {
-        "id": "e40be8e866b4",
-        "revision": 0,
-        "title": "Ronaldo Nazário",
-        "status": "explained",
-        "note": "Causa concreta no confirmada; redacción prudente."
-      },
-      {
-        "id": "9dbe1a97a6b4",
-        "revision": 0,
-        "title": "Intel",
-        "status": "explained"
-      },
-      {
-        "id": "2524fcda47bf",
-        "revision": 1,
-        "title": "Gracias Ministro",
-        "status": "explained"
-      },
-      {
-        "id": "listas-auto-0d3447858f6c0149f1d2",
-        "revision": 0,
-        "title": "Agrupación automática de Listas",
-        "status": "grouping_completed",
-        "created_id": "listas-joint-abb1a972c8b5afbd"
-      },
-      {
-        "id": "red-review-257d9d047ee2c6174779",
-        "revision": 0,
-        "title": "Revisar novedades: Ana Pastor",
-        "status": "review_completed",
-        "outcome": "updated",
-        "created_id": "trend-update-635300762891ee06e043"
-      },
-      {
-        "id": "red-review-6427e924df3f8918dc96",
-        "revision": 0,
-        "title": "Revisar novedades: Repsol",
-        "status": "review_completed",
-        "outcome": "updated",
-        "created_id": "trend-update-8abd13e39488aa1cbefc"
-      },
-      {
-        "id": "listas-auto-43e8f2cb893e845c8975",
-        "revision": 0,
-        "title": "Agrupación automática de Listas",
-        "status": "grouping_completed",
-        "created_ids": []
-      },
-      {
-        "id": "listas-auto-037ee0e9f898242a9a8a",
-        "revision": 0,
-        "title": "Agrupación automática de Listas",
-        "status": "grouping_completed",
-        "created_ids": []
-      },
       {
         "id": "e40be8e866b4",
         "revision": 1,
         "title": "Ronaldo Nazário",
         "status": "problematic",
-        "note": "La pista editorial sobre la encuesta concreta no quedó corroborada de forma independiente; se respeta el cierre sin explicación verificada."
+        "note": "Segundo intento registrado; detonante social no verificado y sin explicación nueva."
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
   "phase": "closing",
-  "started_at": "2026-10-30T19:13:17+01:00",
-  "finished_at": "2026-10-30T19:30:00+01:00",
-  "current": 12,
-  "total": 12,
+  "started_at": "2026-10-30T19:27:30+01:00",
+  "finished_at": "2026-10-30T19:31:10+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null
 }
