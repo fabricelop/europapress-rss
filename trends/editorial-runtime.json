@@ -3,51 +3,64 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T16:55:30+01:00",
-  "last_completed_at": "2026-10-30T16:54:30+01:00",
-  "updated_at": "2026-10-30T17:00:30+01:00",
-  "status": "RUNNING",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "37073f5f219f"
+  "last_started_at": "2026-10-30T16:58:47.357000+01:00",
+  "last_completed_at": "2026-10-30T17:01:51.380650+01:00",
+  "updated_at": "2026-10-30T17:01:51.380650+01:00",
+  "status": "DONE",
+  "queue_complete": true,
+  "processed_ids": [
+    "listas-auto-92e9987cb568328a7e10",
+    "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82"
   ],
-  "remaining_active_ids": [
-    "37073f5f219f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793375721801-manual",
-  "previous_run_id": "tr-1793375430582-manual",
+  "run_id": "tr-1793375927357-manual",
+  "previous_run_id": "tr-1793375721801-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "members_covered": 0,
-    "remaining_active": 1,
+    "grouping_requests": 2,
+    "groups_created": 1,
+    "members_covered": 2,
+    "remaining_active": 0,
     "remaining_problematic": 0,
-    "rewrite_pending_remaining": 1,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T16:56:00+01:00",
+      "at": "2026-10-30T16:58:47.357000+01:00",
       "phase": "preparing",
-      "trend_id": "37073f5f219f",
-      "title": "Pepiño Blanco",
-      "message": "Inicio 1/1: revalidando revisión 1 e investigando desde cero la pista editorial. Sin ImageGen."
+      "trend_id": "listas-auto-92e9987cb568328a7e10",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio de la pasada: releídos contrato y cola; detectada una agrupación automática pendiente. Sin ImageGen."
     },
     {
       "at": "2026-10-30T17:00:30+01:00",
       "phase": "investigating",
+      "trend_id": "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
+      "title": "Agrupar tendencias de Listas",
+      "message": "Apareció una segunda solicitud manual para Pepiño Blanco + Pepe Blanco; se mantuvo validación JIT y se evitó duplicar trabajo."
+    },
+    {
+      "at": "2026-10-30T17:01:20+01:00",
+      "phase": "verifying",
       "trend_id": "listas-auto-92e9987cb568328a7e10",
       "title": "Agrupación automática de Listas",
-      "message": "1/2: Pepiño Blanco r1 ya verificado; comprobando agrupación con Pepe Blanco r0 por mismo acontecimiento."
+      "message": "Verificado en main: la automática creó listas-joint-8df76ba72c6ae8b7 y cubrió Pepiño Blanco r1 + Pepe Blanco r0; la manual quedó grouping_completed con ambos miembros stale tras esa cobertura."
+    },
+    {
+      "at": "2026-10-30T17:01:51.380650+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: editorial-queue.json count 0; no quedan preparing/update ni rewrite_pending. Sin ImageGen ni envíos."
     }
   ],
   "incidents": [],
@@ -56,37 +69,36 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793375721801-manual",
+    "run_id": "tr-1793375927357-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "investigating",
-    "started_at": "2026-10-30T16:56:00+01:00",
-    "updated_at": "2026-10-30T17:00:30+01:00",
-    "finished_at": null,
-    "current": 1,
+    "status": "DONE",
+    "phase": "closing",
+    "started_at": "2026-10-30T16:58:47.357000+01:00",
+    "updated_at": "2026-10-30T17:01:51.380650+01:00",
+    "finished_at": "2026-10-30T17:01:51.380650+01:00",
+    "current": 2,
     "total": 2,
-    "trend_id": "listas-auto-92e9987cb568328a7e10",
-    "title": "Agrupación automática de Listas",
-    "queue_complete": false,
-    "remaining_active_ids": [
-      "listas-auto-92e9987cb568328a7e10"
-    ],
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
+    "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [
-      "37073f5f219f"
+      "listas-auto-92e9987cb568328a7e10",
+      "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82"
     ],
     "partial": false,
-    "message": "Pepiño Blanco r1 verificado; procesando agrupación con Pepe Blanco r0. Sin ImageGen.",
+    "message": "Pasada cerrada tras revalidación JIT: Pepiño Blanco r1 y Pepe Blanco r0 quedaron agrupados en listas-joint-8df76ba72c6ae8b7; la solicitud manual solapada se cerró como stale para evitar duplicado. Cola final 0. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
-      "grouping_requests": 0,
-      "groups_created": 0,
-      "members_covered": 0,
-      "remaining_active": 1,
+      "grouping_requests": 2,
+      "groups_created": 1,
+      "members_covered": 2,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -97,28 +109,42 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T16:56:00+01:00",
+        "at": "2026-10-30T16:58:47.357000+01:00",
         "phase": "preparing",
-        "trend_id": "37073f5f219f",
-        "title": "Pepiño Blanco",
-        "message": "Inicio 1/1: revalidando revisión 1 e investigando desde cero la pista editorial. Sin ImageGen."
+        "trend_id": "listas-auto-92e9987cb568328a7e10",
+        "title": "Agrupación automática de Listas",
+        "message": "Inicio de la pasada: releídos contrato y cola; detectada una agrupación automática pendiente. Sin ImageGen."
       },
       {
         "at": "2026-10-30T17:00:30+01:00",
         "phase": "investigating",
+        "trend_id": "listas-grouping-0f24c0d2-7e64-4e8b-a781-97f708d7be82",
+        "title": "Agrupar tendencias de Listas",
+        "message": "Apareció una segunda solicitud manual para Pepiño Blanco + Pepe Blanco; se mantuvo validación JIT y se evitó duplicar trabajo."
+      },
+      {
+        "at": "2026-10-30T17:01:20+01:00",
+        "phase": "verifying",
         "trend_id": "listas-auto-92e9987cb568328a7e10",
         "title": "Agrupación automática de Listas",
-        "message": "1/2: Pepiño Blanco r1 ya verificado; comprobando agrupación con Pepe Blanco r0 por mismo acontecimiento."
+        "message": "Verificado en main: la automática creó listas-joint-8df76ba72c6ae8b7 y cubrió Pepiño Blanco r1 + Pepe Blanco r0; la manual quedó grouping_completed con ambos miembros stale tras esa cobertura."
+      },
+      {
+        "at": "2026-10-30T17:01:51.380650+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: editorial-queue.json count 0; no quedan preparing/update ni rewrite_pending. Sin ImageGen ni envíos."
       }
     ]
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
-  "started_at": "2026-10-30T16:56:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "phase": "closing",
+  "started_at": "2026-10-30T16:58:47.357000+01:00",
+  "finished_at": "2026-10-30T17:01:51.380650+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "listas-auto-92e9987cb568328a7e10",
-  "title": "Agrupación automática de Listas"
+  "trend_id": null,
+  "title": null
 }
