@@ -3,17 +3,17 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T17:40:00+01:00",
+  "last_started_at": "2026-10-30T17:56:16+01:00",
   "last_completed_at": "2026-10-30T17:42:00+01:00",
-  "updated_at": "2026-10-30T17:42:00+01:00",
-  "status": "DONE_WITH_INCIDENTS",
-  "queue_complete": true,
+  "updated_at": "2026-10-30T17:56:16+01:00",
+  "status": "RUNNING",
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793377754724-manual",
-  "previous_run_id": "tr-1793378463717-manual",
+  "run_id": "tr-1793379376312-manual",
+  "previous_run_id": "tr-1793377754724-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -28,59 +28,40 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T17:40:00+01:00",
+      "at": "2026-10-30T17:56:16+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada manual iniciada. Cola inicial 0; el primer intento de telemetría coincidió con otra pasada más nueva y no se sobrescribió."
-    },
-    {
-      "at": "2026-10-30T17:41:35+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "La pasada concurrente terminó 0/0. Relectura JIT: cola 0 y sin rewrite_pending."
-    },
-    {
-      "at": "2026-10-30T17:42:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Pasada completada 0/0. Sin ImageGen."
+      "message": "Pasada manual iniciada. Cola inicial 0; se verificará de nuevo main antes de cerrar. Sin ImageGen."
     }
   ],
-  "incidents": [
-    {
-      "type": "concurrent_runtrace_conflict",
-      "message": "El primer alta de telemetría recibió 409 porque una pasada más nueva tomó editorial-runtime.json. Se respetó esa ejecución, se esperó a su cierre y se revalidó main antes de cerrar esta pasada; no afectó al trabajo editorial."
-    }
-  ],
-  "incident_count": 1,
+  "incidents": [],
+  "incident_count": 0,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793377754724-manual",
+    "run_id": "tr-1793379376312-manual",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
-    "phase": "closing",
-    "started_at": "2026-10-30T17:40:00+01:00",
-    "updated_at": "2026-10-30T17:42:00+01:00",
-    "finished_at": "2026-10-30T17:42:00+01:00",
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T17:56:16+01:00",
+    "updated_at": "2026-10-30T17:56:16+01:00",
+    "finished_at": null,
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": true,
+    "queue_complete": false,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada 0/0: relectura final de main con cola 0, sin preparing/update ni rewrite_pending. Sin ImageGen. Hubo una colisión de telemetría con una pasada concurrente, ya resuelta sin sobrescribirla.",
+    "message": "Pasada manual en curso. Cola inicial 0; pendiente relectura final de main.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -95,45 +76,26 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "concurrent_runtrace_conflict",
-        "message": "El primer alta de telemetría recibió 409 porque una pasada más nueva tomó editorial-runtime.json. Se respetó esa ejecución, se esperó a su cierre y se revalidó main antes de cerrar esta pasada; no afectó al trabajo editorial."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T17:40:00+01:00",
+        "at": "2026-10-30T17:56:16+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada manual iniciada. Cola inicial 0; el primer intento de telemetría coincidió con otra pasada más nueva y no se sobrescribió."
-      },
-      {
-        "at": "2026-10-30T17:41:35+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "La pasada concurrente terminó 0/0. Relectura JIT: cola 0 y sin rewrite_pending."
-      },
-      {
-        "at": "2026-10-30T17:42:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Pasada completada 0/0. Sin ImageGen."
+        "message": "Pasada manual iniciada. Cola inicial 0; se verificará de nuevo main antes de cerrar. Sin ImageGen."
       }
     ],
     "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "closing",
-  "started_at": "2026-10-30T17:40:00+01:00",
-  "finished_at": "2026-10-30T17:42:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-30T17:56:16+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
