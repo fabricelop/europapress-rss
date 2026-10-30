@@ -77,3 +77,5 @@ Para memoria y pestañas: windows/Repair-TT-Chrome-Memory-Safe.ps1 **-InspectOnl
 ## Agrupar Listas (30/10/2026)
 
 Agrupar → dispatch `ttactualidad_group_listas_v1` → `pilot/listas_grouping.py` → request `task:group_listas` → runner editorial → `trends/listas-grouping-outbox/<job_id>.json` → workflow aplicador → ficha conjunta y originales marcadas **Agrupada en…**. **No cambiar las explicaciones originales.** Retirar agrupadas solo elimina originales cubiertas, no la conjunta ni suma publicaciones. Ver §18 del manual para estados/JIT/pruebas. Fuente iPhone nueva: `feature/ttactualidad-ios-0.4.23-agrupar-listas`, 0.4.23 build29; comprobar instalación.
+
+**Corrección 30/10 tras prueba en iPhone:** originales agrupadas conservan **Quitar de Listas → Publicado / No publicado**. Solo Publicado suma esa original una vez; la conjunta no cambia. Fuente iPhone **0.4.24 build30**, rama `feature/ttactualidad-ios-0.4.24-quitar-agrupadas`. No confundirlo con Retirar agrupadas en bloque, que es limpieza sin publicación.

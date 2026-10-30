@@ -118,23 +118,33 @@ class ListasGroupingTests(unittest.TestCase):
             command=self.result();command['groups'][0][field]=value
             with self.assertRaises(ValueError):m.apply_result(self.requested(),command,self.now)
 
-    def test_existing_action_handler_rejects_publishing_covered_but_allows_delete(self):
+    def test_original_can_be_closed_with_either_explicit_outcome_without_changing_joint(self):
         import tempfile, json
+        from unittest.mock import patch
         spec=importlib.util.spec_from_file_location('grouping_actions',Path(__file__).with_name('apply-ttactualidad-action.py'))
         actions=importlib.util.module_from_spec(spec);spec.loader.exec_module(actions)
         state,_=m.apply_result(self.requested(),self.result(),self.now)
-        with tempfile.TemporaryDirectory() as directory:
-            actions.ROOT=Path(directory)
-            for path,data in {**state,'trends/prepared.json':{'items':[]}}.items():
-                target=Path(directory)/path;target.parent.mkdir(parents=True,exist_ok=True)
-                target.write_text(json.dumps(data))
-            with self.assertRaisesRegex(actions.InvalidAction,'agrupada'):
-                actions.apply('ttendencias','a123','published',1)
-            changed,status=actions.apply('ttendencias','a123','deleted',1)
-            self.assertEqual(status,'applied')
-            row=next(x for x in changed[m.MANUAL]['items'] if x['id']=='a123')
-            self.assertEqual(row['explanation'],self.state[m.MANUAL]['items'][0]['explanation'])
-            self.assertEqual(row['status'],'deleted')
+        parent=copy.deepcopy(state[m.MANUAL]['items'][-1])
+        for decision in ('published','deleted'):
+            with self.subTest(decision=decision), tempfile.TemporaryDirectory() as directory:
+                actions.ROOT=Path(directory)
+                for path,data in {**state,'trends/prepared.json':{'items':[]},actions.PUBLICATIONS:{'items':[]}}.items():
+                    target=Path(directory)/path;target.parent.mkdir(parents=True,exist_ok=True)
+                    target.write_text(json.dumps(data))
+                command={'project':'ttendencias','event_id':'a123','revision':1,
+                         'decision':decision,'request_id':'original-outcome-123456789'}
+                with patch.dict('os.environ',{'TT_ACTUALIDAD_EVENT_JSON':json.dumps(command)}):
+                    actions.main()
+                    actions.main()  # Repeated confirmation must count at most once.
+                rows=json.loads((Path(directory)/m.MANUAL).read_text())['items']
+                row=next(x for x in rows if x['id']=='a123')
+                self.assertEqual(row['explanation'],self.state[m.MANUAL]['items'][0]['explanation'])
+                self.assertEqual(row['status'],decision)
+                self.assertEqual(next(x for x in rows if x['id']==parent['id']),parent)
+                self.assertEqual(next(x for x in rows if x['id']=='b123')['status'],'explained')
+                publications=json.loads((Path(directory)/actions.PUBLICATIONS).read_text())['items']
+                self.assertEqual(len(publications),1 if decision=='published' else 0)
+                if publications:self.assertEqual(publications[0]['event_id'],'a123')
 
     def test_new_revision_does_not_inherit_prior_coverage(self):
         state,_=m.apply_result(self.requested(),self.result(),self.now)

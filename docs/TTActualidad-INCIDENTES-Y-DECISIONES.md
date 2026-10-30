@@ -130,3 +130,12 @@ Copiar esta ficha al FINAL del documento por cada avería/resolución:
 **Componentes:** `pilot/listas_grouping.py`, `ttactualidad-group-listas.yml`, cola/contrato de tendencias, protección de publicación en `apply-ttactualidad-action.py`, UI Qt y SwiftUI 0.4.23 build29. No publicar, borrar ni agrupar datos reales solo por instalar el cambio: la revisión se solicita con el botón.
 
 **Validación:** pruebas sintéticas de persistencia y carreras; UI Windows y preflight iPhone. Distinguir solicitud aplicada, revisión editorial completada, build compilado e instalación en dispositivo. Ruta y diagnóstico detallados en §18 del manual.
+
+
+## 7. 30/10/2026 — restaurar Publicado/No publicado al retirar una original agrupada
+
+**Prueba del usuario:** agrupación correcta; captura de iPhone 0.4.23 con Star Trek AGRUPADA y botón Retirar agrupada sin la elección habitual. **Causa:** la UI suprimía Publicado y el backend rechazaba ese estado sobre cubiertas. Esa restricción no fue solicitada y se retira.
+
+**Cambio:** Quitar de Listas ofrece Publicado y No publicado en iPhone 0.4.24 build30 y Windows. La decisión se aplica solo al ID/revisión de esa original, con ledger idempotente y sin modificar conjunta, hermanas ni textos. Retirar agrupadas en bloque sigue sin sumar publicaciones. La confirmación del usuario demuestra uso real de la agrupación; no prueba todavía la instalación de la corrección 0.4.24.
+
+**Validación:** tests del handler completo con ambos estados, una sola publicación al reintentar, ninguna en No, conjunta inmutable y UI con confirmación restaurada. Consultar §19 del manual. No se modificaron decisiones editoriales reales en esta reparación.

@@ -842,7 +842,7 @@ class MainWindow(QWidget):
             "published":has and ready
         }
         if covered:
-            for key in ("x","published","rework","hints","gag"):
+            for key in ("x","rework","hints","gag"):
                 enable[key]=False
         for k,b in self.actions.items():
             allowed=enable.get(k,False)
@@ -850,7 +850,7 @@ class MainWindow(QWidget):
                 allowed=False
             b.setEnabled(bool(allowed))
         if row:
-            self.actions["deleted"].setText("Retirar agrupada" if covered else "Quitar de Listas")
+            self.actions["deleted"].setText("Quitar de Listas")
             self.actions["rework"].setText(
                 "Preparar" if row["state"] in ("Revisión","Creciendo")
                 or (top and not row.get("body") and row.get("rank",0)>10)
@@ -1122,6 +1122,9 @@ class MainWindow(QWidget):
     def editorial_action(self,action,hint="",confirmed=False):
         r=self.selected
         if not r:return
+        if action=="deleted" and r.get("covered_by_id") and not confirmed:
+            self.ask_publication_outcome(r)
+            return
         if not r.get("id"):
             QMessageBox.warning(self,"No verificable","Esta tarjeta aún no tiene ID editorial. Actualiza.")
             return

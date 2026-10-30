@@ -17,7 +17,7 @@ appmod=importlib.util.module_from_spec(spec)
 loader.exec_module(appmod)
 
 class DesktopModernTests(unittest.TestCase):
-    def test_covered_card_is_recognizable_removable_and_not_publishable(self):
+    def test_covered_card_keeps_both_explicit_publication_outcomes(self):
         row={'project':'ttendencias','id':'covered','revision':1,'state':'Listas',
              'title':'Adif','body':'Texto original que se conserva','category':'Tendencias',
              'source':'','image':'','covered_by_id':'joint','covered_by_name':'Investigación ferroviaria'}
@@ -26,8 +26,12 @@ class DesktopModernTests(unittest.TestCase):
         self.assertIn('AGRUPADA EN',self.window.state_tag.text())
         self.assertIn('Investigación ferroviaria',self.window.state_tag.text())
         self.assertFalse(self.window.actions['x'].isEnabled())
-        self.assertFalse(self.window.actions['published'].isEnabled())
+        self.assertTrue(self.window.actions['published'].isEnabled())
         self.assertTrue(self.window.actions['deleted'].isEnabled())
+        self.assertEqual(self.window.actions['deleted'].text(),'Quitar de Listas')
+        with patch.object(self.window,'ask_publication_outcome') as choose:
+            self.window.editorial_action('deleted')
+        choose.assert_called_once_with(row)
         self.assertIn('Texto original',self.window.body.toPlainText())
 
     def test_group_button_requests_editorial_review_without_rewriting_local_cards(self):
