@@ -5,16 +5,16 @@
   "canonical": true,
   "last_started_at": "2026-10-30T15:07:30+01:00",
   "last_completed_at": "2026-10-30T15:00:00+01:00",
-  "updated_at": "2026-10-30T15:07:30+01:00",
+  "updated_at": "2026-10-30T15:09:30+01:00",
   "status": "running",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+  ],
   "remaining_ids": [
-    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
     "8d550038a24d"
   ],
   "remaining_active_ids": [
-    "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
     "8d550038a24d"
   ],
   "remaining_problematic_ids": [
@@ -23,22 +23,22 @@
   "run_id": "tr-1793369233599-manual",
   "previous_run_id": "tr-1793369096516-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "explained": 0,
     "explanation_groups": 0,
     "new_cards": 0,
     "problematic": 0,
-    "final_resolved": 0,
-    "skipped_concurrent": 0,
-    "remaining_active": 2,
+    "final_resolved": 1,
+    "skipped_concurrent": 1,
+    "remaining_active": 1,
     "remaining_problematic": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0,
     "grouping_requests": 1,
-    "groups_created": 0,
-    "members_covered": 0
+    "groups_created": 1,
+    "members_covered": 2
   },
   "activity": [
     {
@@ -47,6 +47,20 @@
       "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
       "title": "Agrupar tendencias de Listas",
       "message": "Pasada tr-1793369233599-manual: 2 trabajos activos; revalidando primero el agrupado manual más antiguo."
+    },
+    {
+      "at": "2026-10-30T15:09:10+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+      "title": "Agrupar tendencias de Listas",
+      "message": "Revalidación JIT: el job ya fue aplicado concurrentemente; Renfe+ERTMS quedaron agrupadas y Madrid-Barcelona separada."
+    },
+    {
+      "at": "2026-10-30T15:09:30+01:00",
+      "phase": "investigating",
+      "trend_id": "8d550038a24d",
+      "title": "#30OctubrESP",
+      "message": "Revisión 2 JIT válida. Investigación desde cero: se confirma tendencia y presión política sobre Puente, pero no el vínculo causal de la etiqueta."
     }
   ],
   "ratings_snapshot": {
@@ -150,41 +164,42 @@
     "run_id": "tr-1793369233599-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "preparing",
+    "phase": "investigating",
     "started_at": "2026-10-30T15:07:30+01:00",
-    "updated_at": "2026-10-30T15:07:30+01:00",
+    "updated_at": "2026-10-30T15:09:30+01:00",
     "finished_at": null,
-    "current": 0,
+    "current": 1,
     "total": 2,
-    "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
-    "title": "Agrupar tendencias de Listas",
+    "trend_id": "8d550038a24d",
+    "title": "#30OctubrESP",
     "queue_complete": false,
     "remaining_active_ids": [
-      "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
       "8d550038a24d"
     ],
     "remaining_problematic_ids": [
       "dc90fe5a413e"
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185"
+    ],
     "partial": false,
-    "message": "Revalidando agrupación manual 1/2.",
+    "message": "1/2 cerrado por aplicación concurrente verificada; investigando #30OctubrESP r2.",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "explained": 0,
       "explanation_groups": 0,
       "new_cards": 0,
       "problematic": 0,
-      "final_resolved": 0,
-      "skipped_concurrent": 0,
-      "remaining_active": 2,
+      "final_resolved": 1,
+      "skipped_concurrent": 1,
+      "remaining_active": 1,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0,
       "grouping_requests": 1,
-      "groups_created": 0,
-      "members_covered": 0
+      "groups_created": 1,
+      "members_covered": 2
     },
     "incident_count": 0,
     "incidents": [],
@@ -195,6 +210,20 @@
         "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
         "title": "Agrupar tendencias de Listas",
         "message": "Pasada tr-1793369233599-manual: 2 trabajos activos; revalidando primero el agrupado manual más antiguo."
+      },
+      {
+        "at": "2026-10-30T15:09:10+01:00",
+        "phase": "verifying",
+        "trend_id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
+        "title": "Agrupar tendencias de Listas",
+        "message": "Job ya aplicado concurrentemente y verificado en main."
+      },
+      {
+        "at": "2026-10-30T15:09:30+01:00",
+        "phase": "investigating",
+        "trend_id": "8d550038a24d",
+        "title": "#30OctubrESP",
+        "message": "Dos búsquedas independientes no prueban que la etiqueta esté impulsada por la petición de dimisión de Puente."
       }
     ]
   },
