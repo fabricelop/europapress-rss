@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T14:49:30+01:00",
+  "updated_at": "2026-10-30T14:52:30+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -5252,7 +5252,7 @@
       "id": "0151e1be35f5",
       "name": "Madrid-Barcelona",
       "rank": 21,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-30T14:50:07+01:00",
       "revision": 0,
       "reexplain": false,
@@ -5267,13 +5267,31 @@
         "Pobrecito"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "updated_at": "2026-10-30T14:52:30+01:00",
+      "explained_at": "2026-10-30T14:52:30+01:00",
+      "explanation": "TT#21 Madrid-Barcelona es tendencia porque Transportes valora cerrar temporalmente la alta velocidad durante la renovación para reducir unas obras que podrían durar cinco años.\n#AltaVelocidad #Transportes\n🌶️ La obra podría ir más rápido si el tren deja de hacerlo.",
+      "closer_text": "🌶️ La obra podría ir más rápido si el tren deja de hacerlo.",
+      "category": "Transportes",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://elpais.com/economia/2026-10-30/puente-valora-parar-la-linea-de-ave-madrid-barcelona-durante-las-obras-de-remodelacion.html",
+        "https://www.europapress.es/economia/transportes-00343/noticia-gobierno-valora-cerrar-linea-tren-madrid-barcelona-dos-anos-ejecutar-obras-programadas-20261030130203.html"
+      ],
+      "editorial_grouping_state": "pending",
+      "rewrite_pending": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_status": "pending",
+      "image_choice": "none",
+      "image_pending": true
     },
     {
       "id": "c6e758d97041",
       "name": "Pobrecito",
       "rank": 26,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-30T14:50:07+01:00",
       "revision": 0,
       "reexplain": false,
@@ -5288,7 +5306,21 @@
         "Pobrecito"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "updated_at": "2026-10-30T14:52:30+01:00",
+      "problematic_reason": "Tras dos búsquedas distintas y contraste con el radar no se ha podido verificar un detonante concreto y actual para «Pobrecito».",
+      "investigation_history": [
+        {
+          "at": "2026-10-30T14:52:30+01:00",
+          "query": "«Pobrecito» tendencia 30 octubre 2026 España",
+          "result": "sin detonante verificable"
+        },
+        {
+          "at": "2026-10-30T14:52:30+01:00",
+          "query": "«Pobrecito» con contexto político/Urda/Koldo 30 octubre 2026",
+          "result": "sin corroboración independiente"
+        }
+      ]
     }
   ]
 }
