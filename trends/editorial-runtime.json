@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T12:08:00+01:00",
-  "last_completed_at": "2026-10-30T12:13:00+01:00",
-  "updated_at": "2026-10-30T12:13:00+01:00",
+  "last_completed_at": "2026-10-30T12:12:00+01:00",
+  "updated_at": "2026-10-30T12:12:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
@@ -15,7 +15,7 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793358479858-manual",
-  "previous_run_id": "tr-chat-20261030T115500+0100",
+  "previous_run_id": "tr-1793358479858-manual",
   "summary": {
     "attempted": 1,
     "explained": 1,
@@ -33,7 +33,7 @@
     "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates_reviewed": 0,
+    "pending_visual_candidates_reviewed": 1,
     "top10_fresh_coverage": 10,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -44,13 +44,6 @@
     "untouched_candidates": 0
   },
   "activity": [
-    {
-      "at": "2026-10-30T12:08:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola editorial 1; iniciando validación JIT y saneamiento obligatorio antes de investigar."
-    },
     {
       "at": "2026-10-30T12:09:00+01:00",
       "phase": "verifying",
@@ -162,6 +155,34 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada: 1/1 explicado y verificado; cola final 0; Top 10 cubierto/terminal 10/10."
+    },
+    {
+      "at": "2026-10-30T12:11:20+01:00",
+      "phase": "persisting",
+      "trend_id": "eebd7eeea00c",
+      "title": "El Fargue",
+      "message": "Persistencia detectada en main: ficha Explicada y request coinciden; la revisión ya fue retirada de la cola."
+    },
+    {
+      "at": "2026-10-30T12:11:40+01:00",
+      "phase": "verifying",
+      "trend_id": "eebd7eeea00c",
+      "title": "El Fargue",
+      "message": "Releyendo main: cola, requests y Explicadas tras la persistencia."
+    },
+    {
+      "at": "2026-10-30T12:11:50+01:00",
+      "phase": "verifying",
+      "trend_id": "eebd7eeea00c",
+      "title": "El Fargue",
+      "message": "Verificando id+revision y texto persistido: revisión 0 consistente y cola editorial vacía."
+    },
+    {
+      "at": "2026-10-30T12:12:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada: El Fargue explicado y verificado; cola final 0 y ninguna reexplicación pendiente."
     }
   ],
   "ratings_snapshot": {
@@ -174,10 +195,10 @@
   "remate_selections": [
     {
       "trend_id": "eebd7eeea00c",
-      "title": "El Fargue",
       "revision": 0,
-      "closer_text": "🌶️ La detonación llegó más lejos que la explicación.",
-      "selection_note": "Elegido por concreción y porque dirige el giro a la incertidumbre sobre las causas, no a los heridos."
+      "selected_text": "🌶️ La detonación llegó más lejos que la explicación.",
+      "selected_score": null,
+      "no_remate_reason": null
     }
   ],
   "final_outcomes": [
@@ -205,7 +226,7 @@
   },
   "requests_state": {
     "status": "valid_no_active",
-    "updated_at": "2026-10-30T12:13:00+01:00"
+    "updated_at": "2026-10-30T12:12:00+01:00"
   },
   "last_run": {
     "version": 1,
@@ -216,13 +237,20 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-30T12:08:00+01:00",
-    "updated_at": "2026-10-30T12:13:00+01:00",
-    "finished_at": "2026-10-30T12:13:00+01:00",
+    "updated_at": "2026-10-30T12:12:00+01:00",
+    "finished_at": "2026-10-30T12:12:00+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: 1/1 explicado y verificado; cola final 0; Top 10 cubierto/terminal 10/10.",
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "processed_ids": [
+      "eebd7eeea00c"
+    ],
+    "partial": false,
+    "message": "Pasada cerrada: El Fargue explicado y verificado; cola final 0 y ninguna reexplicación pendiente.",
     "summary": {
       "attempted": 1,
       "explained": 1,
@@ -240,7 +268,7 @@
       "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates_reviewed": 0,
+      "pending_visual_candidates_reviewed": 1,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -262,20 +290,13 @@
     "remate_selections": [
       {
         "trend_id": "eebd7eeea00c",
-        "title": "El Fargue",
         "revision": 0,
-        "closer_text": "🌶️ La detonación llegó más lejos que la explicación.",
-        "selection_note": "Elegido por concreción y porque dirige el giro a la incertidumbre sobre las causas, no a los heridos."
+        "selected_text": "🌶️ La detonación llegó más lejos que la explicación.",
+        "selected_score": null,
+        "no_remate_reason": null
       }
     ],
     "activity": [
-      {
-        "at": "2026-10-30T12:08:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola editorial 1; iniciando validación JIT y saneamiento obligatorio antes de investigar."
-      },
       {
         "at": "2026-10-30T12:09:00+01:00",
         "phase": "verifying",
@@ -387,15 +408,36 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada cerrada: 1/1 explicado y verificado; cola final 0; Top 10 cubierto/terminal 10/10."
+      },
+      {
+        "at": "2026-10-30T12:11:20+01:00",
+        "phase": "persisting",
+        "trend_id": "eebd7eeea00c",
+        "title": "El Fargue",
+        "message": "Persistencia detectada en main: ficha Explicada y request coinciden; la revisión ya fue retirada de la cola."
+      },
+      {
+        "at": "2026-10-30T12:11:40+01:00",
+        "phase": "verifying",
+        "trend_id": "eebd7eeea00c",
+        "title": "El Fargue",
+        "message": "Releyendo main: cola, requests y Explicadas tras la persistencia."
+      },
+      {
+        "at": "2026-10-30T12:11:50+01:00",
+        "phase": "verifying",
+        "trend_id": "eebd7eeea00c",
+        "title": "El Fargue",
+        "message": "Verificando id+revision y texto persistido: revisión 0 consistente y cola editorial vacía."
+      },
+      {
+        "at": "2026-10-30T12:12:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada cerrada: El Fargue explicado y verificado; cola final 0 y ninguna reexplicación pendiente."
       }
     ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
-    "processed_ids": [
-      "eebd7eeea00c"
-    ],
-    "partial": false,
     "final_outcomes": [
       {
         "id": "eebd7eeea00c",
