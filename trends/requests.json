@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T13:53:00+01:00",
+  "updated_at": "2026-10-30T13:51:10+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -3622,6 +3622,48 @@
         "Transportes",
         "Madrid-Sevilla",
         "Alta Velocidad"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "09fb9ff32c5a",
+      "name": "Dana",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-30T13:51:10+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "4bf3f8141770",
+      "requested_together": [
+        "Dana"
+      ],
+      "captured_with": [
+        "Dana",
+        "#30OctubrESP"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "22601009b977",
+      "name": "#30OctubrESP",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-10-30T13:51:10+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "4bf3f8141770",
+      "requested_together": [
+        "#30OctubrESP"
+      ],
+      "captured_with": [
+        "Dana",
+        "#30OctubrESP"
       ],
       "auto_queued": true,
       "auto_queue_scope": "top30"
