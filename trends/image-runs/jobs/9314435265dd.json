@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-9314435265dd-r0-a1-1791152763963",
-  "requested_at": "2026-10-04T22:26:03.955265Z",
-  "updated_at": "2026-10-04T22:29:45.670Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-9314435265dd-r0-a1-1793319479474",
+  "requested_at": "2026-10-30T00:17:59.440272Z",
+  "updated_at": "2026-10-30T00:17:59.440272Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -17,46 +19,35 @@
   "attempt": 1,
   "auto_repair": true,
   "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
-  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Asraf",
     "revision": 0,
-    "explanation": "TT#3 Asraf es tendencia por #ConexiónHonduras4: Asraf Beno compite en la Liga de los Nominados junto a Arkano, Chiqui, Omar y Yola, mientras Yulen Pereira vuelve al plató tras su expulsión.\n🌶️ Honduras convirtió la lista de espera en prime time.",
-    "closer_text": "🌶️ Honduras convirtió la lista de espera en prime time.",
+    "explanation": "TT#9 Asraf es tendencia porque Supervivientes All Stars comunicó su evacuación tras sufrir varios mareos; su continuidad queda pendiente de las pruebas médicas.\n#AsrafBeno #SupervivientesAllStars #Telecinco",
+    "closer_text": "",
     "trend_names": [
-      "Asraf",
-      "Pereira"
+      "Asraf"
     ],
-    "group_title": "Conexión Honduras · Liga de los Nominados y regreso de Yulen Pereira",
-    "rank_at_explanation": 3,
-    "explained_at": "2026-10-05T00:27:15+02:00",
+    "group_title": "Asraf · evacuación médica",
+    "rank_at_explanation": 9,
+    "explained_at": "2026-10-30T01:28:25+01:00",
     "verification_sources": [
-      {
-        "source": "FormulaTV · 3/10/2026",
-        "url": "https://www.formulatv.com/noticias/supervivientes-all-stars-3-nominados-emociones-138400/"
-      },
-      {
-        "source": "Los40 · 2/10/2026",
-        "url": "https://los40.com/2026/10/02/nueva-lista-de-nominados-provisionales-de-supervivientes-all-stars-con-intervencion-de-los-familiares-y-roces-en-plato/"
-      }
+      "https://eltelevisero.huffingtonpost.es/2026/10/supervivientes-all-stars-tiene-que-evacuar-a-asraf-beno-y-su-continuidad-pende-de-un-hilo-en-el-programa-de-telecinco/",
+      "https://www.mediasetinfinity.es/programas-tv/supervivientes/"
     ],
-    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "pop_art",
+    "image_style_index": 7
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
-    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "f090c797c0c3f18e8b49a3caa027d394a924a6b056dfc94b052fb83d40bbbd1f",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-04T22:28:16.550Z",
-  "pc_launched_at": "2026-10-04T22:28:24.594Z",
-  "upload_received_at": "2026-10-04T22:29:40.217Z",
-  "upload_sha256": "687390367cd7f3933a7aa3483a30980653e8f948720deb410dbce88a3a5d77ef",
-  "upload_bytes": 2805450,
-  "finished_at": "2026-10-04T22:29:45.670Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
