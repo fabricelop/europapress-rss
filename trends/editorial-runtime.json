@@ -3,316 +3,87 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T15:25:00+01:00",
+  "last_started_at": "2026-10-30T15:40:00+01:00",
   "last_completed_at": "2026-10-30T15:28:00+01:00",
-  "updated_at": "2026-10-30T15:28:00+01:00",
-  "status": "done_with_incidents",
-  "queue_complete": true,
-  "processed_ids": [
-    "dc90fe5a413e",
-    "8d550038a24d"
-  ],
+  "updated_at": "2026-10-30T15:40:00+01:00",
+  "status": "running",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "dc90fe5a413e",
-    "8d550038a24d"
-  ],
-  "run_id": "tr-chat-20261030T152500+0100-manual",
-  "previous_run_id": "tr-chat-20261030T151120+0100-manual",
+  "remaining_problematic_ids": ["dc90fe5a413e", "8d550038a24d"],
+  "run_id": "tr-chat-20261030T154000+0100-manual",
+  "previous_run_id": "tr-chat-20261030T152500+0100-manual",
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "explained": 0,
     "explanation_groups": 0,
     "new_cards": 0,
-    "problematic": 2,
-    "final_resolved": 2,
+    "problematic": 0,
+    "final_resolved": 0,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 1,
+    "incidents": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T15:25:00+01:00",
+      "at": "2026-10-30T15:40:00+01:00",
       "phase": "preparing",
       "trend_id": "dc90fe5a413e",
       "title": "#30OctubrESP",
-      "message": "Pasada manual iniciada: 0 preparing/update, 0 rewrite_pending y 2 problematic vigentes en Top 30."
-    },
-    {
-      "at": "2026-10-30T15:26:30+01:00",
-      "phase": "investigating",
-      "trend_id": "dc90fe5a413e",
-      "title": "#30OctubrESP",
-      "message": "Reintento r0: la etiqueta sigue activa, pero no se verifica un detonante causal concreto."
-    },
-    {
-      "at": "2026-10-30T15:26:30+01:00",
-      "phase": "investigating",
-      "trend_id": "8d550038a24d",
-      "title": "#30OctubrESP",
-      "message": "Reintento r2: la pista editorial sigue sin corroboración causal independiente."
-    },
-    {
-      "at": "2026-10-30T15:27:30+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final: 0 preparing/update, 0 rewrite_pending y 2 problematic. La cola autoritativa quedó actualizada; requests.json no pudo guardar el historial nuevo por fallo del conector."
-    },
-    {
-      "at": "2026-10-30T15:28:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cierre con incidencia de persistencia secundaria: no se inventa explicación; sin ImageGen ni Telegram."
+      "message": "Reintentando las dos revisiones problemáticas aún vigentes en Top 30; sin ImageGen ni Telegram."
     }
   ],
-  "ratings_snapshot": {
-    "path": "trends/remate-ratings.json",
-    "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-    "updated_at": "2026-10-06T21:21:47.927Z",
-    "total_ratings": 154,
-    "recent_considered": 30
-  },
-  "remate_selections": [],
-  "final_outcomes": [
-    {
-      "id": "listas-auto-fc632ae8435ee7ca7518",
-      "status": "grouping_completed",
-      "review_outcome": null,
-      "grouping_state": "completed"
-    },
-    {
-      "id": "red-review-e5ce7866b17650cf6a98",
-      "status": "review_completed",
-      "review_outcome": "stale",
-      "grouping_state": null
-    },
-    {
-      "id": "red-review-b00db6420f77a5793f55",
-      "status": "review_completed",
-      "review_outcome": "updated",
-      "grouping_state": null
-    },
-    {
-      "id": "red-review-6c75d38f9afd25004f2d",
-      "status": "review_completed",
-      "review_outcome": "updated",
-      "grouping_state": null
-    },
-    {
-      "id": "red-review-57995fbed045dc251683",
-      "status": "review_completed",
-      "review_outcome": "updated",
-      "grouping_state": null
-    },
-    {
-      "id": "red-review-85fc60c70503123bd2d9",
-      "status": "review_completed",
-      "review_outcome": "unchanged",
-      "grouping_state": null
-    },
-    {
-      "id": "red-review-4430193b76380af83f7f",
-      "status": "review_completed",
-      "review_outcome": "unchanged",
-      "grouping_state": null
-    },
-    {
-      "id": "0151e1be35f5",
-      "status": "explained",
-      "review_outcome": null,
-      "grouping_state": null
-    },
-    {
-      "id": "c6e758d97041",
-      "status": "problematic",
-      "review_outcome": null,
-      "grouping_state": null
-    },
-    {
-      "id": "listas-auto-fc658ba836ce6ad59bf9",
-      "status": "grouping_completed",
-      "review_outcome": null,
-      "grouping_state": "completed"
-    },
-    {
-      "id": "listas-auto-bb6e636bf571c9bb23f5",
-      "status": "grouping_completed",
-      "review_outcome": null,
-      "grouping_state": "completed"
-    },
-    {
-      "id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
-      "revision": 0,
-      "status": "grouping_completed",
-      "grouping_state": "completed"
-    },
-    {
-      "id": "8d550038a24d",
-      "revision": 2,
-      "status": "problematic",
-      "name": "#30OctubrESP"
-    }
-  ],
-  "incidents": [
-    {
-      "id": "requests-persist-failed",
-      "message": "No se pudo persistir en trends/requests.json el nuevo last_attempt/history de las dos revisiones problemáticas; trends/editorial-queue.json sí quedó actualizado y verificado.",
-      "ids": [
-        "dc90fe5a413e",
-        "8d550038a24d"
-      ]
-    }
-  ],
-  "incident_count": 1,
-  "partial": false,
-  "visual_repair": {
-    "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T144030+0100-manual",
-    "status": "triggered",
-    "editorial_blocking": false
-  },
-  "apply_workflow": {
-    "workflow": "direct-main-persistence",
-    "status": "verified",
-    "editorial_blocking": false
-  },
-  "requests_state": {
-    "status": "valid",
-    "updated_at": "2026-10-30T14:40:45+01:00"
-  },
+  "incidents": [],
+  "incident_count": 0,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T152500+0100-manual",
+    "run_id": "tr-chat-20261030T154000+0100-manual",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
-    "phase": "closing",
-    "started_at": "2026-10-30T15:25:00+01:00",
-    "updated_at": "2026-10-30T15:28:00+01:00",
-    "finished_at": "2026-10-30T15:28:00+01:00",
-    "current": 2,
+    "status": "RUNNING",
+    "phase": "preparing",
+    "started_at": "2026-10-30T15:40:00+01:00",
+    "updated_at": "2026-10-30T15:40:00+01:00",
+    "finished_at": null,
+    "current": 0,
     "total": 2,
-    "trend_id": null,
-    "title": null,
-    "queue_complete": true,
+    "trend_id": "dc90fe5a413e",
+    "title": "#30OctubrESP",
+    "queue_complete": false,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "dc90fe5a413e",
-      "8d550038a24d"
-    ],
-    "processed_ids": [
-      "dc90fe5a413e",
-      "8d550038a24d"
-    ],
+    "remaining_problematic_ids": ["dc90fe5a413e", "8d550038a24d"],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada: 0 preparing/update y 0 rewrite_pending; #30OctubrESP sigue sin causa verificable en sus dos revisiones. Incidencia: requests.json no aceptó el nuevo historial, aunque la cola sí quedó actualizada.",
+    "message": "Pasada manual iniciada: 0 preparing/update, 0 rewrite_pending y 2 problematic vigentes en Top 30; se reintentan al final con verificación actual.",
     "summary": {
-      "attempted": 2,
+      "attempted": 0,
       "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "problematic": 2,
-      "final_resolved": 2,
-      "skipped_concurrent": 0,
-      "remaining_active": 0,
+      "problematic": 0,
       "remaining_problematic": 2,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 1,
-      "grouping_requests": 0,
-      "groups_created": 0,
-      "members_covered": 0
+      "incidents": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "id": "requests-persist-failed",
-        "message": "No se pudo persistir en trends/requests.json el nuevo last_attempt/history de las dos revisiones problemáticas; trends/editorial-queue.json sí quedó actualizado y verificado.",
-        "ids": [
-          "dc90fe5a413e",
-          "8d550038a24d"
-        ]
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T15:25:00+01:00",
+        "at": "2026-10-30T15:40:00+01:00",
         "phase": "preparing",
         "trend_id": "dc90fe5a413e",
         "title": "#30OctubrESP",
-        "message": "Pasada manual iniciada: 0 preparing/update, 0 rewrite_pending y 2 problematic vigentes en Top 30."
-      },
-      {
-        "at": "2026-10-30T15:26:30+01:00",
-        "phase": "investigating",
-        "trend_id": "dc90fe5a413e",
-        "title": "#30OctubrESP",
-        "message": "Reintento r0: la etiqueta sigue activa, pero no se verifica un detonante causal concreto."
-      },
-      {
-        "at": "2026-10-30T15:26:30+01:00",
-        "phase": "investigating",
-        "trend_id": "8d550038a24d",
-        "title": "#30OctubrESP",
-        "message": "Reintento r2: la pista editorial sigue sin corroboración causal independiente."
-      },
-      {
-        "at": "2026-10-30T15:27:30+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Barrera final: 0 preparing/update, 0 rewrite_pending y 2 problematic. La cola autoritativa quedó actualizada; requests.json no pudo guardar el historial nuevo por fallo del conector."
-      },
-      {
-        "at": "2026-10-30T15:28:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre con incidencia de persistencia secundaria: no se inventa explicación; sin ImageGen ni Telegram."
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "dc90fe5a413e",
-        "revision": 0,
-        "status": "problematic",
-        "name": "#30OctubrESP"
-      },
-      {
-        "id": "8d550038a24d",
-        "revision": 2,
-        "status": "problematic",
-        "name": "#30OctubrESP"
+        "message": "Reintentando las dos revisiones problemáticas aún vigentes en Top 30; sin ImageGen ni Telegram."
       }
     ]
-  },
-  "radar": {
-    "captured_at": "2026-10-30T14:29:14+01:00",
-    "queue_count": 1,
-    "top10": [
-      "Urda",
-      "Adif",
-      "Óscar Puente",
-      "Angrois",
-      "#EnBocaDeTodos",
-      "Calvario",
-      "Mazón",
-      "DANA",
-      "Iryo",
-      "Koldo"
-    ]
-  },
-  "api_failover_enabled": false
+  }
 }
