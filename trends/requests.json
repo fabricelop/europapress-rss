@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T16:24:22.684Z",
+  "updated_at": "2026-10-30T16:25:00.121394+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -16900,6 +16900,66 @@
       "review_outcome": "stale",
       "completed_at": "2026-10-30T16:07:32.577634+00:00",
       "review_reason": "La revisión ha quedado obsoleta: la ficha publicada de Renfe ya fue superada por explicaciones posteriores sobre Renfe/Adif y el corte Madrid-Andalucía, por lo que se conserva el texto y la fecha originales."
+    },
+    {
+      "id": "red-review-49cc6ffce6867a4bcaf5",
+      "revision": 0,
+      "name": "Revisar novedades: Repsol",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-10-30T16:25:00.121394+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "d0ec9dd0dbf2",
+        "revision": 0,
+        "name": "Repsol",
+        "rank": 6,
+        "explanation": "TT#6 Repsol es tendencia porque ganó 5.006 M€ hasta septiembre, un 325% más, impulsada por el alza del crudo y los márgenes de refino; además elevó su recompra de acciones.\n#Repsol #Refino #Resultados\n🌶️ El barril ha terminado pasando por caja.",
+        "explanation_sha256": "2af427527fa3d08018de63b6f50fa669a3d7210c38d26b0fba0435dcdfc43485",
+        "explained_at": "2026-10-29T17:17:20+01:00",
+        "verification_sources": [
+          "https://www.repsol.com/es/sala-prensa/notas-prensa/2026/repsol-redobla-compromiso-espana-11500-millones-proyectos-hasta-2030/index.cshtml",
+          "https://www.reuters.com/business/energy/spains-repsol-increases-buybacks-q3-profit-soars-above-expectations-2026-10-29/"
+        ],
+        "fingerprint": "489d3b28601b5ff35813437d6aa5c6c9bbed1bffe805c549798e0ec7720091ee"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-f62ec3ed348cf7a88824",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo García",
+      "rank": 24,
+      "status": "preparing",
+      "requested_at": "2026-10-30T16:25:00.121394+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "d7ef75f3aa45",
+        "revision": 0,
+        "name": "Koldo García",
+        "rank": 2,
+        "explanation": "TT#2 Koldo García es tendencia porque dos facturas atribuyen a Dos Mil Palabras, editora de OkDiario, 242.000 € por su defensa.\n#KoldoGarcía #OkDiario #AudienciaNacional\n🌶️ El misterio de la defensa acabó con IVA incluido.",
+        "explanation_sha256": "f4b6754c35b3788b60e15ab45ffe6bac6406b9b6a3c7b33845fc28d07e949f80",
+        "explained_at": "2026-10-29T14:16:00+01:00",
+        "verification_sources": [
+          "https://elpais.com/espana/2026-10-29/la-editora-de-okdiario-pago-242000-euros-para-costear-honorarios-y-gastos-de-la-defensa-de-koldo-garcia.html",
+          "https://cadenaser.com/nacional/2026/10/29/la-empresa-deditora-de-okdiario-pago-200000-euros-para-sufragar-la-defensa-de-koldo-garcia-cadena-ser/"
+        ],
+        "fingerprint": "037fa4c58e3ff511202e13154855db1825430dd6ab11dc9ee8d694b353daf5d9"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ]
 }
