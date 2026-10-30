@@ -1,3 +1,5 @@
+> **Actualización normativa 30/10/2026:** todas las tendencias pendientes de los puestos 1–30 entran automáticamente en elaboración. La regla anterior «Top 10 automático y 11–30 manuales» queda sustituida; sus menciones anteriores son históricas. El filtro Nuevas se retira en iPhone 0.4.26. Ver §22.
+
 # TTActualidad — memoria operativa integral y manual de rescate
 **Revisión base: 29 de octubre de 2026.** Repositorio: **fabricelop/europapress-rss**. Este documento recoge arquitectura verificada contra código y decisiones de nuestras conversaciones. Es un **documento vivo**, no una garantía de salud en tiempo real.
 
@@ -555,3 +557,37 @@ El usuario confirmó que la agrupación funcionó en iPhone y mostró la app con
 **Confirmación adicional:** tras indicar inicialmente «Sigue igual», el usuario aclaró «Olvídalo. Funciona bien» sobre Quitar de Listas en 0.4.24. No se cambió de nuevo ese diálogo.
 
 Fuente exacta del código 0.4.25: `cc5b0c1eaca135140a65207e077c7b1646cdefd2`. Build nativo: https://github.com/fabricelop/europapress-rss/actions/runs/41049610272 . Distinguir build/pruebas automáticas de instalación y uso físico.
+
+
+## 21. Noticias terminadas que siguen en En elaboración — 30/10/2026
+
+**Incidencia:** el usuario veía ocho noticias y no percibía efecto de Solicitar procesamiento. Se verificó el trigger de iPhone `tt-ios-1793362478410-b1491681` en la cabeza viva del PR #2, solicitado a las 12:14:38Z (13:14:38 Madrid). Durante la investigación el proceso editorial concurrente materializó siete noticias en prepared.json entre las 12:23:35Z y 12:24:55Z; la cola compacta y status quedaron a cero a las 12:27:20Z. Esta reparación del cliente no elaboró ni publicó esas noticias. La presencia de un trigger prueba la petición, no cada eslabón posterior; el run-ack.json histórico del 04/10 no confirma ese comando.
+
+**Causas verificadas en iPhone 0.4.25:**
+
+1. El bucle de consulta cada 75s se activaba solo con órdenes locales sin comprobante o solicitudes de agrupación. Una noticia aceptada por GitHub pero aún en elaboración no mantenía por sí sola las consultas. Una pantalla abierta podía seguir mostrando el conteo anterior aunque main ya hubiese cambiado.
+2. El botón guardaba un trigger sin consultar la cola antes/después. Podía solicitar sobre un contador antiguo y no traer el resultado a pantalla.
+3. `processing.isEmpty` activaba un fallback a status.processing_items incluso si editorial-queue.json era válida y estaba vacía. Se confundían ausencia de datos y cero trabajo.
+4. Un overlay local prepare/rework se retiraba al ver la fase intermedia en elaboración, pero no siempre cuando la revisión objetivo aparecía directamente READY entre dos consultas.
+
+**Corrección 0.4.26 build32**, rama `fix/ttactualidad-ios-0.4.26-seguimiento-editorial`, código `6ec79d5e3d28b1cef8dda200498b50790e39334f`:
+
+- `EditorialProgressPolicy.shouldPoll` mantiene lectura cada 60s con órdenes pendientes, noticias o tendencias en elaboración, o mientras se mira esa vista. Mantiene la exclusión mutua de refrescos del store y el trabajo de lectura fuera de MainActor. No es un servicio de consulta permanente en segundo plano.
+- El botón consulta main antes de pedir una pasada y vuelve a consultar después. Si la lectura fresca demuestra cero pendientes, informa de ello sin lanzar otro comando. Si la lectura falla, no presenta ese fallo como confirmación de cola vacía. Mantiene separados petición registrada y redacción terminada.
+- `workingNewsRows` trata una cola vacía válida como autoritativa, usa el resumen solo si falta la estructura de cola y excluye revisiones ya READY; una revisión posterior activa sigue pendiente.
+- `retireSyncedActions` retira overlays prepare/rework al aparecer la revisión READY objetivo. READY anterior no cierra una reelaboración posterior y no se inventa una confirmación de publicación/borrado.
+- `editorialReadFreshness` registra si se descargaron los documentos editoriales necesarios del proyecto en esa consulta. No exige que un radar ajeno funcione para comprobar noticias.
+- Ocho regresiones nativas nuevas reproducen los casos anteriores, junto con las siete pruebas del menú. Workflow: https://github.com/fabricelop/europapress-rss/actions/runs/41057142681 . Un build correcto no prueba por sí solo la instalación física.
+
+**Diagnóstico posterior:** comparar primero main fresco con la pantalla. Si main ya tiene READY, revisar consultas y overlays del cliente. Si main sigue PROCESSING, continuar hacia trigger, listener, mensaje real, outbox y aplicador; no atribuirlo a caché sin esa comprobación. Para ver el resultado de esta incidencia en versiones anteriores, pulsar Actualizar. No reenviar en bucle ni tocar imágenes/decisiones para aparentar progreso.
+
+
+## 22. Top 30 automático y retirada de Nuevas — 30/10/2026
+
+Petición explícita del usuario durante la reparación de seguimiento: todas las tendencias pendientes/azules del Top 30 deben pasar automáticamente a En elaboración, no solo las diez primeras. Se elimina el filtro Nuevas. Esta regla sustituye cualquier instrucción anterior que exija Preparar manual para 11–30.
+
+- `trends/auto_queue_new.py` selecciona puestos 1–30 y registra `auto_queue_scope:top30`. Elimina la retirada automática de puestos 11–30 por la antigua política. Conserva investigaciones ya aceptadas cuando cambia el ranking, solicitudes manuales y metadatos de Agrupar Listas.
+- Siguen vigentes la fiabilidad/frescura del radar, deduplicación, revisiones, decisiones terminales y explicaciones de menos de 48h. Un episodio posterior a la caducidad usa ID independiente; no resucita el objeto borrado ni su imagen. Nunca seleccionar 31+ ni Próximas tendencias automáticamente.
+- El workflow `ttendencias-refresh.yml` aplica la selección en cada captura y despierta el runner existente solo cuando entran nuevas revisiones. El prompt editorial se actualiza para que el runner no vuelva a ignorar 11–30. Encolar no equivale a explicar ni publicar.
+- iPhone 0.4.26 build32 conserva seis filtros, en dos filas de tres: Top 30, Listas, En elaboración, Recientes, Pendientes y Antiguas. Cualquier rango sin explicación se etiqueta Pendiente; se retira el estado visual Preparación manual para 11–30. La regla automática es de backend y también beneficia a clientes anteriores tras refrescar; retirar Nuevas requiere instalar el IPA nuevo.
+- Regresiones: 30 entradas automáticas sin duplicar al segundo tick, 31+ excluidas, petición manual y caso legacy rank11 conservados, cierres y explicaciones vigentes protegidos, captura insegura sin selección, reentrada con ID nuevo, caducidad48h en rank30 y grupo manual antiguo sin falso cierre. También pasan las 13 pruebas de agrupación de Listas.

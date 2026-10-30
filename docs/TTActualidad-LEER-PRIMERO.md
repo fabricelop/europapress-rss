@@ -21,7 +21,7 @@
 | No hay novedades/noticias nuevas | telegram/events.json, ttittulares/status.json, radar-no-d1.yml | Radar TTiTTulares, fuentes, agrupación y frescura |
 | Noticias con 4+ fuentes no pasan a elaboración | telegram/editorial-processing.json, ttittulares/editorial-queue.json, ttittulares/auto_queue.py | Umbral, anti-duplicación y selección |
 | Top 30 vacío/antiguo | trends/recent.json, ttendencias-refresh.yml | Captura y consenso de tendencias |
-| Top 10 sin preparar; 11–30 se eligen solas | trends/requests.json, trends/editorial-queue.json, trends/auto_queue_new.py | Selección Top 10 automática y 11–30 manual |
+| Pendientes del Top 30 no pasan a elaboración | trends/requests.json, trends/editorial-queue.json, trends/auto_queue_new.py | Selección automática Top 30; excluir 31+ |
 | «En elaboración» se acumula | Ambas colas + prompts editoriales + ramas control + logs locales | Solicitud ≠ envío real ≠ resultado persistido |
 | Windows «Ready» pero no redacta | Get-ScheduledTaskInfo y logs de listeners en C:\TTiTTulares | Último resultado, Ejecutar.js, CDP 9223, ACK |
 | «Target crashed» | ttittulares-mobile-trigger.log / ttendencias-mobile-trigger.log | ChatGPT/CDP 9223, pestañas, memoria, Ejecutar.js |
@@ -64,7 +64,7 @@ Para memoria y pestañas: windows/Repair-TT-Chrome-Memory-Safe.ps1 **-InspectOnl
 ## Reglas de oro
 - El radar **capta y selecciona**; GitHub Actions **encola o solicita**, pero no investiga/redacta por sí solo. El editor de ChatGPT debe trabajar y **persistir en main**; un trigger y un ACK «launched» NO demuestran READY/explained.
 - **TTiTTulares:** automático con **≥4 familias de fuentes generales independientes**, control de duplicados y hecho nuevo; manual puede investigar con menos. Elaboración factual + 2–3 hashtags específicos + **un** remate 🌶️, **≤256 caracteres**, sin generar imagen en la pasada.
-- **TTendencias:** Top 10 automático; puestos 11–30 solo «Preparar» explícito; explicación caduca tras 48 h (sin destruir archivo); texto TT#N + hecho + hashtags + remate, **menos de 280 caracteres ponderados**; cierre coherente en **dos JSON**.
+- **TTendencias:** todas las pendientes del Top 30 entran automáticamente en elaboración; excluir puestos 31+; explicación caduca tras 48 h (sin destruir archivo); texto TT#N + hecho + hashtags + remate, **menos de 280 caracteres ponderados**; cierre coherente en **dos JSON**.
 - **Imagen IA:** etapa independiente del texto. «Copiar GAG» debe producir **solo ilustración sin texto ni tarjeta inferior**; no dibujar 🌶️. Los puentes Chrome 9223 pueden hacer solo **launch_only**. La captura/envío real posterior pertenece a TTImageRelay, Chrome **9234**, PC → TTImages; no mandar imagen desde Actions/Telegram directo.
 - **Estrellas retiradas:** no se piden ni se reactivan; los historiales y párrafos antiguos son contexto histórico. **Sí se permite enviar una tendencia a TTiTTulares por decisión del usuario**, con verificación posterior del hecho.
 - **Acciones de usuario:** evento repository_dispatch → workflow → cambios en GitHub → **recibo por request_id** → lectura de main. No asumir éxito por HTTP 204. Borrados/publicadas/desestimadas son terminales; no resucitar registros por un JSON viejo. No publicar automáticamente en X.
@@ -86,3 +86,11 @@ Agrupar → dispatch `ttactualidad_group_listas_v1` → `pilot/listas_grouping.p
 Última fuente nativa: **0.4.25 build31**, rama `feature/ttactualidad-ios-0.4.25-menu-icono`, basada en 0.4.24. Tras abrir una vez la app, mantener pulsado el icono ofrece Noticias listas, Tendencias listas, En elaboración y Órdenes por confirmar. Cada acceso abre su destino y solicita una consulta. Contadores de la última lectura, con fecha/hora y aviso de datos parciales; no son información en tiempo real. Ver §20 del manual y `ios/ttactualidad/HOME-SCREEN-QUICK-ACTIONS.md` en esa rama.
 
 El usuario confirmó finalmente que **Quitar de Listas de 0.4.24 funciona**; se descartó una nueva modificación del diálogo.
+
+
+## Seguimiento de En elaboración (30/10/2026)
+
+Última fuente iPhone: **0.4.26 build32**, rama `fix/ttactualidad-ios-0.4.26-seguimiento-editorial`, basada en 0.4.25. Corrige consultas periódicas cuando hay noticias/tendencias aceptadas en elaboración, comprobación de cola antes/después del botón, fallback de cola vacía y overlays de reelaboración ya READY. Ver §21. No confundir una pantalla sin refrescar con un trigger no registrado ni con una redacción no ejecutada.
+
+
+**Nueva regla prioritaria del usuario, 30/10/2026:** toda pendiente del Top 30 (puestos 1–30) pasa automáticamente a En elaboración. Sustituye la restricción histórica de 11–30 manuales. Se conservan frescura de captura, cierres y explicaciones vigentes; el filtro Nuevas se elimina en iPhone 0.4.26. Ver §22.

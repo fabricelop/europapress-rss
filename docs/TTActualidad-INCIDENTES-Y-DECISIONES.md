@@ -148,3 +148,17 @@ El usuario solicitó un menú útil en el icono del iPhone. Se implementan cuatr
 La fuente es `feature/ttactualidad-ios-0.4.25-menu-icono`, basada en la 0.4.24 real, sin sustituirla por el iOS antiguo de main. Ver §20 de la memoria para delegados, router, almacenamiento y diagnóstico. La validación automática comprende siete pruebas nativas de lógica en iOS Simulator y compilación del IPA; instalación y gesto en el iPhone requieren comprobación del usuario.
 
 **Cierre de la incidencia anterior:** el usuario confirmó que Quitar de Listas funciona en 0.4.24; no se aplicó otra modificación al diálogo.
+
+
+## 9. 30/10/2026 — seguimiento detenido de noticias en elaboración
+
+El usuario veía ocho noticias y no percibía efecto del botón. La petición de iPhone sí estaba persistida (`tt-ios-1793362478410-b1491681`). Mientras se revisaba, el editor concurrente cerró siete noticias entre 13:23 y 13:25 Madrid, y la cola/resumen quedaron a cero a las 13:27. No se generaron esas noticias desde esta reparación.
+
+En 0.4.25 las noticias aceptadas en elaboración no activaban por sí solas el sondeo; el botón tampoco leía el estado antes/después. Había además fallback de una cola vacía a un resumen antiguo y overlays que podían esperar una fase intermedia ya superada. 0.4.26 build32 corrige esos cuatro puntos, consulta cada minuto mientras corresponda y no declara cola vacía ante una lectura fallida. Conserva el menú del icono y el resto de funciones.
+
+Fuente: `fix/ttactualidad-ios-0.4.26-seguimiento-editorial`. Ocho regresiones nativas nuevas más siete existentes; compilación de app y Live Activity. Ver §21 del manual y `ios/ttactualidad/EDITORIAL-PROGRESS.md` en la rama. No se modificaron Chrome, listeners, automatizaciones, imágenes ni decisiones editoriales reales.
+
+
+## 10. 30/10/2026 — todas las pendientes del Top 30 pasan automáticamente a elaboración
+
+El usuario amplió explícitamente la selección automática de puestos 1–10 a 1–30 y pidió quitar Nuevas. Se actualizan selector, conservación de cola, workflow y contrato editorial en main; se mantienen cierres, explicaciones vigentes, capturas fiables y episodios independientes. El iPhone 0.4.26 elimina Nuevas y la etiqueta Preparación manual de 11–30. Pruebas de selector/idempotencia/terminales/caducidad/grupos y 13 pruebas de Agrupar correctas. Ver §22.

@@ -50,7 +50,7 @@ jobs:
       - name: Verificar radar emergente y continuidad de observaciones
         run: python3 .github/scripts/test_ttendencias_radar_history.py
 
-      - name: Verificar Top 10 automático y Top 11-30 exclusivamente manual
+      - name: Verificar Top 30 automático y protección de estados vigentes
         run: python3 .github/scripts/test_ttendencias_top30_queue.py
 
       - name: Actualizar Top 30 y cola web
@@ -87,7 +87,7 @@ jobs:
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Actualizar Top 10 TTendencias"
+          git commit -m "Actualizar Top 30 TTendencias"
           # Otras pasadas escriben en main varias veces por minuto. Un
           # rechazo de push no debe perder las nuevas pendientes.
           for attempt in 1 2 3 4 5 6; do
@@ -107,10 +107,10 @@ jobs:
             sleep "$attempt"
           done
 
-          # Solo Top 10 se encola automáticamente. Puestos 11-30 son
-          # visuales y solo entran a Explicadas al pulsar Preparar novedad.
+          # Toda pendiente del Top 30 entra automáticamente en elaboración.
+          # Los cierres, explicaciones vigentes y revisiones siguen protegidos.
 
-      - name: Despertar elaboracion editorial de nuevas Top 10
+      - name: Despertar elaboracion editorial de nuevas Top 30
         # The radar only populates preparing/update; it does NOT explain.
         # Reuse the existing dedicated PC Chat editorial listener. One trigger
         # for a newly enqueued (id, revision), never a periodic blind replay.

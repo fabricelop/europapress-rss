@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Top 30 is display only: 1-10 automatic, 11-30 only manual."""
+"""All pending Top 30 entries are automatic; histories and manual work survive."""
 import json
 import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 source = Path(__file__).resolve().parents[2] / "trends" / "auto_queue_new.py"
-reconcile_source = Path(__file__).resolve().parents[2] / "trends" / "reconcile_prepared_ready.py"
+reconcile_source = source.with_name("reconcile_prepared_ready.py")
 
 def load(path):
     return json.loads(path.read_text(encoding="utf8"))
@@ -22,8 +24,7 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
     names = [f"Tendencia {i}" for i in range(1, 31)]
     put(folder / "recent.json", {
-        "selection_method": "consensus",
-        "sources_used": ["social-A", "social-B"],
+        "selection_method": "consensus", "sources_used": ["social-A", "social-B"],
         "items": [{"name": name, "rank": i} for i, name in enumerate(names, 1)],
         "upcoming": [{"name": "Tendencia 31", "rank": 31}],
     })
@@ -38,41 +39,158 @@ with tempfile.TemporaryDirectory() as foldername:
         return load(folder / "requests.json")["requests"]
 
     first = run()
-    auto = [x for x in first if x.get("auto_queued") and
-            x.get("status") in {"preparing", "update", "problematic"}]
-    assert len(auto) == 10, auto
-    assert {x["rank"] for x in auto} == set(range(1, 11)), auto
-    assert len(run()) == len(first), "Top 30 cannot auto-fill ranks 11-30"
+    auto = [x for x in first if x.get("auto_queued") and x.get("status") == "preparing"]
+    assert len(auto) == 30, auto
+    assert {x["rank"] for x in auto} == set(range(1, 31)), auto
+    assert all(x["auto_queue_scope"] == "top30" for x in auto)
+    assert load(folder / "editorial-queue.json")["count"] == 30
+    assert len(run()) == len(first), "A second tick must not duplicate Top 30 work"
+    assert not any(x["name"] == "Tendencia 31" for x in first)
 
-    manual = {
-        "id": "manual-r17", "name": "Tendencia 17", "rank": 17,
-        "status": "preparing", "requested_at": "2026-10-11T21:00:00+02:00",
-        "request_source": "github_pages_authorized_issue",
-        "auto_queued": False, "revision": 1
-    }
-    put(folder / "requests.json", {"requests": [*first, manual]})
-    after_manual = run()
-    assert any(x["id"] == "manual-r17" and x["status"] == "preparing"
-               for x in after_manual), after_manual
-    assert not any(x.get("auto_queued") and int(x.get("rank") or 0) > 10
-                   and x.get("status") in {"preparing", "update", "problematic"}
-                   for x in after_manual)
+    # Existing user requests and legacy rank 11 investigations remain active.
+    stamp = datetime.now(ZoneInfo("Europe/Madrid")).isoformat(timespec="seconds")
+    manual = {"id": "manual-r17", "name": "Tendencia 17", "rank": 17,
+              "status": "preparing", "requested_at": stamp,
+              "request_source": "github_pages_authorized_issue", "auto_queued": False,
+              "revision": 1, "user_pistas": "Conservar estas pistas"}
+    legacy = {"id": "legacy-r11", "name": "Tendencia 11", "rank": 11,
+              "status": "preparing", "requested_at": stamp, "auto_queued": True,
+              "auto_queue_scope": "next_unexplained_11_30", "revision": 0}
+    requests = [x for x in first if x["rank"] not in {11, 17}] + [manual, legacy]
+    put(folder / "requests.json", {"requests": requests})
+    after = run()
+    assert next(x for x in after if x["id"] == "manual-r17") == manual
+    assert next(x for x in after if x["id"] == "legacy-r11")["status"] == "preparing"
+    assert load(folder / "editorial-queue.json")["count"] == 30
 
-    # Regression: old mistakenly auto-queued rank 11 is retired, but the
-    # manual rank 17 is preserved and no historical explanation is removed.
-    legacy = {
-        "id": "legacy-r11", "name": "Tendencia 11", "rank": 11,
-        "status": "preparing", "auto_queued": True,
-        "auto_queue_scope": "next_unexplained_11_30",
-    }
-    put(folder / "requests.json", {"requests": [*after_manual, legacy]})
-    cleaned = run()
-    assert any(x["id"] == "legacy-r11" and x["status"] == "inactive"
-               for x in cleaned), cleaned
-    assert any(x["id"] == "manual-r17" and x["status"] == "preparing"
-               for x in cleaned), cleaned
-    assert not any(x["name"] == "Tendencia 31" for x in cleaned)
+    # The same revision of a closed card never reopens just because rank 28
+    # is now automatic. A currently explained rank 27 is not researched again.
+    fresh = datetime.now(ZoneInfo("Europe/Madrid")).isoformat(timespec="seconds")
+    request_rows = [x for x in after if x["rank"] not in {27, 28}]
+    request_rows += [
+        {"id": "already-ready", "name": "Tendencia 27", "rank": 27,
+         "revision": 0, "status": "explained", "explained_at": fresh,
+         "explanation": "TT#27 Tendencia 27 es tendencia por un hecho comprobado."},
+        {"id": "already-closed", "name": "Tendencia 28", "rank": 28,
+         "revision": 0, "status": "preparing", "requested_at": fresh},
+    ]
+    put(folder / "requests.json", {"requests": request_rows})
+    put(folder / "telegram-manual-explained.json", {"items": [request_rows[-2]]})
+    put(folder / "mobile-decisions.json", {"items": [{"id": "already-closed",
+        "revision": 0, "status": "published", "updated_at": fresh}]})
+    after = run()
+    assert next(x for x in after if x["id"] == "already-closed")["status"] == "published"
+    assert next(x for x in after if x["id"] == "already-ready")["status"] == "explained"
+    assert not any(x["id"] in {"already-ready", "already-closed"}
+                   for x in load(folder / "editorial-queue.json")["items"])
+    before_ids = {x["id"] for x in after}
+    # Unreliable stale captures must not auto-select a newly visible rank 30.
+    snapshot = load(folder / "recent.json")
+    snapshot["selection_method"] = "stale-fallback"
+    snapshot["items"][-1] = {"name": "Never queue from stale radar", "rank": 30}
+    put(folder / "recent.json", snapshot)
+    assert {x["id"] for x in run()} == before_ids
+    print("TT_TOP30_AUTOMATIC_OK: 1-30, idempotency, manual work, closures and fresh explanations")
 
+# A name returning in Top 30 days later must be a new editorial event, not
+# silently suppressed by a deleted delivery from an unrelated old match.
+with tempfile.TemporaryDirectory() as foldername:
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+    folder=Path(foldername)
+    shutil.copy2(source, folder/"auto_queue_new.py")
+    shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
+    old=(datetime.now(ZoneInfo("Europe/Madrid"))-timedelta(days=5)).isoformat(timespec="seconds")
+    put(folder/"recent.json",{"selection_method":"consensus","sources_used":["social-A","social-B"],
+        "items":[{"name":"Pubill","rank":17},{"name":"Fuera del Top 30","rank":31}]})
+    put(folder/"requests.json",{"requests":[{"id":"pubill-old","name":"Pubill","rank":4,
+        "revision":1,"status":"deleted","auto_queued":True,
+        "explained_at":old,"deleted_at":old,"explanation":"Partido antiguo"}]})
+    put(folder/"telegram-manual-explained.json",{"items":[{"id":"pubill-old",
+        "name":"Pubill","revision":1,"status":"explained",
+        "explained_at":old,"explanation":"Partido antiguo"}]})
+    put(folder/"telegram-image-deliveries.json",{"items":[{"event_id":"pubill-old",
+        "name":"Pubill","status":"deleted","deleted_at":old}]})
+    put(folder/"prepared.json",{"items":[]})
+    def update():
+        result=subprocess.run([sys.executable,str(folder/"auto_queue_new.py")],
+            cwd=folder,capture_output=True,text=True)
+        assert result.returncode==0,(result.stdout,result.stderr)
+        return load(folder/"requests.json")["requests"]
+    first=update()
+    assert len(first)==2,first
+    assert first[0]["status"]=="deleted" and first[0]["id"]=="pubill-old",first
+    assert first[1]["name"]=="Pubill" and first[1]["status"]=="preparing",first
+    assert first[1]["id"]!="pubill-old" and first[1]["revision"]==0,first
+    assert "explanation" not in first[1],first
+    assert len(update())==2,"No duplicate Top30 reopen on second refresh"
+    assert load(folder/"editorial-queue.json")["count"]==1
+    # Rank volatility cannot silently remove an already accepted investigation.
+    snapshot=load(folder/"recent.json")
+    snapshot["items"][0]={"name":"Otra tendencia","rank":1}
+    put(folder/"recent.json",snapshot)
+    after_rank_change=update()
+    assert any(x["id"]==first[1]["id"] and x["status"]=="preparing" for x in after_rank_change)
+    pending=load(folder/"editorial-queue.json")["items"]
+    assert any(x["id"]==first[1]["id"] and x["name"]=="Pubill" for x in pending),pending
+    print("TT_TOP30_REENTRY_OK: old closure retained, new episode and queue continuity")
+
+
+# Fresh Top-30 explanation older than 48h must become a distinct, image-enabled
+# episode even if its prior revision was grouped. A 47h explanation stays put.
+with tempfile.TemporaryDirectory() as foldername:
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+    folder=Path(foldername)
+    shutil.copy2(source, folder/"auto_queue_new.py")
+    shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
+    now=datetime.now(ZoneInfo("Europe/Madrid"))
+    old=(now-timedelta(hours=49)).isoformat(timespec="seconds")
+    recent=(now-timedelta(hours=47)).isoformat(timespec="seconds")
+    put(folder/"recent.json",{
+      "selection_method":"consensus","sources_used":["social-A","social-B"],
+      "items":[{"name":"Tendencia antigua","rank":30},{"name":"Tendencia vigente","rank":11}]})
+    requests=[
+      {"id":"ancient-r0","name":"Tendencia antigua","status":"grouped",
+       "revision":0,"rank":1,"explained_at":old,"explanation":"Texto de ayer"},
+      {"id":"recent-r0","name":"Tendencia vigente","status":"explained",
+       "revision":0,"rank":2,"explained_at":recent,"explanation":"Texto reciente"},
+    ]
+    put(folder/"requests.json",{"requests":requests})
+    put(folder/"telegram-manual-explained.json",{"items":[
+      {"id":r["id"],"name":r["name"],"revision":0,"status":"explained",
+       "explained_at":r["explained_at"],"explanation":r["explanation"]}
+      for r in requests]})
+    put(folder/"prepared.json",{"items":[]})
+    result=subprocess.run([sys.executable,str(folder/"auto_queue_new.py")],
+      cwd=folder,capture_output=True,text=True)
+    assert result.returncode==0,(result.stdout,result.stderr)
+    current=load(folder/"requests.json")["requests"]
+    fresh=[r for r in current if r["name"]=="Tendencia antigua" and r["id"]!="ancient-r0"]
+    assert len(fresh)==1,current
+    assert fresh[0]["status"]=="preparing" and fresh[0]["revision"]==0,fresh
+    assert fresh[0]["with_image"] is True and fresh[0]["ai_image_status"]=="pending",fresh
+    assert len([r for r in current if r["name"]=="Tendencia vigente"])==1,current
+    assert load(folder/"editorial-queue.json")["count"]==1
+    print("TT_TOP30_48H_NEW_AI_EPISODE_OK")
+
+# Existing narrow-topic closure and stale manual-group regressions still apply.
+with tempfile.TemporaryDirectory() as foldername:
+    folder = Path(foldername)
+    shutil.copy2(source, folder / "auto_queue_new.py")
+    shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
+    put(folder / "recent.json", {"selection_method":"consensus",
+        "sources_used":["social-A","social-B"],
+        "items":[{"name":f"Tendencia {i}","rank":i} for i in range(1,31)]})
+    put(folder / "requests.json", {"requests":[]})
+    put(folder / "telegram-manual-explained.json", {"items":[]})
+    put(folder / "prepared.json", {"items":[]})
+    def run():
+        result = subprocess.run([sys.executable,str(folder/"auto_queue_new.py")],
+            cwd=folder,capture_output=True,text=True)
+        assert result.returncode == 0, (result.stdout,result.stderr)
+        return load(folder/"requests.json")["requests"]
+    run()
     # Regression: a closed Telegram card under an equivalent holiday label
     # must not reopen another automatic editorial package.
     from datetime import datetime
@@ -91,6 +209,7 @@ with tempfile.TemporaryDirectory() as foldername:
     assert "Hispanidad" not in names or names["Hispanidad"]["status"] not in {"preparing","update"}, queued
     assert "#12DeOctubre" not in names or names["#12DeOctubre"]["status"] not in {"preparing","update"}, queued
     # Manual preparation is still allowed, including a related topic.
+    queued = [r for r in queued if r.get("name") != "Feliz 12"]
     queued.append({"id":"manual-feliz-12","name":"Feliz 12","rank":11,
                    "auto_queued":False,"request_source":"github_pages_authorized_issue",
                    "revision":1,"status":"preparing","requested_at":now})
@@ -119,87 +238,4 @@ with tempfile.TemporaryDirectory() as foldername:
     manual_fixed=next(x for x in fixed if x.get("id")=="manual-feliz-12")
     assert manual_fixed["status"]=="preparing",manual_fixed
     assert not manual_fixed.get("explanation"),manual_fixed
-    print("TT_TOP30_MANUAL_ONLY_OK: Top10 auto, Top11-30 manual, stale group ignored")
-
-
-# A name returning in Top 10 days later must be a new editorial event, not
-# silently suppressed by a deleted delivery from an unrelated old match.
-with tempfile.TemporaryDirectory() as foldername:
-    from datetime import datetime, timedelta
-    from zoneinfo import ZoneInfo
-    folder=Path(foldername)
-    shutil.copy2(source, folder/"auto_queue_new.py")
-    shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
-    old=(datetime.now(ZoneInfo("Europe/Madrid"))-timedelta(days=5)).isoformat(timespec="seconds")
-    put(folder/"recent.json",{"selection_method":"consensus","sources_used":["social-A","social-B"],
-        "items":[{"name":"Pubill","rank":1},{"name":"Solo manual","rank":11}]})
-    put(folder/"requests.json",{"requests":[{"id":"pubill-old","name":"Pubill","rank":4,
-        "revision":1,"status":"deleted","auto_queued":True,
-        "explained_at":old,"deleted_at":old,"explanation":"Partido antiguo"}]})
-    put(folder/"telegram-manual-explained.json",{"items":[{"id":"pubill-old",
-        "name":"Pubill","revision":1,"status":"explained",
-        "explained_at":old,"explanation":"Partido antiguo"}]})
-    put(folder/"telegram-image-deliveries.json",{"items":[{"event_id":"pubill-old",
-        "name":"Pubill","status":"deleted","deleted_at":old}]})
-    put(folder/"prepared.json",{"items":[]})
-    def update():
-        result=subprocess.run([sys.executable,str(folder/"auto_queue_new.py")],
-            cwd=folder,capture_output=True,text=True)
-        assert result.returncode==0,(result.stdout,result.stderr)
-        return load(folder/"requests.json")["requests"]
-    first=update()
-    assert len(first)==2,first
-    assert first[0]["status"]=="deleted" and first[0]["id"]=="pubill-old",first
-    assert first[1]["name"]=="Pubill" and first[1]["status"]=="preparing",first
-    assert first[1]["id"]!="pubill-old" and first[1]["revision"]==0,first
-    assert "explanation" not in first[1],first
-    assert len(update())==2,"No duplicate Top10 reopen on second refresh"
-    assert load(folder/"editorial-queue.json")["count"]==1
-    # Rank volatility cannot silently remove an already accepted investigation.
-    snapshot=load(folder/"recent.json")
-    snapshot["items"][0]={"name":"Otra tendencia","rank":1}
-    put(folder/"recent.json",snapshot)
-    after_rank_change=update()
-    assert any(x["id"]==first[1]["id"] and x["status"]=="preparing" for x in after_rank_change)
-    pending=load(folder/"editorial-queue.json")["items"]
-    assert any(x["id"]==first[1]["id"] and x["name"]=="Pubill" for x in pending),pending
-    print("TT_TOP10_REENTRY_OK: old closure retained, new episode and queue continuity")
-
-
-# Fresh Top-10 explanation older than 48h must become a distinct, image-enabled
-# episode even if its prior revision was grouped. A 47h explanation stays put.
-with tempfile.TemporaryDirectory() as foldername:
-    from datetime import datetime, timedelta
-    from zoneinfo import ZoneInfo
-    folder=Path(foldername)
-    shutil.copy2(source, folder/"auto_queue_new.py")
-    shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
-    now=datetime.now(ZoneInfo("Europe/Madrid"))
-    old=(now-timedelta(hours=49)).isoformat(timespec="seconds")
-    recent=(now-timedelta(hours=47)).isoformat(timespec="seconds")
-    put(folder/"recent.json",{
-      "selection_method":"consensus","sources_used":["social-A","social-B"],
-      "items":[{"name":"Tendencia antigua","rank":1},{"name":"Tendencia vigente","rank":2}]})
-    requests=[
-      {"id":"ancient-r0","name":"Tendencia antigua","status":"grouped",
-       "revision":0,"rank":1,"explained_at":old,"explanation":"Texto de ayer"},
-      {"id":"recent-r0","name":"Tendencia vigente","status":"explained",
-       "revision":0,"rank":2,"explained_at":recent,"explanation":"Texto reciente"},
-    ]
-    put(folder/"requests.json",{"requests":requests})
-    put(folder/"telegram-manual-explained.json",{"items":[
-      {"id":r["id"],"name":r["name"],"revision":0,"status":"explained",
-       "explained_at":r["explained_at"],"explanation":r["explanation"]}
-      for r in requests]})
-    put(folder/"prepared.json",{"items":[]})
-    result=subprocess.run([sys.executable,str(folder/"auto_queue_new.py")],
-      cwd=folder,capture_output=True,text=True)
-    assert result.returncode==0,(result.stdout,result.stderr)
-    current=load(folder/"requests.json")["requests"]
-    fresh=[r for r in current if r["name"]=="Tendencia antigua" and r["id"]!="ancient-r0"]
-    assert len(fresh)==1,current
-    assert fresh[0]["status"]=="preparing" and fresh[0]["revision"]==0,fresh
-    assert fresh[0]["with_image"] is True and fresh[0]["ai_image_status"]=="pending",fresh
-    assert len([r for r in current if r["name"]=="Tendencia vigente"])==1,current
-    assert load(folder/"editorial-queue.json")["count"]==1
-    print("TT_TOP10_48H_NEW_AI_EPISODE_OK")
+    print("TT_TOP30_CLOSED_TOPIC_AND_MANUAL_GROUP_OK")
