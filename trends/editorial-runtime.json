@@ -5,21 +5,20 @@
   "canonical": true,
   "last_started_at": "2026-10-30T19:13:17+01:00",
   "last_completed_at": "2026-10-30T18:58:00+01:00",
-  "updated_at": "2026-10-30T19:16:00+01:00",
+  "updated_at": "2026-10-30T19:18:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [
-    "808846a26299"
+    "808846a26299",
+    "fa530f914299"
   ],
   "remaining_ids": [
-    "fa530f914299",
     "6dcd1bfd7fda",
     "e40be8e866b4",
     "9dbe1a97a6b4",
     "2524fcda47bf"
   ],
   "remaining_active_ids": [
-    "fa530f914299",
     "6dcd1bfd7fda",
     "e40be8e866b4",
     "9dbe1a97a6b4",
@@ -29,15 +28,15 @@
   "run_id": "tr-1793383800000-manual",
   "previous_run_id": "tr-1793383800000-manual",
   "summary": {
-    "attempted": 1,
-    "explained": 1,
+    "attempted": 2,
+    "explained": 2,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 5,
+    "remaining_active": 4,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -72,6 +71,27 @@
       "trend_id": "808846a26299",
       "title": "Alcaraz",
       "message": "ID/revisión y texto coinciden en ambos registros; revisión retirada de la cola."
+    },
+    {
+      "at": "2026-10-30T19:18:00+01:00",
+      "phase": "investigating",
+      "trend_id": "fa530f914299",
+      "title": "Capitalismo",
+      "message": "Dos fuentes actuales confirman el discurso viral de Javier Barrio y la expresión «capitalismo con prisas»."
+    },
+    {
+      "at": "2026-10-30T19:18:00+01:00",
+      "phase": "persisting",
+      "trend_id": "fa530f914299",
+      "title": "Capitalismo",
+      "message": "Explicación factual persistida sin remate por sensibilidad; sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T19:18:00+01:00",
+      "phase": "verifying",
+      "trend_id": "fa530f914299",
+      "title": "Capitalismo",
+      "message": "ID/revisión y texto coinciden en requests y Listas; revisión retirada de la cola."
     }
   ],
   "incidents": [],
@@ -85,15 +105,14 @@
     "status": "RUNNING",
     "phase": "verifying",
     "started_at": "2026-10-30T19:13:17+01:00",
-    "updated_at": "2026-10-30T19:16:00+01:00",
+    "updated_at": "2026-10-30T19:18:00+01:00",
     "finished_at": null,
-    "current": 1,
+    "current": 2,
     "total": 6,
     "trend_id": null,
     "title": null,
     "queue_complete": false,
     "remaining_active_ids": [
-      "fa530f914299",
       "6dcd1bfd7fda",
       "e40be8e866b4",
       "9dbe1a97a6b4",
@@ -101,20 +120,21 @@
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [
-      "808846a26299"
+      "808846a26299",
+      "fa530f914299"
     ],
     "partial": false,
-    "message": "Pasada manual en curso 1/6. Sin ImageGen.",
+    "message": "Pasada manual en curso 2/6. Sin ImageGen.",
     "summary": {
-      "attempted": 1,
-      "explained": 1,
+      "attempted": 2,
+      "explained": 2,
       "updates": 0,
       "stale_reviews": 0,
       "unchanged_reviews": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 5,
+      "remaining_active": 4,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -151,6 +171,27 @@
         "trend_id": "808846a26299",
         "title": "Alcaraz",
         "message": "ID/revisión y texto coinciden en ambos registros; revisión retirada de la cola."
+      },
+      {
+        "at": "2026-10-30T19:18:00+01:00",
+        "phase": "investigating",
+        "trend_id": "fa530f914299",
+        "title": "Capitalismo",
+        "message": "Dos fuentes actuales confirman el discurso viral de Javier Barrio y la expresión «capitalismo con prisas»."
+      },
+      {
+        "at": "2026-10-30T19:18:00+01:00",
+        "phase": "persisting",
+        "trend_id": "fa530f914299",
+        "title": "Capitalismo",
+        "message": "Explicación factual persistida sin remate por sensibilidad; sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T19:18:00+01:00",
+        "phase": "verifying",
+        "trend_id": "fa530f914299",
+        "title": "Capitalismo",
+        "message": "ID/revisión y texto coinciden en requests y Listas; revisión retirada de la cola."
       }
     ],
     "final_outcomes": [
@@ -159,6 +200,12 @@
         "revision": 0,
         "status": "explained",
         "title": "Alcaraz"
+      },
+      {
+        "id": "fa530f914299",
+        "revision": 0,
+        "status": "explained",
+        "title": "Capitalismo"
       }
     ]
   },
@@ -167,7 +214,7 @@
   "phase": "verifying",
   "started_at": "2026-10-30T19:13:17+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 6,
   "trend_id": null,
   "title": null
