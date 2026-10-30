@@ -4,17 +4,17 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T21:55:00.000Z",
-  "last_completed_at": "2026-10-30T21:49:33.693Z",
-  "updated_at": "2026-10-30T21:55:00.000Z",
-  "status": "RUNNING",
-  "queue_complete": false,
+  "last_completed_at": "2026-10-30T21:56:00.000Z",
+  "updated_at": "2026-10-30T21:56:00.000Z",
+  "status": "DONE",
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793397300000-manual",
   "previous_run_id": "tr-1793396029532-manual",
-  "summary": "Pasada editorial real iniciada; verificando cola y reexplicaciones pendientes. Sin ImageGen.",
+  "summary": "Pasada editorial real completada 0/0: cola releída en main y verificada vacía, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
   "activity": [
     {
       "at": "2026-10-30T21:55:00.000Z",
@@ -22,15 +22,29 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada editorial real: cola compacta releída en main; verificando reexplicaciones, estados concurrentes y cierre. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T21:56:00.000Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni rewrite_pending/reexplicaciones pendientes."
+    },
+    {
+      "at": "2026-10-30T21:56:00.000Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada editorial real completada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
+  "phase": "closing",
   "started_at": "2026-10-30T21:55:00.000Z",
-  "finished_at": null,
+  "finished_at": "2026-10-30T21:56:00.000Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -41,21 +55,21 @@
     "project": "TTendencias",
     "run_id": "tr-1793397300000-manual",
     "source": "manual",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T21:55:00.000Z",
-    "updated_at": "2026-10-30T21:55:00.000Z",
-    "finished_at": null,
+    "updated_at": "2026-10-30T21:56:00.000Z",
+    "finished_at": "2026-10-30T21:56:00.000Z",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "queue_complete": false,
+    "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada editorial real iniciada; verificando cola y reexplicaciones pendientes. Sin ImageGen.",
+    "message": "Pasada editorial real completada 0/0: cola releída en main y verificada vacía, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -79,6 +93,20 @@
         "trend_id": null,
         "title": null,
         "message": "Inicio de pasada editorial real: cola compacta releída en main; verificando reexplicaciones, estados concurrentes y cierre. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T21:56:00.000Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni rewrite_pending/reexplicaciones pendientes."
+      },
+      {
+        "at": "2026-10-30T21:56:00.000Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada editorial real completada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
       }
     ],
     "final_outcomes": []
