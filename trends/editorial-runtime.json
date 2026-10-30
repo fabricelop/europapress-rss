@@ -4,34 +4,30 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T16:31:30+01:00",
-  "last_completed_at": "2026-10-30T16:19:30+01:00",
-  "updated_at": "2026-10-30T16:31:30+01:00",
-  "status": "running",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "last_completed_at": "2026-10-30T16:34:10+01:00",
+  "updated_at": "2026-10-30T16:34:10+01:00",
+  "status": "done",
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-db9fb6c63f89ac444f77",
     "red-review-ecba76c4274e57ce9970",
     "red-review-cf6acca8b418ced525e5"
   ],
-  "remaining_active_ids": [
-    "listas-auto-db9fb6c63f89ac444f77",
-    "red-review-ecba76c4274e57ce9970",
-    "red-review-cf6acca8b418ced525e5"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793374155026-manual",
   "previous_run_id": "tr-1793374254132-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "stale_reviews": 0,
-    "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "unchanged_reviews": 1,
+    "grouping_requests": 1,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 3,
+    "remaining_active": 0,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -45,6 +41,20 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio: 3 encargos vigentes en main; agrupación primero y después revisiones de novedades. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T16:33:26+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-cf6acca8b418ced525e5",
+      "title": "Renfe",
+      "message": "Revisión updated aplicada y retirada de la cola; Alvia quedó unchanged y la agrupación terminó sin grupos."
+    },
+    {
+      "at": "2026-10-30T16:34:10+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada completada: 3/3 encargos cerrados; cola 0, sin rewrite_pending. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -55,35 +65,35 @@
     "project": "TTendencias",
     "run_id": "tr-1793374155026-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T16:31:30+01:00",
-    "updated_at": "2026-10-30T16:31:30+01:00",
-    "finished_at": null,
-    "current": 0,
+    "updated_at": "2026-10-30T16:34:10+01:00",
+    "finished_at": "2026-10-30T16:34:10+01:00",
+    "current": 3,
     "total": 3,
     "trend_id": null,
     "title": null,
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "processed_ids": [
       "listas-auto-db9fb6c63f89ac444f77",
       "red-review-ecba76c4274e57ce9970",
       "red-review-cf6acca8b418ced525e5"
     ],
-    "remaining_problematic_ids": [],
-    "processed_ids": [],
     "partial": false,
-    "message": "Preparando 3 encargos vigentes; sin ImageGen.",
+    "message": "Pasada completada: agrupación sin grupos, Alvia unchanged y Renfe updated; cola 0 y sin rewrite_pending.",
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "explained": 0,
-      "updates": 0,
+      "updates": 1,
       "stale_reviews": 0,
-      "unchanged_reviews": 0,
-      "grouping_requests": 0,
+      "unchanged_reviews": 1,
+      "grouping_requests": 1,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 3,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -99,9 +109,46 @@
         "trend_id": null,
         "title": null,
         "message": "Inicio: 3 encargos vigentes en main; agrupación primero y después revisiones de novedades. Sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T16:33:26+01:00",
+        "phase": "verifying",
+        "trend_id": "red-review-cf6acca8b418ced525e5",
+        "title": "Renfe",
+        "message": "Revisión updated aplicada y retirada de la cola; Alvia quedó unchanged y la agrupación terminó sin grupos."
+      },
+      {
+        "at": "2026-10-30T16:34:10+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada completada: 3/3 encargos cerrados; cola 0, sin rewrite_pending. Sin ImageGen."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "listas-auto-db9fb6c63f89ac444f77",
+        "revision": 0,
+        "status": "grouping_completed",
+        "name": "Agrupación automática de Listas",
+        "groups_created": 0,
+        "members_covered": 0
+      },
+      {
+        "id": "red-review-ecba76c4274e57ce9970",
+        "revision": 0,
+        "status": "review_completed",
+        "name": "Alvia",
+        "outcome": "unchanged"
+      },
+      {
+        "id": "red-review-cf6acca8b418ced525e5",
+        "revision": 0,
+        "status": "review_completed",
+        "name": "Renfe",
+        "outcome": "updated"
+      }
+    ]
   },
   "error": null,
   "api_failover_enabled": false
