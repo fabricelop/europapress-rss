@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-30T13:29:25.500289+00:00",
+  "checked_at": "2026-10-30T13:50:11.409972+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -43,7 +43,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 3,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.5,
-      "run_id": 41063312280,
+      "age_minutes": 2.8,
+      "run_id": 41066153241,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -78,9 +78,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 10,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 2.4,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -88,8 +88,19 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "listas-auto-fc632ae8435ee7ca7518",
+        "red-review-e5ce7866b17650cf6a98",
+        "red-review-b00db6420f77a5793f55",
+        "red-review-6c75d38f9afd25004f2d",
+        "red-review-57995fbed045dc251683",
+        "red-review-85fc60c70503123bd2d9",
+        "red-review-4430193b76380af83f7f",
+        "4c7de84bfc7c",
+        "0151e1be35f5",
+        "c6e758d97041"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
