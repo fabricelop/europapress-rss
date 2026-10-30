@@ -1,14 +1,15 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T01:28:55+01:00",
-  "last_completed_at": "2026-10-30T01:28:55+01:00",
-  "updated_at": "2026-10-30T01:28:55+01:00",
+  "last_started_at": "2026-10-30T01:31:00+01:00",
+  "last_completed_at": "2026-10-30T01:37:00+01:00",
+  "updated_at": "2026-10-30T01:37:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
+    "0433e054949e",
     "374938d3ad87"
   ],
   "remaining_ids": [
@@ -20,213 +21,185 @@
     "374938d3ad87",
     "0433e054949e"
   ],
-  "run_id": "tr-chat-20261030T011000+0100",
-  "previous_run_id": "tr-chat-20261030T005500+0100",
+  "run_id": "tr-chat-20261030T013100+0100",
+  "previous_run_id": "tr-chat-20261030T011000+0100",
   "summary": {
-    "attempted": 4,
-    "explained": 3,
-    "final_resolved": 4,
-    "skipped_concurrent": 1,
+    "attempted": 2,
+    "explained": 0,
+    "problematic": 2,
+    "final_resolved": 2,
+    "skipped_concurrent": 0,
     "remaining_active": 0,
-    "remaining_problematic": 1,
-    "visual_backlog": 14,
+    "remaining_problematic": 2,
+    "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "remates_selected": 2,
-    "remates_omitted": 8,
-    "recent_missing_closer_reviewed": 8,
-    "pending_visual_candidates_reviewed": 14,
+    "remates_selected": 0,
+    "remates_omitted": 7,
+    "recent_missing_closer_reviewed": 7,
+    "pending_visual_candidates_reviewed": 13,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-30T01:25:35+01:00",
-      "phase": "persisting",
-      "trend_id": "5c964cfff54c",
-      "title": "Ivana",
-      "message": "Actualizando requests"
+      "at": "2026-10-30T01:31:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Preparando pasada editorial y saneamiento de Pendientes"
     },
     {
-      "at": "2026-10-30T01:25:45+01:00",
-      "phase": "persisting",
-      "trend_id": "5c964cfff54c",
-      "title": "Ivana",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-30T01:25:55+01:00",
+      "at": "2026-10-30T01:31:20+01:00",
       "phase": "verifying",
-      "trend_id": "5c964cfff54c",
-      "title": "Ivana",
-      "message": "Releyendo main y verificando texto persistido"
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
+      "message": "Releyendo estado autoritativo de #MalasLenguasN"
     },
     {
-      "at": "2026-10-30T01:26:10+01:00",
-      "phase": "verifying",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Releyendo estado autoritativo de Asraf"
-    },
-    {
-      "at": "2026-10-30T01:26:25+01:00",
+      "at": "2026-10-30T01:31:30+01:00",
       "phase": "investigating",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
       "message": "Buscando detonante actual"
     },
     {
-      "at": "2026-10-30T01:26:45+01:00",
+      "at": "2026-10-30T01:32:00+01:00",
       "phase": "investigating",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
       "message": "Contrastando fuente 1/2"
     },
     {
-      "at": "2026-10-30T01:27:05+01:00",
+      "at": "2026-10-30T01:32:10+01:00",
       "phase": "investigating",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
       "message": "Contrastando fuente 2/2"
     },
     {
-      "at": "2026-10-30T01:27:20+01:00",
+      "at": "2026-10-30T01:32:20+01:00",
       "phase": "investigating",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Hecho esencial verificado"
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
+      "message": "Contexto del programa verificado; falta detonante exacto del hashtag"
     },
     {
-      "at": "2026-10-30T01:27:35+01:00",
-      "phase": "drafting",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Redactando explicación factual"
+      "at": "2026-10-30T01:33:00+01:00",
+      "phase": "investigating",
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
+      "message": "Sin detonante actual verificable tras búsquedas distintas"
     },
     {
-      "at": "2026-10-30T01:27:50+01:00",
-      "phase": "drafting",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Comprobando límite de X"
+      "at": "2026-10-30T01:33:20+01:00",
+      "phase": "persisting",
+      "trend_id": "0433e054949e",
+      "title": "#MalasLenguasN",
+      "message": "Guardando estado problematic de #MalasLenguasN"
     },
     {
-      "at": "2026-10-30T01:28:05+01:00",
-      "phase": "remate_selection",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Sin remate · asunto de salud"
-    },
-    {
-      "at": "2026-10-30T01:28:15+01:00",
+      "at": "2026-10-30T01:34:00+01:00",
       "phase": "verifying",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Releyendo main antes de persistir Asraf"
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Releyendo estado autoritativo de FANTASMA OUT NOW"
     },
     {
-      "at": "2026-10-30T01:28:35+01:00",
+      "at": "2026-10-30T01:34:10+01:00",
+      "phase": "investigating",
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-30T01:34:20+01:00",
+      "phase": "investigating",
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Contrastando fuente 1/2"
+    },
+    {
+      "at": "2026-10-30T01:34:30+01:00",
+      "phase": "investigating",
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Contrastando fuente 2/2"
+    },
+    {
+      "at": "2026-10-30T01:34:40+01:00",
+      "phase": "investigating",
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Sin atribución verificable del lanzamiento"
+    },
+    {
+      "at": "2026-10-30T01:35:00+01:00",
       "phase": "persisting",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Guardando ficha Explicada"
+      "trend_id": "374938d3ad87",
+      "title": "FANTASMA OUT NOW",
+      "message": "Guardando nuevo intento problematic de FANTASMA OUT NOW"
     },
     {
-      "at": "2026-10-30T01:28:45+01:00",
-      "phase": "persisting",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-30T01:28:55+01:00",
-      "phase": "persisting",
-      "trend_id": "9314435265dd",
-      "title": "Asraf",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-30T01:29:05+01:00",
+      "at": "2026-10-30T01:36:10+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 14 candidatas visuales vigentes"
+      "message": "FANTASMA OUT NOW aplicado y verificado · segundo intento problematic"
     },
     {
-      "at": "2026-10-30T01:29:20+01:00",
+      "at": "2026-10-30T01:36:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "8 explicadas recientes sin remate revisadas; no procede modificar ninguna"
+      "message": "Revisando Pendientes · 13 candidatas visuales vigentes"
     },
     {
-      "at": "2026-10-30T01:29:35+01:00",
+      "at": "2026-10-30T01:36:30+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "7 explicadas recientes sin remate revisadas; no procede añadir humor por sensibilidad o lesión"
+    },
+    {
+      "at": "2026-10-30T01:36:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Auditoría de huérfanos: 0 sin resolver"
     },
     {
-      "at": "2026-10-30T01:29:50+01:00",
+      "at": "2026-10-30T01:36:50+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main: 0 preparing/update, 0 rewrite_pending"
     },
     {
-      "at": "2026-10-30T01:30:00+01:00",
+      "at": "2026-10-30T01:37:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 4 resueltas, 1 problematic; 0 activas"
+      "message": "Pasada cerrada: 2 intentos, 2 problematic; 0 preparing/update"
     }
   ],
   "ratings_snapshot": [],
-  "remate_selections": [
-    {
-      "id": "6edd382e5ca7",
-      "name": "Yola",
-      "closer": "🌶️ La recompensa la dejó literalmente por los suelos."
-    },
-    {
-      "id": "5c964cfff54c",
-      "name": "Ivana",
-      "closer": "🌶️ La carpeta llegó al debate antes que a puerto."
-    }
-  ],
+  "remate_selections": [],
   "final_outcomes": [
     {
       "id": "374938d3ad87",
       "name": "FANTASMA OUT NOW",
       "revision": 0,
       "outcome": "problematic",
-      "reason": "Detonante no verificable con suficiente fiabilidad tras búsquedas independientes."
+      "reason": "Segundo intento editorial: se confirma que «FANTASMA OUT NOW» figura como tendencia en varias ubicaciones, pero las búsquedas independientes no permiten atribuir con fiabilidad la frase a un artista, canción o lanzamiento concreto. Se evita publicar una identificación inferida sin fuente verificable."
     },
     {
-      "id": "03e6546dc5f6",
+      "id": "0433e054949e",
       "name": "#MalasLenguasN",
       "revision": 0,
-      "outcome": "reconciled_existing",
-      "reason": "La revisión exacta ya constaba como explained y se reconcilió requests/queue."
-    },
-    {
-      "id": "6edd382e5ca7",
-      "name": "Yola",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "5c964cfff54c",
-      "name": "Ivana",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "9314435265dd",
-      "name": "Asraf",
-      "revision": 0,
-      "outcome": "explained"
+      "outcome": "problematic",
+      "reason": "Tras dos búsquedas web actuales con formulaciones distintas no se identifica con suficiente fiabilidad un detonante nuevo del hashtag #MalasLenguasN el 30 de octubre. Las fuentes localizadas remiten a emisiones y clips anteriores o al programa general, por lo que se evita reutilizar una explicación antigua como si fuera el motivo actual."
     }
   ],
   "incidents": [],
@@ -234,223 +207,210 @@
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T011000+0100",
+    "trigger_run_id": "tr-chat-20261030T013100+0100",
     "status": "requested",
     "editorial_blocking": false
   },
   "apply_workflow": {
-    "status": "applied_problematic",
-    "run_id": 40978205701,
+    "status": "completed_problematic",
+    "run_id": 40979918501,
     "editorial_blocking": false
   },
   "requests_state": {
     "status": "valid_no_active",
-    "blob_sha": "d17cde32eb24ce757793133a50fc18328a48e47f",
-    "updated_at": "2026-10-30T01:30:00+01:00"
+    "blob_sha": "8f2777c14270e4d7f82a8c37cffdd593b0eda08e",
+    "updated_at": "2026-10-30T01:37:00+01:00"
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T011000+0100",
+    "canonical": true,
+    "run_id": "tr-chat-20261030T013100+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T01:10:00+01:00",
-    "updated_at": "2026-10-30T01:30:00+01:00",
-    "finished_at": "2026-10-30T01:30:00+01:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-30T01:31:00+01:00",
+    "updated_at": "2026-10-30T01:37:00+01:00",
+    "finished_at": "2026-10-30T01:37:00+01:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
+    "message": "Pasada cerrada: 2 intentos, 2 problematic; 0 preparing/update",
     "summary": {
-      "attempted": 4,
-      "explained": 3,
-      "final_resolved": 4,
-      "skipped_concurrent": 1,
+      "attempted": 2,
+      "explained": 0,
+      "problematic": 2,
+      "final_resolved": 2,
+      "skipped_concurrent": 0,
       "remaining_active": 0,
-      "remaining_problematic": 1,
-      "visual_backlog": 14,
+      "remaining_problematic": 2,
+      "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "remates_selected": 2,
-      "remates_omitted": 8,
-      "recent_missing_closer_reviewed": 8,
-      "pending_visual_candidates_reviewed": 14,
+      "remates_selected": 0,
+      "remates_omitted": 7,
+      "recent_missing_closer_reviewed": 7,
+      "pending_visual_candidates_reviewed": 13,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
     },
-    "message": "Pasada cerrada: 4 resueltas, 1 problematic; 0 activas",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": [],
-    "remate_selections": [
-      {
-        "id": "6edd382e5ca7",
-        "name": "Yola",
-        "closer": "🌶️ La recompensa la dejó literalmente por los suelos."
-      },
-      {
-        "id": "5c964cfff54c",
-        "name": "Ivana",
-        "closer": "🌶️ La carpeta llegó al debate antes que a puerto."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T01:25:35+01:00",
-        "phase": "persisting",
-        "trend_id": "5c964cfff54c",
-        "title": "Ivana",
-        "message": "Actualizando requests"
+        "at": "2026-10-30T01:31:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-30T01:25:45+01:00",
-        "phase": "persisting",
-        "trend_id": "5c964cfff54c",
-        "title": "Ivana",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-30T01:25:55+01:00",
+        "at": "2026-10-30T01:31:20+01:00",
         "phase": "verifying",
-        "trend_id": "5c964cfff54c",
-        "title": "Ivana",
-        "message": "Releyendo main y verificando texto persistido"
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
+        "message": "Releyendo estado autoritativo de #MalasLenguasN"
       },
       {
-        "at": "2026-10-30T01:26:10+01:00",
-        "phase": "verifying",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Releyendo estado autoritativo de Asraf"
-      },
-      {
-        "at": "2026-10-30T01:26:25+01:00",
+        "at": "2026-10-30T01:31:30+01:00",
         "phase": "investigating",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
         "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-30T01:26:45+01:00",
+        "at": "2026-10-30T01:32:00+01:00",
         "phase": "investigating",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
         "message": "Contrastando fuente 1/2"
       },
       {
-        "at": "2026-10-30T01:27:05+01:00",
+        "at": "2026-10-30T01:32:10+01:00",
         "phase": "investigating",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
         "message": "Contrastando fuente 2/2"
       },
       {
-        "at": "2026-10-30T01:27:20+01:00",
+        "at": "2026-10-30T01:32:20+01:00",
         "phase": "investigating",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Hecho esencial verificado"
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
+        "message": "Contexto del programa verificado; falta detonante exacto del hashtag"
       },
       {
-        "at": "2026-10-30T01:27:35+01:00",
-        "phase": "drafting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Redactando explicación factual"
+        "at": "2026-10-30T01:33:00+01:00",
+        "phase": "investigating",
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
+        "message": "Sin detonante actual verificable tras búsquedas distintas"
       },
       {
-        "at": "2026-10-30T01:27:50+01:00",
-        "phase": "drafting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Comprobando límite de X"
+        "at": "2026-10-30T01:33:20+01:00",
+        "phase": "persisting",
+        "trend_id": "0433e054949e",
+        "title": "#MalasLenguasN",
+        "message": "Guardando estado problematic de #MalasLenguasN"
       },
       {
-        "at": "2026-10-30T01:28:05+01:00",
-        "phase": "remate_selection",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Sin remate · asunto de salud"
-      },
-      {
-        "at": "2026-10-30T01:28:15+01:00",
+        "at": "2026-10-30T01:34:00+01:00",
         "phase": "verifying",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Releyendo main antes de persistir Asraf"
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Releyendo estado autoritativo de FANTASMA OUT NOW"
       },
       {
-        "at": "2026-10-30T01:28:35+01:00",
+        "at": "2026-10-30T01:34:10+01:00",
+        "phase": "investigating",
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-30T01:34:20+01:00",
+        "phase": "investigating",
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-30T01:34:30+01:00",
+        "phase": "investigating",
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-30T01:34:40+01:00",
+        "phase": "investigating",
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Sin atribución verificable del lanzamiento"
+      },
+      {
+        "at": "2026-10-30T01:35:00+01:00",
         "phase": "persisting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Guardando ficha Explicada"
+        "trend_id": "374938d3ad87",
+        "title": "FANTASMA OUT NOW",
+        "message": "Guardando nuevo intento problematic de FANTASMA OUT NOW"
       },
       {
-        "at": "2026-10-30T01:28:45+01:00",
-        "phase": "persisting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-30T01:28:55+01:00",
-        "phase": "persisting",
-        "trend_id": "9314435265dd",
-        "title": "Asraf",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-30T01:29:05+01:00",
+        "at": "2026-10-30T01:36:10+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 14 candidatas visuales vigentes"
+        "message": "FANTASMA OUT NOW aplicado y verificado · segundo intento problematic"
       },
       {
-        "at": "2026-10-30T01:29:20+01:00",
+        "at": "2026-10-30T01:36:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "8 explicadas recientes sin remate revisadas; no procede modificar ninguna"
+        "message": "Revisando Pendientes · 13 candidatas visuales vigentes"
       },
       {
-        "at": "2026-10-30T01:29:35+01:00",
+        "at": "2026-10-30T01:36:30+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "7 explicadas recientes sin remate revisadas; no procede añadir humor por sensibilidad o lesión"
+      },
+      {
+        "at": "2026-10-30T01:36:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Auditoría de huérfanos: 0 sin resolver"
       },
       {
-        "at": "2026-10-30T01:29:50+01:00",
+        "at": "2026-10-30T01:36:50+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main: 0 preparing/update, 0 rewrite_pending"
       },
       {
-        "at": "2026-10-30T01:30:00+01:00",
+        "at": "2026-10-30T01:37:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 4 resueltas, 1 problematic; 0 activas"
+        "message": "Pasada cerrada: 2 intentos, 2 problematic; 0 preparing/update"
       }
     ],
     "processed_ids": [
-      "374938d3ad87",
-      "03e6546dc5f6",
-      "6edd382e5ca7",
-      "5c964cfff54c",
-      "9314435265dd"
+      "0433e054949e",
+      "374938d3ad87"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
-      "374938d3ad87"
+      "374938d3ad87",
+      "0433e054949e"
     ],
     "final_outcomes": [
       {
@@ -458,32 +418,14 @@
         "name": "FANTASMA OUT NOW",
         "revision": 0,
         "outcome": "problematic",
-        "reason": "Detonante no verificable con suficiente fiabilidad tras búsquedas independientes."
+        "reason": "Segundo intento editorial: se confirma que «FANTASMA OUT NOW» figura como tendencia en varias ubicaciones, pero las búsquedas independientes no permiten atribuir con fiabilidad la frase a un artista, canción o lanzamiento concreto. Se evita publicar una identificación inferida sin fuente verificable."
       },
       {
-        "id": "03e6546dc5f6",
+        "id": "0433e054949e",
         "name": "#MalasLenguasN",
         "revision": 0,
-        "outcome": "reconciled_existing",
-        "reason": "La revisión exacta ya constaba como explained y se reconcilió requests/queue."
-      },
-      {
-        "id": "6edd382e5ca7",
-        "name": "Yola",
-        "revision": 0,
-        "outcome": "explained"
-      },
-      {
-        "id": "5c964cfff54c",
-        "name": "Ivana",
-        "revision": 0,
-        "outcome": "explained"
-      },
-      {
-        "id": "9314435265dd",
-        "name": "Asraf",
-        "revision": 0,
-        "outcome": "explained"
+        "outcome": "problematic",
+        "reason": "Tras dos búsquedas web actuales con formulaciones distintas no se identifica con suficiente fiabilidad un detonante nuevo del hashtag #MalasLenguasN el 30 de octubre. Las fuentes localizadas remiten a emisiones y clips anteriores o al programa general, por lo que se evita reutilizar una explicación antigua como si fuera el motivo actual."
       }
     ]
   },
