@@ -5,22 +5,26 @@
   "canonical": true,
   "last_started_at": "2026-10-30T22:40:00.000Z",
   "last_completed_at": "2026-10-30T22:10:58.000Z",
-  "updated_at": "2026-10-30T22:43:00.000Z",
+  "updated_at": "2026-10-30T22:44:00.000Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
     "red-review-2e5909232e97bfecd690",
-    "red-review-3def540ee0135f135f7a"
+    "red-review-3def540ee0135f135f7a",
+    "f90cc5271f93",
+    "9950fd2c5b18"
   ],
   "remaining_active_ids": [
     "red-review-2e5909232e97bfecd690",
-    "red-review-3def540ee0135f135f7a"
+    "red-review-3def540ee0135f135f7a",
+    "f90cc5271f93",
+    "9950fd2c5b18"
   ],
   "remaining_problematic_ids": [],
   "run_id": "tr-1793400009396-manual",
   "previous_run_id": "tr-20261030T234000+0100-manual",
-  "summary": "0/2. Toledo: revisión JIT obsoleta por existir explicaciones posteriores publicadas del mismo acontecimiento; se cerrará como stale sin reabrir la ficha.",
+  "summary": "0/4. Renfe: revisión JIT obsoleta porque existe una publicación conjunta posterior que ya sustituyó el snapshot; se cerrará como stale.",
   "activity": [
     {
       "at": "2026-10-30T22:42:00.000Z",
@@ -35,6 +39,13 @@
       "trend_id": "red-review-2e5909232e97bfecd690",
       "title": "Toledo",
       "message": "Barrera JIT: el snapshot de Toledo (28/10) está sustituido por explicaciones posteriores publicadas de Iryo/Óscar Puente del mismo acontecimiento. No se reabre ni se pisa texto más nuevo."
+    },
+    {
+      "at": "2026-10-30T22:44:00.000Z",
+      "phase": "verifying",
+      "trend_id": "red-review-3def540ee0135f135f7a",
+      "title": "Renfe",
+      "message": "Barrera JIT: el snapshot original de Renfe está sustituido por la ficha conjunta publicada «Urda · corte Madrid-Andalucía y ERTMS». No se reabre la ficha antigua."
     }
   ],
   "incidents": [],
@@ -45,9 +56,9 @@
   "started_at": "2026-10-30T22:42:00.000Z",
   "finished_at": null,
   "current": 0,
-  "total": 2,
-  "trend_id": "red-review-2e5909232e97bfecd690",
-  "title": "Toledo",
+  "total": 4,
+  "trend_id": "red-review-3def540ee0135f135f7a",
+  "title": "Renfe",
   "last_run": {
     "version": 1,
     "canonical": true,
