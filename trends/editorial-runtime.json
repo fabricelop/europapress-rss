@@ -3,34 +3,31 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T14:11:20+01:00",
-  "last_completed_at": "2026-10-30T14:18:30+01:00",
-  "updated_at": "2026-10-30T14:18:30+01:00",
+  "last_started_at": "2026-10-30T14:25:30+01:00",
+  "last_completed_at": "2026-10-30T14:27:20+01:00",
+  "updated_at": "2026-10-30T14:27:20+01:00",
   "status": "success",
   "queue_complete": true,
-  "processed_ids": [
-    "10aaa9a5458f",
-    "6977961651a2"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "run_id": "tr-chat-20261030T141120+0100-manual",
-  "previous_run_id": "tr-chat-20261030T135500+0100-manual",
+  "run_id": "tr-chat-20261030T142530+0100-manual",
+  "previous_run_id": "tr-chat-20261030T141120+0100-manual",
   "summary": {
-    "attempted": 2,
-    "explained": 2,
+    "attempted": 0,
+    "explained": 0,
     "explanation_groups": 0,
-    "new_cards": 2,
+    "new_cards": 0,
     "problematic": 0,
-    "final_resolved": 2,
+    "final_resolved": 0,
     "skipped_concurrent": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "rewrite_pending_remaining": 0,
-    "explanations_verified_under_280": 2,
+    "explanations_verified_under_280": 0,
     "remates_selected": 0,
     "remates_omitted": 3,
     "recent_missing_closer_reviewed": 3,
@@ -45,144 +42,39 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T14:14:40+01:00",
-      "phase": "verifying",
-      "trend_id": "10aaa9a5458f",
-      "title": "#EnBocaDeTodos",
-      "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
+      "at": "2026-10-30T14:25:30+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada iniciada: cola autoritativa 0; verificando reexplicaciones, agrupaciones y saneamientos."
     },
     {
-      "at": "2026-10-30T14:14:45+01:00",
-      "phase": "verifying",
-      "trend_id": "10aaa9a5458f",
-      "title": "#EnBocaDeTodos",
-      "message": "Tendencia cerrada y verificada."
-    },
-    {
-      "at": "2026-10-30T14:14:55+01:00",
-      "phase": "verifying",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Releyendo estado autoritativo de Mazón."
-    },
-    {
-      "at": "2026-10-30T14:15:15+01:00",
-      "phase": "investigating",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Buscando detonante actual de Mazón."
-    },
-    {
-      "at": "2026-10-30T14:15:35+01:00",
-      "phase": "investigating",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Contrastando fuente 1/2: aniversario y reclamaciones actuales de las víctimas."
-    },
-    {
-      "at": "2026-10-30T14:15:55+01:00",
-      "phase": "investigating",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Contrastando fuente 2/2: manifestación convocada para el 31 de octubre."
-    },
-    {
-      "at": "2026-10-30T14:16:05+01:00",
-      "phase": "investigating",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Hecho esencial verificado: el aniversario y la protesta mantienen a Mazón en el foco."
-    },
-    {
-      "at": "2026-10-30T14:16:15+01:00",
-      "phase": "drafting",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Redactando explicación factual."
-    },
-    {
-      "at": "2026-10-30T14:16:25+01:00",
-      "phase": "drafting",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
-    },
-    {
-      "at": "2026-10-30T14:16:35+01:00",
-      "phase": "remate_selection",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Sin remate · aniversario de una tragedia con víctimas; explicación factual suficiente."
-    },
-    {
-      "at": "2026-10-30T14:16:45+01:00",
-      "phase": "persisting",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Guardando ficha Explicada."
-    },
-    {
-      "at": "2026-10-30T14:17:10+01:00",
-      "phase": "persisting",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Actualizando requests."
-    },
-    {
-      "at": "2026-10-30T14:17:20+01:00",
-      "phase": "persisting",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Retirando revisión de la cola."
-    },
-    {
-      "at": "2026-10-30T14:17:30+01:00",
-      "phase": "verifying",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Releyendo main."
-    },
-    {
-      "at": "2026-10-30T14:17:40+01:00",
-      "phase": "verifying",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
-    },
-    {
-      "at": "2026-10-30T14:17:45+01:00",
-      "phase": "verifying",
-      "trend_id": "6977961651a2",
-      "title": "Mazón",
-      "message": "Tendencia cerrada y verificada."
-    },
-    {
-      "at": "2026-10-30T14:17:55+01:00",
+      "at": "2026-10-30T14:26:10+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Explicadas recientes sin remate."
+      "message": "Revisando Explicadas recientes sin remate y saneamiento pendiente."
     },
     {
-      "at": "2026-10-30T14:18:05+01:00",
+      "at": "2026-10-30T14:26:45+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Tres fichas recientes sin remate revisadas; se mantienen sin humor por víctimas o tragedia."
     },
     {
-      "at": "2026-10-30T14:18:15+01:00",
+      "at": "2026-10-30T14:27:05+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Relectura final: sin preparing/update, reexplicaciones, agrupaciones ni problematic vigentes en Top 30."
     },
     {
-      "at": "2026-10-30T14:18:30+01:00",
+      "at": "2026-10-30T14:27:20+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada: 2/2 tendencias explicadas y verificadas; cola vacía."
+      "message": "Pasada completada 0/0: no había trabajo editorial nuevo; saneamientos revisados y cola final vacía."
     }
   ],
   "ratings_snapshot": {
@@ -193,26 +85,13 @@
     "recent_considered": 0
   },
   "remate_selections": [],
-  "final_outcomes": [
-    {
-      "id": "10aaa9a5458f",
-      "revision": 0,
-      "status": "explained",
-      "name": "#EnBocaDeTodos"
-    },
-    {
-      "id": "6977961651a2",
-      "revision": 0,
-      "status": "explained",
-      "name": "Mazón"
-    }
-  ],
+  "final_outcomes": [],
   "incidents": [],
   "incident_count": 0,
   "partial": false,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas",
-    "trigger_run_id": "tr-chat-20261030T141120+0100-manual",
+    "trigger_run_id": "tr-chat-20261030T142530+0100-manual",
     "status": "triggered",
     "editorial_blocking": false
   },
@@ -223,46 +102,43 @@
   },
   "requests_state": {
     "status": "valid",
-    "updated_at": "2026-10-30T14:18:30+01:00"
+    "updated_at": "2026-10-30T14:27:20+01:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261030T141120+0100-manual",
+    "run_id": "tr-chat-20261030T142530+0100-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T14:11:20+01:00",
-    "updated_at": "2026-10-30T14:18:30+01:00",
-    "finished_at": "2026-10-30T14:18:30+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-30T14:25:30+01:00",
+    "updated_at": "2026-10-30T14:27:20+01:00",
+    "finished_at": "2026-10-30T14:27:20+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "10aaa9a5458f",
-      "6977961651a2"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "Pasada completada: 2/2 tendencias explicadas y verificadas; cola vacía.",
+    "message": "Pasada completada 0/0: no había trabajo editorial nuevo; saneamientos revisados y cola final vacía.",
     "summary": {
-      "attempted": 2,
-      "explained": 2,
+      "attempted": 0,
+      "explained": 0,
       "explanation_groups": 0,
-      "new_cards": 2,
+      "new_cards": 0,
       "problematic": 0,
-      "final_resolved": 2,
+      "final_resolved": 0,
       "skipped_concurrent": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "rewrite_pending_remaining": 0,
-      "explanations_verified_under_280": 2,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 3,
       "recent_missing_closer_reviewed": 3,
@@ -287,163 +163,45 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T14:14:40+01:00",
-        "phase": "verifying",
-        "trend_id": "10aaa9a5458f",
-        "title": "#EnBocaDeTodos",
-        "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
+        "at": "2026-10-30T14:25:30+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada iniciada: cola autoritativa 0; verificando reexplicaciones, agrupaciones y saneamientos."
       },
       {
-        "at": "2026-10-30T14:14:45+01:00",
-        "phase": "verifying",
-        "trend_id": "10aaa9a5458f",
-        "title": "#EnBocaDeTodos",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-30T14:14:55+01:00",
-        "phase": "verifying",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Releyendo estado autoritativo de Mazón."
-      },
-      {
-        "at": "2026-10-30T14:15:15+01:00",
-        "phase": "investigating",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Buscando detonante actual de Mazón."
-      },
-      {
-        "at": "2026-10-30T14:15:35+01:00",
-        "phase": "investigating",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Contrastando fuente 1/2: aniversario y reclamaciones actuales de las víctimas."
-      },
-      {
-        "at": "2026-10-30T14:15:55+01:00",
-        "phase": "investigating",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Contrastando fuente 2/2: manifestación convocada para el 31 de octubre."
-      },
-      {
-        "at": "2026-10-30T14:16:05+01:00",
-        "phase": "investigating",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Hecho esencial verificado: el aniversario y la protesta mantienen a Mazón en el foco."
-      },
-      {
-        "at": "2026-10-30T14:16:15+01:00",
-        "phase": "drafting",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Redactando explicación factual."
-      },
-      {
-        "at": "2026-10-30T14:16:25+01:00",
-        "phase": "drafting",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
-      },
-      {
-        "at": "2026-10-30T14:16:35+01:00",
-        "phase": "remate_selection",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Sin remate · aniversario de una tragedia con víctimas; explicación factual suficiente."
-      },
-      {
-        "at": "2026-10-30T14:16:45+01:00",
-        "phase": "persisting",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Guardando ficha Explicada."
-      },
-      {
-        "at": "2026-10-30T14:17:10+01:00",
-        "phase": "persisting",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Actualizando requests."
-      },
-      {
-        "at": "2026-10-30T14:17:20+01:00",
-        "phase": "persisting",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-30T14:17:30+01:00",
-        "phase": "verifying",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Releyendo main."
-      },
-      {
-        "at": "2026-10-30T14:17:40+01:00",
-        "phase": "verifying",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Verificando id+revision y texto persistido: consistencia exacta confirmada."
-      },
-      {
-        "at": "2026-10-30T14:17:45+01:00",
-        "phase": "verifying",
-        "trend_id": "6977961651a2",
-        "title": "Mazón",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-30T14:17:55+01:00",
+        "at": "2026-10-30T14:26:10+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Explicadas recientes sin remate."
+        "message": "Revisando Explicadas recientes sin remate y saneamiento pendiente."
       },
       {
-        "at": "2026-10-30T14:18:05+01:00",
+        "at": "2026-10-30T14:26:45+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Tres fichas recientes sin remate revisadas; se mantienen sin humor por víctimas o tragedia."
       },
       {
-        "at": "2026-10-30T14:18:15+01:00",
+        "at": "2026-10-30T14:27:05+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura final: sin preparing/update, reexplicaciones, agrupaciones ni problematic vigentes en Top 30."
       },
       {
-        "at": "2026-10-30T14:18:30+01:00",
+        "at": "2026-10-30T14:27:20+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada: 2/2 tendencias explicadas y verificadas; cola vacía."
+        "message": "Pasada completada 0/0: no había trabajo editorial nuevo; saneamientos revisados y cola final vacía."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "10aaa9a5458f",
-        "revision": 0,
-        "status": "explained",
-        "name": "#EnBocaDeTodos"
-      },
-      {
-        "id": "6977961651a2",
-        "revision": 0,
-        "status": "explained",
-        "name": "Mazón"
-      }
-    ]
+    "final_outcomes": []
   },
   "radar": {
-    "captured_at": "2026-10-30T14:10:55+01:00",
+    "captured_at": "2026-10-30T14:21:52+01:00",
     "queue_count": 0,
     "top10": [
       "Urda",
@@ -458,6 +216,5 @@
       "Koldo"
     ]
   },
-  "api_failover_enabled": false,
-  "error": null
+  "api_failover_enabled": false
 }
