@@ -73,6 +73,12 @@ La ruta de transporte existente por comentarios `TTENDENCIAS_CHAT_OUTBOX_V1` en 
 
 El botón manual «Enviar a TTiTTulares» sí existe: crea una investigación independiente con origen ID/revisión y conserva la tendencia. Esta pasada NO envía automáticamente tendencias a noticias; tampoco prohíbe la acción explícita del usuario.
 
+## Agrupaciones y pistas del editor (prioridad vigente)
+
+La vista Listas debe mostrar solo la ficha conjunta cuando un grupo está activo: los miembros originales con listas_group_role:covered se conservan íntegros en datos pero se OCULTAN de Listas, sin marcarlos deleted/dismissed/published ni contarlos como publicaciones. «Desagrupar» debe desactivar la conjunta y restaurar la visibilidad de sus miembros originales, validando estado/revisión y respetando decisiones terminales posteriores. No se deben recrear originales ni perder fuentes, imágenes o fechas. El cambio de visibilidad exige implementación y comprobación en cada cliente nativo, no basta modificar este contrato.
+
+Una pista nueva del usuario sobre una tendencia ya explicada (incluso causa desconocida) abre investigación/reelaboración de ESA ficha existente con su ID y revisión, en vez de descartarla por explained. Comprobar la pista independientemente; si acredita una explicación mejor, actualizar ambos registros mediante el circuito vigente, sin resucitar terminales ni pisar revisiones posteriores. Reconsiderar agrupación con otras fichas vigentes sobre el MISMO acontecimiento, incluida la relación Pepe Blanco/Pepiño Blanco cuando haya evidencia de un episodio actual común. No agrupar por alias o nombre solamente. Una pista no es prueba automática.
+
 ## Agrupación antes de imágenes
 
 Los jobs `listas_grouping_request:true`, `task:group_listas` llevan un snapshot exacto en `grouping_candidates`. Los automáticos tienen `automatic_grouping:true` y comparan Listas más `published_context` (publicaciones recientes). Los manuales contienen EXCLUSIVAMENTE las tarjetas que el editor seleccionó: no ampliar esa selección buscando otras fichas ni confundirla con una revisión global.
