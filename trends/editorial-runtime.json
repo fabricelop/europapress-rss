@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T09:10:00+01:00",
-  "last_completed_at": "2026-10-30T09:12:00+01:00",
-  "updated_at": "2026-10-30T09:12:00+01:00",
+  "last_started_at": "2026-10-30T09:40:00+01:00",
+  "last_completed_at": "2026-10-30T09:44:00+01:00",
+  "updated_at": "2026-10-30T09:44:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [
@@ -144,18 +144,21 @@
     "updated_at": "2026-10-30T09:06:00+01:00"
   },
   "last_run": {
-    "run_id": "tr-chat-20261030T0910+0100",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-chat-20261030T0940+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T09:10:00+01:00",
-    "updated_at": "2026-10-30T09:12:00+01:00",
-    "finished_at": "2026-10-30T09:12:00+01:00",
+    "started_at": "2026-10-30T09:40:00+01:00",
+    "updated_at": "2026-10-30T09:44:00+01:00",
+    "finished_at": "2026-10-30T09:44:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: cola 0; sin preparing/update, reexplicaciones, agrupaciones ni problematic pendientes.",
+    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; reparación visual solicitada.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -171,8 +174,8 @@
       "rewrite_pending_remaining": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 1,
+      "remates_omitted": 30,
+      "recent_missing_closer_reviewed": 30,
       "pending_visual_candidates_reviewed": 0,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
@@ -189,25 +192,25 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T09:10:00+01:00",
+        "at": "2026-10-30T09:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, requests y reexplicaciones antes de cerrar una pasada sin trabajo activo."
+        "message": "Cola editorial 0; revalidando requests, reexplicaciones, agrupaciones, problematic y cobertura fresca del Top 10."
       },
       {
-        "at": "2026-10-30T09:11:00+01:00",
+        "at": "2026-10-30T09:42:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main para confirmar que no aparecieron preparing/update, reexplicaciones ni agrupaciones pendientes."
+        "message": "Releyendo main para confirmar cola 0, ausencia de reexplicaciones/agrupaciones/problematic y cobertura completa del Top 10."
       },
       {
-        "at": "2026-10-30T09:12:00+01:00",
+        "at": "2026-10-30T09:44:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: cola 0; sin preparing/update, reexplicaciones, agrupaciones ni problematic pendientes."
+        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; reparación visual solicitada."
       }
     ],
     "queue_complete": true,
@@ -233,6 +236,5 @@
       "Atocha"
     ]
   },
-  "api_failover_enabled": false,
-  "error": null
+  "api_failover_enabled": false
 }
