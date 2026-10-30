@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T20:50:25.840258+00:00",
+  "updated_at": "2026-10-30T20:50:59.015042+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:50:59.015042+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -3983,7 +3983,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:50:59.015042+00:00"
     },
     {
       "id": "22601009b977",
@@ -8706,7 +8706,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:50:59.015042+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -28695,7 +28695,7 @@
       "editorial_grouping_state": "cleared",
       "updated_at": "2026-10-30T20:51:00+01:00",
       "editorial_grouping_fingerprint": "f702a6dfeef17de6125dc3bc62f6f70168498caca81a48228123df0a60c6559d",
-      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:50:59.015042+00:00"
     },
     {
       "id": "9f812088f7ae",
@@ -31903,7 +31903,7 @@
       "rewrite_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "b2232661225532039fd23e868f9ddc4c4ec29c23387d527c825bf745d9061cf2",
-      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:50:59.015042+00:00"
     },
     {
       "id": "b0c76a2bacab",
@@ -33557,7 +33557,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0424aaaf6b73bbb135ad3b6fd9bbc059a57f9acb09f089eb5b4ffcd9d2c7fbd1",
-      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:50:59.015042+00:00"
     },
     {
       "id": "trend-update-c6c3a71d447e3717c870",
@@ -33588,21 +33588,23 @@
       "new_facts": "Fátima Báñez fue despedida el 30 de octubre en San Juan del Puerto (Huelva), con velatorio público, misa funeral y asistencia de familiares, vecinos y representantes políticos y empresariales; después recibió sepultura en el cementerio municipal.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "27a503e9b772c9226584a5ea0052006a9f625d0106206ee3ea198b049941af75",
+      "editorial_grouping_checked_at": "2026-10-30T20:50:59.015042+00:00"
     },
     {
       "id": "listas-auto-10cd74e7d8ac692b7799",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-30T20:50:25.840258+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -35037,7 +35039,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-30T20:50:59.015042+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "4e24130f8471368588f0be2eb1ca6fdcf18726bb5a8412edf810a72b6af7ffc4"
     }
   ],
   "count": 192
