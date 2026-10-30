@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T19:26:10+01:00",
+  "updated_at": "2026-10-30T19:28:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -20134,9 +20134,9 @@
       "name": "Ronaldo Nazário",
       "rank": 5,
       "revision": 1,
-      "status": "problematic",
+      "status": "explained",
       "requested_at": "2026-10-30T18:24:53.507313+00:00",
-      "updated_at": "2026-10-30T18:24:53.507313+00:00",
+      "updated_at": "2026-10-30T19:28:00+01:00",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
@@ -20159,7 +20159,8 @@
           "at": "2026-10-30T18:24:53.507313+00:00",
           "source_revision": 0,
           "text": "Es por una encuesta de un usuario que pone 4 escudos y pregunta quien ha jugado en los cuatro equipos.",
-          "verification": "unverified_editor_context"
+          "verification": "verified_current_trigger",
+          "verified_at": "2026-10-30T19:28:00+01:00"
         }
       ],
       "investigation_history": [
@@ -20168,13 +20169,57 @@
           "status": "explained",
           "problem_reason": "",
           "last_attempt_at": "2026-10-30T19:17:00+01:00"
+        },
+        {
+          "at": "2026-10-30T19:28:00+01:00",
+          "query": "Ronaldo Nazário cuatro clubes publicación @_UTDIMole",
+          "result": "Localizada la publicación vigente que pide citar un jugador que haya jugado en cuatro clubes; la imagen muestra AC Milan, Barcelona, Inter y Real Madrid y acumulaba alrededor de 2 millones de visualizaciones."
+        },
+        {
+          "at": "2026-10-30T19:28:00+01:00",
+          "query": "Ronaldo Nazário clubes AC Milan Barcelona Inter Real Madrid",
+          "result": "La trayectoria oficial de Ronaldo confirma etapas en Barcelona, Inter, Real Madrid y AC Milan; además se localizó una respuesta actual a la publicación con «Ronaldo Luis Nazario Da Lima»."
         }
       ],
-      "hints_verification_status": "unverified",
-      "problematic_at": "2026-10-30T19:26:10+01:00",
-      "problem_reason": "No se ha podido verificar en fuentes abiertas la encuesta concreta con cuatro escudos que, según la pista editorial, habría impulsado hoy «Ronaldo Nazário». Dos búsquedas independientes confirman su trayectoria por Barça, Inter, Real Madrid y Milan, pero no el detonante social actual; se deja sin explicación verificada para no presentar la pista como hecho.",
+      "hints_verification_status": "verified",
+      "problematic_at": null,
+      "problem_reason": "",
       "problematic_attempts": 1,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-editorial-job-v2",
+      "explained_at": "2026-10-30T19:28:00+01:00",
+      "last_attempt_at": "2026-10-30T19:28:00+01:00",
+      "explanation": "TT#5 Ronaldo Nazário es tendencia por una publicación viral que reta a citar a un jugador que haya militado en AC Milan, Barcelona, Inter y Real Madrid; el brasileño pasó por los cuatro.\n#RonaldoNazário #Fútbol\n🌶️ Cuatro escudos, una respuesta: O Fenômeno.",
+      "closer_text": "🌶️ Cuatro escudos, una respuesta: O Fenômeno.",
+      "rank_at_explanation": 5,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "url": "https://www.sotwe.com/_UTDIMole"
+        },
+        {
+          "url": "https://www.sotwe.com/J0s3s1ll0_0312"
+        },
+        {
+          "url": "https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ronaldo-luis-nazario-de-lima"
+        }
+      ],
+      "group_id": "grp-e40be8e866b4",
+      "explanation_group_id": "grp-e40be8e866b4",
+      "group_title": "Ronaldo Nazário",
+      "group_leader_id": "e40be8e866b4",
+      "trend_names": [
+        "Ronaldo Nazário"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "e40be8e866b4",
+          "name": "Ronaldo Nazário",
+          "revision": 1
+        }
+      ],
+      "image_status": "pending",
+      "editorial_grouping_state": "pending"
     },
     {
       "id": "9dbe1a97a6b4",
@@ -24249,5 +24294,5 @@
       "grouping_result_digest": "85d31c55a5223dda641ba9735ec4c7e124c78a9f16de61d06919a517c6c2b4d7"
     }
   ],
-  "count": 164
+  "count": 172
 }
