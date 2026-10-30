@@ -5,8 +5,8 @@
   "canonical": true,
   "last_started_at": "2026-10-30T16:55:30+01:00",
   "last_completed_at": "2026-10-30T16:54:30+01:00",
-  "updated_at": "2026-10-30T16:55:30+01:00",
-  "status": "running",
+  "updated_at": "2026-10-30T16:56:00+01:00",
+  "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -16,7 +16,7 @@
     "37073f5f219f"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793375730000-manual",
+  "run_id": "tr-1793375721801-manual",
   "previous_run_id": "tr-1793375430582-manual",
   "summary": {
     "attempted": 0,
@@ -36,11 +36,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T16:55:30+01:00",
+      "at": "2026-10-30T16:56:00+01:00",
       "phase": "preparing",
       "trend_id": "37073f5f219f",
       "title": "Pepiño Blanco",
-      "message": "Inicio 0/1: reelaboración manual vigente. Investigación nueva desde cero y validación JIT de la revisión 1. Sin ImageGen."
+      "message": "Inicio 1/1: revalidando revisión 1 e investigando desde cero la pista editorial. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -49,12 +49,12 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793375730000-manual",
+    "run_id": "tr-1793375721801-manual",
     "source": "chat",
     "status": "RUNNING",
     "phase": "preparing",
-    "started_at": "2026-10-30T16:55:30+01:00",
-    "updated_at": "2026-10-30T16:55:30+01:00",
+    "started_at": "2026-10-30T16:56:00+01:00",
+    "updated_at": "2026-10-30T16:56:00+01:00",
     "finished_at": null,
     "current": 0,
     "total": 1,
@@ -67,7 +67,7 @@
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Investigando Pepiño Blanco (revisión 1) desde cero; pistas del editor aún no verificadas. Sin ImageGen.",
+    "message": "Investigando Pepiño Blanco r1 desde cero. Sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -79,7 +79,7 @@
       "members_covered": 0,
       "remaining_active": 1,
       "remaining_problematic": 0,
-      "rewrite_pending_remaining": 1,
+      "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "incidents": 0
@@ -88,15 +88,21 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T16:55:30+01:00",
+        "at": "2026-10-30T16:56:00+01:00",
         "phase": "preparing",
         "trend_id": "37073f5f219f",
         "title": "Pepiño Blanco",
-        "message": "Inicio 0/1: reelaboración manual vigente. Investigación nueva desde cero y validación JIT de la revisión 1. Sin ImageGen."
+        "message": "Inicio 1/1: revalidando revisión 1 e investigando desde cero la pista editorial. Sin ImageGen."
       }
-    ],
-    "final_outcomes": []
+    ]
   },
   "error": null,
-  "api_failover_enabled": false
+  "api_failover_enabled": false,
+  "phase": "preparing",
+  "started_at": "2026-10-30T16:56:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "37073f5f219f",
+  "title": "Pepiño Blanco"
 }
