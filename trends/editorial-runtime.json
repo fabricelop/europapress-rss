@@ -3,25 +3,21 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T18:29:00+01:00",
+  "last_started_at": "2026-10-30T18:30:00+01:00",
   "last_completed_at": "2026-10-30T18:28:00+01:00",
-  "updated_at": "2026-10-30T18:29:00+01:00",
+  "updated_at": "2026-10-30T18:30:00+01:00",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-fbd62020f199c2c1dc63",
-    "red-review-1b3be58ccb9ccda8ce7e",
-    "red-review-7fead06672aa4e9624f1"
+    "listas-auto-821def214a316707de0d"
   ],
   "remaining_active_ids": [
-    "listas-auto-fbd62020f199c2c1dc63",
-    "red-review-1b3be58ccb9ccda8ce7e",
-    "red-review-7fead06672aa4e9624f1"
+    "listas-auto-821def214a316707de0d"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793381257350-manual",
-  "previous_run_id": "tr-20261030T182500-manual",
+  "run_id": "tr-1793381402277-manual",
+  "previous_run_id": "tr-1793381257350-manual",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -31,7 +27,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 3,
+    "remaining_active": 1,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -40,11 +36,11 @@
   },
   "activity": [
     {
-      "at": "2026-10-30T18:29:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada manual iniciada. Cola inicial 3: una agrupación automática y dos revisiones de novedades. Sin ImageGen."
+      "at": "2026-10-30T18:30:00+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-821def214a316707de0d",
+      "title": "Agrupación automática de Listas",
+      "message": "Validando 5 candidatos frente a publicaciones previas; no hay coincidencias inequívocas entre candidatos. Sin ImageGen."
     }
   ],
   "incidents": [],
@@ -53,27 +49,25 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793381257350-manual",
+    "run_id": "tr-1793381402277-manual",
     "source": "chat",
     "status": "RUNNING",
-    "phase": "preparing",
-    "started_at": "2026-10-30T18:29:00+01:00",
-    "updated_at": "2026-10-30T18:29:00+01:00",
+    "phase": "investigating",
+    "started_at": "2026-10-30T18:30:00+01:00",
+    "updated_at": "2026-10-30T18:30:00+01:00",
     "finished_at": null,
     "current": 0,
-    "total": 3,
-    "trend_id": null,
-    "title": null,
+    "total": 1,
+    "trend_id": "listas-auto-821def214a316707de0d",
+    "title": "Agrupación automática de Listas",
     "queue_complete": false,
     "remaining_active_ids": [
-      "listas-auto-fbd62020f199c2c1dc63",
-      "red-review-1b3be58ccb9ccda8ce7e",
-      "red-review-7fead06672aa4e9624f1"
+      "listas-auto-821def214a316707de0d"
     ],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Procesando 0/3: agrupación automática y revisiones de Blocus y Alvia. Sin ImageGen.",
+    "message": "Procesando 0/1: agrupación automática de 5 candidatos; sin ImageGen.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -83,7 +77,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 3,
+      "remaining_active": 1,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -94,22 +88,22 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T18:29:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada manual iniciada. Cola inicial 3: una agrupación automática y dos revisiones de novedades. Sin ImageGen."
+        "at": "2026-10-30T18:30:00+01:00",
+        "phase": "investigating",
+        "trend_id": "listas-auto-821def214a316707de0d",
+        "title": "Agrupación automática de Listas",
+        "message": "Validando 5 candidatos frente a publicaciones previas; no hay coincidencias inequívocas entre candidatos. Sin ImageGen."
       }
     ],
     "final_outcomes": []
   },
   "error": null,
   "api_failover_enabled": false,
-  "phase": "preparing",
-  "started_at": "2026-10-30T18:29:00+01:00",
+  "phase": "investigating",
+  "started_at": "2026-10-30T18:30:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
-  "trend_id": null,
-  "title": null
+  "total": 1,
+  "trend_id": "listas-auto-821def214a316707de0d",
+  "title": "Agrupación automática de Listas"
 }
