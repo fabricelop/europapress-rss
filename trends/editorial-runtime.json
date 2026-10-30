@@ -3,16 +3,12 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T21:40:00+01:00",
+  "last_started_at": "2026-10-30T20:46:26.237Z",
   "last_completed_at": "2026-10-30T20:46:30Z",
-  "updated_at": "2026-10-30T20:47:00Z",
+  "updated_at": "2026-10-30T20:46:26.237Z",
   "status": "RUNNING",
   "queue_complete": false,
-  "processed_ids": [
-    "4e9df6831ab7",
-    "9fee4d7386fb",
-    "b0c76a2bacab"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "listas-auto-4de6de991fd044685208",
     "red-review-20b16a02ea5bcc6b9a5c",
@@ -24,11 +20,11 @@
     "red-review-e152bac20e9cf171794d"
   ],
   "remaining_problematic_ids": [],
-  "run_id": "tr-20261030T214000-manual",
-  "previous_run_id": "tr-20261030T212724-manual",
+  "run_id": "tr-1793393186237-manual",
+  "previous_run_id": "tr-20261030T214000-manual",
   "summary": {
-    "attempted": 3,
-    "explained": 3,
+    "attempted": 0,
+    "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "stale_jobs": 0,
@@ -36,7 +32,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "members_covered": 0,
-    "remaining_active": 0,
+    "remaining_active": 3,
     "remaining_problematic": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -106,32 +102,39 @@
       "trend_id": "listas-auto-4de6de991fd044685208",
       "title": "Agrupación automática de Listas",
       "message": "La barrera final añadió 1 agrupación y 2 revisiones de novedades; se reabre la misma pasada y se procesan en orden contractual."
+    },
+    {
+      "at": "2026-10-30T20:46:26.237Z",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio tr-1793393186237-manual: 3 trabajos activos; agrupación primero y revisiones de novedades después. Sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
-  "started_at": "2026-10-30T21:40:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-30T20:46:26.237Z",
   "finished_at": null,
-  "current": 3,
-  "total": 6,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261030T214000-manual",
+    "run_id": "tr-1793393186237-manual",
     "source": "manual",
     "status": "RUNNING",
-    "phase": "investigating",
-    "started_at": "2026-10-30T21:40:00+01:00",
-    "updated_at": "2026-10-30T20:47:00Z",
+    "phase": "preparing",
+    "started_at": "2026-10-30T20:46:26.237Z",
+    "updated_at": "2026-10-30T20:46:26.237Z",
     "finished_at": null,
-    "current": 3,
-    "total": 6,
+    "current": 0,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "queue_complete": false,
@@ -141,16 +144,12 @@
       "red-review-e152bac20e9cf171794d"
     ],
     "remaining_problematic_ids": [],
-    "processed_ids": [
-      "4e9df6831ab7",
-      "9fee4d7386fb",
-      "b0c76a2bacab"
-    ],
+    "processed_ids": [],
     "partial": false,
-    "message": "La barrera final creó 3 trabajos de mantenimiento; continúa la misma pasada.",
+    "message": "Pasada iniciada con 3 trabajos activos.",
     "summary": {
-      "attempted": 3,
-      "explained": 3,
+      "attempted": 0,
+      "explained": 0,
       "updates": 0,
       "stale_reviews": 0,
       "stale_jobs": 0,
@@ -158,7 +157,7 @@
       "grouping_requests": 0,
       "groups_created": 0,
       "members_covered": 0,
-      "remaining_active": 0,
+      "remaining_active": 3,
       "remaining_problematic": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -230,47 +229,16 @@
         "trend_id": "listas-auto-4de6de991fd044685208",
         "title": "Agrupación automática de Listas",
         "message": "La barrera final añadió 1 agrupación y 2 revisiones de novedades; se reabre la misma pasada y se procesan en orden contractual."
+      },
+      {
+        "at": "2026-10-30T20:46:26.237Z",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Inicio tr-1793393186237-manual: 3 trabajos activos; agrupación primero y revisiones de novedades después. Sin ImageGen."
       }
     ],
-    "final_outcomes": [
-      {
-        "id": "4e9df6831ab7",
-        "revision": 0,
-        "status": "explained",
-        "name": "Tusk"
-      },
-      {
-        "id": "9fee4d7386fb",
-        "revision": 0,
-        "status": "explained",
-        "name": "Dibu"
-      },
-      {
-        "id": "b0c76a2bacab",
-        "revision": 0,
-        "status": "explained",
-        "name": "Tribunal Constitucional"
-      }
-    ]
+    "final_outcomes": []
   },
-  "final_outcomes": [
-    {
-      "id": "4e9df6831ab7",
-      "revision": 0,
-      "status": "explained",
-      "name": "Tusk"
-    },
-    {
-      "id": "9fee4d7386fb",
-      "revision": 0,
-      "status": "explained",
-      "name": "Dibu"
-    },
-    {
-      "id": "b0c76a2bacab",
-      "revision": 0,
-      "status": "explained",
-      "name": "Tribunal Constitucional"
-    }
-  ]
+  "final_outcomes": []
 }
