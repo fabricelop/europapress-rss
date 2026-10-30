@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T14:04:52.858277+00:00",
-  "count": 2,
+  "updated_at": "2026-10-30T14:07:12.005954+00:00",
+  "count": 3,
   "items": [
     {
       "id": "dc90fe5a413e",
@@ -109,6 +109,35 @@
       "with_image": false,
       "disable_ai_image": true,
       "rewrite_instruction": "Agrupa exclusivamente las tarjetas seleccionadas en grouping_candidates. Crea UNA ficha conjunta por acontecimiento comprobado. Conserva íntegros los textos de las originales; solo marca su cobertura. No publiques."
+    },
+    {
+      "id": "8d550038a24d",
+      "name": "#30OctubrESP",
+      "rank": 20,
+      "revision": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-30T14:07:12.005954+00:00",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
+      "task": "explain",
+      "with_image": true,
+      "rewrite_with_image": true,
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nTodo lo que veo con ese hashtag se está usando para criticar a Oscar Puente\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
+        {
+          "at": "2026-10-30T13:33:35.142451+00:00",
+          "source_revision": 0,
+          "text": "Lo mueven las cuentas de derecha para pedir la dimisión de Puente",
+          "verification": "unverified_editor_context"
+        },
+        {
+          "at": "2026-10-30T14:07:12.005954+00:00",
+          "source_revision": 1,
+          "text": "Todo lo que veo con ese hashtag se está usando para criticar a Oscar Puente",
+          "verification": "unverified_editor_context"
+        }
+      ],
+      "hints_verification_status": "unverified"
     }
   ]
 }
