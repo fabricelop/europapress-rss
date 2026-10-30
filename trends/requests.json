@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T15:45:23+01:00",
+  "updated_at": "2026-10-30T15:45:56+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -7722,7 +7722,7 @@
       "id": "d3361acf73b6",
       "name": "Pobrecito",
       "rank": 23,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-30T15:41:14+01:00",
       "revision": 0,
       "reexplain": false,
@@ -7736,7 +7736,11 @@
         "Pobrecito"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "problematic_at": "2026-10-30T15:45:56+01:00",
+      "problem_reason": "Tras búsquedas independientes se confirma que «Pobrecito» ha entrado en tendencias, pero no aparece una fuente pública verificable que permita identificar un detonante único y actual. Los usos recuperables son dispersos y no bastan para atribuir causalmente la tendencia; se mantiene sin explicación para no inventarla.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ]
 }
