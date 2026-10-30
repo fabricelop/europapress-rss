@@ -532,3 +532,26 @@ El usuario confirmó que la agrupación funcionó en iPhone y mostró la app con
 - Windows: Quitar de Listas de una original agrupada abre Sí/No/Cancelar; Cerrar Sí/No permanece disponible. No necesita abrir X para registrar que ya se publicó. Retirar agrupadas en bloque conserva su semántica explícita de limpieza sin publicación.
 - Pruebas: la suite de agrupación verifica ambos resultados pasando por el handler completo y el ledger, reintentos idempotentes, explicación preservada, conjunta intacta y hermana sin cerrar. Tests de UI verifican las dos opciones disponibles. El build compilado no sustituye la instalación de 0.4.24 en el dispositivo.
 - No retirar ni marcar publicadas fichas reales en nombre del usuario durante la reparación: esa elección sigue siendo suya.
+
+
+## 20. Menú del icono del iPhone — 30/10/2026
+
+**iPhone 0.4.25 build31**, rama `feature/ttactualidad-ios-0.4.25-menu-icono`, conserva las funciones de 0.4.24 y añade cuatro acciones de inicio dinámicas de iOS. Requiere abrir la app una vez tras instalarla.
+
+| Acción | Número mostrado | Destino |
+| --- | --- | --- |
+| Noticias listas | Noticias de Listas canónicas | TTiTTulares → Listas |
+| Tendencias listas | Tendencias de Listas canónicas | TTendencias → Listas |
+| En elaboración | Noticias + tendencias aceptadas en elaboración | Vista conjunta de ambos proyectos |
+| Órdenes por confirmar | Solicitudes locales de este iPhone sin comprobante | Panel de órdenes desplegado |
+
+- `HomeQuickActions.swift`: tipos de acción estables, resumen Codable en `TTActualidad.home-quick-actions.v1`, registro de `UIApplication.shortcutItems` y router que conserva una selección antes de que SwiftUI se suscriba. La selección se recibe al conectar una escena (incluida una restaurada) o mediante `windowScene(_:performActionFor:completionHandler:)` si la app ya está abierta. Se consume una vez y se rechazan tipos desconocidos.
+- `TTActualidadApp.swift`: `UIApplicationDelegateAdaptor` instala el delegado; registra al abrir y al pasar al fondo. `EditorialStore.updateHomeQuickActions()` publica al finalizar cada consulta, desde `canonicalSnapshot` con terminales confirmados, sin añadir operaciones optimistas. Conserva el resumen anterior ante una descarga incompleta; si no hubo datos, no presenta contadores desconocidos como cero.
+- Los títulos muestran los números y los subtítulos la fecha/hora de la última consulta; se avisa si hay datos parciales. No hay consultas permanentes en segundo plano ni promesa de datos en vivo. Las órdenes son locales al iPhone, no un total universal de todos los dispositivos.
+- `TTDashboard.openQuickAction` vacía búsqueda y abre el destino correcto sin depender de la pestaña previa. La vista En elaboración reúne ambos proyectos. Las órdenes se abren desplegadas. Al elegir cualquier acceso se solicita lectura de GitHub; el acceso en sí no genera redacción, imagen, publicación ni borrado.
+- Diagnóstico: confirmar 0.4.25 build31 instalada, abrir/sincronizar y volver a inicio; revisar fecha del menú. Si el acceso no navega, comprobar delegado de escena, router retenido y suscripción de TTDashboard. Si el número difiere, comparar la última consulta y el estado canónico, las operaciones provisionales y terminales. Nunca tratar el título del menú como prueba del estado remoto actual.
+- Pruebas nativas: esquema `TTQuickActions`, siete casos sobre cuatro destinos, números, datos desconocidos y parciales, persistencia, consumo único y selecciones sucesivas. Compilación separada del IPA de iPhone y Live Activity. Las pruebas de lógica en simulador no equivalen a una prueba física del gesto del icono.
+
+**Confirmación adicional:** tras indicar inicialmente «Sigue igual», el usuario aclaró «Olvídalo. Funciona bien» sobre Quitar de Listas en 0.4.24. No se cambió de nuevo ese diálogo.
+
+Fuente exacta del código 0.4.25: `cc5b0c1eaca135140a65207e077c7b1646cdefd2`. Build nativo: https://github.com/fabricelop/europapress-rss/actions/runs/41049610272 . Distinguir build/pruebas automáticas de instalación y uso físico.

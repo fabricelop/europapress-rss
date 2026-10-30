@@ -139,3 +139,12 @@ Copiar esta ficha al FINAL del documento por cada avería/resolución:
 **Cambio:** Quitar de Listas ofrece Publicado y No publicado en iPhone 0.4.24 build30 y Windows. La decisión se aplica solo al ID/revisión de esa original, con ledger idempotente y sin modificar conjunta, hermanas ni textos. Retirar agrupadas en bloque sigue sin sumar publicaciones. La confirmación del usuario demuestra uso real de la agrupación; no prueba todavía la instalación de la corrección 0.4.24.
 
 **Validación:** tests del handler completo con ambos estados, una sola publicación al reintentar, ninguna en No, conjunta inmutable y UI con confirmación restaurada. Consultar §19 del manual. No se modificaron decisiones editoriales reales en esta reparación.
+
+
+## 8. 30/10/2026 — accesos al mantener pulsado el icono
+
+El usuario solicitó un menú útil en el icono del iPhone. Se implementan cuatro accesos nativos en 0.4.25 build31: Noticias listas, Tendencias listas, En elaboración y Órdenes por confirmar. Los títulos incorporan contadores de la última lectura y los subtítulos su fecha/hora; los datos parciales se identifican. El menú abre el destino y consulta el estado; no ejecuta acciones editoriales por sí mismo.
+
+La fuente es `feature/ttactualidad-ios-0.4.25-menu-icono`, basada en la 0.4.24 real, sin sustituirla por el iOS antiguo de main. Ver §20 de la memoria para delegados, router, almacenamiento y diagnóstico. La validación automática comprende siete pruebas nativas de lógica en iOS Simulator y compilación del IPA; instalación y gesto en el iPhone requieren comprobación del usuario.
+
+**Cierre de la incidencia anterior:** el usuario confirmó que Quitar de Listas funciona en 0.4.24; no se aplicó otra modificación al diálogo.

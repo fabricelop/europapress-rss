@@ -79,3 +79,10 @@ Para memoria y pestañas: windows/Repair-TT-Chrome-Memory-Safe.ps1 **-InspectOnl
 Agrupar → dispatch `ttactualidad_group_listas_v1` → `pilot/listas_grouping.py` → request `task:group_listas` → runner editorial → `trends/listas-grouping-outbox/<job_id>.json` → workflow aplicador → ficha conjunta y originales marcadas **Agrupada en…**. **No cambiar las explicaciones originales.** Retirar agrupadas solo elimina originales cubiertas, no la conjunta ni suma publicaciones. Ver §18 del manual para estados/JIT/pruebas. Fuente iPhone nueva: `feature/ttactualidad-ios-0.4.23-agrupar-listas`, 0.4.23 build29; comprobar instalación.
 
 **Corrección 30/10 tras prueba en iPhone:** originales agrupadas conservan **Quitar de Listas → Publicado / No publicado**. Solo Publicado suma esa original una vez; la conjunta no cambia. Fuente iPhone **0.4.24 build30**, rama `feature/ttactualidad-ios-0.4.24-quitar-agrupadas`. No confundirlo con Retirar agrupadas en bloque, que es limpieza sin publicación.
+
+
+## Menú del icono del iPhone (30/10/2026)
+
+Última fuente nativa: **0.4.25 build31**, rama `feature/ttactualidad-ios-0.4.25-menu-icono`, basada en 0.4.24. Tras abrir una vez la app, mantener pulsado el icono ofrece Noticias listas, Tendencias listas, En elaboración y Órdenes por confirmar. Cada acceso abre su destino y solicita una consulta. Contadores de la última lectura, con fecha/hora y aviso de datos parciales; no son información en tiempo real. Ver §20 del manual y `ios/ttactualidad/HOME-SCREEN-QUICK-ACTIONS.md` en esa rama.
+
+El usuario confirmó finalmente que **Quitar de Listas de 0.4.24 funciona**; se descartó una nueva modificación del diálogo.
