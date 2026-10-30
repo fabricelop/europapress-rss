@@ -10685,7 +10685,15 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
       "telegram_package_status": "published",
       "published_at": "2026-10-28T10:17:16.427625+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-10-30T13:55:56.097999+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Hay una novedad operativa posterior a la explicación inicial: Renfe ha retrasado el inicio de su plan alternativo de transporte.",
+      "red_review_sources": [
+        {
+          "url": "https://grupo.renfe.com/es/es/sala-de-prensa/noticias/2026/10/suspension-pat-madrid-andalucia"
+        }
+      ]
     },
     {
       "id": "845f4ba23ee4",
@@ -11360,7 +11368,18 @@
       "image_pending": false,
       "telegram_package_status": "published",
       "published_at": "2026-10-28T14:41:48.692085+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-10-30T13:55:56.097999+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "La comparecencia de Puente aporta calendario y retraso concretos para el ERTMS y separa esas pruebas de la causa del accidente.",
+      "red_review_sources": [
+        {
+          "url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/"
+        },
+        {
+          "url": "https://maldita.es/malditobulo/20261030/ertms-lzb-accidente-urda/"
+        }
+      ]
     },
     {
       "id": "3c21fa1e30b5",
@@ -17091,8 +17110,75 @@
       "telegram_package_status": "explained",
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+    },
+    {
+      "id": "trend-update-158c1e414518a44b837b",
+      "revision": 0,
+      "name": "ERTMS",
+      "rank": 17,
+      "status": "explained",
+      "requested_at": "2026-10-30T13:55:56.097999+00:00",
+      "explained_at": "2026-10-30T13:55:56.097999+00:00",
+      "updated_at": "2026-10-30T13:55:56.097999+00:00",
+      "explanation": "TT#17 ERTMS sigue siendo tendencia porque Puente sitúa su implantación en la línea Madrid-Sevilla a comienzos de 2027, con unos 12 meses de retraso, y descarta que las pruebas del sistema causaran el choque de Urda.\n#ERTMS #Urda #Adif",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/"
+        },
+        {
+          "url": "https://maldita.es/malditobulo/20261030/ertms-lzb-accidente-urda/"
+        }
+      ],
+      "originated_from_prior_id": "0283810e4423",
+      "trend_names": [
+        "ERTMS"
+      ],
+      "red_review_job_id": "red-review-6c75d38f9afd25004f2d",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Puente sitúa la implantación del ERTMS en Madrid-Sevilla a comienzos de 2027, con alrededor de 12 meses de retraso, y afirma que las pruebas del sistema no causaron el choque de Urda.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-541b493b13fef8cf3662",
+      "revision": 0,
+      "name": "Renfe",
+      "rank": 2,
+      "status": "explained",
+      "requested_at": "2026-10-30T13:55:56.097999+00:00",
+      "explained_at": "2026-10-30T13:55:56.097999+00:00",
+      "updated_at": "2026-10-30T13:55:56.097999+00:00",
+      "explanation": "TT#2 Renfe sigue siendo tendencia por el corte Madrid-Andalucía: su plan alternativo de transporte no podrá empezar antes del 3 de noviembre por el plazo de 96 horas exigido por SEMAF.\n#Renfe #MadridAndalucía #SEMAF",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://grupo.renfe.com/es/es/sala-de-prensa/noticias/2026/10/suspension-pat-madrid-andalucia"
+        }
+      ],
+      "originated_from_prior_id": "5c4ed0171dad",
+      "trend_names": [
+        "Renfe",
+        "Asesinos",
+        "Dimite",
+        "Adif",
+        "Consternado"
+      ],
+      "red_review_job_id": "red-review-b00db6420f77a5793f55",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Renfe comunica que el plan alternativo para el corredor Madrid-Andalucía no podrá comenzar antes del 3 de noviembre por el plazo de 96 horas de preaviso exigido por SEMAF.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
-  "updated_at": "2026-10-30T13:53:08.620623Z",
+  "updated_at": "2026-10-30T13:55:56.097999+00:00",
   "count": 304
 }
