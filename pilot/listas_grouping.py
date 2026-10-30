@@ -46,6 +46,18 @@ def is_covered(row):
             and int(row.get('covered_source_revision', revision(row))) == revision(row))
 
 
+def terminal_applies(event, row):
+    if str(event.get('status') or '').lower() not in CLOSED:
+        return False
+    if revision(event) != revision(row):
+        return revision(event) > revision(row)
+    closed_at = next((parsed for key in ('deleted_at', 'dismissed_at', 'published_at',
+                                        'removed_at', 'updated_at', 'delivered_at', 'decided_at')
+                      if (parsed := moment(event.get(key)))), None)
+    explained_at = moment(row.get('explained_at'))
+    return not (closed_at and explained_at and (closed_at-explained_at).total_seconds() < -60)
+
+
 def latest(rows, key='id'):
     result = {}
     for row in rows:
@@ -77,7 +89,7 @@ def eligible(state, now, include_covered=False):
                str(x.get('telegram_package_status') or '').lower() in CLOSED
                for x in (row, req)):
             continue
-        if any(str(x.get('status') or '').lower() in CLOSED and revision(x) >= rev
+        if any(terminal_applies(x, row)
                for x in (decisions.get(ident, {}), deliveries.get(ident, {}))):
             continue
         requested = moment(req.get('requested_at'))

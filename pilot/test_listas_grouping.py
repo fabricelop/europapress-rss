@@ -149,4 +149,11 @@ class ListasGroupingTests(unittest.TestCase):
         self.assertEqual(next(x for x in cleaned[m.MANUAL]['items'] if x['id']=='a123')['status'],'explained')
         self.assertEqual(cleaned[m.RECEIPTS]['items'][-1]['status'],'rejected')
 
+    def test_old_closure_does_not_hide_a_later_legacy_episode(self):
+        self.state[m.DECISIONS]['items']=[{'id':'a123','revision':1,'status':'deleted',
+            'updated_at':(self.now-timedelta(days=3)).isoformat()}]
+        self.assertIn('a123',m.eligible(self.state,self.now))
+        self.state[m.DECISIONS]['items'][0]['updated_at']=self.now.isoformat()
+        self.assertNotIn('a123',m.eligible(self.state,self.now))
+
 if __name__=='__main__':unittest.main()
