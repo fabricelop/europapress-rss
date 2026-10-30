@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T20:46:22.723784+00:00",
+  "updated_at": "2026-10-30T20:49:18.716696+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2465,7 +2465,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-30T19:51:52.389747+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -3972,7 +3972,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-30T19:51:52.389747+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     },
     {
       "id": "22601009b977",
@@ -8695,7 +8695,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-30T19:51:52.389747+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -28684,7 +28684,7 @@
       "editorial_grouping_state": "cleared",
       "updated_at": "2026-10-30T20:51:00+01:00",
       "editorial_grouping_fingerprint": "f702a6dfeef17de6125dc3bc62f6f70168498caca81a48228123df0a60c6559d",
-      "editorial_grouping_checked_at": "2026-10-30T19:51:52.389747+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     },
     {
       "id": "9f812088f7ae",
@@ -31810,7 +31810,16 @@
       "ai_image_status": "pending",
       "image_pending": false,
       "rewrite_pending": false,
-      "editorial_grouping_state": "pending"
+      "editorial_grouping_state": "cleared",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-f6486e28f95ce346",
+      "covered_by_revision": 0,
+      "covered_by_name": "Crisis del Tribunal Constitucional de Polonia",
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-30T20:49:18.716696+00:00",
+      "grouping_request_id": "listas-auto-4de6de991fd044685208",
+      "editorial_grouping_fingerprint": "3ff09fab8f5921789f5c0f68dfb6719d535d41bdc8427c6e3e89da2dc2d69099",
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     },
     {
       "id": "9fee4d7386fb",
@@ -31881,7 +31890,9 @@
       "ai_image_status": "pending",
       "image_pending": false,
       "rewrite_pending": false,
-      "editorial_grouping_state": "pending"
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "b2232661225532039fd23e868f9ddc4c4ec29c23387d527c825bf745d9061cf2",
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     },
     {
       "id": "b0c76a2bacab",
@@ -31952,19 +31963,28 @@
       "ai_image_status": "pending",
       "image_pending": false,
       "rewrite_pending": false,
-      "editorial_grouping_state": "pending"
+      "editorial_grouping_state": "cleared",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-f6486e28f95ce346",
+      "covered_by_revision": 0,
+      "covered_by_name": "Crisis del Tribunal Constitucional de Polonia",
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-30T20:49:18.716696+00:00",
+      "grouping_request_id": "listas-auto-4de6de991fd044685208",
+      "editorial_grouping_fingerprint": "fed3f1b6ed663487d95b0a1a061aad6e15c3cf2f05f847a8cddd97bb44609e1b",
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     },
     {
       "id": "listas-auto-4de6de991fd044685208",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-30T20:46:22.723784+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -33405,7 +33425,13 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-30T20:49:18.716696+00:00",
+      "grouping_created_ids": [
+        "listas-joint-f6486e28f95ce346"
+      ],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "439afbdfd4458d195341004c835d8c2e65de40c8428de4dc0d63543d4a8234e9"
     },
     {
       "id": "red-review-20b16a02ea5bcc6b9a5c",
@@ -33467,6 +33493,53 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "listas-joint-f6486e28f95ce346",
+      "revision": 0,
+      "name": "Crisis del Tribunal Constitucional de Polonia",
+      "rank": 19,
+      "status": "explained",
+      "explanation": "TT#19 Tusk y Tribunal Constitucional son tendencia por la crisis en Polonia: la Policía rodeó la corte tras la suspensión de sus dos máximos responsables, en pleno pulso entre Donald Tusk y Karol Nawrocki.\n#Polonia #DonaldTusk #Constitucional",
+      "closer_text": "",
+      "explained_at": "2026-10-30T20:49:18.716696+00:00",
+      "requested_at": "2026-10-30T20:49:18.716696+00:00",
+      "updated_at": "2026-10-30T20:49:18.716696+00:00",
+      "listas_group_role": "joint",
+      "listas_group_members": [
+        {
+          "id": "4e9df6831ab7",
+          "revision": 0
+        },
+        {
+          "id": "b0c76a2bacab",
+          "revision": 0
+        }
+      ],
+      "trend_names": [
+        "Tusk",
+        "Tribunal Constitucional"
+      ],
+      "group_title": "Crisis del Tribunal Constitucional de Polonia",
+      "verification_sources": [
+        {
+          "url": "https://www.europapress.es/internacional/noticia-policia-rodea-sede-tribunal-constitucional-polonia-20261030193359.html"
+        },
+        {
+          "url": "https://cadenaser.com/nacional/2026/10/30/el-primer-ministro-polaco-despliega-a-la-policia-en-el-tribunal-constitucional-cadena-ser/"
+        }
+      ],
+      "grouping_reason": "Ambas fichas describen el mismo episodio actual: suspensión de la cúpula del Constitucional polaco y despliegue policial en torno a la corte.",
+      "grouping_request_id": "listas-auto-4de6de991fd044685208",
+      "source": "listas_grouping_editorial",
+      "auto_queued": false,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "0424aaaf6b73bbb135ad3b6fd9bbc059a57f9acb09f089eb5b4ffcd9d2c7fbd1",
+      "editorial_grouping_checked_at": "2026-10-30T20:49:18.716696+00:00"
     }
   ],
   "count": 192
