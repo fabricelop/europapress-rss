@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T16:05:58.867261+00:00",
+  "updated_at": "2026-10-30T16:07:32.577634+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -16820,7 +16820,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 2,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-30T16:05:35.444562+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -16844,14 +16844,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-30T16:07:32.577634+00:00",
+      "review_reason": "La revisión ha quedado obsoleta: la ficha publicada de Toledo ya fue superada por explicaciones posteriores de miembros del mismo grupo (Urda, Iryo, Óscar Puente y Madrid-Andalucía). Se conserva el texto y la fecha originales."
     },
     {
       "id": "red-review-2713bd95a48b107da047",
       "revision": 0,
       "name": "Revisar novedades: Renfe",
       "rank": 1,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-30T16:05:35.444562+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -16876,7 +16879,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-30T16:07:32.577634+00:00",
+      "review_reason": "La revisión ha quedado obsoleta: la ficha publicada de Renfe ya fue superada por explicaciones posteriores sobre Renfe/Adif y el corte Madrid-Andalucía, por lo que se conserva el texto y la fecha originales."
     }
   ]
 }
