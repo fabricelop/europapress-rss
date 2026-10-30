@@ -5,52 +5,12 @@ on:
     paths:
       - '.github/workflows/ttendencias-text-reconcile-once.yml'
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: ttendencias-text-reconcile-once
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
-  reconcile:
+  stop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
-      - name: Reconcile READY text only
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'ttendencias-editorial'
-          git config user.email 'actions@users.noreply.github.com'
-          for attempt in 1 2 3 4; do
-            git fetch origin main
-            git reset --hard origin/main
-            python3 - <<'PY'
-          import json
-          from datetime import datetime, timezone
-          from pathlib import Path
-          from trends.reconcile_prepared_ready import reconcile_prepared_ready
-
-          root=Path('.')
-          rp=root/'trends/requests.json'
-          pp=root/'trends/prepared.json'
-          ep=root/'trends/telegram-manual-explained.json'
-          requests=json.loads(rp.read_text(encoding='utf-8'))
-          prepared=json.loads(pp.read_text(encoding='utf-8'))
-          explained=json.loads(ep.read_text(encoding='utf-8'))
-          now=datetime.now(timezone.utc).isoformat()
-          completed=reconcile_prepared_ready(requests,prepared,explained,now)
-          if completed:
-              rp.write_text(json.dumps(requests,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-              ep.write_text(json.dumps(explained,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          print('TTENDENCIAS_TEXT_RECONCILED',completed)
-          PY
-            python3 pilot/listas_grouping.py
-            git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json
-            if git diff --cached --quiet; then exit 0; fi
-            git commit -m 'TTendencias: reconciliar texto READY sin imágenes'
-            if git push origin HEAD:main; then exit 0; fi
-            sleep "$((attempt * 2))"
-          done
-          exit 1
+      - run: echo "No-op; canonical concurrent run already reconciled the text."
