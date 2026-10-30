@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-30T22:50:44.362635+00:00",
+  "updated_at": "2026-10-30T22:52:10.940578+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-30T21:47:54.384035+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T22:52:10.940578+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -3983,7 +3983,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-30T21:47:54.384035+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T22:52:10.940578+00:00"
     },
     {
       "id": "22601009b977",
@@ -8706,7 +8706,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-30T21:47:54.384035+00:00"
+      "editorial_grouping_checked_at": "2026-10-30T22:52:10.940578+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -40077,7 +40077,7 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "none",
       "ai_image_status": "not_requested",
@@ -40086,7 +40086,9 @@
       "image_pending": false,
       "telegram_package_status": "pending",
       "news_disposition": "ignored",
-      "disable_ai_image": false
+      "disable_ai_image": false,
+      "editorial_grouping_fingerprint": "c2342c1e32c913ea55b2c3d3d99ed712f6da126083de5b81df2fedf809c7b90a",
+      "editorial_grouping_checked_at": "2026-10-30T22:52:10.940578+00:00"
     },
     {
       "id": "9950fd2c5b18",
@@ -40140,7 +40142,7 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "none",
       "ai_image_status": "not_requested",
@@ -40149,19 +40151,21 @@
       "image_pending": false,
       "telegram_package_status": "pending",
       "news_disposition": "ignored",
-      "disable_ai_image": false
+      "disable_ai_image": false,
+      "editorial_grouping_fingerprint": "2beaa0af2297d5658f27f5b4acd33745a3df02ac2709b481b06c72c9dee1dd26",
+      "editorial_grouping_checked_at": "2026-10-30T22:52:10.940578+00:00"
     },
     {
       "id": "listas-auto-c6b21348c9cdf879fb9f",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-30T22:50:44.362635+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -41577,7 +41581,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-30T22:52:10.940578+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "7ced85d0f5059bdfe92e1fe470738441f19c0b41fc9db22d7f563938b8f002c7"
     }
   ],
   "count": 214
