@@ -88,7 +88,7 @@ El progreso durable se sigue en runtime/RUNTRACE. Un 0/0 no basta cuando existe 
 
 Normaliza para comparar mayúsculas/acentos/etiquetas conservando el nombre visible. Compara fecha y antigüedad de cada fuente, diversidad y consenso. Una fuente sin fecha requiere corroboración. Una descarga nueva puede contener un ranking viejo. `trends/recent.json` registra captura, método, fuentes, Top30, movimientos y señales; `checkpoint.json` y el watchdog respaldan frescura. Ante fallo, conservar el último radar identificado como tal, sin inventar actualidad.
 
-**Todas las pendientes/azules del Top30, puestos 1–30, entran automáticamente en elaboración** mediante `trends/auto_queue_new.py`, con `auto_queue_scope:top30`. No hay una franja 11–30 reservada a preparación manual. Los puestos 31+ y señales Próximas tendencias no se seleccionan por ranking. La captura debe ser fiable; mantener las barreras de fuente insegura.
+**Todas las pendientes/azules del Top30, puestos 1–30, entran automáticamente en elaboración** mediante `trends/auto_queue_new.py`, con `auto_queue_scope:top30`. No hay una franja 11–30 reservada a preparación manual. Los puestos31+ y señales Próximas tendencias no se presentan como fichas del Top30 por ranking. Las candidatas fuertes del Radar pueden preparar un borrador anticipado por el recorrido descrito a continuación. La captura debe ser fiable; mantener las barreras de fuente insegura.
 
 La selección conserva trabajo ya aceptado al cambiar de puesto, solicitudes manuales, pistas, revisiones y decisiones terminales. Los ámbitos históricos top10/next_unexplained_11_30 identifican el origen de antiguas solicitudes; no cambian la regla Top30 actual.
 
@@ -96,11 +96,27 @@ Los estados principales son preparing, update, problematic, explained, inactive 
 
 Una explicación vieja no se renueva solo por cumplir 48h. La revisión de novedades determina si sigue válida, necesita actualización o corresponde a otro episodio. Los terminales no se reabren; un acontecimiento posterior verificado usa identidad nueva.
 
+### Radar emergente y preparación anticipada con presupuesto0€
+
+La captura de `trends/update_trends.py` consulta las mismas13 fuentes públicas mediante cuatro workers en paralelo, con los mismos timeouts y una solicitud por proveedor; mantiene orden de resultados para que las carreras de red no alteren desempates. La programación sigue siendo cada10min: se reduce la espera dentro de la captura sin aumentar consultas periódicas ni contratar proveedores, API X o infraestructura.
+
+`upcoming` y `radar_history` detectan términos fuera del Top30 que aparecen o suben. `trends/anticipation.py`, llamado al cerrar `auto_queue_new.py`, puede encargar hasta **dos borradores de investigación activos o preparados**, con un máximo de dos encargos nuevos en15min móviles. Las investigaciones nuevas y manuales vigentes tienen prioridad. No se inicia anticipación para un término ya investigado, una revisión vigente o un nombre cubierto por una decisión previa.
+
+La selección exige: captura de hasta20min, primera detección de hasta45min, dos observaciones separadas por hasta30min y última observación de hasta15min; subida de al menos ocho puestos o aumento del número de fuentes; dos rankings no casi idénticos y al menos uno fechado/fresco de hasta45min. Se comprueban las listas reales; rankings con similitud de conjunto≥85% cuentan una vez. Son señales de ranking y corroboración, **no una medida de publicaciones por minuto**.
+
+El job usa `anticipation_request:true`, `task:anticipate`, nombre «Radar · término», `anticipated_name` y snapshot `anticipation_signal`. Rank0 es interno: no es un puesto nacional confirmado. Viaja por requests/cola y el consumidor editorial existente; lleva with_image:false/disable_ai_image:true. El editor investiga la causa y redacta el cuerpo habitual sin TT#N ni puesto inventado, dejando margen para la cabecera real. Conserva hashtags, remate cuando corresponda y fuentes verificadas.
+
+La salida exclusiva es `trends/anticipation-outbox/<job_id>.json`, con revisión0, outcome prepared/unverified y motivo. El aplicador guarda `anticipation_prepared` y `anticipation_draft`, o `anticipation_unverified`, y retira el job cerrado de la cola. `anticipation_error` se corrige en el mismo outbox. **El borrador no aparece en Listas, no pide imágenes, no publica ni suma al contador.** Los aplicadores ordinarios y reconciliadores rechazan usar una solicitud anticipada para crear ready/explained publicable.
+
+El borrador caduca una hora después del encargo. Cuando la candidata aparece en el Top30 de una captura válida, el selector habitual registra su solicitud real. Si es automática y el borrador sigue fresco, añade anticipation_origin_id y anticipation_draft a esa solicitud, sin otra identidad en paralelo ni revisión artificial. El editor **revalida causa, actualidad y fuentes**, usa puesto real y formato habitual antes del cierre normal, agrupación e imagen. Una petición manual o terminal no se modifica; una preparación todavía pendiente se sustituye por el trabajo Top30. Un resultado tardío no reabre borradores vencidos/sustituidos.
+
+`trends/anticipation-metrics.json` guarda hasta200 episodios: primera detección, encargo, borrador verificado, primera entrada observada en Top30, destino de promoción y estados. Separa **adelanto de detección** de **minutos que el borrador ya estaba preparado antes de entrar** y su promedio. Una preparación caducada no cuenta como útil. No confundir observación propia del ranking con la hora oficial de X, ni con publicación. Los indicadores cuantifican la ventaja real; presupuesto externo configurado:0€.
+
 ## 6. Elaboración ordinaria de tendencias
 
 La cola autoritativa es `trends/editorial-queue.json`, coordinada con `requests.json`. `trends/request_pc_editorial.py --trigger` solicita la misma pasada en la rama control, con ejecutor `pc_chat_ttendencias_dedicated`. El listener `windows/TTendenciasDedicatedListener.ps1` lanza `Ejecutar.js tendencias --enviar` con `TTENDENCIAS_EDITORIAL_JOB_V2` y el contrato `trends/editorial-run-prompt.md`.
 
-Orden de trabajo: investigaciones nuevas y reelaboraciones manuales vigentes primero; agrupaciones después; revisiones de novedades después. Las problemáticas ordinarias se reintentan al final mientras sigan en Top30. Cada paso relee ID/revisión y respeta cierres concurrentes. Un job especial de agrupación/revisión no es una tendencia llamada como su título.
+Orden de trabajo: investigaciones nuevas y reelaboraciones manuales vigentes primero; agrupaciones después; borradores anticipados del Radar después; revisiones de novedades después. Las problemáticas ordinarias se reintentan al final mientras sigan en Top30. Cada paso relee ID/revisión y respeta cierres concurrentes. Un job especial de agrupación/revisión no es una tendencia llamada como su título.
 
 Investigar el detonante actual con fuentes verificables. `user_pistas` e `hints_verification_status:unverified` se conservan como hipótesis; mantener `investigation_history`. No asumir que una pista del editor está comprobada. Tras dos búsquedas distintas sin detonante verificable, guardar problematic con razón concreta y continuar; nunca inventar causa, actualidad o remate para vaciar la cola.
 
@@ -173,6 +189,7 @@ La selección manual de esta entrega está implementada en iPhone; no asumir que
 | En elaboración tendencias | editorial-queue + requests vigentes | Preparing/update ordinarios o jobs especiales reales; cierre exacto |
 | Top30 | trends/recent.json + explicaciones/historial | Ranking actual independiente de estar en Listas o publicada |
 | Pendientes | Radar/peticiones sin explicación verificable | No confundir fallo de verificación con texto listo |
+| Borrador anticipado Radar | Requests, anticipation_request y anticipation_draft | Investigación sin puesto Top30, Listas ni IA; caduca1h |
 | Órdenes por confirmar | Operaciones locales + recibos remotos | La solicitud persiste hasta applied/already_applied/rejected confirmado |
 
 Una cola compacta válida y vacía significa cero trabajo. Solo usar status como fallback cuando falta una estructura válida, no cuando count es0. Una lectura fallida no prueba una cola vacía. Un READY histórico no cierra un rework posterior; un PROCESSING histórico tampoco reabre un READY vigente.
@@ -341,6 +358,8 @@ La lectura de fuentes, selección, aplicación de decisiones y planificación de
 | Azul1–30 sin elaborar | auto_queue_new, requests, queue | Captura fiable, terminal/revisión y run selector |
 | Muchas en elaboración | Cola viva → trigger/ACK | Listener → envío real → texto/outbox → aplicación |
 | Solicitar procesamiento no cambia pantalla | Main fresco y revisión objetivo | Si ya hay READY, cliente/consulta/overlay; si no, tramo editorial real |
+| Radar no prepara candidatas | upcoming/radar_history, anticipation.py, requests | Señal reciente, dos observaciones, subida/corroboración, fuentes distintas y cupo2; trabajo normal prioritario |
+| Borrador Radar no pasa a Listas | anticipation_draft y entrada Top30 | Debe entrar en ranking, existir solicitud automática vigente y revalidarse el texto |
 | Tendencia sin revisar | explained_at, recent actualizado, requests | Prioridad roja→amarilla→verde, cupo2/15min, máximo2 activas, última revisión≥1h, trabajo nuevo/manual prioritario, consumidor |
 | Revisión marcada sin novedades | red_review_outcome/checked_at/sources | Color conserva edad original; no es fallo por seguir roja |
 | Actualización no aparece | maintenance-outbox, review_error/job | JIT, superseded/stale, review_created_id, ficha explicada real |
@@ -367,6 +386,6 @@ Después de cada cambio, integrar las reglas en sus apartados de proceso, respon
 
 ## 17. Fuentes y acceso para otra conversación
 
-Repositorio canónico: `https://github.com/fabricelop/europapress-rss`. Leer primero `docs/TTActualidad-LEER-PRIMERO.md` y este manual; consultar `docs/TTActualidad-INCIDENTES-Y-DECISIONES.md` para antecedentes. Contratos de redacción: `ttittulares/editorial-run-prompt.md`, `trends/editorial-run-prompt.md`. Para mantenimiento: `pilot/listas_grouping.py`, `pilot/trend_maintenance.py` y sus pruebas. Para versiones: project.yml, workflow de compilación, rama y artifact real; no asumir que main refleja el último IPA.
+Repositorio canónico: `https://github.com/fabricelop/europapress-rss`. Leer primero `docs/TTActualidad-LEER-PRIMERO.md` y este manual; consultar `docs/TTActualidad-INCIDENTES-Y-DECISIONES.md` para antecedentes. Contratos de redacción: `ttittulares/editorial-run-prompt.md`, `trends/editorial-run-prompt.md`. Para mantenimiento: `pilot/listas_grouping.py`, `pilot/trend_maintenance.py`, `trends/anticipation.py` y sus pruebas. Antelación: `trends/anticipation-metrics.json`. Para versiones: project.yml, workflow de compilación, rama y artifact real; no asumir que main refleja el último IPA.
 
 La copia completa para adjuntar a cualquier chat se llama `TTActualidad-Memoria-Completa-2026-10-29.md`; conserva ese nombre e identidad aunque el contenido se mantenga actualizado. El archivo describe contexto, no promete acceso automático universal ni vigilancia permanente del PC. Para reparar basta facilitarlo y añadir proyecto, ID/revisión, dispositivo, hora Madrid, acción y síntoma/error actuales. Los antecedentes de conversaciones no sustituyen la evidencia viva.

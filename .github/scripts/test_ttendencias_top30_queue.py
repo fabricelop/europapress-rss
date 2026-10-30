@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 
 source = Path(__file__).resolve().parents[2] / "trends" / "auto_queue_new.py"
 reconcile_source = source.with_name("reconcile_prepared_ready.py")
+anticipation_source = source.with_name("anticipation.py")
 
 def load(path):
     return json.loads(path.read_text(encoding="utf8"))
@@ -21,6 +22,7 @@ def put(path, data):
 with tempfile.TemporaryDirectory() as foldername:
     folder = Path(foldername)
     shutil.copy2(source, folder / "auto_queue_new.py")
+    shutil.copy2(anticipation_source, folder / "anticipation.py")
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
     names = [f"Tendencia {i}" for i in range(1, 31)]
     put(folder / "recent.json", {
@@ -99,6 +101,7 @@ with tempfile.TemporaryDirectory() as foldername:
     from zoneinfo import ZoneInfo
     folder=Path(foldername)
     shutil.copy2(source, folder/"auto_queue_new.py")
+    shutil.copy2(anticipation_source, folder/"anticipation.py")
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
     old=(datetime.now(ZoneInfo("Europe/Madrid"))-timedelta(days=5)).isoformat(timespec="seconds")
     put(folder/"recent.json",{"selection_method":"consensus","sources_used":["social-A","social-B"],
@@ -131,6 +134,7 @@ with tempfile.TemporaryDirectory() as foldername:
     from zoneinfo import ZoneInfo
     folder=Path(foldername)
     shutil.copy2(source, folder/"auto_queue_new.py")
+    shutil.copy2(anticipation_source, folder/"anticipation.py")
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
     now=datetime.now(ZoneInfo("Europe/Madrid"))
     old=(now-timedelta(hours=49)).isoformat(timespec="seconds")
@@ -164,6 +168,7 @@ with tempfile.TemporaryDirectory() as foldername:
 with tempfile.TemporaryDirectory() as foldername:
     folder = Path(foldername)
     shutil.copy2(source, folder / "auto_queue_new.py")
+    shutil.copy2(anticipation_source, folder / "anticipation.py")
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
     put(folder / "recent.json", {"selection_method":"consensus",
         "sources_used":["social-A","social-B"],

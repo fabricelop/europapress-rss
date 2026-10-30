@@ -36,6 +36,8 @@ def reconcile_prepared_ready(requests_doc, prepared_doc, explained_doc, now):
     }
     completed = 0
     for req in requests:
+        if req.get("anticipation_request"):
+            continue
         if str(req.get("status") or "").lower() != "ready":
             continue
         ident = str(req.get("id") or "")

@@ -6,13 +6,13 @@ Este contrato gobierna la misma pasada editorial iniciada por «Ejecuta TTendenc
 
 El cierre editorial es texto verificado persistido en `trends/requests.json` y `trends/telegram-manual-explained.json`, con la revisión exacta retirada de `trends/editorial-queue.json`. READY/explained no espera fotos, IA ni Telegram. El panel editorial es TTActualidad nativa; Telegram editorial está retirado. TTImages es un transporte independiente desde el PC. No activar ImageGen, llamar al bot TTImages ni generar `trends/image-outbox/**` en esta pasada. Preservar FabCalendar, SeLoRecordamos, URGENTE, credenciales, sesiones y el Chrome de otros procesos.
 
-Todas las pendientes del Top 30 (puestos 1–30) se investigan automáticamente. Las 31+ no entran por ranking. Las solicitudes manuales y pistas ya aceptadas se conservan aunque cambien de puesto o salgan del ranking. La edad por sí sola no autoriza otra publicación ni un nuevo episodio: las explicaciones requieren la revisión condicional de novedades descrita aquí.
+Todas las pendientes del Top 30 (puestos 1–30) se investigan automáticamente. Las 31+ no entran como fichas del Top30 por ranking. El Radar puede encargar hasta dos borradores anticipados según el contrato siguiente. Las solicitudes manuales y pistas ya aceptadas se conservan aunque cambien de puesto o salgan del ranking. La edad por sí sola no autoriza otra publicación ni un nuevo episodio: las explicaciones requieren la revisión condicional de novedades descrita aquí.
 
 ## Inicio, orden y barrera de estado
 
 1. Leer `trends/editorial-config.json`, `recent.json`, `requests.json`, `editorial-queue.json`, `telegram-manual-explained.json`, `mobile-decisions.json` y los últimos resultados de mantenimiento. La cola compacta vigente es autoritativa, incluso cuando está vacía. No resucitar trabajo desde resúmenes antiguos.
 2. Correlacionar siempre proyecto, ID, revisión y fecha. Reconciliar textos ya persistidos con la revisión exacta; nunca por nombre solamente. Atender `rewrite_pending:true` si sigue vigente y no tiene una revisión posterior ni decisión terminal.
-3. Procesar primero todas las nuevas investigaciones y reelaboraciones manuales `preparing/update`, de antiguas a recientes. Después, agrupaciones `task:group_listas`; después revisiones de novedades `task:review_red`. Las problemáticas ordinarias se reintentan al final si siguen en el Top 30. Releer la cola antes de cerrar: un trabajo nuevo puede haber llegado durante la pasada.
+3. Procesar primero todas las nuevas investigaciones y reelaboraciones manuales `preparing/update`, de antiguas a recientes. Después, agrupaciones `task:group_listas`; después borradores Radar `task:anticipate`; después revisiones de novedades `task:review_red`. Las problemáticas ordinarias se reintentan al final si siguen en el Top 30. Releer la cola antes de cerrar: un trabajo nuevo puede haber llegado durante la pasada.
 4. Justo antes de investigar, persistir o aplicar resultados, releer main y comprobar ID+revisión. Si el editor ha quitado, publicado, reelaborado o sustituido una revisión, respetar su estado. No borrar ni reabrir terminales; no sustituir textos más nuevos con snapshots de inicio. Una solicitud especial se completa mediante SU outbox, nunca convirtiéndola en una tendencia ficticia explicada.
 5. El workflow `ttactualidad-group-listas.yml` mantiene las solicitudes especiales y se revisa cada cinco minutos, con posible retraso de Actions. Usa el mismo `trends/request_pc_editorial.py --trigger` y el mismo consumidor Windows. El trigger no demuestra ejecución: confirmar RUNNING real y resultado aplicado.
 
@@ -79,6 +79,24 @@ Si una nueva etiqueta describe exactamente un acontecimiento YA publicado sin he
 No usar esa cobertura si hay novedades sustanciales ni si falta una publicación vigente del snapshot. No modificar la publicación histórica. El aplicador verifica JIT y crea fichas `listas_group_role:joint`; marca originales `covered` / «Agrupada en…», conservando sus textos. Los grupos obsoletos se omiten enteros en `grouping_skipped_stale`. Ante `grouping_error`, corregir el MISMO outbox; no crear jobs duplicados. Releer que el job terminó `grouping_completed` y que las fichas previstas están guardadas.
 
 Solo las fichas con `editorial_grouping_state:cleared` y `editorial_grouping_fingerprint` correspondiente al texto exacto continúan hacia nuevas imágenes. Las originales cubiertas no piden una imagen adicional. Las imágenes ya lanzadas previamente no se cancelan desde este editor. Ni esta espera visual ni una agrupación fallida bloquean el texto ya disponible en Listas; registrar la causa y corregir el job.
+
+## Preparación anticipada del Radar
+
+`anticipation_request:true`, `task:anticipate` identifica un borrador de investigación de una señal fuera del Top30. Su nombre de job es «Radar · …» y rank0 es interno: no es un puesto real de X. El término literal está en `anticipated_name` y las observaciones en `anticipation_signal`. No convertirlo en explained/ready, no añadirlo a Listas, no usar el outbox ordinario, no generar foto ni IA y no publicar.
+
+El selector usa exclusivamente las fuentes públicas ya existentes, sin API de pago ni servicios nuevos. Admite como máximo dos borradores pendientes o preparados y dos encargos nuevos por ventana móvil de15min, siempre detrás de investigaciones nuevas/manuales del Top30. Exige dos observaciones, subida de al menos ocho puestos o aumento de corroboración, dos rankings no casi idénticos, al menos uno fechado y fresco, señal detectada hace45min o menos y captura vigente. Un término del Top30, ya investigado o con decisión previa no se abre de nuevo por este mecanismo.
+
+Investigar el detonante con fuentes actuales y redactar el cuerpo del tuit habitual, hashtags y remate si procede, **sin prefijo TT#N ni puesto inventado**. El cuerpo debe permitir añadir después `TT#30 ` sin alcanzar280 caracteres ponderados. Guardar únicamente `trends/anticipation-outbox/<job_id>.json`:
+
+```json
+{"job_id":"radar-prepare-ID","revision":0,"outcome":"prepared","reason":"Detonante comprobado","explanation_body":"Nombre es tendencia por el hecho verificado.\n#Etiqueta1 #Etiqueta2","closer_text":"","verification_sources":[{"url":"https://FUENTE_REAL_VERIFICADA"}]}
+```
+
+Si no se verifica, guardar `outcome:"unverified"`, motivo preciso y la misma identidad. No forzar una explicación ni pedir estrellas. El aplicador guarda `anticipation_prepared` o `anticipation_unverified` en requests y retira solo el job cerrado de la cola. Ante `anticipation_error`, corregir el mismo resultado; un job expirado/sustituido no se revive.
+
+El borrador caduca una hora después de solicitarse. Cuando el término entra en el Top30, el selector normal registra la petición real; si es automática y existe borrador fresco, añade `anticipation_draft` y `anticipation_origin_id` a esa petición, sin crear otra ni modificar una petición manual/terminal. **Revalidar fecha, detonante y fuentes**, usar el puesto real y el estilo habitual antes de cerrar texto. Una preparación pendiente al entrar se sustituye por el trabajo Top30, evitando dos investigaciones paralelas. Después del cierre normal siguen agrupación e imágenes habituales.
+
+`trends/anticipation-metrics.json` distingue adelanto de detección y adelanto del borrador ya verificado respecto a la primera entrada observada en Top30. No presentar un borrador caducado como preparación útil ni confundir estas métricas con la hora oficial del ranking o una publicación. El límite de gasto externo es0€; no activar API X, proveedores de pago ni planes nuevos.
 
 ## Revisión condicional de tendencias por prioridad
 

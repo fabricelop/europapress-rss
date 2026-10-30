@@ -11,7 +11,7 @@ Para empezar un chat de reparación:
 - **Datos editoriales:** main. **Triggers/ACK/jobs:** ramas control. **Ejecución del PC:** logs Windows. Una de esas pruebas no sustituye a las otras.
 - **iPhone de esta entrega:** 0.4.28 build34, `feature/ttactualidad-ios-0.4.28-revision-y-grupos`. La fuente iOS de main puede ser anterior. Confirmar qué IPA está instalada antes de editar.
 - **Windows:** `desktop/ttactualidad/TTActualidad_Moderno.pyw`, Qt; preferencia ZIP sin EXE. No confundir con la web anterior ni con Tkinter.
-- **Todas las pendientes del Top30 entran automáticamente**; no seleccionar 31+. No hay filtro Nuevas.
+- **Todas las pendientes del Top30 entran automáticamente**. Fuera del ranking, el Radar solo encarga hasta dos borradores fuertes: sin puesto inventado, Listas, IA ni publicación; al entrar en Top30 se revalidan y reutilizan. No hay filtro Nuevas. Presupuesto externo0€; mismas fuentes y captura paralela de cuatro workers, sin aumentar frecuencia.
 - **Revisión de novedades:** primero rojas (>24h), después amarillas (12–24h) y verdes (<12h). Máximo dos comprobaciones automáticas por ventana móvil de15min, máximo dos activas y una por origen/hora, con Top30 fresco. Las revisiones manuales tienen prioridad y no consumen ese cupo. Sin novedades conserva texto, fecha y color. Una actualización continuada usa «sigue siendo tendencia por…»; un episodio distinto requiere verificación y otra identidad.
 - **Agrupación automática:** al cerrar texto y antes de pedir IA, comparar el mismo acontecimiento y cobertura ya publicada. Conservar originales, marcadas Agrupada en…; ambigüedad significa mantener separadas.
 - **Agrupar manual:** seleccionar ≥2 tarjetas de Listas; solo se revisan esas. **Quitar de Listas** sigue permitiendo indicar publicada/no publicada. **Retirar agrupadas** conserva conjuntas y no suma publicación.
@@ -44,6 +44,7 @@ Para empezar un chat de reparación:
 | Noticias | telegram/events.json; editorial-processing.json; ttittulares/editorial-queue.json, prepared.json, decisions.json |
 | Tendencias | trends/recent.json, requests.json, editorial-queue.json, telegram-manual-explained.json, mobile-decisions.json |
 | Mantenimiento | pilot/trend_maintenance.py, listas_grouping.py; trends/maintenance-outbox/, listas-grouping-outbox/ |
+| Anticipación | trends/anticipation.py, anticipation-outbox/, anticipation-metrics.json; requests con anticipation_request |
 | Aplicación y recibos | pilot/apply-ttactualidad-action.py; ttactualidad-action-receipts.json; ttactualidad-publication-events.json |
 | Contratos | ttittulares/editorial-run-prompt.md; trends/editorial-run-prompt.md |
 | Noticias texto final | TTITTULARES_OUTBOX_V1 en **issue164**; PR2 solo control/telemetría |

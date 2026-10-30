@@ -34,7 +34,7 @@ def fingerprint(row):
 
 def image_allowed(row):
     """A changed text invalidates clearance even if a producer reused revision 0."""
-    if row.get('listas_group_role') == 'covered':
+    if row.get('anticipation_request') or row.get('listas_group_role') == 'covered':
         return False
     return (row.get('editorial_grouping_state') == 'cleared'
             and row.get('editorial_grouping_fingerprint') == fingerprint(row))
@@ -73,7 +73,7 @@ def schedule(state, now, grouping):
     for row in unchecked:
         stamp_rows(state, row, editorial_grouping_state='pending')
     # Normal editorial requests (including manual reworks) always take priority.
-    if any(not x.get('listas_grouping_request') and not x.get('red_review_request') for x in live):
+    if any(not x.get('listas_grouping_request') and not x.get('red_review_request') and not x.get('anticipation_request') for x in live):
         return
     if not any(x.get('listas_grouping_request') for x in live) and unchecked:
         signature = '|'.join(sorted(fingerprint(x) for x in current.values()))

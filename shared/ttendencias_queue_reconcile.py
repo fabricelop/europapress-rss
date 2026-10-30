@@ -46,7 +46,8 @@ def reconcile():
         source=(str(queue_row.get("explanation") or "").strip(),
                 str(queue_row.get("closer_text") or "").strip())
         existing=byreq.get(tid)
-        if (str(queue_row.get("status") or "").lower()!="explained"
+        if (queue_row.get("anticipation_request")
+                or str(queue_row.get("status") or "").lower()!="explained"
                 or queue_row.get("editorial_verified") is not True
                 or not source[0] or tid in blocked
                 or existing and int(existing.get("revision") or 0)>rev

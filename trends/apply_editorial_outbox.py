@@ -299,6 +299,11 @@ def sync_queue(requests_doc):
             "automatic_grouping": req.get("automatic_grouping"),
             "published_context": req.get("published_context"),
             "task": req.get("task"),
+            "anticipation_request": req.get("anticipation_request"),
+            "anticipated_name": req.get("anticipated_name"),
+            "anticipation_signal": req.get("anticipation_signal"),
+            "anticipation_origin_id": req.get("anticipation_origin_id"),
+            "anticipation_draft": req.get("anticipation_draft"),
             "listas_grouping_request": req.get("listas_grouping_request"),
             "grouping_candidates": req.get("grouping_candidates"),
             "grouping_state": req.get("grouping_state"),
@@ -328,7 +333,7 @@ def sync_queue(requests_doc):
     # Evita starvation: trabajo nuevo/revisiones primero; problematic al final.
     items.sort(key=lambda x: (
         1 if str(x.get("status") or "") == "problematic" else 0,
-        1 if x.get("red_review_request") else 0,
+        2 if x.get("red_review_request") else 1 if x.get("anticipation_request") else 0,
         str(x.get("requested_at") or ""),
     ))
     save(TRENDS / "editorial-queue.json", {
@@ -391,6 +396,9 @@ def main():
                 print(f"Ignorado {path.name}: estado actual {req.get('status')}")
                 path.unlink()
                 continue
+
+            if req.get("anticipation_request"):
+                raise ValueError("Los borradores Radar solo se aplican por anticipation-outbox; no son Listas")
 
             result_status = str(payload.get("status") or "")
             if result_status == "ready":

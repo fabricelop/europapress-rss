@@ -7,6 +7,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from reconcile_prepared_ready import reconcile_prepared_ready
+from anticipation import sync as sync_anticipation, metrics as anticipation_metrics
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
@@ -82,6 +83,11 @@ def save_editorial_queue(requests_doc):
             "image_strategy": req.get("image_strategy"),
             "selected_tweet_image": req.get("selected_tweet_image"),
             "task": req.get("task") or "explain",
+            "anticipation_request": bool(req.get("anticipation_request")),
+            "anticipated_name": req.get("anticipated_name"),
+            "anticipation_signal": req.get("anticipation_signal"),
+            "anticipation_origin_id": req.get("anticipation_origin_id"),
+            "anticipation_draft": req.get("anticipation_draft"),
             "red_review_request": req.get("red_review_request"),
             "review_source": req.get("review_source"),
             "review_error": req.get("review_error"),
@@ -112,7 +118,7 @@ def save_editorial_queue(requests_doc):
     # Evita starvation: trabajo nuevo/revisiones primero; problematic al final.
     active.sort(key=lambda x: (
         1 if str(x.get("status") or "") == "problematic" else 0,
-        1 if x.get("red_review_request") else 0,
+        2 if x.get("red_review_request") else 1 if x.get("anticipation_request") else 0,
         str(x.get("requested_at") or ""),
     ))
     save("editorial-queue.json", {
@@ -351,6 +357,8 @@ def reconcile_persisted_explanations():
 
     repaired = 0
     for req in requests:
+        if req.get("anticipation_request"):
+            continue
         key = (str(req.get("id") or ""), int(req.get("revision") or 0))
         entry = coverage.get(key)
         if not entry:
@@ -515,6 +523,7 @@ def capture_is_safe(doc):
     return False
 
 if not capture_is_safe(recent):
+    save("anticipation-metrics.json", anticipation_metrics([x for x in requests if x.get("anticipation_request")]))
     if reconciled:
         requests_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
         save("requests.json", requests_doc)
@@ -610,7 +619,7 @@ for item in current:
             req.pop("ready_at", None)
             req.pop("delivery_confirmation", None)
             status = "preparing"
-            print("Reabierta ready sin prepared:", name)
+            print("Reabierta ready sin prepared:", req.get("name"))
             continue
         # Cualquier otra decisión/estado vigente se conserva. Las problemáticas
         # no se convierten a preparing: permanecen como problemáticas, pero
@@ -633,7 +642,14 @@ for item in current:
             continue
     to_queue.append(item)
 
+def finish_anticipation():
+    metrics = sync_anticipation(recent, requests_doc, explained_doc, mobile_decisions, now_dt)
+    save("anticipation-metrics.json", metrics)
+    requests_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
+    save("requests.json", requests_doc)
+
 if not to_queue:
+    finish_anticipation()
     if reconciled:
         requests_doc["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
         save("requests.json", requests_doc)
@@ -687,6 +703,7 @@ for item in to_queue:
 
 requests_doc["updated_at"] = now
 save("requests.json", requests_doc)
+finish_anticipation()
 save_editorial_queue(requests_doc)
 print("Encoladas automáticamente:", ", ".join(names))
 

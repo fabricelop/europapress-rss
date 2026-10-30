@@ -1,6 +1,7 @@
 import json
 import re
 import unicodedata
+from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import parse_qs, unquote, urlparse
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -923,11 +924,18 @@ def anticipated_entries(top10, previous_doc, now):
         })
     return out
 
+def fetch_sources(fetcher=None):
+    # Four bounded workers; the same public sources, timeout and request count.
+    # map preserves source order so completion timing cannot change tie-breaks.
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        return dict(zip(SOURCES, pool.map(fetcher or fetch_source, SOURCES)))
+
+
 def main():
     now = datetime.now(MADRID)
     previous_doc = load_json(RECENT, {})
     previous = previous_doc.get("top10", [])
-    source_data = {name: fetch_source(name) for name in SOURCES}
+    source_data = fetch_sources()
     reconcile_source_freshness(source_data, previous_doc, now)
 
     top10, sources_used, chosen_name, method = choose_top10(source_data)

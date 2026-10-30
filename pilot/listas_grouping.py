@@ -18,6 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pilot import trend_maintenance as maintenance
+from trends import anticipation
 MANUAL = 'trends/telegram-manual-explained.json'
 REQUESTS = 'trends/requests.json'
 QUEUE = 'trends/editorial-queue.json'
@@ -81,7 +82,7 @@ def eligible(state, now, include_covered=False):
         at = moment(row.get('explained_at'))
         rev = revision(row)
         req = requests.get(ident, {})
-        if (row.get('status') != 'explained' or not str(row.get('explanation') or '').strip()
+        if (row.get('anticipation_request') or row.get('status') != 'explained' or not str(row.get('explanation') or '').strip()
                 or not at or not -3600 <= (now-at).total_seconds() <= 48*3600
                 or str(row.get('group_leader_id') or ident) != ident
                 or revision(req) > rev):
@@ -391,6 +392,22 @@ def main():
             state, _ = maintenance.apply_review(state, command, now, grouping_api())
         except ValueError as error:
             job['review_error'] = str(error)
+    for path in sorted((ROOT/'trends/anticipation-outbox').glob('*.json')):
+        command = json.loads(path.read_text(encoding='utf-8'))
+        job = next((x for x in state[REQUESTS]['requests'] if x.get('id') == command.get('job_id')), {})
+        if job.get('status') not in {'preparing', 'update'} or not job.get('anticipation_request'):
+            continue
+        try:
+            state[REQUESTS], _ = anticipation.apply_result(state[REQUESTS], command, now)
+        except ValueError as error:
+            job['anticipation_error'] = str(error)
+    completed_early = {x['id'] for x in state[REQUESTS]['requests']
+                       if x.get('anticipation_request') and x.get('status') not in {'preparing', 'update'}}
+    previous_count = len(state[QUEUE]['items'])
+    state[QUEUE]['items'] = [x for x in state[QUEUE]['items'] if x.get('id') not in completed_early]
+    if len(state[QUEUE]['items']) != previous_count:
+        state[QUEUE]['updated_at'] = now.isoformat()
+    state[QUEUE]['count'] = len(state[QUEUE]['items'])
     maintenance.schedule(state, now, grouping_api())
     changed = []
     for path, doc in state.items():
