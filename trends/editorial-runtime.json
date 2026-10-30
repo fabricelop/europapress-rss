@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T07:55:00+01:00",
-  "last_completed_at": "2026-10-30T07:57:00+01:00",
-  "updated_at": "2026-10-30T07:57:00+01:00",
+  "last_started_at": "2026-10-30T08:10:00+01:00",
+  "last_completed_at": "2026-10-30T08:12:00+01:00",
+  "updated_at": "2026-10-30T08:12:00+01:00",
   "status": "success",
   "queue_complete": true,
   "processed_ids": [],
@@ -103,19 +103,20 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-chat-20261030T075500+0100",
+    "run_id": "tr-chat-20261030T081000+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T07:55:00+01:00",
-    "updated_at": "2026-10-30T07:57:00+01:00",
-    "finished_at": "2026-10-30T07:57:00+01:00",
+    "started_at": "2026-10-30T08:10:00+01:00",
+    "updated_at": "2026-10-30T08:12:00+01:00",
+    "finished_at": "2026-10-30T08:12:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; 10 Pendientes revisados; reparación visual solicitada.",
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; reparación visual solicitada.",
     "summary": {
       "attempted": 0,
       "explained": 0,
@@ -131,8 +132,8 @@
       "rewrite_pending_remaining": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 5,
-      "recent_missing_closer_reviewed": 5,
+      "remates_omitted": 6,
+      "recent_missing_closer_reviewed": 6,
       "pending_visual_candidates_reviewed": 10,
       "top10_fresh_coverage": 10,
       "imagegen_calls": 0,
@@ -151,47 +152,34 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-30T07:55:00+01:00",
+        "at": "2026-10-30T08:10:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial 0; iniciando saneamiento obligatorio, cobertura Top 10 y relectura autoritativa."
+        "message": "Cola editorial 0; iniciando saneamiento obligatorio de Pendientes y verificación de cobertura Top 10."
       },
       {
-        "at": "2026-10-30T07:55:30+01:00",
+        "at": "2026-10-30T08:11:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 actual cubierto por explicaciones vigentes de menos de 48 h."
+        "message": "Releyendo main: cola, requests, reexplicaciones, cobertura Top 10 y saneamiento de Explicadas recientes."
       },
       {
-        "at": "2026-10-30T07:56:00+01:00",
+        "at": "2026-10-30T08:11:30+01:00",
         "phase": "remate_selection",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 10 tarjetas; 5 sin remate son duelo/accidente con víctimas y se mantienen sin humor."
+        "message": "6 Explicadas recientes sin remate se mantienen factuales por fallecimiento, accidente o salud; no se fuerza humor sensible."
       },
       {
-        "at": "2026-10-30T07:56:30+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola 0, sin preparing/update, sin reexplicaciones ni agrupaciones pendientes; trigger visual verificado."
-      },
-      {
-        "at": "2026-10-30T07:57:00+01:00",
+        "at": "2026-10-30T08:12:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; 10 Pendientes revisados; reparación visual solicitada."
+        "message": "Pasada cerrada: 0 nuevas explicaciones; cola final 0; Top 10 cubierto 10/10; reparación visual solicitada."
       }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [],
-    "processed_ids": [],
-    "partial": false,
-    "final_outcomes": []
+    ]
   },
   "radar": {
     "captured_at": "2026-10-30T07:50:53+01:00",
@@ -209,6 +197,5 @@
       "Koldo"
     ]
   },
-  "error": null,
   "api_failover_enabled": false
 }
