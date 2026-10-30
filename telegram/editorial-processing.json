@@ -24122,7 +24122,7 @@
       "event_id": "manual-8865b7be-fade-45ec-b4c1-62317e1e8459",
       "title": "Investigar noticia del enlace: x.com",
       "url": "https://x.com/efenoticias/status/2116106697454301332?a=vaw037X_G0Rxu6FEn5k&s=46",
-      "status": "PROCESSING",
+      "status": "PROBLEMATIC",
       "revision": 1,
       "selected_at": "2026-10-30T11:18:06.396103Z",
       "requested_at": "2026-10-30T11:36:44.028896+00:00",
@@ -24139,11 +24139,12 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY.",
-      "problematic_at": "2026-10-30T11:25:49.761150Z",
-      "problem_reason": "No se ha podido verificar el hecho esencial: el enlace aportado apunta a una publicacion de X de @EFEnoticias que no es accesible desde el entorno editorial y las busquedas publicas no permiten identificar de forma inequivoca su contenido sin riesgo de atribuir otra noticia.",
-      "problematic_attempts": 1,
-      "user_validated": true,
-      "user_validated_at": "2026-10-30T11:36:44.028896+00:00"
+      "problematic_at": "2026-10-30T12:22:20.697320Z",
+      "problem_reason": "Reintento editorial realizado tras validación del usuario. El enlace de X de @EFEnoticias no es accesible desde el entorno editorial y las búsquedas públicas actuales no permiten identificar de forma inequívoca el contenido exacto del post; no se atribuye otra noticia para evitar fabricar el hecho esencial.",
+      "problematic_attempts": 2,
+      "user_validated": false,
+      "user_validation_consumed_at": "2026-10-30T12:22:20.697320Z",
+      "user_validation_consumed_version": 1
     },
     {
       "id": "051761dcf088",
@@ -24362,5 +24363,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-30T12:11:44.642742Z"
+  "updated_at": "2026-10-30T12:22:20.697320Z"
 }
