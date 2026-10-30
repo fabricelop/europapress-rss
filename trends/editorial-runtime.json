@@ -3,62 +3,38 @@
   "engine": "chatgpt-editorial-job-v2",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-30T22:40:00.000Z",
+  "last_started_at": "2026-10-30T22:45:00.000Z",
   "last_completed_at": "2026-10-30T22:10:58.000Z",
-  "updated_at": "2026-10-30T22:44:00.000Z",
+  "updated_at": "2026-10-30T22:45:00.000Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [
-    "red-review-2e5909232e97bfecd690",
-    "red-review-3def540ee0135f135f7a",
-    "f90cc5271f93",
-    "9950fd2c5b18"
-  ],
-  "remaining_active_ids": [
-    "red-review-2e5909232e97bfecd690",
-    "red-review-3def540ee0135f135f7a",
-    "f90cc5271f93",
-    "9950fd2c5b18"
-  ],
+  "remaining_ids": ["f90cc5271f93", "9950fd2c5b18"],
+  "remaining_active_ids": ["f90cc5271f93", "9950fd2c5b18"],
   "remaining_problematic_ids": [],
-  "run_id": "tr-1793400009396-manual",
-  "previous_run_id": "tr-20261030T234000+0100-manual",
-  "summary": "0/4. Renfe: revisión JIT obsoleta porque existe una publicación conjunta posterior que ya sustituyó el snapshot; se cerrará como stale.",
+  "run_id": "tr-1793400249710-manual",
+  "previous_run_id": "tr-1793400009396-manual",
+  "summary": "0/2. Villarreal y Lawson pendientes; se procesan por orden de cola con revalidación JIT. Sin ImageGen.",
   "activity": [
     {
-      "at": "2026-10-30T22:42:00.000Z",
+      "at": "2026-10-30T22:45:00.000Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de tr-1793400009396-manual: cola autoritativa releída en main con 2 revisiones de mantenimiento. Se validará ID+revisión y estado sustituido antes de aplicar cada resultado. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-30T22:43:00.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-2e5909232e97bfecd690",
-      "title": "Toledo",
-      "message": "Barrera JIT: el snapshot de Toledo (28/10) está sustituido por explicaciones posteriores publicadas de Iryo/Óscar Puente del mismo acontecimiento. No se reabre ni se pisa texto más nuevo."
-    },
-    {
-      "at": "2026-10-30T22:44:00.000Z",
-      "phase": "verifying",
-      "trend_id": "red-review-3def540ee0135f135f7a",
-      "title": "Renfe",
-      "message": "Barrera JIT: el snapshot original de Renfe está sustituido por la ficha conjunta publicada «Urda · corte Madrid-Andalucía y ERTMS». No se reabre la ficha antigua."
+      "message": "Inicio de tr-1793400249710-manual: cola autoritativa releída en main con Villarreal y Lawson, ambas revisión 0. Sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "verifying",
-  "started_at": "2026-10-30T22:42:00.000Z",
+  "phase": "preparing",
+  "started_at": "2026-10-30T22:45:00.000Z",
   "finished_at": null,
   "current": 0,
-  "total": 4,
-  "trend_id": "red-review-3def540ee0135f135f7a",
-  "title": "Renfe",
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
