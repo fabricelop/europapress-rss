@@ -4,19 +4,23 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T21:40:00+01:00",
-  "last_completed_at": "2026-10-30T20:28:49.860Z",
-  "updated_at": "2026-10-30T21:41:00+01:00",
-  "status": "RUNNING",
-  "queue_complete": false,
-  "processed_ids": [],
+  "last_completed_at": "2026-10-30T20:46:30Z",
+  "updated_at": "2026-10-30T20:46:30Z",
+  "status": "DONE",
+  "queue_complete": true,
+  "processed_ids": [
+    "4e9df6831ab7",
+    "9fee4d7386fb",
+    "b0c76a2bacab"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "run_id": "tr-20261030T214000-manual",
   "previous_run_id": "tr-20261030T212724-manual",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 3,
+    "explained": 3,
     "updates": 0,
     "stale_reviews": 0,
     "stale_jobs": 0,
@@ -45,16 +49,58 @@
       "trend_id": "4e9df6831ab7",
       "title": "Tusk",
       "message": "Entraron 3 nuevas investigaciones durante la pasada; se procesa Tusk primero y después Dibu y Tribunal Constitucional, por orden de cola."
+    },
+    {
+      "at": "2026-10-30T20:45:49Z",
+      "phase": "drafting",
+      "trend_id": "4e9df6831ab7",
+      "title": "Tusk",
+      "message": "Detonante verificado con fuentes actuales: crisis institucional polaca en torno al Tribunal Constitucional."
+    },
+    {
+      "at": "2026-10-30T20:45:49Z",
+      "phase": "drafting",
+      "trend_id": "9fee4d7386fb",
+      "title": "Dibu",
+      "message": "Detonante verificado con fuentes actuales: entrevista sobre la secuela de la fractura del anular con la que jugó el Mundial 2026."
+    },
+    {
+      "at": "2026-10-30T20:45:49Z",
+      "phase": "drafting",
+      "trend_id": "b0c76a2bacab",
+      "title": "Tribunal Constitucional",
+      "message": "Detonante verificado con fuentes actuales: operativo policial y suspensión de la cúpula del Constitucional polaco."
+    },
+    {
+      "at": "2026-10-30T20:45:49Z",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Las tres revisiones se persistieron atómicamente en requests.json, telegram-manual-explained.json y editorial-queue.json."
+    },
+    {
+      "at": "2026-10-30T20:46:20Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación JIT: las tres revisiones coinciden en ambos registros, todas <280 caracteres y la cola queda 0/0; no hay tareas de agrupación activas."
+    },
+    {
+      "at": "2026-10-30T20:46:30Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final superada: 3/3 explicadas, cola autoritativa vacía. Agrupación editorial queda en pending para el selector posterior; sin ImageGen, Telegram ni publicación en X."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "investigating",
+  "phase": "closing",
   "started_at": "2026-10-30T21:40:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "finished_at": "2026-10-30T20:46:30Z",
+  "current": 3,
   "total": 3,
   "trend_id": null,
   "title": null,
@@ -62,26 +108,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261030T212724-manual",
+    "run_id": "tr-20261030T214000-manual",
     "source": "manual",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-30T20:27:24.953Z",
-    "updated_at": "2026-10-30T20:28:49.860Z",
-    "finished_at": "2026-10-30T20:28:49.860Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-30T21:40:00+01:00",
+    "updated_at": "2026-10-30T20:46:30Z",
+    "finished_at": "2026-10-30T20:46:30Z",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "4e9df6831ab7",
+      "9fee4d7386fb",
+      "b0c76a2bacab"
+    ],
     "partial": false,
-    "message": "Pasada completada 0/0: cola autoritativa vacía tras relectura JIT; ranking de las 21:21 sin entradas nuevas ni Radar pendiente y sin trabajos especiales activos. Sin ImageGen, envíos ni publicación en X.",
+    "message": "Pasada completada 3/3: Tusk, Dibu y Tribunal Constitucional explicadas y sincronizadas por id/revisión; cola final 0/0. Sin ImageGen, envíos ni publicación en X.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 3,
+      "explained": 3,
       "updates": 0,
       "stale_reviews": 0,
       "stale_jobs": 0,
@@ -100,28 +150,101 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-30T20:27:24.953Z",
+        "at": "2026-10-30T21:40:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Inicio manual: cola autoritativa 0/0; se validan reexplicaciones, agrupaciones, Radar y revisiones de novedades. Sin ImageGen."
       },
       {
-        "at": "2026-10-30T20:28:10.033Z",
+        "at": "2026-10-30T21:41:00+01:00",
+        "phase": "investigating",
+        "trend_id": "4e9df6831ab7",
+        "title": "Tusk",
+        "message": "Entraron 3 nuevas investigaciones durante la pasada; se procesa Tusk primero y después Dibu y Tribunal Constitucional, por orden de cola."
+      },
+      {
+        "at": "2026-10-30T20:45:49Z",
+        "phase": "drafting",
+        "trend_id": "4e9df6831ab7",
+        "title": "Tusk",
+        "message": "Detonante verificado con fuentes actuales: crisis institucional polaca en torno al Tribunal Constitucional."
+      },
+      {
+        "at": "2026-10-30T20:45:49Z",
+        "phase": "drafting",
+        "trend_id": "9fee4d7386fb",
+        "title": "Dibu",
+        "message": "Detonante verificado con fuentes actuales: entrevista sobre la secuela de la fractura del anular con la que jugó el Mundial 2026."
+      },
+      {
+        "at": "2026-10-30T20:45:49Z",
+        "phase": "drafting",
+        "trend_id": "b0c76a2bacab",
+        "title": "Tribunal Constitucional",
+        "message": "Detonante verificado con fuentes actuales: operativo policial y suspensión de la cúpula del Constitucional polaco."
+      },
+      {
+        "at": "2026-10-30T20:45:49Z",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Las tres revisiones se persistieron atómicamente en requests.json, telegram-manual-explained.json y editorial-queue.json."
+      },
+      {
+        "at": "2026-10-30T20:46:20Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Ranking fresco 21:21 sin nuevas entradas, sin señales Radar y sin trabajos especiales activos; últimos resultados de mantenimiento/agrupación revisados."
+        "message": "Verificación JIT: las tres revisiones coinciden en ambos registros, todas <280 caracteres y la cola queda 0/0; no hay tareas de agrupación activas."
       },
       {
-        "at": "2026-10-30T20:28:49.860Z",
+        "at": "2026-10-30T20:46:30Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Barrera final superada: main sigue 0/0 y la cola no cambió durante la pasada. Sin ImageGen, Telegram ni publicación en X."
+        "message": "Barrera final superada: 3/3 explicadas, cola autoritativa vacía. Agrupación editorial queda en pending para el selector posterior; sin ImageGen, Telegram ni publicación en X."
       }
     ],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "4e9df6831ab7",
+        "revision": 0,
+        "status": "explained",
+        "name": "Tusk"
+      },
+      {
+        "id": "9fee4d7386fb",
+        "revision": 0,
+        "status": "explained",
+        "name": "Dibu"
+      },
+      {
+        "id": "b0c76a2bacab",
+        "revision": 0,
+        "status": "explained",
+        "name": "Tribunal Constitucional"
+      }
+    ]
   },
-  "final_outcomes": []
+  "final_outcomes": [
+    {
+      "id": "4e9df6831ab7",
+      "revision": 0,
+      "status": "explained",
+      "name": "Tusk"
+    },
+    {
+      "id": "9fee4d7386fb",
+      "revision": 0,
+      "status": "explained",
+      "name": "Dibu"
+    },
+    {
+      "id": "b0c76a2bacab",
+      "revision": 0,
+      "status": "explained",
+      "name": "Tribunal Constitucional"
+    }
+  ]
 }
