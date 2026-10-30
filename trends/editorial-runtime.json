@@ -4,10 +4,10 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-30T20:50:08.120+01:00",
-  "last_completed_at": "2026-10-30T20:50:00+01:00",
-  "updated_at": "2026-10-30T20:51:55+01:00",
-  "status": "RUNNING",
-  "queue_complete": false,
+  "last_completed_at": "2026-10-30T20:53:00+01:00",
+  "updated_at": "2026-10-30T20:53:00+01:00",
+  "status": "DONE",
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -38,40 +38,47 @@
       "trend_id": "listas-auto-cf0a3e7bc88fa07eebfc",
       "title": "Agrupación automática de Listas",
       "message": "La tarea figuraba preparing al leer la cola, pero desapareció de main en la validación JIT; no se resucita ni duplica. Se verifica el cierre global sin ImageGen."
+    },
+    {
+      "at": "2026-10-30T20:53:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final superada: editorial-queue.json releído en main con 0 items preparing/update y sin rewrite_pending localizado. Cierre 0/0 activo; sin ImageGen."
     }
   ],
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
-  "phase": "verifying",
+  "phase": "closing",
   "started_at": "2026-10-30T20:50:08.120+01:00",
-  "finished_at": null,
+  "finished_at": "2026-10-30T20:53:00+01:00",
   "current": 1,
   "total": 1,
-  "trend_id": "listas-auto-cf0a3e7bc88fa07eebfc",
-  "title": "Agrupación automática de Listas",
+  "trend_id": null,
+  "title": null,
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
     "run_id": "tr-1793389808120-manual",
     "source": "manual",
-    "status": "RUNNING",
-    "phase": "verifying",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-30T20:50:08.120+01:00",
-    "updated_at": "2026-10-30T20:51:55+01:00",
-    "finished_at": null,
+    "updated_at": "2026-10-30T20:53:00+01:00",
+    "finished_at": "2026-10-30T20:53:00+01:00",
     "current": 1,
     "total": 1,
-    "trend_id": "listas-auto-cf0a3e7bc88fa07eebfc",
-    "title": "Agrupación automática de Listas",
-    "queue_complete": false,
+    "trend_id": null,
+    "title": null,
+    "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "processed_ids": [],
     "partial": false,
-    "message": "Pasada manual en verificación final: la única tarea detectada quedó stale por cierre concurrente antes de tratarla; cola actual 0. Sin ImageGen.",
+    "message": "Pasada completada: la única tarea vista al inicio desapareció antes de su validación JIT y no se resucitó. Tras releer main, cola activa 0/0 y sin reexplicaciones pendientes. Sin ImageGen.",
     "summary": {
       "attempted": 1,
       "explained": 0,
@@ -98,7 +105,32 @@
         "trend_id": "listas-auto-cf0a3e7bc88fa07eebfc",
         "title": "Agrupación automática de Listas",
         "message": "La tarea figuraba preparing al leer la cola, pero desapareció de main en la validación JIT; no se resucita ni duplica. Se verifica el cierre global sin ImageGen."
+      },
+      {
+        "at": "2026-10-30T20:53:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Barrera final superada: editorial-queue.json releído en main con 0 items preparing/update y sin rewrite_pending localizado. Cierre 0/0 activo; sin ImageGen."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "listas-auto-cf0a3e7bc88fa07eebfc",
+        "revision": 0,
+        "status": "stale",
+        "name": "Agrupación automática de Listas",
+        "outcome": "removed_before_jit_processing"
       }
     ]
-  }
+  },
+  "final_outcomes": [
+    {
+      "id": "listas-auto-cf0a3e7bc88fa07eebfc",
+      "revision": 0,
+      "status": "stale",
+      "name": "Agrupación automática de Listas",
+      "outcome": "removed_before_jit_processing"
+    }
+  ]
 }
