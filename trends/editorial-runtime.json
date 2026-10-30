@@ -5,7 +5,7 @@
   "canonical": true,
   "last_started_at": "2026-10-30T21:35:00Z",
   "last_completed_at": "2026-10-30T21:28:47Z",
-  "updated_at": "2026-10-30T21:45:45.186Z",
+  "updated_at": "2026-10-30T21:46:36.153Z",
   "status": "RUNNING",
   "queue_complete": false,
   "processed_ids": [
@@ -26,7 +26,7 @@
   "remaining_problematic_ids": [],
   "run_id": "tr-1793396029532-manual",
   "previous_run_id": "tr-1793395410731-manual",
-  "summary": "Pasada en curso: ordinarias cerradas; persistiendo agrupación automática. Sin ImageGen.",
+  "summary": "Pasada en curso: agrupación resuelta; revisión Koldo García actualizada; queda Alvia. Sin ImageGen.",
   "activity": [
     {
       "at": "2026-10-30T21:35:00Z",
@@ -118,6 +118,13 @@
       "trend_id": "listas-auto-393aee72db721c540b63",
       "title": "Agrupación automática de Listas",
       "message": "Agrupación automática JIT: OkDiario queda cubierta por la publicación vigente de Inda al tratarse del mismo episodio sin novedades materiales; el resto de candidatas permanece separado."
+    },
+    {
+      "at": "2026-10-30T21:46:36.153Z",
+      "phase": "persisting",
+      "trend_id": "red-review-c7cf10c5fed262f115c4",
+      "title": "Revisar novedades: Koldo García",
+      "message": "Revisión Koldo García JIT: novedad material confirmada; el contrato publicado por OkDiario añade una versión distinta a las facturas judiciales. Resultado updated persistido."
     }
   ],
   "incidents": [],
@@ -127,10 +134,10 @@
   "phase": "persisting",
   "started_at": "2026-10-30T21:35:00Z",
   "finished_at": null,
-  "current": 3,
+  "current": 4,
   "total": 6,
-  "trend_id": "listas-auto-393aee72db721c540b63",
-  "title": "Agrupación automática de Listas",
+  "trend_id": "red-review-c7cf10c5fed262f115c4",
+  "title": "Revisar novedades: Koldo García",
   "last_run": {
     "version": 1,
     "canonical": true,
@@ -140,12 +147,12 @@
     "status": "RUNNING",
     "phase": "persisting",
     "started_at": "2026-10-30T21:35:00Z",
-    "updated_at": "2026-10-30T21:45:45.186Z",
+    "updated_at": "2026-10-30T21:46:36.153Z",
     "finished_at": null,
-    "current": 3,
+    "current": 4,
     "total": 6,
-    "trend_id": "listas-auto-393aee72db721c540b63",
-    "title": "Agrupación automática de Listas",
+    "trend_id": "red-review-c7cf10c5fed262f115c4",
+    "title": "Revisar novedades: Koldo García",
     "queue_complete": false,
     "remaining_active_ids": [
       "listas-auto-393aee72db721c540b63",
@@ -159,7 +166,7 @@
       "19d3c8965a38"
     ],
     "partial": false,
-    "message": "Ordinarias cerradas; persistiendo agrupación automática.",
+    "message": "Agrupación resuelta; revisión Koldo García actualizada; queda Alvia.",
     "summary": {
       "attempted": 3,
       "explained": 3,
@@ -270,6 +277,13 @@
         "trend_id": "listas-auto-393aee72db721c540b63",
         "title": "Agrupación automática de Listas",
         "message": "Agrupación automática JIT: OkDiario queda cubierta por la publicación vigente de Inda al tratarse del mismo episodio sin novedades materiales; el resto de candidatas permanece separado."
+      },
+      {
+        "at": "2026-10-30T21:46:36.153Z",
+        "phase": "persisting",
+        "trend_id": "red-review-c7cf10c5fed262f115c4",
+        "title": "Revisar novedades: Koldo García",
+        "message": "Revisión Koldo García JIT: novedad material confirmada; el contrato publicado por OkDiario añade una versión distinta a las facturas judiciales. Resultado updated persistido."
       }
     ]
   },
