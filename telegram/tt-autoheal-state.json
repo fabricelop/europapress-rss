@@ -2,139 +2,91 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-30T07:45:47.776343+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-30T14:34:34.871537+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "b936529ca377",
+          "title": "Carlos Alcaraz - Tommy Paul, en directo: resultado y última hora de los cuartos de final del ATP 500",
+          "seconds": 585,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1201895,
+          "seconds": 1226422,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "73cad29db1232ad653ea40eeb38a738023938f0cffba806767759e7884c0ffe4",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-30T07:45:47.776343+00:00",
-      "issue_count": 16,
+      "checked_at": "2026-10-30T14:34:34.871537+00:00",
+      "issue_count": 8,
       "issues": [
-        {
-          "kind": "editorial_overdue",
-          "id": "a6c68a1119c5",
-          "title": "OKDIARIO",
-          "seconds": 66881,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "254ccf432967",
-          "title": "Koldo",
-          "seconds": 63723,
-          "workflow": null
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "d3dfeff552b8",
-          "title": "Patrick Stewart",
-          "seconds": 35050,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "e47b0f62f8f1",
-          "title": "#SVGala8",
-          "seconds": 33274,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "dd7f9ce06843",
-          "title": "Charles Xavier",
-          "seconds": 33274,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "b17043a931bf",
-          "title": "#Horizonte",
-          "seconds": 33274,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "8ccac5ae1006",
-          "title": "Star Trek",
-          "seconds": 33274,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "6a4e50b2d65d",
-          "title": "Picard",
-          "seconds": 33274,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
         {
           "kind": "missing_delivery",
           "id": "52173709450d",
           "title": "Maledon",
-          "seconds": 33274,
+          "seconds": 57801,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "03e6546dc5f6",
           "title": "#MalasLenguasN",
-          "seconds": 27853,
+          "seconds": 52380,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "6edd382e5ca7",
           "title": "Yola",
-          "seconds": 27271,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5c964cfff54c",
-          "title": "Ivana",
-          "seconds": 27271,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "9314435265dd",
-          "title": "Asraf",
-          "seconds": 27271,
+          "seconds": 51798,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "2e70108a529b",
           "title": "Arkano",
-          "seconds": 23688,
+          "seconds": 48215,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "236bd892a890",
           "title": "X-Men",
-          "seconds": 14082,
+          "seconds": 38609,
           "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "09fb9ff32c5a",
+          "title": "Dana",
+          "seconds": 6204,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "10aaa9a5458f",
+          "title": "#EnBocaDeTodos",
+          "seconds": 5009,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1201894,
+          "seconds": 1226422,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -143,16 +95,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "28d09e1a1dee7fd529e0dbf2bc46bb19fafa87d2a85311611e5c9d58c4b0d44e",
+      "open_signature": "68c074d06646de88f052b4911458b482b92aa158befdbcd777fa64489cdc592c",
       "repair_via_workflow_run": false,
-      "escalation_required": 15
+      "escalation_required": 7
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-29T17:35:29.712908+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-30T07:45:47.776343+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-30T07:45:47.776343+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-30T07:45:47.776343+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-30T14:34:34.871537+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-30T14:34:34.871537+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-30T14:34:34.871537+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-30T14:34:34.871537+00:00"
   },
-  "checked_at": "2026-10-30T07:45:47.776343+00:00"
+  "checked_at": "2026-10-30T14:34:34.871537+00:00"
 }
