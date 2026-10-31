@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),crypto=require('node:crypto'),vm=require('node:vm');
-const {chatURL,sameContext,rasterProbe}=require('../TTendenciasWebImages.cjs');
+const {chatURL,sameContext,rasterProbe,conversationProbe,prioritizeOpenConversation}=require('../TTendenciasWebImages.cjs');
 test('Only durable ChatGPT conversations are enrolled',()=>{
  assert.equal(chatURL('https://chatgpt.com/c/abc-123?x=1'),'https://chatgpt.com/c/abc-123');
  for(const url of ['https://chatgpt.com/','https://chatgpt.com/images','https://evil.example/c/abc','http://chatgpt.com/c/abc'])assert.equal(chatURL(url),null);
@@ -23,4 +23,15 @@ async function probe({later=false,extra=false,old=false,generating=false}={}){
 test('Reads original raster only after exact last command; ambiguous, older and unfinished images are ignored',async()=>{
  const good=await probe();assert.ok(good.result.ready);assert.equal(good.downloads,1);assert.match(good.result.dataUrl,/^data:image\/png;base64,/);
  for(const input of [{later:true},{extra:true},{old:true},{generating:true}]){const blocked=await probe(input);assert.equal(blocked.result.ready,false);assert.equal(blocked.downloads,0);}
+});
+test('URL discovery requires this command in the last user turn, not merely the pinned tab URL',()=>{
+ const url='https://chatgpt.com/c/abc-123';
+ for(const [texts,expected] of [[[],null],[['old command'],null],[['cmd-123','later command'],null],[['old','TTENDENCIAS_IMAGE_JOB_V4 cmd-123 trend-123'],url]]){
+  const document={querySelectorAll:()=>texts.map(innerText=>({innerText}))};
+  assert.equal(vm.runInNewContext(conversationProbe('cmd-123'),{document,location:{href:url}}),expected);
+ }
+});
+test('the currently open image has priority without starving the remaining fair queue',()=>{
+ const old={task:{conversation_url:'https://chatgpt.com/c/old-1'}},fresh={task:{conversation_url:'https://chatgpt.com/c/abc-123'}},other={task:{conversation_url:'https://chatgpt.com/c/old-2'}};
+ assert.deepEqual(prioritizeOpenConversation([old,fresh,other],[{type:'page',url:fresh.task.conversation_url}]),[fresh,old,other]);
 });

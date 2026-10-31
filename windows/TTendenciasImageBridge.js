@@ -880,12 +880,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",upload_secret:secret,worker_id:"ttendencias-image-bridge-v31-isolated-tab-recovery",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",upload_secret:secret,worker_id:"ttendencias-image-bridge-v33-independent-generation",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v31-isolated-tab-recovery",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v33-independent-generation",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 // The prompt must be confirmed in GitHub before claiming launch success.
 // Retrying an ACK never resubmits the prompt or opens a second chat.
@@ -895,7 +895,7 @@ async function confirmPromptLaunched(){
     try{
       const r=await post({task:"image_pc_ack",target_id:targetId,
         command_id:commandId,stage:"launched",
-        worker_id:"ttendencias-image-bridge-v32-durable-web-handoff"});
+        worker_id:"ttendencias-image-bridge-v33-independent-generation"});
       if(r.ok&&r.data&&r.data.pc_launched_at&&!r.data.deferred){
         console.log("BRIDGE IMAGE LAUNCH CONFIRMED "+r.data.pc_launched_at);
         return true;
@@ -930,6 +930,20 @@ async function uploadImage(image){
   }
   return result;
 }
+// Optional delivery bookkeeping. Failure here is never a generation failure.
+// Keep this boundary separate from the pre-submit and launched receipts.
+async function optionalWebHandoff(handoff,remember=false){
+  try{
+    const exporter=require("./TTendenciasWebImages.cjs");
+    if(remember&&await exporter.rememberConversation(handoff)===false)return false;
+    if(!remember)exporter.enroll(handoff);
+    console.log("TTENDENCIAS WEB IMAGE REGISTERED target="+handoff.targetId);
+    return true;
+  }catch(e){
+    console.log("TTENDENCIAS WEB IMAGE REGISTRATION DEFERRED target="+handoff.targetId+" reason="+String(e&&e.message||e).slice(0,160));
+    return false;
+  }
+}
 (async()=>{
   let cdp;
   let webHandoff;
@@ -944,14 +958,7 @@ async function uploadImage(image){
     try{cdp=await openFreshDedicatedConversation();}
     catch(e){throw Error("TTENDENCIAS_PRE_SUBMIT_FAILED "+String(e&&e.message||e));}
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
-    let exporter;
-    try{
-      exporter=require("./TTendenciasWebImages.cjs");
-      webHandoff={job,commandId,targetId,browserTargetId:cdp.fixedTargetId,secret};
-      exporter.enroll(webHandoff);
-    }catch(e){throw Error("TTENDENCIAS_PRE_SUBMIT_FAILED web_handoff "+String(e&&e.message||e));}
-    console.log("TTENDENCIAS WEB IMAGE REGISTERED target="+targetId+" pending_conversation=true");
-    await progress("web_handoff_saved","v32: registro cifrado guardado antes del envío.");
+    webHandoff={job,commandId,targetId,browserTargetId:cdp.fixedTargetId,secret};
     let image=null;
     for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
       if(generationAttempt>1){
@@ -962,7 +969,6 @@ async function uploadImage(image){
       }
       cdp=await injectPromptIntoChat(cdp,job);
       if(!cdp.promptSubmittedAt)await submitVerifiedDraft(cdp,job);
-      await exporter.rememberConversation(webHandoff);
       cdp=await ensureSubmitted(cdp,job);
       cdp.acceptInitialRaster=true;
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
@@ -971,19 +977,12 @@ async function uploadImage(image){
         await confirmPromptLaunched();
       }
       if(launchOnly){
-        // Export only the exact conversation identity. Raster handling belongs
-        // to the separate web consumer on the relay browser, never this bridge.
-        try{
-          let conversationUrl="";
-          const exporter=require("./TTendenciasWebImages.cjs");
-          for(let n=0;n<30;n++){
-            conversationUrl=String(await cdp.eval("location.href"));
-            if(exporter.chatURL(conversationUrl))break;
-            await sleep(700);
-          }
-          exporter.enroll({job,commandId,targetId,conversationUrl,secret});
-          console.log("TTENDENCIAS WEB IMAGE REGISTERED target="+targetId);
-        }catch(e){console.log("TTENDENCIAS WEB IMAGE REGISTRATION DEFERRED target="+targetId+" reason="+String(e&&e.message||e).slice(0,160));}
+        // Generation is already acknowledged. Resolve only the URL whose
+        // last user turn proves this command; never save a guessed location.
+        for(let n=0;n<5;n++){
+          if(await optionalWebHandoff(webHandoff,true))break;
+          await sleep(700);
+        }
         console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED; ChatGPT Images, sin captura ni subida");
         return;
       }
@@ -1021,7 +1020,7 @@ async function uploadImage(image){
     await fail(e&&e.message||e);
     process.exitCode=1;
   }finally{
-    if(webHandoff)try{await require("./TTendenciasWebImages.cjs").rememberConversation(webHandoff);}catch{}
+    if(webHandoff)await optionalWebHandoff(webHandoff,true);
     try{cdp&&cdp.close()}catch{}
   }
 })();

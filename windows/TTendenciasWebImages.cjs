@@ -1,14 +1,14 @@
 'use strict';
 // Consumes the EXISTING, command-scoped ImageGen result. Never submits prompts.
-// Reads only its own temporary tab in an already-running authenticated browser.
-// Prefer the relay; if unavailable, use the existing generator browser unchanged.
+// Own temporary tabs belong only to the relay browser. On the generator we
+// may inspect an existing exact conversation, but NEVER create/navigate tabs.
 const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
-const WEB_CAPTURE_VERSION=4;
+const WEB_CAPTURE_VERSION=5;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -133,15 +133,25 @@ async function confirmedInMain(task,job){
   }
   return {status:'waiting',reason:'remote_image_not_confirmed'};
 }
-async function rememberConversation({job,commandId,targetId,browserTargetId,secret}){
-  // Preserve the upload capability BEFORE clicking Send. Discover only this
-  // pinned target's durable URL; never select another conversation by name.
-  enroll({job,commandId,targetId,browserTargetId,secret});
-  try{
-    const pages=await http('http://127.0.0.1:9223/json/list');
-    const own=pages.find(x=>String(x.id||'')===String(browserTargetId));
-    if(own&&chatURL(own.url))enroll({job,commandId,targetId,browserTargetId,secret,conversationUrl:own.url});
-  }catch{}
+function conversationProbe(command){return `(()=>{
+ const users=[...document.querySelectorAll('[data-message-author-role="user"]')];
+ const last=users[users.length-1];
+ return last&&String(last.innerText||'').includes(${JSON.stringify(command)})?location.href:null;
+})()`;}
+async function discoverConversation(commandId,browserTargetId){
+  const pages=await http(GENERATOR_BASE+'/json/list');
+  const own=pages.find(x=>String(x.id||'')===String(browserTargetId));
+  if(!chatURL(own?.url)||!own.webSocketDebuggerUrl)return null;
+  const cdp=new CDP(own.webSocketDebuggerUrl);
+  try{await cdp.open();return chatURL(await cdp.evaluate(conversationProbe(commandId)));}
+  finally{cdp.close();}
+}
+async function rememberConversation(input){
+  enroll(input);
+  const url=await discoverConversation(input.commandId,input.browserTargetId);
+  if(!url)return false;
+  enroll({...input,conversationUrl:url});
+  return true;
 }
 async function consume(task){
   const job=await readImageJob(task);
@@ -152,9 +162,7 @@ async function consume(task){
   // it can only read a raster after this command's exact user turn.
   if(!chatURL(task.conversation_url)){
     try{
-      const pages=await http('http://127.0.0.1:9223/json/list');
-      const own=pages.find(x=>String(x.id||'')===String(task.browser_target_id||''));
-      const url=chatURL(own?.url);
+      const url=await discoverConversation(task.command_id,task.browser_target_id);
       if(!url)return {status:'waiting',reason:'awaiting_command_conversation'};
       task.conversation_url=url;
     }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
@@ -163,21 +171,34 @@ async function consume(task){
     const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttendencias-run-status?view=web-image-contract');
     if(contract.web_image_receipt!==2)return {status:'waiting',reason:'receiver_update_pending'};
   }catch{return {status:'waiting',reason:'receiver_update_pending'};}
-  // Both profiles already belong to the pipeline. Never launch/restart Chrome,
-  // navigate the fixed generator tab, or alter TTImages/relay configuration.
+  // Never create capture tabs in the generator profile. Its renderer already
+  // failed before submission in the incident; web delivery must not add churn.
   const capture=await selectExistingBrowser();
   const browser=capture.browser;let browserCDP,cdp,ownedTarget;
   try{
-    browserCDP=new CDP(browser.webSocketDebuggerUrl);await browserCDP.open();
-    const made=await browserCDP.call('Target.createTarget',{url:task.conversation_url,background:true});ownedTarget=made.targetId;
+    let readTarget;
+    if(capture.source==='generator_9223'){
+      const pages=await http(capture.base+'/json/list');
+      readTarget=pages.find(x=>x.type==='page'&&chatURL(x.url)===task.conversation_url&&x.webSocketDebuggerUrl);
+      if(!readTarget)return {status:'waiting',reason:'awaiting_relay_or_existing_conversation'};
+      cdp=new CDP(readTarget.webSocketDebuggerUrl);await cdp.open();
+    }else{
+      browserCDP=new CDP(browser.webSocketDebuggerUrl);await browserCDP.open();
+      const made=await browserCDP.call('Target.createTarget',{url:task.conversation_url,background:true});ownedTarget=made.targetId;
+    }
     for(let n=0;n<5;n++){
+      if(cdp)break;
       const targets=await http(capture.base+'/json/list');const own=targets.find(x=>x.id===ownedTarget);
       if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
       await sleep(500);
     }
     if(!cdp)throw Error('export_tab_not_ready');
     let raster;
-    for(let n=0;n<30;n++){await sleep(1500);raster=await cdp.evaluate(rasterProbe(task.command_id));if(raster?.ready||raster?.reason==='capture_requires_sign_in')break;}
+    for(let n=0;n<30;n++){
+      await sleep(1500);raster=await cdp.evaluate(rasterProbe(task.command_id));
+      if(raster?.ready||raster?.reason==='capture_requires_sign_in'||
+        (capture.source==='generator_9223'&&raster?.reason==='command_not_in_conversation'))break;
+    }
     if(!raster?.ready)return {status:'waiting',reason:raster?.reason||'raster_not_ready'};
     // Fresh job identity check immediately before sending raster bytes.
     const fresh=await readImageJob(task);
@@ -204,6 +225,13 @@ async function telemetry(task,result){
 function dueTasks(tasks,now){return tasks.filter(x=>x.task.status==='waiting')
   .filter(x=>!Number.isFinite(Date.parse(x.task.next_check_at||''))||Date.parse(x.task.next_check_at)<=now)
   .sort((a,b)=>Date.parse(a.task.checked_at||a.task.created_at||0)-Date.parse(b.task.checked_at||b.task.created_at||0));}
+function prioritizeOpenConversation(tasks,pages){
+  // Opportunistic read of the completed current conversation before the
+  // generator reuses its tab. This changes priority, never identity checks.
+  const open=new Set(pages.filter(x=>x.type==='page').map(x=>chatURL(x.url)).filter(Boolean));
+  return tasks.map((entry,index)=>({entry,index,open:open.has(entry.task.conversation_url)}))
+    .sort((a,b)=>Number(b.open)-Number(a.open)||a.index-b.index).map(x=>x.entry);
+}
 async function once(){
   fs.mkdirSync(ROOT,{recursive:true});const lock=path.join(ROOT,'publisher.lock');
   try{const fd=fs.openSync(lock,'wx');fs.writeSync(fd,JSON.stringify({pid:process.pid,at:Date.now()}));fs.closeSync(fd);}catch{
@@ -216,7 +244,8 @@ async function once(){
     const tasks=fs.readdirSync(ROOT).filter(x=>x.endsWith('.json')).flatMap(name=>{
       try{return [{file:path.join(ROOT,name),task:JSON.parse(fs.readFileSync(path.join(ROOT,name),'utf8'))}];}catch{return [];}
     });
-    const due=dueTasks(tasks,now);
+    let due=dueTasks(tasks,now);
+    try{due=prioritizeOpenConversation(due,await http(GENERATOR_BASE+'/json/list'));}catch{}
     for(const {file,task} of due.slice(0,1)){
       if(!safeID(task.target_id)||!safeID(task.command_id)||(!chatURL(task.conversation_url)&&!safeID(task.browser_target_id))||
         !/^[a-f0-9]{64}$/.test(String(task.explanation_sha256||''))||
@@ -249,5 +278,5 @@ async function once(){
     }
   }finally{try{fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rememberConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,readImageJob,readEditorialState,selectExistingBrowser,consume};
+module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume};
 if(require.main===module)once().catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});

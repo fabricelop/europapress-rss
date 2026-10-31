@@ -823,7 +823,7 @@ function Ensure-WebPublisherLatest([string]$NodePath,[bool]$Force = $false) {
     try {$actual=([BitConverter]::ToString($hash.ComputeHash([byte[]]($header+$raw)))).Replace("-","").ToLowerInvariant()} finally {$hash.Dispose()}
     if($actual -ne [string]$doc.sha){throw "publisher source hash mismatch"}
     $source=[Text.Encoding]::UTF8.GetString($raw)
-    if(-not $source.Contains('rememberConversation') -or -not $source.Contains('web_image_upload') -or -not $source.Contains('readImageJob') -or -not $source.Contains('selectExistingBrowser') -or -not $source.Contains('WEB_CAPTURE_VERSION=4')){throw "publisher lacks durable handoff or existing-browser recovery v4"}
+    if(-not $source.Contains('rememberConversation') -or -not $source.Contains('web_image_upload') -or -not $source.Contains('readImageJob') -or -not $source.Contains('selectExistingBrowser') -or -not $source.Contains('WEB_CAPTURE_VERSION=5')){throw "publisher lacks durable handoff or passive generator recovery v5"}
     [IO.File]::WriteAllBytes($tmp,$raw)
     & $NodePath --check $tmp *> $null
     if($LASTEXITCODE -ne 0){throw "publisher syntax invalid"}
@@ -835,7 +835,7 @@ function Ensure-WebPublisherLatest([string]$NodePath,[bool]$Force = $false) {
     Write-Log "WEB IMAGE PUBLISHER REFRESH DEFERRED"
     if(Test-Path -LiteralPath $file){
       $source=Get-Content -LiteralPath $file -Raw -Encoding UTF8
-      return ($source.Contains('rememberConversation') -and $source.Contains('web_image_upload') -and $source.Contains('readImageJob') -and $source.Contains('selectExistingBrowser') -and $source.Contains('WEB_CAPTURE_VERSION=4'))
+      return ($source.Contains('rememberConversation') -and $source.Contains('web_image_upload') -and $source.Contains('readImageJob') -and $source.Contains('selectExistingBrowser') -and $source.Contains('WEB_CAPTURE_VERSION=5'))
     }
     return $false
   }
@@ -844,6 +844,10 @@ function Start-WebImagePublisher {
   if((([DateTimeOffset]::UtcNow)-$script:WebPublisherLastRun).TotalSeconds -lt 60){return}
   $script:WebPublisherLastRun=[DateTimeOffset]::UtcNow
   try {
+    # Capture is secondary. Do not start browser work while either generator
+    # owns the image slot; do not clean up/terminate any generator from here.
+    $generating=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue | Where-Object {[string]$_.CommandLine -match 'TT(endencias|iTTulares)ImageBridge\.js'})
+    if($generating.Count -gt 0){return}
     $node=Get-Command node.exe -ErrorAction Stop
     if(-not (Ensure-WebPublisherLatest $node.Source)){return}
     $file=Join-Path $BaseDir "TTendenciasWebImages.cjs"
@@ -867,7 +871,8 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   if (-not (Ensure-ImageBridgeLatest $node.Source)) {
     return $false
   }
-  if(-not (Ensure-WebPublisherLatest $node.Source $true)){return $false}
+  # Web delivery must never gate prompt generation. The updater and the
+  # independent publisher maintain that optional component separately.
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
   $out = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".log")
   $err = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".err.log")

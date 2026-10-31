@@ -7,6 +7,7 @@ on:
       - "windows/TTendenciasWebImages.cjs"
       - "windows/TTendenciasImageBridge.js"
       - "tests/ttendencias-web-images.test.cjs"
+      - "windows/tests/test_image_web_independence.cjs"
       - ".github/workflows/test-ttendencias-web-images.yml"
   workflow_dispatch:
 
@@ -27,4 +28,4 @@ jobs:
           node --check windows/TTendenciasWebImages.cjs
           node --check windows/TTendenciasImageBridge.js
       - name: Probar asociacion, revisiones, idempotencia y cola
-        run: node --test tests/ttendencias-web-images.test.cjs
+        run: node --test tests/ttendencias-web-images.test.cjs windows/tests/test_image_web_independence.cjs
