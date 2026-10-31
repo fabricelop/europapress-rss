@@ -5,23 +5,21 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T151000+0100",
   "previous_run_id": "tr-chat-20261031T145500+0100",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-10-31T15:10:00+01:00",
-  "updated_at": "2026-10-31T15:11:20+01:00",
+  "updated_at": "2026-10-31T15:13:10+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "2d32e2ddb886",
   "title": "Lisandro",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "2d32e2ddb886"
   ],
-  "remaining_active_ids": [
-    "2d32e2ddb886"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": "Investigando Lisandro (2d32e2ddb886 r0) tras nueva entrada en cola.",
   "incident_count": 0,
@@ -46,6 +44,6 @@
     "summary": "Cola final 0 y rewrite_pending 0 tras relectura de main; no había trabajo editorial pendiente."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T15:10:00+01:00",
-  "last_completed_at": "2026-10-31T14:56:00+01:00"
+  "last_started_at": "2026-10-31T15:13:10+01:00",
+  "last_completed_at": "2026-10-31T15:13:10+01:00"
 }
