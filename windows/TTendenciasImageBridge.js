@@ -395,12 +395,24 @@ function buildMessage(job){
   const sources=Array.isArray(ctx.verification_sources)?ctx.verification_sources.map(x=>String(x&&x.source||"")).filter(Boolean).join(", "):"";
   const style=String(ctx.image_style||"").trim()||"Más gag, menos barroquismo. Una sola idea visual fuerte, composición limpia, pocos elementos protagonistas, acabado cuidado y estilo editorial variable; evita ilustración literal.";
   const styleName=String(ctx.image_style_name||"variable").trim();
+  // Keep image creation first and independent. The same receiving chat then
+  // owns the authorized Sites return step; no credential travels in a prompt.
+  const siteContext={project_id:"appgprj_6ae4dcf7d7488191a574e5b649e67370",target_id:targetId,
+    name,revision:Number(job.revision||0),scope:"editorial",explanation:explanation.trim(),
+    explained_at:String(ctx.explained_at||"")};
+  const siteReturn=[
+    "PASO POSTERIOR OBLIGATORIO: después de generar UNA imagen, usa [@Sites](plugin://sites@openai-curated-remote) para adjuntar ese mismo PNG original a su tendencia en el Site TTendencias EXISTENTE y publicar la misma URL https://ttactualidad-tendencias.rainyraven22.chatgpt.site/ . Este encargo autoriza esa modificación y publicación. No termines al mostrar la imagen.",
+    "CONTEXTO DE ASOCIACIÓN EXACTO (NO VISIBLE EN LA ILUSTRACIÓN): "+JSON.stringify(siteContext),
+    "Abre el proyecto existente indicado con el flujo de repositorio de Sites. Conserva URL, acceso público y demás contenido. Desde ese checkout, ejecuta node scripts/attach-image.mjs con JSON por stdin: {image_path:ruta local del PNG original recién generado,context:el JSON de asociación anterior}. Añade library_file_id solo si la herramienta lo devuelve. El script revalida ID, revisión, texto y fecha antes de incorporar la imagen. No inventes IDs, no asocies por nombre o puesto y no cambies el contexto para saltarte un conflicto.",
+    "Ejecuta las pruebas y el build, empaqueta, guarda y despliega el MISMO Site. Comprueba que su ficha muestra el raster publicado. Las reglas visuales anteriores se refieren al contenido del archivo, no impiden este paso de devolución. No crees otra imagen ni otro Site para reparar una asociación.",
+    "Si no tienes Sites disponible o falla la incorporación, conserva la imagen ya generada e informa del bloqueo concreto. No declares asociación ni publicación correctas sin recibo de despliegue. Un fallo del paso web no autoriza repetir la generación."
+  ].join("\n\n");
   const NO_PEPPER="REGLA VISUAL OBLIGATORIA: el emoji 🌶️ solo es un marcador del remate ESCRITO, nunca un elemento de la imagen. PROHIBIDO representar guindillas, chiles, pimientos picantes, iconos de guindilla, logotipos, mascotas o símbolos equivalentes, ni en fondo, objetos, carteles, ropa, decoraciones o firmas. Convierte exclusivamente el SIGNIFICADO del remate en un gag visual, nunca su emoji.";
   if(String(job.editorial_image_mode||ctx.editorial_image_mode||"")==="rigor"){
     return ["TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ChatGPT Images y genera UNA imagen periodística RIGUROSA y RESPETUOSA sobre '"+name+"'.",
       "CONTEXTO FACTUAL:",explanation,
       "DIRECCIÓN VISUAL:",style,NO_PEPPER,
-      "No hagas humor ni sátira. No trivialices víctimas o sufrimiento, no inventes escenas documentales ni personas identificables. Imagen editorial sobria, no gráfica. Ignora el remate humorístico."]
+      "No hagas humor ni sátira. No trivialices víctimas o sufrimiento, no inventes escenas documentales ni personas identificables. Imagen editorial sobria, no gráfica. Ignora el remate humorístico.",siteReturn]
       .join("\\n");
   }
   return [
@@ -422,7 +434,8 @@ function buildMessage(job){
     NO_PEPPER,
     "",
     "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe expresar el SIGNIFICADO del chiste, no el emoji de texto; si no hay remate, parte del hecho factual sin inventar otro.",
-    "No inventes hechos externos. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas la explicación completa dentro de la imagen. Genera exactamente UNA imagen. No proceses otra tendencia ni persistas la imagen: el puente local recoge el raster."
+    "No inventes hechos externos. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas la explicación completa dentro de la imagen. Genera exactamente UNA imagen. No proceses otra tendencia.",
+    siteReturn
   ].filter(Boolean).join("\n")
 }
 
@@ -880,12 +893,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",upload_secret:secret,worker_id:"ttendencias-image-bridge-v33-independent-generation",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",upload_secret:secret,worker_id:"ttendencias-image-bridge-v34-sites-return",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v33-independent-generation",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v34-sites-return",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 // The prompt must be confirmed in GitHub before claiming launch success.
 // Retrying an ACK never resubmits the prompt or opens a second chat.
@@ -895,7 +908,7 @@ async function confirmPromptLaunched(){
     try{
       const r=await post({task:"image_pc_ack",target_id:targetId,
         command_id:commandId,stage:"launched",
-        worker_id:"ttendencias-image-bridge-v33-independent-generation"});
+        worker_id:"ttendencias-image-bridge-v34-sites-return"});
       if(r.ok&&r.data&&r.data.pc_launched_at&&!r.data.deferred){
         console.log("BRIDGE IMAGE LAUNCH CONFIRMED "+r.data.pc_launched_at);
         return true;
