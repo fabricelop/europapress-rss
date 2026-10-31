@@ -5,31 +5,36 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T1810+0100",
   "previous_run_id": "tr-1793465886374-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-10-31T17:10:00Z",
-  "updated_at": "2026-10-31T17:10:00Z",
-  "finished_at": null,
+  "updated_at": "2026-10-31T17:12:30Z",
+  "finished_at": "2026-10-31T17:12:30Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Refrescando Top 30 y cola editorial antes de procesar la pasada manual.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "0/0 tras refresco manual persistido a las 18:11:20+01:00 y relectura JIT de main: cola autoritativa final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación. Incidencia separada: health-status previo mantiene 125 estados históricos inválidos en request_queue.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "health_status",
+      "detail": "El último health-status disponible marca 125 estados históricos inválidos en request_queue; editorial_queue está válida y vacía (0 pendientes)."
+    }
+  ],
   "error": null,
-  "activity": "Refrescando Top 30 y cola",
+  "activity": "Cierre verificado",
   "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-1793465886374-manual",
-    "status": "DONE",
-    "started_at": "2026-10-31T16:58:06Z",
-    "finished_at": "2026-10-31T16:58:59Z",
+    "run_id": "tr-chat-20261031T1810+0100",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-10-31T17:10:00Z",
+    "finished_at": "2026-10-31T17:12:30Z",
     "attempted": 0,
     "explained": 0,
     "updates": 0,
@@ -42,9 +47,9 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "0/0 tras refresco manual #608 completado con éxito y relectura JIT de main: cola autoritativa final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
+    "summary": "0/0 tras refresco manual persistido a las 18:11:20+01:00 y relectura JIT de main: cola autoritativa final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación. Incidencia separada: health-status previo mantiene 125 estados históricos inválidos en request_queue."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T17:10:00Z",
-  "last_completed_at": "2026-10-31T16:58:59Z"
+  "last_completed_at": "2026-10-31T17:12:30Z"
 }
