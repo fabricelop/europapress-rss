@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T18:23:00+01:00",
-  "updated_at": "2026-10-31T18:27:00+01:00",
-  "finished_at": "2026-10-31T18:27:00+01:00",
+  "updated_at": "2026-10-31T18:24:20+01:00",
+  "finished_at": "2026-10-31T18:24:20+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
@@ -21,7 +21,7 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "1/1 resuelto por concurrencia: Brighton r0 ya había sido explicado y aplicado por tr-1793466842173-manual; agrupación posterior completada sin crear grupos. Relectura final de main: cola 0, sin preparing/update. Sin ImageGen ni publicación.",
+  "summary": "1/1 resuelto: Brighton r0 fue persistido por una ejecución concurrente mientras esta pasada lo investigaba; se verificó en main la explicación vigente y la cola final quedó en 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -30,15 +30,16 @@
     {
       "id": "bf5ade33b5b4",
       "revision": 0,
+      "name": "Brighton",
       "outcome": "concurrent_resolved",
-      "detail": "Brighton ya estaba explained al validar el cierre."
+      "status": "explained"
     }
   ],
   "last_run": {
     "run_id": "tr-1793467195741-manual",
     "status": "DONE",
     "started_at": "2026-10-31T18:23:00+01:00",
-    "finished_at": "2026-10-31T18:27:00+01:00",
+    "finished_at": "2026-10-31T18:24:20+01:00",
     "attempted": 1,
     "explained": 0,
     "updates": 0,
@@ -51,9 +52,9 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "Brighton resuelto por la ejecución concurrente anterior; cola final 0 tras aplicar agrupación sin grupos."
+    "summary": "1/1 resuelto: Brighton r0 fue persistido por una ejecución concurrente mientras esta pasada lo investigaba; se verificó en main la explicación vigente y la cola final quedó en 0. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T18:21:27+01:00",
-  "last_completed_at": "2026-10-31T18:27:00+01:00"
+  "last_started_at": "2026-10-31T18:23:00+01:00",
+  "last_completed_at": "2026-10-31T18:24:20+01:00"
 }
