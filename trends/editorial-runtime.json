@@ -5,21 +5,24 @@
   "canonical": true,
   "run_id": "tr-1793490033474-manual",
   "previous_run_id": "tr-1793489199351-manual",
-  "status": "RUNNING",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T00:40:00+01:00",
-  "updated_at": "2026-11-01T00:48:00+01:00",
-  "finished_at": "2026-11-01T00:34:00+01:00",
-  "current": 6,
+  "updated_at": "2026-11-01T00:49:00+01:00",
+  "finished_at": "2026-11-01T00:49:00+01:00",
+  "current": 7,
   "total": 7,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-9c1f69faa78fa9e7aaa8",
+    "red-review-a4fe9a1e77d38d80cb26",
     "228ee5d89d20",
-    "299030e1bed3",
     "baa31bcd2580",
-    "beb5f267e132"
+    "beb5f267e132",
+    "299030e1bed3",
+    "listas-auto-91bad7b3567ec2994d9d"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -424,42 +427,73 @@
   ],
   "final_outcomes": [
     {
-      "id": "listas-auto-48bd55639b5efb2accaa",
+      "id": "red-review-9c1f69faa78fa9e7aaa8",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "unchanged"
+    },
+    {
+      "id": "red-review-a4fe9a1e77d38d80cb26",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "unchanged"
+    },
+    {
+      "id": "228ee5d89d20",
+      "revision": 0,
+      "status": "explained",
+      "name": "Woodgate"
+    },
+    {
+      "id": "baa31bcd2580",
+      "revision": 0,
+      "status": "explained",
+      "name": "Owen"
+    },
+    {
+      "id": "beb5f267e132",
+      "revision": 0,
+      "status": "explained",
+      "name": "Hamilton"
+    },
+    {
+      "id": "299030e1bed3",
+      "revision": 0,
+      "status": "explained",
+      "name": "Tunkara"
+    },
+    {
+      "id": "listas-auto-91bad7b3567ec2994d9d",
       "revision": 0,
       "status": "grouping_completed",
       "groups_created": 0,
-      "covered_by_existing": [
-        {
-          "member_id": "a4280f1fe18d",
-          "published_id": "listas-joint-1873f405d5b5996d"
-        }
-      ]
+      "covered_by_existing": 0
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T00:44:18+01:00",
-  "last_completed_at": "2026-11-01T00:44:18+01:00",
+  "last_started_at": "2026-11-01T00:40:00+01:00",
+  "last_completed_at": "2026-11-01T00:49:00+01:00",
   "last_run": {
-    "run_id": "tr-1793489438693-manual",
+    "run_id": "tr-1793490033474-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T00:34:00+01:00",
-    "attempted": 1,
-    "explained": 0,
+    "finished_at": "2026-11-01T00:49:00+01:00",
+    "attempted": 7,
+    "explained": 4,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 1,
-    "unchanged_reviews": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Agrupación automática aplicada: Gordon cubierto por la ficha conjunta del Barça-Alavés 6-1; 0 grupos nuevos. Cola final 0."
+    "note": "Pasada real completada: 4 explicaciones, 2 revisiones sin novedades materiales y 1 agrupación sin coincidencias; cola final 0."
   },
   "source": "chat",
-  "message": "Pasada editorial en curso: 2 revisiones de novedades; sin ImageGen ni publicación.",
+  "message": "Pasada editorial cerrada 7/7: 4 explicaciones, 2 revisiones unchanged y 1 agrupación sin coincidencias. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -493,6 +527,16 @@
       "trend_id": "listas-auto-91bad7b3567ec2994d9d",
       "title": "Agrupación automática de Listas",
       "message": "Resultado persistido con groups=[] y covered_by_existing=[]; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:49:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Cuatro explicaciones persistidas y cleared; dos revisiones unchanged aplicadas; agrupación final grouping_completed sin grupos ni coberturas."
+    },
+    {
+      "at": "2026-11-01T00:49:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 7/7 para tr-1793490033474-manual. ImageGen=0; publicaciones=0; incidencias=0."
     }
   ]
 }
