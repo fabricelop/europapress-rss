@@ -358,29 +358,6 @@ def load_state():
 def main():
     state = load_state()
     before = copy.deepcopy(state)
-
-    # One-shot editorial consistency repair: remove an insensitive closer from
-    # the already-applied DANA maintenance update. Exact id/revision/text
-    # guards make this idempotent and prevent touching any later edit.
-    correction_id = 'trend-update-07dc8165892e5d9a6b62'
-    correction_rev = 0
-    old_closer = '🌶️ Dos años después, el recuento aún se mueve.'
-    wrong_text = ('TT#12 Dana sigue siendo tendencia por el segundo aniversario en Valencia: '
-                  'la jueza elevó a 234 las víctimas mortales tras reconocer el fallecimiento '
-                  'de un vecino de Paiporta.\\n#DANA #Valencia')
-    clean_text = ('TT#12 Dana sigue siendo tendencia por el segundo aniversario en Valencia: '
-                  'la jueza elevó a 234 las víctimas mortales tras reconocer el fallecimiento '
-                  'de un vecino de Paiporta.\n#DANA #Valencia')
-    for path, field in ((REQUESTS, 'requests'), (maintenance.MANUAL, 'items')):
-        for row in state[path][field]:
-            if (row.get('id') == correction_id
-                    and int(row.get('revision') or 0) == correction_rev
-                    and (row.get('closer_text') == old_closer
-                         or row.get('explanation') == wrong_text)):
-                row['explanation'] = clean_text
-                row['closer_text'] = ''
-                row['editorial_grouping_state'] = 'cleared'
-                row['editorial_grouping_fingerprint'] = maintenance.fingerprint(row)
     now = datetime.now(timezone.utc)
     payload = json.loads(os.environ.get('TT_LISTAS_GROUP_JSON') or '{}')
     if payload:
