@@ -333,6 +333,24 @@ for token in ('SOLO IMAGEN', 'SIN NINGÚN TEXTO', 'franja inferior', 'SIN BANDA 
     assert token in actions, token
 assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
 print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
+# Two new actions are available for trends only. The preexisting GAG button
+# must remain untouched; the Site route is an explicit copy and paste job.
+assert 'quickButton("Copiar imagen Site", "square.on.square")' in actions
+assert 'quickButton("Abrir chat TT", "plus.bubble")' in actions
+assert 'copyTrendSiteImagePrompt()' in actions
+assert 'openTTProject()' in actions
+assert 'TTENDENCIAS_SITE_IMAGE_V3' in actions
+assert 'attach_trend_image' in actions and 'verify_trend_image' in actions
+assert 'inspect_top30_images' in actions
+for token in ('siteImageEditorialID', 'siteImageRevision', 'siteImageExplainedAt'):
+    assert token in store, token
+assert 'UserDefaults.standard.set(url.absoluteString' in actions
+assert 'url.path.hasPrefix("/g/g-p-")' in actions
+assert 'guard let leader = store.snapshot.trendListas.first' in actions
+assert 'No se puede crear un prompt seguro.' in actions
+assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
+print("TT_ACTUALIDAD_IOS_SITE_IMAGE_CHAT_BUTTONS_OK")
+
 
 
 assert 'filterChip("Nuevas"' not in dashboard
