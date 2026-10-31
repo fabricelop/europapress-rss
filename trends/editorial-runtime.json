@@ -6,26 +6,24 @@
   "run_id": "tr-manual-20261031T074000+0100",
   "previous_run_id": "tr-manual-20261031T072500+0100",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "verifying",
   "started_at": "2026-10-31T07:40:00+01:00",
-  "updated_at": "2026-10-31T07:43:00+01:00",
+  "updated_at": "2026-10-31T07:44:00+01:00",
   "finished_at": null,
   "last_started_at": "2026-10-31T07:40:00+01:00",
   "last_completed_at": "2026-10-31T07:40:00+01:00",
-  "current": 0,
+  "current": 1,
   "total": 1,
   "trend_id": "36bc10edc55b",
   "title": "Luka",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "36bc10edc55b"
   ],
-  "remaining_active_ids": [
-    "36bc10edc55b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Luka r0 revalidada JIT; detonante identificado en el Lakers-Warriors de hoy. Redactando explicación y remate.",
+  "summary": "Luka r0 persistida y verificada en ambos registros; retirada de la cola. Releyendo main antes del cierre.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -78,6 +76,13 @@
       "trend_id": "36bc10edc55b",
       "title": "Luka",
       "message": "Persistiendo Luka r0 en requests.json y telegram-manual-explained.json; la imagen queda fuera de esta pasada."
+    },
+    {
+      "at": "2026-10-31T07:44:00+01:00",
+      "phase": "verifying",
+      "trend_id": "36bc10edc55b",
+      "title": "Luka",
+      "message": "Coinciden ID, revisión, explanation, closer_text y explained_at en requests y ficha explicada; retirada solo Luka r0 de la cola."
     }
   ],
   "final_outcomes": [],
