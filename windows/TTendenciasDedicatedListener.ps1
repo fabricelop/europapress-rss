@@ -809,9 +809,9 @@ function Restart-DedicatedChromeCdp([string]$CommandId,[string]$Reason) {
 # Separate read-only consumer of already generated images; no prompts or Telegram.
 $script:WebPublisherCheckedAt=[DateTimeOffset]::MinValue
 $script:WebPublisherLastRun=[DateTimeOffset]::MinValue
-function Ensure-WebPublisherLatest([string]$NodePath) {
+function Ensure-WebPublisherLatest([string]$NodePath,[bool]$Force = $false) {
   $file=Join-Path $BaseDir "TTendenciasWebImages.cjs"
-  if((Test-Path -LiteralPath $file) -and (([DateTimeOffset]::UtcNow-$script:WebPublisherCheckedAt).TotalMinutes -lt 10)){return $true}
+  if((-not $Force) -and (Test-Path -LiteralPath $file) -and (([DateTimeOffset]::UtcNow-$script:WebPublisherCheckedAt).TotalMinutes -lt 10)){return $true}
   $script:WebPublisherCheckedAt=[DateTimeOffset]::UtcNow
   $tmp=$file+".new.cjs"
   try {
@@ -822,6 +822,8 @@ function Ensure-WebPublisherLatest([string]$NodePath) {
     $hash=[Security.Cryptography.SHA1]::Create()
     try {$actual=([BitConverter]::ToString($hash.ComputeHash([byte[]]($header+$raw)))).Replace("-","").ToLowerInvariant()} finally {$hash.Dispose()}
     if($actual -ne [string]$doc.sha){throw "publisher source hash mismatch"}
+    $source=[Text.Encoding]::UTF8.GetString($raw)
+    if(-not $source.Contains('rememberConversation') -or -not $source.Contains('web_image_upload')){throw "publisher lacks durable handoff"}
     [IO.File]::WriteAllBytes($tmp,$raw)
     & $NodePath --check $tmp *> $null
     if($LASTEXITCODE -ne 0){throw "publisher syntax invalid"}
@@ -831,7 +833,11 @@ function Ensure-WebPublisherLatest([string]$NodePath) {
   } catch {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
     Write-Log "WEB IMAGE PUBLISHER REFRESH DEFERRED"
-    return (Test-Path -LiteralPath $file)
+    if(Test-Path -LiteralPath $file){
+      $source=Get-Content -LiteralPath $file -Raw -Encoding UTF8
+      return ($source.Contains('rememberConversation') -and $source.Contains('web_image_upload'))
+    }
+    return $false
   }
 }
 function Start-WebImagePublisher {
@@ -861,7 +867,7 @@ function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadS
   if (-not (Ensure-ImageBridgeLatest $node.Source)) {
     return $false
   }
-  Ensure-WebPublisherLatest $node.Source | Out-Null
+  if(-not (Ensure-WebPublisherLatest $node.Source $true)){return $false}
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
   $out = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".log")
   $err = Join-Path $BaseDir ("ttendencias-image-bridge-" + $stamp + "-" + $TargetId + ".err.log")

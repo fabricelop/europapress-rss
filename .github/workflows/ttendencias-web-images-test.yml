@@ -8,6 +8,12 @@ on:
       - windows/TTendenciasDedicatedListener.ps1
       - windows/tests/test_web_images.cjs
       - windows/tests/test_web_images_dpapi.cjs
+      - windows/tests/test_web_image_handoff_dpapi.cjs
+      - tests/ttendencias-web-images.test.cjs
+      - vercel-webhook/lib/ttendencias-web-image-receipt.js
+      - vercel-webhook/lib/ttendencias-run-handler.js
+      - vercel-webhook/lib/ttendencias-run-status-handler.js
+      - no-vercel/ttendencias-worker/**
       - .github/workflows/ttendencias-web-images-test.yml
   workflow_dispatch:
 permissions:
@@ -22,7 +28,7 @@ jobs:
         with:
           node-version: '22'
       - name: Identity and raster selection
-        run: node --test windows/tests/test_web_images.cjs
+        run: node --test tests/ttendencias-web-images.test.cjs windows/tests/test_web_images.cjs
       - name: Bridge launch regressions
         run: |
           node windows/tests/test_image_submission_evidence.cjs
@@ -38,3 +44,6 @@ jobs:
         shell: powershell
         run: |
           node windows/tests/test_web_images_dpapi.cjs
+          node windows/tests/test_web_image_handoff_dpapi.cjs
+      - name: Receiver regression tests with Cloudflare adapter
+        run: npm --prefix no-vercel/ttendencias-worker test

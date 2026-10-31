@@ -81,7 +81,7 @@ async function handlerRequest(request, env, url,handler) {
 export default {
   async fetch(request,env){
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
-    if(path==="/health")return json({ok:true,service:"ttendencias-cloudflare",mode:"legacy-handlers"});
+    if(path==="/health")return json({ok:true,service:"ttendencias-cloudflare",mode:"legacy-handlers",web_image_receipt:2});
     if(path==="/api/ttendencias-top10-push")return json({ok:false,disabled:true,error:"Avisos retirados"},410);
     if(Object.prototype.hasOwnProperty.call(ROUTES,path)){
       return handlerRequest(request,env,url,ROUTES[path]);

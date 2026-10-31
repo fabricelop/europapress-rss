@@ -13,6 +13,7 @@ fs.mkdirSync(path.join(target,"compat"),{recursive:true});
 const names=[
   "ttendencias-control-handler.js",
   "ttendencias-run-handler.js",
+  "ttendencias-web-image-receipt.js",
   "ttendencias-run-status-handler.js",
   "ttendencias-copy-state.js",
   "ttendencias-remate-ratings.js"

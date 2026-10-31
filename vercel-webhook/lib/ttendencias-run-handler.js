@@ -1,6 +1,7 @@
 // deploy-sync: mobile-run-worker-contract-v13-20261004
 import crypto from "node:crypto";
 import sharp from "sharp";
+import {webReceiptContext,receiptGuard} from "./ttendencias-web-image-receipt.js";
 import {explanationIsCopied, sameEditorialEpisode} from "./ttendencias-copy-state.js";
 
 const CONTROL_TOKEN_HASHES=[
@@ -206,16 +207,20 @@ async function writeMainBinary(path,buf,sha,message){
   if(!r.ok)throw new Error("GitHub main binary PUT "+path+": "+r.status+" "+await r.text());
   return r.json()
 }
-async function persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime,sha256,width,height,bytes}){
+async function persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime,sha256,width,height,bytes,webJob}){
   await claimRasterContext({project:"ttendencias",target_id,revision,command_id,sha256});
   const ext=mime==="image/png"?"png":mime==="image/webp"?"webp":"jpg";
   const suffix=command_id.replace(/[^A-Za-z0-9_-]/g,"").slice(-12)||Date.now();
   const imagePath="trends/generated-images/"+target_id+"-r"+revision+"-ai"+attempt+"-"+suffix+"."+ext;
-  const imageExisting=await readMainJsonWithSha(imagePath).catch(()=>({sha:null,doc:null}));
-  // readMainJsonWithSha no sirve para binarios existentes; el nombre es único por command_id,
-  // así que solo escribimos sin SHA y tratamos 422 como colisión imposible de nombre.
-  if(imageExisting?.sha)throw new Error("generated_image_path_already_exists");
-  await writeMainBinary(imagePath,buf,null,"TTendencias: guardar raster ImageGen "+target_id);
+  // Reuse identical immutable bytes after a lost write acknowledgement.
+  const prior=await gh("https://api.github.com/repos/"+REPO+"/contents/"+imagePath+"?ref="+MAIN_BRANCH,{cache:"no-store"});
+  if(prior.ok){
+    const file=await prior.json();let encoded=String(file.content||"").replace(/\s/g,"");
+    if(!encoded&&file.sha){const r=await gh("https://api.github.com/repos/"+REPO+"/git/blobs/"+file.sha);if(!r.ok)throw Error("raster_read_failed");encoded=String((await r.json()).content||"").replace(/\s/g,"");}
+    if(crypto.createHash("sha256").update(Buffer.from(encoded,"base64")).digest("hex")!==sha256)throw Error("generated_image_path_collision");
+  }else if(prior.status===404){
+    await writeMainBinary(imagePath,buf,null,"TTendencias: guardar raster ImageGen "+target_id);
+  }else throw Error("raster_read_HTTP_"+prior.status);
 
   const rawUrl="https://raw.githubusercontent.com/"+REPO+"/main/"+imagePath;
   const sourceUrl="https://github.com/"+REPO+"/blob/main/"+imagePath;
@@ -223,7 +228,7 @@ async function persistAiImageDirect({target_id,revision,attempt,command_id,buf,m
     url:rawUrl,source:"TTendencias / ChatGPT ImageGen",rights_status:"generated",generated:true,
     provider:"chat-imagegen",origin:"executing_chat",generation_attempt:attempt,
     sha256,width,height,bytes,
-    context_guard:{version:3,trend_id:target_id,revision,scope:"current_item_only",command_id},
+    context_guard:webJob?receiptGuard(webJob):{version:3,trend_id:target_id,revision,scope:"current_item_only",command_id},
     source_url:sourceUrl,handoff:"pc-bridge-direct-materialized"
   };
 
@@ -232,8 +237,11 @@ async function persistAiImageDirect({target_id,revision,attempt,command_id,buf,m
     const exp=await readMainJsonWithSha(EXPLAINED_PATH);
     const doc=exp.doc||{project:"TTendencias",items:[]};
     const items=Array.isArray(doc.items)?doc.items:[];
+    const latest=items.filter(x=>String(x.id||"")===target_id).sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
+    if(webJob&&webReceiptContext(webJob,latest,receiptGuard(webJob).explanation_sha256))throw new Error("editorial_context_changed_during_upload");
     const row=[...items].reverse().find(x=>String(x.id||"")===target_id&&Number(x.revision||0)===Number(revision));
     if(!row)throw new Error("not_pending_explained");
+    if(webJob&&webReceiptContext(webJob,row,receiptGuard(webJob).explanation_sha256))throw new Error("editorial_context_changed_during_upload");
     const collision=items.find(x=>String(x.id||"")!==target_id&&String(x.ai_image?.sha256||"").toLowerCase()===sha256.toLowerCase());
     if(collision)throw new Error("cross_context_raster_reuse");
     row.ai_image=ai;
@@ -493,7 +501,20 @@ async function requestImagePcAck(req,res){
   return res.status(200).json({ok:true,...next})
 }
 
-async function requestImageUpload(req,res){
+async function requestWebImageTelemetry(req,res){
+  const target=safeTargetId(req.body?.target_id),command=String(req.body?.command_id||'');
+  const path=IMAGE_RUN_DIR+'/'+target+'.json',existing=await readControlJson(path),job=existing.doc||{};
+  if(job.command_id!==command)return res.status(409).json({ok:false,error:'job_identity_changed'});
+  if(!validUploadSecret(job,String(req.body?.upload_secret||'')))return res.status(401).json({ok:false,error:'invalid_secret'});
+  const stage=String(req.body?.stage||'').slice(0,30);
+  if(!['waiting','published','rejected','obsolete'].includes(stage))return res.status(400).json({ok:false,error:'invalid_stage'});
+  const reason=String(req.body?.reason||'').replace(/https?:\/\/\S+/g,'[url]').slice(0,140);
+  const next={...job,web_image:{version:2,stage,reason,checked_at:new Date().toISOString()}};
+  await writeControlJson(path,next,existing.sha,'TTendencias web receipt status '+target);
+  return res.status(200).json({ok:true,web_image:next.web_image});
+}
+
+async function requestImageUpload(req,res,webReceipt=false){
   const target_id=safeTargetId(req.body?.target_id||req.body?.id);
   const command_id=String(req.body?.command_id||"").trim();
   const upload_secret=String(req.body?.upload_secret||"");
@@ -507,8 +528,15 @@ async function requestImageUpload(req,res){
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es actual"});
   if(!validUploadSecret(job,upload_secret))return res.status(401).json({ok:false,error:"Secreto de imagen no válido"});
-  if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job terminal",status:job.status});
-  const eligible=await imageEligibility(target_id);
+  if((webReceipt?["CANCELLED","SUPERSEDED"]:["DONE","ERROR","CANCELLED","SUPERSEDED"]).includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job terminal",status:job.status});
+  let eligible;
+  if(webReceipt){
+    const doc=await readMainJson(EXPLAINED_PATH);
+    const row=(doc.items||[]).filter(x=>String(x.id)===target_id).sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
+    const reason=webReceiptContext(job,row,String(req.body?.context_explanation_sha256||''));
+    if(reason)return res.status(409).json({ok:false,error:reason});
+    eligible={eligible:true,row};
+  }else eligible=await imageEligibility(target_id);
   const revisionChanged=Boolean(eligible.row)&&Number(eligible.row.revision||0)!==Number(job.revision||0);
   if(!eligible.eligible||revisionChanged)return res.status(409).json({ok:false,error:"target_no_elegible",reason:revisionChanged?"revision_changed":eligible.reason});
   const m=data.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
@@ -524,10 +552,13 @@ async function requestImageUpload(req,res){
     return res.status(422).json({ok:false,error:"Raster rechazado: geometría anómala",width,height,aspect:Number(aspect.toFixed(3))});
   }
   const sha256=crypto.createHash("sha256").update(buf).digest("hex");
+  if(webReceipt&&eligible.row.ai_image?.sha256===sha256&&eligible.row.ai_image?.context_guard?.command_id===command_id){
+    return res.status(200).json({ok:true,status:"DONE",idempotent:true,target_id,command_id,sha256,width,height,bytes:buf.length});
+  }
   const now=new Date().toISOString(),revision=Number(eligible.row?.revision||job.revision||0),attempt=Math.max(1,Number(job.attempt||0)||((Number(eligible.row?.ai_image_attempt||0)||0)+1));
   const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido y validado; materializando directamente en main."};
   const persistWrite=await writeControlJson(path,persisting,existing.sha,"TTendencias raster recibido "+command_id);
-  const persisted=await persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime:m[1],sha256,width,height,bytes:buf.length});
+  const persisted=await persistAiImageDirect({target_id,revision,attempt,command_id,buf,mime:m[1],sha256,width,height,bytes:buf.length,webJob:webReceipt?job:undefined});
 
   // La persistencia anterior usa la API REST de GitHub y ya confirma que el raster
   // y el estado editorial están escritos en main. No dependemos después de RAW/CDN
@@ -636,8 +667,11 @@ export default async function handler(req,res){
     try{return await requestImagePcAck(req,res)}
     catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
   }
-  if(rawTask==="image_upload"){
-    try{return await requestImageUpload(req,res)}
+  if(rawTask==="web_image_telemetry"){
+    try{return await requestWebImageTelemetry(req,res)}catch(e){return res.status(500).json({ok:false,error:String(e.message||e)})}
+  }
+  if(rawTask==="image_upload"||rawTask==="web_image_upload"){
+    try{return await requestImageUpload(req,res,rawTask==="web_image_upload")}
     catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
   }
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});

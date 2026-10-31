@@ -77,3 +77,9 @@ test('los puestos del Top30 no intervienen en identidad de imagen',()=>{
   const j=job();j.context_snapshot.rank_at_explanation=29;
   assert.ok(sameContext(task(),j));
 });
+
+test('an uncertain ERROR with a saved handoff is kept pending while receiver update is unavailable',async()=>{
+ const j=job();j.status='ERROR';delete j.upload_sha256;
+ const q={...task(),conversation_url:'https://chatgpt.com/c/abc-123'};delete q.upload_accepted_at;
+ await withDocuments(null,j,manual(),async()=>{const result=await consume(q);assert.equal(result.status,'waiting');assert.equal(result.reason,'receiver_update_pending');});
+});

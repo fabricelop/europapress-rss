@@ -289,6 +289,7 @@ async function openFreshDedicatedConversation(){
   let cdp=new CDP(t.webSocketDebuggerUrl);
   try{
     await cdp.open();
+    cdp.fixedTargetId=String(t.id);
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
     await prepareReusableConversation(cdp);
@@ -339,6 +340,7 @@ async function openFreshDedicatedConversation(){
     t=await createFixedTarget();
     cdp=new CDP(t.webSocketDebuggerUrl);
     await cdp.open();
+    cdp.fixedTargetId=String(t.id);
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
     await prepareReusableConversation(cdp);
@@ -893,7 +895,7 @@ async function confirmPromptLaunched(){
     try{
       const r=await post({task:"image_pc_ack",target_id:targetId,
         command_id:commandId,stage:"launched",
-        worker_id:"ttendencias-image-bridge-v30-launch-only"});
+        worker_id:"ttendencias-image-bridge-v32-durable-web-handoff"});
       if(r.ok&&r.data&&r.data.pc_launched_at&&!r.data.deferred){
         console.log("BRIDGE IMAGE LAUNCH CONFIRMED "+r.data.pc_launched_at);
         return true;
@@ -930,6 +932,7 @@ async function uploadImage(image){
 }
 (async()=>{
   let cdp;
+  let webHandoff;
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
@@ -941,6 +944,14 @@ async function uploadImage(image){
     try{cdp=await openFreshDedicatedConversation();}
     catch(e){throw Error("TTENDENCIAS_PRE_SUBMIT_FAILED "+String(e&&e.message||e));}
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
+    let exporter;
+    try{
+      exporter=require("./TTendenciasWebImages.cjs");
+      webHandoff={job,commandId,targetId,browserTargetId:cdp.fixedTargetId,secret};
+      exporter.enroll(webHandoff);
+    }catch(e){throw Error("TTENDENCIAS_PRE_SUBMIT_FAILED web_handoff "+String(e&&e.message||e));}
+    console.log("TTENDENCIAS WEB IMAGE REGISTERED target="+targetId+" pending_conversation=true");
+    await progress("web_handoff_saved","v32: registro cifrado guardado antes del envío.");
     let image=null;
     for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
       if(generationAttempt>1){
@@ -951,6 +962,7 @@ async function uploadImage(image){
       }
       cdp=await injectPromptIntoChat(cdp,job);
       if(!cdp.promptSubmittedAt)await submitVerifiedDraft(cdp,job);
+      await exporter.rememberConversation(webHandoff);
       cdp=await ensureSubmitted(cdp,job);
       cdp.acceptInitialRaster=true;
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
@@ -1008,5 +1020,8 @@ async function uploadImage(image){
     console.error("BRIDGE ERROR :: "+String(e&&e.message||e));
     await fail(e&&e.message||e);
     process.exitCode=1;
-  }finally{try{cdp&&cdp.close()}catch{}}
+  }finally{
+    if(webHandoff)try{await require("./TTendenciasWebImages.cjs").rememberConversation(webHandoff);}catch{}
+    try{cdp&&cdp.close()}catch{}
+  }
 })();

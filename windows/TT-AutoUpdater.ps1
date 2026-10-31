@@ -4,6 +4,7 @@ $BaseDir="C:\TTiTTulares"
 $LogPath=Join-Path $BaseDir "tt-auto-updater.log"
 
 $Managed=@(
+  @{Path="windows/TTendenciasWebImages.cjs";Local="TTendenciasWebImages.cjs";Kind="js";Pattern=""},
   @{Path="windows/TTendenciasDedicatedListener.ps1";Local="TTendenciasDedicatedListener.ps1";Kind="ps";Pattern="*TTendenciasDedicatedListener.ps1*"},
   @{Path="windows/TTendenciasImageBridge.js";Local="TTendenciasImageBridge.js";Kind="js";Pattern=""},
   @{Path="windows/TTiTTularesDedicatedListener.ps1";Local="TTiTTularesDedicatedListener.ps1";Kind="ps";Pattern="*TTiTTularesDedicatedListener.ps1*"},

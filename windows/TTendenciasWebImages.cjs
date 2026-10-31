@@ -20,14 +20,18 @@ function protect(value,decode=false){
   return execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',code],{input:value,encoding:'utf8',windowsHide:true,timeout:15000,maxBuffer:65536}).trim();
 }
 function atomic(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2),{mode:0o600});fs.renameSync(tmp,file);}
-function enroll({job,commandId,targetId,conversationUrl,secret}){
+function enroll({job,commandId,targetId,conversationUrl,browserTargetId,secret}){
   const url=chatURL(conversationUrl);
-  if(!url||!safeID(targetId)||!safeID(commandId)||String(job.command_id)!==commandId||String(job.target_id||job.trend_id)!==targetId||String(secret||'').length<32)throw Error('invalid web-image identity');
+  if((!url&&!safeID(browserTargetId))||!safeID(targetId)||!safeID(commandId)||String(job.command_id)!==commandId||String(job.target_id||job.trend_id)!==targetId||String(secret||'').length<32)throw Error('invalid web-image identity');
   const explanation=String(job.context_snapshot?.explanation||'').trim();
   if(!explanation)throw Error('missing authoritative explanation');
   fs.mkdirSync(ROOT,{recursive:true});const file=path.join(ROOT,commandId+'.json');
-  if(fs.existsSync(file))return;
-  atomic(file,{version:1,target_id:targetId,command_id:commandId,revision:Number(job.revision||0),conversation_url:url,
+  if(fs.existsSync(file)){
+    const old=JSON.parse(fs.readFileSync(file,'utf8'));
+    if(!old.conversation_url&&url&&old.target_id===targetId&&old.command_id===commandId){atomic(file,{...old,conversation_url:url});}
+    return;
+  }
+  atomic(file,{version:1,target_id:targetId,command_id:commandId,revision:Number(job.revision||0),conversation_url:url,browser_target_id:String(browserTargetId||''),
     explanation_sha256:crypto.createHash('sha256').update(explanation).digest('hex'),
     secret_dpapi:protect(secret),created_at:new Date().toISOString(),status:'waiting',attempts:0});
 }
@@ -71,22 +75,48 @@ async function confirmedInMain(task,job){
   const ai=current.ai_image||{};
   const url=String(ai.url||'');
   const sha=String(ai.sha256||ai.content_sha256||current.ai_image_sha256||'');
-  const command=String(ai.command_id||current.ai_image_command_id||'');
+  const guard=ai.context_guard||{};
+  const command=String(guard.command_id||ai.command_id||current.ai_image_command_id||'');
   const expected=String(job.upload_sha256||task.sha256||'');
   const provenanceMatch=(!!sha&&sha===expected)||(!!command&&command===task.command_id);
   if((job.status==='DONE'||task.upload_accepted_at)&&expected&&ai.generated===true&&/^https:\/\//i.test(url)&&
      /\/generated-images\//i.test(url)&&provenanceMatch&&(!sha||sha===expected)&&(!command||command===task.command_id)&&
-     (!ai.target_id||String(ai.target_id)===task.target_id)&&
-     (ai.revision==null||Number(ai.revision)===task.revision)){
+     (!guard.trend_id||String(guard.trend_id)===task.target_id)&&(!ai.target_id||String(ai.target_id)===task.target_id)&&
+     (guard.revision==null||Number(guard.revision)===task.revision)&&(ai.revision==null||Number(ai.revision)===task.revision)){
     return {status:'published',sha256:expected,image_path:String(job.image_path||''),image_url:url};
   }
   return {status:'waiting',reason:'remote_image_not_confirmed'};
+}
+async function rememberConversation({job,commandId,targetId,browserTargetId,secret}){
+  // Preserve the upload capability BEFORE clicking Send. Discover only this
+  // pinned target's durable URL; never select another conversation by name.
+  enroll({job,commandId,targetId,browserTargetId,secret});
+  try{
+    const pages=await http('http://127.0.0.1:9223/json/list');
+    const own=pages.find(x=>String(x.id||'')===String(browserTargetId));
+    if(own&&chatURL(own.url))enroll({job,commandId,targetId,browserTargetId,secret,conversationUrl:own.url});
+  }catch{}
 }
 async function consume(task){
   const job=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/'+encodeURIComponent(task.target_id)+'.json?t='+Date.now());
   if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
   if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at)return confirmedInMain(task,job);
-  if(['CANCELLED','SUPERSEDED','ERROR'].includes(String(job.status).toUpperCase()))return {status:'obsolete',reason:'image_job_terminal'};
+  if(['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))return {status:'obsolete',reason:'image_job_terminal'};
+  // ERROR is not proof that no image exists. This consumer NEVER generates:
+  // it can only read a raster after this command's exact user turn.
+  if(!chatURL(task.conversation_url)){
+    try{
+      const pages=await http('http://127.0.0.1:9223/json/list');
+      const own=pages.find(x=>String(x.id||'')===String(task.browser_target_id||''));
+      const url=chatURL(own?.url);
+      if(!url)return {status:'waiting',reason:'awaiting_command_conversation'};
+      task.conversation_url=url;
+    }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
+  }
+  try{
+    const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttendencias-run-status?view=web-image-contract');
+    if(contract.web_image_receipt!==2)return {status:'waiting',reason:'receiver_update_pending'};
+  }catch{return {status:'waiting',reason:'receiver_update_pending'};}
   // Verify the existing relay browser is reachable; never start or restart Chrome.
   await http(BASE+'/json/version');
   const pages=await http(BASE+'/json/list');
@@ -110,7 +140,7 @@ async function consume(task){
     const manual=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/telegram-manual-explained.json?t='+Date.now());
     const current=(manual.items||[]).filter(x=>String(x.id)===task.target_id).sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
     if(!current||Number(current.revision||0)!==task.revision||crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')!==task.explanation_sha256)return {status:'obsolete'};
-    const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),body:JSON.stringify({task:'image_upload',target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),image_data_url:raster.dataUrl,capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
+    const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),body:JSON.stringify({task:'web_image_upload',context_explanation_sha256:task.explanation_sha256,target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),image_data_url:raster.dataUrl,capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
     const result=await response.json();
     if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',sha256:String(result.sha256||''),image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString()};
     if([401,409,422].includes(response.status))return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
@@ -120,6 +150,11 @@ async function consume(task){
     if(ownedTarget)try{await browserCDP?.call('Target.closeTarget',{targetId:ownedTarget});}catch{}
     browserCDP?.close();
   }
+}
+async function telemetry(task,result){
+  try{
+    await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(10000),body:JSON.stringify({task:'web_image_telemetry',target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),stage:result.status,reason:String(result.reason||'confirmed').slice(0,140),version:2})});
+  }catch{}
 }
 function dueTasks(tasks,now){return tasks.filter(x=>x.task.status==='waiting')
   .filter(x=>!Number.isFinite(Date.parse(x.task.next_check_at||''))||Date.parse(x.task.next_check_at)<=now)
@@ -138,7 +173,7 @@ async function once(){
     });
     const due=dueTasks(tasks,now);
     for(const {file,task} of due.slice(0,1)){
-      if(!safeID(task.target_id)||!safeID(task.command_id)||!chatURL(task.conversation_url)||
+      if(!safeID(task.target_id)||!safeID(task.command_id)||(!chatURL(task.conversation_url)&&!safeID(task.browser_target_id))||
         !/^[a-f0-9]{64}$/.test(String(task.explanation_sha256||''))||
         !task.secret_dpapi){
         atomic(file,{...task,status:'rejected',reason:'invalid_enrollment',secret_dpapi:undefined});
@@ -155,15 +190,19 @@ async function once(){
       let result;
       try{result=await consume(task);}
       catch(e){result={status:'waiting',reason:String(e&&e.message||'export_unavailable_retry').replace(/https?:\/\/\S+/g,'[url]').slice(0,140)};}
+      const report=task.status!==result.status||task.reason!==result.reason||
+        !task.telemetry_at||Date.now()-Date.parse(task.telemetry_at)>15*60000;
+      if(report)await telemetry(task,result);
       const count=(task.attempts||0)+1;
       const delay=Math.min(10*60000,Math.max(60000,60000*Math.min(10,Math.ceil(count/6))));
       const next={...task,...result,attempts:count,checked_at:new Date().toISOString(),
-        next_check_at:new Date(Date.now()+delay).toISOString()};
+        next_check_at:new Date(Date.now()+delay).toISOString(),
+        telemetry_at:report?new Date().toISOString():task.telemetry_at};
       if(next.status!=='waiting'){delete next.secret_dpapi;delete next.next_check_at;}
       atomic(file,next);
       console.log('TTENDENCIAS_WEB_IMAGE '+task.target_id+' '+next.status+' reason='+String(next.reason||'confirmed').slice(0,90));
     }
   }finally{try{fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rasterProbe,sameContext,confirmedInMain,dueTasks,consume};
+module.exports={chatURL,enroll,rememberConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,consume};
 if(require.main===module)once().catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});

@@ -364,6 +364,7 @@ export default async function handler(req,res){
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
     const view=String(req.query?.view||"").toLowerCase();
+    if(view==="web-image-contract")return res.status(200).json({ok:true,web_image_receipt:2,identity:"id_revision_command_exact_text",generates_images:false});
     if(view==="listener-snapshot"){
       const strong=String(req.query?.strong||"")==="1";
       const [{doc:trigger},imageIndex0]=await Promise.all([
