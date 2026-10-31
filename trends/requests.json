@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T16:44:53.323544+00:00",
+  "updated_at": "2026-10-31T16:46:12.763951+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T16:17:24.220440+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T16:46:12.763951+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -4027,7 +4027,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T16:17:24.220440+00:00",
+      "editorial_grouping_checked_at": "2026-10-31T16:46:12.763951+00:00",
       "red_review_checked_at": "2026-10-31T15:03:39.529415+00:00",
       "red_review_outcome": "updated",
       "red_review_reason": "La cifra oficial de víctimas mortales de la dana cambió después de la explicación original: la jueza de Catarroja elevó el recuento de 233 a 234 al reconocer como víctima a un vecino de Paiporta.",
@@ -8772,7 +8772,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T16:17:24.220440+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T16:46:12.763951+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -81454,7 +81454,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "e2f387ddc0a8387bb93512acccacc077bfd89d502dc0a7918c2c7a3008a35333",
-      "editorial_grouping_checked_at": "2026-10-31T16:17:24.220440+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T16:46:12.763951+00:00"
     },
     {
       "id": "listas-joint-e8e496344a8cf010",
@@ -83250,26 +83250,36 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-f6486e28f95ce346",
+      "covered_by_name": "Crisis del Tribunal Constitucional de Polonia",
+      "covered_by_revision": 0,
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-31T16:46:12.763951+00:00",
+      "coverage_reason": "already_published_same_event",
+      "grouping_request_id": "listas-auto-8d33b931c6a199c4740f",
+      "editorial_grouping_fingerprint": "2295bb0c0dd437118af2b89a83c734123564b147eb60acd61760bd9a5d9eb729",
+      "editorial_grouping_checked_at": "2026-10-31T16:46:12.763951+00:00"
     },
     {
       "id": "listas-auto-8d33b931c6a199c4740f",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T16:44:53.323544+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -84778,7 +84788,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T16:46:12.763951+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "b7359d8bea92667bdb9918792ff63b4acdb87fc4b1f81969b03f330924b2ba08"
     },
     {
       "id": "red-review-27359ad47efeaa09b880",
