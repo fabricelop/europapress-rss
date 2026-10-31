@@ -34,3 +34,5 @@ jobs:
           python3 -m unittest discover -s pilot -p 'test_trends_hints.py' -v
           python3 -m py_compile ttittulares/request_pc_editorial.py
           python3 ttittulares/request_pc_editorial.py --selftest
+          node pilot/ttactualidad-live/test_worker_live.mjs
+          node pilot/ttactualidad-live/test_trend_image.mjs
