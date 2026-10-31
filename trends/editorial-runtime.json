@@ -3,75 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261031T051000+0100",
-  "previous_run_id": "tr-1793418259199-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T05:10:00+01:00",
-  "updated_at": "2026-10-31T05:16:39+01:00",
-  "finished_at": "2026-10-31T05:16:39+01:00",
-  "last_started_at": "2026-10-31T05:16:31+01:00",
+  "run_id": "tr-manual-20261031T052500+0100",
+  "previous_run_id": "tr-manual-20261031T051000+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T05:25:00+01:00",
+  "updated_at": "2026-10-31T05:25:00+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T05:25:00+01:00",
   "last_completed_at": "2026-10-31T05:16:39+01:00",
-  "current": 1,
-  "total": 1,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "d697aee975e2"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 1/1: Armoni Brooks explicado y persistido; barrera final 0/0. Sin ImageGen ni publicación en X.",
+  "summary": "Pasada manual iniciada con cola autoritativa 0/0; verificando reexplicaciones y barrera final. Sin ImageGen ni publicación en X.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T05:10:00+01:00",
+      "at": "2026-10-31T05:25:00+01:00",
       "phase": "preparing",
-      "trend_id": "d697aee975e2",
-      "title": "Armoni Brooks",
-      "message": "Inicio de pasada manual: cola autoritativa main con 1/1 preparando. Revisión 0 validada; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T05:10:30+01:00",
-      "phase": "investigating",
-      "trend_id": "d697aee975e2",
-      "title": "Armoni Brooks",
-      "message": "Detonante contrastado con fuentes independientes: 26 puntos y cinco triples ante el Barça; el quinto puso el 95-94 a nueve segundos. Se prepara texto factual y remate."
-    },
-    {
-      "at": "2026-10-31T05:13:37+01:00",
-      "phase": "persisting",
-      "trend_id": "d697aee975e2",
-      "title": "Armoni Brooks",
-      "message": "Resultado enviado al aplicador canónico tras revalidar id/revisión 0 y ausencia de decisión terminal."
-    },
-    {
-      "at": "2026-10-31T05:16:15+01:00",
-      "phase": "verifying",
-      "trend_id": "d697aee975e2",
-      "title": "Armoni Brooks",
-      "message": "Persistencia verificada: ficha explained presente en Listas y cola retirada. Aplicador canónico completado con éxito."
-    },
-    {
-      "at": "2026-10-31T05:16:39+01:00",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Barrera final sobre main: editorial-queue count=0, sin preparing/update/problematic ni rewrite_pending. Sin ImageGen y sin publicación en X."
+      "message": "Inicio de pasada manual: editorial-queue.json releído en main con 0/0. Se comprueban rewrite_pending y estados aplicados antes del cierre."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "d697aee975e2",
-      "revision": 0,
-      "name": "Armoni Brooks",
-      "outcome": "explained"
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-manual-20261031T051000+0100",
     "status": "DONE",
