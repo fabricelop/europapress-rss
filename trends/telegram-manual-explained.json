@@ -16918,7 +16918,18 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00",
+      "red_review_checked_at": "2026-10-31T15:03:39.529415+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "La cifra oficial de víctimas mortales de la dana cambió después de la explicación original: la jueza de Catarroja elevó el recuento de 233 a 234 al reconocer como víctima a un vecino de Paiporta.",
+      "red_review_sources": [
+        {
+          "url": "https://www.rtve.es/noticias/20261030/jueza-eleva-a-234-cifra-oficial-victimas-mortales-dana-tras-incluir-a-vecino-paiporta/17294248.shtml"
+        },
+        {
+          "url": "https://www.europapress.es/comunitat-valenciana/noticia-jueza-eleva-234-cifra-oficial-victimas-mortales-dana-incluir-vecino-paiporta-20261030160006.html"
+        }
+      ]
     },
     {
       "id": "listas-joint-d700cc8fe741c186",
@@ -17003,7 +17014,18 @@
       "image_pending": false,
       "telegram_package_status": "published",
       "published_at": "2026-10-30T13:01:17.681692+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-10-31T15:03:39.529415+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Hay novedades sustanciales posteriores a la explicación: el registro de Adif detalla una cadena de fallos del LZB y el ministro reconoce que el AVE debía haber circulado a la vista, no en marcha normal.",
+      "red_review_sources": [
+        {
+          "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
+        },
+        {
+          "url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/"
+        }
+      ]
     },
     {
       "id": "10aaa9a5458f",
@@ -23826,8 +23848,78 @@
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "8b8f2e880c1117e5ab73521b334b9fde1cb7751e9bcf866c1c16232aecc1f6ed",
       "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00"
+    },
+    {
+      "id": "trend-update-07dc8165892e5d9a6b62",
+      "revision": 0,
+      "name": "Dana",
+      "rank": 12,
+      "status": "explained",
+      "requested_at": "2026-10-31T15:03:39.529415+00:00",
+      "explained_at": "2026-10-31T15:03:39.529415+00:00",
+      "updated_at": "2026-10-31T15:03:39.529415+00:00",
+      "explanation": "TT#12 Dana sigue siendo tendencia por el segundo aniversario en Valencia: la jueza elevó a 234 las víctimas mortales tras reconocer el fallecimiento de un vecino de Paiporta.\n#DANA #Valencia\n🌶️ Dos años después, el recuento aún se mueve.",
+      "closer_text": "🌶️ Dos años después, el recuento aún se mueve.",
+      "verification_sources": [
+        {
+          "url": "https://www.rtve.es/noticias/20261030/jueza-eleva-a-234-cifra-oficial-victimas-mortales-dana-tras-incluir-a-vecino-paiporta/17294248.shtml"
+        },
+        {
+          "url": "https://www.europapress.es/comunitat-valenciana/noticia-jueza-eleva-234-cifra-oficial-victimas-mortales-dana-incluir-vecino-paiporta-20261030160006.html"
+        }
+      ],
+      "originated_from_prior_id": "09fb9ff32c5a",
+      "trend_names": [
+        "Dana"
+      ],
+      "red_review_job_id": "red-review-a50c64618f8511bf1ef6",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "La cifra oficial de víctimas mortales de la dana de 2024 se elevó a 234 tras incluir a un vecino de Paiporta de 73 años.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-82a2495e41abdb35756f",
+      "revision": 0,
+      "name": "Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
+      "rank": 17,
+      "status": "explained",
+      "requested_at": "2026-10-31T15:03:39.529415+00:00",
+      "explained_at": "2026-10-31T15:03:39.529415+00:00",
+      "updated_at": "2026-10-31T15:03:39.529415+00:00",
+      "explanation": "TT#17 Calvario, #Mañaneros30O, Transportes, Madrid-Sevilla y Alta Velocidad siguen siendo tendencia por Urda: Adif documenta una cadena de fallos del LZB y Puente admite que el AVE debía circular a la vista, no en marcha normal.\n#Urda #Adif #ÓscarPuente",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
+        },
+        {
+          "url": "https://cadenaser.com/nacional/2026/10/30/ultima-hora-sobre-el-accidente-de-urda-en-directo-oscar-puente-comparece-a-las-1130-horas-cadena-ser/"
+        }
+      ],
+      "originated_from_prior_id": "listas-joint-d700cc8fe741c186",
+      "trend_names": [
+        "Calvario",
+        "#Mañaneros30O",
+        "Transportes",
+        "Madrid-Sevilla",
+        "Alta Velocidad"
+      ],
+      "red_review_job_id": "red-review-b7217be18aec0c2ac0d2",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Adif documenta fallos de transmisiones, GSM-R, circuitos de vía y tensión antes del choque. Óscar Puente ha señalado que el protocolo exigía marcha a la vista, con límite de 40 km/h, mientras la investigación continúa.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
-  "updated_at": "2026-10-31T15:02:29.909848+00:00",
+  "updated_at": "2026-10-31T15:03:39.529415+00:00",
   "count": 408
 }
