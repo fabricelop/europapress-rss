@@ -3,31 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T2340+0100",
-  "previous_run_id": "tr-1793484863722-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T23:40:00+01:00",
-  "updated_at": "2026-10-31T23:54:00+01:00",
-  "finished_at": "2026-10-31T23:54:00+01:00",
-  "current": 7,
-  "total": 7,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "3fb6181ca88d",
-    "79f4f7589726",
-    "74d936730a36",
-    "0bea704023b8",
-    "b15f4091648a",
-    "2cb310a0aa34",
-    "ab43e85d3191"
+  "run_id": "tr-1793486988618-manual",
+  "previous_run_id": "tr-chat-20261031T2340+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T23:50:00+01:00",
+  "updated_at": "2026-10-31T23:50:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
+  "trend_id": "listas-auto-7466c03e6699a628e806",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-7466c03e6699a628e806",
+    "red-review-25411a66d89216173e45",
+    "red-review-606fb222b19ec0e0491a"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-7466c03e6699a628e806",
+    "red-review-25411a66d89216173e45",
+    "red-review-606fb222b19ec0e0491a"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada: 7/7 explicaciones persistidas y verificadas; cola final 0 y sin reexplicaciones pendientes. Gavi y José Muñoz se cerraron con causalidad explícitamente no confirmada; sin ImageGen ni publicación en X.",
+  "summary": "Pasada manual en curso: 3 trabajos preparing vigentes en main; agrupación automática y dos revisiones de novedades. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -259,6 +259,13 @@
       "at": "2026-10-31T23:54:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 7/7 para tr-chat-20261031T2340+0100. Sin ImageGen ni publicación en X."
+    },
+    {
+      "at": "2026-10-31T23:50:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-7466c03e6699a628e806",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793486988618-manual: 3 trabajos preparing vigentes en main. Procesando agrupación automática y después revisiones #MalasLenguasN/Mazón, con revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
