@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791104380663-0e2b24",
+  "requested_at": "2026-10-04T08:59:40.663Z",
+  "updated_at": "2026-10-04T09:05:00.116Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "3813e99f80c5",
+  "trend_id": "3813e99f80c5",
+  "target_name": "#UFCHBOMax",
+  "revision": 1,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "#UFCHBOMax",
+    "revision": 1,
+    "explanation": "TT#7 #UFCHBOMax es tendencia por UFC 332: Natalia Silva ganó por decisión unánime el cinturón mosca vacante ante Wang Cong y Roberto Soldic venció a Khaos Williams en su debut.\n🌶️ Soldic entró con dos caídas y salió con la bienvenida firmada.",
+    "closer_text": "🌶️ Soldic entró con dos caídas y salió con la bienvenida firmada.",
+    "trend_names": [
+      "#UFCHBOMax",
+      "#UFC332",
+      "Soldic"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 7,
+    "explained_at": "2026-10-04T09:13:00+02:00",
+    "verification_sources": [
+      {
+        "source": "MMA Fighting · 4/10/2026",
+        "url": "https://www.mmafighting.com/ufc/514054/ufc-332-result-roberto-soldic-gets-past-octagon-jitters-to-win-unanimous-decision-over-khaos-williams"
+      },
+      {
+        "source": "MMA Mania · 4/10/2026",
+        "url": "https://www.mmamania.com/ufc-live-stream-watch-free/475573/ufc-332-live-results-highlights-play-by-play-silva-vs-wang"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate",
+  "pc_upload_secret_hash": "1c3ea857fbe09e5a8d41b17a1a4f4dd640c5b9b146ebe7fd8f4b5d16902f4083",
+  "pc_worker_id": "ttendencias-image-bridge-v1",
+  "pc_picked_up_at": "2026-10-04T09:00:50.502Z",
+  "pc_launched_at": "2026-10-04T09:01:00.234Z",
+  "finished_at": "2026-10-04T09:05:00.116Z"
+}

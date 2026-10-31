@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-9871cf5658af-r0-a2-1791195438574",
+  "requested_at": "2026-10-05T10:17:18.573880Z",
+  "updated_at": "2026-10-05T10:23:29.891Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "9871cf5658af",
+  "trend_id": "9871cf5658af",
+  "target_name": "Granollers",
+  "revision": 0,
+  "attempt": 2,
+  "auto_repair": true,
+  "auto_repair_attempt": 2,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Granollers",
+    "revision": 0,
+    "explanation": "TT#21 Granollers es tendencia por las lluvias torrenciales de esta mañana: se han inundado calles y vías ferroviarias, se han suspendido clases y Protección Civil ha pedido reducir la movilidad.",
+    "closer_text": "",
+    "trend_names": [
+      "Granollers"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 21,
+    "explained_at": "2026-10-05T11:54:00+02:00",
+    "verification_sources": [
+      "https://cadenaser.com/cataluna/2026/10/05/ultima-hora-de-las-lluvias-en-cataluna-nuevo-aviso-por-lluvias-torrenciales-e-inundaciones-sercat/",
+      "https://laciutat.cat/es/laciutatdebarcelona/alerta-maxima-en-granollers-84-litros-lluvia-calles-inundadas-este-lunes_902174_102_amp.html"
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "5208dd163c5a45b6aa8a12f51dda3c343812e67705dbbcdad2d94a5993759143",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-05T10:22:20.002Z",
+  "bridge_version": null,
+  "target_handoff_id": "5466EEFD4A5947C4FC21A114D620CB21",
+  "target_handoff_at": "2026-10-05T10:22:26.892Z",
+  "pc_launched_at": "2026-10-05T10:22:28.087Z",
+  "upload_received_at": "2026-10-05T10:23:25.312Z",
+  "upload_sha256": "098ddd138712f13d708829c1e8b0ae3b4e9598be8c31ed9a11137ca0c141a569",
+  "upload_bytes": 570285,
+  "finished_at": "2026-10-05T10:23:29.891Z"
+}
