@@ -6,16 +6,16 @@
   "run_id": "tr-1793433005570-manual",
   "previous_run_id": "tr-manual-20261031T084000+0100",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "verifying",
   "started_at": "2026-10-31T08:51:00+01:00",
-  "updated_at": "2026-10-31T09:03:00+01:00",
+  "updated_at": "2026-10-31T09:05:00+01:00",
   "finished_at": null,
   "last_started_at": "2026-10-31T08:55:33+01:00",
   "last_completed_at": "2026-10-31T08:55:33+01:00",
-  "current": 8,
-  "total": 9,
-  "trend_id": "red-review-22a97ce14f8a9221c7c8",
-  "title": "Revisar novedades: Toledo",
+  "current": 9,
+  "total": 10,
+  "trend_id": "listas-auto-e729c97b4716c407ef41",
+  "title": "Agrupación automática de Listas",
   "queue_complete": false,
   "processed_ids": [
     "09482f4ec753",
@@ -26,17 +26,13 @@
     "edb94724ec61"
   ],
   "remaining_ids": [
-    "listas-auto-c553f2ecce7b8944f731",
-    "red-review-a684b90943c42ac5b2e2",
-    "red-review-22a97ce14f8a9221c7c8"
+    "listas-auto-e729c97b4716c407ef41"
   ],
   "remaining_active_ids": [
-    "listas-auto-c553f2ecce7b8944f731",
-    "red-review-a684b90943c42ac5b2e2",
-    "red-review-22a97ce14f8a9221c7c8"
+    "listas-auto-e729c97b4716c407ef41"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual ampliada: 6 trabajos cerrados y 3 nuevos detectados al releer main; procesando agrupación y revisiones de novedades.",
+  "summary": "Pasada manual 9/10: los seis trabajos iniciales y dos revisiones están aplicados; queda verificar el snapshot refrescado de agrupación de Sepang.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -75,6 +71,13 @@
       "trend_id": "red-review-22a97ce14f8a9221c7c8",
       "title": "Revisar novedades: Toledo",
       "message": "JIT validado. Toledo ya no aparece en el Top30 vigente; se conserva la explicación sin reescritura."
+    },
+    {
+      "at": "2026-10-31T09:05:00+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-e729c97b4716c407ef41",
+      "title": "Agrupación automática de Listas",
+      "message": "El outbox del snapshot refrescado ya existe con el grupo de Sepang; verificando que el aplicador cierre el job."
     }
   ],
   "final_outcomes": [],
