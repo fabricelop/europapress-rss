@@ -3,24 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793477778646-manual",
-  "previous_run_id": "tr-1793477400000-manual",
+  "run_id": "tr-1793478052112-manual",
+  "previous_run_id": "tr-1793477778646-manual",
   "status": "RUNNING",
-  "phase": "grouping",
-  "started_at": "2026-10-31T21:17:40+01:00",
-  "updated_at": "2026-10-31T21:22:45+01:00",
+  "phase": "investigating",
+  "started_at": "2026-10-31T21:21:00+01:00",
+  "updated_at": "2026-10-31T21:22:00+01:00",
   "finished_at": null,
-  "current": 4,
-  "total": 5,
+  "current": 0,
+  "total": 1,
   "trend_id": "listas-auto-fcbd033c367c6997d7db",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [
-    "4eefe2099a0f",
-    "listas-auto-ac9fe37f4a6e831db267",
-    "red-review-86c68fd6d1a89effb1c1",
-    "red-review-ede58ffb052764f3c400"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "listas-auto-fcbd033c367c6997d7db"
   ],
@@ -28,35 +23,14 @@
     "listas-auto-fcbd033c367c6997d7db"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Mónaco r1 quedó aplicado tras validación JIT; primera agrupación y dos revisiones aplicadas. Última agrupación posterior a revisión tiene outbox persistido y aplicador en curso. Sin ImageGen.",
+  "summary": "Revisando coincidencias inequívocas y cobertura por publicaciones existentes del snapshot automático. Sin ImageGen.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Aplicando agrupación final (4/5)",
-  "final_outcomes": [
-    {
-      "id": "4eefe2099a0f",
-      "revision": 1,
-      "outcome": "applied_concurrently"
-    },
-    {
-      "id": "listas-auto-ac9fe37f4a6e831db267",
-      "revision": 0,
-      "outcome": "grouped"
-    },
-    {
-      "id": "red-review-86c68fd6d1a89effb1c1",
-      "revision": 0,
-      "outcome": "updated"
-    },
-    {
-      "id": "red-review-ede58ffb052764f3c400",
-      "revision": 0,
-      "outcome": "unchanged"
-    }
-  ],
+  "activity": "Investigando agrupación automática de Listas (0/1)",
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T21:17:40+01:00",
+  "last_started_at": "2026-10-31T21:21:00+01:00",
   "last_completed_at": "2026-10-31T21:18:02+01:00",
   "last_run": {
     "run_id": "tr-1793476679503-manual",
