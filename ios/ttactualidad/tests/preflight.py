@@ -53,7 +53,7 @@ assert 'ArchivePhotoCatalog.resolved(' in store
 # Archive-photo support inside each expanded editorial card remains available.
 assert 'chip("Fotos archivo"' not in dashboard
 assert 'ArchivePhotoGallery' not in dashboard
-assert 'Foto archivo' in actions
+assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
 assert 'lineLimit(expanded ? nil : 2)' in dashboard
 assert 'movementLabel' in dashboard and 'rankColor' in dashboard
 assert 'Copiar foto de archivo' in gallery
@@ -227,8 +227,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.32"' in project
-assert 'CURRENT_PROJECT_VERSION: "38"' in project
+assert 'MARKETING_VERSION: "0.4.33"' in project
+assert 'CURRENT_PROJECT_VERSION: "39"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.17: an editorial trend may trigger independent news investigation.
@@ -255,7 +255,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "38"' in project
+assert 'CURRENT_PROJECT_VERSION: "39"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -267,7 +267,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "38"' in project
+assert 'CURRENT_PROJECT_VERSION: "39"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -283,8 +283,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.32"' in project
-assert 'CURRENT_PROJECT_VERSION: "38"' in project
+assert 'MARKETING_VERSION: "0.4.33"' in project
+assert 'CURRENT_PROJECT_VERSION: "39"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -350,7 +350,7 @@ assert 'guard let leader = store.snapshot.trendListas.first' in actions
 assert 'No se puede crear un prompt seguro.' in actions
 assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
 print("TT_ACTUALIDAD_IOS_SITE_IMAGE_CHAT_BUTTONS_OK")
-# v0.4.32: one original PNG appears in Site and in the matching trend card.
+# v0.4.33: one original PNG appears in Site and in the matching trend card.
 # Archive-photo gallery stays archive-only; no new paid API or PC pipeline.
 ai = (root / "TTActualidad/SiteAIImageCatalog.swift").read_text(encoding="utf8")
 live = (root / "TTActualidad/TTDashboard.swift").read_text(encoding="utf8")
@@ -369,6 +369,20 @@ assert 'trends/site-ai-images.json' in actions
 assert 'APP: manifest verified/pending' in actions
 assert 'TTENDENCIAS_SITE_IMAGE_V4' in actions
 print("TT_ACTUALIDAD_IOS_0432_SITE_AI_IMAGES_PREFLIGHT_OK")
+# 0.4.33: purple originals only; joint group remains. AI photo is primary.
+assert 'filter { $0.isCovered && !$0.isJointGroup }' in dashboard
+assert 'Text("Eliminar agrupadas (\\(covered.count))")' in dashboard
+assert 'Eliminarás de Listas todas las' in dashboard
+assert 'groupListas(' in dashboard and 'removeCovered: cleanup ? selected : nil' in dashboard
+assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
+assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
+assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 2
+assert 'trend?.siteImageURL, news?.imageURL ?? trend?.imageURL' in actions
+assert 'UIPasteboard.general.image = image' in actions
+assert 'now.timeIntervalSince($0) <= 48 * 3600' in store
+assert 'let explanation = fresh ? candidate : [:]' in store
+print("TT_ACTUALIDAD_IOS_0433_PURPLE_PHOTO_FRESHNESS_PREFLIGHT_OK")
+
 
 
 
