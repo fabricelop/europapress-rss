@@ -6,9 +6,9 @@
   "run_id": "tr-20261031T094000-manual",
   "previous_run_id": "tr-1793435390759-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-10-31T09:40:00+01:00",
-  "updated_at": "2026-10-31T09:42:00+01:00",
+  "updated_at": "2026-10-31T09:44:10+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -23,7 +23,7 @@
     "fd04788626e5"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Procesando 1/1: Sprint r0. Detonante contrastado con fuentes actuales del sprint de MotoGP en Sepang.",
+  "summary": "Sprint r0 redactado y enviado por TTENDENCIAS_CHAT_OUTBOX_V1; verificando aplicación en main.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -41,6 +41,13 @@
       "trend_id": "fd04788626e5",
       "title": "Sprint",
       "message": "Verificando acontecimiento común: el término coincide con el sprint de MotoGP en Sepang; Acosta ganó ante Marc Márquez tras la caída de Álex Márquez."
+    },
+    {
+      "at": "2026-10-31T09:44:10+01:00",
+      "phase": "persisting",
+      "trend_id": "fd04788626e5",
+      "title": "Sprint",
+      "message": "Texto factual + remate cerrado (<280) y enviado por el outbox editorial canónico. Verificando sincronización request/ficha y retirada de la misma revisión de la cola."
     }
   ],
   "final_outcomes": [],
