@@ -707,7 +707,7 @@ final class GitHubEditor: ObservableObject {
             return .pending
         } catch {
             if let urlError = error as? URLError,
-               urlError.code == .timedOut || urlError?.code == .networkConnectionLost {
+               urlError.code == .timedOut || urlError.code == .networkConnectionLost {
                 notice = "Red interrumpida: estado de GitHub incierto. Comprueba main antes de reintentar."
                 return .pending
             }
