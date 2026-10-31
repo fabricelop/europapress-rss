@@ -5,25 +5,33 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T044000+0100-manual",
   "previous_run_id": "tr-chat-20261031T042500+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-10-31T04:40:00+01:00",
-  "updated_at": "2026-10-31T04:45:00+01:00",
-  "finished_at": "2026-10-31T04:45:00+01:00",
+  "updated_at": "2026-10-31T04:46:00+01:00",
+  "finished_at": null,
   "last_started_at": "2026-10-31T04:40:00+01:00",
   "last_completed_at": "2026-10-31T04:45:00+01:00",
   "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 4,
+  "trend_id": "listas-auto-bc290224e3f39f7e8fc3",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "15e3190f0e6c"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-bc290224e3f39f7e8fc3",
+    "red-review-c9008fdf02605cf47ad9",
+    "red-review-0efb803b91bdb8606726"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-bc290224e3f39f7e8fc3",
+    "red-review-c9008fdf02605cf47ad9",
+    "red-review-0efb803b91bdb8606726"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 1/1: Elvis r0 explicado con causa no confirmada por ambigüedad sustancial; texto persistido en requests y Listas. Cola final 0.",
+  "summary": "Pasada reabierta 1/4: la barrera final detectó una agrupación automática y dos revisiones de novedades.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -62,6 +70,13 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final sobre main completada: no quedan preparing/update ni tareas group_listas, anticipate o review_red. Sin ImageGen ni publicación en X."
+    },
+    {
+      "at": "2026-10-31T04:46:00+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-bc290224e3f39f7e8fc3",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación automática revalidada JIT. Se comparan exclusivamente los candidatos y el contexto publicado del snapshot."
     }
   ],
   "final_outcomes": [
