@@ -5,21 +5,23 @@
   "canonical": true,
   "run_id": "tr-1793481056571-manual",
   "previous_run_id": "tr-1793481000000-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T22:10:56.571000+01:00",
-  "updated_at": "2026-10-31T22:15:10+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T22:16:00+01:00",
+  "finished_at": "2026-10-31T22:16:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "4eefe2099a0f",
-  "title": "Mónaco",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "4eefe2099a0f"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Mónaco r2 investigado desde cero: no se ha verificado la pista de manifestaciones ni otro detonante actual; preparando persistencia problemática sin explicación.",
+  "summary": "Pasada completada 1/1: Mónaco r2 investigado desde cero y explicado por la salida de Mónaco de la lista gris del GAFI; la pista sobre manifestaciones no quedó corroborada como causa predominante. Persistencia verificada en requests y telegram-manual-explained. Sin ImageGen ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -32,24 +34,42 @@
     {
       "at": "2026-10-31T22:11:10+01:00",
       "phase": "investigating",
-      "message": "Entró Mónaco r2 durante la pasada. Investigación nueva desde cero; pista editorial aún sin verificar."
+      "message": "Entró Mónaco r2 durante la pasada. Investigación nueva desde cero; pista editorial tratada como no verificada."
     },
     {
-      "at": "2026-10-31T22:14:01.842+01:00",
+      "at": "2026-10-31T22:13:00+01:00",
       "phase": "persisting",
-      "message": "Mónaco r2 revalidado JIT en preparing. Sin detonante actual verificado; se conservará sin explicación verificada y se marcará problematic."
+      "message": "Mónaco r2 revalidado JIT y persistido como explained con detonante verificado: salida de la lista gris del GAFI."
+    },
+    {
+      "at": "2026-10-31T22:15:10+01:00",
+      "phase": "verifying",
+      "message": "Persistencia comprobada en requests.json y telegram-manual-explained.json; cola final 0 y sin rewrite_pending."
+    },
+    {
+      "at": "2026-10-31T22:16:00+01:00",
+      "phase": "closing",
+      "message": "Cierre 1/1 verificado. Sin ImageGen ni publicaciones."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "4eefe2099a0f",
+      "revision": 2,
+      "name": "Mónaco",
+      "outcome": "explained",
+      "explained_at": "2026-10-31T22:13:00+01:00"
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T22:15:10+01:00",
-  "last_completed_at": "2026-10-31T22:15:10+01:00",
+  "last_started_at": "2026-10-31T22:10:56.571000+01:00",
+  "last_completed_at": "2026-10-31T22:16:00+01:00",
   "last_run": {
-    "run_id": "tr-1793480100000-manual",
+    "run_id": "tr-1793481056571-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T21:56:45+01:00",
-    "attempted": 0,
-    "explained": 0,
+    "finished_at": "2026-10-31T22:16:00+01:00",
+    "attempted": 1,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
