@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T22:25:00+01:00",
-  "updated_at": "2026-10-31T21:26:24.942Z",
-  "finished_at": "2026-10-31T21:26:24.942Z",
+  "updated_at": "2026-10-31T22:26:30+01:00",
+  "finished_at": "2026-10-31T22:26:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -19,7 +19,7 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada 0/0 verificada. Cola compacta releída en main: 0 items; rewrite_pending 0. Los últimos resultados de mantenimiento/grupación están ya resueltos por la pasada anterior; no hay trabajo editorial nuevo que aplicar.",
+  "summary": "Pasada 0/0 verificada. Cola compacta releída en main: 0 items; rewrite_pending 0. Los últimos resultados de mantenimiento y agrupación ya estaban resueltos por la pasada anterior; no hay trabajo editorial nuevo que aplicar.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -38,16 +38,26 @@
       "at": "2026-10-31T21:26:24.942Z",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicaciones y sin cambios de texto."
+    },
+    {
+      "at": "2026-10-31T22:26:30+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0; rewrite_pending 0. Últimos resultados de mantenimiento y agrupación ya resueltos; sin escrituras editoriales pendientes."
+    },
+    {
+      "at": "2026-10-31T22:26:30+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicaciones y sin cambios de texto."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T22:25:00+01:00",
-  "last_completed_at": "2026-10-31T21:26:24.942Z",
+  "last_completed_at": "2026-10-31T22:26:30+01:00",
   "last_run": {
     "run_id": "tr-chat-20261031T2225+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T21:26:24.942Z",
+    "finished_at": "2026-10-31T22:26:30+01:00",
     "attempted": 0,
     "explained": 0,
     "updates": 0,
