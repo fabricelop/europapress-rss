@@ -3,31 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793439854638-manual",
+  "run_id": "tr-20261031T104000-manual",
   "previous_run_id": "tr-20261031T104000-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-10-31T10:44:00+01:00",
-  "updated_at": "2026-10-31T10:46:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T10:47:00+01:00",
+  "finished_at": "2026-10-31T10:47:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-9b715458254916e50e33",
-  "title": "#DeViernes",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-9b715458254916e50e33",
     "red-review-eaf70e605deb8a23229b"
   ],
-  "remaining_active_ids": [
-    "red-review-9b715458254916e50e33",
-    "red-review-eaf70e605deb8a23229b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Revisando novedades sustanciales de #DeViernes; JIT confirmado en main. Sin ImageGen ni publicación.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada manual 2/2 completada. Las dos revisiones de mantenimiento fueron aplicadas como stale por las guardas JIT. Toledo quedó superado por desarrollos posteriores publicados; #DeViernes sigue bloqueado por una entrega terminal heredada revision 1 anterior a la explicación actual revision 0.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "trend_id": "413c73f54712",
+      "title": "#DeViernes",
+      "reason": "La revisión actual fue cerrada como stale porque telegram-image-deliveries conserva para el mismo event_id una entrada deleted revision 1 de 2026-10-09, anterior a la explicación vigente de 2026-10-24 revision 0. La guarda terminal_applies prioriza la revisión superior y bloquea la actualización actual."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -43,17 +46,53 @@
       "trend_id": "red-review-9b715458254916e50e33",
       "title": "#DeViernes",
       "message": "JIT ID+revisión confirmado; revisando el episodio actual de #DeViernes con fuentes actuales."
+    },
+    {
+      "at": "2026-10-31T10:45:52+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-9b715458254916e50e33",
+      "title": "#DeViernes",
+      "message": "Resultado editorial investigado y persistido en maintenance-outbox; el aplicador oficial lo cerró stale por una guarda terminal heredada."
+    },
+    {
+      "at": "2026-10-31T10:45:52+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-eaf70e605deb8a23229b",
+      "title": "Toledo",
+      "message": "Resultado editorial investigado y persistido en maintenance-outbox; el aplicador oficial lo cerró stale al existir desarrollos posteriores publicados del mismo episodio."
+    },
+    {
+      "at": "2026-10-31T10:47:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola autoritativa 0. Cierre DONE_WITH_INCIDENTS 2/2; sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-9b715458254916e50e33",
+      "revision": 0,
+      "name": "#DeViernes",
+      "outcome": "stale",
+      "applied": true
+    },
+    {
+      "id": "red-review-eaf70e605deb8a23229b",
+      "revision": 0,
+      "name": "Toledo",
+      "outcome": "stale",
+      "applied": true
+    }
+  ],
   "last_run": {
-    "run_id": "tr-20261031T101000-manual",
-    "status": "DONE",
-    "finished_at": "2026-10-31T10:11:30+01:00",
-    "attempted": 0,
+    "run_id": "tr-20261031T104000-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "finished_at": "2026-10-31T10:47:00+01:00",
+    "attempted": 2,
     "explained": 0,
     "updates": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "unchanged_reviews": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -62,8 +101,8 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "total": 0
+    "incidents": 1,
+    "total": 2
   },
   "api_failover_enabled": false
 }
