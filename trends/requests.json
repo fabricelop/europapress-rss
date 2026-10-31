@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T18:31:31+01:00",
+  "updated_at": "2026-10-31T17:32:29.557716+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T17:29:50.684629+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:32:29.557716+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -8818,7 +8818,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T17:29:50.684629+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:32:29.557716+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -86730,7 +86730,7 @@
       "image_pending": false,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "e7d0470bbf6369adc700b6bbe9b335afa3e38fbaf5fa0771a010ba33584c1849",
-      "editorial_grouping_checked_at": "2026-10-31T17:29:50.684629+00:00",
+      "editorial_grouping_checked_at": "2026-10-31T17:32:29.557716+00:00",
       "news_disposition": "ignored",
       "disable_ai_image": false
     },
@@ -89824,21 +89824,23 @@
       "new_facts": "Adif registró caída del LZB, fallos GSM-R, pérdidas intermitentes en circuitos de vía y pérdida de tensión; el AVE de Renfe no debía superar 40 km/h mientras el Iryo seguía detenido. Puente cifra en 170 las caídas del LZB en 2026 y Semaf reclama modificar la norma.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "3bd0eeca48ddc120c21883c1ac8e8fb00bcebc7b0ca8fcdb9c0f4a974c2a7b3a",
+      "editorial_grouping_checked_at": "2026-10-31T17:32:29.557716+00:00"
     },
     {
       "id": "listas-auto-65ad3707f7581441f114",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T17:31:10.078635+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -91331,7 +91333,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T17:32:29.557716+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "8e86f2b3aff6950a20ff1e086f402e8fb705b702216d7467b93959d9fb248267"
     }
   ],
   "count": 341
