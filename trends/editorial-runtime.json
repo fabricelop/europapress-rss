@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793435232434-manual",
-  "previous_run_id": "tr-1793433487804-manual",
+  "run_id": "tr-1793435390759-manual",
+  "previous_run_id": "tr-1793435232434-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-10-31T09:28:00+01:00",
-  "updated_at": "2026-10-31T09:30:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-31T09:30:30+01:00",
+  "updated_at": "2026-10-31T09:30:30+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "red-review-2d2f2ec3a98ec29aa471",
-  "title": "Revisar novedades: #FelizSábado",
+  "current": 0,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "listas-auto-e0a55a00211ce533e0af"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "red-review-2d2f2ec3a98ec29aa471",
     "red-review-e18f2eaa13bca806e2e2"
@@ -27,31 +25,17 @@
     "red-review-e18f2eaa13bca806e2e2"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Agrupación automática aplicada sin grupos ni coberturas; revisando novedades de #FelizSábado.",
+  "summary": "Nueva pasada manual: 2 revisiones de novedades vigentes en main; se continúa desde el estado autoritativo sin reabrir la agrupación ya aplicada por la pasada anterior.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T09:28:00+01:00",
+      "at": "2026-10-31T09:30:30+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Releída main: 3 trabajos preparing vigentes. Orden: agrupación automática; revisión #FelizSábado; revisión Toledo. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T09:30:00+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-e0a55a00211ce533e0af",
-      "title": "Agrupación automática de Listas",
-      "message": "Aplicador verificado: job retirado de la cola; groups:[] y covered_by_existing:[]."
-    },
-    {
-      "at": "2026-10-31T09:30:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-2d2f2ec3a98ec29aa471",
-      "title": "Revisar novedades: #FelizSábado",
-      "message": "Revisando episodio actual frente a la ficha del sábado 24; revalidación JIT pendiente antes de persistir."
+      "message": "Releída main: 2 trabajos preparing vigentes. Orden: revisión #FelizSábado; revisión Toledo. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [],
