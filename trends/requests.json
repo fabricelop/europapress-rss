@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T11:50:47.209931+00:00",
+  "updated_at": "2026-10-31T11:51:43.800916+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -3387,7 +3387,18 @@
       "ai_image_status": "pending",
       "telegram_package_status": "published",
       "published_at": "2026-10-30T08:28:18.893362+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-10-31T11:51:43.800916+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "La cobertura posterior añade homenajes y perfiles, pero no cambia el motivo ya explicado ni aporta un episodio nuevo sustancial.",
+      "red_review_sources": [
+        {
+          "url": "https://apnews.com/article/5d771fd5af52070e23cf081b31754393"
+        },
+        {
+          "url": "https://www.reuters.com/world/uk/british-actor-patrick-stewart-has-died-his-family-says-2026-10-29/"
+        }
+      ]
     },
     {
       "id": "listas-joint-1c0000339de79528",
@@ -67813,7 +67824,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 27,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T11:47:56.944208+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -67837,14 +67848,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T11:51:43.800916+00:00",
+      "review_reason": "Desde la explicación del 28 de octubre se ha confirmado un balance de 69 fallecidos y la investigación ha avanzado hacia la cadena de decisiones tras la caída del LZB, incluida la orden de reanudar con marcha normal; la línea Madrid-Andalucía continúa interrumpida."
     },
     {
       "id": "red-review-003b9df27f1dbd390d1f",
       "revision": 0,
       "name": "Revisar novedades: Patrick Stewart · Picard / Star Trek / Charles Xavier",
       "rank": 28,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T11:47:56.944208+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -67871,7 +67885,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-10-31T11:51:43.800916+00:00",
+      "review_reason": "La cobertura posterior añade homenajes y perfiles, pero no cambia el motivo ya explicado ni aporta un episodio nuevo sustancial."
     }
   ],
   "count": 278
