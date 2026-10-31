@@ -5,25 +5,23 @@
   "canonical": true,
   "run_id": "tr-1793487575059-manual",
   "previous_run_id": "tr-1793487168174-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "done",
   "started_at": "2026-10-31T23:59:35+01:00",
-  "updated_at": "2026-10-31T23:59:35+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T00:02:30+01:00",
+  "finished_at": "2026-11-01T00:02:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-361a8dfbf515b7c44a2c"
   ],
-  "remaining_active_ids": [
-    "listas-auto-361a8dfbf515b7c44a2c"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Procesando 1 agrupación automática de Listas; sin ImageGen ni publicación.",
+  "summary": "Pasada completada: 1 agrupación automática resuelta; 0 grupos nuevos y 2 tendencias cubiertas por publicaciones existentes. Cola editorial main=0; rewrite_pending=0. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -297,6 +295,32 @@
       "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
       "title": "Agrupación automática de Listas",
       "message": "Inicio tr-1793487575059-manual: 1 trabajo preparing vigente. Revalidando id+revision y comparando candidatas con publicaciones recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:01:20+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
+      "title": "Agrupación automática de Listas",
+      "message": "Comparación verificada: #RayoCelta coincide exactamente con Rayo 3-0 Celta ya publicado; El Atleti coincide con Levante 0-2 Atlético ya publicado. Xabi Alonso aporta una declaración posterior y no se cubre; el resto no presenta coincidencia inequívoca."
+    },
+    {
+      "at": "2026-11-01T00:01:40+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado persistido en listas-grouping-outbox: 0 grupos nuevos y 2 covered_by_existing; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:02:13+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
+      "title": "Agrupación automática de Listas",
+      "message": "Aplicador confirmado en main: job grouping_completed; #RayoCelta cubierto por listas-joint-30a1d7da7017e769 y El Atleti por listas-joint-880801e46031546b. Cola editorial=0."
+    },
+    {
+      "at": "2026-11-01T00:02:30+01:00",
+      "phase": "closing",
+      "message": "Relectura final de main: editorial-queue=0 y rewrite_pending=0. Pasada cerrada 1/1; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
