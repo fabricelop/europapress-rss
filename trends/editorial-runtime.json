@@ -3,75 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793418259199-manual",
-  "previous_run_id": "tr-chat-20261031T044000+0100-manual",
+  "run_id": "tr-1793418358481-manual",
+  "previous_run_id": "tr-1793418259199-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-10-31T04:44:19+01:00",
-  "updated_at": "2026-10-31T04:48:00+01:00",
-  "finished_at": "2026-10-31T04:48:00+01:00",
-  "last_started_at": "2026-10-31T04:44:19+01:00",
-  "last_completed_at": "2026-10-31T04:48:00+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-10-31T04:46:00+01:00",
+  "updated_at": "2026-10-31T04:48:33+01:00",
+  "finished_at": "2026-10-31T04:48:33+01:00",
+  "last_started_at": "2026-10-31T04:46:00+01:00",
+  "last_completed_at": "2026-10-31T04:48:33+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-c9008fdf02605cf47ad9",
-    "red-review-0efb803b91bdb8606726"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada concurrente completada 2/2: las revisiones de #DeViernes y Toledo fueron investigadas y sus resultados quedaron aplicados como stale por la barrera JIT; cola final 0.",
+  "summary": "Pasada manual 0/0 cerrada tras relectura autoritativa de main: no quedan preparing/update ni rewrite_pending. La pasada inmediatamente anterior terminó 2/2 a las 04:48 y dejó ambos review_red como review_completed/stale por la barrera JIT.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T04:47:00+01:00",
+      "at": "2026-10-31T04:46:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de la pasada manual. Relectura de main: quedan dos task:review_red; la agrupación automática ya fue aplicada por la pasada anterior. Sin ImageGen ni publicación."
+      "message": "Inicio solicitado mientras la pasada manual anterior todavía procesaba dos review_red."
     },
     {
       "at": "2026-10-31T04:48:00+01:00",
       "phase": "verifying",
-      "trend_id": "red-review-c9008fdf02605cf47ad9",
-      "title": "Revisar novedades: #DeViernes",
-      "message": "Resultado actualizado investigado y aplicado por el reconciliador; el snapshot se cerró como stale y no reabrió la ficha antigua."
+      "trend_id": null,
+      "title": null,
+      "message": "La pasada anterior terminó 2/2; ambos review_red quedaron review_completed con outcome stale y la cola pasó a 0."
     },
     {
-      "at": "2026-10-31T04:48:00+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-0efb803b91bdb8606726",
-      "title": "Revisar novedades: Toledo",
-      "message": "Resultado actualizado investigado y aplicado por el reconciliador; el snapshot se cerró como stale y no reabrió la ficha antigua."
-    },
-    {
-      "at": "2026-10-31T04:48:00+01:00",
+      "at": "2026-10-31T04:48:33+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Barrera final: editorial-queue.json count=0; no quedan preparing/update, group_listas, anticipate ni review_red. Sin ImageGen ni publicación en X."
+      "message": "Relectura final de main: editorial-queue count 0, ningún request preparing/update y ningún rewrite_pending vigente. Cierre 0/0 válido. Sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "red-review-c9008fdf02605cf47ad9",
-      "revision": 0,
-      "name": "Revisar novedades: #DeViernes",
-      "outcome": "stale",
-      "status": "review_completed"
-    },
-    {
-      "id": "red-review-0efb803b91bdb8606726",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "status": "review_completed"
-    }
-  ]
+  "final_outcomes": []
 }
