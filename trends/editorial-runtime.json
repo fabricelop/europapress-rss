@@ -3,56 +3,46 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261031T094000-manual",
-  "previous_run_id": "tr-1793435390759-manual",
+  "run_id": "tr-1793436338047-manual",
+  "previous_run_id": "tr-20261031T094000-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-10-31T09:40:00+01:00",
-  "updated_at": "2026-10-31T09:44:10+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-31T09:46:00+01:00",
+  "updated_at": "2026-10-31T09:46:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
-  "trend_id": "fd04788626e5",
-  "title": "Sprint",
+  "total": 3,
+  "trend_id": "listas-auto-7023d998e92fe485eae5",
+  "title": "Agrupación automática de Listas",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "fd04788626e5"
+    "listas-auto-7023d998e92fe485eae5",
+    "red-review-2d47f02baa7db3c0fdca",
+    "red-review-55bc85950456f58b2531"
   ],
   "remaining_active_ids": [
-    "fd04788626e5"
+    "listas-auto-7023d998e92fe485eae5",
+    "red-review-2d47f02baa7db3c0fdca",
+    "red-review-55bc85950456f58b2531"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Sprint r0 redactado y enviado por TTENDENCIAS_CHAT_OUTBOX_V1; verificando aplicación en main.",
+  "summary": "Pasada tr-1793436338047-manual iniciada sobre 3 trabajos activos; validación JIT antes de cada operación. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T09:40:00+01:00",
+      "at": "2026-10-31T09:46:00+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Leídos contrato y estado autoritativo en main. editorial-queue count 0; no se genera ImageGen ni se publica."
-    },
-    {
-      "at": "2026-10-31T09:42:00+01:00",
-      "phase": "investigating",
-      "trend_id": "fd04788626e5",
-      "title": "Sprint",
-      "message": "Verificando acontecimiento común: el término coincide con el sprint de MotoGP en Sepang; Acosta ganó ante Marc Márquez tras la caída de Álex Márquez."
-    },
-    {
-      "at": "2026-10-31T09:44:10+01:00",
-      "phase": "persisting",
-      "trend_id": "fd04788626e5",
-      "title": "Sprint",
-      "message": "Texto factual + remate cerrado (<280) y enviado por el outbox editorial canónico. Verificando sincronización request/ficha y retirada de la misma revisión de la cola."
+      "trend_id": "listas-auto-7023d998e92fe485eae5",
+      "title": "Agrupación automática de Listas",
+      "message": "Contrato y estado autoritativo releídos. 3 trabajos activos; se procesa primero la agrupación y después las revisiones de novedades."
     }
   ],
   "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-20261031T094000-manual",
+    "run_id": "tr-1793436338047-manual",
     "status": "RUNNING",
     "finished_at": null,
     "attempted": 0,
@@ -60,15 +50,15 @@
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": null,
+    "queue_remaining": 3,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "total": 1
+    "total": 3
   },
   "api_failover_enabled": false
 }
