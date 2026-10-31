@@ -94,6 +94,54 @@ export default {
   // A stolen cross-site form cannot send a deletion using the browser session.
   if(cookie&&req.method==='POST'&&req.headers.get('Origin')!==url.origin)
    return respond(req,{ok:false,error:'cross_origin_forbidden'},403);
+  // TTendencias images: authenticated on-demand bridge to the EXISTING image-run API.
+  // A request means queued, never generated or uploaded. No prompt is run by the Worker.
+  // Keep the upstream control token as a Cloudflare secret, not in JS or a cookie.
+  if(route==='/api/trend-image'&&(req.method==='GET'||req.method==='POST')){
+   const imageHost='https://tt-control.fabricelop.workers.dev';
+   let input;
+   if(req.method==='POST'){
+    if(!(req.headers.get('Content-Type')||'').toLowerCase().startsWith('application/json'))
+     return respond(req,{ok:false,error:'json_required'},415);
+    try{input=await req.json()}catch{return respond(req,{ok:false,error:'bad_json'},400)}
+   }else input={target_id:url.searchParams.get('target_id')};
+   const targetId=String(input?.target_id||'');
+   const revision=Number(input?.revision);
+   if(!/^[A-Za-z0-9._-]{3,128}$/.test(targetId)||
+      (req.method==='POST'&&(!Number.isInteger(revision)||revision<0||revision>999)))
+    return respond(req,{ok:false,error:'invalid_image_identity'},400);
+   if(req.method==='GET'){
+    let upstream;
+    try{upstream=await fetch(imageHost+'/api/ttendencias-run-status?view=image-job&strong=1&id='+encodeURIComponent(targetId),
+     {headers:{'Accept':'application/json'},signal:AbortSignal.timeout(15000)});}
+    catch{return respond(req,{ok:false,error:'image_status_unreachable'},502)}
+    if(upstream.status===404)return respond(req,{ok:true,found:false,target_id:targetId},200);
+    if(!upstream.ok)return respond(req,{ok:false,error:'image_status_http_'+upstream.status},502);
+    let result;try{result=await upstream.json()}catch{return respond(req,{ok:false,error:'image_status_invalid'},502)}
+    // Never expose the upload credential, hashed secrets or the context snapshot.
+    return respond(req,{ok:true,found:true,target_id:targetId,
+     revision:Number(result.revision||0),command_id:String(result.command_id||''),
+     status:String(result.status||''),phase:String(result.phase||''),
+     requested_at:result.requested_at||null,updated_at:result.updated_at||null,
+     web_image_stage:String(result.web_image?.stage||''),
+     web_image_reason:String(result.web_image?.reason||'').slice(0,140)});
+   }
+   if(!env.TTENDENCIAS_CONTROL_TOKEN)
+    return respond(req,{ok:false,error:'image_bridge_not_configured'},503);
+   let upstream;
+   try{upstream=await fetch(imageHost+'/api/ttendencias-run',{
+    method:'POST',headers:{'content-type':'application/json','Authorization':'Bearer '+env.TTENDENCIAS_CONTROL_TOKEN},
+    body:JSON.stringify({task:'images',target_id:targetId,id:targetId,revision}),
+    signal:AbortSignal.timeout(25000)});}
+   catch{return respond(req,{ok:false,error:'image_dispatch_unreachable'},502)}
+   let result;try{result=await upstream.json()}catch{return respond(req,{ok:false,error:'image_dispatch_invalid'},502)}
+   if(!upstream.ok||!result.ok)
+    return respond(req,{ok:false,error:String(result.error||'image_dispatch_failed').slice(0,100),
+     reason:String(result.reason||'').slice(0,100)},upstream.status===409?409:502);
+   return respond(req,{ok:true,state:'REQUESTED',target_id:targetId,revision,
+    command_id:String(result.command_id||''),requested_at:result.requested_at||null,
+    message:'Solicitud registrada; pendiente de recogida por el PC'},202);
+  }
   // +Noticia is deliberately separate from existing revisions and decisions.
   // GitHub main is the only editorial authority; 202 means dispatched, NOT saved.
   if(route==='/api/manual-news'&&req.method==='POST'){
