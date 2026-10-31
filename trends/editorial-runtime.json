@@ -3,30 +3,23 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T2241+0100",
-  "previous_run_id": "tr-chat-20261031T2225+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T22:41:00+01:00",
+  "run_id": "tr-1793483220000-manual",
+  "previous_run_id": "tr-chat-20261031T2241+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T22:46:00+01:00",
   "updated_at": "2026-10-31T22:46:00+01:00",
-  "finished_at": "2026-10-31T22:46:00+01:00",
-  "current": 6,
-  "total": 6,
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "d35618ffea00",
-    "c6c98db8f107",
-    "f58e6c159e64",
-    "64a52adb63e1",
-    "0cc8cea169b1",
-    "eccc5279841e"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 6/6. Fermín, Adeyemi, Pedri, Raphinha, Alonso y #MexicoGP investigados, revalidados JIT y persistidos en requests y Listas. Cola final 0; sin ImageGen ni publicaciones.",
+  "summary": "Pasada manual iniciada; verificando cola y reexplicaciones pendientes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -70,42 +63,16 @@
       "at": "2026-10-31T22:46:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 6/6. Sin ImageGen, sin publicación en X y sin pendientes editoriales en la cola."
+    },
+    {
+      "at": "2026-10-31T22:46:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio manual: cola compacta 0. Verificando main, rewrite_pending y estado final antes de cerrar; sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "d35618ffea00",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "c6c98db8f107",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "f58e6c159e64",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "64a52adb63e1",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "0cc8cea169b1",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "eccc5279841e",
-      "revision": 0,
-      "outcome": "explained"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T22:41:00+01:00",
+  "last_started_at": "2026-10-31T22:46:00+01:00",
   "last_completed_at": "2026-10-31T22:46:00+01:00",
   "last_run": {
     "run_id": "tr-chat-20261031T2241+0100",
