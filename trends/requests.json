@@ -93526,7 +93526,7 @@
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "needs_correction",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -95070,7 +95070,9 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "grouping_error": "Miembro repetido, inventado o revisión fuera de la solicitud",
+      "grouping_error_digest": "e2de39ab34167341a856617048f3a8acfc10d1ea5d840123e352fc964c9c1e5f"
     }
   ],
   "count": 341
