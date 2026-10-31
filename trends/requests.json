@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T21:50:24.942286+00:00",
+  "updated_at": "2026-10-31T21:51:08.031482+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T21:49:36.591792+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T21:51:08.031482+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -8818,7 +8818,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T21:49:36.591792+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T21:51:08.031482+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -100744,7 +100744,7 @@
       "image_status": "none",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "e03b33d8c5c3834d3ceec97b8182ac47d9e7f473ee93654a49258e5a521c2510",
-      "editorial_grouping_checked_at": "2026-10-31T21:49:36.591792+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T21:51:08.031482+00:00"
     },
     {
       "id": "9f5502207ede",
@@ -115713,7 +115713,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "07d304ee8bf3a7e97a7e4c41ac4c80fddef30a2cd5e040ad924fcc4e868184b5",
-      "editorial_grouping_checked_at": "2026-10-31T21:49:36.591792+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T21:51:08.031482+00:00"
     },
     {
       "id": "listas-joint-0eb4a381fb8b9858",
@@ -115760,7 +115760,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "fa370f2046e249add3ab91c24456ccbfd1d652f358fefde8b6bfcfd28c2b10d5",
-      "editorial_grouping_checked_at": "2026-10-31T21:49:36.591792+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T21:51:08.031482+00:00"
     },
     {
       "id": "trend-update-51a4daff4cfd054ed8d9",
@@ -115795,21 +115795,23 @@
       "new_facts": "Documentación e investigaciones publicadas el 31 de octubre detallan la caída del LZB y fallos simultáneos de transmisión, comunicaciones y tensión, además de la revisión de los procedimientos que permitieron reanudar la marcha.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "a6bb4c70dcf0aeffc37a830eb15cedd07981f75a3681842deeac00f051dad2cb",
+      "editorial_grouping_checked_at": "2026-10-31T21:51:08.031482+00:00"
     },
     {
       "id": "listas-auto-be8687e634f4c1cffa36",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T21:50:24.942286+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -117477,7 +117479,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T21:51:08.031482+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "3757c115b9c5850f687518e1117ee0a7d53814cc0fa696e74c99693b6c96685c"
     }
   ],
   "count": 423
