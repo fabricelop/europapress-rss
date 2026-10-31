@@ -3,28 +3,23 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793483220000-manual",
+  "run_id": "tr-1793483381118-manual",
   "previous_run_id": "tr-1793483220000-manual",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T22:50:00+01:00",
-  "updated_at": "2026-10-31T22:52:00+01:00",
-  "finished_at": "2026-10-31T22:52:00+01:00",
-  "current": 4,
-  "total": 4,
+  "updated_at": "2026-10-31T22:53:00+01:00",
+  "finished_at": "2026-10-31T22:53:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-91261590da84c37fe3fd",
-    "red-review-d52e88d83df77b6be78b",
-    "red-review-84945ccaa9ddef1faf33",
-    "listas-auto-be8687e634f4c1cffa36"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 4/4: 2 agrupaciones automáticas procesadas, 2 grupos creados (Barça-Alavés y GP de México), revisión de #laSextaXplica cerrada como stale por validación JIT y actualización material de Urda aplicada. Cola final 0; sin ImageGen ni publicaciones.",
+  "summary": "Pasada 0/0 verificada tras carrera concurrente: cola final 0, rewrite_pending 0; revisiones y agrupación observadas durante la ejecución ya quedaron terminales/aplicadas.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -93,6 +88,16 @@
       "at": "2026-10-31T22:52:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 4/4. Sin ImageGen, sin publicación en X y sin pendientes editoriales en la cola."
+    },
+    {
+      "at": "2026-10-31T22:53:00+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0 y rewrite_pending 0. #laSextaXplica review_completed/stale; Urda updated y sincronizada; agrupación grouping_completed sin grupos."
+    },
+    {
+      "at": "2026-10-31T22:53:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para este run: no quedaba trabajo activo al llegar a la barrera JIT. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [
@@ -126,23 +131,24 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T22:46:00+01:00",
-  "last_completed_at": "2026-10-31T22:52:00+01:00",
+  "last_completed_at": "2026-10-31T22:53:00+01:00",
   "last_run": {
-    "run_id": "tr-1793483220000-manual",
+    "run_id": "tr-1793483381118-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T22:52:00+01:00",
-    "attempted": 4,
+    "finished_at": "2026-10-31T22:53:00+01:00",
+    "attempted": 0,
     "explained": 0,
-    "updates": 1,
-    "grouping_requests": 2,
-    "groups_created": 2,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "note": "Durante la pasada se observaron trabajos creados por una ejecución concurrente; desaparecieron antes de su tratamiento JIT y se verificaron como terminales/aplicados."
   }
 }
