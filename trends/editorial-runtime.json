@@ -5,32 +5,29 @@
   "canonical": true,
   "run_id": "tr-1793463021698-manual",
   "previous_run_id": "tr-chat-20261031T171000+0100",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-10-31T17:10:21.698+01:00",
-  "updated_at": "2026-10-31T17:10:53+01:00",
+  "updated_at": "2026-10-31T17:13:34+01:00",
   "finished_at": null,
   "current": 0,
   "total": 7,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "4bcc67659c7e",
+    "8e78ca332a37",
+    "a62d395c919c",
+    "b9065cb3e41e"
+  ],
   "remaining_ids": [
     "listas-auto-344de3241cad2c2dea0a",
-    "a62d395c919c",
-    "8e78ca332a37",
-    "b9065cb3e41e",
-    "4bcc67659c7e",
     "red-review-2dea83faddfe273c82ec",
     "red-review-578fdffd83604e2ad3af"
   ],
   "remaining_active_ids": [
     "listas-auto-344de3241cad2c2dea0a",
-    "a62d395c919c",
-    "8e78ca332a37",
-    "b9065cb3e41e",
-    "4bcc67659c7e",
     "red-review-2dea83faddfe273c82ec",
     "red-review-578fdffd83604e2ad3af"
   ],
@@ -60,6 +57,6 @@
     "summary": "4/4 explicadas y verificadas. Cola final 0; sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T16:55:00+01:00",
+  "last_started_at": "2026-10-31T17:13:34+01:00",
   "last_completed_at": "2026-10-31T17:08:00+01:00"
 }
