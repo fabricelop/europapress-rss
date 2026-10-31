@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793457344128-manual",
-  "previous_run_id": "tr-1793457153780-manual",
+  "run_id": "tr-1793457674451-manual",
+  "previous_run_id": "tr-1793457344128-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-10-31T15:36:00+01:00",
-  "updated_at": "2026-10-31T15:42:00+01:00",
+  "phase": "verifying",
+  "started_at": "2026-10-31T15:41:14.451+01:00",
+  "updated_at": "2026-10-31T15:43:00+01:00",
   "finished_at": null,
   "current": 1,
-  "total": 2,
+  "total": 1,
   "trend_id": "listas-auto-6631486dcdf94c1ca599",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [
-    "listas-joint-2ea3268fe326f4cf"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "listas-auto-6631486dcdf94c1ca599"
   ],
@@ -25,19 +23,12 @@
     "listas-auto-6631486dcdf94c1ca599"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Investigando 2/2: agrupación automática de Listas; comparando el snapshot exacto de cinco fichas.",
+  "summary": "Verificando 1/1: agrupación automática de Listas; cinco candidatos revalidados por ID, revisión y hash. Sin ImageGen.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
-  "final_outcomes": [
-    {
-      "id": "listas-joint-2ea3268fe326f4cf",
-      "revision": 1,
-      "outcome": "explained",
-      "name": "Chelsea-Manchester United"
-    }
-  ],
+  "activity": "verifying",
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793457344128-manual",
     "status": "DONE",
@@ -56,6 +47,6 @@
     "summary": "1/1. Chelsea-Manchester United r1 actualizada y aplicada; cola final 0 y sin reexplicaciones pendientes."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T15:36:00+01:00",
+  "last_started_at": "2026-10-31T15:41:14.451+01:00",
   "last_completed_at": "2026-10-31T15:40:31+01:00"
 }
