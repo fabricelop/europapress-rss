@@ -3,58 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T165500+0100",
-  "previous_run_id": "tr-chat-20261031T164000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T16:55:00+01:00",
-  "updated_at": "2026-10-31T17:08:00+01:00",
-  "finished_at": "2026-10-31T17:08:00+01:00",
-  "current": 4,
-  "total": 4,
+  "run_id": "tr-chat-20261031T171000+0100",
+  "previous_run_id": "tr-chat-20261031T165500+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T17:10:00+01:00",
+  "updated_at": "2026-10-31T17:10:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "81f29d926bb3",
-    "a0d59365caff",
-    "967e3874cc0c",
-    "bf9a1fe7a07a"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "4/4 explicadas y verificadas: Ocon, Ryo Hirakawa, Sorloth y Barrios. Cola autoritativa releída vacía; sin preparing/update, rewrite_pending ni problematic. Sin ImageGen ni publicación.",
+  "summary": "Releyendo cola autoritativa y últimos resultados antes del cierre.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre editorial completado",
-  "final_outcomes": [
-    {
-      "id": "81f29d926bb3",
-      "revision": 0,
-      "name": "Ocon",
-      "outcome": "explained"
-    },
-    {
-      "id": "a0d59365caff",
-      "revision": 0,
-      "name": "Ryo Hirakawa",
-      "outcome": "explained"
-    },
-    {
-      "id": "967e3874cc0c",
-      "revision": 0,
-      "name": "Sorloth",
-      "outcome": "explained"
-    },
-    {
-      "id": "bf9a1fe7a07a",
-      "revision": 0,
-      "name": "Barrios",
-      "outcome": "explained"
-    }
-  ],
+  "activity": "Revisando novedades",
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T165500+0100",
     "status": "DONE",
