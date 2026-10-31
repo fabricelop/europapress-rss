@@ -3,111 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793429240411-manual",
-  "previous_run_id": "tr-manual-20261031T074000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T07:47:20.411+01:00",
-  "updated_at": "2026-10-31T07:49:00+01:00",
-  "finished_at": "2026-10-31T07:49:00+01:00",
-  "last_started_at": "2026-10-31T07:47:20.411+01:00",
+  "run_id": "tr-manual-20261031T081100+0100",
+  "previous_run_id": "tr-1793429240411-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T08:11:00+01:00",
+  "updated_at": "2026-10-31T08:11:00+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T08:11:00+01:00",
   "last_completed_at": "2026-10-31T07:49:00+01:00",
-  "current": 5,
-  "total": 5,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "36bc10edc55b",
-    "listas-auto-cf1a57e5089b6b0ad33e",
-    "red-review-b0f211321398ac293a69",
-    "red-review-1bbd2722e14a13f3d3d0",
-    "listas-auto-00a7617e4cd89b3ccb35"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 5/5: Luka explicada; dos agrupaciones sin coincidencias; Atocha actualizada; revisión de #DeViernes descartada como stale por estado terminal previo. Cola final vacía y sin rewrite_pending.",
+  "summary": "Pasada manual en curso: ranking recién actualizado; cola autoritativa inicial 0/0. Verificando pendientes y barrera final.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T07:47:20.411+01:00",
+      "at": "2026-10-31T08:11:00+01:00",
       "phase": "preparing",
-      "trend_id": "listas-auto-00a7617e4cd89b3ccb35",
-      "title": "Agrupación automática de Listas",
-      "message": "Al inicio de la pasada se observó el job r0 en preparing y se evaluó su snapshot; no había coincidencias inequívocas para agrupar ni cobertura exacta sin novedades."
-    },
-    {
-      "at": "2026-10-31T07:48:30+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-00a7617e4cd89b3ccb35",
-      "title": "Agrupación automática de Listas",
-      "message": "Barrera JIT: el job ya no estaba en main; se respetó la aplicación concurrente y no se escribió un outbox obsoleto."
-    },
-    {
-      "at": "2026-10-31T07:49:00+01:00",
-      "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: cola count=0 y rewrite_pending=0."
-    },
-    {
-      "at": "2026-10-31T07:49:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada editorial cerrada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
-    },
-    {
-      "at": "2026-10-31T07:48:25+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-00a7617e4cd89b3ccb35",
-      "title": "Agrupación automática de Listas",
-      "message": "Segunda agrupación aplicada sin grupos ni coberturas; cola vuelve a cero."
-    },
-    {
-      "at": "2026-10-31T07:49:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final: Luka y Atocha coinciden en requests/manual; #DeViernes quedó review_completed/stale; cola count=0 y rewrite_pending=0."
+      "message": "Inicio de pasada manual: radar actualizado a las 08:10:54; editorial-queue.json en main muestra 0/0. Se verifica rewrite_pending y se relee la cola antes de cerrar."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "36bc10edc55b",
-      "revision": 0,
-      "name": "Luka",
-      "outcome": "explained"
-    },
-    {
-      "id": "listas-auto-cf1a57e5089b6b0ad33e",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed_empty"
-    },
-    {
-      "id": "red-review-b0f211321398ac293a69",
-      "revision": 0,
-      "name": "Revisar novedades: #DeViernes",
-      "outcome": "stale"
-    },
-    {
-      "id": "red-review-1bbd2722e14a13f3d3d0",
-      "revision": 0,
-      "name": "Revisar novedades: Atocha",
-      "outcome": "updated",
-      "created_id": "trend-update-0930a3412d38d281ce25"
-    },
-    {
-      "id": "listas-auto-00a7617e4cd89b3ccb35",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed_empty"
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-manual-20261031T074000+0100",
     "status": "DONE",
