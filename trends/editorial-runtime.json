@@ -5,34 +5,29 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T2340+0100",
   "previous_run_id": "tr-1793484863722-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T23:40:00+01:00",
-  "updated_at": "2026-10-31T23:50:00+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-10-31T23:54:00+01:00",
+  "finished_at": "2026-10-31T23:54:00+01:00",
+  "current": 7,
   "total": 7,
-  "trend_id": "b15f4091648a",
-  "title": "Gavi",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "3fb6181ca88d",
     "79f4f7589726",
     "74d936730a36",
-    "0bea704023b8"
-  ],
-  "remaining_ids": [
+    "0bea704023b8",
     "b15f4091648a",
     "2cb310a0aa34",
     "ab43e85d3191"
   ],
-  "remaining_active_ids": [
-    "b15f4091648a",
-    "2cb310a0aa34",
-    "ab43e85d3191"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "4 resultados enviados al aplicador; 3 trabajos nuevos incorporados y en investigación. Sin ImageGen ni publicación.",
+  "summary": "Pasada completada: 7/7 explicaciones persistidas y verificadas; cola final 0 y sin reexplicaciones pendientes. Gavi y José Muñoz se cerraron con causalidad explícitamente no confirmada; sin ImageGen ni publicación en X.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -254,41 +249,71 @@
       "trend_id": "b15f4091648a",
       "title": "Gavi",
       "message": "Entraron 3 trabajos nuevos durante la pasada. Gavi, Tobajas y José Muñoz se procesan en la misma ejecución; Tobajas verificado, Gavi con contexto de suplencia y José Muñoz sin detonante causal único acreditado."
+    },
+    {
+      "at": "2026-10-31T23:54:00+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0; los 7 IDs quedaron explicados y persistidos en requests + telegram-manual-explained; sin rewrite_pending detectado."
+    },
+    {
+      "at": "2026-10-31T23:54:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 7/7 para tr-chat-20261031T2340+0100. Sin ImageGen ni publicación en X."
     }
   ],
   "final_outcomes": [
     {
-      "id": "listas-auto-6e922bcc692d7eb03194",
-      "outcome": "grouping_completed",
-      "groups_created": 1,
-      "covered_by_existing": 1
+      "id": "3fb6181ca88d",
+      "name": "Mariano",
+      "revision": 0,
+      "outcome": "explained"
     },
     {
-      "id": "red-review-ba61767e4f3587475df3",
-      "outcome": "review_completed",
-      "review_outcome": "stale"
+      "id": "79f4f7589726",
+      "name": "Honda",
+      "revision": 0,
+      "outcome": "explained"
     },
     {
-      "id": "red-review-e1e22bc4e0a17ee83c48",
-      "outcome": "review_completed",
-      "review_outcome": "stale"
+      "id": "74d936730a36",
+      "name": "Aston Martin",
+      "revision": 0,
+      "outcome": "explained"
     },
     {
-      "id": "listas-auto-dec4359818675e9d1925",
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 0
+      "id": "0bea704023b8",
+      "name": "#frac1",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "b15f4091648a",
+      "name": "Gavi",
+      "revision": 0,
+      "outcome": "explained_uncertain_trigger"
+    },
+    {
+      "id": "2cb310a0aa34",
+      "name": "Tobajas",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "ab43e85d3191",
+      "name": "José Muñoz",
+      "revision": 0,
+      "outcome": "explained_uncertain_trigger"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T23:12:03+01:00",
-  "last_completed_at": "2026-10-31T22:17:08.872Z",
+  "last_completed_at": "2026-10-31T23:54:00+01:00",
   "last_run": {
-    "run_id": "tr-1793484863722-manual",
+    "run_id": "tr-chat-20261031T2340+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T22:17:08.872Z",
-    "attempted": 0,
-    "explained": 0,
+    "finished_at": "2026-10-31T23:54:00+01:00",
+    "attempted": 7,
+    "explained": 7,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -300,6 +325,6 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Cola inicial y final vacías tras relectura de main; no quedó ningún preparing/update ni reexplicación pendiente. La ejecución concurrente anterior terminó antes de este cierre."
+    "note": "7 explicaciones persistidas en requests y telegram-manual-explained; cola final 0. Sin ImageGen ni publicación en X."
   }
 }
