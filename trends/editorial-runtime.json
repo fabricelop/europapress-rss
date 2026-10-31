@@ -3,34 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793487168174-manual",
-  "previous_run_id": "tr-1793486988618-manual",
-  "status": "DONE",
-  "phase": "done",
-  "started_at": "2026-10-31T23:53:00+01:00",
-  "updated_at": "2026-10-31T23:59:30+01:00",
-  "finished_at": "2026-10-31T23:59:30+01:00",
-  "current": 10,
-  "total": 10,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-7466c03e6699a628e806",
-    "red-review-25411a66d89216173e45",
-    "red-review-606fb222b19ec0e0491a",
-    "7b18f8c98739",
-    "9df0b07ec47e",
-    "5261970c7a60",
-    "b3b69dd6ae50",
-    "6ced0406ed4d",
-    "c5a531d85db4",
-    "5e0d9fdf2cb2"
+  "run_id": "tr-1793487575059-manual",
+  "previous_run_id": "tr-1793487168174-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T23:59:35+01:00",
+  "updated_at": "2026-10-31T23:59:35+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-361a8dfbf515b7c44a2c"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-361a8dfbf515b7c44a2c"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada: 7 explicaciones nuevas, 2 revisiones actualizadas y 1 agrupación resuelta. Cola editorial main=0; sin reexplicaciones pendientes. ImageGen=0; publicaciones=0.",
+  "summary": "Procesando 1 agrupación automática de Listas; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -297,6 +290,13 @@
       "trend_id": null,
       "title": null,
       "message": "Cierre tras relectura de main: editorial-queue count=0, sin preparing/update ni reexplicaciones pendientes. 7 explicaciones + 2 revisiones + 1 agrupación. ImageGen 0, publicaciones 0."
+    },
+    {
+      "at": "2026-10-31T23:59:35+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793487575059-manual: 1 trabajo preparing vigente. Revalidando id+revision y comparando candidatas con publicaciones recientes; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
