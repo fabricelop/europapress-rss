@@ -1,12 +1,30 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-31T08:40:34.956868+00:00",
+  "checked_at": "2026-10-31T14:45:27.172088+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 2,
   "telegram_live_count": 13,
   "matched_count": 0,
-  "issues_count": 13,
+  "issues_count": 15,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "8828cc99f9d7",
+      "title": "Un guardia civil relata el rescate de Almudena tras el accidente de Urda",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "554e34f62cb3",
+      "title": "García-Page pone en valor la solidaridad tras el accidente de Urda",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
     {
       "kind": "telegram_without_app",
       "id": "4788c370b927",
@@ -100,7 +118,10 @@
     }
   ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "554e34f62cb3",
+    "8828cc99f9d7"
+  ],
   "telegram_ids": [
     "16218d804d58",
     "4788c370b927",
