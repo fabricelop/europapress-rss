@@ -5,51 +5,70 @@
   "canonical": true,
   "run_id": "tr-1793447280616-manual",
   "previous_run_id": "tr-chat-20261031T124000+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T12:48:00+01:00",
-  "updated_at": "2026-10-31T12:48:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T12:53:01+01:00",
+  "finished_at": "2026-10-31T12:53:01+01:00",
+  "current": 3,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-421f110f2465ec63ca09",
     "red-review-944c9fc791a8a09918c9",
     "red-review-003b9df27f1dbd390d1f"
   ],
-  "remaining_active_ids": [
-    "listas-auto-421f110f2465ec63ca09",
-    "red-review-944c9fc791a8a09918c9",
-    "red-review-003b9df27f1dbd390d1f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial en curso: 3 trabajos activos revalidados en main. Sin ImageGen ni publicación.",
+  "summary": "3/3 resueltos: agrupación automática completada sin coincidencias (0 grupos, 0 coberturas); revisión de Toledo cerrada como stale por revalidación JIT al estar el snapshot supersedido, sin crear una actualización; Patrick Stewart revisado sin novedades sustanciales, conservando texto y fecha. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "listas-auto-421f110f2465ec63ca09",
+      "revision": 0,
+      "status": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "completed_at": "2026-10-31T12:50:47.209931+01:00"
+    },
+    {
+      "id": "red-review-944c9fc791a8a09918c9",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "stale",
+      "update_created": false
+    },
+    {
+      "id": "red-review-003b9df27f1dbd390d1f",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "unchanged",
+      "red_review_checked_at": "2026-10-31T12:51:43.800916+01:00"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-chat-20261031T124000+0100",
+    "run_id": "tr-1793447280616-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T12:47:00+01:00",
-    "attempted": 1,
-    "explained": 1,
+    "finished_at": "2026-10-31T12:53:01+01:00",
+    "attempted": 3,
+    "explained": 0,
     "updates": 0,
-    "stale_reviews": 0,
-    "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "stale_reviews": 1,
+    "unchanged_reviews": 1,
+    "grouping_requests": 1,
     "groups_created": 0,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "1/1 resuelto: Widilo r0 quedó explicado y sincronizado por cierre concurrente durante la revalidación JIT. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
+    "summary": "3/3 resueltos: agrupación automática completada sin coincidencias (0 grupos, 0 coberturas); revisión de Toledo cerrada como stale por revalidación JIT al estar el snapshot supersedido, sin crear una actualización; Patrick Stewart revisado sin novedades sustanciales, conservando texto y fecha. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T12:48:00+01:00",
-  "last_completed_at": "2026-10-31T12:47:00+01:00"
+  "last_completed_at": "2026-10-31T12:53:01+01:00"
 }
