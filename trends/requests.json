@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T17:13:58.418867+00:00",
+  "updated_at": "2026-10-31T17:19:30.670679+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -86597,7 +86597,7 @@
       "revision": 0,
       "name": "Revisar novedades: #FelizSábado",
       "rank": 30,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T17:13:58.418867+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -86620,14 +86620,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T17:19:30.670679+00:00",
+      "review_reason": "Es un episodio semanal distinto: la ficha fuente corresponde al sábado 24 de octubre y #FelizSábado vuelve a estar entre las tendencias de España el sábado 31 de octubre."
     },
     {
       "id": "red-review-6637a68b90c2f978721a",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 2,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T17:13:58.418867+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -86651,7 +86654,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T17:19:30.670679+00:00",
+      "review_reason": "La situación posterior al accidente ha cambiado materialmente desde la explicación del 28 de octubre: se ha consolidado el balance de víctimas, ha descendido el número de hospitalizados y avanzan las identificaciones mientras continúan los trabajos en la zona cero."
     }
   ],
   "count": 319
