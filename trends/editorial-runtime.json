@@ -3,57 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793479454677-manual",
-  "previous_run_id": "tr-chat-20261031T2140-manual",
+  "run_id": "tr-1793479593840-manual",
+  "previous_run_id": "tr-1793479454677-manual",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-10-31T21:44:00+01:00",
-  "updated_at": "2026-10-31T21:46:00+01:00",
+  "phase": "verifying",
+  "started_at": "2026-10-31T21:49:28.987+01:00",
+  "updated_at": "2026-10-31T21:49:28.987+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
-  "trend_id": "listas-auto-a77be4d2413a80e81e6d",
-  "title": "Agrupación automática de Listas",
+  "total": 0,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [
-    "listas-auto-a77be4d2413a80e81e6d",
-    "red-review-b1c5acdbb8ca170d3aa9",
-    "red-review-9ffbc55c5c7b8f23523b"
-  ],
-  "remaining_active_ids": [
-    "listas-auto-a77be4d2413a80e81e6d",
-    "red-review-b1c5acdbb8ca170d3aa9",
-    "red-review-9ffbc55c5c7b8f23523b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada en curso: 3 trabajos editoriales activos; iniciando agrupación automática de Listas. Sin ImageGen ni publicaciones.",
+  "summary": "Pasada editorial iniciada con cola ya consumida por una ejecución solapada; verificando main antes de cerrar 0/0. Sin ImageGen ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Agrupando Listas",
-  "final_outcomes": [
-    {
-      "id": "5f6f3883c215",
-      "revision": 0,
-      "name": "Betis",
-      "outcome": "explained"
-    },
-    {
-      "id": "706c8ce3c08f",
-      "revision": 0,
-      "name": "Balde",
-      "outcome": "explained"
-    },
-    {
-      "id": "d72312e370eb",
-      "revision": 0,
-      "name": "Cajuste",
-      "outcome": "explained_cause_unconfirmed"
-    }
-  ],
+  "activity": "Verificando cola final",
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T21:43:22+01:00",
+  "last_started_at": "2026-10-31T21:49:28.987+01:00",
   "last_completed_at": "2026-10-31T21:45:00+01:00",
   "last_run": {
     "run_id": "tr-chat-20261031T2140-manual",
