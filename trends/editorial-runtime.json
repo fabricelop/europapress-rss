@@ -3,72 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T1740+0100",
-  "previous_run_id": "tr-1793465261954-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T16:40:00Z",
-  "updated_at": "2026-10-31T16:52:00Z",
-  "finished_at": "2026-10-31T16:52:00Z",
-  "current": 5,
-  "total": 5,
+  "run_id": "tr-1793465371522-manual",
+  "previous_run_id": "tr-chat-20261031T1740+0100",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-10-31T16:52:10Z",
+  "updated_at": "2026-10-31T16:52:10Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "364e5f6525c7",
-    "listas-auto-8d33b931c6a199c4740f",
-    "red-review-27359ad47efeaa09b880",
-    "red-review-f37f1bac1f47f4401887",
-    "listas-auto-bd7a19bcdf8898cf9d0d"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completa cerrada tras refresco Top 30: Senegal r0 explicado y después cubierto por la tarjeta ya publicada de la crisis constitucional de Polonia; dos revisiones rojas actualizadas (Mazón y Óscar Puente); agrupación Dana + Mazón creada como listas-joint-70909e5711c6192a. Cola final 0, sin preparing/update, problematic ni rewrite_pending. Sin ImageGen ni publicación.",
+  "summary": "Relectura JIT de main para pasada manual solicitada; verificando cola autoritativa y reexplicaciones pendientes. Sin ImageGen.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial cerrada",
-  "final_outcomes": [
-    {
-      "id": "364e5f6525c7",
-      "revision": 0,
-      "outcome": "explained",
-      "name": "Senegal",
-      "covered_by_id": "listas-joint-f6486e28f95ce346"
-    },
-    {
-      "id": "listas-auto-8d33b931c6a199c4740f",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 1
-    },
-    {
-      "id": "red-review-27359ad47efeaa09b880",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-4b230854f55f7c1c5bbc",
-      "name": "Mazón"
-    },
-    {
-      "id": "red-review-f37f1bac1f47f4401887",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-98ec35ffa6f6fecec2e7",
-      "name": "Óscar Puente"
-    },
-    {
-      "id": "listas-auto-bd7a19bcdf8898cf9d0d",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "created_ids": [
-        "listas-joint-70909e5711c6192a"
-      ],
-      "group_title": "Segundo aniversario de la DANA en Valencia"
-    }
-  ],
+  "activity": "Verificando cola y reexplicaciones",
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T1740+0100",
     "status": "DONE",
