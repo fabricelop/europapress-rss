@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T22:14:18.363059+00:00",
+  "updated_at": "2026-10-31T22:14:56.785035+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T22:13:35.178941+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T22:14:56.785035+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -8818,7 +8818,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T22:13:35.178941+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T22:14:56.785035+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -117646,7 +117646,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "7822fbc71574c4773897860f8e8827983c77a00c8c220350bdb3b091b43bca6d",
-      "editorial_grouping_checked_at": "2026-10-31T22:13:35.178941+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T22:14:56.785035+00:00"
     },
     {
       "id": "5f67b35ee0aa",
@@ -117770,7 +117770,7 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "none",
       "image_choice": null,
       "image_pending": false,
@@ -117787,8 +117787,8 @@
       ],
       "rewrite_pending": false,
       "grouped_into_existing_card": false,
-      "editorial_grouping_fingerprint": "a7f4d15626720c2965fba48171360ef2c64b2a1e33bd5b2670246cc4321a60e1",
-      "editorial_grouping_checked_at": "2026-10-31T22:13:35.178941+00:00"
+      "editorial_grouping_fingerprint": "951c96fee8249aa79a3527f456474bf4033f614fa719fbbf5721c8391313f221",
+      "editorial_grouping_checked_at": "2026-10-31T22:14:56.785035+00:00"
     },
     {
       "id": "listas-auto-6e922bcc692d7eb03194",
@@ -119499,7 +119499,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 2,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T22:12:16.319646+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -119523,14 +119523,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T22:14:56.785035+00:00",
+      "review_reason": "La explicación inicial del 28 de octubre describía el choque y el corte de la línea; ahora hay avances materiales sobre la secuencia técnica y operativa previa al impacto."
     },
     {
       "id": "red-review-e1e22bc4e0a17ee83c48",
       "revision": 0,
       "name": "Revisar novedades: Renfe",
       "rank": 6,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T22:12:16.319646+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -119555,7 +119558,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T22:14:56.785035+00:00",
+      "review_reason": "La explicación original del 28 de octubre quedó superada por las consecuencias operativas: la alta velocidad Madrid-Andalucía continúa interrumpida y Renfe aplazó su plan alternativo integral hasta, como pronto, el 3 de noviembre."
     },
     {
       "id": "listas-joint-1873f405d5b5996d",
@@ -119602,19 +119608,19 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "39d0d5ae19b8c7475316938a546921aec8c399a01947e283b30f169dde7f3739",
-      "editorial_grouping_checked_at": "2026-10-31T22:13:35.178941+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T22:14:56.785035+00:00"
     },
     {
       "id": "listas-auto-dec4359818675e9d1925",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T22:14:18.363059+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -121266,7 +121272,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T22:14:56.785035+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "f4256a35d0fb47b725b89d9f3bda676743f424a6eb20d362af79baf7ae7f923c"
     }
   ],
   "count": 438
