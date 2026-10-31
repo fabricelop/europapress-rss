@@ -6,20 +6,28 @@
   "run_id": "tr-1793483220000-manual",
   "previous_run_id": "tr-chat-20261031T2241+0100",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-31T22:46:00+01:00",
-  "updated_at": "2026-10-31T22:46:00+01:00",
+  "updated_at": "2026-10-31T22:48:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-91261590da84c37fe3fd",
+    "red-review-d52e88d83df77b6be78b",
+    "red-review-84945ccaa9ddef1faf33"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-91261590da84c37fe3fd",
+    "red-review-d52e88d83df77b6be78b",
+    "red-review-84945ccaa9ddef1faf33"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada; verificando cola y reexplicaciones pendientes.",
+  "summary": "Detectados 3 trabajos tras la relectura: 1 agrupación automática y 2 revisiones de novedades.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -68,6 +76,11 @@
       "at": "2026-10-31T22:46:00+01:00",
       "phase": "preparing",
       "message": "Inicio manual: cola compacta 0. Verificando main, rewrite_pending y estado final antes de cerrar; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T22:48:00+01:00",
+      "phase": "investigating",
+      "message": "Relectura de main: llegaron 3 trabajos nuevos. Procesando primero agrupación automática, después dos revisiones de novedades; sin ImageGen."
     }
   ],
   "final_outcomes": [],
