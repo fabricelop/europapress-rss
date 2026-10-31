@@ -72,6 +72,7 @@ struct TrendItem: Identifiable {
     var siteImageExplainedAt: String = ""
     // AI image is independent from archive photographs.
     var siteImageURL: URL? = nil
+    var siteImageSHA256: String = ""
     var isCovered: Bool { !coveredByID.isEmpty }
 
     func ageBand(now: Date = Date()) -> Int {
@@ -1363,7 +1364,8 @@ final class EditorialStore: ObservableObject {
                   siteImageEditorialID: trend.siteImageEditorialID,
                   siteImageRevision: trend.siteImageRevision,
                   siteImageExplainedAt: trend.siteImageExplainedAt,
-                  siteImageURL: trend.siteImageURL)
+                  siteImageURL: trend.siteImageURL,
+                  siteImageSHA256: trend.siteImageSHA256)
     }
 
     private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
@@ -1712,7 +1714,12 @@ final class EditorialStore: ObservableObject {
                                  id: id, revision: rev,
                                  explanation: str(row, "explanation"),
                                  explainedAt: str(row, "explained_at"),
-                                 catalog: siteImages))
+                                 catalog: siteImages),
+                             siteImageSHA256: SiteAIImageCatalog.resolvedSHA256(
+                                 id: id, revision: rev,
+                                 explanation: str(row, "explanation"),
+                                 explainedAt: str(row, "explained_at"),
+                                 catalog: siteImages) ?? "")
         }
         .sorted {
             let leftRank = $0.rank > 0 ? $0.rank : Int.max
@@ -1919,7 +1926,13 @@ final class EditorialStore: ObservableObject {
                                  revision: int(explanation, "revision"),
                                  explanation: text,
                                  explainedAt: str(explanation, "explained_at"),
-                                 catalog: siteImages))
+                                 catalog: siteImages),
+                             siteImageSHA256: SiteAIImageCatalog.resolvedSHA256(
+                                 id: str(explanation, "id"),
+                                 revision: int(explanation, "revision"),
+                                 explanation: text,
+                                 explainedAt: str(explanation, "explained_at"),
+                                 catalog: siteImages) ?? "")
         }
     }
 
