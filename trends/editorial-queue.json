@@ -1,15 +1,15 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T12:17:00+01:00",
-  "count": 3,
+  "updated_at": "2026-10-31T11:19:31.919098+00:00",
+  "count": 1,
   "items": [
     {
-      "id": "listas-auto-72b00ebc0ca70f7bb2a5",
+      "id": "listas-auto-63edd5c6917d6dccad6d",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
-      "requested_at": "2026-10-31T11:15:37.519105+00:00",
+      "requested_at": "2026-10-31T11:19:31.919098+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
@@ -83,6 +83,19 @@
             "https://www.canalsur.es/radio/canal-fiesta/top-50/",
             "https://www.canalsur.es/radio/canal-fiesta/top-50/sabado-merche-barrio-cuenta_1_1448218.html",
             "https://www.canalsur.es/radio/canal-fiesta/cuenta-atras/felicitamos-arrebato-n1canalfiesta44_1_1351341.html"
+          ]
+        },
+        {
+          "id": "5ad4a23bc13e",
+          "revision": 0,
+          "name": "Salvador",
+          "rank": 27,
+          "explanation": "TT#27 Salvador es tendencia por el aviso de Salvador Illa ante las nuevas convocatorias de Blocus en Cataluña: asegura que los Mossos están preparados y que quien vaya a saquear responderá ante la justicia.\n#SalvadorIlla #Blocus #Cataluña",
+          "explanation_sha256": "e17945710e479a7a67a954df7b237df65c49d76f83059ce46b3b5ce5f3d57360",
+          "explained_at": "2026-10-31T12:16:00+01:00",
+          "verification_sources": [
+            "https://www.europapress.es/catalunya/noticia-illa-convocatoria-blocus-quien-venga-saquear-respondera-justicia-20261031093940.html",
+            "https://www.infobae.com/espana/agencias/2026/10/31/illa-asegura-que-los-mossos-estan-preparados-y-advierte-contra-quien-venga-a-saquear/"
           ]
         }
       ],
@@ -1641,66 +1654,6 @@
       "auto_queued": false,
       "request_source": "editorial_maintenance",
       "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
-    },
-    {
-      "id": "red-review-90d5ff9c5c87c7b1f739",
-      "revision": 0,
-      "name": "Revisar novedades: #DeViernes",
-      "rank": 25,
-      "status": "preparing",
-      "requested_at": "2026-10-31T11:15:37.519105+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "413c73f54712",
-        "revision": 0,
-        "name": "#DeViernes",
-        "rank": 10,
-        "explanation": "TT#10 #DeViernes es tendencia por la emisión de Telecinco: Silvia Bronchalo habló de los audios filtrados con Daniel Sancho y Alba Silva relató el asalto sufrido en su casa.\n#SilviaBronchalo #DanielSancho #AlbaSilva",
-        "explanation_sha256": "fadf1a21d91a6a4468d3efb5963c2e07668709a6baee09ea8aee2d66ad0d1fe4",
-        "explained_at": "2026-10-24T02:49:00+02:00",
-        "verification_sources": [
-          "https://as.com/tikitakas/famosos/silvia-bronchalo-vuelve-a-telecinco-para-hablar-de-daniel-sancho-y-responder-a-rodolfo-f202610-n/",
-          "https://www.hola.com/actualidad/20261023931005/alba-silva-mujer-sergio-rico-revela-secuelas-brutal-asalto-casa/"
-        ],
-        "fingerprint": "0b3616b2f8022fcf22c2edae5f488b1f3575a7c285f7ca23332e39922ca17969"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
-    },
-    {
-      "id": "red-review-03c8d74c3706ececf9b4",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizSábado",
-      "rank": 16,
-      "status": "preparing",
-      "requested_at": "2026-10-31T11:15:37.519105+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "772cda27031c",
-        "revision": 0,
-        "name": "#FelizSábado",
-        "rank": 5,
-        "explanation": "TT#5 #FelizSábado es tendencia porque usuarios de X comparten saludos y mensajes para empezar este sábado 24 de octubre.\n#Sábado24 #BuenosDías\n🌶️ X ha puesto el despertador en modo fin de semana.",
-        "explanation_sha256": "90486a85e636f6d0fc78b468beb41de22006701bd6bd21c07abe52cc3555163c",
-        "explained_at": "2026-10-24T09:52:40+02:00",
-        "verification_sources": [
-          "trends/recent.json",
-          "https://twitter-trends.snaplytics.io/spain/"
-        ],
-        "fingerprint": "616045a5c712d462ec1701299e271ec6cda4bc7f735a6670760bb1c3888ef424"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ]
 }
