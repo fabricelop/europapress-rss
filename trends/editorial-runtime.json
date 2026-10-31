@@ -3,85 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793411528658-manual",
-  "previous_run_id": "tr-chat-20261031T024055+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T02:52:08.658+01:00",
-  "updated_at": "2026-10-31T02:54:44.476970+01:00",
-  "finished_at": "2026-10-31T02:54:44.476970+01:00",
-  "last_started_at": "2026-10-31T02:52:08.658+01:00",
+  "run_id": "tr-chat-20261031T031000+0100-manual",
+  "previous_run_id": "tr-1793411528658-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T03:10:00+01:00",
+  "updated_at": "2026-10-31T03:10:00+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T03:10:00+01:00",
   "last_completed_at": "2026-10-31T02:54:44.476970+01:00",
-  "current": 2,
-  "total": 2,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-4504690d27957ebb7ee2",
-    "red-review-8815443bbe311efbb739"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial real completada 2/2: ambas revisiones se investigaron y el aplicador JIT las cerró como stale; cola final 0.",
+  "summary": "Ejecución manual iniciada: refrescando Top 30 y cola autoritativa antes de la pasada editorial.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
   "activity": [
     {
-      "at": "2026-10-31T02:52:08.658+01:00",
+      "at": "2026-10-31T03:10:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de tr-1793411528658-manual: contrato editorial y cola autoritativa leídos en main; 2 revisiones de novedades. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T02:54:44.476970+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-4504690d27957ebb7ee2",
-      "title": "#DeViernes",
-      "message": "Novedad material verificada: muerte de Raúl Triguero en Urda durante un encargo de ¡De viernes!; resultado propuesto updated, sin remate por sensibilidad."
-    },
-    {
-      "at": "2026-10-31T02:54:44.476970+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-8815443bbe311efbb739",
-      "title": "Toledo",
-      "message": "Novedades materiales verificadas del mismo accidente: 69 fallecidos, cajas negras recuperadas y primer informe técnico; resultado propuesto updated, sin remate por sensibilidad."
-    },
-    {
-      "at": "2026-10-31T02:54:44.476970+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "El aplicador JIT consumió ambos resultados como stale y retiró las dos revisiones; no se pisaron snapshots obsoletos."
-    },
-    {
-      "at": "2026-10-31T02:54:44.476970+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final sobre main: editorial-queue.json count=0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación en X."
+      "message": "Inicio manual: contrato y cola leídos; se fuerza actualización del Top 30 y se procesará en esta conversación toda pendiente preparing/update/rewrite vigente. Sin ImageGen."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "red-review-4504690d27957ebb7ee2",
-      "revision": 0,
-      "name": "#DeViernes",
-      "result": "stale",
-      "researched_outcome": "updated",
-      "reason": "El aplicador JIT marcó obsoleta la revisión antes de persistir una actualización."
-    },
-    {
-      "id": "red-review-8815443bbe311efbb739",
-      "revision": 0,
-      "name": "Toledo",
-      "result": "stale",
-      "researched_outcome": "updated",
-      "reason": "El aplicador JIT marcó obsoleta la revisión antes de persistir una actualización."
-    }
-  ]
+  "final_outcomes": []
 }
