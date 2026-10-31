@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T19:51:17+01:00",
+  "updated_at": "2026-10-31T18:54:51.385767+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:54:51.385767+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -8818,7 +8818,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:54:51.385767+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -96833,7 +96833,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "fd77fab6d1fb0635b21d797589b2012a8d9be8341e8e282c8331a2f2dcf22e16",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:54:51.385767+00:00"
     },
     {
       "id": "8896b7c8b76c",
@@ -97051,7 +97051,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "cf274221252566af2d4258789d09c5af691d91c5cddaff76b655c653bf8a64ec",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:54:51.385767+00:00"
     },
     {
       "id": "38c2e92ebcb0",
@@ -97190,7 +97190,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "938ceb177dde43de4999860b48ff415078ec3e3587ade04c8612ad6991a915c3",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:54:51.385767+00:00"
     },
     {
       "id": "listas-auto-31fb23e88f7babc92189",
@@ -98916,7 +98916,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "79708d0ce42c5a673303802b9b9319cb46b2d3dcafc696853f8a2cac3fae28db",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:54:51.385767+00:00"
     },
     {
       "id": "trend-update-ca1c60eee915efb0e125",
@@ -98947,21 +98947,23 @@
       "new_facts": "Manuel Prieto, abogado del maquinista del Alvia de Angrois, afirma que existe un paralelismo entre ambos accidentes y que la investigación de Urda no debe reducirse al último eslabón de la cadena; reclama examinar los sistemas y la gestión de seguridad.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "29c6729cf5602e4d6116c129fb25e5d0ba182cc1344148d5d6e4f3d17fc1afec",
+      "editorial_grouping_checked_at": "2026-10-31T18:54:51.385767+00:00"
     },
     {
       "id": "listas-auto-dd9353353e5151c1b186",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T18:51:10.152306+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -100516,7 +100518,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T18:54:51.385767+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "e621af0993a0d93920e440ec8c55270d63d90ed88e7d580a125bd56af1e12e95"
     }
   ],
   "count": 341
