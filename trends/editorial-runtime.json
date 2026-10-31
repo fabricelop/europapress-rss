@@ -5,13 +5,13 @@
   "canonical": true,
   "run_id": "tr-1793490033474-manual",
   "previous_run_id": "tr-1793489199351-manual",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "closing",
   "started_at": "2026-11-01T00:40:00+01:00",
-  "updated_at": "2026-11-01T00:44:18+01:00",
+  "updated_at": "2026-11-01T00:48:00+01:00",
   "finished_at": "2026-11-01T00:34:00+01:00",
-  "current": 0,
-  "total": 6,
+  "current": 6,
+  "total": 7,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -479,6 +479,20 @@
       "trend_id": "red-review-a4fe9a1e77d38d80cb26",
       "title": "Revisar novedades: Chelsea-Manchester United",
       "message": "Sin novedades materiales: el 2-0, Rogers, la expulsión de Lisandro y el penalti de Palmer siguen siendo el mismo episodio; la presión posterior sobre Carrick no cambia la explicación."
+    },
+    {
+      "at": "2026-11-01T00:48:00+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-91bad7b3567ec2994d9d",
+      "title": "Agrupación automática de Listas",
+      "message": "Comparación del snapshot exacto: no hay coincidencias inequívocas que justifiquen grupo nuevo o cobertura por publicación existente. Hamilton, Tunkara, Woodgate/Owen y las fichas previas comparten partidos o temas, pero aportan episodios distintos o causalidad ambigua."
+    },
+    {
+      "at": "2026-11-01T00:48:10+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-91bad7b3567ec2994d9d",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado persistido con groups=[] y covered_by_existing=[]; sin ImageGen ni publicación."
     }
   ]
 }
