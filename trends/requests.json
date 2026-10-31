@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T08:29:46.744101+00:00",
+  "updated_at": "2026-10-31T08:31:35.014399+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -57192,7 +57192,7 @@
       "revision": 0,
       "name": "Revisar novedades: #FelizSábado",
       "rank": 8,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T08:27:09.007637+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -57215,14 +57215,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T08:31:35.014399+00:00",
+      "review_reason": "Es un episodio semanal distinto: la ficha anterior correspondía al sábado 24 de octubre y #FelizSábado vuelve a entrar en el Top 10 el sábado 31."
     },
     {
       "id": "red-review-e18f2eaa13bca806e2e2",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 2,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T08:27:09.007637+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -57246,7 +57249,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T08:31:35.014399+00:00",
+      "review_reason": "Revisión obsoleta en la revalidación JIT: Toledo ya no figura en el Top 30 fresco de recent.json, por lo que no corresponde reescribir ni renovar la ficha publicada."
     }
   ],
   "count": 254
