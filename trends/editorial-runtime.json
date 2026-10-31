@@ -5,21 +5,21 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T2255+0100",
   "previous_run_id": "tr-1793483381118-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T22:55:00+01:00",
-  "updated_at": "2026-10-31T22:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T22:56:30+01:00",
+  "finished_at": "2026-10-31T22:56:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Inicio manual: cola compacta 0. Verificando main, rewrite_pending, mantenimiento y cualquier trabajo que llegue durante la pasada; sin ImageGen ni publicación.",
+  "summary": "Pasada 0/0 verificada: cola final 0, sin rewrite_pending en decisiones vigentes y sin nuevos trabajos editoriales tras la barrera final. Últimos resultados de mantenimiento revisados; sin ImageGen ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -103,16 +103,26 @@
       "at": "2026-10-31T22:55:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-chat-20261031T2255+0100: cola compacta 0. Verificando main, rewrite_pending y resultados aplicados antes del cierre; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T22:56:30+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0; no rewrite_pending en decisiones vigentes; no hay nuevos commits editoriales posteriores a la última aplicación y los últimos resultados de mantenimiento están persistidos."
+    },
+    {
+      "at": "2026-10-31T22:56:30+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios de texto."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T22:55:00+01:00",
-  "last_completed_at": "2026-10-31T22:53:00+01:00",
+  "last_completed_at": "2026-10-31T22:56:30+01:00",
   "last_run": {
-    "run_id": "tr-1793483381118-manual",
+    "run_id": "tr-chat-20261031T2255+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T22:53:00+01:00",
+    "finished_at": "2026-10-31T22:56:30+01:00",
     "attempted": 0,
     "explained": 0,
     "updates": 0,
@@ -126,6 +136,6 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Durante la pasada se observaron trabajos creados por una ejecución concurrente; desaparecieron antes de su tratamiento JIT y se verificaron como terminales/aplicados."
+    "note": "Cola inicial y final vacías; la última mutación de requests anterior al inicio ya estaba aplicada. No se encontró trabajo nuevo durante la pasada."
   }
 }
