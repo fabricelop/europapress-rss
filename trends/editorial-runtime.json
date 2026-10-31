@@ -5,25 +5,33 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T014000+0100-manual",
   "previous_run_id": "tr-chat-20261031T012500+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-10-31T01:40:00+01:00",
-  "updated_at": "2026-10-31T01:46:00+01:00",
-  "finished_at": "2026-10-31T01:46:00+01:00",
+  "updated_at": "2026-10-31T01:47:00+01:00",
+  "finished_at": null,
   "last_started_at": "2026-10-31T01:40:00+01:00",
   "last_completed_at": "2026-10-31T01:46:00+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "current": 2,
+  "total": 4,
+  "trend_id": "listas-auto-60de85f2ab3d8b0141a2",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "3d5ee1703a15"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-60de85f2ab3d8b0141a2",
+    "red-review-344163f90c35e54db9a9",
+    "red-review-1f83c913270f3b62bc2e"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-60de85f2ab3d8b0141a2",
+    "red-review-344163f90c35e54db9a9",
+    "red-review-1f83c913270f3b62bc2e"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial real completada 1/1: #LaReuniónSecreta rev. 0 explicada y sincronizada; cola final 0 y sin reexplicaciones vigentes.",
+  "summary": "Pasada reabierta: entraron 1 agrupación y 2 revisiones automáticas durante el cierre.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -77,6 +85,13 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada completada 1/1. Agrupación visual/editorial de la ficha queda pending sin task:group_listas en cola; sin ImageGen, sin Telegram editorial y sin publicación en X."
+    },
+    {
+      "at": "2026-10-31T01:47:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-60de85f2ab3d8b0141a2",
+      "title": "Agrupación automática de Listas",
+      "message": "Reapertura de la misma pasada: se detectaron 3 tareas nuevas en main tras el cierre provisional; se procesan en orden contractual."
     }
   ]
 }
