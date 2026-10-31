@@ -3,85 +3,45 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793426882192-manual",
+  "run_id": "tr-manual-20261031T072500+0100",
   "previous_run_id": "tr-1793426882192-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T07:08:02.192+01:00",
-  "updated_at": "2026-10-31T06:14:48.174Z",
-  "finished_at": "2026-10-31T06:14:48.174Z",
-  "last_started_at": "2026-10-31T07:08:02.192+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T07:25:00+01:00",
+  "updated_at": "2026-10-31T07:25:00+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T07:25:00+01:00",
   "last_completed_at": "2026-10-31T06:14:48.174Z",
-  "current": 3,
-  "total": 3,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-60598ef948ccc9204100",
-    "red-review-085146f2ca38bd67c6b8",
-    "red-review-b9cb516eb9be7b1aa23c"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada: agrupación inicial aplicada con Poland cubierta por la ficha conjunta existente; revisión de Toledo cerrada stale por existir una ficha posterior; revisión de Iryo aplicada como actualización y agrupación liberada. Una agrupación posterior apareció durante la pasada y ya estaba completada concurrentemente al revalidarla. Cola final 0. Sin ImageGen ni publicación en X.",
+  "summary": "Pasada manual iniciada. Cola inicial 0; verificando barrera final y posibles trabajos llegados durante la ejecución. Sin ImageGen ni publicación en X.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T06:14:48.174Z",
-      "phase": "verifying",
-      "trend_id": "listas-auto-ff587ca91537c75d16ab",
-      "title": "Agrupación automática de Listas",
-      "message": "Barrera JIT: la agrupación surgida tras la actualización de Iryo ya había sido completada por una ejecución concurrente antes de tratarla; no se escribió un resultado obsoleto."
+      "at": "2026-10-31T07:25:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio de pasada manual. Leídos contrato, configuración, ranking, cola, decisiones, estado explicado y últimos resultados de mantenimiento; cola inicial count=0."
     },
     {
-      "at": "2026-10-31T06:14:48.174Z",
+      "at": "2026-10-31T07:25:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: editorial-queue.json count=0, sin preparing/update, problematic ni rewrite_pending. Iryo está explained y grouping_state cleared; Poland quedó cubierta por la conjunta polaca."
-    },
-    {
-      "at": "2026-10-31T06:14:48.174Z",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada editorial cerrada. Sin ImageGen y sin publicación en X."
+      "message": "Comprobando que no haya preparing/update, tareas de agrupación/anticipación/revisión ni rewrite_pending vigentes antes del cierre."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "listas-auto-60598ef948ccc9204100",
-      "revision": 0,
-      "title": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 1
-    },
-    {
-      "id": "red-review-085146f2ca38bd67c6b8",
-      "revision": 0,
-      "title": "Toledo",
-      "outcome": "stale",
-      "changed": false
-    },
-    {
-      "id": "red-review-b9cb516eb9be7b1aa23c",
-      "revision": 0,
-      "title": "Iryo",
-      "outcome": "updated",
-      "created_id": "trend-update-8f9aed85c91855561abf"
-    },
-    {
-      "id": "listas-auto-ff587ca91537c75d16ab",
-      "revision": 0,
-      "title": "Agrupación automática de Listas",
-      "outcome": "completed_concurrently_before_jit"
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793426882192-manual",
     "status": "DONE",
