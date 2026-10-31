@@ -5,18 +5,18 @@
   "canonical": true,
   "run_id": "tr-1793433005570-manual",
   "previous_run_id": "tr-manual-20261031T084000+0100",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "preparing",
   "started_at": "2026-10-31T08:51:00+01:00",
-  "updated_at": "2026-10-31T08:55:33+01:00",
+  "updated_at": "2026-10-31T09:00:00+01:00",
   "finished_at": null,
   "last_started_at": "2026-10-31T08:55:33+01:00",
   "last_completed_at": "2026-10-31T08:55:33+01:00",
-  "current": 0,
-  "total": 6,
-  "trend_id": "1510c923e357",
-  "title": "Halloween",
-  "queue_complete": true,
+  "current": 6,
+  "total": 9,
+  "trend_id": "listas-auto-c553f2ecce7b8944f731",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "09482f4ec753",
     "1510c923e357",
@@ -25,10 +25,18 @@
     "bbc3b648ddbe",
     "edb94724ec61"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-c553f2ecce7b8944f731",
+    "red-review-a684b90943c42ac5b2e2",
+    "red-review-22a97ce14f8a9221c7c8"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-c553f2ecce7b8944f731",
+    "red-review-a684b90943c42ac5b2e2",
+    "red-review-22a97ce14f8a9221c7c8"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual en curso: 6 trabajos preparing/update detectados en main.",
+  "summary": "Pasada manual ampliada: 6 trabajos cerrados y 3 nuevos detectados al releer main; procesando agrupación y revisiones de novedades.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -39,6 +47,13 @@
       "trend_id": "1510c923e357",
       "title": "Halloween",
       "message": "Inicio de pasada real 0/6; se revalidará ID+revisión justo antes de investigar y persistir cada trabajo."
+    },
+    {
+      "at": "2026-10-31T09:00:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-c553f2ecce7b8944f731",
+      "title": "Agrupación automática de Listas",
+      "message": "Relectura de main: entraron 3 trabajos nuevos antes del cierre. Continúa la misma pasada 6/9; sin ImageGen."
     }
   ],
   "final_outcomes": [],
