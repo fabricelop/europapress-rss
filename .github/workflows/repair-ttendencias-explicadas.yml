@@ -96,6 +96,37 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
 
+      - name: Despertar agrupación pendiente antes de la IA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # GITHUB_TOKEN writes do not trigger the grouping push workflow.
+          # Request its normal planner explicitly; never bypass its clearance.
+          if python3 - <<'PY'
+          from datetime import datetime, timezone
+          from pilot import listas_grouping as grouping, trend_maintenance as maintenance
+          state = grouping.load_state()
+          live = [x for x in state[grouping.REQUESTS]['requests'] if x.get('status') in {'preparing', 'update'}]
+          if state[grouping.QUEUE].get('maintenance_pause') or any(x.get('listas_grouping_request') for x in live):
+              raise SystemExit(1)
+          # Ordinary editorial requests retain priority over maintenance.
+          if any(not x.get('red_review_request') and not x.get('anticipation_request') for x in live):
+              raise SystemExit(1)
+          pending = [x['id'] for x in grouping.eligible(state, datetime.now(timezone.utc)).values()
+                     if not maintenance.image_allowed(x)]
+          if not pending:
+              raise SystemExit(1)
+          print('TTENDENCIAS_GROUPING_WAKE_REQUIRED', ','.join(pending))
+          PY
+          then
+            gh workflow run ttactualidad-group-listas.yml --repo "$GITHUB_REPOSITORY" --ref main
+            echo "TTENDENCIAS_GROUPING_WAKE_REQUESTED"
+          else
+            echo "TTENDENCIAS_GROUPING_WAKE_NOT_REQUIRED"
+          fi
+
       - name: Encolar imágenes en ChatGPT Images (solo lanzamiento)
         shell: bash
         run: |
