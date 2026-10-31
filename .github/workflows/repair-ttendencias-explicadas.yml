@@ -292,7 +292,7 @@ jobs:
               leaders.append(row)
 
           queued=[]
-          sensitive_words=("fallece","muere","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","cáncer","atentado","bombardeo","víctimas","misiles","muerte","accidente mortal")
+          sensitive_words=("fallec","muere","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","cáncer","atentado","bombardeo","víctima","misiles","muerte","accidente mortal")
           for row in leaders:
               if valid_ai(row):
                   continue
