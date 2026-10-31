@@ -3,31 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T144000+0100",
-  "previous_run_id": "tr-chat-20261031T142500+0100",
-  "status": "success",
-  "phase": "investigating",
-  "started_at": "2026-10-31T14:40:00+01:00",
-  "updated_at": "2026-10-31T14:45:09+01:00",
+  "run_id": "tr-1793454351406-manual",
+  "previous_run_id": "tr-chat-20261031T144000+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T14:46:00+01:00",
+  "updated_at": "2026-10-31T14:46:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
-  "trend_id": "355d223e9798",
-  "title": "Hjulmand",
-  "queue_complete": true,
-  "processed_ids": [
-    "355d223e9798",
-    "7c2dfbcd3134",
-    "836530272c76"
+  "trend_id": "listas-auto-dd413455657c31b745da",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-dd413455657c31b745da",
+    "red-review-c87bc5f551d7653733c0",
+    "red-review-3ad7a43fc68a0025b99d"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-dd413455657c31b745da",
+    "red-review-c87bc5f551d7653733c0",
+    "red-review-3ad7a43fc68a0025b99d"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Investigando 3/3: Hjulmand; dos resultados editoriales ya están materializados en outbox.",
+  "summary": "Preparando 3 trabajos editoriales vigentes: 1 agrupación y 2 revisiones rojas.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "preparing",
   "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T142500+0100",
@@ -46,6 +50,6 @@
     "summary": "0 trabajos editoriales vigentes tras relectura final de main; cola 0 y rewrite_pending 0. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T14:45:09+01:00",
+  "last_started_at": "2026-10-31T14:46:00+01:00",
   "last_completed_at": "2026-10-31T14:45:09+01:00"
 }
