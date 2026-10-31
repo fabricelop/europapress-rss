@@ -6,9 +6,9 @@
   "run_id": "tr-chat-20261031T021000+0100-manual",
   "previous_run_id": "tr-1793407484035-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-10-31T02:10:00+01:00",
-  "updated_at": "2026-10-31T02:10:00+01:00",
+  "updated_at": "2026-10-31T02:10:20+01:00",
   "finished_at": null,
   "last_started_at": "2026-10-31T02:10:00+01:00",
   "last_completed_at": "2026-10-31T01:55:55+01:00",
@@ -21,7 +21,7 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial iniciada; verificando estado autoritativo y barrera final.",
+  "summary": "Primera lectura: cola 0/0; sin preparing/update ni rewrite_pending vigentes. Realizando barrera final.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -33,6 +33,13 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de tr-chat-20261031T021000+0100-manual: contrato editorial y estado autoritativo leídos en main. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-31T02:10:20+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Primera lectura: editorial-queue 0/0; telegram-manual-explained sin preparing/update ni rewrite_pending; comprobando barrera final en main."
     }
   ]
 }
