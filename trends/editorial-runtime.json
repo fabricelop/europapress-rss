@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793481000000-manual",
-  "previous_run_id": "tr-1793480100000-manual",
+  "run_id": "tr-1793481056571-manual",
+  "previous_run_id": "tr-1793481000000-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-10-31T22:10:00+01:00",
-  "updated_at": "2026-10-31T22:11:10+01:00",
+  "phase": "persisting",
+  "started_at": "2026-10-31T22:10:56.571000+01:00",
+  "updated_at": "2026-10-31T22:14:01.842+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -23,7 +23,7 @@
     "4eefe2099a0f"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Investigando Mónaco revisión 2 desde cero; pista editorial no verificada.",
+  "summary": "Mónaco r2 investigado desde cero: no se ha verificado la pista de manifestaciones ni otro detonante actual; preparando persistencia problemática sin explicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -37,6 +37,11 @@
       "at": "2026-10-31T22:11:10+01:00",
       "phase": "investigating",
       "message": "Entró Mónaco r2 durante la pasada. Investigación nueva desde cero; pista editorial aún sin verificar."
+    },
+    {
+      "at": "2026-10-31T22:14:01.842+01:00",
+      "phase": "persisting",
+      "message": "Mónaco r2 revalidado JIT en preparing. Sin detonante actual verificado; se conservará sin explicación verificada y se marcará problematic."
     }
   ],
   "final_outcomes": [],
