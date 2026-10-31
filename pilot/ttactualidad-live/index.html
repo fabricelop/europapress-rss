@@ -786,7 +786,7 @@ function imageWatch(x,attempt=0){
 // Top 30 always shows the image action. Without a verified editorial text,
 // generate a conceptual visual instead of making up a cause or news event.
 function anyTrendImagePrompt(x){
- if(String(x.explanation||'').trim())return manualPrompt(x);
+ if(!x._priorReason&&String(x.explanation||'').trim())return manualPrompt(x);
  const name=String(x.name||x.title||'Tendencia').trim();
  return [
   'Genera UNA SOLA ilustración editorial original en horizontal 16:9, a sangre, sin texto, letras, números, hashtags, logos, rótulos, tarjetas ni marcos.',
@@ -1213,6 +1213,7 @@ function rowCard(x,i){
   // automatic image association when the editorial item is not eligible.
   const topImage=btn('Generar imagen IA',()=>generateTrendImage(x,topImage),true);
   topImage.classList.add('trend-image-action');
+  link('Abrir ChatGPT Images','https://chatgpt.com/images');
   // The action is available for every Top-30 rank, with or without
   // an older explanation. Requests already in progress are not duplicated.
   if(['EN COLA','EN ELABORACIÓN','PENDIENTE DE GITHUB'].includes(x._status)){
