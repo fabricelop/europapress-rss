@@ -16,9 +16,9 @@
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "a4280f1fe18d",
     "red-review-a2aafd3afdb9b0af1225",
     "red-review-9b905fc7acd38b8e230b",
+    "a4280f1fe18d",
     "listas-auto-f212a00761592b11323a"
   ],
   "remaining_ids": [],
@@ -38,15 +38,20 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1
+    "incidents": 2
   },
-  "incident_count": 1,
+  "incident_count": 2,
   "incidents": [
     {
       "type": "recovered_transport_error",
       "item_id": "a4280f1fe18d",
       "revision": 0,
       "detail": "Una escritura directa de archivos grandes falló con h2 protocol error sin cambios parciales; el resultado se aplicó después por el outbox editorial oficial y se verificó en ambos registros."
+    },
+    {
+      "type": "coalesced_concurrent_run",
+      "run_id": "tr-1793488725947-manual",
+      "detail": "La pasada solicitada coincidió con otra ejecución manual sobre los mismos id/revision; se aplicó una sola vez cada resultado vigente y ambas convergieron en la misma barrera final de main."
     }
   ],
   "error": null,
@@ -371,6 +376,16 @@
       "at": "2026-11-01T00:29:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 4/4 con 1 incidencia de transporte recuperada sin impacto final. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T00:29:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Dos revisiones stale, Gordon explicado y agrupación completada con cobertura por ficha existente."
+    },
+    {
+      "at": "2026-11-01T00:29:00+01:00",
+      "phase": "closing",
+      "message": "Ejecución cerrada tras converger con tr-1793488725947-manual. ImageGen=0 y publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -416,8 +431,11 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
-    "note": "Gordon r0 persistido y agrupación automática resuelta por cobertura de la tarjeta conjunta Barça-Alavés. Incidencia de transporte recuperada; sin impacto final."
+    "incidents": 2,
+    "coalesced_run_ids": [
+      "tr-1793488725947-manual"
+    ],
+    "note": "Barrera final limpia; concurrencia absorbida sin duplicar fichas ni publicaciones."
   },
   "source": "chat",
   "message": "Pasada completada: Gordon r0 explicado y persistido; agrupación automática aplicada como covered_by_existing sobre Barça-Alavés · goleada y Lamine. Dos revisiones previas quedaron stale. Cola final 0; sin ImageGen ni publicación."
