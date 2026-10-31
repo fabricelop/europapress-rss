@@ -3,43 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T121059+0100",
-  "previous_run_id": "tr-chat-20261031T114000+0100",
+  "run_id": "tr-1793445575815-manual",
+  "previous_run_id": "tr-chat-20261031T121059+0100",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-10-31T12:10:59+01:00",
-  "updated_at": "2026-10-31T12:18:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-31T12:19:00+01:00",
+  "updated_at": "2026-10-31T12:19:00+01:00",
   "finished_at": null,
-  "current": 3,
-  "total": 5,
-  "trend_id": "listas-auto-72b00ebc0ca70f7bb2a5",
+  "current": 0,
+  "total": 1,
+  "trend_id": "listas-auto-63edd5c6917d6dccad6d",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-72b00ebc0ca70f7bb2a5",
-    "red-review-90d5ff9c5c87c7b1f739",
-    "red-review-03c8d74c3706ececf9b4"
+    "listas-auto-63edd5c6917d6dccad6d"
   ],
   "remaining_active_ids": [
-    "listas-auto-72b00ebc0ca70f7bb2a5",
-    "red-review-90d5ff9c5c87c7b1f739",
-    "red-review-03c8d74c3706ececf9b4"
+    "listas-auto-63edd5c6917d6dccad6d"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Comprobación de agrupación 3/5: sin coincidencias inequívocas; guardando resultado vacío útil.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-10-31T12:17:00+01:00",
-      "phase": "persisting",
-      "trend_id": "5ad4a23bc13e",
-      "title": "Salvador",
-      "reason": "Conflicto SHA al escribir telegram-manual-explained.json; reconciliado contra la request ya persistida y verificado antes de retirar la revisión de la cola."
-    }
-  ],
+  "summary": "Preparando agrupación automática de Listas 0/1; validando snapshot y publicaciones previas. Sin ImageGen ni publicación.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "preparing",
   "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T114000+0100",
