@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T09:44:11.326456+00:00",
+  "updated_at": "2026-10-31T09:45:52.511509+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -60658,7 +60658,7 @@
       "revision": 0,
       "name": "Revisar novedades: #DeViernes",
       "rank": 23,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T09:44:11.326456+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -60681,14 +60681,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T09:45:52.511509+00:00",
+      "review_reason": "Episodio distinto al de la ficha del 23 de octubre: la emisión del 30 de octubre abrió con un homenaje a Raúl Triguero, reportero de 'De viernes' fallecido en el accidente ferroviario de Urda, y contó de nuevo con Silvia Bronchalo en plató."
     },
     {
       "id": "red-review-eaf70e605deb8a23229b",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 25,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T09:44:11.326456+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -60712,7 +60715,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T09:45:52.511509+00:00",
+      "review_reason": "Es el mismo accidente de Urda, pero con novedades sustanciales respecto a la explicación inicial del 28 de octubre: el balance llegó a 69 fallecidos, la investigación sigue abierta y Renfe mantiene servicios alternativos por carretera ante la interrupción de la alta velocidad."
     }
   ],
   "count": 258
