@@ -3,27 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793484216269-manual",
-  "previous_run_id": "tr-chat-20261031T2255+0100",
+  "run_id": "tr-1793484331290-manual",
+  "previous_run_id": "tr-1793484216269-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-10-31T23:04:00+01:00",
-  "updated_at": "2026-10-31T23:04:00+01:00",
+  "started_at": "2026-10-31T23:05:00+01:00",
+  "updated_at": "2026-10-31T23:05:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
+  "total": 3,
   "trend_id": "listas-joint-8b5b19c2fe8dda63",
   "title": "Barça-Alavés · partido y protagonistas",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-joint-8b5b19c2fe8dda63"
+    "listas-joint-8b5b19c2fe8dda63",
+    "8c9a2cfc45bb",
+    "0e9ddd785dc2"
   ],
   "remaining_active_ids": [
-    "listas-joint-8b5b19c2fe8dda63"
+    "listas-joint-8b5b19c2fe8dda63",
+    "8c9a2cfc45bb",
+    "0e9ddd785dc2"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial en curso: 1 trabajo activo. Reelaboración desde cero del Barça-Alavés, con validación JIT e investigación del resultado actual. Sin ImageGen ni publicación.",
+  "summary": "Pasada editorial en curso: 3 reelaboraciones activas. Procesamiento antiguo→reciente con revalidación JIT; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -124,11 +128,18 @@
       "trend_id": "listas-joint-8b5b19c2fe8dda63",
       "title": "Barça-Alavés · partido y protagonistas",
       "message": "Inicio tr-1793484216269-manual: 1 trabajo active en cola. Revalidando id+revision y preparando investigación actual; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T23:05:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-joint-8b5b19c2fe8dda63",
+      "title": "Barça-Alavés · partido y protagonistas",
+      "message": "Inicio tr-1793484331290-manual: 3 trabajos preparing/update en cola. Revalidación JIT e investigación actual; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T23:04:00+01:00",
+  "last_started_at": "2026-10-31T23:05:00+01:00",
   "last_completed_at": "2026-10-31T22:56:30+01:00",
   "last_run": {
     "run_id": "tr-chat-20261031T2255+0100",
