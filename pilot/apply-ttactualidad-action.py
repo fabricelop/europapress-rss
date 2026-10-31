@@ -510,9 +510,11 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
                       and str(x.get("status") or "").lower() == "explained"), None)
         historical_request = find(requests.get("requests", []), "id", event_id)
         try:
-            if ready and str((historical_request or {}).get("status") or "").lower() not in TERMINAL and not any(str(x.get("id") or "") == event_id and
-                                 str(x.get("status") or "").lower() in TERMINAL
-                                 for x in mobile.get("items", [])):
+            if (ready and str(ready.get("listas_group_role") or "") != "covered"
+                    and str((historical_request or {}).get("status") or "").lower() not in TERMINAL
+                    and not any(str(x.get("id") or "") == event_id and
+                                str(x.get("status") or "").lower() in TERMINAL
+                                for x in mobile.get("items", []))):
                 rework_explained(event_id, revision, now, requests, manual, queue,
                                  mobile, deliveries, "ttactualidad_direct_rework")
                 prepared["items"] = [row for row in prepared.get("items", [])
