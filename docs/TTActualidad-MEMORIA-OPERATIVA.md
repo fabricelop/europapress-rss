@@ -412,3 +412,8 @@ Después de cada cambio, integrar las reglas en sus apartados de proceso, respon
 Repositorio canónico: `https://github.com/fabricelop/europapress-rss`. Leer primero `docs/TTActualidad-LEER-PRIMERO.md` y este manual; consultar `docs/TTActualidad-INCIDENTES-Y-DECISIONES.md` para antecedentes. Contratos de redacción: `ttittulares/editorial-run-prompt.md`, `trends/editorial-run-prompt.md`. Para mantenimiento: `pilot/listas_grouping.py`, `pilot/trend_maintenance.py`, `trends/anticipation.py` y sus pruebas. Antelación: `trends/anticipation-metrics.json`. Para versiones: project.yml, workflow de compilación, rama y artifact real; no asumir que main refleja el último IPA.
 
 La copia completa para adjuntar a cualquier chat se llama `TTActualidad-Memoria-Completa-2026-10-29.md`; conserva ese nombre e identidad aunque el contenido se mantenga actualizado. El archivo describe contexto, no promete acceso automático universal ni vigilancia permanente del PC. Para reparar basta facilitarlo y añadir proyecto, ID/revisión, dispositivo, hora Madrid, acción y síntoma/error actuales. Los antecedentes de conversaciones no sustituyen la evidencia viva.
+
+
+### Verificación de la reparación web, 31/10/2026
+
+Recepción v2 desplegada en el Worker real y Site público versión 8. Cuatro imágenes pendientes recuperadas sin regenerar. La automatización aún requiere observar un job nuevo v32 desde el PC; no dar la recuperación manual por prueba automática. Véase [evidencia, límites y alternativas](TTendencias-WEB-IMAGE-RECEIPTS-20261031.md).
