@@ -5,21 +5,21 @@
   "canonical": true,
   "run_id": "tr-1793484863722-manual",
   "previous_run_id": "tr-1793484740569-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T22:16:50.602Z",
-  "updated_at": "2026-10-31T22:16:50.602Z",
-  "finished_at": null,
+  "updated_at": "2026-10-31T22:17:08.872Z",
+  "finished_at": "2026-10-31T22:17:08.872Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Inicio manual 0/0: revalidando main y cualquier reexplicación pendiente; sin ImageGen ni publicación.",
+  "summary": "Pasada cerrada 0/0: relectura final de main con cola 0 y sin reexplicaciones pendientes. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -219,6 +219,16 @@
       "at": "2026-10-31T22:16:50.602Z",
       "phase": "preparing",
       "message": "Inicio tr-1793484863722-manual: cola compacta 0 tras el cierre concurrente anterior. Revalidando main y rewrite_pending; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T22:17:08.872Z",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0; sin preparing/update ni rewrite_pending detectado."
+    },
+    {
+      "at": "2026-10-31T22:17:08.872Z",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-1793484863722-manual. Sin ImageGen, sin publicación y sin cambios editoriales."
     }
   ],
   "final_outcomes": [
@@ -247,24 +257,24 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T23:12:03+01:00",
-  "last_completed_at": "2026-10-31T23:17:00+01:00",
+  "last_completed_at": "2026-10-31T22:17:08.872Z",
   "last_run": {
-    "run_id": "tr-1793484740569-manual",
+    "run_id": "tr-1793484863722-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T23:17:00+01:00",
-    "attempted": 4,
+    "finished_at": "2026-10-31T22:17:08.872Z",
+    "attempted": 0,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 2,
-    "groups_created": 1,
-    "covered_by_existing": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Cola final revalidada en 0; las revisiones de Toledo y Renfe quedaron cerradas como stale frente a fichas ya superadas, y las agrupaciones quedaron aplicadas."
+    "note": "Cola inicial y final vacías tras relectura de main; no quedó ningún preparing/update ni reexplicación pendiente. La ejecución concurrente anterior terminó antes de este cierre."
   }
 }
