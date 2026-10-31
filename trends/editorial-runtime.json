@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793489199351-manual",
   "previous_run_id": "tr-1793488841552-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T00:26:39.351+01:00",
-  "updated_at": "2026-11-01T00:29:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T00:31:00+01:00",
+  "finished_at": "2026-11-01T00:31:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -374,34 +374,44 @@
       "at": "2026-11-01T00:29:00+01:00",
       "phase": "verifying",
       "message": "Inicio tr-1793489199351-manual: se observó inicialmente 1 group_listas, pero la revalidación JIT de main confirmó que una ejecución concurrente ya lo aplicó. Verificando barrera final; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:31:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de tr-1793489199351-manual: editorial-queue=0, preparing/update=0 y rewrite_pending=0; el único group_listas visto al inicio ya estaba grouping_completed al revalidarlo."
+    },
+    {
+      "at": "2026-11-01T00:31:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-1793489199351-manual. Sin ImageGen, sin publicación y sin duplicar el trabajo concurrente ya aplicado."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T00:20:00+01:00",
-  "last_completed_at": "2026-11-01T00:29:00+01:00",
+  "last_started_at": "2026-11-01T00:26:39.351+01:00",
+  "last_completed_at": "2026-11-01T00:31:00+01:00",
   "last_run": {
-    "run_id": "tr-1793488841552-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "finished_at": "2026-11-01T00:29:00+01:00",
-    "attempted": 4,
-    "explained": 1,
+    "run_id": "tr-1793489199351-manual",
+    "status": "DONE",
+    "finished_at": "2026-11-01T00:31:00+01:00",
+    "attempted": 0,
+    "explained": 0,
     "updates": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
-    "covered_by_existing": 1,
+    "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 2,
+    "incidents": 0,
     "coalesced_run_ids": [
-      "tr-1793488725947-manual"
+      "tr-1793488841552-manual"
     ],
-    "note": "Barrera final limpia; concurrencia absorbida sin duplicar fichas ni publicaciones."
+    "note": "El único group_listas observado al inicio fue aplicado y verificado por la ejecución concurrente antes de la barrera JIT; cola final 0 y sin reexplicaciones pendientes."
   },
   "source": "chat",
-  "message": "Revalidación JIT: el único group_listas observado al inicio ya quedó aplicado por una ejecución concurrente. Verificando cola y rewrite_pending antes del cierre."
+  "message": "Pasada editorial cerrada 0/0: main limpio tras revalidación JIT. Sin ImageGen ni publicación."
 }
