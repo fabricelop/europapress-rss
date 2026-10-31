@@ -3,28 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793490416662-manual",
-  "previous_run_id": "tr-1793490304956-manual",
+  "run_id": "tr-1793490579211-manual",
+  "previous_run_id": "tr-1793490416662-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-01T00:47:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-01T00:50:00+01:00",
   "updated_at": "2026-11-01T00:50:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 3,
+  "current": 0,
+  "total": 1,
   "trend_id": "listas-auto-09ccc1fc32302336fef0",
   "title": "Agrupación automática de Listas",
-  "queue_complete": true,
-  "processed_ids": [
-    "8c4ad00d976c",
-    "9a049ef14213"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-09ccc1fc32302336fef0"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-09ccc1fc32302336fef0"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "explained": 2,
+    "attempted": 1,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
@@ -433,6 +434,13 @@
       "at": "2026-11-01T00:47:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-1793490304956-manual: cola compacta inicial 0. Verificando main, reexplicaciones pendientes y barrera final antes de cerrar; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:50:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-09ccc1fc32302336fef0",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793490579211-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -503,7 +511,7 @@
     "note": "Pasada real completada: 4 explicaciones, 2 revisiones sin novedades materiales y 1 agrupación sin coincidencias; cola final 0."
   },
   "source": "chat",
-  "message": "Snapshot revalidado JIT: no hay coincidencias inequívocas para grupo nuevo ni cobertura por publicación existente; persistiendo resultado vacío útil.",
+  "message": "Revalidando agrupación automática pendiente; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -547,6 +555,13 @@
       "at": "2026-11-01T00:49:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 7/7 para tr-1793490033474-manual. ImageGen=0; publicaciones=0; incidencias=0."
+    },
+    {
+      "at": "2026-11-01T00:50:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-09ccc1fc32302336fef0",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793490579211-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
     }
   ]
 }
