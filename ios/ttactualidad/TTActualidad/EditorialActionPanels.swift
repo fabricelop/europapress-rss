@@ -475,7 +475,8 @@ struct EditorialActions: View {
         let sensitive = [
             "victim", "fallec", "muert", "murio", "traged", "accident",
             "agresion", "violacion", "asesinat", "atentad", "desaparecid",
-            "herid", "catastrof", "suicid", "dana", "funeral", "rescate"
+            "herid", "catastrof", "suicid", "dana", "funeral", "rescate",
+            "urda", "descarril", "siniestro ferroviario"
         ].contains(where: { lower.contains($0) })
         let visual = sensitive
             ? "Ilustración periodística sobria y respetuosa, sin humor ni caricaturas, sin escenas gráficas, víctimas inventadas o representación especulativa."
