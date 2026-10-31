@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T16:49:19.923Z",
-  "updated_at": "2026-10-31T16:50:27Z",
-  "finished_at": "2026-10-31T16:50:27Z",
+  "updated_at": "2026-10-31T16:51:50.015Z",
+  "finished_at": "2026-10-31T16:51:50.015Z",
   "current": 1,
   "total": 1,
   "trend_id": null,
@@ -21,27 +21,39 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "1/1 en la pasada concurrente: agrupación Dana + Mazón aplicada como listas-joint-70909e5711c6192a. Este trabajo era la continuación generada por las dos revisiones de novedades del run previo tr-1793465096923-manual. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación.",
+  "summary": "Pasada cerrada tras relectura final de main: 2 revisiones (Mazón y Óscar Puente) ya aplicadas por ejecución solapada y revalidadas; 1 agrupación automática procesada, creando la conjunta Dana + Mazón. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre editorial verificado",
+  "activity": "Cierre verificado",
   "final_outcomes": [
+    {
+      "id": "red-review-27359ad47efeaa09b880",
+      "revision": 0,
+      "outcome": "concurrent_applied",
+      "result_id": "trend-update-4b230854f55f7c1c5bbc",
+      "name": "Mazón"
+    },
+    {
+      "id": "red-review-f37f1bac1f47f4401887",
+      "revision": 0,
+      "outcome": "concurrent_applied",
+      "result_id": "trend-update-98ec35ffa6f6fecec2e7",
+      "name": "Óscar Puente"
+    },
     {
       "id": "listas-auto-bd7a19bcdf8898cf9d0d",
       "revision": 0,
       "outcome": "grouping_completed",
-      "created_ids": [
-        "listas-joint-70909e5711c6192a"
-      ],
-      "group_title": "Segundo aniversario de la DANA en Valencia"
+      "result_id": "listas-joint-70909e5711c6192a",
+      "name": "Segundo aniversario de la DANA en Valencia"
     }
   ],
   "last_run": {
     "run_id": "tr-1793465261954-manual",
     "status": "DONE",
     "started_at": "2026-10-31T16:49:19.923Z",
-    "finished_at": "2026-10-31T16:50:27Z",
+    "finished_at": "2026-10-31T16:51:50.015Z",
     "attempted": 1,
     "explained": 0,
     "updates": 0,
@@ -50,13 +62,13 @@
     "grouping_requests": 1,
     "groups_created": 1,
     "covered_by_existing": 0,
-    "concurrent_resolved": 0,
+    "concurrent_resolved": 2,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "1/1 en la pasada concurrente: agrupación Dana + Mazón aplicada como listas-joint-70909e5711c6192a. Este trabajo era la continuación generada por las dos revisiones de novedades del run previo tr-1793465096923-manual. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
+    "summary": "Pasada cerrada tras relectura final de main: 2 revisiones (Mazón y Óscar Puente) ya aplicadas por ejecución solapada y revalidadas; 1 agrupación automática procesada, creando la conjunta Dana + Mazón. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T16:49:19.923Z",
-  "last_completed_at": "2026-10-31T16:50:27Z"
+  "last_completed_at": "2026-10-31T16:51:50.015Z"
 }
