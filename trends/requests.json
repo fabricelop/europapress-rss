@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T08:48:54.149139+00:00",
+  "updated_at": "2026-10-31T08:50:01.404810+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T08:48:13.833378+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T08:50:01.404810+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -4005,7 +4005,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T08:48:13.833378+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T08:50:01.404810+00:00"
     },
     {
       "id": "22601009b977",
@@ -8728,7 +8728,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T08:48:13.833378+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T08:50:01.404810+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -59032,21 +59032,23 @@
       "new_facts": "Martín probó la moto en Sepang seis días después de la fractura de muñeca sufrida en Australia, pero se retiró del GP de Malasia al no poder frenar con suficiente fuerza.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "eb12ba2e1c9ab9b03bf108f46a45a82cf7c923dd5178ad6f87ccddad2ca49fd1",
+      "editorial_grouping_checked_at": "2026-10-31T08:50:01.404810+00:00"
     },
     {
       "id": "listas-auto-c437e58bb3a88a3182ad",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T08:48:54.149139+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -60639,7 +60641,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T08:50:01.404810+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "a101262fc60d275a8571e884774cbb70f4680edf74de4ccecb912893975d0174"
     }
   ],
   "count": 258
