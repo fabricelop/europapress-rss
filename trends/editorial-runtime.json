@@ -3,106 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793436338047-manual",
-  "previous_run_id": "tr-1793436499760-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T09:46:00+01:00",
-  "updated_at": "2026-10-31T09:51:00+01:00",
-  "finished_at": "2026-10-31T09:51:00+01:00",
-  "current": 4,
-  "total": 4,
+  "run_id": "tr-20261031T095500-manual",
+  "previous_run_id": "tr-1793436338047-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T09:55:00+01:00",
+  "updated_at": "2026-10-31T09:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-7023d998e92fe485eae5",
-    "red-review-2d47f02baa7db3c0fdca",
-    "red-review-55bc85950456f58b2531",
-    "listas-auto-c437e58bb3a88a3182ad"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada sobre estado vivo: 2 agrupaciones resueltas (0 grupos nuevos; Sprint cubierto por la conjunta ya publicada), Jorge Martín actualizado por episodio distinto y #DeViernes cerrado como stale tras validación JIT. Cola final 0. Sin ImageGen ni publicación.",
+  "summary": "Pasada manual iniciada; releyendo el estado autoritativo de main antes del cierre.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T09:46:00+01:00",
+      "at": "2026-10-31T09:55:00+01:00",
       "phase": "preparing",
-      "trend_id": "listas-auto-7023d998e92fe485eae5",
-      "title": "Agrupación automática de Listas",
-      "message": "Contrato y cola autoritativa releídos; 3 trabajos activos al inicio. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T09:47:40+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-7023d998e92fe485eae5",
-      "title": "Agrupación automática de Listas",
-      "message": "Resultado de agrupación persistido: Sprint cubierto por la ficha conjunta ya publicada; sin grupos nuevos."
-    },
-    {
-      "at": "2026-10-31T09:48:54+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-2d47f02baa7db3c0fdca",
-      "title": "Revisar novedades: #DeViernes",
-      "message": "La revisión dejó de estar vigente justo antes de persistir; el aplicador la cerró como stale. No se sobrescribió la ficha."
-    },
-    {
-      "at": "2026-10-31T09:48:54+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-55bc85950456f58b2531",
-      "title": "Revisar novedades: Jorge Martín",
-      "message": "Revisión aplicada como episodio distinto; creada trend-update-166ff7a9a68de41cad16."
-    },
-    {
-      "at": "2026-10-31T09:50:01+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-c437e58bb3a88a3182ad",
-      "title": "Agrupación automática de Listas",
-      "message": "Agrupación posterior aplicada con groups=[] y covered_by_existing=[]; Jorge Martín quedó editorial_grouping_state=cleared."
-    },
-    {
-      "at": "2026-10-31T09:51:00+01:00",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: no quedan preparing/update ni rewrite_pending. Cierre DONE."
+      "message": "Contrato y estado autoritativo en main releídos; comprobando si hay trabajo activo. Sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "listas-auto-7023d998e92fe485eae5",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": [
-        "fd04788626e5"
-      ],
-      "covered_by_id": "listas-joint-021a97e2e386c40f"
-    },
-    {
-      "id": "red-review-2d47f02baa7db3c0fdca",
-      "revision": 0,
-      "outcome": "stale",
-      "created_id": null
-    },
-    {
-      "id": "red-review-55bc85950456f58b2531",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-166ff7a9a68de41cad16"
-    },
-    {
-      "id": "listas-auto-c437e58bb3a88a3182ad",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": []
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793436338047-manual",
     "status": "DONE",
