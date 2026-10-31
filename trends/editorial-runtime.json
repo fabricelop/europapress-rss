@@ -3,25 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T1740+0100",
-  "previous_run_id": "tr-1793464160000-manual",
-  "status": "success",
+  "run_id": "tr-1793465096923-manual",
+  "previous_run_id": "tr-chat-20261031T1740+0100",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-10-31T16:40:00Z",
-  "updated_at": "2026-10-31T17:44:18+01:00",
+  "started_at": "2026-10-31T16:44:56.923Z",
+  "updated_at": "2026-10-31T16:44:56.923Z",
   "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "364e5f6525c7"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-27359ad47efeaa09b880",
+    "red-review-f37f1bac1f47f4401887"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-27359ad47efeaa09b880",
+    "red-review-f37f1bac1f47f4401887"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Preparando pasada editorial manual; verificando frescura del Top 30 y cola autoritativa.",
+  "summary": "Pasada editorial manual iniciada; cola autoritativa revalidada y ordenada según contrato.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -47,6 +51,6 @@
     "summary": "0/0 tras refresco manual completo del Top 30. GitHub Actions #606 terminó correctamente; captura 2026-10-31T17:29:11+01:00 y cola autoritativa final 0, sin preparing/update, rewrite_pending ni trabajos especiales pendientes. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T17:44:18+01:00",
+  "last_started_at": "2026-10-31T16:44:56.923Z",
   "last_completed_at": "2026-10-31T17:44:18+01:00"
 }
