@@ -3,59 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793458902852-manual",
-  "previous_run_id": "tr-chat-20261031T161000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T16:02:00+01:00",
-  "updated_at": "2026-10-31T16:13:00+01:00",
-  "finished_at": "2026-10-31T16:13:00+01:00",
-  "current": 4,
-  "total": 4,
+  "run_id": "tr-chat-20261031T162500+0100",
+  "previous_run_id": "tr-1793458902852-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T16:25:00+01:00",
+  "updated_at": "2026-10-31T16:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-3fe2d7f5aa381be2712e",
-    "red-review-b7217be18aec0c2ac0d2",
-    "red-review-a50c64618f8511bf1ef6",
-    "listas-auto-ceca7c4d7f7bfd9a5f3a"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "4/4. Dos agrupaciones resueltas (2 grupos creados en la primera y 0 en la derivada) y dos revisiones de novedades actualizadas (Urda y Dana). Dana quedó sin remate por sensibilidad. Cola final 0, sin reexplicaciones pendientes y sin ImageGen.",
+  "summary": "Preparando pasada editorial: cola inicial 0; revalidando main, reexplicaciones y resultados aplicados. Sin ImageGen.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre sin pendientes",
-  "final_outcomes": [
-    {
-      "id": "listas-auto-3fe2d7f5aa381be2712e",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 2
-    },
-    {
-      "id": "red-review-b7217be18aec0c2ac0d2",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-82a2495e41abdb35756f"
-    },
-    {
-      "id": "red-review-a50c64618f8511bf1ef6",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-07dc8165892e5d9a6b62",
-      "sensitivity_correction": "closer_removed"
-    },
-    {
-      "id": "listas-auto-ceca7c4d7f7bfd9a5f3a",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 0
-    }
-  ],
+  "activity": "Revalidando estado autoritativo",
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793458902852-manual",
     "status": "DONE",
@@ -75,6 +44,6 @@
     "summary": "4/4. Dos agrupaciones resueltas (2 grupos creados en la primera y 0 en la derivada) y dos revisiones de novedades actualizadas (Urda y Dana). Dana quedó sin remate por sensibilidad. Cola final 0, sin reexplicaciones pendientes y sin ImageGen."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T16:02:00+01:00",
+  "last_started_at": "2026-10-31T16:25:00+01:00",
   "last_completed_at": "2026-10-31T16:13:00+01:00"
 }
