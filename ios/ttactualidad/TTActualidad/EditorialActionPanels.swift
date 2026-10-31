@@ -29,7 +29,8 @@ struct EditorialActions: View {
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
-    @State private var confirmTrendToNews = false
+    @State private var confirmSiteAICatalogRemoval = false
+    @State private var siteAIDeletionCandidate: TrendItem? = nil
     @Environment(\.openURL) private var openURL
 
     private var title: String { news?.title ?? trend?.name ?? "" }
@@ -38,6 +39,15 @@ struct EditorialActions: View {
     private var revision: Int { news?.revision ?? trend?.revision ?? 0 }
     private var editorialID: String { news?.id ?? trend?.editorialID ?? "" }
     private var project: String { news == nil ? "ttendencias" : "ttittulares" }
+
+    // Covered entries use their editorial group, never rank or displayed name.
+    private var siteImageTarget: TrendItem? {
+        guard let displayed = trend else { return nil }
+        guard displayed.isCovered else { return displayed }
+        return store.snapshot.trendListas.first {
+            $0.editorialID == displayed.coveredByID && !$0.isCovered
+        }
+    }
 
     var body: some View {
         VStack(spacing: 7) {
@@ -199,13 +209,11 @@ struct EditorialActions: View {
                     }
                 }
             }
-            if trend != nil {
-                quickButton("Enviar a TTiTTulares", "newspaper") {
-                    if github.authenticated {
-                        confirmTrendToNews = true
-                    } else {
-                        showSettings = true
-                    }
+            if let target = siteImageTarget, target.siteImageURL != nil,
+               target.siteImageSHA256.count == 64 {
+                quickButton("Eliminar imagen IA", "trash", danger: true) {
+                    siteAIDeletionCandidate = target
+                    confirmSiteAICatalogRemoval = true
                 }
             }
             if !outcome.isEmpty {
@@ -219,14 +227,20 @@ struct EditorialActions: View {
                     .presentationDetents([.medium, .large])
             }
         }
-        .alert("¿Investigar esta tendencia como noticia?",
-               isPresented: $confirmTrendToNews) {
-            Button("Enviar a En elaboración") {
-                if let trend { sendTrendToNews(trend) }
+        .confirmationDialog(
+            "¿Retirar imagen IA de \(siteAIDeletionCandidate?.name ?? "esta tendencia")?",
+            isPresented: $confirmSiteAICatalogRemoval, titleVisibility: .visible
+        ) {
+            Button("Retirar solo del catálogo iPhone (Site pendiente)", role: .destructive) {
+                if let candidate = siteAIDeletionCandidate {
+                    Task { await removeSiteAICatalogEntry(candidate) }
+                }
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text("TTiTTulares investigará el posible hecho noticioso con fuentes independientes. La tendencia seguirá en TTendencias. No se publicará automáticamente.")
+            if let candidate = siteAIDeletionCandidate {
+                Text("ID: \(candidate.siteImageEditorialID), revisión \(candidate.siteImageRevision), SHA-256: \(candidate.siteImageSHA256). Esta operación elimina SOLO la referencia de GitHub tras verificarla. La imagen seguirá publicada en el Site: su conector no admite borrarla. No equivale a una eliminación completa.")
+            }
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?
@@ -259,45 +273,27 @@ struct EditorialActions: View {
         }
     }
 
-    private func sendTrendToNews(_ trend: TrendItem) {
-        // Stable UUID makes repeated taps/retries idempotent for the exact
-        // original editorial ID + revision. A later trend revision can be sent.
-        let bytes = SHA256.hash(data: Data(
-            ("ttactualidad-trend-news:" + trend.editorialID +
-             ":r" + String(trend.revision)).utf8))
-        var digits = Array(bytes.map { String(format: "%02x", $0) }.joined().prefix(32))
-        digits[12] = "4"
-        digits[16] = "8"
-        let requestID = [
-            String(digits[0..<8]), String(digits[8..<12]),
-            String(digits[12..<16]), String(digits[16..<20]),
-            String(digits[20..<32])
-        ].joined(separator: "-")
-        let manualID = "manual-" + requestID
-        if store.operationHistory.contains(where: {
-            $0.id == manualID && $0.status != "Rechazada"
-        }) {
-            outcome = "Esta tendencia ya se ha enviado a TTiTTulares. Consulta Órdenes pendientes."
+    private func removeSiteAICatalogEntry(_ candidate: TrendItem) async {
+        guard github.authenticated else { showSettings = true; return }
+        guard let imageURL = candidate.siteImageURL else {
+            outcome = "La imagen cambió. Actualiza antes de retirarla."
             return
         }
-        let headline = String(("Investigar noticia: " + trend.name).prefix(240))
-        let context = String(trend.explanation.prefix(280))
-        var instructions = "Origen TTendencias: ID \(trend.editorialID), revisión \(trend.revision), nombre \(trend.name), puesto \(trend.rank). "
-        instructions += "Investiga si hay un hecho noticioso reciente detrás de esta tendencia. "
-        instructions += "Comprueba fechas y fuentes independientes; el hashtag no demuestra que haya ocurrido. "
-        instructions += "Sin pruebas suficientes, no inventes una noticia ni la presentes como verificada."
-        if !context.isEmpty {
-            instructions += " Contexto preliminar, pendiente de contrastar: " + context
-        }
-        store.beginManualNews(requestID: requestID, title: headline,
-                              url: "", fromTrend: true)
-        outcome = "Solicitud provisional enviada a TTiTTulares. Consultar Órdenes pendientes."
-        Task {
-            let result = await github.addNews(
-                title: headline, url: "", instructions: instructions,
-                requestID: requestID, originTrend: trend)
-            store.completeManualNews(requestID: requestID, result: result,
-                                     detail: github.notice)
+        let result = await github.removeSiteAIImageFromCatalog(
+            id: candidate.siteImageEditorialID,
+            revision: candidate.siteImageRevision,
+            explanation: candidate.explanation,
+            explainedAt: candidate.siteImageExplainedAt,
+            imageURL: imageURL.absoluteString,
+            sha256: candidate.siteImageSHA256)
+        switch result {
+        case .verified:
+            await SiteAIImageCatalog.invalidateCache()
+            outcome = "CATÁLOGO APP: retirada verificada. SITE: borrado pendiente (sin API de eliminación). Actualiza la app; no se ha borrado el PNG del Site."
+        case .pending:
+            outcome = "CATÁLOGO APP: resultado sin verificar. SITE: sin cambios. " + github.notice
+        case .failed:
+            outcome = "No se ha confirmado la retirada. SITE: sin cambios. " + github.notice
         }
     }
 
