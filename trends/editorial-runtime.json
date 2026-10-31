@@ -4,39 +4,36 @@
   "version": 1,
   "canonical": true,
   "run_id": "tr-1793433487804-manual",
-  "previous_run_id": "tr-1793433005570-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T08:58:07.804+01:00",
-  "updated_at": "2026-10-31T09:06:30+01:00",
-  "finished_at": "2026-10-31T09:06:30+01:00",
+  "previous_run_id": "tr-1793433487804-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T09:20:00+01:00",
+  "updated_at": "2026-10-31T09:20:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "2d250d20786e",
+  "title": "#AgropopularTodosLosSantos",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "2d250d20786e"
+  ],
+  "remaining_active_ids": [
+    "2d250d20786e"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual 0/0 completada tras relectura final de main: no quedan preparing/update ni rewrite_pending. La pasada inmediatamente anterior quedó reconciliada y finalizada 10/10, incluida la agrupación de Sepang.",
+  "summary": "Pasada manual reiniciada sobre main: 1 entrada preparing detectada; investigación pendiente.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T08:59:30+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola inicial 0/0. Sin preparing/update ni rewrite_pending; se verificó la agrupación de Sepang."
-    },
-    {
-      "at": "2026-10-31T09:06:30+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main sin trabajo nuevo. Cierre DONE 0/0; sin ImageGen ni publicaciones."
+      "at": "2026-10-31T09:20:00+01:00",
+      "phase": "preparing",
+      "trend_id": "2d250d20786e",
+      "title": "#AgropopularTodosLosSantos",
+      "message": "Revalidada cola main: ID 2d250d20786e revisión 0 sigue preparing en puesto 3. Se inicia investigación; sin ImageGen."
     }
   ],
   "final_outcomes": [],
