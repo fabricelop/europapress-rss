@@ -5,23 +5,27 @@
   "canonical": true,
   "run_id": "tr-manual-20261031T074000+0100",
   "previous_run_id": "tr-manual-20261031T072500+0100",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-10-31T07:40:00+01:00",
-  "updated_at": "2026-10-31T07:40:00+01:00",
-  "finished_at": "2026-10-31T07:40:00+01:00",
+  "updated_at": "2026-10-31T07:40:59+01:00",
+  "finished_at": null,
   "last_started_at": "2026-10-31T07:40:00+01:00",
   "last_completed_at": "2026-10-31T07:40:00+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "36bc10edc55b",
+  "title": "Luka",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "36bc10edc55b"
+  ],
+  "remaining_active_ids": [
+    "36bc10edc55b"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 0/0: la cola autoritativa permaneció vacía tras la relectura final y no hay rewrite_pending vigente.",
+  "summary": "Entró Luka r0 durante la verificación final; pasada reabierta para procesarla.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -31,36 +35,36 @@
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual. Leídos contrato, configuración, ranking, cola, decisiones y estado editorial; cola inicial count=0."
+      "message": "Inicio de pasada manual; cola inicial count=0."
     },
     {
       "at": "2026-10-31T07:40:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Comprobando que no haya preparing/update, tareas especiales ni rewrite_pending vigentes antes del cierre."
+      "message": "La cola seguía vacía y no había rewrite_pending al primer cierre."
     },
     {
-      "at": "2026-10-31T07:40:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: editorial-queue.json mantiene count=0 e items=[]; requests.json no contiene rewrite_pending:true."
+      "at": "2026-10-31T07:40:59+01:00",
+      "phase": "preparing",
+      "trend_id": "36bc10edc55b",
+      "title": "Luka",
+      "message": "Apareció trabajo nuevo en main durante la verificación final: Luka r0, rank 30."
     },
     {
-      "at": "2026-10-31T07:40:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada editorial cerrada 0/0 sin incidencias."
+      "at": "2026-10-31T07:40:59+01:00",
+      "phase": "investigating",
+      "trend_id": "36bc10edc55b",
+      "title": "Luka",
+      "message": "Investigando el detonante actual de Luka con fuentes independientes antes de redactar."
     }
   ],
   "final_outcomes": [],
   "last_run": {
     "run_id": "tr-manual-20261031T074000+0100",
-    "status": "DONE",
-    "finished_at": "2026-10-31T07:40:00+01:00",
-    "attempted": 0,
+    "status": "RUNNING",
+    "finished_at": null,
+    "attempted": 1,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
@@ -68,7 +72,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
