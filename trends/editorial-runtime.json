@@ -3,57 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793476588400-manual",
-  "previous_run_id": "tr-1793475951279-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T20:56:28.400+01:00",
-  "updated_at": "2026-10-31T21:00:30+01:00",
-  "finished_at": "2026-10-31T21:00:30+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793476679503-manual",
+  "previous_run_id": "tr-1793476588400-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T21:00:00+01:00",
+  "updated_at": "2026-10-31T21:00:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-4d429a300cd33f3a1065",
-    "red-review-da11b21569b4ed3b362c",
-    "red-review-b99316165bec38aa28fd"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial completada 3/3 sobre los trabajos vigentes al inicio: 1 agrupación automática aplicada con 2 grupos y 2 revisiones de novedades sin cambio. La ejecución concurrente ya activa aplicó los outboxes; esta pasada revalidó cada (id,revision), evitó duplicados y verificó los resultados persistidos. Cola final 0 y sin rewrite_pending/reexplain vigentes. Sin ImageGen ni publicaciones.",
+  "summary": "Releyendo main y verificando que no queden preparing/update ni reexplicaciones pendientes. Sin ImageGen.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre verificado",
-  "final_outcomes": [
-    {
-      "id": "listas-auto-4d429a300cd33f3a1065",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": [
-        "listas-joint-31e87230d75c1ec0",
-        "listas-joint-b0ec777659e30af3"
-      ]
-    },
-    {
-      "id": "red-review-da11b21569b4ed3b362c",
-      "revision": 0,
-      "name": "Revisar novedades: Halloween",
-      "outcome": "unchanged"
-    },
-    {
-      "id": "red-review-b99316165bec38aa28fd",
-      "revision": 0,
-      "name": "Revisar novedades: Levante 0-2 Atlético",
-      "outcome": "unchanged"
-    }
-  ],
+  "activity": "Verificando cola editorial",
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T20:56:28.400+01:00",
+  "last_started_at": "2026-10-31T21:00:00+01:00",
   "last_completed_at": "2026-10-31T21:00:30+01:00",
   "last_run": {
     "run_id": "tr-1793476588400-manual",
