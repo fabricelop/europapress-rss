@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793490690446-manual",
-  "previous_run_id": "tr-1793490579211-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T00:51:00+01:00",
-  "updated_at": "2026-11-01T00:53:00+01:00",
-  "finished_at": "2026-11-01T00:53:00+01:00",
+  "run_id": "tr-1793490930000-manual",
+  "previous_run_id": "tr-1793490690446-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T00:55:30+01:00",
+  "updated_at": "2026-11-01T00:55:30+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -459,6 +459,11 @@
       "at": "2026-11-01T00:53:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0 para tr-1793490690446-manual tras revalidación JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:55:30+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-1793490930000-manual: refresco real del Top 30 solicitado; cola inicial 0. Revalidando main antes de procesar; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
