@@ -3,38 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T124000+0100",
+  "run_id": "tr-1793447280616-manual",
   "previous_run_id": "tr-chat-20261031T124000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T12:41:00+01:00",
-  "updated_at": "2026-10-31T12:47:00+01:00",
-  "finished_at": "2026-10-31T12:47:00+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T12:48:00+01:00",
+  "updated_at": "2026-10-31T12:48:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "ff856dec111d"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-421f110f2465ec63ca09",
+    "red-review-944c9fc791a8a09918c9",
+    "red-review-003b9df27f1dbd390d1f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-421f110f2465ec63ca09",
+    "red-review-944c9fc791a8a09918c9",
+    "red-review-003b9df27f1dbd390d1f"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "1/1 resuelto: Widilo r0 quedó explicado y sincronizado por cierre concurrente durante la revalidación JIT. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación.",
+  "summary": "Pasada editorial en curso: 3 trabajos activos revalidados en main. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "ff856dec111d",
-      "revision": 0,
-      "status": "explained",
-      "completion": "concurrent_jit",
-      "explained_at": "2026-10-31T12:44:00+01:00"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T124000+0100",
     "status": "DONE",
@@ -52,6 +50,6 @@
     "summary": "1/1 resuelto: Widilo r0 quedó explicado y sincronizado por cierre concurrente durante la revalidación JIT. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T11:25:00+01:00",
+  "last_started_at": "2026-10-31T12:48:00+01:00",
   "last_completed_at": "2026-10-31T12:47:00+01:00"
 }
