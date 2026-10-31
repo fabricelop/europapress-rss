@@ -5,23 +5,31 @@
   "canonical": true,
   "run_id": "tr-1793471162889-manual",
   "previous_run_id": "tr-20261031T191000+0100-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-10-31T19:27:00+01:00",
-  "updated_at": "2026-10-31T19:31:30+01:00",
-  "finished_at": "2026-10-31T19:31:30+01:00",
+  "updated_at": "2026-10-31T19:32:00+01:00",
+  "finished_at": null,
   "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 4,
+  "trend_id": "listas-auto-b11174abc9ed9f0d2413",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "ab65bc5a5cf7"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-b11174abc9ed9f0d2413",
+    "red-review-acde095dbdf61843392f",
+    "red-review-ab13786d10b53ca8da4d"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-b11174abc9ed9f0d2413",
+    "red-review-acde095dbdf61843392f",
+    "red-review-ab13786d10b53ca8da4d"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 1/1. Halloween ab65bc5a5cf7 r0 quedó explicado y verificado en requests + Explicadas; cola final 0 y sin rewrite_pending. La escritura directa encontró un error de transporte h2, tras el cual se releyó main y se confirmó que el aplicador editorial había cerrado correctamente la misma revisión. Sin ImageGen ni publicación.",
+  "summary": "Halloween ya cerrado 1/1; entraron 3 trabajos nuevos durante la relectura final. Se reabre la pasada para procesarlos sin ImageGen.",
   "incident_count": 1,
   "incidents": [
     {
@@ -33,7 +41,7 @@
     }
   ],
   "error": null,
-  "activity": "Cierre verificado",
+  "activity": "Procesando trabajo nuevo detectado en cierre",
   "final_outcomes": [
     {
       "id": "ab65bc5a5cf7",
