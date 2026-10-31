@@ -6,7 +6,7 @@ try{
  fs.copyFileSync(path.join(__dirname,'../TTendenciasWebImages.cjs'),path.join(root,'exporter.cjs'));
  const {enroll}=require(path.join(root,'exporter.cjs'));
  const secret='test-only-'+require('node:crypto').randomBytes(32).toString('hex');
- const input={job:{command_id:'cmd-test',target_id:'tt-test',revision:1,context_snapshot:{explanation:'Texto de prueba'}},commandId:'cmd-test',targetId:'tt-test',conversationUrl:'https://chatgpt.com/c/abc-123',secret};
+ const input={startPublisher:false,job:{command_id:'cmd-test',target_id:'tt-test',revision:1,context_snapshot:{explanation:'Texto de prueba'}},commandId:'cmd-test',targetId:'tt-test',conversationUrl:'https://chatgpt.com/c/abc-123',secret};
  enroll(input);
  const file=path.join(root,'ttendencias-web-images/cmd-test.json'),text=fs.readFileSync(file,'utf8'),row=JSON.parse(text);
  assert.ok(!text.includes(secret));assert.ok(row.secret_dpapi);assert.equal(row.revision,1);

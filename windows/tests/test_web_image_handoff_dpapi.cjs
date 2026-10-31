@@ -6,7 +6,7 @@ const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),asse
   fs.copyFileSync(path.join(__dirname,'../TTendenciasWebImages.cjs'),path.join(root,'helper.cjs'));
   const helper=require(path.join(root,'helper.cjs'));
   const job={target_id:'trend-test',command_id:'cmd-pending',revision:0,context_snapshot:{explanation:'Texto exacto'}};
-  const input={job,targetId:job.target_id,commandId:job.command_id,browserTargetId:'own-pinned-target',secret:'private-test-'+require('node:crypto').randomBytes(32).toString('hex')};
+  const input={startPublisher:false,job,targetId:job.target_id,commandId:job.command_id,browserTargetId:'own-pinned-target',secret:'private-test-'+require('node:crypto').randomBytes(32).toString('hex')};
   helper.enroll(input);
   const file=path.join(root,'ttendencias-web-images/cmd-pending.json');
   const pending=JSON.parse(fs.readFileSync(file,'utf8'));

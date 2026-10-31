@@ -12,6 +12,7 @@ on:
       - windows/tests/test_image_web_independence.cjs
       - windows/tests/test_trends_sites_return.cjs
       - windows/tests/test_web_images_passive.cjs
+      - windows/tests/test_web_image_delivery_start.cjs
       - tests/ttendencias-web-images.test.cjs
       - vercel-webhook/lib/ttendencias-web-image-receipt.js
       - vercel-webhook/lib/ttendencias-run-handler.js
@@ -38,7 +39,7 @@ jobs:
         with:
           node-version: '22'
       - name: Identity and raster selection
-        run: node --test tests/ttendencias-web-images.test.cjs windows/tests/test_web_images.cjs windows/tests/test_web_images_passive.cjs
+        run: node --test tests/ttendencias-web-images.test.cjs windows/tests/test_web_images.cjs windows/tests/test_web_images_passive.cjs windows/tests/test_web_image_delivery_start.cjs
       - name: Bridge launch regressions
         run: |
           node --test windows/tests/test_trends_sites_return.cjs

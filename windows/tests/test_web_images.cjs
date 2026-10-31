@@ -35,3 +35,12 @@ test('the currently open image has priority without starving the remaining fair 
  const old={task:{conversation_url:'https://chatgpt.com/c/old-1'}},fresh={task:{conversation_url:'https://chatgpt.com/c/abc-123'}},other={task:{conversation_url:'https://chatgpt.com/c/old-2'}};
  assert.deepEqual(prioritizeOpenConversation([old,fresh,other],[{type:'page',url:fresh.task.conversation_url}]),[fresh,old,other]);
 });
+test('newly enrolled command keeps the retained tab window even before its URL is recorded',()=>{
+ const old=Array.from({length:40},(_,i)=>({task:{command_id:'old-'+i,conversation_url:null,browser_target_id:'closed-'+i}}));
+ const urda={task:{command_id:'urda-command',conversation_url:null,browser_target_id:'pinned-live'}};
+ const queue=prioritizeOpenConversation([...old,urda],[{id:'pinned-live',type:'page',url:'https://chatgpt.com/'}]);
+ assert.equal(queue[0],urda);
+ assert.deepEqual(queue.slice(1),old);
+ // A similarly named title or a different browser target is never identity.
+ assert.equal(prioritizeOpenConversation([...old,urda],[{id:'other',type:'page',title:'Urda',url:'https://chatgpt.com/'}])[0],old[0]);
+});

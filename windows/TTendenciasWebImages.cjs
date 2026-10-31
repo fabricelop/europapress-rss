@@ -5,10 +5,11 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
-const {execFileSync}=require('node:child_process');
+const {execFileSync,spawn}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
 const WEB_CAPTURE_VERSION=5;
+const WEB_DELIVERY_VERSION=6;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -23,7 +24,20 @@ function protect(value,decode=false){
   return execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',code],{input:value,encoding:'utf8',windowsHide:true,timeout:15000,maxBuffer:65536}).trim();
 }
 function atomic(file,value){const tmp=file+'.'+process.pid+'.tmp';fs.writeFileSync(tmp,JSON.stringify(value,null,2),{mode:0o600});fs.renameSync(tmp,file);}
-function enroll({job,commandId,targetId,conversationUrl,browserTargetId,secret}){
+// Only starts the separate consumer AFTER enrollment. No generation command,
+// browser navigation or upload secret is passed to the child process.
+function wakePublisher(){
+  try{
+    const lock=JSON.parse(fs.readFileSync(path.join(ROOT,'watch.lock'),'utf8'));
+    if(Date.now()-Number(lock.at)<360000){process.kill(lock.pid,0);return;}
+  }catch{}
+  try{
+    const env={...process.env};delete env.TT_IMAGE_UPLOAD_SECRET;
+    const child=spawn(process.execPath,[__filename,'--watch'],{detached:true,stdio:'ignore',windowsHide:true,env});
+    child.on('error',()=>{});child.unref();
+  }catch{}
+}
+function enroll({job,commandId,targetId,conversationUrl,browserTargetId,secret,startPublisher=true}){
   const url=chatURL(conversationUrl);
   if((!url&&!safeID(browserTargetId))||!safeID(targetId)||!safeID(commandId)||String(job.command_id)!==commandId||String(job.target_id||job.trend_id)!==targetId||String(secret||'').length<32)throw Error('invalid web-image identity');
   const explanation=String(job.context_snapshot?.explanation||'').trim();
@@ -32,11 +46,12 @@ function enroll({job,commandId,targetId,conversationUrl,browserTargetId,secret})
   if(fs.existsSync(file)){
     const old=JSON.parse(fs.readFileSync(file,'utf8'));
     if(!old.conversation_url&&url&&old.target_id===targetId&&old.command_id===commandId){atomic(file,{...old,conversation_url:url});}
-    return;
+    if(startPublisher)wakePublisher();return;
   }
   atomic(file,{version:1,target_id:targetId,command_id:commandId,revision:Number(job.revision||0),conversation_url:url,browser_target_id:String(browserTargetId||''),
     explanation_sha256:crypto.createHash('sha256').update(explanation).digest('hex'),
     secret_dpapi:protect(secret),created_at:new Date().toISOString(),status:'waiting',attempts:0});
+  if(startPublisher)wakePublisher();
 }
 class CDP{
   constructor(url){this.url=url;this.seq=0;this.pending=new Map();}
@@ -229,7 +244,13 @@ function prioritizeOpenConversation(tasks,pages){
   // Opportunistic read of the completed current conversation before the
   // generator reuses its tab. This changes priority, never identity checks.
   const open=new Set(pages.filter(x=>x.type==='page').map(x=>chatURL(x.url)).filter(Boolean));
-  return tasks.map((entry,index)=>({entry,index,open:open.has(entry.task.conversation_url)}))
+  const targets=new Set(pages.filter(x=>x.type==='page').map(x=>String(x.id||'')).filter(Boolean));
+  // The conversation URL often has not settled at enrollment. Prioritizing
+  // only saved URLs let older waiting jobs consume the entire retained-tab
+  // window. A pinned target is scheduling evidence ONLY: consume still proves
+  // the exact command in that page before accepting its URL or raster.
+  return tasks.map((entry,index)=>({entry,index,open:open.has(entry.task.conversation_url)||
+    (!chatURL(entry.task.conversation_url)&&targets.has(String(entry.task.browser_target_id||'')))}))
     .sort((a,b)=>Number(b.open)-Number(a.open)||a.index-b.index).map(x=>x.entry);
 }
 async function once(){
@@ -278,5 +299,22 @@ async function once(){
     }
   }finally{try{fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume};
-if(require.main===module)once().catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
+async function watch(){
+  fs.mkdirSync(ROOT,{recursive:true});const lock=path.join(ROOT,'watch.lock');
+  try{
+    console.log('TTENDENCIAS_WEB_IMAGE delivery watcher v'+WEB_DELIVERY_VERSION);
+    const fd=fs.openSync(lock,'wx');fs.writeSync(fd,JSON.stringify({pid:process.pid,at:Date.now()}));fs.closeSync(fd);
+  }catch{
+    try{const old=JSON.parse(fs.readFileSync(lock,'utf8'));process.kill(old.pid,0);return;}
+    catch{try{fs.unlinkSync(lock);}catch{}return;}
+  }
+  try{
+    const deadline=Date.now()+300000;
+    while(Date.now()<deadline){
+      try{await once();}catch(e){console.error('TTENDENCIAS_WEB_IMAGE delivery retry deferred');}
+      await sleep(5000);
+    }
+  }finally{try{const own=JSON.parse(fs.readFileSync(lock,'utf8'));if(own.pid===process.pid)fs.unlinkSync(lock);}catch{}}
+}
+module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once};
+if(require.main===module)(process.argv.includes('--watch')?watch():once()).catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
