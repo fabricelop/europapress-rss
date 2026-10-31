@@ -42,7 +42,34 @@ class CDP{
   async evaluate(expression){const r=await this.call('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error('Image inspection failed');return r.result?.value;}
   close(){for(const p of this.pending.values()){clearTimeout(p.timer);p.bad(Error('CDP closed'));}this.pending.clear();try{this.ws?.close();}catch{}}
 }
-async function http(url,options={}){const r=await fetch(url,{...options,signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('HTTP '+r.status);return r.json();}
+function networkStage(url){
+  if(url.includes('127.0.0.1:9234'))return url.includes('/json/version')?'relay_version':'relay_targets';
+  if(url.includes('127.0.0.1:9223'))return 'conversation_targets';
+  if(url.includes('image-runs/jobs/')||url.includes('view=image-job'))return 'image_job';
+  if(url.includes('telegram-manual-explained')||url.includes('view=state'))return 'editorial_state';
+  return 'receiver';
+}
+async function http(url,options={}){
+  try{const r=await fetch(url,{...options,signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('HTTP_'+r.status);return await r.json();}
+  catch(e){const code=String(e?.cause?.code||e?.message||'unavailable').replace(/[^A-Za-z0-9_ -]/g,'').slice(0,70);throw Error(networkStage(url)+'_'+code);}
+}
+async function readImageJob(task){
+  let last;
+  for(const url of [
+    'https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/'+encodeURIComponent(task.target_id)+'.json?t='+Date.now(),
+    'https://tt-control.fabricelop.workers.dev/api/ttendencias-run-status?view=image-job&strong=1&id='+encodeURIComponent(task.target_id)
+  ]){try{const doc=await http(url);if(doc.command_id&&doc.context_snapshot){if(sameContext(task,doc))return doc;last=doc;}}catch(e){last=e;}}
+  if(last&&!(last instanceof Error))return last;
+  throw last||Error('image_job_unavailable');
+}
+async function readEditorialState(){
+  try{return await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/telegram-manual-explained.json?t='+Date.now());}
+  catch{
+    const state=await http('https://tt-control.fabricelop.workers.dev/api/ttendencias-control?view=state&fresh=1');
+    if(!Array.isArray(state.explained?.items))throw Error('editorial_state_invalid');
+    return state.explained;
+  }
+}
 // The user turn carrying this exact command is the only permitted image scope.
 // Rejects a later user turn, avatars, previews and unfinished generations.
 function rasterProbe(command){return `(async()=>{
@@ -65,7 +92,7 @@ function rasterProbe(command){return `(async()=>{
 })()`;}
 function sameContext(task,job){return String(job.command_id||'')===task.command_id&&String(job.target_id||job.trend_id||'')===task.target_id&&Number(job.revision||0)===task.revision&&crypto.createHash('sha256').update(String(job.context_snapshot?.explanation||'').trim()).digest('hex')===task.explanation_sha256;}
 async function confirmedInMain(task,job){
-  const manual=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/telegram-manual-explained.json?t='+Date.now());
+  const manual=await readEditorialState();
   const current=(manual.items||[]).filter(x=>String(x.id||'')===task.target_id)
     .sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
   if(!current||Number(current.revision||0)!==task.revision||
@@ -98,7 +125,7 @@ async function rememberConversation({job,commandId,targetId,browserTargetId,secr
   }catch{}
 }
 async function consume(task){
-  const job=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/'+encodeURIComponent(task.target_id)+'.json?t='+Date.now());
+  const job=await readImageJob(task);
   if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
   if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at)return confirmedInMain(task,job);
   if(['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))return {status:'obsolete',reason:'image_job_terminal'};
@@ -135,9 +162,9 @@ async function consume(task){
     for(let n=0;n<6;n++){await sleep(1500);raster=await cdp.evaluate(rasterProbe(task.command_id));if(raster?.ready)break;}
     if(!raster?.ready)return {status:'waiting',reason:raster?.reason||'raster_not_ready'};
     // Fresh job identity check immediately before sending raster bytes.
-    const fresh=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/jobs/'+encodeURIComponent(task.target_id)+'.json?t='+Date.now());
+    const fresh=await readImageJob(task);
     if(!sameContext(task,fresh))return {status:'obsolete'};
-    const manual=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/telegram-manual-explained.json?t='+Date.now());
+    const manual=await readEditorialState();
     const current=(manual.items||[]).filter(x=>String(x.id)===task.target_id).sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
     if(!current||Number(current.revision||0)!==task.revision||crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')!==task.explanation_sha256)return {status:'obsolete'};
     const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),body:JSON.stringify({task:'web_image_upload',context_explanation_sha256:task.explanation_sha256,target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),image_data_url:raster.dataUrl,capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
@@ -204,5 +231,5 @@ async function once(){
     }
   }finally{try{fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rememberConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,consume};
+module.exports={chatURL,enroll,rememberConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,readImageJob,readEditorialState,consume};
 if(require.main===module)once().catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});

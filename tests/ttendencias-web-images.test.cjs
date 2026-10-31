@@ -15,7 +15,7 @@ async function withDocuments(t,j,m,fn){
   const calls=[];
   global.fetch=async url=>{
     calls.push(String(url));
-    const doc=String(url).includes('image-runs/jobs/')?j:m;
+    const doc=(String(url).includes('image-runs/jobs/')||String(url).includes('view=image-job'))?j:m;
     return {ok:true,status:200,json:async()=>doc};
   };
   try{await fn(calls);}finally{global.fetch=original;}
@@ -56,7 +56,8 @@ test('un job no coincidente no puede abrir el navegador ni subir un raster',asyn
   const j=job();j.command_id='tr-img-other';
   await withDocuments(t,j,manual(),async calls=>{
     assert.equal((await consume(task())).status,'obsolete');
-    assert.equal(calls.length,1);
+    assert.equal(calls.length,2);
+    assert.ok(calls.every(x=>!x.includes('127.0.0.1')));
   });
 });
 test('la cola atiende otros trabajos aunque uno siga esperando imagen',()=>{
@@ -82,4 +83,14 @@ test('an uncertain ERROR with a saved handoff is kept pending while receiver upd
  const j=job();j.status='ERROR';delete j.upload_sha256;
  const q={...task(),conversation_url:'https://chatgpt.com/c/abc-123'};delete q.upload_accepted_at;
  await withDocuments(null,j,manual(),async()=>{const result=await consume(q);assert.equal(result.status,'waiting');assert.equal(result.reason,'receiver_update_pending');});
+});
+
+test('network failure reading RAW falls back to the existing strong receiver without bypassing identity',async()=>{
+ const {readImageJob,readEditorialState}=require('../windows/TTendenciasWebImages.cjs');const original=global.fetch;const q=task();
+ global.fetch=async url=>{if(String(url).startsWith('https://raw.githubusercontent.com/'))throw new TypeError('fetch failed');return {ok:true,json:async()=>String(url).includes('view=image-job')?job():{explained:manual()}};};
+ try{assert.ok(sameContext(q,await readImageJob(q)));assert.equal((await readEditorialState()).items[0].id,ID);}finally{global.fetch=original;}
+});
+test('network failures identify the stopped stage without leaking request URLs',async()=>{
+ const {readImageJob}=require('../windows/TTendenciasWebImages.cjs');const original=global.fetch;global.fetch=async()=>{const e=new TypeError('fetch failed');e.cause={code:'ECONNREFUSED'};throw e;};
+ try{await assert.rejects(()=>readImageJob(task()),/image_job_ECONNREFUSED/);}finally{global.fetch=original;}
 });
