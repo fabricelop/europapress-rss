@@ -94,3 +94,19 @@ test('network failures identify the stopped stage without leaking request URLs',
  const {readImageJob}=require('../windows/TTendenciasWebImages.cjs');const original=global.fetch;global.fetch=async()=>{const e=new TypeError('fetch failed');e.cause={code:'ECONNREFUSED'};throw e;};
  try{await assert.rejects(()=>readImageJob(task()),/image_job_ECONNREFUSED/);}finally{global.fetch=original;}
 });
+
+test('an unavailable 9234 relay falls back to existing 9223 using only discovery GETs',async()=>{
+ const {selectExistingBrowser}=require('../windows/TTendenciasWebImages.cjs');const original=global.fetch,calls=[];
+ global.fetch=async(url,opts)=>{calls.push(String(url));assert.equal(opts.method,undefined);if(String(url).includes(':9234')){const e=new TypeError('fetch failed');e.cause={code:'ECONNREFUSED'};throw e;}return {ok:true,json:async()=>String(url).endsWith('/json/version')?{webSocketDebuggerUrl:'ws://127.0.0.1:9223/devtools/browser/test'}:[{type:'page',url:'https://chatgpt.com/c/abc-123'}]};};
+ try{const selected=await selectExistingBrowser();assert.equal(selected.source,'generator_9223');assert.equal(selected.base,'http://127.0.0.1:9223');assert.deepEqual(calls,['http://127.0.0.1:9234/json/version','http://127.0.0.1:9223/json/version','http://127.0.0.1:9223/json/list']);}finally{global.fetch=original;}
+});
+test('a healthy relay remains preferred and never contacts the generator',async()=>{
+ const {selectExistingBrowser}=require('../windows/TTendenciasWebImages.cjs');const original=global.fetch;
+ global.fetch=async url=>{assert.ok(String(url).startsWith('http://127.0.0.1:9234/'));return {ok:true,json:async()=>String(url).endsWith('/json/version')?{webSocketDebuggerUrl:'ws://127.0.0.1:9234/devtools/browser/test'}:[{type:'page',url:'https://chatgpt.com/'}]};};
+ try{assert.equal((await selectExistingBrowser()).source,'relay_9234');}finally{global.fetch=original;}
+});
+test('neither unavailable browser starts a process or opens an arbitrary conversation',async()=>{
+ const {selectExistingBrowser}=require('../windows/TTendenciasWebImages.cjs');const original=global.fetch,calls=[];
+ global.fetch=async url=>{calls.push(String(url));const e=new TypeError('fetch failed');e.cause={code:'ECONNREFUSED'};throw e;};
+ try{await assert.rejects(()=>selectExistingBrowser(),/relay_version_ECONNREFUSED;generator_version_ECONNREFUSED/);assert.equal(calls.length,2);assert.ok(calls.every(x=>x.endsWith('/json/version')));}finally{global.fetch=original;}
+});

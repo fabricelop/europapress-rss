@@ -1,11 +1,13 @@
 'use strict';
 // Consumes the EXISTING, command-scoped ImageGen result. Never submits prompts.
-// Reads only its own temporary tab on the relay's already-running Chrome 9234.
+// Reads only its own temporary tab in an already-running authenticated browser.
+// Prefer the relay; if unavailable, use the existing generator browser unchanged.
 const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
+const GENERATOR_BASE='http://127.0.0.1:9223';
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -44,7 +46,7 @@ class CDP{
 }
 function networkStage(url){
   if(url.includes('127.0.0.1:9234'))return url.includes('/json/version')?'relay_version':'relay_targets';
-  if(url.includes('127.0.0.1:9223'))return 'conversation_targets';
+  if(url.includes('127.0.0.1:9223'))return url.includes('/json/version')?'generator_version':'generator_targets';
   if(url.includes('image-runs/jobs/')||url.includes('view=image-job'))return 'image_job';
   if(url.includes('telegram-manual-explained')||url.includes('view=state'))return 'editorial_state';
   return 'receiver';
@@ -69,6 +71,19 @@ async function readEditorialState(){
     if(!Array.isArray(state.explained?.items))throw Error('editorial_state_invalid');
     return state.explained;
   }
+}
+async function selectExistingBrowser(){
+  const failures=[];
+  for(const [base,source] of [[BASE,'relay_9234'],[GENERATOR_BASE,'generator_9223']]){
+    try{
+      const browser=await http(base+'/json/version');
+      if(!browser.webSocketDebuggerUrl)throw Error(source+'_debugger_missing');
+      const pages=await http(base+'/json/list');
+      if(!Array.isArray(pages)||!pages.some(x=>x.type==='page'&&/^https:\/\/chatgpt\.com\//.test(x.url||'')))throw Error(source+'_chat_page_missing');
+      return {base,source,browser};
+    }catch(e){failures.push(String(e.message||e));}
+  }
+  throw Error(failures.join(';').slice(0,140));
 }
 // The user turn carrying this exact command is the only permitted image scope.
 // Rejects a later user turn, avatars, previews and unfinished generations.
@@ -144,16 +159,15 @@ async function consume(task){
     const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttendencias-run-status?view=web-image-contract');
     if(contract.web_image_receipt!==2)return {status:'waiting',reason:'receiver_update_pending'};
   }catch{return {status:'waiting',reason:'receiver_update_pending'};}
-  // Verify the existing relay browser is reachable; never start or restart Chrome.
-  await http(BASE+'/json/version');
-  const pages=await http(BASE+'/json/list');
-  if(!pages.some(x=>x.type==='page'&&/^https:\/\/chatgpt\.com\//.test(x.url||'')))throw Error('relay_browser_not_signed_in_or_missing');
-  const browser=await http(BASE+'/json/version');let browserCDP,cdp,ownedTarget;
+  // Both profiles already belong to the pipeline. Never launch/restart Chrome,
+  // navigate the fixed generator tab, or alter TTImages/relay configuration.
+  const capture=await selectExistingBrowser();
+  const browser=capture.browser;let browserCDP,cdp,ownedTarget;
   try{
     browserCDP=new CDP(browser.webSocketDebuggerUrl);await browserCDP.open();
     const made=await browserCDP.call('Target.createTarget',{url:task.conversation_url,background:true});ownedTarget=made.targetId;
     for(let n=0;n<5;n++){
-      const targets=await http(BASE+'/json/list');const own=targets.find(x=>x.id===ownedTarget);
+      const targets=await http(capture.base+'/json/list');const own=targets.find(x=>x.id===ownedTarget);
       if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
       await sleep(500);
     }
@@ -169,7 +183,7 @@ async function consume(task){
     if(!current||Number(current.revision||0)!==task.revision||crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')!==task.explanation_sha256)return {status:'obsolete'};
     const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),body:JSON.stringify({task:'web_image_upload',context_explanation_sha256:task.explanation_sha256,target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),image_data_url:raster.dataUrl,capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
     const result=await response.json();
-    if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',sha256:String(result.sha256||''),image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString()};
+    if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',capture_browser:capture.source,sha256:String(result.sha256||''),image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString()};
     if([401,409,422].includes(response.status))return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
     throw Error('image_upload_HTTP_'+response.status);
   }finally{
@@ -231,5 +245,5 @@ async function once(){
     }
   }finally{try{fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rememberConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,readImageJob,readEditorialState,consume};
+module.exports={chatURL,enroll,rememberConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,readImageJob,readEditorialState,selectExistingBrowser,consume};
 if(require.main===module)once().catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
