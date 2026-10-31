@@ -6,30 +6,33 @@
   "run_id": "tr-chat-20261031T2340+0100",
   "previous_run_id": "tr-1793484863722-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-31T23:40:00+01:00",
-  "updated_at": "2026-10-31T23:40:00+01:00",
+  "updated_at": "2026-10-31T23:50:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 4,
-  "trend_id": null,
-  "title": null,
+  "current": 4,
+  "total": 7,
+  "trend_id": "b15f4091648a",
+  "title": "Gavi",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "3fb6181ca88d",
     "79f4f7589726",
     "74d936730a36",
     "0bea704023b8"
+  ],
+  "remaining_ids": [
+    "b15f4091648a",
+    "2cb310a0aa34",
+    "ab43e85d3191"
   ],
   "remaining_active_ids": [
-    "3fb6181ca88d",
-    "79f4f7589726",
-    "74d936730a36",
-    "0bea704023b8"
+    "b15f4091648a",
+    "2cb310a0aa34",
+    "ab43e85d3191"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Inicio manual: 4 trabajos preparing en cola; revalidación JIT e investigación actual en curso. Sin ImageGen ni publicación.",
+  "summary": "4 resultados enviados al aplicador; 3 trabajos nuevos incorporados y en investigación. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -244,6 +247,13 @@
       "at": "2026-10-31T23:40:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-chat-20261031T2340+0100: 4 trabajos preparing vigentes en main (Mariano, Honda, Aston Martin, #frac1). Revalidando id+revision antes de investigar; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T23:50:00+01:00",
+      "phase": "investigating",
+      "trend_id": "b15f4091648a",
+      "title": "Gavi",
+      "message": "Entraron 3 trabajos nuevos durante la pasada. Gavi, Tobajas y José Muñoz se procesan en la misma ejecución; Tobajas verificado, Gavi con contexto de suplencia y José Muñoz sin detonante causal único acreditado."
     }
   ],
   "final_outcomes": [
