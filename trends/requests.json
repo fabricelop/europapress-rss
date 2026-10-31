@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T21:10:24.419477+00:00",
+  "updated_at": "2026-10-31T21:10:53.650017+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -100669,15 +100669,15 @@
       "id": "4eefe2099a0f",
       "name": "Mónaco",
       "rank": 14,
-      "revision": 1,
-      "status": "explained",
-      "requested_at": "2026-10-31T20:16:15.583905+00:00",
-      "updated_at": "2026-10-31T21:18:02+01:00",
+      "revision": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-31T21:10:53.650017+00:00",
+      "updated_at": "2026-10-31T21:10:53.650017+00:00",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
       "auto_queued": false,
-      "request_source": "ttactualidad_direct_rework",
+      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
       "disable_ai_image": false,
       "rewrite_with_image": true,
@@ -100689,45 +100689,24 @@
       "requested_together": [
         "Mónaco"
       ],
-      "rewrite_instruction": "Elaboración desde cero por información desfasada. Investiga hechos y marcador o resultado ACTUALES antes de escribir. Redacta un texto factual nuevo y un remate nuevo. Busca y valida una foto de archivo nueva para esta revisión. No reutilices texto, remate ni imágenes de revisiones anteriores.",
-      "explained_at": "2026-10-31T21:18:02+01:00",
-      "last_attempt_at": "2026-10-31T21:18:02+01:00",
-      "explanation": "TT#14 Mónaco aparece entre las tendencias sin un detonante único confirmado. El AS Monaco no juega hoy: su último partido fue 1-1 ante el Lille el 25 de octubre y visita mañana al Paris FC.\n#ASMonaco #Ligue1\n🌶️ El nombre corre hoy más que el calendario del club.",
-      "closer_text": "🌶️ El nombre corre hoy más que el calendario del club.",
-      "rank_at_explanation": 14,
-      "category": "Deportes",
-      "source": "editorial_outbox_applied",
-      "editorial_engine": "chatgpt-automation-outbox",
-      "verification_sources": [
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nErigida si no es por las manifestaciones.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
         {
-          "url": "https://www.asmonaco.com/en/pros/resultats"
-        },
-        {
-          "url": "https://www.goal.com/es/equipo/monaco/partidos-resultados/4t4hod56fsj7utpjdor8so5q6"
-        },
-        {
-          "url": "https://jadwallive.com/es/match/1552807"
+          "at": "2026-10-31T21:10:53.650017+00:00",
+          "source_revision": 1,
+          "text": "Erigida si no es por las manifestaciones.",
+          "verification": "unverified_editor_context"
         }
       ],
-      "news_note": "Revisión desde cero: no se localiza detonante único actual. Se corrige con el último resultado confirmado (1-1 ante Lille, 25/10) y el próximo partido ante Paris FC el 1/11.",
-      "group_id": "grp-4eefe2099a0f",
-      "explanation_group_id": "grp-4eefe2099a0f",
-      "group_title": "Mónaco",
-      "group_leader_id": "4eefe2099a0f",
-      "trend_names": [
-        "Mónaco"
-      ],
-      "grouped_member_revisions": [
+      "investigation_history": [
         {
-          "id": "4eefe2099a0f",
-          "revision": 1
+          "revision": 1,
+          "status": "explained",
+          "problem_reason": "",
+          "last_attempt_at": "2026-10-31T21:18:02+01:00"
         }
       ],
-      "editorial_grouping_state": "cleared",
-      "image_status": "pending",
-      "telegram_package_status": "pending",
-      "editorial_grouping_fingerprint": "859957481257f2b1ca36a188e798ae1d8c285c3c33c68ca6e2a087f7eb959fa3",
-      "editorial_grouping_checked_at": "2026-10-31T20:47:47.438287+00:00"
+      "hints_verification_status": "unverified"
     },
     {
       "id": "9f5502207ede",
