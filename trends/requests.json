@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T00:10:59+01:00",
+  "updated_at": "2026-10-31T23:18:41.333128+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -121359,7 +121359,7 @@
       "id": "79f4f7589726",
       "name": "Honda",
       "rank": 12,
-      "status": "explained",
+      "status": "deleted",
       "requested_at": "2026-10-31T23:31:11+01:00",
       "revision": 0,
       "reexplain": false,
@@ -121424,13 +121424,16 @@
       "covered_at": "2026-10-31T22:52:43.501131+00:00",
       "grouping_request_id": "listas-auto-7466c03e6699a628e806",
       "editorial_grouping_fingerprint": "e3ef7c557b2f8703947080d0f4133f5ac00dc3472cbb067d4c1c1147f6d3e10a",
-      "editorial_grouping_checked_at": "2026-10-31T22:52:43.501131+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T22:52:43.501131+00:00",
+      "telegram_package_status": "deleted",
+      "deleted_at": "2026-10-31T23:18:41.333128+00:00",
+      "decision_source": "listas_grouping_cleanup"
     },
     {
       "id": "74d936730a36",
       "name": "Aston Martin",
       "rank": 13,
-      "status": "explained",
+      "status": "deleted",
       "requested_at": "2026-10-31T23:31:11+01:00",
       "revision": 0,
       "reexplain": false,
@@ -121495,7 +121498,10 @@
       "covered_at": "2026-10-31T22:52:43.501131+00:00",
       "grouping_request_id": "listas-auto-7466c03e6699a628e806",
       "editorial_grouping_fingerprint": "2130cc1c0e4e66892f79842e3f546d2897e01a4de416ebf158650617576aa51e",
-      "editorial_grouping_checked_at": "2026-10-31T22:52:43.501131+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T22:52:43.501131+00:00",
+      "telegram_package_status": "deleted",
+      "deleted_at": "2026-10-31T23:18:41.333128+00:00",
+      "decision_source": "listas_grouping_cleanup"
     },
     {
       "id": "0bea704023b8",
@@ -123550,7 +123556,7 @@
       "id": "7b18f8c98739",
       "name": "#RayoCelta",
       "rank": 10,
-      "status": "explained",
+      "status": "deleted",
       "requested_at": "2026-10-31T23:50:52+01:00",
       "revision": 0,
       "reexplain": false,
@@ -123619,13 +123625,16 @@
       "coverage_reason": "already_published_same_event",
       "grouping_request_id": "listas-auto-361a8dfbf515b7c44a2c",
       "editorial_grouping_fingerprint": "8119dfceaca28936424ff1cd808c0c597aad2e0cbd9bdf2bd8c99418da09d3f6",
-      "editorial_grouping_checked_at": "2026-10-31T23:02:12.748696+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T23:02:12.748696+00:00",
+      "telegram_package_status": "deleted",
+      "deleted_at": "2026-10-31T23:18:41.333128+00:00",
+      "decision_source": "listas_grouping_cleanup"
     },
     {
       "id": "9df0b07ec47e",
       "name": "El Atleti",
       "rank": 17,
-      "status": "explained",
+      "status": "deleted",
       "requested_at": "2026-10-31T23:50:52+01:00",
       "revision": 0,
       "reexplain": false,
@@ -123694,7 +123703,10 @@
       "coverage_reason": "already_published_same_event",
       "grouping_request_id": "listas-auto-361a8dfbf515b7c44a2c",
       "editorial_grouping_fingerprint": "0ff87eaaee405999ab08183f9e9a122f79df3504cebd68103ed3a96113b4c85f",
-      "editorial_grouping_checked_at": "2026-10-31T23:02:12.748696+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T23:02:12.748696+00:00",
+      "telegram_package_status": "deleted",
+      "deleted_at": "2026-10-31T23:18:41.333128+00:00",
+      "decision_source": "listas_grouping_cleanup"
     },
     {
       "id": "5261970c7a60",
@@ -125890,6 +125902,67 @@
       "grouping_created_ids": [],
       "grouping_skipped_stale": [],
       "grouping_result_digest": "e7d3978df8a1ce0169b400e2400c021a26a4c877d2578318d14ea8902a58ee65"
+    },
+    {
+      "id": "red-review-a2aafd3afdb9b0af1225",
+      "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-10-31T23:18:41.333128+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "d438ccc039cc",
+        "revision": 0,
+        "name": "#laSextaXplica",
+        "rank": 4,
+        "explanation": "TT#4 #laSextaXplica es tendencia por la emisión de este sábado, que aborda los disturbios de Barcelona; Ignasi Guardans calificó de «inédito» el saqueo.\n#Barcelona #IgnasiGuardans #JoséYélamo",
+        "explanation_sha256": "2b9c3384e4056e1a1dc471fa2d5ac3ff02a9bfa0361c37cb07cc5a044a43a5ab",
+        "explained_at": "2026-10-24T22:48:55+02:00",
+        "verification_sources": [
+          "https://www.lasexta.com/programas/sexta-noche/guardans-violencia-calles-barcelona-saqueo-inedito-caldo-cultivo-francia-espana_202610246add0a2c1e66613d9f1c46ff.html",
+          "https://www.lasexta.com/programas/sexta-noche/"
+        ],
+        "fingerprint": "201d005c9598986dd02c5c3bb448e4fa6ecf177e05b953d6eb320c28346d9a5c"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-9b905fc7acd38b8e230b",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-10-31T23:18:41.333128+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "24d64469c94e",
+        "revision": 0,
+        "name": "Toledo",
+        "rank": 1,
+        "explanation": "TT#1 Toledo es tendencia junto a Iryo, Urda, Óscar Puente, Madrid-Andalucía y Adamuz por el choque de un AVE y un Iryo en Toledo: dos vagones del Iryo descarrilaron y la línea quedó cortada. Adamuz reaparece por el accidente de enero.\n#Toledo #Iryo #AltaVelocidad",
+        "explanation_sha256": "4e81418da48b6422cdb75cce371cc7c14f1b1d17a476421ec238d7f5633cfacd",
+        "explained_at": "2026-10-28T10:52:00+01:00",
+        "verification_sources": [
+          "https://www.reuters.com/world/two-high-speed-trains-rear-end-spain-rail-operator-says-2026-10-28/",
+          "https://www.lasexta.com/noticias/sociedad/choque-trenes-directo_202610286ae1b2e502501232156a9847.html",
+          "https://www.rtve.es/noticias/20260119/bulos-desinformacion-contexto-sobre-accidente-tren-adamuz-cordoba/16900413.shtml"
+        ],
+        "fingerprint": "112eb948a5c209b81fac07a180a1b5789fc24256ce3abff36bf0287e6e4c4ffd"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
   "count": 457
