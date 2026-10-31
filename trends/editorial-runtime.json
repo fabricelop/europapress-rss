@@ -3,238 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T114000+0100",
-  "previous_run_id": "tr-chat-20261031T112500+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T11:40:00+01:00",
-  "updated_at": "2026-10-31T11:42:00+01:00",
-  "finished_at": "2026-10-31T11:42:00+01:00",
+  "run_id": "tr-chat-20261031T121059+0100",
+  "previous_run_id": "tr-chat-20261031T114000+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T12:10:59+01:00",
+  "updated_at": "2026-10-31T12:10:59+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "3ad85904ecd9",
+    "5ad4a23bc13e"
+  ],
+  "remaining_active_ids": [
+    "3ad85904ecd9",
+    "5ad4a23bc13e"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 0/0 tras refresco real del Top 30: recent.json persistido a las 11:41:18+01:00 y editorial-queue.json releído a las 11:41:22+01:00 con count=0. No hay preparing/update/rewrite_pending detectados. Sin ImageGen ni publicación.",
+  "summary": "Pasada manual iniciada sobre refresco Top 30 de 12:10:54+01:00; 2 pendientes preparando.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": [
-    {
-      "at": "2026-10-31T10:44:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Contrato y estado autoritativo en main releídos; 2 revisiones de mantenimiento vigentes. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T10:46:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-9b715458254916e50e33",
-      "title": "#DeViernes",
-      "message": "JIT ID+revisión confirmado; revisando el episodio actual de #DeViernes con fuentes actuales."
-    },
-    {
-      "at": "2026-10-31T10:45:52+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-9b715458254916e50e33",
-      "title": "#DeViernes",
-      "message": "Resultado editorial investigado y persistido en maintenance-outbox; el aplicador oficial lo cerró stale por una guarda terminal heredada."
-    },
-    {
-      "at": "2026-10-31T10:45:52+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-eaf70e605deb8a23229b",
-      "title": "Toledo",
-      "message": "Resultado editorial investigado y persistido en maintenance-outbox; el aplicador oficial lo cerró stale al existir desarrollos posteriores publicados del mismo episodio."
-    },
-    {
-      "at": "2026-10-31T10:47:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: cola autoritativa 0. Cierre DONE_WITH_INCIDENTS 2/2; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T10:47:00+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-9b715458254916e50e33",
-      "title": "#DeViernes",
-      "message": "El job desapareció de la cola durante la revalidación JIT; se verificó review_completed/stale y no se sobrescribió."
-    },
-    {
-      "at": "2026-10-31T10:48:00+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-eaf70e605deb8a23229b",
-      "title": "Toledo",
-      "message": "Se verificó review_completed/stale; la fuente antigua está superada por publicaciones posteriores del mismo contexto."
-    },
-    {
-      "at": "2026-10-31T10:49:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final en main: cola 0, ningún preparing/update en requests y ningún rewrite_pending. Cierre con 1 incidencia de estado histórico en #DeViernes."
-    },
-    {
-      "at": "2026-10-31T10:55:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Contrato y estado autoritativo en main releídos; 3 preparing vigentes. Iniciando investigación JIT sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T10:59:00+01:00",
-      "phase": "investigating",
-      "trend_id": "5b2b84b126eb",
-      "title": "#BornToBeNuNewConcertD1",
-      "message": "JIT ID+revisión confirmado. Detonante verificado: primer día del segundo concierto solista Born to be NuNew en IMPACT Arena."
-    },
-    {
-      "at": "2026-10-31T11:01:00+01:00",
-      "phase": "investigating",
-      "trend_id": "81542559f97d",
-      "title": "Humillación",
-      "message": "JIT ID+revisión confirmado. Dos búsquedas independientes no permiten atribuir un detonante único a «Humillación»; se cierra con causa no confirmada, sin remate."
-    },
-    {
-      "at": "2026-10-31T11:02:00+01:00",
-      "phase": "investigating",
-      "trend_id": "0fe61402e93a",
-      "title": "DÍA DE PARTIDO",
-      "message": "JIT ID+revisión confirmado. La frase coincide con una jornada de LaLiga con varios partidos hoy, pero no se puede atribuir con rigor a un club concreto; se cierra con contexto verificado y causa no confirmada."
-    },
-    {
-      "at": "2026-10-31T11:03:00+01:00",
-      "phase": "verifying",
-      "trend_id": "0fe61402e93a",
-      "title": "DÍA DE PARTIDO",
-      "message": "Aplicador oficial confirmó ficha explained rev0 y retiró la revisión de la cola."
-    },
-    {
-      "at": "2026-10-31T11:04:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: cola 0, sin preparing/update. Pasada cerrada 3/3; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:01:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio tr-1793440808230-manual: contrato y cola autoritativa releídos en main; 3 trabajos activos. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:02:00+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-9c671cb8f6b82a219761",
-      "title": "Agrupación automática de Listas",
-      "message": "JIT confirmado. Los seis candidatos no comparten acontecimiento inequívoco y ninguno debe quedar cubierto por una publicación previa: groups=[]; covered_by_existing=[]."
-    },
-    {
-      "at": "2026-10-31T11:03:00+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-aa267e2c0713fcba29c4",
-      "title": "#DeViernes",
-      "message": "JIT confirmado y episodio nuevo verificado. Se aplicó una actualización distinta por el homenaje del programa a Raúl Triguero; sin remate por sensibilidad."
-    },
-    {
-      "at": "2026-10-31T11:03:30+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-19fd58865c1cae4eff9d",
-      "title": "#FelizSábado",
-      "message": "JIT confirmado. La etiqueta ya no figuraba en el Top 30 vigente; la revisión se cerró como stale sin reescribir la ficha antigua."
-    },
-    {
-      "at": "2026-10-31T11:04:15+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final: editorial-queue.json releído en main con count=0 y sin preparing/update/rewrite_pending. Cierre 3/3; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:04:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio tr-1793441024231-manual: contrato y cola autoritativa releídos en main; cola inicial 0. Se ejecuta barrera final sobre preparing/update/rewrite_pending. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:05:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificados los trabajos residuales del runtime anterior: listas-auto-9c671cb8f6b82a219761 sin grupos; red-review-aa267e2c0713fcba29c4 actualizado; red-review-19fd58865c1cae4eff9d unverified por quedar fuera del Top 30."
-    },
-    {
-      "at": "2026-10-31T11:05:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final en main: editorial-queue 0 y sin preparing/update/rewrite_pending. Cierre DONE 0/0; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:10:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio tr-chat-20261031T111000+0100: contrato y cola autoritativa releídos en main; cola inicial 0. Revalidando preparing/update/rewrite_pending y trabajos especiales. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:13:30+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final en main: editorial-queue count=0, sin preparing/update ni rewrite_pending. Cierre DONE 0/0; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:25:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio tr-chat-20261031T112500+0100: cola inicial 0 con recent capturado a las 11:20:54. Se fuerza refresco manual del radar/selector antes de la barrera final. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:28:39+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera editorial verificada: cola 0 y sin preparing/update/rewrite_pending en main. El refresco lanzado aún no ha persistido un snapshot nuevo."
-    },
-    {
-      "at": "2026-10-31T11:28:39+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cierre DONE_WITH_INCIDENTS 0/0: sin trabajo editorial pendiente en el estado autoritativo disponible; incidencia limitada al refresco manual aún en curso. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:40:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio tr-chat-20261031T114000+0100: contrato y estado autoritativo releídos; se fuerza refresco real del Top 30 antes de la barrera final. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T11:41:22+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Refresco persistido: recent.json capturado a las 11:41:18+01:00. Relectura de editorial-queue.json: count=0; sin preparing/update/rewrite_pending detectados."
-    },
-    {
-      "at": "2026-10-31T11:42:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final superada. Cierre DONE 0/0; sin ImageGen ni publicación."
-    }
-  ],
+  "activity": "preparing",
   "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T114000+0100",
