@@ -737,7 +737,7 @@ const trendImageSessions=new Map();
 function matchingAiImage(x){
  const ai=x.ai_image||{},guard=ai.context_guard||{};
  return ai.generated===true&&ai.provider==='chat-imagegen'&&ai.origin==='executing_chat'&&
-   Number(guard.version)===3&&guard.scope==='current_item_only'&&
+   [3,4].includes(Number(guard.version))&&guard.scope==='current_item_only'&&
    (!guard.trend_id||String(guard.trend_id)===String(x._id||x.id))&&
    (guard.revision==null||Number(guard.revision)===Number(x.revision||0))&&isHttp(ai.url)?ai:null;
 }
@@ -782,10 +782,39 @@ function imageWatch(x,attempt=0){
   }catch{if(attempt<4)imageWatch(x,attempt+1)}
  },30000);
 }
+// Top 30 always shows the image action. Without a verified editorial text,
+// generate a conceptual visual instead of making up a cause or news event.
+function anyTrendImagePrompt(x){
+ if(String(x.explanation||'').trim())return manualPrompt(x);
+ const name=String(x.name||x.title||'Tendencia').trim();
+ return [
+  'Genera UNA SOLA ilustración editorial original en horizontal 16:9, a sangre, sin texto, letras, números, hashtags, logos, rótulos, tarjetas ni marcos.',
+  'TÉRMINO DE TENDENCIA (no es prueba de un hecho ni de una causa): '+name,
+  'El contexto factual de esta tendencia todavía no ha sido verificado. Representa una idea visual simbólica ligada al término, con un gag gráfico sencillo, expresivo y cuidado. No inventes noticias, escándalos, acusaciones, resultados, declaraciones ni motivos de tendencia.',
+  'Si el término alude a muerte, duelo, víctimas o tragedias, evita burlas sobre las personas afectadas y utiliza un tratamiento respetuoso.',
+  'Solo imagen, sin ningún elemento textual visible. Un único concepto visual, lectura inmediata y fondo sobrio.'
+ ].join('\\n\\n');
+}
+function openTrendImageInChatGPT(x){
+ // Open as a direct user-click action, before clipboard awaits, to avoid
+ // mobile pop-up blockers. This route never claims automatic web association.
+ const tab=window.open('https://chatgpt.com/images','_blank','noopener,noreferrer');
+ void copyText(anyTrendImagePrompt(x),'Prompt visual de la tendencia');
+ if(!tab)showToast('Prompt preparado. Abre ChatGPT Images desde el enlace de la ficha.');
+}
+function canRequestAutomaticTrendImage(x){
+ return x._kind==='tr'&&!x._topOnly&&!x._historical&&
+   x._status==='EXPLICADA'&&String(x.explanation||'').trim().length>0;
+}
 async function generateTrendImage(x,button){
+ // Any trend can generate a visual. Current automatic ID/revision association
+ // only supports a still-active, explained item in Listas.
+ if(!canRequestAutomaticTrendImage(x)){
+  openTrendImageInChatGPT(x);
+  return;
+ }
  const id=String(x._id||x.id||'');
  const revision=Number(x.revision||0);
- if(!id||!String(x.explanation||'').trim())return showToast('La tendencia necesita una explicación vigente');
  button.disabled=true;const prior=button.textContent;
  button.textContent='Consultando…';
  try{
@@ -797,22 +826,28 @@ async function generateTrendImage(x,button){
     render();imageWatch(x);return;
    }
    if(existing.status==='DONE'&&!matchingAiImage(x)){
-    // A completed upload is not permission to create another image while the
-    // separately downloaded editorial file may still be updating.
     await load(true);
-    showToast('La última generación terminó. Comprueba la imagen actualizada antes de volver a solicitar otra.');
+    showToast('La última generación terminó. Comprueba la imagen actualizada antes de solicitar otra.');
     return;
    }
   }
   if(matchingAiImage(x)&&!confirm('Ya hay una imagen IA válida. ¿Solicitar una nueva?'))return;
-  // Same upstream image-run endpoint already used by the original editor.
   const response=await fetch('/api/trend-image',{method:'POST',credentials:'same-origin',
     headers:{'Content-Type':'application/json'},body:JSON.stringify({target_id:id,revision}),
     signal:AbortSignal.timeout(27000)});
   const result=await response.json().catch(()=>({}));
   if(!response.ok||!result.ok){
-   if(response.status===409){showToast('No se ha creado otra orden: '+String(result.reason||result.error));return}
-   throw Error(result.error==='image_bridge_not_configured'?'Falta configurar el puente de imágenes en TTActualidad':
+   if(response.status===409){
+    // The authoritative image service may have closed or superseded the item:
+    // still offer the visual route, but never pretend it will auto-associate.
+    if(['not_pending_explained','archived','telegram_card_closed','tremending','revision_changed'].includes(String(result.reason||''))){
+     showToast('Imagen automática no elegible. Puedes usar el prompt visual en ChatGPT Images.');
+     return;
+    }
+    showToast('No se ha creado otra orden: '+String(result.reason||result.error));return;
+   }
+   throw Error(result.error==='image_bridge_not_configured'?
+    'Falta configurar la asociación automática. Usa ChatGPT Images desde el enlace de esta ficha.':
     result.error||'No se pudo solicitar imagen');
   }
   trendImageSessions.set(id,{...result,status:'REQUESTED',phase:'queued'});
@@ -1131,9 +1166,10 @@ function rowCard(x,i){
   external('Abrir ChatGPTImages','https://chatgpt.com/images');
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
   btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
-  if(x._kind==='tr'&&x._status==='EXPLICADA'){
+  if(x._kind==='tr'){
    const line=document.createElement('p');line.className='fact';
-   line.textContent=imageCardMessage(x);
+   line.textContent=canRequestAutomaticTrendImage(x)?imageCardMessage(x):
+    'Generación visual en ChatGPT Images. La asociación automática de esta ficha aún no está habilitada.';
    out.querySelector('.card-body').insertBefore(line,a);
    const session=trendImageSessions.get(String(x._id||x.id||''));
    const active=session&&session.revision===Number(x.revision||0)&&imageStillPending(session);
@@ -1167,6 +1203,11 @@ function rowCard(x,i){
    out.querySelector('.card-body').insertBefore(note,a);
    btn('Ver en Explicadas',()=>{state.tab='explicadas';render()},true);
   }
+  // The same image control is visible at every Top-30 rank, not only in Listas.
+  // This route opens ChatGPT Images with a contextual prompt; it never implies
+  // automatic image association when the editorial item is not eligible.
+  const topImage=btn('Generar imagen IA',()=>generateTrendImage(x,topImage),true);
+  topImage.classList.add('trend-image-action');
   // The action is available for every Top-30 rank, with or without
   // an older explanation. Requests already in progress are not duplicated.
   if(['EN COLA','EN ELABORACIÓN','PENDIENTE DE GITHUB'].includes(x._status)){
