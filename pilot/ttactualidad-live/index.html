@@ -796,8 +796,12 @@ async function generateTrendImage(x,button){
     showToast(existing.status==='LAUNCHED'?'El chat ya se abrió; pendiente de recuperar la imagen':'La imagen ya está solicitada');
     render();imageWatch(x);return;
    }
-   if(existing.status==='DONE'&&matchingAiImage(x)){
-    showToast('La imagen ya está asociada');render();return;
+   if(existing.status==='DONE'&&!matchingAiImage(x)){
+    // A completed upload is not permission to create another image while the
+    // separately downloaded editorial file may still be updating.
+    await load(true);
+    showToast('La última generación terminó. Comprueba la imagen actualizada antes de volver a solicitar otra.');
+    return;
    }
   }
   if(matchingAiImage(x)&&!confirm('Ya hay una imagen IA válida. ¿Solicitar una nueva?'))return;
