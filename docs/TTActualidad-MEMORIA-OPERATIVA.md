@@ -202,7 +202,7 @@ Con elaboración, órdenes pendientes o esa vista abierta, iPhone consulta cada6
 
 En iPhone desde0.4.30 build36, las tendencias originales cubiertas por una agrupación se muestran **moradas solo en Listas**, tanto en el filtro de tendencias como en la vista conjunta. Se exige isCovered e inListas y se excluye isJointGroup; la ficha conjunta y las vistas de ranking conservan el color de antigüedad. La versión está compilada (Actions41174689744); no consta instalación física.
 
-El sitio público https://ttactualidad-tendencias.rainyraven22.chatgpt.site/ (versión9) añade buscador al principio por nombre y miembros explícitos de grupos, incluyendo explicaciones guardadas fuera de las24h recientes; respeta retiradas. Cada ficha explicada ofrece «Publicar en X» mediante https://x.com/intent/tweet y el texto original completo en text, igual que el borrador de la app. Abre X con su sesión existente si está disponible; no garantiza una sesión vigente ni publica/confirma estados ni contadores. Bordes, fondo, número y etiqueta refuerzan verde/amarillo/rojo/gris por antigüedad. Conserva acceso público, modo oscuro, una ficha por fila y desplegables.
+El sitio público https://ttactualidad-tendencias.rainyraven22.chatgpt.site/ (versión11) añade buscador al principio por nombre y miembros explícitos de grupos, incluyendo explicaciones guardadas fuera de las24h recientes; respeta retiradas. Cada ficha explicada ofrece «Publicar en X» mediante https://x.com/intent/tweet y el texto original completo en text, igual que el borrador de la app. Abre X con su sesión existente si está disponible; no garantiza una sesión vigente ni publica/confirma estados ni contadores. Bordes, fondo, número y etiqueta refuerzan verde/amarillo/rojo/gris por antigüedad. Conserva acceso público, modo oscuro, una ficha por fila y desplegables.
 
 Filtros TTendencias: **Top30, Listas, En elaboración, Recientes, Pendientes y Antiguas**, en dos filas de tres. No existe Nuevas. Todas las tendencias incluyen **Buscar en X**, con nombre literal en `q` y `f=live`, codificado por URLComponents; disponible también sin explicación, agrupadas y conjuntas. Buscar no publica, no encola y no requiere autorización editorial GitHub.
 
@@ -423,3 +423,8 @@ La copia completa para adjuntar a cualquier chat se llama `TTActualidad-Memoria-
 ### Verificación de la reparación web, 31/10/2026
 
 Recepción v2 desplegada en el Worker real y Site público versión 8. Cuatro imágenes pendientes recuperadas sin regenerar. La automatización aún requiere observar un job nuevo v32 desde el PC; no dar la recuperación manual por prueba automática. Véase [evidencia, límites y alternativas](TTendencias-WEB-IMAGE-RECEIPTS-20261031.md).
+
+
+### Evidencia de esta reparación
+
+Generación real comprobada para GP de Malasia (jobv32 y raster existente), pero recepción web no acreditada todavía a06:20UTC. Poland queda cubierta por el grupo ya publicado de Polonia; no se crea otra imagen independiente y falta materializar el raster de esa conjunta. Detalle y límites: [TTActualidad-0.4.30-WEB-Y-AGRUPACION.md](TTActualidad-0.4.30-WEB-Y-AGRUPACION.md).

@@ -9,9 +9,10 @@ Para empezar un chat de reparación:
 ## Identidad y reglas
 
 - **Datos editoriales:** main. **Triggers/ACK/jobs:** ramas control. **Ejecución del PC:** logs Windows. Una de esas pruebas no sustituye a las otras.
-- **Última entrega iPhone compilada:** 0.4.29 build35, `feature/ttactualidad-ios-0.4.29-orden-listas`. La instalación física no está acreditada. La fuente iOS de main puede ser anterior. Confirmar qué IPA está instalada antes de editar.
-- **Windows:** `desktop/ttactualidad/TTActualidad_Moderno.pyw`, Qt; preferencia ZIP sin EXE. No confundir con la web anterior ni con Tkinter.
-- **Orden de tendencias en Listas:** número ascendente; sin número válido al final.
+- **Última entrega iPhone compilada:** 0.4.30 build36, `feature/ttactualidad-ios-0.4.30-agrupadas-morado`. La instalación física no está acreditada. La fuente iOS de main puede ser anterior. Confirmar qué IPA está instalada antes de editar.
+- **App Windows retirada el31/10/2026 por petición del editor:** sin paquetes ni compilación automática. Su código se conserva como histórico. **Continúan los listeners, ImageBridge, relay y sesiones del PC Windows**, necesarios para los procesos editoriales y las imágenes.
+- **Orden de tendencias en Listas:** número ascendente; sin número válido al final. Desde0.4.30, las originales agrupadas se muestran moradas en Listas; la conjunta conserva el color por antigüedad.
+- **Web pública:** buscador por nombre, también en explicaciones guardadas; botón X con borrador exacto, colores de edad reforzados y fichas desplegables. Abrir X no publica ni suma contador. La sesión de X depende del navegador/app del usuario.
 - **Todas las pendientes del Top30 entran automáticamente**. Fuera del ranking, el Radar solo encarga hasta dos borradores fuertes: sin puesto inventado, Listas, IA ni publicación; al entrar en Top30 se revalidan y reutilizan. No hay filtro Nuevas. Presupuesto externo0€; mismas fuentes y captura paralela de cuatro workers, sin aumentar frecuencia.
 - **Revisión de novedades:** primero rojas (>24h), después amarillas (12–24h) y verdes (<12h). Máximo dos comprobaciones automáticas por ventana móvil de15min, máximo dos activas y una por origen/hora, con Top30 fresco. Las revisiones manuales tienen prioridad y no consumen ese cupo. Sin novedades conserva texto, fecha y color. Una actualización continuada usa «sigue siendo tendencia por…»; un episodio distinto requiere verificación y otra identidad.
 - **Agrupación automática:** al cerrar texto y antes de pedir IA, comparar el mismo acontecimiento y cobertura ya publicada. Conservar originales, marcadas Agrupada en…; ambigüedad significa mantener separadas.
@@ -32,7 +33,7 @@ Para empezar un chat de reparación:
 | Tendencia sin revisión | Fecha explicación, Top30, último checked_at | Color, cupo2/15min, máximo2 activas, prioridad de nuevas/manuales, job review_red, consumidor |
 | Roja revisada sigue roja | red_review_outcome/checked_at | Sin novedades no renueva explained_at: es correcto |
 | Agrupación atascada | grouping job/outbox/error | Candidatas snapshot, fuentes, revisiones y aplicación |
-| Texto sin imagen | grouping_state/fingerprint/covered | Luego job → prompt → raster → relay → TTImages |
+| Texto sin imagen | grouping_state/fingerprint/covered | Si pending sin job, comprobar despertar explícito de agrupación tras cierre editorial; luego job → prompt → raster → relay → TTImages/web |
 | Actualización ausente | maintenance-outbox y review_error | review_completed/created_id o stale por cambio concurrente |
 | Borrada/publicada reaparece | decisions/mobile-decisions/recibo | ID/revisión/episodio y caché, sin destruir terminales |
 | Tendencia→noticia falla | origin_trend y recibo manual-news | PROCESSING en ambas colas noticias; tendencia se conserva |
