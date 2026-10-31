@@ -236,7 +236,7 @@ assert 'quickButton("Enviar a TTiTTulares"' not in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' not in actions
 assert 'originTrend: trend' not in actions
 assert 'quickButton("Eliminar imagen IA"' not in actions
-assert 'confirmSiteAICatalogRemoval' in actions
+assert 'confirmSiteAICatalogRemoval' not in actions
 assert 'removeSiteAIImageFromCatalog(' not in auth
 assert 'siteImageSHA256' in store
 assert 'resolvedSHA256(' in (root / "TTActualidad/SiteAIImageCatalog.swift").read_text()
