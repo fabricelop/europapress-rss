@@ -347,4 +347,6 @@ async function watch(){
   }finally{try{const own=JSON.parse(fs.readFileSync(lock,'utf8'));if(own.pid===process.pid)fs.unlinkSync(lock);}catch{}}
 }
 module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once};
-if(require.main===module)(process.argv.includes('--watch')?watch():once()).catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
+// Existing installed listeners invoke this file without arguments. Drain their
+// already-enrolled backlog too; do not require a new image to wake delivery.
+if(require.main===module)(process.argv.includes('--once')?once():watch()).catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
