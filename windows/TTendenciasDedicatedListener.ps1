@@ -823,7 +823,7 @@ function Ensure-WebPublisherLatest([string]$NodePath,[bool]$Force = $false) {
     try {$actual=([BitConverter]::ToString($hash.ComputeHash([byte[]]($header+$raw)))).Replace("-","").ToLowerInvariant()} finally {$hash.Dispose()}
     if($actual -ne [string]$doc.sha){throw "publisher source hash mismatch"}
     $source=[Text.Encoding]::UTF8.GetString($raw)
-    if(-not $source.Contains('rememberConversation') -or -not $source.Contains('web_image_upload') -or -not $source.Contains('readImageJob') -or -not $source.Contains('selectExistingBrowser')){throw "publisher lacks durable handoff or existing-browser recovery"}
+    if(-not $source.Contains('rememberConversation') -or -not $source.Contains('web_image_upload') -or -not $source.Contains('readImageJob') -or -not $source.Contains('selectExistingBrowser') -or -not $source.Contains('WEB_CAPTURE_VERSION=4')){throw "publisher lacks durable handoff or existing-browser recovery v4"}
     [IO.File]::WriteAllBytes($tmp,$raw)
     & $NodePath --check $tmp *> $null
     if($LASTEXITCODE -ne 0){throw "publisher syntax invalid"}
@@ -835,7 +835,7 @@ function Ensure-WebPublisherLatest([string]$NodePath,[bool]$Force = $false) {
     Write-Log "WEB IMAGE PUBLISHER REFRESH DEFERRED"
     if(Test-Path -LiteralPath $file){
       $source=Get-Content -LiteralPath $file -Raw -Encoding UTF8
-      return ($source.Contains('rememberConversation') -and $source.Contains('web_image_upload') -and $source.Contains('readImageJob') -and $source.Contains('selectExistingBrowser'))
+      return ($source.Contains('rememberConversation') -and $source.Contains('web_image_upload') -and $source.Contains('readImageJob') -and $source.Contains('selectExistingBrowser') -and $source.Contains('WEB_CAPTURE_VERSION=4'))
     }
     return $false
   }

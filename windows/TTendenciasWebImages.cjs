@@ -8,6 +8,7 @@ const crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
+const WEB_CAPTURE_VERSION=4;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -91,7 +92,10 @@ function rasterProbe(command){return `(async()=>{
  const command=${JSON.stringify(command)};
  const users=[...document.querySelectorAll('[data-message-author-role="user"]')];
  const user=users.find(x=>String(x.innerText||'').includes(command));
- if(!user)return {ready:false,reason:'command_not_visible'};
+ if(!user){
+  if(document.querySelector('[data-testid="login-button"],a[href="/auth/login"]'))return {ready:false,reason:'capture_requires_sign_in'};
+  return {ready:false,reason:users.length?'command_not_in_conversation':'conversation_not_loaded'};
+ }
  if(users.indexOf(user)!==users.length-1)return {ready:false,reason:'later_user_turn'};
  if(document.querySelector('button[data-testid="stop-button"],button[aria-label*="Stop" i],button[aria-label*="Detener" i]'))return {ready:false,reason:'generating'};
  const images=[...document.querySelectorAll('[data-message-author-role="assistant"] img')].filter(img=>
@@ -173,7 +177,7 @@ async function consume(task){
     }
     if(!cdp)throw Error('export_tab_not_ready');
     let raster;
-    for(let n=0;n<6;n++){await sleep(1500);raster=await cdp.evaluate(rasterProbe(task.command_id));if(raster?.ready)break;}
+    for(let n=0;n<30;n++){await sleep(1500);raster=await cdp.evaluate(rasterProbe(task.command_id));if(raster?.ready||raster?.reason==='capture_requires_sign_in')break;}
     if(!raster?.ready)return {status:'waiting',reason:raster?.reason||'raster_not_ready'};
     // Fresh job identity check immediately before sending raster bytes.
     const fresh=await readImageJob(task);
