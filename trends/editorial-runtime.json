@@ -6,20 +6,24 @@
   "run_id": "tr-20261031T094000-manual",
   "previous_run_id": "tr-1793435390759-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-31T09:40:00+01:00",
-  "updated_at": "2026-10-31T09:40:00+01:00",
+  "updated_at": "2026-10-31T09:42:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 1,
+  "trend_id": "fd04788626e5",
+  "title": "Sprint",
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "fd04788626e5"
+  ],
+  "remaining_active_ids": [
+    "fd04788626e5"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada. Cola autoritativa leída en main con 0 items; se realizará relectura final antes del cierre.",
+  "summary": "Procesando 1/1: Sprint r0. Detonante contrastado con fuentes actuales del sprint de MotoGP en Sepang.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -30,6 +34,13 @@
       "trend_id": null,
       "title": null,
       "message": "Leídos contrato y estado autoritativo en main. editorial-queue count 0; no se genera ImageGen ni se publica."
+    },
+    {
+      "at": "2026-10-31T09:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "fd04788626e5",
+      "title": "Sprint",
+      "message": "Verificando acontecimiento común: el término coincide con el sprint de MotoGP en Sepang; Acosta ganó ante Marc Márquez tras la caída de Álex Márquez."
     }
   ],
   "final_outcomes": [],
@@ -45,11 +56,12 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": null,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "total": 1
   },
   "api_failover_enabled": false
 }
