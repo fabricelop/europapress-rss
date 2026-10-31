@@ -5,14 +5,14 @@
   "canonical": true,
   "run_id": "tr-manual-20261031T064100+0100",
   "previous_run_id": "tr-manual-20261031T055500+0100",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T06:41:00+01:00",
-  "updated_at": "2026-10-31T06:42:55+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T06:44:00+01:00",
+  "finished_at": "2026-10-31T06:44:00+01:00",
   "last_started_at": "2026-10-31T06:42:55+01:00",
-  "last_completed_at": "2026-10-31T06:42:55+01:00",
-  "current": 0,
+  "last_completed_at": "2026-10-31T06:44:00+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
@@ -24,7 +24,7 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual en curso: 2 pendientes preparing detectadas en main (GP de Malasia y Poland). Sin ImageGen ni publicación en X.",
+  "summary": "Pasada manual completada 2/2: GP de Malasia y Poland quedaron explained y sincronizadas en requests y telegram-manual-explained; cola final count=0 tras relectura de main. Sin ImageGen en la pasada editorial ni publicación en X.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -35,15 +35,70 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual: cola autoritativa releída en main con 2 pendientes preparing. Se procesan por requested_at y se valida ID+revisión JIT antes de cada persistencia."
+    },
+    {
+      "at": "2026-10-31T06:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "592bc75eb909",
+      "title": "GP de Malasia",
+      "message": "Detonante actual contrastado con fuentes de MotoGP: clasificación de Sepang y pole de Álex Márquez antes del sprint."
+    },
+    {
+      "at": "2026-10-31T06:42:20+01:00",
+      "phase": "persisting",
+      "trend_id": "592bc75eb909",
+      "title": "GP de Malasia",
+      "message": "Revisión 0 validada JIT y enviada al aplicador editorial con texto factual, hashtags, remate y fuentes."
+    },
+    {
+      "at": "2026-10-31T06:42:30+01:00",
+      "phase": "investigating",
+      "trend_id": "7f69649ad704",
+      "title": "Poland",
+      "message": "Detonante actual contrastado: crisis del Tribunal Constitucional polaco, protestas en Varsovia y regreso de Karol Nawrocki."
+    },
+    {
+      "at": "2026-10-31T06:42:40+01:00",
+      "phase": "persisting",
+      "trend_id": "7f69649ad704",
+      "title": "Poland",
+      "message": "Revisión 0 validada JIT y enviada al aplicador editorial con texto factual, remate político neutral y fuentes."
+    },
+    {
+      "at": "2026-10-31T06:42:55+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Aplicador verificado: ambas revisiones figuran como explained en requests y telegram-manual-explained; editorial-queue.json queda count=0."
+    },
+    {
+      "at": "2026-10-31T06:44:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada completada 2/2. Sin ImageGen en la pasada editorial y sin publicación en X."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "592bc75eb909",
+      "revision": 0,
+      "title": "GP de Malasia",
+      "outcome": "explained"
+    },
+    {
+      "id": "7f69649ad704",
+      "revision": 0,
+      "title": "Poland",
+      "outcome": "explained"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-manual-20261031T055500+0100",
+    "run_id": "tr-manual-20261031T064100+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T05:57:00+01:00",
-    "attempted": 0,
-    "explained": 0,
+    "finished_at": "2026-10-31T06:44:00+01:00",
+    "attempted": 2,
+    "explained": 2,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
