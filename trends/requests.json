@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T15:03:39.529415+00:00",
+  "updated_at": "2026-10-31T15:04:55.410907+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T15:04:55.410907+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -4027,7 +4027,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00",
+      "editorial_grouping_checked_at": "2026-10-31T15:04:55.410907+00:00",
       "red_review_checked_at": "2026-10-31T15:03:39.529415+00:00",
       "red_review_outcome": "updated",
       "red_review_reason": "La cifra oficial de víctimas mortales de la dana cambió después de la explicación original: la jueza de Catarroja elevó el recuento de 233 a 234 al reconocer como víctima a un vecino de Paiporta.",
@@ -8772,7 +8772,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T15:04:55.410907+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -77480,7 +77480,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "2fdaab72468e3aef4883c9c571cdce37376af77984e63cfa70c89323271d60bb",
-      "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T15:04:55.410907+00:00"
     },
     {
       "id": "listas-joint-8084b8cfdfcfd786",
@@ -77537,7 +77537,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "8b8f2e880c1117e5ab73521b334b9fde1cb7751e9bcf866c1c16232aecc1f6ed",
-      "editorial_grouping_checked_at": "2026-10-31T15:02:29.909848+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T15:04:55.410907+00:00"
     },
     {
       "id": "trend-update-07dc8165892e5d9a6b62",
@@ -77568,9 +77568,11 @@
       "new_facts": "La cifra oficial de víctimas mortales de la dana de 2024 se elevó a 234 tras incluir a un vecino de Paiporta de 73 años.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "27caff1918a832956476d6b56a3dcb5de2dd93566cf46d43870bd27e09757e65",
+      "editorial_grouping_checked_at": "2026-10-31T15:04:55.410907+00:00"
     },
     {
       "id": "trend-update-82a2495e41abdb35756f",
@@ -77605,21 +77607,23 @@
       "new_facts": "Adif documenta fallos de transmisiones, GSM-R, circuitos de vía y tensión antes del choque. Óscar Puente ha señalado que el protocolo exigía marcha a la vista, con límite de 40 km/h, mientras la investigación continúa.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "3132cb9c6a78360e24454af88955510213522c51ee3df8334d3e79066e3d1e48",
+      "editorial_grouping_checked_at": "2026-10-31T15:04:55.410907+00:00"
     },
     {
       "id": "listas-auto-ceca7c4d7f7bfd9a5f3a",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T15:03:39.529415+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -79186,7 +79190,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T15:04:55.410907+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "fe9b71ef1b93ade85dc32a8bb8805a7405ca2fe538cc1c2333b08d1cb5c0144a"
     }
   ],
   "count": 278
