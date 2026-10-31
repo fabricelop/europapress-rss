@@ -1,81 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T17:31:10.078635+00:00",
+  "updated_at": "2026-10-31T18:31:31+01:00",
   "count": 1,
   "items": [
     {
       "id": "listas-auto-65ad3707f7581441f114",
-      "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
       "requested_at": "2026-10-31T17:31:10.078635+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "group_listas",
-      "listas_grouping_request": true,
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
       "automatic_grouping": true,
-      "grouping_state": "pending",
-      "grouping_candidates": [
-        {
-          "id": "6edd382e5ca7",
-          "revision": 0,
-          "name": "Yola",
-          "rank": 2,
-          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
-          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
-          "explained_at": "2026-10-30T01:21:30+01:00",
-          "verification_sources": [
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
-          ]
-        },
-        {
-          "id": "0ecf2a36f589",
-          "revision": 0,
-          "name": "La UCO",
-          "rank": 29,
-          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
-          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
-            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
-          ]
-        },
-        {
-          "id": "bf5ade33b5b4",
-          "revision": 0,
-          "name": "Brighton",
-          "rank": 11,
-          "explanation": "TT#11 Brighton es tendencia por ganar 0-1 al Manchester City en el Etihad con gol de Yasin Ayari.\\n#PremierLeague #ManCity\\n🌶️ Ayari dejó al Etihad sin truco ni trato.",
-          "explanation_sha256": "e37f4c8bbb2fc6c9c136359276e7f8772efa230ae3f45d334cd064c414547f23",
-          "explained_at": "2026-10-31T18:23:20+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.reuters.com/sports/soccer/dark-day-man-united-city-after-halloween-defeats-2026-10-31/"
-            },
-            {
-              "url": "https://www.theguardian.com/football/2026/oct/31/manchester-city-brighton-premier-league-match-report"
-            }
-          ]
-        },
-        {
-          "id": "trend-update-abc0dfa9f4c37dc25b26",
-          "revision": 0,
-          "name": "Urda · corte Madrid-Andalucía y ERTMS",
-          "rank": 22,
-          "explanation": "TT#22 Renfe y ERTMS siguen siendo tendencia por Urda: Adif registró cuatro fallos técnicos antes del choque; Puente cifra en 170 las caídas del LZB este año y Semaf pide endurecer el protocolo.\n#Urda #Renfe #ERTMS",
-          "explanation_sha256": "32bf90a21773e6f381d1ff57309a1ba971613a7b5f8d8bf8ac3063ac13259200",
-          "explained_at": "2026-10-31T17:31:10.078635+00:00",
-          "verification_sources": [
-            {
-              "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
-            },
-            {
-              "url": "https://elpais.com/espana/2026-10-31/ultima-hora-y-reacciones-tras-el-accidente-de-trenes-de-urda-toledo-en-directo.html"
-            }
-          ]
-        }
-      ],
       "published_context": [
         {
           "id": "09fb9ff32c5a",
@@ -1502,11 +1453,89 @@
           ]
         }
       ],
-      "with_image": false,
-      "disable_ai_image": true,
+      "listas_grouping_request": true,
+      "grouping_candidates": [
+        {
+          "id": "6edd382e5ca7",
+          "revision": 0,
+          "name": "Yola",
+          "rank": 2,
+          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
+          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
+          "explained_at": "2026-10-30T01:21:30+01:00",
+          "verification_sources": [
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
+          ]
+        },
+        {
+          "id": "0ecf2a36f589",
+          "revision": 0,
+          "name": "La UCO",
+          "rank": 29,
+          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
+          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
+          ]
+        },
+        {
+          "id": "bf5ade33b5b4",
+          "revision": 0,
+          "name": "Brighton",
+          "rank": 11,
+          "explanation": "TT#11 Brighton es tendencia por ganar 0-1 al Manchester City en el Etihad con gol de Yasin Ayari.\\n#PremierLeague #ManCity\\n🌶️ Ayari dejó al Etihad sin truco ni trato.",
+          "explanation_sha256": "e37f4c8bbb2fc6c9c136359276e7f8772efa230ae3f45d334cd064c414547f23",
+          "explained_at": "2026-10-31T18:23:20+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.reuters.com/sports/soccer/dark-day-man-united-city-after-halloween-defeats-2026-10-31/"
+            },
+            {
+              "url": "https://www.theguardian.com/football/2026/oct/31/manchester-city-brighton-premier-league-match-report"
+            }
+          ]
+        },
+        {
+          "id": "trend-update-abc0dfa9f4c37dc25b26",
+          "revision": 0,
+          "name": "Urda · corte Madrid-Andalucía y ERTMS",
+          "rank": 22,
+          "explanation": "TT#22 Renfe y ERTMS siguen siendo tendencia por Urda: Adif registró cuatro fallos técnicos antes del choque; Puente cifra en 170 las caídas del LZB este año y Semaf pide endurecer el protocolo.\n#Urda #Renfe #ERTMS",
+          "explanation_sha256": "32bf90a21773e6f381d1ff57309a1ba971613a7b5f8d8bf8ac3063ac13259200",
+          "explained_at": "2026-10-31T17:31:10.078635+00:00",
+          "verification_sources": [
+            {
+              "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
+            },
+            {
+              "url": "https://elpais.com/espana/2026-10-31/ultima-hora-y-reacciones-tras-el-accidente-de-trenes-de-urda-toledo-en-directo.html"
+            }
+          ]
+        }
+      ],
+      "grouping_state": "pending",
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Agrupación automática de Listas"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
