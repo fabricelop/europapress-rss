@@ -62,6 +62,12 @@ struct EditorialActions: View {
                 }
                 quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                 quickButton("Copiar explicación original", "doc.on.doc") { copy(fullText) }
+                // A covered original is still its own editorial identity. The
+                // existing rework action opens a NEW investigation without
+                // deleting this original or the previously published joint.
+                quickButton("Volver a evaluar", "arrow.triangle.2.circlepath") {
+                    request("rework")
+                }
                 if let joint = store.snapshot.trendListas.first(where: { $0.editorialID == trend.coveredByID }) {
                     quickButton("Copiar publicación conjunta", "rectangle.3.group") { copy(joint.explanation) }
                 }
@@ -232,6 +238,8 @@ struct EditorialActions: View {
                  : intent == "deleted" && (news?.status == "LISTA" ||
                                          trend?.inListas == true)
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
+                 : trend?.isCovered == true && intent == "rework"
+                 ? "Se pedirá una evaluación nueva e independiente de esta tendencia, sin reutilizar el texto ni la imagen antigua. La explicación original y la ficha conjunta se conservarán. Solo se marcará como solicitada cuando GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
                  : intent == "discard" && news?.status == "EN ELABORACIÓN"

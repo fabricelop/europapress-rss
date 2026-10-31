@@ -1419,7 +1419,18 @@ final class EditorialStore: ObservableObject {
                     }
                 }
             } else {
-                if ["deleted", "discard", "published", "rework", "prepare", "hints"].contains(action.decision) {
+                // A grouped original is not replaced by rework: the backend
+                // starts a NEW editorial ID, keeping the old text and the
+                // joint group until an independently reviewed result exists.
+                let preserveCoveredOriginal = action.decision == "rework" && (
+                    canonicalSnapshot.trendListas.contains(where: {
+                        sameTrend($0) && $0.isCovered
+                    }) || canonicalSnapshot.top30.contains(where: {
+                        sameTrend($0) && $0.isCovered
+                    })
+                )
+                if ["deleted", "discard", "published", "rework", "prepare", "hints"].contains(action.decision) &&
+                    !preserveCoveredOriginal {
                     updated.trendListas.removeAll(where: sameTrend)
                     if ["discard", "deleted", "published"].contains(action.decision) {
                         updated.trendsElaboracion.removeAll(where: sameTrend)
@@ -1433,6 +1444,7 @@ final class EditorialStore: ObservableObject {
                         return overlayTrend(original, inListas: false)
                     }
                     if ["rework", "prepare", "hints"].contains(action.decision) {
+                        if preserveCoveredOriginal { return original }
                         return overlayTrend(original, status: "EN ELABORACIÓN", inListas: false)
                     }
                     return original
