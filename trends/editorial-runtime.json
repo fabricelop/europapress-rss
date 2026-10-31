@@ -5,23 +5,23 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T022500+0100-manual",
   "previous_run_id": "tr-chat-20261031T021000+0100-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T02:25:00+01:00",
-  "updated_at": "2026-10-31T02:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T02:26:34+01:00",
+  "finished_at": "2026-10-31T02:26:34+01:00",
   "last_started_at": "2026-10-31T02:25:00+01:00",
-  "last_completed_at": "2026-10-31T02:10:56+01:00",
+  "last_completed_at": "2026-10-31T02:26:34+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial en ejecución: primera lectura 0/0; comprobando barrera final y reexplicaciones vigentes.",
+  "summary": "Pasada editorial real completada 0/0: cola autoritativa vacía tras relectura final y sin reexplicaciones vigentes.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -40,6 +40,20 @@
       "trend_id": null,
       "title": null,
       "message": "Primera lectura: editorial-queue 0/0; comprobando preparing/update, rewrite_pending y barrera final en main."
+    },
+    {
+      "at": "2026-10-31T02:26:34+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final sobre main: editorial-queue.json sigue en count=0; sin preparing/update ni rewrite_pending vigente. Últimos resultados de mantenimiento revisados."
+    },
+    {
+      "at": "2026-10-31T02:26:34+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada completada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
     }
   ]
 }
