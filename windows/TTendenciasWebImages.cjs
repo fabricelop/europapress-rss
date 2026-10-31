@@ -103,18 +103,24 @@ async function selectExistingBrowser(){
 }
 // The user turn carrying this exact command is the only permitted image scope.
 // Rejects a later user turn, avatars, previews and unfinished generations.
+function userTurns(){
+ const nodes=[...document.querySelectorAll('[data-message-author-role="user"],[data-testid*="user-message" i],[class*="user-message" i],article[data-turn="user"]')];
+ // Multiple selectors can describe nested wrappers of the same user turn.
+ return nodes.filter(el=>!nodes.some(other=>other!==el&&typeof el.contains==='function'&&el.contains(other)));
+}
 function rasterProbe(command){return `(async()=>{
  const command=${JSON.stringify(command)};
- const users=[...document.querySelectorAll('[data-message-author-role="user"]')];
- const user=users.find(x=>String(x.innerText||'').includes(command));
+ const users=(${userTurns.toString()})();
+ const user=users.find(x=>String(x.innerText||x.textContent||'').includes(command));
  if(!user){
   if(document.querySelector('[data-testid="login-button"],a[href="/auth/login"]'))return {ready:false,reason:'capture_requires_sign_in'};
   return {ready:false,reason:users.length?'command_not_in_conversation':'conversation_not_loaded'};
  }
  if(users.indexOf(user)!==users.length-1)return {ready:false,reason:'later_user_turn'};
  if(document.querySelector('button[data-testid="stop-button"],button[aria-label*="Stop" i],button[aria-label*="Detener" i]'))return {ready:false,reason:'generating'};
- const images=[...document.querySelectorAll('[data-message-author-role="assistant"] img')].filter(img=>
+ const images=[...document.querySelectorAll('img')].filter(img=>
   Boolean(user.compareDocumentPosition(img)&Node.DOCUMENT_POSITION_FOLLOWING)&&img.complete&&img.naturalWidth>=1024&&img.naturalHeight>=576&&
+  !users.some(u=>typeof u.contains==='function'&&u.contains(img))&&
   !/avatar|emoji|icon|profile/i.test(String(img.alt||'')));
  if(images.length!==1)return {ready:false,reason:'ambiguous_or_missing_raster'};
  const img=images[0];const response=await fetch(img.currentSrc||img.src,{credentials:'include'});
@@ -148,17 +154,20 @@ async function confirmedInMain(task,job){
   }
   return {status:'waiting',reason:'remote_image_not_confirmed'};
 }
-function conversationProbe(command){return `(()=>{
- const users=[...document.querySelectorAll('[data-message-author-role="user"]')];
+function conversationProbe(command,diagnostic=false){return `(()=>{
+ const users=(${userTurns.toString()})();
  const last=users[users.length-1];
- return last&&String(last.innerText||'').includes(${JSON.stringify(command)})?location.href:null;
+ const matched=last&&String(last.innerText||last.textContent||'').includes(${JSON.stringify(command)});
+ return ${diagnostic?'true':'false'}?{url:matched?location.href:null,reason:matched?'matched':last?'last_user_command_differs':'user_turn_not_found'}:matched?location.href:null;
 })()`;}
-async function discoverConversation(commandId,browserTargetId){
+async function discoverConversation(commandId,browserTargetId,diagnostic=false){
   const pages=await http(GENERATOR_BASE+'/json/list');
   const own=pages.find(x=>String(x.id||'')===String(browserTargetId));
-  if(!chatURL(own?.url)||!own.webSocketDebuggerUrl)return null;
+  if(!own?.webSocketDebuggerUrl)return diagnostic?{url:null,reason:'pinned_target_missing'}:null;
+  if(!chatURL(own.url))return diagnostic?{url:null,reason:'pinned_url_not_durable'}:null;
   const cdp=new CDP(own.webSocketDebuggerUrl);
-  try{await cdp.open();return chatURL(await cdp.evaluate(conversationProbe(commandId)));}
+  try{await cdp.open();const result=await cdp.evaluate(conversationProbe(commandId,diagnostic));
+    return diagnostic?{url:chatURL(result?.url),reason:result?.reason||'conversation_probe_unavailable'}:chatURL(result);}
   finally{cdp.close();}
 }
 async function rememberConversation(input){
@@ -177,9 +186,9 @@ async function consume(task){
   // it can only read a raster after this command's exact user turn.
   if(!chatURL(task.conversation_url)){
     try{
-      const url=await discoverConversation(task.command_id,task.browser_target_id);
-      if(!url)return {status:'waiting',reason:'awaiting_command_conversation'};
-      task.conversation_url=url;
+      const found=await discoverConversation(task.command_id,task.browser_target_id,true);
+      if(!found.url)return {status:'waiting',reason:'awaiting_command_conversation:'+found.reason};
+      task.conversation_url=found.url;
     }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
   }
   try{

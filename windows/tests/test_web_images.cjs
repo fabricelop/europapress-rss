@@ -31,6 +31,19 @@ test('URL discovery requires this command in the last user turn, not merely the 
   assert.equal(vm.runInNewContext(conversationProbe('cmd-123'),{document,location:{href:url}}),expected);
  }
 });
+test('delivery recognizes semantic user wrappers and tool-rendered images without an assistant role wrapper',async()=>{
+ const url='https://chatgpt.com/c/abc-123';
+ const leaf={textContent:'TTENDENCIAS_IMAGE_JOB_V4 cmd-123 tt-123',compareDocumentPosition:()=>4,contains:()=>false};
+ const wrapper={contains:el=>el===leaf};
+ const image={complete:true,naturalWidth:1536,naturalHeight:864,src:'https://asset.example/original.png',alt:''};
+ const document={querySelectorAll:selector=>selector==='img'?[image]:selector.includes('user-message')?[wrapper,leaf]:[],querySelector:()=>null};
+ const context={document,location:{href:url},Node:{DOCUMENT_POSITION_FOLLOWING:4},Uint8Array,btoa:s=>Buffer.from(s,'binary').toString('base64'),
+ fetch:async()=>({ok:true,blob:async()=>({type:'image/png',size:15000,arrayBuffer:async()=>new Uint8Array(15000).buffer})})};
+ assert.equal(vm.runInNewContext(conversationProbe('cmd-123'),context),url);
+ assert.equal((await vm.runInNewContext(rasterProbe('cmd-123'),context)).ready,true);
+ const diag=vm.runInNewContext(conversationProbe('other-command',true),context);
+ assert.equal(diag.url,null);assert.equal(diag.reason,'last_user_command_differs');
+});
 test('the currently open image has priority without starving the remaining fair queue',()=>{
  const old={task:{conversation_url:'https://chatgpt.com/c/old-1'}},fresh={task:{conversation_url:'https://chatgpt.com/c/abc-123'}},other={task:{conversation_url:'https://chatgpt.com/c/old-2'}};
  assert.deepEqual(prioritizeOpenConversation([old,fresh,other],[{type:'page',url:fresh.task.conversation_url}]),[fresh,old,other]);
