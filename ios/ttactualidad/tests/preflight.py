@@ -227,7 +227,7 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.31"' in project
+assert 'MARKETING_VERSION: "0.4.32"' in project
 assert 'CURRENT_PROJECT_VERSION: "37"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
@@ -283,7 +283,7 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.31"' in project
+assert 'MARKETING_VERSION: "0.4.32"' in project
 assert 'CURRENT_PROJECT_VERSION: "37"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
@@ -339,7 +339,7 @@ assert 'quickButton("Copiar imagen Site", "square.on.square")' in actions
 assert 'quickButton("Abrir chat TT", "plus.bubble")' in actions
 assert 'copyTrendSiteImagePrompt()' in actions
 assert 'openTTProject()' in actions
-assert 'TTENDENCIAS_SITE_IMAGE_V3' in actions
+assert 'TTENDENCIAS_SITE_IMAGE_V4' in actions
 assert 'attach_trend_image' in actions and 'verify_trend_image' in actions
 assert 'inspect_top30_images' in actions
 for token in ('siteImageEditorialID', 'siteImageRevision', 'siteImageExplainedAt'):
@@ -350,6 +350,26 @@ assert 'guard let leader = store.snapshot.trendListas.first' in actions
 assert 'No se puede crear un prompt seguro.' in actions
 assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
 print("TT_ACTUALIDAD_IOS_SITE_IMAGE_CHAT_BUTTONS_OK")
+# v0.4.32: one original PNG appears in Site and in the matching trend card.
+# Archive-photo gallery stays archive-only; no new paid API or PC pipeline.
+ai = (root / "TTActualidad/SiteAIImageCatalog.swift").read_text(encoding="utf8")
+live = (root / "TTActualidad/TTDashboard.swift").read_text(encoding="utf8")
+for text in ('trends/site-ai-images.json', 'site-ai-images.json', 'target_id',
+             'explained_at', 'explanation', 'revision', 'sha256',
+             'ttactualidad-tendencias.rainyraven22.chatgpt.site'):
+    assert text in ai, text
+assert 'record.explanation == explanation' in ai
+assert 'record.explained_at == explainedAt' in ai
+assert 'url.host?.lowercased() == siteHost' in ai
+assert 'siteImageURL: SiteAIImageCatalog.resolved(' in store
+assert 'siteImageURL: trend.siteImageURL' in store
+assert 'TrendSiteOrArchiveImage(aiURL: item.siteImageURL' in live
+assert 'archiveFallback' in live
+assert 'trends/site-ai-images.json' in actions
+assert 'APP: manifest verified/pending' in actions
+assert 'TTENDENCIAS_SITE_IMAGE_V4' in actions
+print("TT_ACTUALIDAD_IOS_0432_SITE_AI_IMAGES_PREFLIGHT_OK")
+
 
 
 
