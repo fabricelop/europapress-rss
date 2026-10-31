@@ -17,6 +17,13 @@ on:
       - vercel-webhook/lib/ttendencias-run-status-handler.js
       - no-vercel/ttendencias-worker/**
       - .github/workflows/ttendencias-web-images-test.yml
+  pull_request:
+    paths:
+      - windows/TTendenciasImageBridge.js
+      - windows/TTendenciasDedicatedListener.ps1
+      - windows/TTendenciasWebImages.cjs
+      - windows/tests/test_image_web_independence.cjs
+      - .github/workflows/ttendencias-web-images-test.yml
   workflow_dispatch:
 permissions:
   contents: read
