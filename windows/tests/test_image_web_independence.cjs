@@ -58,4 +58,11 @@ test('passive publisher can run during own confirmed LAUNCHED only; never with T
  assert.match(gate,/\$job\.pc_launched_at/);
  assert.match(gate,/\$job\.delivery_mode/);
  assert.match(gate,/\$own\.Count -ne 1/);
+ const busyStart=listener.indexOf('function Test-ImageBridgeBusy {');
+ const busyEnd=listener.indexOf('\nfunction Set-ImageBridgeLock(',busyStart);
+ assert.ok(busyStart>=0&&busyEnd>busyStart);
+ const busyGate=listener.slice(busyStart,busyEnd);
+ assert.match(busyGate,/if\(\$tooOld\)/,'stale lock still recovers after 12 minutes');
+ assert.doesNotMatch(busyGate,/if\(\$tooOld\s+-or\s+\$terminal\)/,
+   'LAUNCHED is not safe to kill: web-image capture may still be running');
 });
