@@ -55,6 +55,8 @@ struct TrendItem: Identifiable {
     let revision: Int
     let imageURL: URL?
     let sourceURL: URL?
+    // AI image is independent from archive photographs.
+    var siteImageURL: URL? = nil
     var rankDelta: Int = 0
     var movement: String = ""
     var enteredAt: Date? = nil
@@ -589,9 +591,11 @@ final class EditorialStore: ObservableObject {
         }
         let fresh = !downloaded.isEmpty
         let now = fresh ? Date() : (snapshot.updatedAt ?? Date())
-        // Archive photographs only. This GitHub listing cannot include the AI
-        // directories because ArchivePhotoCatalog only selects archive-images.
-        let archivePhotos = await ArchivePhotoCatalog.load()
+        // Archive photographs and verified Sites PNGs are separate catalogs.
+        async let archivePhotosTask = ArchivePhotoCatalog.load()
+        async let siteImagesTask = SiteAIImageCatalog.load()
+        let archivePhotos = await archivePhotosTask
+        let siteImages = await siteImagesTask
         let news = Self.buildNews(prepared: docs["ttittulares/prepared.json"]!,
                                   decisions: docs["ttittulares/decisions.json"]!,
                                   archivePhotos: archivePhotos)
@@ -601,14 +605,14 @@ final class EditorialStore: ObservableObject {
             deliveries: docs["trends/telegram-image-deliveries.json"]!,
             decisions: docs["trends/mobile-decisions.json"]!,
             queue: docs["trends/editorial-queue.json"]!,
-            now: now, archivePhotos: archivePhotos
+            now: now, archivePhotos: archivePhotos, siteImages: siteImages
         )
         let top = Self.buildTop30(
             recent: docs["trends/recent.json"] ?? [:],
             manual: docs["trends/telegram-manual-explained.json"]!,
             explained: docs["trends/explained.json"] ?? [:],
             requests: docs["trends/requests.json"]!,
-            ready: ready, archivePhotos: archivePhotos
+            ready: ready, archivePhotos: archivePhotos, siteImages: siteImages
         )
         let unexplained = Self.buildUnexplainedTrends(
             requests: docs["trends/requests.json"]!,
@@ -1350,6 +1354,7 @@ final class EditorialStore: ObservableObject {
                   status: status ?? trend.status, inListas: inListas ?? trend.inListas,
                   editorialID: trend.editorialID, revision: trend.revision,
                   imageURL: trend.imageURL, sourceURL: trend.sourceURL,
+                  siteImageURL: trend.siteImageURL,
                   rankDelta: trend.rankDelta, movement: trend.movement,
                   enteredAt: trend.enteredAt, problemReason: trend.problemReason,
                   coveredByID: trend.coveredByID, coveredByName: trend.coveredByName,
@@ -1624,7 +1629,8 @@ final class EditorialStore: ObservableObject {
     private static func buildTrendListas(
         manual: [String: Any], requests: [String: Any], deliveries: [String: Any],
         decisions: [String: Any], queue: [String: Any], now: Date,
-        archivePhotos: [String: URL]
+        archivePhotos: [String: URL],
+        siteImages: [String: SiteAIImageCatalog.Entry]
     ) -> [TrendItem] {
         var latestManual: [String: [String: Any]] = [:]
         var latestRequests: [String: [String: Any]] = [:]
@@ -1700,7 +1706,12 @@ final class EditorialStore: ObservableObject {
                              reviewReason: str(row, "red_review_reason"),
                              siteImageEditorialID: id,
                              siteImageRevision: rev,
-                             siteImageExplainedAt: str(row, "explained_at"))
+                             siteImageExplainedAt: str(row, "explained_at"),
+                             siteImageURL: SiteAIImageCatalog.resolved(
+                                 id: id, revision: rev,
+                                 explanation: str(row, "explanation"),
+                                 explainedAt: str(row, "explained_at"),
+                                 catalog: siteImages))
         }
         .sorted {
             let leftRank = $0.rank > 0 ? $0.rank : Int.max
@@ -1799,7 +1810,8 @@ final class EditorialStore: ObservableObject {
 
     private static func buildTop30(
         recent: [String: Any], manual: [String: Any], explained: [String: Any],
-        requests: [String: Any], ready: [TrendItem], archivePhotos: [String: URL]
+        requests: [String: Any], ready: [TrendItem], archivePhotos: [String: URL],
+        siteImages: [String: SiteAIImageCatalog.Entry]
     ) -> [TrendItem] {
         let names = recent["top30"] as? [String] ?? []
         let radar = rows(recent, "items")
@@ -1891,7 +1903,13 @@ final class EditorialStore: ObservableObject {
                              reviewReason: str(explanation, "red_review_reason"),
                              siteImageEditorialID: str(explanation, "id"),
                              siteImageRevision: int(explanation, "revision"),
-                             siteImageExplainedAt: str(explanation, "explained_at"))
+                             siteImageExplainedAt: str(explanation, "explained_at"),
+                             siteImageURL: SiteAIImageCatalog.resolved(
+                                 id: str(explanation, "id"),
+                                 revision: int(explanation, "revision"),
+                                 explanation: text,
+                                 explainedAt: str(explanation, "explained_at"),
+                                 catalog: siteImages))
         }
     }
 
