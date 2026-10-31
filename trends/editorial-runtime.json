@@ -3,25 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T2311+0100",
-  "previous_run_id": "tr-1793484331290-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-10-31T23:11:00+01:00",
-  "updated_at": "2026-10-31T23:12:03+01:00",
+  "run_id": "tr-1793484740569-manual",
+  "previous_run_id": "tr-chat-20261031T2311+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T23:12:20+01:00",
+  "updated_at": "2026-10-31T23:12:20+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
-  "trend_id": "348f94331bf0",
-  "title": "#laSextaXplica",
-  "queue_complete": true,
-  "processed_ids": [
-    "348f94331bf0"
+  "total": 3,
+  "trend_id": "listas-auto-6e922bcc692d7eb03194",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-6e922bcc692d7eb03194",
+    "red-review-ba61767e4f3587475df3",
+    "red-review-e1e22bc4e0a17ee83c48"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-6e922bcc692d7eb03194",
+    "red-review-ba61767e4f3587475df3",
+    "red-review-e1e22bc4e0a17ee83c48"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "1 trabajo vigente: #laSextaXplica. Causa actual verificada (especial sobre Urda); persistiendo texto factual sin remate por sensibilidad.",
+  "summary": "3 trabajos vigentes: agrupación automática de Listas y revisiones de novedades Toledo/Renfe. Sin ImageGen.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -171,6 +177,13 @@
       "trend_id": "348f94331bf0",
       "title": "#laSextaXplica",
       "message": "Revisión 0 revalidada JIT en main; enviando resultado al aplicador editorial."
+    },
+    {
+      "at": "2026-10-31T23:12:20+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-6e922bcc692d7eb03194",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793484740569-manual: 3 trabajos preparing/update vigentes en main. Procesando agrupación y después revisiones Toledo/Renfe, con revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
