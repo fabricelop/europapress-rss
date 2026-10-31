@@ -3,32 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T1810+0100",
-  "previous_run_id": "tr-1793465886374-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-10-31T17:10:00Z",
-  "updated_at": "2026-10-31T17:12:30Z",
-  "finished_at": "2026-10-31T17:12:30Z",
+  "run_id": "tr-1793466842173-manual",
+  "previous_run_id": "tr-chat-20261031T1810+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T17:15:00Z",
+  "updated_at": "2026-10-31T17:15:00Z",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
-  "summary": "0/0 tras refresco manual persistido a las 18:11:20+01:00 y relectura JIT de main: cola autoritativa final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación. Incidencia separada: health-status previo mantiene 125 estados históricos inválidos en request_queue.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "health_status",
-      "detail": "El último health-status disponible marca 125 estados históricos inválidos en request_queue; editorial_queue está válida y vacía (0 pendientes)."
-    }
+  "remaining_ids": [
+    "red-review-ab452204d108362187f4",
+    "red-review-6637a68b90c2f978721a"
   ],
+  "remaining_active_ids": [
+    "red-review-ab452204d108362187f4",
+    "red-review-6637a68b90c2f978721a"
+  ],
+  "remaining_problematic_ids": [],
+  "summary": "Iniciando revisión de novedades 0/2: #FelizSábado y Toledo. Sin ImageGen ni publicación.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Cierre verificado",
+  "activity": "Revisando novedades",
   "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T1810+0100",
