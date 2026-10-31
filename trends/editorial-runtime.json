@@ -8,39 +8,50 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T13:13:30+01:00",
-  "updated_at": "2026-10-31T13:18:00+01:00",
-  "finished_at": "2026-10-31T13:18:00+01:00",
+  "updated_at": "2026-10-31T13:18:30+01:00",
+  "finished_at": "2026-10-31T13:18:30+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "listas-auto-8423bde277fb0072e86d",
     "red-review-7e61105d549dfd7cbb0a",
     "red-review-b10ca3fa03f234e357b1"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "2/2 revisiones cerradas como stale por barrera JIT; cola final 0, sin preparing/update ni rewrite_pending. Urda r0 y agrupación previa ya estaban aplicadas. Sin ImageGen ni publicación.",
+  "summary": "Agrupación automática cerrada sin grupos; #DeViernes y #FelizSábado revisados con novedades de episodio, pero el aplicador los cerró como stale al revalidar el origen. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
+      "id": "listas-auto-8423bde277fb0072e86d",
+      "revision": 0,
+      "status": "grouping_completed",
+      "result": "groups:0"
+    },
+    {
       "id": "red-review-7e61105d549dfd7cbb0a",
-      "outcome": "stale"
+      "revision": 0,
+      "status": "review_completed",
+      "result": "stale"
     },
     {
       "id": "red-review-b10ca3fa03f234e357b1",
-      "outcome": "stale"
+      "revision": 0,
+      "status": "review_completed",
+      "result": "stale"
     }
   ],
   "last_run": {
     "run_id": "tr-1793448774223-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T13:18:00+01:00",
+    "finished_at": "2026-10-31T13:18:30+01:00",
     "attempted": 2,
     "explained": 0,
     "updates": 0,
@@ -51,9 +62,9 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "2/2 revisiones cerradas como stale; cola final 0. Sin ImageGen ni publicación."
+    "summary": "Agrupación automática cerrada sin grupos; #DeViernes y #FelizSábado revisados con novedades de episodio, pero el aplicador los cerró como stale al revalidar el origen. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T13:13:30+01:00",
-  "last_completed_at": "2026-10-31T13:18:00+01:00"
+  "last_completed_at": "2026-10-31T13:18:30+01:00"
 }
