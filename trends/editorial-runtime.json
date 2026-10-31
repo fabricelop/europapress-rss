@@ -5,31 +5,36 @@
   "canonical": true,
   "run_id": "tr-1793467530000-manual",
   "previous_run_id": "tr-1793467325131-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-10-31T18:25:30+01:00",
-  "updated_at": "2026-10-31T18:25:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T18:26:00+01:00",
+  "finished_at": "2026-10-31T18:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Preparando pasada editorial real; verificando cola autoritativa y estados vigentes.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "0/0 tras relectura final de main y barrido completo de requests.json: cola autoritativa 0, sin status preparing/update ni rewrite_pending. Sin ImageGen ni publicación. Incidencia separada: health-status mantiene 127 estados históricos inválidos en request_queue; ready_consistency sin huérfanos.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "maintenance_health",
+      "reason": "health-status mantiene 127 estados históricos inválidos en request_queue; no afecta a la cola editorial autoritativa, que está en 0, y ready_consistency marca 0 huérfanos."
+    }
+  ],
   "error": null,
-  "activity": "Preparando pasada editorial",
+  "activity": "Cierre verificado",
   "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-1793467325131-manual",
+    "run_id": "tr-1793467530000-manual",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-10-31T18:25:00+01:00",
-    "finished_at": "2026-10-31T18:25:00+01:00",
+    "started_at": "2026-10-31T18:25:30+01:00",
+    "finished_at": "2026-10-31T18:26:00+01:00",
     "attempted": 0,
     "explained": 0,
     "updates": 0,
@@ -42,9 +47,9 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "0/0 tras relectura JIT de main y barrido completo de requests.json: cola autoritativa 0, sin status preparing/update ni rewrite_pending. La pasada concurrente anterior cerró Brighton r0 antes de este cierre. Sin ImageGen ni publicación. Incidencia separada: health-status registra 127 estados históricos inválidos en request_queue."
+    "summary": "0/0 tras relectura final de main y barrido completo de requests.json: cola autoritativa 0, sin status preparing/update ni rewrite_pending. Sin ImageGen ni publicación. Incidencia separada: health-status mantiene 127 estados históricos inválidos en request_queue; ready_consistency sin huérfanos."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T18:25:30+01:00",
-  "last_completed_at": "2026-10-31T18:25:00+01:00"
+  "last_completed_at": "2026-10-31T18:26:00+01:00"
 }
