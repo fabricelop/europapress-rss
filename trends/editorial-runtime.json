@@ -3,69 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793477927177-manual",
-  "previous_run_id": "tr-1793478052112-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "done",
-  "started_at": "2026-10-31T21:19:00+01:00",
-  "updated_at": "2026-10-31T21:27:00+01:00",
-  "finished_at": "2026-10-31T21:27:00+01:00",
-  "current": 4,
-  "total": 4,
+  "run_id": "tr-chat-20261031T2140-manual",
+  "previous_run_id": "tr-1793477927177-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T21:40:00+01:00",
+  "updated_at": "2026-10-31T21:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-ac9fe37f4a6e831db267",
-    "red-review-86c68fd6d1a89effb1c1",
-    "red-review-ede58ffb052764f3c400",
-    "listas-auto-fcbd033c367c6997d7db"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial completa: 2 agrupaciones tratadas, 2 grupos nuevos creados, 2 coberturas por publicación existente, Adrián Niño actualizado por episodio distinto y Haas/Ocon-Hirakawa sin novedades. Cola textual 0. Sin ImageGen ni publicaciones.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "code": "concurrent_editorial_run",
-      "message": "La telemetría inicial de este run chocó con cambios concurrentes; los resultados editoriales se aplicaron en main por ejecuciones concurrentes y se revalidaron antes del cierre."
-    }
-  ],
+  "summary": "Iniciando pasada editorial manual; revalidando ranking y cola en main.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada con concurrencia recuperada (4/4)",
-  "final_outcomes": [
-    {
-      "id": "listas-auto-ac9fe37f4a6e831db267",
-      "revision": 0,
-      "outcome": "completed",
-      "groups_created": 2,
-      "covered_by_existing": [
-        "4fbbc513f13d"
-      ]
-    },
-    {
-      "id": "red-review-86c68fd6d1a89effb1c1",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-b359c175e9758f259d6c",
-      "distinct_episode": true
-    },
-    {
-      "id": "red-review-ede58ffb052764f3c400",
-      "revision": 0,
-      "outcome": "unchanged"
-    },
-    {
-      "id": "listas-auto-fcbd033c367c6997d7db",
-      "revision": 0,
-      "outcome": "completed",
-      "groups_created": 0,
-      "covered_by_existing": [
-        "trend-update-b359c175e9758f259d6c"
-      ]
-    }
-  ],
+  "activity": "Revalidando ranking y cola",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T21:19:00+01:00",
   "last_completed_at": "2026-10-31T21:27:00+01:00",
