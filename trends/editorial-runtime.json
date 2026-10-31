@@ -6,32 +6,30 @@
   "run_id": "tr-manual-20261031T074000+0100",
   "previous_run_id": "tr-manual-20261031T072500+0100",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "verifying",
   "started_at": "2026-10-31T07:40:00+01:00",
-  "updated_at": "2026-10-31T07:46:00+01:00",
+  "updated_at": "2026-10-31T07:48:00+01:00",
   "finished_at": null,
   "last_started_at": "2026-10-31T07:40:00+01:00",
   "last_completed_at": "2026-10-31T07:45:00+01:00",
-  "current": 1,
+  "current": 2,
   "total": 4,
-  "trend_id": "listas-auto-cf1a57e5089b6b0ad33e",
-  "title": "Agrupación automática de Listas",
+  "trend_id": "red-review-b0f211321398ac293a69",
+  "title": "Revisar novedades: #DeViernes",
   "queue_complete": false,
   "processed_ids": [
     "36bc10edc55b"
   ],
   "remaining_ids": [
-    "listas-auto-cf1a57e5089b6b0ad33e",
     "red-review-b0f211321398ac293a69",
     "red-review-1bbd2722e14a13f3d3d0"
   ],
   "remaining_active_ids": [
-    "listas-auto-cf1a57e5089b6b0ad33e",
     "red-review-b0f211321398ac293a69",
     "red-review-1bbd2722e14a13f3d3d0"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Procesando agrupación automática y después dos revisiones de novedades.",
+  "summary": "Agrupación aplicada sin grupos. Resultados de revisión de #DeViernes y Atocha escritos; verificando su aplicación.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -105,6 +103,27 @@
       "trend_id": "listas-auto-cf1a57e5089b6b0ad33e",
       "title": "Agrupación automática de Listas",
       "message": "Comparación editorial concluida: no hay agrupaciones ni coberturas exactas aplicables entre los candidatos actuales."
+    },
+    {
+      "at": "2026-10-31T07:47:16+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-cf1a57e5089b6b0ad33e",
+      "title": "Agrupación automática de Listas",
+      "message": "El aplicador retiró la tarea de agrupación; resultado aplicado sin grupos ni coberturas."
+    },
+    {
+      "at": "2026-10-31T07:48:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-b0f211321398ac293a69",
+      "title": "Revisar novedades: #DeViernes",
+      "message": "Resultado updated/distinct_episode persistido en maintenance-outbox; sin remate por incluir homenaje a un fallecido."
+    },
+    {
+      "at": "2026-10-31T07:48:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-1bbd2722e14a13f3d3d0",
+      "title": "Revisar novedades: Atocha",
+      "message": "Resultado updated/continuidad persistido en maintenance-outbox; sin remate por tratarse del accidente de Urda."
     }
   ],
   "final_outcomes": [
@@ -121,13 +140,13 @@
     "finished_at": null,
     "attempted": 4,
     "explained": 1,
-    "updates": 0,
+    "updates": 2,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
