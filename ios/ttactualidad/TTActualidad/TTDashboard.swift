@@ -15,7 +15,11 @@ private struct ListasGroupingControls: View {
     @State private var groupRequestID = UUID().uuidString.lowercased()
     @State private var cleanupRequestID = UUID().uuidString.lowercased()
 
-    private var covered: [TrendItem] { store.snapshot.trendListas.filter { $0.isCovered } }
+    // Purple originals only. Never delete the newly-created joint card.
+    // Backend also revalidates listas_group_role == covered before deleting.
+    private var covered: [TrendItem] {
+        store.snapshot.trendListas.filter { $0.isCovered && !$0.isJointGroup }
+    }
     private var ungrouped: [TrendItem] { store.snapshot.trendListas.filter { !$0.isCovered } }
 
     var body: some View {
