@@ -216,6 +216,11 @@ private struct TrendRowView: View {
                     }
                     .font(.caption)
                 }
+                if let aiImage = item.siteImageURL {
+                    TrendEditorialImage(url: aiImage, label: "Imagen IA · TTendencias Site")
+                } else if let archivePhoto = item.imageURL {
+                    TrendEditorialImage(url: archivePhoto, label: "Foto de archivo")
+                }
                 if item.inListas {
                     Label("Disponible en Listas", systemImage: "checkmark.circle.fill")
                         .font(.caption).foregroundStyle(.green)
@@ -230,6 +235,20 @@ private struct TrendRowView: View {
                     Text("#\(item.rank)")
                         .font(.subheadline.monospacedDigit().bold())
                         .frame(width: 36, alignment: .leading)
+                }
+                if let imageURL = item.siteImageURL ?? item.imageURL {
+                    AsyncImage(url: imageURL) { phase in
+                        if case .success(let image) = phase {
+                            image.resizable().scaledToFill()
+                        } else {
+                            Image(systemName: "photo").foregroundStyle(.secondary)
+                        }
+                    }
+                    .frame(width: 52, height: 40)
+                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    .accessibilityLabel(item.siteImageURL == nil
+                                        ? "Fotografía de archivo" : "Imagen IA")
                 }
                 Text(item.name)
                     .font(.subheadline.weight(.semibold))
@@ -253,5 +272,31 @@ private struct TrendRowView: View {
         .tint(.primary)
         .padding(12)
         .background(bandColor, in: RoundedRectangle(cornerRadius: 12))
+    }
+}
+
+private struct TrendEditorialImage: View {
+    let url: URL
+    let label: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().scaledToFit()
+                case .failure:
+                    Label("Imagen no disponible. Se conserva la referencia original.",
+                          systemImage: "photo.badge.exclamationmark")
+                        .font(.caption).foregroundStyle(.secondary)
+                default:
+                    ProgressView().frame(maxWidth: .infinity)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .background(.thinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            Text(label).font(.caption2).foregroundStyle(.secondary)
+        }
     }
 }
