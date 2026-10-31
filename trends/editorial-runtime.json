@@ -3,32 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793467325131-manual",
-  "previous_run_id": "tr-1793467195741-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-10-31T18:25:00+01:00",
-  "updated_at": "2026-10-31T18:25:00+01:00",
-  "finished_at": "2026-10-31T18:25:00+01:00",
+  "run_id": "tr-1793467530000-manual",
+  "previous_run_id": "tr-1793467325131-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T18:25:30+01:00",
+  "updated_at": "2026-10-31T18:25:30+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "0/0 tras relectura JIT de main y barrido completo de requests.json: cola autoritativa 0, sin status preparing/update ni rewrite_pending. La pasada concurrente anterior cerró Brighton r0 antes de este cierre. Sin ImageGen ni publicación. Incidencia separada: health-status registra 127 estados históricos inválidos en request_queue.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "maintenance_health",
-      "reason": "health-status mantiene 127 estados históricos inválidos en request_queue; no afecta a la cola editorial autoritativa, que está en 0."
-    }
-  ],
+  "summary": "Preparando pasada editorial real; verificando cola autoritativa y estados vigentes.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Cierre verificado",
+  "activity": "Preparando pasada editorial",
   "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793467325131-manual",
@@ -50,6 +45,6 @@
     "summary": "0/0 tras relectura JIT de main y barrido completo de requests.json: cola autoritativa 0, sin status preparing/update ni rewrite_pending. La pasada concurrente anterior cerró Brighton r0 antes de este cierre. Sin ImageGen ni publicación. Incidencia separada: health-status registra 127 estados históricos inválidos en request_queue."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T18:25:00+01:00",
+  "last_started_at": "2026-10-31T18:25:30+01:00",
   "last_completed_at": "2026-10-31T18:25:00+01:00"
 }
