@@ -166,6 +166,10 @@ assert 'Button("Publicado · Quitar de Listas")' in actions
 assert '"No publicado · Quitar de Listas"' in actions
 covered_actions = actions.split('if let trend, trend.isCovered {', 1)[1].split('} else if let news', 1)[0]
 assert 'quickButton("Quitar de Listas"' in covered_actions
+assert 'quickButton("Volver a evaluar", "arrow.triangle.2.circlepath")' in covered_actions
+assert 'request("rework")' in covered_actions
+assert 'trend?.isCovered == true && intent == "rework"' in actions
+assert 'La explicación original y la ficha conjunta se conservarán.' in actions
 assert 'trend?.isCovered != true' not in actions
 assert 'submit("published")' in actions and 'submit("deleted")' in actions
 assert '"pilot/ttactualidad-publication-events.json"' in store
@@ -227,11 +231,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.35"' in project
-assert 'CURRENT_PROJECT_VERSION: "41"' in project
+assert 'MARKETING_VERSION: "0.4.36"' in project
+assert 'CURRENT_PROJECT_VERSION: "42"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.35: remove image deletion UI/API and trend→news UI. Keep news functionality.
+# 0.4.36: remove image deletion UI/API and trend→news UI. Keep news functionality.
 assert 'quickButton("Enviar a TTiTTulares"' not in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' not in actions
 assert 'originTrend: trend' not in actions
@@ -260,7 +264,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "41"' in project
+assert 'CURRENT_PROJECT_VERSION: "42"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -272,7 +276,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "41"' in project
+assert 'CURRENT_PROJECT_VERSION: "42"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -288,8 +292,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.35"' in project
-assert 'CURRENT_PROJECT_VERSION: "41"' in project
+assert 'MARKETING_VERSION: "0.4.36"' in project
+assert 'CURRENT_PROJECT_VERSION: "42"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
