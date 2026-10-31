@@ -22709,16 +22709,33 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "4bf0bbb3b67d77814ba58d1555fda6ca98c0a0c8607cadc999465e317d02b034",
-      "editorial_grouping_checked_at": "2026-10-31T12:13:55.048646+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T12:13:55.048646+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/accidente-tren-directo-ultima-hora-heridos/01793406669984.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261031/accidente-tren-directo-ultima-hora-heridos/17294654.shtml",
+        "alt": "Imagen de archivo relacionada con Urda",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/accidente-tren-directo-ultima-hora-heridos/01793406669984.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261031/accidente-tren-directo-ultima-hora-heridos/17294654.shtml",
+        "alt": "Imagen de archivo relacionada con Urda",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-31T13:07:00+01:00",
+  "updated_at": "2026-10-31T12:14:39.790434Z",
   "count": 395
 }
