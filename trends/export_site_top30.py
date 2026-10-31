@@ -133,6 +133,19 @@ def image_index(catalog):
     return index
 
 
+def verified_public_sources(row):
+    result = []
+    for item in row.get("verification_sources", []):
+        url = item if isinstance(item, str) else text(item, "url") if isinstance(item, dict) else ""
+        u = urlparse(url)
+        if u.scheme == "https" and u.hostname and not (u.username or u.password):
+            if url not in result:
+                result.append(url)
+        if len(result) >= 8:
+            break
+    return result
+
+
 def recorded_image(row, image_map):
     ident = (text(row, "id"), int(row.get("revision") or 0))
     candidate = image_map.get(ident)
@@ -147,7 +160,8 @@ def recorded_image(row, image_map):
     if not (u.scheme == "https" and u.netloc == SITE_HOST and
             u.path.startswith("/images/ttendencias/") and u.path.endswith(".png")
             and not (u.query or u.fragment or u.params)
-            and re.fullmatch(r"[0-9a-f]{64}", digest)):
+            and re.fullmatch(r"[0-9a-f]{64}", digest)
+            and digest[:12] in u.path.rsplit("/", 1)[-1]):
         return None
     # The catalog records an original, but only the Site/browser can verify
     # that the PNG still responds; never label this file as storage-verified.
@@ -200,6 +214,10 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
             "editorial_id": text(chosen, "id"),
             "revision": int(chosen.get("revision") or 0),
             "group_title": text(chosen, "group_title"),
+            "category": text(chosen, "category"),
+            "closer_text": text(chosen, "closer_text"),
+            "verification_sources": verified_public_sources(chosen),
+            "last_reviewed_at": text(chosen, "red_review_checked_at"),
             "image": recorded_image(chosen, images) if exp else None,
             "movement": text(movement.get(rank, {}), "movement"),
         }
