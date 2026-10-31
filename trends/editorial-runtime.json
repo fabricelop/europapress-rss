@@ -3,27 +3,23 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793440808230-manual",
-  "previous_run_id": "tr-20261031T105500-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T11:00:08.230+01:00",
-  "updated_at": "2026-10-31T11:04:15+01:00",
-  "finished_at": "2026-10-31T11:04:15+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793441024231-manual",
+  "previous_run_id": "tr-1793440808230-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T11:04:00+01:00",
+  "updated_at": "2026-10-31T11:04:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-9c671cb8f6b82a219761",
-    "red-review-aa267e2c0713fcba29c4",
-    "red-review-19fd58865c1cae4eff9d"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 3/3. Agrupación automática sin coincidencias; #DeViernes actualizado por episodio nuevo; #FelizSábado cerrado como revisión obsoleta al salir del Top 30. Cola final 0. Sin ImageGen ni publicación.",
+  "summary": "Inicio de pasada manual: cola autoritativa inicial 0. Verificando estado final de main antes de permitir cierre 0/0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -160,35 +156,16 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final: editorial-queue.json releído en main con count=0 y sin preparing/update/rewrite_pending. Cierre 3/3; sin ImageGen ni publicación."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "listas-auto-9c671cb8f6b82a219761",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 0,
-      "applied": true
     },
     {
-      "id": "red-review-aa267e2c0713fcba29c4",
-      "revision": 0,
-      "name": "#DeViernes",
-      "outcome": "updated",
-      "created_id": "trend-update-57bbd24f139ebd80a7bc",
-      "applied": true
-    },
-    {
-      "id": "red-review-19fd58865c1cae4eff9d",
-      "revision": 0,
-      "name": "#FelizSábado",
-      "outcome": "stale",
-      "changed": false,
-      "applied": true
+      "at": "2026-10-31T11:04:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio tr-1793441024231-manual: contrato y cola autoritativa releídos en main; cola inicial 0. Se ejecuta barrera final sobre preparing/update/rewrite_pending. Sin ImageGen ni publicación."
     }
   ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793440808230-manual",
     "status": "DONE",
