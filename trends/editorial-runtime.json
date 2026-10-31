@@ -5,52 +5,54 @@
   "canonical": true,
   "run_id": "tr-1793445575815-manual",
   "previous_run_id": "tr-chat-20261031T121059+0100",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T12:19:00+01:00",
-  "updated_at": "2026-10-31T12:22:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T12:23:00+01:00",
+  "finished_at": "2026-10-31T12:23:00+01:00",
   "current": 1,
   "total": 1,
-  "trend_id": "listas-auto-63edd5c6917d6dccad6d",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "listas-auto-63edd5c6917d6dccad6d"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Revalidación JIT: el trabajo fue completado concurrentemente antes de nuestra escritura; verificando outbox aplicado, cola final y reexplicaciones pendientes.",
+  "summary": "1/1 resuelto: agrupación automática completada sin coincidencias (0 grupos, 0 coberturas). La revalidación JIT evitó escribir sobre un cierre concurrente. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "verifying",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "listas-auto-63edd5c6917d6dccad6d",
       "revision": 0,
-      "status": "grouping_completed_concurrently",
-      "groups_created": 0
+      "status": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "completion": "concurrent_jit"
     }
   ],
   "last_run": {
-    "run_id": "tr-chat-20261031T114000+0100",
+    "run_id": "tr-1793445575815-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T11:42:00+01:00",
-    "attempted": 0,
+    "finished_at": "2026-10-31T12:23:00+01:00",
+    "attempted": 1,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "0/0; Top 30 actualizado a 11:41:18+01:00; cola final 0; sin ImageGen ni publicación."
+    "summary": "1/1 resuelto: agrupación automática completada sin coincidencias (0 grupos, 0 coberturas). La revalidación JIT evitó escribir sobre un cierre concurrente. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T11:25:00+01:00",
-  "last_completed_at": "2026-10-31T11:28:39+01:00"
+  "last_completed_at": "2026-10-31T12:23:00+01:00"
 }
