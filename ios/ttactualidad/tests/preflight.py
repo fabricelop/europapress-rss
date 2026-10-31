@@ -227,8 +227,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.30"' in project
-assert 'CURRENT_PROJECT_VERSION: "36"' in project
+assert 'MARKETING_VERSION: "0.4.31"' in project
+assert 'CURRENT_PROJECT_VERSION: "37"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.17: an editorial trend may trigger independent news investigation.
@@ -255,7 +255,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "36"' in project
+assert 'CURRENT_PROJECT_VERSION: "37"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -267,7 +267,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "36"' in project
+assert 'CURRENT_PROJECT_VERSION: "37"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -283,8 +283,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.30"' in project
-assert 'CURRENT_PROJECT_VERSION: "36"' in project
+assert 'MARKETING_VERSION: "0.4.31"' in project
+assert 'CURRENT_PROJECT_VERSION: "37"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -333,6 +333,24 @@ for token in ('SOLO IMAGEN', 'SIN NINGÚN TEXTO', 'franja inferior', 'SIN BANDA 
     assert token in actions, token
 assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
 print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
+# Two new actions are available for trends only. The preexisting GAG button
+# must remain untouched; the Site route is an explicit copy and paste job.
+assert 'quickButton("Copiar imagen Site", "square.on.square")' in actions
+assert 'quickButton("Abrir chat TT", "plus.bubble")' in actions
+assert 'copyTrendSiteImagePrompt()' in actions
+assert 'openTTProject()' in actions
+assert 'TTENDENCIAS_SITE_IMAGE_V3' in actions
+assert 'attach_trend_image' in actions and 'verify_trend_image' in actions
+assert 'inspect_top30_images' in actions
+for token in ('siteImageEditorialID', 'siteImageRevision', 'siteImageExplainedAt'):
+    assert token in store, token
+assert 'UserDefaults.standard.set(url.absoluteString' in actions
+assert 'url.path.hasPrefix("/g/g-p-")' in actions
+assert 'guard let leader = store.snapshot.trendListas.first' in actions
+assert 'No se puede crear un prompt seguro.' in actions
+assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
+print("TT_ACTUALIDAD_IOS_SITE_IMAGE_CHAT_BUTTONS_OK")
+
 
 
 assert 'filterChip("Nuevas"' not in dashboard

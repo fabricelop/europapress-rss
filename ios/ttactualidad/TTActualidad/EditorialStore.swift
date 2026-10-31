@@ -65,6 +65,11 @@ struct TrendItem: Identifiable {
     var lastReviewed: Date? = nil
     var reviewOutcome: String = ""
     var reviewReason: String = ""
+    // Site attachment needs the ORIGINAL editorial ID and literal ISO timestamp.
+    // Do not derive these from a name, ranking position or a newer request.
+    var siteImageEditorialID: String = ""
+    var siteImageRevision: Int = 0
+    var siteImageExplainedAt: String = ""
     var isCovered: Bool { !coveredByID.isEmpty }
 
     func ageBand(now: Date = Date()) -> Int {
@@ -1349,7 +1354,10 @@ final class EditorialStore: ObservableObject {
                   enteredAt: trend.enteredAt, problemReason: trend.problemReason,
                   coveredByID: trend.coveredByID, coveredByName: trend.coveredByName,
                   isJointGroup: trend.isJointGroup, lastReviewed: trend.lastReviewed,
-                  reviewOutcome: trend.reviewOutcome, reviewReason: trend.reviewReason)
+                  reviewOutcome: trend.reviewOutcome, reviewReason: trend.reviewReason,
+                  siteImageEditorialID: trend.siteImageEditorialID,
+                  siteImageRevision: trend.siteImageRevision,
+                  siteImageExplainedAt: trend.siteImageExplainedAt)
     }
 
     private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
@@ -1689,7 +1697,10 @@ final class EditorialStore: ObservableObject {
                              isJointGroup: str(row, "listas_group_role") == "joint",
                              lastReviewed: when(row, ["red_review_checked_at"]),
                              reviewOutcome: str(row, "red_review_outcome"),
-                             reviewReason: str(row, "red_review_reason"))
+                             reviewReason: str(row, "red_review_reason"),
+                             siteImageEditorialID: id,
+                             siteImageRevision: rev,
+                             siteImageExplainedAt: str(row, "explained_at"))
         }
         .sorted {
             let leftRank = $0.rank > 0 ? $0.rank : Int.max
@@ -1877,7 +1888,10 @@ final class EditorialStore: ObservableObject {
                              isJointGroup: str(request, "listas_group_role") == "joint",
                              lastReviewed: when(explanation, ["red_review_checked_at"]),
                              reviewOutcome: str(explanation, "red_review_outcome"),
-                             reviewReason: str(explanation, "red_review_reason"))
+                             reviewReason: str(explanation, "red_review_reason"),
+                             siteImageEditorialID: str(explanation, "id"),
+                             siteImageRevision: int(explanation, "revision"),
+                             siteImageExplainedAt: str(explanation, "explained_at"))
         }
     }
 
