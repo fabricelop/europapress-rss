@@ -10,33 +10,32 @@
   "started_at": "2026-10-31T19:34:00+01:00",
   "updated_at": "2026-10-31T19:36:00+01:00",
   "finished_at": "2026-10-31T19:36:00+01:00",
-  "current": 2,
-  "total": 2,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-acde095dbdf61843392f",
-    "red-review-ab13786d10b53ca8da4d"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada concurrente reconciliada 2/2: las dos revisiones quedaron terminales mientras la pasada anterior seguía activa. Toledo terminó review_completed/stale; Ana Pastor review_completed/unchanged. Cola final 0. Sin ImageGen ni publicación.",
+  "summary": "Pasada cerrada 0/0 tras relectura final de main. Los 2 jobs visibles al inicio fueron cerrados concurrentemente antes de su validación JIT: Toledo quedó review_completed/stale (no se resucita un snapshot obsoleto) y Ana Pastor review_completed/unchanged. No queda preparing/update ni rewrite_pending.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre reconciliado",
+  "activity": "Cierre verificado",
   "final_outcomes": [
     {
       "id": "red-review-acde095dbdf61843392f",
       "revision": 0,
-      "outcome": "stale"
+      "outcome": "stale",
+      "note": "Resultado updated preparado previamente, pero el aplicador detectó snapshot de origen obsoleto y lo cerró sin sobrescribir estado más nuevo."
     },
     {
       "id": "red-review-ab13786d10b53ca8da4d",
       "revision": 0,
-      "outcome": "unchanged"
+      "outcome": "unchanged",
+      "note": "Sin novedades sustanciales; texto y fecha conservados."
     }
   ],
   "api_failover_enabled": false,
