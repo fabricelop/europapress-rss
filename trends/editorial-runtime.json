@@ -3,22 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T144000+0100",
+  "run_id": "tr-1793454351406-manual",
   "previous_run_id": "tr-chat-20261031T144000+0100",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T14:46:00+01:00",
-  "updated_at": "2026-10-31T14:49:00+01:00",
-  "finished_at": "2026-10-31T14:49:00+01:00",
-  "current": 6,
-  "total": 6,
+  "updated_at": "2026-10-31T14:48:00+01:00",
+  "finished_at": "2026-10-31T14:48:00+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "836530272c76",
-    "7c2dfbcd3134",
-    "355d223e9798",
     "listas-auto-dd413455657c31b745da",
     "red-review-c87bc5f551d7653733c0",
     "red-review-3ad7a43fc68a0025b99d"
@@ -26,50 +23,39 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 6/6 sobre main: 3 explicaciones nuevas, 1 agrupación automática creada y 2 revisiones cerradas como stale por guard terminal histórico. Cola final 0; rewrite_pending 0. Sin ImageGen ni publicación.",
+  "summary": "3 trabajos cerrados: 1 agrupación aplicada (Chelsea + #PremierLeagueDAZN) y 2 revisiones completadas como stale por validación JIT. Cola final 0; rewrite_pending 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "836530272c76",
-      "name": "Chelsea",
-      "outcome": "explained"
-    },
-    {
-      "id": "7c2dfbcd3134",
-      "name": "#PremierLeagueDAZN",
-      "outcome": "explained"
-    },
-    {
-      "id": "355d223e9798",
-      "name": "Hjulmand",
-      "outcome": "explained"
-    },
-    {
       "id": "listas-auto-dd413455657c31b745da",
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouped",
-      "created_id": "listas-joint-97706d6825e02352"
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "created_ids": [
+        "listas-joint-97706d6825e02352"
+      ]
     },
     {
       "id": "red-review-c87bc5f551d7653733c0",
-      "name": "Revisar novedades: #DeViernes",
-      "outcome": "stale"
+      "revision": 0,
+      "outcome": "stale",
+      "reason": "El origen #DeViernes ya no estaba vigente en requests.json al aplicar la revisión."
     },
     {
       "id": "red-review-3ad7a43fc68a0025b99d",
-      "name": "Revisar novedades: #FelizSábado",
-      "outcome": "stale"
+      "revision": 0,
+      "outcome": "stale",
+      "reason": "El origen #FelizSábado ya no estaba vigente en requests.json al aplicar la revisión."
     }
   ],
   "last_run": {
-    "run_id": "tr-chat-20261031T144000+0100",
+    "run_id": "tr-1793454351406-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T14:49:00+01:00",
-    "attempted": 6,
-    "explained": 3,
+    "finished_at": "2026-10-31T14:48:00+01:00",
+    "attempted": 3,
+    "explained": 0,
     "updates": 0,
     "stale_reviews": 2,
     "unchanged_reviews": 0,
@@ -78,9 +64,9 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "3 tendencias explicadas; Chelsea + #PremierLeagueDAZN agrupadas en listas-joint-97706d6825e02352; 2 revisiones cerradas stale; cola 0 y rewrite_pending 0. Sin ImageGen ni publicación."
+    "summary": "Agrupación Chelsea/#PremierLeagueDAZN aplicada; revisiones #DeViernes y #FelizSábado cerradas stale al no seguir vigente su origen. Cola 0 y rewrite_pending 0."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T14:46:00+01:00",
-  "last_completed_at": "2026-10-31T14:49:00+01:00"
+  "last_completed_at": "2026-10-31T14:48:00+01:00"
 }
