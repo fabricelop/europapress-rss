@@ -5,22 +5,20 @@
   "canonical": true,
   "run_id": "tr-1793487168174-manual",
   "previous_run_id": "tr-1793486988618-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "done",
   "started_at": "2026-10-31T23:53:00+01:00",
-  "updated_at": "2026-10-31T23:59:00+01:00",
-  "finished_at": null,
-  "current": 3,
+  "updated_at": "2026-10-31T23:59:30+01:00",
+  "finished_at": "2026-10-31T23:59:30+01:00",
+  "current": 10,
   "total": 10,
-  "trend_id": "7b18f8c98739",
-  "title": "#RayoCelta",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "listas-auto-7466c03e6699a628e806",
     "red-review-25411a66d89216173e45",
-    "red-review-606fb222b19ec0e0491a"
-  ],
-  "remaining_ids": [
+    "red-review-606fb222b19ec0e0491a",
     "7b18f8c98739",
     "9df0b07ec47e",
     "5261970c7a60",
@@ -29,17 +27,10 @@
     "c5a531d85db4",
     "5e0d9fdf2cb2"
   ],
-  "remaining_active_ids": [
-    "7b18f8c98739",
-    "9df0b07ec47e",
-    "5261970c7a60",
-    "b3b69dd6ae50",
-    "6ced0406ed4d",
-    "c5a531d85db4",
-    "5e0d9fdf2cb2"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "3 trabajos ya consolidados en main: 1 agrupación y 2 revisiones. Las 7 explicaciones nuevas están enviadas al aplicador y pendientes de consolidación. Sin ImageGen ni publicación.",
+  "summary": "Pasada completada: 7 explicaciones nuevas, 2 revisiones actualizadas y 1 agrupación resuelta. Cola editorial main=0; sin reexplicaciones pendientes. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -299,6 +290,13 @@
       "trend_id": "7b18f8c98739",
       "title": "#RayoCelta",
       "message": "Agrupación y dos revisiones ya aplicadas. Lote de 7 explicaciones enviado por TTENDENCIAS_CHAT_OUTBOX_V1; aplicador en curso. Se releerá main antes del cierre."
+    },
+    {
+      "at": "2026-10-31T23:59:30+01:00",
+      "phase": "done",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre tras relectura de main: editorial-queue count=0, sin preparing/update ni reexplicaciones pendientes. 7 explicaciones + 2 revisiones + 1 agrupación. ImageGen 0, publicaciones 0."
     }
   ],
   "final_outcomes": [
