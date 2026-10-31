@@ -5,23 +5,31 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T112500+0100",
   "previous_run_id": "tr-chat-20261031T111000+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-10-31T11:25:00+01:00",
-  "updated_at": "2026-10-31T11:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T11:28:39+01:00",
+  "finished_at": "2026-10-31T11:28:39+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual en curso: contrato, Top 30 y cola autoritativa releídos; cola inicial 0. Se fuerza refresco del radar/selector y después se repite la barrera editorial.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada manual completada 0/0 tras relectura de main: editorial-queue count=0 y búsquedas de preparing/update/rewrite_pending sin coincidencias. El refresco manual del radar/selector fue lanzado, pero su job seguía in_progress en checkout al cierre; el snapshot autoritativo disponible sigue siendo 11:20:54/11:20:58. Sin ImageGen ni publicación.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-10-31T11:28:39+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "reason": "El refresco manual de GitHub Actions (run 41191777114, job 124512700553) seguía in_progress en checkout al cierre; no se atribuye al refresco un resultado que aún no ha persistido."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -198,13 +206,27 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio tr-chat-20261031T112500+0100: cola inicial 0 con recent capturado a las 11:20:54. Se fuerza refresco manual del radar/selector antes de la barrera final. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T11:28:39+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera editorial verificada: cola 0 y sin preparing/update/rewrite_pending en main. El refresco lanzado aún no ha persistido un snapshot nuevo."
+    },
+    {
+      "at": "2026-10-31T11:28:39+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre DONE_WITH_INCIDENTS 0/0: sin trabajo editorial pendiente en el estado autoritativo disponible; incidencia limitada al refresco manual aún en curso. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-chat-20261031T111000+0100",
-    "status": "DONE",
-    "finished_at": "2026-10-31T11:13:30+01:00",
+    "run_id": "tr-chat-20261031T112500+0100",
+    "status": "DONE_WITH_INCIDENTS",
+    "finished_at": "2026-10-31T11:28:39+01:00",
     "attempted": 0,
     "explained": 0,
     "updates": 0,
@@ -217,10 +239,10 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "total": 0
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T11:10:00+01:00",
-  "last_completed_at": "2026-10-31T11:13:30+01:00"
+  "last_started_at": "2026-10-31T11:25:00+01:00",
+  "last_completed_at": "2026-10-31T11:28:39+01:00"
 }
