@@ -5,49 +5,55 @@
   "canonical": true,
   "run_id": "tr-1793463251991-manual",
   "previous_run_id": "tr-1793463021698-manual",
-  "status": "RUNNING",
-  "phase": "drafting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T16:16:13.061Z",
-  "updated_at": "2026-10-31T16:16:50.088Z",
-  "finished_at": null,
+  "updated_at": "2026-10-31T16:18:00Z",
+  "finished_at": "2026-10-31T16:18:00Z",
   "current": 1,
   "total": 1,
-  "trend_id": "listas-auto-aee4c38e7b11a1115827",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-aee4c38e7b11a1115827"
   ],
-  "remaining_active_ids": [
-    "listas-auto-aee4c38e7b11a1115827"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Coincidencias inequívocas detectadas: Haas con la conjunta Ocon/Ryo; Levante y Atlético ya están cubiertos por la conjunta publicada del 0-2.",
+  "summary": "1/1 agrupación derivada aplicada: Haas consolidado con Ocon/Ryo Hirakawa; Levante y Atlético cubiertos por la ficha conjunta del 0-2. Cola final 0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Agrupando coincidencias verificadas",
-  "final_outcomes": [],
+  "activity": "Cierre editorial completado",
+  "final_outcomes": [
+    {
+      "id": "listas-auto-aee4c38e7b11a1115827",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-chat-20261031T165500+0100",
+    "run_id": "tr-1793463251991-manual",
     "status": "DONE",
-    "started_at": "2026-10-31T16:55:00+01:00",
-    "finished_at": "2026-10-31T17:08:00+01:00",
-    "attempted": 4,
-    "explained": 4,
+    "started_at": "2026-10-31T16:16:13.061Z",
+    "finished_at": "2026-10-31T16:18:00Z",
+    "attempted": 1,
+    "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
+    "grouping_requests": 1,
+    "groups_created": 1,
+    "covered_by_existing": 2,
     "concurrent_resolved": 0,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "4/4 explicadas y verificadas. Cola final 0; sin ImageGen ni publicación."
+    "summary": "1/1 agrupación aplicada. Cola final 0; sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T16:16:13.061Z",
-  "last_completed_at": "2026-10-31T17:08:00+01:00"
+  "last_completed_at": "2026-10-31T16:18:00Z"
 }
