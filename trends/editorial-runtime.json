@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T19:34:00+01:00",
-  "updated_at": "2026-10-31T19:35:10+01:00",
-  "finished_at": "2026-10-31T19:35:10+01:00",
+  "updated_at": "2026-10-31T19:36:00+01:00",
+  "finished_at": "2026-10-31T19:36:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -22,24 +22,24 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 2/2. Toledo actualizado con novedades materiales del accidente de Urda; Ana Pastor revisada sin cambios sustanciales. La reelaboración de Halloween TT#1 quedó cerrada y sincronizada en el mismo ciclo manual iniciado a las 19:25. Cola final verificada en 0. Sin ImageGen directo ni publicación.",
+  "summary": "Pasada concurrente reconciliada 2/2: las dos revisiones quedaron terminales mientras la pasada anterior seguía activa. Toledo terminó review_completed/stale; Ana Pastor review_completed/unchanged. Cola final 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre verificado",
+  "activity": "Cierre reconciliado",
   "final_outcomes": [
     {
       "id": "red-review-acde095dbdf61843392f",
-      "name": "Toledo",
-      "outcome": "updated"
+      "revision": 0,
+      "outcome": "stale"
     },
     {
       "id": "red-review-ab13786d10b53ca8da4d",
-      "name": "Ana Pastor",
+      "revision": 0,
       "outcome": "unchanged"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T19:34:00+01:00",
-  "last_completed_at": "2026-10-31T19:35:10+01:00"
+  "last_completed_at": "2026-10-31T19:36:00+01:00"
 }
