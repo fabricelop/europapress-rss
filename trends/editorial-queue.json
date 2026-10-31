@@ -1,186 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T20:20:47.343943+00:00",
+  "updated_at": "2026-10-31T21:21:08+01:00",
   "count": 1,
   "items": [
     {
       "id": "listas-auto-fcbd033c367c6997d7db",
-      "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
       "requested_at": "2026-10-31T20:20:47.343943+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "group_listas",
-      "listas_grouping_request": true,
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
       "automatic_grouping": true,
-      "grouping_state": "pending",
-      "grouping_candidates": [
-        {
-          "id": "6edd382e5ca7",
-          "revision": 0,
-          "name": "Yola",
-          "rank": 2,
-          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
-          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
-          "explained_at": "2026-10-30T01:21:30+01:00",
-          "verification_sources": [
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
-            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
-          ]
-        },
-        {
-          "id": "0ecf2a36f589",
-          "revision": 0,
-          "name": "La UCO",
-          "rank": 29,
-          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
-          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
-            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
-          ]
-        },
-        {
-          "id": "d7b205c966c8",
-          "revision": 0,
-          "name": "Simeone",
-          "rank": 26,
-          "explanation": "TT#26 Simeone es tendencia tras el 0-2 del Atlético al Levante: alcanzó 344 victorias en LaLiga e igualó a Luis Aragonés como técnico con más triunfos en la competición.\n#Atleti #Simeone\n🌶️ El Cholo ya comparte la cima histórica con Luis.",
-          "explanation_sha256": "4da0c8c04e917a9d597acbb6f53afda73e2d1084dffd71c611c4c7372818f054",
-          "explained_at": "2026-10-31T21:00:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.atleticodemadrid.com/noticias/simeone-iguala-el-record-historico-de-victorias-de-luis-aragones-en-laliga-como-tecnico"
-            },
-            {
-              "url": "https://www.europapress.es/deportes/futbol-00162/noticia-atletico-no-falla-presiona-barca-20261031162242.html"
-            }
-          ]
-        },
-        {
-          "id": "b6cb6e203901",
-          "revision": 0,
-          "name": "#Riftbound1Year",
-          "rank": 2,
-          "explanation": "TT#2 #Riftbound1Year es tendencia porque Riftbound cumple un año de su lanzamiento occidental del 31 de octubre de 2025, con cinco sets publicados desde Origins.\n#RiftboundTCG #LeagueOfLegends\n🌶️ El primer cumpleaños llega con la carpeta bastante más gruesa.",
-          "explanation_sha256": "ab91ce3cbc89a0c030833798eeae6a5503a96ada6a808dcf72ec9c6b1eb54cf1",
-          "explained_at": "2026-10-31T21:16:03+01:00",
-          "verification_sources": [
-            {
-              "url": "https://riftcollect.app/riftbound-turns-one"
-            },
-            {
-              "url": "https://tech.yahoo.com/gaming/articles/riftbound-card-exciting-variant-time-135348814.html"
-            }
-          ]
-        },
-        {
-          "id": "2ad64c143f3e",
-          "revision": 0,
-          "name": "Dortmund",
-          "rank": 13,
-          "explanation": "TT#13 Dortmund es tendencia porque el Borussia Dortmund empató 2-2 al Bayern en Múnich con un gol de Fábio Silva en el 89' y ambos quedan con 18 puntos.\n#Bundesliga #DerKlassiker\n🌶️ El clásico alemán guardó el empate para el último sobre.",
-          "explanation_sha256": "75dc9214d9319141e357793224992d58d6904bc527077c6af53f95c0669c5471",
-          "explained_at": "2026-10-31T21:16:44+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.reuters.com/sports/soccer/kane-misses-penalty-hits-post-dortmund-snatch-draw-2026-10-31/"
-            },
-            {
-              "url": "https://www.infobae.com/espana/agencias/2026/10/31/2-2-un-clasico-sin-ganador-y-con-lesiones-en-el-bayern/"
-            }
-          ]
-        },
-        {
-          "id": "9d7ede61b0b2",
-          "revision": 0,
-          "name": "Antes de Urda",
-          "rank": 21,
-          "explanation": "TT#21 Antes de Urda aparece entre las tendencias mientras se difunde que un AVE quedó 11 minutos parado por una caída del LZB cerca de Urda unas 12 horas antes del accidente. No se ha confirmado qué publicación impulsó la frase.\n#Urda #LZB",
-          "explanation_sha256": "8975210d62d8febdd7239cbb423f51dc53c3f8013269cf6a98b72c493035a9bd",
-          "explained_at": "2026-10-31T21:16:44+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.elespanol.com/invertia/observatorios/movilidad/20261031/ave-quedo-parado-km-lugar-siniestro-noche-anterior-retenido-minutos-caida-lzb/1003744441485_0.html"
-            },
-            {
-              "url": "https://gaceta.es/espana/un-tren-permanecio-detenido-durante-11-minutos-en-urda-por-un-fallo-del-lzb-apenas-12-horas-antes-del-accidente-que-dejo-69-muertos-20261031-0947/"
-            }
-          ]
-        },
-        {
-          "id": "4eefe2099a0f",
-          "revision": 1,
-          "name": "Mónaco",
-          "rank": 14,
-          "explanation": "TT#14 Mónaco aparece entre las tendencias sin un detonante único confirmado. El AS Monaco no juega hoy: su último partido fue 1-1 ante el Lille el 25 de octubre y visita mañana al Paris FC.\n#ASMonaco #Ligue1\n🌶️ El nombre corre hoy más que el calendario del club.",
-          "explanation_sha256": "ec3a40280a9f5e08a4b420d09f2d9665a32075e014f43b34746df9379c7416ed",
-          "explained_at": "2026-10-31T21:18:02+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.asmonaco.com/en/pros/resultats"
-            },
-            {
-              "url": "https://www.goal.com/es/equipo/monaco/partidos-resultados/4t4hod56fsj7utpjdor8so5q6"
-            },
-            {
-              "url": "https://jadwallive.com/es/match/1552807"
-            }
-          ]
-        },
-        {
-          "id": "listas-joint-33805909374a3046",
-          "revision": 0,
-          "name": "Barça-Alavés · Fariñas y De Jong en defensa",
-          "rank": 8,
-          "explanation": "TT#8 Fariñas y De Jong son tendencia por el once del Barça ante el Alavés: Fariñas debuta como titular en el lateral derecho y Frenkie juega de central junto a Cubarsí.\n#FCBarcelona #BarçaAlavés\n🌶️ Flick movió las piezas desde la última línea.",
-          "explanation_sha256": "ae2341694350e3c452380aef89b0cffefe352310c93606664b26601c77200b02",
-          "explained_at": "2026-10-31T20:20:47.343943+00:00",
-          "verification_sources": [
-            {
-              "url": "https://elpais.com/deportes/futbol/2026-10-31/barcelona-alaves-en-directo-el-partido-de-la-liga-en-vivo.html/"
-            },
-            {
-              "url": "https://www.infobae.com/america/agencias/2026/10/31/de-jong-farinas-y-adeyemi-novedades-azulgranas-ante-un-alaves-con-cinco-cambios/"
-            }
-          ]
-        },
-        {
-          "id": "listas-joint-3a0792cc6a82d394",
-          "revision": 0,
-          "name": "Karmine Corp-Movistar KOI en Worlds 2026",
-          "rank": 14,
-          "explanation": "TT#14 Myrwn, Worlds e Ibai son tendencia tras el 2-0 de Karmine Corp a Movistar KOI, que elimina a MKOI y clasifica a KC para cuartos; el cruce Ibai-Kameto calentó la previa.\n#Worlds2026 #MKOI\n🌶️ La previa duró más que la serie.",
-          "explanation_sha256": "1d7e69f50aa8abad1b067f04167c95265c55985549d670c161636aeb6d5118ce",
-          "explained_at": "2026-10-31T20:20:47.343943+00:00",
-          "verification_sources": [
-            {
-              "url": "https://liquipedia.net/leagueoflegends/Match%3AID_Wrd26SwsR5_0001"
-            },
-            {
-              "url": "https://www.sheepesports.com/us/lol/matches/2026%20Season%20World%20Championship%2FMain%20Event_Round%205_1"
-            }
-          ]
-        },
-        {
-          "id": "trend-update-b359c175e9758f259d6c",
-          "revision": 0,
-          "name": "Adrián Niño",
-          "rank": 12,
-          "explanation": "TT#12 Adrián Niño es tendencia por su gol en la derrota 2-1 del Málaga ante el Betis en La Cartuja; fue su quinto tanto de la temporada.\n#MálagaCF #BetisMálaga\n🌶️ Volvió a marcar; esta vez no alcanzó para puntuar.",
-          "explanation_sha256": "218d79670ba304e2f690ff7e17eeee05f0210d9664fc447ec60da346adfb5ec9",
-          "explained_at": "2026-10-31T20:20:47.343943+00:00",
-          "verification_sources": [
-            {
-              "url": "https://www.elespanol.com/malaga/deporte/malaga-c-f/20261031/malaga-cf-salva-imagen-cartuja-sigue-sin-ganar/1003744442451_0.html"
-            },
-            {
-              "url": "https://as.com/futbol/primera/betis-malaga-en-directo-laliga-ea-sports-en-vivo-f202610-d/"
-            }
-          ]
-        }
-      ],
       "published_context": [
         {
           "id": "09fb9ff32c5a",
@@ -1751,11 +1597,194 @@
           ]
         }
       ],
-      "with_image": false,
-      "disable_ai_image": true,
+      "listas_grouping_request": true,
+      "grouping_candidates": [
+        {
+          "id": "6edd382e5ca7",
+          "revision": 0,
+          "name": "Yola",
+          "rank": 2,
+          "explanation": "TT#2 Yola es tendencia porque se tiró a la arena al conocer el resultado de la prueba de recompensa de Supervivientes All Stars, tras competir junto a Chiqui y Víctor.\n#YolaBerrocal #SupervivientesAllStars #Telecinco\n🌶️ La recompensa la dejó literalmente por los suelos.",
+          "explanation_sha256": "d2e7d72995ea9a0f3c2c34536b4f46182ce55725b1f83a3e36aa9454eb70223c",
+          "explained_at": "2026-10-30T01:21:30+01:00",
+          "verification_sources": [
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/yola-berrocal-acaba-suelos-descubrir-quien-ha-ganado-prueba-recompensa-40_020564360/player/",
+            "https://www.mediasetinfinity.es/programas-tv/supervivientes/all-stars-2026/top-videos/chiqui-victor-yola-forman-equipo-juego-enfrentan-ivana-rosa-omar-40_020564362/player/"
+          ]
+        },
+        {
+          "id": "0ecf2a36f589",
+          "revision": 0,
+          "name": "La UCO",
+          "rank": 29,
+          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
+          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
+          ]
+        },
+        {
+          "id": "d7b205c966c8",
+          "revision": 0,
+          "name": "Simeone",
+          "rank": 26,
+          "explanation": "TT#26 Simeone es tendencia tras el 0-2 del Atlético al Levante: alcanzó 344 victorias en LaLiga e igualó a Luis Aragonés como técnico con más triunfos en la competición.\n#Atleti #Simeone\n🌶️ El Cholo ya comparte la cima histórica con Luis.",
+          "explanation_sha256": "4da0c8c04e917a9d597acbb6f53afda73e2d1084dffd71c611c4c7372818f054",
+          "explained_at": "2026-10-31T21:00:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.atleticodemadrid.com/noticias/simeone-iguala-el-record-historico-de-victorias-de-luis-aragones-en-laliga-como-tecnico"
+            },
+            {
+              "url": "https://www.europapress.es/deportes/futbol-00162/noticia-atletico-no-falla-presiona-barca-20261031162242.html"
+            }
+          ]
+        },
+        {
+          "id": "b6cb6e203901",
+          "revision": 0,
+          "name": "#Riftbound1Year",
+          "rank": 2,
+          "explanation": "TT#2 #Riftbound1Year es tendencia porque Riftbound cumple un año de su lanzamiento occidental del 31 de octubre de 2025, con cinco sets publicados desde Origins.\n#RiftboundTCG #LeagueOfLegends\n🌶️ El primer cumpleaños llega con la carpeta bastante más gruesa.",
+          "explanation_sha256": "ab91ce3cbc89a0c030833798eeae6a5503a96ada6a808dcf72ec9c6b1eb54cf1",
+          "explained_at": "2026-10-31T21:16:03+01:00",
+          "verification_sources": [
+            {
+              "url": "https://riftcollect.app/riftbound-turns-one"
+            },
+            {
+              "url": "https://tech.yahoo.com/gaming/articles/riftbound-card-exciting-variant-time-135348814.html"
+            }
+          ]
+        },
+        {
+          "id": "2ad64c143f3e",
+          "revision": 0,
+          "name": "Dortmund",
+          "rank": 13,
+          "explanation": "TT#13 Dortmund es tendencia porque el Borussia Dortmund empató 2-2 al Bayern en Múnich con un gol de Fábio Silva en el 89' y ambos quedan con 18 puntos.\n#Bundesliga #DerKlassiker\n🌶️ El clásico alemán guardó el empate para el último sobre.",
+          "explanation_sha256": "75dc9214d9319141e357793224992d58d6904bc527077c6af53f95c0669c5471",
+          "explained_at": "2026-10-31T21:16:44+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.reuters.com/sports/soccer/kane-misses-penalty-hits-post-dortmund-snatch-draw-2026-10-31/"
+            },
+            {
+              "url": "https://www.infobae.com/espana/agencias/2026/10/31/2-2-un-clasico-sin-ganador-y-con-lesiones-en-el-bayern/"
+            }
+          ]
+        },
+        {
+          "id": "9d7ede61b0b2",
+          "revision": 0,
+          "name": "Antes de Urda",
+          "rank": 21,
+          "explanation": "TT#21 Antes de Urda aparece entre las tendencias mientras se difunde que un AVE quedó 11 minutos parado por una caída del LZB cerca de Urda unas 12 horas antes del accidente. No se ha confirmado qué publicación impulsó la frase.\n#Urda #LZB",
+          "explanation_sha256": "8975210d62d8febdd7239cbb423f51dc53c3f8013269cf6a98b72c493035a9bd",
+          "explained_at": "2026-10-31T21:16:44+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.elespanol.com/invertia/observatorios/movilidad/20261031/ave-quedo-parado-km-lugar-siniestro-noche-anterior-retenido-minutos-caida-lzb/1003744441485_0.html"
+            },
+            {
+              "url": "https://gaceta.es/espana/un-tren-permanecio-detenido-durante-11-minutos-en-urda-por-un-fallo-del-lzb-apenas-12-horas-antes-del-accidente-que-dejo-69-muertos-20261031-0947/"
+            }
+          ]
+        },
+        {
+          "id": "4eefe2099a0f",
+          "revision": 1,
+          "name": "Mónaco",
+          "rank": 14,
+          "explanation": "TT#14 Mónaco aparece entre las tendencias sin un detonante único confirmado. El AS Monaco no juega hoy: su último partido fue 1-1 ante el Lille el 25 de octubre y visita mañana al Paris FC.\n#ASMonaco #Ligue1\n🌶️ El nombre corre hoy más que el calendario del club.",
+          "explanation_sha256": "ec3a40280a9f5e08a4b420d09f2d9665a32075e014f43b34746df9379c7416ed",
+          "explained_at": "2026-10-31T21:18:02+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.asmonaco.com/en/pros/resultats"
+            },
+            {
+              "url": "https://www.goal.com/es/equipo/monaco/partidos-resultados/4t4hod56fsj7utpjdor8so5q6"
+            },
+            {
+              "url": "https://jadwallive.com/es/match/1552807"
+            }
+          ]
+        },
+        {
+          "id": "listas-joint-33805909374a3046",
+          "revision": 0,
+          "name": "Barça-Alavés · Fariñas y De Jong en defensa",
+          "rank": 8,
+          "explanation": "TT#8 Fariñas y De Jong son tendencia por el once del Barça ante el Alavés: Fariñas debuta como titular en el lateral derecho y Frenkie juega de central junto a Cubarsí.\n#FCBarcelona #BarçaAlavés\n🌶️ Flick movió las piezas desde la última línea.",
+          "explanation_sha256": "ae2341694350e3c452380aef89b0cffefe352310c93606664b26601c77200b02",
+          "explained_at": "2026-10-31T20:20:47.343943+00:00",
+          "verification_sources": [
+            {
+              "url": "https://elpais.com/deportes/futbol/2026-10-31/barcelona-alaves-en-directo-el-partido-de-la-liga-en-vivo.html/"
+            },
+            {
+              "url": "https://www.infobae.com/america/agencias/2026/10/31/de-jong-farinas-y-adeyemi-novedades-azulgranas-ante-un-alaves-con-cinco-cambios/"
+            }
+          ]
+        },
+        {
+          "id": "listas-joint-3a0792cc6a82d394",
+          "revision": 0,
+          "name": "Karmine Corp-Movistar KOI en Worlds 2026",
+          "rank": 14,
+          "explanation": "TT#14 Myrwn, Worlds e Ibai son tendencia tras el 2-0 de Karmine Corp a Movistar KOI, que elimina a MKOI y clasifica a KC para cuartos; el cruce Ibai-Kameto calentó la previa.\n#Worlds2026 #MKOI\n🌶️ La previa duró más que la serie.",
+          "explanation_sha256": "1d7e69f50aa8abad1b067f04167c95265c55985549d670c161636aeb6d5118ce",
+          "explained_at": "2026-10-31T20:20:47.343943+00:00",
+          "verification_sources": [
+            {
+              "url": "https://liquipedia.net/leagueoflegends/Match%3AID_Wrd26SwsR5_0001"
+            },
+            {
+              "url": "https://www.sheepesports.com/us/lol/matches/2026%20Season%20World%20Championship%2FMain%20Event_Round%205_1"
+            }
+          ]
+        },
+        {
+          "id": "trend-update-b359c175e9758f259d6c",
+          "revision": 0,
+          "name": "Adrián Niño",
+          "rank": 12,
+          "explanation": "TT#12 Adrián Niño es tendencia por su gol en la derrota 2-1 del Málaga ante el Betis en La Cartuja; fue su quinto tanto de la temporada.\n#MálagaCF #BetisMálaga\n🌶️ Volvió a marcar; esta vez no alcanzó para puntuar.",
+          "explanation_sha256": "218d79670ba304e2f690ff7e17eeee05f0210d9664fc447ec60da346adfb5ec9",
+          "explained_at": "2026-10-31T20:20:47.343943+00:00",
+          "verification_sources": [
+            {
+              "url": "https://www.elespanol.com/malaga/deporte/malaga-c-f/20261031/malaga-cf-salva-imagen-cartuja-sigue-sin-ganar/1003744442451_0.html"
+            },
+            {
+              "url": "https://as.com/futbol/primera/betis-malaga-en-directo-laliga-ea-sports-en-vivo-f202610-d/"
+            }
+          ]
+        }
+      ],
+      "grouping_state": "pending",
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Agrupación automática de Listas"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
