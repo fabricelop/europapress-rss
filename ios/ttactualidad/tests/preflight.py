@@ -240,8 +240,8 @@ assert 'confirmSiteAICatalogRemoval' in actions
 assert 'removeSiteAIImageFromCatalog(' in auth
 assert 'siteImageSHA256' in store
 assert 'resolvedSHA256(' in (root / "TTActualidad/SiteAIImageCatalog.swift").read_text()
-assert 'beginManualNews(requestID: requestID, title: headline,' in actions
-assert 'fromTrend: true' in actions
+assert 'beginManualNews(requestID: requestID, title: headline,' not in actions
+assert 'fromTrend: true' not in actions
 assert 'originTrend: TrendItem? = nil' in auth
 assert 'payload["origin_trend"]' in auth
 assert 'case "De tendencia a noticia": return "Tendencia → TTiTTulares"' in store
