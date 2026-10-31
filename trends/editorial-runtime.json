@@ -8,7 +8,7 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-10-31T12:10:59+01:00",
-  "updated_at": "2026-10-31T12:16:00+01:00",
+  "updated_at": "2026-10-31T12:17:00+01:00",
   "finished_at": null,
   "current": 2,
   "total": 2,
@@ -17,17 +17,27 @@
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "3ad85904ecd9",
-    "5ad4a23bc13e"
+    "listas-auto-72b00ebc0ca70f7bb2a5",
+    "red-review-90d5ff9c5c87c7b1f739",
+    "red-review-03c8d74c3706ececf9b4"
   ],
   "remaining_active_ids": [
-    "3ad85904ecd9",
-    "5ad4a23bc13e"
+    "listas-auto-72b00ebc0ca70f7bb2a5",
+    "red-review-90d5ff9c5c87c7b1f739",
+    "red-review-03c8d74c3706ececf9b4"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Persistiendo explicación verificada 2/2: Salvador.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Salvador r0 reconciliado tras conflicto SHA; continuando con trabajos nuevos llegados durante la pasada.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-10-31T12:17:00+01:00",
+      "phase": "persisting",
+      "trend_id": "5ad4a23bc13e",
+      "title": "Salvador",
+      "reason": "Conflicto SHA al escribir telegram-manual-explained.json; reconciliado contra la request ya persistida y verificado antes de retirar la revisión de la cola."
+    }
+  ],
   "error": null,
   "activity": "persisting",
   "final_outcomes": [],
