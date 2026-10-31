@@ -55,8 +55,6 @@ struct TrendItem: Identifiable {
     let revision: Int
     let imageURL: URL?
     let sourceURL: URL?
-    // AI image is independent from archive photographs.
-    var siteImageURL: URL? = nil
     var rankDelta: Int = 0
     var movement: String = ""
     var enteredAt: Date? = nil
@@ -72,6 +70,8 @@ struct TrendItem: Identifiable {
     var siteImageEditorialID: String = ""
     var siteImageRevision: Int = 0
     var siteImageExplainedAt: String = ""
+    // AI image is independent from archive photographs.
+    var siteImageURL: URL? = nil
     var isCovered: Bool { !coveredByID.isEmpty }
 
     func ageBand(now: Date = Date()) -> Int {
@@ -1354,7 +1354,6 @@ final class EditorialStore: ObservableObject {
                   status: status ?? trend.status, inListas: inListas ?? trend.inListas,
                   editorialID: trend.editorialID, revision: trend.revision,
                   imageURL: trend.imageURL, sourceURL: trend.sourceURL,
-                  siteImageURL: trend.siteImageURL,
                   rankDelta: trend.rankDelta, movement: trend.movement,
                   enteredAt: trend.enteredAt, problemReason: trend.problemReason,
                   coveredByID: trend.coveredByID, coveredByName: trend.coveredByName,
@@ -1362,7 +1361,8 @@ final class EditorialStore: ObservableObject {
                   reviewOutcome: trend.reviewOutcome, reviewReason: trend.reviewReason,
                   siteImageEditorialID: trend.siteImageEditorialID,
                   siteImageRevision: trend.siteImageRevision,
-                  siteImageExplainedAt: trend.siteImageExplainedAt)
+                  siteImageExplainedAt: trend.siteImageExplainedAt,
+                  siteImageURL: trend.siteImageURL)
     }
 
     private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
