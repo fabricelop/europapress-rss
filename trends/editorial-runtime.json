@@ -3,36 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T2140-manual",
-  "previous_run_id": "tr-1793477927177-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-10-31T21:40:00+01:00",
-  "updated_at": "2026-10-31T21:45:00+01:00",
-  "finished_at": "2026-10-31T21:45:00+01:00",
-  "current": 3,
+  "run_id": "tr-1793479454677-manual",
+  "previous_run_id": "tr-chat-20261031T2140-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T21:44:00+01:00",
+  "updated_at": "2026-10-31T21:46:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "5f6f3883c215",
-    "706c8ce3c08f",
-    "d72312e370eb"
+  "trend_id": "listas-auto-a77be4d2413a80e81e6d",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-a77be4d2413a80e81e6d",
+    "red-review-b1c5acdbb8ca170d3aa9",
+    "red-review-9ffbc55c5c7b8f23523b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-a77be4d2413a80e81e6d",
+    "red-review-b1c5acdbb8ca170d3aa9",
+    "red-review-9ffbc55c5c7b8f23523b"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial completa: 3/3 nuevas tendencias explicadas y persistidas (Betis, Balde y Cajuste). Cajuste quedó con causa no confirmada y sin remate. Cola textual final 0. Sin ImageGen ni publicaciones.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "code": "concurrent_runtime_write_retried",
-      "message": "La escritura final del runtime chocó con un cambio concurrente de otro proceso; los resultados editoriales ya estaban persistidos y la cola se revalidó vacía antes del cierre."
-    }
-  ],
+  "summary": "Pasada en curso: 3 trabajos editoriales activos; iniciando agrupación automática de Listas. Sin ImageGen ni publicaciones.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada (3/3)",
+  "activity": "Agrupando Listas",
   "final_outcomes": [
     {
       "id": "5f6f3883c215",
