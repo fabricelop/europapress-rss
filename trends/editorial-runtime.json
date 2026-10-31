@@ -3,71 +3,57 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793436338047-manual",
-  "previous_run_id": "tr-20261031T094000-manual",
+  "run_id": "tr-1793436499760-manual",
+  "previous_run_id": "tr-1793436338047-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-10-31T09:46:00+01:00",
-  "updated_at": "2026-10-31T09:47:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-31T09:48:00+01:00",
+  "updated_at": "2026-10-31T09:48:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 4,
-  "trend_id": "listas-auto-7023d998e92fe485eae5",
+  "current": 0,
+  "total": 1,
+  "trend_id": "listas-auto-c437e58bb3a88a3182ad",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [
-    "fd04788626e5"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-7023d998e92fe485eae5",
-    "red-review-2d47f02baa7db3c0fdca",
-    "red-review-55bc85950456f58b2531"
+    "listas-auto-c437e58bb3a88a3182ad"
   ],
   "remaining_active_ids": [
-    "listas-auto-7023d998e92fe485eae5",
-    "red-review-2d47f02baa7db3c0fdca",
-    "red-review-55bc85950456f58b2531"
+    "listas-auto-c437e58bb3a88a3182ad"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Sprint r0 aplicado. Procesando agrupación automática: cubrir Sprint con la ficha conjunta ya publicada del mismo sprint de Sepang.",
+  "summary": "Pasada tr-1793436499760-manual iniciada con 1 revisiones activas; revalidación JIT antes de cada una. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T09:46:00+01:00",
+      "at": "2026-10-31T09:48:00+01:00",
       "phase": "preparing",
-      "trend_id": "listas-auto-7023d998e92fe485eae5",
+      "trend_id": "listas-auto-c437e58bb3a88a3182ad",
       "title": "Agrupación automática de Listas",
-      "message": "Contrato y estado autoritativo releídos. 3 trabajos activos; se procesa primero la agrupación y después las revisiones de novedades."
-    },
-    {
-      "at": "2026-10-31T09:47:00+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-7023d998e92fe485eae5",
-      "title": "Agrupación automática de Listas",
-      "message": "Comparación JIT: Sprint r0 corresponde al mismo sprint de Sepang ya cubierto por listas-joint-021a97e2e386c40f, sin novedades materiales. Yola, Dana y La UCO permanecen separadas."
+      "message": "Cola autoritativa releída: 1 trabajos preparing/update. Se procesan por antigüedad."
     }
   ],
   "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-1793436338047-manual",
+    "run_id": "tr-1793436499760-manual",
     "status": "RUNNING",
     "finished_at": null,
-    "attempted": 1,
-    "explained": 1,
+    "attempted": 0,
+    "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "total": 4
+    "incidents": 0
   },
   "api_failover_enabled": false
 }
