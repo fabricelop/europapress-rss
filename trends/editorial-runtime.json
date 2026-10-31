@@ -5,47 +5,53 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T124000+0100",
   "previous_run_id": "tr-chat-20261031T124000+0100",
-  "status": "RUNNING",
-  "phase": "drafting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T12:41:00+01:00",
-  "updated_at": "2026-10-31T12:44:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T12:47:00+01:00",
+  "finished_at": "2026-10-31T12:47:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "ff856dec111d",
-  "title": "Widilo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "ff856dec111d"
   ],
-  "remaining_active_ids": [
-    "ff856dec111d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "1/1 Widilo r0: contexto actual verificado (Widilo Days/cashback); redactando con causalidad prudente.",
+  "summary": "1/1 resuelto: Widilo r0 quedó explicado y sincronizado por cierre concurrente durante la revalidación JIT. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "drafting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "ff856dec111d",
+      "revision": 0,
+      "status": "explained",
+      "completion": "concurrent_jit",
+      "explained_at": "2026-10-31T12:44:00+01:00"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-1793445575815-manual",
+    "run_id": "tr-chat-20261031T124000+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T12:23:00+01:00",
+    "finished_at": "2026-10-31T12:47:00+01:00",
     "attempted": 1,
-    "explained": 0,
+    "explained": 1,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "1/1 resuelto: agrupación automática completada sin coincidencias (0 grupos, 0 coberturas). La revalidación JIT evitó escribir sobre un cierre concurrente. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
+    "summary": "1/1 resuelto: Widilo r0 quedó explicado y sincronizado por cierre concurrente durante la revalidación JIT. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T11:25:00+01:00",
-  "last_completed_at": "2026-10-31T12:23:00+01:00"
+  "last_completed_at": "2026-10-31T12:47:00+01:00"
 }
