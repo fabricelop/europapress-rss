@@ -367,10 +367,10 @@ def main():
     old_closer = '🌶️ Dos años después, el recuento aún se mueve.'
     wrong_text = ('TT#12 Dana sigue siendo tendencia por el segundo aniversario en Valencia: '
                   'la jueza elevó a 234 las víctimas mortales tras reconocer el fallecimiento '
-                  'de un vecino de Paiporta.\\\\n#DANA #Valencia')
+                  'de un vecino de Paiporta.\\n#DANA #Valencia')
     clean_text = ('TT#12 Dana sigue siendo tendencia por el segundo aniversario en Valencia: '
                   'la jueza elevó a 234 las víctimas mortales tras reconocer el fallecimiento '
-                  'de un vecino de Paiporta.\\n#DANA #Valencia')
+                  'de un vecino de Paiporta.\n#DANA #Valencia')
     for path, field in ((REQUESTS, 'requests'), (maintenance.MANUAL, 'items')):
         for row in state[path][field]:
             if (row.get('id') == correction_id
