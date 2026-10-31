@@ -21,7 +21,11 @@ class SiteFeedWorkflowWiringTest(unittest.TestCase):
                 export = s.index("python3 trends/export_site_top30.py", action)
                 stage = s.index("git add ", export)
                 self.assertTrue(action < export < stage)
-                self.assertIn("trends/site-top30-current.json", s[stage:stage + 240])
+                self.assertTrue(
+                    "trends/site-top30-current.json" in s[stage:stage + 240]
+                    or s[stage:stage + 30].startswith("git add -A trends"),
+                    "Site feed must be staged (explicitly or by git add -A trends)",
+                )
 
     def test_export_is_not_only_a_separate_push_trigger(self):
         s = (WORKFLOWS / "ttendencias-refresh.yml").read_text(encoding="utf-8")
