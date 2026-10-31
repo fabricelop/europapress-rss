@@ -5,23 +5,27 @@
   "canonical": true,
   "run_id": "tr-1793481056571-manual",
   "previous_run_id": "tr-1793481000000-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-10-31T22:10:56.571000+01:00",
-  "updated_at": "2026-10-31T22:16:00+01:00",
-  "finished_at": "2026-10-31T22:16:00+01:00",
+  "updated_at": "2026-10-31T22:16:16.384+01:00",
+  "finished_at": null,
   "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 4,
+  "trend_id": "listas-auto-94d0604310bb7746f812",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "4eefe2099a0f"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-94d0604310bb7746f812",
+    "red-review-80a147a2f5bf6e439909",
+    "red-review-275356d05ce6c56c3340"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 1/1: Mónaco r2 investigado desde cero y explicado por la salida de Mónaco de la lista gris del GAFI; la pista sobre manifestaciones no quedó corroborada como causa predominante. Persistencia verificada en requests y telegram-manual-explained. Sin ImageGen ni publicaciones.",
+  "summary": "Mónaco r2 cerrado y verificado; llegaron tres trabajos nuevos durante la pasada. Procesando agrupación automática antes de las revisiones Toledo/Renfe.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -50,6 +54,11 @@
       "at": "2026-10-31T22:16:00+01:00",
       "phase": "closing",
       "message": "Cierre 1/1 verificado. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-10-31T22:16:16.384+01:00",
+      "phase": "preparing",
+      "message": "Relectura de main detectó 3 trabajos nuevos: group_listas + revisiones Toledo y Renfe. Se reabre la pasada."
     }
   ],
   "final_outcomes": [
