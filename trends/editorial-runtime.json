@@ -5,33 +5,41 @@
   "canonical": true,
   "run_id": "tr-1793471631017-manual",
   "previous_run_id": "tr-1793471485078-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T19:34:00+01:00",
-  "updated_at": "2026-10-31T19:34:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T19:35:10+01:00",
+  "finished_at": "2026-10-31T19:35:10+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-acde095dbdf61843392f",
     "red-review-ab13786d10b53ca8da4d"
   ],
-  "remaining_active_ids": [
-    "red-review-acde095dbdf61843392f",
-    "red-review-ab13786d10b53ca8da4d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial real iniciada 0/2. Revisiones de novedades: Toledo y Ana Pastor. Sin ImageGen ni publicación.",
+  "summary": "Pasada completada 2/2. Toledo actualizado con novedades materiales del accidente de Urda; Ana Pastor revisada sin cambios sustanciales. La reelaboración de Halloween TT#1 quedó cerrada y sincronizada en el mismo ciclo manual iniciado a las 19:25. Cola final verificada en 0. Sin ImageGen directo ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando revisiones editoriales",
-  "final_outcomes": [],
+  "activity": "Cierre verificado",
+  "final_outcomes": [
+    {
+      "id": "red-review-acde095dbdf61843392f",
+      "name": "Toledo",
+      "outcome": "updated"
+    },
+    {
+      "id": "red-review-ab13786d10b53ca8da4d",
+      "name": "Ana Pastor",
+      "outcome": "unchanged"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T19:34:00+01:00",
-  "last_completed_at": "2026-10-31T19:31:30+01:00"
+  "last_completed_at": "2026-10-31T19:35:10+01:00"
 }
