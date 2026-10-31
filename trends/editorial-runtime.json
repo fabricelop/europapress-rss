@@ -5,27 +5,25 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T044000+0100-manual",
   "previous_run_id": "tr-chat-20261031T042500+0100-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T04:40:00+01:00",
-  "updated_at": "2026-10-31T04:44:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T04:45:00+01:00",
+  "finished_at": "2026-10-31T04:45:00+01:00",
   "last_started_at": "2026-10-31T04:40:00+01:00",
-  "last_completed_at": "2026-10-31T04:26:00+01:00",
-  "current": 0,
+  "last_completed_at": "2026-10-31T04:45:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "15e3190f0e6c",
-  "title": "Elvis",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "15e3190f0e6c"
   ],
-  "remaining_active_ids": [
-    "15e3190f0e6c"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada 0/1: Elvis r0 revalidado en main y listo para investigación.",
+  "summary": "Pasada manual completada 1/1: Elvis r0 explicado con causa no confirmada por ambigüedad sustancial; texto persistido en requests y Listas. Cola final 0.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -50,7 +48,31 @@
       "trend_id": "15e3190f0e6c",
       "title": "Elvis",
       "message": "Cierre prudente de causa no confirmada; sin remate. Persistiendo la revisión 0 en requests y Listas."
+    },
+    {
+      "at": "2026-10-31T04:45:00+01:00",
+      "phase": "verifying",
+      "trend_id": "15e3190f0e6c",
+      "title": "Elvis",
+      "message": "Verificación JIT: request y ficha Listas coinciden en ID, revisión, texto, closer_text y explained_at; cola autoritativa count=0."
+    },
+    {
+      "at": "2026-10-31T04:45:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final sobre main completada: no quedan preparing/update ni tareas group_listas, anticipate o review_red. Sin ImageGen ni publicación en X."
     }
   ],
-  "final_outcomes": []
+  "final_outcomes": [
+    {
+      "id": "15e3190f0e6c",
+      "revision": 0,
+      "name": "Elvis",
+      "outcome": "explained",
+      "cause": "unconfirmed",
+      "closer_text": "",
+      "editorial_grouping_state": "pending"
+    }
+  ]
 }
