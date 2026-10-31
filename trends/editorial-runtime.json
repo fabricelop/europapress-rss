@@ -3,74 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793435390759-manual",
-  "previous_run_id": "tr-1793435232434-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T09:30:30+01:00",
-  "updated_at": "2026-10-31T09:32:30+01:00",
-  "finished_at": "2026-10-31T09:32:30+01:00",
+  "run_id": "tr-20261031T094000-manual",
+  "previous_run_id": "tr-1793435390759-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T09:40:00+01:00",
+  "updated_at": "2026-10-31T09:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Cierre 0/0 tras relectura final de main: los 2 jobs vistos al inicio fueron completados por otra ejecución antes de la revalidación JIT. Cola vacía y sin rewrite_pending vigente.",
+  "summary": "Pasada manual iniciada. Cola autoritativa leída en main con 0 items; se realizará relectura final antes del cierre.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T09:30:30+01:00",
+      "at": "2026-10-31T09:40:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Releída main: 2 trabajos preparing vigentes. Orden: revisión #FelizSábado; revisión Toledo. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-10-31T09:31:35+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-2d2f2ec3a98ec29aa471",
-      "title": "Revisar novedades: #FelizSábado",
-      "message": "JIT: job ya retirado de la cola. Outbox existente; aplicador lo dejó review_completed con outcome stale, sin reabrir la ficha."
-    },
-    {
-      "at": "2026-10-31T09:31:35+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-e18f2eaa13bca806e2e2",
-      "title": "Revisar novedades: Toledo",
-      "message": "JIT: job ya retirado de la cola. Review_completed stale porque Toledo ya no figuraba en el Top 30 fresco."
-    },
-    {
-      "at": "2026-10-31T09:32:30+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: editorial-queue count 0; no rewrite_pending:true en el registro explicado. Cierre 0/0 sin ImageGen ni publicaciones."
+      "message": "Leídos contrato y estado autoritativo en main. editorial-queue count 0; no se genera ImageGen ni se publica."
     }
   ],
-  "final_outcomes": [
-    {
-      "job_id": "red-review-2d2f2ec3a98ec29aa471",
-      "result": "already_completed_elsewhere",
-      "applied_status": "review_completed",
-      "review_outcome": "stale"
-    },
-    {
-      "job_id": "red-review-e18f2eaa13bca806e2e2",
-      "result": "already_completed_elsewhere",
-      "applied_status": "review_completed",
-      "review_outcome": "stale"
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-1793435390759-manual",
-    "status": "DONE",
-    "finished_at": "2026-10-31T09:32:30+01:00",
+    "run_id": "tr-20261031T094000-manual",
+    "status": "RUNNING",
+    "finished_at": null,
     "attempted": 0,
     "explained": 0,
     "updates": 0,
@@ -80,11 +46,10 @@
     "groups_created": 0,
     "covered_by_existing": 0,
     "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "rewrite_pending_remaining": null,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_jobs_verified_completed": 2
+    "incidents": 0
   },
   "api_failover_enabled": false
 }
