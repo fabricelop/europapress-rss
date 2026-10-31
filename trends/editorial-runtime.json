@@ -6,16 +6,18 @@
   "run_id": "tr-1793436338047-manual",
   "previous_run_id": "tr-20261031T094000-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-10-31T09:46:00+01:00",
-  "updated_at": "2026-10-31T09:46:00+01:00",
+  "updated_at": "2026-10-31T09:47:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 3,
+  "current": 1,
+  "total": 4,
   "trend_id": "listas-auto-7023d998e92fe485eae5",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "fd04788626e5"
+  ],
   "remaining_ids": [
     "listas-auto-7023d998e92fe485eae5",
     "red-review-2d47f02baa7db3c0fdca",
@@ -27,7 +29,7 @@
     "red-review-55bc85950456f58b2531"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-1793436338047-manual iniciada sobre 3 trabajos activos; validación JIT antes de cada operación. Sin ImageGen ni publicación.",
+  "summary": "Sprint r0 aplicado. Procesando agrupación automática: cubrir Sprint con la ficha conjunta ya publicada del mismo sprint de Sepang.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -38,6 +40,13 @@
       "trend_id": "listas-auto-7023d998e92fe485eae5",
       "title": "Agrupación automática de Listas",
       "message": "Contrato y estado autoritativo releídos. 3 trabajos activos; se procesa primero la agrupación y después las revisiones de novedades."
+    },
+    {
+      "at": "2026-10-31T09:47:00+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-7023d998e92fe485eae5",
+      "title": "Agrupación automática de Listas",
+      "message": "Comparación JIT: Sprint r0 corresponde al mismo sprint de Sepang ya cubierto por listas-joint-021a97e2e386c40f, sin novedades materiales. Yola, Dana y La UCO permanecen separadas."
     }
   ],
   "final_outcomes": [],
@@ -45,8 +54,8 @@
     "run_id": "tr-1793436338047-manual",
     "status": "RUNNING",
     "finished_at": null,
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 1,
+    "explained": 1,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
@@ -58,7 +67,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "total": 3
+    "total": 4
   },
   "api_failover_enabled": false
 }
