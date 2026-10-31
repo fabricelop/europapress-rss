@@ -6,9 +6,9 @@
   "run_id": "tr-1793433487804-manual",
   "previous_run_id": "tr-1793433487804-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-10-31T09:20:00+01:00",
-  "updated_at": "2026-10-31T09:21:00+01:00",
+  "updated_at": "2026-10-31T09:22:45+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -23,7 +23,7 @@
     "2d250d20786e"
   ],
   "remaining_problematic_ids": [],
-  "summary": "1/1 en investigación. La emisión sabatina de Agropopular coincide con la entrada de la etiqueta en Top 10 y con el fin de semana de Todos los Santos.",
+  "summary": "1/1 redactada y enviada al outbox oficial; aplicador de TTendencias en curso. Pendiente verificar requests, ficha y retirada exacta de la cola.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -41,6 +41,13 @@
       "trend_id": "2d250d20786e",
       "title": "#AgropopularTodosLosSantos",
       "message": "Dos búsquedas independientes y fuentes de programación confirman Agropopular los sábados 08:30–10:00; la etiqueta entró en Top 10 durante la emisión. Se redacta causa directa."
+    },
+    {
+      "at": "2026-10-31T09:22:45+01:00",
+      "phase": "persisting",
+      "trend_id": "2d250d20786e",
+      "title": "#AgropopularTodosLosSantos",
+      "message": "Outbox TTENDENCIAS_CHAT_OUTBOX_V1 enviado. Workflow apply-ttendencias-chat-outbox en curso; aún no se considera cerrado."
     }
   ],
   "final_outcomes": [],
