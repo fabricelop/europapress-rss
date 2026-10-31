@@ -6,16 +6,18 @@
   "run_id": "tr-1793448774223-manual",
   "previous_run_id": "tr-1793448135200-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-10-31T13:13:30+01:00",
   "updated_at": "2026-10-31T13:13:30+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-7e61105d549dfd7cbb0a",
-  "title": "Revisar novedades: #DeViernes",
+  "current": 1,
+  "total": 4,
+  "trend_id": "listas-auto-8423bde277fb0072e86d",
+  "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "f2e4752029f7"
+  ],
   "remaining_ids": [
     "red-review-7e61105d549dfd7cbb0a",
     "red-review-b10ca3fa03f234e357b1"
@@ -25,11 +27,19 @@
     "red-review-b10ca3fa03f234e357b1"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Preparando pasada editorial real 2/2: agrupación automática y revisiones de novedades. Sin ImageGen ni publicación.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "1/4 completado: Urda r0 explicada. Verificando aplicación de agrupación automática de Listas; después, dos revisiones de novedades.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-10-31T13:06:00+01:00",
+      "phase": "persisting",
+      "trend_id": "f2e4752029f7",
+      "title": "Urda",
+      "reason": "La escritura directa del archivo grande requests.json falló por transporte; se recuperó mediante el editorial-outbox oficial y su aplicador."
+    }
+  ],
   "error": null,
-  "activity": "preparing",
+  "activity": "verifying",
   "final_outcomes": [],
   "last_run": {
     "run_id": "tr-chat-20261031T125557+0100",
