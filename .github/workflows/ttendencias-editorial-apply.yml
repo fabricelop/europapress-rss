@@ -68,6 +68,10 @@ jobs:
 
             apply_status=0
             python3 trends/apply_editorial_outbox.py || apply_status=$?
+            # A removed Listas card can retain the newest public Top30 text.
+            # Write its Site feed alongside editorial state; token pushes do
+            # not trigger ttendencias-site-top30-sync.yml independently.
+            python3 trends/export_site_top30.py
             git add -A trends
             if git diff --cached --quiet; then
               exit "$apply_status"
