@@ -59,9 +59,6 @@ QFrame#metric { background:#172b3e; border:1px solid #31506a; border-radius:16px
 QFrame#rowCard { background:#1c2d42; border:1px solid #34485f; border-radius:13px; }
 QFrame#rowCard:hover { background:#233a50; border-color:#64d8c3; }
 QFrame#rowCard[selected="true"] { background:#243d4e; border:1px solid #74dac6; }
-QFrame#rowCard[groupedOriginal="true"] { background:#322044; border:1px solid #aa75e8; }
-QFrame#rowCard[groupedOriginal="true"]:hover { background:#432859; border-color:#d0a4ff; }
-QFrame#rowCard[groupedOriginal="true"][selected="true"] { background:#493061; border:2px solid #d0a4ff; }
 QMenu { background:#192a3e; border:1px solid #3a566f; border-radius:10px; padding:6px; }
 QMenu::item { padding:9px 18px; color:#eaf2ff; border-radius:6px; }
 QMenu::item:selected { background:#2a554e; color:#9bffe7; }
@@ -706,10 +703,6 @@ class MainWindow(QWidget):
             is_selected=(self.selected and item["id"]==self.selected["id"]
                          and item["project"]==self.selected["project"])
             card.setProperty("selected",bool(is_selected))
-            card.setProperty("groupedOriginal",bool(
-                self.section in {"Todas las Listas", "Tendencias · Listas"}
-                and item["project"] == "ttendencias" and item["state"] == "Listas"
-                and item.get("covered_by_id") and not item.get("is_joint_group")))
             self.card_widgets[(item["project"],item["id"])]=card
             card.setCursor(Qt.PointingHandCursor)
             cc=col_layout(card,7,(13,12,13,11))
