@@ -12,6 +12,11 @@ on:
       - 'trends/export_site_top30.py'
       - 'tests/test_site_top30_export.py'
       - '.github/workflows/ttendencias-site-top30-sync.yml'
+  pull_request:
+    paths:
+      - 'trends/export_site_top30.py'
+      - 'tests/test_site_top30_export.py'
+      - '.github/workflows/ttendencias-site-top30-sync.yml'
   workflow_dispatch:
 
 permissions:
@@ -22,7 +27,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test mapping against TTActualidad iOS behavior
+        run: python3 -m unittest discover -s tests -p 'test_site_top30_export.py' -v
   export:
+    needs: validate
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -30,8 +44,6 @@ jobs:
         with:
           ref: main
           persist-credentials: true
-      - name: Test mapping against TTActualidad iOS behavior
-        run: python3 -m unittest discover -s tests -p 'test_site_top30_export.py' -v
       - name: Export from latest main and publish small public feed
         shell: bash
         run: |
