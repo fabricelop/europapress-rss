@@ -54,5 +54,19 @@ try{
  assert(html.includes("matchingAiImage(x)?.url"));
  assert(html.includes("imageStillPending(existing)"));
  assert(html.includes("/api/trend-image"));
+ // All ranked trends must expose a one-click image action even when a
+ // particular explanation has not been prepared, delivered, or published.
+ assert(html.includes("const topImage=btn('Generar imagen IA'"));
+ assert(html.includes("topImage.classList.add('trend-image-action')"));
+ assert(html.includes("quickImage.classList.add('top30-image-quick')"));
+ assert(html.includes("out.replaceChildren(detail,quickImage)"));
+ assert(html.includes("if(x._kind==='tr'){"),'Every trend in Listas gets the image action');
+ assert(html.includes("if(!canRequestAutomaticTrendImage(x))"));
+ assert(html.includes("openTrendImageInChatGPT(x)"));
+ assert(html.includes("El contexto factual de esta tendencia todavía no ha sido verificado."));
+ assert(html.includes("[3,4].includes(Number(guard.version))"),
+   'The frontend must recognize current receipt provenance v4 as well as v3');
+ assert(!html.includes("if(x._kind==='tr'&&x._status==='EXPLICADA'){"),
+   'Do not hide the image action for other statuses');
 }finally{globalThis.fetch=original}
 console.log('TTActualidad: authenticated image-run proxy and card wiring OK');

@@ -46,8 +46,16 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
  assert(html.includes('.cards.top30{display:flex;flex-direction:column'),
   path+': Top 30 must render as compact vertical rows');
  assert(html.includes('function compactTop30Card(out,x){')&&
-        html.includes('detail.append(summary,content);out.replaceChildren(detail)'),
+        (html.includes('detail.append(summary,content);out.replaceChildren(detail)')||
+         (html.includes('detail.append(summary,content);')&&
+          html.includes('out.replaceChildren(detail,quickImage)'))),
   path+': rows must expand to show explanation and controls');
+ if(path.startsWith('pilot/')){
+  assert(html.includes("const topImage=btn('Generar imagen IA'"),
+   path+': every Top 30 trend must have an image action');
+  assert(html.includes("quickImage.classList.add('top30-image-quick')"),
+   path+': image action must remain visible while the ranked row is collapsed');
+ }
  assert(html.includes("summary.addEventListener('click'")&&html.includes('expandedTop30'),
   path+': expanded row state must persist across live refreshes');
  assert(html.includes("if(ageBand)out.classList.add(ageBand)")&&
