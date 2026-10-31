@@ -22,3 +22,8 @@ Poland7f69649ad704 quedó covered por la agrupación publicada listas-joint-f648
 La primera consulta mostró timeout de recogida a90s; después editorial-runtime mostró RUNNING y finalmente DONE/cola0 con la agrupación aplicada. No concluir que el PC sigue parado a partir del timeout inicial. Contrato y barrera de agrupación (pilot/trend_maintenance.py y listas_grouping.py) tienen los mismos hashes que antes de las modificaciones del receptor; el fallo probado era la ausencia de activación explícita del planificador tras el cierre.
 
 Sitio público versión11, commit ea604483e57de3357cf929bc5885877fb6dfeee5. Pruebas de modelo15/15, incluidas búsqueda histórica, texto exacto del borrador X y cobertura de original por agrupación publicada. El sitio indica pendientes de agrupación antes de generar, sin afirmar recepción de una imagen aún inexistente.
+
+
+### Error de red del consumidor web observado
+
+El job nuevo de GP registró web_image.waiting / fetch failed a06:19:05Z. El raster existe pero esa recepción no está completada. Publicados f9e24c8db09dc22c9403acc289fb0c486246908a (fallback de lectura RAW al receptor existente, revalidación exacta y diagnóstico por etapa/código de red) y 14d938a04a139176b3e96bf77bf366c5a1422259 (exigir el consumidor compatible en el refresco). Pruebas del consumidor16/16 y CI Windows41176490139 correcto. No adjuntar GP manualmente para declarar éxito automático ni asumir que un deploy acredita carga física del helper o acceso a Chrome9234. La comprobación horaria permanece desactivada.
