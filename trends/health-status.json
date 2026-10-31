@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-31T18:27:49.977616+00:00",
+  "checked_at": "2026-10-31T18:43:52.233266+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.6,
-      "run_id": 41229408938,
+      "age_minutes": 2.2,
+      "run_id": 41230649353,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -68,7 +68,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 136,
+      "invalid_count": 139,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -78,9 +78,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 1,
+      "pending_count": 5,
       "overdue_count": 0,
-      "oldest_age_minutes": 1.8,
+      "oldest_age_minutes": 2.7,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -90,7 +90,11 @@
       "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "ab65bc5a5cf7"
+        "69709b2f4154",
+        "8896b7c8b76c",
+        "0873682a0c89",
+        "79bd894ced7e",
+        "38c2e92ebcb0"
       ],
       "contradictory_success": false
     },
@@ -102,9 +106,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 136 estado(s) inválido(s)"
+    "cola con 139 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 136 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 139 estado(s) inválido(s)"
 }
