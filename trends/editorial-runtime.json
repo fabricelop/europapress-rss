@@ -3,27 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261031T105500-manual",
-  "previous_run_id": "tr-1793439854638-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T10:55:00+01:00",
-  "updated_at": "2026-10-31T11:04:00+01:00",
-  "finished_at": "2026-10-31T11:04:00+01:00",
-  "current": 3,
+  "run_id": "tr-1793440808230-manual",
+  "previous_run_id": "tr-20261031T105500-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T11:00:08.230+01:00",
+  "updated_at": "2026-10-31T11:01:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "5b2b84b126eb",
-    "81542559f97d",
-    "0fe61402e93a"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-9c671cb8f6b82a219761",
+    "red-review-aa267e2c0713fcba29c4",
+    "red-review-19fd58865c1cae4eff9d"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-9c671cb8f6b82a219761",
+    "red-review-aa267e2c0713fcba29c4",
+    "red-review-19fd58865c1cae4eff9d"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 3/3. #BornToBeNuNewConcertD1 explicado con detonante verificado; Humillación y DÍA DE PARTIDO cerradas con causa no confirmada para evitar atribuciones especulativas. Cola final 0. Sin ImageGen ni publicación.",
+  "summary": "Pasada manual en curso 0/3. Cola autoritativa releída; agrupación automática y dos revisiones rojas vigentes. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -125,31 +129,16 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: cola 0, sin preparing/update. Pasada cerrada 3/3; sin ImageGen ni publicación."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "5b2b84b126eb",
-      "revision": 0,
-      "name": "#BornToBeNuNewConcertD1",
-      "outcome": "explained",
-      "applied": true
     },
     {
-      "id": "81542559f97d",
-      "revision": 0,
-      "name": "Humillación",
-      "outcome": "explained_uncertain_cause",
-      "applied": true
-    },
-    {
-      "id": "0fe61402e93a",
-      "revision": 0,
-      "name": "DÍA DE PARTIDO",
-      "outcome": "explained_uncertain_cause",
-      "applied": true
+      "at": "2026-10-31T11:01:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio tr-1793440808230-manual: contrato y cola autoritativa releídos en main; 3 trabajos activos. Sin ImageGen ni publicación."
     }
   ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-20261031T105500-manual",
     "status": "DONE",
