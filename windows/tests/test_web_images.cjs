@@ -57,3 +57,10 @@ test('newly enrolled command keeps the retained tab window even before its URL i
  // A similarly named title or a different browser target is never identity.
  assert.equal(prioritizeOpenConversation([...old,urda],[{id:'other',type:'page',title:'Urda',url:'https://chatgpt.com/'}])[0],old[0]);
 });
+test('the exact live command identifies its pending delivery after the producer replaces the enrolled target',()=>{
+ const old={task:{command_id:'old-command',target_id:'other',browser_target_id:'live-pin'}};
+ const urda={task:{command_id:'urda-command',target_id:'urda-id',browser_target_id:'replaced-pin'}};
+ const live={command_id:'urda-command',target_id:'urda-id'};
+ assert.equal(prioritizeOpenConversation([old,urda],[{id:'live-pin',type:'page',url:'https://chatgpt.com/'}],live)[0],urda);
+ assert.equal(prioritizeOpenConversation([old,urda],[],{...live,target_id:'different'})[0],old);
+});

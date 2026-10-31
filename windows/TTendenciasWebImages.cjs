@@ -160,15 +160,35 @@ function conversationProbe(command,diagnostic=false){return `(()=>{
  const matched=last&&String(last.innerText||last.textContent||'').includes(${JSON.stringify(command)});
  return ${diagnostic?'true':'false'}?{url:matched?location.href:null,reason:matched?'matched':last?'last_user_command_differs':'user_turn_not_found'}:matched?location.href:null;
 })()`;}
+function pinnedTargetId(){
+  try{const id=String(JSON.parse(fs.readFileSync(path.join(__dirname,'ttendencias-image-tab.json'),'utf8')).target_id||'');return safeID(id)?id:null;}catch{return null;}
+}
+async function currentPinnedCommand(pages){
+  const id=pinnedTargetId(),own=pages.find(x=>id&&String(x.id)===id&&x.webSocketDebuggerUrl&&chatURL(x.url));
+  if(!own)return null;
+  const cdp=new CDP(own.webSocketDebuggerUrl);
+  try{
+    await cdp.open();return await cdp.evaluate(`(()=>{const users=(${userTurns.toString()})();const last=users[users.length-1];const m=String(last&&(last.innerText||last.textContent)||'').match(/^TTENDENCIAS_IMAGE_JOB_V4\\s+([A-Za-z0-9._-]+)\\s+([A-Za-z0-9._-]+)/);return m?{command_id:m[1],target_id:m[2]}:null;})()`);
+  }finally{cdp.close();}
+}
 async function discoverConversation(commandId,browserTargetId,diagnostic=false){
   const pages=await http(GENERATOR_BASE+'/json/list');
-  const own=pages.find(x=>String(x.id||'')===String(browserTargetId));
-  if(!own?.webSocketDebuggerUrl)return diagnostic?{url:null,reason:'pinned_target_missing'}:null;
-  if(!chatURL(own.url))return diagnostic?{url:null,reason:'pinned_url_not_durable'}:null;
-  const cdp=new CDP(own.webSocketDebuggerUrl);
-  try{await cdp.open();const result=await cdp.evaluate(conversationProbe(commandId,diagnostic));
-    return diagnostic?{url:chatURL(result?.url),reason:result?.reason||'conversation_probe_unavailable'}:chatURL(result);}
-  finally{cdp.close();}
+  // The producer can recover/replace its fixed target during submission. The
+  // enrollment may still carry the former target. Inspect only the recorded
+  // target and the producer's OWN current pinned target, never arbitrary tabs.
+  let reason='pinned_target_missing';
+  for(const id of new Set([String(browserTargetId||''),pinnedTargetId()].filter(Boolean))){
+    const own=pages.find(x=>String(x.id||'')===id&&x.webSocketDebuggerUrl);
+    if(!own)continue;
+    if(!chatURL(own.url)){reason='pinned_url_not_durable';continue;}
+    const cdp=new CDP(own.webSocketDebuggerUrl);
+    try{await cdp.open();const result=await cdp.evaluate(conversationProbe(commandId,diagnostic));
+      const url=chatURL(diagnostic?result?.url:result);
+      if(url)return diagnostic?{url,reason:'matched',browser_target_id:id}:url;
+      reason=diagnostic?(result?.reason||'conversation_probe_unavailable'):'last_user_command_differs';
+    }finally{cdp.close();}
+  }
+  return diagnostic?{url:null,reason}:null;
 }
 async function rememberConversation(input){
   enroll(input);
@@ -189,6 +209,7 @@ async function consume(task){
       const found=await discoverConversation(task.command_id,task.browser_target_id,true);
       if(!found.url)return {status:'waiting',reason:'awaiting_command_conversation:'+found.reason};
       task.conversation_url=found.url;
+      task.browser_target_id=found.browser_target_id;
     }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
   }
   try{
@@ -249,7 +270,7 @@ async function telemetry(task,result){
 function dueTasks(tasks,now){return tasks.filter(x=>x.task.status==='waiting')
   .filter(x=>!Number.isFinite(Date.parse(x.task.next_check_at||''))||Date.parse(x.task.next_check_at)<=now)
   .sort((a,b)=>Date.parse(a.task.checked_at||a.task.created_at||0)-Date.parse(b.task.checked_at||b.task.created_at||0));}
-function prioritizeOpenConversation(tasks,pages){
+function prioritizeOpenConversation(tasks,pages,currentCommand=null){
   // Opportunistic read of the completed current conversation before the
   // generator reuses its tab. This changes priority, never identity checks.
   const open=new Set(pages.filter(x=>x.type==='page').map(x=>chatURL(x.url)).filter(Boolean));
@@ -258,9 +279,9 @@ function prioritizeOpenConversation(tasks,pages){
   // only saved URLs let older waiting jobs consume the entire retained-tab
   // window. A pinned target is scheduling evidence ONLY: consume still proves
   // the exact command in that page before accepting its URL or raster.
-  return tasks.map((entry,index)=>({entry,index,open:open.has(entry.task.conversation_url)||
+  return tasks.map((entry,index)=>({entry,index,current:!!currentCommand&&entry.task.command_id===currentCommand.command_id&&entry.task.target_id===currentCommand.target_id,open:open.has(entry.task.conversation_url)||
     (!chatURL(entry.task.conversation_url)&&targets.has(String(entry.task.browser_target_id||'')))}))
-    .sort((a,b)=>Number(b.open)-Number(a.open)||a.index-b.index).map(x=>x.entry);
+    .sort((a,b)=>Number(b.current)-Number(a.current)||Number(b.open)-Number(a.open)||a.index-b.index).map(x=>x.entry);
 }
 async function once(){
   fs.mkdirSync(ROOT,{recursive:true});const lock=path.join(ROOT,'publisher.lock');
@@ -275,7 +296,7 @@ async function once(){
       try{return [{file:path.join(ROOT,name),task:JSON.parse(fs.readFileSync(path.join(ROOT,name),'utf8'))}];}catch{return [];}
     });
     let due=dueTasks(tasks,now);
-    try{due=prioritizeOpenConversation(due,await http(GENERATOR_BASE+'/json/list'));}catch{}
+    try{const pages=await http(GENERATOR_BASE+'/json/list');due=prioritizeOpenConversation(due,pages,await currentPinnedCommand(pages));}catch{}
     for(const {file,task} of due.slice(0,1)){
       if(!safeID(task.target_id)||!safeID(task.command_id)||(!chatURL(task.conversation_url)&&!safeID(task.browser_target_id))||
         !/^[a-f0-9]{64}$/.test(String(task.explanation_sha256||''))||
