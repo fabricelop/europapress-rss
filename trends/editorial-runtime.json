@@ -6,29 +6,34 @@
   "run_id": "tr-1793445575815-manual",
   "previous_run_id": "tr-chat-20261031T121059+0100",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-10-31T12:19:00+01:00",
-  "updated_at": "2026-10-31T12:19:00+01:00",
+  "updated_at": "2026-10-31T12:22:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 1,
   "trend_id": "listas-auto-63edd5c6917d6dccad6d",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "listas-auto-63edd5c6917d6dccad6d"
   ],
-  "remaining_active_ids": [
-    "listas-auto-63edd5c6917d6dccad6d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Preparando agrupación automática de Listas 0/1; validando snapshot y publicaciones previas. Sin ImageGen ni publicación.",
+  "summary": "Revalidación JIT: el trabajo fue completado concurrentemente antes de nuestra escritura; verificando outbox aplicado, cola final y reexplicaciones pendientes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "verifying",
+  "final_outcomes": [
+    {
+      "id": "listas-auto-63edd5c6917d6dccad6d",
+      "revision": 0,
+      "status": "grouping_completed_concurrently",
+      "groups_created": 0
+    }
+  ],
   "last_run": {
     "run_id": "tr-chat-20261031T114000+0100",
     "status": "DONE",
