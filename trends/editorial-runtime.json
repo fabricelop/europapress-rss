@@ -3,49 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261031T055500+0100",
-  "previous_run_id": "tr-manual-20261031T054000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T05:55:00+01:00",
-  "updated_at": "2026-10-31T05:57:00+01:00",
-  "finished_at": "2026-10-31T05:57:00+01:00",
-  "last_started_at": "2026-10-31T05:55:00+01:00",
+  "run_id": "tr-manual-20261031T064100+0100",
+  "previous_run_id": "tr-manual-20261031T055500+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T06:41:00+01:00",
+  "updated_at": "2026-10-31T06:41:00+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T06:41:00+01:00",
   "last_completed_at": "2026-10-31T05:57:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "592bc75eb909",
+    "7f69649ad704"
+  ],
+  "remaining_active_ids": [
+    "592bc75eb909",
+    "7f69649ad704"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 0/0: cola final vacía tras releer main; editorial-queue.json sigue en count=0 (updated_at 2026-10-31T05:50:56+01:00) y no hay rewrite_pending detectados. Sin ImageGen, Telegram editorial ni publicación en X.",
+  "summary": "Pasada manual en curso: 2 pendientes preparing detectadas en main (GP de Malasia y Poland). Sin ImageGen ni publicación en X.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T05:55:00+01:00",
+      "at": "2026-10-31T06:41:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual: editorial-queue.json en main muestra 0/0. Se verifican requests, explicadas, decisiones y rewrite_pending antes del cierre."
-    },
-    {
-      "at": "2026-10-31T05:57:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final sobre main: editorial-queue.json count=0, sin items; búsqueda de rewrite_pending=true sin coincidencias. No hay revisiones editoriales que aplicar."
-    },
-    {
-      "at": "2026-10-31T05:57:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+      "message": "Inicio de pasada manual: cola autoritativa releída en main con 2 pendientes preparing. Se procesan por requested_at y se valida ID+revisión JIT antes de cada persistencia."
     }
   ],
   "final_outcomes": [],
