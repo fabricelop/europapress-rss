@@ -523,7 +523,7 @@ async function requestImageUpload(req,res,webReceipt=false){
   const captureFromImage=/^(original-fetch-img|canvas-from-img-)/.test(captureMethod);
   if(!command_id||!upload_secret||!data.startsWith("data:image/"))return res.status(400).json({ok:false,error:"Carga de imagen incompleta"});
   if(!captureFromImage)return res.status(422).json({ok:false,error:"Raster rechazado: el bridge no acredita captura del elemento de imagen",capture_method:captureMethod||null});
-  if(data.length>4*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
+  if(data.length>(webReceipt?12:4)*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es actual"});
@@ -542,7 +542,7 @@ async function requestImageUpload(req,res,webReceipt=false){
   const m=data.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
   if(!m)return res.status(400).json({ok:false,error:"Formato de raster no admitido"});
   const buf=Buffer.from(m[2],"base64");
-  if(buf.length<12000||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
+  if(buf.length<12000||buf.length>(webReceipt?8:3)*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
   const meta=await sharp(buf,{animated:false}).metadata(),width=Number(meta.width||0),height=Number(meta.height||0);
   if(width<1024||height<576)return res.status(400).json({ok:false,error:"Raster inferior a 1024x576",width,height});
   // La geometría puede variar según la salida real de ImageGen. La garantía

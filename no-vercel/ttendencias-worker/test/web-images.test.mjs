@@ -26,5 +26,13 @@ test('cancellations, wrong secrets, changed text, revisions and episodes cannot 
  for(const kind of ['cancelled','secret','text','revision','episode']){const s=setup(),body={...s.body};if(kind==='cancelled')s.job.status='CANCELLED';if(kind==='secret')body.upload_secret='wrong';if(kind==='text')s.row.explanation='Reelaborada';if(kind==='revision')s.row.revision=1;if(kind==='episode')s.row.explained_at='2026-10-31T02:00:00Z';const r=await run(s,body);assert.ok([401,409].includes(r.status),kind);assert.equal(s.puts.length,0,kind);}
 });
 test('legacy image upload keeps its conservative terminal gate',async()=>{const s=setup(),r=await run(s,{...s.body,task:'image_upload'});assert.equal(r.status,409);assert.equal(s.puts.length,0);});
+test('web receipt preserves an existing original above the old 3 MiB limit',async()=>{
+ const s=setup(),bytes=Buffer.alloc(3231673);
+ Buffer.from(s.body.image_data_url.split(',')[1],'base64').subarray(0,32).copy(bytes);
+ const r=await run(s,{...s.body,image_data_url:'data:image/png;base64,'+bytes.toString('base64')});
+ assert.equal(r.status,200,await r.clone().text());
+ assert.equal((await r.json()).bytes,3231673);
+ const stored=[...s.docs.values()].find(x=>Buffer.isBuffer(x));assert.deepEqual(stored,bytes);
+});
 test('public contract exposes receipt version without credentials',async()=>{const r=await worker.fetch(new Request('https://worker.test/api/ttendencias-run-status?view=web-image-contract'),{}),d=await r.json();assert.equal(d.web_image_receipt,2);assert.equal(d.generates_images,false);});
 test('rank changes keep identity; another editorial ID never does',()=>{const s=setup();s.row.rank=1;assert.equal(webReceiptContext(s.job,s.row,explanationHash(text)),null);assert.equal(webReceiptContext(s.job,{...s.row,id:'other'},explanationHash(text)),'revision_changed');});

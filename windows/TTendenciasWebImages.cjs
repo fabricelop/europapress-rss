@@ -59,7 +59,7 @@ function rasterProbe(command){return `(async()=>{
  const img=images[0];const response=await fetch(img.currentSrc||img.src,{credentials:'include'});
  if(!response.ok)return {ready:false,reason:'raster_fetch_failed'};
  const blob=await response.blob();
- if(!/^image\\/(png|jpeg|webp)$/.test(blob.type)||blob.size<12000||blob.size>3145728)return {ready:false,reason:'raster_size_or_type'};
+ if(!/^image\\/(png|jpeg|webp)$/.test(blob.type)||blob.size<12000||blob.size>8388608)return {ready:false,reason:'raster_size_or_type'};
  const bytes=new Uint8Array(await blob.arrayBuffer());let binary='';for(let i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode(...bytes.subarray(i,i+32768));
  return {ready:true,dataUrl:'data:'+blob.type+';base64,'+btoa(binary),width:img.naturalWidth,height:img.naturalHeight};
 })()`;}

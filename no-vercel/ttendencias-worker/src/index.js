@@ -57,11 +57,12 @@ async function handlerRequest(request, env, url,handler) {
   const headers=Object.fromEntries(request.headers.entries());
   const query=Object.fromEntries(url.searchParams.entries());
   const len=Number(request.headers.get("content-length")||0);
-  if(len>MAX_BODY_BYTES)return json({ok:false,error:"Carga demasiado grande"},413);
+  const maxBody=url.pathname==='/api/ttendencias-run'?12*1024*1024:MAX_BODY_BYTES;
+  if(len>maxBody)return json({ok:false,error:"Carga demasiado grande"},413);
   let body={};
   if(!["GET","HEAD"].includes(request.method)){
     const t=await request.text();
-    if(t.length>MAX_BODY_BYTES)return json({ok:false,error:"Carga demasiado grande"},413);
+    if(t.length>maxBody)return json({ok:false,error:"Carga demasiado grande"},413);
     if(t){
       try{body=JSON.parse(t)}
       catch{return json({ok:false,error:"JSON inválido"},400)}
