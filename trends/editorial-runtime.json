@@ -6,9 +6,9 @@
   "run_id": "tr-chat-20261031T014000+0100-manual",
   "previous_run_id": "tr-chat-20261031T012500+0100-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-10-31T01:40:00+01:00",
-  "updated_at": "2026-10-31T01:41:20+01:00",
+  "updated_at": "2026-10-31T01:45:00+01:00",
   "finished_at": null,
   "last_started_at": "2026-10-31T01:40:00+01:00",
   "last_completed_at": "2026-10-31T01:27:00+01:00",
@@ -17,15 +17,13 @@
   "trend_id": "3d5ee1703a15",
   "title": "#LaReuniónSecreta",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "3d5ee1703a15"
   ],
-  "remaining_active_ids": [
-    "3d5ee1703a15"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Investigando #LaReuniónSecreta (rev. 0) tras entrada nueva durante la pasada.",
+  "summary": "Persistiendo y verificando #LaReuniónSecreta (rev. 0).",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -44,6 +42,27 @@
       "trend_id": "3d5ee1703a15",
       "title": "#LaReuniónSecreta",
       "message": "Nueva entrada detectada en la barrera: puesto 25, revisión 0. Identidad revalidada JIT; investigando detonante actual con fuentes independientes."
+    },
+    {
+      "at": "2026-10-31T01:44:20+01:00",
+      "phase": "drafting",
+      "trend_id": "3d5ee1703a15",
+      "title": "#LaReuniónSecreta",
+      "message": "Detonante contrastado: nuevo directo del programa a las 22:00 difundido con la propia etiqueta; episodio 08x07 verificado en plataforma de podcast."
+    },
+    {
+      "at": "2026-10-31T01:44:40+01:00",
+      "phase": "remate_selection",
+      "trend_id": "3d5ee1703a15",
+      "title": "#LaReuniónSecreta",
+      "message": "Remate único seleccionado, breve y ligado al nombre del programa; sin añadir hechos nuevos."
+    },
+    {
+      "at": "2026-10-31T01:45:00+01:00",
+      "phase": "persisting",
+      "trend_id": "3d5ee1703a15",
+      "title": "#LaReuniónSecreta",
+      "message": "Persistiendo texto, fuentes y estado explained en requests y telegram-manual-explained; retirando solo la revisión 0 de la cola."
     }
   ]
 }
