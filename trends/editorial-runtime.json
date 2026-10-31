@@ -6,20 +6,26 @@
   "run_id": "tr-20261031T104000-manual",
   "previous_run_id": "tr-20261031T101000-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-31T10:40:00+01:00",
-  "updated_at": "2026-10-31T10:40:00+01:00",
+  "updated_at": "2026-10-31T10:45:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "red-review-9b715458254916e50e33",
+  "title": "#DeViernes",
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-9b715458254916e50e33",
+    "red-review-eaf70e605deb8a23229b"
+  ],
+  "remaining_active_ids": [
+    "red-review-9b715458254916e50e33",
+    "red-review-eaf70e605deb8a23229b"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada; contrato y estado autoritativo releídos. Verificando cola, reexplicaciones y resultados aplicados. Sin ImageGen ni publicación.",
+  "summary": "Procesando 2 revisiones de mantenimiento vigentes detectadas tras la barrera de estado.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -30,6 +36,13 @@
       "trend_id": null,
       "title": null,
       "message": "Contrato y estado autoritativo en main releídos; verificando trabajo activo y barrera final. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T10:45:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-9b715458254916e50e33",
+      "title": "#DeViernes",
+      "message": "Revisando novedades del episodio actual de #DeViernes con fuentes actuales."
     }
   ],
   "final_outcomes": [],
