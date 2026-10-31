@@ -3,49 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T042500+0100-manual",
-  "previous_run_id": "tr-chat-20261031T041000+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T04:25:00+01:00",
-  "updated_at": "2026-10-31T04:26:00+01:00",
-  "finished_at": "2026-10-31T04:26:00+01:00",
-  "last_started_at": "2026-10-31T04:25:00+01:00",
+  "run_id": "tr-chat-20261031T044000+0100-manual",
+  "previous_run_id": "tr-chat-20261031T042500+0100-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T04:40:00+01:00",
+  "updated_at": "2026-10-31T04:40:00+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T04:40:00+01:00",
   "last_completed_at": "2026-10-31T04:26:00+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "15e3190f0e6c",
+  "title": "Elvis",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "15e3190f0e6c"
+  ],
+  "remaining_active_ids": [
+    "15e3190f0e6c"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 0/0: ranking vigente capturado a las 04:21:04, cola autoritativa revalidada en main con count=0 y sin rewrite_pending vigente.",
+  "summary": "Pasada manual iniciada 0/1: Elvis r0 revalidado en main y listo para investigación.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T04:25:00+01:00",
+      "at": "2026-10-31T04:40:00+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio manual: contrato y estado autoritativo en main; cola inicial observada con count=0. Se revalidará antes de cerrar. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T04:25:40+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Registros revalidados: editorial-queue.json count=0; sin rewrite_pending en requests, explained ni decisiones móviles. Últimos resultados de mantenimiento comprobados."
-    },
-    {
-      "at": "2026-10-31T04:26:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final sobre main: editorial-queue.json sigue en count=0. Pasada completada 0/0. Sin ImageGen, Telegram editorial ni publicación en X."
+      "trend_id": "15e3190f0e6c",
+      "title": "Elvis",
+      "message": "Elvis r0 revalidado en la cola autoritativa (puesto 29). Inicio de investigación editorial; sin ImageGen."
     }
   ],
   "final_outcomes": []
