@@ -26193,16 +26193,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "938ceb177dde43de4999860b48ff415078ec3e3587ade04c8612ad6991a915c3",
       "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/4LRX4EULAQ3B6FINDKNB7KMPSY.jpg?auth=22cfb19d28867bdf290ec00109833f9a2637588b117707a35841c18020a7bfa9&width=1200",
+        "source": "cincodias.elpais.com",
+        "source_url": "https://cincodias.elpais.com/criptoactivos/2026-10-31/las-claves-del-robo-del-siglo-en-binance-que-ocurrio-quien-esta-detras-y-como-puede-sobrevivir-la-empresa.html",
+        "alt": "Imagen de archivo relacionada con Binance",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/4LRX4EULAQ3B6FINDKNB7KMPSY.jpg?auth=22cfb19d28867bdf290ec00109833f9a2637588b117707a35841c18020a7bfa9&width=1200",
+        "source": "cincodias.elpais.com",
+        "source_url": "https://cincodias.elpais.com/criptoactivos/2026-10-31/las-claves-del-robo-del-siglo-en-binance-que-ocurrio-quien-esta-detras-y-como-puede-sobrevivir-la-empresa.html",
+        "alt": "Imagen de archivo relacionada con Binance",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "listas-joint-a5f5450c8a66666e",
@@ -26307,12 +26322,32 @@
       "distinct_episode": false,
       "new_facts": "Manuel Prieto, abogado del maquinista del Alvia de Angrois, afirma que existe un paralelismo entre ambos accidentes y que la investigación de Urda no debe reducirse al último eslabón de la cadena; reclama examinar los sistemas y la gestión de seguridad.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.galiciae.com/media/galiciae/images/2026/10/30/2026103021130147587.jpg",
+        "source": "www.galiciae.com",
+        "source_url": "https://www.galiciae.com/articulo/galicia/manuel-prieto-abogado-maquinista-angrois-puede-volver-culpar-ultimo-eslabon-cadena-como-santiago/20261030142845110258.html",
+        "alt": "Imagen de archivo relacionada con Angrois",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://www.galiciae.com/media/galiciae/images/2026/10/30/2026103021130147587.jpg",
+        "source": "www.galiciae.com",
+        "source_url": "https://www.galiciae.com/articulo/galicia/manuel-prieto-abogado-maquinista-angrois-puede-volver-culpar-ultimo-eslabon-cadena-como-santiago/20261030142845110258.html",
+        "alt": "Imagen de archivo relacionada con Angrois",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-31T18:51:10.152306+00:00",
+  "updated_at": "2026-10-31T18:52:49.387229Z",
   "count": 443
 }
