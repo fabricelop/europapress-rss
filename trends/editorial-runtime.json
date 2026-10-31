@@ -3,96 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261031T064100+0100",
-  "previous_run_id": "tr-manual-20261031T055500+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T06:41:00+01:00",
-  "updated_at": "2026-10-31T06:44:00+01:00",
-  "finished_at": "2026-10-31T06:44:00+01:00",
-  "last_started_at": "2026-10-31T06:42:55+01:00",
+  "run_id": "tr-manual-20261031T065555+0100",
+  "previous_run_id": "tr-manual-20261031T064100+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T06:55:55+01:00",
+  "updated_at": "2026-10-31T06:55:55+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T06:55:55+01:00",
   "last_completed_at": "2026-10-31T06:44:00+01:00",
-  "current": 2,
-  "total": 2,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "592bc75eb909",
-    "7f69649ad704"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 2/2: GP de Malasia y Poland quedaron explained y sincronizadas en requests y telegram-manual-explained; cola final count=0 tras relectura de main. Sin ImageGen en la pasada editorial ni publicación en X.",
+  "summary": "Pasada manual iniciada; cola autoritativa leída en main con 0 pendientes. Se hará relectura final antes de cerrar 0/0.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T06:41:00+01:00",
+      "at": "2026-10-31T06:55:55+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual: cola autoritativa releída en main con 2 pendientes preparing. Se procesan por requested_at y se valida ID+revisión JIT antes de cada persistencia."
-    },
-    {
-      "at": "2026-10-31T06:42:00+01:00",
-      "phase": "investigating",
-      "trend_id": "592bc75eb909",
-      "title": "GP de Malasia",
-      "message": "Detonante actual contrastado con fuentes de MotoGP: clasificación de Sepang y pole de Álex Márquez antes del sprint."
-    },
-    {
-      "at": "2026-10-31T06:42:20+01:00",
-      "phase": "persisting",
-      "trend_id": "592bc75eb909",
-      "title": "GP de Malasia",
-      "message": "Revisión 0 validada JIT y enviada al aplicador editorial con texto factual, hashtags, remate y fuentes."
-    },
-    {
-      "at": "2026-10-31T06:42:30+01:00",
-      "phase": "investigating",
-      "trend_id": "7f69649ad704",
-      "title": "Poland",
-      "message": "Detonante actual contrastado: crisis del Tribunal Constitucional polaco, protestas en Varsovia y regreso de Karol Nawrocki."
-    },
-    {
-      "at": "2026-10-31T06:42:40+01:00",
-      "phase": "persisting",
-      "trend_id": "7f69649ad704",
-      "title": "Poland",
-      "message": "Revisión 0 validada JIT y enviada al aplicador editorial con texto factual, remate político neutral y fuentes."
-    },
-    {
-      "at": "2026-10-31T06:42:55+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Aplicador verificado: ambas revisiones figuran como explained en requests y telegram-manual-explained; editorial-queue.json queda count=0."
-    },
-    {
-      "at": "2026-10-31T06:44:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completada 2/2. Sin ImageGen en la pasada editorial y sin publicación en X."
+      "message": "Inicio de pasada manual: editorial-queue.json autoritativo en main está vacío. Se revalidará main antes del cierre y no se generarán imágenes ni se publicará en X."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "592bc75eb909",
-      "revision": 0,
-      "title": "GP de Malasia",
-      "outcome": "explained"
-    },
-    {
-      "id": "7f69649ad704",
-      "revision": 0,
-      "title": "Poland",
-      "outcome": "explained"
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-manual-20261031T064100+0100",
     "status": "DONE",
