@@ -19,6 +19,10 @@ on:
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
+  workflow_run:
+    workflows: ['Aplicar resultados editoriales TTendencias', 'TTendencias consolidar editorial directo']
+    types: [completed]
+    branches: [main]
 permissions:
   contents: write
   actions: write
@@ -27,6 +31,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   group:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
