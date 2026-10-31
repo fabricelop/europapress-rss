@@ -6,40 +6,42 @@
   "run_id": "tr-1793487168174-manual",
   "previous_run_id": "tr-1793486988618-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-31T23:53:00+01:00",
-  "updated_at": "2026-10-31T23:53:00+01:00",
+  "updated_at": "2026-10-31T23:55:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 9,
+  "total": 10,
   "trend_id": "7b18f8c98739",
   "title": "#RayoCelta",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
+    "listas-auto-7466c03e6699a628e806",
+    "red-review-25411a66d89216173e45",
+    "red-review-606fb222b19ec0e0491a",
     "7b18f8c98739",
     "9df0b07ec47e",
     "5261970c7a60",
     "b3b69dd6ae50",
     "6ced0406ed4d",
     "c5a531d85db4",
-    "5e0d9fdf2cb2",
-    "red-review-25411a66d89216173e45",
-    "red-review-606fb222b19ec0e0491a"
+    "5e0d9fdf2cb2"
   ],
   "remaining_active_ids": [
+    "listas-auto-7466c03e6699a628e806",
+    "red-review-25411a66d89216173e45",
+    "red-review-606fb222b19ec0e0491a",
     "7b18f8c98739",
     "9df0b07ec47e",
     "5261970c7a60",
     "b3b69dd6ae50",
     "6ced0406ed4d",
     "c5a531d85db4",
-    "5e0d9fdf2cb2",
-    "red-review-25411a66d89216173e45",
-    "red-review-606fb222b19ec0e0491a"
+    "5e0d9fdf2cb2"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual en curso: 9 trabajos preparing/update vigentes en main al inicio (7 explicaciones y 2 revisiones de novedades). Revalidación JIT por id+revision; sin ImageGen ni publicación.",
+  "summary": "Pasada en curso: 7 investigaciones nuevas llegaron durante la ejecución, además de agrupación y 2 revisiones. Total activo observado: 10. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -285,6 +287,13 @@
       "trend_id": "7b18f8c98739",
       "title": "#RayoCelta",
       "message": "Inicio tr-1793487168174-manual: 9 trabajos preparing/update en main. Revalidando id+revision y decisiones terminales antes de investigar; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T23:55:00+01:00",
+      "phase": "investigating",
+      "trend_id": "7b18f8c98739",
+      "title": "#RayoCelta",
+      "message": "Entraron 7 investigaciones nuevas durante la pasada. Se incorporan a la misma ejecución; total activo observado 10. Investigación actual y revalidación JIT en curso; sin ImageGen."
     }
   ],
   "final_outcomes": [
