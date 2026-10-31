@@ -6,28 +6,26 @@
   "run_id": "tr-1793484740569-manual",
   "previous_run_id": "tr-chat-20261031T2311+0100",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "drafting",
   "started_at": "2026-10-31T23:12:20+01:00",
-  "updated_at": "2026-10-31T23:12:20+01:00",
+  "updated_at": "2026-10-31T23:15:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
-  "trend_id": "listas-auto-6e922bcc692d7eb03194",
-  "title": "Agrupación automática de Listas",
+  "trend_id": "red-review-ba61767e4f3587475df3",
+  "title": "Revisar novedades: Toledo",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-6e922bcc692d7eb03194",
     "red-review-ba61767e4f3587475df3",
     "red-review-e1e22bc4e0a17ee83c48"
   ],
   "remaining_active_ids": [
-    "listas-auto-6e922bcc692d7eb03194",
     "red-review-ba61767e4f3587475df3",
     "red-review-e1e22bc4e0a17ee83c48"
   ],
   "remaining_problematic_ids": [],
-  "summary": "3 trabajos vigentes: agrupación automática de Listas y revisiones de novedades Toledo/Renfe. Sin ImageGen.",
+  "summary": "Agrupación inicial quedó obsoleta antes de tratarla. Toledo: novedad material verificada; preparando maintenance-outbox. Renfe queda pendiente.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -184,6 +182,20 @@
       "trend_id": "listas-auto-6e922bcc692d7eb03194",
       "title": "Agrupación automática de Listas",
       "message": "Inicio tr-1793484740569-manual: 3 trabajos preparing/update vigentes en main. Procesando agrupación y después revisiones Toledo/Renfe, con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T23:15:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-ba61767e4f3587475df3",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisando novedades: fuentes de hoy documentan fallos del LZB/comunicaciones y la investigación de los protocolos de reanudación de marcha."
+    },
+    {
+      "at": "2026-10-31T23:15:00+01:00",
+      "phase": "drafting",
+      "trend_id": "red-review-ba61767e4f3587475df3",
+      "title": "Revisar novedades: Toledo",
+      "message": "Actualización material redactada en continuidad, sin remate por tragedia; revalidando id+revision antes de persistir."
     }
   ],
   "final_outcomes": [],
