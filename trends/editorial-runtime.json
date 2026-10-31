@@ -3,80 +3,44 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793433487804-manual",
+  "run_id": "tr-1793435232434-manual",
   "previous_run_id": "tr-1793433487804-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T09:20:00+01:00",
-  "updated_at": "2026-10-31T09:25:00+01:00",
-  "finished_at": "2026-10-31T09:25:00+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T09:28:00+01:00",
+  "updated_at": "2026-10-31T09:28:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "2d250d20786e"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-e0a55a00211ce533e0af",
+    "red-review-2d2f2ec3a98ec29aa471",
+    "red-review-e18f2eaa13bca806e2e2"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-e0a55a00211ce533e0af",
+    "red-review-2d2f2ec3a98ec29aa471",
+    "red-review-e18f2eaa13bca806e2e2"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Completada 1/1: #AgropopularTodosLosSantos (rev. 0) explicada y persistida; cola final 0 y sin reelaboraciones pendientes. Sin ImageGen ni publicaciones.",
+  "summary": "Pasada editorial iniciada: 3 trabajos especiales vigentes (1 agrupación automática y 2 revisiones de novedades). Sin ImageGen ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T09:20:00+01:00",
+      "at": "2026-10-31T09:28:00+01:00",
       "phase": "preparing",
-      "trend_id": "2d250d20786e",
-      "title": "#AgropopularTodosLosSantos",
-      "message": "Revalidada cola main: ID 2d250d20786e revisión 0 sigue preparing en puesto 3. Se inicia investigación; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T09:21:00+01:00",
-      "phase": "investigating",
-      "trend_id": "2d250d20786e",
-      "title": "#AgropopularTodosLosSantos",
-      "message": "Dos búsquedas independientes y fuentes de programación confirman Agropopular los sábados 08:30–10:00; la etiqueta entró en Top 10 durante la emisión. Se redacta causa directa."
-    },
-    {
-      "at": "2026-10-31T09:22:45+01:00",
-      "phase": "persisting",
-      "trend_id": "2d250d20786e",
-      "title": "#AgropopularTodosLosSantos",
-      "message": "Outbox TTENDENCIAS_CHAT_OUTBOX_V1 enviado. Workflow apply-ttendencias-chat-outbox en curso; aún no se considera cerrado."
-    },
-    {
-      "at": "2026-10-31T09:24:30+01:00",
-      "phase": "verifying",
-      "trend_id": "2d250d20786e",
-      "title": "#AgropopularTodosLosSantos",
-      "message": "Verificada ficha explained rev. 0 con texto y remate. El aplicador actualiza requests.json y telegram-manual-explained.json antes de regenerar editorial-queue.json; la cola autoritativa quedó a 0."
-    },
-    {
-      "at": "2026-10-31T09:25:00+01:00",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Releída main: 0 preparing/update y 0 reelaboraciones pendientes. Cierre 1/1 sin ImageGen."
+      "message": "Releída main: 3 trabajos preparing vigentes. Orden: agrupación automática; revisión #FelizSábado; revisión Toledo. Sin ImageGen."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "2d250d20786e",
-      "revision": 0,
-      "name": "#AgropopularTodosLosSantos",
-      "outcome": "explained",
-      "explained_at": "2026-10-31T09:22:00+01:00"
-    }
-  ],
-  "reconciled_previous_run": {
-    "run_id": "tr-1793433005570-manual",
-    "status": "DONE",
-    "finished_at": "2026-10-31T09:06:00+01:00",
-    "summary": "Completada 10/10: seis explicaciones, una agrupación final de Sepang y dos revisiones obsoletas tras revalidación. Cola y reexplicaciones pendientes: 0. Sin ImageGen."
-  },
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793433487804-manual",
     "status": "DONE",
