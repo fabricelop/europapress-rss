@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T08:45:33.783973+00:00",
+  "updated_at": "2026-10-31T08:48:13.833378+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T08:29:46.744101+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T08:48:13.833378+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -4005,7 +4005,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T08:29:46.744101+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T08:48:13.833378+00:00"
     },
     {
       "id": "22601009b977",
@@ -8728,7 +8728,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T08:29:46.744101+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T08:48:13.833378+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -57311,19 +57311,29 @@
       "image_choice": null,
       "image_status": "none",
       "image_pending": false,
-      "editorial_grouping_state": "pending"
+      "editorial_grouping_state": "cleared",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-021a97e2e386c40f",
+      "covered_by_name": "Sprint de MotoGP en Sepang",
+      "covered_by_revision": 0,
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-31T08:48:13.833378+00:00",
+      "coverage_reason": "already_published_same_event",
+      "grouping_request_id": "listas-auto-7023d998e92fe485eae5",
+      "editorial_grouping_fingerprint": "9a07f85083e29a114ceea228e94776d2b6aa62ac8113306450608c02e749ad32",
+      "editorial_grouping_checked_at": "2026-10-31T08:48:13.833378+00:00"
     },
     {
       "id": "listas-auto-7023d998e92fe485eae5",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T08:45:33.783973+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -58916,7 +58926,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T08:48:13.833378+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "5cd14ca59e716a74ffa75e748db4971bae92c55b3a81a557fb968593a24b2377"
     },
     {
       "id": "red-review-2d47f02baa7db3c0fdca",
