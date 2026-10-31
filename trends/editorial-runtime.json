@@ -3,73 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793481056571-manual",
-  "previous_run_id": "tr-1793481000000-manual",
+  "run_id": "tr-1793481355073-manual",
+  "previous_run_id": "tr-1793481056571-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-10-31T22:10:56.571000+01:00",
-  "updated_at": "2026-10-31T22:16:16.384+01:00",
+  "started_at": "2026-10-31T22:17:00+01:00",
+  "updated_at": "2026-10-31T22:17:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 4,
-  "trend_id": "listas-auto-94d0604310bb7746f812",
-  "title": "Agrupación automática de Listas",
+  "current": 0,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "4eefe2099a0f"
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-94d0604310bb7746f812",
+    "red-review-80a147a2f5bf6e439909",
+    "red-review-275356d05ce6c56c3340"
   ],
-  "remaining_ids": [],
   "remaining_active_ids": [
     "listas-auto-94d0604310bb7746f812",
     "red-review-80a147a2f5bf6e439909",
     "red-review-275356d05ce6c56c3340"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Mónaco r2 cerrado y verificado; llegaron tres trabajos nuevos durante la pasada. Procesando agrupación automática antes de las revisiones Toledo/Renfe.",
+  "summary": "Cola autoritativa releída: 3 trabajos preparing/update vigentes (1 agrupación automática y 2 revisiones rojas).",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T22:10:00+01:00",
+      "at": "2026-10-31T22:17:00+01:00",
       "phase": "preparing",
-      "message": "Cola autoritativa leída en main; lectura inicial 0/0. Verificando pendientes y estado durable."
-    },
-    {
-      "at": "2026-10-31T22:11:10+01:00",
-      "phase": "investigating",
-      "message": "Entró Mónaco r2 durante la pasada. Investigación nueva desde cero; pista editorial tratada como no verificada."
-    },
-    {
-      "at": "2026-10-31T22:13:00+01:00",
-      "phase": "persisting",
-      "message": "Mónaco r2 revalidado JIT y persistido como explained con detonante verificado: salida de la lista gris del GAFI."
-    },
-    {
-      "at": "2026-10-31T22:15:10+01:00",
-      "phase": "verifying",
-      "message": "Persistencia comprobada en requests.json y telegram-manual-explained.json; cola final 0 y sin rewrite_pending."
-    },
-    {
-      "at": "2026-10-31T22:16:00+01:00",
-      "phase": "closing",
-      "message": "Cierre 1/1 verificado. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-10-31T22:16:16.384+01:00",
-      "phase": "preparing",
-      "message": "Relectura de main detectó 3 trabajos nuevos: group_listas + revisiones Toledo y Renfe. Se reabre la pasada."
+      "message": "Inicio de pasada real. Cola main: 3 pendientes; se procesa primero group_listas y después Toledo/Renfe. Sin ImageGen."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "4eefe2099a0f",
-      "revision": 2,
-      "name": "Mónaco",
-      "outcome": "explained",
-      "explained_at": "2026-10-31T22:13:00+01:00"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T22:10:56.571000+01:00",
   "last_completed_at": "2026-10-31T22:16:00+01:00",
