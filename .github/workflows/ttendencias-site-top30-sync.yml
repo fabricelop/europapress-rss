@@ -1,0 +1,68 @@
+name: TTendencias Site - Top30 parity with iPhone
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trends/recent.json'
+      - 'trends/telegram-manual-explained.json'
+      - 'trends/explained.json'
+      - 'trends/requests.json'
+      - 'trends/site-ai-images.json'
+      - 'trends/export_site_top30.py'
+      - 'tests/test_site_top30_export.py'
+      - '.github/workflows/ttendencias-site-top30-sync.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-site-top30-export
+  cancel-in-progress: true
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Test mapping against TTActualidad iOS behavior
+        run: python3 -m unittest discover -s tests -p 'test_site_top30_export.py' -v
+      - name: Export from latest main and publish small public feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # Do not export the stale event SHA if editorial files changed while
+          # the workflow was queued.
+          for attempt in 1 2 3 4; do
+            git fetch --quiet origin main
+            git reset --hard origin/main
+            python3 trends/export_site_top30.py
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("trends/site-top30-current.json")
+          feed = json.loads(path.read_text(encoding="utf-8"))
+          assert feed["schema_version"] == 1
+          assert 1 <= feed["count"] <= 30
+          assert path.stat().st_size < 250_000, "Public Site feed should be small"
+          PY
+            git add trends/site-top30-current.json
+            if git diff --cached --quiet; then
+              echo 'No changed public Top30 data'; exit 0
+            fi
+            git commit -m 'TTendencias Site: refresh Top30 editorial feed'
+            if git push origin HEAD:main; then
+              echo 'Published current Top30 feed to main'; exit 0
+            fi
+            echo "Concurrent push detected, retry $attempt"
+            sleep "$attempt"
+          done
+          echo 'Failed to publish Top30 feed after four retries' >&2
+          exit 1
