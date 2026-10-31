@@ -29203,9 +29203,9 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
@@ -29217,9 +29217,25 @@
           "revision": 0
         }
       ],
-      "disable_ai_image": false
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://fotografias.atresmedia.com/clipping/cmsimages02/2026/10/30/3344E133-EE8D-494C-8CD8-B8B77AAF1957/destacados-programa-sabado-31-octubre-domingo-1-noviembre_69.jpg?crop=8256,4644,x0,y0&width=1280&height=720",
+        "source": "www.atresmedia.com",
+        "source_url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programa-sabado-31-octubre-domingo-1-noviembre_202610306ae49c4a004b78127aba28c7.html",
+        "alt": "Imagen de archivo relacionada con #laSextaXplica",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://fotografias.atresmedia.com/clipping/cmsimages02/2026/10/30/3344E133-EE8D-494C-8CD8-B8B77AAF1957/destacados-programa-sabado-31-octubre-domingo-1-noviembre_69.jpg?crop=8256,4644,x0,y0&width=1280&height=720",
+        "source": "www.atresmedia.com",
+        "source_url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programa-sabado-31-octubre-domingo-1-noviembre_202610306ae49c4a004b78127aba28c7.html",
+        "alt": "Imagen de archivo relacionada con #laSextaXplica",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-31T23:13:17+01:00",
+  "updated_at": "2026-10-31T22:13:25.318538Z",
   "count": 487
 }
