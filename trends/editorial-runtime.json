@@ -8,12 +8,12 @@
   "status": "RUNNING",
   "phase": "drafting",
   "started_at": "2026-10-31T23:12:20+01:00",
-  "updated_at": "2026-10-31T23:15:00+01:00",
+  "updated_at": "2026-10-31T23:16:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
-  "trend_id": "red-review-ba61767e4f3587475df3",
-  "title": "Revisar novedades: Toledo",
+  "trend_id": "red-review-e1e22bc4e0a17ee83c48",
+  "title": "Revisar novedades: Renfe",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -25,7 +25,7 @@
     "red-review-e1e22bc4e0a17ee83c48"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Agrupación inicial quedó obsoleta antes de tratarla. Toledo: novedad material verificada; preparando maintenance-outbox. Renfe queda pendiente.",
+  "summary": "Toledo enviado a maintenance-outbox; Renfe tiene novedad material verificada. Nuevo job de agrupación detectado y queda detrás de las revisiones más antiguas.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -196,6 +196,20 @@
       "trend_id": "red-review-ba61767e4f3587475df3",
       "title": "Revisar novedades: Toledo",
       "message": "Actualización material redactada en continuidad, sin remate por tragedia; revalidando id+revision antes de persistir."
+    },
+    {
+      "at": "2026-10-31T23:16:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-e1e22bc4e0a17ee83c48",
+      "title": "Revisar novedades: Renfe",
+      "message": "Revisando novedades: autorización de marcha del AVE sin limitación tras caída del LZB y con Iryo detenido por delante."
+    },
+    {
+      "at": "2026-10-31T23:16:00+01:00",
+      "phase": "drafting",
+      "trend_id": "red-review-e1e22bc4e0a17ee83c48",
+      "title": "Revisar novedades: Renfe",
+      "message": "Actualización material redactada en continuidad, sin remate por tragedia; revalidación JIT completada."
     }
   ],
   "final_outcomes": [],
