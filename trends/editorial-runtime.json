@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T2311+0100",
   "previous_run_id": "tr-1793484331290-manual",
-  "status": "waiting",
-  "phase": "preparing",
+  "status": "RUNNING",
+  "phase": "persisting",
   "started_at": "2026-10-31T23:11:00+01:00",
-  "updated_at": "2026-10-31T23:11:26+01:00",
+  "updated_at": "2026-10-31T23:14:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
-  "trend_id": "0e9ddd785dc2",
-  "title": "Grimaldo",
+  "total": 1,
+  "trend_id": "348f94331bf0",
+  "title": "#laSextaXplica",
   "queue_complete": false,
   "processed_ids": [
     "0e9ddd785dc2",
@@ -26,7 +26,7 @@
     "348f94331bf0"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Inicio: 3 reelaboraciones manuales vigentes tras revalidación JIT. Investigación desde cero, sin ImageGen ni publicación.",
+  "summary": "1 trabajo vigente: #laSextaXplica. Causa actual verificada (especial sobre Urda); persistiendo texto factual sin remate por sensibilidad.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -155,6 +155,27 @@
       "trend_id": "0e9ddd785dc2",
       "title": "Grimaldo",
       "message": "Inicio tr-chat-20261031T2311+0100: 3 trabajos preparing vigentes tras relectura de main. Revalidación JIT antes de cada investigación; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T23:14:00+01:00",
+      "phase": "investigating",
+      "trend_id": "348f94331bf0",
+      "title": "#laSextaXplica",
+      "message": "Detonante verificado: la emisión de este sábado de laSexta Xplica está dedicada esencialmente al accidente ferroviario de Urda; emisión vigente en parrilla."
+    },
+    {
+      "at": "2026-10-31T23:14:00+01:00",
+      "phase": "drafting",
+      "trend_id": "348f94331bf0",
+      "title": "#laSextaXplica",
+      "message": "Texto factual redactado desde cero. Sin remate humorístico por tratarse de una tragedia; sin ImageGen."
+    },
+    {
+      "at": "2026-10-31T23:14:00+01:00",
+      "phase": "persisting",
+      "trend_id": "348f94331bf0",
+      "title": "#laSextaXplica",
+      "message": "Revisión 0 revalidada JIT en main; enviando resultado al aplicador editorial."
     }
   ],
   "final_outcomes": [],
