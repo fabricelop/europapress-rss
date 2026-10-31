@@ -26,6 +26,9 @@ struct EditorialActions: View {
     @State private var intent = "deleted"
     @State private var outcome = ""
     @State private var showHints = false
+    @State private var showTTProjectLink = false
+    @State private var ttProjectLinkInput = UserDefaults.standard.string(
+        forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
     @State private var confirmTrendToNews = false
     @Environment(\.openURL) private var openURL
 
@@ -175,6 +178,25 @@ struct EditorialActions: View {
                     if let url = parts?.url { openURL(url) }
                 }
             }
+            }
+            if trend != nil {
+                HStack(spacing: 7) {
+                    quickButton("Copiar imagen Site", "square.on.square") {
+                        copyTrendSiteImagePrompt()
+                    }
+                    quickButton("Abrir chat TT", "plus.bubble") {
+                        openTTProject()
+                    }
+                    .alert("Enlace del proyecto TT", isPresented: $showTTProjectLink) {
+                        TextField("Enlace de PROYECTOS APP", text: $ttProjectLinkInput)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                        Button("Guardar y abrir") { saveAndOpenTTProject() }
+                        Button("Cancelar", role: .cancel) {}
+                    } message: {
+                        Text("Pega una vez el enlace de tu proyecto de ChatGPT (no el del Site ni un chat compartido). El botón abrirá ese proyecto para crear allí un chat nuevo.")
+                    }
+                }
             }
             if trend != nil {
                 quickButton("Enviar a TTiTTulares", "newspaper") {
@@ -418,6 +440,101 @@ struct EditorialActions: View {
             "ENTREGA ÚNICAMENTE UNA IMAGEN ILUSTRADA LIMPIA, SIN TEXTO Y SIN BANDA INFERIOR. No generar composición con fotografía y texto debajo."
         ].joined(separator: "\n\n")
     }
+    // Separate from Copiar GAG: the user pastes this complete instruction in
+    // a normal ChatGPT project chat; only the existing Sites tools may attach it.
+    // Neither this button nor opening ChatGPT creates an image or a PC job.
+    private func copyTrendSiteImagePrompt() {
+        guard let displayed = trend else { return }
+        let target: TrendItem
+        if displayed.isCovered {
+            guard let leader = store.snapshot.trendListas.first(where: {
+                $0.editorialID == displayed.coveredByID && !$0.isCovered
+            }) else {
+                outcome = "La explicación conjunta no está disponible. Actualiza Listas antes de copiar."
+                return
+            }
+            target = leader
+        } else {
+            target = displayed
+        }
+        let targetID = target.siteImageEditorialID
+        let explanation = target.explanation
+        let explainedAt = target.siteImageExplainedAt
+        let targetRevision = target.siteImageRevision
+        guard targetID.range(of: "^[A-Za-z0-9_-]{3,160}$",
+                             options: .regularExpression) != nil,
+              !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !explainedAt.isEmpty, targetRevision >= 0,
+              target.status != "EN ELABORACIÓN" else {
+            outcome = "Falta identidad, fecha o explicación exacta. No se puede crear un prompt seguro."
+            return
+        }
+        let lower = (target.name + " " + explanation).folding(
+            options: [.caseInsensitive, .diacriticInsensitive],
+            locale: Locale(identifier: "es_ES"))
+        let sensitive = [
+            "victim", "fallec", "muert", "murio", "traged", "accident",
+            "agresion", "violacion", "asesinat", "atentad", "desaparecid",
+            "herid", "catastrof", "suicid", "dana", "funeral", "rescate"
+        ].contains(where: { lower.contains($0) })
+        let visual = sensitive
+            ? "Ilustración periodística sobria y respetuosa, sin humor ni caricaturas, sin escenas gráficas, víctimas inventadas o representación especulativa."
+            : "GAG editorial ingenioso e inmediato: una sola metáfora visual del hecho o del remate, composición limpia y estilo ilustrado de alta calidad. Más gag, menos barroquismo."
+        let closer = explanation.components(separatedBy: "\n")
+            .last(where: { $0.trimmingCharacters(in: .whitespaces).hasPrefix("🌶") }) ?? ""
+        let prompt = [
+            "TTENDENCIAS_SITE_IMAGE_V3 — GENERAR, ADJUNTAR Y VERIFICAR EN UNA SOLA EJECUCIÓN",
+            "Ejecuta en Chat normal dentro del proyecto de ChatGPT PROYECTOS APP. Sin Work, PC, API de pago ni cambios en la web o scripts del PC.",
+            "SITE EXISTENTE: https://ttactualidad-tendencias.rainyraven22.chatgpt.site/\nproject_id: appgprj_6ae4dcf7d7488191a574e5b649e67370",
+            "IDENTIDAD EDITORIAL DE LA EXPLICACIÓN (NO IDENTIFICAR POR NOMBRE NI PUESTO):\ntarget_id: \(targetID)\nname: \(target.name)\nrevision: \(targetRevision)\nscope: editorial\nexplained_at: \(explainedAt)",
+            "EXPLICACIÓN EXACTA — NO REESCRIBIR:\n\(explanation)",
+            "REMATE EXACTO, SI EXISTE (SOLO CONTEXTO):\n\(closer.isEmpty ? "No hay remate separado." : closer)",
+            "DIRECCIÓN VISUAL: \(visual) Composición horizontal 16:9, a sangre. SOLO IMAGEN, SIN NINGÚN TEXTO: no dibujar cifras, letras, títulos, nombres, hashtags, bocadillos, logotipos, tarjetas, franjas ni guindillas. No inventar hechos, daños o declaraciones.",
+            "1. Invoca mcp__TTendencias___TTActualidad__inspect_top30_images. Comprueba que la explicación compartida, target_id, revisión, texto LITERAL y explained_at siguen siendo EXACTAMENTE los de arriba. Si cambian, detente; NO regeneres con datos antiguos. Si no está en el Top 30, verifica en los datos originales y con verify_trend_image; si no puedes confirmar su identidad vigente, detente.",
+            "2. Comprueba con mcp__TTendencias___TTActualidad__verify_trend_image que no hay imagen IA válida. Foto de archivo no cuenta. Revisa si el PC mantiene un trabajo activo, LAUNCHED sin entrega verificable o incierto: en tal caso detente para no duplicar. Si hay un original inequívocamente terminado, reutilízalo.",
+            "3. Si sigue siendo elegible, utiliza ChatGPT Images AHORA para generar UNA SOLA imagen siguiendo el contexto y la dirección visual indicados. Conserva el archivo PNG ORIGINAL y su identificador real. La generación es solo un paso intermedio: NO TERMINES AL MOSTRAR LA IMAGEN.",
+            "4. A continuación, en este MISMO CHAT y SIN REGENERAR, invoca mcp__TTendencias___TTActualidad__attach_trend_image con file igual al archivo PNG ORIGINAL recién generado y context con los siete campos exactos project_id, target_id, name, revision, scope, explanation y explained_at. Revalida identidad antes de adjuntar. No uses rutas inventadas, imágenes parecidas ni identificaciones por nombre/puesto.",
+            "5. Inmediatamente invoca mcp__TTendencias___TTActualidad__verify_trend_image con el mismo context. Solo declara ÉXITO cuando devuelva status: verified, URL del PNG persistido y SHA-256, y comprueba la ficha pública si el acceso lo permite. El mecanismo existente no requiere republicar ni crear otro Site.",
+            "6. Si falla la incorporación, conserva el original y comunica el error exacto para reintentar ÚNICAMENTE attach_trend_image y verify_trend_image, sin regeneración. Procesa una sola tendencia y termina. No toques listeners, scripts ni imagen automática del PC."
+        ].joined(separator: "\n\n")
+        copy(prompt)
+        outcome = "Prompt Site copiado para ID " + targetID + ". Abre un chat del proyecto TT y pégalo."
+    }
+
+    // ChatGPT does not document an external URL that starts a new conversation
+    // inside an arbitrary private project. Save the user's actual project URL
+    // and open it; then New chat in that project retains the correct context.
+    private func validatedTTProjectURL(_ value: String) -> URL? {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let url = URL(string: trimmed),
+              url.scheme == "https", url.host?.lowercased() == "chatgpt.com",
+              url.path.hasPrefix("/g/g-p-") || url.path.hasPrefix("/project/") else {
+            return nil
+        }
+        return url
+    }
+
+    private func openTTProject() {
+        if let saved = UserDefaults.standard.string(forKey: "TTActualidad.chatgpt.projectTT.url"),
+           let url = validatedTTProjectURL(saved) {
+            openURL(url)
+            outcome = "Proyecto TT abierto. Pulsa Nuevo chat dentro del proyecto y pega el prompt."
+        } else {
+            showTTProjectLink = true
+        }
+    }
+
+    private func saveAndOpenTTProject() {
+        guard let url = validatedTTProjectURL(ttProjectLinkInput) else {
+            outcome = "Introduce un enlace HTTPS válido del proyecto de ChatGPT (no del Site)."
+            return
+        }
+        UserDefaults.standard.set(url.absoluteString,
+                                  forKey: "TTActualidad.chatgpt.projectTT.url")
+        openURL(url)
+        outcome = "Enlace del proyecto TT guardado. Crea un chat allí y pega el prompt."
+    }
+
     /// Manual cloud-only fallback when Windows editorial listeners are offline.
     /// The prompt is a REQUEST, not a GitHub dispatch or a claim of completion.
     /// A fresh GitHub read and the official outbox are mandatory for success.
