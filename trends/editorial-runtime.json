@@ -6,11 +6,11 @@
   "run_id": "tr-1793489438693-manual",
   "previous_run_id": "tr-1793489199351-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-01T00:30:38.693+01:00",
-  "updated_at": "2026-11-01T00:30:38.693+01:00",
+  "updated_at": "2026-11-01T00:33:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 1,
   "trend_id": "listas-auto-48bd55639b5efb2accaa",
   "title": "Agrupación automática de Listas",
@@ -24,12 +24,12 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 0,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "remaining_active": 1,
@@ -395,6 +395,20 @@
       "trend_id": "listas-auto-48bd55639b5efb2accaa",
       "title": "Agrupación automática de Listas",
       "message": "Inicio tr-1793489438693-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:32:30+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-48bd55639b5efb2accaa",
+      "title": "Agrupación automática de Listas",
+      "message": "Comparación JIT del snapshot: Gordon r0 coincide exactamente con el Barça-Alavés 6-1 ya publicado; Alba/Gavi no se fuerzan por causalidad ambigua, Xabi Alonso aporta declaración posterior y Honda/Aston Martin contiene detalle material adicional."
+    },
+    {
+      "at": "2026-11-01T00:33:00+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-48bd55639b5efb2accaa",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado guardado en listas-grouping-outbox: 0 grupos nuevos y 1 covered_by_existing (Gordon → Barça-Alavés · goleada y Lamine). Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
@@ -424,5 +438,5 @@
     "note": "El único group_listas observado al inicio fue aplicado y verificado por la ejecución concurrente antes de la barrera JIT; cola final 0 y sin reexplicaciones pendientes."
   },
   "source": "chat",
-  "message": "Pasada editorial en curso: 1 agrupación automática pendiente; sin ImageGen ni publicación."
+  "message": "Resultado de agrupación persistido; verificando aplicación JIT en main."
 }
