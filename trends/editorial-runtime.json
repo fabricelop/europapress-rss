@@ -5,36 +5,41 @@
   "canonical": true,
   "run_id": "tr-1793467195741-manual",
   "previous_run_id": "tr-1793466842173-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T18:23:00+01:00",
-  "updated_at": "2026-10-31T18:23:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T18:27:00+01:00",
+  "finished_at": "2026-10-31T18:27:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "bf5ade33b5b4",
-  "title": "Brighton",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "bf5ade33b5b4"
   ],
-  "remaining_active_ids": [
-    "bf5ade33b5b4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Brighton r0 JIT validado e investigado; persistiendo explicación verificada 1/1.",
+  "summary": "1/1 resuelto por concurrencia: Brighton r0 ya había sido explicado y aplicado por tr-1793466842173-manual; agrupación posterior completada sin crear grupos. Relectura final de main: cola 0, sin preparing/update. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo explicación",
-  "final_outcomes": [],
+  "activity": "Cierre verificado",
+  "final_outcomes": [
+    {
+      "id": "bf5ade33b5b4",
+      "revision": 0,
+      "outcome": "concurrent_resolved",
+      "detail": "Brighton ya estaba explained al validar el cierre."
+    }
+  ],
   "last_run": {
-    "run_id": "tr-chat-20261031T1810+0100",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-10-31T17:10:00Z",
-    "finished_at": "2026-10-31T17:12:30Z",
-    "attempted": 0,
+    "run_id": "tr-1793467195741-manual",
+    "status": "DONE",
+    "started_at": "2026-10-31T18:23:00+01:00",
+    "finished_at": "2026-10-31T18:27:00+01:00",
+    "attempted": 1,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
@@ -42,13 +47,13 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "concurrent_resolved": 0,
+    "concurrent_resolved": 1,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "0/0 tras refresco manual persistido a las 18:11:20+01:00 y relectura JIT de main: cola autoritativa final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación. Incidencia separada: health-status previo mantiene 125 estados históricos inválidos en request_queue."
+    "summary": "Brighton resuelto por la ejecución concurrente anterior; cola final 0 tras aplicar agrupación sin grupos."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T18:21:27+01:00",
-  "last_completed_at": "2026-10-31T18:21:27+01:00"
+  "last_completed_at": "2026-10-31T18:27:00+01:00"
 }
