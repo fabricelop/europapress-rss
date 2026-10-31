@@ -5,29 +5,25 @@
   "canonical": true,
   "run_id": "tr-1793440808230-manual",
   "previous_run_id": "tr-20261031T105500-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T11:00:08.230+01:00",
-  "updated_at": "2026-10-31T11:01:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T11:04:15+01:00",
+  "finished_at": "2026-10-31T11:04:15+01:00",
+  "current": 3,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-9c671cb8f6b82a219761",
     "red-review-aa267e2c0713fcba29c4",
     "red-review-19fd58865c1cae4eff9d"
   ],
-  "remaining_active_ids": [
-    "listas-auto-9c671cb8f6b82a219761",
-    "red-review-aa267e2c0713fcba29c4",
-    "red-review-19fd58865c1cae4eff9d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual en curso 0/3. Cola autoritativa releída; agrupación automática y dos revisiones rojas vigentes. Sin ImageGen ni publicación.",
+  "summary": "Pasada manual completada 3/3. Agrupación automática sin coincidencias; #DeViernes actualizado por episodio nuevo; #FelizSábado cerrado como revisión obsoleta al salir del Top 30. Cola final 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -136,19 +132,73 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio tr-1793440808230-manual: contrato y cola autoritativa releídos en main; 3 trabajos activos. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T11:02:00+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-9c671cb8f6b82a219761",
+      "title": "Agrupación automática de Listas",
+      "message": "JIT confirmado. Los seis candidatos no comparten acontecimiento inequívoco y ninguno debe quedar cubierto por una publicación previa: groups=[]; covered_by_existing=[]."
+    },
+    {
+      "at": "2026-10-31T11:03:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-aa267e2c0713fcba29c4",
+      "title": "#DeViernes",
+      "message": "JIT confirmado y episodio nuevo verificado. Se aplicó una actualización distinta por el homenaje del programa a Raúl Triguero; sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-10-31T11:03:30+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-19fd58865c1cae4eff9d",
+      "title": "#FelizSábado",
+      "message": "JIT confirmado. La etiqueta ya no figuraba en el Top 30 vigente; la revisión se cerró como stale sin reescribir la ficha antigua."
+    },
+    {
+      "at": "2026-10-31T11:04:15+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: editorial-queue.json releído en main con count=0 y sin preparing/update/rewrite_pending. Cierre 3/3; sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "listas-auto-9c671cb8f6b82a219761",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "applied": true
+    },
+    {
+      "id": "red-review-aa267e2c0713fcba29c4",
+      "revision": 0,
+      "name": "#DeViernes",
+      "outcome": "updated",
+      "created_id": "trend-update-57bbd24f139ebd80a7bc",
+      "applied": true
+    },
+    {
+      "id": "red-review-19fd58865c1cae4eff9d",
+      "revision": 0,
+      "name": "#FelizSábado",
+      "outcome": "stale",
+      "changed": false,
+      "applied": true
+    }
+  ],
   "last_run": {
-    "run_id": "tr-20261031T105500-manual",
+    "run_id": "tr-1793440808230-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T11:04:00+01:00",
+    "finished_at": "2026-10-31T11:04:15+01:00",
     "attempted": 3,
-    "explained": 3,
-    "updates": 0,
-    "stale_reviews": 0,
+    "explained": 0,
+    "updates": 1,
+    "stale_reviews": 1,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
     "queue_remaining": 0,
