@@ -5,45 +5,74 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T151000+0100",
   "previous_run_id": "tr-chat-20261031T145500+0100",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T15:10:00+01:00",
-  "updated_at": "2026-10-31T15:13:10+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "2d32e2ddb886",
-  "title": "Lisandro",
+  "updated_at": "2026-10-31T15:17:00+01:00",
+  "finished_at": "2026-10-31T15:17:00+01:00",
+  "current": 4,
+  "total": 4,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "2d32e2ddb886"
+    "2d32e2ddb886",
+    "listas-auto-4b1bda6d35332a1b848b",
+    "red-review-ecf54234a55e2aa95969",
+    "red-review-c301aaf99f089eac6e49"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Investigando Lisandro (2d32e2ddb886 r0) tras nueva entrada en cola.",
+  "summary": "Pasada editorial completada 4/4: Lisandro r0 explicado; agrupación Chelsea-Manchester United + Lisandro aplicada; 2 revisiones de mantenimiento cerradas como stale por revalidación JIT. Cola final 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "2d32e2ddb886",
+      "revision": 0,
+      "type": "explain",
+      "outcome": "explained"
+    },
+    {
+      "id": "listas-auto-4b1bda6d35332a1b848b",
+      "revision": 0,
+      "type": "group_listas",
+      "outcome": "grouping_completed",
+      "created_id": "listas-joint-2ea3268fe326f4cf"
+    },
+    {
+      "id": "red-review-ecf54234a55e2aa95969",
+      "revision": 0,
+      "type": "review_red",
+      "outcome": "stale"
+    },
+    {
+      "id": "red-review-c301aaf99f089eac6e49",
+      "revision": 0,
+      "type": "review_red",
+      "outcome": "stale"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-chat-20261031T145500+0100",
+    "run_id": "tr-chat-20261031T151000+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T14:56:00+01:00",
-    "attempted": 0,
-    "explained": 0,
+    "finished_at": "2026-10-31T15:17:00+01:00",
+    "attempted": 4,
+    "explained": 1,
     "updates": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
+    "grouping_requests": 1,
+    "groups_created": 1,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "Cola final 0 y rewrite_pending 0 tras relectura de main; no había trabajo editorial pendiente."
+    "summary": "Lisandro explicado y agrupado con Chelsea-Manchester United; dos revisiones automáticas se cerraron stale al revalidar el estado vigente; cola final 0."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T15:13:10+01:00",
-  "last_completed_at": "2026-10-31T15:13:10+01:00"
+  "last_completed_at": "2026-10-31T15:17:00+01:00"
 }
