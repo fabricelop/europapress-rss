@@ -3,78 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793481355073-manual",
-  "previous_run_id": "tr-1793481056571-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T22:17:00+01:00",
-  "updated_at": "2026-10-31T22:19:00.830+01:00",
-  "finished_at": "2026-10-31T22:19:00.830+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-chat-20261031T2225+0100",
+  "previous_run_id": "tr-1793481355073-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T22:25:00+01:00",
+  "updated_at": "2026-10-31T22:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-94d0604310bb7746f812",
-    "red-review-80a147a2f5bf6e439909",
-    "red-review-275356d05ce6c56c3340"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada 3/3 verificada. Los trabajos fueron completados concurrentemente antes de la persistencia JIT de esta ejecución; se confirmaron sus resultados durables y se evitó duplicarlos. Cola final 0; rewrite_pending 0.",
+  "summary": "Pasada iniciada con cola compacta 0; verificando reexplicaciones, mantenimiento aplicado y relectura final de main antes de cerrar.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T22:17:00+01:00",
+      "at": "2026-10-31T22:25:00+01:00",
       "phase": "preparing",
-      "message": "Inicio: 3 trabajos preparing/update vigentes; group_listas primero y después Toledo/Renfe. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T22:17:20+01:00",
-      "phase": "investigating",
-      "message": "Verificando acontecimiento común: no hay coincidencia inequívoca entre los cinco candidatos; se evita agrupar por tema compartido."
-    },
-    {
-      "at": "2026-10-31T22:17:45+01:00",
-      "phase": "verifying",
-      "message": "Revalidación JIT: los 3 jobs ya habían sido retirados de la cola por otra pasada activa; no se duplican escrituras."
-    },
-    {
-      "at": "2026-10-31T22:19:00.830+01:00",
-      "phase": "closing",
-      "message": "Resultados durables verificados: grouping_completed sin grupos/coberturas; Toledo y Renfe review_completed con outcome stale. Cola final 0 y rewrite_pending 0."
+      "message": "Inicio: cola compacta 0. Verificando requests, rewrite_pending, decisiones y resultados de mantenimiento antes del cierre; sin ImageGen."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "listas-auto-94d0604310bb7746f812",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 0
-    },
-    {
-      "id": "red-review-80a147a2f5bf6e439909",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "review_completed",
-      "review_outcome": "stale"
-    },
-    {
-      "id": "red-review-275356d05ce6c56c3340",
-      "revision": 0,
-      "name": "Revisar novedades: Renfe",
-      "outcome": "review_completed",
-      "review_outcome": "stale"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T22:17:00+01:00",
+  "last_started_at": "2026-10-31T22:25:00+01:00",
   "last_completed_at": "2026-10-31T22:19:00.830+01:00",
   "last_run": {
     "run_id": "tr-1793481355073-manual",
