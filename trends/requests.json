@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T11:19:31.919098+00:00",
+  "updated_at": "2026-10-31T11:21:16.972485+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T11:19:31.919098+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T11:21:16.972485+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -4005,7 +4005,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T11:19:31.919098+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T11:21:16.972485+00:00"
     },
     {
       "id": "22601009b977",
@@ -8728,7 +8728,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T11:19:31.919098+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T11:21:16.972485+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -60908,7 +60908,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "10be4c0b60e3ffb9ef53ec3e6177c0606e94421c67272139117651d53ce2e213",
-      "editorial_grouping_checked_at": "2026-10-31T11:19:31.919098+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T11:21:16.972485+00:00"
     },
     {
       "id": "listas-auto-9c671cb8f6b82a219761",
@@ -62664,7 +62664,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "8dcbc134fc0c3b7fd8fbf6c313cf75e8ad12b24c5f987127d8e96dfbbac381af",
-      "editorial_grouping_checked_at": "2026-10-31T11:19:31.919098+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T11:21:16.972485+00:00"
     },
     {
       "id": "5ad4a23bc13e",
@@ -62708,7 +62708,9 @@
           "result": "EFE/Infobae confirma el mismo aviso: Mossos preparados y consecuencias judiciales para quienes acudan a saquear."
         }
       ],
-      "editorial_grouping_state": "pending"
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "281f2b4a6ac6a4f8f1a35bc861bc56a2fd91b3e6d0b0d4be13b38e398caf8767",
+      "editorial_grouping_checked_at": "2026-10-31T11:21:16.972485+00:00"
     },
     {
       "id": "listas-auto-72b00ebc0ca70f7bb2a5",
@@ -64424,12 +64426,12 @@
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T11:19:31.919098+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -66069,7 +66071,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T11:21:16.972485+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "c52f4f4fc81de9167161cab2c4b63351cde8aed48e35b48fb88f7f83b258a88f"
     }
   ],
   "count": 258
