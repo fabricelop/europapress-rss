@@ -5,47 +5,51 @@
   "canonical": true,
   "run_id": "tr-1793472600422-manual",
   "previous_run_id": "tr-1793472476275-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T19:50:00.422+01:00",
-  "updated_at": "2026-10-31T19:52:00+01:00",
-  "finished_at": null,
-  "current": 2,
+  "updated_at": "2026-10-31T19:55:30+01:00",
+  "finished_at": "2026-10-31T19:55:30+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "listas-auto-dd9353353e5151c1b186",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "red-review-2a44c2b2306d6a4e63a6",
-    "red-review-2b9096193faf29435cfe"
-  ],
-  "remaining_ids": [
+    "red-review-2b9096193faf29435cfe",
     "listas-auto-dd9353353e5151c1b186"
   ],
-  "remaining_active_ids": [
-    "listas-auto-dd9353353e5151c1b186"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Revisiones de Repsol y Angrois ya aplicadas por ejecución concurrente; comprobando agrupación automática.",
+  "summary": "Repsol sin novedades materiales; Angrois actualizado; agrupación automática revisada sin coincidencias. Cola final 0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Verificando acontecimiento común",
+  "activity": "Cierre verificado",
   "final_outcomes": [
     {
       "id": "red-review-2a44c2b2306d6a4e63a6",
       "revision": 0,
       "outcome": "unchanged",
-      "note": "Resultado ya aplicado antes de la revalidación JIT."
+      "note": "Aplicado durante ejecución concurrente antes de la revalidación JIT de esta pasada; no se duplicó."
     },
     {
       "id": "red-review-2b9096193faf29435cfe",
       "revision": 0,
       "outcome": "updated",
-      "note": "Resultado ya aplicado antes de la revalidación JIT."
+      "note": "Aplicado durante ejecución concurrente antes de la revalidación JIT de esta pasada; no se duplicó."
+    },
+    {
+      "id": "listas-auto-dd9353353e5151c1b186",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 0
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T19:50:00.422+01:00",
-  "last_completed_at": "2026-10-31T19:47:14+01:00"
+  "last_completed_at": "2026-10-31T19:55:30+01:00"
 }
