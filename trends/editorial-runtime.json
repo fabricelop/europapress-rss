@@ -5,21 +5,21 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T111000+0100",
   "previous_run_id": "tr-1793441024231-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T11:10:00+01:00",
-  "updated_at": "2026-10-31T11:10:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T11:13:30+01:00",
+  "finished_at": "2026-10-31T11:13:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada; contrato y estado autoritativo se están revalidando en main.",
+  "summary": "Pasada manual completada 0/0 tras relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Se lanzó además el refresco manual del Top 30 y cola (run 41191777114); en la barrera de cierre no había trabajo editorial pendiente. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -184,13 +184,20 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio tr-chat-20261031T111000+0100: contrato y cola autoritativa releídos en main; cola inicial 0. Revalidando preparing/update/rewrite_pending y trabajos especiales. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T11:13:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final en main: editorial-queue count=0, sin preparing/update ni rewrite_pending. Cierre DONE 0/0; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-1793441024231-manual",
+    "run_id": "tr-chat-20261031T111000+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T11:05:00+01:00",
+    "finished_at": "2026-10-31T11:13:30+01:00",
     "attempted": 0,
     "explained": 0,
     "updates": 0,
@@ -208,5 +215,5 @@
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T11:10:00+01:00",
-  "last_completed_at": "2026-10-31T11:05:00+01:00"
+  "last_completed_at": "2026-10-31T11:13:30+01:00"
 }
