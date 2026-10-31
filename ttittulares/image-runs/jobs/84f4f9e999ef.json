@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-84f4f9e999ef-r1-a1-1792109430453",
+  "requested_at": "2026-10-16T00:10:30.416916Z",
+  "updated_at": "2026-10-16T00:13:52.995310Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "84f4f9e999ef",
+  "event_id": "84f4f9e999ef",
+  "target_name": "Un terremoto de magnitud 4,2 se registra en El Bierzo (León)",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Un terremoto de magnitud 4,2 se registra en El Bierzo (León)",
+    "revision": 1,
+    "factual_summary": "El IGN registró a las 22:34 un terremoto de magnitud 4,2 al este de Benuza (León), sentido en El Bierzo y otras zonas del noroeste. No constaban daños personales ni materiales.",
+    "tweet_text": "El IGN registró a las 22:34 un terremoto de magnitud 4,2 al este de Benuza (León), sentido en El Bierzo. No constaban daños personales ni materiales.\n\n#ElBierzo #León #Terremoto\n🌶️ La comarca cerró el día con un movimiento fuera de agenda.",
+    "remate": "🌶️ La comarca cerró el día con un movimiento fuera de agenda.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "grabado_moderno",
+    "image_style_index": 6,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl IGN registró a las 22:34 un terremoto de magnitud 4,2 al este de Benuza (León), sentido en El Bierzo. No constaban daños personales ni materiales.\n\n#ElBierzo #León #Terremoto\n🌶️ La comarca cerró el día con un movimiento fuera de agenda.\n\nREMATE EXACTO:\n🌶️ La comarca cerró el día con un movimiento fuera de agenda.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl IGN registró a las 22:34 un terremoto de magnitud 4,2 al este de Benuza (León), sentido en El Bierzo y otras zonas del noroeste. No constaban daños personales ni materiales.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.ondacero.es/noticias/sociedad/terremoto-magnitud-42-registra-bierzo-leon_202610156ad1457cbafd3d736361445a.html",
+    "citations": [
+      {
+        "source": "Instituto Geográfico Nacional",
+        "title": "Información de los últimos terremotos",
+        "url": "https://www.ign.es/web/ultimos-terremotos/-/ultimos-terremotos/"
+      },
+      {
+        "source": "Europa Press",
+        "title": "Registrado un terremoto de magnitud 4,0 en Villafranca del Bierzo (León)",
+        "url": "https://www.europapress.es/castilla-y-leon/noticia-registrado-terremoto-magnitud-40-villafranca-bierzo-leon-20261015232940.html"
+      },
+      {
+        "source": "Onda Cero",
+        "title": "Un terremoto de magnitud 4,2 se registra en El Bierzo (León)",
+        "url": "https://www.ondacero.es/noticias/sociedad/terremoto-magnitud-42-registra-bierzo-leon_202610156ad1457cbafd3d736361445a.html"
+      },
+      {
+        "source": "Cadena SER",
+        "title": "Un terremoto de 4,2 grados sacude la comarca del Bierzo y sus alrededores",
+        "url": "https://cadenaser.com/castillayleon/2026/10/15/un-terremoto-de-cuatro-grados-sacude-la-comarca-del-bierzo-y-sus-alrededores-desde-priaranza-radio-bierzo/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "925e40c024a7f8472ac52bd6b768bd2603bf8f8ba0d43fffb08e76253cfaba5e",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T00:12:14.428Z",
+  "pc_launched_at": "2026-10-16T00:12:25.216Z",
+  "finished_at": "2026-10-16T00:12:25.216Z"
+}

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-7e3e6ed4eb0f-r1-a1-1792150791425",
+  "requested_at": "2026-10-16T11:39:51.399012Z",
+  "updated_at": "2026-10-16T11:43:34.999557Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "7e3e6ed4eb0f",
+  "event_id": "7e3e6ed4eb0f",
+  "target_name": "El Ayuntamiento de Zaragoza suspende las fiestas del Pilar durante 5 minutos este viernes por la agresión sexual",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El Ayuntamiento de Zaragoza suspende las fiestas del Pilar durante 5 minutos este viernes por la agresión sexual",
+    "revision": 1,
+    "factual_summary": "El Ayuntamiento de Zaragoza paralizará durante cinco minutos los actos culturales de las Fiestas del Pilar este viernes a las 17.00 tras una nueva agresión sexual denunciada de madrugada en un local del Casco Histórico. El presunto agresor fue detenido y se ha convocado un minuto de silencio para el sábado.",
+    "tweet_text": "Zaragoza parará cinco minutos los actos del Pilar este viernes tras una nueva agresión sexual denunciada en el Casco Histórico; el presunto agresor fue detenido.\n\n#Zaragoza #FiestasDelPilar\n🌶️ Cinco minutos sin fiesta para que la denuncia no pase de largo.",
+    "remate": "🌶️ Cinco minutos sin fiesta para que la denuncia no pase de largo.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nZaragoza parará cinco minutos los actos del Pilar este viernes tras una nueva agresión sexual denunciada en el Casco Histórico; el presunto agresor fue detenido.\n\n#Zaragoza #FiestasDelPilar\n🌶️ Cinco minutos sin fiesta para que la denuncia no pase de largo.\n\nREMATE EXACTO:\n🌶️ Cinco minutos sin fiesta para que la denuncia no pase de largo.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl Ayuntamiento de Zaragoza paralizará durante cinco minutos los actos culturales de las Fiestas del Pilar este viernes a las 17.00 tras una nueva agresión sexual denunciada de madrugada en un local del Casco Histórico. El presunto agresor fue detenido y se ha convocado un minuto de silencio para el sábado.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/aragon/noticia-ayuntamiento-zaragoza-suspende-fiestas-pilar-minutos-viernes-agresion-sexual-20261016131855.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "title": "El Ayuntamiento de Zaragoza suspende las fiestas del Pilar durante 5 minutos este viernes por la agresión sexual",
+        "url": "https://www.europapress.es/aragon/noticia-ayuntamiento-zaragoza-suspende-fiestas-pilar-minutos-viernes-agresion-sexual-20261016131855.html"
+      },
+      {
+        "source": "elDiario.es",
+        "title": "Detenido un hombre por una agresión sexual en un local del Casco Histórico de Zaragoza durante el Pilar",
+        "url": "https://www.eldiario.es/aragon/sociedad/detenido-hombre-agresion-sexual-local-casco-historico-zaragoza-durante-pilar_1_13590826.html"
+      },
+      {
+        "source": "Aragón Digital",
+        "title": "Detenido un hombre por una nueva agresión sexual denunciada en Zaragoza durante las Fiestas del Pilar",
+        "url": "https://www.aragondigital.es/articulo/sucesos/nueva-agresion-sexual-denunciada-zaragoza-fiestas-pilar-detenido-casco-historico/202610161256251015968.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "3d0aceae388691ff3313e5eb26ec9667261d940b9ce873c8c544575c99085fbc",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T11:41:20.845Z",
+  "pc_launched_at": "2026-10-16T11:41:29.788Z",
+  "finished_at": "2026-10-16T11:41:29.788Z"
+}

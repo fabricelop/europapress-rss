@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-8d7dec19a332-r1-a1-1792920926500",
+  "requested_at": "2026-10-25T09:35:26.430123Z",
+  "updated_at": "2026-10-25T10:20:31.160214Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "8d7dec19a332",
+  "event_id": "8d7dec19a332",
+  "target_name": "Un total de 128 detenidos y 15 policías heridos en los disturbios de Barcelona",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Un total de 128 detenidos y 15 policías heridos en los disturbios de Barcelona",
+    "revision": 1,
+    "factual_summary": "Los disturbios del sábado 24 de octubre en el centro de Barcelona dejaron 128 detenidos, 72 de ellos menores, y 15 policías heridos en total. Catorce agentes de los Mossos resultaron heridos, cuatro de gravedad, y también hubo un agente de la Guardia Urbana herido. Se vandalizaron 23 comercios y los bomberos realizaron 33 intervenciones por incendios.",
+    "tweet_text": "Los disturbios del sábado en Barcelona dejaron 128 detenidos, 72 menores, 15 policías heridos —cuatro graves—, 23 comercios vandalizados y 33 incendios.\n\n#Barcelona #Mossos\n🌶️ La convocatoria terminó convertida en parte de daños.",
+    "remate": "🌶️ La convocatoria terminó convertida en parte de daños.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos disturbios del sábado en Barcelona dejaron 128 detenidos, 72 menores, 15 policías heridos —cuatro graves—, 23 comercios vandalizados y 33 incendios.\n\n#Barcelona #Mossos\n🌶️ La convocatoria terminó convertida en parte de daños.\n\nREMATE EXACTO:\n🌶️ La convocatoria terminó convertida en parte de daños.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLos disturbios del sábado 24 de octubre en el centro de Barcelona dejaron 128 detenidos, 72 de ellos menores, y 15 policías heridos en total. Catorce agentes de los Mossos resultaron heridos, cuatro de gravedad, y también hubo un agente de la Guardia Urbana herido. Se vandalizaron 23 comercios y los bomberos realizaron 33 intervenciones por incendios.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://efe.com/espana/2026-10-25/disturbios-barcelona-detenidos-heridos/",
+    "citations": [
+      {
+        "source": "EFE",
+        "url": "https://efe.com/espana/2026-10-25/disturbios-barcelona-detenidos-heridos/"
+      },
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/catalunya/noticia-128-detenidos-disturbios-barcelona-sabado-72-ellos-menores-edad-20261025090646.html"
+      },
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/catalunya/noticia-comisaria-jefe-mossos-ve-bastante-inexplicable-dinamica-disturbios-sabado-barcelona-20261025095721.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "e17caaa1629189df2d4dd82356c746abcf59ed19b0018a34ae5e49e823ba0bd7",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-25T09:37:32.017Z",
+  "pc_launched_at": "2026-10-25T09:37:40.185Z",
+  "finished_at": "2026-10-25T09:37:40.185Z"
+}

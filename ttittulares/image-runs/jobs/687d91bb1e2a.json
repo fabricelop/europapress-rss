@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-687d91bb1e2a-r1-a1-1792129099782",
+  "requested_at": "2026-10-16T05:38:19.764130Z",
+  "updated_at": "2026-10-16T06:38:45.510637Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "687d91bb1e2a",
+  "event_id": "687d91bb1e2a",
+  "target_name": "El PSOE deja fuera de las listas al Congreso al delegado del Gobierno en Madrid en pleno choque con Ayuso por la acampada de Sol",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El PSOE deja fuera de las listas al Congreso al delegado del Gobierno en Madrid en pleno choque con Ayuso por la acampada de Sol",
+    "revision": 1,
+    "factual_summary": "El PSOE deja fuera de sus candidaturas por Madrid al Congreso y al Senado a Francisco Martín, delegado del Gobierno en la Comunidad de Madrid, que aspiraba a un escaño. La exclusión coincide con su enfrentamiento institucional con el Gobierno de Isabel Díaz Ayuso por la acampada de la Puerta del Sol.",
+    "tweet_text": "El PSOE deja fuera de sus listas por Madrid a Francisco Martín, delegado del Gobierno. La exclusión llega en pleno choque con Ayuso por la acampada de Sol.\n\n#FranciscoMartín #PSOE\n🌶️ El PSOE ha encontrado un desalojo rápido: Martín de la lista.",
+    "remate": "🌶️ El PSOE ha encontrado un desalojo rápido: Martín de la lista.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl PSOE deja fuera de sus listas por Madrid a Francisco Martín, delegado del Gobierno. La exclusión llega en pleno choque con Ayuso por la acampada de Sol.\n\n#FranciscoMartín #PSOE\n🌶️ El PSOE ha encontrado un desalojo rápido: Martín de la lista.\n\nREMATE EXACTO:\n🌶️ El PSOE ha encontrado un desalojo rápido: Martín de la lista.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl PSOE deja fuera de sus candidaturas por Madrid al Congreso y al Senado a Francisco Martín, delegado del Gobierno en la Comunidad de Madrid, que aspiraba a un escaño. La exclusión coincide con su enfrentamiento institucional con el Gobierno de Isabel Díaz Ayuso por la acampada de la Puerta del Sol.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/madrid/2026-10-15/el-psoe-deja-fuera-de-las-listas-al-congreso-al-delegado-del-gobierno-en-madrid-en-pleno-choque-con-ayuso-por-la-acampada-de-sol.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "title": "El PSOE deja fuera de las listas al Congreso al delegado del Gobierno en Madrid en pleno choque con Ayuso por la acampada de Sol",
+        "url": "https://elpais.com/espana/madrid/2026-10-15/el-psoe-deja-fuera-de-las-listas-al-congreso-al-delegado-del-gobierno-en-madrid-en-pleno-choque-con-ayuso-por-la-acampada-de-sol.html"
+      },
+      {
+        "source": "Vozpópuli",
+        "title": "Ferraz sacrifica a sanchistas 'pata negra' para blindar a ministros ante la Justicia",
+        "url": "https://www.vozpopuli.com/espana/politica/ferraz-sacrifica-a-sanchistas-pata-negra-para-blindar-a-ministros-ante-la-justicia.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "4f65473db64fac42414a7b06c2bf536a5fa38652db084aad34cceb183c0a43c0",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T05:39:47.354Z",
+  "pc_launched_at": "2026-10-16T05:39:56.993Z",
+  "finished_at": "2026-10-16T05:39:56.993Z"
+}

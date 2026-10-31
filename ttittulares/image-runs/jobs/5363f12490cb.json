@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-5363f12490cb-r1-a1-1792717606987",
+  "requested_at": "2026-10-23T01:06:46.925863Z",
+  "updated_at": "2026-10-23T01:09:14.207172Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "5363f12490cb",
+  "event_id": "5363f12490cb",
+  "target_name": "Muere Agustín de Grandes, quien fuera presidente de CEOE-Cepyme Guadalajara durante 17 años y alcalde de la ciudad",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Muere Agustín de Grandes, quien fuera presidente de CEOE-Cepyme Guadalajara durante 17 años y alcalde de la ciudad",
+    "revision": 1,
+    "factual_summary": "Ha fallecido Agustín de Grandes Pascual, alcalde de Guadalajara entre 1977 y 1979 y presidente de CEOE-Cepyme Guadalajara entre 2002 y 2019. También presidió la Fundación CEEI Guadalajara entre 2010 y 2019.",
+    "tweet_text": "Ha fallecido Agustín de Grandes, alcalde de Guadalajara entre 1977 y 1979 y presidente de CEOE-Cepyme Guadalajara de 2002 a 2019.\n\n#AgustínDeGrandes #Guadalajara #CEOE\n🌶️ Guadalajara despide a una figura de su historia municipal y empresarial.",
+    "remate": "🌶️ Guadalajara despide a una figura de su historia municipal y empresarial.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nHa fallecido Agustín de Grandes, alcalde de Guadalajara entre 1977 y 1979 y presidente de CEOE-Cepyme Guadalajara de 2002 a 2019.\n\n#AgustínDeGrandes #Guadalajara #CEOE\n🌶️ Guadalajara despide a una figura de su historia municipal y empresarial.\n\nREMATE EXACTO:\n🌶️ Guadalajara despide a una figura de su historia municipal y empresarial.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nHa fallecido Agustín de Grandes Pascual, alcalde de Guadalajara entre 1977 y 1979 y presidente de CEOE-Cepyme Guadalajara entre 2002 y 2019. También presidió la Fundación CEEI Guadalajara entre 2010 y 2019.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.eldiario.es/castilla-la-mancha/provincias/guadalajara/muere-agustin-grandes-presidente-ceoe-cepyme-guadalajara-durante-17-anos-alcalde_1_13606645.html",
+    "citations": [
+      {
+        "source": "CEOE-Cepyme Guadalajara",
+        "url": "https://www.ceoeguadalajara.es/noticia/ceoe-cepyme-guadalajara-lamenta-el-fallecimiento-de-agustin-de-grandes-presidente-de-la-organizacion-durante-17-anos"
+      },
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/castilla-lamancha/noticia-fallece-agustin-grandes-presidente-ceoe-cepyme-guadalajara-17-anos-alcalde-1977-1979-20261022111610.html"
+      },
+      {
+        "source": "Ayuntamiento de Guadalajara",
+        "url": "https://www.guadalajara.es/es/noticia/el-ayuntamiento-de-guadalajara-lamenta-el-fallecimiento-de-agustin-de-grandes-pascual-alcalde-de-la-ciudad-entre-1977-y-1979.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "d9c573fd8efb6b08996a49d0f91700f515afbc2d0ae8f57ff714ae4c21408821",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-23T01:07:46.072Z",
+  "pc_launched_at": "2026-10-23T01:07:55.422Z",
+  "finished_at": "2026-10-23T01:07:55.422Z"
+}

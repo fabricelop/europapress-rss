@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-79a66c140b88-r1-a1-1792573988487",
+  "requested_at": "2026-10-21T09:13:08.454817Z",
+  "updated_at": "2026-10-21T09:15:38.271Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "79a66c140b88",
+  "event_id": "79a66c140b88",
+  "target_name": "Hallado el cadáver de un migrante en el puerto de Ceuta",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Hallado el cadáver de un migrante en el puerto de Ceuta",
+    "revision": 1,
+    "factual_summary": "La Guardia Civil halló el cadáver de un migrante flotando en el interior del puerto de Ceuta, con ropa de baño y aletas. Se investigan su identidad y las circunstancias de la muerte.",
+    "tweet_text": "La Guardia Civil ha hallado el cadáver de un migrante flotando en el puerto de Ceuta, con ropa de baño y aletas. Se investigan las circunstancias.\n\n#Ceuta #GuardiaCivil\n🌶️ La investigación deberá esclarecer su identidad y lo ocurrido.",
+    "remate": "🌶️ La investigación deberá esclarecer su identidad y lo ocurrido.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLa Guardia Civil ha hallado el cadáver de un migrante flotando en el puerto de Ceuta, con ropa de baño y aletas. Se investigan las circunstancias.\n\n#Ceuta #GuardiaCivil\n🌶️ La investigación deberá esclarecer su identidad y lo ocurrido.\n\nREMATE EXACTO:\n🌶️ La investigación deberá esclarecer su identidad y lo ocurrido.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa Guardia Civil halló el cadáver de un migrante flotando en el interior del puerto de Ceuta, con ropa de baño y aletas. Se investigan su identidad y las circunstancias de la muerte.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.20minutos.es/ceuta/hallan-cadaver-un-migrante-flotando-interior-puerto-ceuta-llevaba-ropa-bano-las-aletas-puestas_7051385_0.html",
+    "citations": [
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/ceuta/hallan-cadaver-un-migrante-flotando-interior-puerto-ceuta-llevaba-ropa-bano-las-aletas-puestas_7051385_0.html"
+      },
+      {
+        "source": "Antena 3 Noticias",
+        "url": "https://www.antena3.com/noticias/sociedad/hallan-cadaver-migrante-flotando-muelle-poniente-ceuta_202610216ad87598bb4b267410507981.html"
+      },
+      {
+        "source": "La Vanguardia",
+        "url": "https://www.lavanguardia.com/politica/20261021/11664327/hallado-cadaver-migrante-flotando-interior-puerto-ceuta.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false",
+  "pc_upload_secret_hash": "bd74c3a3f0e15377680ddc959b03690e5bb66a5e7548b223dc0c98a6f584b159",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-21T09:14:45.456Z",
+  "finished_at": "2026-10-21T09:15:38.271Z"
+}

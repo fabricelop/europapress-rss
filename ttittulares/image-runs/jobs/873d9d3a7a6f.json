@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-873d9d3a7a6f-r1-a3-1792435493994",
+  "requested_at": "2026-10-19T18:44:53.945982Z",
+  "updated_at": "2026-10-19T18:47:10.714Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "873d9d3a7a6f",
+  "event_id": "873d9d3a7a6f",
+  "target_name": "México denunciará en EEUU la muerte de un hombre mexicano bajo custodia del ICE en Texas",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 3,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "México denunciará en EEUU la muerte de un hombre mexicano bajo custodia del ICE en Texas",
+    "revision": 1,
+    "factual_summary": "El Gobierno de México ha anunciado que presentará una denuncia en Estados Unidos por la muerte de un ciudadano mexicano bajo custodia del ICE en un centro de procesamiento de Laredo, Texas, y ha pedido que el caso se investigue.",
+    "tweet_text": "México presentará una denuncia en EEUU por la muerte de un ciudadano mexicano bajo custodia del ICE en Laredo (Texas). El Gobierno pide una investigación exhaustiva.\n\n#México #ICE #Texas\n🌶️ El caso queda pendiente de esclarecimiento.",
+    "remate": "🌶️ El caso queda pendiente de esclarecimiento.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nMéxico presentará una denuncia en EEUU por la muerte de un ciudadano mexicano bajo custodia del ICE en Laredo (Texas). El Gobierno pide una investigación exhaustiva.\n\n#México #ICE #Texas\n🌶️ El caso queda pendiente de esclarecimiento.\n\nREMATE EXACTO:\n🌶️ El caso queda pendiente de esclarecimiento.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl Gobierno de México ha anunciado que presentará una denuncia en Estados Unidos por la muerte de un ciudadano mexicano bajo custodia del ICE en un centro de procesamiento de Laredo, Texas, y ha pedido que el caso se investigue.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/internacional/noticia-mexico-denunciara-eeuu-muerte-hombre-mexicano-custodia-ice-texas-20261019191620.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "title": "México presenta una nueva denuncia en Estados Unidos por la muerte de otro migrante a manos del ICE",
+        "url": "https://elpais.com/mexico/2026-10-19/mexico-presenta-una-nueva-denuncia-en-estados-unidos-por-la-muerte-de-otro-migrante-a-manos-del-ice.html"
+      },
+      {
+        "source": "Infobae",
+        "title": "México presentará denuncia en EEUU por muerte de connacional detenido bajo custodia del ICE, adelanta Sheinbaum",
+        "url": "https://www.infobae.com/mexico/2026/10/19/mexico-exige-a-estados-unidos-esclarecer-la-muerte-de-un-connacional-bajo-custodia-del-ice-en-laredo-texas/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Fallback no pudo escribir el prompt completo",
+  "pc_upload_secret_hash": "87a0923f1b762b72d3f0e194892cdca032585b94ec81f1a088c76b459d14cb8b",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-19T18:47:04.690Z",
+  "finished_at": "2026-10-19T18:47:10.714Z"
+}

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-dbffd9eca9a7-r1-a1-1792152866544",
+  "requested_at": "2026-10-16T12:14:26.524581Z",
+  "updated_at": "2026-10-16T12:17:44.712783Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "dbffd9eca9a7",
+  "event_id": "dbffd9eca9a7",
+  "target_name": "EH Bildu irá a las generales con Oskar Matute de candidato y Oihana Etxebarrieta como relevo de Aizpurua",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "EH Bildu irá a las generales con Oskar Matute de candidato y Oihana Etxebarrieta como relevo de Aizpurua",
+    "revision": 1,
+    "factual_summary": "EH Bildu ha propuesto a Oskar Matute como cabeza de lista al Congreso por Bizkaia y a Oihana Etxebarrieta por Gipuzkoa para las elecciones generales del 29 de noviembre. Las bases deberán ratificar las candidaturas.",
+    "tweet_text": "EH Bildu propone a Oskar Matute como cabeza de lista por Bizkaia y a Oihana Etxebarrieta por Gipuzkoa para el 29-N; las bases deben ratificar las candidaturas.\n\n#EHBildu #29N\n🌶️ El relevo generacional aún tiene que pasar por el botón «ratificar».",
+    "remate": "🌶️ El relevo generacional aún tiene que pasar por el botón «ratificar».",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "pop_art",
+    "image_style_index": 7,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEH Bildu propone a Oskar Matute como cabeza de lista por Bizkaia y a Oihana Etxebarrieta por Gipuzkoa para el 29-N; las bases deben ratificar las candidaturas.\n\n#EHBildu #29N\n🌶️ El relevo generacional aún tiene que pasar por el botón «ratificar».\n\nREMATE EXACTO:\n🌶️ El relevo generacional aún tiene que pasar por el botón «ratificar».\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEH Bildu ha propuesto a Oskar Matute como cabeza de lista al Congreso por Bizkaia y a Oihana Etxebarrieta por Gipuzkoa para las elecciones generales del 29 de noviembre. Las bases deberán ratificar las candidaturas.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.eldiario.es/euskadi/eh-bildu-ira-generales-oskar-matute-candidato-oihana-etxebarrieta-relevo-aizpurua_1_13590392.html",
+    "citations": [
+      {
+        "source": "EH Bildu",
+        "title": "La Mesa Política de Hegoalde propone que Oskar Matute e Idurre Bideguren encabecen las candidaturas de EH Bildu al Congreso y al Senado",
+        "url": "https://ehbildu.eus/es/noticias/la-mesa-politica-de-hegoalde-propone-que-oskar-matute-e-idurre-bideguren-encabecen-las-candidaturas-de-eh-bildu-al-congreso-y-al-senado"
+      },
+      {
+        "source": "elDiario.es",
+        "title": "EH Bildu irá a las generales con Oskar Matute de candidato y Oihana Etxebarrieta como relevo de Aizpurua",
+        "url": "https://www.eldiario.es/euskadi/eh-bildu-ira-generales-oskar-matute-candidato-oihana-etxebarrieta-relevo-aizpurua_1_13590392.html"
+      },
+      {
+        "source": "Última Hora",
+        "title": "Oskar Matute será el próximo portavoz de EH Bildu en el Congreso en sustitución de Mertxe Aizpurua",
+        "url": "https://www.ultimahora.es/noticias/comunidades/2026/10/16/2730015/oskar-matute-sera-proximo-portavoz-bildu-congreso-sustitucion-mertxe-aizpurua.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "ed2297f690a53e55e5ad5ccda7b765014f8f19bd7a393c5530305646df914abf",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T12:16:38.739Z",
+  "pc_launched_at": "2026-10-16T12:16:50.399Z",
+  "finished_at": "2026-10-16T12:16:50.399Z"
+}

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-631c97182c21-r1-a1-1792088074823",
+  "requested_at": "2026-10-15T18:14:34.798807Z",
+  "updated_at": "2026-10-15T18:16:17.251994Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "631c97182c21",
+  "event_id": "631c97182c21",
+  "target_name": "Hallan muerta a una mujer de 47 años junto al Museu Torre Balldovina de Santa Coloma de Gramenet",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Hallan muerta a una mujer de 47 años junto al Museu Torre Balldovina de Santa Coloma de Gramenet",
+    "revision": 1,
+    "factual_summary": "Una mujer de 47 años fue hallada sin vida en las inmediaciones del Museu Torre Balldovina de Santa Coloma de Gramenet; los Mossos d'Esquadra investigan las circunstancias del fallecimiento.",
+    "tweet_text": "Hallada muerta una mujer de 47 años junto al Museu Torre Balldovina de Santa Coloma de Gramenet. Los Mossos investigan las circunstancias.\n\n#SantaColomaDeGramenet #Mossos\n🌶️ Caso bajo investigación, sin causas confirmadas.",
+    "remate": "🌶️ Caso bajo investigación, sin causas confirmadas.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nHallada muerta una mujer de 47 años junto al Museu Torre Balldovina de Santa Coloma de Gramenet. Los Mossos investigan las circunstancias.\n\n#SantaColomaDeGramenet #Mossos\n🌶️ Caso bajo investigación, sin causas confirmadas.\n\nREMATE EXACTO:\n🌶️ Caso bajo investigación, sin causas confirmadas.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUna mujer de 47 años fue hallada sin vida en las inmediaciones del Museu Torre Balldovina de Santa Coloma de Gramenet; los Mossos d'Esquadra investigan las circunstancias del fallecimiento.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.lavanguardia.com/local/barcelones-nord/20261015/11659593/localizan-cuerpo-vida-mujer-santa-coloma-gramenet.html",
+    "citations": [
+      {
+        "source": "La Vanguardia",
+        "title": "Localizan el cuerpo sin vida de una mujer en Santa Coloma de Gramenet",
+        "url": "https://www.lavanguardia.com/local/barcelones-nord/20261015/11659593/localizan-cuerpo-vida-mujer-santa-coloma-gramenet.html"
+      },
+      {
+        "source": "Antena 3 Noticias",
+        "title": "Hallan el cadáver de una mujer de 47 años cerca de un museo en Santa Coloma de Gramenet, Barcelona",
+        "url": "https://www.antena3.com/noticias/sociedad/hallan-cadaver-mujer-47-anos-cerca-museo-santa-coloma-gramenet-barcelona_202610156ad0f91efb06971aad03e744.html"
+      },
+      {
+        "source": "20minutos",
+        "title": "Hallan muerta a una mujer sin hogar junto a un museo de Santa Coloma de Gramenet",
+        "url": "https://www.20minutos.es/cataluna/barcelona/hallan-muerta-una-mujer-sin-hogar-junto-un-museo-santa-coloma-gramenet_7049371_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "a1a11ce2e59146f47315924b8388dc8a554f8a9bb09f23fa2a0e0cb1485d7550",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-15T18:15:32.798Z",
+  "pc_launched_at": "2026-10-15T18:15:43.929Z",
+  "finished_at": "2026-10-15T18:15:43.929Z"
+}

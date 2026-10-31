@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-8c1539f76f87-r1-a1-1792349023753",
+  "requested_at": "2026-10-18T18:43:43.709328Z",
+  "updated_at": "2026-10-18T18:52:16.530879Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "8c1539f76f87",
+  "event_id": "8c1539f76f87",
+  "target_name": "El primer ministro canadiense confirma cuatro militares muertos y decenas de heridos graves en una base militar en Alberta",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El primer ministro canadiense confirma cuatro militares muertos y decenas de heridos graves en una base militar en Alberta",
+    "revision": 1,
+    "factual_summary": "El primer ministro canadiense Mark Carney confirmó que cuatro miembros de las Fuerzas Armadas murieron y decenas resultaron heridos en el incendio ocurrido el 17 de octubre en la base de Wainwright, Alberta. La causa del incidente sigue bajo investigación.",
+    "tweet_text": "Cuatro militares murieron y decenas resultaron heridos en el incendio de la base de Wainwright (Alberta), según el primer ministro Mark Carney. La causa se investiga.\n\n#Canadá #Wainwright\n🌶️ Canadá baja las banderas mientras intenta entender qué ocurrió.",
+    "remate": "🌶️ Canadá baja las banderas mientras intenta entender qué ocurrió.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nCuatro militares murieron y decenas resultaron heridos en el incendio de la base de Wainwright (Alberta), según el primer ministro Mark Carney. La causa se investiga.\n\n#Canadá #Wainwright\n🌶️ Canadá baja las banderas mientras intenta entender qué ocurrió.\n\nREMATE EXACTO:\n🌶️ Canadá baja las banderas mientras intenta entender qué ocurrió.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl primer ministro canadiense Mark Carney confirmó que cuatro miembros de las Fuerzas Armadas murieron y decenas resultaron heridos en el incendio ocurrido el 17 de octubre en la base de Wainwright, Alberta. La causa del incidente sigue bajo investigación.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.elmundo.es/internacional/2026/10/18/6ad461b1e9cf4ada158b457e.html",
+    "citations": [
+      {
+        "source": "AP",
+        "title": "Carney says 4 service members killed and dozens injured in fire at Alberta military base",
+        "url": "https://apnews.com/article/1a41899da5b6e797b000061fa4da9c6a"
+      },
+      {
+        "source": "Canadian Press",
+        "title": "Four dead, dozens injured in violent fire at Alberta military base",
+        "url": "https://www.auroratoday.ca/local-news/four-dead-dozens-injured-in-violent-fire-at-alberta-military-base-12907907"
+      },
+      {
+        "source": "National Defence Canada",
+        "title": "Incident at Canadian Forces Base Wainwright",
+        "url": "https://www.canada.ca/en/department-national-defence/news/2026/10/incident-at-canadian-forces-base-wainwright.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "35b6b25d75110e7ce4054437c1f6abe16895795c0e11854f07c3bb22563f10de",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-18T18:45:35.145Z",
+  "pc_launched_at": "2026-10-18T18:45:47.146Z",
+  "finished_at": "2026-10-18T18:45:47.146Z"
+}
