@@ -23070,10 +23070,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "listas_group_role": "covered",
@@ -23084,7 +23084,24 @@
       "covered_at": "2026-10-31T14:14:47.122155+00:00",
       "grouping_request_id": "listas-auto-4b1bda6d35332a1b848b",
       "editorial_grouping_fingerprint": "c9644b1e833906191b933cc62f7c8345e9c00bd960980edd52c538adf6d2ca33",
-      "editorial_grouping_checked_at": "2026-10-31T14:14:47.122155+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T14:14:47.122155+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.thetimes.com/imageserver/image/1eb5932d-190d-4a38-979d-8cbbc4a72111.jpg?strip=all&format=webp&crop=5600px%2C3150px%2C0px%2C106px&resize=1200",
+        "source": "www.thetimes.com",
+        "source_url": "https://www.thetimes.com/sport/football/article/premier-league-live-score-analysis-commentary-latest-news-d7z9ctbj2",
+        "alt": "Imagen de archivo relacionada con Lisandro",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.thetimes.com/imageserver/image/1eb5932d-190d-4a38-979d-8cbbc4a72111.jpg?strip=all&format=webp&crop=5600px%2C3150px%2C0px%2C106px&resize=1200",
+        "source": "www.thetimes.com",
+        "source_url": "https://www.thetimes.com/sport/football/article/premier-league-live-score-analysis-commentary-latest-news-d7z9ctbj2",
+        "alt": "Imagen de archivo relacionada con Lisandro",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "listas-joint-2ea3268fe326f4cf",
@@ -23126,14 +23143,34 @@
       "source": "listas_grouping_editorial",
       "auto_queued": false,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0de04e3385296a186a87c07b8a1bbc55f792c7b3d5d7c59341b04b20551bf876",
-      "editorial_grouping_checked_at": "2026-10-31T14:14:47.122155+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T14:14:47.122155+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.thetimes.com/imageserver/image/1eb5932d-190d-4a38-979d-8cbbc4a72111.jpg?strip=all&format=webp&crop=5600px%2C3150px%2C0px%2C106px&resize=1200",
+        "source": "www.thetimes.com",
+        "source_url": "https://www.thetimes.com/sport/football/article/premier-league-live-score-analysis-commentary-latest-news-d7z9ctbj2",
+        "alt": "Imagen de archivo relacionada con Chelsea-Manchester United",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://www.thetimes.com/imageserver/image/1eb5932d-190d-4a38-979d-8cbbc4a72111.jpg?strip=all&format=webp&crop=5600px%2C3150px%2C0px%2C106px&resize=1200",
+        "source": "www.thetimes.com",
+        "source_url": "https://www.thetimes.com/sport/football/article/premier-league-live-score-analysis-commentary-latest-news-d7z9ctbj2",
+        "alt": "Imagen de archivo relacionada con Chelsea-Manchester United",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-31T14:15:33.868962+00:00",
+  "updated_at": "2026-10-31T14:15:40.924877Z",
   "count": 400
 }
