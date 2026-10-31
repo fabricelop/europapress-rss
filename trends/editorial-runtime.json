@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793471162889-manual",
-  "previous_run_id": "tr-20261031T191000+0100-manual",
+  "run_id": "tr-1793471485078-manual",
+  "previous_run_id": "tr-1793471162889-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-10-31T19:27:00+01:00",
-  "updated_at": "2026-10-31T19:32:00+01:00",
+  "started_at": "2026-10-31T19:31:00+01:00",
+  "updated_at": "2026-10-31T19:31:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 4,
-  "trend_id": "listas-auto-b11174abc9ed9f0d2413",
-  "title": "Agrupación automática de Listas",
+  "current": 0,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "ab65bc5a5cf7"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "listas-auto-b11174abc9ed9f0d2413",
     "red-review-acde095dbdf61843392f",
@@ -29,28 +27,13 @@
     "red-review-ab13786d10b53ca8da4d"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Halloween ya cerrado 1/1; entraron 3 trabajos nuevos durante la relectura final. Se reabre la pasada para procesarlos sin ImageGen.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-10-31T19:30:00+01:00",
-      "phase": "persisting",
-      "trend_id": "ab65bc5a5cf7",
-      "title": "Halloween",
-      "reason": "Error de transporte h2 durante el intento de escritura atómica directa; tras releer main se confirmó la persistencia correcta de la misma revisión por el aplicador editorial, sin duplicarla ni sobrescribirla."
-    }
-  ],
+  "summary": "Pasada editorial en curso 0/3. Cola inicial: 1 agrupación automática y 2 revisiones de novedades. Sin ImageGen ni publicación.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Procesando trabajo nuevo detectado en cierre",
-  "final_outcomes": [
-    {
-      "id": "ab65bc5a5cf7",
-      "revision": 0,
-      "outcome": "explained",
-      "rank": 1
-    }
-  ],
+  "activity": "Preparando cola editorial",
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T19:30:42+01:00",
+  "last_started_at": "2026-10-31T19:31:00+01:00",
   "last_completed_at": "2026-10-31T19:31:30+01:00"
 }
