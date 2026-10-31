@@ -1,15 +1,46 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T08:58:30+01:00",
-  "count": 3,
+  "updated_at": "2026-10-31T07:58:00.720050+00:00",
+  "count": 2,
   "items": [
     {
-      "id": "listas-auto-c553f2ecce7b8944f731",
+      "id": "red-review-22a97ce14f8a9221c7c8",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-31T07:56:11.791037+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "24d64469c94e",
+        "revision": 0,
+        "name": "Toledo",
+        "rank": 1,
+        "explanation": "TT#1 Toledo es tendencia junto a Iryo, Urda, Óscar Puente, Madrid-Andalucía y Adamuz por el choque de un AVE y un Iryo en Toledo: dos vagones del Iryo descarrilaron y la línea quedó cortada. Adamuz reaparece por el accidente de enero.\n#Toledo #Iryo #AltaVelocidad",
+        "explanation_sha256": "4e81418da48b6422cdb75cce371cc7c14f1b1d17a476421ec238d7f5633cfacd",
+        "explained_at": "2026-10-28T10:52:00+01:00",
+        "verification_sources": [
+          "https://www.reuters.com/world/two-high-speed-trains-rear-end-spain-rail-operator-says-2026-10-28/",
+          "https://www.lasexta.com/noticias/sociedad/choque-trenes-directo_202610286ae1b2e502501232156a9847.html",
+          "https://www.rtve.es/noticias/20260119/bulos-desinformacion-contexto-sobre-accidente-tren-adamuz-cordoba/16900413.shtml"
+        ],
+        "fingerprint": "112eb948a5c209b81fac07a180a1b5789fc24256ce3abff36bf0287e6e4c4ffd"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "listas-auto-e729c97b4716c407ef41",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
-      "requested_at": "2026-10-31T07:56:11.791037+00:00",
+      "requested_at": "2026-10-31T07:58:00.720050+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
@@ -55,64 +86,13 @@
           ]
         },
         {
-          "id": "09482f4ec753",
-          "revision": 0,
-          "name": "#MalaysianGP",
-          "rank": 18,
-          "explanation": "TT#18 #MalaysianGP es tendencia por el sprint de Sepang: Pedro Acosta ganó tras la caída de Álex Márquez cuando lideraba, con Marc Márquez segundo.\n#MotoGP #Sepang\n🌶️ La lluvia amagó; el sprint no.",
-          "explanation_sha256": "06f6be1788a3cc151aeceeec5604cb133ad13d4a35c66388f9710dfd6f7b3f79",
-          "explained_at": "2026-10-31T08:59:10+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.crash.net/motogp/news/1108910/1/pedro-acosta-wins-rain-hit-sepang-motogp-sprint-after-alex-marquez-crash"
-            },
-            {
-              "url": "https://www.autosport.com/motogp/news/motogp-malaysian-grand-prix-pedro-acosta-beats-marc-marquez-in-tense-sprint/10869993/"
-            }
-          ]
-        },
-        {
-          "id": "1510c923e357",
-          "revision": 0,
-          "name": "Halloween",
-          "rank": 5,
-          "explanation": "TT#5 Halloween es tendencia porque hoy, 31 de octubre, se celebra Halloween con fiestas, disfraces y pasajes del terror en toda España.\n#Halloween #31deOctubre\n🌶️ Hoy el calendario también viene disfrazado.",
-          "explanation_sha256": "5cbfb4dba031b0f00a32eec362f0fea895da97877206cec625c82dcbc46fa3fc",
-          "explained_at": "2026-10-31T08:59:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://diario.madrid.es/blog/2026/10/26/halloween-2026-en-madrid-todos-los-planes-por-distritos-para-pasarlo-de-miedo/"
-            },
-            {
-              "url": "https://www.europapress.es/madrid/noticia-madrid-blinda-halloween-1700-agentes-coordinacion-policia-nacional-llamadas-actos-vandalicos-20261029123015.html"
-            }
-          ]
-        },
-        {
-          "id": "aba20deed25f",
-          "revision": 0,
-          "name": "Ogura",
-          "rank": 22,
-          "explanation": "TT#22 Ogura es tendencia por su sprint en Sepang: Ai Ogura llegó a liderar tras la caída de Álex Márquez y terminó cuarto después de pelear por el podio.\n#MotoGP #Sepang\n🌶️ Lideró bajo amenaza de lluvia y acabó a un paso del podio.",
-          "explanation_sha256": "d9cbf723189a568fe6e8c59cd824abd3328245d2cbc4f0511fdf863c76492bf4",
-          "explained_at": "2026-10-31T08:59:20+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.crash.net/motogp/news/1108910/1/pedro-acosta-wins-rain-hit-sepang-motogp-sprint-after-alex-marquez-crash"
-            },
-            {
-              "url": "https://www.autosport.com/motogp/news/motogp-malaysian-grand-prix-pedro-acosta-beats-marc-marquez-in-tense-sprint/10869993/"
-            }
-          ]
-        },
-        {
           "id": "b00a5099c4fa",
           "revision": 0,
           "name": "Alex Márquez",
           "rank": 23,
           "explanation": "TT#23 Alex Márquez es tendencia por su sábado en Sepang: logró la pole por 70 milésimas sobre Marc, pero se cayó en la tercera vuelta del sprint cuando lideraba.\n#MotoGP #Sepang\n🌶️ De la pole al suelo en tres vueltas.",
           "explanation_sha256": "6ea1f4f2c42453e02a9dd2bc400b2f2643b69523435c97a1e63beaf41404ac57",
-          "explained_at": "2026-10-31T08:59:30+01:00",
+          "explained_at": "2026-10-31T08:55:00+01:00",
           "verification_sources": [
             {
               "url": "https://www.motogp.com/es/news/2026/10/31/alex-marquez-le-arrebata-la-pole-a-marc-por-70-milesima/1181621"
@@ -123,13 +103,13 @@
           ]
         },
         {
-          "id": "bbc3b648ddbe",
+          "id": "09482f4ec753",
           "revision": 0,
-          "name": "Pedro Acosta",
-          "rank": 26,
-          "explanation": "TT#26 Pedro Acosta es tendencia por ganar el sprint de MotoGP en Sepang: superó a Ai Ogura a tres vueltas del final y batió a Marc Márquez por 0,578 segundos.\n#MotoGP #Sepang\n🌶️ Acosta esperó ocho vueltas para dar el golpe.",
-          "explanation_sha256": "645cfa46831dcb80d22a4d2bbe9c0e42b18cb17ea682381bf8c25bdadb795536",
-          "explained_at": "2026-10-31T08:59:50+01:00",
+          "name": "#MalaysianGP",
+          "rank": 18,
+          "explanation": "TT#18 #MalaysianGP es tendencia por el sprint de Sepang: Pedro Acosta ganó tras la caída de Álex Márquez cuando lideraba, con Marc Márquez segundo.\n#MotoGP #Sepang\n🌶️ La lluvia amagó; el sprint no.",
+          "explanation_sha256": "06f6be1788a3cc151aeceeec5604cb133ad13d4a35c66388f9710dfd6f7b3f79",
+          "explained_at": "2026-10-31T08:55:00+01:00",
           "verification_sources": [
             {
               "url": "https://www.crash.net/motogp/news/1108910/1/pedro-acosta-wins-rain-hit-sepang-motogp-sprint-after-alex-marquez-crash"
@@ -146,10 +126,61 @@
           "rank": 24,
           "explanation": "TT#24 #MotoGP es tendencia por el sprint de Malasia: Pedro Acosta ganó en Sepang tras la caída de Álex Márquez, con Marc Márquez segundo y Bezzecchi tercero.\n#MalaysianGP #Sepang\n🌶️ Sepang repartió agua, caída y victoria.",
           "explanation_sha256": "46a12e742f81cd43a52ec1fc9d0a99b0026a1a6c87bbfefafb6cb3e91c81774f",
-          "explained_at": "2026-10-31T08:59:40+01:00",
+          "explained_at": "2026-10-31T08:55:00+01:00",
           "verification_sources": [
             {
               "url": "https://www.crash.net/motogp/results/1108662/1/2026-malaysian-motogp-sepang-sprint-results"
+            },
+            {
+              "url": "https://www.autosport.com/motogp/news/motogp-malaysian-grand-prix-pedro-acosta-beats-marc-marquez-in-tense-sprint/10869993/"
+            }
+          ]
+        },
+        {
+          "id": "1510c923e357",
+          "revision": 0,
+          "name": "Halloween",
+          "rank": 5,
+          "explanation": "TT#5 Halloween es tendencia porque hoy, 31 de octubre, se celebra Halloween con fiestas, disfraces y pasajes del terror en toda España.\n#Halloween #31deOctubre\n🌶️ Hoy el calendario también viene disfrazado.",
+          "explanation_sha256": "5cbfb4dba031b0f00a32eec362f0fea895da97877206cec625c82dcbc46fa3fc",
+          "explained_at": "2026-10-31T08:55:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://diario.madrid.es/blog/2026/10/26/halloween-2026-en-madrid-todos-los-planes-por-distritos-para-pasarlo-de-miedo/"
+            },
+            {
+              "url": "https://www.europapress.es/madrid/noticia-madrid-blinda-halloween-1700-agentes-coordinacion-policia-nacional-llamadas-actos-vandalicos-20261029123015.html"
+            }
+          ]
+        },
+        {
+          "id": "aba20deed25f",
+          "revision": 0,
+          "name": "Ogura",
+          "rank": 22,
+          "explanation": "TT#22 Ogura es tendencia por su sprint en Sepang: Ai Ogura llegó a liderar tras la caída de Álex Márquez y terminó cuarto después de pelear por el podio.\n#MotoGP #Sepang\n🌶️ Lideró bajo amenaza de lluvia y acabó a un paso del podio.",
+          "explanation_sha256": "d9cbf723189a568fe6e8c59cd824abd3328245d2cbc4f0511fdf863c76492bf4",
+          "explained_at": "2026-10-31T08:55:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.crash.net/motogp/news/1108910/1/pedro-acosta-wins-rain-hit-sepang-motogp-sprint-after-alex-marquez-crash"
+            },
+            {
+              "url": "https://www.autosport.com/motogp/news/motogp-malaysian-grand-prix-pedro-acosta-beats-marc-marquez-in-tense-sprint/10869993/"
+            }
+          ]
+        },
+        {
+          "id": "bbc3b648ddbe",
+          "revision": 0,
+          "name": "Pedro Acosta",
+          "rank": 26,
+          "explanation": "TT#26 Pedro Acosta es tendencia por ganar el sprint de MotoGP en Sepang: superó a Ai Ogura a tres vueltas del final y batió a Marc Márquez por 0,578 segundos.\n#MotoGP #Sepang\n🌶️ Acosta esperó ocho vueltas para dar el golpe.",
+          "explanation_sha256": "645cfa46831dcb80d22a4d2bbe9c0e42b18cb17ea682381bf8c25bdadb795536",
+          "explained_at": "2026-10-31T08:58:30+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.crash.net/motogp/news/1108910/1/pedro-acosta-wins-rain-hit-sepang-motogp-sprint-after-alex-marquez-crash"
             },
             {
               "url": "https://www.autosport.com/motogp/news/motogp-malaysian-grand-prix-pedro-acosta-beats-marc-marquez-in-tense-sprint/10869993/"
@@ -1641,67 +1672,6 @@
       "auto_queued": false,
       "request_source": "editorial_maintenance",
       "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
-    },
-    {
-      "id": "red-review-a684b90943c42ac5b2e2",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizSábado",
-      "rank": 11,
-      "status": "preparing",
-      "requested_at": "2026-10-31T07:56:11.791037+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "772cda27031c",
-        "revision": 0,
-        "name": "#FelizSábado",
-        "rank": 5,
-        "explanation": "TT#5 #FelizSábado es tendencia porque usuarios de X comparten saludos y mensajes para empezar este sábado 24 de octubre.\n#Sábado24 #BuenosDías\n🌶️ X ha puesto el despertador en modo fin de semana.",
-        "explanation_sha256": "90486a85e636f6d0fc78b468beb41de22006701bd6bd21c07abe52cc3555163c",
-        "explained_at": "2026-10-24T09:52:40+02:00",
-        "verification_sources": [
-          "trends/recent.json",
-          "https://twitter-trends.snaplytics.io/spain/"
-        ],
-        "fingerprint": "616045a5c712d462ec1701299e271ec6cda4bc7f735a6670760bb1c3888ef424"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
-    },
-    {
-      "id": "red-review-22a97ce14f8a9221c7c8",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "rank": 2,
-      "status": "preparing",
-      "requested_at": "2026-10-31T07:56:11.791037+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "24d64469c94e",
-        "revision": 0,
-        "name": "Toledo",
-        "rank": 1,
-        "explanation": "TT#1 Toledo es tendencia junto a Iryo, Urda, Óscar Puente, Madrid-Andalucía y Adamuz por el choque de un AVE y un Iryo en Toledo: dos vagones del Iryo descarrilaron y la línea quedó cortada. Adamuz reaparece por el accidente de enero.\n#Toledo #Iryo #AltaVelocidad",
-        "explanation_sha256": "4e81418da48b6422cdb75cce371cc7c14f1b1d17a476421ec238d7f5633cfacd",
-        "explained_at": "2026-10-28T10:52:00+01:00",
-        "verification_sources": [
-          "https://www.reuters.com/world/two-high-speed-trains-rear-end-spain-rail-operator-says-2026-10-28/",
-          "https://www.lasexta.com/noticias/sociedad/choque-trenes-directo_202610286ae1b2e502501232156a9847.html",
-          "https://www.rtve.es/noticias/20260119/bulos-desinformacion-contexto-sobre-accidente-tren-adamuz-cordoba/16900413.shtml"
-        ],
-        "fingerprint": "112eb948a5c209b81fac07a180a1b5789fc24256ce3abff36bf0287e6e4c4ffd"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ]
 }
