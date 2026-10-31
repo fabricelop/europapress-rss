@@ -32,6 +32,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .card.trend-top .card-body{padding:10px 11px}
 .card.trend-top .actions{padding-top:7px}
 .top30-detail{margin:0;color:var(--ink);font-size:13px}
+.card.trend-top .top30-image-quick{display:block;min-height:30px;width:calc(100% - 22px);margin:0 11px 7px;padding:5px 10px;text-align:center;font-size:12px;font-weight:750;color:#eefbff;background:#205a77;border-color:#4995b6}
 .top30-detail summary{display:grid;grid-template-columns:43px minmax(0,1fr) minmax(75px,auto) 14px;align-items:center;gap:7px;min-height:39px;list-style:none;cursor:pointer;padding:7px 11px}
 .top30-detail summary::-webkit-details-marker{display:none}
 .top30-detail summary:focus-visible{outline:2px solid var(--aqua);outline-offset:-2px}
@@ -798,9 +799,8 @@ function anyTrendImagePrompt(x){
 function openTrendImageInChatGPT(x){
  // Open as a direct user-click action, before clipboard awaits, to avoid
  // mobile pop-up blockers. This route never claims automatic web association.
- const tab=window.open('https://chatgpt.com/images','_blank','noopener,noreferrer');
+ window.open('https://chatgpt.com/images','_blank','noopener,noreferrer');
  void copyText(anyTrendImagePrompt(x),'Prompt visual de la tendencia');
- if(!tab)showToast('Prompt preparado. Abre ChatGPT Images desde el enlace de la ficha.');
 }
 function canRequestAutomaticTrendImage(x){
  return x._kind==='tr'&&!x._topOnly&&!x._historical&&
@@ -1129,7 +1129,12 @@ function compactTop30Card(out,x){
   (explanationDate?'<span class="top30-date">'+esc(explanationDate)+'</span>':'')+'</span>'+
   '<span class="top30-chevron" aria-hidden="true">⌄</span>';
  summary.addEventListener('click',()=>{if(detail.open)expandedTop30.delete(key);else expandedTop30.add(key)});
- detail.append(summary,content);out.replaceChildren(detail);
+ detail.append(summary,content);
+ // Keep the action visible even while the 30 ranked cards are collapsed.
+ // The very same button is moved out of the expanded content (no duplicate).
+ const quickImage=content.querySelector('.trend-image-action');
+ if(quickImage){quickImage.classList.add('top30-image-quick');quickImage.remove();out.replaceChildren(detail,quickImage)}
+ else out.replaceChildren(detail);
  out.classList.add('trend-top');
  out.dataset.explainedAt=x.explained_at||'';
  const ageBand=top30AgeBand(out.dataset.explainedAt);
