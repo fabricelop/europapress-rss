@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793471162889-manual",
   "previous_run_id": "tr-20261031T191000+0100-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-10-31T19:27:00+01:00",
-  "updated_at": "2026-10-31T19:30:42+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T19:31:30+01:00",
+  "finished_at": "2026-10-31T19:31:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "ab65bc5a5cf7",
-  "title": "Halloween",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "ab65bc5a5cf7"
@@ -21,13 +21,28 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada. 1 trabajo activo: Halloween ab65bc5a5cf7 r0; validación JIT e investigación desde cero en curso. Sin ImageGen.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada completada 1/1. Halloween ab65bc5a5cf7 r0 quedó explicado y verificado en requests + Explicadas; cola final 0 y sin rewrite_pending. La escritura directa encontró un error de transporte h2, tras el cual se releyó main y se confirmó que el aplicador editorial había cerrado correctamente la misma revisión. Sin ImageGen ni publicación.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-10-31T19:30:00+01:00",
+      "phase": "persisting",
+      "trend_id": "ab65bc5a5cf7",
+      "title": "Halloween",
+      "reason": "Error de transporte h2 durante el intento de escritura atómica directa; tras releer main se confirmó la persistencia correcta de la misma revisión por el aplicador editorial, sin duplicarla ni sobrescribirla."
+    }
+  ],
   "error": null,
-  "activity": "Preparando Halloween",
-  "final_outcomes": [],
+  "activity": "Cierre verificado",
+  "final_outcomes": [
+    {
+      "id": "ab65bc5a5cf7",
+      "revision": 0,
+      "outcome": "explained",
+      "rank": 1
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T19:30:42+01:00",
-  "last_completed_at": "2026-10-31T19:30:42+01:00"
+  "last_completed_at": "2026-10-31T19:31:30+01:00"
 }
