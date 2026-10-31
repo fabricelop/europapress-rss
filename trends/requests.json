@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T06:47:51.442707+00:00",
+  "updated_at": "2026-10-31T06:48:25.271079+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T06:47:16.872418+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T06:48:25.271079+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -4005,7 +4005,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T06:47:16.872418+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T06:48:25.271079+00:00"
     },
     {
       "id": "22601009b977",
@@ -8728,7 +8728,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T06:47:16.872418+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T06:48:25.271079+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -48481,7 +48481,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "8dc59042233d692af691661747d71cc321ef43bcacd83c3e47b56be2d1d61999",
-      "editorial_grouping_checked_at": "2026-10-31T06:47:16.872418+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T06:48:25.271079+00:00"
     },
     {
       "id": "listas-auto-cf1a57e5089b6b0ad33e",
@@ -50103,21 +50103,23 @@
       "new_facts": "El operario del centro de control de Adif en Atocha citado como investigado no detenido se acogió a su derecho a no declarar. La Guardia Civil reconstruye la cadena de decisión y las posibles discrepancias entre audios y documentación.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "87b5b7fadf39c4d9d6fa0604027e46d36149fc41a5bb3b6ece704fd8bd0cb892",
+      "editorial_grouping_checked_at": "2026-10-31T06:48:25.271079+00:00"
     },
     {
       "id": "listas-auto-00a7617e4cd89b3ccb35",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T06:47:51.442707+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -51642,7 +51644,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T06:48:25.271079+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "94e850a645d6238734d115d36a30bdd0fcf30038baf5729f385faa7b59806b96"
     }
   ],
   "count": 229
