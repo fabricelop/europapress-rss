@@ -3,13 +3,13 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T112500+0100",
-  "previous_run_id": "tr-chat-20261031T111000+0100",
-  "status": "DONE_WITH_INCIDENTS",
+  "run_id": "tr-chat-20261031T114000+0100",
+  "previous_run_id": "tr-chat-20261031T112500+0100",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-10-31T11:25:00+01:00",
-  "updated_at": "2026-10-31T11:28:39+01:00",
-  "finished_at": "2026-10-31T11:28:39+01:00",
+  "started_at": "2026-10-31T11:40:00+01:00",
+  "updated_at": "2026-10-31T11:42:00+01:00",
+  "finished_at": "2026-10-31T11:42:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -19,17 +19,9 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 0/0 tras relectura de main: editorial-queue count=0 y búsquedas de preparing/update/rewrite_pending sin coincidencias. El refresco manual del radar/selector fue lanzado, pero su job seguía in_progress en checkout al cierre; el snapshot autoritativo disponible sigue siendo 11:20:54/11:20:58. Sin ImageGen ni publicación.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-10-31T11:28:39+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "reason": "El refresco manual de GitHub Actions (run 41191777114, job 124512700553) seguía in_progress en checkout al cierre; no se atribuye al refresco un resultado que aún no ha persistido."
-    }
-  ],
+  "summary": "Pasada manual completada 0/0 tras refresco real del Top 30: recent.json persistido a las 11:41:18+01:00 y editorial-queue.json releído a las 11:41:22+01:00 con count=0. No hay preparing/update/rewrite_pending detectados. Sin ImageGen ni publicación.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -220,13 +212,34 @@
       "trend_id": null,
       "title": null,
       "message": "Cierre DONE_WITH_INCIDENTS 0/0: sin trabajo editorial pendiente en el estado autoritativo disponible; incidencia limitada al refresco manual aún en curso. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T11:40:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio tr-chat-20261031T114000+0100: contrato y estado autoritativo releídos; se fuerza refresco real del Top 30 antes de la barrera final. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T11:41:22+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Refresco persistido: recent.json capturado a las 11:41:18+01:00. Relectura de editorial-queue.json: count=0; sin preparing/update/rewrite_pending detectados."
+    },
+    {
+      "at": "2026-10-31T11:42:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final superada. Cierre DONE 0/0; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-chat-20261031T112500+0100",
-    "status": "DONE_WITH_INCIDENTS",
-    "finished_at": "2026-10-31T11:28:39+01:00",
+    "run_id": "tr-chat-20261031T114000+0100",
+    "status": "DONE",
+    "finished_at": "2026-10-31T11:42:00+01:00",
     "attempted": 0,
     "explained": 0,
     "updates": 0,
@@ -234,13 +247,10 @@
     "unchanged_reviews": 0,
     "grouping_requests": 0,
     "groups_created": 0,
-    "covered_by_existing": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 1,
-    "total": 0
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [],
+    "summary": "0/0; Top 30 actualizado a 11:41:18+01:00; cola final 0; sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T11:25:00+01:00",
