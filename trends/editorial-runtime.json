@@ -5,50 +5,58 @@
   "canonical": true,
   "run_id": "tr-1793465261954-manual",
   "previous_run_id": "tr-1793465096923-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T16:49:19.923Z",
-  "updated_at": "2026-10-31T16:49:19.923Z",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T16:50:27Z",
+  "finished_at": "2026-10-31T16:50:27Z",
+  "current": 1,
   "total": 1,
-  "trend_id": "listas-auto-bd7a19bcdf8898cf9d0d",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-bd7a19bcdf8898cf9d0d"
   ],
-  "remaining_active_ids": [
-    "listas-auto-bd7a19bcdf8898cf9d0d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Verificando acontecimiento común para Agrupación automática de Listas; cola revalidada en main.",
+  "summary": "1/1 en la pasada concurrente: agrupación Dana + Mazón aplicada como listas-joint-70909e5711c6192a. Este trabajo era la continuación generada por las dos revisiones de novedades del run previo tr-1793465096923-manual. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Verificando acontecimiento común",
-  "final_outcomes": [],
+  "activity": "Cierre editorial verificado",
+  "final_outcomes": [
+    {
+      "id": "listas-auto-bd7a19bcdf8898cf9d0d",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "created_ids": [
+        "listas-joint-70909e5711c6192a"
+      ],
+      "group_title": "Segundo aniversario de la DANA en Valencia"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-1793464160000-manual",
+    "run_id": "tr-1793465261954-manual",
     "status": "DONE",
-    "started_at": "2026-10-31T16:26:43Z",
-    "finished_at": "2026-10-31T16:29:22Z",
-    "attempted": 0,
+    "started_at": "2026-10-31T16:49:19.923Z",
+    "finished_at": "2026-10-31T16:50:27Z",
+    "attempted": 1,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
+    "grouping_requests": 1,
+    "groups_created": 1,
     "covered_by_existing": 0,
     "concurrent_resolved": 0,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "0/0 tras refresco manual completo del Top 30. GitHub Actions #606 terminó correctamente; captura 2026-10-31T17:29:11+01:00 y cola autoritativa final 0, sin preparing/update, rewrite_pending ni trabajos especiales pendientes. Sin ImageGen ni publicación."
+    "summary": "1/1 en la pasada concurrente: agrupación Dana + Mazón aplicada como listas-joint-70909e5711c6192a. Este trabajo era la continuación generada por las dos revisiones de novedades del run previo tr-1793465096923-manual. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T16:49:19.923Z",
-  "last_completed_at": "2026-10-31T17:44:18+01:00"
+  "last_completed_at": "2026-10-31T16:50:27Z"
 }
