@@ -13,13 +13,14 @@ async function run({exporter,preflightError=false,verifyError=false}={}){
   submitVerifiedDraft:async()=>{calls.push('submit');cdp.promptSubmittedAt=1;},
   ensureSubmitted:async x=>{calls.push('verify');if(verifyError)throw Error('ack uncertain');return x;},
   confirmPromptLaunched:async()=>{calls.push('launched');},
+  holdForWebImageReceipt:async()=>{calls.push('hold');return 'web_image_done';},
   fail:async()=>{calls.push('failed');},progress:async()=>{}};
  await vm.runInNewContext(boundary,context);
  return {calls,exitCode:context.process.exitCode};
 }
 test('a missing web module cannot prevent injection, verified send or launched receipt',async()=>{
  const result=await run({exporter:Error('MODULE_NOT_FOUND')});
- assert.deepEqual(result.calls.filter(x=>x!=='web'),['open','inject','submit','verify','launched','close']);
+ assert.deepEqual(result.calls.filter(x=>x!=='web'),['open','inject','submit','verify','launched','hold','close']);
  assert.ok(result.calls.indexOf('web')>result.calls.indexOf('launched'),'web module is never loaded before send/launch');
  assert.equal(result.exitCode,0);
 });
@@ -35,4 +36,26 @@ test('an uncertain result after send still saves the handoff without submitting 
  let enrollments=0;
  const result=await run({verifyError:true,exporter:{async rememberConversation(){enrollments++;return true;}}});
  assert.equal(enrollments,1);assert.equal(result.calls.filter(x=>x==='submit').length,1);assert.ok(result.calls.includes('failed'));
+});
+
+test('LAUNCHED waits for independent web receipt; no duplicate prompt or raster capture in bridge',async()=>{
+ const result=await run({exporter:{async rememberConversation(){return true;}}});
+ assert.equal(result.calls.filter(x=>x==='inject').length,1);
+ assert.equal(result.calls.filter(x=>x==='submit').length,1);
+ assert.equal(result.calls.filter(x=>x==='hold').length,1);
+ assert.ok(result.calls.indexOf('hold')>result.calls.indexOf('launched'));
+ assert.ok(result.calls.indexOf('hold')<result.calls.indexOf('close'));
+ assert.equal(result.exitCode,0);
+});
+test('passive publisher can run during own confirmed LAUNCHED only; never with TTiTTulares',()=>{
+ const listener=fs.readFileSync('windows/TTendenciasDedicatedListener.ps1','utf8');
+ const start=listener.indexOf('function Start-WebImagePublisher {');
+ const end=listener.indexOf('\nfunction Start-ImageBridge(',start);
+ assert.ok(start>=0&&end>start);
+ const gate=listener.slice(start,end);
+ assert.match(gate,/TTiTTularesImageBridge/);
+ assert.match(gate,/\$lock\.command_id/);
+ assert.match(gate,/\$job\.pc_launched_at/);
+ assert.match(gate,/\$job\.delivery_mode/);
+ assert.match(gate,/\$own\.Count -ne 1/);
 });
