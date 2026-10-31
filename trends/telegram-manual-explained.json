@@ -29175,8 +29175,8 @@
       "rank": 5,
       "rank_at_explanation": 5,
       "category": "Actualidad",
-      "source": "editorial_outbox_applied",
-      "editorial_engine": "chatgpt-automation-outbox",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
       "verification_sources": [
         {
           "url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programa-sabado-31-octubre-domingo-1-noviembre_202610306ae49c4a004b78127aba28c7.html"
@@ -29196,6 +29196,7 @@
       "grouped_member_revisions": [
         {
           "id": "348f94331bf0",
+          "name": "#laSextaXplica",
           "revision": 0
         }
       ],
@@ -29205,11 +29206,20 @@
       "fallback_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "trend_context": [
+        {
+          "id": "348f94331bf0",
+          "name": "#laSextaXplica",
+          "rank": 5,
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false
     }
   ],
-  "updated_at": "2026-10-31T23:12:00+01:00",
+  "updated_at": "2026-10-31T23:13:17+01:00",
   "count": 487
 }

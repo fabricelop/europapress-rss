@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T22:12:16.319646+00:00",
+  "updated_at": "2026-10-31T23:13:17+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -117710,13 +117710,13 @@
       "originated_from_prior_id": "manual-d438ccc039cce66fed3c8b6108352b8e",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de #laSextaXplica, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
       "explained_at": "2026-10-31T23:12:00+01:00",
-      "last_attempt_at": "2026-10-31T23:12:00+01:00",
+      "last_attempt_at": "2026-10-31T23:13:17+01:00",
       "explanation": "TT#5 #laSextaXplica es tendencia por la emisión de este sábado, centrada en el accidente ferroviario de Urda y la última hora de su investigación, con José Yélamo al frente.\n#Urda #laSexta",
       "closer_text": "",
       "rank_at_explanation": 5,
       "category": "Actualidad",
-      "source": "editorial_outbox_applied",
-      "editorial_engine": "chatgpt-automation-outbox",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
       "verification_sources": [
         {
           "url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programa-sabado-31-octubre-domingo-1-noviembre_202610306ae49c4a004b78127aba28c7.html"
@@ -117736,14 +117736,27 @@
       "grouped_member_revisions": [
         {
           "id": "348f94331bf0",
+          "name": "#laSextaXplica",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_status": "pending",
       "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "reexplain": false,
+      "news_disposition": "ignored",
+      "trend_context": [
+        {
+          "id": "348f94331bf0",
+          "name": "#laSextaXplica",
+          "rank": 5,
+          "revision": 0
+        }
+      ],
+      "rewrite_pending": false,
+      "grouped_into_existing_card": false
     },
     {
       "id": "listas-auto-6e922bcc692d7eb03194",
