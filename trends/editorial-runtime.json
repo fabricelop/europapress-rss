@@ -3,46 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793448869432-manual",
-  "previous_run_id": "tr-1793448774223-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T13:15:00+01:00",
-  "updated_at": "2026-10-31T13:19:21+01:00",
-  "finished_at": "2026-10-31T13:19:21+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-1793449594438-manual",
+  "previous_run_id": "tr-1793448869432-manual",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-10-31T13:26:34+01:00",
+  "updated_at": "2026-10-31T13:26:34+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-7e61105d549dfd7cbb0a",
-    "red-review-b10ca3fa03f234e357b1"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada solicitada revalidada sobre main: #DeViernes y #FelizSábado estaban en preparing al inicio; durante la investigación una ejecución concurrente aplicó sus outbox y ambos quedaron review_completed/stale por la barrera JIT. Relectura final: cola 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación.",
+  "summary": "Pasada manual iniciada. Cola compacta 0 al arranque; verificando rewrite_pending, mantenimiento y relectura final de main.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-7e61105d549dfd7cbb0a",
-      "revision": 0,
-      "status": "review_completed",
-      "result": "stale",
-      "note": "Cerrada por aplicador concurrente durante revalidación JIT; no se reabre estado terminal."
-    },
-    {
-      "id": "red-review-b10ca3fa03f234e357b1",
-      "revision": 0,
-      "status": "review_completed",
-      "result": "stale",
-      "note": "Cerrada por aplicador concurrente durante revalidación JIT; no se reabre estado terminal."
-    }
-  ],
+  "activity": "verifying",
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793448869432-manual",
     "status": "DONE",
@@ -60,6 +42,6 @@
     "summary": "2 revisiones detectadas y revalidadas; ambas cerraron stale por el aplicador concurrente. Cola final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T13:15:00+01:00",
+  "last_started_at": "2026-10-31T13:26:34+01:00",
   "last_completed_at": "2026-10-31T13:19:21+01:00"
 }
