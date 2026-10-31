@@ -6,22 +6,26 @@
   "run_id": "tr-chat-20261031T014000+0100-manual",
   "previous_run_id": "tr-chat-20261031T012500+0100-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-31T01:40:00+01:00",
-  "updated_at": "2026-10-31T01:40:00+01:00",
+  "updated_at": "2026-10-31T01:41:20+01:00",
   "finished_at": null,
   "last_started_at": "2026-10-31T01:40:00+01:00",
   "last_completed_at": "2026-10-31T01:27:00+01:00",
-  "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "current": 1,
+  "total": 1,
+  "trend_id": "3d5ee1703a15",
+  "title": "#LaReuniónSecreta",
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "3d5ee1703a15"
+  ],
+  "remaining_active_ids": [
+    "3d5ee1703a15"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial en curso: cola inicial 0; verificando estado autoritativo y reexplicaciones vigentes.",
+  "summary": "Investigando #LaReuniónSecreta (rev. 0) tras entrada nueva durante la pasada.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -33,6 +37,13 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio: cola autoritativa 0/0; verificando reexplicaciones vigentes y últimos resultados de mantenimiento. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-31T01:41:20+01:00",
+      "phase": "investigating",
+      "trend_id": "3d5ee1703a15",
+      "title": "#LaReuniónSecreta",
+      "message": "Nueva entrada detectada en la barrera: puesto 25, revisión 0. Identidad revalidada JIT; investigando detonante actual con fuentes independientes."
     }
   ]
 }
