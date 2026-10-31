@@ -8,48 +8,41 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T15:41:14.451+01:00",
-  "updated_at": "2026-10-31T15:43:00+01:00",
-  "finished_at": "2026-10-31T15:43:00+01:00",
-  "current": 2,
-  "total": 2,
+  "updated_at": "2026-10-31T15:43:30+01:00",
+  "finished_at": "2026-10-31T15:43:30+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "listas-joint-2ea3268fe326f4cf",
     "listas-auto-6631486dcdf94c1ca599"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "2/2. Chelsea-Manchester United r1 actualizada con el 2-0 final; agrupación automática aplicada sin fusiones (5 fichas distintas). Cola vacía confirmada tras relectura. Sin ImageGen.",
+  "summary": "1/1. Agrupación automática de Listas cerrada sin coincidencias ni coberturas previas; cola final 0 y sin reexplicaciones pendientes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "listas-joint-2ea3268fe326f4cf",
-      "revision": 1,
-      "outcome": "explained",
-      "name": "Chelsea-Manchester United"
-    },
-    {
       "id": "listas-auto-6631486dcdf94c1ca599",
       "revision": 0,
       "outcome": "grouping_completed",
-      "name": "Agrupación automática de Listas",
-      "groups_created": 0
+      "groups_created": 0,
+      "covered_by_existing": 0
     }
   ],
   "last_run": {
-    "run_id": "tr-1793457344128-manual",
+    "run_id": "tr-1793457674451-manual",
     "status": "DONE",
     "started_at": "2026-10-31T15:41:14.451+01:00",
-    "finished_at": "2026-10-31T15:43:00+01:00",
-    "attempted": 2,
-    "explained": 1,
-    "updates": 1,
+    "finished_at": "2026-10-31T15:43:30+01:00",
+    "attempted": 1,
+    "explained": 0,
+    "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
     "grouping_requests": 1,
@@ -57,9 +50,9 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "2/2. Chelsea-Manchester United r1 actualizada; agrupación automática cerrada sin coincidencias; cola final 0."
+    "summary": "1/1. Agrupación automática de Listas cerrada sin coincidencias ni coberturas previas; cola final 0 y sin reexplicaciones pendientes."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T15:41:14.451+01:00",
-  "last_completed_at": "2026-10-31T15:43:00+01:00"
+  "last_completed_at": "2026-10-31T15:43:30+01:00"
 }
