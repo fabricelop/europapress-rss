@@ -81,6 +81,23 @@ enum SiteAIImageCatalog {
         return result
     }
 
+    static func resolvedSHA256(id: String, revision: Int, explanation: String,
+                               explainedAt: String, catalog: [String: Entry]) -> String? {
+        guard resolved(id: id, revision: revision, explanation: explanation,
+                       explainedAt: explainedAt, catalog: catalog) != nil else { return nil }
+        return catalog[key(id: id, revision: revision)]?.sha256
+    }
+
+    // A verified remote deletion must not be undone by a 90-second memory
+    // cache or an older disk manifest when the next refresh is offline.
+    static func invalidateCache() async {
+        await memory.invalidate()
+        let disk = FileManager.default.urls(for: .cachesDirectory,
+                                            in: .userDomainMask)[0]
+            .appendingPathComponent("ttactualidad-site-ai-index.json")
+        try? FileManager.default.removeItem(at: disk)
+    }
+
     static func resolved(id: String, revision: Int, explanation: String,
                          explainedAt: String, catalog: [String: Entry]) -> URL? {
         guard !id.isEmpty, !explanation.isEmpty, !explainedAt.isEmpty,
@@ -103,5 +120,10 @@ private actor SiteAIImageMemory {
     func store(_ value: [String: SiteAIImageCatalog.Entry]) {
         last = value
         at = Date()
+    }
+
+    func invalidate() {
+        last = nil
+        at = .distantPast
     }
 }
