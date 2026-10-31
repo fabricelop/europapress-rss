@@ -5,18 +5,17 @@
   "canonical": true,
   "run_id": "tr-chat-20261031T2241+0100",
   "previous_run_id": "tr-chat-20261031T2225+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T22:41:00+01:00",
-  "updated_at": "2026-10-31T22:41:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T22:46:00+01:00",
+  "finished_at": "2026-10-31T22:46:00+01:00",
+  "current": 6,
   "total": 6,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "d35618ffea00",
     "c6c98db8f107",
     "f58e6c159e64",
@@ -24,16 +23,10 @@
     "0cc8cea169b1",
     "eccc5279841e"
   ],
-  "remaining_active_ids": [
-    "d35618ffea00",
-    "c6c98db8f107",
-    "f58e6c159e64",
-    "64a52adb63e1",
-    "0cc8cea169b1",
-    "eccc5279841e"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada iniciada con 6 trabajos editoriales reales detectados en la cola de main; investigación y cierre JIT en curso. Sin ImageGen.",
+  "summary": "Pasada completada 6/6. Fermín, Adeyemi, Pedri, Raphinha, Alonso y #MexicoGP investigados, revalidados JIT y persistidos en requests y Listas. Cola final 0; sin ImageGen ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -67,18 +60,59 @@
       "at": "2026-10-31T22:41:00+01:00",
       "phase": "preparing",
       "message": "Inicio: 6 trabajos en cola. Revalidación JIT e investigación actual en curso; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T22:46:00+01:00",
+      "phase": "verifying",
+      "message": "Persistencia comprobada en main: las 6 revisiones figuran como explained en requests y telegram-manual-explained; cola compacta 0."
+    },
+    {
+      "at": "2026-10-31T22:46:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 6/6. Sin ImageGen, sin publicación en X y sin pendientes editoriales en la cola."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "d35618ffea00",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "c6c98db8f107",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "f58e6c159e64",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "64a52adb63e1",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "0cc8cea169b1",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "eccc5279841e",
+      "revision": 0,
+      "outcome": "explained"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T22:41:00+01:00",
-  "last_completed_at": "2026-10-31T22:26:30+01:00",
+  "last_completed_at": "2026-10-31T22:46:00+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261031T2225+0100",
+    "run_id": "tr-chat-20261031T2241+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T22:26:30+01:00",
-    "attempted": 0,
-    "explained": 0,
+    "finished_at": "2026-10-31T22:46:00+01:00",
+    "attempted": 6,
+    "explained": 6,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
