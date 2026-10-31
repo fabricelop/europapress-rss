@@ -3,154 +3,83 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261031T074000+0100",
-  "previous_run_id": "tr-manual-20261031T072500+0100",
-  "status": "RUNNING",
-  "phase": "verifying",
-  "started_at": "2026-10-31T07:40:00+01:00",
-  "updated_at": "2026-10-31T07:48:00+01:00",
-  "finished_at": null,
-  "last_started_at": "2026-10-31T07:40:00+01:00",
-  "last_completed_at": "2026-10-31T07:45:00+01:00",
-  "current": 2,
-  "total": 4,
-  "trend_id": "red-review-b0f211321398ac293a69",
-  "title": "Revisar novedades: #DeViernes",
-  "queue_complete": false,
-  "processed_ids": [
-    "36bc10edc55b"
-  ],
-  "remaining_ids": [
-    "red-review-b0f211321398ac293a69",
-    "red-review-1bbd2722e14a13f3d3d0"
-  ],
-  "remaining_active_ids": [
-    "red-review-b0f211321398ac293a69",
-    "red-review-1bbd2722e14a13f3d3d0"
-  ],
+  "run_id": "tr-1793429240411-manual",
+  "previous_run_id": "tr-manual-20261031T074000+0100",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-10-31T07:47:20.411+01:00",
+  "updated_at": "2026-10-31T07:49:00+01:00",
+  "finished_at": "2026-10-31T07:49:00+01:00",
+  "last_started_at": "2026-10-31T07:47:20.411+01:00",
+  "last_completed_at": "2026-10-31T07:49:00+01:00",
+  "current": 0,
+  "total": 0,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Agrupación aplicada sin grupos. Resultados de revisión de #DeViernes y Atocha escritos; verificando su aplicación.",
+  "summary": "Pasada cerrada 0/0 tras barrera final: editorial-queue.json vacío y requests.json sin rewrite_pending. El job de agrupación observado al inicio dejó de existir antes de la barrera JIT, por lo que no se escribió un resultado obsoleto. Sin ImageGen ni publicaciones.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T07:40:00+01:00",
+      "at": "2026-10-31T07:47:20.411+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio de pasada manual; cola inicial count=0."
+      "trend_id": "listas-auto-00a7617e4cd89b3ccb35",
+      "title": "Agrupación automática de Listas",
+      "message": "Al inicio de la pasada se observó el job r0 en preparing y se evaluó su snapshot; no había coincidencias inequívocas para agrupar ni cobertura exacta sin novedades."
     },
     {
-      "at": "2026-10-31T07:40:00+01:00",
+      "at": "2026-10-31T07:48:30+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-00a7617e4cd89b3ccb35",
+      "title": "Agrupación automática de Listas",
+      "message": "Barrera JIT: el job ya no estaba en main; se respetó la aplicación concurrente y no se escribió un outbox obsoleto."
+    },
+    {
+      "at": "2026-10-31T07:49:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "La cola seguía vacía y no había rewrite_pending al primer cierre."
+      "message": "Relectura final de main: cola count=0 y rewrite_pending=0."
     },
     {
-      "at": "2026-10-31T07:40:59+01:00",
-      "phase": "preparing",
-      "trend_id": "36bc10edc55b",
-      "title": "Luka",
-      "message": "Apareció trabajo nuevo en main durante la verificación final: Luka r0, rank 30."
-    },
-    {
-      "at": "2026-10-31T07:40:59+01:00",
-      "phase": "investigating",
-      "trend_id": "36bc10edc55b",
-      "title": "Luka",
-      "message": "Investigando el detonante actual de Luka con fuentes independientes antes de redactar."
-    },
-    {
-      "at": "2026-10-31T07:42:00+01:00",
-      "phase": "drafting",
-      "trend_id": "36bc10edc55b",
-      "title": "Luka",
-      "message": "Dos fuentes independientes confirman el partido: 37 puntos, 7 rebotes y 5 asistencias de Dončić; Lakers perdió 112-95 tras ceder 25 puntos de ventaja."
-    },
-    {
-      "at": "2026-10-31T07:42:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "36bc10edc55b",
-      "title": "Luka",
-      "message": "Seleccionado un único remate factual, breve y no sensible; texto completo validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-10-31T07:43:00+01:00",
-      "phase": "persisting",
-      "trend_id": "36bc10edc55b",
-      "title": "Luka",
-      "message": "Persistiendo Luka r0 en requests.json y telegram-manual-explained.json; la imagen queda fuera de esta pasada."
-    },
-    {
-      "at": "2026-10-31T07:44:00+01:00",
-      "phase": "verifying",
-      "trend_id": "36bc10edc55b",
-      "title": "Luka",
-      "message": "Coinciden ID, revisión, explanation, closer_text y explained_at en requests y ficha explicada; retirada solo Luka r0 de la cola."
-    },
-    {
-      "at": "2026-10-31T07:45:00+01:00",
+      "at": "2026-10-31T07:49:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: cola count=0, sin rewrite_pending. Pasada cerrada 1/1 sin incidencias."
-    },
-    {
-      "at": "2026-10-31T07:46:00+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-cf1a57e5089b6b0ad33e",
-      "title": "Agrupación automática de Listas",
-      "message": "Comparación editorial concluida: no hay agrupaciones ni coberturas exactas aplicables entre los candidatos actuales."
-    },
-    {
-      "at": "2026-10-31T07:47:16+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-cf1a57e5089b6b0ad33e",
-      "title": "Agrupación automática de Listas",
-      "message": "El aplicador retiró la tarea de agrupación; resultado aplicado sin grupos ni coberturas."
-    },
-    {
-      "at": "2026-10-31T07:48:00+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-b0f211321398ac293a69",
-      "title": "Revisar novedades: #DeViernes",
-      "message": "Resultado updated/distinct_episode persistido en maintenance-outbox; sin remate por incluir homenaje a un fallecido."
-    },
-    {
-      "at": "2026-10-31T07:48:00+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-1bbd2722e14a13f3d3d0",
-      "title": "Revisar novedades: Atocha",
-      "message": "Resultado updated/continuidad persistido en maintenance-outbox; sin remate por tratarse del accidente de Urda."
+      "message": "Pasada editorial cerrada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "36bc10edc55b",
-      "revision": 0,
-      "name": "Luka",
-      "outcome": "explained"
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-manual-20261031T074000+0100",
-    "status": "RUNNING",
-    "finished_at": null,
-    "attempted": 4,
-    "explained": 1,
-    "updates": 2,
+    "run_id": "tr-1793429240411-manual",
+    "status": "DONE",
+    "finished_at": "2026-10-31T07:49:00+01:00",
+    "attempted": 0,
+    "explained": 0,
+    "updates": 0,
     "stale_reviews": 0,
     "unchanged_reviews": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "initially_observed_then_resolved_elsewhere": [
+      {
+        "id": "listas-auto-00a7617e4cd89b3ccb35",
+        "revision": 0,
+        "task": "group_listas"
+      }
+    ]
   },
   "api_failover_enabled": false
 }
