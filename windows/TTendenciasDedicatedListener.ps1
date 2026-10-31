@@ -601,7 +601,11 @@ function Test-ImageBridgeBusy {
             ((Is-TerminalImageStatus ([string]$job.status)) -or
              ([string]$job.delivery_mode -eq "launch_only" -and $job.pc_launched_at)))
         }
-        if($tooOld -or $terminal) {
+        # LAUNCHED is a confirmed prompt, NOT a completed image. The bridge
+        # deliberately keeps its own conversation alive briefly for passive
+        # image export, so a terminal remote status must never kill a living
+        # image bridge. Only the existing 12-minute deadlock safety cap applies.
+        if($tooOld) {
           Write-Log "IMAGE LOCAL LOCK STALE pid=$pidValue terminal=$terminal too_old=$tooOld"
           try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}
           Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
