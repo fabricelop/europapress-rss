@@ -5,29 +5,26 @@
   "canonical": true,
   "run_id": "tr-1793418259199-manual",
   "previous_run_id": "tr-chat-20261031T044000+0100-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T04:44:19+01:00",
-  "updated_at": "2026-10-31T04:47:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T04:48:00+01:00",
+  "finished_at": "2026-10-31T04:48:00+01:00",
   "last_started_at": "2026-10-31T04:44:19+01:00",
-  "last_completed_at": "2026-10-31T04:45:00+01:00",
-  "current": 0,
+  "last_completed_at": "2026-10-31T04:48:00+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-c9008fdf02605cf47ad9",
     "red-review-0efb803b91bdb8606726"
   ],
-  "remaining_active_ids": [
-    "red-review-c9008fdf02605cf47ad9",
-    "red-review-0efb803b91bdb8606726"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada sobre la cola autoritativa vigente: dos revisiones de novedades pendientes; la agrupación automática concurrente ya quedó aplicada.",
+  "summary": "Pasada concurrente completada 2/2: las revisiones de #DeViernes y Toledo fueron investigadas y sus resultados quedaron aplicados como stale por la barrera JIT; cola final 0.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -38,7 +35,43 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de la pasada manual. Relectura de main: quedan dos task:review_red; la agrupación automática ya fue aplicada por la pasada anterior. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T04:48:00+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-c9008fdf02605cf47ad9",
+      "title": "Revisar novedades: #DeViernes",
+      "message": "Resultado actualizado investigado y aplicado por el reconciliador; el snapshot se cerró como stale y no reabrió la ficha antigua."
+    },
+    {
+      "at": "2026-10-31T04:48:00+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-0efb803b91bdb8606726",
+      "title": "Revisar novedades: Toledo",
+      "message": "Resultado actualizado investigado y aplicado por el reconciliador; el snapshot se cerró como stale y no reabrió la ficha antigua."
+    },
+    {
+      "at": "2026-10-31T04:48:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: editorial-queue.json count=0; no quedan preparing/update, group_listas, anticipate ni review_red. Sin ImageGen ni publicación en X."
     }
   ],
-  "final_outcomes": []
+  "final_outcomes": [
+    {
+      "id": "red-review-c9008fdf02605cf47ad9",
+      "revision": 0,
+      "name": "Revisar novedades: #DeViernes",
+      "outcome": "stale",
+      "status": "review_completed"
+    },
+    {
+      "id": "red-review-0efb803b91bdb8606726",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "status": "review_completed"
+    }
+  ]
 }
