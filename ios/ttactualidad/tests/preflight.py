@@ -170,6 +170,10 @@ assert 'quickButton("Volver a evaluar", "arrow.triangle.2.circlepath")' in cover
 assert 'request("rework")' in covered_actions
 assert 'trend?.isCovered == true && intent == "rework"' in actions
 assert 'La explicación original y la ficha conjunta se conservarán.' in actions
+assert 'let preserveCoveredOriginal = action.decision == "rework"' in store
+assert 'if preserveCoveredOriginal { return original }' in store
+assert '!preserveCoveredOriginal' in store
+
 assert 'trend?.isCovered != true' not in actions
 assert 'submit("published")' in actions and 'submit("deleted")' in actions
 assert '"pilot/ttactualidad-publication-events.json"' in store
