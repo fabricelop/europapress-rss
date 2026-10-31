@@ -3,23 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793484863722-manual",
-  "previous_run_id": "tr-1793484740569-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T22:16:50.602Z",
-  "updated_at": "2026-10-31T22:17:08.872Z",
-  "finished_at": "2026-10-31T22:17:08.872Z",
+  "run_id": "tr-chat-20261031T2340+0100",
+  "previous_run_id": "tr-1793484863722-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T23:40:00+01:00",
+  "updated_at": "2026-10-31T23:40:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "3fb6181ca88d",
+    "79f4f7589726",
+    "74d936730a36",
+    "0bea704023b8"
+  ],
+  "remaining_active_ids": [
+    "3fb6181ca88d",
+    "79f4f7589726",
+    "74d936730a36",
+    "0bea704023b8"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada cerrada 0/0: relectura final de main con cola 0 y sin reexplicaciones pendientes. Sin ImageGen ni publicación.",
+  "summary": "Inicio manual: 4 trabajos preparing en cola; revalidación JIT e investigación actual en curso. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -229,6 +239,11 @@
       "at": "2026-10-31T22:17:08.872Z",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0 para tr-1793484863722-manual. Sin ImageGen, sin publicación y sin cambios editoriales."
+    },
+    {
+      "at": "2026-10-31T23:40:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-chat-20261031T2340+0100: 4 trabajos preparing vigentes en main (Mariano, Honda, Aston Martin, #frac1). Revalidando id+revision antes de investigar; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
