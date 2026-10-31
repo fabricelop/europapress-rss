@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T01:52:05.372538+00:00",
+  "updated_at": "2026-10-31T01:54:44.476970+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -43390,7 +43390,7 @@
       "revision": 0,
       "name": "Revisar novedades: #DeViernes",
       "rank": 7,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T01:52:05.372538+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -43413,14 +43413,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T01:54:44.476970+00:00",
+      "review_reason": "Episodio distinto y material: el 30 de octubre se confirmó la muerte de Raúl Triguero, reportero de ¡De viernes!, en el accidente de Urda; viajaba a Sevilla para un encargo del programa."
     },
     {
       "id": "red-review-8815443bbe311efbb739",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 26,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T01:52:05.372538+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -43444,7 +43447,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T01:54:44.476970+00:00",
+      "review_reason": "Continuidad del mismo accidente con novedades sustanciales verificadas: balance oficial de 69 fallecidos, cajas negras recuperadas y primer informe técnico con estimación de velocidad de la colisión."
     }
   ],
   "count": 214
