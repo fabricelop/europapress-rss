@@ -25,7 +25,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python3 shared/ttendencias_queue_reconcile.py
-            git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json
+            python3 trends/export_site_top30.py
+            git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json trends/site-top30-current.json
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "Consolidar explicaciones verificadas en TTActualidad"
             if git push origin HEAD:main; then exit 0; fi
