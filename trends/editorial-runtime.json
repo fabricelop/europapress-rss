@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793476500000-manual",
-  "previous_run_id": "tr-1793475951279-manual",
+  "run_id": "tr-1793476588400-manual",
+  "previous_run_id": "tr-1793476500000-manual",
   "status": "RUNNING",
   "phase": "investigating",
-  "started_at": "2026-10-31T20:55:00+01:00",
-  "updated_at": "2026-10-31T20:58:00+01:00",
+  "started_at": "2026-10-31T20:56:28.400+01:00",
+  "updated_at": "2026-10-31T20:57:00+01:00",
   "finished_at": null,
-  "current": 11,
-  "total": 14,
+  "current": 0,
+  "total": 3,
   "trend_id": "listas-auto-4d429a300cd33f3a1065",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
@@ -27,79 +27,12 @@
     "red-review-b99316165bec38aa28fd"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Reabierta la pasada: entraron 3 trabajos tras el primer cierre (1 agrupación y 2 revisiones de novedades). Procesando el más antiguo.",
+  "summary": "Comparando acontecimientos comunes y revalidando los tres trabajos vigentes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "Verificando acontecimiento común",
-  "final_outcomes": [
-    {
-      "id": "listas-joint-a5f5450c8a66666e",
-      "revision": 1,
-      "name": "Betis-Málaga en La Cartuja",
-      "outcome": "explained"
-    },
-    {
-      "id": "2a319bab5b04",
-      "revision": 0,
-      "name": "Eibar",
-      "outcome": "explained"
-    },
-    {
-      "id": "4eefe2099a0f",
-      "revision": 0,
-      "name": "Mónaco",
-      "outcome": "explained_with_uncertainty"
-    },
-    {
-      "id": "9f5502207ede",
-      "revision": 0,
-      "name": "La Cartuja",
-      "outcome": "explained"
-    },
-    {
-      "id": "5e8f0921d912",
-      "revision": 0,
-      "name": "#Worlds2026",
-      "outcome": "explained"
-    },
-    {
-      "id": "cfa997cefa1f",
-      "revision": 0,
-      "name": "#Mafin",
-      "outcome": "explained"
-    },
-    {
-      "id": "f8409ba1fa55",
-      "revision": 0,
-      "name": "Las Gaunas",
-      "outcome": "explained"
-    },
-    {
-      "id": "d7b205c966c8",
-      "revision": 0,
-      "name": "Simeone",
-      "outcome": "explained"
-    },
-    {
-      "id": "91e2b3bd68b1",
-      "revision": 0,
-      "name": "Alba Carrillo",
-      "outcome": "explained"
-    },
-    {
-      "id": "2f4a568bb479",
-      "revision": 0,
-      "name": "Ibai",
-      "outcome": "explained"
-    },
-    {
-      "id": "7131ba38fb4f",
-      "revision": 0,
-      "name": "Ferrol",
-      "outcome": "explained"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T20:46:00+01:00",
   "last_completed_at": "2026-10-31T20:56:00+01:00",
