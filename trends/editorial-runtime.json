@@ -5,59 +5,55 @@
   "canonical": true,
   "run_id": "tr-1793448774223-manual",
   "previous_run_id": "tr-1793448135200-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T13:13:30+01:00",
-  "updated_at": "2026-10-31T13:16:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T13:18:00+01:00",
+  "finished_at": "2026-10-31T13:18:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-7e61105d549dfd7cbb0a",
-  "title": "#DeViernes",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "f2e4752029f7"
-  ],
-  "remaining_ids": [
     "red-review-7e61105d549dfd7cbb0a",
     "red-review-b10ca3fa03f234e357b1"
   ],
-  "remaining_active_ids": [
-    "red-review-7e61105d549dfd7cbb0a",
-    "red-review-b10ca3fa03f234e357b1"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Revisando novedades de #DeViernes: episodio del 30 de octubre contrastado; comprobando cambio material frente al 23 de octubre.",
-  "incident_count": 1,
-  "incidents": [
+  "summary": "2/2 revisiones cerradas como stale por barrera JIT; cola final 0, sin preparing/update ni rewrite_pending. Urda r0 y agrupación previa ya estaban aplicadas. Sin ImageGen ni publicación.",
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "closing",
+  "final_outcomes": [
     {
-      "at": "2026-10-31T13:06:00+01:00",
-      "phase": "persisting",
-      "trend_id": "f2e4752029f7",
-      "title": "Urda",
-      "reason": "La escritura directa del archivo grande requests.json falló por transporte; se recuperó mediante el editorial-outbox oficial y su aplicador."
+      "id": "red-review-7e61105d549dfd7cbb0a",
+      "outcome": "stale"
+    },
+    {
+      "id": "red-review-b10ca3fa03f234e357b1",
+      "outcome": "stale"
     }
   ],
-  "error": null,
-  "activity": "investigating",
-  "final_outcomes": [],
   "last_run": {
-    "run_id": "tr-chat-20261031T125557+0100",
+    "run_id": "tr-1793448774223-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T13:00:30+01:00",
-    "attempted": 0,
+    "finished_at": "2026-10-31T13:18:00+01:00",
+    "attempted": 2,
     "explained": 0,
     "updates": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "0/0 cerrado tras refresco Top 30 #601 y relectura final de main: cola 0, sin preparing/update, problematic ni rewrite_pending. Sin ImageGen ni publicación."
+    "summary": "2/2 revisiones cerradas como stale; cola final 0. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T13:13:30+01:00",
-  "last_completed_at": "2026-10-31T13:12:09+01:00"
+  "last_completed_at": "2026-10-31T13:18:00+01:00"
 }
