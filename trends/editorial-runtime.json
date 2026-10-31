@@ -3,53 +3,84 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793454351406-manual",
+  "run_id": "tr-chat-20261031T144000+0100",
   "previous_run_id": "tr-chat-20261031T144000+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T14:46:00+01:00",
-  "updated_at": "2026-10-31T14:46:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 3,
-  "trend_id": "listas-auto-dd413455657c31b745da",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "updated_at": "2026-10-31T14:49:00+01:00",
+  "finished_at": "2026-10-31T14:49:00+01:00",
+  "current": 6,
+  "total": 6,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "836530272c76",
+    "7c2dfbcd3134",
+    "355d223e9798",
     "listas-auto-dd413455657c31b745da",
     "red-review-c87bc5f551d7653733c0",
     "red-review-3ad7a43fc68a0025b99d"
   ],
-  "remaining_active_ids": [
-    "listas-auto-dd413455657c31b745da",
-    "red-review-c87bc5f551d7653733c0",
-    "red-review-3ad7a43fc68a0025b99d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Preparando 3 trabajos editoriales vigentes: 1 agrupación y 2 revisiones rojas.",
+  "summary": "Pasada manual completada 6/6 sobre main: 3 explicaciones nuevas, 1 agrupación automática creada y 2 revisiones cerradas como stale por guard terminal histórico. Cola final 0; rewrite_pending 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "836530272c76",
+      "name": "Chelsea",
+      "outcome": "explained"
+    },
+    {
+      "id": "7c2dfbcd3134",
+      "name": "#PremierLeagueDAZN",
+      "outcome": "explained"
+    },
+    {
+      "id": "355d223e9798",
+      "name": "Hjulmand",
+      "outcome": "explained"
+    },
+    {
+      "id": "listas-auto-dd413455657c31b745da",
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouped",
+      "created_id": "listas-joint-97706d6825e02352"
+    },
+    {
+      "id": "red-review-c87bc5f551d7653733c0",
+      "name": "Revisar novedades: #DeViernes",
+      "outcome": "stale"
+    },
+    {
+      "id": "red-review-3ad7a43fc68a0025b99d",
+      "name": "Revisar novedades: #FelizSábado",
+      "outcome": "stale"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-chat-20261031T142500+0100",
+    "run_id": "tr-chat-20261031T144000+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T14:26:00+01:00",
-    "attempted": 0,
-    "explained": 0,
+    "finished_at": "2026-10-31T14:49:00+01:00",
+    "attempted": 6,
+    "explained": 3,
     "updates": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
+    "grouping_requests": 1,
+    "groups_created": 1,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "0 trabajos editoriales vigentes tras relectura final de main; cola 0 y rewrite_pending 0. Sin ImageGen ni publicación."
+    "summary": "3 tendencias explicadas; Chelsea + #PremierLeagueDAZN agrupadas en listas-joint-97706d6825e02352; 2 revisiones cerradas stale; cola 0 y rewrite_pending 0. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T14:46:00+01:00",
-  "last_completed_at": "2026-10-31T14:45:09+01:00"
+  "last_completed_at": "2026-10-31T14:49:00+01:00"
 }
