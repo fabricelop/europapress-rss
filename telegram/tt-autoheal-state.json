@@ -2,48 +2,63 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-31T14:45:29.151159+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-31T18:49:31.269450+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "879ac17a8e18",
+          "title": "La mayoría de las comisiones organizadoras de la acampada de Sol anuncian que dejan la protesta para",
+          "seconds": 258,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1313476,
+          "seconds": 1328118,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "8e13ea69653a38f42328e02e2391bdedda14785907c339b4b6889f809e8d8417",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-31T14:45:29.151159+00:00",
-      "issue_count": 3,
+      "checked_at": "2026-10-31T18:49:31.269450+00:00",
+      "issue_count": 4,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "listas-joint-97706d6825e02352",
-          "title": "Chelsea-Manchester United",
-          "seconds": 3461,
+          "id": "69709b2f4154",
+          "title": "Supa",
+          "seconds": 501,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "listas-joint-2ea3268fe326f4cf",
-          "title": "Chelsea-Manchester United",
-          "seconds": 587,
+          "id": "8896b7c8b76c",
+          "title": "Riquelme",
+          "seconds": 501,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "234189b5a459",
+          "title": "Binance",
+          "seconds": 228,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1313476,
+          "seconds": 1328118,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -52,16 +67,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "802bd55115d42e788cb35f2f331c10cc67bf4b102213937aa57dafa5fed3e862",
+      "open_signature": "52f617478eb08546db1ada637f097085f1e2b75c9b4939af9763a75761916065",
       "repair_via_workflow_run": false,
-      "escalation_required": 1
+      "escalation_required": 0
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-30T19:39:39.066381+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-31T14:45:29.151159+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-31T14:45:29.151159+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-31T14:45:29.151159+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-31T18:49:31.269450+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-31T18:49:31.269450+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-31T18:49:31.269450+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-31T18:49:31.269450+00:00"
   },
-  "checked_at": "2026-10-31T14:45:29.151159+00:00"
+  "checked_at": "2026-10-31T18:49:31.269450+00:00"
 }
