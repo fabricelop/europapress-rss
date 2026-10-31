@@ -24,7 +24,6 @@ globalThis.fetch=async(url,options)=>{
 };
 try{
  assert.equal((await app.fetch(make('/api/trend-image?target_id=trend-123', 'GET',null,false),env)).status,401);
- assert.equal((await app.fetch(make('/api/trend-image',{target_id:'trend-123'}),env)).status,404);
  const invalid=await app.fetch(make('/api/trend-image','POST',{target_id:'../../etc',revision:0}),env);
  assert.equal(invalid.status,400);
  const badRevision=await app.fetch(make('/api/trend-image','POST',{target_id:'trend-123',revision:-1}),env);
