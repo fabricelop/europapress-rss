@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T16:10:17.780050+00:00",
+  "updated_at": "2026-10-31T17:10:58+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -81121,6 +81121,98 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "a62d395c919c",
+      "name": "Haas",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-10-31T17:10:58+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "1559c8dae991",
+      "requested_together": [
+        "Haas"
+      ],
+      "captured_with": [
+        "Haas",
+        "Levante",
+        "Atlético de Madrid",
+        "Medvedev"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "8e78ca332a37",
+      "name": "Levante",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-31T17:10:58+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "1559c8dae991",
+      "requested_together": [
+        "Levante"
+      ],
+      "captured_with": [
+        "Haas",
+        "Levante",
+        "Atlético de Madrid",
+        "Medvedev"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "b9065cb3e41e",
+      "name": "Atlético de Madrid",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-31T17:10:58+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "1559c8dae991",
+      "requested_together": [
+        "Atlético de Madrid"
+      ],
+      "captured_with": [
+        "Haas",
+        "Levante",
+        "Atlético de Madrid",
+        "Medvedev"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "4bcc67659c7e",
+      "name": "Medvedev",
+      "rank": 15,
+      "status": "preparing",
+      "requested_at": "2026-10-31T17:10:58+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "1559c8dae991",
+      "requested_together": [
+        "Medvedev"
+      ],
+      "captured_with": [
+        "Haas",
+        "Levante",
+        "Atlético de Madrid",
+        "Medvedev"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 319
