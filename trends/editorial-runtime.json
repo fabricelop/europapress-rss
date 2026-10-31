@@ -5,27 +5,26 @@
   "canonical": true,
   "run_id": "tr-1793484740569-manual",
   "previous_run_id": "tr-chat-20261031T2311+0100",
-  "status": "RUNNING",
-  "phase": "drafting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T23:12:20+01:00",
-  "updated_at": "2026-10-31T23:16:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T23:17:00+01:00",
+  "finished_at": "2026-10-31T23:17:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "red-review-e1e22bc4e0a17ee83c48",
-  "title": "Revisar novedades: Renfe",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "listas-auto-6e922bcc692d7eb03194",
     "red-review-ba61767e4f3587475df3",
-    "red-review-e1e22bc4e0a17ee83c48"
+    "red-review-e1e22bc4e0a17ee83c48",
+    "listas-auto-dec4359818675e9d1925"
   ],
-  "remaining_active_ids": [
-    "red-review-ba61767e4f3587475df3",
-    "red-review-e1e22bc4e0a17ee83c48"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Toledo enviado a maintenance-outbox; Renfe tiene novedad material verificada. Nuevo job de agrupación detectado y queda detrás de las revisiones más antiguas.",
+  "summary": "Pasada cerrada: cola final 0. Dos revisiones rojas completadas y dos barreras de agrupación resueltas; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -210,29 +209,62 @@
       "trend_id": "red-review-e1e22bc4e0a17ee83c48",
       "title": "Revisar novedades: Renfe",
       "message": "Actualización material redactada en continuidad, sin remate por tragedia; revalidación JIT completada."
+    },
+    {
+      "at": "2026-10-31T23:17:00+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0. Revisiones Toledo/Renfe figuran review_completed; agrupaciones aplicadas y sin trabajo activo restante."
+    },
+    {
+      "at": "2026-10-31T23:17:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada. Sin ImageGen, sin publicación en X y sin incidencias editoriales."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "listas-auto-6e922bcc692d7eb03194",
+      "outcome": "grouping_completed",
+      "groups_created": 1,
+      "covered_by_existing": 1
+    },
+    {
+      "id": "red-review-ba61767e4f3587475df3",
+      "outcome": "review_completed",
+      "review_outcome": "stale"
+    },
+    {
+      "id": "red-review-e1e22bc4e0a17ee83c48",
+      "outcome": "review_completed",
+      "review_outcome": "stale"
+    },
+    {
+      "id": "listas-auto-dec4359818675e9d1925",
+      "outcome": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 0
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T23:12:03+01:00",
-  "last_completed_at": "2026-10-31T23:12:03+01:00",
+  "last_completed_at": "2026-10-31T23:17:00+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261031T2255+0100",
+    "run_id": "tr-1793484740569-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T22:56:30+01:00",
-    "attempted": 0,
+    "finished_at": "2026-10-31T23:17:00+01:00",
+    "attempted": 3,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
+    "grouping_requests": 2,
+    "groups_created": 1,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Cola inicial y final vacías; la última mutación de requests anterior al inicio ya estaba aplicada. No se encontró trabajo nuevo durante la pasada."
+    "note": "Cola final revalidada en 0; las revisiones de Toledo y Renfe quedaron cerradas como stale frente a fichas ya superadas, y las agrupaciones quedaron aplicadas."
   }
 }
