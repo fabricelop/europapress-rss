@@ -3,19 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793481355073-manual",
+  "run_id": "tr-1793481056571-manual",
   "previous_run_id": "tr-1793481056571-manual",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T22:17:00+01:00",
-  "updated_at": "2026-10-31T22:18:00+01:00",
-  "finished_at": "2026-10-31T22:18:00+01:00",
-  "current": 3,
-  "total": 3,
+  "updated_at": "2026-10-31T22:18:05.161+01:00",
+  "finished_at": "2026-10-31T22:18:05.161+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "4eefe2099a0f",
     "listas-auto-94d0604310bb7746f812",
     "red-review-80a147a2f5bf6e439909",
     "red-review-275356d05ce6c56c3340"
@@ -23,7 +24,7 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 3/3: agrupación automática revisada sin nuevas agrupaciones; revisiones Toledo y Renfe consumidas como stale porque sus fuentes editoriales ya habían sido superadas por estado más reciente. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicaciones.",
+  "summary": "Pasada completada 4/4: Mónaco r2 explicado con detonante GAFI verificado; agrupación automática sin coincidencias; revisiones Toledo y Renfe cerradas como stale al perder elegibilidad antes de aplicar. Cola final sin preparing/update ni reelaboraciones pendientes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -42,44 +43,58 @@
       "at": "2026-10-31T22:18:00+01:00",
       "phase": "closing",
       "message": "Relectura final de main: cola 0 y sin rewrite_pending. Cierre 3/3 verificado."
+    },
+    {
+      "at": "2026-10-31T22:18:05.161+01:00",
+      "phase": "closing",
+      "message": "Relectura final de main: 0 preparing/update y 0 reexplicaciones/rewrite pendientes. Cierre 4/4; ImageGen 0."
     }
   ],
   "final_outcomes": [
+    {
+      "id": "4eefe2099a0f",
+      "revision": 2,
+      "name": "Mónaco",
+      "outcome": "explained",
+      "note": "Detonante verificado: salida de Mónaco de la lista gris del GAFI."
+    },
     {
       "id": "listas-auto-94d0604310bb7746f812",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 0
+      "groups_created": 0
     },
     {
       "id": "red-review-80a147a2f5bf6e439909",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
-      "outcome": "stale"
+      "outcome": "stale",
+      "note": "Novedades contrastadas, pero la ficha dejó de ser elegible antes de aplicar; no se creó actualización."
     },
     {
       "id": "red-review-275356d05ce6c56c3340",
       "revision": 0,
       "name": "Revisar novedades: Renfe",
-      "outcome": "stale"
+      "outcome": "stale",
+      "note": "Novedad contrastada, pero la ficha dejó de ser elegible antes de aplicar; no se creó actualización."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T22:17:00+01:00",
-  "last_completed_at": "2026-10-31T22:18:00+01:00",
+  "last_completed_at": "2026-10-31T22:18:05.161+01:00",
   "last_run": {
-    "run_id": "tr-1793481355073-manual",
+    "run_id": "tr-1793481056571-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T22:18:00+01:00",
-    "attempted": 3,
-    "explained": 0,
+    "finished_at": "2026-10-31T22:18:05.161+01:00",
+    "attempted": 4,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
