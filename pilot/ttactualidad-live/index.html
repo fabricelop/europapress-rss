@@ -731,6 +731,96 @@ function manualPrompt(x){
   'RESULTADO OBLIGATORIO: UNA ÚNICA ILUSTRACIÓN LIMPIA, SIN NINGÚN TEXTO NI MAQUETACIÓN, sin bordes ni panel inferior. NO respondas con una tarjeta o diseño que incluya el contenido editorial.'
  ].filter(Boolean).join('\n\n');
 }
+// Image requests are on demand. No periodic scanning of all Listas cards:
+ // the PC keeps its own queue and the app only watches jobs explicitly opened here.
+const trendImageSessions=new Map();
+function matchingAiImage(x){
+ const ai=x.ai_image||{},guard=ai.context_guard||{};
+ return ai.generated===true&&ai.provider==='chat-imagegen'&&ai.origin==='executing_chat'&&
+   Number(guard.version)===3&&guard.scope==='current_item_only'&&
+   (!guard.trend_id||String(guard.trend_id)===String(x._id||x.id))&&
+   (guard.revision==null||Number(guard.revision)===Number(x.revision||0))&&isHttp(ai.url)?ai:null;
+}
+function imageCardMessage(x){
+ if(matchingAiImage(x))return 'Imagen IA asociada y disponible';
+ const s=trendImageSessions.get(String(x._id||x.id||''));
+ if(s&&s.revision===Number(x.revision||0)){
+  if(s.status==='DONE')return 'Imagen recibida; comprobando su incorporación a Listas';
+  if(s.status==='LAUNCHED')return 'Prompt lanzado; falta recuperar la imagen del navegador';
+  if(s.status==='REQUESTED')return 'Imagen solicitada; esperando al PC';
+  if(s.status==='ERROR')return 'Falló la generación; se puede volver a solicitar';
+  if(s.status==='CANCELLED')return 'Generación cancelada';
+  return 'Imagen pendiente: '+String(s.phase||s.status||'').slice(0,48);
+ }
+ return String(x.ai_image_status||'').toLowerCase()==='ready'?'Imagen IA indicada como lista; falta verificar archivo':'Imagen IA pendiente de asociación';
+}
+function imageStillPending(s){
+ if(!s||!['REQUESTED','RUNNING','GENERATING','PERSISTING','LAUNCHED'].includes(s.status))return false;
+ const at=Date.parse(s.updated_at||s.requested_at||'');
+ return Number.isFinite(at)&&Date.now()-at<72*3600000;
+}
+async function imageRunStatus(id){
+ const r=await fetch('/api/trend-image?target_id='+encodeURIComponent(id),{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(16000)});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok||!d.ok)throw Error(d.error||'No se pudo consultar la generación');
+ return d.found?d:null;
+}
+function imageWatch(x,attempt=0){
+ const id=String(x._id||x.id||''),rev=Number(x.revision||0);
+ if(attempt>=12||document.hidden)return;
+ setTimeout(async()=>{
+  if(state.app!=='tr'||state.tab!=='listas')return;
+  try{
+   const latest=await imageRunStatus(id);
+   if(!latest||latest.revision!==rev)return;
+   trendImageSessions.set(id,latest);
+   if(latest.status==='DONE'){
+    await load(true);return;
+   }
+   render();
+   if(imageStillPending(latest))imageWatch(x,attempt+1);
+  }catch{if(attempt<4)imageWatch(x,attempt+1)}
+ },30000);
+}
+async function generateTrendImage(x,button){
+ const id=String(x._id||x.id||'');
+ const revision=Number(x.revision||0);
+ if(!id||!String(x.explanation||'').trim())return showToast('La tendencia necesita una explicación vigente');
+ button.disabled=true;const prior=button.textContent;
+ button.textContent='Consultando…';
+ try{
+  const existing=await imageRunStatus(id);
+  if(existing&&existing.revision===revision){
+   trendImageSessions.set(id,existing);
+   if(imageStillPending(existing)){
+    showToast(existing.status==='LAUNCHED'?'El chat ya se abrió; pendiente de recuperar la imagen':'La imagen ya está solicitada');
+    render();imageWatch(x);return;
+   }
+   if(existing.status==='DONE'&&!matchingAiImage(x)){
+    // A completed upload is not permission to create another image while the
+    // separately downloaded editorial file may still be updating.
+    await load(true);
+    showToast('La última generación terminó. Comprueba la imagen actualizada antes de volver a solicitar otra.');
+    return;
+   }
+  }
+  if(matchingAiImage(x)&&!confirm('Ya hay una imagen IA válida. ¿Solicitar una nueva?'))return;
+  // Same upstream image-run endpoint already used by the original editor.
+  const response=await fetch('/api/trend-image',{method:'POST',credentials:'same-origin',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({target_id:id,revision}),
+    signal:AbortSignal.timeout(27000)});
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok||!result.ok){
+   if(response.status===409){showToast('No se ha creado otra orden: '+String(result.reason||result.error));return}
+   throw Error(result.error==='image_bridge_not_configured'?'Falta configurar el puente de imágenes en TTActualidad':
+    result.error||'No se pudo solicitar imagen');
+  }
+  trendImageSessions.set(id,{...result,status:'REQUESTED',phase:'queued'});
+  showToast('Solicitud registrada; ahora debe recogerla el PC');
+  render();imageWatch(x);
+ }catch(e){showToast(String(e.message||e))}
+ finally{button.disabled=false;button.textContent=prior}
+}
 async function copyText(value,label){
  try{await navigator.clipboard.writeText(value)}catch(e){
   const el=document.createElement('textarea');el.value=value;el.style.cssText='position:fixed;top:0;left:0;opacity:.01';document.body.append(el);el.focus();el.select();const ok=document.execCommand('copy');el.remove();if(!ok){showToast('No se pudo copiar; mantén pulsado el texto');return}
@@ -1013,7 +1103,7 @@ function compactTop30Card(out,x){
 }
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
- const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
+ const img=isHttp(matchingAiImage(x)?.url||x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
  const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.displayExpl;
  const showClip=!['fuente','tremending'].includes(x._kind)&&!x._topOnly&&!x._historical,showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial)&&!(x._kind==='tr'&&!d.expl);
  const out=document.createElement('article');out.className='card';
@@ -1042,10 +1132,14 @@ function rowCard(x,i){
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
   btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
   if(x._kind==='tr'&&x._status==='EXPLICADA'){
-   const ai=String(x.ai_image_status||'').toLowerCase();
    const line=document.createElement('p');line.className='fact';
-   line.textContent=ai==='ready'?'Imagen IA disponible':ai==='pending'?'Imagen IA solicitada; pendiente de generación':'Imagen IA pendiente de reparación automática';
+   line.textContent=imageCardMessage(x);
    out.querySelector('.card-body').insertBefore(line,a);
+   const session=trendImageSessions.get(String(x._id||x.id||''));
+   const active=session&&session.revision===Number(x.revision||0)&&imageStillPending(session);
+   const makeImage=btn(active?'Comprobar imagen':matchingAiImage(x)?'Regenerar imagen IA':'Generar imagen IA',
+     ()=>generateTrendImage(x,makeImage),!active);
+   makeImage.classList.add('trend-image-action');
    const redo=command('Volver a En elaboración','rework');redo.classList.add('rework');
   }
   const remove=command('Quitar de Listas','deleted');remove.classList.add('remove');

@@ -844,10 +844,24 @@ function Start-WebImagePublisher {
   if((([DateTimeOffset]::UtcNow)-$script:WebPublisherLastRun).TotalSeconds -lt 60){return}
   $script:WebPublisherLastRun=[DateTimeOffset]::UtcNow
   try {
-    # Capture is secondary. Do not start browser work while either generator
-    # owns the image slot; do not clean up/terminate any generator from here.
+    # A prompt that is still being submitted must never be inspected. Once
+    # TTendencias has ACKed LAUNCHED, its own fixed conversation is retained
+    # temporarily so the PASSIVE exporter can read the existing 9223 tab.
+    # Do not navigate, restart Chrome, touch TTiTTulares or revive the old 9234 relay.
     $generating=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue | Where-Object {[string]$_.CommandLine -match 'TT(endencias|iTTulares)ImageBridge\.js'})
-    if($generating.Count -gt 0){return}
+    if(@($generating|Where-Object{[string]$_.CommandLine -match 'TTiTTularesImageBridge\.js'}).Count -gt 0){return}
+    $own=@($generating|Where-Object{[string]$_.CommandLine -match 'TTendenciasImageBridge\.js'})
+    if($own.Count -gt 0){
+      # Without a positively verified launch identity, fail closed.
+      if($own.Count -ne 1 -or -not(Test-Path -LiteralPath $ImageBridgeLockPath)){return}
+      try{
+        $lock=Get-Content -LiteralPath $ImageBridgeLockPath -Raw -ErrorAction Stop|ConvertFrom-Json
+        if(-not($own|Where-Object{$_.ProcessId -eq [int]$lock.pid})){return}
+        $job=Read-ImageJob ([string]$lock.target_id) ([string]$lock.command_id)
+        if(-not $job -or [string]$job.command_id -ne [string]$lock.command_id -or
+           [string]$job.delivery_mode -ne "launch_only" -or -not $job.pc_launched_at){return}
+      }catch{return}
+    }
     $node=Get-Command node.exe -ErrorAction Stop
     if(-not (Ensure-WebPublisherLatest $node.Source)){return}
     $file=Join-Path $BaseDir "TTendenciasWebImages.cjs"

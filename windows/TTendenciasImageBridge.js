@@ -930,6 +930,23 @@ async function uploadImage(image){
   }
   return result;
 }
+// After LAUNCHED, protect only this already-submitted conversation long enough
+// for the independent read-only publisher to receive the raster. Never request
+// another generation, navigate away, or touch the other project's fixed tab.
+async function holdForWebImageReceipt(maxMs=240000,pollMs=15000){
+  const deadline=Date.now()+maxMs;
+  while(Date.now()<deadline){
+    await sleep(Math.min(pollMs,Math.max(1,deadline-Date.now())));
+    let current;
+    try{current=await fetchJob();}catch{continue}
+    if(String(current.command_id||"")!==commandId)return "superseded";
+    const status=String(current.status||"").toUpperCase();
+    if(status==="DONE"&&current.upload_sha256)return "web_image_done";
+    if(String(current.web_image?.stage||"")==="published")return "web_image_published";
+    if(status==="CANCELLED"||status==="SUPERSEDED")return "cancelled";
+  }
+  return "receipt_not_confirmed_within_hold";
+}
 // Optional delivery bookkeeping. Failure here is never a generation failure.
 // Keep this boundary separate from the pre-submit and launched receipts.
 async function optionalWebHandoff(handoff,remember=false){
@@ -983,7 +1000,11 @@ async function optionalWebHandoff(handoff,remember=false){
           if(await optionalWebHandoff(webHandoff,true))break;
           await sleep(700);
         }
-        console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED; ChatGPT Images, sin captura ni subida");
+        // The relay may no longer be installed. The publisher can read this
+        // same existing 9223 conversation without opening a new Chrome tab,
+        // provided the producer does not immediately reuse it for the next job.
+        const receipt=await holdForWebImageReceipt();
+        console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED receipt="+receipt+"; bridge sin captura ni subida");
         return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
