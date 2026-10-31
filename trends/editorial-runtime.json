@@ -5,35 +5,31 @@
   "canonical": true,
   "run_id": "tr-1793490690446-manual",
   "previous_run_id": "tr-1793490579211-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T00:51:00+01:00",
-  "updated_at": "2026-11-01T00:51:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T00:53:00+01:00",
+  "finished_at": "2026-11-01T00:53:00+01:00",
   "current": 0,
-  "total": 1,
-  "trend_id": "listas-auto-1a5f4a05d85097448e5b",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
+  "total": 0,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [],
-  "remaining_ids": [
-    "listas-auto-1a5f4a05d85097448e5b"
-  ],
-  "remaining_active_ids": [
-    "listas-auto-1a5f4a05d85097448e5b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "remaining_active": 1,
-    "queue_remaining": 1,
+    "remaining_active": 0,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -448,6 +444,21 @@
       "trend_id": "listas-auto-1a5f4a05d85097448e5b",
       "title": "Agrupación automática de Listas",
       "message": "Inicio tr-1793490690446-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T00:52:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT: el group_listas observado al inicio ya no figura en editorial-queue. Existe su outbox con groups=[] y covered_by_existing=[]; main muestra la cola en 0. No se duplica trabajo concurrente."
+    },
+    {
+      "at": "2026-11-01T00:53:00+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Últimos resultados de mantenimiento revisados; sin trabajo editorial pendiente."
+    },
+    {
+      "at": "2026-11-01T00:53:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-1793490690446-manual tras revalidación JIT. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
