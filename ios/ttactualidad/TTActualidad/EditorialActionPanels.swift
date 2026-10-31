@@ -29,8 +29,6 @@ struct EditorialActions: View {
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
-    @State private var confirmSiteAICatalogRemoval = false
-    @State private var siteAIDeletionCandidate: TrendItem? = nil
     @Environment(\.openURL) private var openURL
 
     private var title: String { news?.title ?? trend?.name ?? "" }
@@ -39,15 +37,6 @@ struct EditorialActions: View {
     private var revision: Int { news?.revision ?? trend?.revision ?? 0 }
     private var editorialID: String { news?.id ?? trend?.editorialID ?? "" }
     private var project: String { news == nil ? "ttendencias" : "ttittulares" }
-
-    // Covered entries use their editorial group, never rank or displayed name.
-    private var siteImageTarget: TrendItem? {
-        guard let displayed = trend else { return nil }
-        guard displayed.isCovered else { return displayed }
-        return store.snapshot.trendListas.first {
-            $0.editorialID == displayed.coveredByID && !$0.isCovered
-        }
-    }
 
     var body: some View {
         VStack(spacing: 7) {
@@ -209,13 +198,6 @@ struct EditorialActions: View {
                     }
                 }
             }
-            if let target = siteImageTarget, target.siteImageURL != nil,
-               target.siteImageSHA256.count == 64 {
-                quickButton("Eliminar imagen IA", "trash", danger: true) {
-                    siteAIDeletionCandidate = target
-                    confirmSiteAICatalogRemoval = true
-                }
-            }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -225,21 +207,6 @@ struct EditorialActions: View {
                 TrendHintsSheet(trend: trend, github: github)
                     .environmentObject(store)
                     .presentationDetents([.medium, .large])
-            }
-        }
-        .confirmationDialog(
-            "¿Retirar imagen IA de \(siteAIDeletionCandidate?.name ?? "esta tendencia")?",
-            isPresented: $confirmSiteAICatalogRemoval, titleVisibility: .visible
-        ) {
-            Button("Retirar solo del catálogo iPhone (Site pendiente)", role: .destructive) {
-                if let candidate = siteAIDeletionCandidate {
-                    Task { await removeSiteAICatalogEntry(candidate) }
-                }
-            }
-            Button("Cancelar", role: .cancel) {}
-        } message: {
-            if let candidate = siteAIDeletionCandidate {
-                Text("ID: \(candidate.siteImageEditorialID), revisión \(candidate.siteImageRevision), SHA-256: \(candidate.siteImageSHA256). Esta operación elimina SOLO la referencia de GitHub tras verificarla. La imagen seguirá publicada en el Site: su conector no admite borrarla. No equivale a una eliminación completa.")
             }
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
@@ -270,30 +237,6 @@ struct EditorialActions: View {
                  : intent == "discard" && news?.status == "EN ELABORACIÓN"
                  ? "Se cancelará la investigación en GitHub y no se añadirá a Listas. Si ya terminó mientras confirmabas, se te avisará para que la quites desde Listas."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
-        }
-    }
-
-    private func removeSiteAICatalogEntry(_ candidate: TrendItem) async {
-        guard github.authenticated else { showSettings = true; return }
-        guard let imageURL = candidate.siteImageURL else {
-            outcome = "La imagen cambió. Actualiza antes de retirarla."
-            return
-        }
-        let result = await github.removeSiteAIImageFromCatalog(
-            id: candidate.siteImageEditorialID,
-            revision: candidate.siteImageRevision,
-            explanation: candidate.explanation,
-            explainedAt: candidate.siteImageExplainedAt,
-            imageURL: imageURL.absoluteString,
-            sha256: candidate.siteImageSHA256)
-        switch result {
-        case .verified:
-            await SiteAIImageCatalog.invalidateCache()
-            outcome = "CATÁLOGO APP: retirada verificada. SITE: borrado pendiente (sin API de eliminación). Actualiza la app; no se ha borrado el PNG del Site."
-        case .pending:
-            outcome = "CATÁLOGO APP: resultado sin verificar. SITE: sin cambios. " + github.notice
-        case .failed:
-            outcome = "No se ha confirmado la retirada. SITE: sin cambios. " + github.notice
         }
     }
 

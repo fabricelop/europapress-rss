@@ -227,17 +227,17 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.34"' in project
-assert 'CURRENT_PROJECT_VERSION: "40"' in project
+assert 'MARKETING_VERSION: "0.4.35"' in project
+assert 'CURRENT_PROJECT_VERSION: "41"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.34: remove only the trend→news UI. Keep independent news API.
+# 0.4.35: remove image deletion UI/API and trend→news UI. Keep news functionality.
 assert 'quickButton("Enviar a TTiTTulares"' not in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' not in actions
 assert 'originTrend: trend' not in actions
-assert 'quickButton("Eliminar imagen IA"' in actions
-assert 'confirmSiteAICatalogRemoval' in actions
-assert 'removeSiteAIImageFromCatalog(' in auth
+assert 'quickButton("Eliminar imagen IA"' not in actions
+assert 'confirmSiteAICatalogRemoval' not in actions
+assert 'removeSiteAIImageFromCatalog(' not in auth
 assert 'siteImageSHA256' in store
 assert 'resolvedSHA256(' in (root / "TTActualidad/SiteAIImageCatalog.swift").read_text()
 assert 'beginManualNews(requestID: requestID, title: headline,' not in actions
@@ -260,7 +260,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "40"' in project
+assert 'CURRENT_PROJECT_VERSION: "41"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -272,7 +272,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "40"' in project
+assert 'CURRENT_PROJECT_VERSION: "41"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -288,8 +288,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.34"' in project
-assert 'CURRENT_PROJECT_VERSION: "40"' in project
+assert 'MARKETING_VERSION: "0.4.35"' in project
+assert 'CURRENT_PROJECT_VERSION: "41"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
