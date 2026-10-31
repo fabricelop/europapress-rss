@@ -16,7 +16,7 @@ Este documento es una **especificación de aplicación al código existente del 
    - No usar el color de antigüedad como una segunda fila. Si se conservan códigos visuales, usar un punto/borde mínimo con texto accesible.
    - No equiparar icono de foto de archivo, trabajo lanzado, imagen generada pendiente o imagen inexistente con una IA verificada.
    - Si la tendencia está agrupada, conservar identificación del grupo y su explicación compartida; no reescribir originales ni depender del nombre.
-3. **Acordeón de apertura única.** Mantener en estado UI **un único identificador editorial abierto** (no un booleano en cada tarjeta); pulsar otra fila abre esa tarjeta y cierra la anterior; pulsar de nuevo la abierta la cierra. `aria-expanded`, `aria-controls`, activación mediante Enter/Espacio y foco visible. No abrir ninguna ficha al recargar salvo decisión explícita.
+3. **Acordeón de apertura única.** Mantener en estado UI **un único identificador estable de fila abierto** (no un booleano en cada tarjeta); pulsar otra fila abre esa tarjeta y cierra la anterior; pulsar de nuevo la abierta la cierra. `aria-expanded`, `aria-controls`, activación mediante Enter/Espacio y foco visible. No abrir ninguna ficha al recargar salvo decisión explícita.
 4. **Ficha desplegada.** Mostrar explicación literal, fecha, remate separado, agrupación, imagen IA actual si existe y acciones editoriales actuales; preservar enlaces de fuentes, acciones de copiar/buscar/compartir y los textos ya publicados. En falta de explicación mostrar «En investigación» o el estado editorial real, sin inventar contenido.
 5. **No restituir «Próximas tendencias».** Mantener actualización, antigüedad y aviso de estado de los datos. No modificar X, Telegram, TTiTTulares, PC ni sistemas de imágenes.
 
@@ -49,7 +49,7 @@ Este documento es una **especificación de aplicación al código existente del 
 .tt-top30-card__content[hidden] { display: none; }
 @media (max-width: 540px) {
   .tt-top30-search input[type="search"] { width: 100%; max-width: none; }
-  .tt-top30-card__toggle { grid-template-columns: 1.8rem minmax(0,1fr) auto auto; gap: .35rem; }
+  .tt-top30-card__toggle { grid-template-columns: 1.8rem minmax(0,1fr) auto .8rem auto; gap: .35rem; }
   .tt-top30-card__time { font-size: .68rem; max-width: 8.4rem; overflow: hidden; text-overflow: ellipsis; }
 }
 ```
@@ -59,7 +59,7 @@ La cuadrícula es orientativa; si los textos de fecha ocupan demasiado espacio e
 ## Integración del estado (pseudocódigo React/Site)
 
 ```jsx
-const [openEditorialId, setOpenEditorialId] = useState(null);
+const [openCardId, setOpenCardId] = useState(null);
 const [search, setSearch] = useState("");
 
 <section id="tendencias">
@@ -70,14 +70,14 @@ const [search, setSearch] = useState("");
   </div>
   <h2>El top 30, explicado.</h2>
   {filteredTop30.map(row => {
-    const key = row.editorialTargetId ?? row.id; // resolver datos reales; NO por rank/nombre
-    const isOpen = openEditorialId === key;
+    const key = row.stableCardId; // distinta por fila; sin usar rank/nombre
+    const isOpen = openCardId === key;
     return (
       <article key={row.stableCardId}>
         <button className="tt-top30-card__toggle"
                 type="button" aria-expanded={isOpen}
                 aria-controls={`trend-details-${row.stableCardId}`}
-                onClick={() => setOpenEditorialId(isOpen ? null : key)}>
+                onClick={() => setOpenCardId(isOpen ? null : key)}>
           <span>{String(row.rank).padStart(2, "0")}</span>
           <span className="tt-top30-card__name">{row.name}</span>
           <time className="tt-top30-card__time">{row.lastExplainedLabel ?? "Pendiente"}</time>
@@ -94,7 +94,7 @@ const [search, setSearch] = useState("");
 </section>
 ```
 
-**Atención a agrupaciones:** si dos filas comparten identidad editorial, no usar esa identidad como clave de React de ambas; mantener `stableCardId` distinto para cada fila y un `openCardId` por fila, y resolver el contexto editorial agrupado solo para los datos asociados. El ejemplo debe adaptarse a eso antes de publicar.
+**Atención a agrupaciones:** si dos filas comparten identidad editorial, conservar `stableCardId` distinto para cada fila y `openCardId` único para la apertura, pero resolver el contexto editorial agrupado para la explicación, imagen y revisiones. Nunca usar posición ni nombre como identidad de la explicación.
 
 ## Verificaciones exigidas antes de comunicar publicado
 
