@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T04:40:55+01:00",
+  "updated_at": "2026-10-31T04:44:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -43456,7 +43456,7 @@
       "id": "15e3190f0e6c",
       "name": "Elvis",
       "rank": 29,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-31T04:31:40+01:00",
       "revision": 0,
       "reexplain": false,
@@ -43470,7 +43470,36 @@
         "Elvis"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-10-31T04:44:00+01:00",
+      "updated_at": "2026-10-31T04:44:00+01:00",
+      "explanation": "TT#29 Elvis aparece entre las tendencias en España mientras los herederos de Elvis Presley demandan a Anthropic y «La Graciosa», de Quevedo con Elvis Crespo, sigue en el top 10 de Spotify. No se ha podido confirmar qué hecho impulsa el término.\n#ElvisPresley #ElvisCrespo",
+      "closer_text": "",
+      "verification_sources": [
+        "https://getdaytrends.com/es/spain/",
+        "https://www.theguardian.com/us-news/2026/oct/25/elvis-presley-anthropic-lawsuit-ai-models-music",
+        "https://kworb.net/spotify/country/es_daily.html"
+      ],
+      "investigation_history": [
+        {
+          "at": "2026-10-31T04:44:00+01:00",
+          "query": "Elvis tendencia España 31 octubre 2026",
+          "result": "La presencia actual de Elvis en las tendencias españolas está corroborada, pero las búsquedas no identifican un detonante único."
+        },
+        {
+          "at": "2026-10-31T04:44:00+01:00",
+          "query": "Elvis Presley / Elvis Crespo actualidad España octubre 2026",
+          "result": "Hay dos contextos actuales plausibles y verificables: la demanda de los herederos de Elvis Presley contra Anthropic y la permanencia de La Graciosa, de Quevedo con Elvis Crespo, en el top 10 de Spotify España. No hay evidencia suficiente para atribuir el impulso del término a uno de ellos."
+        }
+      ],
+      "category": "Redes",
+      "editorial_grouping_state": "pending",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "uncertainty_reason": "Ambigüedad sustancial: el término puede aludir a Elvis Presley o a Elvis Crespo y no se ha podido identificar un detonante predominante.",
+      "explanation_sha256": "82c332583e595de289baec714845be93d1109fb39b8e1a55ffdfce39c50c64df",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 214
