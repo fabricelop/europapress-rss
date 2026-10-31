@@ -3,43 +3,148 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793476588400-manual",
-  "previous_run_id": "tr-1793476500000-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-10-31T20:56:28.400+01:00",
+  "run_id": "tr-1793475951279-manual",
+  "previous_run_id": "tr-1793475600000-manual",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
+  "started_at": "2026-10-31T20:46:00+01:00",
   "updated_at": "2026-10-31T21:00:00+01:00",
-  "finished_at": null,
-  "current": 12,
+  "finished_at": "2026-10-31T21:00:00+01:00",
+  "current": 14,
   "total": 14,
-  "trend_id": "red-review-da11b21569b4ed3b362c",
-  "title": "Revisar novedades: Halloween",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "listas-joint-a5f5450c8a66666e",
+    "2a319bab5b04",
+    "4eefe2099a0f",
+    "9f5502207ede",
+    "5e8f0921d912",
+    "cfa997cefa1f",
+    "f8409ba1fa55",
+    "d7b205c966c8",
+    "91e2b3bd68b1",
+    "2f4a568bb479",
+    "7131ba38fb4f",
+    "listas-auto-4d429a300cd33f3a1065",
     "red-review-da11b21569b4ed3b362c",
     "red-review-b99316165bec38aa28fd"
   ],
-  "remaining_active_ids": [
-    "red-review-da11b21569b4ed3b362c",
-    "red-review-b99316165bec38aa28fd"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Agrupación automática aplicada. Revisando novedades de Halloween; las cifras posteriores cuantifican el mismo acontecimiento sin cambiar su explicación.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada editorial completada 14/14: 11 explicaciones/reelaboraciones, 1 agrupación automática con 2 grupos y 2 revisiones de novedades sin cambio. Cola final 0 y sin rewrite_pending/reexplain vigentes. Sin ImageGen ni publicaciones.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "trend_id": "listas-joint-a5f5450c8a66666e",
+      "revision": 1,
+      "reason": "Un intento de escritura Git directa falló por transporte h2; main se releyó, se comprobó que no hubo escritura parcial y la persistencia se completó por el aplicador editorial existente."
+    }
+  ],
   "error": null,
-  "activity": "Sin novedades",
-  "final_outcomes": [],
+  "activity": "Cierre verificado",
+  "final_outcomes": [
+    {
+      "id": "listas-joint-a5f5450c8a66666e",
+      "revision": 1,
+      "name": "Betis-Málaga en La Cartuja",
+      "outcome": "explained_rework"
+    },
+    {
+      "id": "2a319bab5b04",
+      "revision": 0,
+      "name": "Eibar",
+      "outcome": "explained"
+    },
+    {
+      "id": "4eefe2099a0f",
+      "revision": 0,
+      "name": "Mónaco",
+      "outcome": "explained_with_uncertainty"
+    },
+    {
+      "id": "9f5502207ede",
+      "revision": 0,
+      "name": "La Cartuja",
+      "outcome": "explained"
+    },
+    {
+      "id": "5e8f0921d912",
+      "revision": 0,
+      "name": "#Worlds2026",
+      "outcome": "explained"
+    },
+    {
+      "id": "cfa997cefa1f",
+      "revision": 0,
+      "name": "#Mafin",
+      "outcome": "explained"
+    },
+    {
+      "id": "f8409ba1fa55",
+      "revision": 0,
+      "name": "Las Gaunas",
+      "outcome": "explained"
+    },
+    {
+      "id": "d7b205c966c8",
+      "revision": 0,
+      "name": "Simeone",
+      "outcome": "explained"
+    },
+    {
+      "id": "91e2b3bd68b1",
+      "revision": 0,
+      "name": "Alba Carrillo",
+      "outcome": "explained"
+    },
+    {
+      "id": "2f4a568bb479",
+      "revision": 0,
+      "name": "Ibai",
+      "outcome": "explained"
+    },
+    {
+      "id": "7131ba38fb4f",
+      "revision": 0,
+      "name": "Ferrol",
+      "outcome": "explained"
+    },
+    {
+      "id": "listas-auto-4d429a300cd33f3a1065",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouped",
+      "groups_created": 2
+    },
+    {
+      "id": "red-review-da11b21569b4ed3b362c",
+      "revision": 0,
+      "name": "Revisar novedades: Halloween",
+      "outcome": "unchanged"
+    },
+    {
+      "id": "red-review-b99316165bec38aa28fd",
+      "revision": 0,
+      "name": "Revisar novedades: Levante 0-2 Atlético",
+      "outcome": "unchanged"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T20:46:00+01:00",
-  "last_completed_at": "2026-10-31T20:56:00+01:00",
+  "last_completed_at": "2026-10-31T21:00:00+01:00",
   "last_run": {
     "run_id": "tr-1793475951279-manual",
     "status": "DONE_WITH_INCIDENTS",
-    "finished_at": "2026-10-31T20:56:00+01:00",
-    "attempted": 11,
+    "finished_at": "2026-10-31T21:00:00+01:00",
+    "attempted": 14,
     "explained": 11,
+    "updates": 1,
+    "grouping_requests": 1,
+    "groups_created": 2,
+    "unchanged_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
