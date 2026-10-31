@@ -3,78 +3,124 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793436499760-manual",
-  "previous_run_id": "tr-1793436338047-manual",
+  "run_id": "tr-1793436338047-manual",
+  "previous_run_id": "tr-1793436499760-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-10-31T09:48:00+01:00",
-  "updated_at": "2026-10-31T09:50:10+01:00",
-  "finished_at": "2026-10-31T09:50:10+01:00",
-  "current": 1,
-  "total": 1,
+  "started_at": "2026-10-31T09:46:00+01:00",
+  "updated_at": "2026-10-31T09:51:00+01:00",
+  "finished_at": "2026-10-31T09:51:00+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "listas-auto-7023d998e92fe485eae5",
+    "red-review-2d47f02baa7db3c0fdca",
+    "red-review-55bc85950456f58b2531",
     "listas-auto-c437e58bb3a88a3182ad"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 1/1: agrupación automática evaluada y aplicada sin grupos ni coberturas; cola editorial final 0. Sin ImageGen ni publicación.",
+  "summary": "Pasada completada sobre estado vivo: 2 agrupaciones resueltas (0 grupos nuevos; Sprint cubierto por la conjunta ya publicada), Jorge Martín actualizado por episodio distinto y #DeViernes cerrado como stale tras validación JIT. Cola final 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T09:48:00+01:00",
+      "at": "2026-10-31T09:46:00+01:00",
       "phase": "preparing",
-      "trend_id": "listas-auto-c437e58bb3a88a3182ad",
+      "trend_id": "listas-auto-7023d998e92fe485eae5",
       "title": "Agrupación automática de Listas",
-      "message": "Cola autoritativa releída: 1 trabajos preparing/update. Se procesan por antigüedad."
+      "message": "Contrato y cola autoritativa releídos; 3 trabajos activos al inicio. Sin ImageGen ni publicación."
     },
     {
-      "at": "2026-10-31T09:49:00+01:00",
+      "at": "2026-10-31T09:47:40+01:00",
       "phase": "persisting",
-      "trend_id": "listas-auto-c437e58bb3a88a3182ad",
+      "trend_id": "listas-auto-7023d998e92fe485eae5",
       "title": "Agrupación automática de Listas",
-      "message": "JIT validado. Yola, Dana, La UCO y Jorge Martín permanecen separados; Jorge Martín no queda cubierto por el sprint de Sepang porque su retirada es un desarrollo distinto."
+      "message": "Resultado de agrupación persistido: Sprint cubierto por la ficha conjunta ya publicada; sin grupos nuevos."
     },
     {
-      "at": "2026-10-31T09:50:10+01:00",
+      "at": "2026-10-31T09:48:54+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-2d47f02baa7db3c0fdca",
+      "title": "Revisar novedades: #DeViernes",
+      "message": "La revisión dejó de estar vigente justo antes de persistir; el aplicador la cerró como stale. No se sobrescribió la ficha."
+    },
+    {
+      "at": "2026-10-31T09:48:54+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-55bc85950456f58b2531",
+      "title": "Revisar novedades: Jorge Martín",
+      "message": "Revisión aplicada como episodio distinto; creada trend-update-166ff7a9a68de41cad16."
+    },
+    {
+      "at": "2026-10-31T09:50:01+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-c437e58bb3a88a3182ad",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación posterior aplicada con groups=[] y covered_by_existing=[]; Jorge Martín quedó editorial_grouping_state=cleared."
+    },
+    {
+      "at": "2026-10-31T09:51:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Aplicador verificado: grouping_completed, 0 grupos, 0 coberturas. Cola main vacía y sin rewrite_pending localizado."
+      "message": "Relectura final de main: no quedan preparing/update ni rewrite_pending. Cierre DONE."
     }
   ],
   "final_outcomes": [
     {
-      "id": "listas-auto-c437e58bb3a88a3182ad",
+      "id": "listas-auto-7023d998e92fe485eae5",
       "revision": 0,
-      "task": "group_listas",
       "outcome": "grouping_completed",
       "groups_created": 0,
-      "covered_by_existing": 0
+      "covered_by_existing": [
+        "fd04788626e5"
+      ],
+      "covered_by_id": "listas-joint-021a97e2e386c40f"
+    },
+    {
+      "id": "red-review-2d47f02baa7db3c0fdca",
+      "revision": 0,
+      "outcome": "stale",
+      "created_id": null
+    },
+    {
+      "id": "red-review-55bc85950456f58b2531",
+      "revision": 0,
+      "outcome": "updated",
+      "created_id": "trend-update-166ff7a9a68de41cad16"
+    },
+    {
+      "id": "listas-auto-c437e58bb3a88a3182ad",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": []
     }
   ],
   "last_run": {
-    "run_id": "tr-1793436499760-manual",
+    "run_id": "tr-1793436338047-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T09:50:10+01:00",
-    "attempted": 1,
-    "explained": 0,
-    "updates": 0,
-    "stale_reviews": 0,
+    "finished_at": "2026-10-31T09:51:00+01:00",
+    "attempted": 4,
+    "explained": 1,
+    "updates": 1,
+    "stale_reviews": 1,
     "unchanged_reviews": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 2,
     "groups_created": 0,
-    "covered_by_existing": 0,
+    "covered_by_existing": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "total": 4
   },
   "api_failover_enabled": false
 }
