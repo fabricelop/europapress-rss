@@ -6,20 +6,21 @@
   "run_id": "tr-1793487168174-manual",
   "previous_run_id": "tr-1793486988618-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-10-31T23:53:00+01:00",
-  "updated_at": "2026-10-31T23:55:00+01:00",
+  "updated_at": "2026-10-31T23:59:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 3,
   "total": 10,
   "trend_id": "7b18f8c98739",
   "title": "#RayoCelta",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "listas-auto-7466c03e6699a628e806",
     "red-review-25411a66d89216173e45",
-    "red-review-606fb222b19ec0e0491a",
+    "red-review-606fb222b19ec0e0491a"
+  ],
+  "remaining_ids": [
     "7b18f8c98739",
     "9df0b07ec47e",
     "5261970c7a60",
@@ -29,9 +30,6 @@
     "5e0d9fdf2cb2"
   ],
   "remaining_active_ids": [
-    "listas-auto-7466c03e6699a628e806",
-    "red-review-25411a66d89216173e45",
-    "red-review-606fb222b19ec0e0491a",
     "7b18f8c98739",
     "9df0b07ec47e",
     "5261970c7a60",
@@ -41,7 +39,7 @@
     "5e0d9fdf2cb2"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada en curso: 7 investigaciones nuevas llegaron durante la ejecución, además de agrupación y 2 revisiones. Total activo observado: 10. Sin ImageGen ni publicación.",
+  "summary": "3 trabajos ya consolidados en main: 1 agrupación y 2 revisiones. Las 7 explicaciones nuevas están enviadas al aplicador y pendientes de consolidación. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -294,6 +292,13 @@
       "trend_id": "7b18f8c98739",
       "title": "#RayoCelta",
       "message": "Entraron 7 investigaciones nuevas durante la pasada. Se incorporan a la misma ejecución; total activo observado 10. Investigación actual y revalidación JIT en curso; sin ImageGen."
+    },
+    {
+      "at": "2026-10-31T23:59:00+01:00",
+      "phase": "persisting",
+      "trend_id": "7b18f8c98739",
+      "title": "#RayoCelta",
+      "message": "Agrupación y dos revisiones ya aplicadas. Lote de 7 explicaciones enviado por TTENDENCIAS_CHAT_OUTBOX_V1; aplicador en curso. Se releerá main antes del cierre."
     }
   ],
   "final_outcomes": [
