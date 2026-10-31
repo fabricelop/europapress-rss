@@ -26171,14 +26171,16 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "938ceb177dde43de4999860b48ff415078ec3e3587ade04c8612ad6991a915c3",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "listas-joint-a5f5450c8a66666e",
@@ -26228,14 +26230,34 @@
       "source": "listas_grouping_editorial",
       "auto_queued": false,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "79708d0ce42c5a673303802b9b9319cb46b2d3dcafc696853f8a2cac3fae28db",
-      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T18:49:56.187863+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261031173129_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-real-betis-malaga-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261031173129.html",
+        "alt": "Imagen de archivo relacionada con Betis-Málaga en La Cartuja",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261031173129_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-real-betis-malaga-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261031173129.html",
+        "alt": "Imagen de archivo relacionada con Betis-Málaga en La Cartuja",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-31T18:49:56.187863+00:00",
+  "updated_at": "2026-10-31T18:50:04.288396Z",
   "count": 443
 }
