@@ -3,55 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793447280616-manual",
-  "previous_run_id": "tr-chat-20261031T124000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T12:48:00+01:00",
-  "updated_at": "2026-10-31T12:53:01+01:00",
-  "finished_at": "2026-10-31T12:53:01+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793447451085-manual",
+  "previous_run_id": "tr-1793447280616-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T12:51:00+01:00",
+  "updated_at": "2026-10-31T12:51:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-421f110f2465ec63ca09",
-    "red-review-944c9fc791a8a09918c9",
-    "red-review-003b9df27f1dbd390d1f"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "3/3 resueltos: agrupación automática completada sin coincidencias (0 grupos, 0 coberturas); revisión de Toledo cerrada como stale por revalidación JIT al estar el snapshot supersedido, sin crear una actualización; Patrick Stewart revisado sin novedades sustanciales, conservando texto y fecha. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación.",
+  "summary": "Pasada editorial real iniciada: cola revalidada en 0; comprobando reexplicaciones y cierre final en main. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "listas-auto-421f110f2465ec63ca09",
-      "revision": 0,
-      "status": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 0,
-      "completed_at": "2026-10-31T12:50:47.209931+01:00"
-    },
-    {
-      "id": "red-review-944c9fc791a8a09918c9",
-      "revision": 0,
-      "status": "review_completed",
-      "outcome": "stale",
-      "update_created": false
-    },
-    {
-      "id": "red-review-003b9df27f1dbd390d1f",
-      "revision": 0,
-      "status": "review_completed",
-      "outcome": "unchanged",
-      "red_review_checked_at": "2026-10-31T12:51:43.800916+01:00"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793447280616-manual",
     "status": "DONE",
@@ -69,6 +42,6 @@
     "summary": "3/3 resueltos: agrupación automática completada sin coincidencias (0 grupos, 0 coberturas); revisión de Toledo cerrada como stale por revalidación JIT al estar el snapshot supersedido, sin crear una actualización; Patrick Stewart revisado sin novedades sustanciales, conservando texto y fecha. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T12:48:00+01:00",
+  "last_started_at": "2026-10-31T12:51:00+01:00",
   "last_completed_at": "2026-10-31T12:53:01+01:00"
 }
