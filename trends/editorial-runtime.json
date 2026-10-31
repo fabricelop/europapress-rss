@@ -5,23 +5,25 @@
   "canonical": true,
   "run_id": "tr-manual-20261031T051000+0100",
   "previous_run_id": "tr-1793418259199-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T05:10:00+01:00",
-  "updated_at": "2026-10-31T05:16:31+01:00",
-  "finished_at": null,
+  "updated_at": "2026-10-31T05:16:39+01:00",
+  "finished_at": "2026-10-31T05:16:39+01:00",
   "last_started_at": "2026-10-31T05:16:31+01:00",
-  "last_completed_at": "2026-10-31T05:16:31+01:00",
-  "current": 0,
+  "last_completed_at": "2026-10-31T05:16:39+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "d697aee975e2",
-  "title": "Armoni Brooks",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "d697aee975e2"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Investigación verificada: 26 puntos y 5 triples con Valencia ante el Barça; 95-94 a 9 segundos antes del 98-94 final.",
+  "summary": "Pasada manual completada 1/1: Armoni Brooks explicado y persistido; barrera final 0/0. Sin ImageGen ni publicación en X.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -39,17 +41,45 @@
       "trend_id": "d697aee975e2",
       "title": "Armoni Brooks",
       "message": "Detonante contrastado con fuentes independientes: 26 puntos y cinco triples ante el Barça; el quinto puso el 95-94 a nueve segundos. Se prepara texto factual y remate."
+    },
+    {
+      "at": "2026-10-31T05:13:37+01:00",
+      "phase": "persisting",
+      "trend_id": "d697aee975e2",
+      "title": "Armoni Brooks",
+      "message": "Resultado enviado al aplicador canónico tras revalidar id/revisión 0 y ausencia de decisión terminal."
+    },
+    {
+      "at": "2026-10-31T05:16:15+01:00",
+      "phase": "verifying",
+      "trend_id": "d697aee975e2",
+      "title": "Armoni Brooks",
+      "message": "Persistencia verificada: ficha explained presente en Listas y cola retirada. Aplicador canónico completado con éxito."
+    },
+    {
+      "at": "2026-10-31T05:16:39+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final sobre main: editorial-queue count=0, sin preparing/update/problematic ni rewrite_pending. Sin ImageGen y sin publicación en X."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "d697aee975e2",
+      "revision": 0,
+      "name": "Armoni Brooks",
+      "outcome": "explained"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-1793418259199-manual",
+    "run_id": "tr-manual-20261031T051000+0100",
     "status": "DONE",
-    "finished_at": "2026-10-31T04:50:00+01:00",
-    "attempted": 2,
-    "explained": 0,
+    "finished_at": "2026-10-31T05:16:39+01:00",
+    "attempted": 1,
+    "explained": 1,
     "updates": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "unchanged_reviews": 0,
     "groups_created": 0,
     "queue_remaining": 0,
