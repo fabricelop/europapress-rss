@@ -5,23 +5,27 @@
   "canonical": true,
   "run_id": "tr-1793488841552-manual",
   "previous_run_id": "tr-1793487575059-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-11-01T00:20:00+01:00",
-  "updated_at": "2026-11-01T00:27:00+01:00",
-  "finished_at": "2026-11-01T00:27:00+01:00",
+  "updated_at": "2026-11-01T00:28:00+01:00",
+  "finished_at": null,
   "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 4,
+  "trend_id": "listas-auto-f212a00761592b11323a",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "a4280f1fe18d",
     "red-review-a2aafd3afdb9b0af1225",
     "red-review-9b905fc7acd38b8e230b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-f212a00761592b11323a"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-f212a00761592b11323a"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
@@ -386,5 +390,5 @@
     "note": "Pasada cerrada tras relectura final de main: cola 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
   },
   "source": "chat",
-  "message": "Pasada editorial 3/3 cerrada: Gordon r0 explicado y persistido; revisiones #laSextaXplica y Toledo verificadas como review_completed/stale. Cola 0, rewrite_pending 0. Sin ImageGen ni publicación."
+  "message": "La barrera final detectó un nuevo group_listas. Procesando agrupación automática con snapshot JIT; sin ImageGen ni publicación."
 }
