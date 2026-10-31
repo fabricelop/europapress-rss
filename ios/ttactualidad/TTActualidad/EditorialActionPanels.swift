@@ -475,7 +475,8 @@ struct EditorialActions: View {
         let sensitive = [
             "victim", "fallec", "muert", "murio", "traged", "accident",
             "agresion", "violacion", "asesinat", "atentad", "desaparecid",
-            "herid", "catastrof", "suicid", "dana", "funeral", "rescate"
+            "herid", "catastrof", "suicid", "dana", "funeral", "rescate",
+            "urda", "descarril", "siniestro ferroviario"
         ].contains(where: { lower.contains($0) })
         let visual = sensitive
             ? "Ilustración periodística sobria y respetuosa, sin humor ni caricaturas, sin escenas gráficas, víctimas inventadas o representación especulativa."
@@ -483,7 +484,7 @@ struct EditorialActions: View {
         let closer = explanation.components(separatedBy: "\n")
             .last(where: { $0.trimmingCharacters(in: .whitespaces).hasPrefix("🌶") }) ?? ""
         let prompt = [
-            "TTENDENCIAS_SITE_IMAGE_V3 — GENERAR, ADJUNTAR Y VERIFICAR EN UNA SOLA EJECUCIÓN",
+            "TTENDENCIAS_SITE_IMAGE_V4 — GENERAR, ADJUNTAR, SINCRONIZAR APP Y VERIFICAR",
             "Ejecuta en Chat normal dentro del proyecto de ChatGPT PROYECTOS APP. Sin Work, PC, API de pago ni cambios en la web o scripts del PC.",
             "SITE EXISTENTE: https://ttactualidad-tendencias.rainyraven22.chatgpt.site/\nproject_id: appgprj_6ae4dcf7d7488191a574e5b649e67370",
             "IDENTIDAD EDITORIAL DE LA EXPLICACIÓN (NO IDENTIFICAR POR NOMBRE NI PUESTO):\ntarget_id: \(targetID)\nname: \(target.name)\nrevision: \(targetRevision)\nscope: editorial\nexplained_at: \(explainedAt)",
@@ -495,7 +496,9 @@ struct EditorialActions: View {
             "3. Si sigue siendo elegible, utiliza ChatGPT Images AHORA para generar UNA SOLA imagen siguiendo el contexto y la dirección visual indicados. Conserva el archivo PNG ORIGINAL y su identificador real. La generación es solo un paso intermedio: NO TERMINES AL MOSTRAR LA IMAGEN.",
             "4. A continuación, en este MISMO CHAT y SIN REGENERAR, invoca mcp__TTendencias___TTActualidad__attach_trend_image con file igual al archivo PNG ORIGINAL recién generado y context con los siete campos exactos project_id, target_id, name, revision, scope, explanation y explained_at. Revalida identidad antes de adjuntar. No uses rutas inventadas, imágenes parecidas ni identificaciones por nombre/puesto.",
             "5. Inmediatamente invoca mcp__TTendencias___TTActualidad__verify_trend_image con el mismo context. Solo declara ÉXITO cuando devuelva status: verified, URL del PNG persistido y SHA-256, y comprueba la ficha pública si el acceso lo permite. El mecanismo existente no requiere republicar ni crear otro Site.",
-            "6. Si falla la incorporación, conserva el original y comunica el error exacto para reintentar ÚNICAMENTE attach_trend_image y verify_trend_image, sin regeneración. Procesa una sola tendencia y termina. No toques listeners, scripts ni imagen automática del PC."
+            "6. Tras verificar el Site, sincroniza EXACTAMENTE ESA MISMA IMAGEN con TTActualidad iPhone, sin cargar de nuevo el PNG. Usa el conector GitHub del repositorio fabricelop/europapress-rss, rama main, archivo trends/site-ai-images.json. Con fetch_file lee el archivo completo y su SHA actual. Conserva TODAS sus entradas y actualiza SOLO la entrada para target_id + revision, con estos campos exactos: target_id, revision, explained_at, explanation, image_url (URL pública HTTPS formada con el dominio del Site original y la ruta real devuelta por verify_trend_image) y sha256 (huella real devuelta por verify_trend_image). NO crees imágenes, rutas o hashes por suposición. Usa update_file pasando el SHA actual; si aparece un conflicto de revisión, vuelve a leer y reintenta sin borrar entradas ajenas. Si no puedes escribir GitHub, conserva el Site verificado y declara que la sincronización con la app queda pendiente.",
+            "7. Relee trends/site-ai-images.json desde main después del commit. Verifica que target_id, revision, explanation, explained_at, image_url y sha256 coinciden EXACTAMENTE con la imagen ya asociada al Site. La app iOS 0.4.32 lee este catálogo al actualizarse y muestra el mismo PNG en la ficha de la tendencia. Nunca sustituyas una foto de archivo ni reescribas otras tendencias. No declares APP SINCRONIZADA si el archivo no está persistido.",
+            "8. Si falla la incorporación al Site, conserva el PNG original y comunica el error exacto para reintentar ÚNICAMENTE attach_trend_image y verify_trend_image, sin regeneración ni tocar el catálogo. Termina informando POR SEPARADO: SITE: verified/pending; APP: manifest verified/pending; y la URL/sha256 reales. Procesa una sola tendencia. No toques listeners, scripts ni la generación automática del PC."
         ].joined(separator: "\n\n")
         copy(prompt)
         outcome = "Prompt Site copiado para ID " + targetID + ". Abre un chat del proyecto TT y pégalo."

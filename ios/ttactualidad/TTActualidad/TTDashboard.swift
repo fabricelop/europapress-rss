@@ -1049,17 +1049,8 @@ private struct TrendTile: View {
                         .foregroundStyle(Color.white.opacity(0.9))
                         .textSelection(.enabled)
                 }
-                if let image = item.imageURL {
-                    AsyncImage(url: image) { picture in
-                        picture.resizable().scaledToFit()
-                    } placeholder: {
-                        ProgressView().tint(TTTheme.teal)
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                } else {
-                    Label("Sin fotografía de archivo", systemImage: "photo")
-                        .font(.caption2).foregroundStyle(TTTheme.muted)
-                }
+                TrendSiteOrArchiveImage(aiURL: item.siteImageURL,
+                                        archiveURL: item.imageURL)
                 EditorialActions(trend: item, github: github, showSettings: $settings)
             }
             .padding(.top, 12)
@@ -1130,3 +1121,49 @@ private struct TrendTile: View {
     }
 }
 
+
+private struct TrendSiteOrArchiveImage: View {
+    let aiURL: URL?
+    let archiveURL: URL?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            if let aiURL {
+                AsyncImage(url: aiURL) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable().scaledToFit()
+                    case .failure:
+                        archiveFallback
+                    default:
+                        ProgressView().tint(TTTheme.teal)
+                            .frame(maxWidth: .infinity, minHeight: 95)
+                    }
+                }
+                Text("Imagen IA · TTendencias Site")
+                    .font(.caption2).foregroundStyle(TTTheme.muted)
+            } else {
+                archiveFallback
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    @ViewBuilder
+    private var archiveFallback: some View {
+        if let archiveURL {
+            AsyncImage(url: archiveURL) { phase in
+                if case .success(let image) = phase {
+                    image.resizable().scaledToFit()
+                } else {
+                    Label("Foto de archivo", systemImage: "photo")
+                        .font(.caption2).foregroundStyle(TTTheme.muted)
+                }
+            }
+        } else {
+            Label("Sin imagen IA ni foto de archivo", systemImage: "photo")
+                .font(.caption2).foregroundStyle(TTTheme.muted)
+        }
+    }
+}
