@@ -6,33 +6,44 @@
   "run_id": "tr-1793458902852-manual",
   "previous_run_id": "tr-1793458793413-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-10-31T16:02:00+01:00",
-  "updated_at": "2026-10-31T16:06:00+01:00",
+  "updated_at": "2026-10-31T16:08:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "red-review-b7217be18aec0c2ac0d2",
-  "title": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
+  "current": 3,
+  "total": 4,
+  "trend_id": "listas-auto-ceca7c4d7f7bfd9a5f3a",
+  "title": "Agrupación automática de Listas",
   "queue_complete": false,
   "processed_ids": [
-    "listas-auto-3fe2d7f5aa381be2712e"
+    "listas-auto-3fe2d7f5aa381be2712e",
+    "red-review-b7217be18aec0c2ac0d2",
+    "red-review-a50c64618f8511bf1ef6"
   ],
   "remaining_ids": [
-    "red-review-b7217be18aec0c2ac0d2",
-    "red-review-a50c64618f8511bf1ef6"
+    "listas-auto-ceca7c4d7f7bfd9a5f3a"
   ],
   "remaining_active_ids": [
-    "red-review-b7217be18aec0c2ac0d2",
-    "red-review-a50c64618f8511bf1ef6"
+    "listas-auto-ceca7c4d7f7bfd9a5f3a"
   ],
   "remaining_problematic_ids": [],
-  "summary": "1/3. Agrupación cerrada concurrentemente; revisando novedades sustanciales del accidente de Urda.",
+  "summary": "3/4. Revisiones de Urda y Dana aplicadas; verificando la agrupación derivada antes de cerrar.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades",
-  "final_outcomes": [],
+  "activity": "Verificando acontecimiento común",
+  "final_outcomes": [
+    {
+      "id": "red-review-b7217be18aec0c2ac0d2",
+      "revision": 0,
+      "outcome": "updated"
+    },
+    {
+      "id": "red-review-a50c64618f8511bf1ef6",
+      "revision": 0,
+      "outcome": "updated"
+    }
+  ],
   "last_run": {
     "run_id": "tr-1793457674451-manual",
     "status": "DONE",
