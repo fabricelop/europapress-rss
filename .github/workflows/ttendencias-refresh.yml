@@ -67,6 +67,10 @@ jobs:
 
           python3 trends/update_trends.py
           python3 trends/auto_queue_new.py
+          # GITHUB_TOKEN pushes do NOT fire another push workflow. Publish
+          # Site Top30 in the SAME commit as the iPhone radar snapshot.
+          python3 -m unittest discover -s tests -p 'test_site_top30_export.py' -q
+          python3 trends/export_site_top30.py
 
           python3 - <<'PY'
           import json
@@ -88,7 +92,7 @@ jobs:
 
           echo "TTActualidad: actualización editorial web, sin sincronización Telegram"
 
-          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json trends/anticipation-metrics.json
+          git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json trends/anticipation-metrics.json trends/site-top30-current.json
           if git diff --cached --quiet; then
             exit 0
           fi
