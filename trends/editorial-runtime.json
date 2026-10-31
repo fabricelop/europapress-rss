@@ -3,140 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793433005570-manual",
-  "previous_run_id": "tr-manual-20261031T084000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T08:51:00+01:00",
-  "updated_at": "2026-10-31T09:06:00+01:00",
-  "finished_at": "2026-10-31T09:06:00+01:00",
-  "last_started_at": "2026-10-31T08:55:33+01:00",
-  "last_completed_at": "2026-10-31T09:06:00+01:00",
-  "current": 10,
-  "total": 10,
+  "run_id": "tr-1793433487804-manual",
+  "previous_run_id": "tr-1793433005570-manual",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-10-31T08:58:07.804+01:00",
+  "updated_at": "2026-10-31T08:59:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "1510c923e357",
-    "09482f4ec753",
-    "aba20deed25f",
-    "b00a5099c4fa",
-    "edb94724ec61",
-    "bbc3b648ddbe",
-    "listas-auto-c553f2ecce7b8944f731",
-    "red-review-a684b90943c42ac5b2e2",
-    "red-review-22a97ce14f8a9221c7c8",
-    "listas-auto-e729c97b4716c407ef41"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 10/10. Seis explicaciones ordinarias quedaron aplicadas; #FelizSábado se actualizó como episodio del 31 de octubre; Toledo se conservó sin cambios; el sprint de Sepang quedó agrupado en una ficha conjunta. Cola final 0. Sin ImageGen ni publicación en X.",
+  "summary": "Pasada manual iniciada con cola compacta vacía; verificando relectura final, rewrite_pending y cierre del trabajo de agrupación que había quedado en verificación en la pasada anterior.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T08:51:00+01:00",
-      "phase": "preparing",
-      "trend_id": "1510c923e357",
-      "title": "Halloween",
-      "message": "Inicio de pasada real 0/6; se revalidará ID+revisión justo antes de investigar y persistir cada trabajo."
-    },
-    {
-      "at": "2026-10-31T09:00:00+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-c553f2ecce7b8944f731",
-      "title": "Agrupación automática de Listas",
-      "message": "Relectura de main: entraron 3 trabajos nuevos antes del cierre. Continúa la misma pasada 6/9; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T09:01:00+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-c553f2ecce7b8944f731",
-      "title": "Agrupación automática de Listas",
-      "message": "JIT validado. Guardando grupo del sprint de Sepang para cinco tendencias; las demás quedan separadas."
-    },
-    {
-      "at": "2026-10-31T09:02:00+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-a684b90943c42ac5b2e2",
-      "title": "Revisar novedades: #FelizSábado",
-      "message": "JIT validado. Episodio distinto: nueva aparición del sábado 31 de octubre en puesto 11; guardando actualización."
-    },
-    {
-      "at": "2026-10-31T09:03:00+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-22a97ce14f8a9221c7c8",
-      "title": "Revisar novedades: Toledo",
-      "message": "JIT validado. Toledo ya no aparece en el Top30 vigente; se conserva la explicación sin reescritura."
-    },
-    {
-      "at": "2026-10-31T09:05:00+01:00",
+      "at": "2026-10-31T08:59:30+01:00",
       "phase": "verifying",
-      "trend_id": "listas-auto-e729c97b4716c407ef41",
-      "title": "Agrupación automática de Listas",
-      "message": "El outbox del snapshot refrescado ya existe con el grupo de Sepang; verificando que el aplicador cierre el job."
-    },
-    {
-      "at": "2026-10-31T09:06:00+01:00",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Barrera final superada: editorial-queue.json 0/0 y ninguna reexplicación rewrite_pending activa. Pasada completada 10/10 sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T09:06:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final: cola 0 y workflow de agrupación completado con éxito. Cierre 10/10; sin ImageGen ni publicación."
+      "message": "Cola inicial 0/0. Se confirmó que la agrupación de Sepang de la pasada anterior está aplicada; releyendo main antes del cierre. Sin ImageGen."
     }
   ],
-  "final_outcomes": [
-    {
-      "type": "ordinary",
-      "count": 6,
-      "ids": [
-        "09482f4ec753",
-        "1510c923e357",
-        "aba20deed25f",
-        "b00a5099c4fa",
-        "bbc3b648ddbe",
-        "edb94724ec61"
-      ],
-      "outcome": "explained"
-    },
-    {
-      "type": "review_red",
-      "job_id": "red-review-a684b90943c42ac5b2e2",
-      "source_id": "772cda27031c",
-      "name": "#FelizSábado",
-      "outcome": "updated",
-      "distinct_episode": true
-    },
-    {
-      "type": "review_red",
-      "job_id": "red-review-22a97ce14f8a9221c7c8",
-      "source_id": "24d64469c94e",
-      "name": "Toledo",
-      "outcome": "unchanged"
-    },
-    {
-      "type": "group_listas",
-      "job_id": "listas-auto-e729c97b4716c407ef41",
-      "outcome": "grouping_completed",
-      "group_name": "Sprint de MotoGP en Sepang",
-      "members": [
-        "09482f4ec753",
-        "aba20deed25f",
-        "b00a5099c4fa",
-        "edb94724ec61",
-        "bbc3b648ddbe"
-      ]
-    }
-  ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793433005570-manual",
     "status": "DONE",
