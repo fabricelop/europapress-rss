@@ -3,31 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793483220000-manual",
-  "previous_run_id": "tr-chat-20261031T2241+0100",
+  "run_id": "tr-1793483381118-manual",
+  "previous_run_id": "tr-1793483220000-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-10-31T22:46:00+01:00",
-  "updated_at": "2026-10-31T22:48:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-10-31T22:50:00+01:00",
+  "updated_at": "2026-10-31T22:50:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-91261590da84c37fe3fd",
-    "red-review-d52e88d83df77b6be78b",
-    "red-review-84945ccaa9ddef1faf33"
+    "listas-auto-be8687e634f4c1cffa36"
   ],
   "remaining_active_ids": [
-    "listas-auto-91261590da84c37fe3fd",
-    "red-review-d52e88d83df77b6be78b",
-    "red-review-84945ccaa9ddef1faf33"
+    "listas-auto-be8687e634f4c1cffa36"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Detectados 3 trabajos tras la relectura: 1 agrupación automática y 2 revisiones de novedades.",
+  "summary": "Inicio manual: 1 trabajos activos en cola; revalidación JIT y revisión de novedades en curso.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -81,6 +77,11 @@
       "at": "2026-10-31T22:48:00+01:00",
       "phase": "investigating",
       "message": "Relectura de main: llegaron 3 trabajos nuevos. Procesando primero agrupación automática, después dos revisiones de novedades; sin ImageGen."
+    },
+    {
+      "at": "2026-10-31T22:50:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-1793483381118-manual: 1 trabajos activos en cola. Revalidando cada id+revision antes de investigar; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
