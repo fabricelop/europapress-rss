@@ -5,29 +5,25 @@
   "canonical": true,
   "run_id": "tr-1793481355073-manual",
   "previous_run_id": "tr-1793481056571-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T22:17:00+01:00",
-  "updated_at": "2026-10-31T22:17:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T22:18:00+01:00",
+  "finished_at": "2026-10-31T22:18:00+01:00",
+  "current": 3,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-94d0604310bb7746f812",
     "red-review-80a147a2f5bf6e439909",
     "red-review-275356d05ce6c56c3340"
   ],
-  "remaining_active_ids": [
-    "listas-auto-94d0604310bb7746f812",
-    "red-review-80a147a2f5bf6e439909",
-    "red-review-275356d05ce6c56c3340"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Cola autoritativa releída: 3 trabajos preparing/update vigentes (1 agrupación automática y 2 revisiones rojas).",
+  "summary": "Pasada completada 3/3: agrupación automática revisada sin nuevas agrupaciones; revisiones Toledo y Renfe consumidas como stale porque sus fuentes editoriales ya habían sido superadas por estado más reciente. Cola final 0 y sin rewrite_pending. Sin ImageGen ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -35,24 +31,55 @@
     {
       "at": "2026-10-31T22:17:00+01:00",
       "phase": "preparing",
-      "message": "Inicio de pasada real. Cola main: 3 pendientes; se procesa primero group_listas y después Toledo/Renfe. Sin ImageGen."
+      "message": "Cola main: 3 pendientes; primero group_listas y después Toledo/Renfe. Sin ImageGen."
+    },
+    {
+      "at": "2026-10-31T22:17:13+01:00",
+      "phase": "persisting",
+      "message": "Agrupación automática completada sin crear grupos. Las revisiones Toledo y Renfe se cerraron como stale al detectar estado editorial más reciente."
+    },
+    {
+      "at": "2026-10-31T22:18:00+01:00",
+      "phase": "closing",
+      "message": "Relectura final de main: cola 0 y sin rewrite_pending. Cierre 3/3 verificado."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "listas-auto-94d0604310bb7746f812",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 0
+    },
+    {
+      "id": "red-review-80a147a2f5bf6e439909",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale"
+    },
+    {
+      "id": "red-review-275356d05ce6c56c3340",
+      "revision": 0,
+      "name": "Revisar novedades: Renfe",
+      "outcome": "stale"
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T22:10:56.571000+01:00",
-  "last_completed_at": "2026-10-31T22:16:00+01:00",
+  "last_started_at": "2026-10-31T22:17:00+01:00",
+  "last_completed_at": "2026-10-31T22:18:00+01:00",
   "last_run": {
-    "run_id": "tr-1793481056571-manual",
+    "run_id": "tr-1793481355073-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T22:16:00+01:00",
-    "attempted": 1,
-    "explained": 1,
+    "finished_at": "2026-10-31T22:18:00+01:00",
+    "attempted": 3,
+    "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
