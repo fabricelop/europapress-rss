@@ -32,7 +32,7 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 10/10: 6 tendencias explicadas; agrupación de Sepang creada tras refrescar un snapshot obsoleto; 2 revisiones cerradas como stale por revalidación; cola final 0 y rewrite_pending 0. Sin ImageGen.",
+  "summary": "Pasada manual completada 10/10. Seis explicaciones ordinarias quedaron aplicadas; #FelizSábado se actualizó como episodio del 31 de octubre; Toledo se conservó sin cambios; el sprint de Sepang quedó agrupado en una ficha conjunta. Cola final 0. Sin ImageGen ni publicación en X.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -85,69 +85,56 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final superada: editorial-queue.json 0/0 y ninguna reexplicación rewrite_pending activa. Pasada completada 10/10 sin ImageGen."
+    },
+    {
+      "at": "2026-10-31T09:06:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación final: cola 0 y workflow de agrupación completado con éxito. Cierre 10/10; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
     {
-      "id": "1510c923e357",
-      "revision": 0,
-      "name": "Halloween",
+      "type": "ordinary",
+      "count": 6,
+      "ids": [
+        "09482f4ec753",
+        "1510c923e357",
+        "aba20deed25f",
+        "b00a5099c4fa",
+        "bbc3b648ddbe",
+        "edb94724ec61"
+      ],
       "outcome": "explained"
     },
     {
-      "id": "09482f4ec753",
-      "revision": 0,
-      "name": "#MalaysianGP",
-      "outcome": "explained_covered_by_joint"
+      "type": "review_red",
+      "job_id": "red-review-a684b90943c42ac5b2e2",
+      "source_id": "772cda27031c",
+      "name": "#FelizSábado",
+      "outcome": "updated",
+      "distinct_episode": true
     },
     {
-      "id": "aba20deed25f",
-      "revision": 0,
-      "name": "Ogura",
-      "outcome": "explained_covered_by_joint"
+      "type": "review_red",
+      "job_id": "red-review-22a97ce14f8a9221c7c8",
+      "source_id": "24d64469c94e",
+      "name": "Toledo",
+      "outcome": "unchanged"
     },
     {
-      "id": "b00a5099c4fa",
-      "revision": 0,
-      "name": "Alex Márquez",
-      "outcome": "explained_covered_by_joint"
-    },
-    {
-      "id": "edb94724ec61",
-      "revision": 0,
-      "name": "#MotoGP",
-      "outcome": "explained_covered_by_joint"
-    },
-    {
-      "id": "bbc3b648ddbe",
-      "revision": 0,
-      "name": "Pedro Acosta",
-      "outcome": "explained_covered_by_joint"
-    },
-    {
-      "id": "listas-auto-c553f2ecce7b8944f731",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed_snapshot_refreshed"
-    },
-    {
-      "id": "red-review-a684b90943c42ac5b2e2",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizSábado",
-      "outcome": "review_stale"
-    },
-    {
-      "id": "red-review-22a97ce14f8a9221c7c8",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "review_stale"
-    },
-    {
-      "id": "listas-auto-e729c97b4716c407ef41",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
+      "type": "group_listas",
+      "job_id": "listas-auto-e729c97b4716c407ef41",
       "outcome": "grouping_completed",
-      "created_id": "listas-joint-021a97e2e386c40f"
+      "group_name": "Sprint de MotoGP en Sepang",
+      "members": [
+        "09482f4ec753",
+        "aba20deed25f",
+        "b00a5099c4fa",
+        "edb94724ec61",
+        "bbc3b648ddbe"
+      ]
     }
   ],
   "last_run": {
@@ -156,9 +143,9 @@
     "finished_at": "2026-10-31T09:06:00+01:00",
     "attempted": 10,
     "explained": 6,
-    "updates": 0,
-    "stale_reviews": 2,
-    "unchanged_reviews": 0,
+    "updates": 1,
+    "stale_reviews": 0,
+    "unchanged_reviews": 1,
     "grouping_requests": 2,
     "groups_created": 1,
     "covered_by_existing": 0,
