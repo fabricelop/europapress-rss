@@ -8,39 +8,35 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T18:48:30+01:00",
-  "updated_at": "2026-10-31T18:51:00+01:00",
-  "finished_at": "2026-10-31T18:51:00+01:00",
+  "updated_at": "2026-10-31T18:50:30+01:00",
+  "finished_at": "2026-10-31T18:50:30+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": ["listas-auto-f002da5c7fcb639fcffd"],
+  "processed_ids": [
+    "listas-auto-f002da5c7fcb639fcffd"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "1/1 cerrado: agrupación automática final revisada sin coincidencias aplicables. Cola final vacía tras la cadena completa de esta ejecución.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-10-31T18:49:00+01:00",
-      "phase": "grouping",
-      "trend_id": "listas-auto-f002da5c7fcb639fcffd",
-      "title": "Agrupación automática de Listas",
-      "reason": "Primer resultado rechazado por protección de miembros: Salvador Illa estaba en publicaciones previas, no en grouping_candidates. Se corrigió el mismo outbox a groups:[] y se aplicó con éxito."
-    }
-  ],
+  "summary": "Pasada completada 1/1. La agrupación automática fue aplicada sin crear grupos ni coberturas: no había coincidencias inequívocas que justificaran fusionar fichas. Cola final 0; sin reexplicaciones pendientes, ImageGen ni publicaciones.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": "Cierre verificado",
   "final_outcomes": [
     {
       "id": "listas-auto-f002da5c7fcb639fcffd",
       "revision": 0,
+      "task": "group_listas",
       "outcome": "grouping_completed",
-      "result": "groups:[]; covered_by_existing:[]"
+      "groups_created": 0,
+      "covered_by_existing": 0
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T18:48:30+01:00",
-  "last_completed_at": "2026-10-31T18:51:00+01:00"
+  "last_completed_at": "2026-10-31T18:50:30+01:00"
 }
