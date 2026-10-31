@@ -123,16 +123,28 @@ def rework_top30(event_id, expected_revision, now, current_top30, requests, manu
     rank_row = next((x for x in current_top30 if key(x.get("name")) == key(name)), None)
     if not name:
         raise ValueError("La tendencia no tiene nombre verificable")
+    def is_historical_recheckable(row):
+        status = str(row.get("status") or "").lower()
+        if status in {"explained", "published"}:
+            return True
+        # An original that was grouped can later be marked deleted when
+        # removed from Listas. This is NOT removal of its historical text.
+        # Rechecking must be possible after it leaves Top30, but only with
+        # exact provenance to its already-created joint group.
+        return (status == "deleted" and
+                str(row.get("listas_group_role") or "") == "covered" and
+                bool(str(row.get("covered_by_id") or "").strip()) and
+                bool(str(row.get("explanation") or "").strip()))
+
     if not rank_row:
-        # A user may be acting on a genuine saved trend that already moved
-        # out of today's Top-30. Its EXACT historic id/revision/name proves
-        # provenance, including a previously published explanation; we start
-        # NEW work rather than alter or republish that old version.
+        # A saved covered original can leave today's Top30 or be closed
+        # without losing its right to fresh, independent evaluation.
+        # Verify exact historic id+revision+name; do not restore a tombstone.
         history = next((x for x in manual.get("items", [])
                         if str(x.get("id") or "") == str(event_id) and
                         int(x.get("revision") or 0) == expected_revision and
                         key(x.get("name")) == key(name) and
-                        str(x.get("status") or "").lower() in {"explained", "published"}), None)
+                        is_historical_recheckable(x)), None)
         if history is None:
             raise ValueError("La tendencia ya no está en el Top 30 actual y no consta identidad histórica")
         rank_row = {"name": history["name"], "rank": history.get("rank") or history.get("rank_at_explanation") or 0}
@@ -150,7 +162,7 @@ def rework_top30(event_id, expected_revision, now, current_top30, requests, manu
             str(x.get("id") or "") == str(event_id) and
             int(x.get("revision") or 0) == expected_revision and
             key(x.get("name")) == key(name) and
-            str(x.get("status") or "").lower() in {"explained", "published"}
+            is_historical_recheckable(x)
             for x in manual.get("items", []))
         if str(event_id) != expected_id and key(event_id) != key(name) and not historic_identity:
             raise ValueError("El identificador no corresponde a esta tendencia")
