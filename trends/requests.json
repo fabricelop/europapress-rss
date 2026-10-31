@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T00:46:06.791209+00:00",
+  "updated_at": "2026-10-31T00:47:33.941613+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -43276,7 +43276,7 @@
       "revision": 0,
       "name": "Revisar novedades: #DeViernes",
       "rank": 7,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T00:44:40.756182+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -43299,14 +43299,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T00:47:33.941613+00:00",
+      "review_reason": "Es una entrega distinta a la revisada el 24 de octubre: nueva emisión del 30 de octubre, con Silvia Bronchalo por primera vez en directo en plató y Verónica Hidalgo como segunda invitada."
     },
     {
       "id": "red-review-1f83c913270f3b62bc2e",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 26,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T00:44:40.756182+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -43330,7 +43333,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T00:47:33.941613+00:00",
+      "review_reason": "El accidente es el mismo episodio, pero el balance y la situación forense han cambiado materialmente desde la explicación inicial del 28 de octubre."
     },
     {
       "id": "listas-joint-e8fc1845064ef779",
