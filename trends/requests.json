@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T07:56:11.791037+00:00",
+  "updated_at": "2026-10-31T08:55:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -51671,20 +51671,20 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Halloween"
       ],
       "originated_from_prior_id": "fe94617e42ee",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Halloween, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "explained_at": "2026-10-31T08:59:00+01:00",
-      "last_attempt_at": "2026-10-31T08:59:00+01:00",
+      "explained_at": "2026-10-31T08:55:00+01:00",
+      "last_attempt_at": "2026-10-31T08:55:00+01:00",
       "explanation": "TT#5 Halloween es tendencia porque hoy, 31 de octubre, se celebra Halloween con fiestas, disfraces y pasajes del terror en toda España.\n#Halloween #31deOctubre\n🌶️ Hoy el calendario también viene disfrazado.",
       "closer_text": "🌶️ Hoy el calendario también viene disfrazado.",
       "rank_at_explanation": 5,
       "category": "Sociedad",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
@@ -51694,7 +51694,7 @@
           "url": "https://www.europapress.es/madrid/noticia-madrid-blinda-halloween-1700-agentes-coordinacion-policia-nacional-llamadas-actos-vandalicos-20261029123015.html"
         }
       ],
-      "news_note": "Reelaboración desde cero con contexto del 31 de octubre. Texto y remate nuevos; no se reutiliza la versión anterior.",
+      "news_note": "Reelaboración desde cero: hoy 31 de octubre se celebra Halloween y hay programación específica de fiestas, disfraces y pasajes del terror. Texto y remate nuevos; no se reutiliza la versión anterior.",
       "group_id": "grp-1510c923e357",
       "explanation_group_id": "grp-1510c923e357",
       "group_title": "Halloween",
@@ -51705,14 +51705,16 @@
       "grouped_member_revisions": [
         {
           "id": "1510c923e357",
+          "name": "Halloween",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored"
     },
     {
       "id": "09482f4ec753",
@@ -51738,13 +51740,13 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-10-31T08:59:10+01:00",
-      "explained_at": "2026-10-31T08:59:10+01:00",
-      "last_attempt_at": "2026-10-31T08:59:10+01:00",
+      "explained_at": "2026-10-31T08:55:00+01:00",
+      "last_attempt_at": "2026-10-31T08:55:00+01:00",
       "explanation": "TT#18 #MalaysianGP es tendencia por el sprint de Sepang: Pedro Acosta ganó tras la caída de Álex Márquez cuando lideraba, con Marc Márquez segundo.\n#MotoGP #Sepang\n🌶️ La lluvia amagó; el sprint no.",
       "closer_text": "🌶️ La lluvia amagó; el sprint no.",
       "rank_at_explanation": 18,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
@@ -51765,17 +51767,20 @@
       "grouped_member_revisions": [
         {
           "id": "09482f4ec753",
+          "name": "#MalaysianGP",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "aba20deed25f",
@@ -51801,13 +51806,13 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-10-31T08:59:20+01:00",
-      "explained_at": "2026-10-31T08:59:20+01:00",
-      "last_attempt_at": "2026-10-31T08:59:20+01:00",
+      "explained_at": "2026-10-31T08:55:00+01:00",
+      "last_attempt_at": "2026-10-31T08:55:00+01:00",
       "explanation": "TT#22 Ogura es tendencia por su sprint en Sepang: Ai Ogura llegó a liderar tras la caída de Álex Márquez y terminó cuarto después de pelear por el podio.\n#MotoGP #Sepang\n🌶️ Lideró bajo amenaza de lluvia y acabó a un paso del podio.",
       "closer_text": "🌶️ Lideró bajo amenaza de lluvia y acabó a un paso del podio.",
       "rank_at_explanation": 22,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
@@ -51828,17 +51833,20 @@
       "grouped_member_revisions": [
         {
           "id": "aba20deed25f",
+          "name": "Ogura",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "b00a5099c4fa",
@@ -51864,13 +51872,13 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-10-31T08:59:30+01:00",
-      "explained_at": "2026-10-31T08:59:30+01:00",
-      "last_attempt_at": "2026-10-31T08:59:30+01:00",
+      "explained_at": "2026-10-31T08:55:00+01:00",
+      "last_attempt_at": "2026-10-31T08:55:00+01:00",
       "explanation": "TT#23 Alex Márquez es tendencia por su sábado en Sepang: logró la pole por 70 milésimas sobre Marc, pero se cayó en la tercera vuelta del sprint cuando lideraba.\n#MotoGP #Sepang\n🌶️ De la pole al suelo en tres vueltas.",
       "closer_text": "🌶️ De la pole al suelo en tres vueltas.",
       "rank_at_explanation": 23,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
@@ -51880,7 +51888,7 @@
           "url": "https://www.crash.net/motogp/news/1108910/1/pedro-acosta-wins-rain-hit-sepang-motogp-sprint-after-alex-marquez-crash"
         }
       ],
-      "news_note": "Álex Márquez logró la pole con 1:56.493, 0,070 s por delante de Marc, y se cayó en la vuelta 3 del sprint cuando lideraba.",
+      "news_note": "Álex Márquez logró la pole con 1:56.493, 0,070 s por delante de Marc, y después se cayó en la vuelta 3 del sprint cuando lideraba.",
       "group_id": "grp-b00a5099c4fa",
       "explanation_group_id": "grp-b00a5099c4fa",
       "group_title": "Alex Márquez",
@@ -51891,17 +51899,20 @@
       "grouped_member_revisions": [
         {
           "id": "b00a5099c4fa",
+          "name": "Alex Márquez",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "edb94724ec61",
@@ -51927,13 +51938,13 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-10-31T08:59:40+01:00",
-      "explained_at": "2026-10-31T08:59:40+01:00",
-      "last_attempt_at": "2026-10-31T08:59:40+01:00",
+      "explained_at": "2026-10-31T08:55:00+01:00",
+      "last_attempt_at": "2026-10-31T08:55:00+01:00",
       "explanation": "TT#24 #MotoGP es tendencia por el sprint de Malasia: Pedro Acosta ganó en Sepang tras la caída de Álex Márquez, con Marc Márquez segundo y Bezzecchi tercero.\n#MalaysianGP #Sepang\n🌶️ Sepang repartió agua, caída y victoria.",
       "closer_text": "🌶️ Sepang repartió agua, caída y victoria.",
       "rank_at_explanation": 24,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
@@ -51954,17 +51965,20 @@
       "grouped_member_revisions": [
         {
           "id": "edb94724ec61",
+          "name": "#MotoGP",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "bbc3b648ddbe",
@@ -51990,13 +52004,13 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-10-31T08:59:50+01:00",
-      "explained_at": "2026-10-31T08:59:50+01:00",
-      "last_attempt_at": "2026-10-31T08:59:50+01:00",
+      "explained_at": "2026-10-31T08:55:00+01:00",
+      "last_attempt_at": "2026-10-31T08:55:00+01:00",
       "explanation": "TT#26 Pedro Acosta es tendencia por ganar el sprint de MotoGP en Sepang: superó a Ai Ogura a tres vueltas del final y batió a Marc Márquez por 0,578 segundos.\n#MotoGP #Sepang\n🌶️ Acosta esperó ocho vueltas para dar el golpe.",
       "closer_text": "🌶️ Acosta esperó ocho vueltas para dar el golpe.",
       "rank_at_explanation": 26,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
@@ -52017,17 +52031,20 @@
       "grouped_member_revisions": [
         {
           "id": "bbc3b648ddbe",
+          "name": "Pedro Acosta",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "listas-auto-c553f2ecce7b8944f731",
@@ -53730,5 +53747,5 @@
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
-  "count": 229
+  "count": 251
 }
