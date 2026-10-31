@@ -5,23 +5,25 @@
   "canonical": true,
   "run_id": "tr-20261031T105500-manual",
   "previous_run_id": "tr-1793439854638-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-10-31T10:55:00+01:00",
-  "updated_at": "2026-10-31T10:59:24+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-10-31T11:04:00+01:00",
+  "finished_at": "2026-10-31T11:04:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "0fe61402e93a",
-  "title": "DÍA DE PARTIDO",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "5b2b84b126eb",
+    "81542559f97d",
     "0fe61402e93a"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual real iniciada sobre 3 tendencias nuevas; contrato y cola de main revalidados. Sin ImageGen ni publicación.",
+  "summary": "Pasada manual completada 3/3. #BornToBeNuNewConcertD1 explicado con detonante verificado; Humillación y DÍA DE PARTIDO cerradas con causa no confirmada para evitar atribuciones especulativas. Cola final 0. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -109,17 +111,53 @@
       "trend_id": "0fe61402e93a",
       "title": "DÍA DE PARTIDO",
       "message": "JIT ID+revisión confirmado. La frase coincide con una jornada de LaLiga con varios partidos hoy, pero no se puede atribuir con rigor a un club concreto; se cierra con contexto verificado y causa no confirmada."
+    },
+    {
+      "at": "2026-10-31T11:03:00+01:00",
+      "phase": "verifying",
+      "trend_id": "0fe61402e93a",
+      "title": "DÍA DE PARTIDO",
+      "message": "Aplicador oficial confirmó ficha explained rev0 y retiró la revisión de la cola."
+    },
+    {
+      "at": "2026-10-31T11:04:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola 0, sin preparing/update. Pasada cerrada 3/3; sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "5b2b84b126eb",
+      "revision": 0,
+      "name": "#BornToBeNuNewConcertD1",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "81542559f97d",
+      "revision": 0,
+      "name": "Humillación",
+      "outcome": "explained_uncertain_cause",
+      "applied": true
+    },
+    {
+      "id": "0fe61402e93a",
+      "revision": 0,
+      "name": "DÍA DE PARTIDO",
+      "outcome": "explained_uncertain_cause",
+      "applied": true
+    }
+  ],
   "last_run": {
-    "run_id": "tr-1793439854638-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "finished_at": "2026-10-31T10:49:00+01:00",
-    "attempted": 2,
-    "explained": 0,
+    "run_id": "tr-20261031T105500-manual",
+    "status": "DONE",
+    "finished_at": "2026-10-31T11:04:00+01:00",
+    "attempted": 3,
+    "explained": 3,
     "updates": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "unchanged_reviews": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -128,8 +166,8 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
-    "total": 2
+    "incidents": 0,
+    "total": 3
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T10:59:24+01:00",
