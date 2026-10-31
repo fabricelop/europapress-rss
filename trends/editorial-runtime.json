@@ -3,125 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261031T014000+0100-manual",
-  "previous_run_id": "tr-chat-20261031T012500+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T01:40:00+01:00",
-  "updated_at": "2026-10-31T01:48:00+01:00",
-  "finished_at": "2026-10-31T01:48:00+01:00",
-  "last_started_at": "2026-10-31T01:40:00+01:00",
+  "run_id": "tr-chat-20261031T015500+0100-manual",
+  "previous_run_id": "tr-chat-20261031T014000+0100-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T01:55:00+01:00",
+  "updated_at": "2026-10-31T01:55:00+01:00",
+  "finished_at": null,
+  "last_started_at": "2026-10-31T01:55:00+01:00",
   "last_completed_at": "2026-10-31T01:48:00+01:00",
-  "current": 4,
-  "total": 4,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "3d5ee1703a15",
-    "listas-auto-60de85f2ab3d8b0141a2",
-    "red-review-344163f90c35e54db9a9",
-    "red-review-1f83c913270f3b62bc2e"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial real completada 4/4: #LaReuniónSecreta explicada; agrupación Villarreal/Sergio García aplicada; 2 revisiones cerradas como stale por barrera JIT; cola final 0 y sin reexplicaciones vigentes.",
+  "summary": "Inicio de pasada editorial real: cola autoritativa 0/0 en primera lectura; verificando reexplicaciones y barrera final.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "api_failover_enabled": false,
   "activity": [
     {
-      "at": "2026-10-31T01:40:00+01:00",
+      "at": "2026-10-31T01:55:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio: cola autoritativa 0/0; verificando reexplicaciones vigentes y últimos resultados de mantenimiento. Sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T01:41:20+01:00",
-      "phase": "investigating",
-      "trend_id": "3d5ee1703a15",
-      "title": "#LaReuniónSecreta",
-      "message": "Nueva entrada detectada en la barrera: puesto 25, revisión 0. Identidad revalidada JIT; investigando detonante actual con fuentes independientes."
-    },
-    {
-      "at": "2026-10-31T01:44:20+01:00",
-      "phase": "drafting",
-      "trend_id": "3d5ee1703a15",
-      "title": "#LaReuniónSecreta",
-      "message": "Detonante contrastado: nuevo directo del programa a las 22:00 difundido con la propia etiqueta; episodio 08x07 verificado en plataforma de podcast."
-    },
-    {
-      "at": "2026-10-31T01:44:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "3d5ee1703a15",
-      "title": "#LaReuniónSecreta",
-      "message": "Remate único seleccionado, breve y ligado al nombre del programa; sin añadir hechos nuevos."
-    },
-    {
-      "at": "2026-10-31T01:45:00+01:00",
-      "phase": "persisting",
-      "trend_id": "3d5ee1703a15",
-      "title": "#LaReuniónSecreta",
-      "message": "Persistiendo texto, fuentes y estado explained en requests y telegram-manual-explained; retirando solo la revisión 0 de la cola."
-    },
-    {
-      "at": "2026-10-31T01:45:40+01:00",
-      "phase": "verifying",
-      "trend_id": "3d5ee1703a15",
-      "title": "#LaReuniónSecreta",
-      "message": "Verificación final: request y ficha explained coinciden en revisión 0, texto, remate y explained_at; la cola autoritativa está a 0 y no hay rewrite_pending vigente."
-    },
-    {
-      "at": "2026-10-31T01:46:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completada 1/1. Agrupación visual/editorial de la ficha queda pending sin task:group_listas en cola; sin ImageGen, sin Telegram editorial y sin publicación en X."
-    },
-    {
-      "at": "2026-10-31T01:47:00+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-60de85f2ab3d8b0141a2",
-      "title": "Agrupación automática de Listas",
-      "message": "Reapertura de la misma pasada: se detectaron 3 tareas nuevas en main tras el cierre provisional; se procesan en orden contractual."
-    },
-    {
-      "at": "2026-10-31T01:46:06+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-60de85f2ab3d8b0141a2",
-      "title": "Agrupación automática de Listas",
-      "message": "Agrupación aplicada: Villarreal y Sergio García cubiertos por la ficha conjunta listas-joint-e8fc1845064ef779; originales conservados."
-    },
-    {
-      "at": "2026-10-31T01:47:33+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-344163f90c35e54db9a9",
-      "title": "Revisar novedades: #DeViernes",
-      "message": "Resultado investigado, pero la barrera JIT detectó que la revisión origen ya no era vigente; cerrada como stale sin sobrescribir estado más nuevo."
-    },
-    {
-      "at": "2026-10-31T01:47:33+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-1f83c913270f3b62bc2e",
-      "title": "Revisar novedades: Toledo",
-      "message": "Resultado investigado, pero la barrera JIT detectó que la revisión origen ya no era vigente; cerrada como stale sin sobrescribir estado más nuevo."
-    },
-    {
-      "at": "2026-10-31T01:47:50+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final: editorial-queue.json count=0; #LaReuniónSecreta sincronizada y grouping_state=cleared; sin rewrite_pending vigente."
-    },
-    {
-      "at": "2026-10-31T01:48:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada completada 4/4. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+      "message": "Inicio: cola autoritativa 0/0; verificando reexplicaciones vigentes, últimos resultados de mantenimiento y barrera final. Sin ImageGen."
     }
   ]
 }
