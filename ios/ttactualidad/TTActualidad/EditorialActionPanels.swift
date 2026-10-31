@@ -55,6 +55,12 @@ struct EditorialActions: View {
                 Text("Agrupada en: " + trend.coveredByName)
                     .font(.caption.weight(.semibold)).foregroundStyle(.orange)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                HStack(spacing: 7) {
+                    quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
+                    quickButton("Copiar foto", "photo.on.rectangle") {
+                        Task { await copyPhoto() }
+                    }
+                }
                 quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                 quickButton("Copiar explicación original", "doc.on.doc") { copy(fullText) }
                 if let joint = store.snapshot.trendListas.first(where: { $0.editorialID == trend.coveredByID }) {
@@ -126,12 +132,7 @@ struct EditorialActions: View {
             } else {
             HStack(spacing: 7) {
                 quickLink("TTImages", "photo.stack", "https://t.me/TTImages_bot")
-                quickButton("Publicar en X", "square.and.arrow.up") {
-                    guard !fullText.isEmpty else { outcome = "Sin texto para publicar"; return }
-                    var parts = URLComponents(string: "https://twitter.com/intent/tweet")
-                    parts?.queryItems = [URLQueryItem(name: "text", value: fullText)]
-                    if let url = parts?.url { openURL(url) }
-                }
+                quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
             }
             HStack(spacing: 7) {
                 quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
@@ -139,7 +140,7 @@ struct EditorialActions: View {
             }
             HStack(spacing: 7) {
                 quickButton("Copiar texto", "doc.on.doc") { copy(fullText) }
-                quickButton("Foto archivo", "photo.on.rectangle") {
+                quickButton("Copiar foto", "photo.on.rectangle") {
                     Task { await copyPhoto() }
                 }
             }
@@ -632,18 +633,39 @@ struct EditorialActions: View {
         outcome = "Copiado al portapapeles"
         UINotificationFeedbackGenerator().notificationOccurred(.success)
     }
-    private func copyPhoto() async {
-        guard let url = news?.imageURL ?? trend?.imageURL else {
-            outcome = "Todavía no hay foto de archivo disponible."
+    private func publishOnX() {
+        guard !fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            outcome = "Sin texto para publicar"
             return
         }
-        do {
-            let (data, response) = try await URLSession.shared.data(from: url)
-            guard (response as? HTTPURLResponse)?.statusCode == 200,
-                  let image = UIImage(data: data) else { throw URLError(.cannotDecodeContentData) }
-            UIPasteboard.general.image = image
-            outcome = "Fotografía copiada"
-        } catch { outcome = "No se pudo copiar la fotografía." }
+        var parts = URLComponents(string: "https://twitter.com/intent/tweet")
+        parts?.queryItems = [URLQueryItem(name: "text", value: fullText)]
+        if let url = parts?.url { openURL(url) }
+    }
+
+    private func copyPhoto() async {
+        // Prefer the verified AI image that is displayed in the trend card.
+        // Fall back to the archive only if there is no accessible IA file.
+        let sources: [URL] = [trend?.siteImageURL, news?.imageURL ?? trend?.imageURL].compactMap { $0 }
+        guard !sources.isEmpty else {
+            outcome = "No hay imagen IA ni foto de archivo disponible."
+            return
+        }
+        for (index, url) in sources.enumerated() {
+            do {
+                let (data, response) = try await URLSession.shared.data(from: url)
+                guard (response as? HTTPURLResponse)?.statusCode == 200,
+                      let image = UIImage(data: data) else { continue }
+                UIPasteboard.general.image = image
+                outcome = "Foto copiada: " + (index == 0 && trend?.siteImageURL != nil
+                    ? "imagen IA" : "archivo")
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                return
+            } catch {
+                continue
+            }
+        }
+        outcome = "No se pudo descargar ninguna imagen. Reintenta tras actualizar."
     }
 }
 

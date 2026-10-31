@@ -612,7 +612,8 @@ final class EditorialStore: ObservableObject {
             manual: docs["trends/telegram-manual-explained.json"]!,
             explained: docs["trends/explained.json"] ?? [:],
             requests: docs["trends/requests.json"]!,
-            ready: ready, archivePhotos: archivePhotos, siteImages: siteImages
+            ready: ready, archivePhotos: archivePhotos, siteImages: siteImages,
+            now: now
         )
         let unexplained = Self.buildUnexplainedTrends(
             requests: docs["trends/requests.json"]!,
@@ -1811,7 +1812,7 @@ final class EditorialStore: ObservableObject {
     private static func buildTop30(
         recent: [String: Any], manual: [String: Any], explained: [String: Any],
         requests: [String: Any], ready: [TrendItem], archivePhotos: [String: URL],
-        siteImages: [String: SiteAIImageCatalog.Entry]
+        siteImages: [String: SiteAIImageCatalog.Entry], now: Date
     ) -> [TrendItem] {
         let names = recent["top30"] as? [String] ?? []
         let radar = rows(recent, "items")
@@ -1865,9 +1866,18 @@ final class EditorialStore: ObservableObject {
         }
         return (1...30).compactMap { rank -> TrendItem? in
             guard let name = byRank[rank], !name.isEmpty else { return nil }
-            let key = norm(name), explanation = explanations[key] ?? [:]
+            let key = norm(name), candidate = explanations[key] ?? [:]
+            let candidateDate = when(candidate, ["explained_at"])
+            // The Site treats old explanations as pending. Do not display an
+            // orphaned historical explanation in iOS just because the keyword
+            // reappears in today's ranking (e.g. Funes).
+            let fresh = candidateDate.map {
+                now.timeIntervalSince($0) <= 48 * 3600 &&
+                $0.timeIntervalSince(now) <= 3600
+            } ?? false
+            let explanation = fresh ? candidate : [:]
             let text = str(explanation, "explanation")
-            let date = when(explanation, ["explained_at"])
+            let date = fresh ? candidateDate : nil
             let status: String = statuses[key] ??
                 (text.isEmpty ? "PENDIENTE" : "EXPLICADA")
             let request = requestByName[key] ?? [:]

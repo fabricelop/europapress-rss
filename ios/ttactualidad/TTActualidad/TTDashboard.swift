@@ -15,7 +15,11 @@ private struct ListasGroupingControls: View {
     @State private var groupRequestID = UUID().uuidString.lowercased()
     @State private var cleanupRequestID = UUID().uuidString.lowercased()
 
-    private var covered: [TrendItem] { store.snapshot.trendListas.filter { $0.isCovered } }
+    // Purple originals only. Never delete the newly-created joint card.
+    // Backend also revalidates listas_group_role == covered before deleting.
+    private var covered: [TrendItem] {
+        store.snapshot.trendListas.filter { $0.isCovered && !$0.isJointGroup }
+    }
     private var ungrouped: [TrendItem] { store.snapshot.trendListas.filter { !$0.isCovered } }
 
     var body: some View {
@@ -36,7 +40,7 @@ private struct ListasGroupingControls: View {
                 Button {
                     if github.authenticated { confirmCleanup = true } else { settings = true }
                 } label: {
-                    Text("Retirar agrupadas (\(covered.count))")
+                    Text("Eliminar agrupadas (\(covered.count))")
                         .frame(maxWidth: .infinity).padding(.vertical, 10)
                 }
                 .disabled(busy || covered.isEmpty)
@@ -85,11 +89,13 @@ private struct ListasGroupingControls: View {
                 }
             }.preferredColorScheme(.dark)
         }
-        .alert("¿Retirar las agrupadas?", isPresented: $confirmCleanup) {
-            Button("Retirar sin publicar", role: .destructive) { submit(cleanup: true) }
+        .alert("¿Eliminar todas las agrupadas?", isPresented: $confirmCleanup) {
+            Button("Eliminar \(covered.count) · No publicadas", role: .destructive) {
+                submit(cleanup: true)
+            }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text("Se retirarán únicamente las tarjetas originales marcadas como agrupadas. Las publicaciones conjuntas se conservan y no se incrementa el contador de publicados.")
+            Text("Eliminarás de Listas todas las \(covered.count) tarjetas moradas, registradas como NO PUBLICADAS. Las explicaciones conjuntas se conservan y no se suman publicaciones en X.")
         }
     }
 
@@ -108,7 +114,7 @@ private struct ListasGroupingControls: View {
             case .verified:
                 if cleanup { cleanupRequestID = UUID().uuidString.lowercased() }
                 else { groupRequestID = UUID().uuidString.lowercased(); submittedGroup = nil }
-                message = cleanup ? "Retirada confirmada en GitHub." :
+                message = cleanup ? "Agrupadas eliminadas como no publicadas · confirmado en GitHub." :
                     "Agrupación de la selección solicitada. Consulta En elaboración; las originales se conservan."
             case .pending:
                 message = "Solicitud pendiente de confirmación. Se conservará el mismo identificador si reintentas."
