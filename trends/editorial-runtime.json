@@ -12,16 +12,22 @@
   "finished_at": "2026-10-31T07:49:00+01:00",
   "last_started_at": "2026-10-31T07:47:20.411+01:00",
   "last_completed_at": "2026-10-31T07:49:00+01:00",
-  "current": 0,
-  "total": 0,
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "36bc10edc55b",
+    "listas-auto-cf1a57e5089b6b0ad33e",
+    "red-review-b0f211321398ac293a69",
+    "red-review-1bbd2722e14a13f3d3d0",
+    "listas-auto-00a7617e4cd89b3ccb35"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada cerrada 0/0 tras barrera final: editorial-queue.json vacío y requests.json sin rewrite_pending. El job de agrupación observado al inicio dejó de existir antes de la barrera JIT, por lo que no se escribió un resultado obsoleto. Sin ImageGen ni publicaciones.",
+  "summary": "Pasada manual completada 5/5: Luka explicada; dos agrupaciones sin coincidencias; Atocha actualizada; revisión de #DeViernes descartada como stale por estado terminal previo. Cola final vacía y sin rewrite_pending.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -53,33 +59,72 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada editorial cerrada 0/0. Sin ImageGen, sin Telegram editorial y sin publicación en X."
+    },
+    {
+      "at": "2026-10-31T07:48:25+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-00a7617e4cd89b3ccb35",
+      "title": "Agrupación automática de Listas",
+      "message": "Segunda agrupación aplicada sin grupos ni coberturas; cola vuelve a cero."
+    },
+    {
+      "at": "2026-10-31T07:49:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación final: Luka y Atocha coinciden en requests/manual; #DeViernes quedó review_completed/stale; cola count=0 y rewrite_pending=0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "36bc10edc55b",
+      "revision": 0,
+      "name": "Luka",
+      "outcome": "explained"
+    },
+    {
+      "id": "listas-auto-cf1a57e5089b6b0ad33e",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed_empty"
+    },
+    {
+      "id": "red-review-b0f211321398ac293a69",
+      "revision": 0,
+      "name": "Revisar novedades: #DeViernes",
+      "outcome": "stale"
+    },
+    {
+      "id": "red-review-1bbd2722e14a13f3d3d0",
+      "revision": 0,
+      "name": "Revisar novedades: Atocha",
+      "outcome": "updated",
+      "created_id": "trend-update-0930a3412d38d281ce25"
+    },
+    {
+      "id": "listas-auto-00a7617e4cd89b3ccb35",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed_empty"
+    }
+  ],
   "last_run": {
-    "run_id": "tr-1793429240411-manual",
+    "run_id": "tr-manual-20261031T074000+0100",
     "status": "DONE",
     "finished_at": "2026-10-31T07:49:00+01:00",
-    "attempted": 0,
-    "explained": 0,
-    "updates": 0,
-    "stale_reviews": 0,
+    "attempted": 5,
+    "explained": 1,
+    "updates": 1,
+    "stale_reviews": 1,
     "unchanged_reviews": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 2,
     "groups_created": 0,
     "covered_by_existing": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "initially_observed_then_resolved_elsewhere": [
-      {
-        "id": "listas-auto-00a7617e4cd89b3ccb35",
-        "revision": 0,
-        "task": "group_listas"
-      }
-    ]
+    "incidents": 0
   },
   "api_failover_enabled": false
 }
