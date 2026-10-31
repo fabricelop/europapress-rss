@@ -365,6 +365,9 @@ def main():
     correction_id = 'trend-update-07dc8165892e5d9a6b62'
     correction_rev = 0
     old_closer = '🌶️ Dos años después, el recuento aún se mueve.'
+    wrong_text = ('TT#12 Dana sigue siendo tendencia por el segundo aniversario en Valencia: '
+                  'la jueza elevó a 234 las víctimas mortales tras reconocer el fallecimiento '
+                  'de un vecino de Paiporta.\\\\n#DANA #Valencia')
     clean_text = ('TT#12 Dana sigue siendo tendencia por el segundo aniversario en Valencia: '
                   'la jueza elevó a 234 las víctimas mortales tras reconocer el fallecimiento '
                   'de un vecino de Paiporta.\\n#DANA #Valencia')
@@ -372,8 +375,8 @@ def main():
         for row in state[path][field]:
             if (row.get('id') == correction_id
                     and int(row.get('revision') or 0) == correction_rev
-                    and row.get('closer_text') == old_closer
-                    and str(row.get('explanation') or '').endswith(old_closer)):
+                    and (row.get('closer_text') == old_closer
+                         or row.get('explanation') == wrong_text)):
                 row['explanation'] = clean_text
                 row['closer_text'] = ''
                 row['editorial_grouping_state'] = 'cleared'
