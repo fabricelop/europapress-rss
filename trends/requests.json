@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T17:48:14.207870+00:00",
+  "updated_at": "2026-10-31T17:50:19.701748+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T17:48:14.207870+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -8818,7 +8818,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T17:48:14.207870+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -89846,7 +89846,7 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_fingerprint": "3bd0eeca48ddc120c21883c1ac8e8fb00bcebc7b0ca8fcdb9c0f4a974c2a7b3a",
-      "editorial_grouping_checked_at": "2026-10-31T17:48:14.207870+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00"
     },
     {
       "id": "listas-auto-65ad3707f7581441f114",
@@ -91639,7 +91639,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "682061efc3c30bb7e18d4e7f401e00536d9eaaa2bc532590cd93f2716b7cb997",
-      "editorial_grouping_checked_at": "2026-10-31T17:48:14.207870+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00"
     },
     {
       "id": "1c20fcf72b9e",
@@ -93429,7 +93429,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "88a2e34bc52d46a9ee808b806062c2ac0592d5010531dd4d751c56385734c9fa",
-      "editorial_grouping_checked_at": "2026-10-31T17:48:14.207870+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00"
     },
     {
       "id": "listas-joint-30a1d7da7017e769",
@@ -93481,7 +93481,7 @@
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "8024e07e12d90cad8e54da424062f9e85184e127ce2d993bea6c58a431a4f4a1",
-      "editorial_grouping_checked_at": "2026-10-31T17:48:14.207870+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00"
     },
     {
       "id": "trend-update-4a9b908648388275064e",
@@ -93512,21 +93512,23 @@
       "new_facts": "El presunto fundador ha ingresado en prisión provisional sin fianza; en Palma hubo 200 identificados y varias ciudades reforzaron medidas preventivas ante las convocatorias del 31 de octubre.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "d6fa2b939a440749817e248e125b296afee9bb66df6935fc9f62ac561d6f0501",
+      "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00"
     },
     {
       "id": "listas-auto-f002da5c7fcb639fcffd",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T17:48:14.207870+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "needs_correction",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -95072,7 +95074,11 @@
       "request_source": "editorial_maintenance",
       "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
       "grouping_error": "Miembro repetido, inventado o revisión fuera de la solicitud",
-      "grouping_error_digest": "e2de39ab34167341a856617048f3a8acfc10d1ea5d840123e352fc964c9c1e5f"
+      "grouping_error_digest": "e2de39ab34167341a856617048f3a8acfc10d1ea5d840123e352fc964c9c1e5f",
+      "completed_at": "2026-10-31T17:50:19.701748+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "09e7f9b4adccc257fc2bbf3eff41aa6e9bc058121bfcdaeee845d8416e81ee83"
     }
   ],
   "count": 341
