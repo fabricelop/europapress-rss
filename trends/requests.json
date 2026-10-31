@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-31T13:45:47.948016+00:00",
+  "updated_at": "2026-10-31T13:47:48.084909+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -2476,7 +2476,7 @@
       "group_leader_id": "6edd382e5ca7",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "7bc400f18d812c037d70c4193822bd8ccd40d1dc07260a2d0e10b45ed23537c9",
-      "editorial_grouping_checked_at": "2026-10-31T12:13:55.048646+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T13:47:48.084909+00:00"
     },
     {
       "id": "5c964cfff54c",
@@ -4016,7 +4016,7 @@
       "telegram_package_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "0f0a77ea63339fc1847b90cb353b9456cd65fddb4383d71f36184f11098abba5",
-      "editorial_grouping_checked_at": "2026-10-31T12:13:55.048646+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T13:47:48.084909+00:00"
     },
     {
       "id": "22601009b977",
@@ -8739,7 +8739,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-10-31T12:13:55.048646+00:00"
+      "editorial_grouping_checked_at": "2026-10-31T13:47:48.084909+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -69759,14 +69759,23 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-97706d6825e02352",
+      "covered_by_revision": 0,
+      "covered_by_name": "Chelsea-Manchester United",
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-31T13:47:48.084909+00:00",
+      "grouping_request_id": "listas-auto-dd413455657c31b745da",
+      "editorial_grouping_fingerprint": "738c85dff3ec58e69789bb8880c83d00988b4201f1d39dae958d9e19ab42b71b",
+      "editorial_grouping_checked_at": "2026-10-31T13:47:48.084909+00:00"
     },
     {
       "id": "7c2dfbcd3134",
@@ -69823,14 +69832,23 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-97706d6825e02352",
+      "covered_by_revision": 0,
+      "covered_by_name": "Chelsea-Manchester United",
+      "covered_source_revision": 0,
+      "covered_at": "2026-10-31T13:47:48.084909+00:00",
+      "grouping_request_id": "listas-auto-dd413455657c31b745da",
+      "editorial_grouping_fingerprint": "222f8f18d9c77f1c07ceb05bbdecdbd071256f381c7ffe7484a60076daed4f73",
+      "editorial_grouping_checked_at": "2026-10-31T13:47:48.084909+00:00"
     },
     {
       "id": "355d223e9798",
@@ -69887,26 +69905,28 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "8400e3b9c86065da4b64f681002fbb69f95525d53e82e1c6835dd0c635232b49",
+      "editorial_grouping_checked_at": "2026-10-31T13:47:48.084909+00:00"
     },
     {
       "id": "listas-auto-dd413455657c31b745da",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-10-31T13:45:47.948016+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "6edd382e5ca7",
@@ -71504,14 +71524,20 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-10-31T13:47:48.084909+00:00",
+      "grouping_created_ids": [
+        "listas-joint-97706d6825e02352"
+      ],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "b9fa7c38f319ca7371f073ac51808ec9308dd044f828d879f8817c416136fe47"
     },
     {
       "id": "red-review-c87bc5f551d7653733c0",
       "revision": 0,
       "name": "Revisar novedades: #DeViernes",
       "rank": 28,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T13:45:47.948016+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -71534,14 +71560,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T13:47:48.084909+00:00",
+      "review_reason": "Es una emisión distinta de la explicada el 24 de octubre: el 30 de octubre Silvia Bronchalo volvió al plató en directo y el programa registró un 13,7% de cuota."
     },
     {
       "id": "red-review-3ad7a43fc68a0025b99d",
       "revision": 0,
       "name": "Revisar novedades: #FelizSábado",
       "rank": 20,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-10-31T13:45:47.948016+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -71564,7 +71593,57 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-10-31T13:47:48.084909+00:00",
+      "review_reason": "La explicación anterior correspondía al sábado 24 de octubre. La etiqueta vuelve a figurar entre las tendencias españolas el sábado 31 de octubre, por lo que es una ocurrencia temporal distinta."
+    },
+    {
+      "id": "listas-joint-97706d6825e02352",
+      "revision": 0,
+      "name": "Chelsea-Manchester United",
+      "rank": 14,
+      "status": "explained",
+      "explanation": "TT#14 Chelsea y #PremierLeagueDAZN son tendencia por el Chelsea-Manchester United de Premier, emitido por DAZN en España; Morgan Rogers adelantó al Chelsea tras el 0-0 del descanso.\n#Chelsea #ManchesterUnited\n🌶️ El candado del primer tiempo se abrió de azul.",
+      "closer_text": "🌶️ El candado del primer tiempo se abrió de azul.",
+      "explained_at": "2026-10-31T13:47:48.084909+00:00",
+      "requested_at": "2026-10-31T13:47:48.084909+00:00",
+      "updated_at": "2026-10-31T13:47:48.084909+00:00",
+      "listas_group_role": "joint",
+      "listas_group_members": [
+        {
+          "id": "836530272c76",
+          "revision": 0
+        },
+        {
+          "id": "7c2dfbcd3134",
+          "revision": 0
+        }
+      ],
+      "trend_names": [
+        "Chelsea",
+        "#PremierLeagueDAZN"
+      ],
+      "group_title": "Chelsea-Manchester United",
+      "verification_sources": [
+        {
+          "url": "https://www.theguardian.com/football/live/2026/oct/31/chelsea-v-manchester-united-premier-league-live"
+        },
+        {
+          "url": "https://as.com/resultados/futbol/inglaterra/2026_2027/directo/regular_a_9_6a38cde9456c710/alineaciones/"
+        }
+      ],
+      "grouping_reason": "Chelsea y #PremierLeagueDAZN describen inequívocamente el mismo partido actual de Premier League; se agrupan sin modificar las fichas originales.",
+      "grouping_request_id": "listas-auto-dd413455657c31b745da",
+      "source": "listas_grouping_editorial",
+      "auto_queued": false,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "0f3193b87ac659a2c37ae5c22bff4d7c99221257df9103bdbaad027e74459f13",
+      "editorial_grouping_checked_at": "2026-10-31T13:47:48.084909+00:00"
     }
   ],
   "count": 278
