@@ -10,11 +10,21 @@ on:
       - 'trends/requests.json'
       - 'trends/site-ai-images.json'
       - 'trends/export_site_top30.py'
+      - 'tests/test_site_top30_workflow_wiring.py'
+      - '.github/workflows/ttendencias-refresh.yml'
+      - '.github/workflows/ttendencias-editorial-apply.yml'
+      - '.github/workflows/ttendencias-editorial-reconcile.yml'
+      - '.github/workflows/ttendencias-cleanup-editorial.yml'
       - 'tests/test_site_top30_export.py'
       - '.github/workflows/ttendencias-site-top30-sync.yml'
   pull_request:
     paths:
       - 'trends/export_site_top30.py'
+      - 'tests/test_site_top30_workflow_wiring.py'
+      - '.github/workflows/ttendencias-refresh.yml'
+      - '.github/workflows/ttendencias-editorial-apply.yml'
+      - '.github/workflows/ttendencias-editorial-reconcile.yml'
+      - '.github/workflows/ttendencias-cleanup-editorial.yml'
       - 'tests/test_site_top30_export.py'
       - '.github/workflows/ttendencias-site-top30-sync.yml'
   workflow_dispatch:
@@ -33,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test mapping against TTActualidad iOS behavior
-        run: python3 -m unittest discover -s tests -p 'test_site_top30_export.py' -v
+        run: python3 -m unittest discover -s tests -p 'test_site_top30*.py' -v
   export:
     needs: validate
     if: github.event_name != 'pull_request'
