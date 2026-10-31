@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T16:16:13.061Z",
-  "updated_at": "2026-10-31T16:18:00Z",
-  "finished_at": "2026-10-31T16:18:00Z",
+  "updated_at": "2026-10-31T16:19:04.047Z",
+  "finished_at": "2026-10-31T16:19:04.047Z",
   "current": 1,
   "total": 1,
   "trend_id": null,
@@ -21,24 +21,30 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "1/1 agrupación derivada aplicada: Haas consolidado con Ocon/Ryo Hirakawa; Levante y Atlético cubiertos por la ficha conjunta del 0-2. Cola final 0.",
+  "summary": "1/1 agrupación aplicada y verificada. Se creó la conjunta Haas/Ocon/Ryo Hirakawa y Levante/Atlético quedaron cubiertos por la conjunta ya publicada. Tres trabajos observados al inicio fueron resueltos concurrentemente y no se reabrieron. Cola final 0; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre editorial completado",
+  "activity": "Pasada editorial cerrada",
   "final_outcomes": [
     {
       "id": "listas-auto-aee4c38e7b11a1115827",
       "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed"
+      "outcome": "grouping_completed",
+      "groups_created": 1,
+      "covered_by_existing": 2,
+      "created_joint_id": "listas-joint-3856ea7db4034b8b",
+      "covered_ids": [
+        "8e78ca332a37",
+        "b9065cb3e41e"
+      ]
     }
   ],
   "last_run": {
     "run_id": "tr-1793463251991-manual",
     "status": "DONE",
     "started_at": "2026-10-31T16:16:13.061Z",
-    "finished_at": "2026-10-31T16:18:00Z",
+    "finished_at": "2026-10-31T16:19:04.047Z",
     "attempted": 1,
     "explained": 0,
     "updates": 0,
@@ -47,13 +53,13 @@
     "grouping_requests": 1,
     "groups_created": 1,
     "covered_by_existing": 2,
-    "concurrent_resolved": 0,
+    "concurrent_resolved": 3,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "1/1 agrupación aplicada. Cola final 0; sin ImageGen ni publicación."
+    "summary": "1/1 agrupación aplicada y verificada. Se creó la conjunta Haas/Ocon/Ryo Hirakawa y Levante/Atlético quedaron cubiertos por la conjunta ya publicada. Tres trabajos observados al inicio fueron resueltos concurrentemente y no se reabrieron. Cola final 0; sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-10-31T16:16:13.061Z",
-  "last_completed_at": "2026-10-31T16:18:00Z"
+  "last_completed_at": "2026-10-31T16:19:04.047Z"
 }
