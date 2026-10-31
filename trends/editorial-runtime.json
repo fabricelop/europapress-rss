@@ -6,20 +6,24 @@
   "run_id": "tr-1793481000000-manual",
   "previous_run_id": "tr-1793480100000-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-10-31T22:10:00+01:00",
-  "updated_at": "2026-10-31T22:10:00+01:00",
+  "updated_at": "2026-10-31T22:11:10+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 1,
+  "trend_id": "4eefe2099a0f",
+  "title": "Mónaco",
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "4eefe2099a0f"
+  ],
+  "remaining_active_ids": [
+    "4eefe2099a0f"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial iniciada; cola autoritativa inicial 0/0. Verificando estado y relectura final.",
+  "summary": "Investigando Mónaco revisión 2 desde cero; pista editorial no verificada.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -28,6 +32,11 @@
       "at": "2026-10-31T22:10:00+01:00",
       "phase": "preparing",
       "message": "Cola autoritativa leída en main; lectura inicial 0/0. Verificando pendientes y estado durable."
+    },
+    {
+      "at": "2026-10-31T22:11:10+01:00",
+      "phase": "investigating",
+      "message": "Entró Mónaco r2 durante la pasada. Investigación nueva desde cero; pista editorial aún sin verificar."
     }
   ],
   "final_outcomes": [],
