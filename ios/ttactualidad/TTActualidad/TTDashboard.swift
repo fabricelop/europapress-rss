@@ -764,7 +764,7 @@ struct TTDashboard: View {
                     search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
                 }) { item in
                     TrendTile(item: item, showRank: item.rank > 0,
-                              github: github, settings: $showSettings)
+                              github: github, settings: $showSettings, highlightGroupedOriginals: true)
                 }
             }
             if store.snapshot.news.isEmpty && store.snapshot.trendListas.isEmpty {
@@ -825,7 +825,8 @@ struct TTDashboard: View {
         LazyVStack(spacing: 5) {
             ForEach(visible) { item in
                 TrendTile(item: item, showRank: item.rank > 0,
-                          github: github, settings: $showSettings)
+                          github: github, settings: $showSettings,
+                          highlightGroupedOriginals: store.trendFilter == .listas)
             }
         }
     }
@@ -944,10 +945,17 @@ private struct TrendTile: View {
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
     @State private var expanded = false
+    var highlightGroupedOriginals = false
+
+    private var groupedOriginal: Bool {
+        highlightGroupedOriginals && item.inListas && item.isCovered && !item.isJointGroup
+    }
+    private let groupedPurple = Color(red: 0.70, green: 0.40, blue: 1.0)
 
     // Saturated hues are exclusive to the rank plate. The rest of the card
     // retains its original dark surface to prioritize text legibility.
     private var rankColor: Color {
+        if groupedOriginal { return groupedPurple }
         switch item.ageBand() {
         case 1: return Color(red: 0.06, green: 0.80, blue: 0.52) // green
         case 2: return Color(red: 1.00, green: 0.77, blue: 0.14) // yellow
@@ -957,12 +965,13 @@ private struct TrendTile: View {
     }
 
     private var rankTextColor: Color {
-        item.ageBand() == 2 ? TTTheme.base : .white
+        !groupedOriginal && item.ageBand() == 2 ? TTTheme.base : .white
     }
 
     // The vivid left rank keeps its saturation; the card itself is a dark,
     // desaturated tint of the same hue (as in the original compact design).
     private var softCardColor: Color {
+        if groupedOriginal { return Color(red: 0.26, green: 0.14, blue: 0.38) }
         switch item.ageBand() {
         case 1: return Color(red: 0.105, green: 0.235, blue: 0.285) // subtle green
         case 2: return Color(red: 0.240, green: 0.222, blue: 0.235) // subtle yellow
@@ -1025,7 +1034,7 @@ private struct TrendTile: View {
                 }
                 if item.isCovered {
                     Label("Agrupada en: " + item.coveredByName, systemImage: "rectangle.3.group.fill")
-                        .font(.caption.weight(.semibold)).foregroundStyle(.orange)
+                        .font(.caption.weight(.semibold)).foregroundStyle(groupedOriginal ? groupedPurple : .orange)
                     Text("Conserva su explicación original. Puedes quitarla de Listas indicando si la publicaste o no; la ficha conjunta se mantiene.")
                         .font(.caption2).foregroundStyle(TTTheme.muted)
                 }
@@ -1091,7 +1100,7 @@ private struct TrendTile: View {
 
                 Text(shortStatus)
                     .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(TTTheme.teal)
+                    .foregroundStyle(groupedOriginal ? groupedPurple : TTTheme.teal)
                     .lineLimit(1)
                     .frame(width: 39, alignment: .trailing)
 
@@ -1114,7 +1123,7 @@ private struct TrendTile: View {
             in: RoundedRectangle(cornerRadius: 10)
         )
         .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(TTTheme.cardBorder, lineWidth: 1.8))
+                    .stroke(groupedOriginal ? groupedPurple.opacity(0.75) : TTTheme.cardBorder, lineWidth: 1.8))
         .onChange(of: expanded) { _, value in
             if value { store.markTrendReviewed(item.name) }
         }

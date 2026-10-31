@@ -150,7 +150,7 @@ struct EditorialView: View {
                 .padding(.top, 20)
         } else {
             ForEach(rows) { row in
-                TrendRowView(item: row, showRank: store.trendFilter == .top)
+                TrendRowView(item: row, showRank: store.trendFilter == .top, inLists: store.trendFilter == .listas)
             }
         }
     }
@@ -188,8 +188,12 @@ struct EditorialView: View {
 private struct TrendRowView: View {
     let item: TrendItem
     let showRank: Bool
+    var inLists = false
 
     private var bandColor: Color {
+        if inLists && item.isCovered && !item.isJointGroup {
+            return Color(red: 0.30, green: 0.15, blue: 0.44)
+        }
         switch item.ageBand() {
         case 1: return Color(red: 0.12, green: 0.36, blue: 0.25)
         case 2: return Color(red: 0.40, green: 0.32, blue: 0.11)
