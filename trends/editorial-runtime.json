@@ -3,25 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793418358481-manual",
+  "run_id": "tr-1793418259199-manual",
   "previous_run_id": "tr-1793418259199-manual",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-10-31T04:46:00+01:00",
-  "updated_at": "2026-10-31T04:48:33+01:00",
-  "finished_at": "2026-10-31T04:48:33+01:00",
+  "updated_at": "2026-10-31T04:50:00+01:00",
+  "finished_at": "2026-10-31T04:50:00+01:00",
   "last_started_at": "2026-10-31T04:46:00+01:00",
-  "last_completed_at": "2026-10-31T04:48:33+01:00",
-  "current": 0,
-  "total": 0,
+  "last_completed_at": "2026-10-31T04:50:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-c9008fdf02605cf47ad9",
+    "red-review-0efb803b91bdb8606726"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual 0/0 cerrada tras relectura autoritativa de main: no quedan preparing/update ni rewrite_pending. La pasada inmediatamente anterior terminó 2/2 a las 04:48 y dejó ambos review_red como review_completed/stale por la barrera JIT.",
+  "summary": "Pasada manual completada. Las dos revisiones de novedades fueron consumidas concurrentemente y verificadas como review_completed/stale; barrera final 0/0.",
   "incidents": [],
   "incident_count": 0,
   "error": null,
@@ -46,7 +49,66 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: editorial-queue count 0, ningún request preparing/update y ningún rewrite_pending vigente. Cierre 0/0 válido. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-10-31T04:48:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-c9008fdf02605cf47ad9",
+      "title": "Revisar novedades: #DeViernes",
+      "message": "Revisión JIT: el job dejó de estar activo mientras se contrastaban novedades. Se releyó main en vez de sobrescribir el resultado concurrente."
+    },
+    {
+      "at": "2026-10-31T04:48:30+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-c9008fdf02605cf47ad9",
+      "title": "Revisar novedades: #DeViernes",
+      "message": "Resultado aplicado verificado en requests: review_completed / stale; outbox updated conservado, sin nueva ficha por snapshot superado."
+    },
+    {
+      "at": "2026-10-31T04:49:00+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-0efb803b91bdb8606726",
+      "title": "Revisar novedades: Toledo",
+      "message": "Resultado aplicado verificado en requests: review_completed / stale; outbox updated conservado, sin nueva ficha por snapshot superado."
+    },
+    {
+      "at": "2026-10-31T04:50:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final sobre main: editorial-queue count=0, sin preparing/update ni rewrite_pending. Sin ImageGen y sin publicación."
     }
   ],
-  "final_outcomes": []
+  "final_outcomes": [
+    {
+      "id": "red-review-c9008fdf02605cf47ad9",
+      "revision": 0,
+      "name": "Revisar novedades: #DeViernes",
+      "outcome": "stale",
+      "reason": "Snapshot superado antes de aplicar; no se creó una ficha nueva."
+    },
+    {
+      "id": "red-review-0efb803b91bdb8606726",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "reason": "Snapshot superado antes de aplicar; no se creó una ficha nueva."
+    }
+  ],
+  "last_run": {
+    "run_id": "tr-1793418259199-manual",
+    "status": "DONE",
+    "finished_at": "2026-10-31T04:50:00+01:00",
+    "attempted": 2,
+    "explained": 0,
+    "updates": 0,
+    "stale_reviews": 2,
+    "unchanged_reviews": 0,
+    "groups_created": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0
+  }
 }
