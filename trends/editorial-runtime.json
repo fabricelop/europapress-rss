@@ -3,35 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793439854638-manual",
-  "previous_run_id": "tr-20261031T104000-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-10-31T10:44:00+01:00",
-  "updated_at": "2026-10-31T10:49:00+01:00",
-  "finished_at": "2026-10-31T10:49:00+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-20261031T105500-manual",
+  "previous_run_id": "tr-1793439854638-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T10:55:00+01:00",
+  "updated_at": "2026-10-31T10:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-9b715458254916e50e33",
-    "red-review-eaf70e605deb8a23229b"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "5b2b84b126eb",
+    "81542559f97d",
+    "0fe61402e93a"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "5b2b84b126eb",
+    "81542559f97d",
+    "0fe61402e93a"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "2 revisiones de mantenimiento revalidadas; ambas cerradas como stale por el aplicador JIT. Cola final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "trend_id": "413c73f54712",
-      "revision": 0,
-      "title": "#DeViernes",
-      "reason": "La revisión con novedades verificadas terminó stale porque telegram-image-deliveries conserva un tombstone deleted de revision 1 fechado 09/10, anterior a la explicación rev0 del 24/10. El guard de revisión considera terminal toda revisión superior sin comparar fecha; no se forzó la actualización."
-    }
-  ],
+  "summary": "Pasada manual real iniciada sobre 3 tendencias nuevas; contrato y cola de main revalidados. Sin ImageGen ni publicación.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -89,26 +87,16 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final en main: cola 0, ningún preparing/update en requests y ningún rewrite_pending. Cierre con 1 incidencia de estado histórico en #DeViernes."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "red-review-9b715458254916e50e33",
-      "revision": 0,
-      "name": "#DeViernes",
-      "outcome": "stale",
-      "applied": false,
-      "reason": "El aplicador rechazó la actualización JIT. La fuente rev0 queda invalidada por un registro terminal histórico telegram-image-deliveries rev1 deleted; no se reabrió ni se forzó el texto."
     },
     {
-      "id": "red-review-eaf70e605deb8a23229b",
-      "revision": 0,
-      "name": "Toledo",
-      "outcome": "stale",
-      "applied": false,
-      "reason": "La fuente del 28/10 fue superada por fichas posteriores publicadas del mismo contexto (Óscar Puente/Iryo/Urda); no se reabrió ni se sobrescribió estado más nuevo."
+      "at": "2026-10-31T10:55:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Contrato y estado autoritativo en main releídos; 3 preparing vigentes. Iniciando investigación JIT sin ImageGen ni publicación."
     }
   ],
+  "final_outcomes": [],
   "last_run": {
     "run_id": "tr-1793439854638-manual",
     "status": "DONE_WITH_INCIDENTS",
