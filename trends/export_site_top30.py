@@ -62,8 +62,8 @@ def rows(doc, key="items"):
 def explanation_names(row):
     names = [text(row, "name"), text(row, "display_name")]
     if text(row, "listas_group_role") != "joint":
-        names.extend(n for n in row.get("trend_names", []) if isinstance(n, str))
-        names.extend(text(t, "name") for t in row.get("trend_context", []) if isinstance(t, dict))
+        names.extend(n for n in (row.get("trend_names") or []) if isinstance(n, str))
+        names.extend(text(t, "name") for t in (row.get("trend_context") or []) if isinstance(t, dict))
     return [name for name in names if name]
 
 
@@ -135,7 +135,7 @@ def image_index(catalog):
 
 def verified_public_sources(row):
     result = []
-    for item in row.get("verification_sources", []):
+    for item in (row.get("verification_sources") or []):
         url = item if isinstance(item, str) else text(item, "url") if isinstance(item, dict) else ""
         u = urlparse(url)
         if u.scheme == "https" and u.hostname and not (u.username or u.password):
