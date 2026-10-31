@@ -3,49 +3,43 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261031T065555+0100",
-  "previous_run_id": "tr-manual-20261031T064100+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T06:55:55+01:00",
-  "updated_at": "2026-10-31T06:57:00+01:00",
-  "finished_at": "2026-10-31T06:57:00+01:00",
+  "run_id": "tr-1793426882192-manual",
+  "previous_run_id": "tr-manual-20261031T065555+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T07:08:02.192+01:00",
+  "updated_at": "2026-10-31T07:08:02.192+01:00",
+  "finished_at": null,
   "last_started_at": "2026-10-31T06:55:55+01:00",
   "last_completed_at": "2026-10-31T06:57:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-60598ef948ccc9204100",
+    "red-review-085146f2ca38bd67c6b8",
+    "red-review-b9cb516eb9be7b1aa23c"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-60598ef948ccc9204100",
+    "red-review-085146f2ca38bd67c6b8",
+    "red-review-b9cb516eb9be7b1aa23c"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual completada 0/0: tras relectura final de main, editorial-queue.json sigue count=0 y no apareció trabajo editorial nuevo durante la pasada. Sin ImageGen ni publicación en X.",
+  "summary": null,
   "incidents": [],
   "incident_count": 0,
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T06:55:55+01:00",
+      "at": "2026-10-31T07:08:02.192+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual: editorial-queue.json autoritativo en main está vacío. Se revalidará main antes del cierre y no se generarán imágenes ni se publicará en X."
-    },
-    {
-      "at": "2026-10-31T06:57:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: editorial-queue.json continúa count=0; no apareció ninguna revisión preparing/update, agrupación, anticipación ni mantenimiento pendiente en la cola compacta."
-    },
-    {
-      "at": "2026-10-31T06:57:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada cerrada 0/0 con cola autoritativa vacía. Sin ImageGen y sin publicación en X."
+      "message": "Inicio de tr-1793426882192-manual: cola autoritativa releída en main con 3 trabajos activos. Sin ImageGen ni publicación en X."
     }
   ],
   "final_outcomes": [],
