@@ -3,46 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793480100000-manual",
-  "previous_run_id": "tr-1793479593840-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-10-31T21:55:00+01:00",
-  "updated_at": "2026-10-31T21:56:45+01:00",
-  "finished_at": "2026-10-31T21:56:45+01:00",
+  "run_id": "tr-1793481000000-manual",
+  "previous_run_id": "tr-1793480100000-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-10-31T22:10:00+01:00",
+  "updated_at": "2026-10-31T22:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 0/0 tras releer main: no queda ningún preparing/update ni reexplicación pendiente. Sin ImageGen ni publicaciones.",
+  "summary": "Pasada editorial iniciada; cola autoritativa inicial 0/0. Verificando estado y relectura final.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-10-31T21:55:00+01:00",
+      "at": "2026-10-31T22:10:00+01:00",
       "phase": "preparing",
-      "message": "Cola autoritativa leída en main; lectura inicial 0/0."
-    },
-    {
-      "at": "2026-10-31T21:56:30+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de editorial-queue.json y búsqueda de rewrite_pending: sin pendientes."
-    },
-    {
-      "at": "2026-10-31T21:56:45+01:00",
-      "phase": "closing",
-      "message": "Cierre 0/0 verificado. Sin ImageGen ni publicaciones."
+      "message": "Cola autoritativa leída en main; lectura inicial 0/0. Verificando pendientes y estado durable."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T21:55:00+01:00",
+  "last_started_at": "2026-10-31T22:10:00+01:00",
   "last_completed_at": "2026-10-31T21:56:45+01:00",
   "last_run": {
     "run_id": "tr-1793480100000-manual",
