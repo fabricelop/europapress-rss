@@ -297,6 +297,96 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(change["trends/telegram-manual-explained.json"]["items"][0]["status"],"deleted")
 
 
+    def test_grouped_explained_can_be_reevaluated_without_erasing_original(self):
+        """The existing joint explanation and original MUST survive a recheck."""
+        covered_id = "4e9df6831ab7"
+        joint_id = "listas-joint-f6486e28f95ce346"
+        old = {
+            "id": covered_id, "name": "Tusk", "revision": 0,
+            "status": "explained", "listas_group_role": "covered",
+            "covered_by_id": joint_id,
+            "covered_by_name": "Crisis del Tribunal Constitucional de Polonia",
+            "explanation": "Explicación original de Tusk",
+            "explained_at": "2026-10-30T21:45:00+01:00",
+        }
+        group = {
+            "id": joint_id, "name": "Crisis del Tribunal Constitucional de Polonia",
+            "status": "explained", "revision": 0,
+            "listas_group_role": "joint", "explanation": "Texto conjunto",
+        }
+        self.write("trends/telegram-manual-explained.json",
+                   {"items": [old, group]})
+        self.write("trends/requests.json", {"requests": [{
+            "id": covered_id, "name": "Tusk", "revision": 0,
+            "status": "explained", "listas_group_role": "covered",
+            "covered_by_id": joint_id,
+        }]})
+        # Simulate a row previously grouped, now outside Top 30.
+        self.write("trends/recent.json", {"items": [{"rank": 1, "name": "Otra tendencia"}]})
+        changes, status = mod.apply_live(
+            "ttendencias", covered_id, "rework", 0, "Tusk", 9)
+        self.assertEqual(status, "applied")
+        self.assertEqual(changes["trends/telegram-manual-explained.json"]["items"],
+                         [old, group])
+        pending = changes["trends/editorial-queue.json"]["items"]
+        self.assertEqual(len(pending), 1)
+        self.assertEqual(pending[0]["status"], "preparing")
+        self.assertEqual(pending[0]["originated_from_prior_id"], covered_id)
+        self.assertNotEqual(pending[0]["id"], covered_id)
+        self.assertNotIn("Explicación original de Tusk", str(pending[0]))
+        self.assertEqual(changes["trends/requests.json"]["requests"][0]["revision"], 0)
+        self.assertEqual(changes["trends/requests.json"]["requests"][0]["status"], "explained")
+
+    def test_grouped_deleted_can_be_reevaluated_outside_top30(self):
+        covered_id = "b0c76a2bacab"
+        joint_id = "listas-joint-f6486e28f95ce346"
+        row = {
+            "id": covered_id, "name": "Tribunal Constitucional",
+            "revision": 0, "status": "deleted",
+            "listas_group_role": "covered", "covered_by_id": joint_id,
+            "explanation": "Texto original previo", "explained_at": "2026-10-30T21:45:00+01:00",
+        }
+        self.write("trends/telegram-manual-explained.json", {"items": [row]})
+        self.write("trends/requests.json", {"requests": [{
+            "id": covered_id, "name": row["name"], "revision": 0,
+            "status": "deleted", "listas_group_role": "covered",
+            "covered_by_id": joint_id,
+        }]})
+        self.write("trends/recent.json", {"items": [{"rank": 1, "name": "Otra"}]})
+        changes, status = mod.apply_live(
+            "ttendencias", covered_id, "rework", 0, row["name"], 24)
+        self.assertEqual(status, "applied")
+        self.assertEqual(changes["trends/telegram-manual-explained.json"]["items"], [row])
+        new_row = changes["trends/requests.json"]["requests"][-1]
+        self.assertEqual(new_row["status"], "preparing")
+        self.assertEqual(new_row["originated_from_prior_id"], covered_id)
+        self.assertNotEqual(new_row["id"], covered_id)
+        self.assertEqual(changes["trends/requests.json"]["requests"][0]["status"], "deleted")
+        # A duplicate click (or stale retry) cannot spawn another pending job.
+        with self.assertRaises(mod.InvalidAction):
+            # Feed the returned changes to simulate committing the first action.
+            for name, doc in changes.items():
+                self.write(name, doc)
+            mod.apply_live("ttendencias", covered_id, "rework", 0,
+                           row["name"], 24)
+
+    def test_ordinary_deleted_or_spoofed_history_is_not_reevaluated(self):
+        row = {
+            "id": "non-covered-123", "name": "Otro nombre", "revision": 0,
+            "status": "deleted", "explanation": "Texto retirado",
+        }
+        self.write("trends/telegram-manual-explained.json", {"items": [row]})
+        self.write("trends/recent.json", {"items": []})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttendencias", row["id"], "rework", 0, row["name"], 0)
+        row["listas_group_role"] = "covered"
+        row["covered_by_id"] = "joint-123"
+        self.write("trends/telegram-manual-explained.json", {"items": [row]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttendencias", row["id"], "rework", 1, row["name"], 0)
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttendencias", "invented-123", "rework", 0, row["name"], 0)
+
     def test_top30_first_time_rework_creates_clean_active_revision(self):
         import hashlib
         name = "Cucurella"
