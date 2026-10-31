@@ -3,68 +3,63 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793448774223-manual",
-  "previous_run_id": "tr-1793448135200-manual",
+  "run_id": "tr-1793448869432-manual",
+  "previous_run_id": "tr-1793448774223-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-10-31T13:13:30+01:00",
-  "updated_at": "2026-10-31T13:18:30+01:00",
-  "finished_at": "2026-10-31T13:18:30+01:00",
+  "started_at": "2026-10-31T13:15:00+01:00",
+  "updated_at": "2026-10-31T13:19:21+01:00",
+  "finished_at": "2026-10-31T13:19:21+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "listas-auto-8423bde277fb0072e86d",
     "red-review-7e61105d549dfd7cbb0a",
     "red-review-b10ca3fa03f234e357b1"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Agrupación automática cerrada sin grupos; #DeViernes y #FelizSábado revisados con novedades de episodio, pero el aplicador los cerró como stale al revalidar el origen. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación.",
+  "summary": "Pasada solicitada revalidada sobre main: #DeViernes y #FelizSábado estaban en preparing al inicio; durante la investigación una ejecución concurrente aplicó sus outbox y ambos quedaron review_completed/stale por la barrera JIT. Relectura final: cola 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "listas-auto-8423bde277fb0072e86d",
-      "revision": 0,
-      "status": "grouping_completed",
-      "result": "groups:0"
-    },
-    {
       "id": "red-review-7e61105d549dfd7cbb0a",
       "revision": 0,
       "status": "review_completed",
-      "result": "stale"
+      "result": "stale",
+      "note": "Cerrada por aplicador concurrente durante revalidación JIT; no se reabre estado terminal."
     },
     {
       "id": "red-review-b10ca3fa03f234e357b1",
       "revision": 0,
       "status": "review_completed",
-      "result": "stale"
+      "result": "stale",
+      "note": "Cerrada por aplicador concurrente durante revalidación JIT; no se reabre estado terminal."
     }
   ],
   "last_run": {
-    "run_id": "tr-1793448774223-manual",
+    "run_id": "tr-1793448869432-manual",
     "status": "DONE",
-    "finished_at": "2026-10-31T13:18:30+01:00",
+    "finished_at": "2026-10-31T13:19:21+01:00",
     "attempted": 2,
     "explained": 0,
     "updates": 0,
     "stale_reviews": 2,
     "unchanged_reviews": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "summary": "Agrupación automática cerrada sin grupos; #DeViernes y #FelizSábado revisados con novedades de episodio, pero el aplicador los cerró como stale al revalidar el origen. Cola final sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
+    "summary": "2 revisiones detectadas y revalidadas; ambas cerraron stale por el aplicador concurrente. Cola final 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicación."
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-31T13:13:30+01:00",
-  "last_completed_at": "2026-10-31T13:18:30+01:00"
+  "last_started_at": "2026-10-31T13:15:00+01:00",
+  "last_completed_at": "2026-10-31T13:19:21+01:00"
 }
