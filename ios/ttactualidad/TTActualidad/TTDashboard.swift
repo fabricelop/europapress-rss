@@ -927,17 +927,20 @@ private struct NewsTile: View {
             AsyncImage(url: url) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().scaledToFill()
+                    image.resizable().scaledToFit()
+                        .frame(maxWidth: .infinity)
                 case .failure:
                     RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .frame(height: 150)
                         .overlay(Image(systemName: "exclamationmark.triangle"))
                 default:
                     RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .frame(height: 150)
                         .overlay(ProgressView().tint(TTTheme.teal))
                 }
             }
-            .frame(height: 145).frame(maxWidth: .infinity)
-            .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
+            .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             Text(label)
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TTTheme.muted)
@@ -965,7 +968,9 @@ private struct NewsTile: View {
                 // If both exist, display BOTH the verified AI artwork and the
                 // archive photograph. Neither displaces the other.
                 if item.siteImageURL != nil || item.imageURL != nil {
-                    HStack(alignment: .top, spacing: 8) {
+                    // Both originals remain visible, stacked within the card.
+                    // Never force two full-size photos into a narrow iPhone HStack.
+                    VStack(alignment: .center, spacing: 12) {
                         if let ai = item.siteImageURL {
                             newsPhoto(ai, label: "Imagen IA")
                         }
@@ -973,6 +978,7 @@ private struct NewsTile: View {
                             newsPhoto(archive, label: "Fotografía de archivo")
                         }
                     }
+                    .frame(maxWidth: .infinity)
                 } else {
                     Label("Sin imagen disponible", systemImage: "photo")
                         .font(.caption2).foregroundStyle(TTTheme.muted)
@@ -1217,17 +1223,20 @@ private struct TrendSiteOrArchiveImage: View {
             AsyncImage(url: url) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().scaledToFill()
+                    image.resizable().scaledToFit()
+                        .frame(maxWidth: .infinity)
                 case .failure:
                     RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .frame(height: 150)
                         .overlay(Image(systemName: "photo.badge.exclamationmark"))
                 default:
                     RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .frame(height: 150)
                         .overlay(ProgressView().tint(TTTheme.teal))
                 }
             }
-            .frame(height: 145).frame(maxWidth: .infinity)
-            .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
+            .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             Text(label)
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(TTTheme.muted)
@@ -1237,15 +1246,16 @@ private struct TrendSiteOrArchiveImage: View {
     var body: some View {
         Group {
             if aiURL != nil || archiveURL != nil {
-                HStack(alignment: .top, spacing: 8) {
+                VStack(alignment: .center, spacing: 12) {
                     if let aiURL {
                         photo(aiURL, label: "Imagen IA")
                     }
                     if let archiveURL, archiveURL != aiURL {
-                        // Never hide an archive photo when ImageGen succeeds.
+                        // Keep the archive photo beneath the AI original.
                         photo(archiveURL, label: "Fotografía de archivo")
                     }
                 }
+                .frame(maxWidth: .infinity)
             } else {
                 Label("Sin imagen IA ni foto de archivo", systemImage: "photo")
                     .font(.caption2).foregroundStyle(TTTheme.muted)
