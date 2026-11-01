@@ -185,27 +185,32 @@ function userTurns(){
  return nodes.filter(el=>!nodes.some(other=>other!==el&&typeof el.contains==='function'&&el.contains(other)));
 }
 function rasterProbe(command){return `(async()=>{
- const command=${JSON.stringify(command)};
- const users=(${userTurns.toString()})();
- const user=users.find(x=>String(x.innerText||x.textContent||'').includes(command));
- if(!user){
-  if(document.querySelector('[data-testid="login-button"],a[href="/auth/login"]'))return {ready:false,reason:'capture_requires_sign_in'};
-  return {ready:false,reason:users.length?'command_not_in_conversation':'conversation_not_loaded'};
- }
- const last=users[users.length-1],next=users[users.indexOf(user)+1];
- if(users.indexOf(user)!==users.length-1)return {ready:false,reason:'later_user_turn'};
- if(document.querySelector('button[data-testid="stop-button"],button[aria-label*="Stop" i],button[aria-label*="Detener" i]'))return {ready:false,reason:'generating'};
- const images=[...document.querySelectorAll('img')].filter(img=>
-  Boolean(user.compareDocumentPosition(img)&Node.DOCUMENT_POSITION_FOLLOWING)&&img.complete&&img.naturalWidth>=1024&&img.naturalHeight>=576&&
-  !users.some(u=>typeof u.contains==='function'&&u.contains(img))&&
-  !/avatar|emoji|icon|profile/i.test(String(img.alt||'')));
- if(images.length!==1)return {ready:false,reason:'ambiguous_or_missing_raster'};
- const img=images[0];const response=await fetch(img.currentSrc||img.src,{credentials:'include'});
- if(!response.ok)return {ready:false,reason:'raster_fetch_failed'};
- const blob=await response.blob();
- if(!/^image\\/(png|jpeg|webp)$/.test(blob.type)||blob.size<12000||blob.size>8388608)return {ready:false,reason:'raster_size_or_type'};
- const bytes=new Uint8Array(await blob.arrayBuffer());let binary='';for(let i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode(...bytes.subarray(i,i+32768));
- return {ready:true,dataUrl:'data:'+blob.type+';base64,'+btoa(binary),width:img.naturalWidth,height:img.naturalHeight};
+  const command=\${JSON.stringify(command)};
+  const users=(\${userTurns.toString()})();
+  // A later Site message must not strand an earlier original.
+  const prefix='TTITTULARES_IMAGE_JOB_V4 '+command+' ';
+  const found=users.filter(x=>String(x.innerText||x.textContent||'').trim().startsWith(prefix));
+  if(found.length!==1){
+    if(document.querySelector('[data-testid="login-button"],a[href="/auth/login"]'))return {ready:false,reason:'capture_requires_sign_in'};
+    return {ready:false,reason:found.length?'duplicate_command':'command_not_in_conversation'};
+  }
+  const user=found[0],index=users.indexOf(user),next=users[index+1]||null;
+  if(!next&&document.querySelector('button[data-testid="stop-button"],button[aria-label*="Stop" i],button[aria-label*="Detener" i]'))return {ready:false,reason:'generating'};
+  // Strictly between exact command and next user turn; never reuse later GAGs.
+  const following=Node.DOCUMENT_POSITION_FOLLOWING;
+  const images=[...document.querySelectorAll('img')].filter(img=>
+    Boolean(user.compareDocumentPosition(img)&following)&&
+    (!next||Boolean(img.compareDocumentPosition(next)&following))&&
+    img.complete&&img.naturalWidth>=1024&&img.naturalHeight>=576&&
+    !users.some(u=>typeof u.contains==='function'&&u.contains(img))&&
+    !/avatar|emoji|icon|profile/i.test(String(img.alt||'')));
+  if(images.length!==1)return {ready:false,reason:'ambiguous_or_missing_raster'};
+  const img=images[0];const response=await fetch(img.currentSrc||img.src,{credentials:'include'});
+  if(!response.ok)return {ready:false,reason:'raster_fetch_failed'};
+  const blob=await response.blob();
+  if(!/^image\\/(png|jpeg|webp)$/.test(blob.type)||blob.size<12000||blob.size>8388608)return {ready:false,reason:'raster_size_or_type'};
+  const bytes=new Uint8Array(await blob.arrayBuffer());let binary='';for(let i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode(...bytes.subarray(i,i+32768));
+  return {ready:true,dataUrl:'data:'+blob.type+';base64,'+btoa(binary),width:img.naturalWidth,height:img.naturalHeight};
 })()`;}
 function sameContext(task,job){
  return String(job.command_id||'')===task.command_id&&String(job.target_id||job.event_id||'')===task.target_id&&
@@ -228,12 +233,13 @@ async function confirmedInMain(task,job){
  return {status:'waiting',reason:'remote_image_not_confirmed'};
 }
 function conversationProbe(command,diagnostic=false){return `(()=>{
- const users=(${userTurns.toString()})();
- const last=users[users.length-1];
- const text=String(last&&(last.innerText||last.textContent)||'').trim();
- const matched=text.includes(${JSON.stringify(command)})&&
-   text.startsWith('TTITTULARES_IMAGE_JOB_V4 ');
- return ${diagnostic?'true':'false'}?{url:matched?location.href:null,reason:matched?'matched':last?'last_user_command_differs':'user_turn_not_found'}:matched?location.href:null;
+  const users=(\${userTurns.toString()})();
+  const prefix='TTITTULARES_IMAGE_JOB_V4 '+\${JSON.stringify(command)}+' ';
+  const matches=users.filter(x=>String(x.innerText||x.textContent||'').trim().startsWith(prefix));
+  const matched=matches.length===1;
+  return \${diagnostic?'true':'false'}?
+    {url:matched?location.href:null,reason:matched?'matched':matches.length?'duplicate_command':'command_not_in_conversation'}:
+    matched?location.href:null;
 })()`;}
 function pinnedTargetId(){
   try{const id=String(JSON.parse(fs.readFileSync(path.join(__dirname,'ttittulares-image-tab.json'),'utf8')).target_id||'');return safeID(id)?id:null;}catch{return null;}
