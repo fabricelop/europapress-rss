@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793545880425-manual",
+  "run_id": "tr-1793545682955-manual",
   "previous_run_id": "tr-1793545682955-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T16:11:30+01:00",
-  "updated_at": "2026-11-01T16:11:30+01:00",
+  "updated_at": "2026-11-01T16:13:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
+  "current": 2,
+  "total": 4,
+  "trend_id": "red-review-83ebe32f690b4d2b469f",
+  "title": "Revisar novedades: #laSextaXplica",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -653,6 +653,14 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual real: 2 review_red preparing en main (#laSextaXplica y Toledo), ordenados por requested_at y sujetos a validación JIT de id+revision. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:13:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793545682955-manual",
+      "trend_id": "red-review-83ebe32f690b4d2b469f",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Revisando novedades 3/4: #laSextaXplica r0. La emisión del 31 de octubre constituye un episodio distinto, centrado en el accidente ferroviario de Urda; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -693,7 +701,7 @@
     }
   },
   "source": "chat",
-  "message": "Investigando 1/2: Getafe-Sevilla · Kike Salas y Gudelj r1. Revalidación actual: Getafe-Sevilla terminó 3-1; sin ImageGen ni publicación.",
+  "message": "Revisando novedades 3/4: #laSextaXplica r0. La emisión del 31 de octubre constituye un episodio distinto, centrado en el accidente ferroviario de Urda; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2620,6 +2628,6 @@
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": null,
-  "current_title": null
+  "current_item": "red-review-83ebe32f690b4d2b469f",
+  "current_title": "Revisar novedades: #laSextaXplica"
 }
