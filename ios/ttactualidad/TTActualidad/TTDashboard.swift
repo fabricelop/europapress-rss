@@ -1211,44 +1211,46 @@ private struct TrendSiteOrArchiveImage: View {
     let aiURL: URL?
     let archiveURL: URL?
 
+    @ViewBuilder
+    private func photo(_ url: URL, label: String) -> some View {
+        VStack(spacing: 4) {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().scaledToFill()
+                case .failure:
+                    RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .overlay(Image(systemName: "photo.badge.exclamationmark"))
+                default:
+                    RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .overlay(ProgressView().tint(TTTheme.teal))
+                }
+            }
+            .frame(height: 145).frame(maxWidth: .infinity)
+            .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
+            Text(label)
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(TTTheme.muted)
+        }
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            if let aiURL {
-                AsyncImage(url: aiURL) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image.resizable().scaledToFit()
-                    case .failure:
-                        archiveFallback
-                    default:
-                        ProgressView().tint(TTTheme.teal)
-                            .frame(maxWidth: .infinity, minHeight: 95)
+        Group {
+            if aiURL != nil || archiveURL != nil {
+                HStack(alignment: .top, spacing: 8) {
+                    if let aiURL {
+                        photo(aiURL, label: "Imagen IA")
+                    }
+                    if let archiveURL, archiveURL != aiURL {
+                        // Never hide an archive photo when ImageGen succeeds.
+                        photo(archiveURL, label: "Fotografía de archivo")
                     }
                 }
-                Text("Imagen IA · TTendencias Site")
-                    .font(.caption2).foregroundStyle(TTTheme.muted)
             } else {
-                archiveFallback
+                Label("Sin imagen IA ni foto de archivo", systemImage: "photo")
+                    .font(.caption2).foregroundStyle(TTTheme.muted)
             }
         }
         .frame(maxWidth: .infinity)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-    }
-
-    @ViewBuilder
-    private var archiveFallback: some View {
-        if let archiveURL {
-            AsyncImage(url: archiveURL) { phase in
-                if case .success(let image) = phase {
-                    image.resizable().scaledToFit()
-                } else {
-                    Label("Foto de archivo", systemImage: "photo")
-                        .font(.caption2).foregroundStyle(TTTheme.muted)
-                }
-            }
-        } else {
-            Label("Sin imagen IA ni foto de archivo", systemImage: "photo")
-                .font(.caption2).foregroundStyle(TTTheme.muted)
-        }
     }
 }
