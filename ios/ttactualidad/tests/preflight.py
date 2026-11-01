@@ -173,7 +173,7 @@ common_actions = actions.split('quickLink("TTImages"', 1)[1].split('if !outcome.
 for label in ('Publicar en X', 'Copiar GAG', 'Copiar texto', 'Copiar foto',
               'Quitar de Listas', 'Elaborar desde cero', 'Aportar pistas'):
     assert 'quickButton("' + label + '"' in common_actions
-# 0.4.40: one explicit non-publication batch for every trend in Listas.
+# 0.4.41: one explicit non-publication batch for every trend in Listas.
 assert 'Label("Retirar todas las tendencias (' in dashboard
 assert 'private var allTrends: [TrendItem]' in dashboard
 assert 'store.snapshot.trendListas.filter(\\.inListas)' in dashboard
@@ -251,11 +251,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.40"' in project
-assert 'CURRENT_PROJECT_VERSION: "46"' in project
+assert 'MARKETING_VERSION: "0.4.41"' in project
+assert 'CURRENT_PROJECT_VERSION: "47"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.40: remove image deletion UI/API and trend→news UI. Keep news functionality.
+# 0.4.41: remove image deletion UI/API and trend→news UI. Keep news functionality.
 assert 'quickButton("Enviar a TTiTTulares"' not in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' not in actions
 assert 'originTrend: trend' not in actions
@@ -284,7 +284,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "46"' in project
+assert 'CURRENT_PROJECT_VERSION: "47"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -296,7 +296,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "46"' in project
+assert 'CURRENT_PROJECT_VERSION: "47"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -312,8 +312,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.40"' in project
-assert 'CURRENT_PROJECT_VERSION: "46"' in project
+assert 'MARKETING_VERSION: "0.4.41"' in project
+assert 'CURRENT_PROJECT_VERSION: "47"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -366,6 +366,16 @@ print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
 # in the same ChatGPT conversation. TTImages PC is entirely independent.
 assert 'TTENDENCIAS_GAG_SITE_SYNC_V3' in actions
 assert 'UNA SOLA CONVERSACIÓN' in actions
+# Missing leader metadata must not degrade Copiar GAG to an unhelpful error.
+assert 'TTENDENCIAS_GAG_SITE_SYNC_V3 — CONTEXTO EDITORIAL NO DISPONIBLE' not in actions
+assert 'IDENTIDAD PENDIENTE DE VERIFICAR EN SITE' in actions
+assert 'displayed_editorial_id' in actions and 'displayed_editorial_revision' in actions
+assert 'displayed_is_joint' in actions
+assert 'group_id' in actions and 'displayed.coveredByID' in actions
+assert 'busca por displayed_editorial_id de la ORIGINAL' in actions
+assert 'si existe en el Top 30' in actions
+assert 'Si el group_id no existe y tampoco el ID original está vigente' in actions
+assert 'No intervienen TTImages, el PC' in actions
 assert 'ImageGen UNA sola vez' in actions
 assert 'inspect_top30_images' in actions
 assert 'attach_trend_image' in actions and 'verify_trend_image' in actions
