@@ -1,0 +1,15 @@
+# Permanent maintenance rule — no regressions
+
+When modifying this repository from any conversation, agent or editor, treat the latest **validated** release/branch and its working functionality as the baseline. Never silently move changes from an older branch over newer fixes.
+
+Before changing production, Windows automation, TTActualidad iOS/web, TTendencias, TTiTTulares, TTImages, SeLoRecordamos or other live flows:
+
+1. **Inspect first.** Determine the currently deployed version, most recent validated commit, branches, running workflows and existing tests. Distinguish GitHub source code from installed iPhone builds, local Windows processes and external ChatGPT Sites. Do not claim one is deployed simply because another was edited.
+2. **Preserve behavior.** Write down what already works: editorial queue/decisions, archive and IA image attachments, manual grouping, published content, Telegram/X/Instagram buttons, scheduling, local watchdogs, recovery, existing IDs and users' state. Scope each patch to the specific defect. Do not remove an established feature to fix another.
+3. **Do not interrupt production processes.** Before restarting a PC service or Chrome, check for active editorial runs, image generation, bridges, locks and scheduled tasks. Prefer non-destructive, idempotent healing. Preserve browser profiles, cookies, images, queues and Telegram deduplication baselines. Do not kill ordinary Chrome or a busy dedicated 9223/9234 instance.
+4. **Use stable identity and actual bytes.** An ImageGen preview is not proof of a successful upload. Do not claim an AI image is attached until the real raster, its SHA-256, exact editorial identity and the relevant app/web catalog have been verified. A TTiTTulares news `event_id` remains stable across editorial revisions. Archive photos and AI art are separate and both must remain visible when present.
+5. **Regression tests are mandatory.** Add or update automated tests that reproduce the reported failure and exercise previously working features (including comparison with the previous validated build). Require syntax validation, relevant unit/regression tests and complete build/workflow success before recommending installation or publication. Do not weaken a test merely to obtain green CI.
+6. **Isolate and report.** Prefer a feature branch and incremental commits, with rollback path. Report what was changed, which tests actually passed, any remaining unknowns, the precise build and its artifact link. Never imply that inaccessible local PC processes, an independently published Site or a remote action have been verified without evidence.
+7. **Fail closed.** If the task requires binaries, third-party access, device access or authorization which is unavailable, do not fabricate files, links, process restarts or success. Keep existing data and systems intact and explain the unmet prerequisite.
+
+**User requirement:** Across every future conversation involving this repository, preventing regressions and preserving previously working functionality takes priority over rushed changes or speculative fixes.
