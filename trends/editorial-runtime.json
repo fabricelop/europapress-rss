@@ -3,20 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793532281494-manual",
-  "previous_run_id": "tr-1793531820836-manual",
+  "run_id": "tr-1793532422256-manual",
+  "previous_run_id": "tr-1793532281494-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T12:25:00+01:00",
-  "updated_at": "2026-11-01T12:28:37+01:00",
-  "finished_at": "2026-11-01T12:28:37+01:00",
-  "current": 3,
-  "total": 3,
+  "started_at": "2026-11-01T12:27:02.256+01:00",
+  "updated_at": "2026-11-01T12:31:40+01:00",
+  "finished_at": "2026-11-01T12:31:40+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "listas-auto-d949d22fea9dcb5ca638",
     "red-review-5cea86122c498eb32753",
     "red-review-2c540cbea6cdfd2e7781"
   ],
@@ -24,12 +23,12 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 1,
@@ -39,7 +38,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -1262,147 +1261,89 @@
         "incidents": 0,
         "concurrent_convergence": 3
       }
+    },
+    {
+      "at": "2026-11-01T12:27:02.256+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793532422256-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 2 revisiones review_red preparing observadas en main (Toledo y Óscar Muerte), ordenadas por la cola y sujetas a validación JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:31:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793532422256-manual",
+      "message": "Convergencia JIT verificada: editorial-queue=0; Toledo quedó stale tras prepararse como updated porque una ejecución concurrente invalidó la revisión origen; Óscar Muerte quedó unchanged. mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T12:31:40+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793532422256-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: Toledo stale con prepared_outcome=updated y Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "red-review-05204f713c2b87317710",
-      "revision": 0,
-      "status": "review_completed",
-      "outcome": "updated_converged"
-    },
-    {
-      "id": "83e91c68231f",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "67a2703e67ab",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "1aec380df3a5",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "810183f59b40",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "733d8b67420a",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "ad401a1e9e58",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "da4e26d2219f",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "55ccc5014f2a",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "listas-auto-d962c519109a109bdc4b",
-      "revision": 0,
-      "status": "grouping_completed",
-      "groups_created": 1,
-      "covered_by_existing": 1
-    },
-    {
-      "id": "red-review-c6d3860715baa85c7425",
-      "revision": 0,
-      "status": "review_completed",
-      "outcome": "stale"
-    },
-    {
-      "id": "listas-auto-5cddaa57caddb33c53cd",
-      "revision": 0,
-      "status": "grouping_completed",
-      "groups_created": 1,
-      "grouping_created_ids": [
-        "listas-joint-89705fdab1782025"
-      ]
-    },
-    {
-      "id": "236995aec110",
-      "revision": 1,
-      "status": "explained",
-      "outcome": "ready_applied",
-      "converged_with": "tr-1793526664502-manual"
-    },
-    {
-      "id": "listas-auto-50403cbc6f4acb2379c3",
-      "revision": 0,
-      "status": "grouping_completed",
-      "groups_created": 1,
-      "converged_with": "tr-1793526664502-manual"
-    },
-    {
-      "id": "red-review-59f90d990dadda2724b7",
+      "id": "red-review-5cea86122c498eb32753",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "outcome": "stale",
-      "applied": true
+      "applied": true,
+      "prepared_outcome": "updated"
     },
     {
-      "id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "id": "red-review-2c540cbea6cdfd2e7781",
       "revision": 0,
-      "status": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 1,
-      "converged": true
-    },
-    {
-      "id": "red-review-75d6901ff6221472cea3",
-      "revision": 0,
-      "name": "Revisar novedades: #UFCHBOMax",
-      "outcome": "stale",
-      "applied": true
-    },
-    {
-      "id": "red-review-eccf7b087d522304b016",
-      "revision": 0,
-      "name": "Revisar novedades: #laSextaXplica",
-      "outcome": "stale",
+      "name": "Revisar novedades: Óscar Muerte",
+      "outcome": "unchanged",
       "applied": true
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T12:23:52+01:00",
-  "last_completed_at": "2026-11-01T12:23:52+01:00",
+  "last_started_at": "2026-11-01T12:27:02.256+01:00",
+  "last_completed_at": "2026-11-01T12:31:40+01:00",
   "last_run": {
-    "run_id": "tr-1793532281494-manual",
+    "run_id": "tr-1793532422256-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T12:28:37+01:00",
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "finished_at": "2026-11-01T12:31:40+01:00",
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
-    "updates": 1,
-    "grouping_requests": 1,
+    "updates": 0,
+    "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 1,
-    "stale_reviews": 0,
+    "stale_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 2
   },
   "source": "chat",
-  "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación aplicada con 0 grupos/0 coberturas; Toledo investigado con novedades materiales pero cerrado stale por protección JIT, sin sobrescribir estado posterior; Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 2/2 por convergencia JIT: Toledo stale con prepared_outcome=updated y Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2111,6 +2052,44 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T12:27:02.256+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793532422256-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 2 revisiones review_red preparing observadas en main (Toledo y Óscar Muerte), ordenadas por la cola y sujetas a validación JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:31:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793532422256-manual",
+      "message": "Convergencia JIT verificada: editorial-queue=0; Toledo quedó stale tras prepararse como updated porque una ejecución concurrente invalidó la revisión origen; Óscar Muerte quedó unchanged. mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T12:31:40+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793532422256-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: Toledo stale con prepared_outcome=updated y Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -2815,32 +2794,62 @@
         "concurrent_convergence": 3
       },
       "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación 0 grupos/0 coberturas, Toledo actualizado por novedades materiales y Óscar Muerte sin cambios sustanciales. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:27:02.256+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793532422256-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 2 revisiones review_red preparing observadas en main (Toledo y Óscar Muerte), ordenadas por la cola y sujetas a validación JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:31:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793532422256-manual",
+      "message": "Convergencia JIT verificada: editorial-queue=0; Toledo quedó stale tras prepararse como updated porque una ejecución concurrente invalidó la revisión origen; Óscar Muerte quedó unchanged. mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T12:31:40+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793532422256-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: Toledo stale con prepared_outcome=updated y Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "listas-auto-d949d22fea9dcb5ca638",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "groups_created": 0,
-      "covered_by_existing": 0
-    },
-    {
       "id": "red-review-5cea86122c498eb32753",
       "revision": 0,
+      "name": "Revisar novedades: Toledo",
       "outcome": "stale",
       "applied": true,
-      "name": "Toledo",
       "prepared_outcome": "updated"
     },
     {
       "id": "red-review-2c540cbea6cdfd2e7781",
       "revision": 0,
+      "name": "Revisar novedades: Óscar Muerte",
       "outcome": "unchanged",
-      "applied": true,
-      "name": "Óscar Muerte"
+      "applied": true
     }
   ]
 }
