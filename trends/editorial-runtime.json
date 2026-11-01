@@ -3,36 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793533948548-manual",
-  "previous_run_id": "tr-1793533812781-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T12:55:02.577+01:00",
-  "updated_at": "2026-11-01T12:57:40+01:00",
-  "finished_at": "2026-11-01T12:57:40+01:00",
-  "current": 5,
-  "total": 5,
+  "run_id": "tr-1793534122544-manual",
+  "previous_run_id": "tr-1793533948548-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T12:55:22.544+01:00",
+  "updated_at": "2026-11-01T12:58:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "aea33831119b",
-    "12beb07b0d96",
-    "24b026091f12",
-    "listas-auto-e41651c718620ce133ce",
-    "listas-auto-bc8dfbb410389cba37b7"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
-    "grouping_requests": 2,
-    "groups_created": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -41,7 +35,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 5
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1389,6 +1383,13 @@
         "concurrent_convergence": 5
       },
       "message": "Pasada cerrada 5/5 por convergencia JIT: 3 explicaciones + 2 agrupaciones; 1 conjunta Yamaha+MotoGP. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:58:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793534122544-manual",
+      "status": "RUNNING",
+      "message": "Inicio de pasada manual: cola autoritativa observada en 0 tras convergencia de la ejecución anterior. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -2992,45 +2993,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "aea33831119b",
-      "revision": 0,
-      "name": "Yamaha",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "12beb07b0d96",
-      "revision": 0,
-      "name": "Preparación",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "24b026091f12",
-      "revision": 0,
-      "name": "MotoGP",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "listas-auto-e41651c718620ce133ce",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "applied": true,
-      "groups_created": 0
-    },
-    {
-      "id": "listas-auto-bc8dfbb410389cba37b7",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "applied": true,
-      "groups_created": 1
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null
 }
