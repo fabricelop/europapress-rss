@@ -485,7 +485,7 @@ struct EditorialActions: View {
                 "reintenta. Si el manifiesto no es escribible, informa APP pendiente " +
                 "pero nunca borres ni dupliques imágenes.",
             "7. Relee el manifiesto desde GitHub main para confirmar persistencia exacta. " +
-                "Finaliza con los estados SEPARADOS SITE verified/pending y APP manifest " +
+                "Finaliza con los estados SEPARADOS SITE: verified/pending y APP: manifest " +
                 "verified/pending, URL y SHA-256 solo si están realmente verificados. " +
                 "Procesa UNA tendencia y UNA imagen. No cambies ni el texto ni el PC."
         ].joined(separator: "\n\n")
