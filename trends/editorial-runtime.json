@@ -2438,6 +2438,13 @@
         "concurrent_convergence": 20
       },
       "message": "Pasada cerrada 32/32 tras la barrera final real: 28 explicaciones ordinarias, 2 revisiones updated (Día de Todos y Kerolin) y 2 unchanged (#FelizDomingo y Alsina). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:45:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793550896199-manual",
+      "status": "DONE",
+      "message": "Pasada cerrada 10/10 tras absorber 6 pendientes nuevos aparecidos en la barrera final. Guti y Diomande explained; Alsina unchanged; Kerolin updated con nuevo trend-update; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso explained. Barrera: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para una pasada concurrente posterior."
     }
   ],
   "history": [
@@ -3470,6 +3477,30 @@
         "concurrent_convergence": 20
       },
       "message": "Pasada cerrada 32/32 tras la barrera final real: 28 explicaciones ordinarias, 2 revisiones updated (Día de Todos y Kerolin) y 2 unchanged (#FelizDomingo y Alsina). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:45:30+01:00",
+      "run_id": "tr-1793550896199-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 10,
+        "observed": 10,
+        "closed": 10,
+        "explained": 8,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 7
+      },
+      "message": "Pasada cerrada 10/10 tras absorber 6 pendientes nuevos aparecidos en la barrera final. Guti y Diomande explained; Alsina unchanged; Kerolin updated con nuevo trend-update; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso explained. Barrera: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para una pasada concurrente posterior."
     }
   ],
   "partial": false,
@@ -3595,6 +3626,114 @@
           "applied": true
         }
       ]
+    },
+    {
+      "run_id": "tr-1793550896199-manual",
+      "status": "DONE",
+      "started_at": "2026-11-01T17:35:00+01:00",
+      "finished_at": "2026-11-01T17:45:30+01:00",
+      "summary": {
+        "attempted": 10,
+        "observed": 10,
+        "closed": 10,
+        "explained": 8,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 7
+      },
+      "outcomes": [
+        {
+          "id": "98e7a044dc62",
+          "revision": 0,
+          "name": "Guti",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "7184eb72d1ea",
+          "revision": 0,
+          "name": "Diomande",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "red-review-8c4e81a9fff60caff47a",
+          "revision": 0,
+          "name": "Revisar novedades: Alsina",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "red-review-bd128813cc4afbd44c58",
+          "revision": 0,
+          "name": "Revisar novedades: Kerolin",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "created_id": "trend-update-df91a57b6555b4f60712"
+        },
+        {
+          "id": "447e15e9015b",
+          "revision": 0,
+          "name": "Vinicius",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "1bb64c22590e",
+          "revision": 0,
+          "name": "Negreira",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "18dc47314a83",
+          "revision": 0,
+          "name": "Munuera",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "743ba673b658",
+          "revision": 0,
+          "name": "Guler",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "6ba934928aa1",
+          "revision": 0,
+          "name": "DAZN",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "c7ce07dc6179",
+          "revision": 0,
+          "name": "Dudoso",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        }
+      ],
+      "message": "Pasada cerrada 10/10 tras absorber 6 pendientes nuevos aparecidos en la barrera final. Guti y Diomande explained; Alsina unchanged; Kerolin updated con nuevo trend-update; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso explained. Barrera: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para una pasada concurrente posterior."
     }
   ]
 }
