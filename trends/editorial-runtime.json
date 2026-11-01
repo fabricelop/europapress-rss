@@ -5,33 +5,41 @@
   "canonical": true,
   "run_id": "tr-1793491247699-manual",
   "previous_run_id": "tr-1793490930000-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "RUNNING",
+  "phase": "verifying",
   "started_at": "2026-11-01T01:00:47.699+01:00",
-  "updated_at": "2026-11-01T01:07:04+01:00",
+  "updated_at": "2026-11-01T01:08:30+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 5,
   "total": 5,
-  "trend_id": "34773b6871a6",
-  "title": "Tusk",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "34773b6871a6",
+    "930473fae55b",
+    "c1d3d1afb9e9",
+    "2fa9bd880a4d",
     "e66f5cfee46f"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "explained": 0,
+    "attempted": 4,
+    "observed": 5,
+    "closed": 5,
+    "explained": 5,
+    "applied_this_run": 4,
+    "converged_concurrent": 1,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "remaining_active": 5,
-    "queue_remaining": 5,
+    "remaining_active": 0,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -494,51 +502,45 @@
       "trend_id": "34773b6871a6",
       "title": "Tusk",
       "message": "Inicio tr-1793491247699-manual: 5 trabajos preparing vigentes tras relectura de main. Investigación actual y revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:08:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera de verificación: los 5 trabajos observados están explained y sincronizados en requests + telegram-manual-explained; Tusk convergió con la ejecución anterior. editorial-queue=0 y rewrite_pending=0. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
     {
-      "id": "red-review-9c1f69faa78fa9e7aaa8",
-      "revision": 0,
-      "status": "review_completed",
-      "outcome": "unchanged"
-    },
-    {
-      "id": "red-review-a4fe9a1e77d38d80cb26",
-      "revision": 0,
-      "status": "review_completed",
-      "outcome": "unchanged"
-    },
-    {
-      "id": "228ee5d89d20",
+      "id": "34773b6871a6",
       "revision": 0,
       "status": "explained",
-      "name": "Woodgate"
+      "name": "Tusk",
+      "converged_concurrent": true,
+      "source_run": "tr-1793490930000-manual"
     },
     {
-      "id": "baa31bcd2580",
+      "id": "930473fae55b",
       "revision": 0,
       "status": "explained",
-      "name": "Owen"
+      "name": "Ana Pastor"
     },
     {
-      "id": "beb5f267e132",
+      "id": "c1d3d1afb9e9",
       "revision": 0,
       "status": "explained",
-      "name": "Hamilton"
+      "name": "Sabadell"
     },
     {
-      "id": "299030e1bed3",
+      "id": "2fa9bd880a4d",
       "revision": 0,
       "status": "explained",
-      "name": "Tunkara"
+      "name": "Aston Villa"
     },
     {
-      "id": "listas-auto-91bad7b3567ec2994d9d",
+      "id": "e66f5cfee46f",
       "revision": 0,
-      "status": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 0
+      "status": "explained",
+      "name": "Frenkie"
     }
   ],
   "api_failover_enabled": false,
@@ -622,6 +624,11 @@
       "trend_id": "34773b6871a6",
       "title": "Tusk",
       "message": "Inicio tr-1793491247699-manual: 5 trabajos preparing vigentes tras relectura de main. Investigación actual y revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:08:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera de verificación: 5/5 cerrados, cola 0, rewrite_pending 0; sin ImageGen ni publicación."
     }
   ]
 }
