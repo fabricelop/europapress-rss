@@ -120,7 +120,7 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(state[g.DECISIONS], self.state[g.DECISIONS])
         new = state[g.MANUAL]['items'][-1]
         self.assertNotEqual(new['id'], 'a')
-        self.assertFalse(m.image_allowed(new))
+        self.assertTrue(m.image_allowed(new))
         self.assertEqual(new['originated_from_prior_id'], 'a')
         self.assertEqual(m.apply_review(state, command, self.now, g.grouping_api()), (state, False))
 
@@ -161,20 +161,19 @@ class MaintenanceTests(unittest.TestCase):
         final, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
         self.assertTrue(final[g.MANUAL]['items'][-1]['distinct_episode'])
 
-    def test_new_work_precedes_maintenance_and_images_wait_for_grouping(self):
-        fresh = {**self.row, 'id': 'b', 'name': 'Atocha', 'explained_at': self.now.isoformat()}
+    def test_new_work_does_not_trigger_automatic_grouping(self):
+        fresh = {**self.row, 'id': 'b', 'name': 'Atocha',
+                 'explained_at': self.now.isoformat()}
         self.add(fresh)
-        self.state[g.REQUESTS]['requests'].append(dict(id='new', revision=0, status='preparing'))
+        self.state[g.REQUESTS]['requests'].append(
+            dict(id='new', revision=0, status='preparing'))
         self.assertFalse(self.schedule())
-        self.assertFalse(m.image_allowed(self.state[g.MANUAL]['items'][1]))
+        self.assertTrue(m.image_allowed(self.state[g.MANUAL]['items'][1]))
         self.state[g.REQUESTS]['requests'][-1]['status'] = 'explained'
         self.schedule()
-        job = next(x for x in self.state[g.REQUESTS]['requests'] if x.get('automatic_grouping'))
-        final, _ = g.apply_result(self.state, dict(job_id=job['id'], groups=[]), self.now)
-        row = final[g.MANUAL]['items'][1]
-        self.assertTrue(m.image_allowed(row))
-        row['explanation'] += ' revisión técnica'
-        self.assertFalse(m.image_allowed(row))
+        self.assertFalse(any(x.get('automatic_grouping')
+                             for x in self.state[g.REQUESTS]['requests']))
+        self.assertTrue(m.image_allowed(self.state[g.MANUAL]['items'][1]))
 
     def test_manual_selection_excludes_other_listas_and_rejects_stale(self):
         self.add({**self.row, 'id': 'b', 'name': 'Atocha'})
@@ -188,19 +187,20 @@ class MaintenanceTests(unittest.TestCase):
         self.assertFalse(final[g.QUEUE]['items'])
         self.assertEqual(final[g.RECEIPTS]['items'][-1]['status'], 'rejected')
 
-    def test_new_hashtag_can_be_covered_by_published_story_without_new_post(self):
+    def test_new_hashtag_is_not_automatically_covered_by_published_story(self):
         self.state[g.REQUESTS]['requests'][0]['status'] = 'published'
-        self.state[g.DECISIONS]['items'] = [dict(id='a', revision=1, status='published', updated_at=self.now.isoformat())]
-        self.add({**self.row, 'id': 'b', 'name': 'Atocha', 'explained_at': self.now.isoformat()})
+        self.state[g.DECISIONS]['items'] = [
+            dict(id='a', revision=1, status='published',
+                 updated_at=self.now.isoformat())]
+        self.add({**self.row, 'id': 'b', 'name': 'Atocha',
+                  'explained_at': self.now.isoformat()})
         self.schedule()
-        job = next(x for x in self.state[g.REQUESTS]['requests'] if x.get('automatic_grouping'))
-        command = dict(job_id=job['id'], groups=[], covered_by_existing=[dict(
-            member=dict(id='b', revision=1), published_id='a', no_material_changes=True, reason='Mismo corte ya publicado')])
-        final, _ = g.apply_result(self.state, command, self.now)
-        row = final[g.MANUAL]['items'][1]
-        self.assertEqual(row['covered_by_id'], 'a')
-        self.assertFalse(m.image_allowed(row))
-        self.assertEqual(len(final[g.MANUAL]['items']), 2)
+        self.assertFalse(any(x.get('automatic_grouping')
+                             for x in self.state[g.REQUESTS]['requests']))
+        row = self.state[g.MANUAL]['items'][1]
+        self.assertFalse(row.get('covered_by_id'))
+        self.assertTrue(m.image_allowed(row))
+        self.assertEqual(len(self.state[g.MANUAL]['items']), 2)
 
 
 if __name__ == '__main__':
