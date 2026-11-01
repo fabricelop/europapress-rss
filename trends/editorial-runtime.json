@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793531820836-manual",
   "previous_run_id": "tr-chat-20261101T121100+0100",
-  "status": "waiting",
-  "phase": "investigating",
+  "status": "RUNNING",
+  "phase": "persisting",
   "started_at": "2026-11-01T12:17:00+01:00",
-  "updated_at": "2026-11-01T12:23:00+01:00",
+  "updated_at": "2026-11-01T12:26:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 3,
-  "trend_id": "ecfab12c8f74",
-  "title": "Halloween",
+  "trend_id": "d0d920c046f0",
+  "title": "Blocus",
   "queue_complete": false,
   "processed_ids": [
     "ecfab12c8f74"
@@ -1373,7 +1373,7 @@
     "concurrent_convergence": 0
   },
   "source": "chat",
-  "message": "#UFCHBOMax r0 aplicado. Investigando Halloween r0 tras relectura de main; se incorporó Blocus r0 como tercer trabajo concurrente.",
+  "message": "#UFCHBOMax r0 y Halloween r0 aplicados. Blocus r0 investigado y enviado al outbox; pendiente de aplicación. Sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
