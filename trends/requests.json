@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:56:00.773016+00:00",
+  "updated_at": "2026-11-01T11:56:25.694991+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8823,7 +8823,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T11:55:17.678638+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -124117,7 +124117,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T11:55:17.678638+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -177399,14 +177399,23 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-eee3db5b7d223989",
+      "covered_by_revision": 0,
+      "covered_by_name": "MotoGP · Qatar y retirada de Yamaha",
+      "covered_source_revision": 0,
+      "covered_at": "2026-11-01T11:56:25.694991+00:00",
+      "grouping_request_id": "listas-auto-bc8dfbb410389cba37b7",
+      "editorial_grouping_fingerprint": "f197add7f0ffd29d11fa4d96a37bf9265be539178a79705dfb1f8a2e6db7fc52",
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
     },
     {
       "id": "12beb07b0d96",
@@ -177453,14 +177462,16 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "1a4372aaace2e12a94de47338085551182c6f10229c6ae926c5eb1721ab3e558",
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
     },
     {
       "id": "24b026091f12",
@@ -177514,26 +177525,35 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-eee3db5b7d223989",
+      "covered_by_revision": 0,
+      "covered_by_name": "MotoGP · Qatar y retirada de Yamaha",
+      "covered_source_revision": 0,
+      "covered_at": "2026-11-01T11:56:25.694991+00:00",
+      "grouping_request_id": "listas-auto-bc8dfbb410389cba37b7",
+      "editorial_grouping_fingerprint": "96d72abd4a2714a57a9fdfa8d1a22e4dc27b8dbf45601e0d1aaae350d6c8fdd3",
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
     },
     {
       "id": "listas-auto-bc8dfbb410389cba37b7",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T11:55:17.678638+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -179319,7 +179339,60 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T11:56:25.694991+00:00",
+      "grouping_created_ids": [
+        "listas-joint-eee3db5b7d223989"
+      ],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "5d736a7ccd9d516705e0b761371b6b82c70e298d4ea30e3331f4c64053379d11"
+    },
+    {
+      "id": "listas-joint-eee3db5b7d223989",
+      "revision": 0,
+      "name": "MotoGP · Qatar y retirada de Yamaha",
+      "rank": 11,
+      "status": "explained",
+      "explanation": "TT#11 Yamaha y MotoGP son tendencia por el GP de Qatar: MotoGP mantiene la cita del 6 al 8 de noviembre tras revisar la seguridad, mientras Yamaha no participará por sus restricciones corporativas de viaje.\n#MotoGP #Yamaha #QatarGP",
+      "closer_text": "",
+      "explained_at": "2026-11-01T11:56:25.694991+00:00",
+      "requested_at": "2026-11-01T11:56:25.694991+00:00",
+      "updated_at": "2026-11-01T11:56:25.694991+00:00",
+      "listas_group_role": "joint",
+      "listas_group_members": [
+        {
+          "id": "aea33831119b",
+          "revision": 0
+        },
+        {
+          "id": "24b026091f12",
+          "revision": 0
+        }
+      ],
+      "trend_names": [
+        "Yamaha",
+        "MotoGP"
+      ],
+      "group_title": "MotoGP · Qatar y retirada de Yamaha",
+      "verification_sources": [
+        {
+          "url": "https://www.motogp.com/en/news/2026/11/01/statements-from-yamaha-motor-co-ltd-motogp-group/1183172"
+        },
+        {
+          "url": "https://www.reuters.com/sports/motogp-keeps-qatar-gp-track-after-meeting-with-teams-malaysia-2026-11-01/"
+        }
+      ],
+      "grouping_reason": "Yamaha y MotoGP describen el mismo episodio actual del GP de Qatar; la retirada de Yamaha es una novedad material y forma parte de la misma decisión deportiva y de seguridad.",
+      "grouping_request_id": "listas-auto-bc8dfbb410389cba37b7",
+      "source": "listas_grouping_editorial",
+      "auto_queued": false,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "80851316fbdbeecfb3dfed60a3489525e4db5e7a77e3ca8c734f27ff60129cbb",
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
     }
   ],
   "count": 576
