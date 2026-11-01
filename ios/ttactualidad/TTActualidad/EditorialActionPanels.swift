@@ -50,27 +50,24 @@ struct EditorialActions: View {
                     if let url = parts?.url { openURL(url) }
                 }
             }
-            // Every news category has the same image creation/association tools.
-            // A non-READY item may copy the guide, but cannot invent an image binding.
-            if let news {
-                HStack(spacing: 7) {
-                    quickButton("Copiar GAG", "sparkles") {
-                        if news.status == "LISTA" && !fullText.isEmpty {
-                            copy(gagPrompt)
-                        } else {
-                            outcome = "Primero hay que finalizar esta noticia en Listas para generar una imagen fiel a los hechos."
-                        }
-                    }
-                    quickLink("Proyecto TT", "folder",
-                              "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
-                }
-                HStack(spacing: 7) {
-                    quickButton("Asociar imagen IA", "paperclip") {
+            // Shared image controls for every editorial card. The text of
+            // "Copiar GAG" itself requests generation + attachment + verification.
+            // Association-only is the recovery route for an existing original.
+            HStack(spacing: 7) {
+                quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
+                quickLink("Proyecto TT", "folder",
+                    "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
+            }
+            HStack(spacing: 7) {
+                quickButton("Asociar imagen IA", "paperclip") {
+                    if news != nil {
                         copyNewsImageAssociationPrompt()
+                    } else {
+                        copyTrendSiteImagePrompt()
                     }
-                    quickButton("Copiar foto", "photo.on.rectangle") {
-                        Task { await copyPhoto() }
-                    }
+                }
+                quickButton("Copiar foto", "photo.on.rectangle") {
+                    Task { await copyPhoto() }
                 }
             }
             // A grouped original retains the same editorial actions as a normal trend.
@@ -130,30 +127,14 @@ struct EditorialActions: View {
             } else if trend?.status == "EN ELABORACIÓN" {
                 Text("Elaboración solicitada en GitHub; pendiente de cierre editorial.")
                     .font(.caption).foregroundStyle(TTTheme.muted)
-                HStack(spacing: 7) {
-                    quickButton("Copiar orden editorial", "doc.on.doc") {
-                        copyManualEditorialPrompt()
-                    }
-                    quickLink("Proyecto TT", "folder", "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
+                quickButton("Copiar orden editorial", "doc.on.doc") {
+                    copyManualEditorialPrompt()
                 }
             } else {
-            // Principal actions: publication and project; then copy tools.
+            // Publication/editing remains independent of the image flow.
             HStack(spacing: 7) {
                 quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
-                if trend != nil {
-                    quickLink("Proyecto TT", "folder", "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
-                }
-            }
-            HStack(spacing: 7) {
-                if trend != nil {
-                    quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
-                }
                 quickButton("Copiar texto", "doc.on.doc") { copy(fullText) }
-            }
-            if trend != nil {
-                quickButton("Copiar foto", "photo.on.rectangle") {
-                    Task { await copyPhoto() }
-                }
             }
             HStack(spacing: 7) {
                 if news != nil || trend?.inListas == true {
