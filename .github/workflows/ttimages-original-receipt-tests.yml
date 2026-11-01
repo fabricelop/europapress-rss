@@ -7,6 +7,7 @@ on:
       - 'windows/TTiTTularesDedicatedListener.ps1'
       - 'windows/TT-AutoUpdater.ps1'
       - 'windows/tests/test_headline_original_receipt.cjs'
+      - 'tests/test_ttimages_mobile_continuity.cjs'
       - 'vercel-webhook/lib/ttittulares-run-handler.js'
       - 'vercel-webhook/lib/ttittulares-run-status-handler.js'
       - 'vercel-webhook/lib/ttendencias-run-handler.js'
@@ -32,6 +33,10 @@ jobs:
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/TT-AutoUpdater.ps1
             /windows/tests/test_headline_original_receipt.cjs
+            /tests/test_ttimages_mobile_continuity.cjs
+            /ios/ttactualidad/TTActualidad/EditorialStore.swift
+            /pilot/ttactualidad-live/index.html
+            /docs/ttactualidad/index.html
             /vercel-webhook/lib/ttittulares-run-handler.js
             /vercel-webhook/lib/ttittulares-run-status-handler.js
             /vercel-webhook/lib/ttendencias-run-handler.js
@@ -52,6 +57,8 @@ jobs:
           node --check no-vercel/ttittulares-worker/src/index.js
       - name: Contrato exacto de asociación y no duplicación
         run: node --test windows/tests/test_headline_original_receipt.cjs
+      - name: Continuidad de lectura móvil sin Cloudflare
+        run: node --test tests/test_ttimages_mobile_continuity.cjs
       - name: Catálogo de imágenes de noticias con SHA-256 real
         run: python3 -m unittest discover -s tests -p test_ttittulares_image_catalog.py -v
   windows-safety:
