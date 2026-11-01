@@ -9,7 +9,7 @@
 param(
   [switch]$Apply,
   [ValidatePattern('^[A-Za-z0-9._/-]{3,120}$')]
-  [string]$Ref='fix/ttimages-original-association-v1'
+  [string]$Ref='31524093bf4c821feca8cd6aed70029d4bd2f358'
 )
 $ErrorActionPreference='Stop'
 $root='C:\TTiTTulares'
