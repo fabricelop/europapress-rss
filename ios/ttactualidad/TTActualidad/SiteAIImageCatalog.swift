@@ -83,9 +83,90 @@ enum SiteAIImageCatalog {
 
     static func resolvedSHA256(id: String, revision: Int, explanation: String,
                                explainedAt: String, catalog: [String: Entry]) -> String? {
-        guard resolved(id: id, revision: revision, explanation: explanation,
-                       explainedAt: explainedAt, catalog: catalog) != nil else { return nil }
-        return catalog[key(id: id, revision: revision)]?.sha256
+        continuityAwareEntry(id: id, revision: revision, explanation: explanation,
+                             explainedAt: explainedAt, catalog: catalog)?.sha256
+    }
+
+    // An editorial re-explanation can assign a new ID to effectively the SAME
+    // story. Its already-stored PNG must not vanish from the UI just because
+    // the text gained a filler word. This is display-only visual continuity:
+    // it does not claim Site verified a new association or copy any file.
+    // Never use name-only matches, other stories or sensitive incidents.
+    private static let disallowedContinuityTopics = [
+        "accidente", "falleci", "muert", "victima", "herid",
+        "asesinat", "atentad", "violacion", "suicid", "desaparecid"
+    ]
+
+    private static func words(_ value: String) -> [String] {
+        value.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                      locale: Locale(identifier: "es_ES"))
+            .components(separatedBy: CharacterSet.alphanumerics.inverted)
+            .filter { !$0.isEmpty }
+    }
+
+    private static func moment(_ value: String) -> Date? {
+        let parser = ISO8601DateFormatter()
+        parser.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = parser.date(from: value) { return date }
+        parser.formatOptions = [.withInternetDateTime]
+        return parser.date(from: value)
+    }
+
+    private struct ContinuityParts {
+        let topic: [String]
+        let tags: [String]
+        let closer: [String]
+        let tokens: Set<String>
+    }
+
+    private static func continuityParts(_ value: String) -> ContinuityParts? {
+        let lines = value.components(separatedBy: .newlines).map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }.filter { !$0.isEmpty }
+        guard let first = lines.first else { return nil }
+        let heading = words(first)
+        guard heading.count >= 8, heading[0] == "tt",
+              Int(heading[1]) != nil else { return nil }
+        let tags = lines.filter { $0.hasPrefix("#") }.map { words($0).joined(separator: " ") }.sorted()
+        let closer = lines.filter { $0.hasPrefix("🌶") }.map { words($0).joined(separator: " ") }.sorted()
+        let tokens = Set(words(value))
+        let lower = words(value).joined(separator: " ")
+        guard !tags.isEmpty, !closer.isEmpty, tokens.count >= 24,
+              !disallowedContinuityTopics.contains(where: { lower.contains($0) }) else {
+            return nil
+        }
+        return ContinuityParts(topic: Array(heading.dropFirst(2).prefix(4)),
+                               tags: tags, closer: closer, tokens: tokens)
+    }
+
+    private static func continuityAwareEntry(id: String, revision: Int,
+                                              explanation: String, explainedAt: String,
+                                              catalog: [String: Entry]) -> Entry? {
+        guard !id.isEmpty, !explanation.isEmpty, !explainedAt.isEmpty else { return nil }
+        if let record = catalog[key(id: id, revision: revision)],
+           record.explanation == explanation, record.explained_at == explainedAt {
+            return record // Current exact association always wins.
+        }
+        guard let targetDate = moment(explainedAt),
+              let target = continuityParts(explanation) else { return nil }
+        var matches: [(Date, Entry)] = []
+        for old in catalog.values where old.revision == revision {
+            guard let oldDate = moment(old.explained_at) else { continue }
+            let delta = targetDate.timeIntervalSince(oldDate)
+            guard delta >= 0, delta <= 12 * 3600,
+                  let previous = continuityParts(old.explanation),
+                  previous.topic == target.topic,
+                  previous.tags == target.tags,
+                  previous.closer == target.closer else { continue }
+            let overlap = target.tokens.intersection(previous.tokens).count
+            let union = target.tokens.union(previous.tokens).count
+            guard union > 0, Double(overlap) / Double(union) >= 0.96 else { continue }
+            matches.append((oldDate, old))
+        }
+        matches.sort { $0.0 > $1.0 }
+        guard let first = matches.first,
+              matches.count == 1 || matches[1].0 != first.0 else { return nil }
+        return first.1
     }
 
     // A verified remote deletion must not be undone by a 90-second memory
@@ -100,10 +181,10 @@ enum SiteAIImageCatalog {
 
     static func resolved(id: String, revision: Int, explanation: String,
                          explainedAt: String, catalog: [String: Entry]) -> URL? {
-        guard !id.isEmpty, !explanation.isEmpty, !explainedAt.isEmpty,
-              let record = catalog[key(id: id, revision: revision)],
-              record.explanation == explanation,
-              record.explained_at == explainedAt else { return nil }
+        guard let record = continuityAwareEntry(
+            id: id, revision: revision, explanation: explanation,
+            explainedAt: explainedAt, catalog: catalog
+        ) else { return nil }
         return URL(string: record.image_url)
     }
 }
