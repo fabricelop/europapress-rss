@@ -3,21 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T121100+0100",
-  "previous_run_id": "tr-1793530989787-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T12:11:00+01:00",
-  "updated_at": "2026-11-01T12:12:00+01:00",
-  "finished_at": "2026-11-01T12:12:00+01:00",
+  "run_id": "tr-1793531820836-manual",
+  "previous_run_id": "tr-chat-20261101T121100+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T12:17:00+01:00",
+  "updated_at": "2026-11-01T12:17:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "e7a34c909e2e",
+    "ecfab12c8f74"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -1367,7 +1370,7 @@
     "concurrent_convergence": 0
   },
   "source": "chat",
-  "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales.",
+  "message": "Pasada editorial real en ejecución: 2 revisiones preparing/update; validación JIT antes de cada una; sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
