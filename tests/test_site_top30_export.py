@@ -111,7 +111,7 @@ class PublicTop30ParityTests(unittest.TestCase):
             "explained_at": "2026-11-01T12:23:00+01:00",
             "explanation": ("TT#1 Halloween sigue siendo tendencia tras la noche del 31 de octubre: "
                             "en España hubo unas 16.000 fiestas temáticas y en Madrid continúan "
-                            "hoy actos del fin de semana.\\n#Halloween2026\\n"
+                            "hoy actos del fin de semana.\n#Halloween2026\n"
                             "🌶️ Cayó en sábado y el disfraz se ha resistido a volver al armario."),
         }
         new = {
