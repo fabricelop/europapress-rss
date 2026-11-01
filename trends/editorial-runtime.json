@@ -6,35 +6,37 @@
   "run_id": "tr-1793558264614-manual",
   "previous_run_id": "tr-1793556220668-manual",
   "status": "success",
-  "phase": "investigating",
+  "phase": "completed",
   "started_at": "2026-11-01T19:38:00+01:00",
-  "updated_at": "2026-11-01T19:48:23+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-c74370b5fe5ef16a1ff8",
-  "title": "Revisar novedades: Día de Todos",
+  "updated_at": "2026-11-01T19:49:03+01:00",
+  "finished_at": "2026-11-01T19:49:03+01:00",
+  "current": 5,
+  "total": 5,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "b2a574d098ac",
+    "red-review-c74370b5fe5ef16a1ff8",
+    "red-review-b64f6d1ba98aa70b35a3",
     "c999199b2612",
+    "b2a574d098ac",
     "e9faebbb0c92"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "unchanged_reviews": 1,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1441,12 +1443,53 @@
       "trend_id": "red-review-c74370b5fe5ef16a1ff8",
       "title": "Revisar novedades: Día de Todos",
       "message": "Revisando novedades JIT: la evolución material de Todos los Santos de hoy ya fue incorporada por una revisión anterior; se comprueba que no exista un desarrollo adicional posterior para evitar una actualización duplicada."
+    },
+    {
+      "at": "2026-11-01T19:49:03+01:00",
+      "phase": "completed",
+      "run_id": "tr-1793558264614-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre verificado: 5/5 tratados. Arsenal, Martínez Quarta y #LaRoca252 explicados y sincronizados request/ficha; Día de Todos review_completed unchanged; Heidi Klum review_completed stale por validación JIT. Cola activa 0, rewrite/reexplain pendientes 0, ImageGen 0, publicaciones 0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-c74370b5fe5ef16a1ff8",
+      "revision": 0,
+      "name": "Revisar novedades: Día de Todos",
+      "status": "review_completed",
+      "outcome": "unchanged"
+    },
+    {
+      "id": "red-review-b64f6d1ba98aa70b35a3",
+      "revision": 0,
+      "name": "Revisar novedades: Heidi Klum",
+      "status": "review_completed",
+      "outcome": "stale"
+    },
+    {
+      "id": "c999199b2612",
+      "revision": 0,
+      "name": "Arsenal",
+      "status": "explained"
+    },
+    {
+      "id": "b2a574d098ac",
+      "revision": 0,
+      "name": "Martínez Quarta",
+      "status": "explained"
+    },
+    {
+      "id": "e9faebbb0c92",
+      "revision": 0,
+      "name": "#LaRoca252",
+      "status": "explained"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T19:48:23+01:00",
-  "last_completed_at": "2026-11-01T19:48:23+01:00",
+  "last_completed_at": "2026-11-01T19:49:03+01:00",
   "last_run": {
     "run_id": "tr-1793556220668-manual",
     "status": "DONE",
