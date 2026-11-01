@@ -5,26 +5,26 @@
   "canonical": true,
   "run_id": "tr-1793531820836-manual",
   "previous_run_id": "tr-1793531820836-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T12:25:00+01:00",
-  "updated_at": "2026-11-01T12:30:00+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-01T12:31:00+01:00",
+  "finished_at": "2026-11-01T12:31:00+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "red-review-5cea86122c498eb32753",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "e7a34c909e2e",
+    "ecfab12c8f74",
+    "d0d920c046f0",
     "listas-auto-d949d22fea9dcb5ca638",
     "red-review-5cea86122c498eb32753",
     "red-review-2c540cbea6cdfd2e7781"
   ],
-  "remaining_active_ids": [
-    "red-review-5cea86122c498eb32753",
-    "red-review-2c540cbea6cdfd2e7781"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -1380,7 +1380,7 @@
     "concurrent_convergence": 0
   },
   "source": "chat",
-  "message": "Agrupación aplicada sin grupos. Resultados de mantenimiento preparados: Toledo=updated; Óscar Muerte=unchanged. Verificando aplicación secuencial; sin ImageGen.",
+  "message": "Pasada editorial completada: 3 reelaboraciones explicadas, 1 agrupación cerrada sin grupos, Toledo resuelto como stale por convergencia y Óscar Muerte unchanged. Cola 0, rewrite_pending 0, ImageGen 0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2765,5 +2765,49 @@
     }
   ],
   "partial": false,
-  "outcomes": []
+  "outcomes": [
+    {
+      "id": "e7a34c909e2e",
+      "revision": 0,
+      "name": "#UFCHBOMax",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "ecfab12c8f74",
+      "revision": 0,
+      "name": "Halloween",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d0d920c046f0",
+      "revision": 0,
+      "name": "Blocus",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "listas-auto-d949d22fea9dcb5ca638",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed",
+      "applied": true,
+      "groups_created": 0
+    },
+    {
+      "id": "red-review-5cea86122c498eb32753",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "applied": true
+    },
+    {
+      "id": "red-review-2c540cbea6cdfd2e7781",
+      "revision": 0,
+      "name": "Revisar novedades: Óscar Muerte",
+      "outcome": "unchanged",
+      "applied": true
+    }
+  ]
 }
