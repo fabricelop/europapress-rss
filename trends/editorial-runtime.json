@@ -5,17 +5,19 @@
   "canonical": true,
   "run_id": "tr-1793531820836-manual",
   "previous_run_id": "tr-chat-20261101T121100+0100",
-  "status": "success",
-  "phase": "persisting",
+  "status": "RUNNING",
+  "phase": "closing",
   "started_at": "2026-11-01T12:17:00+01:00",
-  "updated_at": "2026-11-01T12:23:52+01:00",
+  "updated_at": "2026-11-01T12:27:00+01:00",
   "finished_at": null,
-  "current": 2,
+  "current": 3,
   "total": 3,
-  "trend_id": "d0d920c046f0",
-  "title": "Blocus",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "e7a34c909e2e",
+    "ecfab12c8f74",
     "d0d920c046f0"
   ],
   "remaining_ids": [],
@@ -1369,7 +1371,7 @@
     "concurrent_convergence": 0
   },
   "source": "chat",
-  "message": "#UFCHBOMax r0 y Halloween r0 aplicados. Blocus r0 investigado y enviado al outbox; pendiente de aplicación. Sin ImageGen.",
+  "message": "Verificación final: #UFCHBOMax, Halloween y Blocus r0 están explained en requests y telegram-manual-explained; cola 0; rewrite_pending 0; sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2756,175 +2758,25 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "listas-auto-d962c519109a109bdc4b",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true
-    },
-    {
-      "id": "listas-auto-d962c519109a109bdc4b",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "converged_with": "tr-1793522752871-manual",
-      "grouping_created_ids": [
-        "listas-joint-d25b18ebc7cd1aec"
-      ],
-      "covered_by_existing": [
-        {
-          "id": "83e91c68231f",
-          "published_id": "83aa70bdac40"
-        }
-      ]
-    },
-    {
-      "id": "red-review-c6d3860715baa85c7425",
-      "revision": 0,
-      "outcome": "stale",
-      "applied": true,
-      "converged_with": "tr-1793523878329-manual"
-    },
-    {
-      "id": "listas-auto-5cddaa57caddb33c53cd",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "converged_with": "tr-1793523878329-manual",
-      "grouping_created_ids": [
-        "listas-joint-89705fdab1782025"
-      ]
-    },
-    {
-      "id": "236995aec110",
-      "revision": 1,
-      "outcome": "explained",
-      "applied": true,
-      "converged": true
-    },
-    {
-      "id": "listas-auto-50403cbc6f4acb2379c3",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "converged": true,
-      "grouping_created_ids": [
-        "listas-joint-66aef034f7c9633e"
-      ]
-    },
-    {
-      "id": "listas-auto-50403cbc6f4acb2379c3",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "converged_with": "tr-1793527057284-manual",
-      "groups_created": 1,
-      "covered_by_existing": 0
-    },
-    {
-      "id": "red-review-59f90d990dadda2724b7",
-      "revision": 0,
-      "outcome": "stale",
-      "applied": true,
-      "converged_with": "tr-1793527469295-manual",
-      "reason": "El aplicador JIT cerró la revisión como stale tras recibir un resultado updated; no se sobrescribió la ficha de origen."
-    },
-    {
-      "id": "listas-auto-cbda911e727cb3be2693",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "groups_created": 0,
-      "covered_by_existing": 0
-    },
-    {
-      "id": "red-review-1343290e6c52ef92fee0",
-      "revision": 0,
-      "outcome": "stale",
-      "applied": true,
-      "converged": true
-    },
-    {
-      "id": "red-review-59f90d990dadda2724b7",
-      "revision": 0,
-      "outcome": "stale",
-      "applied": true,
-      "converged_with": "tr-1793527734709-manual"
-    },
-    {
-      "id": "red-review-26695e1ca8ee103d072d",
-      "revision": 0,
-      "outcome": "updated",
-      "applied": true,
-      "converged": true,
-      "created_id": "trend-update-2b425c5e3dea7f90e862"
-    },
-    {
-      "id": "listas-auto-5044a484f28cfabeb0e7",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "converged": true,
-      "groups_created": 0,
-      "covered_by_existing": [
-        {
-          "id": "trend-update-1fd56c057396312298e4",
-          "published_id": "listas-joint-89705fdab1782025"
-        }
-      ]
-    },
-    {
-      "id": "listas-auto-4af3a50ea6a6cbe196b7",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "converged": true,
-      "groups_created": 0,
-      "covered_by_existing": [
-        {
-          "id": "trend-update-2b425c5e3dea7f90e862",
-          "published_id": "listas-joint-89705fdab1782025"
-        }
-      ]
-    },
-    {
-      "id": "231068a14860",
+      "id": "e7a34c909e2e",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "name": "Heidi Klum"
+      "name": "#UFCHBOMax"
     },
     {
-      "id": "listas-auto-c681e4c08e0e850727d5",
+      "id": "ecfab12c8f74",
       "revision": 0,
-      "outcome": "grouping_completed",
+      "outcome": "explained",
       "applied": true,
-      "groups_created": 0,
-      "covered_by_existing": 0
+      "name": "Halloween"
     },
     {
-      "id": "listas-auto-c681e4c08e0e850727d5",
+      "id": "d0d920c046f0",
       "revision": 0,
-      "outcome": "grouping_completed",
+      "outcome": "explained",
       "applied": true,
-      "converged": true,
-      "converged_with": "tr-chat-20261101T1140+0100",
-      "groups_created": 0,
-      "covered_by_existing": 0,
-      "apply_commit": "191f1e0afaf9e88fcad8491e78a274062c20cc13"
-    },
-    {
-      "id": "red-review-75d6901ff6221472cea3",
-      "revision": 0,
-      "name": "Revisar novedades: #UFCHBOMax",
-      "outcome": "stale",
-      "applied": true
-    },
-    {
-      "id": "red-review-eccf7b087d522304b016",
-      "revision": 0,
-      "name": "Revisar novedades: #laSextaXplica",
-      "outcome": "stale",
-      "applied": true
+      "name": "Blocus"
     }
   ]
 }
