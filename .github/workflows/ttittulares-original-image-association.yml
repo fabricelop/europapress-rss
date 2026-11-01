@@ -1,0 +1,58 @@
+name: TTiTTulares · asociar IA original a APP y web
+# No inicia ImageGen, no envía fotos a Telegram ni toca el PC.
+# Solo consume originales recibidos realmente en GitHub image-outbox
+# o refleja los ya verificados en prepared.json.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/image-outbox/**"
+      - "ttittulares/prepared.json"
+      - "ttittulares/generated-images/**"
+      - "ttittulares/sync_site_ai_images.py"
+      - "ttittulares/apply_ai_image_outbox.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-original-image-association
+  cancel-in-progress: false
+
+jobs:
+  associate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Instalar validador de raster
+        run: python3 -m pip install --quiet Pillow
+      - name: Validar y asociar originales por event_id/revisión; reflejar en ambos catálogos
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttittulares-image-catalog"
+          git config user.email "actions@users.noreply.github.com"
+          for n in 1 2 3 4 5; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 ttittulares/apply_ai_image_outbox.py
+            python3 ttittulares/sync_site_ai_images.py
+            git add ttittulares/prepared.json ttittulares/site-ai-images.json
+            git add -A -- ttittulares/generated-images ttittulares/image-outbox
+            if git diff --cached --quiet; then
+              echo "TTITTULARES_AI_IMAGE_ASSOCIATION_UNCHANGED"
+              exit 0
+            fi
+            git commit -m "Asociar imagen IA original a noticia y catálogo web/iPhone"
+            if git push origin HEAD:main; then
+              echo "TTITTULARES_AI_IMAGE_ASSOCIATED"
+              exit 0
+            fi
+            sleep "$((n * 2))"
+          done
+          echo "Error de sincronización; verificar el commit antes de reenviar el PNG" >&2
+          exit 1
