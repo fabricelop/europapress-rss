@@ -14,6 +14,7 @@ import argparse
 import json
 import re
 import unicodedata
+from difflib import SequenceMatcher
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
@@ -146,6 +147,63 @@ def verified_public_sources(row):
     return result
 
 
+# Visual continuity is a READ-ONLY fallback, not a new Site association.
+# Only near-identical text of the SAME ongoing episode can inherit a prior
+# verified-catalog raster. The old image remains at its immutable Site URL.
+# A new image for the current identity ALWAYS wins.
+NO_CONTINUITY = ("accidente", "falleci", "muert", "victima", "herid",
+                 "asesinat", "atentad", "violacion", "suicid", "desaparecid")
+
+def continuity_parts(explanation):
+    lines = [line.strip() for line in explanation.splitlines() if line.strip()]
+    if not lines:
+        return None
+    words = re.findall(r"[a-z0-9]+", norm(lines[0]))
+    # Both titles must start with the same exact leading topic words.
+    if len(words) < 8 or words[0] != "tt" or not words[1].isdigit():
+        return None
+    tags = sorted(norm(line) for line in lines if line.startswith("#"))
+    closers = sorted(norm(line) for line in lines if line.startswith("🌶"))
+    if not tags or not closers:
+        return None
+    normalized = norm(explanation)
+    tokens = set(re.findall(r"[a-z0-9]+", normalized))
+    if len(tokens) < 24 or any(word in normalized for word in NO_CONTINUITY):
+        return None
+    return (tuple(words[2:6]), tuple(tags), tuple(closers), tokens, normalized)
+
+def continuity_image(row, image_map):
+    current_date = when(text(row, "explained_at"))
+    current_parts = continuity_parts(text(row, "explanation"))
+    if not current_date or not current_parts:
+        return None
+    matches = []
+    current_id = text(row, "id")
+    for (source_id, source_revision), candidate in image_map.items():
+        if not isinstance(candidate, dict) or source_id == current_id:
+            continue
+        if source_revision != int(row.get("revision") or 0):
+            continue
+        old_date = when(text(candidate, "explained_at"))
+        if not old_date or not timedelta(0) <= current_date - old_date <= timedelta(hours=12):
+            continue
+        old_parts = continuity_parts(text(candidate, "explanation"))
+        if not old_parts or old_parts[:3] != current_parts[:3]:
+            continue
+        old_tokens, current_tokens = old_parts[3], current_parts[3]
+        similarity = len(old_tokens & current_tokens) / len(old_tokens | current_tokens)
+        if similarity < 0.96 or SequenceMatcher(None, old_parts[4], current_parts[4]).ratio() < 0.96:
+            continue
+        valid_image = recorded_image(candidate | {"id": source_id, "revision": source_revision}, image_map)
+        if valid_image:
+            matches.append((old_date, source_id, valid_image))
+    # Ambiguity is not permission to guess; only the latest unique candidate.
+    matches.sort(key=lambda item: item[0], reverse=True)
+    if not matches or (len(matches) > 1 and matches[0][0] == matches[1][0]):
+        return None
+    _, source_id, image = matches[0]
+    return dict(image, status="catalog_recorded_continuity", source_target_id=source_id)
+
 def recorded_image(row, image_map):
     ident = (text(row, "id"), int(row.get("revision") or 0))
     candidate = image_map.get(ident)
@@ -218,7 +276,7 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
             "closer_text": text(chosen, "closer_text"),
             "verification_sources": verified_public_sources(chosen),
             "last_reviewed_at": text(chosen, "red_review_checked_at"),
-            "image": recorded_image(chosen, images) if exp else None,
+            "image": (recorded_image(chosen, images) or continuity_image(chosen, images)) if exp else None,
             "movement": text(movement.get(rank, {}), "movement"),
         }
         output.append(selected)
