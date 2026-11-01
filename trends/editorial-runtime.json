@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793495454000-manual",
   "previous_run_id": "tr-1793494749102-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T02:10:54+01:00",
-  "updated_at": "2026-11-01T02:10:54+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T02:12:28+01:00",
+  "finished_at": "2026-11-01T02:12:28+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -664,6 +664,16 @@
       "at": "2026-11-01T02:10:54+01:00",
       "phase": "preparing",
       "message": "Inicio tr-1793495454000-manual: editorial-queue=0 tras la actualización de las 02:10:54. Verificando barrera de main y ausencia de reexplicaciones vigentes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T02:12:28+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0; mobile-decisions sin rewrite_pending/reexplain; desde el barrido completo de requests a las 02:04 no hubo cambios semánticos en requests (solo updated_at a las 02:10:54). Sin preparing/update pendientes."
+    },
+    {
+      "at": "2026-11-01T02:12:28+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-1793495454000-manual. ImageGen=0, publicaciones=0, incidencias=0."
     }
   ],
   "final_outcomes": [],
@@ -905,6 +915,16 @@
       "at": "2026-11-01T02:10:54+01:00",
       "phase": "preparing",
       "message": "Inicio tr-1793495454000-manual: editorial-queue=0 tras la actualización de las 02:10:54. Verificando barrera de main y ausencia de reexplicaciones vigentes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T02:12:28+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0; mobile-decisions sin rewrite_pending/reexplain; desde el barrido completo de requests a las 02:04 no hubo cambios semánticos en requests (solo updated_at a las 02:10:54). Sin preparing/update pendientes."
+    },
+    {
+      "at": "2026-11-01T02:12:28+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-1793495454000-manual. ImageGen=0, publicaciones=0, incidencias=0."
     }
   ],
   "partial": false,
