@@ -58,10 +58,24 @@ enum NewsAIImageCatalog {
             "ttactualidad-tendencias.rainyraven22.chatgpt.site" &&
             path.hasPrefix("/images/ttittulares/" + id + "-r" + String(revision) + "-") &&
             url.lastPathComponent.lowercased().contains(hashPrefix)
-        let github = url.host?.lowercased() == "raw.githubusercontent.com" &&
-            path.hasPrefix(root + id + "-r" + String(revision) + "-manual-") &&
+        let githubBase = url.host?.lowercased() == "raw.githubusercontent.com"
+        let prefix = id + "-r" + String(revision)
+        let githubManual = githubBase &&
+            path.hasPrefix(root + prefix + "-manual-") &&
             url.lastPathComponent.lowercased().contains(hashPrefix)
-        return site || github ? url : nil
+        // TTImages-compatible image outbox writes a real SHA-verified original
+        // as <event_id>-r<revision>-ai<attempt>.jpg. The SHA is persisted in
+        // the authenticated manifest, not repeated in this filename.
+        let aiPrefix = prefix + "-ai"
+        let filename = url.lastPathComponent
+        let aiSuffix = filename.hasPrefix(aiPrefix)
+            ? String(filename.dropFirst(aiPrefix.count)) : ""
+        let attempt = aiSuffix.prefix(while: { $0.isNumber })
+        let extensionPart = String(aiSuffix.dropFirst(attempt.count)).lowercased()
+        let githubPipeline = githubBase && path.hasPrefix(root + aiPrefix) &&
+            !attempt.isEmpty &&
+            [".png", ".jpg", ".jpeg", ".webp"].contains(extensionPart)
+        return site || githubManual || githubPipeline ? url : nil
     }
 
     static func load() async -> [String: Entry] {
