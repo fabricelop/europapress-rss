@@ -180,7 +180,7 @@ function verifiedNewsAI(x){
    // silently use an older image over a newer but different story version.
    if(exact.prepared_at!==prepared||exact.editorial_text!==text)return '';
    const hash=String(exact.sha256||''),url=String(exact.image_url||'');
-   const valid=check(url,hash,'manual',rev)||check(url,hash,'site',rev);
+   const valid=check(url,hash,'manual',rev)||check(url,hash,'site',rev)||check(url,hash,'pipeline',rev);
    if(valid)return valid;
    return '';
   }
@@ -191,7 +191,7 @@ function verifiedNewsAI(x){
    if(!entry.prepared_at||!entry.editorial_text)continue;
    const sourceRev=Number(entry.revision),hash=String(entry.sha256||'');
    const url=String(entry.image_url||'');
-   const valid=check(url,hash,'manual',sourceRev)||check(url,hash,'site',sourceRev);
+   const valid=check(url,hash,'manual',sourceRev)||check(url,hash,'site',sourceRev)||check(url,hash,'pipeline',sourceRev);
    if(valid)return valid;
   }
  }
