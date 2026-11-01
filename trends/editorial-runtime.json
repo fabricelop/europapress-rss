@@ -5,13 +5,13 @@
   "canonical": true,
   "run_id": "tr-1793533948548-manual",
   "previous_run_id": "tr-1793533812781-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T12:55:02.577+01:00",
-  "updated_at": "2026-11-01T12:57:15.360+01:00",
-  "finished_at": "2026-11-01T12:57:30+01:00",
-  "current": 3,
-  "total": 4,
+  "updated_at": "2026-11-01T12:57:40+01:00",
+  "finished_at": "2026-11-01T12:57:40+01:00",
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -26,12 +26,12 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 3,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
     "explained": 3,
     "updates": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 2,
     "groups_created": 1,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
@@ -40,17 +40,11 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 3
+    "incidents": 0,
+    "concurrent_convergence": 5
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-01T12:55:00+01:00",
-      "code": "github_transport_h2",
-      "message": "Error de transporte al intentar persistir Yamaha; la relectura JIT confirmó que el aplicador concurrente ya había persistido correctamente la misma revisión. No se sobrescribió el resultado."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -1364,6 +1358,37 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera de estado: no quedan trabajos activos."
+    },
+    {
+      "at": "2026-11-01T12:57:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793533948548-manual",
+      "message": "Convergencia JIT verificada con tr-1793533812781-manual: Yamaha, Preparación y MotoGP explicadas; una agrupación previa cerrada con 0 grupos y la nueva agrupación Yamaha+MotoGP aplicada. Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:57:40+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793533948548-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 2,
+        "groups_created": 1,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 5
+      },
+      "message": "Pasada cerrada 5/5 por convergencia JIT: 3 explicaciones + 2 agrupaciones; 1 conjunta Yamaha+MotoGP. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -2969,19 +2994,41 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-5cea86122c498eb32753",
+      "id": "aea33831119b",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "prepared_outcome": "updated"
+      "name": "Yamaha",
+      "outcome": "explained",
+      "applied": true
     },
     {
-      "id": "red-review-2c540cbea6cdfd2e7781",
+      "id": "12beb07b0d96",
       "revision": 0,
-      "name": "Revisar novedades: Óscar Muerte",
-      "outcome": "unchanged",
+      "name": "Preparación",
+      "outcome": "explained",
       "applied": true
+    },
+    {
+      "id": "24b026091f12",
+      "revision": 0,
+      "name": "MotoGP",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "listas-auto-e41651c718620ce133ce",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed",
+      "applied": true,
+      "groups_created": 0
+    },
+    {
+      "id": "listas-auto-bc8dfbb410389cba37b7",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed",
+      "applied": true,
+      "groups_created": 1
     }
   ],
   "current_item": null,
