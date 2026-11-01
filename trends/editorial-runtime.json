@@ -3,14 +3,14 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793500773611-manual",
-  "previous_run_id": "tr-chat-20261101T0325+0100",
+  "run_id": "tr-chat-20261101T0340+0100",
+  "previous_run_id": "tr-1793500773611-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "preparing",
   "started_at": "2026-11-01T03:40:00+01:00",
-  "updated_at": "2026-11-01T03:42:00+01:00",
+  "updated_at": "2026-11-01T03:40:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
   "trend_id": "red-review-aa7345290a2c65cc1cf9",
   "title": "Revisar novedades: #UFCHBOMax",
@@ -785,6 +785,13 @@
       "trend_id": "red-review-aa7345290a2c65cc1cf9",
       "title": "Revisar novedades: #UFCHBOMax",
       "message": "Revisando novedades: episodio distinto verificado, UFC Fight Night del 31 de octubre en Las Vegas con Renato Moicano vs Tom Nolan, ofrecida en directo por HBO Max en España."
+    },
+    {
+      "at": "2026-11-01T03:40:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-aa7345290a2c65cc1cf9",
+      "title": "Revisar novedades: #UFCHBOMax",
+      "message": "Inicio manual: 2 revisiones review_red vigentes en main (#UFCHBOMax y #laSextaXplica)."
     }
   ],
   "final_outcomes": [
@@ -831,7 +838,7 @@
     "note": "Refresco manual #621 success; Top 30 03:27:56; cola final 0."
   },
   "source": "chat",
-  "message": "Ejecución en curso: 2 revisiones de novedades preparing.",
+  "message": "Pasada real iniciada: 2 revisiones review_red vigentes. Revalidación JIT, investigación actual y persistencia por maintenance-outbox; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1003,6 +1010,14 @@
       "phase": "closing",
       "run_id": "tr-1793496823373-manual",
       "message": "DONE por convergencia concurrente; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T03:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T0340+0100",
+      "trend_id": "red-review-aa7345290a2c65cc1cf9",
+      "title": "Revisar novedades: #UFCHBOMax",
+      "message": "Inicio manual: 2 revisiones review_red vigentes en main (#UFCHBOMax y #laSextaXplica). Revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
