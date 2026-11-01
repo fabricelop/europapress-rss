@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793533812781-manual",
+  "run_id": "tr-1793533948548-manual",
   "previous_run_id": "tr-1793533812781-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "verifying",
   "started_at": "2026-11-01T12:55:02.577+01:00",
-  "updated_at": "2026-11-01T12:57:30+01:00",
+  "updated_at": "2026-11-01T12:57:15.360+01:00",
   "finished_at": "2026-11-01T12:57:30+01:00",
-  "current": 5,
-  "total": 5,
+  "current": 3,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -26,12 +26,12 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 3,
     "explained": 3,
     "updates": 0,
-    "grouping_requests": 2,
+    "grouping_requests": 1,
     "groups_created": 1,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
@@ -41,7 +41,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 1,
-    "concurrent_convergence": 5
+    "concurrent_convergence": 3
   },
   "incident_count": 1,
   "incidents": [
@@ -1356,6 +1356,14 @@
         "concurrent_convergence": 5
       },
       "message": "Pasada cerrada 5/5. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen y sin publicaciones."
+    },
+    {
+      "at": "2026-11-01T12:57:15.360+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793533948548-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera de estado: no quedan trabajos activos."
     }
   ],
   "final_outcomes": [
