@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T13:41:05+01:00",
+  "updated_at": "2026-11-01T13:50:57+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -179481,7 +179481,7 @@
       "revision": 0,
       "name": "Radar · Mariah Carey",
       "rank": 0,
-      "status": "anticipation_prepared",
+      "status": "anticipation_promoted",
       "requested_at": "2026-11-01T13:11:10.957136+01:00",
       "task": "anticipate",
       "anticipation_request": true,
@@ -179544,7 +179544,12 @@
       },
       "anticipation_prepared_at": "2026-11-01T12:14:19.532764+00:00",
       "anticipation_reason": "Detonante actual verificado en fuentes del 1 de noviembre de 2026: Carey publicó su vídeo anual «It's Time» para abrir la temporada navideña, con transición de una actuación punk a una puesta en escena sobre un gran árbol.",
-      "updated_at": "2026-11-01T12:14:19.532764+00:00"
+      "updated_at": "2026-11-01T13:50:57.894840+01:00",
+      "anticipated_entered_top30_at": "2026-11-01T12:50:53+00:00",
+      "detection_lead_minutes": 59.9,
+      "prepared_before_top30": true,
+      "preparation_lead_minutes": 36.6,
+      "promotion_request_id": "f7361b47a759"
     },
     {
       "id": "7c590b18d53a",
@@ -185078,6 +185083,41 @@
       "grouping_created_ids": [],
       "grouping_skipped_stale": [],
       "grouping_result_digest": "2b7cc2bd10fc5f9233ec02f64230012c3b5a3ae7733eeea640997e3f42656045"
+    },
+    {
+      "id": "f7361b47a759",
+      "name": "Mariah Carey",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-01T13:50:57+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "14411af1b91b",
+      "requested_together": [
+        "Mariah Carey"
+      ],
+      "captured_with": [
+        "Mariah Carey"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30",
+      "anticipation_origin_id": "radar-prepare-1bb8e2ac5b536dac98f1",
+      "anticipation_draft": {
+        "explanation_body": "Mariah Carey aparece en tendencia tras publicar a medianoche su vídeo anual «It’s Time»: salta de Halloween a Navidad y acaba sobre un gran árbol con «All I Want for Christmas Is You».\n#MariahCarey #ItsTime\n🌶️ Halloween bajó el telón y Mariah encendió la Navidad.",
+        "closer_text": "🌶️ Halloween bajó el telón y Mariah encendió la Navidad.",
+        "verification_sources": [
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/01/mariah-carey-cumple-con-la-tradicion-e-inaugura-la-navidad-subida-a-un-gigantesco-arbol-con-su-mitico-its-time-cadena-ser/"
+          },
+          {
+            "url": "https://ew.com/mariah-carey-2026-all-i-want-for-christmas-is-you-its-time-video-12204353"
+          }
+        ],
+        "verified_at": "2026-11-01T12:14:19.532764+00:00"
+      },
+      "rewrite_instruction": "Ha entrado en Top 30. Reutiliza anticipation_draft solo tras comprobar actualidad, fuentes y detonante; usa el puesto real y el formato habitual. No des por verificado lo antiguo."
     }
   ],
   "count": 576
