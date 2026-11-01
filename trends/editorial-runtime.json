@@ -6,14 +6,14 @@
   "run_id": "tr-1793548906654-manual",
   "previous_run_id": "tr-1793548588490-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T17:02:00+01:00",
   "updated_at": "2026-11-01T17:04:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
+  "current": 8,
+  "total": 10,
+  "trend_id": "red-review-1edd481ffb993c356f45",
+  "title": "Revisar novedades: Toledo",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -818,6 +818,14 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual real: 2 review_red preparing vigentes en main (Toledo y Carvajal), del más antiguo al más reciente, con validación JIT de id+revision. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:04:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793548588490-manual",
+      "trend_id": "red-review-1edd481ffb993c356f45",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisando novedades: Toledo r0 revalidado JIT. Hay cambio material desde el 28 de octubre: balance de 69 fallecidos, 56 identificados y diligencias activas para preservar pruebas y localizar restos biológicos."
     }
   ],
   "final_outcomes": [],
@@ -884,7 +892,7 @@
     "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Barrera final detectó 2 review_red nuevos (Toledo y Carvajal). La misma pasada continúa 8/10; validación JIT antes de cada revisión. Sin ImageGen ni publicación.",
+  "message": "Revisando novedades: Toledo r0 revalidado JIT. Hay cambio material desde el 28 de octubre: balance de 69 fallecidos, 56 identificados y diligencias activas para preservar pruebas y localizar restos biológicos.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2922,6 +2930,6 @@
       "applied": true
     }
   ],
-  "current_item": null,
-  "current_title": null
+  "current_item": "red-review-1edd481ffb993c356f45",
+  "current_title": "Revisar novedades: Toledo"
 }
