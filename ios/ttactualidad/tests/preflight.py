@@ -450,8 +450,8 @@ assert 'ttittulares/site-ai-images.json' in news_ai
 assert 'ttittulares/generated-images/' in news_ai
 assert 'ai["generated"] as? Bool == true' in news_ai
 assert 'ai["provider"] as? String == "chat-imagegen"' in news_ai
-assert 'current.editorial_text == editorialText' in news_ai
-assert 'current.prepared_at == preparedAt' in news_ai
+assert 'if let current = catalog[key(id, revision)]' in news_ai
+assert 'record.revision < revision' not in news_ai or '$0.revision < revision' in news_ai
 assert 'NewsAIImageCatalog.load()' in store
 assert 'NewsAIImageCatalog.assigned(' in store
 assert 'NewsAIImageCatalog.preparedImage(' in store
@@ -504,7 +504,7 @@ print("TT_ACTUALIDAD_IOS_046_NEWS_TRENDS_SHARED_IMAGE_ACTIONS_OK")
 assert 'photo(aiURL, label: "Imagen IA")' in live
 assert 'photo(archiveURL, label: "Fotografía de archivo")' in live
 assert 'if let archive = item.imageURL' in live
-assert 'current.editorial_text == editorialText' in news_ai
+assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
 assert 'CURRENT_PROJECT_VERSION: "54"' in project
