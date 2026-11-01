@@ -1069,10 +1069,10 @@ function rowCard(x,i){
   const external=(label,url)=>{
    const el=link(label,url,true);el.classList.add('external');return el
   };
-  external('TTImages','https://t.me/TTImages_bot');
   external('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial||d.title));
   btn('Copiar GAG Completo',()=>copyText(manualPrompt(x),'GAG completo'));
-  external('Abrir ChatGPTImages','https://chatgpt.com/images');
+  if(x._kind==='tr')external('Proyecto TT','https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project');
+  else external('Abrir ChatGPT Images','https://chatgpt.com/images');
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
   btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
   if(x._kind==='tr'&&x._status==='EXPLICADA'){
@@ -1139,7 +1139,8 @@ function rowCard(x,i){
  if(showClip){
   btn('📋 Copiar texto',()=>copyText(d.editorial||d.title,'Texto'));
   if(hasPrompt)btn('🎨 Copiar GAG completo',()=>copyText(manualPrompt(x),'Prompt GAG'),true);
-  if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
+  if(x._kind==='tr')link('Proyecto TT','https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project');
+  else if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
   if(img)btn('📷 Copiar foto de archivo',()=>copyArchive(img,d.title));
   if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
