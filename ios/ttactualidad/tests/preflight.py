@@ -57,18 +57,19 @@ assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
 assert 'lineLimit(expanded ? nil : 2)' in dashboard
 assert 'movementLabel' in dashboard and 'rankColor' in dashboard
 assert 'Copiar foto de archivo' in gallery
-assert 'ChatGPT Images' in actions
+assert 'quickLink("Proyecto TT"' in actions
+assert 'quickLink("TTImages"' not in actions
 
 # Urgent/manual editor must open the already signed-in ChatGPT iOS app,
-# never the unauthenticated browser homepage. Keep Images unchanged.
+# never the unauthenticated browser homepage. Trend links open the fixed project.
 assert 'quickButton("URGENTE · Elaborar ya"' in actions
-assert actions.count('quickButton("Abrir ChatGPT"') == 2
+assert actions.count('quickButton("Abrir ChatGPT"') == 1
 assert 'URL(string: "chatgpt://")' in actions
 assert 'URL(string: "com.openai.chat://")' in actions
 assert 'UIApplication.shared.open(primary, options: [:])' in actions
 assert 'openChatGPTApp()' in actions
 assert 'URL(string: "https://chatgpt.com/")' not in actions
-assert 'https://chatgpt.com/images' in actions
+assert 'https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project' in actions
 
 # Editorial UX and durable GitHub session contract.
 assert "SecureSession" in auth and 'save("session", value: saved)' in auth
@@ -324,12 +325,12 @@ assert 'if let fresh = await memory.fresh()' in catalog
 assert 'Date().timeIntervalSince(modified) < 600' in catalog
 assert 'TimelineView(.periodic(from: .now, by: 60))' in dashboard
 assert 'TimelineView(.periodic(from: .now, by: 1))' not in dashboard
-# Keep urgent/manual ChatGPT and ChatGPT Images navigation unchanged.
+# Keep urgent/manual ChatGPT navigation and explicit project shortcut.
 assert 'launchUrgentEditorial()' in actions
 assert 'openChatGPTApp()' in actions
 assert 'TTActualidad.chatGPTProjectLink.v1' not in actions
 assert 'openEditorialChat()' not in actions
-assert 'quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/images")' in actions
+assert actions.count('quickLink("Proyecto TT"') == 2
 print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
 
 
