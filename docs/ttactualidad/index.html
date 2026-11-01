@@ -151,10 +151,10 @@ function verifiedNewsAI(x){
  const id=String(x.event_id||''),rev=Number(x.revision||0);
  const prepared=String(x.prepared_at||''),text=String(x.tweet?.text||'');
  if(!/^[A-Za-z0-9_-]{3,160}$/.test(id)||!Number.isInteger(rev)||rev<1||!prepared||!text)return '';
- const check=(raw,sha,kind)=>{
+ const check=(raw,sha,kind,sourceRevision=rev)=>{
   try{
    if(!/^[0-9a-f]{64}$/i.test(sha))return '';
-   const u=new URL(raw),prefix=id+'-r'+rev+'-',file=u.pathname.split('/').pop()||'';
+   const u=new URL(raw),prefix=id+'-r'+sourceRevision+'-',file=u.pathname.split('/').pop()||'';
    if(u.protocol!=='https:'||u.username||u.password||u.port||u.search||u.hash||
       !file.startsWith(prefix)||!/\.(png|jpe?g|webp)$/i.test(file))return '';
    if(kind==='site')return u.hostname==='ttactualidad-tendencias.rainyraven22.chatgpt.site'&&
@@ -171,19 +171,35 @@ function verifiedNewsAI(x){
  };
  const catalog=state.data.newsAi;
  if(catalog?.schema_version===1&&catalog.project==='ttittulares'&&Array.isArray(catalog.images)){
-  const match=catalog.images.find(row=>row.target_id===id&&Number(row.revision)===rev&&
-      row.prepared_at===prepared&&row.editorial_text===text);
-  if(match){
-   const hash=String(match.sha256||''),url=String(match.image_url||'');
-   const approved=check(url,hash,'manual')||check(url,hash,'site');
-   if(approved)return approved;
+  const sameID=catalog.images.filter(row=>row.target_id===id &&
+      Number.isInteger(Number(row.revision)) &&
+      Number(row.revision)>=1&&Number(row.revision)<=rev);
+  const exact=sameID.find(row=>Number(row.revision)===rev);
+  if(exact){
+   // Current revision with a mismatched text/clock is not valid. Do not
+   // silently use an older image over a newer but different story version.
+   if(exact.prepared_at!==prepared||exact.editorial_text!==text)return '';
+   const hash=String(exact.sha256||''),url=String(exact.image_url||'');
+   const valid=check(url,hash,'manual',rev)||check(url,hash,'site',rev);
+   if(valid)return valid;
+   return '';
+  }
+  // Stable TTiTTulares event_id: keep the last original attached to the
+  // same news item across editorial revisions. No title matching.
+  sameID.sort((a,b)=>Number(b.revision)-Number(a.revision));
+  for(const entry of sameID){
+   if(!entry.prepared_at||!entry.editorial_text)continue;
+   const sourceRev=Number(entry.revision),hash=String(entry.sha256||'');
+   const url=String(entry.image_url||'');
+   const valid=check(url,hash,'manual',sourceRev)||check(url,hash,'site',sourceRev);
+   if(valid)return valid;
   }
  }
  const ai=x.ai_image||{},guard=ai.context_guard||{};
  if(String(x.ai_image_status||'').toLowerCase()!=='ready'||ai.generated!==true||
     ai.provider!=='chat-imagegen'||(guard.event_id&&guard.event_id!==id)||
     (guard.revision!==undefined&&Number(guard.revision)!==rev))return '';
- return check(String(ai.url||''),String(ai.sha256||''),'pipeline');
+ return check(String(ai.url||''),String(ai.sha256||''),'pipeline',rev);
 }
 
 // TT_ACTUALIDAD_TREND_SITE_IMAGE_V1: display only the exact Site image registered for this editorial revision.
