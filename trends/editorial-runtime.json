@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793494749102-manual",
-  "previous_run_id": "tr-1793493958991-manual",
+  "run_id": "tr-chat-20261101T0155+0100",
+  "previous_run_id": "tr-1793494749102-manual",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-01T01:59:20+01:00",
-  "updated_at": "2026-11-01T01:59:20+01:00",
+  "phase": "investigating",
+  "started_at": "2026-11-01T02:00:27+01:00",
+  "updated_at": "2026-11-01T02:00:27+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "red-review-554afd2590fab3a9e8d0",
-  "title": "Revisar novedades: Mazón",
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -26,7 +26,7 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
     "closed": 0,
     "explained": 0,
@@ -661,11 +661,16 @@
       "at": "2026-11-01T01:58:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0 para tr-1793493958991-manual. Sin ImageGen, sin publicación y sin cambios de texto."
+    },
+    {
+      "at": "2026-11-01T02:00:27+01:00",
+      "phase": "investigating",
+      "message": "Inicio tr-chat-20261101T0155+0100 tras refresco manual #619: 2 review_red preparing vigentes (Mazón y Óscar Puente). Revalidación JIT e investigación actual; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T01:56:00+01:00",
+  "last_started_at": "2026-11-01T02:00:27+01:00",
   "last_completed_at": "2026-11-01T01:58:00+01:00",
   "last_run": {
     "run_id": "tr-1793493958991-manual",
@@ -691,7 +696,7 @@
     "note": "Pasada real 0/0: la relectura final de main no dejó preparing/update ni reexplicaciones pendientes."
   },
   "source": "chat",
-  "message": "Pasada real en curso: 2 review_red preparing vigentes (Mazón y Óscar Puente). Revalidación JIT antes de cada investigación y persistencia; sin ImageGen ni publicación.",
+  "message": "Revisando novedades de Mazón y Óscar Puente tras refresco real del Top 30.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
