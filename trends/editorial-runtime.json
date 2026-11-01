@@ -3,39 +3,44 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T0140+0100",
-  "previous_run_id": "tr-1793491791612-manual",
-  "status": "success",
-  "phase": "drafting",
-  "started_at": "2026-11-01T01:40:00+01:00",
-  "updated_at": "2026-11-01T01:43:16+01:00",
+  "run_id": "tr-1793493836050-manual",
+  "previous_run_id": "tr-chat-20261101T0140+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T01:44:00+01:00",
+  "updated_at": "2026-11-01T01:44:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 2,
-  "trend_id": "2f626d4022c4",
-  "title": "Steve McManaman",
-  "queue_complete": true,
-  "processed_ids": [
-    "2f626d4022c4",
-    "7c83e4ed846c"
+  "total": 3,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-d4eed9cf53f94dcf03a6",
+    "red-review-2fd64dafac53753fd63c",
+    "red-review-db4f143e84b1a39c2c0d"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-d4eed9cf53f94dcf03a6",
+    "red-review-2fd64dafac53753fd63c",
+    "red-review-db4f143e84b1a39c2c0d"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
     "converged_concurrent": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "remaining_active": 0,
-    "queue_remaining": 0,
+    "remaining_active": 3,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -597,6 +602,11 @@
       "trend_id": "2f626d4022c4",
       "title": "Steve McManaman",
       "message": "Redacción prudente sin atribuir causalidad: contexto reciente del Liverpool y análisis sobre el Real Madrid; closer_text vacío."
+    },
+    {
+      "at": "2026-11-01T01:44:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-1793493836050-manual: 3 trabajos preparing vigentes en main (1 group_listas y 2 review_red). Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -641,7 +651,7 @@
     "note": "Cierre 0/0 válido tras relectura final de main: no queda ningún preparing/update ni reexplicación pendiente. El único job visto al inicio convergió por ejecución concurrente."
   },
   "source": "chat",
-  "message": "Barrera final: editorial-queue=0 y rewrite_pending=0. El único group_listas observado al inicio fue aplicado concurrentemente antes de la revalidación JIT; no se duplicó. Sin ImageGen ni publicación.",
+  "message": "Pasada manual en curso: 3 trabajos activos observados en main. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
