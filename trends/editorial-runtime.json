@@ -28,12 +28,12 @@
     "observed": 3,
     "closed": 3,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 1,
-    "stale_reviews": 0,
+    "stale_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -1237,6 +1237,31 @@
       "phase": "preparing",
       "run_id": "tr-1793532281494-manual",
       "message": "Inicio de pasada manual: 3 trabajos preparing vigentes en main (1 group_listas y 2 review_red). Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:28:37+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793532281494-manual",
+      "status": "DONE",
+      "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación aplicada con 0 grupos/0 coberturas; Toledo investigado con novedades materiales pero cerrado stale por protección JIT, sin sobrescribir estado posterior; Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      }
     }
   ],
   "final_outcomes": [
@@ -1377,7 +1402,7 @@
     "concurrent_convergence": 3
   },
   "source": "chat",
-  "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación 0 grupos/0 coberturas, Toledo actualizado por novedades materiales y Óscar Muerte sin cambios sustanciales. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación aplicada con 0 grupos/0 coberturas; Toledo investigado con novedades materiales pero cerrado stale por protección JIT, sin sobrescribir estado posterior; Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2799,14 +2824,16 @@
       "revision": 0,
       "outcome": "grouping_completed",
       "applied": true,
-      "name": "Agrupación automática de Listas"
+      "groups_created": 0,
+      "covered_by_existing": 0
     },
     {
       "id": "red-review-5cea86122c498eb32753",
       "revision": 0,
-      "outcome": "updated",
+      "outcome": "stale",
       "applied": true,
-      "name": "Toledo"
+      "name": "Toledo",
+      "prepared_outcome": "updated"
     },
     {
       "id": "red-review-2c540cbea6cdfd2e7781",
