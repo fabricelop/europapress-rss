@@ -5,43 +5,40 @@
   "canonical": true,
   "run_id": "tr-1793524138533-manual",
   "previous_run_id": "tr-1793523878329-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T10:08:58.533+01:00",
-  "updated_at": "2026-11-01T10:10:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T10:12:00+01:00",
+  "finished_at": "2026-11-01T10:12:00+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "listas-auto-5cddaa57caddb33c53cd",
-    "red-review-c6d3860715baa85c7425"
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-c6d3860715baa85c7425",
+    "listas-auto-5cddaa57caddb33c53cd"
   ],
-  "remaining_active_ids": [
-    "listas-auto-5cddaa57caddb33c53cd",
-    "red-review-c6d3860715baa85c7425"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 1,
-    "groups_created": 0,
+    "groups_created": 1,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -1294,6 +1291,39 @@
       "at": "2026-11-01T10:10:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-1793524138533-manual: 2 trabajos preparing vigentes en main (1 group_listas y 1 review_red). Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T10:12:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793524138533-manual",
+      "trend_id": "listas-auto-5cddaa57caddb33c53cd",
+      "title": "Agrupación automática de Listas",
+      "message": "Convergencia JIT verificada: grouping_completed creó listas-joint-89705fdab1782025; editorial-queue=0 y mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T10:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793524138533-manual",
+      "status": "DONE",
+      "message": "TTendencias cerrada 2/2 por convergencia JIT: #laSextaXplica quedó review_completed/stale para no duplicar el episodio ya actualizado y la agrupación creó GP de Malasia · Aprilia y carrera. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0.",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      }
     }
   ],
   "final_outcomes": [
@@ -1349,38 +1379,56 @@
       "status": "grouping_completed",
       "groups_created": 1,
       "covered_by_existing": 1
+    },
+    {
+      "id": "red-review-c6d3860715baa85c7425",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "stale"
+    },
+    {
+      "id": "listas-auto-5cddaa57caddb33c53cd",
+      "revision": 0,
+      "status": "grouping_completed",
+      "groups_created": 1,
+      "grouping_created_ids": [
+        "listas-joint-89705fdab1782025"
+      ]
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T09:37:29.693+01:00",
-  "last_completed_at": "2026-11-01T09:50:30+01:00",
+  "last_started_at": "2026-11-01T10:08:58.533+01:00",
+  "last_completed_at": "2026-11-01T10:12:00+01:00",
   "last_run": {
-    "run_id": "chat-20261101T085636303Z",
+    "run_id": "tr-1793524138533-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T08:56:36.303Z",
-    "finished_at": "2026-11-01T08:57:05.869Z",
+    "started_at": "2026-11-01T10:08:58.533+01:00",
+    "finished_at": "2026-11-01T10:12:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "updates": 0,
-      "grouping_requests": 0,
-      "groups_created": 0,
+      "grouping_requests": 1,
+      "groups_created": 1,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "processed_ids": []
+    "processed_ids": [
+      "red-review-c6d3860715baa85c7425",
+      "listas-auto-5cddaa57caddb33c53cd"
+    ]
   },
-  "source": "chat",
-  "message": "TTendencias cerrada 1/1 por convergencia JIT. 1 agrupación creada, 1 cobertura previa, cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0.",
+  "source": "manual",
+  "message": "TTendencias cerrada 2/2 por convergencia JIT: #laSextaXplica quedó review_completed/stale para no duplicar el episodio ya actualizado y la agrupación creó GP de Malasia · Aprilia y carrera. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2370,6 +2418,37 @@
         "concurrent_convergence": 1
       },
       "message": "TTendencias cerrada 1/1 por convergencia JIT. 1 agrupación creada, 1 cobertura previa, cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T10:12:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793524138533-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. #laSextaXplica stale JIT y agrupación grouping_completed."
+    },
+    {
+      "at": "2026-11-01T10:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793524138533-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "TTendencias cerrada 2/2 por convergencia JIT: #laSextaXplica quedó review_completed/stale para no duplicar el episodio ya actualizado y la agrupación creó GP de Malasia · Aprilia y carrera. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
     }
   ],
   "partial": false,
@@ -2395,7 +2474,24 @@
           "published_id": "83aa70bdac40"
         }
       ]
+    },
+    {
+      "id": "red-review-c6d3860715baa85c7425",
+      "revision": 0,
+      "outcome": "stale",
+      "applied": true,
+      "converged_with": "tr-1793523878329-manual"
+    },
+    {
+      "id": "listas-auto-5cddaa57caddb33c53cd",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "applied": true,
+      "converged_with": "tr-1793523878329-manual",
+      "grouping_created_ids": [
+        "listas-joint-89705fdab1782025"
+      ]
     }
   ],
-  "converged_with": "tr-1793522752871-manual"
+  "converged_with": "tr-1793523878329-manual"
 }
