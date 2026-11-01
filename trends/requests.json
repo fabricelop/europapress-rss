@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:45:54.640826+00:00",
+  "updated_at": "2026-11-01T12:44:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -171654,30 +171654,32 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Urda"
       ],
       "originated_from_prior_id": "f2e4752029f7",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Urda, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "explained_at": "2026-11-01T12:44:10+01:00",
-      "last_attempt_at": "2026-11-01T12:44:10+01:00",
-      "explanation": "TT#2 Urda es tendencia por la evolución del accidente ferroviario del 28 de octubre: el balance sigue en 69 fallecidos, 56 ya identificados, y continúa la búsqueda de restos biológicos.\n#Urda #Toledo",
+      "explained_at": "2026-11-01T12:44:00+01:00",
+      "last_attempt_at": "2026-11-01T12:44:00+01:00",
+      "explanation": "TT#2 Urda es tendencia por el accidente ferroviario del 28 de octubre: 69 personas han fallecido y la Guardia Civil mantiene este domingo la zona restringida mientras busca restos biológicos y preserva pruebas.\n#Urda #Toledo",
       "closer_text": "",
       "rank_at_explanation": 2,
-      "category": "Sucesos",
-      "source": "editorial_outbox_applied",
+      "category": "Actualidad",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
-          "url": "https://www.europapress.es/castilla-lamancha/noticia-identificadas-56-69-victimas-accidente-urda-ellas-todas-nacionalidad-espanola-20261101100534.html"
+          "source": "EFE · 01/11/2026",
+          "url": "https://efe.com/castilla-la-mancha/accidente-trenes-urda-investigacion-guardia-civil/"
         },
         {
-          "url": "https://www.lasexta.com/noticias/sociedad/guardia-civil-blinda-urda-dia-mas-busqueda-restos-biologicos-mientras-baja-31-numero-hospitalizados_202611016ae70d896973466c29e50c53.html"
+          "source": "RTVE · 01/11/2026",
+          "url": "https://www.rtve.es/noticias/20261101/accidente-tren-directo-ultima-hora-heridos/17295258.shtml"
         }
       ],
-      "news_note": "Reelaboración desde cero. No es un evento deportivo y no existe marcador aplicable. Suceso sensible: se omite remate humorístico.",
+      "news_note": "Reelaboración desde cero de Urda r0. Causa actual inequívoca: seguimiento del accidente ferroviario del 28 de octubre. Se omite remate por tratarse de una tragedia con víctimas. Sin ImageGen ni publicación automática.",
       "group_id": "grp-2480cbdd6701",
       "explanation_group_id": "grp-2480cbdd6701",
       "group_title": "Urda",
@@ -171688,14 +171690,16 @@
       "grouped_member_revisions": [
         {
           "id": "2480cbdd6701",
+          "name": "Urda",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored"
     },
     {
       "id": "2b20f3e40801",
@@ -173668,5 +173672,5 @@
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
-  "count": 546
+  "count": 574
 }
