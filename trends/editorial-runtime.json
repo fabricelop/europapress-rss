@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T091043+0100",
   "previous_run_id": "tr-chat-20261101T084115+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-01T09:10:43+01:00",
-  "updated_at": "2026-11-01T09:10:43+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T09:11:53+01:00",
+  "finished_at": "2026-11-01T09:11:53+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -34,11 +34,16 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "scope": "health-status",
+      "reason": "El chequeo de salud de TTendencias informa 201 estados inválidos en request_queue. editorial_queue permanece sana con 0 pendientes; la incidencia no bloquea esta pasada editorial."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -896,6 +901,18 @@
       "phase": "preparing",
       "run_id": "tr-chat-20261101T091043+0100",
       "message": "Inicio: cola compacta observada 0. Revalidando main, decisiones/reexplicaciones y últimos resultados antes de la barrera final; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:11:53+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T091043+0100",
+      "message": "Barrera final de main: recent capturado 09:11:05; editorial-queue=0 (09:11:11), preparing/update/problematic=0 y rewrite_pending/reexplain=0. Sin trabajo editorial nuevo."
+    },
+    {
+      "at": "2026-11-01T09:11:53+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T091043+0100",
+      "message": "TTendencias cerrada 0/0. Sin ImageGen ni publicación. Incidencia auxiliar: health-status detecta 201 estados inválidos en request_queue; editorial_queue sigue sana y vacía."
     }
   ],
   "final_outcomes": {
