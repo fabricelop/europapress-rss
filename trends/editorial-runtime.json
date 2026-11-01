@@ -3,21 +3,25 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T062500+0100",
-  "previous_run_id": "tr-chat-20261101T061000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T06:25:00+01:00",
-  "updated_at": "2026-11-01T06:27:45.317+01:00",
-  "finished_at": "2026-11-01T06:27:45.317+01:00",
-  "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "run_id": "tr-chat-20261101T064000+0100",
+  "previous_run_id": "tr-chat-20261101T062500+0100",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-01T06:40:00+01:00",
+  "updated_at": "2026-11-01T06:42:00+01:00",
+  "finished_at": null,
+  "current": 1,
+  "total": 1,
+  "trend_id": "55d77a86fd5f",
+  "title": "Rapha",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "55d77a86fd5f"
+  ],
+  "remaining_active_ids": [
+    "55d77a86fd5f"
+  ],
   "remaining_problematic_ids": [],
   "summary": "Pasada completada 0/0. Cola final 0; sin reexplicaciones pendientes.",
   "incident_count": 0,
@@ -531,7 +535,7 @@
     }
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T05:55:00+01:00",
+  "last_started_at": "2026-11-01T06:40:00+01:00",
   "last_completed_at": "2026-11-01T05:55:45+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T055500+0100",
@@ -556,7 +560,7 @@
     "note": "Top 30 05:50:49; cola 05:50:52 y final 0. Sin rewrite_pending ni reexplain."
   },
   "source": "chat",
-  "message": "TTendencias cerrada 0/0; cola final 0; sin reexplicaciones pendientes.",
+  "message": "Investigando Rapha (R0, puesto 25); revalidación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -856,6 +860,22 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T055500+0100",
       "message": "DONE 0/0; incidencias=0."
+    },
+    {
+      "at": "2026-11-01T06:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T064000+0100",
+      "trend_id": "55d77a86fd5f",
+      "title": "Rapha",
+      "message": "Inicio manual: 1 trabajo preparing vigente en main (Rapha, R0, puesto 25). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T06:42:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-chat-20261101T064000+0100",
+      "trend_id": "55d77a86fd5f",
+      "title": "Rapha",
+      "message": "Rapha corresponde a Raphinha: tras el Barcelona-Alavés 6-1, el capitán brasileño firmó un doblete. Verificando fuentes y causalidad del pico actual."
     }
   ],
   "history": [
