@@ -71,3 +71,14 @@ test("Original raster survives an outage, can be reused and rejects cross-news t
    assert.throws(()=>mod.loadCachedOriginal(base,temp),/original_bytes_integrity_failed/);
  }finally{fs.rmSync(temp,{recursive:true,force:true});}
 });
+
+test("Producer hands the exact CDP target to receiver instead of undefined fixedTargetId",()=>{
+ const bridge=fs.readFileSync(path.join(__dirname,"..","TTiTTularesImageBridge.js"),"utf8");
+ assert(bridge.includes("async function originalImageTargetId(cdp)"));
+ assert(bridge.includes("String(t.webSocketDebuggerUrl||\"\")===ws"));
+ assert(bridge.includes("browserTargetId:await originalImageTargetId(cdp)"));
+ assert(!bridge.includes("browserTargetId:cdp.fixedTargetId"));
+ const consumer=fs.readFileSync(path.join(__dirname,"..","TTiTTularesWebImages.cjs"),"utf8");
+ assert(consumer.includes("if((!url&&!safeID(browserTargetId))"));
+ assert(consumer.includes("String(job.command_id)!==commandId"));
+});
