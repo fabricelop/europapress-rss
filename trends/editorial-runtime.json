@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T01:44:00+01:00",
-  "updated_at": "2026-11-01T01:47:00+01:00",
-  "finished_at": "2026-11-01T01:47:00+01:00",
+  "updated_at": "2026-11-01T01:48:00+01:00",
+  "finished_at": "2026-11-01T01:48:00+01:00",
   "current": 3,
   "total": 3,
   "trend_id": null,
@@ -27,14 +27,14 @@
     "attempted": 3,
     "observed": 3,
     "closed": 3,
-    "explained": 0,
-    "updates": 2,
+    "explained": 1,
+    "updates": 0,
     "grouping_requests": 1,
     "groups_created": 1,
     "covered_by_existing": 0,
     "converged_concurrent": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "remaining_active": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -613,51 +613,100 @@
       "at": "2026-11-01T01:47:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 3/3 para tr-1793493836050-manual. ImageGen=0; publicaciones=0; incidencias=0."
+    },
+    {
+      "at": "2026-11-01T01:45:54+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-d4eed9cf53f94dcf03a6",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación aplicada: Hamilton r0 y Lewis Hamilton r0 quedan cubiertos por listas-joint-b43dbd00ac0d1380 (GP de México · pole de Hamilton)."
+    },
+    {
+      "at": "2026-11-01T01:46:46+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-2fd64dafac53753fd63c",
+      "title": "Revisar novedades: #UFCHBOMax",
+      "message": "Aplicador JIT cerró la revisión como review_completed/stale; no se crea actualización para evitar pisar un estado posterior."
+    },
+    {
+      "at": "2026-11-01T01:46:46+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-db4f143e84b1a39c2c0d",
+      "title": "Revisar novedades: Toledo",
+      "message": "Aplicador JIT cerró la revisión como review_completed/stale; no se crea actualización para evitar pisar un estado posterior."
+    },
+    {
+      "at": "2026-11-01T01:48:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending:true detectado. Agrupación aplicada y dos revisiones cerradas stale. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T01:48:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 3/3 para tr-1793493836050-manual. 1 grupo creado, 2 revisiones stale por protección JIT, cola final 0; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
     {
-      "id": "listas-auto-f46948b56552f8daac10",
+      "id": "listas-auto-d4eed9cf53f94dcf03a6",
       "revision": 0,
       "status": "grouping_completed",
-      "converged_concurrent": true,
-      "groups_created": 0,
-      "covered_by_existing": [
+      "groups_created": 1,
+      "created_ids": [
+        "listas-joint-b43dbd00ac0d1380"
+      ],
+      "members": [
         {
-          "id": "trend-update-7c8d21f3ad39dd8b2761",
-          "published_id": "listas-joint-1873f405d5b5996d"
+          "id": "beb5f267e132",
+          "revision": 0
+        },
+        {
+          "id": "7c83e4ed846c",
+          "revision": 0
         }
       ]
+    },
+    {
+      "id": "red-review-2fd64dafac53753fd63c",
+      "revision": 0,
+      "status": "review_completed",
+      "review_outcome": "stale"
+    },
+    {
+      "id": "red-review-db4f143e84b1a39c2c0d",
+      "revision": 0,
+      "status": "review_completed",
+      "review_outcome": "stale"
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T01:43:16+01:00",
-  "last_completed_at": "2026-11-01T01:47:00+01:00",
+  "last_started_at": "2026-11-01T01:44:00+01:00",
+  "last_completed_at": "2026-11-01T01:48:00+01:00",
   "last_run": {
     "run_id": "tr-1793493836050-manual",
     "status": "DONE",
     "started_at": "2026-11-01T01:44:00+01:00",
-    "finished_at": "2026-11-01T01:47:00+01:00",
+    "finished_at": "2026-11-01T01:48:00+01:00",
     "attempted": 3,
     "observed": 3,
     "closed": 3,
-    "explained": 0,
-    "updates": 2,
+    "explained": 1,
+    "updates": 0,
     "grouping_requests": 1,
     "groups_created": 1,
     "covered_by_existing": 0,
     "converged_concurrent": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Cierre válido tras relectura final de main: cola 0 y sin rewrite_pending."
+    "note": "3/3 obligaciones cerradas: 1 agrupación aplicada (Hamilton + Lewis Hamilton) y 2 review_red cerradas stale por revalidación JIT. Cola final 0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 3/3: agrupación Hamilton/Lewis Hamilton aplicada y dos revisiones actualizadas (#UFCHBOMax y Toledo). Cola final 0 y rewrite_pending 0; sin ImageGen ni publicación.",
+  "message": "Barrera final limpia: editorial-queue=0 y sin reexplicaciones pendientes detectadas. 1 agrupación aplicada; 2 revisiones cerradas stale por protección JIT. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
