@@ -9,7 +9,7 @@ const {execFileSync,spawn}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
 const WEB_CAPTURE_VERSION=5;
-const WEB_DELIVERY_VERSION=7;
+const WEB_DELIVERY_VERSION=8;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -275,10 +275,66 @@ async function sendSiteReturnFromPublisher(cdp,task,job){
   return after?'sent_verified':'submitted_not_yet_visible';
 }
 
+function sameEditorialBeforeReturn(task,manual){
+  const current=(manual.items||[]).filter(x=>String(x.id||'')===task.target_id)
+    .sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
+  return !!current&&Number(current.revision||0)===task.revision&&crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')===task.explanation_sha256;
+}
+async function recoverSiteAfterUpload(task,job){
+  const remote=await confirmedInMain(task,job);
+  if(task.site_return_sent_at)return remote;
+  if(producerBusyFor(task))return {...remote,site_return_status:'producer_still_running'};
+  let url=chatURL(task.conversation_url);
+  if(!url){
+    try{url=await discoverConversation(task.command_id,task.browser_target_id);}
+    catch{return {...remote,site_return_status:'conversation_discovery_unavailable'};}
+  }
+  if(!url)return {...remote,site_return_status:'conversation_not_available'};
+  let capture;
+  try{capture=await selectExistingBrowser();}
+  catch{return {...remote,site_return_status:'browser_unavailable'};}
+  // The generator's 9223 tab belongs to ImageGen. Never navigate/create a
+  // second tab there: recovery is only allowed in the isolated 9234 relay.
+  if(capture.source!=='relay_9234')return {...remote,site_return_status:'isolated_relay_unavailable'};
+  let browserCDP,cdp,ownedTarget;
+  try{
+    browserCDP=new CDP(capture.browser.webSocketDebuggerUrl);await browserCDP.open();
+    const made=await browserCDP.call('Target.createTarget',{url,background:true});
+    ownedTarget=made.targetId;
+    for(let n=0;n<10;n++){
+      const pages=await http(capture.base+'/json/list');
+      const own=pages.find(x=>x.id===ownedTarget);
+      if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
+      await sleep(400);
+    }
+    if(!cdp)return {...remote,site_return_status:'relay_tab_not_ready'};
+    let raster;
+    for(let n=0;n<18;n++){
+      await sleep(1000);
+      raster=await cdp.evaluate(rasterProbe(task.command_id));
+      if(raster?.ready||raster?.reason==='later_user_turn'||raster?.reason==='capture_requires_sign_in')break;
+    }
+    if(!raster?.ready)return {...remote,site_return_status:raster?.reason||'original_not_ready'};
+    const fresh=await readImageJob(task);
+    if(!sameContext(task,fresh))return {...remote,site_return_status:'identity_changed'};
+    const editorial=await readEditorialState();
+    if(!sameEditorialBeforeReturn(task,editorial))return {...remote,site_return_status:'editorial_changed'};
+    const status=await sendSiteReturnFromPublisher(cdp,task,fresh);
+    const sent=status==='sent_verified'||status==='already_sent';
+    return {...remote,site_return_status:status,...(sent?{site_return_sent_at:new Date().toISOString()}:{}),
+      ...(task.conversation_url?{}:{conversation_url:url})};
+  }catch(e){return {...remote,site_return_status:'deferred_'+String(e?.message||e).replace(/https?:\/\/\S+/g,'[url]').slice(0,65)};}
+  finally{
+    cdp?.close();
+    if(ownedTarget)try{await browserCDP?.call('Target.closeTarget',{targetId:ownedTarget});}catch{}
+    browserCDP?.close();
+  }
+}
+
 async function consume(task){
   const job=await readImageJob(task);
   if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
-  if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at)return confirmedInMain(task,job);
+  if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at||task.status==='published')return recoverSiteAfterUpload(task,job);
   if(['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))return {status:'obsolete',reason:'image_job_terminal'};
   // ERROR is not proof that no image exists. This consumer NEVER generates:
   // it can only read a raster after this command's exact user turn.
@@ -354,7 +410,7 @@ async function telemetry(task,result){
     await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(10000),body:JSON.stringify({task:'web_image_telemetry',target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),stage:result.status,reason:String(result.reason||'confirmed').slice(0,140),version:2})});
   }catch{}
 }
-function dueTasks(tasks,now){return tasks.filter(x=>x.task.status==='waiting')
+function dueTasks(tasks,now){return tasks.filter(x=>x.task.status==='waiting'||(x.task.status==='published'&&!x.task.site_return_sent_at&&chatURL(x.task.conversation_url)&&Number.isFinite(Date.parse(x.task.created_at||''))&&now-Date.parse(x.task.created_at)<72*3600000))
   .filter(x=>!Number.isFinite(Date.parse(x.task.next_check_at||''))||Date.parse(x.task.next_check_at)<=now)
   .sort((a,b)=>Date.parse(a.task.checked_at||a.task.created_at||0)-Date.parse(b.task.checked_at||b.task.created_at||0));}
 function prioritizeOpenConversation(tasks,pages,currentCommand=null){
@@ -387,7 +443,7 @@ async function once(){
     for(const {file,task} of due.slice(0,1)){
       if(!safeID(task.target_id)||!safeID(task.command_id)||(!chatURL(task.conversation_url)&&!safeID(task.browser_target_id))||
         !/^[a-f0-9]{64}$/.test(String(task.explanation_sha256||''))||
-        !task.secret_dpapi){
+        (!task.secret_dpapi&&task.status==='waiting')){
         atomic(file,{...task,status:'rejected',reason:'invalid_enrollment',secret_dpapi:undefined});
         console.log('TTENDENCIAS_WEB_IMAGE '+String(task.target_id||'?')+' rejected_invalid_enrollment');
         continue;
@@ -433,7 +489,7 @@ async function watch(){
     }
   }finally{try{const own=JSON.parse(fs.readFileSync(lock,'utf8'));if(own.pid===process.pid)fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once};
+module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once,siteReturnPrompt,siteReturnProbe,producerBusyFor,sameEditorialBeforeReturn,recoverSiteAfterUpload};
 // Existing installed listeners invoke this file without arguments. Drain their
 // already-enrolled backlog too; do not require a new image to wake delivery.
 if(require.main===module)(process.argv.includes('--once')?once():watch()).catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
