@@ -1,0 +1,49 @@
+name: TTActualidad · índice de fotografías de archivo
+on:
+  push:
+    branches: [main]
+    paths:
+      - "trends/archive-images/**"
+      - "ttittulares/archive-images/**"
+      - "shared/build_archive_photo_index.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttactualidad-archive-photo-index
+  cancel-in-progress: false
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Actualizar el índice con rutas reales sin mezclar imágenes IA
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttactualidad-image-index"
+          git config user.email "actions@users.noreply.github.com"
+          for n in 1 2 3 4 5; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 shared/build_archive_photo_index.py
+            git add shared/archive-photo-index.json
+            if git diff --cached --quiet; then
+              echo "ARCHIVE_PHOTO_INDEX_UNCHANGED"
+              exit 0
+            fi
+            git commit -m "Actualizar índice público de fotos de archivo"
+            if git push origin HEAD:main; then
+              echo "ARCHIVE_PHOTO_INDEX_UPDATED"
+              exit 0
+            fi
+            sleep "$((n * 2))"
+          done
+          echo "No se pudo actualizar el índice tras reintentos" >&2
+          exit 1
