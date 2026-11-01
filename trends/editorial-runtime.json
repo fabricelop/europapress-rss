@@ -6,18 +6,26 @@
   "run_id": "tr-1793535000000-manual",
   "previous_run_id": "tr-1793534122544-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T13:10:00+01:00",
-  "updated_at": "2026-11-01T13:10:00+01:00",
+  "updated_at": "2026-11-01T13:12:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 3,
+  "trend_id": "radar-prepare-1bb8e2ac5b536dac98f1",
+  "title": "Radar · Mariah Carey",
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "radar-prepare-1bb8e2ac5b536dac98f1",
+    "red-review-c65467b99044e63e4911",
+    "red-review-cbc79c00e7ca740d8630"
+  ],
+  "remaining_active_ids": [
+    "radar-prepare-1bb8e2ac5b536dac98f1",
+    "red-review-c65467b99044e63e4911",
+    "red-review-cbc79c00e7ca740d8630"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "incident_count": 0,
@@ -1442,6 +1450,14 @@
       "run_id": "tr-1793535000000-manual",
       "status": "RUNNING",
       "message": "Inicio efectivo de pasada manual; verificando cola autoritativa, reexplicaciones y mantenimiento. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T13:12:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793535000000-manual",
+      "trend_id": "radar-prepare-1bb8e2ac5b536dac98f1",
+      "title": "Radar · Mariah Carey",
+      "message": "Investigando Radar · Mariah Carey r0; borrador anticipado, no ficha de Listas."
     }
   ],
   "final_outcomes": [],
@@ -1474,7 +1490,7 @@
     "message": "Pasada 0/0; cola y reelaboraciones pendientes a cero; sin ImageGen ni publicaciones."
   },
   "source": "chat",
-  "message": "Inicio efectivo de pasada manual; verificando cola autoritativa, reexplicaciones y mantenimiento. Sin ImageGen ni publicaciones.",
+  "message": "Investigando Radar · Mariah Carey r0; borrador anticipado, no ficha de Listas.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3034,6 +3050,6 @@
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": null,
-  "current_title": null
+  "current_item": "radar-prepare-1bb8e2ac5b536dac98f1",
+  "current_title": "Radar · Mariah Carey"
 }
