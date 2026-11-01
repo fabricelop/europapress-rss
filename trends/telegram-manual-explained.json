@@ -34516,7 +34516,6 @@
       "distinct_episode": true,
       "new_facts": "Barcelona venció 6-1 a Alavés el 31 de octubre de 2026; Raphinha y Lamine Yamal marcaron sendos dobletes, Fermín López y Anthony Gordon completaron los goles locales.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
@@ -34529,7 +34528,13 @@
       "coverage_reason": "already_published_same_event",
       "grouping_request_id": "listas-auto-df687bbd5831bc34b13b",
       "editorial_grouping_fingerprint": "16a174f60325af3dcf47c8323a03cd3e4aa23127def03bb133c74454d96a538e",
-      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "trend-update-ce4f4a1477a1efb0edd3",
@@ -34559,14 +34564,34 @@
       "distinct_episode": false,
       "new_facts": "La marcha del 31 de octubre por el segundo aniversario de la DANA reunió a más de 3.500 personas, según la Delegación del Gobierno, y reclamó justicia, verdad y responsabilidades.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_fingerprint": "50372e9ff8d0e3c3a2339e4438f55a16314fa061644b7b5ff647bd269541d5c8",
-      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261031184027_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/comunitat-valenciana/noticia-manifestacion-dos-anos-dana-reclama-verdad-justicia-seguiremos-porque-tenemos-legitimidad-20261031184027.html",
+        "alt": "Imagen de archivo relacionada con Mazón",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261031184027_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/comunitat-valenciana/noticia-manifestacion-dos-anos-dana-reclama-verdad-justicia-seguiremos-porque-tenemos-legitimidad-20261031184027.html",
+        "alt": "Imagen de archivo relacionada con Mazón",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-01T13:02:32.342843+00:00",
+  "updated_at": "2026-11-01T13:03:29.656112Z",
   "count": 568
 }
