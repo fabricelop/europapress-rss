@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T084115+0100",
-  "previous_run_id": "tr-1793517832727-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T08:41:15+01:00",
-  "updated_at": "2026-11-01T08:42:15+01:00",
-  "finished_at": "2026-11-01T08:42:15+01:00",
+  "run_id": "tr-chat-20261101T091043+0100",
+  "previous_run_id": "tr-chat-20261101T084115+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T09:10:43+01:00",
+  "updated_at": "2026-11-01T09:10:43+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -890,6 +890,12 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada completada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T09:10:43+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T091043+0100",
+      "message": "Inicio: cola compacta observada 0. Revalidando main, decisiones/reexplicaciones y últimos resultados antes de la barrera final; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
