@@ -420,12 +420,13 @@ struct EditorialActions: View {
         return imagePrompt + """
 
         
-        TTENDENCIAS_GAG_AUTO_ATTACH_V1 — SEGUNDA FASE, DESPUÉS DE GENERAR ESTA IMAGEN.
-        El resultado de ImageGen es intermedio: genera UNA única imagen y usa SOLO el PNG ORIGINAL creado EN ESTA conversación. No generes otra, no uses una imagen de la galería ajena al encargo ni una miniatura.
-        Contexto autoritativo de la explicación a revalidar sin reescribir:
+        TTENDENCIAS_GAG_AUTO_ATTACH_V2 — ENTREGA AUTOMÁTICA DE LA IMAGEN NUEVA.
+        Genera UNA SOLA imagen y conserva su PNG ORIGINAL de ESTA MISMA CONVERSACIÓN. Este encargo manual más reciente tiene PRIORIDAD sobre trabajos anteriores de TTImages que todavía estén pendientes; un LAUNCHED antiguo NO puede bloquearlo. No utilices otra imagen ni una miniatura.
+        Contexto editorial vigente a revalidar sin reescribir:
         \(exactContext)
-        Después de ImageGen, sin intervención del usuario, utiliza el conector TTendencias · TTActualidad: inspect_top30_images; si la identidad exacta de la explicación y revisión es vigente y el Site aún no contiene imagen válida, attach_trend_image usando file=PNG ORIGINAL de esta generación y context=JSON exacto; verify_trend_image y confirma URL y SHA-256 reales. Si Site verified, sincroniza GitHub main trends/site-ai-images.json preservando todas las entradas y modificando solo (target_id,revision), con image_url y sha256 verificados y explanation/explained_at literales. Relee el catálogo y comunica SITE y APP por separado.
-        Si ImageGen finaliza el turno antes de ejecutar herramientas, informa que la asociación está PENDIENTE, no que se completó: el botón «Copiar imagen Site» permite asociar el original en esta misma conversación SIN repetir ImageGen. No inventes acceso a la galería, no sustituyas otra imagen válida y nunca afirmes éxito sin verify_trend_image y comprobación en GitHub.
+        Después de ImageGen, SIN esperar otra orden del usuario: llama a inspect_top30_images y verifica target_id, revision, explanation literal y explained_at. Llama a verify_trend_image. Si falta imagen en Site, ejecuta attach_trend_image con el PNG ORIGINAL recién creado y el context exacto, luego verify_trend_image. Si la imagen anterior existe, la NUEVA es la preferida: solicita sustitución ÚNICAMENTE si el conector Site ofrece una operación autorizada y verificable de reemplazo para la misma identidad. No elimines ni falsifiques la asociación previa. Si el conector solo acepta alta y prohíbe sobrescribir, informa REEMPLAZO BLOQUEADO POR SITE, no afirmes que reemplazaste.
+        Después de status verified y URL/SHA-256 reales, sincroniza GitHub main trends/site-ai-images.json manteniendo todas las otras entradas y reemplazando solo el registro exacto (target_id, revision) con explanation y explained_at literales; relee el catálogo. Comunica GENERACIÓN, SITE y APP por separado. No marques asociada la imagen nueva si Site solo conservó la imagen anterior.
+        Si el turno termina al dibujar y no puedes ejecutar las herramientas, indica ASOCIACIÓN PENDIENTE. No solicites imágenes ni adjuntos de forma manual y no repitas la generación: la imagen original permanece en esta conversación para un retorno posterior. No inventes acceso a la galería ni anuncies éxito sin comprobación en Site y GitHub.
         """
     }
     // "Copiar imagen Site" is ONLY a safe existing-image attachment guide.
