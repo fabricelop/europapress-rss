@@ -5,35 +5,43 @@
   "canonical": true,
   "run_id": "tr-1793521834896-manual",
   "previous_run_id": "tr-chat-20261101T091043+0100",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "persisting",
   "started_at": "2026-11-01T09:31:35+01:00",
-  "updated_at": "2026-11-01T09:35:35+01:00",
-  "finished_at": "2026-11-01T09:35:35+01:00",
+  "updated_at": "2026-11-01T09:36:15+01:00",
+  "finished_at": null,
   "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 5,
+  "trend_id": "listas-auto-02d7268c0acfb734e9df",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "b622600f47d4",
     "7084b3e15859"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-02d7268c0acfb734e9df",
+    "red-review-c833262dd375349d1e78",
+    "red-review-05204f713c2b87317710"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-02d7268c0acfb734e9df",
+    "red-review-c833262dd375349d1e78",
+    "red-review-05204f713c2b87317710"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
-    "observed": 2,
+    "observed": 5,
     "closed": 2,
     "explained": 2,
     "updates": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -963,6 +971,14 @@
         "concurrent_convergence": 0
       },
       "message": "TTendencias cerrada 2/2. ImageGen=0; publicaciones=0; incidencias=0."
+    },
+    {
+      "at": "2026-11-01T09:36:15+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793521834896-manual",
+      "trend_id": "listas-auto-02d7268c0acfb734e9df",
+      "title": "Agrupación automática de Listas",
+      "message": "La barrera final detectó 3 trabajos nuevos. Reabriendo la pasada: 1 group_listas y 2 review_red; procesamiento según prioridad contractual, sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
