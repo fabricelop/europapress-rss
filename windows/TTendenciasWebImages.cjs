@@ -116,7 +116,11 @@ function rasterProbe(command){return `(async()=>{
   if(document.querySelector('[data-testid="login-button"],a[href="/auth/login"]'))return {ready:false,reason:'capture_requires_sign_in'};
   return {ready:false,reason:users.length?'command_not_in_conversation':'conversation_not_loaded'};
  }
- if(users.indexOf(user)!==users.length-1)return {ready:false,reason:'later_user_turn'};
+ const last=users[users.length-1],next=users[users.indexOf(user)+1];
+ if(users.indexOf(user)!==users.length-1&&
+   !(users.indexOf(user)===users.length-2&&
+     String(next?.innerText||next?.textContent||'').trim().startsWith('TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+command+' ')))
+   return {ready:false,reason:'later_user_turn'};
  if(document.querySelector('button[data-testid="stop-button"],button[aria-label*="Stop" i],button[aria-label*="Detener" i]'))return {ready:false,reason:'generating'};
  const images=[...document.querySelectorAll('img')].filter(img=>
   Boolean(user.compareDocumentPosition(img)&Node.DOCUMENT_POSITION_FOLLOWING)&&img.complete&&img.naturalWidth>=1024&&img.naturalHeight>=576&&
@@ -157,7 +161,10 @@ async function confirmedInMain(task,job){
 function conversationProbe(command,diagnostic=false){return `(()=>{
  const users=(${userTurns.toString()})();
  const last=users[users.length-1];
- const matched=last&&String(last.innerText||last.textContent||'').includes(${JSON.stringify(command)});
+ const text=String(last&&(last.innerText||last.textContent)||'').trim();
+ const matched=text.includes(${JSON.stringify(command)})&&
+   (text.startsWith('TTENDENCIAS_IMAGE_JOB_V4 ')||
+    text.startsWith('TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '));
  return ${diagnostic?'true':'false'}?{url:matched?location.href:null,reason:matched?'matched':last?'last_user_command_differs':'user_turn_not_found'}:matched?location.href:null;
 })()`;}
 function pinnedTargetId(){
@@ -168,7 +175,7 @@ async function currentPinnedCommand(pages){
   if(!own)return null;
   const cdp=new CDP(own.webSocketDebuggerUrl);
   try{
-    await cdp.open();return await cdp.evaluate(`(()=>{const users=(${userTurns.toString()})();const last=users[users.length-1];const m=String(last&&(last.innerText||last.textContent)||'').match(/^TTENDENCIAS_IMAGE_JOB_V4\\s+([A-Za-z0-9._-]+)\\s+([A-Za-z0-9._-]+)/);return m?{command_id:m[1],target_id:m[2]}:null;})()`);
+    await cdp.open();return await cdp.evaluate(`(()=>{const users=(${userTurns.toString()})();const last=users[users.length-1];const m=String(last&&(last.innerText||last.textContent)||'').match(/^TTENDENCIAS_(?:IMAGE_JOB_V4|SITE_RETURN_AFTER_IMAGE_V1)\\s+([A-Za-z0-9._-]+)\\s+([A-Za-z0-9._-]+)/);return m?{command_id:m[1],target_id:m[2]}:null;})()`);
   }finally{cdp.close();}
 }
 async function discoverConversation(commandId,browserTargetId,diagnostic=false){
