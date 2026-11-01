@@ -50,28 +50,9 @@ struct EditorialActions: View {
                     if let url = parts?.url { openURL(url) }
                 }
             }
-            if let trend, trend.isCovered {
-                Text("Agrupada en: " + trend.coveredByName)
-                    .font(.caption.weight(.semibold)).foregroundStyle(.orange)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                HStack(spacing: 7) {
-                    quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
-                    quickButton("Copiar foto", "photo.on.rectangle") {
-                        Task { await copyPhoto() }
-                    }
-                }
-                quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
-                quickButton("Copiar explicación original", "doc.on.doc") { copy(fullText) }
-                // A covered original is still its own editorial identity. The
-                // existing rework action opens a NEW investigation without
-                // deleting this original or the previously published joint.
-                quickButton("Volver a evaluar", "arrow.triangle.2.circlepath") {
-                    request("rework")
-                }
-                if let joint = store.snapshot.trendListas.first(where: { $0.editorialID == trend.coveredByID }) {
-                    quickButton("Copiar publicación conjunta", "rectangle.3.group") { copy(joint.explanation) }
-                }
-            } else if let news, news.status != "LISTA" {
+            // A grouped original retains the same editorial actions as a normal trend.
+            // Its grouping is indicated only by a small label on the tile.
+            if let news, news.status != "LISTA" {
                 HStack(spacing: 7) {
                     quickButton("Copiar título", "doc.on.doc") { copy(news.title) }
                     quickButton("Buscar en X", "magnifyingglass") {
@@ -148,11 +129,7 @@ struct EditorialActions: View {
                 quickButton("Copiar foto", "photo.on.rectangle") {
                     Task { await copyPhoto() }
                 }
-                if trend != nil {
-                    quickButton("Copiar imagen Site", "square.on.square") {
-                        copyTrendSiteImagePrompt()
-                    }
-                }
+
             }
             HStack(spacing: 7) {
                 if news != nil || trend?.inListas == true {
