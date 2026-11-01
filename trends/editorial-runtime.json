@@ -3,47 +3,43 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793526906818-manual",
-  "previous_run_id": "tr-1793526664502-manual",
+  "run_id": "tr-1793527057284-manual",
+  "previous_run_id": "tr-1793526906818-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-01T10:55:00+01:00",
-  "updated_at": "2026-11-01T10:56:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-01T10:59:00+01:00",
+  "updated_at": "2026-11-01T10:59:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "red-review-2c39bbbdb347acb280c8",
-  "title": "Revisar novedades: Toledo",
+  "current": 0,
+  "total": 1,
+  "trend_id": "236995aec110",
+  "title": "#CCubicos440",
   "queue_complete": false,
-  "processed_ids": [
-    "listas-auto-0b9e1d1295f72d565ff2"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
-    "red-review-2c39bbbdb347acb280c8",
-    "red-review-b9480e99ceb0de1ae281"
+    "236995aec110"
   ],
   "remaining_active_ids": [
-    "red-review-2c39bbbdb347acb280c8",
-    "red-review-b9480e99ceb0de1ae281"
+    "236995aec110"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 1,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 1,
-    "groups_created": 1,
-    "covered_by_existing": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1113,6 +1109,14 @@
       "trend_id": "red-review-2c39bbbdb347acb280c8",
       "title": "Revisar novedades: Toledo",
       "message": "Agrupación inicial ya aplicada por convergencia: 1 grupo nuevo de Todos los Santos y 1 cobertura previa de Bezz. Revisión JIT de Toledo r0 activa; se investigan novedades materiales sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T10:59:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793527057284-manual",
+      "trend_id": "236995aec110",
+      "title": "#CCubicos440",
+      "message": "Inicio de pasada manual: 1 reelaboración preparing vigente (#CCubicos440 r1). Revalidación JIT e investigación nueva desde cero de la pista editorial; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
