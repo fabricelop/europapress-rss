@@ -172,7 +172,7 @@ test('si solo hay navegador productor 9223, no se crea pestaña de recuperación
    const q={...task(),status:'published',conversation_url:'https://chatgpt.com/c/6ae4adf9-f5b8-83ed-a524-37232d9b9992'};
    const result=await recoverSiteAfterUpload(q,j);
    assert.equal(result.status,'published');
-   assert.equal(result.site_return_status,'isolated_relay_unavailable');
+   assert.equal(result.site_return_status,'original_generator_tab_not_present');
    assert.ok(calls.every(x=>!x.method||x.method==='GET'));
  }finally{global.fetch=original;}
 });
