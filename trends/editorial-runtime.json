@@ -6,9 +6,9 @@
   "run_id": "tr-1793512121167-manual",
   "previous_run_id": "tr-chat-20261101T064000+0100",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-11-01T06:49:00+01:00",
-  "updated_at": "2026-11-01T06:49:00+01:00",
+  "updated_at": "2026-11-01T06:51:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
@@ -536,6 +536,14 @@
       "trend_id": "listas-auto-600209548fe6e0ab5c4b",
       "title": "Agrupación automática de Listas",
       "message": "Inicio de pasada manual: 3 trabajos preparing vigentes en main (1 group_listas y 2 review_red). Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T06:51:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793512121167-manual",
+      "trend_id": "listas-auto-600209548fe6e0ab5c4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Outbox persistido: Rapha cubierto por Barça-Alavés y #realbetismálaga por Betis-Málaga; sin grupo nuevo. Verificando workflow y estado aplicado."
     }
   ],
   "final_outcomes": {
@@ -588,7 +596,7 @@
     "note": "Rapha, Quiles y #realbetismálaga explicados y verificados en requests + telegram-manual-explained; cola final 0 y sin rewrite_pending/reexplain."
   },
   "source": "chat",
-  "message": "Pasada manual en curso: 3 trabajos activos; sin ImageGen ni publicación.",
+  "message": "Agrupación persistida; verificando aplicación JIT antes de continuar con las revisiones.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
