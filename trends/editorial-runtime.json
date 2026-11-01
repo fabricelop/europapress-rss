@@ -3,43 +3,49 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793533559573-manual",
-  "previous_run_id": "tr-1793533354993-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T12:46:00+01:00",
-  "updated_at": "2026-11-01T12:49:00+01:00",
-  "finished_at": "2026-11-01T12:49:00+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793533812781-manual",
+  "previous_run_id": "tr-1793533559573-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T12:50:12.781+01:00",
+  "updated_at": "2026-11-01T12:52:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-d6d8bbb39e54433ec48c",
-    "red-review-4edd0e87b5dcad5065f6",
-    "listas-auto-2ccea12644d585a5fd98"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "aea33831119b",
+    "12beb07b0d96",
+    "24b026091f12",
+    "listas-auto-e41651c718620ce133ce"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "aea33831119b",
+    "12beb07b0d96",
+    "24b026091f12",
+    "listas-auto-e41651c718620ce133ce"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 0,
+    "observed": 4,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 1,
-    "groups_created": 1,
+    "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1305,6 +1311,12 @@
         "concurrent_convergence": 3
       },
       "message": "TTendencias cerrada 3/3 por ejecución y convergencia JIT: 2 revisiones unchanged y 1 agrupación creada. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:52:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793533812781-manual",
+      "message": "Inicio manual: 3 investigaciones explain y 1 agrupación automática vigentes en main. Se procesan primero explain en orden y después group_listas; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
