@@ -3,152 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T055500+0100",
-  "previous_run_id": "tr-chat-20261101T054000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T05:55:00+01:00",
-  "updated_at": "2026-11-01T05:55:45+01:00",
-  "finished_at": "2026-11-01T05:55:45+01:00",
+  "run_id": "tr-chat-20261101T061000+0100",
+  "previous_run_id": "tr-chat-20261101T055500+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T06:10:00+01:00",
+  "updated_at": "2026-11-01T06:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 0/0. Cola final 0; sin reexplicaciones pendientes.",
+  "summary": "Pasada en curso; verificando cola editorial y reexplicaciones pendientes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-01T00:31:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0 para tr-1793489199351-manual. Sin ImageGen, sin publicación y sin duplicar el trabajo concurrente ya aplicado."
-    },
-    {
-      "at": "2026-11-01T00:30:38.693+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-48bd55639b5efb2accaa",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio tr-1793489438693-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:32:30+01:00",
-      "phase": "investigating",
-      "trend_id": "listas-auto-48bd55639b5efb2accaa",
-      "title": "Agrupación automática de Listas",
-      "message": "Comparación JIT del snapshot: Gordon r0 coincide exactamente con el Barça-Alavés 6-1 ya publicado; Alba/Gavi no se fuerzan por causalidad ambigua, Xabi Alonso aporta declaración posterior y Honda/Aston Martin contiene detalle material adicional."
-    },
-    {
-      "at": "2026-11-01T00:33:00+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-48bd55639b5efb2accaa",
-      "title": "Agrupación automática de Listas",
-      "message": "Resultado guardado en listas-grouping-outbox: 0 grupos nuevos y 1 covered_by_existing (Gordon → Barça-Alavés · goleada y Lamine). Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:33:30+01:00",
-      "phase": "verifying",
-      "message": "Aplicador confirmado en main: Gordon r0 figura covered por listas-joint-1873f405d5b5996d; job listas-auto-48bd55639b5efb2accaa grouping_completed; cola activa 0."
-    },
-    {
-      "at": "2026-11-01T00:34:00+01:00",
-      "phase": "closing",
-      "message": "Barrera final: editorial-queue sin preparing/update ni rewrite_pending; pasada cerrada 1/1. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:47:30+01:00",
-      "phase": "verifying",
-      "message": "Barrera final: Woodgate, Owen, Hamilton y Tunkara persistidos como EXPLICADA con id/revision vigentes; revisiones Halloween y Chelsea-Manchester United cerradas sin cambios materiales; agrupación automática aplicada sin coincidencias; editorial-queue 0."
-    },
-    {
-      "at": "2026-11-01T00:48:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 7/7. Sin ImageGen, sin publicación en X y sin pendientes editoriales en la cola."
-    },
-    {
-      "at": "2026-11-01T00:47:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-1793490304956-manual: cola compacta inicial 0. Verificando main, reexplicaciones pendientes y barrera final antes de cerrar; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:50:00+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-09ccc1fc32302336fef0",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio tr-1793490579211-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:51:00+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-1a5f4a05d85097448e5b",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio tr-1793490690446-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:52:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera JIT: el group_listas observado al inicio ya no figura en editorial-queue. Existe su outbox con groups=[] y covered_by_existing=[]; main muestra la cola en 0. No se duplica trabajo concurrente."
-    },
-    {
-      "at": "2026-11-01T00:53:00+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Últimos resultados de mantenimiento revisados; sin trabajo editorial pendiente."
-    },
-    {
-      "at": "2026-11-01T00:53:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0 para tr-1793490690446-manual tras revalidación JIT. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:55:30+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-1793490930000-manual: refresco real del Top 30 solicitado; cola inicial 0. Revalidando main antes de procesar; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T01:02:00+01:00",
-      "phase": "investigating",
-      "trend_id": "34773b6871a6",
-      "title": "Tusk",
-      "message": "Tusk revisado desde cero: Reuters y AP confirman la crisis del Tribunal Constitucional polaco, la defensa de Tusk de la suspensión de su presidente, la denuncia de Nawrocki y las protestas en Varsovia."
-    },
-    {
-      "at": "2026-11-01T01:02:00+01:00",
-      "phase": "drafting",
-      "trend_id": "34773b6871a6",
-      "title": "Tusk",
-      "message": "Nueva explicación y remate redactados para TT#9; neutralidad política y límite X verificados. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-01T01:02:00+01:00",
-      "phase": "persisting",
-      "trend_id": "34773b6871a6",
-      "title": "Tusk",
-      "message": "Revisión 0 revalidada JIT en main; enviando resultado al aplicador editorial."
-    },
-    {
-      "at": "2026-11-01T01:03:00+01:00",
-      "phase": "investigating",
-      "trend_id": "34773b6871a6",
-      "title": "Tusk",
-      "message": "Inicio tr-1793491247699-manual: 5 trabajos preparing vigentes tras relectura de main. Investigación actual y revalidación JIT por id+revision; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T01:08:30+01:00",
-      "phase": "verifying",
-      "message": "Barrera de verificación: los 5 trabajos observados están explained y sincronizados en requests + telegram-manual-explained; Tusk convergió con la ejecución anterior. editorial-queue=0 y rewrite_pending=0. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T01:08:03.102+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-c2e98f2555a5a80353db",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio tr-1793491683102-manual: 3 trabajos preparing/update vigentes en main. Procesando group_listas y después review_red con revalidación JIT; sin ImageGen ni publicación."
-    },
     {
       "at": "2026-11-01T01:11:00+01:00",
       "phase": "investigating",
@@ -603,6 +478,11 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T055500+0100",
       "message": "DONE 0/0; incidencias=0."
+    },
+    {
+      "at": "2026-11-01T06:10:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-chat-20261101T061000+0100: cola compacta inicial 0. Verificando main, reexplicaciones y barrera final; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
