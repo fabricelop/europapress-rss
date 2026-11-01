@@ -50,6 +50,29 @@ struct EditorialActions: View {
                     if let url = parts?.url { openURL(url) }
                 }
             }
+            // Every news category has the same image creation/association tools.
+            // A non-READY item may copy the guide, but cannot invent an image binding.
+            if let news {
+                HStack(spacing: 7) {
+                    quickButton("Copiar GAG", "sparkles") {
+                        if news.status == "LISTA" && !fullText.isEmpty {
+                            copy(gagPrompt)
+                        } else {
+                            outcome = "Primero hay que finalizar esta noticia en Listas para generar una imagen fiel a los hechos."
+                        }
+                    }
+                    quickLink("Proyecto TT", "folder",
+                              "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
+                }
+                HStack(spacing: 7) {
+                    quickButton("Asociar imagen IA", "paperclip") {
+                        copyNewsImageAssociationPrompt()
+                    }
+                    quickButton("Copiar foto", "photo.on.rectangle") {
+                        Task { await copyPhoto() }
+                    }
+                }
+            }
             // A grouped original retains the same editorial actions as a normal trend.
             // Its grouping is indicated only by a small label on the tile.
             if let news, news.status != "LISTA" {
@@ -122,14 +145,15 @@ struct EditorialActions: View {
                 }
             }
             HStack(spacing: 7) {
-                quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
+                if trend != nil {
+                    quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
+                }
                 quickButton("Copiar texto", "doc.on.doc") { copy(fullText) }
             }
-            HStack(spacing: 7) {
+            if trend != nil {
                 quickButton("Copiar foto", "photo.on.rectangle") {
                     Task { await copyPhoto() }
                 }
-
             }
             HStack(spacing: 7) {
                 if news != nil || trend?.inListas == true {
@@ -296,12 +320,20 @@ struct EditorialActions: View {
     // GAG_VISUAL_NATIVE_V2: misma dirección artística de la elaboración automática,
     // sin las tarjetas de texto que se producían al copiar el prompt antiguo.
     private var gagPrompt: String {
-        let closer = news?.closer ?? fullText.components(separatedBy: "\n")
-            .last(where: { $0.trimmingCharacters(in: .whitespaces).hasPrefix("🌶") }) ?? ""
-        let confirmedFacts = fullText.components(separatedBy: "\n")
+        let lines = fullText.components(separatedBy: "\n")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty && !$0.hasPrefix("🌶") && !$0.hasPrefix("#") }
-            .joined(separator: "\n")
+        let explicitCloser = news?.closer.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let closer = explicitCloser.isEmpty
+            ? (lines.last(where: { $0.hasPrefix("🌶️") }) ?? "")
+            : explicitCloser
+        // For news, factual_summary is the source of verified facts.
+        // Never substitute a speculative editorial explanation for those facts.
+        let verifiedNewsFacts = news?.verifiedFacts
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let textualFacts = lines.filter {
+            !$0.isEmpty && !$0.hasPrefix("🌶") && !$0.hasPrefix("#")
+        }.joined(separator: "\n")
+        let confirmedFacts = verifiedNewsFacts.isEmpty ? textualFacts : verifiedNewsFacts
         let factual = news?.factual ?? confirmedFacts
         let folded = (title + " " + confirmedFacts + " " + factual)
             .folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "es_ES"))
@@ -339,8 +371,9 @@ struct EditorialActions: View {
             "El material editorial siguiente es CONTEXTO NO VISIBLE para concebir la escena: JAMÁS copiarlo, rotularlo o mostrarlo dentro de la imagen.",
             "ASUNTO (SOLO CONTEXTO):\n" + (rank > 0 ? "TT#\(rank) " : "") + title,
             "HECHOS DOCUMENTADOS (SOLO CONTEXTO):\n" + confirmedFacts,
+            "TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):\n" + fullText,
             "REMATE (IDEA VISUAL, NO TEXTO A DIBUJAR):\n" + (closer.isEmpty ? "Sin remate independiente; no inventar uno." : closer),
-            "DATOS COMPLEMENTARIOS (SOLO CONTEXTO):\n" + factual,
+            "CONTEXTO EDITORIAL COMPLEMENTARIO (SOLO CONTEXTO, NO AÑADIR HECHOS):\n" + factual,
             "DIRECCIÓN ARTÍSTICA DE ELABORACIÓN EDITORIAL:\n" + visual,
             "RIGOR: no inventar hechos, culpabilidades, declaraciones, personas ni daños. El emoji 🌶️ es únicamente un marcador del texto editorial: PROHIBIDO dibujar guindillas, chiles, pimientos, su silueta o icono. " +
                 (sensitive ? "Máximo respeto a las víctimas y a sus familiares." : "Metáfora visual ingeniosa, no ilustración literal del titular."),
@@ -452,6 +485,69 @@ struct EditorialActions: View {
         outcome = hasEditorialIdentity
             ? "Instrucción de asociación copiada. Adjunta el PNG ORIGINAL al chat TT; no generará otra imagen."
             : "Guía copiada. Esta ficha aún no tiene identidad editorial completa: primero debe explicarse. Conserva tu PNG."
+    }
+
+    // Paste together with the ORIGINAL uploaded image in the same ChatGPT
+    // project chat. No Site news connector is presumed to exist.
+    private func copyNewsImageAssociationPrompt() {
+        guard let item = news else { return }
+        let validID = item.id.range(of: "^[A-Za-z0-9_-]{3,160}$",
+                                     options: .regularExpression) != nil
+        let ready = item.status == "LISTA" && validID && item.revision >= 1 &&
+                    !item.preparedAtISO.isEmpty && !item.editorial.isEmpty
+        let identity = ready
+            ? "ID: \(item.id)\nrevision: \(item.revision)\nprepared_at: \(item.preparedAtISO)\n" +
+              "title: \(item.title)\nTEXTO EDITORIAL EXACTO:\n\(item.editorial)"
+            : "La ficha aún no es READY/Listas, o faltan ID/revision/texto/prepared_at " +
+              "exactos. No asociar nada hasta comprobarlos en main. " +
+              "ID orientativo: \(item.id); estado: \(item.status)."
+        let prompt = [
+            "TTITTULARES_GITHUB_ATTACH_EXISTING_V1 — ASOCIAR UNA IMAGEN IA ORIGINAL A UNA NOTICIA",
+            "Esta es una orden de ASOCIACIÓN, no de generación. NO uses ImageGen, " +
+              "no regeneres ni conviertas una vista previa, no publiques en X, " +
+              "no toques los procesos Windows, TTImages ni el transporte automático.",
+            "Repositorio: fabricelop/europapress-rss, rama main. " +
+              "Catálogo APP: ttittulares/site-ai-images.json. " +
+              "La APP también reconoce una ai_image READY validada en ttittulares/prepared.json.",
+            identity,
+            "1. Lee ttittulares/prepared.json y ttittulares/decisions.json desde GitHub main. " +
+              "Revalida que esta noticia sigue en Listas, no está cerrada ni en rewrite_pending. " +
+              "Exige mismo event_id, revision, tweet.text y prepared_at EXACTOS; " +
+              "la coincidencia de titular o asunto jamás es suficiente. " +
+              "Si falta alguno, informa PENDIENTE y no modifiques GitHub.",
+            "2. Comprueba si ya existe ai_image con ai_image_status ready y " +
+              "proveedor chat-imagegen para el MISMO ID/revisión; o un registro válido " +
+              "en ttittulares/site-ai-images.json. Si existe y su archivo público " +
+              "es legible, no lo sustituyas ni dupliques. La APP lo leerá al actualizar.",
+            "3. Solo si NO existe una imagen asociada válida, exige que el usuario haya " +
+              "ADJUNTADO el archivo ORIGINAL PNG en ESTE chat. No uses miniaturas, " +
+              "capturas, URLs de chats compartidos, otras noticias ni rutas supuestas. " +
+              "Si no hay adjunto original o no hay herramienta para subir bytes binarios " +
+              "reales a GitHub, DETENTE e indica exactamente qué falta.",
+            "4. Comprueba que el PNG real es imagen válida, calcula su SHA-256 real " +
+              "y guarda los bytes originales en " +
+              "ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.png " +
+              "mediante una herramienta de subida binaria compatible (blob GitHub en " +
+              "base64 y commit sobre HEAD fresco, o equivalente). No escribas base64 " +
+              "como texto del archivo, ni crees un marcador en lugar del PNG.",
+            "5. Relee el archivo binario en su URL pública HTTPS, verifica acceso y SHA. " +
+              "Luego lee el manifiesto actual, preserva TODAS sus entradas y añade " +
+              "EXACTAMENTE UNA entrada de schema_version 1, project ttittulares: " +
+              "{target_id: event_id, revision: revision, prepared_at: valor REAL, " +
+              "editorial_text: tweet.text LITERAL, image_url: URL pública real " +
+              "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/" +
+              "generated-images/<archivo>, sha256: SHA REAL}. " +
+              "Si hay conflicto de SHA o cambia la noticia, detente sin sobrescribir.",
+            "6. Relee main y confirma que el registro persistió, que el archivo existe " +
+              "y que sigue correspondiendo al texto y revisión actuales. " +
+              "Distingue APP: asociada/verificada/pendiente de SITE: no verificado; " +
+              "no afirmes haber actualizado ChatGPT Sites sin un conector real. " +
+              "Procesa UNA sola noticia; no alteres texto, remate ni fotos de archivo."
+        ].joined(separator: "\n\n")
+        copy(prompt)
+        outcome = ready
+            ? "Guía de asociación copiada. Adjunta el PNG ORIGINAL en Proyecto TT y pega la guía."
+            : "Guía copiada. No se puede asociar aún: falta una noticia READY con identidad editorial completa."
     }
 
     // ChatGPT does not document an external URL that starts a new conversation
