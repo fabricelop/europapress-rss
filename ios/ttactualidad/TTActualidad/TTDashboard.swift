@@ -921,6 +921,29 @@ private struct NewsTile: View {
         }
     }
 
+    @ViewBuilder
+    private func newsPhoto(_ url: URL, label: String) -> some View {
+        VStack(spacing: 4) {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().scaledToFill()
+                case .failure:
+                    RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .overlay(Image(systemName: "exclamationmark.triangle"))
+                default:
+                    RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                        .overlay(ProgressView().tint(TTTheme.teal))
+                }
+            }
+            .frame(height: 145).frame(maxWidth: .infinity)
+            .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
+            Text(label)
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(TTTheme.muted)
+        }
+    }
+
     var body: some View {
         DisclosureGroup(isExpanded: $expanded) {
             VStack(alignment: .leading, spacing: 12) {
@@ -939,17 +962,19 @@ private struct NewsTile: View {
                     }
                 }
                 .font(.system(size: 10, weight: .semibold))
-                if let image = item.imageURL {
-                    AsyncImage(url: image) { picture in
-                        picture.resizable().scaledToFill()
-                    } placeholder: {
-                        RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
-                            .overlay(ProgressView().tint(TTTheme.teal))
+                // If both exist, display BOTH the verified AI artwork and the
+                // archive photograph. Neither displaces the other.
+                if item.siteImageURL != nil || item.imageURL != nil {
+                    HStack(alignment: .top, spacing: 8) {
+                        if let ai = item.siteImageURL {
+                            newsPhoto(ai, label: "Imagen IA")
+                        }
+                        if let archive = item.imageURL, archive != item.siteImageURL {
+                            newsPhoto(archive, label: "Fotografía de archivo")
+                        }
                     }
-                    .frame(height: 145).frame(maxWidth: .infinity)
-                    .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
                 } else {
-                    Label("Sin fotografía de archivo", systemImage: "photo")
+                    Label("Sin imagen disponible", systemImage: "photo")
                         .font(.caption2).foregroundStyle(TTTheme.muted)
                 }
                 Text(item.factual.isEmpty ?
