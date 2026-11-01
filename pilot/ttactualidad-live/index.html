@@ -1585,6 +1585,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)void check
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)void syncListasBadge()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
+ // The radar changes while a mobile tab stays open for hours.
+ // Fetch new GitHub data without any editorial action or publishing.
+ setInterval(()=>{
+  if(!document.hidden&&state.app==='tr'&&!state.busy&&Date.now()-state.updated>180000)void load();
+ },60000);
 // Recalculate colors on every render and when Safari comes back into view.
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateTop30AgeColors()});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
