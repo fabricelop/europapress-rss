@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793549061243-manual",
   "previous_run_id": "tr-chat-20261101T1712+0100",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-01T17:12:00+01:00",
-  "updated_at": "2026-11-01T17:23:00+01:00",
-  "finished_at": "2026-11-01T17:23:00+01:00",
+  "updated_at": "2026-11-01T17:24:00+01:00",
+  "finished_at": null,
   "current": 13,
-  "total": 13,
+  "total": 15,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "94a58cd3f7f4",
     "9c13be489fe2",
@@ -30,12 +30,18 @@
     "red-review-0396f5be3748cad9c883",
     "red-review-8929019c45203f7ea8d3"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "abde5d028f8b",
+    "6c2a72c06497"
+  ],
+  "remaining_active_ids": [
+    "abde5d028f8b",
+    "6c2a72c06497"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 13,
-    "observed": 13,
+    "observed": 15,
     "closed": 13,
     "explained": 11,
     "updates": 1,
@@ -44,7 +50,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1075,6 +1081,14 @@
         "concurrent_convergence": 13
       },
       "message": "Pasada cerrada 13/13 por investigación y convergencia JIT: 11 explicaciones ordinarias, 1 revisión updated (Día de Todos) y 1 revisión unchanged (#FelizDomingo). Cola final 0, reelaboraciones 0, ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:24:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793549061243-manual",
+      "trend_id": "abde5d028f8b",
+      "title": "Fofana",
+      "message": "Reapertura JIT: aparecieron dos reelaboraciones manuales nuevas (Fofana y Getafe) después de la barrera anterior. Se investigan desde cero en orden requested_at. Sin ImageGen."
     }
   ],
   "final_outcomes": [
