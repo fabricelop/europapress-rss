@@ -3,28 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793548588490-manual",
-  "previous_run_id": "tr-1793545295401-manual",
+  "run_id": "tr-1793548906654-manual",
+  "previous_run_id": "tr-1793548588490-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T16:57:00+01:00",
-  "updated_at": "2026-11-01T17:03:00+01:00",
+  "started_at": "2026-11-01T17:02:00+01:00",
+  "updated_at": "2026-11-01T17:04:00+01:00",
   "finished_at": null,
-  "current": 8,
-  "total": 10,
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "2d00f5e3e658",
-    "64b7521f1d8d",
-    "4e4384519ea7",
-    "f4ae195585a9",
-    "63b063f5b637",
-    "b77ac0afa366",
-    "107d210b8318",
-    "57b80a6a7dd2"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "red-review-1edd481ffb993c356f45",
     "red-review-5bf9d77fea8cb881470f"
@@ -819,42 +810,17 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final detectó 2 review_red nuevos (Toledo y Carvajal). La misma pasada continúa 8/10; validación JIT antes de cada revisión. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:04:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793548906654-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio de pasada manual real: 2 review_red preparing vigentes en main (Toledo y Carvajal), del más antiguo al más reciente, con validación JIT de id+revision. Sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "listas-joint-f8769365147a3582",
-      "revision": 1,
-      "name": "Getafe-Sevilla · Kike Salas y Gudelj",
-      "outcome": "explained",
-      "applied": true,
-      "final_score": "3-1"
-    },
-    {
-      "id": "cb9bc0ab3d67",
-      "revision": 0,
-      "name": "#GetafeSevilla",
-      "outcome": "explained",
-      "applied": true,
-      "final_score": "3-1"
-    },
-    {
-      "id": "red-review-83ebe32f690b4d2b469f",
-      "revision": 0,
-      "name": "#laSextaXplica",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-fd05f8e91a6fb29a4e48",
-      "revision": 0,
-      "name": "Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T17:00:59+01:00",
   "last_completed_at": "2026-11-01T17:00:59+01:00",
