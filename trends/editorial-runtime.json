@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793541308453-manual",
   "previous_run_id": "tr-1793541128453-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T14:55:08.453+01:00",
-  "updated_at": "2026-11-01T14:56:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T14:57:00+01:00",
+  "finished_at": "2026-11-01T14:57:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -320,63 +320,67 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada: cola inicial 0; comprobando barrera final de main y reexplicaciones pendientes. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T14:57:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793541308453-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 0/0 tras relectura JIT de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente; mobile-decisions también sin reelaboraciones activas. La pasada inmediatamente anterior ya había convergido y cerrado los 3 trabajos efectivos a las 14:55:45. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T14:45:00+01:00",
-  "last_completed_at": "2026-11-01T14:55:45.844+01:00",
+  "last_completed_at": "2026-11-01T14:57:00+01:00",
   "last_run": {
-    "run_id": "tr-1793541128453-manual",
+    "run_id": "tr-1793541308453-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T14:52:08.453+01:00",
-    "finished_at": "2026-11-01T14:55:45.844+01:00",
+    "started_at": "2026-11-01T14:55:08.453+01:00",
+    "finished_at": "2026-11-01T14:57:00+01:00",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "updates": 0,
-      "grouping_requests": 1,
-      "groups_created": 1,
+      "grouping_requests": 0,
+      "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 2,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 3
+      "concurrent_convergence": 0
     },
-    "outcomes": [
-      {
-        "id": "listas-auto-74fc5d10a0aa25181bdd",
-        "revision": 0,
-        "outcome": "grouping_completed",
-        "applied": true,
-        "name": "Getafe-Sevilla · Kike Salas y Gudelj",
-        "group_id": "listas-joint-f8769365147a3582"
-      },
-      {
-        "id": "red-review-1ebb48830d60a64d2dd1",
-        "revision": 0,
-        "outcome": "stale",
-        "applied": true,
-        "name": "#laSextaXplica"
-      },
-      {
-        "id": "red-review-82d4a0dc48d3318bd79e",
-        "revision": 0,
-        "outcome": "stale",
-        "applied": true,
-        "name": "Toledo"
-      }
-    ],
-    "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación Getafe-Sevilla aplicada como ficha conjunta; #laSextaXplica y Toledo quedaron review_completed/stale al invalidarse sus orígenes en la comprobación final. Barrera final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. ImageGen=0; publicaciones=0."
+    "outcomes": [],
+    "message": "Pasada cerrada 0/0 tras relectura JIT de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente; mobile-decisions también sin reelaboraciones activas. La pasada inmediatamente anterior ya había convergido y cerrado los 3 trabajos efectivos a las 14:55:45. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación Getafe-Sevilla aplicada como ficha conjunta; #laSextaXplica y Toledo quedaron review_completed/stale al invalidarse sus orígenes en la comprobación final. Barrera final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 0/0 tras relectura JIT de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente; mobile-decisions también sin reelaboraciones activas. La pasada inmediatamente anterior ya había convergido y cerrado los 3 trabajos efectivos a las 14:55:45. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1297,6 +1301,31 @@
       "phase": "closing",
       "run_id": "tr-1793538157393-manual",
       "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. Los dos review_red de la ejecución anterior ya convergieron como updated. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T14:57:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793541308453-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 0/0 tras relectura JIT de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente; mobile-decisions también sin reelaboraciones activas. La pasada inmediatamente anterior ya había convergido y cerrado los 3 trabajos efectivos a las 14:55:45. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -2152,30 +2181,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "listas-auto-74fc5d10a0aa25181bdd",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
-      "name": "Getafe-Sevilla · Kike Salas y Gudelj",
-      "group_id": "listas-joint-f8769365147a3582"
-    },
-    {
-      "id": "red-review-1ebb48830d60a64d2dd1",
-      "revision": 0,
-      "outcome": "stale",
-      "applied": true,
-      "name": "#laSextaXplica"
-    },
-    {
-      "id": "red-review-82d4a0dc48d3318bd79e",
-      "revision": 0,
-      "outcome": "stale",
-      "applied": true,
-      "name": "Toledo"
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null
 }
