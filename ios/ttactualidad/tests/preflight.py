@@ -251,7 +251,7 @@ assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
 assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "53"' in project
+assert 'CURRENT_PROJECT_VERSION: "54"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -284,7 +284,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "53"' in project
+assert 'CURRENT_PROJECT_VERSION: "54"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -296,7 +296,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "53"' in project
+assert 'CURRENT_PROJECT_VERSION: "54"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -313,7 +313,7 @@ assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
 assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "53"' in project
+assert 'CURRENT_PROJECT_VERSION: "54"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -406,7 +406,7 @@ assert 'url.host?.lowercased() == siteHost' in ai
 assert 'siteImageURL: SiteAIImageCatalog.resolved(' in store
 assert 'siteImageURL: trend.siteImageURL' in store
 assert 'TrendSiteOrArchiveImage(aiURL: item.siteImageURL' in live
-assert 'archiveFallback' in live
+assert 'photo(archiveURL, label: "Fotografía de archivo")' in live
 assert 'trends/site-ai-images.json' in actions
 assert 'APP: manifest verified/pending' in actions
 assert 'TTENDENCIAS_SITE_ATTACH_EXISTING_V1' in actions
@@ -450,8 +450,8 @@ assert 'ttittulares/site-ai-images.json' in news_ai
 assert 'ttittulares/generated-images/' in news_ai
 assert 'ai["generated"] as? Bool == true' in news_ai
 assert 'ai["provider"] as? String == "chat-imagegen"' in news_ai
-assert 'record.editorial_text == editorialText' in news_ai
-assert 'record.prepared_at == preparedAt' in news_ai
+assert 'current.editorial_text == editorialText' in news_ai
+assert 'current.prepared_at == preparedAt' in news_ai
 assert 'NewsAIImageCatalog.load()' in store
 assert 'NewsAIImageCatalog.assigned(' in store
 assert 'NewsAIImageCatalog.preparedImage(' in store
@@ -467,7 +467,7 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL, trend?.siteImageURL' in actions
 assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "53"' in project
+assert 'CURRENT_PROJECT_VERSION: "54"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
 # 0.4.46: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
@@ -488,7 +488,7 @@ assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
 assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "53"' in project
+assert 'CURRENT_PROJECT_VERSION: "54"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.46 build 53: one identical image-action panel for news and trends.
@@ -499,3 +499,13 @@ assert 'copyTrendSiteImagePrompt()' in actions and 'copyNewsImageAssociationProm
 assert 'news == nil ? automaticTrendImageBindingPrompt' in actions
 assert 'automaticNewsImageBindingPrompt' in actions
 print("TT_ACTUALIDAD_IOS_046_NEWS_TRENDS_SHARED_IMAGE_ACTIONS_OK")
+
+# Build 54: archival photos must remain visible even after IA appears.
+assert 'photo(aiURL, label: "Imagen IA")' in live
+assert 'photo(archiveURL, label: "Fotografía de archivo")' in live
+assert 'if let archive = item.imageURL' in live
+assert 'current.editorial_text == editorialText' in news_ai
+assert 'record.revision < revision' in news_ai
+assert 'bestRevision = old' in catalog
+assert 'CURRENT_PROJECT_VERSION: "54"' in project
+print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
