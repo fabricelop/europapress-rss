@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T06:22:04.418796+00:00",
+  "updated_at": "2026-11-01T06:23:18.675331+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8812,7 +8812,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T05:51:02.286914+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -123919,7 +123919,15 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "48c4457fe2371ecd071aaf17d371461bc6196a2a2661ea21bc01196687782cb1",
-      "editorial_grouping_checked_at": "2026-11-01T05:51:02.286914+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00",
+      "listas_group_role": "covered",
+      "covered_by_id": "91e2b3bd68b1",
+      "covered_by_name": "Alba Carrillo",
+      "covered_by_revision": 0,
+      "covered_source_revision": 0,
+      "covered_at": "2026-11-01T06:23:18.675331+00:00",
+      "coverage_reason": "already_published_same_event",
+      "grouping_request_id": "listas-auto-30620e264cab7828affa"
     },
     {
       "id": "c5a531d85db4",
@@ -124056,7 +124064,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T05:51:02.286914+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -146587,11 +146595,13 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "d6c6bd5eb4dba2dcb6c4c590d166110a1a8bc961ec779d0e39524169350244d2",
+      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
     },
     {
       "id": "615c9aac32f0",
@@ -146649,23 +146659,25 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "ac6fbdfc4ce8c7a5140f4acb861d3592ba6d390b345960ce0b77c8aa47377c10",
+      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
     },
     {
       "id": "listas-auto-30620e264cab7828affa",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T06:22:04.418796+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -148268,7 +148280,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T06:23:18.675331+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "61e066a95fef97fc790a7bbce00b5922160c7f1960ebea646ee3b536e2375f6e"
     },
     {
       "id": "red-review-e6155cb227cfa12b7d19",
