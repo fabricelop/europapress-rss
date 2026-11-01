@@ -18,13 +18,13 @@ private struct ListasGroupingControls: View {
     @State private var removeAllRequestID = UUID().uuidString.lowercased()
     @State private var removeAllSelection: [TrendItem] = []
 
-    // Purple originals only. Never delete the newly-created joint card.
+    // Grouped originals are eligible for cleanup, without special styling.
     // Backend also revalidates listas_group_role == covered before deleting.
     private var covered: [TrendItem] {
         store.snapshot.trendListas.filter { $0.isCovered && !$0.isJointGroup }
     }
     private var ungrouped: [TrendItem] { store.snapshot.trendListas.filter { !$0.isCovered } }
-    // All ready trends, including green, yellow, red and purple joint/covered
+    // All ready trends, including joint/covered
     // cards. Never select news or filter by the current search query.
     private var allTrends: [TrendItem] { store.snapshot.trendListas.filter(\.inListas) }
 
@@ -115,7 +115,7 @@ private struct ListasGroupingControls: View {
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text("Eliminarás de Listas todas las \(covered.count) tarjetas moradas, registradas como NO PUBLICADAS. Las explicaciones conjuntas se conservan y no se suman publicaciones en X.")
+            Text("Eliminarás de Listas todas las \(covered.count) tendencias previamente agrupadas, registradas como NO PUBLICADAS. Las explicaciones conjuntas se conservan y no se suman publicaciones en X.")
         }
         .confirmationDialog("¿Retirar todas las tendencias de Listas?",
                             isPresented: $confirmRemoveAllTrends, titleVisibility: .visible) {
@@ -826,7 +826,7 @@ struct TTDashboard: View {
                     search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
                 }) { item in
                     TrendTile(item: item, showRank: item.rank > 0,
-                              github: github, settings: $showSettings, highlightGroupedOriginals: true)
+                              github: github, settings: $showSettings)
                 }
             }
             if store.snapshot.news.isEmpty && store.snapshot.trendListas.isEmpty {
@@ -887,8 +887,7 @@ struct TTDashboard: View {
         LazyVStack(spacing: 5) {
             ForEach(visible) { item in
                 TrendTile(item: item, showRank: item.rank > 0,
-                          github: github, settings: $showSettings,
-                          highlightGroupedOriginals: store.trendFilter == .listas)
+                          github: github, settings: $showSettings)
             }
         }
     }
@@ -1007,17 +1006,9 @@ private struct TrendTile: View {
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
     @State private var expanded = false
-    var highlightGroupedOriginals = false
-
-    private var groupedOriginal: Bool {
-        highlightGroupedOriginals && item.inListas && item.isCovered && !item.isJointGroup
-    }
-    private let groupedPurple = Color(red: 0.70, green: 0.40, blue: 1.0)
-
     // Saturated hues are exclusive to the rank plate. The rest of the card
     // retains its original dark surface to prioritize text legibility.
     private var rankColor: Color {
-        if groupedOriginal { return groupedPurple }
         switch item.ageBand() {
         case 1: return Color(red: 0.06, green: 0.80, blue: 0.52) // green
         case 2: return Color(red: 1.00, green: 0.77, blue: 0.14) // yellow
@@ -1027,13 +1018,12 @@ private struct TrendTile: View {
     }
 
     private var rankTextColor: Color {
-        !groupedOriginal && item.ageBand() == 2 ? TTTheme.base : .white
+        item.ageBand() == 2 ? TTTheme.base : .white
     }
 
     // The vivid left rank keeps its saturation; the card itself is a dark,
     // desaturated tint of the same hue (as in the original compact design).
     private var softCardColor: Color {
-        if groupedOriginal { return Color(red: 0.26, green: 0.14, blue: 0.38) }
         switch item.ageBand() {
         case 1: return Color(red: 0.105, green: 0.235, blue: 0.285) // subtle green
         case 2: return Color(red: 0.240, green: 0.222, blue: 0.235) // subtle yellow
@@ -1047,8 +1037,7 @@ private struct TrendTile: View {
         case "EN ELABORACIÓN": return "ELAB."
         case "PREPARACIÓN MANUAL": return "MANUAL"
         case "EXPLICADA": return "EXPL."
-        case "AGRUPADA": return "AGRUP."
-        case "CONJUNTA": return "GRUPO"
+        case "AGRUPADA", "CONJUNTA": return "EXPL."
         case "PENDIENTE": return "PEND."
         case "SIN EXPLICACIÓN": return "PISTAS"
         default: return item.status
@@ -1076,7 +1065,7 @@ private struct TrendTile: View {
         DisclosureGroup(isExpanded: $expanded) {
             VStack(alignment: .leading, spacing: 11) {
                 HStack {
-                    Text(item.status)
+                    Text(item.status == "AGRUPADA" || item.status == "CONJUNTA" ? "EXPLICADA" : item.status)
                         .font(.caption2.weight(.semibold)).foregroundStyle(rankColor)
                     Spacer()
                     if let date = item.lastExplained {
@@ -1093,12 +1082,6 @@ private struct TrendTile: View {
                     if item.reviewOutcome == "unverified" && !item.reviewReason.isEmpty {
                         Text(item.reviewReason).font(.caption2).foregroundStyle(.orange)
                     }
-                }
-                if item.isCovered {
-                    Label("Agrupada en: " + item.coveredByName, systemImage: "rectangle.3.group.fill")
-                        .font(.caption.weight(.semibold)).foregroundStyle(groupedOriginal ? groupedPurple : .orange)
-                    Text("Conserva su explicación original. Puedes quitarla de Listas indicando si la publicaste o no; la ficha conjunta se mantiene.")
-                        .font(.caption2).foregroundStyle(TTTheme.muted)
                 }
                 if item.explanation.isEmpty {
                     Text(item.problemReason.isEmpty ? "Aún no hay explicación editorial." :
@@ -1135,11 +1118,19 @@ private struct TrendTile: View {
                         .frame(width: 4, height: 28)
                         .padding(.leading, 8)
                 }
-                Text(item.name)
-                    .font(.system(size: 13, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.white)
-                    .lineLimit(1).minimumScaleFactor(0.76)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(item.name)
+                        .font(.system(size: 13, weight: .semibold, design: .rounded))
+                        .foregroundStyle(.white)
+                        .lineLimit(1).minimumScaleFactor(0.76)
+                    if item.isCovered || item.isJointGroup {
+                        Text("Agrupada")
+                            .font(.system(size: 9, weight: .medium))
+                            .foregroundStyle(TTTheme.muted)
+                            .accessibilityLabel("Tendencia agrupada")
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 if showRank {
                     Text(movementLabel)
@@ -1151,9 +1142,16 @@ private struct TrendTile: View {
                         .accessibilityLabel("Movimiento en el ranking: " + movementLabel)
                 }
 
+                if item.siteImageURL != nil && !item.siteImageSHA256.isEmpty {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(TTTheme.teal)
+                        .accessibilityLabel("Imagen IA verificada")
+                }
+
                 Text(shortStatus)
                     .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(groupedOriginal ? groupedPurple : TTTheme.teal)
+                    .foregroundStyle(TTTheme.teal)
                     .lineLimit(1)
                     .frame(width: 39, alignment: .trailing)
 
@@ -1176,7 +1174,7 @@ private struct TrendTile: View {
             in: RoundedRectangle(cornerRadius: 10)
         )
         .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(groupedOriginal ? groupedPurple.opacity(0.75) : TTTheme.cardBorder, lineWidth: 1.8))
+                    .stroke(TTTheme.cardBorder, lineWidth: 1.8))
         .onChange(of: expanded) { _, value in
             if value { store.markTrendReviewed(item.name) }
         }

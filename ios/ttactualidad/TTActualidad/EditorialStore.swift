@@ -742,7 +742,8 @@ final class EditorialStore: ObservableObject {
            downloaded["trends/editorial-queue.json"] != nil &&
            downloaded["pilot/ttactualidad-action-receipts.json"] != nil {
             retireAbandonedTrendOperations(requests: docs["trends/requests.json"] ?? [:],
-                                           queue: docs["trends/editorial-queue.json"] ?? [:])
+                                           queue: docs["trends/editorial-queue.json"] ?? [:],
+                                           receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:])
         }
         // A grouped explanation closes every member's request, even though
         // only the leader gets a separate card in Listas. Do not leave local
@@ -900,6 +901,7 @@ final class EditorialStore: ObservableObject {
                     (Self.when($1, ["at"]) ?? .distantPast)
                 }
             let receiptStatus = receipt.map { Self.str($0, "status").lowercased() } ?? ""
+            let rejectionReason = receipt.map { Self.str($0, "error") } ?? ""
             let accepted = ["applied", "already_applied"].contains(receiptStatus)
 
             let closure = newsClosures.first { row in
@@ -961,7 +963,9 @@ final class EditorialStore: ObservableObject {
                                     (receipt.map { Self.str($0, "request_id") }),
                                 project: identity.project, eventID: id,
                                 revision: identity.revision,
-                                detail: confirmed ? "Confirmado en GitHub" : nil)
+                                detail: stage == "Rechazada" ?
+                    ("GitHub rechazó la orden" + (rejectionReason.isEmpty ? "." : ": " + rejectionReason)) :
+                    (confirmed ? "Confirmado en GitHub" : nil))
             }
             if stage == "Retirada" || stage == "Confirmada" ||
                stage == "En Listas" || stage == "Rechazada" {
@@ -1029,31 +1033,50 @@ final class EditorialStore: ObservableObject {
 
     // Expire only obsolete local trend operations after a COMPLETE fresh read.
     // Never expire an active GitHub queue entry or assume an API timeout failed.
+    // A local trend order cannot remain "Sin confirmar" forever. Only a
+    // complete fresh GitHub read of requests, queue AND receipts permits
+    // expiry. A real receipt (including a rejection) always takes precedence.
     private func retireAbandonedTrendOperations(requests: [String: Any],
-                                                queue: [String: Any]) {
+                                                queue: [String: Any],
+                                                receipts: [String: Any]) {
         let authoritative = Self.rows(requests, "requests")
         let activeQueue = Self.rows(queue, "items")
+        let receiptRows = Self.rows(receipts, "items")
         for operation in operationHistory where
             operation.project == "ttendencias" &&
             ["prepare", "rework", "hints"].contains(operation.kind) &&
             ["Enviando", "Esperando GitHub", "Pendiente de GitHub",
-             "Sin confirmar", "En elaboración"].contains(operation.status) &&
-            Date().timeIntervalSince(operation.createdAt) > 20 * 60 {
-            guard let identity = operationIdentity(operation),
-                  let id = Optional(identity.eventID),
-                  let revision = Optional(identity.revision),
-                  let server = authoritative.first(where: {
-                      Self.str($0, "id") == id && Self.int($0, "revision") == revision
-                  }),
-                  ["inactive", "problem", "failed"].contains(
-                      Self.str(server, "status").lowercased()),
-                  !activeQueue.contains(where: {
-                      Self.str($0, "id") == id &&
-                      ["preparing", "update"].contains(Self.str($0, "status").lowercased())
-                  }) else { continue }
+             "Sin confirmar"].contains(operation.status) &&
+            Date().timeIntervalSince(operation.createdAt) >= 60 * 60 {
+            guard let identity = operationIdentity(operation) else { continue }
+            let id = identity.eventID
+            let revision = identity.revision
+            let receiptExists = receiptRows.contains { row in
+                if let requestID = operation.requestID, !requestID.isEmpty {
+                    return Self.str(row, "request_id") == requestID
+                }
+                return Self.str(row, "project") == identity.project &&
+                       Self.str(row, "event_id") == id &&
+                       Self.int(row, "revision") == revision &&
+                       Self.str(row, "decision") == operation.kind &&
+                       (Self.when(row, ["at"]) ?? .distantPast) >=
+                           operation.createdAt.addingTimeInterval(-180)
+            }
+            guard !receiptExists else { continue }
+            let isWorking = activeQueue.contains {
+                Self.str($0, "id") == id &&
+                ["preparing", "update"].contains(Self.str($0, "status").lowercased())
+            } || authoritative.contains {
+                Self.str($0, "id") == id &&
+                Self.int($0, "revision") >= revision &&
+                ["preparing", "update"].contains(Self.str($0, "status").lowercased())
+            }
+            guard !isWorking else { continue }
             recordOperation(id: operation.id, title: operation.title,
                             kind: operation.kind, status: "Caducada",
-                            detail: "GitHub confirma que ya no hay elaboración activa. Puedes enviar otra orden.")
+                            requestID: operation.requestID, project: identity.project,
+                            eventID: id, revision: revision,
+                            detail: "Tras 1 hora no consta comprobante ni trabajo activo en GitHub. No se presupone ejecución.")
             activeEditorialActions.removeValue(forKey: operation.id)
         }
     }
@@ -1742,7 +1765,7 @@ final class EditorialStore: ObservableObject {
             let leftRank = $0.rank > 0 ? $0.rank : Int.max
             let rightRank = $1.rank > 0 ? $1.rank : Int.max
             if leftRank != rightRank { return leftRank < rightRank }
-            if $0.isCovered != $1.isCovered { return !$0.isCovered }
+            // Keep the ordinary chronological tie-breaker for every trend.
             let leftDate = $0.lastExplained ?? .distantPast
             let rightDate = $1.lastExplained ?? .distantPast
             if leftDate != rightDate { return leftDate > rightDate }

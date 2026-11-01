@@ -151,6 +151,7 @@ struct PendingOperationsPanel: View {
         switch status {
         case "Confirmada", "En Listas", "Verificada", "Retirada": return "checkmark.circle.fill"
         case "Rechazada": return "xmark.octagon.fill"
+        case "Caducada": return "clock.badge.xmark"
         case "En elaboración": return "square.and.pencil"
         case "Sin confirmar": return "exclamationmark.triangle.fill"
         default: return "clock.fill"
@@ -161,6 +162,7 @@ struct PendingOperationsPanel: View {
         switch status {
         case "Confirmada", "En Listas", "Verificada", "Retirada": return TTTheme.teal
         case "Rechazada": return Color.red
+        case "Caducada": return Color.orange
         case "En elaboración": return TTTheme.blue
         default: return Color.orange
         }

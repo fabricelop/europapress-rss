@@ -165,10 +165,14 @@ assert 'url.scheme?.lowercased() == "https"' in actions
 # Publish/non-publish is a deliberate two-button confirmation on ready Lists.
 assert 'Button("Publicado · Quitar de Listas")' in actions
 assert '"No publicado · Quitar de Listas"' in actions
-covered_actions = actions.split('if let trend, trend.isCovered {', 1)[1].split('} else if let news', 1)[0]
-assert 'quickButton("Quitar de Listas"' in covered_actions
-assert 'quickButton("Volver a evaluar", "arrow.triangle.2.circlepath")' in covered_actions
-# 0.4.38: one explicit non-publication batch for every trend in Listas.
+# Grouped originals must use precisely the same actions as ordinary trends.
+assert 'if let trend, trend.isCovered {' not in actions
+assert 'quickButton("Quitar de Listas"' in actions
+assert 'quickButton("Elaborar desde cero"' in actions
+assert 'quickButton("Copiar GAG", "sparkles")' in actions
+assert 'quickLink("Proyecto TT", "folder"' in actions
+assert 'quickButton("Volver a evaluar"' not in actions
+# 0.4.45: one explicit non-publication batch for every trend in Listas.
 assert 'Label("Retirar todas las tendencias (' in dashboard
 assert 'private var allTrends: [TrendItem]' in dashboard
 assert 'store.snapshot.trendListas.filter(\\.inListas)' in dashboard
@@ -178,9 +182,9 @@ assert 'github.removeAllTrendsFromListas(' in dashboard
 assert 'decision": "remove_all_trends"' in auth
 assert '"ttactualidad_group_listas_v1"' in auth
 assert 'requestID: String) async -> WriteResult' in auth
-assert 'request("rework")' in covered_actions
-assert 'trend?.isCovered == true && intent == "rework"' in actions
-assert 'La explicación original y la ficha conjunta se conservarán.' in actions
+assert 'request("rework")' in actions
+assert 'trend?.isCovered == true && intent == "rework"' not in actions
+assert 'La orden se confirmará con GitHub.' in actions
 assert 'let preserveCoveredOriginal = action.decision == "rework"' in store
 assert 'if preserveCoveredOriginal { return original }' in store
 assert '!preserveCoveredOriginal' in store
@@ -246,11 +250,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.38"' in project
-assert 'CURRENT_PROJECT_VERSION: "44"' in project
+assert 'MARKETING_VERSION: "0.4.45"' in project
+assert 'CURRENT_PROJECT_VERSION: "51"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.38: remove image deletion UI/API and trend→news UI. Keep news functionality.
+# 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
 assert 'quickButton("Enviar a TTiTTulares"' not in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' not in actions
 assert 'originTrend: trend' not in actions
@@ -272,14 +276,15 @@ print("TT_ACTUALIDAD_IOS_TREND_TO_NEWS_PREFLIGHT_OK")
 # increments without blocking the rest of the interface.
 assert "retireAbandonedTrendOperations(" in store
 assert "await store.refreshIfStale(minInterval: 0)" in hints_sheet
-assert '["inactive", "problem", "failed"].contains(' in store
+assert 'guard !receiptExists else { continue }' in store
+assert 'guard !isWorking else { continue }' in store
 assert 'publicationEvents.append(PublicationEvent(' in store
 assert 'func requestEditorialRun(project: String)' in auth
 assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "44"' in project
+assert 'CURRENT_PROJECT_VERSION: "51"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -291,7 +296,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "44"' in project
+assert 'CURRENT_PROJECT_VERSION: "51"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -307,8 +312,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.38"' in project
-assert 'CURRENT_PROJECT_VERSION: "44"' in project
+assert 'MARKETING_VERSION: "0.4.45"' in project
+assert 'CURRENT_PROJECT_VERSION: "51"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -359,7 +364,7 @@ assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
 print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
 # Two new actions are available for trends only. The preexisting GAG button
 # must remain untouched; the Site route is an explicit copy and paste job.
-assert 'quickButton("Copiar imagen Site", "square.on.square")' in actions
+assert 'quickButton("Copiar imagen Site", "square.on.square")' not in actions
 assert 'quickButton("Abrir chat TT", "plus.bubble")' not in actions
 assert 'quickLink("Proyecto TT", "folder"' in actions
 assert 'copyTrendSiteImagePrompt()' in actions
@@ -406,17 +411,28 @@ assert 'trends/site-ai-images.json' in actions
 assert 'APP: manifest verified/pending' in actions
 assert 'TTENDENCIAS_SITE_ATTACH_EXISTING_V1' in actions
 print("TT_ACTUALIDAD_IOS_0432_SITE_AI_IMAGES_PREFLIGHT_OK")
-# 0.4.33: purple originals only; joint group remains. AI photo is primary.
+# Grouped and joint cards keep ordinary colors, actions, and AI/archived photos.
 assert 'filter { $0.isCovered && !$0.isJointGroup }' in dashboard
 assert 'Text("Eliminar agrupadas (\\(covered.count))")' in dashboard
 assert 'Eliminarás de Listas todas las' in dashboard
 assert 'groupListas(' in dashboard and 'removeCovered: cleanup ? selected : nil' in dashboard
 assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
 assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
-assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 2
+assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 1
 assert 'trend?.siteImageURL, news?.imageURL ?? trend?.imageURL' in actions
 assert 'UIPasteboard.general.image = image' in actions
 assert 'now.timeIntervalSince($0) <= 48 * 3600' in store
+assert 'Text("Agrupada")' in dashboard
+assert 'Text(item.status == "AGRUPADA" || item.status == "CONJUNTA" ? "EXPLICADA" : item.status)' in dashboard
+assert 'groupedPurple' not in dashboard
+assert 'highlightGroupedOriginals' not in dashboard
+assert 'Imagen IA verificada' in dashboard
+assert 'minorEditorialEdit(old:' in ai
+assert 'recentEnough(old:' in ai
+assert 'matchedEntry(id:' in ai
+assert 'Date().timeIntervalSince(operation.createdAt) >= 60 * 60' in store
+assert 'let rejectionReason = receipt.map' in store
+assert 'case "Caducada"' in pending_panel
 assert 'let explanation = fresh ? candidate : [:]' in store
 print("TT_ACTUALIDAD_IOS_0433_PURPLE_PHOTO_FRESHNESS_PREFLIGHT_OK")
 

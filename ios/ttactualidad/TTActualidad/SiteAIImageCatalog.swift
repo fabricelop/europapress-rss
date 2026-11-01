@@ -81,11 +81,80 @@ enum SiteAIImageCatalog {
         return result
     }
 
+    /// Resolve the newest verified image for this editorial identity.
+    /// A recent earlier revision can be reused ONLY for tiny copy edits.
+    /// Exact current-revision images always win.
+    private static func matchedEntry(id: String, revision: Int, explanation: String,
+                                     explainedAt: String, catalog: [String: Entry]) -> Entry? {
+        guard !id.isEmpty, !explanation.isEmpty, !explainedAt.isEmpty else { return nil }
+        if let record = catalog[key(id: id, revision: revision)],
+           record.explanation == explanation && record.explained_at == explainedAt {
+            return record
+        }
+        // Do not carry art across a new topic, a different editorial ID, old
+        // revisions, or a substantially changed text/closer/hashtags.
+        guard revision > 0 else { return nil }
+        return catalog.values
+            .filter { $0.target_id == id && $0.revision < revision &&
+                      revision - $0.revision <= 2 &&
+                      minorEditorialEdit(old: $0.explanation, new: explanation) &&
+                      recentEnough(old: $0.explained_at, new: explainedAt) }
+            .max(by: { $0.revision < $1.revision })
+    }
+
+    private static func recentEnough(old: String, new: String) -> Bool {
+        let iso = ISO8601DateFormatter()
+        iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        func parse(_ value: String) -> Date? {
+            if let date = iso.date(from: value) { return date }
+            iso.formatOptions = [.withInternetDateTime]
+            defer { iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds] }
+            return iso.date(from: value)
+        }
+        guard let before = parse(old), let after = parse(new) else { return false }
+        return after >= before && after.timeIntervalSince(before) <= 72 * 3600
+    }
+
+    private static func minorEditorialEdit(old: String, new: String) -> Bool {
+        let a = old.trimmingCharacters(in: .whitespacesAndNewlines)
+        let b = new.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard a.count >= 65, b.count >= 65 else { return false }
+        func hashtags(_ value: String) -> Set<String> {
+            Set(value.split(whereSeparator: { $0.isWhitespace })
+                .filter { $0.hasPrefix("#") }
+                .map { $0.lowercased().trimmingCharacters(in: .punctuationCharacters) })
+        }
+        func closer(_ value: String) -> String {
+            value.components(separatedBy: .newlines)
+                .first(where: { $0.trimmingCharacters(in: .whitespaces).hasPrefix("🌶️") })?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        }
+        guard hashtags(a) == hashtags(b), closer(a) == closer(b) else { return false }
+        func words(_ value: String) -> [String] {
+            value.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: .current)
+                .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
+                .map(String.init)
+        }
+        let aa = words(a), bb = words(b)
+        guard !aa.isEmpty && !bb.isEmpty else { return false }
+        var counts: [String: Int] = [:]
+        for word in aa { counts[word, default: 0] += 1 }
+        var common = 0
+        for word in bb {
+            if let count = counts[word], count > 0 {
+                counts[word] = count - 1
+                common += 1
+            }
+        }
+        // Weighted multiset overlap: allow punctuation / tiny editorial copy
+        // adjustments but not a changed event, outcome, score or new reporting.
+        return Double(2 * common) / Double(aa.count + bb.count) >= 0.91
+    }
+
     static func resolvedSHA256(id: String, revision: Int, explanation: String,
                                explainedAt: String, catalog: [String: Entry]) -> String? {
-        guard resolved(id: id, revision: revision, explanation: explanation,
-                       explainedAt: explainedAt, catalog: catalog) != nil else { return nil }
-        return catalog[key(id: id, revision: revision)]?.sha256
+        matchedEntry(id: id, revision: revision, explanation: explanation,
+                     explainedAt: explainedAt, catalog: catalog)?.sha256
     }
 
     // A verified remote deletion must not be undone by a 90-second memory
@@ -100,10 +169,9 @@ enum SiteAIImageCatalog {
 
     static func resolved(id: String, revision: Int, explanation: String,
                          explainedAt: String, catalog: [String: Entry]) -> URL? {
-        guard !id.isEmpty, !explanation.isEmpty, !explainedAt.isEmpty,
-              let record = catalog[key(id: id, revision: revision)],
-              record.explanation == explanation,
-              record.explained_at == explainedAt else { return nil }
+        guard let record = matchedEntry(id: id, revision: revision,
+                                        explanation: explanation,
+                                        explainedAt: explainedAt, catalog: catalog) else { return nil }
         return URL(string: record.image_url)
     }
 }
