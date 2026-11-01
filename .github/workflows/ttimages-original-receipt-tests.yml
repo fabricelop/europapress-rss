@@ -8,6 +8,7 @@ on:
       - 'windows/TT-AutoUpdater.ps1'
       - 'windows/tests/test_headline_original_receipt.cjs'
       - 'vercel-webhook/lib/ttittulares-run-handler.js'
+      - 'vercel-webhook/lib/ttittulares-run-status-handler.js'
       - 'vercel-webhook/lib/ttendencias-run-handler.js'
       - 'no-vercel/ttittulares-worker/src/index.js'
       - 'ttittulares/sync_site_ai_images.py'
@@ -32,6 +33,7 @@ jobs:
             /windows/TT-AutoUpdater.ps1
             /windows/tests/test_headline_original_receipt.cjs
             /vercel-webhook/lib/ttittulares-run-handler.js
+            /vercel-webhook/lib/ttittulares-run-status-handler.js
             /vercel-webhook/lib/ttendencias-run-handler.js
             /no-vercel/ttittulares-worker/src/index.js
             /ttittulares/sync_site_ai_images.py
@@ -45,6 +47,7 @@ jobs:
           node --check windows/TTiTTularesWebImages.cjs
           node --check windows/TTendenciasWebImages.cjs
           node --check vercel-webhook/lib/ttittulares-run-handler.js
+          node --check vercel-webhook/lib/ttittulares-run-status-handler.js
           node --check vercel-webhook/lib/ttendencias-run-handler.js
           node --check no-vercel/ttittulares-worker/src/index.js
       - name: Contrato exacto de asociación y no duplicación
