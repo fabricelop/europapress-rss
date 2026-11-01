@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793565318526-manual",
   "previous_run_id": "tr-1793564218863-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-01T21:36:00+01:00",
-  "updated_at": "2026-11-01T21:44:17+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 6,
-  "trend_id": "0cd169a778b9",
-  "title": "Iraola",
+  "updated_at": "2026-11-01T21:44:30+01:00",
+  "finished_at": "2026-11-01T21:44:30+01:00",
+  "current": 7,
+  "total": 7,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "a4a691b7cac1"
@@ -21,9 +21,34 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "incident_count": 0,
-  "incidents": [],
+  "summary": {
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 7,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 1,
+    "new_arrivals_during_run": 1
+  },
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-01T21:38:00+01:00",
+      "phase": "persisting",
+      "trend_id": "0cd169a778b9",
+      "title": "Iraola",
+      "reason": "El primer intento de commit atómico directo devolvió un error de protocolo h2 sin modificar main. Se releyó el estado y se recuperó mediante el aplicador editorial oficial, sin duplicados ni pérdida de revisión."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -1533,15 +1558,15 @@
   "last_started_at": "2026-11-01T21:44:17+01:00",
   "last_completed_at": "2026-11-01T21:44:17+01:00",
   "last_run": {
-    "run_id": "tr-1793564218863-manual",
-    "status": "DONE",
-    "started_at": "2026-11-01T21:17:00+01:00",
-    "finished_at": "2026-11-01T21:22:00+01:00",
+    "run_id": "tr-1793565318526-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-01T21:36:00+01:00",
+    "finished_at": "2026-11-01T21:44:30+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 2,
+      "attempted": 7,
+      "observed": 7,
+      "closed": 7,
+      "explained": 7,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -1552,33 +1577,81 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
+      "incidents": 1,
+      "new_arrivals_during_run": 1
     },
     "outcomes": [
       {
-        "id": "a1f72cb31fee",
+        "id": "0cd169a778b9",
         "revision": 0,
-        "name": "elche",
+        "name": "Iraola",
         "outcome": "explained",
         "applied": true,
-        "via": "this_run_outbox"
+        "via": "editorial_outbox"
       },
       {
-        "id": "b4e57b51c750",
+        "id": "425e95efd6a8",
         "revision": 0,
-        "name": "#DragRaceEs",
+        "name": "Martínez Valero",
         "outcome": "explained",
         "applied": true,
-        "via": "this_run_outbox"
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "5de2c2a7b20e",
+        "revision": 0,
+        "name": "El Sardinero",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "a91fa6a9490a",
+        "revision": 0,
+        "name": "Dimitrievski",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "2982cf2cc5c4",
+        "revision": 0,
+        "name": "Goiria",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "82f5a317d5c7",
+        "revision": 0,
+        "name": "Racing",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "a4a691b7cac1",
+        "revision": 0,
+        "name": "Leclerc",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
       }
     ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-11-01T21:38:00+01:00",
+        "phase": "persisting",
+        "trend_id": "0cd169a778b9",
+        "title": "Iraola",
+        "reason": "El primer intento de commit atómico directo devolvió un error de protocolo h2 sin modificar main. Se releyó el estado y se recuperó mediante el aplicador editorial oficial, sin duplicados ni pérdida de revisión."
+      }
+    ],
+    "message": "Pasada cerrada 7/7: Iraola, Martínez Valero, El Sardinero, Dimitrievski, Goiria, Racing y Leclerc explicados y verificados en requests + Listas. Leclerc entró durante la ejecución y también fue procesado. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidente técnico inicial recuperado sin pérdida de estado."
   },
   "source": "chat",
-  "message": "Investigando Iraola (0/6): contraste actual Liverpool-Arsenal y validación JIT antes de persistir.",
+  "message": "Pasada cerrada 7/7: Iraola, Martínez Valero, El Sardinero, Dimitrievski, Goiria, Racing y Leclerc explicados y verificados en requests + Listas. Leclerc entró durante la ejecución y también fue procesado. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidente técnico inicial recuperado sin pérdida de estado.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3869,7 +3942,64 @@
     }
   ],
   "partial": false,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "0cd169a778b9",
+      "revision": 0,
+      "name": "Iraola",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "425e95efd6a8",
+      "revision": 0,
+      "name": "Martínez Valero",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "5de2c2a7b20e",
+      "revision": 0,
+      "name": "El Sardinero",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "a91fa6a9490a",
+      "revision": 0,
+      "name": "Dimitrievski",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "2982cf2cc5c4",
+      "revision": 0,
+      "name": "Goiria",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "82f5a317d5c7",
+      "revision": 0,
+      "name": "Racing",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "a4a691b7cac1",
+      "revision": 0,
+      "name": "Leclerc",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    }
+  ],
   "current_item": null,
   "current_title": null,
   "completed_runs": [
