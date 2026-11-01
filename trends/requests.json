@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T01:07:03+01:00",
+  "updated_at": "2026-11-01T01:04:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -135787,8 +135787,8 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Ana Pastor"
       ],
@@ -135796,21 +135796,21 @@
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Ana Pastor, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
       "explained_at": "2026-11-01T01:04:00+01:00",
       "last_attempt_at": "2026-11-01T01:04:00+01:00",
-      "explanation": "TT#24 Ana Pastor aparece entre las tendencias en pleno debate por Urda: Puente ha citado a la exministra al recordar Angrois, mientras la periodista homónima cubre el accidente. No se ha podido confirmar qué uso del nombre ha impulsado la tendencia.\n#Urda #Angrois",
+      "explanation": "TT#24 Ana Pastor es tendencia porque laSexta aplazó por la tragedia ferroviaria de Urda el debate electoral que iba a moderar el 2 de noviembre.\n#laSexta #Elecciones29N",
       "closer_text": "",
       "rank_at_explanation": 24,
-      "category": "Actualidad",
-      "source": "editorial_outbox_applied",
+      "category": "Política",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
-          "url": "https://www.pressdigital.es/articulo/economia/2026-10-30/6072527-puente-remarca-oposicion-psoe-nunca-pidio-dimision-ana-pastor-accidente-angrois"
+          "url": "https://www.lasexta.com/elecciones/generales/lasexta-traslada-debate-electoral-2-9-noviembre-accidente-ferroviario-urda_202610296ae3597602501232156c9ed7.html"
         },
         {
-          "url": "https://www.lasexta.com/programas/el-objetivo/"
+          "url": "https://www.europapress.es/sociedad/noticia-lasexta-aplaza-noviembre-primer-debate-previsto-proximo-lunes-tragedia-urda-toledo-20261029152756.html"
         }
       ],
-      "news_note": "",
+      "news_note": "Detonante actual verificado: aplazamiento del debate electoral que Ana Pastor iba a moderar el 2 de noviembre, a raíz de la tragedia ferroviaria de Urda.",
       "group_id": "grp-930473fae55b",
       "explanation_group_id": "grp-930473fae55b",
       "group_title": "Ana Pastor",
@@ -135821,14 +135821,16 @@
       "grouped_member_revisions": [
         {
           "id": "930473fae55b",
+          "name": "Ana Pastor",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored"
     },
     {
       "id": "c1d3d1afb9e9",
@@ -135852,23 +135854,23 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-11-01T01:06:00+01:00",
-      "explained_at": "2026-11-01T01:06:00+01:00",
-      "last_attempt_at": "2026-11-01T01:06:00+01:00",
-      "explanation": "TT#14 Sabadell es tendencia tras perder 2-1 en Albacete: llegó 2-0 abajo al descanso, jugó toda la segunda parte con uno más y Eneko Aguilar recortó en el 81'.\n#Albacete #LaLigaHypermotion\n🌶️ Cuarenta y cinco minutos con uno más no alcanzaron para el empate.",
-      "closer_text": "🌶️ Cuarenta y cinco minutos con uno más no alcanzaron para el empate.",
+      "explained_at": "2026-11-01T01:04:00+01:00",
+      "last_attempt_at": "2026-11-01T01:04:00+01:00",
+      "explanation": "TT#14 Sabadell es tendencia tras perder 2-1 ante el Albacete en un partido marcado por el fuerte golpe que sufrió Quadri, trasladado consciente en ambulancia.\n#CESabadell #LaLigaHypermotion",
+      "closer_text": "",
       "rank_at_explanation": 14,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
-          "url": "https://www.mundodeportivo.com/futbol/liga-segunda-division/20261031/1004243637/albacete-sabadell-directo-laliga-hypermotion-segunda-division-futbol.html?facet=amp"
+          "url": "https://as.com/futbol/segunda/el-susto-de-quadri-marca-la-victoria-del-albacete-ante-el-sabadell-f202610-n/"
         },
         {
-          "url": "https://as.com/futbol/segunda/el-susto-de-quadri-marca-la-victoria-del-albacete-ante-el-sabadell-f202610-n/"
+          "url": "https://www.lavanguardia.com/deportes/20261031/11673047/evacuado-ambulancia-jugador-sabadell-quadri-liameed-patada-cabeza.html"
         }
       ],
-      "news_note": "",
+      "news_note": "La conversación actual coincide con el 2-1 ante el Albacete y el incidente de Quadri, evacuado consciente tras un fuerte golpe en la cabeza.",
       "group_id": "grp-c1d3d1afb9e9",
       "explanation_group_id": "grp-c1d3d1afb9e9",
       "group_title": "Sabadell",
@@ -135879,17 +135881,20 @@
       "grouped_member_revisions": [
         {
           "id": "c1d3d1afb9e9",
+          "name": "Sabadell",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "2fa9bd880a4d",
@@ -135913,23 +135918,23 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-11-01T01:07:00+01:00",
-      "explained_at": "2026-11-01T01:07:00+01:00",
-      "last_attempt_at": "2026-11-01T01:07:00+01:00",
-      "explanation": "TT#20 Aston Villa es tendencia tras el 1-1 con Fulham: Jackson adelantó al equipo, Suzuki marcó en propia y McGinn falló un penalti. Además, el club mantiene su pulso con Carragher.\n#PremierLeague #Fulham #Carragher\n🌶️ Un punto en Villa Park y otra pelea fuera del césped.",
-      "closer_text": "🌶️ Un punto en Villa Park y otra pelea fuera del césped.",
+      "explained_at": "2026-11-01T01:04:00+01:00",
+      "last_attempt_at": "2026-11-01T01:04:00+01:00",
+      "explanation": "TT#20 Aston Villa es tendencia tras empatar 1-1 con el Fulham: Nicolas Jackson adelantó a los locales y un autogol del portero Zion Suzuki igualó el partido.\n#PremierLeague #AVFC\n🌶️ El empate llegó desde la portería menos esperada.",
+      "closer_text": "🌶️ El empate llegó desde la portería menos esperada.",
       "rank_at_explanation": 20,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
           "url": "https://www.theguardian.com/football/2026/oct/31/aston-villa-fulham-premier-league-match-report"
         },
         {
-          "url": "https://www.reuters.com/sports/soccer/villa-threaten-legal-action-against-carragher-over-insults-2026-10-31/"
+          "url": "https://www.skysports.com/football/news/13606363/aston-villa-1-1-fulham-zion-suzuki-concedes-own-goal-as-nicholas-jackson-scores-after-john-mcginns-penalty-miss-in-draw-with-fulham"
         }
       ],
-      "news_note": "",
+      "news_note": "Detonante actual verificado: empate 1-1 de Aston Villa y Fulham en Villa Park, resuelto por un autogol del portero de Villa.",
       "group_id": "grp-2fa9bd880a4d",
       "explanation_group_id": "grp-2fa9bd880a4d",
       "group_title": "Aston Villa",
@@ -135940,17 +135945,20 @@
       "grouped_member_revisions": [
         {
           "id": "2fa9bd880a4d",
+          "name": "Aston Villa",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "e66f5cfee46f",
@@ -135974,26 +135982,23 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-11-01T01:08:00+01:00",
-      "explained_at": "2026-11-01T01:08:00+01:00",
-      "last_attempt_at": "2026-11-01T01:08:00+01:00",
-      "explanation": "TT#24 Frenkie es tendencia tras jugar de central en el 6-1 del Barça al Alavés por las bajas en defensa: De Jong completó 124 de 129 pases y ayudó a sostener el dominio azulgrana.\n#FCBarcelona #LaLiga\n🌶️ Flick pidió un central y Frenkie respondió con 124 pases buenos.",
-      "closer_text": "🌶️ Flick pidió un central y Frenkie respondió con 124 pases buenos.",
+      "explained_at": "2026-11-01T01:04:00+01:00",
+      "last_attempt_at": "2026-11-01T01:04:00+01:00",
+      "explanation": "TT#24 Frenkie es tendencia porque De Jong estrenó titularidad esta temporada jugando de central ante el Alavés y el Barça ganó 6-1.\n#FCBarcelona #LaLiga\n🌶️ El mediocentro acabó la noche haciendo guardia atrás.",
+      "closer_text": "🌶️ El mediocentro acabó la noche haciendo guardia atrás.",
       "rank_at_explanation": 24,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
           "url": "https://www.fcbarcelona.com/en/football/first-team/news/4602177/fc-barcelona-6-1-alaves-thats-more-like-it"
         },
         {
-          "url": "https://www.reuters.com/sports/soccer/barcelona-bounce-back-with-big-win-over-alaves-2026-10-31/"
-        },
-        {
-          "url": "https://www.sofascore.com/news/a-perfect-10-yamal-steals-the-show-in-barcelonas-six-goal-blitz"
+          "url": "https://www.lavanguardia.com/deportes/fc-barcelona/20261031/11672911/notas-jugadores-barca-alaves.html"
         }
       ],
-      "news_note": "",
+      "news_note": "Detonante actual verificado: primera titularidad de Frenkie de Jong en la temporada, fuera de su posición habitual como central, en el 6-1 del Barça al Alavés.",
       "group_id": "grp-e66f5cfee46f",
       "explanation_group_id": "grp-e66f5cfee46f",
       "group_title": "Frenkie",
@@ -136004,17 +136009,20 @@
       "grouped_member_revisions": [
         {
           "id": "e66f5cfee46f",
+          "name": "Frenkie",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     }
   ],
   "count": 479
