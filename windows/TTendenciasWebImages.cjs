@@ -9,7 +9,7 @@ const {execFileSync,spawn}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
 const WEB_CAPTURE_VERSION=5;
-const WEB_DELIVERY_VERSION=8;
+const WEB_DELIVERY_VERSION=9;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -293,19 +293,28 @@ async function recoverSiteAfterUpload(task,job){
   let capture;
   try{capture=await selectExistingBrowser();}
   catch{return {...remote,site_return_status:'browser_unavailable'};}
-  // The generator's 9223 tab belongs to ImageGen. Never navigate/create a
-  // second tab there: recovery is only allowed in the isolated 9234 relay.
-  if(capture.source!=='relay_9234')return {...remote,site_return_status:'isolated_relay_unavailable'};
+  // The generator's fixed tab is NEVER navigated or cloned. If the exact
+  // command's conversation is STILL open there after the producer exited,
+  // it can safely receive a no-ImageGen Site follow-up. Otherwise only an
+  // independently authenticated relay can open the retained conversation.
   let browserCDP,cdp,ownedTarget;
   try{
-    browserCDP=new CDP(capture.browser.webSocketDebuggerUrl);await browserCDP.open();
-    const made=await browserCDP.call('Target.createTarget',{url,background:true});
-    ownedTarget=made.targetId;
-    for(let n=0;n<10;n++){
+    if(capture.source==='generator_9223'){
       const pages=await http(capture.base+'/json/list');
-      const own=pages.find(x=>x.id===ownedTarget);
-      if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
-      await sleep(400);
+      const exact=pages.find(x=>x.type==='page'&&chatURL(x.url)===url&&x.webSocketDebuggerUrl&&
+        String(x.id||'')===String(task.browser_target_id||''));
+      if(!exact)return {...remote,site_return_status:'original_generator_tab_not_present'};
+      cdp=new CDP(exact.webSocketDebuggerUrl);await cdp.open();
+    }else{
+      browserCDP=new CDP(capture.browser.webSocketDebuggerUrl);await browserCDP.open();
+      const made=await browserCDP.call('Target.createTarget',{url,background:true});
+      ownedTarget=made.targetId;
+      for(let n=0;n<10;n++){
+        const pages=await http(capture.base+'/json/list');
+        const own=pages.find(x=>x.id===ownedTarget);
+        if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
+        await sleep(400);
+      }
     }
     if(!cdp)return {...remote,site_return_status:'relay_tab_not_ready'};
     let raster;
