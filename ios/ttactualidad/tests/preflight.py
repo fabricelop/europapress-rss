@@ -423,6 +423,7 @@ assert 'trend?.siteImageURL, news?.imageURL ?? trend?.imageURL' in actions
 assert 'UIPasteboard.general.image = image' in actions
 assert 'now.timeIntervalSince($0) <= 48 * 3600' in store
 assert 'Text("Agrupada")' in dashboard
+assert 'Text(item.status == "AGRUPADA" || item.status == "CONJUNTA" ? "EXPLICADA" : item.status)' in dashboard
 assert 'groupedPurple' not in dashboard
 assert 'highlightGroupedOriginals' not in dashboard
 assert 'Imagen IA verificada' in dashboard
