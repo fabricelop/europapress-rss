@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T15:45:10+01:00",
+  "updated_at": "2026-11-01T14:46:01.578895+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -193029,6 +193029,70 @@
       "image_choice": "none",
       "image_pending": true,
       "telegram_package_status": "pending"
+    },
+    {
+      "id": "red-review-4c6a0ff63bcb29f18660",
+      "revision": 0,
+      "name": "Revisar novedades: Día de Todos",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-11-01T14:46:01.578895+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "83aa70bdac40",
+        "revision": 0,
+        "name": "Día de Todos",
+        "rank": 30,
+        "explanation": "TT#30 Día de Todos es tendencia por la cercanía de Todos los Santos: este año el 1 de noviembre cae en domingo y nueve comunidades trasladan el festivo al lunes 2.\n#TodosLosSantos #Festivos\n🌶️ Este año el puente viene con mapa autonómico.",
+        "explanation_sha256": "05950cbc45d9df4bb1902d08ae0b45a7e82e8bc3515f226ca2cf905649ef76bb",
+        "explained_at": "2026-10-30T18:27:00+01:00",
+        "verification_sources": [
+          "https://www.europapress.es/economia/noticia-donde-festivo-novimebre-comunidades-tendran-puente-lunes-20261030111011.html",
+          "https://www.dgt.es/comunicacion/notas-de-prensa/20261029-dispositivo-especial-festividad-todos-los-santos"
+        ],
+        "fingerprint": "aa43573fb3eca7dedb7366603a9356e161b6c3640f389b032147aac251bb9fe7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-390031a6b4233c786de6",
+      "revision": 0,
+      "name": "Revisar novedades: Jorge Martín",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-01T14:46:01.578895+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-166ff7a9a68de41cad16",
+        "revision": 0,
+        "name": "Jorge Martín",
+        "rank": 24,
+        "explanation": "TT#24 Jorge Martín es tendencia porque se ha retirado del GP de Malasia: intentó volver seis días después de fracturarse la muñeca en Australia, pero no pudo frenar con suficiente fuerza.\n#MotoGP #Sepang",
+        "explanation_sha256": "c977cc6f051a05390fdfd1f36119ffafcf95e0e638e5879e0d51c3f46a6255b6",
+        "explained_at": "2026-10-31T08:48:54.149139+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.motogp.com/es/news/2026/10/30/martin-zieht-sich-zuruck-die-89-wird-in-malaysia-nicht-an-den-start-gehen/1182474"
+          },
+          {
+            "url": "https://www.reuters.com/sports/motogp-title-already-lost-after-sepang-withdrawal-says-martin-2026-10-31/"
+          }
+        ],
+        "fingerprint": "eb12ba2e1c9ab9b03bf108f46a45a82cf7c923dd5178ad6f87ccddad2ca49fd1"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
   "count": 605
