@@ -3,45 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793550218501-manual",
-  "previous_run_id": "tr-1793549061243-manual",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-01T17:23:38.501+01:00",
-  "updated_at": "2026-11-01T17:31:54+01:00",
-  "finished_at": "2026-11-01T17:28:00+01:00",
-  "current": 4,
+  "run_id": "tr-1793550896199-manual",
+  "previous_run_id": "tr-1793550218501-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T17:35:00+01:00",
+  "updated_at": "2026-11-01T17:35:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "08376d731cac",
-    "12287c24cea0",
-    "3cc8471656db",
-    "6870ca4b898f"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "98e7a044dc62",
+    "7184eb72d1ea",
+    "red-review-8c4e81a9fff60caff47a",
+    "red-review-bd128813cc4afbd44c58"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "98e7a044dc62",
+    "7184eb72d1ea",
+    "red-review-8c4e81a9fff60caff47a",
+    "red-review-bd128813cc4afbd44c58"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 4
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1256,7 +1244,7 @@
     "message": "Pasada cerrada 4/4 por convergencia JIT: Fofana, Getafe, Viena y Alcaraz r0 quedaron explained y aplicadas en main. Barrera final observada: editorial-queue=0 y mobile-decisions sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2 por convergencia JIT: Día de Todos updated; #FelizDomingo unchanged. Cola final 0; sin reelaboraciones pendientes; ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 4 trabajos vigentes en main; primero Guti r0 y Diomande r0, después revisiones de Alsina y Kerolin. Validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2352,6 +2340,13 @@
         "concurrent_convergence": 17
       },
       "message": "Pasada cerrada 22/22 tras barrera final real: 20 explicaciones, 1 review updated (Día de Todos) y 1 review unchanged (#FelizDomingo). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:35:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793550896199-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 4 trabajos vigentes en main; primero Guti r0 y Diomande r0, después revisiones de Alsina y Kerolin. Validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
