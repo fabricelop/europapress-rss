@@ -110,3 +110,18 @@ test('neither unavailable browser starts a process or opens an arbitrary convers
  global.fetch=async url=>{calls.push(String(url));const e=new TypeError('fetch failed');e.cause={code:'ECONNREFUSED'};throw e;};
  try{await assert.rejects(()=>selectExistingBrowser(),/relay_version_ECONNREFUSED;generator_version_ECONNREFUSED/);assert.equal(calls.length,2);assert.ok(calls.every(x=>x.endsWith('/json/version')));}finally{global.fetch=original;}
 });
+
+
+test('the exact Site-return follow-up does not orphan the existing original raster',()=>{
+ const {conversationProbe,rasterProbe}=require('../windows/TTendenciasWebImages.cjs');
+ const conv=conversationProbe(COMMAND,true);
+ const raster=rasterProbe(COMMAND);
+ assert.match(conv,/TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1/);
+ assert.match(raster,/TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1/);
+ assert.match(raster,/later_user_turn/);
+ assert.match(raster,/ambiguous_or_missing_raster/);
+ // Only one adjacent follow-up for the SAME command may keep the raster
+ // accessible; arbitrary later user messages must never match.
+ assert.match(raster,/users\.length-2/);
+ assert.match(raster,/command\+' '/);
+});
