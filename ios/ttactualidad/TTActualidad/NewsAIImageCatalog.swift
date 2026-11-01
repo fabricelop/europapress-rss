@@ -123,12 +123,12 @@ enum NewsAIImageCatalog {
         guard validID(id), revision >= 1,
               !editorialText.isEmpty, !preparedAt.isEmpty else { return nil }
 
-        // Exact revision has priority. Never mix a stale manifest entry from
-        // the same revision with a different editor-approved text or timestamp.
+        // Exact ID/revision has priority. The event_id is immutable; small
+        // corrections to tweet.text or prepared_at must not erase its artwork.
+        // A new original always takes priority when explicitly associated,
+        // while rewrite_pending still suppresses the old READY card.
         if let current = catalog[key(id, revision)] {
-            guard current.editorial_text == editorialText,
-                  current.prepared_at == preparedAt,
-                  let url = validAssignedURL(current.image_url, id: id,
+            guard let url = validAssignedURL(current.image_url, id: id,
                                              revision: revision, sha: current.sha256)
             else { return nil }
             return ValidatedImage(url: url, sha256: current.sha256)
