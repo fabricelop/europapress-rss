@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793532281494-manual",
+  "run_id": "tr-1793531820836-manual",
   "previous_run_id": "tr-1793531820836-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-01T12:25:00+01:00",
-  "updated_at": "2026-11-01T12:25:30+01:00",
+  "updated_at": "2026-11-01T12:30:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
+  "current": 4,
+  "total": 6,
+  "trend_id": "red-review-5cea86122c498eb32753",
+  "title": "Revisar novedades: Toledo",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -22,7 +22,6 @@
     "red-review-2c540cbea6cdfd2e7781"
   ],
   "remaining_active_ids": [
-    "listas-auto-d949d22fea9dcb5ca638",
     "red-review-5cea86122c498eb32753",
     "red-review-2c540cbea6cdfd2e7781"
   ],
@@ -1381,7 +1380,7 @@
     "concurrent_convergence": 0
   },
   "source": "chat",
-  "message": "Resultado de agrupación persistido: groups=[] y covered_by_existing=[]. Verificando aplicación antes de iniciar mantenimiento; sin ImageGen.",
+  "message": "Agrupación aplicada sin grupos. Resultados de mantenimiento preparados: Toledo=updated; Óscar Muerte=unchanged. Verificando aplicación secuencial; sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
