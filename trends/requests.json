@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:47:59.779255+00:00",
+  "updated_at": "2026-11-01T12:45:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -171726,30 +171726,32 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Alavés"
       ],
       "originated_from_prior_id": "trend-update-7c8d21f3ad39dd8b2761",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Alavés, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "explained_at": "2026-11-01T12:45:20+01:00",
-      "last_attempt_at": "2026-11-01T12:45:20+01:00",
-      "explanation": "TT#4 Alavés es tendencia por la goleada 6-1 sufrida ante el Barcelona el 31 de octubre en LaLiga; Mariano Díaz marcó el único gol vitoriano en el 84'.\n#FCBarcelona #LaLiga\n🌶️ Mariano abrió el casillero del Alavés cuando el Barça ya lo había cerrado.",
-      "closer_text": "🌶️ Mariano abrió el casillero del Alavés cuando el Barça ya lo había cerrado.",
+      "explained_at": "2026-11-01T12:45:00+01:00",
+      "last_attempt_at": "2026-11-01T12:45:00+01:00",
+      "explanation": "TT#4 Alavés es tendencia por la derrota 6-1 ante el Barcelona este sábado en el Camp Nou, en la jornada 11 de LaLiga.\n#DeportivoAlavés #LaLiga\n🌶️ Halloween se alargó una noche en el marcador.",
+      "closer_text": "🌶️ Halloween se alargó una noche en el marcador.",
       "rank_at_explanation": 4,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
-          "url": "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-barcelona-deportivo-alaves-resumen-goles-resultado-partido-hoy-20261031230303.html"
+          "source": "LALIGA · 31/10/2026",
+          "url": "https://iaas-public-front-pro.laliga.com/partido/temporada-2026-2027-laliga-ea-sports-fc-barcelona-deportivo-alaves-11"
         },
         {
-          "url": "https://www.reuters.com/sports/soccer/barcelona-bounce-back-with-big-win-over-alaves-2026-10-31/"
+          "source": "FC Barcelona · 31/10/2026",
+          "url": "https://www.fcbarcelona.es/es/futbol/primer-equipo/noticias/4602177/fc-barcelona-alaves-noche-dulce-de-halloween-6-1"
         }
       ],
-      "news_note": "Reelaboración desde cero con fecha y marcador actual verificados.",
+      "news_note": "Reelaboración desde cero de Alavés r0. Marcador final y fecha verificados: Barcelona 6-1 Alavés, jornada 11, 31 de octubre de 2026. Sin ImageGen ni publicación automática.",
       "group_id": "grp-2b20f3e40801",
       "explanation_group_id": "grp-2b20f3e40801",
       "group_title": "Alavés",
@@ -171760,13 +171762,14 @@
       "grouped_member_revisions": [
         {
           "id": "2b20f3e40801",
+          "name": "Alavés",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "cleared",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
       "telegram_package_status": "pending",
       "listas_group_role": "covered",
       "covered_by_id": "listas-joint-1873f405d5b5996d",
@@ -171777,7 +171780,8 @@
       "coverage_reason": "already_published_same_event",
       "grouping_request_id": "listas-auto-72ab19fbbb9d740fb0d8",
       "editorial_grouping_fingerprint": "0019ebc058cca93bd070d424cac91c240d9a92f8239aaea95102e177dbffee7e",
-      "editorial_grouping_checked_at": "2026-11-01T11:46:29.308670+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:46:29.308670+00:00",
+      "news_disposition": "ignored"
     },
     {
       "id": "5b13bbe6ae22",
@@ -171795,30 +171799,32 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Adif"
       ],
       "originated_from_prior_id": "8c4ad00d976c",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Adif, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "explained_at": "2026-11-01T12:46:00+01:00",
-      "last_attempt_at": "2026-11-01T12:46:00+01:00",
-      "explanation": "TT#5 Adif es tendencia por la investigación del accidente de Urda del 28 de octubre: se analiza el fallo del LZB y la autorización del centro de control de Atocha para que el AVE reanudara la marcha.\n#Urda #Ferrocarril",
+      "explained_at": "2026-11-01T12:45:00+01:00",
+      "last_attempt_at": "2026-11-01T12:45:00+01:00",
+      "explanation": "TT#5 Adif es tendencia por la investigación del accidente de Urda: se examinan el fallo del sistema LZB y las instrucciones de circulación previas al choque del 28 de octubre.\n#Adif #Urda",
       "closer_text": "",
       "rank_at_explanation": 5,
       "category": "Actualidad",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
+          "source": "RTVE · 31/10/2026",
           "url": "https://www.rtve.es/noticias/20261031/por-reanudo-marcha-ave-fallo-sistemas-seguridad-incognitas-del-accidente-urda/17295123.shtml"
         },
         {
-          "url": "https://elpais.com/espana/2026-10-29/la-guardia-civil-investiga-en-que-circunstancias-se-produjo-el-error-humano-del-accidente-de-urda.html"
+          "source": "EL PAÍS · 31/10/2026",
+          "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
         }
       ],
-      "news_note": "Reelaboración desde cero. Se describe una línea de investigación, no una responsabilidad penal cerrada. Suceso sensible: sin remate humorístico.",
+      "news_note": "Reelaboración desde cero de Adif r0. Se describe la investigación abierta sobre el fallo del LZB y las instrucciones previas sin atribuir causalidad definitiva. Se omite remate por sensibilidad. Sin ImageGen ni publicación automática.",
       "group_id": "grp-5b13bbe6ae22",
       "explanation_group_id": "grp-5b13bbe6ae22",
       "group_title": "Adif",
@@ -171829,13 +171835,14 @@
       "grouped_member_revisions": [
         {
           "id": "5b13bbe6ae22",
+          "name": "Adif",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "cleared",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "3c2868cae4ed4520874e0dd651ee2401c27d688ce0ca98c858ba16ff7266e3e8",
       "editorial_grouping_checked_at": "2026-11-01T11:47:03.837726+00:00",
@@ -171845,7 +171852,8 @@
       "covered_by_name": "Urda · accidente e investigación de Adif",
       "covered_source_revision": 0,
       "covered_at": "2026-11-01T11:47:03.837726+00:00",
-      "grouping_request_id": "listas-auto-2ccea12644d585a5fd98"
+      "grouping_request_id": "listas-auto-2ccea12644d585a5fd98",
+      "news_disposition": "ignored"
     },
     {
       "id": "listas-auto-72ab19fbbb9d740fb0d8",
@@ -175541,5 +175549,5 @@
       "editorial_grouping_checked_at": "2026-11-01T11:47:03.837726+00:00"
     }
   ],
-  "count": 574
+  "count": 576
 }
