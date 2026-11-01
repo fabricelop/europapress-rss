@@ -38,3 +38,20 @@ for(const mode of ['humor','rigor'])test(mode+': ImageGen only once, then native
   assert.ok(prompt.indexOf('genera UNA')<prompt.indexOf('TTENDENCIAS_SITE_AUTO_RECEIPT_V5'));
   if(mode==='rigor')assert.ok(prompt.includes('No hagas humor ni sátira'));
 });
+
+
+test('TTImages emits a second original-only Site/App turn after ImageGen when required',()=>{
+  const begin=source.indexOf('function siteReturnAfterImagePrompt(job){');
+  const end=source.indexOf('\nasync function sendSiteReturnAfterImage(',begin);
+  assert.ok(begin>0&&end>begin,'Site-return follow-up builder exists');
+  const followup=new Function('commandId','targetId','buildMessage',
+    source.slice(begin,end)+';return siteReturnAfterImagePrompt;')(command,target,build);
+  const output=followup({revision:2,target_name:'Álex & Marc',context_snapshot:context});
+  assert.ok(output.startsWith('TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+command+' '+target));
+  assert.ok(output.includes(context.explanation));
+  assert.ok(output.includes('TTENDENCIAS_SITE_AUTO_RECEIPT_V5'));
+  assert.ok(output.includes('NO generes imágenes ni invoques ImageGen'));
+  assert.ok(output.includes('mcp__TTendencias___TTActualidad__attach_trend_image'));
+  assert.match(source,/await sendSiteReturnAfterImage\(cdp,job\)/);
+  assert.match(source,/await holdForWebImageReceipt\(webHandoff\)/);
+});
