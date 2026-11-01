@@ -3,42 +3,45 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793563876449-manual",
-  "previous_run_id": "tr-1793558264614-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T21:11:30+01:00",
-  "updated_at": "2026-11-01T21:16:00+01:00",
-  "finished_at": "2026-11-01T21:16:00+01:00",
-  "current": 2,
+  "run_id": "tr-1793564218863-manual",
+  "previous_run_id": "tr-1793563876449-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T21:17:00+01:00",
+  "updated_at": "2026-11-01T21:17:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-c6071d49583826af9ae6",
-    "red-review-406f9fdb710cc75ff2a0"
+  "trend_id": "a1f72cb31fee",
+  "title": "elche",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "a1f72cb31fee",
+    "b4e57b51c750"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "a1f72cb31fee",
+    "b4e57b51c750"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 2,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 2,
+    "rewrite_pending_remaining": null,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1492,6 +1495,13 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 2/2 por ejecución y convergencia JIT: Halloween updated; Toledo stale sin sobrescribir estado vigente. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T21:17:00+01:00",
+      "phase": "preparing",
+      "trend_id": "a1f72cb31fee",
+      "title": "elche",
+      "message": "Inicio: 2 trabajos preparing/update observados en main; validación JIT por ID+revisión; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -1529,7 +1539,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T21:10:18+01:00",
+  "last_started_at": "2026-11-01T21:17:00+01:00",
   "last_completed_at": "2026-11-01T21:10:18+01:00",
   "last_run": {
     "run_id": "tr-1793563201597-manual",
@@ -1661,7 +1671,7 @@
     "message": "Pasada cerrada 16/16: 14 investigaciones ordinarias explained, 1 revisión de Halloween actualizada y 1 revisión de Toledo cerrada stale por validación JIT (fuera del Top30/snapshot no vigente). Cola activa 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 1/1 por convergencia JIT: Blocus quedó review_completed/updated con nueva ficha trend-update; barrera final de main con editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 2 trabajos preparing/update observados en main; validación JIT por ID+revisión; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3972,8 +3982,31 @@
       "created_id": "trend-update-cba7ae26f75721ea1312"
     }
   ],
-  "current_item": null,
-  "current_title": null,
+  "current_item": {
+    "id": "a1f72cb31fee",
+    "name": "elche",
+    "rank": 11,
+    "revision": 0,
+    "status": "preparing",
+    "created_at": "2026-11-01T20:16:55.069339+00:00",
+    "requested_at": "2026-11-01T20:16:55.069339+00:00",
+    "updated_at": "2026-11-01T20:16:55.069339+00:00",
+    "task": "explain",
+    "auto_queued": false,
+    "request_source": "ttactualidad_direct_rework",
+    "with_image": true,
+    "disable_ai_image": false,
+    "rewrite_with_image": true,
+    "image_strategy": "ai_plus_fallback",
+    "fallback_image_status": "pending",
+    "ai_image_status": "pending",
+    "requested_together": [
+      "elche"
+    ],
+    "originated_from_prior_id": "manual-3ef249cab88399795aeb1cc0f4bbf769",
+    "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de elche, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+  },
+  "current_title": "elche",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
