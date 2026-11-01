@@ -28,13 +28,17 @@ on:
       - 'tests/test_site_top30_export.py'
       - '.github/workflows/ttendencias-site-top30-sync.yml'
   workflow_dispatch:
+  # Github Actions GITHUB_TOKEN commits do not trigger other push workflows.
+  # Reconcile the Site feed even when an external/editorial bot updates radar.
+  schedule:
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
 
 concurrency:
   group: ttendencias-site-top30-export
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   validate:
@@ -74,6 +78,19 @@ jobs:
           assert feed["schema_version"] == 1
           assert 1 <= feed["count"] <= 30
           assert path.stat().st_size < 250_000, "Public Site feed should be small"
+          PY
+            # Consistency guard: the public feed must reflect the exact radar
+            # revision from the same checkout, never a prior cached snapshot.
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          recent=json.loads(Path('trends/recent.json').read_text(encoding='utf-8'))
+          feed=json.loads(Path('trends/site-top30-current.json').read_text(encoding='utf-8'))
+          assert feed['radar_captured_at']==recent['captured_at'], 'radar/feed drift'
+          expected=[row['name'] for row in recent.get('items',[])[:30]]
+          published=[row['name'] for row in feed['items']]
+          assert expected==published, 'rank order mismatch against iPhone radar'
+          print('TT_SITE_PARITY_MATCHED',feed['radar_captured_at'],len(published))
           PY
             git add trends/site-top30-current.json
             if git diff --cached --quiet; then
