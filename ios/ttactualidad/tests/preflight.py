@@ -335,7 +335,7 @@ assert 'launchUrgentEditorial()' in actions
 assert 'openChatGPTApp()' in actions
 assert 'TTActualidad.chatGPTProjectLink.v1' not in actions
 assert 'openEditorialChat()' not in actions
-assert actions.count('quickLink("Proyecto TT"') == 3
+assert actions.count('quickLink("Proyecto TT"') == 1
 print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
 
 
@@ -418,7 +418,7 @@ assert 'Eliminarás de Listas todas las' in dashboard
 assert 'groupListas(' in dashboard and 'removeCovered: cleanup ? selected : nil' in dashboard
 assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
 assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
-assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 2
+assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 1
 assert 'news?.siteImageURL, trend?.siteImageURL' in actions
 assert 'UIPasteboard.general.image = image' in actions
 assert 'now.timeIntervalSince($0) <= 48 * 3600' in store
@@ -490,3 +490,12 @@ assert 'GitHub' in actions
 assert 'MARKETING_VERSION: "0.4.46"' in project
 assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
+
+# 0.4.46 build 53: one identical image-action panel for news and trends.
+assert actions.count('quickButton("Copiar GAG", "sparkles")') == 1
+assert actions.count('quickButton("Asociar imagen IA", "paperclip")') == 1
+assert actions.count('quickLink("Proyecto TT", "folder"') == 1
+assert 'copyTrendSiteImagePrompt()' in actions and 'copyNewsImageAssociationPrompt()' in actions
+assert 'news == nil ? automaticTrendImageBindingPrompt' in actions
+assert 'automaticNewsImageBindingPrompt' in actions
+print("TT_ACTUALIDAD_IOS_046_NEWS_TRENDS_SHARED_IMAGE_ACTIONS_OK")
