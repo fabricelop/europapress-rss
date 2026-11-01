@@ -26,9 +26,6 @@ struct EditorialActions: View {
     @State private var intent = "deleted"
     @State private var outcome = ""
     @State private var showHints = false
-    @State private var showTTProjectLink = false
-    @State private var ttProjectLinkInput = UserDefaults.standard.string(
-        forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
     @Environment(\.openURL) private var openURL
 
     private var title: String { news?.title ?? trend?.name ?? "" }
@@ -50,28 +47,14 @@ struct EditorialActions: View {
                     if let url = parts?.url { openURL(url) }
                 }
             }
+            // The grouping label is informational. All Listas entries, covered
+            // originals and joint leaders, share exactly the same action grid.
             if let trend, trend.isCovered {
                 Text("Agrupada en: " + trend.coveredByName)
                     .font(.caption.weight(.semibold)).foregroundStyle(.orange)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                HStack(spacing: 7) {
-                    quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
-                    quickButton("Copiar foto", "photo.on.rectangle") {
-                        Task { await copyPhoto() }
-                    }
-                }
-                quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
-                quickButton("Copiar explicación original", "doc.on.doc") { copy(fullText) }
-                // A covered original is still its own editorial identity. The
-                // existing rework action opens a NEW investigation without
-                // deleting this original or the previously published joint.
-                quickButton("Volver a evaluar", "arrow.triangle.2.circlepath") {
-                    request("rework")
-                }
-                if let joint = store.snapshot.trendListas.first(where: { $0.editorialID == trend.coveredByID }) {
-                    quickButton("Copiar publicación conjunta", "rectangle.3.group") { copy(joint.explanation) }
-                }
-            } else if let news, news.status != "LISTA" {
+            }
+            if let news, news.status != "LISTA" {
                 HStack(spacing: 7) {
                     quickButton("Copiar título", "doc.on.doc") { copy(news.title) }
                     quickButton("Buscar en X", "magnifyingglass") {
@@ -123,7 +106,7 @@ struct EditorialActions: View {
                         }
                     }
                 }
-            } else if trend?.status == "EN ELABORACIÓN" {
+            } else if trend?.status == "EN ELABORACIÓN" && trend?.inListas != true {
                 Text("Elaboración solicitada en GitHub; pendiente de cierre editorial.")
                     .font(.caption).foregroundStyle(TTTheme.muted)
                 HStack(spacing: 7) {
@@ -184,25 +167,6 @@ struct EditorialActions: View {
                     if let url = parts?.url { openURL(url) }
                 }
             }
-            }
-            if trend != nil {
-                HStack(spacing: 7) {
-                    quickButton("Copiar imagen Site", "square.on.square") {
-                        copyTrendSiteImagePrompt()
-                    }
-                    quickButton("Abrir chat TT", "plus.bubble") {
-                        openTTProject()
-                    }
-                    .alert("Enlace del proyecto TT", isPresented: $showTTProjectLink) {
-                        TextField("Enlace de PROYECTOS APP", text: $ttProjectLinkInput)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                        Button("Guardar y abrir") { saveAndOpenTTProject() }
-                        Button("Cancelar", role: .cancel) {}
-                    } message: {
-                        Text("Pega una vez el enlace de tu proyecto de ChatGPT (no el del Site ni un chat compartido). El botón abrirá ese proyecto para crear allí un chat nuevo.")
-                    }
-                }
             }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
@@ -405,7 +369,12 @@ struct EditorialActions: View {
               !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               !explainedAt.isEmpty, revision >= 0,
               target.status != "EN ELABORACIÓN",
-              !(displayed.isCovered && leader == nil) else { return imagePrompt }
+              !(displayed.isCovered && leader == nil) else {
+            // Do not silently generate a PNG that cannot be associated.
+            return "TTENDENCIAS_GAG_SITE_SYNC_V3 — CONTEXTO EDITORIAL NO DISPONIBLE. " +
+                "Actualiza Listas para obtener target_id, revisión, explicación literal y fecha de la ficha " +
+                "o de su agrupación. No generes ni asocies una imagen sin identidad exacta."
+        }
         let context: [String: Any] = [
             "project_id": "appgprj_6ae4dcf7d7488191a574e5b649e67370",
             "target_id": targetID,
@@ -420,168 +389,19 @@ struct EditorialActions: View {
         return imagePrompt + """
 
         
-        TTENDENCIAS_GAG_AUTO_ATTACH_V2 — ENTREGA AUTOMÁTICA DE LA IMAGEN NUEVA.
-        Genera UNA SOLA imagen y conserva su PNG ORIGINAL de ESTA MISMA CONVERSACIÓN. Este encargo manual más reciente tiene PRIORIDAD sobre trabajos anteriores de TTImages que todavía estén pendientes; un LAUNCHED antiguo NO puede bloquearlo. No utilices otra imagen ni una miniatura.
-        Contexto editorial vigente a revalidar sin reescribir:
+        TTENDENCIAS_GAG_SITE_SYNC_V3 — UNA SOLA CONVERSACIÓN, UNA IMAGEN Y SU ENTREGA.
+        Es un único encargo de ChatGPT dentro del proyecto PROYECTOS APP: generar la imagen y, sin pedir un segundo mensaje, asociar el PNG ORIGINAL generado AQUÍ al Site TTendencias existente y sincronizar el catálogo iPhone. No intervienen TTImages, el PC, scripts locales, bots, API de pago ni una segunda generación.
+        IDENTIDAD EDITORIAL INMUTABLE (JSON exacto para la herramienta context, NO reescribir):
         \(exactContext)
-        Después de ImageGen, SIN esperar otra orden del usuario: llama a inspect_top30_images y verifica target_id, revision, explanation literal y explained_at. Llama a verify_trend_image. Si falta imagen en Site, ejecuta attach_trend_image con el PNG ORIGINAL recién creado y el context exacto, luego verify_trend_image. Si la imagen anterior existe, la NUEVA es la preferida: solicita sustitución ÚNICAMENTE si el conector Site ofrece una operación autorizada y verificable de reemplazo para la misma identidad. No elimines ni falsifiques la asociación previa. Si el conector solo acepta alta y prohíbe sobrescribir, informa REEMPLAZO BLOQUEADO POR SITE, no afirmes que reemplazaste.
-        Después de status verified y URL/SHA-256 reales, sincroniza GitHub main trends/site-ai-images.json manteniendo todas las otras entradas y reemplazando solo el registro exacto (target_id, revision) con explanation y explained_at literales; relee el catálogo. Comunica GENERACIÓN, SITE y APP por separado. No marques asociada la imagen nueva si Site solo conservó la imagen anterior.
-        Si el turno termina al dibujar y no puedes ejecutar las herramientas, indica ASOCIACIÓN PENDIENTE. No solicites imágenes ni adjuntos de forma manual y no repitas la generación: la imagen original permanece en esta conversación para un retorno posterior. No inventes acceso a la galería ni anuncies éxito sin comprobación en Site y GitHub.
+
+        FASE 1 — IDENTIDAD, ANTES DE DIBUJAR: ejecuta mcp__TTendencias___TTActualidad__inspect_top30_images y busca EXACTAMENTE target_id, revision, explanation y explained_at vigentes. El nombre y el número TT# solo son ayudas visuales; para una ficha agrupada usa exclusivamente el contexto editorial exacto del grupo que figura arriba. Si el Site está desactualizado, falta identidad o no coincide, no asocies a otra ficha ni inventes datos. Informa BLOQUEADO POR CONTEXTO y no declares la entrega.
+        FASE 2 — GENERACIÓN: usa ImageGen UNA sola vez para producir la ilustración limpia 16:9 conforme a las reglas visuales anteriores, sin texto, bandas ni logotipos. Conserva el archivo PNG ORIGINAL y el identificador real de este resultado para la asociación en ESTA MISMA conversación.
+        FASE 3 — SITE, INMEDIATAMENTE DESPUÉS DE IMAGEGEN: no termines la tarea al generar el raster. Invoca mcp__TTendencias___TTActualidad__verify_trend_image con context literal. Si no existe imagen, llama mcp__TTendencias___TTActualidad__attach_trend_image con file=PNG ORIGINAL de este resultado y el MISMO context. Después llama otra vez a verify_trend_image; exige status verified, URL pública y sha256 reales. Si ya había una imagen DIFERENTE para el mismo ID/revisión, la nueva es la preferida, pero sustituye SOLO si el conector lo autoriza; si no lo permite, conserva la anterior e informa REEMPLAZO NO DISPONIBLE, sin fingir que la nueva quedó asociada. Un job TTImages antiguo con estado LAUNCHED no impide esta asociación si Site la admite.
+        FASE 4 — CATÁLOGO IPHONE: solo después de confirmar SITE verified para ESTA imagen, lee mediante GitHub fetch_file el archivo fabricelop/europapress-rss, rama main, trends/site-ai-images.json. Conserva todas las demás entradas, y crea o actualiza SOLO (target_id, revision) con explanation y explained_at literales del contexto, image_url HTTPS y sha256 reales verificados del Site. Usa GitHub update_file con el SHA actual; ante conflicto relee, reconcilia y comprueba después el registro leyendo main de nuevo. No dupliques entradas.
+        FASE 5 — RESULTADO: comunica GENERACIÓN realizada, SITE verified/pending, APP manifest verified/pending, con URL, SHA y commit únicamente si los has comprobado. El iPhone físico no se puede dar por comprobado desde el chat. No publiques en X ni Telegram.
+        REGLA DE ENTREGA: no pidas al usuario pulsar otro botón, pegar otro prompt, adjuntar otra vez el PNG ni descargarlo. No sustituyas el PNG original por miniaturas o archivos de Biblioteca que el conector no pueda recibir. Si ChatGPT termina el turno tras ImageGen sin ejecutar estas herramientas, informa el bloqueo de manera exacta cuando puedas; el texto del prompt NO es prueba de asociación ni autoriza declarar éxito.
         """
     }
-    // "Copiar imagen Site" is ONLY a safe existing-image attachment guide.
-    // Prefer the ORIGINAL PNG already available in the same conversation.
-    // A gallery/other-chat image needs explicit attachment if it is not in
-    // current context; a thumbnail or shared URL is NOT the original.
-    // Neither this button nor its prompt starts image generation.
-    private func copyTrendSiteImagePrompt() {
-        guard let displayed = trend else { return }
-
-        // An original covered by a joint grouping should reuse the leader's
-        // exact editorial identity, never an arbitrary matching name or rank.
-        let leader = displayed.isCovered
-            ? store.snapshot.trendListas.first(where: {
-                $0.editorialID == displayed.coveredByID && !$0.isCovered
-            })
-            : nil
-        let target = leader ?? displayed
-        let targetID = target.siteImageEditorialID
-        let explanation = target.explanation
-        let explainedAt = target.siteImageExplainedAt
-        let targetRevision = target.siteImageRevision
-        let validID = targetID.range(of: "^[A-Za-z0-9_-]{3,160}$",
-                                     options: .regularExpression) != nil
-        let hasEditorialIdentity = validID &&
-            !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-            !explainedAt.isEmpty && targetRevision >= 0 &&
-            target.status != "EN ELABORACIÓN" &&
-            !targetID.hasPrefix("site-term-") &&
-            !(displayed.isCovered && leader == nil)
-
-        let editorialContext = hasEditorialIdentity
-            ? "IDENTIDAD EDITORIAL CANDIDATA (REVALIDAR ANTES DE ADJUNTAR):\n" +
-              "target_id: \(targetID)\nname: \(target.name)\nrevision: \(targetRevision)\n" +
-              "scope: editorial\nexplained_at: \(explainedAt)\n" +
-              "EXPLICACIÓN LITERAL — NO REESCRIBIR:\n\(explanation)"
-            : "IDENTIDAD AÚN NO CONFIRMADA PARA ADJUNTAR:\n" +
-              "nombre visible: \(displayed.name)\npuesto orientativo: \(displayed.rank)\n" +
-              "id provisional o antiguo: \(targetID.isEmpty ? "sin ID" : targetID)\n" +
-              "estado actual: \(target.status)\n" +
-              (displayed.isCovered
-                ? "agrupada en: \(displayed.coveredByName), ID del grupo: \(displayed.coveredByID)\n"
-                : "") +
-              "El texto y/o la fecha editorial exactos no están disponibles aquí. " +
-              "NO inventes scope editorial, ID, explicación ni explained_at."
-
-        let prompt = [
-            "TTENDENCIAS_SITE_ATTACH_EXISTING_V1 — SOLO ASOCIAR PNG ORIGINAL YA CREADO",
-            "Proyecto ChatGPT PROYECTOS APP, chat normal, con las conexiones TTendencias y GitHub. " +
-                "NO uses ImageGen ni generes, redibujes, mejores, conviertas o sustituyas imágenes. " +
-                "NO publiques en X ni Telegram y NO utilices Work, PC, listeners ni API de pago.",
-            "SITE ORIGINAL: https://ttactualidad-tendencias.rainyraven22.chatgpt.site/\n" +
-                "project_id: appgprj_6ae4dcf7d7488191a574e5b649e67370\n" +
-                "Catálogo para iPhone: fabricelop/europapress-rss, main, trends/site-ai-images.json.",
-            editorialContext,
-            "ARCHIVO A ASOCIAR: primero identifica la ÚNICA imagen ORIGINAL ya " +
-                "generada o aportada por el usuario EN ESTA MISMA CONVERSACIÓN, " +
-                "preferiblemente en el mensaje al que se refiere expresamente " +
-                "al decir «Asocia esta imagen a la tendencia». Si el archivo original " +
-                "está disponible para attach_trend_image, REUTILÍZALO DIRECTAMENTE: " +
-                "no pidas copiar, descargar ni adjuntar de nuevo y NO generes otra imagen. " +
-                "Si hay varias candidatas, pregunta cuál de ellas debe asociarse; " +
-                "nunca adivines por el aspecto ni el nombre. " +
-                "Si la imagen está SOLO en otro chat o en la galería Imágenes y no " +
-                "tienes acceso a su archivo original desde ESTA conversación, " +
-                "pide al usuario que la seleccione/comparta o adjunte aquí mediante " +
-                "Imágenes o Biblioteca. No afirmes que puedes recorrer la galería " +
-                "personal automáticamente. " +
-                "Un enlace a un chat compartido, una vista previa, una captura " +
-                "o una ruta inventada NO sustituyen el archivo original requerido " +
-                "por el conector. No uses una imagen de otra tendencia.",
-            "1. Ejecuta mcp__TTendencias___TTActualidad__inspect_top30_images para obtener " +
-                "el contexto editorial VIGENTE del Site. Resuelve exactamente la tendencia y, " +
-                "si está agrupada, la identidad de su grupo. El nombre y el puesto aquí son pistas " +
-                "de búsqueda, nunca prueba suficiente para escribir. Si el contexto editorial " +
-                "actual no coincide con la identidad candidata, descarta la candidata y usa " +
-                "SOLO los datos vigentes que puedas verificar de forma inequívoca. " +
-                "Si el conector informa Authoritative Top 30 is stale, DETENTE: " +
-                "informa «BLOQUEADO POR TOP 30 ANTICUADO» y reintenta la asociación " +
-                "cuando la fuente se actualice, sin generar otra imagen.",
-            "2. REQUISITO NO NEGOCIABLE: antes de invocar attach_trend_image deben existir " +
-                "target_id editorial válido, revision, name, scope editorial, explicación literal " +
-                "NO VACÍA y explained_at NO VACÍO que pertenezcan a LA MISMA revisión. " +
-                "Si la ficha sigue pendiente, devuelve «PENDIENTE DE EXPLICACIÓN» y señala " +
-                "«Elaborar desde cero» en TTActualidad. No intentes adjuntar una imagen a " +
-                "scope term o a una explicación inventada. Cuando se explique, se podrá " +
-                "reintentar con el mismo PNG sin volver a generarlo.",
-            "3. Con el contexto exacto y vigente llama a " +
-                "mcp__TTendencias___TTActualidad__verify_trend_image. Si ya existe una imagen " +
-                "Site válida, no la sustituyas: omite attach y pasa al catálogo de iPhone " +
-                "para verificar/reparar ÚNICAMENTE la asociación existente.",
-            "4. Si el Site no tiene una imagen válida, adjunta el PNG ORIGINAL disponible " +
-                "en ESTA conversación, generado aquí o aportado por el usuario, mediante " +
-                "mcp__TTendencias___TTActualidad__attach_trend_image " +
-                "con su parámetro file real y context EXACTO: project_id, target_id, name, " +
-                "revision, scope, explanation, explained_at. " +
-                "Un encargo antiguo del PC con status LAUNCHED sin entrega NO prohíbe " +
-                "adjuntar el PNG aportado por el usuario: NO estás iniciando otra generación. " +
-                "Si hay conflicto porque otra imagen terminó antes, no sobrescribas; verifica.",
-            "5. Llama otra vez a mcp__TTendencias___TTActualidad__verify_trend_image " +
-                "y confirma status verified, ruta pública real y SHA-256. Si falla, detente, " +
-                "explica el error y conserva el original. No declares éxito ni actualices GitHub " +
-                "basándote en un archivo local o una URL supuesta.",
-            "6. Solo después del Site verificado, sincroniza esa MISMA imagen con iPhone: " +
-                "lee trends/site-ai-images.json de GitHub main con fetch_file, conservando " +
-                "TODAS las entradas. Actualiza únicamente el registro de (target_id, revision) " +
-                "con explanation y explained_at LITERALES, image_url pública HTTPS del Site " +
-                "y sha256 REAL. Usa update_file con SHA vigente; en conflicto relee y " +
-                "reintenta. Si el manifiesto no es escribible, informa APP pendiente " +
-                "pero nunca borres ni dupliques imágenes.",
-            "7. Relee el manifiesto desde GitHub main para confirmar persistencia exacta. " +
-                "Finaliza con los estados SEPARADOS SITE: verified/pending; APP: manifest verified/pending. " +
-                "Da URL y SHA-256 solo si están realmente verificados. " +
-                "Procesa UNA tendencia y UNA imagen. No cambies ni el texto ni el PC."
-        ].joined(separator: "\n\n")
-        copy(prompt)
-        outcome = hasEditorialIdentity
-            ? "Guía copiada. Pégala donde creaste la imagen; solo selecciónala si el original no está accesible."
-            : "Guía copiada. Esta ficha aún no tiene identidad editorial completa: primero debe explicarse. Conserva tu PNG."
-    }
-
-    // ChatGPT does not document an external URL that starts a new conversation
-    // inside an arbitrary private project. Save the user's actual project URL
-    // and open it; then New chat in that project retains the correct context.
-    private func validatedTTProjectURL(_ value: String) -> URL? {
-        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let url = URL(string: trimmed),
-              url.scheme == "https", url.host?.lowercased() == "chatgpt.com",
-              url.path.hasPrefix("/g/g-p-") || url.path.hasPrefix("/project/") else {
-            return nil
-        }
-        return url
-    }
-
-    private func openTTProject() {
-        if let saved = UserDefaults.standard.string(forKey: "TTActualidad.chatgpt.projectTT.url"),
-           let url = validatedTTProjectURL(saved) {
-            openURL(url)
-            outcome = "Proyecto TT abierto. Pulsa Nuevo chat dentro del proyecto y pega el prompt."
-        } else {
-            showTTProjectLink = true
-        }
-    }
-
-    private func saveAndOpenTTProject() {
-        guard let url = validatedTTProjectURL(ttProjectLinkInput) else {
-            outcome = "Introduce un enlace HTTPS válido del proyecto de ChatGPT (no del Site)."
-            return
-        }
-        UserDefaults.standard.set(url.absoluteString,
-                                  forKey: "TTActualidad.chatgpt.projectTT.url")
-        openURL(url)
-        outcome = "Enlace del proyecto TT guardado. Crea un chat allí y pega el prompt."
-    }
-
     /// Manual cloud-only fallback when Windows editorial listeners are offline.
     /// The prompt is a REQUEST, not a GitHub dispatch or a claim of completion.
     /// A fresh GitHub read and the official outbox are mandatory for success.
