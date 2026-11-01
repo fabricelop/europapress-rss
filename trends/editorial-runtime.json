@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793513820564-manual",
+  "run_id": "tr-1793514130661-manual",
   "previous_run_id": "tr-1793513703839-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-01T07:17:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-01T07:25:00+01:00",
   "updated_at": "2026-11-01T07:25:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 5,
-  "trend_id": "listas-auto-30620e264cab7828affa",
-  "title": "Agrupación automática de Listas",
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-e6155cb227cfa12b7d19",
+  "title": "Revisar novedades: #laSextaXplica",
   "queue_complete": false,
   "processed_ids": [
     "002cc3abd023",
@@ -25,7 +25,6 @@
     "red-review-1f12f1c6ae5cb8e7097d"
   ],
   "remaining_active_ids": [
-    "listas-auto-30620e264cab7828affa",
     "red-review-e6155cb227cfa12b7d19",
     "red-review-1f12f1c6ae5cb8e7097d"
   ],
@@ -757,7 +756,7 @@
     "note": "Koldo y jungkook fueron revalidados JIT; una ejecución inmediatamente anterior materializó las mismas revisiones durante esta pasada. Se respetaron los resultados más nuevos, se verificó sincronía en requests y telegram-manual-explained y la cola final quedó vacía. Sin ImageGen."
   },
   "source": "chat",
-  "message": "La relectura final detectó 3 trabajos nuevos; procesando agrupación automática (3/5). Sin ImageGen.",
+  "message": "Inicio tr-1793514130661-manual: 2 review_red preparing vigentes (#laSextaXplica y Toledo). Revalidación JIT por id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1115,6 +1114,14 @@
       "trend_id": "002cc3abd023",
       "title": "Koldo",
       "message": "Inicio tr-1793513703839-manual: 2 trabajo preparing/update vigente en main (Koldo, R0, puesto 17). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T07:25:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793514130661-manual",
+      "trend_id": "red-review-e6155cb227cfa12b7d19",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Inicio tr-1793514130661-manual: 2 review_red preparing vigentes (#laSextaXplica y Toledo). Revalidación JIT por id+revision; sin ImageGen ni publicación."
     }
   ],
   "history": [
