@@ -8,12 +8,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-01T09:31:35+01:00",
-  "updated_at": "2026-11-01T09:36:15+01:00",
+  "updated_at": "2026-11-01T09:38:00+01:00",
   "finished_at": null,
-  "current": 2,
+  "current": 3,
   "total": 5,
-  "trend_id": "listas-auto-02d7268c0acfb734e9df",
-  "title": "Agrupación automática de Listas",
+  "trend_id": "red-review-c833262dd375349d1e78",
+  "title": "Revisar novedades: #laSextaXplica",
   "queue_complete": false,
   "processed_ids": [
     "b622600f47d4",
@@ -31,17 +31,17 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 3,
     "observed": 5,
-    "closed": 2,
+    "closed": 3,
     "explained": 2,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 0,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -979,6 +979,14 @@
       "trend_id": "listas-auto-02d7268c0acfb734e9df",
       "title": "Agrupación automática de Listas",
       "message": "La barrera final detectó 3 trabajos nuevos. Reabriendo la pasada: 1 group_listas y 2 review_red; procesamiento según prioridad contractual, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:38:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793521834896-manual",
+      "trend_id": "red-review-c833262dd375349d1e78",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Revisión JIT vigente. Novedad material: episodio distinto del 31 de octubre centrado en Urda y LZB; resultado updated preparado sin remate por sensibilidad."
     }
   ],
   "final_outcomes": {
