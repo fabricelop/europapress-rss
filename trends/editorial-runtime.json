@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793555992698-manual",
-  "previous_run_id": "tr-chat-20261101T185500+0100",
-  "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-01T19:00:00+01:00",
-  "updated_at": "2026-11-01T19:06:00+01:00",
+  "run_id": "tr-1793556220668-manual",
+  "previous_run_id": "tr-1793555992698-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T19:04:00+01:00",
+  "updated_at": "2026-11-01T19:04:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 2,
+  "current": 0,
+  "total": 1,
   "trend_id": "red-review-4aa776ef0f7aa6c9554d",
   "title": "Revisar novedades: Blocus",
   "queue_complete": false,
@@ -25,8 +25,7 @@
     "red-review-0a921ac388344c58f273"
   ],
   "remaining_active_ids": [
-    "red-review-4aa776ef0f7aa6c9554d",
-    "red-review-0a921ac388344c58f273"
+    "red-review-4aa776ef0f7aa6c9554d"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
@@ -1393,7 +1392,7 @@
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T18:59:05+01:00",
+  "last_started_at": "2026-11-01T19:04:00+01:00",
   "last_completed_at": "2026-11-01T18:59:05+01:00",
   "last_run": {
     "run_id": "tr-1793553937207-manual",
@@ -1503,7 +1502,7 @@
     "message": "Pasada cerrada 10/10 por ejecución y convergencia JIT: 8 reelaboraciones manuales quedaron explicadas y verificadas en requests + Listas; las dos revisiones tardías de #laSextaXplica y Toledo quedaron review_completed/stale sin sobrescribir snapshots superados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Corregido el mismo outbox de Blocus r0 tras rechazo de validación: continuidad ahora usa «sigue siendo tendencia por…». Reintentando aplicación; sin ImageGen ni publicación.",
+  "message": "Inicio tr-1793556220668-manual: 1 revisión review_red preparing observada en main (Blocus). Validación JIT activa; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3845,12 +3844,8 @@
       "via": "concurrent_convergence_jit"
     }
   ],
-  "current_item": {
-    "id": "red-review-0a921ac388344c58f273",
-    "revision": 0,
-    "name": "Revisar novedades: Angrois"
-  },
-  "current_title": null,
+  "current_item": "red-review-4aa776ef0f7aa6c9554d",
+  "current_title": "Revisar novedades: Blocus",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
