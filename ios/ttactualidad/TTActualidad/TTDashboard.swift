@@ -1065,7 +1065,7 @@ private struct TrendTile: View {
         DisclosureGroup(isExpanded: $expanded) {
             VStack(alignment: .leading, spacing: 11) {
                 HStack {
-                    Text(item.isCovered || item.isJointGroup ? "EXPLICADA" : item.status)
+                    Text(item.status == "AGRUPADA" || item.status == "CONJUNTA" ? "EXPLICADA" : item.status)
                         .font(.caption2.weight(.semibold)).foregroundStyle(rankColor)
                     Spacer()
                     if let date = item.lastExplained {
