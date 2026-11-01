@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T071000+0100",
   "previous_run_id": "tr-chat-20261101T065500+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T07:10:00+01:00",
-  "updated_at": "2026-11-01T07:10:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T07:11:30+01:00",
+  "finished_at": "2026-11-01T07:11:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -638,6 +638,18 @@
       "phase": "preparing",
       "run_id": "tr-chat-20261101T071000+0100",
       "message": "Inicio manual desde ChatGPT: se refresca el Top 30 y después se relee la cola autoritativa; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T07:11:20+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T071000+0100",
+      "message": "Refresco manual completado: Top 30 capturado a las 07:10:55; editorial-queue actualizada 07:10:58 con count 0; mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T07:11:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T071000+0100",
+      "message": "TTendencias cerrada 0/0 tras refresco real. Sin ImageGen, sin publicación y sin cambios editoriales."
     }
   ],
   "final_outcomes": {
