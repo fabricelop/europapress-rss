@@ -3,30 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793534122544-manual",
+  "run_id": "tr-1793533948548-manual",
   "previous_run_id": "tr-1793533948548-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T12:55:22.544+01:00",
-  "updated_at": "2026-11-01T12:58:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 0,
+  "updated_at": "2026-11-01T12:58:04.023+01:00",
+  "finished_at": "2026-11-01T12:58:04.023+01:00",
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "listas-auto-e41651c718620ce133ce",
+    "aea33831119b",
+    "12beb07b0d96",
+    "24b026091f12",
+    "listas-auto-bc8dfbb410389cba37b7"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
     "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
+    "grouping_requests": 2,
+    "groups_created": 1,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -35,7 +41,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 5
   },
   "incident_count": 0,
   "incidents": [],
@@ -1390,6 +1396,37 @@
       "run_id": "tr-1793534122544-manual",
       "status": "RUNNING",
       "message": "Inicio de pasada manual: cola autoritativa observada en 0 tras convergencia de la ejecución anterior. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:58:04.023+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793533948548-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Yamaha y MotoGP quedaron cubiertos por la conjunta; Preparación permanece individual y explicada."
+    },
+    {
+      "at": "2026-11-01T12:58:04.023+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793533948548-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 2,
+        "groups_created": 1,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 5
+      },
+      "message": "TTendencias cerrada 5/5 por ejecución y convergencia JIT: 3 explicaciones y 2 agrupaciones resueltas; una agrupación creó MotoGP · Qatar y retirada de Yamaha. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -2993,7 +3030,39 @@
     }
   ],
   "partial": false,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "listas-auto-e41651c718620ce133ce",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "groups_created": 0
+    },
+    {
+      "id": "aea33831119b",
+      "revision": 0,
+      "outcome": "explained",
+      "name": "Yamaha"
+    },
+    {
+      "id": "12beb07b0d96",
+      "revision": 0,
+      "outcome": "explained",
+      "name": "Preparación"
+    },
+    {
+      "id": "24b026091f12",
+      "revision": 0,
+      "outcome": "explained",
+      "name": "MotoGP"
+    },
+    {
+      "id": "listas-auto-bc8dfbb410389cba37b7",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "groups_created": 1,
+      "joint_id": "listas-joint-eee3db5b7d223989"
+    }
+  ],
   "current_item": null,
   "current_title": null
 }
