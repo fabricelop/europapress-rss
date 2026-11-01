@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T044000+0100",
   "previous_run_id": "tr-chat-20261101T044000+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T04:40:00+01:00",
-  "updated_at": "2026-11-01T04:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T04:41:15+01:00",
+  "finished_at": "2026-11-01T04:41:15+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -521,17 +521,29 @@
       "phase": "preparing",
       "run_id": "tr-chat-20261101T044000+0100",
       "message": "Inicio tr-chat-20261101T044000+0100: refresco real del Top 30 y relectura de main; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T04:41:05+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T044000+0100",
+      "message": "Barrera final de main: editorial-queue=0 (actualizada 04:41:00), sin preparing/update ni rewrite_pending/reexplain. Captura Top 30 de las 04:40:56."
+    },
+    {
+      "at": "2026-11-01T04:41:15+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T044000+0100",
+      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T04:40:00+01:00",
-  "last_completed_at": "2026-11-01T04:11:15+01:00",
+  "last_completed_at": "2026-11-01T04:41:15+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T041000+0100",
+    "run_id": "tr-chat-20261101T044000+0100",
     "status": "DONE",
-    "started_at": "2026-11-01T04:10:00+01:00",
-    "finished_at": "2026-11-01T04:11:15+01:00",
+    "started_at": "2026-11-01T04:40:00+01:00",
+    "finished_at": "2026-11-01T04:41:15+01:00",
     "attempted": 0,
     "observed": 0,
     "closed": 0,
@@ -547,10 +559,10 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Cola compacta 0 en inicio y relectura final; captura Top 30 renovada a las 04:10:58 y cola actualizada a las 04:11:02. Sin rewrite_pending/reexplain ni preparing/update detectados. Sin ImageGen ni publicaciones."
+    "note": "Top 30 renovado a las 04:40:56; cola editorial actualizada a las 04:41:00 y final 0. Sin rewrite_pending/reexplain detectado. Sin ImageGen ni publicaciones."
   },
   "source": "chat",
-  "message": "Pasada real en curso: refrescando Top 30 y revalidando la cola editorial; sin ImageGen ni publicación.",
+  "message": "Pasada real completada 0/0: captura Top 30 renovada a las 04:40:56, cola actualizada a las 04:41:00 y final 0; sin rewrite_pending/reexplain, ImageGen 0 y publicaciones 0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -790,6 +802,18 @@
       "phase": "preparing",
       "run_id": "tr-chat-20261101T044000+0100",
       "message": "Inicio tr-chat-20261101T044000+0100: refresco real del Top 30 y relectura de main; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T04:41:05+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T044000+0100",
+      "message": "Barrera final: cola 0 y sin reexplicaciones vigentes."
+    },
+    {
+      "at": "2026-11-01T04:41:15+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T044000+0100",
+      "message": "DONE 0/0; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
