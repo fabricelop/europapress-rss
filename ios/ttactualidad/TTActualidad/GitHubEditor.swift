@@ -653,6 +653,24 @@ final class GitHubEditor: ObservableObject {
                               label: removeCovered == nil ? "Agrupar Listas" : "Retirar agrupadas")
     }
 
+    // One GitHub receipt for the complete snapshot, not one API call per card.
+    // Revisions are checked again by the authoritative Listas workflow.
+    func removeAllTrendsFromListas(items: [TrendItem], requestID: String) async -> WriteResult {
+        guard !items.isEmpty && items.count <= 500 else {
+            notice = "No hay tendencias para retirar o la selección supera las 500."
+            return .failed
+        }
+        let payload: [String: Any] = [
+            "project": "ttendencias", "event_id": "listas-remove-all",
+            "decision": "remove_all_trends", "request_id": requestID,
+            "items": items.map {
+                ["id": $0.editorialID, "revision": $0.revision] as [String: Any]
+            }
+        ]
+        return await dispatch("ttactualidad_group_listas_v1", payload: payload,
+                              label: "Retirar todas las tendencias · No publicadas")
+    }
+
     func addNews(title: String, url: String, instructions: String,
                  requestID: String? = nil,
                  originTrend: TrendItem? = nil) async -> WriteResult {
