@@ -3,25 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T142500+0100",
-  "previous_run_id": "tr-chat-20261101T141000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T14:25:00+01:00",
-  "updated_at": "2026-11-01T14:26:52+01:00",
-  "finished_at": "2026-11-01T14:26:52+01:00",
+  "run_id": "tr-chat-20261101T1445+0100",
+  "previous_run_id": "tr-chat-20261101T142500+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T14:45:00+01:00",
+  "updated_at": "2026-11-01T14:45:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "ad9b88f15edd",
+    "dd01c065f868",
+    "e7a4bf7abad7",
+    "120476851821"
+  ],
+  "remaining_active_ids": [
+    "ad9b88f15edd",
+    "dd01c065f868",
+    "e7a4bf7abad7",
+    "120476851821"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -30,7 +40,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -221,11 +231,19 @@
       "at": "2026-11-01T14:26:52+01:00",
       "phase": "closing",
       "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. No se resucitaron trabajos históricos fuera de la cola autoritativa. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T14:45:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T1445+0100",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio: 4 trabajos preparing vigentes en main (Kike Salas, #GetafeSevilla, Miquel Navarro, Gudelj). Revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T14:25:00+01:00",
+  "last_started_at": "2026-11-01T14:45:00+01:00",
   "last_completed_at": "2026-11-01T14:26:52+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T142500+0100",
@@ -254,7 +272,7 @@
     "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. No se resucitaron trabajos históricos fuera de la cola autoritativa. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. Los registros grandes de requests y Listas fueron verificados por blob; no se resucitaron problemáticas históricas fuera de la cola autoritativa. ImageGen=0; publicaciones=0.",
+  "message": "Procesando 4 trabajos editoriales nuevos tras refresco manual del Top 30.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
