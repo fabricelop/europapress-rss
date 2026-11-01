@@ -3,23 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793545682955-manual",
-  "previous_run_id": "tr-1793545295401-manual",
-  "status": "success",
-  "phase": "investigating",
-  "started_at": "2026-11-01T16:08:00+01:00",
-  "updated_at": "2026-11-01T16:10:36+01:00",
+  "run_id": "tr-1793545880425-manual",
+  "previous_run_id": "tr-1793545682955-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T16:11:30+01:00",
+  "updated_at": "2026-11-01T16:11:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "listas-joint-f8769365147a3582",
-  "title": "Getafe-Sevilla · Kike Salas y Gudelj",
-  "queue_complete": true,
-  "processed_ids": [
-    "cb9bc0ab3d67"
+  "trend_id": null,
+  "title": null,
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-83ebe32f690b4d2b469f",
+    "red-review-fd05f8e91a6fb29a4e48"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-83ebe32f690b4d2b469f",
+    "red-review-fd05f8e91a6fb29a4e48"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -640,6 +644,15 @@
       "trend_id": "listas-joint-f8769365147a3582",
       "title": "Getafe-Sevilla · Kike Salas y Gudelj",
       "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:11:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793545880425-manual",
+      "status": "RUNNING",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio de pasada manual real: 2 review_red preparing en main (#laSextaXplica y Toledo), ordenados por requested_at y sujetos a validación JIT de id+revision. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -2606,16 +2619,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-390031a6b4233c786de6",
-      "revision": 0,
-      "title": "Jorge Martín",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
-  "current_item": "listas-joint-f8769365147a3582",
-  "current_title": "Getafe-Sevilla · Kike Salas y Gudelj"
+  "outcomes": [],
+  "current_item": null,
+  "current_title": null
 }
