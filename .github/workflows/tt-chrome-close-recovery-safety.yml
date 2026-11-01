@@ -1,0 +1,42 @@
+name: TT Windows Chrome-close recovery · no-regression checks
+on:
+  push:
+    branches: [main]
+    paths:
+      - "windows/Recover-TT-After-Chrome-Close-Safe.ps1"
+      - ".github/workflows/tt-chrome-close-recovery-safety.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Windows PowerShell 5.1 syntax and non-destructive contract
+        shell: powershell
+        run: |
+          $file='windows/Recover-TT-After-Chrome-Close-Safe.ps1'
+          $tokens=$null; $errors=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file),[ref]$tokens,[ref]$errors)|Out-Null
+          if($errors.Count){throw ('PowerShell syntax error: '+$errors[0].Message)}
+          $src=Get-Content -LiteralPath $file -Raw -Encoding UTF8
+          foreach($danger in @('Stop-Process','Stop-ScheduledTask','Remove-Item','Unregister-ScheduledTask','Disable-ScheduledTask','taskkill','--user-data-dir=')){
+            if($src.Contains($danger)){throw ('Forbidden destructive action: '+$danger)}
+          }
+          foreach($required in @('TT Chrome Auto','TTImages - AutoRecovery Viewer','TTiTTularesDedicatedListener.ps1','TTendenciasDedicatedListener.ps1','TT-LocalWatchdog.ps1','SeLoRecordamos-Telegram','SeLoRecordamos-Watchdog')){
+            if(-not $src.Contains($required)){throw ('Missing recovery compatibility: '+$required)}
+          }
+          Write-Output 'TT_SAFE_CHROME_RECOVERY_PS51_PARSE_AND_CONTRACT_OK'
+      - name: Inspect-only on fresh Windows runner must have no side effects
+        shell: powershell
+        run: |
+          $out=& powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File windows/Recover-TT-After-Chrome-Close-Safe.ps1 2>&1
+          $text=($out | Out-String)
+          if($LASTEXITCODE -ne 0){throw ('Inspector failed: '+$text)}
+          if(-not $text.Contains('TT_SAFE_RECOVERY BEGIN MODE INSPECT ONLY')){throw ('Inspector not readonly: '+$text)}
+          if(-not $text.Contains('C:\TTiTTulares\Ejecutar.js absent')){throw 'Fresh machine must not silently install/edit TT components'}
+          Write-Output 'TT_SAFE_CHROME_RECOVERY_READ_ONLY_OK'
