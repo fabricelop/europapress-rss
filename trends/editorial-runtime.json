@@ -6,18 +6,24 @@
   "run_id": "tr-chat-20261101T0140+0100",
   "previous_run_id": "tr-1793491791612-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T01:40:00+01:00",
-  "updated_at": "2026-11-01T01:40:00+01:00",
+  "updated_at": "2026-11-01T01:42:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "7c83e4ed846c",
+  "title": "Lewis Hamilton",
   "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "7c83e4ed846c",
+    "2f626d4022c4"
+  ],
+  "remaining_active_ids": [
+    "7c83e4ed846c",
+    "2f626d4022c4"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -573,6 +579,13 @@
       "at": "2026-11-01T01:40:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-chat-20261101T0140+0100: cola compacta observada 0. Revalidando main, rewrite_pending y últimos resultados antes de la barrera final; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "7c83e4ed846c",
+      "title": "Lewis Hamilton",
+      "message": "Revalidación JIT r0 completada. Detonante verificado: primera pole de Hamilton con Ferrari en México, 1:16.514 y 0.009 s sobre Russell."
     }
   ],
   "final_outcomes": [
