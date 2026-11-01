@@ -64,7 +64,7 @@ function networkStage(url){
   if(url.includes('127.0.0.1:9234'))return url.includes('/json/version')?'relay_version':'relay_targets';
   if(url.includes('127.0.0.1:9223'))return url.includes('/json/version')?'generator_version':'generator_targets';
   if(url.includes('image-runs/jobs/')||url.includes('view=image-job'))return 'image_job';
-  if(url.includes('telegram-manual-explained')||url.includes('view=state'))return 'editorial_state';
+  if(url.includes('prepared')||url.includes('view=state'))return 'editorial_state';
   return 'receiver';
 }
 async function http(url,options={}){
@@ -200,83 +200,69 @@ async function rememberConversation(input){
 }
 
 async function consume(task){
-  const job=await readImageJob(task);
-  if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
-  if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at||task.status==='published')return recoverSiteAfterUpload(task,job);
-  if(['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))return {status:'obsolete',reason:'image_job_terminal'};
-  // ERROR is not proof that no image exists. This consumer NEVER generates:
-  // it can only read a raster after this command's exact user turn.
-  if(!chatURL(task.conversation_url)){
-    try{
-      const found=await discoverConversation(task.command_id,task.browser_target_id,true);
-      if(!found.url)return {status:'waiting',reason:'awaiting_command_conversation:'+found.reason};
-      task.conversation_url=found.url;
-      task.browser_target_id=found.browser_target_id;
-    }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
-  }
+ const job=await readImageJob(task);
+ if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
+ if(job.status==='DONE'||task.upload_accepted_at)return confirmedInMain(task,job);
+ if(['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))
+   return {status:'obsolete',reason:'job_cancelled'};
+ if(!chatURL(task.conversation_url)){
   try{
-    const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttittulares-run-status?view=web-image-contract');
-    if(contract.web_image_receipt!==2)return {status:'waiting',reason:'receiver_update_pending'};
-  }catch{return {status:'waiting',reason:'receiver_update_pending'};}
-  // Never create capture tabs in the generator profile. Its renderer already
-  // failed before submission in the incident; web delivery must not add churn.
-  const capture=await selectExistingBrowser();
-  const browser=capture.browser;let browserCDP,cdp,ownedTarget;
-  try{
-    let readTarget;
-    if(capture.source==='generator_9223'){
-      const pages=await http(capture.base+'/json/list');
-      readTarget=pages.find(x=>x.type==='page'&&chatURL(x.url)===task.conversation_url&&x.webSocketDebuggerUrl);
-      if(!readTarget)return {status:'waiting',reason:'awaiting_relay_or_existing_conversation'};
-      cdp=new CDP(readTarget.webSocketDebuggerUrl);await cdp.open();
-    }else{
-      browserCDP=new CDP(browser.webSocketDebuggerUrl);await browserCDP.open();
-      const made=await browserCDP.call('Target.createTarget',{url:task.conversation_url,background:true});ownedTarget=made.targetId;
-    }
-    for(let n=0;n<5;n++){
-      if(cdp)break;
-      const targets=await http(capture.base+'/json/list');const own=targets.find(x=>x.id===ownedTarget);
-      if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
-      await sleep(500);
-    }
-    if(!cdp)throw Error('export_tab_not_ready');
-    let raster;
-    for(let n=0;n<30;n++){
-      await sleep(1500);raster=await cdp.evaluate(rasterProbe(task.command_id));
-      if(raster?.ready||raster?.reason==='capture_requires_sign_in'||
-        (capture.source==='generator_9223'&&raster?.reason==='command_not_in_conversation'))break;
-    }
-    if(!raster?.ready)return {status:'waiting',reason:raster?.reason||'raster_not_ready'};
-    // Fresh job identity check immediately before sending raster bytes.
-    const fresh=await readImageJob(task);
-    if(!sameContext(task,fresh))return {status:'obsolete'};
-    const manual=await readEditorialState();
-    const current=(manual.items||[]).filter(x=>String(x.id)===task.target_id).sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
-    if(!current||Number(current.revision||0)!==task.revision||crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')!==task.editorial_sha256)return {status:'obsolete'};
-    // Recover native Site/App attachment from the existing original only.
-    let siteReturnStatus=String(task.site_return_status||'');
-    if(capture.source==='relay_9234'&&!task.site_return_sent_at&&!producerBusyFor(task)){
-      try{siteReturnStatus=await sendSiteReturnFromPublisher(cdp,task,fresh);}
-      catch(e){siteReturnStatus='deferred_'+String(e?.message||e).replace(/https?:\/\/\S+/g,'[url]').slice(0,70);}
-    }
-    const siteReturnSent=siteReturnStatus==='already_sent'||siteReturnStatus==='sent_verified';
-    const siteReturnReceipt={site_return_status:siteReturnStatus,
-      ...(siteReturnSent?{site_return_sent_at:new Date().toISOString()}:{})};
-    const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttittulares-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),body:JSON.stringify({task:'web_image_upload',context_editorial_sha256:task.editorial_sha256,target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),image_data_url:raster.dataUrl,capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
-    const result=await response.json();
-    if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',capture_browser:capture.source,sha256:String(result.sha256||''),image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString(),...siteReturnReceipt};
-    if([401,409,422].includes(response.status))return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
-    throw Error('image_upload_HTTP_'+response.status);
-  }finally{
-    cdp?.close();
-    if(ownedTarget)try{await browserCDP?.call('Target.closeTarget',{targetId:ownedTarget});}catch{}
-    browserCDP?.close();
+   const found=await discoverConversation(task.command_id,task.browser_target_id,true);
+   if(!found.url)return {status:'waiting',reason:'awaiting_command_conversation:'+found.reason};
+   task.conversation_url=found.url;task.browser_target_id=found.browser_target_id;
+  }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
+ }
+ const capture=await selectExistingBrowser();let browserCDP,cdp,ownedTarget;
+ try{
+  if(capture.source==='generator_9223'){
+   const pages=await http(capture.base+'/json/list');
+   const own=pages.find(x=>x.type==='page'&&chatURL(x.url)===task.conversation_url&&
+    String(x.id||'')===String(task.browser_target_id||'')&&x.webSocketDebuggerUrl);
+   if(!own)return {status:'waiting',reason:'exact_generator_conversation_missing'};
+   cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();
+  }else{
+   browserCDP=new CDP(capture.browser.webSocketDebuggerUrl);await browserCDP.open();
+   const made=await browserCDP.call('Target.createTarget',{url:task.conversation_url,background:true});
+   ownedTarget=made.targetId;
+   for(let n=0;n<8;n++){
+    const pages=await http(capture.base+'/json/list'),own=pages.find(x=>x.id===ownedTarget);
+    if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
+    await sleep(400);
+   }
   }
+  if(!cdp)return {status:'waiting',reason:'export_tab_not_ready'};
+  let raster;
+  for(let n=0;n<35;n++){
+   await sleep(1200);raster=await cdp.evaluate(rasterProbe(task.command_id));
+   if(raster?.ready||['capture_requires_sign_in','later_user_turn'].includes(raster?.reason))break;
+  }
+  if(!raster?.ready)return {status:'waiting',reason:raster?.reason||'raster_not_ready'};
+  const fresh=await readImageJob(task);
+  if(!sameContext(task,fresh))return {status:'obsolete',reason:'job_changed_before_upload'};
+  const state=await readEditorialState(),row=(state.items||[]).filter(x=>String(x.event_id||'')===task.target_id)
+    .sort((a,b)=>Number(b.revision||0)-Number(a.revision||0))[0];
+  if(!row||Number(row.revision||0)!==task.revision||
+    headlineFingerprint({tweet_text:row.tweet?.text,factual_summary:row.factual_summary,remate:row.tweet?.remate})!==task.editorial_sha256)
+    return {status:'obsolete',reason:'editorial_changed'};
+  const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttittulares-run',{
+   method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(55000),
+   body:JSON.stringify({task:'web_image_upload',context_editorial_sha256:task.editorial_sha256,
+    target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),
+    image_data_url:raster.dataUrl,
+    capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
+  const result=await response.json();
+  if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'awaiting_main_confirmation',
+     capture_browser:capture.source,sha256:String(result.sha256||''),image_path:String(result.image_path||''),
+     upload_accepted_at:new Date().toISOString()};
+  if([401,409,422].includes(response.status))return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
+  throw Error('image_upload_HTTP_'+response.status);
+ }finally{
+  cdp?.close();if(ownedTarget)try{await browserCDP?.call('Target.closeTarget',{targetId:ownedTarget});}catch{}
+  browserCDP?.close();
+ }
 }
 async function telemetry(task,result){
-  try{
-    await fetch('https://tt-control.fabricelop.workers.dev/api/ttittulares-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(10000),body:JSON.stringify({task:'web_image_telemetry',target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),stage:result.status,reason:String(result.reason||'confirmed').slice(0,140),version:2})});
-  }catch{}
+ if(result.status!=='waiting')console.log('TTITTULARES_WEB_IMAGE '+task.target_id+' '+result.status);
 }
 // Prefer only the newest eligible command per exact editorial ID.
 // Older receipts remain on disk for fallback if the newer attempt fails;
