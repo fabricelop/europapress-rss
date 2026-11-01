@@ -146,7 +146,7 @@ function archivedPhoto(x){
  const original=/generated-images|chatgpt|\/images\/(ttendencias|ttittulares)\//i.test(sourceURL)?
    '':isHttp(sourceURL);
  let earlier='';
- if(!indexed&&!supplied&&project&&/^[A-Za-z0-9_-]{3,160}$/.test(id)){
+ if(!indexed&&project&&/^[A-Za-z0-9_-]{3,160}$/.test(id)){
    let previous=-1;
    for(const [key,url] of Object.entries(photos)){
      if(!key.startsWith(prefix))continue;
@@ -157,7 +157,7 @@ function archivedPhoto(x){
      }
    }
  }
- return indexed||supplied||earlier||original;
+ return indexed||earlier||supplied||original;
 }
 
 function verifiedNewsAI(x){
