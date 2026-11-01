@@ -91,6 +91,6 @@ jobs:
           $updater=Get-Content 'windows/TT-AutoUpdater.ps1' -Raw
           if(-not $updater.Contains('TTiTTularesWebImages.cjs')){throw "Receptor ausente del auto-updater"}
           $diagnostic=Get-Content 'windows/Diagnosticar-TTImages-Asociacion-Safe.ps1' -Raw
-          if($diagnostic -match '(?im)^\\s*(Remove-Item|Set-Content|Add-Content|Start-Process|Stop-Process|Restart-Computer|Invoke-Expression|git push)\\b'){
+          if($diagnostic -match '(?im)^\s*(Remove-Item|Set-Content|Add-Content|Start-Process|Stop-Process|Restart-Computer|Invoke-Expression|git push)\b'){
             throw 'Diagnóstico contiene una operación prohibida'
           }
