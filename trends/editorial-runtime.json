@@ -5,30 +5,47 @@
   "canonical": true,
   "run_id": "tr-1793548588490-manual",
   "previous_run_id": "tr-1793545295401-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T16:57:00+01:00",
-  "updated_at": "2026-11-01T17:00:59+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T17:01:31+01:00",
+  "finished_at": "2026-11-01T17:01:31+01:00",
+  "current": 8,
   "total": 8,
   "trend_id": "2d00f5e3e658",
   "title": "Manu",
   "queue_complete": true,
   "processed_ids": [
-    "107d210b8318",
     "2d00f5e3e658",
-    "4e4384519ea7",
-    "57b80a6a7dd2",
-    "63b063f5b637",
     "64b7521f1d8d",
+    "4e4384519ea7",
+    "f4ae195585a9",
+    "63b063f5b637",
     "b77ac0afa366",
-    "f4ae195585a9"
+    "107d210b8318",
+    "57b80a6a7dd2"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
+    "explained": 8,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -742,6 +759,33 @@
       "trend_id": "2d00f5e3e658",
       "title": "Manu",
       "message": "Persistiendo Manu r0 mediante TTENDENCIAS_CHAT_OUTBOX_V1 tras revalidación JIT. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-01T17:01:31+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793548588490-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 8,
+        "observed": 8,
+        "closed": 8,
+        "explained": 8,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 8/8: ocho explicaciones aplicadas con validación JIT; cola final 0 y sin rewrite_pending/reexplain. Sin ImageGen, agrupaciones automáticas ni publicaciones."
     }
   ],
   "final_outcomes": [
@@ -2821,7 +2865,56 @@
     }
   ],
   "partial": false,
-  "outcomes": [],
-  "current_item": "2d00f5e3e658",
-  "current_title": "Manu"
+  "outcomes": [
+    {
+      "id": "2d00f5e3e658",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "64b7521f1d8d",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4e4384519ea7",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "f4ae195585a9",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "63b063f5b637",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "b77ac0afa366",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "107d210b8318",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "57b80a6a7dd2",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
+  "current_item": null,
+  "current_title": null
 }
