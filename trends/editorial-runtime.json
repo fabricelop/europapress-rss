@@ -6,21 +6,23 @@
   "run_id": "tr-1793527469295-manual",
   "previous_run_id": "tr-1793527213050-manual",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "investigating",
   "started_at": "2026-11-01T11:05:00+01:00",
-  "updated_at": "2026-11-01T11:08:30+01:00",
+  "updated_at": "2026-11-01T11:09:30+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "listas-auto-cbda911e727cb3be2693",
-  "title": "Agrupación automática de Listas",
+  "current": 1,
+  "total": 3,
+  "trend_id": "red-review-1343290e6c52ef92fee0",
+  "title": "Revisar novedades: #laSextaXplica",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "listas-auto-cbda911e727cb3be2693"
+    "red-review-1343290e6c52ef92fee0",
+    "red-review-59f90d990dadda2724b7"
   ],
   "remaining_active_ids": [
-    "listas-auto-cbda911e727cb3be2693"
+    "red-review-1343290e6c52ef92fee0",
+    "red-review-59f90d990dadda2724b7"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
@@ -1220,6 +1222,14 @@
       "trend_id": "listas-auto-cbda911e727cb3be2693",
       "title": "Agrupación automática de Listas",
       "message": "Outbox persistido para el mismo job con groups:[] y covered_by_existing:[]. Workflow ttactualidad-group-listas en ejecución; pruebas de agrupación superadas y aplicador persistiendo resultado."
+    },
+    {
+      "at": "2026-11-01T11:09:30+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793527469295-manual",
+      "trend_id": "red-review-1343290e6c52ef92fee0",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Revisando novedades JIT de #laSextaXplica: comparación del episodio original del 24 de octubre con la emisión actual; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
