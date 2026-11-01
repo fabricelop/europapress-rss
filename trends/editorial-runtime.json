@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T09:46:30+01:00",
-  "updated_at": "2026-11-01T09:48:35+01:00",
-  "finished_at": "2026-11-01T09:48:35+01:00",
+  "updated_at": "2026-11-01T09:49:30+01:00",
+  "finished_at": "2026-11-01T09:49:30+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
@@ -36,19 +36,11 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 2
+    "incidents": 0,
+    "concurrent_convergence": 1
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-01T09:48:35+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-d962c519109a109bdc4b",
-      "title": "Agrupación automática de Listas",
-      "reason": "Una corrección concurrente añadió Sepang, que no figuraba en el snapshot de candidatos; el aplicador la rechazó como miembro fuera de solicitud y la agrupación se corrigió contra el snapshot JIT antes de aplicar."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -1084,59 +1076,68 @@
         "incidents": 1,
         "concurrent_convergence": 2
       }
+    },
+    {
+      "at": "2026-11-01T09:49:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado del job ya persistido por ejecución concurrente válida: 1 grupo conjunto GP de Malasia (Acosta, Malasia, Bezzecchi) y #TodosLosSantos cubierto por Día de Todos. No se sobrescribe el outbox."
+    },
+    {
+      "at": "2026-11-01T09:49:15+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain y búsqueda en repo sin pendientes equivalentes. Commit de aplicación actualizó requests.json y telegram-manual-explained.json."
+    },
+    {
+      "at": "2026-11-01T09:49:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793522752871-manual",
+      "status": "DONE",
+      "message": "DONE 1/1 por convergencia concurrente. Agrupación aplicada: 1 grupo nuevo y 1 covered_by_existing; cola final 0; ImageGen=0; publicaciones=0; incidencias=0.",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      }
     }
   ],
-  "final_outcomes": {
-    "last_run": {
-      "run_id": "tr-1793514130661-manual",
-      "status": "DONE",
-      "started_at": "2026-11-01T07:25:00+01:00",
-      "finished_at": "2026-11-01T07:28:00+01:00",
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 0,
-      "grouping_requests": 0,
-      "groups_created": 0,
-      "covered_by_existing": 0,
-      "unchanged_reviews": 0,
-      "stale_reviews": 2,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 2,
-      "note": "Las dos review_red observadas se cerraron stale por protección JIT frente a estados posteriores. No se generaron imágenes ni se publicó."
-    },
-    "last_requested_run": {
-      "run_id": "tr-1793513703839-manual",
-      "status": "DONE",
-      "converged_with": "tr-1793513820564-manual",
-      "finished_at": "2026-11-01T07:27:00+01:00",
-      "attempted": 5,
-      "observed": 5,
-      "closed": 5,
-      "explained": 2,
-      "grouping_requests": 1,
+  "final_outcomes": [
+    {
+      "id": "listas-auto-d962c519109a109bdc4b",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "applied": true,
+      "groups_created": 1,
       "covered_by_existing": 1,
-      "stale_reviews": 2,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "publications": 0,
-      "incidents": 0
+      "joint_id": "listas-joint-d25b18ebc7cd1aec"
     }
-  },
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T09:45:07+01:00",
-  "last_completed_at": "2026-11-01T09:45:07+01:00",
+  "last_completed_at": "2026-11-01T09:49:30+01:00",
   "last_run": {
     "run_id": "tr-1793522752871-manual",
     "status": "DONE",
     "started_at": "2026-11-01T09:46:30+01:00",
-    "finished_at": "2026-11-01T09:48:35+01:00",
+    "finished_at": "2026-11-01T09:49:30+01:00",
     "summary": {
       "attempted": 1,
       "observed": 1,
@@ -1152,15 +1153,15 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 1,
-      "concurrent_convergence": 2
+      "incidents": 0,
+      "concurrent_convergence": 1
     },
     "processed_ids": [
       "listas-auto-d962c519109a109bdc4b"
     ]
   },
   "source": "chat",
-  "message": "Agrupación aplicada y verificada: GP de Malasia consolidado; #TodosLosSantos cubierto por publicación previa. Cola final 0; rewrite_pending/reexplain 0; ImageGen 0; publicaciones 0.",
+  "message": "DONE 1/1 por convergencia concurrente. Agrupación aplicada: 1 grupo nuevo y 1 covered_by_existing; cola final 0; ImageGen=0; publicaciones=0; incidencias=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1619,6 +1620,47 @@
       "trend_id": "listas-auto-d962c519109a109bdc4b",
       "title": "Agrupación automática de Listas",
       "message": "Agrupación verificada: Malasia+Acosta+Bezzecchi comparten la carrera MotoGP de Sepang; #TodosLosSantos+Mt 5 comparten la solemnidad del 1 de noviembre y su Evangelio. Resto del snapshot sin coincidencia inequívoca ni cobertura previa sin novedades."
+    },
+    {
+      "at": "2026-11-01T09:49:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado del job ya persistido por ejecución concurrente válida: 1 grupo conjunto GP de Malasia (Acosta, Malasia, Bezzecchi) y #TodosLosSantos cubierto por Día de Todos. No se sobrescribe el outbox."
+    },
+    {
+      "at": "2026-11-01T09:49:15+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain y búsqueda en repo sin pendientes equivalentes. Commit de aplicación actualizó requests.json y telegram-manual-explained.json."
+    },
+    {
+      "at": "2026-11-01T09:49:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793522752871-manual",
+      "status": "DONE",
+      "message": "DONE 1/1 por convergencia concurrente. Agrupación aplicada: 1 grupo nuevo y 1 covered_by_existing; cola final 0; ImageGen=0; publicaciones=0; incidencias=0.",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      }
     }
   ],
   "history": [
@@ -1922,20 +1964,55 @@
       "trend_id": "listas-auto-d962c519109a109bdc4b",
       "title": "Agrupación automática de Listas",
       "message": "Agrupación verificada: Malasia+Acosta+Bezzecchi comparten la carrera MotoGP de Sepang; #TodosLosSantos+Mt 5 comparten la solemnidad del 1 de noviembre y su Evangelio. Resto del snapshot sin coincidencia inequívoca ni cobertura previa sin novedades."
+    },
+    {
+      "at": "2026-11-01T09:49:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Resultado del job ya persistido por ejecución concurrente válida: 1 grupo conjunto GP de Malasia (Acosta, Malasia, Bezzecchi) y #TodosLosSantos cubierto por Día de Todos. No se sobrescribe el outbox."
+    },
+    {
+      "at": "2026-11-01T09:49:15+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain y búsqueda en repo sin pendientes equivalentes. Commit de aplicación actualizó requests.json y telegram-manual-explained.json."
+    },
+    {
+      "at": "2026-11-01T09:49:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793522752871-manual",
+      "status": "DONE",
+      "message": "DONE 1/1 por convergencia concurrente. Agrupación aplicada: 1 grupo nuevo y 1 covered_by_existing; cola final 0; ImageGen=0; publicaciones=0; incidencias=0.",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      }
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "b622600f47d4",
+      "id": "listas-auto-d962c519109a109bdc4b",
       "revision": 0,
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "7084b3e15859",
-      "revision": 0,
-      "outcome": "explained",
+      "outcome": "grouping_completed",
       "applied": true
     }
   ]
