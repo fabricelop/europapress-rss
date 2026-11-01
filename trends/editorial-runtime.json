@@ -3,30 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793550999335-manual",
-  "previous_run_id": "tr-1793550896199-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
-  "started_at": "2026-11-01T17:35:00+01:00",
-  "updated_at": "2026-11-01T17:40:00+01:00",
-  "finished_at": null,
-  "current": 2,
-  "total": 3,
-  "trend_id": "red-review-bd128813cc4afbd44c58",
-  "title": "Revisar novedades: Kerolin",
-  "queue_complete": false,
+  "run_id": "tr-1793551137456-manual",
+  "previous_run_id": "tr-1793550999335-manual",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-01T17:38:57.456+01:00",
+  "updated_at": "2026-11-01T17:41:26+01:00",
+  "finished_at": "2026-11-01T17:41:26+01:00",
+  "current": 1,
+  "total": 1,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "98e7a044dc62",
-    "7184eb72d1ea"
-  ],
-  "remaining_ids": [
     "red-review-bd128813cc4afbd44c58"
   ],
-  "remaining_active_ids": [
-    "red-review-bd128813cc4afbd44c58"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
+    "updates": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1165,6 +1177,41 @@
       "trend_id": "red-review-bd128813cc4afbd44c58",
       "title": "Revisar novedades: Kerolin",
       "message": "Guti r0 y Diomande r0 ya convergieron por ejecución concurrente válida. Kerolin r0 revalidada JIT; se corrigió el mismo maintenance-outbox a continuidad «sigue siendo tendencia por» con el 0-4 final y doblete verificado. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:40:17+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793551137456-manual",
+      "trend_id": "red-review-bd128813cc4afbd44c58",
+      "title": "Revisar novedades: Kerolin",
+      "message": "Validación JIT: la cola ya retiró Kerolin por una ejecución concurrente. El outbox vigente está corrected/updated con el resultado final 0-4 y doblete; verificando aplicación real y barrera de reexplicaciones. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:41:26+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793551137456-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada cerrada 1/1 por convergencia JIT: la revisión de Kerolin r0 fue actualizada concurrentemente y verificada como review_completed/updated; nueva ficha trend-update-df91a57b6555b4f60712 aplicada en requests y Listas con el 0-4 y el doblete. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -3364,36 +3411,13 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "abde5d028f8b",
+      "id": "red-review-bd128813cc4afbd44c58",
       "revision": 0,
-      "name": "Fofana",
-      "outcome": "explained",
+      "name": "Revisar novedades: Kerolin",
+      "outcome": "updated",
       "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "6c2a72c06497",
-      "revision": 0,
-      "name": "Getafe",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "7e1e67ba93a6",
-      "revision": 0,
-      "name": "Viena",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "c4436566a609",
-      "revision": 0,
-      "name": "Alcaraz",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
+      "via": "concurrent_convergence_jit",
+      "result_id": "trend-update-df91a57b6555b4f60712"
     }
   ],
   "current_item": null,
@@ -3431,6 +3455,32 @@
         }
       ],
       "message": "Pasada cerrada 22/22 tras barrera final real: 20 explicaciones, 1 review updated (Día de Todos) y 1 review unchanged (#FelizDomingo). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793551137456-manual",
+      "status": "DONE",
+      "finished_at": "2026-11-01T17:41:26+01:00",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada cerrada 1/1 por convergencia JIT: la revisión de Kerolin r0 fue actualizada concurrentemente y verificada como review_completed/updated; nueva ficha trend-update-df91a57b6555b4f60712 aplicada en requests y Listas con el 0-4 y el doblete. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ]
 }
