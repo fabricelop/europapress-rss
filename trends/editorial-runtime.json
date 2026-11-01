@@ -992,6 +992,13 @@
       "trend_id": "red-review-c833262dd375349d1e78",
       "title": "Revisar novedades: #laSextaXplica",
       "message": "Inicio de la pasada actual tras convergencia JIT: la agrupación automática salió de la cola con 0 grupos nuevos y cobertura de Día de Todos por publicación previa; quedan 2 review_red vigentes. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:39:35+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793521834896-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "message": "tr-1793521834896-manual cerrada 5/5 por convergencia parcial con tr-1793522159076-manual; cola 0, reexplicaciones 0, ImageGen 0."
     }
   ],
   "final_outcomes": {
@@ -1766,6 +1773,38 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada completada 0/0. Barrera final limpia; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T09:39:35+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793521834896-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "converged_with": "tr-1793522159076-manual",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 2,
+        "updates": 2,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 1
+      },
+      "incidents": [
+        {
+          "scope": "post-persist-visual-repair-dispatch",
+          "reason": "El workflow que aplicó la revisión de #laSextaXplica persistió correctamente el estado editorial, pero el dispatch posterior del reparador visual devolvió HTTP 500. No afectó a la cola ni al texto y esta pasada no llamó a ImageGen."
+        }
+      ],
+      "message": "Cierre 5/5: #FelizDomingo y Día de Todos explicados; agrupación automática resuelta con Día de Todos cubierto por publicación previa; #laSextaXplica y Toledo actualizados, Toledo por convergencia concurrente. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
