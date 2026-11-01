@@ -887,8 +887,7 @@ struct TTDashboard: View {
         LazyVStack(spacing: 5) {
             ForEach(visible) { item in
                 TrendTile(item: item, showRank: item.rank > 0,
-                          github: github, settings: $showSettings,
-                          )
+                          github: github, settings: $showSettings)
             }
         }
     }
