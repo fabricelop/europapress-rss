@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T155701+0100",
   "previous_run_id": "tr-1793544481477-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T15:57:01+01:00",
-  "updated_at": "2026-11-01T15:57:01+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T15:57:28+01:00",
+  "finished_at": "2026-11-01T15:57:28+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -613,6 +613,22 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual: relectura JIT de main; editorial-queue observada vacía. Verificando reexplicaciones antes de cerrar. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T15:57:28+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T155701+0100",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT: editorial-queue=0, preparing/update=0, reexplicaciones móviles=0; búsquedas exactas en requests y telegram-manual-explained sin coincidencias rewrite_pending:true."
+    },
+    {
+      "at": "2026-11-01T15:57:28+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T155701+0100",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada 0/0: no queda trabajo editorial activo ni reexplicación pendiente detectada. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
