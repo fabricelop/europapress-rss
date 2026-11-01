@@ -3,25 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T155701+0100",
-  "previous_run_id": "tr-1793544481477-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T15:57:01+01:00",
-  "updated_at": "2026-11-01T15:57:28+01:00",
-  "finished_at": "2026-11-01T15:57:28+01:00",
+  "run_id": "tr-1793545295401-manual",
+  "previous_run_id": "tr-chat-20261101T155701+0100",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-01T16:01:45+01:00",
+  "updated_at": "2026-11-01T16:01:45+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "listas-joint-f8769365147a3582",
+  "title": "Getafe-Sevilla · Kike Salas y Gudelj",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-joint-f8769365147a3582"
+  ],
+  "remaining_active_ids": [
+    "listas-joint-f8769365147a3582"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 1,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -30,7 +34,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -629,6 +633,15 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada 0/0: no queda trabajo editorial activo ni reexplicación pendiente detectada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T16:01:45+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793545295401-manual",
+      "status": "RUNNING",
+      "trend_id": "listas-joint-f8769365147a3582",
+      "title": "Getafe-Sevilla · Kike Salas y Gudelj",
+      "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -669,7 +682,7 @@
     }
   },
   "source": "chat",
-  "message": "Pasada cerrada 1/1 por convergencia JIT: Jorge Martín r0 ya había sido actualizado por la ejecución concurrente tr-1793544112796-manual; se verificó su outbox updated, editorial-queue=0 y ausencia de rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1666,6 +1679,15 @@
       "run_id": "tr-1793544481477-manual",
       "status": "DONE",
       "message": "Pasada cerrada 1/1 por convergencia JIT: Jorge Martín r0 ya había sido actualizado por la ejecución concurrente tr-1793544112796-manual; se verificó su outbox updated, editorial-queue=0 y ausencia de rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T16:01:45+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793545295401-manual",
+      "status": "RUNNING",
+      "trend_id": "listas-joint-f8769365147a3582",
+      "title": "Getafe-Sevilla · Kike Salas y Gudelj",
+      "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -2574,6 +2596,15 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada cerrada 1/1 por convergencia JIT: Jorge Martín r0 ya había sido actualizado por la ejecución concurrente tr-1793544112796-manual; se verificó su outbox updated, editorial-queue=0 y ausencia de rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T16:01:45+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793545295401-manual",
+      "status": "RUNNING",
+      "trend_id": "listas-joint-f8769365147a3582",
+      "title": "Getafe-Sevilla · Kike Salas y Gudelj",
+      "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación."
     }
   ],
   "partial": false,
@@ -2587,6 +2618,6 @@
       "via": "concurrent_convergence"
     }
   ],
-  "current_item": null,
-  "current_title": null
+  "current_item": "listas-joint-f8769365147a3582",
+  "current_title": "Getafe-Sevilla · Kike Salas y Gudelj"
 }
