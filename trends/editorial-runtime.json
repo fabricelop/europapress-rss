@@ -8,19 +8,22 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T02:34:00+01:00",
-  "updated_at": "2026-11-01T02:36:00+01:00",
-  "finished_at": "2026-11-01T02:36:00+01:00",
+  "updated_at": "2026-11-01T02:35:20+01:00",
+  "finished_at": "2026-11-01T02:35:20+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-26907ba4832f3cac99fb",
+    "red-review-2da670cbf1e4539a8644"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
     "closed": 2,
     "explained": 0,
@@ -28,7 +31,6 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "converged_concurrent": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 2,
     "remaining_active": 0,
@@ -707,35 +709,59 @@
       "at": "2026-11-01T02:36:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 2/2 por convergencia concurrente. ImageGen=0, publicaciones=0, incidencias=0."
+    },
+    {
+      "at": "2026-11-01T02:33:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-26907ba4832f3cac99fb",
+      "title": "Revisar novedades: #UFCHBOMax",
+      "message": "Revisando novedades: episodio distinto verificado, UFC Fight Night del 31 de octubre en Las Vegas, emitida en directo por HBO Max; resultado preparado sin ImageGen."
+    },
+    {
+      "at": "2026-11-01T02:34:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-2da670cbf1e4539a8644",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Revisando novedades: episodio distinto del 31 de octubre centrado en la tragedia ferroviaria de Urda; texto factual sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-01T02:35:07+01:00",
+      "phase": "verifying",
+      "message": "Aplicador JIT cerró ambas review_red como stale; no creó fichas nuevas ni sobrescribió estados posteriores/terminales."
+    },
+    {
+      "at": "2026-11-01T02:35:20+01:00",
+      "phase": "closing",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Cierre 2/2; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
       "id": "red-review-26907ba4832f3cac99fb",
       "revision": 0,
+      "name": "Revisar novedades: #UFCHBOMax",
       "task": "review_red",
-      "status": "review_completed",
-      "review_outcome": "stale",
-      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+      "outcome": "stale",
+      "result": "Aplicador JIT cerró la revisión sin crear actualización."
     },
     {
       "id": "red-review-2da670cbf1e4539a8644",
       "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
       "task": "review_red",
-      "status": "review_completed",
-      "review_outcome": "stale",
-      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+      "outcome": "stale",
+      "result": "Aplicador JIT cerró la revisión sin crear actualización."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T02:34:00+01:00",
-  "last_completed_at": "2026-11-01T02:36:00+01:00",
+  "last_completed_at": "2026-11-01T02:35:20+01:00",
   "last_run": {
-    "run_id": "tr-1793496823373-manual",
+    "run_id": "tr-1793496668273-manual",
     "status": "DONE",
     "started_at": "2026-11-01T02:34:00+01:00",
-    "finished_at": "2026-11-01T02:36:00+01:00",
-    "attempted": 0,
+    "finished_at": "2026-11-01T02:35:20+01:00",
+    "attempted": 2,
     "observed": 2,
     "closed": 2,
     "explained": 0,
@@ -743,7 +769,7 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "converged_concurrent": 2,
+    "converged_concurrent": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 2,
     "queue_remaining": 0,
@@ -751,10 +777,10 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Se observaron 2 review_red, pero ambos quedaron review_completed/stale por convergencia concurrente antes de la investigación JIT. Barrera final: cola 0 y sin reexplicaciones pendientes."
+    "note": "Dos review_red investigadas; ambos resultados quedaron stale en la barrera JIT del aplicador, sin crear actualización. Cola final 0."
   },
   "source": "chat",
-  "message": "Pasada cerrada por convergencia concurrente: las 2 revisiones observadas quedaron review_completed/stale antes de la investigación JIT. Relectura final de main: cola 0, rewrite_pending/reexplain 0. Sin ImageGen ni publicaciones.",
+  "message": "Pasada real cerrada 2/2 observados: las dos revisiones fueron investigadas y materializadas en maintenance-outbox, pero el aplicador JIT las cerró como stale para no pisar estado terminal/posterior. Cola 0, rewrite_pending/reexplain 0, ImageGen 0, publicaciones 0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1002,18 +1028,18 @@
     {
       "id": "red-review-26907ba4832f3cac99fb",
       "revision": 0,
+      "name": "Revisar novedades: #UFCHBOMax",
       "task": "review_red",
-      "status": "review_completed",
-      "review_outcome": "stale",
-      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+      "outcome": "stale",
+      "result": "Aplicador JIT cerró la revisión sin crear actualización."
     },
     {
       "id": "red-review-2da670cbf1e4539a8644",
       "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
       "task": "review_red",
-      "status": "review_completed",
-      "review_outcome": "stale",
-      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+      "outcome": "stale",
+      "result": "Aplicador JIT cerró la revisión sin crear actualización."
     }
   ]
 }
