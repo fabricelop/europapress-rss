@@ -3,28 +3,26 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793544481477-manual",
-  "previous_run_id": "tr-1793544112796-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T15:48:01.477+01:00",
-  "updated_at": "2026-11-01T15:56:00+01:00",
-  "finished_at": "2026-11-01T15:56:00+01:00",
-  "current": 1,
-  "total": 1,
+  "run_id": "tr-chat-20261101T155701+0100",
+  "previous_run_id": "tr-1793544481477-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T15:57:01+01:00",
+  "updated_at": "2026-11-01T15:57:01+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-390031a6b4233c786de6"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
@@ -37,7 +35,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -607,6 +605,14 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada cerrada 1/1 por convergencia JIT: Jorge Martín r0 ya había sido actualizado por la ejecución concurrente tr-1793544112796-manual; se verificó su outbox updated, editorial-queue=0 y ausencia de rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T15:57:01+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T155701+0100",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio de pasada manual: relectura JIT de main; editorial-queue observada vacía. Verificando reexplicaciones antes de cerrar. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
