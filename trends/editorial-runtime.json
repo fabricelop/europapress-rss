@@ -10,12 +10,14 @@
   "started_at": "2026-11-01T10:55:00+01:00",
   "updated_at": "2026-11-01T10:56:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
+  "current": 1,
+  "total": 3,
   "trend_id": "red-review-2c39bbbdb347acb280c8",
   "title": "Revisar novedades: Toledo",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "listas-auto-0b9e1d1295f72d565ff2"
+  ],
   "remaining_ids": [
     "red-review-2c39bbbdb347acb280c8",
     "red-review-b9480e99ceb0de1ae281"
@@ -28,12 +30,12 @@
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
+    "grouping_requests": 1,
+    "groups_created": 1,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 2,
@@ -1087,6 +1089,22 @@
       "trend_id": "red-review-2c39bbbdb347acb280c8",
       "title": "Revisar novedades: Toledo",
       "message": "Revalidación JIT r0 completada. Revisando novedades sustanciales sobre Toledo frente a la explicación del 28 de octubre."
+    },
+    {
+      "at": "2026-11-01T10:56:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793526664502-manual",
+      "trend_id": "listas-auto-0b9e1d1295f72d565ff2",
+      "title": "Agrupación automática de Listas",
+      "message": "Aplicador JIT retiró el job de la cola. Resultado: grupo #1DeNoviembre+Almudena y Bezz cubierto por GP de Malasia · Aprilia y carrera."
+    },
+    {
+      "at": "2026-11-01T10:56:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793526664502-manual",
+      "trend_id": "red-review-2c39bbbdb347acb280c8",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisando novedades: no aparece un desarrollo posterior material respecto a la actualización de Toledo ya aplicada esta mañana; se valida el mismo episodio de Urda/Toledo."
     }
   ],
   "final_outcomes": [
