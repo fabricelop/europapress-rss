@@ -751,6 +751,24 @@
       "publications": 0,
       "incidents": 0,
       "note": "Agrupación aplicada con Rapha y #realbetismálaga cubiertos por fichas conjuntas existentes. Las revisiones de #laSextaXplica y Toledo se cerraron stale por protección JIT frente a estados posteriores. Cola final 0; sin rewrite_pending/reexplain, ImageGen ni publicación."
+    },
+    "last_requested_run": {
+      "run_id": "tr-1793513703839-manual",
+      "status": "DONE",
+      "converged_with": "tr-1793513820564-manual",
+      "finished_at": "2026-11-01T07:27:00+01:00",
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
+      "explained": 2,
+      "grouping_requests": 1,
+      "covered_by_existing": 1,
+      "stale_reviews": 2,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "publications": 0,
+      "incidents": 0
     }
   },
   "api_failover_enabled": false,
@@ -1243,6 +1261,32 @@
       "phase": "closing",
       "run_id": "tr-1793512267215-manual",
       "message": "Barrera final: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Cierre 2/2 por convergencia concurrente; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T07:27:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793513703839-manual",
+      "status": "DONE",
+      "converged_with": "tr-1793513820564-manual",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 2,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 5
+      },
+      "message": "tr-1793513703839-manual cerró por convergencia con tr-1793513820564-manual: 5/5 procesados; Koldo y jungkook explicados, Alba cubierta por Alba Carrillo, #laSextaXplica y Toledo stale JIT; cola 0, reexplicaciones 0, ImageGen 0, publicaciones 0."
     }
   ],
   "partial": false,
