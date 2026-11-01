@@ -16,6 +16,11 @@ $root='C:\TTiTTulares'
 $target=Join-Path $root 'TTiTTularesWebImages.cjs'
 $sourcePath='windows/TTiTTularesWebImages.cjs'
 $raw='https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$Ref+'/'+$sourcePath
+function Sha256Bytes([byte[]]$bytes){
+  $sha=[Security.Cryptography.SHA256]::Create()
+  try{return ([BitConverter]::ToString($sha.ComputeHash($bytes))).Replace('-','').ToLowerInvariant()}
+  finally{$sha.Dispose()}
+}
 function Report([string]$status,[string]$detail=''){
   Write-Host ('TTIMAGE_NEWS_STAGE '+$status+' '+$detail)
 }
@@ -43,11 +48,11 @@ try {
   }
   & $node.Source --check $temp | Out-Null
   if($LASTEXITCODE -ne 0){throw 'Error de sintaxis Node: no modificar receptor'}
-  $remoteSha=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($bytes)).ToLowerInvariant()
+  $remoteSha=Sha256Bytes $bytes
   $localSha=''
   if(Test-Path -LiteralPath $target){
     $oldBytes=[IO.File]::ReadAllBytes($target)
-    $localSha=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($oldBytes)).ToLowerInvariant()
+    $localSha=Sha256Bytes $oldBytes
   }
   if($localSha -eq $remoteSha){
     Report 'UNCHANGED' ('sha256='+$remoteSha)
