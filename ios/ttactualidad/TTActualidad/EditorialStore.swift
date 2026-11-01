@@ -501,8 +501,8 @@ final class EditorialStore: ObservableObject {
                              status: status, inListas: readyNames.contains(key),
                              editorialID: editorialID, revision: revision,
                              imageURL: ArchivePhotoCatalog.resolved(
-                                 project: "ttendencias", id: editorialID,
-                                 revision: revision, image: URL(string: str(archive, "url")),
+                                 project: "ttendencias", id: str(explanation, "id"),
+                                 revision: int(explanation, "revision"), image: URL(string: str(archive, "url")),
                                  catalog: archivePhotos),
                              sourceURL: URL(string: source),
                              imageEditorialID: str(explanation, "id"),
