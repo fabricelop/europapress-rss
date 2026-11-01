@@ -218,7 +218,7 @@ function verifiedNewsAI(x){
 
 // TT_ACTUALIDAD_TREND_SITE_IMAGE_V1: display only the exact Site image registered for this editorial revision.
 function verifiedTrendSiteAI(x){
- if(x?._kind!=='tr'||x?._status!=='EXPLICADA')return '';
+ if(x?._kind!=='tr'||!['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x?._status))return '';
  const id=String(x._id||x.id||''),rev=Number(x.revision||0);
  const explanation=String(x.explanation||''),at=String(x.explained_at||'');
  const m=state.data.trendSiteAi;
@@ -246,7 +246,7 @@ function imageWorkflowPrompt(x,associationOnly=false){
  const literal=String(news?x.tweet?.text||'':x.explanation||'');
  if(!/^[A-Za-z0-9_-]{3,160}$/.test(id)||!Number.isInteger(revision)||
      revision<(news?1:0)||!timestamp||!literal||
-     (news?x._status!=='LISTA':x._status!=='EXPLICADA')){
+     (news?x._status!=='LISTA':!['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x._status))){
   return 'BLOQUEADO: primero debe existir una noticia READY o tendencia EXPLICADA con ID, revisión, texto y fecha literales. No generar ni asociar sin estos datos.';
  }
  const identity=JSON.stringify(news?
@@ -1324,7 +1324,7 @@ function rowCard(x,i){
   if(['prepare','deleted','discard','published','rework'].includes(action))return btn(label,()=>pilotSend(x,action),action==='prepare');
   return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
  }
- if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||x._status==='EXPLICADA')){
+ if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x._status))){
   // Exactly four rows, two buttons each; no Telegram command callbacks.
   a.classList.add('ready-actions');
   const external=(label,url)=>{
