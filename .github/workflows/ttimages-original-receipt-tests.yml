@@ -6,6 +6,7 @@ on:
       - 'windows/TTiTTularesGithubOutbox.cjs'
       - 'windows/tests/test_headline_github_outbox.cjs'
       - 'ttittulares/apply_ai_image_outbox.py'
+      - 'tests/test_ttittulares_github_outbox.py'
       - 'windows/TTiTTularesImageBridge.js'
       - 'windows/TTiTTularesDedicatedListener.ps1'
       - 'windows/TT-AutoUpdater.ps1'
@@ -38,6 +39,8 @@ jobs:
             /windows/TTiTTularesGithubOutbox.cjs
             /windows/tests/test_headline_github_outbox.cjs
             /ttittulares/apply_ai_image_outbox.py
+            /ttittulares/apply_editorial_outbox.py
+            /tests/test_ttittulares_github_outbox.py
             /windows/TTiTTularesImageBridge.js
             /windows/TTendenciasWebImages.cjs
             /windows/TTiTTularesDedicatedListener.ps1
@@ -99,6 +102,8 @@ jobs:
             fi
           done
           echo 'No uploads, deployment or modifications were attempted'
+      - name: Recibos de Noticias: identidad editorial y SHA-256 del original
+        run: python3 -m unittest discover -s tests -p test_ttittulares_github_outbox.py -v
       - name: Catálogo de imágenes de noticias con SHA-256 real
         run: python3 -m unittest discover -s tests -p test_ttittulares_image_catalog.py -v
   windows-safety:
@@ -117,6 +122,8 @@ jobs:
             /windows/TTiTTularesGithubOutbox.cjs
             /windows/tests/test_headline_github_outbox.cjs
             /ttittulares/apply_ai_image_outbox.py
+            /ttittulares/apply_editorial_outbox.py
+            /tests/test_ttittulares_github_outbox.py
       - name: Sintaxis PowerShell sin ejecutar ni reiniciar procesos
         shell: powershell
         run: |
