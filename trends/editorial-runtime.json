@@ -3,41 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793523878329-manual",
-  "previous_run_id": "chat-20261101T085636303Z",
+  "run_id": "tr-1793524138533-manual",
+  "previous_run_id": "tr-1793523878329-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-01T10:05:00+01:00",
-  "updated_at": "2026-11-01T10:10:40+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-01T10:08:58.533+01:00",
+  "updated_at": "2026-11-01T10:10:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 3,
-  "trend_id": "listas-auto-5cddaa57caddb33c53cd",
-  "title": "Agrupación automática de Listas",
+  "current": 0,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "red-review-29215daa06e77c8a77fa",
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-5cddaa57caddb33c53cd",
     "red-review-c6d3860715baa85c7425"
   ],
-  "remaining_ids": [
-    "listas-auto-5cddaa57caddb33c53cd"
-  ],
   "remaining_active_ids": [
-    "listas-auto-5cddaa57caddb33c53cd"
+    "listas-auto-5cddaa57caddb33c53cd",
+    "red-review-c6d3860715baa85c7425"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 2,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1290,6 +1289,11 @@
       "trend_id": "listas-auto-5cddaa57caddb33c53cd",
       "title": "Agrupación automática de Listas",
       "message": "Agrupación JIT persistida: Aprilia + ficha conjunta GP de Malasia comparten el mismo acontecimiento; resto del snapshot sin coincidencia inequívoca ni cobertura previa sin novedades."
+    },
+    {
+      "at": "2026-11-01T10:10:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-1793524138533-manual: 2 trabajos preparing vigentes en main (1 group_listas y 1 review_red). Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
