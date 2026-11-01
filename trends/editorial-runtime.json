@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T0255+0100",
   "previous_run_id": "tr-1793496823373-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T02:55:00+01:00",
-  "updated_at": "2026-11-01T02:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T02:55:35+01:00",
+  "finished_at": "2026-11-01T02:55:35+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -41,16 +41,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-10-31T22:25:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio: cola compacta 0. Verificando requests, rewrite_pending, decisiones y resultados de mantenimiento antes del cierre; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T21:26:24.942Z",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0; rewrite_pending 0. Últimos resultados de mantenimiento/grupación ya resueltos; sin escrituras editoriales pendientes."
-    },
     {
       "at": "2026-10-31T21:26:24.942Z",
       "phase": "closing",
@@ -735,6 +725,16 @@
       "at": "2026-11-01T02:55:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-chat-20261101T0255+0100: cola compacta 0. Verificando main, rewrite_pending y estado final antes del cierre; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T02:55:30+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0; rewrite_pending 0; no entró trabajo nuevo durante la pasada."
+    },
+    {
+      "at": "2026-11-01T02:55:35+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-chat-20261101T0255+0100. Sin ImageGen, sin publicación y sin cambios editoriales."
     }
   ],
   "final_outcomes": [
