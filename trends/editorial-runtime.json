@@ -6,14 +6,14 @@
   "run_id": "tr-1793548588490-manual",
   "previous_run_id": "tr-1793545295401-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-01T16:57:00+01:00",
-  "updated_at": "2026-11-01T16:57:00+01:00",
+  "updated_at": "2026-11-01T16:58:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 8,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "2d00f5e3e658",
+  "title": "Manu",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -719,6 +719,38 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual real: 8 trabajos preparing vigentes en main (Manu, Racing, Mangala, Satriano, Isaac, García Plaza, Boselli y De Miñaur), ordenados por requested_at. Revalidación JIT de id+revision antes de cada tratamiento. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:58:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793548588490-manual",
+      "trend_id": "2d00f5e3e658",
+      "title": "Manu",
+      "message": "Manu r0 revalidada JIT. Motivo verificado: Manu Bueno entró por Isaac Romero y fue expulsado en el tramo final del Getafe-Sevilla por derribar a Satriano como último hombre."
+    },
+    {
+      "at": "2026-11-01T16:58:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-1793548588490-manual",
+      "trend_id": "2d00f5e3e658",
+      "title": "Manu",
+      "message": "Explicación factual y remate verificados; texto completo por debajo de 280 caracteres ponderados."
+    },
+    {
+      "at": "2026-11-01T16:58:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-1793548588490-manual",
+      "trend_id": "2d00f5e3e658",
+      "title": "Manu",
+      "message": "Remate único seleccionado sobre su entrada desde el banquillo y expulsión; sin hechos añadidos."
+    },
+    {
+      "at": "2026-11-01T16:58:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793548588490-manual",
+      "trend_id": "2d00f5e3e658",
+      "title": "Manu",
+      "message": "Persistiendo Manu r0 mediante TTENDENCIAS_CHAT_OUTBOX_V1 tras revalidación JIT. Sin ImageGen."
     }
   ],
   "final_outcomes": [
@@ -2799,6 +2831,6 @@
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": null,
-  "current_title": null
+  "current_item": "2d00f5e3e658",
+  "current_title": "Manu"
 }
