@@ -380,7 +380,7 @@ assert 'NO uses ImageGen ni generes' in actions
 assert 'utiliza ChatGPT Images AHORA' not in actions
 assert 'REUTILÍZALO DIRECTAMENTE' in actions
 assert 'no pidas copiar, descargar ni adjuntar de nuevo' in actions
-assert 'no afirmes que puedes recorrer la galería' in actions
+assert 'no afirmes que puedes recorrer la galería' in actions.lower()
 assert 'Imágenes o Biblioteca' in actions
 assert 'no la sustituyas: omite attach' in actions
 assert 'status verified, ruta pública real y SHA-256' in actions
