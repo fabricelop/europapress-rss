@@ -1201,6 +1201,31 @@
       "trend_id": null,
       "title": null,
       "message": "La barrera final detectó 6 trabajos nuevos preparing en main (Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso). La misma pasada continúa con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:45:02.058Z",
+      "phase": "closing",
+      "run_id": "tr-1793549768380-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "summary": {
+        "attempted": 32,
+        "observed": 32,
+        "closed": 32,
+        "explained": 28,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 20
+      },
+      "message": "Pasada cerrada 32/32 tras la barrera final real: 28 explicaciones ordinarias, 2 revisiones updated (Día de Todos y Kerolin) y 2 unchanged (#FelizDomingo y Alsina). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -2388,6 +2413,31 @@
       "run_id": "tr-1793550896199-manual",
       "status": "RUNNING",
       "message": "Inicio: 4 trabajos vigentes en main; primero Guti r0 y Diomande r0, después revisiones de Alsina y Kerolin. Validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:45:02.058Z",
+      "phase": "closing",
+      "run_id": "tr-1793549768380-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "summary": {
+        "attempted": 32,
+        "observed": 32,
+        "closed": 32,
+        "explained": 28,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 20
+      },
+      "message": "Pasada cerrada 32/32 tras la barrera final real: 28 explicaciones ordinarias, 2 revisiones updated (Día de Todos y Kerolin) y 2 unchanged (#FelizDomingo y Alsina). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3395,6 +3445,31 @@
         "concurrent_convergence": 17
       },
       "message": "Pasada cerrada 22/22 tras barrera final real: 20 explicaciones, 1 review updated (Día de Todos) y 1 review unchanged (#FelizDomingo). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T16:45:02.058Z",
+      "phase": "closing",
+      "run_id": "tr-1793549768380-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "summary": {
+        "attempted": 32,
+        "observed": 32,
+        "closed": 32,
+        "explained": 28,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 20
+      },
+      "message": "Pasada cerrada 32/32 tras la barrera final real: 28 explicaciones ordinarias, 2 revisiones updated (Día de Todos y Kerolin) y 2 unchanged (#FelizDomingo y Alsina). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
@@ -3415,24 +3490,24 @@
     {
       "run_id": "tr-1793549768380-manual",
       "status": "DONE_WITH_INCIDENTS",
-      "finished_at": "2026-11-01T16:35:20.382Z",
+      "finished_at": "2026-11-01T16:45:02.058Z",
       "summary": {
-        "attempted": 22,
-        "observed": 22,
-        "closed": 22,
-        "explained": 20,
-        "updates": 1,
+        "attempted": 32,
+        "observed": 32,
+        "closed": 32,
+        "explained": 28,
+        "updates": 2,
         "grouping_requests": 0,
         "groups_created": 0,
         "covered_by_existing": 0,
-        "unchanged_reviews": 1,
+        "unchanged_reviews": 2,
         "stale_reviews": 0,
         "queue_remaining": 0,
         "rewrite_pending_remaining": 0,
         "imagegen_calls": 0,
         "publications": 0,
         "incidents": 1,
-        "concurrent_convergence": 17
+        "concurrent_convergence": 20
       },
       "incident_count": 1,
       "incidents": [
@@ -3443,7 +3518,83 @@
           "message": "Una ejecución concurrente sobrescribió Racing r1 con un snapshot 0-2 después de haberse preparado el 0-3. Se reparó la misma revisión a 0-3 al descanso, verificado en Europa Press, sin ImageGen ni publicación."
         }
       ],
-      "message": "Pasada cerrada 22/22 tras barrera final real: 20 explicaciones, 1 review updated (Día de Todos) y 1 review unchanged (#FelizDomingo). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+      "message": "Pasada cerrada 32/32 tras la barrera final real: 28 explicaciones ordinarias, 2 revisiones updated (Día de Todos y Kerolin) y 2 unchanged (#FelizDomingo y Alsina). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0.",
+      "late_outcomes": [
+        {
+          "id": "red-review-8c4e81a9fff60caff47a",
+          "revision": 0,
+          "name": "Alsina",
+          "outcome": "unchanged",
+          "applied": true
+        },
+        {
+          "id": "red-review-bd128813cc4afbd44c58",
+          "revision": 0,
+          "name": "Kerolin",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-df91a57b6555b4f60712"
+        },
+        {
+          "id": "98e7a044dc62",
+          "revision": 0,
+          "name": "Guti",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "7184eb72d1ea",
+          "revision": 0,
+          "name": "Diomande",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "447e15e9015b",
+          "revision": 0,
+          "name": "Vinicius",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "1bb64c22590e",
+          "revision": 0,
+          "name": "Negreira",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "18dc47314a83",
+          "revision": 0,
+          "name": "Munuera",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "743ba673b658",
+          "revision": 0,
+          "name": "Guler",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "6ba934928aa1",
+          "revision": 0,
+          "name": "DAZN",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "c7ce07dc6179",
+          "revision": 0,
+          "name": "Dudoso",
+          "outcome": "explained",
+          "applied": true
+        }
+      ]
     }
   ]
 }
