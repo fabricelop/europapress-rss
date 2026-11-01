@@ -6,14 +6,14 @@
   "run_id": "tr-1793555992698-manual",
   "previous_run_id": "tr-chat-20261101T185500+0100",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T19:00:00+01:00",
-  "updated_at": "2026-11-01T19:00:00+01:00",
+  "updated_at": "2026-11-01T19:02:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "red-review-4aa776ef0f7aa6c9554d",
+  "title": "Revisar novedades: Blocus",
   "queue_complete": false,
   "processed_ids": [
     "536b6cb3934c",
@@ -1503,7 +1503,7 @@
     "message": "Pasada cerrada 10/10 por ejecución y convergencia JIT: 8 reelaboraciones manuales quedaron explicadas y verificadas en requests + Listas; las dos revisiones tardías de #laSextaXplica y Toledo quedaron review_completed/stale sin sobrescribir snapshots superados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio: 2 revisiones review_red preparing observadas en main (Blocus y Angrois), con validación JIT; sin ImageGen ni publicación.",
+  "message": "Investigando Blocus r0 tras revalidación JIT: novedades del 31-O en Cataluña y resolución judicial posterior; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2677,6 +2677,15 @@
       "run_id": "tr-1793555992698-manual",
       "status": "RUNNING",
       "message": "Inicio: 2 revisiones review_red preparing observadas en main (Blocus y Angrois), con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T19:02:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793555992698-manual",
+      "status": "RUNNING",
+      "trend_id": "red-review-4aa776ef0f7aa6c9554d",
+      "title": "Revisar novedades: Blocus",
+      "message": "Investigando Blocus r0 tras revalidación JIT: novedades del 31-O en Cataluña y resolución judicial posterior; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -3819,9 +3828,9 @@
     }
   ],
   "current_item": {
-    "id": "d8bedf30339e",
+    "id": "red-review-4aa776ef0f7aa6c9554d",
     "revision": 0,
-    "name": "Tchouameni"
+    "name": "Revisar novedades: Blocus"
   },
   "current_title": null,
   "completed_runs": [
