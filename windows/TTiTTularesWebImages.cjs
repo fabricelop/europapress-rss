@@ -185,8 +185,8 @@ function userTurns(){
  return nodes.filter(el=>!nodes.some(other=>other!==el&&typeof el.contains==='function'&&el.contains(other)));
 }
 function rasterProbe(command){return `(async()=>{
-  const command=\${JSON.stringify(command)};
-  const users=(\${userTurns.toString()})();
+  const command=${JSON.stringify(command)};
+  const users=(${userTurns.toString()})();
   // A later Site message must not strand an earlier original.
   const prefix='TTITTULARES_IMAGE_JOB_V4 '+command+' ';
   const found=users.filter(x=>String(x.innerText||x.textContent||'').trim().startsWith(prefix));
@@ -233,11 +233,11 @@ async function confirmedInMain(task,job){
  return {status:'waiting',reason:'remote_image_not_confirmed'};
 }
 function conversationProbe(command,diagnostic=false){return `(()=>{
-  const users=(\${userTurns.toString()})();
-  const prefix='TTITTULARES_IMAGE_JOB_V4 '+\${JSON.stringify(command)}+' ';
+  const users=(${userTurns.toString()})();
+  const prefix='TTITTULARES_IMAGE_JOB_V4 '+${JSON.stringify(command)}+' ';
   const matches=users.filter(x=>String(x.innerText||x.textContent||'').trim().startsWith(prefix));
   const matched=matches.length===1;
-  return \${diagnostic?'true':'false'}?
+  return ${diagnostic?'true':'false'}?
     {url:matched?location.href:null,reason:matched?'matched':matches.length?'duplicate_command':'command_not_in_conversation'}:
     matched?location.href:null;
 })()`;}
