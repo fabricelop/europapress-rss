@@ -46,15 +46,16 @@ personalizados como clics en botones y apertura de fichas.
 
 **Acción del propietario necesaria, solo una vez:**
 
-- Crear cuenta de Umami Cloud en https://cloud.umami.is/signup y elegir
-  región EU si se ofrece. No seleccionar Pro ni prueba de pago.
-- Registrar exactamente el dominio
-  ttactualidad-tendencias.rainyraven22.chatgpt.site
-- Copiar el código de seguimiento de la nueva web desde la sección de Tracking
-  en Umami. El código es personalizado: sin ese ID NO hay analítica activa.
-- Pegar el script de la cuenta en HEAD del Site original a través de su
-  editor (no inventar el ID). Revisa políticas CSP del Site y comprueba
-  con herramienta Network del navegador que el script carga correctamente.
+- **Cuenta creada, website añadido y código real recibido** el 01/11/2026.
+  ID del Site en Umami: `646e82d3-bfaf-4b2e-b274-fc6b0e295b0d`.
+- Inserta **una sola vez** en el `<head>` del Site original el contenido EXACTO
+  de `umami-head.html`. Si ya existe una etiqueta Umami, actualiza esa,
+  **nunca añadas un segundo script**. No instalar en otras apps/sitios.
+- Revisa políticas CSP del Site y comprueba con herramienta Network que
+  `https://cloud.umami.is/script.js` carga correctamente. El ID es público,
+  no es una contraseña. No incluir tokens ni credenciales Umami en el Site.
+- Si el editor no admite modificaciones del `<head>`, explica esa limitación;
+  NO afirmes que las estadísticas están activadas solo por tener el ID.
 - Enlazar eventos de clic genéricos con los atributos data-umami-event ya
   incluidos en los botones del footer. En el controlador EXISTENTE de
   apertura de fichas Top 30, usar:
@@ -93,3 +94,11 @@ Comprobar manualmente en móvil y escritorio:
 
 No decir «publicado» sin verificar que el Site original fue guardado y
 publicado por su editor.
+
+## Estado del snippet de la cuenta
+
+El usuario ha facilitado su código Umami. Archivo `umami-head.html` añadido
+con la URL y el `data-website-id` exactos. Esto solo actualiza la integración
+preparada en GitHub. **Aún es necesario pegarlo en el editor del Site original,
+publicar y comprobar una visita de prueba en el panel Umami.**
+No insertar otros rastreadores ni capturar textos de formularios/búsquedas.
