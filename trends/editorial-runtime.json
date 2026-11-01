@@ -3,56 +3,52 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793565318526-manual",
-  "previous_run_id": "tr-1793564218863-manual",
-  "status": "waiting",
-  "phase": "investigating",
-  "started_at": "2026-11-01T21:36:00+01:00",
-  "updated_at": "2026-11-01T21:48:08+01:00",
+  "run_id": "tr-1793565885959-manual",
+  "previous_run_id": "tr-1793565318526-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T21:45:00+01:00",
+  "updated_at": "2026-11-01T21:45:00+01:00",
   "finished_at": null,
-  "current": 7,
-  "total": 10,
+  "current": 0,
+  "total": 4,
   "trend_id": "dc082e7257e6",
   "title": "Aston Martin",
   "queue_complete": false,
-  "processed_ids": [
-    "728d35279d6e"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
+    "dc082e7257e6",
+    "a066ede401f4",
+    "728d35279d6e",
     "e0e35ef59ec3"
   ],
   "remaining_active_ids": [
+    "dc082e7257e6",
+    "a066ede401f4",
+    "728d35279d6e",
     "e0e35ef59ec3"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 7,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
-    "new_arrivals_during_run": 1
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-01T21:38:00+01:00",
-      "phase": "persisting",
-      "trend_id": "0cd169a778b9",
-      "title": "Iraola",
-      "reason": "El primer intento de commit atómico directo devolvió un error de protocolo h2 sin modificar main. Se releyó el estado y se recuperó mediante el aplicador editorial oficial, sin duplicados ni pérdida de revisión."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -1655,7 +1651,7 @@
     "message": "Pasada cerrada 7/7: Iraola, Martínez Valero, El Sardinero, Dimitrievski, Goiria, Racing y Leclerc explicados y verificados en requests + Listas. Leclerc entró durante la ejecución y también fue procesado. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidente técnico inicial recuperado sin pérdida de estado."
   },
   "source": "chat",
-  "message": "Continúa la pasada tras 3 nuevas entradas detectadas en la barrera final: Aston Martin, #NASCARenDAZN y Hamilton. 7/10 cerrados; validación JIT activa; ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 4 trabajos preparing observados en main. Orden JIT: Aston Martin, #NASCARenDAZN, Hamilton, Honda. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2887,6 +2883,16 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada cerrada 2/2: Angrois y Blocus quedaron review_completed/updated con nuevas fichas persistidas en requests y Listas. Blocus requirió corregir el formato de continuidad del mismo outbox. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T21:45:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793565885959-manual",
+      "current": 0,
+      "total": 4,
+      "trend_id": "dc082e7257e6",
+      "title": "Aston Martin",
+      "message": "4 trabajos activos; validación JIT antes de investigar y persistir."
     }
   ],
   "history": [
@@ -4004,8 +4010,8 @@
       "via": "editorial_outbox"
     }
   ],
-  "current_item": null,
-  "current_title": null,
+  "current_item": "dc082e7257e6",
+  "current_title": "Aston Martin",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -4779,6 +4785,6 @@
       "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793565318526-manual",
-  "requested_at": "2026-11-01T21:36:00+01:00"
+  "command_id": "tr-1793565885959-manual",
+  "requested_at": "2026-11-01T21:45:00+01:00"
 }
