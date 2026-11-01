@@ -1286,6 +1286,31 @@
         "concurrent_convergence": 7
       },
       "message": "Pasada cerrada 7/7 por ejecución y convergencia JIT: Kerolin quedó review_completed/updated con nueva ficha por su doblete; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso quedaron explicados y verificados en requests y Listas. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:46:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793550999335-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 8,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 8
+      },
+      "message": "Pasada cerrada 9/9 tras absorber seis trabajos nuevos aparecidos en la barrera final: Guti, Diomande, Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso explained; Kerolin updated con trend-update-df91a57b6555b4f60712. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para la pasada concurrente posterior."
     }
   ],
   "final_outcomes": [
@@ -3868,6 +3893,106 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada cerrada 7/7 por ejecución y convergencia JIT: Kerolin quedó review_completed/updated con nueva ficha por su doblete; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso quedaron explicados y verificados en requests y Listas. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793550999335-manual",
+      "status": "DONE",
+      "started_at": "2026-11-01T17:37:00+01:00",
+      "finished_at": "2026-11-01T17:46:00+01:00",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 8,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 8
+      },
+      "outcomes": [
+        {
+          "id": "98e7a044dc62",
+          "revision": 0,
+          "name": "Guti",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "7184eb72d1ea",
+          "revision": 0,
+          "name": "Diomande",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "red-review-bd128813cc4afbd44c58",
+          "revision": 0,
+          "name": "Revisar novedades: Kerolin",
+          "outcome": "updated",
+          "applied": true,
+          "via": "this_run_corrected_maintenance_outbox",
+          "created_id": "trend-update-df91a57b6555b4f60712"
+        },
+        {
+          "id": "447e15e9015b",
+          "revision": 0,
+          "name": "Vinicius",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "1bb64c22590e",
+          "revision": 0,
+          "name": "Negreira",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "18dc47314a83",
+          "revision": 0,
+          "name": "Munuera",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "743ba673b658",
+          "revision": 0,
+          "name": "Guler",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "6ba934928aa1",
+          "revision": 0,
+          "name": "DAZN",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "c7ce07dc6179",
+          "revision": 0,
+          "name": "Dudoso",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        }
+      ],
+      "message": "Pasada cerrada 9/9: 8 explicaciones ordinarias y 1 revisión updated (Kerolin). La barrera final detectó y absorbió seis trabajos nuevos. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. Se preserva como canónica la pasada concurrente posterior."
     }
   ]
 }
