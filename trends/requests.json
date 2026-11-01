@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T06:23:18.675331+00:00",
+  "updated_at": "2026-11-01T06:24:25.974861+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -148291,7 +148291,7 @@
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "rank": 9,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T06:22:04.418796+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -148314,14 +148314,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T06:24:25.974861+00:00",
+      "review_reason": "Episodio distinto comprobado respecto a la ficha fuente del 24 de octubre: la emisión vigente del 31 de octubre de laSexta Xplica está centrada en el accidente ferroviario de Urda y en los fallos del LZB."
     },
     {
       "id": "red-review-1f12f1c6ae5cb8e7097d",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 20,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T06:22:04.418796+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -148345,7 +148348,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T06:24:25.974861+00:00",
+      "review_reason": "Continuidad del mismo accidente de Urda con novedades sustanciales respecto a la ficha fuente del 28 de octubre: la investigación documenta la cadena de fallos del LZB y la aplicación de un protocolo incorrecto antes del choque."
     }
   ],
   "count": 501
