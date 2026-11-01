@@ -5,27 +5,41 @@
   "canonical": true,
   "run_id": "tr-1793542709832-manual",
   "previous_run_id": "tr-chat-20261101T151100+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T15:18:29.832+01:00",
-  "updated_at": "2026-11-01T15:18:29.832+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T14:24:54.257Z",
+  "finished_at": "2026-11-01T14:24:54.257Z",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-fe8897eb26a7589b187a",
     "red-review-17dfc044beb48e400236"
   ],
-  "remaining_active_ids": [
-    "red-review-fe8897eb26a7589b187a",
-    "red-review-17dfc044beb48e400236"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -381,44 +395,101 @@
       "run_id": "tr-1793542709832-manual",
       "status": "RUNNING",
       "message": "Inicio de pasada manual real: 2 revisiones review_red preparing observadas en main (#laSextaXplica y Toledo), ordenadas por requested_at y sujetas a validación JIT de id+revision. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T14:24:54.257Z",
+      "phase": "verifying",
+      "run_id": "tr-1793542709832-manual",
+      "message": "Barrera final JIT verificada en main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Los dos review_red quedaron review_completed/stale por validación del aplicador."
+    },
+    {
+      "at": "2026-11-01T14:24:54.257Z",
+      "phase": "closing",
+      "run_id": "tr-1793542709832-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-fe8897eb26a7589b187a",
+      "revision": 0,
+      "name": "#laSextaXplica",
+      "outcome": "stale",
+      "applied": true
+    },
+    {
+      "id": "red-review-17dfc044beb48e400236",
+      "revision": 0,
+      "name": "Toledo",
+      "outcome": "stale",
+      "applied": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T15:11:00+01:00",
-  "last_completed_at": "2026-11-01T15:12:00+01:00",
+  "last_completed_at": "2026-11-01T14:24:54.257Z",
   "last_run": {
-    "run_id": "tr-chat-20261101T151100+0100",
+    "run_id": "tr-1793542709832-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T15:11:00+01:00",
-    "updated_at": "2026-11-01T15:12:00+01:00",
-    "finished_at": "2026-11-01T15:12:00+01:00",
-    "phase": "closing",
-    "current": 0,
-    "total": 0,
-    "queue_complete": true,
+    "started_at": "2026-11-01T15:18:29.832+01:00",
+    "finished_at": "2026-11-01T14:24:54.257Z",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 2,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0 y sin rewrite_pending/reexplain. Top30 sin nuevas entradas. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
+    "outcomes": [
+      {
+        "id": "red-review-fe8897eb26a7589b187a",
+        "revision": 0,
+        "name": "#laSextaXplica",
+        "outcome": "stale",
+        "applied": true
+      },
+      {
+        "id": "red-review-17dfc044beb48e400236",
+        "revision": 0,
+        "name": "Toledo",
+        "outcome": "stale",
+        "applied": true
+      }
+    ]
   },
   "source": "chat",
-  "message": "Inicio de pasada manual real: 2 revisiones review_red preparing observadas en main (#laSextaXplica y Toledo), ordenadas por requested_at y sujetas a validación JIT de id+revision. Sin ImageGen ni publicación.",
+  "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1371,6 +1442,37 @@
       "run_id": "tr-1793542709832-manual",
       "status": "RUNNING",
       "message": "Inicio de pasada manual real: 2 revisiones review_red preparing observadas en main (#laSextaXplica y Toledo), ordenadas por requested_at y sujetas a validación JIT de id+revision. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T14:24:54.257Z",
+      "phase": "verifying",
+      "run_id": "tr-1793542709832-manual",
+      "message": "Barrera final JIT verificada en main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Los dos review_red quedaron review_completed/stale por validación del aplicador."
+    },
+    {
+      "at": "2026-11-01T14:24:54.257Z",
+      "phase": "closing",
+      "run_id": "tr-1793542709832-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -2223,10 +2325,56 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. Los registros grandes de requests y Listas fueron verificados por blob; no se resucitaron problemáticas históricas fuera de la cola autoritativa. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T14:24:54.257Z",
+      "phase": "verifying",
+      "run_id": "tr-1793542709832-manual",
+      "message": "Barrera final JIT verificada en main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Los dos review_red quedaron review_completed/stale por validación del aplicador."
+    },
+    {
+      "at": "2026-11-01T14:24:54.257Z",
+      "phase": "closing",
+      "run_id": "tr-1793542709832-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-fe8897eb26a7589b187a",
+      "revision": 0,
+      "name": "#laSextaXplica",
+      "outcome": "stale",
+      "applied": true
+    },
+    {
+      "id": "red-review-17dfc044beb48e400236",
+      "revision": 0,
+      "name": "Toledo",
+      "outcome": "stale",
+      "applied": true
+    }
+  ],
   "current_item": null,
   "current_title": null
 }
