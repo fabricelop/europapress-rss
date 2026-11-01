@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T08:35:54.992017+00:00",
+  "updated_at": "2026-11-01T08:37:24.697767+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8812,7 +8812,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T07:23:47.690330+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T08:37:24.697767+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -124064,7 +124064,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T07:23:47.690330+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T08:37:24.697767+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -150142,11 +150142,13 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "ced0e55f5bff5c12b510661e2f9f7a718bf51c2faa190b4bbda203c43b703c75",
+      "editorial_grouping_checked_at": "2026-11-01T08:37:24.697767+00:00"
     },
     {
       "id": "7084b3e15859",
@@ -150204,23 +150206,33 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "listas_group_role": "covered",
+      "covered_by_id": "83aa70bdac40",
+      "covered_by_name": "Día de Todos",
+      "covered_by_revision": 0,
+      "covered_source_revision": 0,
+      "covered_at": "2026-11-01T08:37:24.697767+00:00",
+      "coverage_reason": "already_published_same_event",
+      "grouping_request_id": "listas-auto-02d7268c0acfb734e9df",
+      "editorial_grouping_fingerprint": "2bf86b6ead9b6333f310bf4c531a358360a578b269be6ecf3d631492a967477e",
+      "editorial_grouping_checked_at": "2026-11-01T08:37:24.697767+00:00"
     },
     {
       "id": "listas-auto-02d7268c0acfb734e9df",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T08:35:54.992017+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -151809,7 +151821,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T08:37:24.697767+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "2e6a48e6ec519b63d9cd7012ce0610bfc88d31925fcc3f5661c1164686a01f9d"
     },
     {
       "id": "red-review-c833262dd375349d1e78",
