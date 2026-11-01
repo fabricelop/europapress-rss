@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-01T18:28:31.113612+00:00",
+  "checked_at": "2026-11-01T22:16:28.280544+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,8 +42,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 6,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 4,
+      "captured_age_minutes": 0.1,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.8,
-      "run_id": 41336565182,
+      "age_minutes": 2.2,
+      "run_id": 41356102026,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -68,7 +68,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 264,
+      "invalid_count": 270,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -77,19 +77,95 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 14,
+      "overdue_count": 14,
+      "oldest_age_minutes": 65.5,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "852bc9d693d2",
+          "name": "Remiro",
+          "status": "preparing",
+          "age_minutes": 65.5
+        },
+        {
+          "id": "d3cbe44e3ca8",
+          "name": "Sucic",
+          "status": "preparing",
+          "age_minutes": 65.5
+        },
+        {
+          "id": "9d6bff465407",
+          "name": "San Mamés",
+          "status": "preparing",
+          "age_minutes": 65.5
+        },
+        {
+          "id": "3b39f6eccb69",
+          "name": "#AthleticRealSociedad",
+          "status": "preparing",
+          "age_minutes": 65.5
+        },
+        {
+          "id": "0710cf37c7ab",
+          "name": "Bottas",
+          "status": "preparing",
+          "age_minutes": 32.4
+        },
+        {
+          "id": "885aa8b6c362",
+          "name": "Aramburu",
+          "status": "preparing",
+          "age_minutes": 32.4
+        },
+        {
+          "id": "f8d77adad927",
+          "name": "#ConexionHonduras8",
+          "status": "preparing",
+          "age_minutes": 32.4
+        },
+        {
+          "id": "072724b6a35d",
+          "name": "#SalvadosAlmudenaCid",
+          "status": "preparing",
+          "age_minutes": 32.4
+        },
+        {
+          "id": "cc9091b36b3b",
+          "name": "Antonelli",
+          "status": "preparing",
+          "age_minutes": 32.4
+        },
+        {
+          "id": "6e5f3712838f",
+          "name": "Nico",
+          "status": "preparing",
+          "age_minutes": 32.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "852bc9d693d2",
+        "d3cbe44e3ca8",
+        "9d6bff465407",
+        "3b39f6eccb69",
+        "0710cf37c7ab",
+        "885aa8b6c362",
+        "f8d77adad927",
+        "072724b6a35d",
+        "cc9091b36b3b",
+        "6e5f3712838f",
+        "ff5aa449aa6e",
+        "8fa1231fe82e",
+        "f03247d1c40e",
+        "0eb183243950"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -100,9 +176,10 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 264 estado(s) inválido(s)"
+    "cola con 270 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 65.5 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 264 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 270 estado(s) inválido(s) | cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 65.5 min"
 }
