@@ -5,39 +5,34 @@
   "canonical": true,
   "run_id": "tr-1793496823373-manual",
   "previous_run_id": "tr-1793496668273-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T02:34:00+01:00",
-  "updated_at": "2026-11-01T02:34:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T02:36:00+01:00",
+  "finished_at": "2026-11-01T02:36:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-26907ba4832f3cac99fb",
-  "title": "Revisar novedades: #UFCHBOMax",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [],
-  "remaining_ids": [
-    "red-review-26907ba4832f3cac99fb",
-    "red-review-2da670cbf1e4539a8644"
-  ],
-  "remaining_active_ids": [
-    "red-review-26907ba4832f3cac99fb",
-    "red-review-2da670cbf1e4539a8644"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
+    "converged_concurrent": 2,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "remaining_active": 2,
-    "queue_remaining": 2,
+    "stale_reviews": 2,
+    "remaining_active": 0,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -702,37 +697,64 @@
       "trend_id": "red-review-26907ba4832f3cac99fb",
       "title": "Revisar novedades: #UFCHBOMax",
       "message": "Inicio tr-1793496668273-manual: 2 revisiones de novedades preparing vigentes en main (#UFCHBOMax y #laSextaXplica). Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T02:36:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0; los dos review_red observados constan review_completed/stale por aplicación concurrente; no hay rewrite_pending/reexplain vigente detectado."
+    },
+    {
+      "at": "2026-11-01T02:36:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 2/2 por convergencia concurrente. ImageGen=0, publicaciones=0, incidencias=0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-26907ba4832f3cac99fb",
+      "revision": 0,
+      "task": "review_red",
+      "status": "review_completed",
+      "review_outcome": "stale",
+      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+    },
+    {
+      "id": "red-review-2da670cbf1e4539a8644",
+      "revision": 0,
+      "task": "review_red",
+      "status": "review_completed",
+      "review_outcome": "stale",
+      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T02:02:00+01:00",
-  "last_completed_at": "2026-11-01T02:04:10+01:00",
+  "last_started_at": "2026-11-01T02:34:00+01:00",
+  "last_completed_at": "2026-11-01T02:36:00+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T0225+0100",
+    "run_id": "tr-1793496823373-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T02:25:00+01:00",
-    "finished_at": "2026-11-01T02:26:00+01:00",
+    "started_at": "2026-11-01T02:34:00+01:00",
+    "finished_at": "2026-11-01T02:36:00+01:00",
     "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "converged_concurrent": 0,
+    "converged_concurrent": 2,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Cola autoritativa vacía en inicio y barrera final; no había preparing/update ni rewrite_pending. Último mantenimiento de Mazón ya aplicado."
+    "note": "Se observaron 2 review_red, pero ambos quedaron review_completed/stale por convergencia concurrente antes de la investigación JIT. Barrera final: cola 0 y sin reexplicaciones pendientes."
   },
   "source": "chat",
-  "message": "Pasada editorial real en curso: 2 revisiones review_red preparing observadas; revalidación JIT antes de cada investigación. Sin ImageGen ni publicación.",
+  "message": "Pasada cerrada por convergencia concurrente: las 2 revisiones observadas quedaron review_completed/stale antes de la investigación JIT. Relectura final de main: cola 0, rewrite_pending/reexplain 0. Sin ImageGen ni publicaciones.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -892,6 +914,18 @@
       "trend_id": "red-review-26907ba4832f3cac99fb",
       "title": "Revisar novedades: #UFCHBOMax",
       "message": "Inicio de pasada manual; 2 revisiones activas."
+    },
+    {
+      "at": "2026-11-01T02:36:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793496823373-manual",
+      "message": "Barrera final de main: editorial-queue=0; 2 revisiones cerradas stale de forma concurrente; sin reexplicaciones pendientes."
+    },
+    {
+      "at": "2026-11-01T02:36:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793496823373-manual",
+      "message": "DONE por convergencia concurrente; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -964,5 +998,22 @@
     }
   ],
   "partial": false,
-  "outcomes": []
+  "outcomes": [
+    {
+      "id": "red-review-26907ba4832f3cac99fb",
+      "revision": 0,
+      "task": "review_red",
+      "status": "review_completed",
+      "review_outcome": "stale",
+      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+    },
+    {
+      "id": "red-review-2da670cbf1e4539a8644",
+      "revision": 0,
+      "task": "review_red",
+      "status": "review_completed",
+      "review_outcome": "stale",
+      "note": "El aplicador concurrente cerró la revisión JIT; no se resucita ni se pisa un estado posterior."
+    }
+  ]
 }
