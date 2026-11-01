@@ -3,19 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793549980185-manual",
-  "previous_run_id": "tr-1793549768380-manual",
+  "run_id": "tr-chat-20261101T1712+0100",
+  "previous_run_id": "tr-1793549980185-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T17:19:40.185+01:00",
-  "updated_at": "2026-11-01T17:22:30+01:00",
-  "finished_at": "2026-11-01T17:22:30+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-01T17:12:00+01:00",
+  "updated_at": "2026-11-01T17:23:04+01:00",
+  "finished_at": "2026-11-01T17:23:04+01:00",
+  "current": 14,
+  "total": 14,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "94a58cd3f7f4",
+    "9c13be489fe2",
+    "451c86e02a9f",
+    "fbcc0fc4a036",
+    "252573ec624f",
+    "5850dd71f0f2",
+    "aa3a852a8cf8",
+    "1059f968f961",
+    "9c737ccf96e9",
+    "0aee0c3ad94a",
+    "55135fd6b838",
+    "64b7521f1d8d",
     "red-review-0396f5be3748cad9c883",
     "red-review-8929019c45203f7ea8d3"
   ],
@@ -23,10 +35,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 14,
+    "observed": 14,
+    "closed": 14,
+    "explained": 12,
     "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -994,6 +1006,41 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada manual real: 1 trabajos preparing/update vigentes en main, ordenados del más antiguo al más reciente. Revalidación JIT de (id,revision) antes de cada tratamiento. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:23:04+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T1712+0100",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT verificada en main: editorial-queue=0 y mobile-decisions sin rewrite_pending/reexplain. Los 12 textos y las 2 revisiones de mantenimiento convergieron y quedaron aplicados."
+    },
+    {
+      "at": "2026-11-01T17:23:04+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T1712+0100",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 14,
+        "observed": 14,
+        "closed": 14,
+        "explained": 12,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 14/14: 12 explicaciones, 1 actualización (Día de Todos), 1 revisión sin cambios (#FelizDomingo), cola final 0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -3121,21 +3168,102 @@
   "partial": false,
   "outcomes": [
     {
+      "id": "94a58cd3f7f4",
+      "revision": 0,
+      "name": "Manu Bueno",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "9c13be489fe2",
+      "revision": 0,
+      "name": "#SevillaFC",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "451c86e02a9f",
+      "revision": 0,
+      "name": "#EldenseGranada",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "fbcc0fc4a036",
+      "revision": 0,
+      "name": "Coliseum",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "252573ec624f",
+      "revision": 0,
+      "name": "Sardinero",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "5850dd71f0f2",
+      "revision": 0,
+      "name": "Carlitos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "aa3a852a8cf8",
+      "revision": 0,
+      "name": "Paracuellos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "1059f968f961",
+      "revision": 0,
+      "name": "Antequera",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "9c737ccf96e9",
+      "revision": 0,
+      "name": "Fortnite",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "0aee0c3ad94a",
+      "revision": 0,
+      "name": "Real Murcia",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "55135fd6b838",
+      "revision": 0,
+      "name": "Pecco",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "64b7521f1d8d",
+      "revision": 1,
+      "name": "Racing",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
       "id": "red-review-0396f5be3748cad9c883",
       "revision": 0,
       "name": "Día de Todos",
       "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-6f8efdbc5b4f98f241ed",
-      "via": "concurrent_convergence"
+      "applied": true
     },
     {
       "id": "red-review-8929019c45203f7ea8d3",
       "revision": 0,
       "name": "#FelizDomingo",
       "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
+      "applied": true
     }
   ],
   "current_item": null,
