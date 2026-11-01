@@ -114,6 +114,38 @@ const decisions=()=>new Map((state.data.decisions?.items||[]).map(x=>[String(x.e
 const isClosed=(status)=>['published','dismissed','deleted','removed','delete_pending'].includes(String(status||'').toLowerCase());
 
 // TT_ACTUALIDAD_NEWS_AI_WEB_V1: never attach a raster by name, title or similarity.
+
+/* Exact-ID archive photo index. Archive imagery is independent of ImageGen. */
+function archivedPhoto(x){
+ const project=x?._kind==='tti'?'ttittulares':x?._kind==='tr'?'ttendencias':'';
+ const id=String(x?._kind==='tti'?x.event_id:(x?._id||x?.id)||'');
+ const rev=Number(x?.revision||0);
+ const photos=state.data.archiveIndex?.kind==='archive_only'&&
+   state.data.archiveIndex?.schema_version===1?state.data.archiveIndex.photos||{}:{};
+ const prefix=project+':'+id+':r';
+ const indexed=project&&/^[A-Za-z0-9_-]{3,160}$/.test(id)&&Number.isInteger(rev)&&rev>=0?
+   isHttp(photos[prefix+rev]||''):'';
+ const supplied=isHttp(x?.archive_image?.url||'')||
+   isHttp(x?.fallback_image?.url||'');
+ // Only fall back to image_url when it is not generated/Telegram/ChatGPT art.
+ const sourceURL=String(x?.image_url||'');
+ const original=/generated-images|chatgpt|\/images\/(ttendencias|ttittulares)\//i.test(sourceURL)?
+   '':isHttp(sourceURL);
+ let earlier='';
+ if(!indexed&&!supplied&&project&&/^[A-Za-z0-9_-]{3,160}$/.test(id)){
+   let previous=-1;
+   for(const [key,url] of Object.entries(photos)){
+     if(!key.startsWith(prefix))continue;
+     const old=Number(key.slice(prefix.length));
+     if(Number.isInteger(old)&&old<=rev&&old>previous){
+       const valid=isHttp(url);
+       if(valid){previous=old;earlier=valid}
+     }
+   }
+ }
+ return indexed||supplied||earlier||original;
+}
+
 function verifiedNewsAI(x){
  if(x?._kind!=='tti'||x?._status!=='LISTA'||x?.rewrite_pending)return '';
  const id=String(x.event_id||''),rev=Number(x.revision||0);
@@ -221,10 +253,10 @@ function imageWorkflowPrompt(x,associationOnly=false){
 }
 
 const fields={
-tti:['ttittulares/site-ai-images.json','ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json','ttittulares/editorial-queue.json'],
-tr:['trends/site-ai-images.json','trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
+tti:['shared/archive-photo-index.json','ttittulares/site-ai-images.json','ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json','ttittulares/editorial-queue.json'],
+tr:['shared/archive-photo-index.json','trends/site-ai-images.json','trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
 };
-const aliases={'ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/site-ai-images.json':'trendSiteAi','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
+const aliases={'shared/archive-photo-index.json':'archiveIndex','ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/site-ai-images.json':'trendSiteAi','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
 async function fetchJson(path,force=false){
  const key='tt-web-cache-'+path;
  const sources=[RAW+path,SITE_DATA+path];
@@ -1157,7 +1189,7 @@ function rowCard(x,i){
  const newsAI=verifiedNewsAI(x);
  const trendSiteAI=verifiedTrendSiteAI(x);
  const artwork=newsAI||trendSiteAI;
- const archive=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
+ const archive=archivedPhoto(x);
  const img=isHttp(artwork||archive||'');
  const pictureHTML=artwork?'<div class="news-photo-set"><figure><img class="pic" loading="lazy" alt="" src="'+esc(artwork)+'"><figcaption>Imagen IA</figcaption></figure>'+
   (archive&&archive!==artwork?'<figure><img class="pic" loading="lazy" alt="" src="'+esc(archive)+'"><figcaption>Fotografía de archivo</figcaption></figure>':'')+'</div>':
