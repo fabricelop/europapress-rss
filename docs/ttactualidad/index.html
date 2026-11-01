@@ -153,6 +153,30 @@ function verifiedNewsAI(x){
     (guard.revision!==undefined&&Number(guard.revision)!==rev))return '';
  return check(String(ai.url||''),String(ai.sha256||''),'pipeline');
 }
+
+// TT_ACTUALIDAD_TREND_SITE_IMAGE_V1: display only the exact Site image registered for this editorial revision.
+function verifiedTrendSiteAI(x){
+ if(x?._kind!=='tr'||x?._status!=='EXPLICADA')return '';
+ const id=String(x._id||x.id||''),rev=Number(x.revision||0);
+ const explanation=String(x.explanation||''),at=String(x.explained_at||'');
+ const m=state.data.trendSiteAi;
+ if(!/^[A-Za-z0-9_-]{3,160}$/.test(id)||!Number.isInteger(rev)||rev<0||
+    !explanation||!at||m?.schema_version!==1||
+    m.project_id!=='appgprj_6ae4dcf7d7488191a574e5b649e67370'||
+    !Array.isArray(m.images))return '';
+ const record=m.images.find(y=>y.target_id===id&&Number(y.revision)===rev&&
+    y.explanation===explanation&&y.explained_at===at);
+ if(!record||!/^[a-f0-9]{64}$/i.test(String(record.sha256||'')))return '';
+ try{
+  const u=new URL(record.image_url),file=u.pathname.split('/').pop()||'';
+  return u.protocol==='https:'&&u.hostname==='ttactualidad-tendencias.rainyraven22.chatgpt.site'&&
+   !u.search&&!u.hash&&!u.username&&!u.password&&!u.port&&
+   u.pathname.startsWith('/images/ttendencias/'+id+'-r'+rev+'-')&&
+   file.toLowerCase().includes(String(record.sha256).slice(0,12).toLowerCase())&&
+   file.toLowerCase().endsWith('.png')?u.href:'';
+ }catch{return ''}
+}
+
 function imageWorkflowPrompt(x,associationOnly=false){
  const news=x._kind==='tti',id=String((news?x.event_id:x._id||x.id)||'');
  const revision=Number(x.revision||0),d=itemData(x);
@@ -198,9 +222,9 @@ function imageWorkflowPrompt(x,associationOnly=false){
 
 const fields={
 tti:['ttittulares/site-ai-images.json','ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json','ttittulares/editorial-queue.json'],
-tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
+tr:['trends/site-ai-images.json','trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
 };
-const aliases={'ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
+const aliases={'ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/site-ai-images.json':'trendSiteAi','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
 async function fetchJson(path,force=false){
  const key='tt-web-cache-'+path;
  const sources=[RAW+path,SITE_DATA+path];
@@ -1131,10 +1155,12 @@ function compactTop30Card(out,x){
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
  const newsAI=verifiedNewsAI(x);
+ const trendSiteAI=verifiedTrendSiteAI(x);
+ const artwork=newsAI||trendSiteAI;
  const archive=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
- const img=isHttp(newsAI||archive||'');
- const pictureHTML=newsAI?'<div class="news-photo-set"><figure><img class="pic" loading="lazy" alt="" src="'+esc(newsAI)+'"><figcaption>Imagen IA</figcaption></figure>'+
-  (archive&&archive!==newsAI?'<figure><img class="pic" loading="lazy" alt="" src="'+esc(archive)+'"><figcaption>Fotografía de archivo</figcaption></figure>':'')+'</div>':
+ const img=isHttp(artwork||archive||'');
+ const pictureHTML=artwork?'<div class="news-photo-set"><figure><img class="pic" loading="lazy" alt="" src="'+esc(artwork)+'"><figcaption>Imagen IA</figcaption></figure>'+
+  (archive&&archive!==artwork?'<figure><img class="pic" loading="lazy" alt="" src="'+esc(archive)+'"><figcaption>Fotografía de archivo</figcaption></figure>':'')+'</div>':
   (img?'<img class="pic" loading="lazy" alt="" src="'+esc(img)+'">':'');
  const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.displayExpl;
  const showClip=!['fuente','tremending'].includes(x._kind)&&!x._topOnly&&!x._historical,showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial)&&!(x._kind==='tr'&&!d.expl);
@@ -1166,7 +1192,7 @@ function rowCard(x,i){
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
   btn('Asociar imagen IA',()=>copyText(imageWorkflowPrompt(x,true),'Orden de asociación'));
   btn('Copiar Foto Archivo',()=>archive?copyArchive(archive,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
-  if(newsAI)btn('Copiar imagen IA',()=>copyArchive(newsAI,d.title));
+  if(artwork)btn('Copiar imagen IA',()=>copyArchive(artwork,d.title));
   if(x._kind==='tr'&&x._status==='EXPLICADA'){
    const ai=String(x.ai_image_status||'').toLowerCase();
    const line=document.createElement('p');line.className='fact';
