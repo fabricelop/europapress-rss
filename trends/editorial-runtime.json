@@ -3,20 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793512121167-manual",
-  "previous_run_id": "tr-chat-20261101T064000+0100",
+  "run_id": "tr-1793512267215-manual",
+  "previous_run_id": "tr-1793512121167-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T06:49:00+01:00",
-  "updated_at": "2026-11-01T06:54:00+01:00",
-  "finished_at": "2026-11-01T06:54:00+01:00",
-  "current": 3,
-  "total": 3,
+  "started_at": "2026-11-01T06:51:07.215+01:00",
+  "updated_at": "2026-11-01T06:53:09+01:00",
+  "finished_at": "2026-11-01T06:53:09+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "listas-auto-600209548fe6e0ab5c4b",
     "red-review-4c57a3edb7fa71916431",
     "red-review-656a3fba6061d7d8bc4f"
   ],
@@ -24,21 +23,22 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
-    "grouping_requests": 1,
+    "updates": 2,
+    "grouping_requests": 0,
     "groups_created": 0,
-    "covered_by_existing": 2,
+    "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -586,6 +586,34 @@
       "phase": "closing",
       "run_id": "tr-1793512121167-manual",
       "message": "Barrera final de main: editorial-queue=0; requests/telegram/mobile sin rewrite_pending:true ni reexplain:true. Cierre 3/3: 1 agrupación aplicada con 2 coberturas y 2 revisiones stale. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T06:51:07.215+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793512267215-manual",
+      "message": "Inicio de pasada manual: 2 review_red preparing vigentes (#laSextaXplica y Toledo). Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T06:52:04+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793512267215-manual",
+      "trend_id": "red-review-4c57a3edb7fa71916431",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Convergencia JIT: la ejecución concurrente aplicó actualización material por episodio distinto del 31 de octubre centrado en Urda; el job salió de la cola."
+    },
+    {
+      "at": "2026-11-01T06:53:09+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793512267215-manual",
+      "trend_id": "red-review-656a3fba6061d7d8bc4f",
+      "title": "Revisar novedades: Toledo",
+      "message": "Convergencia JIT: el outbox de Toledo se aplicó como actualización material del mismo episodio; workflow aplicador success y job retirado de la cola."
+    },
+    {
+      "at": "2026-11-01T06:53:09+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793512267215-manual",
+      "message": "Barrera final: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Cierre 2/2 por convergencia concurrente; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": {
@@ -1057,29 +1085,51 @@
       "at": "2026-11-01T02:12:28+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0 para tr-1793495454000-manual. ImageGen=0, publicaciones=0, incidencias=0."
+    },
+    {
+      "at": "2026-11-01T06:51:07.215+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793512267215-manual",
+      "message": "Inicio de pasada manual: 2 review_red preparing vigentes (#laSextaXplica y Toledo). Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T06:52:04+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793512267215-manual",
+      "trend_id": "red-review-4c57a3edb7fa71916431",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Convergencia JIT: la ejecución concurrente aplicó actualización material por episodio distinto del 31 de octubre centrado en Urda; el job salió de la cola."
+    },
+    {
+      "at": "2026-11-01T06:53:09+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793512267215-manual",
+      "trend_id": "red-review-656a3fba6061d7d8bc4f",
+      "title": "Revisar novedades: Toledo",
+      "message": "Convergencia JIT: el outbox de Toledo se aplicó como actualización material del mismo episodio; workflow aplicador success y job retirado de la cola."
+    },
+    {
+      "at": "2026-11-01T06:53:09+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793512267215-manual",
+      "message": "Barrera final: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Cierre 2/2 por convergencia concurrente; ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "listas-auto-600209548fe6e0ab5c4b",
-      "revision": 0,
-      "name": "Agrupación automática de Listas",
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 2
-    },
-    {
       "id": "red-review-4c57a3edb7fa71916431",
       "revision": 0,
-      "name": "Revisar novedades: #laSextaXplica",
-      "outcome": "stale"
+      "outcome": "updated",
+      "distinct_episode": true,
+      "applied": true
     },
     {
       "id": "red-review-656a3fba6061d7d8bc4f",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale"
+      "outcome": "updated",
+      "distinct_episode": false,
+      "applied": true
     }
   ]
 }
