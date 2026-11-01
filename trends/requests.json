@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T18:59:05+01:00",
+  "updated_at": "2026-11-01T17:59:47.210676+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -196404,6 +196404,74 @@
       "image_choice": "none",
       "image_pending": true,
       "telegram_package_status": "pending"
+    },
+    {
+      "id": "red-review-4aa776ef0f7aa6c9554d",
+      "revision": 0,
+      "name": "Revisar novedades: Blocus",
+      "rank": 21,
+      "status": "preparing",
+      "requested_at": "2026-11-01T17:59:47.210676+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-4a9b908648388275064e",
+        "revision": 0,
+        "name": "Blocus",
+        "rank": 10,
+        "explanation": "TT#10 Blocus sigue siendo tendencia por las convocatorias del 31-O: el presunto fundador ha ingresado en prisión provisional y Palma dejó 200 identificados, mientras varias ciudades refuerzan sus dispositivos.\n#Blocus #31Octubre",
+        "explanation_sha256": "fb4a9726e10fa7227764cefcbeaed41c1d809255dcdf91ea8049afb460ac8d0d",
+        "explained_at": "2026-10-31T17:48:14.207870+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261031/blocus-detenido-arrestados-lider-espana/17294774.shtml"
+          },
+          {
+            "url": "https://www.elespanol.com/valencia/20261031/impulsor-blocus-espana-detenido-pasan-sabado-disposicion-judicial/1003744442287_0.html"
+          }
+        ],
+        "fingerprint": "d6fa2b939a440749817e248e125b296afee9bb66df6935fc9f62ac561d6f0501"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-0a921ac388344c58f273",
+      "revision": 0,
+      "name": "Revisar novedades: Angrois",
+      "rank": 24,
+      "status": "preparing",
+      "requested_at": "2026-11-01T17:59:47.210676+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-607ecdd2b7d2e6f993f5",
+        "revision": 0,
+        "name": "Angrois",
+        "rank": 12,
+        "explanation": "TT#12 Angrois sigue siendo tendencia por las reacciones tras Urda: el abogado de la plataforma de víctimas del Alvia recomienda documentar lesiones y gastos, no firmar precipitadamente y personarse pronto en la vía penal.\n#Angrois #Urda",
+        "explanation_sha256": "06f29c985e7d63ace6813d8dca3641cdc003e4ed422f16dba3ced05c94f1400e",
+        "explained_at": "2026-10-30T18:42:17.107968+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/sociedad/noticia-accidente-abogados-victimas-angrois-adamuz-recomiendan-documentar-lesiones-personarse-via-penal-20261030141422.html"
+          },
+          {
+            "url": "https://www.galiciapress.es/articulo/ultima-hora/2026-10-30/6072584-abogados-victimas-angrois-adamuz-recomiendan-documentar-lesiones-personarse-via-penal"
+          }
+        ],
+        "fingerprint": "00468f478eb08dad57db9583c174356ef7cea8c1dbf663c1541b624d722a33f7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
   "count": 642
