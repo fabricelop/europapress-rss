@@ -6,22 +6,26 @@
   "run_id": "tr-1793531820836-manual",
   "previous_run_id": "tr-chat-20261101T121100+0100",
   "status": "RUNNING",
-  "phase": "closing",
+  "phase": "preparing",
   "started_at": "2026-11-01T12:17:00+01:00",
-  "updated_at": "2026-11-01T12:27:00+01:00",
+  "updated_at": "2026-11-01T12:28:00+01:00",
   "finished_at": null,
   "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 6,
+  "trend_id": "listas-auto-d949d22fea9dcb5ca638",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "e7a34c909e2e",
     "ecfab12c8f74",
     "d0d920c046f0"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-d949d22fea9dcb5ca638",
+    "red-review-5cea86122c498eb32753",
+    "red-review-2c540cbea6cdfd2e7781"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -1371,7 +1375,7 @@
     "concurrent_convergence": 0
   },
   "source": "chat",
-  "message": "Verificación final: #UFCHBOMax, Halloween y Blocus r0 están explained en requests y telegram-manual-explained; cola 0; rewrite_pending 0; sin ImageGen.",
+  "message": "La barrera final detectó 3 trabajos nuevos: 1 agrupación automática y 2 revisiones de novedades. Continúa la misma pasada; sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
