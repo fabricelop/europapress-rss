@@ -3,11 +3,11 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793527734709-manual",
-  "previous_run_id": "tr-1793527469295-manual",
+  "run_id": "tr-1793527834213-manual",
+  "previous_run_id": "tr-1793527734709-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T11:09:00+01:00",
+  "started_at": "2026-11-01T11:11:00+01:00",
   "updated_at": "2026-11-01T11:12:00+01:00",
   "finished_at": "2026-11-01T11:12:00+01:00",
   "current": 1,
@@ -21,7 +21,24 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 1/1 por convergencia JIT: la revisión Toledo fue aplicada como review_completed/stale porque el estado editorial ya había sido superado. Cola final 0 y sin rewrite_pending/reexplain. Sin ImageGen ni publicaciones.",
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1282,6 +1299,39 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:11:45+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793527834213-manual",
+      "trend_id": "red-review-59f90d990dadda2724b7",
+      "title": "Revisar novedades: Toledo",
+      "message": "Convergencia JIT: el outbox updated ya había sido aplicado por otra ejecución. El aplicador marcó la revisión review_completed/stale y retiró el job de la cola; no se sobrescribe el origen."
+    },
+    {
+      "at": "2026-11-01T11:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793527834213-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Cierre 1/1 por convergencia JIT. Barrera final: editorial-queue=0, preparing/update=0 y mobile-decisions sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -2558,6 +2608,14 @@
       "converged_with": "tr-1793527057284-manual",
       "groups_created": 1,
       "covered_by_existing": 0
+    },
+    {
+      "id": "red-review-59f90d990dadda2724b7",
+      "revision": 0,
+      "outcome": "stale",
+      "applied": true,
+      "converged_with": "tr-1793527469295-manual",
+      "reason": "El aplicador JIT cerró la revisión como stale tras recibir un resultado updated; no se sobrescribió la ficha de origen."
     }
   ]
 }
