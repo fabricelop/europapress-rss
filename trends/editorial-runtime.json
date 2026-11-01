@@ -3,30 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793522752871-manual",
-  "previous_run_id": "tr-chat-20261101T094115+0100",
+  "run_id": "tr-1793522249693-manual",
+  "previous_run_id": "tr-1793522752871-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T09:46:30+01:00",
-  "updated_at": "2026-11-01T09:49:30+01:00",
-  "finished_at": "2026-11-01T09:49:30+01:00",
-  "current": 1,
-  "total": 1,
+  "started_at": "2026-11-01T09:37:29.693+01:00",
+  "updated_at": "2026-11-01T09:50:36.887+01:00",
+  "finished_at": "2026-11-01T09:50:36.887+01:00",
+  "current": 10,
+  "total": 10,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-05204f713c2b87317710",
+    "83e91c68231f",
+    "67a2703e67ab",
+    "1aec380df3a5",
+    "810183f59b40",
+    "733d8b67420a",
+    "ad401a1e9e58",
+    "da4e26d2219f",
+    "55ccc5014f2a",
     "listas-auto-d962c519109a109bdc4b"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
-    "updates": 0,
+    "attempted": 10,
+    "observed": 10,
+    "closed": 10,
+    "explained": 8,
+    "updates": 1,
     "grouping_requests": 1,
     "groups_created": 1,
     "covered_by_existing": 1,
@@ -37,7 +46,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 10
   },
   "incident_count": 0,
   "incidents": [],
@@ -1117,33 +1126,110 @@
         "incidents": 0,
         "concurrent_convergence": 1
       }
+    },
+    {
+      "at": "2026-11-01T09:50:36.887+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793522249693-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; reexplain/rewrite_pending=0. Los 8 items ordinarios están explicados; Toledo quedó cerrado por actualización concurrente; group_listas completó 1 grupo nuevo y 1 cobertura por publicación previa. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T09:50:36.887+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793522249693-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 10,
+        "observed": 10,
+        "closed": 10,
+        "explained": 8,
+        "updates": 1,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 10
+      },
+      "message": "TTendencias cerrada 10/10 por ejecución y convergencia JIT: 8 explicaciones, 1 revisión de Toledo y 1 agrupación. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "final_outcomes": [
     {
+      "id": "red-review-05204f713c2b87317710",
+      "revision": 0,
+      "status": "review_completed",
+      "outcome": "updated_converged"
+    },
+    {
+      "id": "83e91c68231f",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "67a2703e67ab",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "1aec380df3a5",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "810183f59b40",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "733d8b67420a",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "ad401a1e9e58",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "da4e26d2219f",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "55ccc5014f2a",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
       "id": "listas-auto-d962c519109a109bdc4b",
       "revision": 0,
-      "outcome": "grouping_completed",
-      "applied": true,
+      "status": "grouping_completed",
       "groups_created": 1,
-      "covered_by_existing": 1,
-      "joint_id": "listas-joint-d25b18ebc7cd1aec"
+      "covered_by_existing": 1
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T09:45:07+01:00",
-  "last_completed_at": "2026-11-01T09:49:30+01:00",
+  "last_started_at": "2026-11-01T09:37:29.693+01:00",
+  "last_completed_at": "2026-11-01T09:50:36.887+01:00",
   "last_run": {
-    "run_id": "tr-1793522752871-manual",
+    "run_id": "tr-1793522249693-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T09:46:30+01:00",
-    "finished_at": "2026-11-01T09:49:30+01:00",
+    "started_at": "2026-11-01T09:37:29.693+01:00",
+    "finished_at": "2026-11-01T09:50:36.887+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
-      "updates": 0,
+      "attempted": 10,
+      "observed": 10,
+      "closed": 10,
+      "explained": 8,
+      "updates": 1,
       "grouping_requests": 1,
       "groups_created": 1,
       "covered_by_existing": 1,
@@ -1154,14 +1240,23 @@
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 10
     },
     "processed_ids": [
+      "red-review-05204f713c2b87317710",
+      "83e91c68231f",
+      "67a2703e67ab",
+      "1aec380df3a5",
+      "810183f59b40",
+      "733d8b67420a",
+      "ad401a1e9e58",
+      "da4e26d2219f",
+      "55ccc5014f2a",
       "listas-auto-d962c519109a109bdc4b"
     ]
   },
   "source": "chat",
-  "message": "DONE 1/1 por convergencia concurrente. Agrupación aplicada: 1 grupo nuevo y 1 covered_by_existing; cola final 0; ImageGen=0; publicaciones=0; incidencias=0.",
+  "message": "TTendencias cerrada 10/10 por ejecución y convergencia JIT: 8 explicaciones, 1 revisión de Toledo y 1 agrupación. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0; incidencias=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2005,6 +2100,39 @@
         "incidents": 0,
         "concurrent_convergence": 1
       }
+    },
+    {
+      "at": "2026-11-01T09:50:36.887+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793522249693-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; reexplain/rewrite_pending=0. Los 8 items ordinarios están explicados; Toledo quedó cerrado por actualización concurrente; group_listas completó 1 grupo nuevo y 1 cobertura por publicación previa. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T09:50:36.887+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793522249693-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 10,
+        "observed": 10,
+        "closed": 10,
+        "explained": 8,
+        "updates": 1,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 10
+      },
+      "message": "TTendencias cerrada 10/10 por ejecución y convergencia JIT: 8 explicaciones, 1 revisión de Toledo y 1 agrupación. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "partial": false,
