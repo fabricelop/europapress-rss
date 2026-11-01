@@ -5,29 +5,41 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T064000+0100",
   "previous_run_id": "tr-chat-20261101T062500+0100",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T06:40:00+01:00",
-  "updated_at": "2026-11-01T06:46:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T06:48:30+01:00",
+  "finished_at": "2026-11-01T06:48:30+01:00",
   "current": 3,
   "total": 3,
-  "trend_id": "fbc796aef3ba",
-  "title": "#realbetismálaga",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "55d77a86fd5f",
     "f7f7be947d1c",
     "fbc796aef3ba"
   ],
-  "remaining_active_ids": [
-    "55d77a86fd5f",
-    "f7f7be947d1c",
-    "fbc796aef3ba"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada completada 0/0. Cola final 0; sin reexplicaciones pendientes.",
+  "summary": {
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 3,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -516,14 +528,14 @@
   ],
   "final_outcomes": {
     "last_run": {
-      "run_id": "tr-chat-20261101T062500+0100",
+      "run_id": "tr-chat-20261101T064000+0100",
       "status": "DONE",
-      "started_at": "2026-11-01T06:25:00+01:00",
-      "finished_at": "2026-11-01T06:27:45.317+01:00",
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "started_at": "2026-11-01T06:40:00+01:00",
+      "finished_at": "2026-11-01T06:48:30+01:00",
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 3,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -535,21 +547,21 @@
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "note": "Cola autoritativa final 0 (actualizada 2026-11-01T06:20:57+01:00); sin rewrite_pending ni reexplain."
+      "note": "Rapha, Quiles y #realbetismálaga explicados y verificados en requests + telegram-manual-explained; cola final 0 y sin rewrite_pending/reexplain."
     }
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T06:40:00+01:00",
-  "last_completed_at": "2026-11-01T05:55:45+01:00",
+  "last_completed_at": "2026-11-01T06:48:30+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T055500+0100",
+    "run_id": "tr-chat-20261101T064000+0100",
     "status": "DONE",
-    "started_at": "2026-11-01T05:55:00+01:00",
-    "finished_at": "2026-11-01T05:55:45+01:00",
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "started_at": "2026-11-01T06:40:00+01:00",
+    "finished_at": "2026-11-01T06:48:30+01:00",
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 3,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -561,10 +573,10 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Top 30 05:50:49; cola 05:50:52 y final 0. Sin rewrite_pending ni reexplain."
+    "note": "Rapha, Quiles y #realbetismálaga explicados y verificados en requests + telegram-manual-explained; cola final 0 y sin rewrite_pending/reexplain."
   },
   "source": "chat",
-  "message": "Persistidos outbox de Quiles y #realbetismálaga tras revalidación JIT; esperando aplicación y verificando Rapha.",
+  "message": "TTendencias cerrada 3/3: Rapha, Quiles y #realbetismálaga. Cola final 0; rewrite_pending/reexplain 0; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -902,6 +914,18 @@
       "phase": "persisting",
       "run_id": "tr-chat-20261101T064000+0100",
       "message": "Outbox textual persistido para Quiles y #realbetismálaga; ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T06:48:10+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T064000+0100",
+      "message": "Barrera final: 3/3 fichas coinciden exactamente entre requests y telegram-manual-explained; editorial-queue=0; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T06:48:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T064000+0100",
+      "message": "DONE 3/3. Rapha, Quiles y #realbetismálaga cerrados; ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "history": [
@@ -974,5 +998,24 @@
     }
   ],
   "partial": false,
-  "outcomes": []
+  "outcomes": [
+    {
+      "id": "55d77a86fd5f",
+      "name": "Rapha",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "f7f7be947d1c",
+      "name": "Quiles",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "fbc796aef3ba",
+      "name": "#realbetismálaga",
+      "revision": 0,
+      "outcome": "explained"
+    }
+  ]
 }
