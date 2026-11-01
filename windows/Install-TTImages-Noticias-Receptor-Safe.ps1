@@ -2,7 +2,7 @@
 <#
  Instalador manual seguro del receptor de Noticias y su helper GitHub.
  Sin -Apply: SOLO LECTURA. Con -Apply: descarga/valida los dos modulos,
- copia versiones previas y sustituye archivos. Nunca toca ImageGen,
+ copia versiones previas y sustituye archivos. Nunca inicia generacion,
  Chrome, listeners, Telegram, X, Instagram ni ningun Worker.
  Para version de pruebas usar -Ref fix/ttimages-original-association-v1.
 #>
