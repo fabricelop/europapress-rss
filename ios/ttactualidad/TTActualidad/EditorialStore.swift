@@ -919,7 +919,12 @@ final class EditorialStore: ObservableObject {
                 closedTrends.isClosed(id: id, name: operation.title,
                                      since: operation.createdAt)
             let stage: String
-            if closedAfterRequest || newsTerminal {
+            // A definitive rejected/failed receipt closes the command immediately.
+            // Do not classify it as 'En elaboración' or 'Sin confirmar' just
+            // because the original trend has not advanced to a newer revision.
+            if ["failed", "rejected"].contains(receiptStatus) {
+                stage = "Rechazada"
+            } else if closedAfterRequest || newsTerminal {
                 stage = "Retirada"
             } else if ["Nueva noticia", "De tendencia a noticia"].contains(operation.kind) {
                 if readyNews.contains(where: { $0.id == id }) { stage = "En Listas" }
