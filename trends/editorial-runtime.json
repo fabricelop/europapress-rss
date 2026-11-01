@@ -3,36 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T0340+0100",
-  "previous_run_id": "tr-1793500773611-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T03:40:00+01:00",
-  "updated_at": "2026-11-01T03:43:00+01:00",
-  "finished_at": "2026-11-01T03:43:00+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-chat-20261101T035627+0100",
+  "previous_run_id": "tr-chat-20261101T0340+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T03:56:27+01:00",
+  "updated_at": "2026-11-01T03:56:27+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-aa7345290a2c65cc1cf9",
-    "red-review-006e56f6dc2852d7cdf0"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "remaining_active": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -810,6 +807,12 @@
       "phase": "closing",
       "run_id": "tr-1793500773611-manual",
       "message": "Cierre del job manual por convergencia con la ejecución canónica concurrente: 2/2 revisiones cerradas stale. ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T03:56:27+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T035627+0100",
+      "message": "Inicio tr-chat-20261101T035627+0100: cola compacta 0. Revalidando main y reexplicaciones antes del cierre; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -831,7 +834,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T03:40:00+01:00",
+  "last_started_at": "2026-11-01T03:56:27+01:00",
   "last_completed_at": "2026-11-01T03:43:00+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T0340+0100",
@@ -856,7 +859,7 @@
     "note": "El job manual tr-1793500773611-manual convergió con esta ejecución; ambos review_red cerraron stale por protección JIT."
   },
   "source": "chat",
-  "message": "Pasada real completada: 2 revisiones observadas y cerradas como stale por protección JIT; cola final 0 y rewrite_pending 0. ImageGen 0, publicaciones 0.",
+  "message": "Inicio tr-chat-20261101T035627+0100: cola compacta 0. Revalidando main y reexplicaciones antes del cierre; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1048,6 +1051,12 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T0340+0100",
       "message": "DONE: 2/2 observados y cerrados stale por JIT; ImageGen=0, publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T03:56:27+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T035627+0100",
+      "message": "Inicio tr-chat-20261101T035627+0100: cola compacta 0. Revalidando main y reexplicaciones antes del cierre; sin ImageGen ni publicación."
     }
   ],
   "history": [
