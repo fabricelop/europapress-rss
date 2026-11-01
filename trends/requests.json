@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:26:57.121403+00:00",
+  "updated_at": "2026-11-01T11:27:57.003695+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -1135,7 +1135,18 @@
       "group_title": "Óscar Muerte",
       "telegram_package_status": "published",
       "published_at": "2026-10-29T19:05:22.433270+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-01T11:27:57.003695+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "Se mantiene el mismo episodio: la etiqueta y la descalificación a Óscar Puente siguen ligadas a la presión política tras Urda y a la querella de Vox. Las informaciones posteriores añaden críticas y la comparecencia prevista, pero no cambian sustancialmente la explicación de origen.",
+      "red_review_sources": [
+        {
+          "url": "https://www.lasexta.com/elecciones/generales/accidente-ferroviario-urda-rompe-campana-pone-cuerdas-gobierno-voces-que-piden-dimision-puente_202610296ae312cda5f83c2fb8e7d3b2.html"
+        },
+        {
+          "url": "https://www.vozpopuli.com/espana/politica/abascal-acusa-al-gobierno-de-mentir-en-el-accidente-de-urda-tras-el-anuncio-del-cierre-del-ave-madrid-barcelona.html"
+        }
+      ]
     },
     {
       "id": "379c43835c7c",
@@ -171559,7 +171570,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 21,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T11:24:36.870698+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -171583,14 +171594,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T11:27:57.003695+00:00",
+      "review_reason": "La explicación inicial se limitaba al choque y al corte de la línea. Hay novedades materiales: 69 fallecidos, 56 víctimas identificadas y una investigación que ya reconstruye una cadena de fallos del LZB y del protocolo del centro de control."
     },
     {
       "id": "red-review-2c540cbea6cdfd2e7781",
       "revision": 0,
       "name": "Revisar novedades: Óscar Muerte",
       "rank": 9,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T11:24:36.870698+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -171613,7 +171627,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-01T11:27:57.003695+00:00",
+      "review_reason": "Se mantiene el mismo episodio: la etiqueta y la descalificación a Óscar Puente siguen ligadas a la presión política tras Urda y a la querella de Vox. Las informaciones posteriores añaden críticas y la comparecencia prevista, pero no cambian sustancialmente la explicación de origen."
     }
   ],
   "count": 546
