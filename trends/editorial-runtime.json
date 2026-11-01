@@ -8,29 +8,31 @@
   "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-01T10:05:00+01:00",
-  "updated_at": "2026-11-01T10:07:00+01:00",
+  "updated_at": "2026-11-01T10:09:20+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-29215daa06e77c8a77fa",
-  "title": "Revisar novedades: Aprilia",
+  "current": 1,
+  "total": 3,
+  "trend_id": "red-review-c6d3860715baa85c7425",
+  "title": "Revisar novedades: #laSextaXplica",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-29215daa06e77c8a77fa"
+  ],
   "remaining_ids": [
-    "red-review-29215daa06e77c8a77fa",
-    "red-review-c6d3860715baa85c7425"
+    "red-review-c6d3860715baa85c7425",
+    "listas-auto-5cddaa57caddb33c53cd"
   ],
   "remaining_active_ids": [
-    "red-review-29215daa06e77c8a77fa",
-    "red-review-c6d3860715baa85c7425"
+    "red-review-c6d3860715baa85c7425",
+    "listas-auto-5cddaa57caddb33c53cd"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 1,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
@@ -1257,6 +1259,22 @@
       "trend_id": "red-review-29215daa06e77c8a77fa",
       "title": "Revisar novedades: Aprilia",
       "message": "Revisando novedades: episodio actual de Sepang. Jorge Martín intentó volver seis días después de fracturarse la muñeca, se retiró antes de clasificación y, tras la carrera, quedó a 44 puntos de Marc Márquez. Desarrollo material frente a Australia; sin ImageGen."
+    },
+    {
+      "at": "2026-11-01T10:09:20+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793523878329-manual",
+      "trend_id": "red-review-29215daa06e77c8a77fa",
+      "title": "Revisar novedades: Aprilia",
+      "message": "Aplicación confirmada por retirada del review_red y creación posterior de un group_listas; actualización material de Aprilia cerrada sin ImageGen."
+    },
+    {
+      "at": "2026-11-01T10:09:20+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793523878329-manual",
+      "trend_id": "red-review-c6d3860715baa85c7425",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Revisando novedades: existe una actualización material ya aplicada hoy sobre la emisión del 31 de octubre centrada en Urda/LZB. Se comprueba si hay novedad posterior; no se duplicará otra ficha por el mismo episodio."
     }
   ],
   "final_outcomes": [
