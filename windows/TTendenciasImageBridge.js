@@ -954,22 +954,43 @@ async function uploadImage(image){
 // After LAUNCHED, protect only this already-submitted conversation long enough
 // for the independent read-only publisher to receive the raster. Never request
 // another generation, navigate away, or touch the other project's fixed tab.
-async function holdForWebImageReceipt(handoff,maxMs=360000,pollMs=10000){
+async function holdForWebImageReceipt(handoff,cdp,job,maxMs=360000,pollMs=10000){
   const deadline=Date.now()+maxMs;
+  let siteReturnSentAt=0;
   while(Date.now()<deadline){
     await sleep(Math.min(pollMs,Math.max(1,deadline-Date.now())));
     // A conversation URL often becomes durable only after the ImageGen turn starts.
     // Retry enrollment throughout the hold, before this fixed tab is recycled.
     if(handoff)await optionalWebHandoff(handoff,true);
+    // ImageGen often ends its response without running tools; launch its exact
+    // no-generation Site/App association turn as soon as the original raster
+    // appears, never while another command or an incomplete image is active.
+    if(!siteReturnSentAt){
+      try{
+        const outcome=await sendSiteReturnAfterImage(cdp,job);
+        if(outcome==="sent"||outcome==="already_sent"){
+          siteReturnSentAt=Date.now();
+          console.log("TTENDENCIAS SITE RETURN "+outcome+" for "+commandId);
+        }else if(outcome==="obsolete"||outcome==="different_last_user_turn"){
+          console.log("TTENDENCIAS SITE RETURN PENDING "+outcome);
+          return outcome;
+        }
+      }catch(e){console.log("TTENDENCIAS SITE RETURN DEFERRED "+String(e&&e.message||e).slice(0,100))}
+    }
     let current;
     try{current=await fetchJob();}catch{continue}
     if(String(current.command_id||"")!==commandId)return "superseded";
     const status=String(current.status||"").toUpperCase();
-    if(status==="DONE"&&current.upload_sha256)return "web_image_done";
-    if(String(current.web_image?.stage||"")==="published")return "web_image_published";
     if(status==="CANCELLED"||status==="SUPERSEDED")return "cancelled";
+    // Web receiver state and Site/App state are independent. A receiver DONE
+    // must not suppress the Site/App request, but can stop after it was sent.
+    if(siteReturnSentAt&&status==="DONE"&&current.upload_sha256)return "web_image_done_and_site_return_sent";
+    if(siteReturnSentAt&&String(current.web_image?.stage||"")==="published")return "web_image_published_and_site_return_sent";
+    // Browser can be reused once the exact follow-up has been submitted and
+    // allowed time to process; the delivery watcher keeps retrying independently.
+    if(siteReturnSentAt&&Date.now()-siteReturnSentAt>90000)return "site_return_sent_delivery_independent";
   }
-  return "receipt_not_confirmed_within_hold";
+  return siteReturnSentAt?"site_return_sent_delivery_independent":"receipt_not_confirmed_within_hold";
 }
 // Optional delivery bookkeeping. Failure here is never a generation failure.
 // Keep this boundary separate from the pre-submit and launched receipts.
@@ -1058,7 +1079,7 @@ async function optionalWebHandoff(handoff,remember=false){
         // The relay may no longer be installed. The publisher can read this
         // same existing 9223 conversation without opening a new Chrome tab,
         // provided the producer does not immediately reuse it for the next job.
-        const receipt=await holdForWebImageReceipt(webHandoff);
+        const receipt=await holdForWebImageReceipt(webHandoff,cdp,job);
         // An ImageGen tool turn cannot guarantee execution of its own follow-up.
         // Submit the independent Site/App request only into THIS proven chat.
         let siteReturn="not_attempted";
