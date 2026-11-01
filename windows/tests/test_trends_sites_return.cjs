@@ -53,5 +53,5 @@ test('TTImages emits a second original-only Site/App turn after ImageGen when re
   assert.ok(output.includes('NO generes imágenes ni invoques ImageGen'));
   assert.ok(output.includes('mcp__TTendencias___TTActualidad__attach_trend_image'));
   assert.match(source,/await sendSiteReturnAfterImage\(cdp,job\)/);
-  assert.match(source,/await holdForWebImageReceipt\(webHandoff\)/);
+  assert.match(source,/await holdForWebImageReceipt\(webHandoff,cdp,job\)/);
 });
