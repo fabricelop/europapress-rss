@@ -14,6 +14,9 @@ private struct ListasGroupingControls: View {
     @State private var message = ""
     @State private var groupRequestID = UUID().uuidString.lowercased()
     @State private var cleanupRequestID = UUID().uuidString.lowercased()
+    @State private var confirmRemoveAllTrends = false
+    @State private var removeAllRequestID = UUID().uuidString.lowercased()
+    @State private var removeAllSelection: [TrendItem] = []
 
     // Purple originals only. Never delete the newly-created joint card.
     // Backend also revalidates listas_group_role == covered before deleting.
@@ -21,6 +24,9 @@ private struct ListasGroupingControls: View {
         store.snapshot.trendListas.filter { $0.isCovered && !$0.isJointGroup }
     }
     private var ungrouped: [TrendItem] { store.snapshot.trendListas.filter { !$0.isCovered } }
+    // All ready trends, including green, yellow, red and purple joint/covered
+    // cards. Never select news or filter by the current search query.
+    private var allTrends: [TrendItem] { store.snapshot.trendListas.filter(\.inListas) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
@@ -47,6 +53,20 @@ private struct ListasGroupingControls: View {
                 .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 10))
             }
             .font(.system(size: 12, weight: .semibold)).foregroundStyle(TTTheme.teal)
+            Button {
+                if github.authenticated {
+                    removeAllSelection = allTrends
+                    confirmRemoveAllTrends = !removeAllSelection.isEmpty
+                } else { settings = true }
+            } label: {
+                Label("Retirar todas las tendencias (\(allTrends.count))", systemImage: "trash")
+                    .font(.system(size: 12, weight: .semibold))
+                    .frame(maxWidth: .infinity).padding(.vertical, 11)
+                    .foregroundStyle(Color(red: 1, green: 0.78, blue: 0.80))
+            }
+            .disabled(busy || allTrends.isEmpty)
+            .background(TTTheme.red.opacity(0.55), in: RoundedRectangle(cornerRadius: 10))
+            .accessibilityHint("Retirar en una sola operación todas las tendencias de Listas como no publicadas")
             if !message.isEmpty {
                 Text(message).font(.caption2).foregroundStyle(TTTheme.muted)
             }
@@ -96,6 +116,42 @@ private struct ListasGroupingControls: View {
             Button("Cancelar", role: .cancel) {}
         } message: {
             Text("Eliminarás de Listas todas las \(covered.count) tarjetas moradas, registradas como NO PUBLICADAS. Las explicaciones conjuntas se conservan y no se suman publicaciones en X.")
+        }
+        .confirmationDialog("¿Retirar todas las tendencias de Listas?",
+                            isPresented: $confirmRemoveAllTrends, titleVisibility: .visible) {
+            Button("Retirar \(removeAllSelection.count) · No publicadas", role: .destructive) {
+                submitRemoveAllTrends()
+            }
+            Button("Cancelar", role: .cancel) { removeAllSelection = [] }
+        } message: {
+            Text("Se retirarán todas las \(removeAllSelection.count) tendencias que estaban en Listas al pulsar el botón, sin distinguir color y sin marcar ninguna como publicada en X. No se retirarán noticias. Se conservarán las explicaciones, imágenes y grupos en su historial.")
+        }
+    }
+
+    private func submitRemoveAllTrends() {
+        guard !busy, !removeAllSelection.isEmpty else { return }
+        let selected = removeAllSelection
+        busy = true
+        message = "Comprobando \(selected.count) tendencias en GitHub…"
+        Task {
+            let result = await github.removeAllTrendsFromListas(
+                items: selected, requestID: removeAllRequestID)
+            switch result {
+            case .verified:
+                removeAllRequestID = UUID().uuidString.lowercased()
+                removeAllSelection = []
+                message = "\(selected.count) tendencias retiradas como no publicadas · verificado en GitHub."
+            case .pending:
+                message = github.notice
+            case .failed:
+                // Explicit rejected receipts can be retried with a fresh
+                // snapshot; a possibly-running request keeps its same ID.
+                removeAllRequestID = UUID().uuidString.lowercased()
+                removeAllSelection = []
+                message = github.notice
+            }
+            await store.refreshIfStale(minInterval: 0)
+            busy = false
         }
     }
 
