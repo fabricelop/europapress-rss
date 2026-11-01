@@ -5,37 +5,41 @@
   "canonical": true,
   "run_id": "tr-1793491683102-manual",
   "previous_run_id": "tr-1793491247699-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T01:08:03.102+01:00",
-  "updated_at": "2026-11-01T01:14:00+01:00",
-  "finished_at": null,
-  "current": 3,
+  "updated_at": "2026-11-01T01:12:30+01:00",
+  "finished_at": "2026-11-01T01:12:30+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "listas-auto-f46948b56552f8daac10",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "listas-auto-c2e98f2555a5a80353db",
+    "red-review-0e6998c134c36aa734d1",
+    "red-review-8dc8bb3b8fe5c0d01bca",
     "listas-auto-f46948b56552f8daac10"
   ],
-  "remaining_active_ids": [
-    "listas-auto-f46948b56552f8daac10"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 4,
-    "closed": 3,
+    "closed": 4,
     "explained": 0,
     "updates": 2,
+    "updated_reviews": 2,
     "grouping_requests": 2,
     "groups_created": 0,
-    "covered_by_existing": 0,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "remaining_active": 1,
-    "queue_remaining": 1,
+    "converged_concurrent": 3,
+    "applied_this_run": 1,
+    "remaining_active": 0,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -524,66 +528,77 @@
       "trend_id": "listas-auto-f46948b56552f8daac10",
       "title": "Agrupación automática de Listas",
       "message": "Resultado JIT: Alavés actualizado queda cubierto por la ficha publicada Barça-Alavés · goleada y Lamine; 0 grupos nuevos y 1 covered_by_existing. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:12:20+01:00",
+      "phase": "verifying",
+      "message": "Barrera final tras completar el workflow de agrupación: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Las dos review_red quedaron updated; ambas agrupaciones se aplicaron, con Alavés cubierto por la ficha publicada Barça-Alavés · goleada y Lamine."
+    },
+    {
+      "at": "2026-11-01T01:12:30+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 4/4 observados. ImageGen=0, publicaciones=0, cola final=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "34773b6871a6",
+      "id": "listas-auto-c2e98f2555a5a80353db",
       "revision": 0,
-      "status": "explained",
-      "name": "Tusk",
-      "converged_concurrent": true,
-      "source_run": "tr-1793490930000-manual"
+      "status": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "converged_concurrent": true
     },
     {
-      "id": "930473fae55b",
+      "id": "red-review-0e6998c134c36aa734d1",
       "revision": 0,
-      "status": "explained",
-      "name": "Ana Pastor"
+      "status": "review_completed",
+      "outcome": "updated",
+      "distinct_episode": true,
+      "converged_concurrent": true
     },
     {
-      "id": "c1d3d1afb9e9",
+      "id": "red-review-8dc8bb3b8fe5c0d01bca",
       "revision": 0,
-      "status": "explained",
-      "name": "Sabadell"
+      "status": "review_completed",
+      "outcome": "updated",
+      "distinct_episode": true,
+      "converged_concurrent": true
     },
     {
-      "id": "2fa9bd880a4d",
+      "id": "listas-auto-f46948b56552f8daac10",
       "revision": 0,
-      "status": "explained",
-      "name": "Aston Villa"
-    },
-    {
-      "id": "e66f5cfee46f",
-      "revision": 0,
-      "status": "explained",
-      "name": "Frenkie"
+      "status": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 1,
+      "covered_member": "trend-update-7c8d21f3ad39dd8b2761",
+      "published_id": "listas-joint-1873f405d5b5996d"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T01:07:03+01:00",
-  "last_completed_at": "2026-11-01T01:07:04+01:00",
+  "last_completed_at": "2026-11-01T01:12:30+01:00",
   "last_run": {
-    "run_id": "tr-1793490033474-manual",
+    "run_id": "tr-1793491683102-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T00:49:00+01:00",
-    "attempted": 7,
-    "explained": 4,
-    "updates": 0,
-    "grouping_requests": 1,
+    "finished_at": "2026-11-01T01:12:30+01:00",
+    "observed": 4,
+    "attempted": 2,
+    "closed": 4,
+    "explained": 0,
+    "updates": 2,
+    "grouping_requests": 2,
     "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 2,
-    "stale_reviews": 0,
+    "covered_by_existing": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Pasada real completada: 4 explicaciones, 2 revisiones sin novedades materiales y 1 agrupación sin coincidencias; cola final 0."
+    "note": "Pasada real completada: dos revisiones actualizadas como episodios distintos, dos agrupaciones resueltas y Alavés cubierto por la ficha conjunta ya publicada. Cola final 0."
   },
   "source": "chat",
-  "message": "Resultado JIT: Alavés actualizado queda cubierto por la ficha publicada Barça-Alavés · goleada y Lamine; 0 grupos nuevos y 1 covered_by_existing. Sin ImageGen ni publicación.",
+  "message": "TTendencias cerrada 4/4 observados. ImageGen=0, publicaciones=0, cola final=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -667,6 +682,16 @@
       "trend_id": "listas-auto-f46948b56552f8daac10",
       "title": "Agrupación automática de Listas",
       "message": "Resultado JIT: Alavés actualizado queda cubierto por la ficha publicada Barça-Alavés · goleada y Lamine; 0 grupos nuevos y 1 covered_by_existing. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:12:20+01:00",
+      "phase": "verifying",
+      "message": "Barrera final tras completar el workflow de agrupación: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Las dos review_red quedaron updated; ambas agrupaciones se aplicaron, con Alavés cubierto por la ficha publicada Barça-Alavés · goleada y Lamine."
+    },
+    {
+      "at": "2026-11-01T01:12:30+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 4/4 observados. ImageGen=0, publicaciones=0, cola final=0."
     }
   ]
 }
