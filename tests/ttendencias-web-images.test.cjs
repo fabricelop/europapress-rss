@@ -125,3 +125,53 @@ test('the exact Site-return follow-up does not orphan the existing original rast
  assert.match(raster,/users\.length-2/);
  assert.match(raster,/command\+' '/);
 });
+
+
+test('la cola reintenta asociación Site de imágenes ya publicadas con una conversación original',()=>{
+ const now=Date.parse('2026-11-01T11:30:00Z');
+ const published={task:{status:'published',created_at:'2026-11-01T10:00:00Z',conversation_url:'https://chatgpt.com/c/6ae4adf9-f5b8-83ed-a524-37232d9b9992'}};
+ const attached={task:{...published.task,site_return_sent_at:'2026-11-01T11:00:00Z'}};
+ const old={task:{...published.task,created_at:'2026-10-27T10:00:00Z'}};
+ const noConversation={task:{...published.task,conversation_url:null}};
+ assert.deepEqual(dueTasks([published,attached,old,noConversation],now),[published]);
+});
+test('un reintento Site solo instruye asociar el PNG original y conserva identidad exacta',()=>{
+ const {siteReturnPrompt,siteReturnProbe}=require('../windows/TTendenciasWebImages.cjs');
+ const t={target_id:ID,command_id:COMMAND,revision:0};
+ const j={target_name:'Tendencia primera',context_snapshot:{explanation:TEXT,explained_at:'2026-11-01T10:40:57+01:00'}};
+ const prompt=siteReturnPrompt(t,j);
+ assert.ok(prompt.startsWith('TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+COMMAND+' '+ID));
+ assert.match(prompt,/NO GENERES NINGUNA IMAGEN/);
+ assert.match(prompt,/attach_trend_image/);
+ assert.match(prompt,/verify_trend_image/);
+ assert.match(prompt,/trends\/site-ai-images.json/);
+ const m=prompt.match(/CONTEXTO EXACTO Y AUTORITATIVO \(revalídalo antes de escribir\): (\{[^\n]+\})/);
+ assert.ok(m);
+ const ctx=JSON.parse(m[1]);
+ assert.equal(ctx.target_id,ID);assert.equal(ctx.revision,0);
+ assert.equal(ctx.explanation,TEXT);
+ assert.equal(ctx.explained_at,'2026-11-01T10:40:57+01:00');
+ assert.match(siteReturnProbe(COMMAND,ID,'TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+COMMAND+' '+ID),/different_last_user_turn/);
+ assert.match(siteReturnProbe(COMMAND,ID,'TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+COMMAND+' '+ID),/already_sent/);
+});
+test('si solo hay navegador productor 9223, no se crea pestaña de recuperación ni nueva generación',async()=>{
+ const {recoverSiteAfterUpload}=require('../windows/TTendenciasWebImages.cjs');
+ const original=global.fetch;
+ const calls=[];
+ const j=job(),m=manual();
+ global.fetch=async(url,opts={})=>{
+   calls.push({url:String(url),method:opts.method});
+   if(String(url).includes(':9234/')){const e=new TypeError('unavailable');e.cause={code:'ECONNREFUSED'};throw e;}
+   const doc=String(url).endsWith('/json/version')?{webSocketDebuggerUrl:'ws://127.0.0.1:9223/devtools/browser/test'}:
+     String(url).endsWith('/json/list')?[{type:'page',url:'https://chatgpt.com/'}]:
+     String(url).includes('telegram-manual-explained')?m:j;
+   return {ok:true,status:200,json:async()=>doc};
+ };
+ try{
+   const q={...task(),status:'published',conversation_url:'https://chatgpt.com/c/6ae4adf9-f5b8-83ed-a524-37232d9b9992'};
+   const result=await recoverSiteAfterUpload(q,j);
+   assert.equal(result.status,'published');
+   assert.equal(result.site_return_status,'isolated_relay_unavailable');
+   assert.ok(calls.every(x=>!x.method||x.method==='GET'));
+ }finally{global.fetch=original;}
+});
