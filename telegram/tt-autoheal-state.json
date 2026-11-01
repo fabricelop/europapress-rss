@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-01T06:53:41.426032+00:00",
+      "checked_at": "2026-11-01T13:56:25.843099+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1371569,
+          "seconds": 1396933,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,31 +22,46 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-01T06:53:41.426032+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-01T13:56:25.843099+00:00",
+      "issue_count": 3,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "ad9b88f15edd",
+          "title": "Kike Salas",
+          "seconds": 930,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "listas-joint-f8769365147a3582",
+          "title": "Getafe-Sevilla · Kike Salas y Gudelj",
+          "seconds": 183,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1371568,
+          "seconds": 1396933,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "61ca91450ffe4df8e5471de033339ccd50812da37b4ea2a9c0919751115853de",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-31T18:49:31.269450+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-01T06:53:41.426032+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-01T06:53:41.426032+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-01T00:46:01.084404+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-11-01T13:56:25.843099+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-01T13:56:25.843099+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-01T13:56:25.843099+00:00"
   },
-  "checked_at": "2026-11-01T06:53:41.426032+00:00"
+  "checked_at": "2026-11-01T13:56:25.843099+00:00"
 }

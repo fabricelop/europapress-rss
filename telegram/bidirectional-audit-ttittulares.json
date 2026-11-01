@@ -1,12 +1,30 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-11-01T06:53:38.416677+00:00",
+  "checked_at": "2026-11-01T13:56:22.421926+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 2,
   "telegram_live_count": 13,
   "matched_count": 0,
-  "issues_count": 13,
+  "issues_count": 15,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "7dc73accf58d",
+      "title": "Trump aclara que no se reunirá con Flávio Bolsonaro aunque le invita a permanecer en EEUU \"todo el tiempo que desee\"",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "227e680e5ae4",
+      "title": "La Fiscalía presenta una querella contra el vicepresidente de Vox en Mallorca por el uso de los coches oficiales",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
     {
       "kind": "telegram_without_app",
       "id": "4788c370b927",
@@ -100,7 +118,10 @@
     }
   ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "227e680e5ae4",
+    "7dc73accf58d"
+  ],
   "telegram_ids": [
     "16218d804d58",
     "4788c370b927",
