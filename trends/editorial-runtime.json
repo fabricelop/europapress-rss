@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "chat-20261101T085636303Z",
   "previous_run_id": "tr-1793522850347-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T08:56:36.303Z",
-  "updated_at": "2026-11-01T08:56:36.303Z",
-  "finished_at": null,
+  "updated_at": "2026-11-01T08:57:05.869Z",
+  "finished_at": "2026-11-01T08:57:05.869Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -1225,6 +1225,16 @@
       "at": "2026-11-01T08:56:36.303Z",
       "phase": "preparing",
       "message": "Inicio chat-20261101T085636303Z: cola compacta inicial observada 0. Revalidando main, reexplicaciones y últimos resultados aplicados; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T08:57:05.869Z",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Sin trabajo editorial pendiente."
+    },
+    {
+      "at": "2026-11-01T08:57:05.869Z",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para chat-20261101T085636303Z. Sin ImageGen, sin publicación en X y sin cambios de texto."
     }
   ],
   "final_outcomes": [
@@ -1286,19 +1296,19 @@
   "last_started_at": "2026-11-01T09:37:29.693+01:00",
   "last_completed_at": "2026-11-01T09:50:30+01:00",
   "last_run": {
-    "run_id": "tr-1793522249693-manual",
+    "run_id": "chat-20261101T085636303Z",
     "status": "DONE",
-    "started_at": "2026-11-01T09:37:29.693+01:00",
-    "finished_at": "2026-11-01T09:50:30+01:00",
+    "started_at": "2026-11-01T08:56:36.303Z",
+    "finished_at": "2026-11-01T08:57:05.869Z",
     "summary": {
-      "attempted": 10,
-      "observed": 10,
-      "closed": 10,
-      "explained": 8,
-      "updates": 1,
-      "grouping_requests": 1,
-      "groups_created": 1,
-      "covered_by_existing": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
+      "updates": 0,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "covered_by_existing": 0,
       "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
@@ -1306,20 +1316,9 @@
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 10
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-05204f713c2b87317710",
-      "83e91c68231f",
-      "67a2703e67ab",
-      "1aec380df3a5",
-      "810183f59b40",
-      "733d8b67420a",
-      "ad401a1e9e58",
-      "da4e26d2219f",
-      "55ccc5014f2a",
-      "listas-auto-d962c519109a109bdc4b"
-    ]
+    "processed_ids": []
   },
   "source": "chat",
   "message": "TTendencias cerrada 1/1 por convergencia JIT. 1 agrupación creada, 1 cobertura previa, cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0.",
