@@ -3,46 +3,45 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793536401576-manual",
-  "previous_run_id": "tr-chat-20261101T132500+0100",
+  "run_id": "tr-1793536492209-manual",
+  "previous_run_id": "tr-1793536401576-manual",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-01T13:33:30+01:00",
-  "updated_at": "2026-11-01T13:33:30+01:00",
+  "phase": "verifying",
+  "started_at": "2026-11-01T13:34:52.209+01:00",
+  "updated_at": "2026-11-01T13:37:30+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "red-review-d618f1f1401545108e64",
-  "title": "Revisar novedades: Halloween",
+  "current": 1,
+  "total": 2,
+  "trend_id": "listas-auto-ced6f329769524398859",
+  "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "listas-auto-0def7a67b2e3bff3bc3a",
-    "red-review-40e74cd77ce920da353e",
+  "processed_ids": [
     "red-review-d618f1f1401545108e64"
   ],
+  "remaining_ids": [
+    "listas-auto-ced6f329769524398859"
+  ],
   "remaining_active_ids": [
-    "red-review-d618f1f1401545108e64",
-    "listas-auto-55e9977fa75dd550026d"
+    "listas-auto-ced6f329769524398859"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
     "observed": 2,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
@@ -54,9 +53,25 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada; 3 trabajos activos detectados en main. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T13:37:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793536492209-manual",
+      "trend_id": "listas-auto-ced6f329769524398859",
+      "title": "Agrupación automática de Listas",
+      "message": "La revisión de Halloween ya convergió en main como updated. El job de agrupación siguiente sigue preparing; su outbox existente devuelve groups=[] y covered_by_existing=[]. Revalidación JIT antes del cierre."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-d618f1f1401545108e64",
+      "revision": 0,
+      "outcome": "updated",
+      "applied": true,
+      "name": "Halloween"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T13:29:09+01:00",
   "last_completed_at": "2026-11-01T13:30:00+01:00",
@@ -95,7 +110,7 @@
     "message": "Pasada cerrada 1/1: Kerolin r0 explicada y persistida en requests.json y telegram-manual-explained.json; barrera final editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio de pasada real: 2 trabajos preparing/update vigentes en main; se procesan del más antiguo al más reciente con revalidación JIT. Sin ImageGen ni publicación.",
+  "message": "Pasada real en curso: 2 trabajos observados por convergencia JIT; Halloween ya aplicado y agrupación automática pendiente de aplicador. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
