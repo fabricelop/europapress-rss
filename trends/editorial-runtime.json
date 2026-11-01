@@ -5,41 +5,43 @@
   "canonical": true,
   "run_id": "tr-1793553845285-manual",
   "previous_run_id": "tr-chat-20261101T175500+0100",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T18:26:20+01:00",
-  "updated_at": "2026-11-01T18:30:55+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 7,
+  "updated_at": "2026-11-01T18:34:10+01:00",
+  "finished_at": "2026-11-01T18:34:10+01:00",
+  "current": 10,
+  "total": 10,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "08376d731cac",
-    "18dc47314a83",
+    "64b7521f1d8d",
     "24e3a441d3d1",
+    "c49977e1871e",
+    "08376d731cac",
     "252573ec624f",
     "5d3198c8b68a",
-    "64b7521f1d8d",
+    "18dc47314a83",
     "7b671362898c",
-    "c49977e1871e"
+    "red-review-1e1b9d135357dfda3d75",
+    "red-review-5add855adb1cf42cbd62"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 10,
+    "observed": 10,
+    "closed": 10,
+    "explained": 8,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 7,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1355,6 +1357,31 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 0/0 tras relectura final de main: no queda preparing/update ni reelaboración pendiente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T18:34:10+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793553845285-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 10,
+        "observed": 10,
+        "closed": 10,
+        "explained": 8,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 10/10: Racing r2, Mbappe r0, Mourinho r0, Penalti r1, Sardinero r1, Bellingham r0, Munuera r1 y Bernardo r0 quedaron explained; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale por validación JIT. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [],
@@ -1388,7 +1415,7 @@
     "message": "Pasada manual cerrada 0/0 tras refrescar el Top 30 y releer main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio: 7 reelaboraciones manuales preparing detectadas en main; se procesan de la más antigua a la más reciente con validación JIT. Sin ImageGen ni publicación.",
+  "message": "Pasada cerrada 10/10: Racing r2, Mbappe r0, Mourinho r0, Penalti r1, Sardinero r1, Bellingham r0, Munuera r1 y Bernardo r0 quedaron explained; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale por validación JIT. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3614,7 +3641,88 @@
     }
   ],
   "partial": false,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "64b7521f1d8d",
+      "revision": 2,
+      "name": "Racing",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "24e3a441d3d1",
+      "revision": 0,
+      "name": "Mbappe",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "c49977e1871e",
+      "revision": 0,
+      "name": "Mourinho",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "08376d731cac",
+      "revision": 1,
+      "name": "Penalti",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "252573ec624f",
+      "revision": 1,
+      "name": "Sardinero",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "5d3198c8b68a",
+      "revision": 0,
+      "name": "Bellingham",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "18dc47314a83",
+      "revision": 1,
+      "name": "Munuera",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "7b671362898c",
+      "revision": 0,
+      "name": "Bernardo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
+    },
+    {
+      "id": "red-review-1e1b9d135357dfda3d75",
+      "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
+      "outcome": "stale",
+      "applied": true,
+      "via": "this_run_maintenance_outbox"
+    },
+    {
+      "id": "red-review-5add855adb1cf42cbd62",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "applied": true,
+      "via": "this_run_maintenance_outbox"
+    }
+  ],
   "current_item": null,
   "current_title": null,
   "completed_runs": [
@@ -3986,6 +4094,115 @@
       },
       "outcomes": [],
       "message": "Pasada manual cerrada 0/0 tras refrescar el Top 30 y releer main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793553845285-manual",
+      "status": "DONE",
+      "started_at": "2026-11-01T18:26:20+01:00",
+      "finished_at": "2026-11-01T18:34:10+01:00",
+      "summary": {
+        "attempted": 10,
+        "observed": 10,
+        "closed": 10,
+        "explained": 8,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "64b7521f1d8d",
+          "revision": 2,
+          "name": "Racing",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "24e3a441d3d1",
+          "revision": 0,
+          "name": "Mbappe",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "c49977e1871e",
+          "revision": 0,
+          "name": "Mourinho",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "08376d731cac",
+          "revision": 1,
+          "name": "Penalti",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "252573ec624f",
+          "revision": 1,
+          "name": "Sardinero",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "5d3198c8b68a",
+          "revision": 0,
+          "name": "Bellingham",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "18dc47314a83",
+          "revision": 1,
+          "name": "Munuera",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "7b671362898c",
+          "revision": 0,
+          "name": "Bernardo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "red-review-1e1b9d135357dfda3d75",
+          "revision": 0,
+          "name": "Revisar novedades: #laSextaXplica",
+          "outcome": "stale",
+          "applied": true,
+          "via": "this_run_maintenance_outbox"
+        },
+        {
+          "id": "red-review-5add855adb1cf42cbd62",
+          "revision": 0,
+          "name": "Revisar novedades: Toledo",
+          "outcome": "stale",
+          "applied": true,
+          "via": "this_run_maintenance_outbox"
+        }
+      ],
+      "message": "Pasada cerrada 10/10: Racing r2, Mbappe r0, Mourinho r0, Penalti r1, Sardinero r1, Bellingham r0, Munuera r1 y Bernardo r0 quedaron explained; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale por validación JIT. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "incident_count": 0,
+      "incidents": []
     }
   ]
 }
