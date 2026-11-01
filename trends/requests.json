@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T08:21:01+01:00",
+  "updated_at": "2026-11-01T07:23:47.690330+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8812,7 +8812,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T07:23:47.690330+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -124064,7 +124064,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T07:23:47.690330+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -148414,19 +148414,21 @@
       "image_choice": null,
       "image_status": "none",
       "image_pending": false,
-      "editorial_grouping_state": "pending"
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "905b12eb5a4a96d0d93e9c1c9243575aad1d8d909f367ef9d2c96151052228a2",
+      "editorial_grouping_checked_at": "2026-11-01T07:23:47.690330+00:00"
     },
     {
       "id": "listas-auto-43e1f378f5733cfae117",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T07:20:16.974197+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -150009,14 +150011,18 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T07:23:47.690330+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "92d11fadaf3e01ae8b01a420be5f97d58c25dbf3e5b6186c09f22efc72a41443"
     },
     {
       "id": "red-review-39b0dda273fa126a8990",
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T07:20:16.974197+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -150039,7 +150045,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T07:23:47.690330+00:00",
+      "review_reason": "Episodio distinto: la revisión original correspondía a la emisión del 24 de octubre; la tendencia actual coincide con el programa del 31 de octubre dedicado a la tragedia ferroviaria de Urda."
     },
     {
       "id": "red-review-41acc459167352633968",
