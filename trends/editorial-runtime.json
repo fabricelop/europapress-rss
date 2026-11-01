@@ -6,39 +6,38 @@
   "run_id": "tr-1793523878329-manual",
   "previous_run_id": "chat-20261101T085636303Z",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-01T10:05:00+01:00",
-  "updated_at": "2026-11-01T10:09:20+01:00",
+  "updated_at": "2026-11-01T10:10:40+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 3,
-  "trend_id": "red-review-c6d3860715baa85c7425",
-  "title": "Revisar novedades: #laSextaXplica",
+  "trend_id": "listas-auto-5cddaa57caddb33c53cd",
+  "title": "Agrupación automática de Listas",
   "queue_complete": false,
   "processed_ids": [
-    "red-review-29215daa06e77c8a77fa"
+    "red-review-29215daa06e77c8a77fa",
+    "red-review-c6d3860715baa85c7425"
   ],
   "remaining_ids": [
-    "red-review-c6d3860715baa85c7425",
     "listas-auto-5cddaa57caddb33c53cd"
   ],
   "remaining_active_ids": [
-    "red-review-c6d3860715baa85c7425",
     "listas-auto-5cddaa57caddb33c53cd"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "updates": 1,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1275,6 +1274,22 @@
       "trend_id": "red-review-c6d3860715baa85c7425",
       "title": "Revisar novedades: #laSextaXplica",
       "message": "Revisando novedades: existe una actualización material ya aplicada hoy sobre la emisión del 31 de octubre centrada en Urda/LZB. Se comprueba si hay novedad posterior; no se duplicará otra ficha por el mismo episodio."
+    },
+    {
+      "at": "2026-11-01T10:10:40+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793523878329-manual",
+      "trend_id": "red-review-c6d3860715baa85c7425",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Aplicación confirmada: review_red retirado de la cola como unchanged; no se duplicó la actualización ya aplicada del episodio Urda/LZB."
+    },
+    {
+      "at": "2026-11-01T10:10:40+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793523878329-manual",
+      "trend_id": "listas-auto-5cddaa57caddb33c53cd",
+      "title": "Agrupación automática de Listas",
+      "message": "Agrupación JIT persistida: Aprilia + ficha conjunta GP de Malasia comparten el mismo acontecimiento; resto del snapshot sin coincidencia inequívoca ni cobertura previa sin novedades."
     }
   ],
   "final_outcomes": [
