@@ -3,25 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793536920000-manual",
-  "previous_run_id": "tr-1793536492209-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T13:42:00+01:00",
-  "updated_at": "2026-11-01T13:43:00+01:00",
-  "finished_at": "2026-11-01T13:43:00+01:00",
+  "run_id": "tr-chat-20261101T1355+0100",
+  "previous_run_id": "tr-1793536920000-manual",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-01T13:55:00+01:00",
+  "updated_at": "2026-11-01T13:56:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "f7361b47a759",
+  "title": "Mariah Carey",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "f7361b47a759"
+  ],
+  "remaining_active_ids": [
+    "f7361b47a759"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 1,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -30,7 +34,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -79,6 +83,22 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada 0/0 tras barrera JIT: editorial-queue=0 y sin rewrite_pending/reexplicación pendiente en requests/telegram-manual-explained. Radar reciente sin nuevas entradas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T13:55:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T1355+0100",
+      "trend_id": "f7361b47a759",
+      "title": "Mariah Carey",
+      "message": "Inicio: 1 trabajo preparing vigente en main (Mariah Carey, r0, TT#30). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T13:56:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-chat-20261101T1355+0100",
+      "trend_id": "f7361b47a759",
+      "title": "Mariah Carey",
+      "message": "Detonante verificado con fuentes actuales: publicó a medianoche su vídeo anual «It’s Time», pasando de Halloween a Navidad con «All I Want for Christmas Is You»."
     }
   ],
   "final_outcomes": [],
@@ -112,7 +132,7 @@
     "message": "Pasada cerrada 0/0 tras barrera JIT: editorial-queue=0 y sin rewrite_pending/reexplicación pendiente en requests/telegram-manual-explained. Radar reciente sin nuevas entradas. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 0/0 tras barrera JIT: editorial-queue=0 y sin rewrite_pending/reexplicación pendiente en requests/telegram-manual-explained. Radar reciente sin nuevas entradas. ImageGen=0; publicaciones=0.",
+  "message": "Mariah Carey r0 revalidada JIT en TT#30. Detonante actual confirmado con fuentes de hoy; preparando persistencia textual sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1857,6 +1877,6 @@
       "covered_by_existing": 0
     }
   ],
-  "current_item": null,
-  "current_title": null
+  "current_item": "f7361b47a759",
+  "current_title": "Mariah Carey"
 }
