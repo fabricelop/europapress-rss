@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793553937207-manual",
+  "run_id": "tr-chat-20261101T185500+0100",
   "previous_run_id": "tr-1793553845285-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T18:26:20+01:00",
-  "updated_at": "2026-11-01T18:34:30+01:00",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-01T18:55:00+01:00",
+  "updated_at": "2026-11-01T18:55:00+01:00",
   "finished_at": "2026-11-01T18:34:30+01:00",
-  "current": 10,
-  "total": 10,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -28,7 +28,11 @@
     "red-review-5add855adb1cf42cbd62"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "d8bedf30339e",
+    "affd096f80ce",
+    "536b6cb3934c"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 10,
@@ -3829,7 +3833,11 @@
       "via": "concurrent_convergence_jit"
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "d8bedf30339e",
+    "revision": 0,
+    "name": "Tchouameni"
+  },
   "current_title": null,
   "completed_runs": [
     {
