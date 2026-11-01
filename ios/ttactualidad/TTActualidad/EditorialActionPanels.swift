@@ -130,23 +130,28 @@ struct EditorialActions: View {
                     quickButton("Copiar orden editorial", "doc.on.doc") {
                         copyManualEditorialPrompt()
                     }
-                    quickButton("Abrir ChatGPT", "arrow.up.right.square") {
-                        openChatGPTApp()
-                    }
+                    quickLink("Proyecto TT", "folder", "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
                 }
             } else {
+            // Principal actions: publication and project; then copy tools.
             HStack(spacing: 7) {
-                quickLink("TTImages", "photo.stack", "https://t.me/TTImages_bot")
                 quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
+                if trend != nil {
+                    quickLink("Proyecto TT", "folder", "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
+                }
             }
             HStack(spacing: 7) {
                 quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
-                quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/images")
+                quickButton("Copiar texto", "doc.on.doc") { copy(fullText) }
             }
             HStack(spacing: 7) {
-                quickButton("Copiar texto", "doc.on.doc") { copy(fullText) }
                 quickButton("Copiar foto", "photo.on.rectangle") {
                     Task { await copyPhoto() }
+                }
+                if trend != nil {
+                    quickButton("Copiar imagen Site", "square.on.square") {
+                        copyTrendSiteImagePrompt()
+                    }
                 }
             }
             HStack(spacing: 7) {
@@ -184,25 +189,6 @@ struct EditorialActions: View {
                     if let url = parts?.url { openURL(url) }
                 }
             }
-            }
-            if trend != nil {
-                HStack(spacing: 7) {
-                    quickButton("Copiar imagen Site", "square.on.square") {
-                        copyTrendSiteImagePrompt()
-                    }
-                    quickButton("Abrir chat TT", "plus.bubble") {
-                        openTTProject()
-                    }
-                    .alert("Enlace del proyecto TT", isPresented: $showTTProjectLink) {
-                        TextField("Enlace de PROYECTOS APP", text: $ttProjectLinkInput)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                        Button("Guardar y abrir") { saveAndOpenTTProject() }
-                        Button("Cancelar", role: .cancel) {}
-                    } message: {
-                        Text("Pega una vez el enlace de tu proyecto de ChatGPT (no el del Site ni un chat compartido). El botón abrirá ese proyecto para crear allí un chat nuevo.")
-                    }
-                }
             }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
