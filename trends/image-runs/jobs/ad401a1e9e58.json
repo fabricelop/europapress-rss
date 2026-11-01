@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791025833711-0d7a32",
-  "requested_at": "2026-10-03T11:10:33.711Z",
-  "updated_at": "2026-10-03T11:11:54.852Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
-  "mode": "manual_pc_chat_image",
+  "command_id": "tr-img-auto-ad401a1e9e58-r0-a1-1793544451735",
+  "requested_at": "2026-11-01T14:47:31.713975Z",
+  "updated_at": "2026-11-01T14:47:31.713975Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -13,43 +15,43 @@
   "target_id": "ad401a1e9e58",
   "trend_id": "ad401a1e9e58",
   "target_name": "Sepang",
-  "revision": 1,
-  "chat_command_version": 3,
-  "instruction_profile": "ttendencias_gag_v1",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Sepang",
-    "revision": 1,
-    "explanation": "TT#25 Sepang es tendencia porque Verstappen logró su primera pole de 2026, con Hamilton 2.º; Alonso saldrá 12.º y Sainz 13.º en el GP de Baréin en Malasia.\n🌶️ Sepang volvió a la F1 tras ocho años y ha regresado repartiendo titulares.",
-    "closer_text": "🌶️ Sepang volvió a la F1 tras ocho años y ha regresado repartiendo titulares.",
+    "revision": 0,
+    "explanation": "TT#23 Sepang es tendencia por el GP de Malasia de MotoGP: Marc Márquez ganó en el circuito por delante de Pedro Acosta y Álex Márquez.\n#MotoGP #MalaysianGP\n🌶️ Sepang puso tres españoles en el podio.",
+    "closer_text": "🌶️ Sepang puso tres españoles en el podio.",
     "trend_names": [
       "Sepang"
     ],
-    "group_title": "Sepang · clasificación del 3 de octubre",
-    "rank_at_explanation": 25,
-    "explained_at": "2026-10-03T13:02:40+02:00",
+    "group_title": "Sepang",
+    "rank_at_explanation": 23,
+    "explained_at": "2026-11-01T09:44:31+01:00",
     "verification_sources": [
       {
-        "source": "Formula 1 · 3/10/2026",
-        "url": "https://www.formula1.com/en/latest/article/verstappen-seizes-first-pole-position-of-the-season-in-qualifying-for-bahrain-gp-in-malaysia.3BW0zzYBLhG54bsQoNKFvP"
+        "url": "https://stats.motogp.com/en/gp-results"
       },
       {
-        "source": "Reuters · 3/10/2026",
-        "url": "https://www.reuters.com/sports/formula1/verstappen-claims-first-pole-season-bahrain-gp-malaysia-2026-10-03/"
+        "url": "https://www.reuters.com/sports/marquez-wins-malaysian-gp-extending-motogp-championship-lead-2026-11-01/"
       }
-    ]
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2
   },
   "instructions": {
-    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
-    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
-    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
-    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
-    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "No se encontró el chat lanzado con el command_id en 60 segundos; {\"hasMarker\":false,\"composerMarker\":false,\"generating\":false,\"turns\":0,\"title\":\"Ejecuta TTendencias\",\"url\":\"https://chatgpt.com/g/g-p-6aad81af6424819194017",
-  "pc_upload_secret_hash": "de2455fc86e5ffa16b451b4527c398b816fb81d0153765243eb6b66cca963103",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-03T11:10:39.163Z",
-  "pc_launched_at": "2026-10-03T11:10:50.552Z",
-  "finished_at": "2026-10-03T11:11:54.852Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
