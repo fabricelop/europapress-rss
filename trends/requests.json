@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T13:02:32.342843+00:00",
+  "updated_at": "2026-11-01T13:03:19.749354+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8823,7 +8823,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -124117,7 +124117,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -179610,7 +179610,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "fa1a3f534b750d9569dcf0d772a8782e549c9c7a5f20ae127261326a1c211b0e",
-      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
     },
     {
       "id": "listas-auto-0def7a67b2e3bff3bc3a",
@@ -181480,7 +181480,7 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_fingerprint": "b0fd353063a9f4c5002ecbd12529edf85f0c2b9aba78c7e3ac92aaf76b181a66",
-      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
     },
     {
       "id": "listas-auto-55e9977fa75dd550026d",
@@ -183290,7 +183290,7 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_fingerprint": "33894a6d239df0128ad3dfceb911a4b5aebdf503ccab6d22c98bb379e0004787",
-      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
     },
     {
       "id": "listas-auto-ced6f329769524398859",
@@ -185158,7 +185158,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "1fd5270242be02805246aaf7c3e120a9d379a9f4c225c2edab0ff202cfcbf390",
-      "editorial_grouping_checked_at": "2026-11-01T13:02:32.342843+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
     },
     {
       "id": "listas-auto-9148c4e93e7874393006",
@@ -188869,21 +188869,23 @@
       "new_facts": "La marcha del 31 de octubre por el segundo aniversario de la DANA reunió a más de 3.500 personas, según la Delegación del Gobierno, y reclamó justicia, verdad y responsabilidades.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "50372e9ff8d0e3c3a2339e4438f55a16314fa061644b7b5ff647bd269541d5c8",
+      "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00"
     },
     {
       "id": "listas-auto-183f4f308cb84673006b",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T13:02:32.342843+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -190660,7 +190662,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T13:03:19.749354+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "4e95e57d4204cff00884c627c303a42dfdb3c05499f578b2e089e766de05bbff"
     }
   ],
   "count": 576
