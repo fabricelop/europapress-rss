@@ -1166,9 +1166,9 @@ function rowCard(x,i){
    const el=link(label,url,true);el.classList.add('external');return el
   };
   external('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial||d.title));
-  btn('Copiar GAG Completo',()=>copyText(manualPrompt(x),'GAG completo'));
   if(x._kind==='tr')external('Proyecto TT','https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project');
   else external('Abrir ChatGPT Images','https://chatgpt.com/images');
+  btn('Copiar GAG Completo',()=>copyText(manualPrompt(x),'GAG completo'));
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
   btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
   if(x._kind==='tr'){
