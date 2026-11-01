@@ -6,25 +6,23 @@
   "run_id": "tr-1793544112796-manual",
   "previous_run_id": "tr-chat-20261101T152500+0100",
   "status": "RUNNING",
-  "phase": "verifying",
+  "phase": "persisting",
   "started_at": "2026-11-01T15:43:00+01:00",
-  "updated_at": "2026-11-01T15:49:00+01:00",
+  "updated_at": "2026-11-01T15:53:00+01:00",
   "finished_at": null,
-  "current": 2,
+  "current": 3,
   "total": 4,
-  "trend_id": "red-review-4c6a0ff63bcb29f18660",
-  "title": "Revisar novedades: Día de Todos",
+  "trend_id": "red-review-390031a6b4233c786de6",
+  "title": "Revisar novedades: Jorge Martín",
   "queue_complete": false,
   "processed_ids": [
     "063f5299a90f",
     "caf37a6371a4"
   ],
   "remaining_ids": [
-    "red-review-4c6a0ff63bcb29f18660",
     "red-review-390031a6b4233c786de6"
   ],
   "remaining_active_ids": [
-    "red-review-4c6a0ff63bcb29f18660",
     "red-review-390031a6b4233c786de6"
   ],
   "remaining_problematic_ids": [],
@@ -507,6 +505,22 @@
       "trend_id": "red-review-4c6a0ff63bcb29f18660",
       "title": "Revisar novedades: Día de Todos",
       "message": "La barrera final detectó 2 review_red nuevos. Revalidando primero Día de Todos (origen 83aa70bdac40 r0) antes de investigar."
+    },
+    {
+      "at": "2026-11-01T15:53:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793544112796-manual",
+      "trend_id": "red-review-390031a6b4233c786de6",
+      "title": "Revisar novedades: Jorge Martín",
+      "message": "Desarrollo material verificado: Marc Márquez ganó en Sepang, amplió a 44 puntos su ventaja sobre el ausente Jorge Martín y llega con primer match point a Qatar."
+    },
+    {
+      "at": "2026-11-01T15:53:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793544112796-manual",
+      "trend_id": "red-review-390031a6b4233c786de6",
+      "title": "Revisar novedades: Jorge Martín",
+      "message": "Corregido el outbox tras validación de continuidad: ahora usa «sigue siendo tendencia por…», mantiene hechos/fuentes verificadas y deja el remate vacío por la lesión."
     }
   ],
   "final_outcomes": [],
