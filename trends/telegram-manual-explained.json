@@ -39840,12 +39840,14 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "dc082e7257e6",
@@ -39978,14 +39980,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cdn.racingnews365.com/2026/Alonso/Alonso-Stroll_2026-09-07-132833_ggbz.jpg?v=1788787714&width=1800&height=945&quality=75&crop=5185%2C2723%2C0%2C369",
+        "source": "racingnews365.com",
+        "source_url": "https://racingnews365.com/aston-martin-suffer-double-embarrassment-inside-first-five-laps-in-mexico-city-gp",
+        "alt": "Imagen de archivo relacionada con Honda",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://cdn.racingnews365.com/2026/Alonso/Alonso-Stroll_2026-09-07-132833_ggbz.jpg?v=1788787714&width=1800&height=945&quality=75&crop=5185%2C2723%2C0%2C369",
+        "source": "racingnews365.com",
+        "source_url": "https://racingnews365.com/aston-martin-suffer-double-embarrassment-inside-first-five-laps-in-mexico-city-gp",
+        "alt": "Imagen de archivo relacionada con Honda",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-01T21:47:00+01:00",
+  "updated_at": "2026-11-01T20:50:00.963153Z",
   "count": 658
 }
