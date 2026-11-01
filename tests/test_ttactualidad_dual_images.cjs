@@ -43,6 +43,9 @@ for (const path of paths) {
     tweet: {text: "Original factual news"}};
   assert.equal(verifiedNewsAI(original), url, path + ": original AI");
   assert.equal(archivedPhoto(original), archive, path + ": original archive");
+  assert.equal(verifiedNewsAI({...original, prepared_at: "2026-11-01T17:00:00Z",
+    tweet: {text: "Editorial correction"} }), url,
+    path + ": same ID and revision preserves original after textual edit");
   const edited = {...original, revision: 2,
     prepared_at: "2026-11-02T17:00:00Z",
     tweet: {text: "Updated factual news"}};
