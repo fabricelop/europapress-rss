@@ -72,17 +72,32 @@ enum ArchivePhotoCatalog {
 
     static func resolved(project: String, id: String, revision: Int,
                          image: URL?, catalog: [String: URL]) -> URL? {
-        let key = project + ":" + id + ":r" + String(revision)
-        if let known = catalog[key] { return known }
-        guard let image, image.scheme?.lowercased() == "https",
-              let host = image.host?.lowercased(),
-              !host.contains("chatgpt.com"),
-              !image.path.lowercased().contains("generated-images"),
-              !image.path.lowercased().contains("ai-image"),
-              !image.path.lowercased().contains("/images/ai/")
-        else { return nil }
-        return image
+        let prefix = project + ":" + id + ":r"
+        if let known = catalog[prefix + String(revision)] { return known }
+        // Editorial feeds can contain a valid original that was not copied to
+        // GitHub. This is distinct from the AI image.
+        if let image, image.scheme?.lowercased() == "https",
+           let host = image.host?.lowercased(),
+           !host.contains("chatgpt.com"),
+           !image.path.lowercased().contains("generated-images"),
+           !image.path.lowercased().contains("ai-image"),
+           !image.path.lowercased().contains("/images/ai/") {
+            return image
+        }
+        // The event_id of a TTiTTulares article never changes when its
+        // editorial revision changes. Retain the last archived real photo
+        // from that SAME event instead of silently losing it.
+        var bestRevision = -1
+        var bestURL: URL?
+        for (key, url) in catalog where key.hasPrefix(prefix) {
+            guard let old = Int(key.dropFirst(prefix.count)),
+                  old <= revision, old > bestRevision else { continue }
+            bestRevision = old
+            bestURL = url
+        }
+        return bestURL
     }
+
 }
 
 
