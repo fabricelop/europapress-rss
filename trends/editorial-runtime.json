@@ -5,45 +5,37 @@
   "canonical": true,
   "run_id": "tr-1793551137456-manual",
   "previous_run_id": "tr-1793550999335-manual",
-  "status": "success",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-11-01T17:38:57.456+01:00",
-  "updated_at": "2026-11-01T17:44:07+01:00",
-  "finished_at": "2026-11-01T17:41:26+01:00",
+  "updated_at": "2026-11-01T17:42:21+01:00",
+  "finished_at": null,
   "current": 1,
-  "total": 1,
+  "total": 7,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "18dc47314a83",
-    "1bb64c22590e",
+    "red-review-bd128813cc4afbd44c58"
+  ],
+  "remaining_ids": [
     "447e15e9015b",
-    "6ba934928aa1",
+    "1bb64c22590e",
+    "18dc47314a83",
     "743ba673b658",
+    "6ba934928aa1",
     "c7ce07dc6179"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "447e15e9015b",
+    "1bb64c22590e",
+    "18dc47314a83",
+    "743ba673b658",
+    "6ba934928aa1",
+    "c7ce07dc6179"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
-    "updates": 1,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1217,6 +1209,14 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada cerrada 1/1 por convergencia JIT: la revisión de Kerolin r0 fue actualizada concurrentemente y verificada como review_completed/updated; nueva ficha trend-update-df91a57b6555b4f60712 aplicada en requests y Listas con el 0-4 y el doblete. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:42:21+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793551137456-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "La barrera final detectó 6 trabajos nuevos preparing en main (Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso). La misma pasada continúa con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -3460,32 +3460,6 @@
         }
       ],
       "message": "Pasada cerrada 22/22 tras barrera final real: 20 explicaciones, 1 review updated (Día de Todos) y 1 review unchanged (#FelizDomingo). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1793551137456-manual",
-      "status": "DONE",
-      "finished_at": "2026-11-01T17:41:26+01:00",
-      "summary": {
-        "attempted": 1,
-        "observed": 1,
-        "closed": 1,
-        "explained": 0,
-        "updates": 1,
-        "grouping_requests": 0,
-        "groups_created": 0,
-        "covered_by_existing": 0,
-        "unchanged_reviews": 0,
-        "stale_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 1
-      },
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada cerrada 1/1 por convergencia JIT: la revisión de Kerolin r0 fue actualizada concurrentemente y verificada como review_completed/updated; nueva ficha trend-update-df91a57b6555b4f60712 aplicada en requests y Listas con el 0-4 y el doblete. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ]
 }
