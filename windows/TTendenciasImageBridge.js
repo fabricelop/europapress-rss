@@ -954,10 +954,13 @@ async function uploadImage(image){
 // After LAUNCHED, protect only this already-submitted conversation long enough
 // for the independent read-only publisher to receive the raster. Never request
 // another generation, navigate away, or touch the other project's fixed tab.
-async function holdForWebImageReceipt(maxMs=240000,pollMs=15000){
+async function holdForWebImageReceipt(handoff,maxMs=360000,pollMs=10000){
   const deadline=Date.now()+maxMs;
   while(Date.now()<deadline){
     await sleep(Math.min(pollMs,Math.max(1,deadline-Date.now())));
+    // A conversation URL often becomes durable only after the ImageGen turn starts.
+    // Retry enrollment throughout the hold, before this fixed tab is recycled.
+    if(handoff)await optionalWebHandoff(handoff,true);
     let current;
     try{current=await fetchJob();}catch{continue}
     if(String(current.command_id||"")!==commandId)return "superseded";
@@ -1024,7 +1027,7 @@ async function optionalWebHandoff(handoff,remember=false){
         // The relay may no longer be installed. The publisher can read this
         // same existing 9223 conversation without opening a new Chrome tab,
         // provided the producer does not immediately reuse it for the next job.
-        const receipt=await holdForWebImageReceipt();
+        const receipt=await holdForWebImageReceipt(webHandoff);
         console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED receipt="+receipt+"; bridge sin captura ni subida");
         return;
       }
