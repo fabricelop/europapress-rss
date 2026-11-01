@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T17:38:21+01:00",
+  "updated_at": "2026-11-01T16:39:58.007415+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -179625,7 +179625,18 @@
       "editorial_grouping_fingerprint": "fa1a3f534b750d9569dcf0d772a8782e549c9c7a5f20ae127261326a1c211b0e",
       "editorial_grouping_checked_at": "2026-11-01T13:03:19.749354+00:00",
       "published_at": "2026-11-01T13:44:28.075416+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-01T16:39:58.007415+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "La ficha anterior se escribió tras el primer gol; el partido ya terminó 0-4 y Kerolin completó un doblete, por lo que hay una novedad material dentro del mismo episodio.",
+      "red_review_sources": [
+        {
+          "url": "https://www.fcbarcelona.es/es/noticias/4602406/badalona-women-barca-goleada-en-el-municipal-de-palamos-0-4"
+        },
+        {
+          "url": "https://www.mundodeportivo.com/futbol/fc-barcelona/femenino/20261101/1004245812/kerolin-brilla-palamos-barca-golea-badalona-0-4.html?facet=amp"
+        }
+      ]
     },
     {
       "id": "listas-auto-0def7a67b2e3bff3bc3a",
@@ -195346,7 +195357,7 @@
       "revision": 0,
       "name": "Revisar novedades: Kerolin",
       "rank": 27,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T16:34:50.974227+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -195374,7 +195385,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
-      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos"
+      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos",
+      "review_created_id": "trend-update-df91a57b6555b4f60712",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-01T16:39:58.007415+00:00",
+      "review_reason": "La ficha anterior se escribió tras el primer gol; el partido ya terminó 0-4 y Kerolin completó un doblete, por lo que hay una novedad material dentro del mismo episodio."
     },
     {
       "id": "98e7a044dc62",
@@ -195490,6 +195505,39 @@
       "image_choice": "none",
       "image_pending": true,
       "telegram_package_status": "pending"
+    },
+    {
+      "id": "trend-update-df91a57b6555b4f60712",
+      "revision": 0,
+      "name": "Kerolin",
+      "rank": 27,
+      "status": "explained",
+      "requested_at": "2026-11-01T16:39:58.007415+00:00",
+      "explained_at": "2026-11-01T16:39:58.007415+00:00",
+      "updated_at": "2026-11-01T16:39:58.007415+00:00",
+      "explanation": "TT#27 Kerolin sigue siendo tendencia por su doblete en el 0-4 del Barça al Badalona: abrió el marcador con su primer gol en Liga F y volvió a marcar en el 65.\n#FCBarcelona #LigaF\n🌶️ Estrenó su cuenta liguera y acabó firmando dos.",
+      "closer_text": "🌶️ Estrenó su cuenta liguera y acabó firmando dos.",
+      "verification_sources": [
+        {
+          "url": "https://www.fcbarcelona.es/es/noticias/4602406/badalona-women-barca-goleada-en-el-municipal-de-palamos-0-4"
+        },
+        {
+          "url": "https://www.mundodeportivo.com/futbol/fc-barcelona/femenino/20261101/1004245812/kerolin-brilla-palamos-barca-golea-badalona-0-4.html?facet=amp"
+        }
+      ],
+      "originated_from_prior_id": "7c590b18d53a",
+      "trend_names": [
+        "Kerolin"
+      ],
+      "red_review_job_id": "red-review-bd128813cc4afbd44c58",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "El Barça ganó 0-4 al Badalona Women y Kerolin marcó dos goles, sus dos primeros tantos en Liga F.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 642
