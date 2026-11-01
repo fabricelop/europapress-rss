@@ -31,5 +31,10 @@ test("Trend receiver captures locally before Cloudflare and preserves Site hook"
  assert(src.includes("recoverSiteAfterUpload(task,job)"));
  assert(src.includes("needs_review_preserved_original"));
  assert(!src.includes("status:'expired',reason:'image_not_confirmed_within_72h',secret_dpapi:undefined"));
- assert(!src.includes("Input.insertText"));
+ // The existing Site follow-up legitimately inserts a text instruction.
+ // The cached-original upload path itself must never type or regenerate.
+ const offline=src.slice(src.indexOf("async function deliverSavedTrendOriginal(task,raster){"),src.indexOf("async function consume(task){"));
+ assert(!offline.includes("Input.insertText"));
+ assert(!offline.includes("Input.dispatchKeyEvent"));
+ assert(!offline.includes("ImageGen"));
 });
