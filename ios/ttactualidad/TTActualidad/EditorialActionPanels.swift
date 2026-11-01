@@ -451,7 +451,10 @@ struct EditorialActions: View {
                 "si está agrupada, la identidad de su grupo. El nombre y el puesto aquí son pistas " +
                 "de búsqueda, nunca prueba suficiente para escribir. Si el contexto editorial " +
                 "actual no coincide con la identidad candidata, descarta la candidata y usa " +
-                "SOLO los datos vigentes que puedas verificar de forma inequívoca.",
+                "SOLO los datos vigentes que puedas verificar de forma inequívoca. " +
+                "Si el conector informa Authoritative Top 30 is stale, DETENTE: " +
+                "informa «BLOQUEADO POR TOP 30 ANTICUADO» y reintenta la asociación " +
+                "cuando la fuente se actualice, sin generar otra imagen.",
             "2. REQUISITO NO NEGOCIABLE: antes de invocar attach_trend_image deben existir " +
                 "target_id editorial válido, revision, name, scope editorial, explicación literal " +
                 "NO VACÍA y explained_at NO VACÍO que pertenezcan a LA MISMA revisión. " +
