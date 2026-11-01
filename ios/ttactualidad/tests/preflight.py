@@ -505,7 +505,7 @@ assert 'photo(aiURL, label: "Imagen IA")' in live
 assert 'photo(archiveURL, label: "Fotografía de archivo")' in live
 assert 'if let archive = item.imageURL' in live
 assert 'current.editorial_text == editorialText' in news_ai
-assert 'record.revision < revision' in news_ai
+assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
 assert 'CURRENT_PROJECT_VERSION: "54"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
