@@ -3,19 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793524138533-manual",
+  "run_id": "tr-1793523878329-manual",
   "previous_run_id": "tr-1793523878329-manual",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T10:08:58.533+01:00",
-  "updated_at": "2026-11-01T10:12:00+01:00",
-  "finished_at": "2026-11-01T10:12:00+01:00",
-  "current": 2,
-  "total": 2,
+  "updated_at": "2026-11-01T10:12:45+01:00",
+  "finished_at": "2026-11-01T10:12:45+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-29215daa06e77c8a77fa",
     "red-review-c6d3860715baa85c7425",
     "listas-auto-5cddaa57caddb33c53cd"
   ],
@@ -23,22 +24,22 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 1,
     "groups_created": 1,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1324,6 +1325,21 @@
         "incidents": 0,
         "concurrent_convergence": 2
       }
+    },
+    {
+      "at": "2026-11-01T10:12:45+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793523878329-manual",
+      "trend_id": "listas-auto-5cddaa57caddb33c53cd",
+      "title": "Agrupación automática de Listas",
+      "message": "Barrera final de main: editorial-queue=0; el commit 2dea7413a61051e5f44f6d4ed56fa3e65e2f7c8d aplicó la agrupación en requests y telegram-manual-explained; mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T10:12:45+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793523878329-manual",
+      "status": "DONE",
+      "message": "TTendencias cerrada 3/3: Aprilia updated; #laSextaXplica unchanged para evitar duplicar el episodio Urda/LZB; agrupación Aprilia + GP de Malasia aplicada. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
     }
   ],
   "final_outcomes": [
