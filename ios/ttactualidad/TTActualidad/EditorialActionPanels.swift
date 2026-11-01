@@ -168,7 +168,7 @@ struct EditorialActions: View {
     private var gagPrompt: String {
         let closer = news?.closer ?? fullText.components(separatedBy: "\n")
             .last(where: { $0.trimmingCharacters(in: .whitespaces).hasPrefix("🌶") }) ?? ""
-        return [
+        let base = [
             "Genera AHORA UNA SOLA imagen GAG IA para \(news == nil ? "TTendencias" : "TTiTTulares").",
             "TÍTULO:\n\(rank > 0 ? "TT#\(rank) " : "")\(title)",
             "TEXTO EXACTO CERRADO. NO LO REESCRIBAS:\n\(fullText)",
@@ -176,6 +176,43 @@ struct EditorialActions: View {
             "CONTEXTO DOCUMENTADO:\n\(news?.factual ?? fullText)",
             "DIRECCIÓN VISUAL: gag satírico original. Una sola idea visual fuerte, composición limpia, lectura en 1-2 segundos, sin inventar hechos."
         ].joined(separator: "\n\n")
+        // TTiTTulares has a different image workflow. Do not attach its news
+        // pictures to the TTendencias Site.
+        guard news == nil, let trend else { return base }
+        let targetID = trend.imageEditorialID
+        let explainedAt = trend.explainedAtRaw
+        guard !targetID.isEmpty, !explainedAt.isEmpty, !fullText.isEmpty else {
+            return base + "\n\nNO ASOCIAR AUTOMÁTICAMENTE: falta el ID editorial, la explicación o su fecha literal. Nunca adivines la identidad por título o puesto."
+        }
+        let context: [String: Any] = [
+            "project_id": "appgprj_6ae4dcf7d7488191a574e5b649e67370",
+            "target_id": targetID,
+            "name": title,
+            "revision": trend.imageRevision,
+            "scope": "editorial",
+            "explanation": fullText,
+            "explained_at": explainedAt
+        ]
+        let json = (try? JSONSerialization.data(withJSONObject: context, options: [.sortedKeys]))
+            .flatMap { String(data: $0, encoding: .utf8) } ?? ""
+        return base + """
+
+        
+        TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V6 — ESTE GAG procede del botón Copiar GAG de TTActualidad.
+        Primero genera UNA SOLA imagen original con ImageGen. No generes otras ni tomes ninguna imagen de otra tendencia.
+        
+        Después de generar, SIN PEDIR OTRA ORDEN: utiliza el conector TTendencias · TTActualidad en esta misma conversación.
+        CONTEXTO EXACTO (preserva literalmente todos los campos):
+        \(json)
+        
+        1. Invoca inspect_top30_images, revisa la identidad exacta (target_id, revision, explanation y explained_at); si está desactualizada, detente.
+        2. Si no hay imagen verificada previa, adjunta exclusivamente el archivo PNG ORIGINAL que acabas de generar mediante attach_trend_image con file=original y context=el JSON exacto de arriba. No adjuntes URL, imagen parecida, captura ni archivo de otra conversación.
+        3. Invoca verify_trend_image con el mismo context. Solo continúa si status=verified y devuelve URL y SHA-256 reales.
+        4. Sincroniza TTActualidad iPhone en fabricelop/europapress-rss/main/trends/site-ai-images.json con GitHub fetch_file y update_file usando el SHA actual. Conserva todas las demás entradas y escribe/actualiza solo (target_id,revision) con explanation y explained_at literales, y URL HTTPS y SHA reales. Ante conflicto de concurrencia, relee main y reconcilia sin borrar otras fichas.
+        5. Relee el catálogo en main y confirma los datos persistidos. Informa SITE verified/pending y APP verified/pending. No afirmes éxito de la app sin comprobar el catálogo.
+        
+        Si ImageGen finaliza el turno antes de poder ejecutar estos pasos, no has completado la asociación: indica que está PENDING. No regeneres la imagen ni asegures que se asociará por reconocerla en la galería.
+        """
     }
     private func copy(_ value: String) {
         guard !value.isEmpty else { outcome = "No hay texto disponible."; return }
