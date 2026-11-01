@@ -3,320 +3,44 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793530989787-manual",
-  "previous_run_id": "tr-chat-20261101T1155+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T12:03:09.787+01:00",
-  "updated_at": "2026-11-01T11:08:44.789Z",
-  "finished_at": "2026-11-01T11:08:44.789Z",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-chat-20261101T121100+0100",
+  "previous_run_id": "tr-1793530989787-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T12:11:00+01:00",
+  "updated_at": "2026-11-01T12:11:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-75d6901ff6221472cea3",
-    "red-review-eccf7b087d522304b016"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-01T04:55:30+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. No entró trabajo nuevo durante la pasada."
-    },
-    {
-      "at": "2026-11-01T04:55:30+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0 para tr-chat-20261101T045500+0100. Sin ImageGen, sin publicación en X y sin cambios de texto."
-    },
-    {
-      "at": "2026-11-01T05:10:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-chat-20261101T051000+0100",
-      "message": "Inicio tr-chat-20261101T051000+0100: cola compacta 0. Revalidando main, rewrite_pending/reexplain y barrera final; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T05:11:20+01:00",
-      "phase": "verifying",
-      "run_id": "tr-chat-20261101T051000+0100",
-      "message": "Barrera final de main: editorial-queue=0 (actualizada 05:11:02), sin preparing/update ni rewrite_pending/reexplain. Captura Top 30 de las 05:10:58."
-    },
-    {
-      "at": "2026-11-01T05:11:20+01:00",
-      "phase": "closing",
-      "run_id": "tr-chat-20261101T051000+0100",
-      "message": "TTendencias cerrada 0/0 para tr-chat-20261101T051000+0100. Sin ImageGen, sin publicación en X y sin cambios editoriales."
-    },
-    {
-      "at": "2026-11-01T05:25:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-chat-20261101T052500+0100",
-      "message": "Inicio tr-chat-20261101T052500+0100: cola compacta 0. Revalidando main y reexplicaciones; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T05:26:00+01:00",
-      "phase": "verifying",
-      "run_id": "tr-chat-20261101T052500+0100",
-      "message": "Barrera final de main: Top 30 capturado 05:20:50; editorial-queue actualizada 05:20:53 con 0 items; rewrite_pending/reexplain=0."
-    },
-    {
-      "at": "2026-11-01T05:26:00+01:00",
-      "phase": "closing",
-      "run_id": "tr-chat-20261101T052500+0100",
-      "message": "TTendencias cerrada 0/0. ImageGen=0; publicaciones=0; incidencias=0."
-    },
-    {
-      "at": "2026-11-01T05:40:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-chat-20261101T054000+0100",
-      "message": "Inicio tr-chat-20261101T054000+0100: cola compacta 0. Revalidando main, reexplicaciones y mantenimiento; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T05:41:05+01:00",
-      "phase": "verifying",
-      "run_id": "tr-chat-20261101T054000+0100",
-      "message": "Barrera final: editorial-queue=0 y reexplicaciones=0."
-    },
-    {
-      "at": "2026-11-01T05:41:15+01:00",
-      "phase": "closing",
-      "run_id": "tr-chat-20261101T054000+0100",
-      "message": "DONE 0/0; incidencias=0."
-    },
-    {
-      "at": "2026-11-01T05:55:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-chat-20261101T055500+0100",
-      "message": "Inicio tr-chat-20261101T055500+0100: cola compacta 0. Revalidando main, reexplicaciones y mantenimiento; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T05:55:40+01:00",
-      "phase": "verifying",
-      "run_id": "tr-chat-20261101T055500+0100",
-      "message": "Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0."
-    },
-    {
-      "at": "2026-11-01T05:55:45+01:00",
-      "phase": "closing",
-      "run_id": "tr-chat-20261101T055500+0100",
-      "message": "DONE 0/0; incidencias=0."
-    },
-    {
-      "at": "2026-11-01T06:10:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-chat-20261101T061000+0100: cola compacta inicial 0. Verificando main, reexplicaciones y barrera final; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T06:11:03+01:00",
-      "phase": "verifying",
-      "message": "Barrera final: editorial-queue actualizada a las 06:11:03 con count 0; sin rewrite_pending/reexplain localizados en main."
-    },
-    {
-      "at": "2026-11-01T06:11:30+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación y sin cambios editoriales."
-    },
-    {
-      "at": "2026-11-01T06:25:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-chat-20261101T062500+0100",
-      "message": "Inicio tr-chat-20261101T062500+0100: cola compacta inicial 0. Verificando main, reexplicaciones y barrera final; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T06:27:45.317+01:00",
-      "phase": "verifying",
-      "run_id": "tr-chat-20261101T062500+0100",
-      "message": "Barrera final: editorial-queue actualizada a las 06:20:57 con count 0; rewrite_pending=0 y reexplain=0."
-    },
-    {
-      "at": "2026-11-01T06:27:45.317+01:00",
-      "phase": "closing",
-      "run_id": "tr-chat-20261101T062500+0100",
-      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación y sin cambios editoriales."
-    },
-    {
-      "at": "2026-11-01T06:49:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-1793512121167-manual",
-      "trend_id": "listas-auto-600209548fe6e0ab5c4b",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio de pasada manual: 3 trabajos preparing vigentes en main (1 group_listas y 2 review_red). Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T06:51:00+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793512121167-manual",
-      "trend_id": "listas-auto-600209548fe6e0ab5c4b",
-      "title": "Agrupación automática de Listas",
-      "message": "Outbox persistido: Rapha cubierto por Barça-Alavés y #realbetismálaga por Betis-Málaga; sin grupo nuevo. Verificando workflow y estado aplicado."
-    },
-    {
-      "at": "2026-11-01T06:51:11+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793512121167-manual",
-      "trend_id": "listas-auto-600209548fe6e0ab5c4b",
-      "title": "Agrupación automática de Listas",
-      "message": "Workflow aplicado con éxito: job retirado de editorial-queue; Rapha y #realbetismálaga cubiertos por publicaciones conjuntas existentes."
-    },
-    {
-      "at": "2026-11-01T06:52:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-1793512121167-manual",
-      "trend_id": "red-review-4c57a3edb7fa71916431",
-      "title": "Revisar novedades: #laSextaXplica",
-      "message": "Revisando novedades JIT: episodio del 31 de octubre centrado en el accidente de Urda; comprobando si constituye actualización material distinta del episodio del 24 de octubre."
-    },
-    {
-      "at": "2026-11-01T06:52:04+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793512121167-manual",
-      "trend_id": "red-review-4c57a3edb7fa71916431",
-      "title": "Revisar novedades: #laSextaXplica",
-      "message": "Aplicador JIT retiró el job de la cola; actualización material por episodio distinto del 31 de octubre, sin remate por sensibilidad."
-    },
-    {
-      "at": "2026-11-01T06:53:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-1793512121167-manual",
-      "trend_id": "red-review-656a3fba6061d7d8bc4f",
-      "title": "Revisar novedades: Toledo",
-      "message": "Revisando novedades: la investigación de Urda documenta fallos del LZB y protocolos incorrectos posteriores al texto original del 28 de octubre; comprobando continuidad y alcance."
-    },
-    {
-      "at": "2026-11-01T06:53:08+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793512121167-manual",
-      "trend_id": "red-review-656a3fba6061d7d8bc4f",
-      "title": "Revisar novedades: Toledo",
-      "message": "Aplicador JIT cerró la revisión como review_completed/stale; no se sobrescribe el estado posterior. Workflow completado correctamente y editorial-queue=0."
-    },
-    {
-      "at": "2026-11-01T06:54:00+01:00",
-      "phase": "closing",
-      "run_id": "tr-1793512121167-manual",
-      "message": "Barrera final de main: editorial-queue=0; requests/telegram/mobile sin rewrite_pending:true ni reexplain:true. Cierre 3/3: 1 agrupación aplicada con 2 coberturas y 2 revisiones stale. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-01T06:51:07.215+01:00",
-      "phase": "preparing",
-      "run_id": "tr-1793512267215-manual",
-      "message": "Inicio de pasada manual: 2 review_red preparing vigentes (#laSextaXplica y Toledo). Revalidación JIT por id+revision; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T06:52:04+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793512267215-manual",
-      "trend_id": "red-review-4c57a3edb7fa71916431",
-      "title": "Revisar novedades: #laSextaXplica",
-      "message": "Convergencia JIT: la ejecución concurrente aplicó actualización material por episodio distinto del 31 de octubre centrado en Urda; el job salió de la cola."
-    },
-    {
-      "at": "2026-11-01T06:53:09+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793512267215-manual",
-      "trend_id": "red-review-656a3fba6061d7d8bc4f",
-      "title": "Revisar novedades: Toledo",
-      "message": "Convergencia JIT: el outbox de Toledo se aplicó como actualización material del mismo episodio; workflow aplicador success y job retirado de la cola."
-    },
-    {
-      "at": "2026-11-01T06:53:09+01:00",
-      "phase": "closing",
-      "run_id": "tr-1793512267215-manual",
-      "message": "Barrera final: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Cierre 2/2 por convergencia concurrente; ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-01T06:55:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio tr-chat-20261101T065500+0100: cola compacta 0 en main; verificando rewrite_pending/reexplain y barrera final. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T06:56:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No entró trabajo nuevo durante la pasada."
-    },
-    {
-      "at": "2026-11-01T06:56:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "TTendencias cerrada 0/0 para tr-chat-20261101T065500+0100. Sin ImageGen, sin publicación en X y sin cambios editoriales."
-    },
-    {
-      "at": "2026-11-01T07:10:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-chat-20261101T071000+0100",
-      "message": "Inicio manual desde ChatGPT: se refresca el Top 30 y después se relee la cola autoritativa; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T07:11:20+01:00",
-      "phase": "verifying",
-      "run_id": "tr-chat-20261101T071000+0100",
-      "message": "Refresco manual completado: Top 30 capturado a las 07:10:55; editorial-queue actualizada 07:10:58 con count 0; mobile-decisions sin rewrite_pending/reexplain."
-    },
-    {
-      "at": "2026-11-01T07:11:30+01:00",
-      "phase": "closing",
-      "run_id": "tr-chat-20261101T071000+0100",
-      "message": "TTendencias cerrada 0/0 tras refresco real. Sin ImageGen, sin publicación y sin cambios editoriales."
-    },
-    {
-      "at": "2026-11-01T07:16:15+01:00",
-      "phase": "preparing",
-      "run_id": "tr-1793513703839-manual",
-      "trend_id": "002cc3abd023",
-      "title": "Koldo",
-      "message": "Inicio tr-1793513703839-manual: 2 trabajo preparing/update vigente en main (Koldo, R0, puesto 17). Revalidación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T07:17:00+01:00",
-      "phase": "investigating",
-      "trend_id": "002cc3abd023",
-      "title": "Koldo",
-      "message": "Investigando desde cero el contexto actual; revisión 0 revalidada en cola."
-    },
-    {
-      "at": "2026-11-01T07:20:00+01:00",
-      "phase": "verifying",
-      "trend_id": "002cc3abd023",
-      "title": "Koldo",
-      "message": "Convergencia concurrente detectada: la misma revisión quedó explicada en requests y ficha; no se sobrescribió el resultado más nuevo."
-    },
-    {
-      "at": "2026-11-01T07:22:00+01:00",
-      "phase": "verifying",
-      "trend_id": "615c9aac32f0",
-      "title": "jungkook",
-      "message": "Outbox concurrente revalidado por fuentes actuales y aplicado; request y ficha coinciden para revisión 0."
-    },
     {
       "at": "2026-11-01T07:24:00+01:00",
       "phase": "closing",
@@ -1499,6 +1223,12 @@
       "phase": "verifying",
       "run_id": "tr-1793530989787-manual",
       "message": "Barrera final: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Los dos review_red constan review_completed con outcome stale."
+    },
+    {
+      "at": "2026-11-01T12:11:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T121100+0100",
+      "message": "Inicio manual desde ChatGPT: cola compacta inicialmente vacía; revalidando main, reexplicaciones y mantenimiento antes de cerrar. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -1615,7 +1345,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T12:03:09.787+01:00",
+  "last_started_at": "2026-11-01T12:11:00+01:00",
   "last_completed_at": "2026-11-01T11:08:44.789Z",
   "last_run": {
     "run_id": "tr-1793530989787-manual",
@@ -1638,8 +1368,8 @@
     "incidents": 0,
     "concurrent_convergence": 2
   },
-  "source": "manual",
-  "message": "Pasada cerrada 2/2 por convergencia JIT: ambas revisiones de mantenimiento fueron investigadas y sus resultados materializados, pero el aplicador las cerró como stale porque las fichas origen ya no eran vigentes. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
+  "source": "chat",
+  "message": "Inicio manual desde ChatGPT: cola compacta inicialmente vacía; revalidando main, reexplicaciones y mantenimiento antes de cerrar. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
