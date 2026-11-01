@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:24:36.870698+00:00",
+  "updated_at": "2026-11-01T11:26:57.121403+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8812,7 +8812,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T10:46:19.443622+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:26:57.121403+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -124106,7 +124106,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T10:46:19.443622+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:26:57.121403+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -169637,11 +169637,13 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "21269aea75c3a63649a197d8aa20e4da7a61fcc09a48d4a585b5aa1deff388c8",
+      "editorial_grouping_checked_at": "2026-11-01T11:26:57.121403+00:00"
     },
     {
       "id": "ecfab12c8f74",
@@ -169699,11 +169701,13 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "660dd9220062c71e043ef6eb0820f67541b1fd0214047f3a0fcc690f0747bb27",
+      "editorial_grouping_checked_at": "2026-11-01T11:26:57.121403+00:00"
     },
     {
       "id": "d0d920c046f0",
@@ -169761,23 +169765,25 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "editorial_grouping_fingerprint": "5fadfa641a6d941233341a1361521c6650068ae59fc3df25ed57a198c5a8b733",
+      "editorial_grouping_checked_at": "2026-11-01T11:26:57.121403+00:00"
     },
     {
       "id": "listas-auto-d949d22fea9dcb5ca638",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T11:24:36.870698+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -171542,7 +171548,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T11:26:57.121403+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "0699ee161980b33c2ab1e6069f17462c2cc1f41ba95f9938e47f23132da9301d"
     },
     {
       "id": "red-review-5cea86122c498eb32753",
