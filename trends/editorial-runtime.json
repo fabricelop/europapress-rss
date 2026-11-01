@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793513703839-manual",
-  "previous_run_id": "tr-chat-20261101T071000+0100",
+  "run_id": "tr-1793513820564-manual",
+  "previous_run_id": "tr-1793513703839-manual",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-01T07:16:15+01:00",
-  "updated_at": "2026-11-01T07:16:15+01:00",
+  "phase": "investigating",
+  "started_at": "2026-11-01T07:17:00+01:00",
+  "updated_at": "2026-11-01T07:17:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -664,6 +664,13 @@
       "trend_id": "002cc3abd023",
       "title": "Koldo",
       "message": "Inicio tr-1793513703839-manual: 2 trabajo preparing/update vigente en main (Koldo, R0, puesto 17). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T07:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "002cc3abd023",
+      "title": "Koldo",
+      "message": "Investigando desde cero el contexto actual; revisión 0 revalidada en cola."
     }
   ],
   "final_outcomes": {
@@ -716,7 +723,7 @@
     "note": "Agrupación aplicada con Rapha y #realbetismálaga cubiertos por fichas conjuntas existentes. Las revisiones de #laSextaXplica y Toledo se cerraron stale por protección JIT frente a estados posteriores. Cola final 0; sin rewrite_pending/reexplain, ImageGen ni publicación."
   },
   "source": "chat",
-  "message": "Inicio tr-1793513703839-manual: 2 trabajo preparing/update vigente en main (Koldo, R0, puesto 17). Revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Investigando Koldo (1/2): revalidación JIT activa; sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
