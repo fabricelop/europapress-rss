@@ -5,39 +5,36 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T0340+0100",
   "previous_run_id": "tr-1793500773611-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T03:40:00+01:00",
-  "updated_at": "2026-11-01T03:40:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-01T03:42:23+01:00",
+  "finished_at": "2026-11-01T03:42:23+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-aa7345290a2c65cc1cf9",
-  "title": "Revisar novedades: #UFCHBOMax",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-aa7345290a2c65cc1cf9",
     "red-review-006e56f6dc2852d7cdf0"
   ],
-  "remaining_active_ids": [
-    "red-review-aa7345290a2c65cc1cf9",
-    "red-review-006e56f6dc2852d7cdf0"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "remaining_active": 2,
-    "queue_remaining": 2,
+    "stale_reviews": 2,
+    "remaining_active": 0,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -792,6 +789,16 @@
       "trend_id": "red-review-aa7345290a2c65cc1cf9",
       "title": "Revisar novedades: #UFCHBOMax",
       "message": "Inicio manual: 2 revisiones review_red vigentes en main (#UFCHBOMax y #laSextaXplica)."
+    },
+    {
+      "at": "2026-11-01T03:42:23+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue=0; ambos review_red figuran review_completed/stale."
+    },
+    {
+      "at": "2026-11-01T03:42:23+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 2/2 observados; 2 stale JIT, sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [
@@ -814,31 +821,31 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T03:40:00+01:00",
-  "last_completed_at": "2026-11-01T03:28:10+01:00",
+  "last_completed_at": "2026-11-01T03:42:23+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T0325+0100",
+    "run_id": "tr-chat-20261101T0340+0100",
     "status": "DONE",
-    "started_at": "2026-11-01T03:25:00+01:00",
-    "finished_at": "2026-11-01T03:28:10+01:00",
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "started_at": "2026-11-01T03:40:00+01:00",
+    "finished_at": "2026-11-01T03:42:23+01:00",
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Refresco manual #621 success; Top 30 03:27:56; cola final 0."
+    "note": "Las dos review_red se cerraron stale al aplicar JIT; cola final 0."
   },
   "source": "chat",
-  "message": "Pasada real iniciada: 2 revisiones review_red vigentes. Revalidación JIT, investigación actual y persistencia por maintenance-outbox; sin ImageGen ni publicación.",
+  "message": "Pasada real completada: 2 revisiones observadas y cerradas stale por la barrera JIT; cola autoritativa final 0. No se crearon actualizaciones, no se llamó a ImageGen y no hubo publicaciones.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1018,6 +1025,18 @@
       "trend_id": "red-review-aa7345290a2c65cc1cf9",
       "title": "Revisar novedades: #UFCHBOMax",
       "message": "Inicio manual: 2 revisiones review_red vigentes en main (#UFCHBOMax y #laSextaXplica). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T03:42:23+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T0340+0100",
+      "message": "Barrera final: editorial-queue=0. Los dos jobs review_red quedaron review_completed con review_outcome=stale; no se creó actualización."
+    },
+    {
+      "at": "2026-11-01T03:42:23+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T0340+0100",
+      "message": "DONE: 2/2 observados y cerrados stale por JIT; ImageGen=0, publicaciones=0."
     }
   ],
   "history": [
@@ -1092,7 +1111,7 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-26907ba4832f3cac99fb",
+      "id": "red-review-aa7345290a2c65cc1cf9",
       "revision": 0,
       "name": "Revisar novedades: #UFCHBOMax",
       "task": "review_red",
@@ -1100,7 +1119,7 @@
       "result": "Aplicador JIT cerró la revisión sin crear actualización."
     },
     {
-      "id": "red-review-2da670cbf1e4539a8644",
+      "id": "red-review-006e56f6dc2852d7cdf0",
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "task": "review_red",
