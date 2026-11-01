@@ -55,7 +55,7 @@ jobs:
             git fetch --depth=1 origin main
             git reset --hard origin/main
             python3 pilot/listas_grouping.py
-            git add -- trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json trends/mobile-decisions.json pilot/ttactualidad-action-receipts.json
+            git add -- trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json trends/mobile-decisions.json trends/telegram-image-deliveries.json pilot/ttactualidad-action-receipts.json
             if git diff --cached --quiet; then exit 0; fi
             git commit -m 'TTActualidad: agrupar Listas sin reescribir originales'
             if git push origin HEAD:main; then
