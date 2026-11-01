@@ -3,41 +3,43 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793527834213-manual",
-  "previous_run_id": "tr-1793527734709-manual",
+  "run_id": "tr-1793527469295-manual",
+  "previous_run_id": "tr-1793527834213-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T11:11:00+01:00",
-  "updated_at": "2026-11-01T11:12:00+01:00",
-  "finished_at": "2026-11-01T11:12:00+01:00",
-  "current": 1,
-  "total": 1,
+  "started_at": "2026-11-01T11:05:00+01:00",
+  "updated_at": "2026-11-01T11:13:00+01:00",
+  "finished_at": "2026-11-01T11:13:00+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "listas-auto-cbda911e727cb3be2693",
+    "red-review-1343290e6c52ef92fee0",
     "red-review-59f90d990dadda2724b7"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -1332,6 +1334,37 @@
         "concurrent_convergence": 1
       },
       "message": "Cierre 1/1 por convergencia JIT. Barrera final: editorial-queue=0, preparing/update=0 y mobile-decisions sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:12:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793527469295-manual",
+      "message": "Aplicación JIT confirmada: agrupación automática cerró sin grupos ni coberturas; #laSextaXplica y Toledo quedaron review_completed/stale al detectar estado editorial posterior. Barrera final: editorial-queue=0 y mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T11:13:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793527469295-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 3/3. 1 agrupación resuelta sin coincidencias y 2 revisiones stale por protección JIT/convergencia. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -2616,6 +2649,28 @@
       "applied": true,
       "converged_with": "tr-1793527469295-manual",
       "reason": "El aplicador JIT cerró la revisión como stale tras recibir un resultado updated; no se sobrescribió la ficha de origen."
+    },
+    {
+      "id": "listas-auto-cbda911e727cb3be2693",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "applied": true,
+      "groups_created": 0,
+      "covered_by_existing": 0
+    },
+    {
+      "id": "red-review-1343290e6c52ef92fee0",
+      "revision": 0,
+      "outcome": "stale",
+      "applied": true,
+      "converged": true
+    },
+    {
+      "id": "red-review-59f90d990dadda2724b7",
+      "revision": 0,
+      "outcome": "stale",
+      "applied": true,
+      "converged_with": "tr-1793527734709-manual"
     }
   ]
 }
