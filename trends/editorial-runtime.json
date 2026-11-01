@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T03:40:00+01:00",
-  "updated_at": "2026-11-01T03:42:23+01:00",
-  "finished_at": "2026-11-01T03:42:23+01:00",
+  "updated_at": "2026-11-01T03:43:00+01:00",
+  "finished_at": "2026-11-01T03:43:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -799,34 +799,45 @@
       "at": "2026-11-01T03:42:23+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 2/2 observados; 2 stale JIT, sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T03:43:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Los dos review_red figuran review_completed/stale tras aplicación JIT; no se sobrescriben estados posteriores."
+    },
+    {
+      "at": "2026-11-01T03:43:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793500773611-manual",
+      "message": "Cierre del job manual por convergencia con la ejecución canónica concurrente: 2/2 revisiones cerradas stale. ImageGen=0 y publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "red-review-26907ba4832f3cac99fb",
+      "id": "red-review-aa7345290a2c65cc1cf9",
       "revision": 0,
       "name": "Revisar novedades: #UFCHBOMax",
       "task": "review_red",
       "outcome": "stale",
-      "result": "Aplicador JIT cerró la revisión sin crear actualización."
+      "result": "Aplicador JIT cerró la revisión sin crear actualización; existía un estado posterior/terminal que no debía sobrescribirse."
     },
     {
-      "id": "red-review-2da670cbf1e4539a8644",
+      "id": "red-review-006e56f6dc2852d7cdf0",
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "task": "review_red",
       "outcome": "stale",
-      "result": "Aplicador JIT cerró la revisión sin crear actualización."
+      "result": "Aplicador JIT cerró la revisión sin crear actualización; existía un estado posterior/terminal que no debía sobrescribirse."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T03:40:00+01:00",
-  "last_completed_at": "2026-11-01T03:42:23+01:00",
+  "last_completed_at": "2026-11-01T03:43:00+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T0340+0100",
     "status": "DONE",
     "started_at": "2026-11-01T03:40:00+01:00",
-    "finished_at": "2026-11-01T03:42:23+01:00",
+    "finished_at": "2026-11-01T03:43:00+01:00",
     "attempted": 2,
     "observed": 2,
     "closed": 2,
@@ -842,10 +853,10 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Las dos review_red se cerraron stale al aplicar JIT; cola final 0."
+    "note": "El job manual tr-1793500773611-manual convergió con esta ejecución; ambos review_red cerraron stale por protección JIT."
   },
   "source": "chat",
-  "message": "Pasada real completada: 2 revisiones observadas y cerradas stale por la barrera JIT; cola autoritativa final 0. No se crearon actualizaciones, no se llamó a ImageGen y no hubo publicaciones.",
+  "message": "Pasada real completada: 2 revisiones observadas y cerradas como stale por protección JIT; cola final 0 y rewrite_pending 0. ImageGen 0, publicaciones 0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1116,7 +1127,7 @@
       "name": "Revisar novedades: #UFCHBOMax",
       "task": "review_red",
       "outcome": "stale",
-      "result": "Aplicador JIT cerró la revisión sin crear actualización."
+      "result": "Aplicador JIT cerró la revisión sin crear actualización; existía un estado posterior/terminal que no debía sobrescribirse."
     },
     {
       "id": "red-review-006e56f6dc2852d7cdf0",
@@ -1124,7 +1135,7 @@
       "name": "Revisar novedades: #laSextaXplica",
       "task": "review_red",
       "outcome": "stale",
-      "result": "Aplicador JIT cerró la revisión sin crear actualización."
+      "result": "Aplicador JIT cerró la revisión sin crear actualización; existía un estado posterior/terminal que no debía sobrescribirse."
     }
   ]
 }
