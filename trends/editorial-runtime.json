@@ -3,38 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793521834896-manual",
-  "previous_run_id": "tr-chat-20261101T091043+0100",
+  "run_id": "tr-1793522159076-manual",
+  "previous_run_id": "tr-1793521834896-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-01T09:31:35+01:00",
-  "updated_at": "2026-11-01T09:38:00+01:00",
+  "phase": "investigating",
+  "started_at": "2026-11-01T09:36:00+01:00",
+  "updated_at": "2026-11-01T09:39:00+01:00",
   "finished_at": null,
-  "current": 3,
-  "total": 5,
+  "current": 1,
+  "total": 3,
   "trend_id": "red-review-c833262dd375349d1e78",
   "title": "Revisar novedades: #laSextaXplica",
   "queue_complete": false,
   "processed_ids": [
-    "b622600f47d4",
-    "7084b3e15859"
+    "listas-auto-02d7268c0acfb734e9df"
   ],
   "remaining_ids": [
-    "listas-auto-02d7268c0acfb734e9df",
     "red-review-c833262dd375349d1e78",
     "red-review-05204f713c2b87317710"
   ],
   "remaining_active_ids": [
-    "listas-auto-02d7268c0acfb734e9df",
     "red-review-c833262dd375349d1e78",
     "red-review-05204f713c2b87317710"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 5,
-    "closed": 3,
-    "explained": 2,
+    "attempted": 1,
+    "observed": 3,
+    "closed": 1,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
@@ -46,7 +43,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
@@ -987,6 +984,14 @@
       "trend_id": "red-review-c833262dd375349d1e78",
       "title": "Revisar novedades: #laSextaXplica",
       "message": "Revisión JIT vigente. Novedad material: episodio distinto del 31 de octubre centrado en Urda y LZB; resultado updated preparado sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-01T09:39:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793522159076-manual",
+      "trend_id": "red-review-c833262dd375349d1e78",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Inicio de la pasada actual tras convergencia JIT: la agrupación automática salió de la cola con 0 grupos nuevos y cobertura de Día de Todos por publicación previa; quedan 2 review_red vigentes. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
