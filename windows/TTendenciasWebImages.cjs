@@ -11,6 +11,7 @@ const GENERATOR_BASE='http://127.0.0.1:9223';
 const WEB_CAPTURE_VERSION=5;
 const WEB_DELIVERY_VERSION=10;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
+const ORIGINALS=path.join(ROOT,'originals');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
 function chatURL(value){
@@ -60,6 +61,78 @@ class CDP{
   async evaluate(expression){const r=await this.call('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error('Image inspection failed');return r.result?.value;}
   close(){for(const p of this.pending.values()){clearTimeout(p.timer);p.bad(Error('CDP closed'));}this.pending.clear();try{this.ws?.close();}catch{}}
 }
+// Strict local receipt: persist verified original bytes BEFORE any remote call.
+// The local file is not a replacement for verified publication in GitHub.
+function originalPaths(task,directory=ORIGINALS){
+ if(!safeID(task.command_id))throw Error('invalid_original_command_id');
+ return {meta:path.join(directory,task.command_id+'.json'),directory};
+}
+function assertSameOriginal(task,meta){
+ if(String(meta.command_id)!==String(task.command_id)||
+    String(meta.target_id)!==String(task.target_id)||
+    Number(meta.revision)!==Number(task.revision)||
+    String(meta.explanation_sha256)!==String(task.explanation_sha256))
+    throw Error('original_context_mismatch');
+ if(!/^[a-f0-9]{64}$/.test(String(meta.sha256||'')))throw Error('invalid_original_sha256');
+ if(!/^(image\/png|image\/jpeg|image\/webp)$/.test(String(meta.mime||'')))
+    throw Error('original_mime_invalid');
+ if(!Number.isInteger(meta.width)||!Number.isInteger(meta.height)||
+    meta.width<1024||meta.height<576)throw Error('original_dimensions_invalid');
+}
+function loadCachedOriginal(task,directory=ORIGINALS){
+ const {meta:metaFile}=originalPaths(task,directory);
+ if(!fs.existsSync(metaFile))return null;
+ const meta=JSON.parse(fs.readFileSync(metaFile,'utf8'));
+ assertSameOriginal(task,meta);
+ const ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[meta.mime];
+ const filename=task.command_id+'-'+meta.sha256+'.'+ext;
+ const absolute=path.join(directory,filename);
+ if(!fs.existsSync(absolute))throw Error('original_bytes_missing');
+ const raw=fs.readFileSync(absolute);
+ if(raw.length<12000||raw.length>8388608||raw.length!==meta.bytes||
+    crypto.createHash('sha256').update(raw).digest('hex')!==meta.sha256)
+    throw Error('original_bytes_integrity_failed');
+ const magic=meta.mime==='image/png'
+    ?raw.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))
+    :meta.mime==='image/jpeg'
+     ?raw.subarray(0,3).equals(Buffer.from([255,216,255]))
+     :raw.toString('ascii',0,4)==='RIFF'&&raw.toString('ascii',8,12)==='WEBP';
+ if(!magic)throw Error('original_image_signature_invalid');
+ return {ready:true,dataUrl:'data:'+meta.mime+';base64,'+raw.toString('base64'),
+    width:meta.width,height:meta.height,sha256:meta.sha256,source:'durable_local'};
+}
+function cacheRaster(task,raster,directory=ORIGINALS){
+ if(!raster?.ready||!Number.isInteger(raster.width)||!Number.isInteger(raster.height)||
+    raster.width<1024||raster.height<576)throw Error('raster_not_verified');
+ const match=/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/.exec(String(raster.dataUrl||''));
+ if(!match)throw Error('raster_data_url_invalid');
+ const raw=Buffer.from(match[2],'base64');
+ if(raw.length<12000||raw.length>8388608)throw Error('raster_size_invalid');
+ const sha256=crypto.createHash('sha256').update(raw).digest('hex');
+ const {meta:metaFile}=originalPaths(task,directory);
+ if(fs.existsSync(metaFile)){
+   const cached=loadCachedOriginal(task,directory);
+   if(cached.sha256!==sha256)throw Error('original_collision_same_command');
+   return cached;
+ }
+ fs.mkdirSync(directory,{recursive:true,mode:0o700});
+ const meta={version:1,command_id:task.command_id,target_id:task.target_id,
+   revision:task.revision,explanation_sha256:task.explanation_sha256,sha256,
+   mime:match[1],width:raster.width,height:raster.height,bytes:raw.length,
+   saved_at:new Date().toISOString()};
+ assertSameOriginal(task,meta);
+ const ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[match[1]];
+ const filename=task.command_id+'-'+sha256+'.'+ext;
+ const dest=path.join(directory,filename);
+ if(!fs.existsSync(dest)){
+   const tmp=dest+'.'+process.pid+'.new';
+   try{fs.writeFileSync(tmp,raw,{flag:'wx',mode:0o600});fs.renameSync(tmp,dest);}
+   finally{try{fs.unlinkSync(tmp);}catch{}}
+ }
+ atomic(metaFile,meta);
+ return loadCachedOriginal(task,directory);
+}
+
 function networkStage(url){
   if(url.includes('127.0.0.1:9234'))return url.includes('/json/version')?'relay_version':'relay_targets';
   if(url.includes('127.0.0.1:9223'))return url.includes('/json/version')?'generator_version':'generator_targets';
@@ -340,11 +413,38 @@ async function recoverSiteAfterUpload(task,job){
   }
 }
 
+async function deliverSavedTrendOriginal(task,raster){
+ const fresh=await readImageJob(task);
+ if(!sameContext(task,fresh))return {status:'obsolete',reason:'job_changed_before_upload'};
+ const manual=await readEditorialState();
+ if(!sameEditorialBeforeReturn(task,manual))return {status:'obsolete',reason:'editorial_changed'};
+ try{
+  const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttendencias-run-status?view=web-image-contract');
+  if(contract.web_image_receipt!==2)return {status:'waiting',reason:'receiver_update_pending'};
+ }catch{return {status:'waiting',reason:'receiver_update_pending'};}
+ const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{
+  method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),
+  body:JSON.stringify({task:'web_image_upload',context_explanation_sha256:task.explanation_sha256,
+   target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),
+   image_data_url:raster.dataUrl,
+   capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
+ const result=await response.json();
+ if(response.ok&&result.status==='DONE')return {
+   status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',
+   capture_browser:'durable_local',sha256:String(result.sha256||''),
+   image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString()};
+ if([401,409,422].includes(response.status))
+    return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
+ throw Error('image_upload_HTTP_'+response.status);
+}
 async function consume(task){
   const job=await readImageJob(task);
   if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
   if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at||task.status==='published')return recoverSiteAfterUpload(task,job);
   if(['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))return {status:'obsolete',reason:'image_job_terminal'};
+  // An already-captured original survives temporary receiver/browser outages.
+  const saved=loadCachedOriginal(task);
+  if(saved)return deliverSavedTrendOriginal(task,saved);
   // ERROR is not proof that no image exists. This consumer NEVER generates:
   // it can only read a raster after this command's exact user turn.
   if(!chatURL(task.conversation_url)){
@@ -355,10 +455,6 @@ async function consume(task){
       task.browser_target_id=found.browser_target_id;
     }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
   }
-  try{
-    const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttendencias-run-status?view=web-image-contract');
-    if(contract.web_image_receipt!==2)return {status:'waiting',reason:'receiver_update_pending'};
-  }catch{return {status:'waiting',reason:'receiver_update_pending'};}
   // Never create capture tabs in the generator profile. Its renderer already
   // failed before submission in the incident; web delivery must not add churn.
   const capture=await selectExistingBrowser();
@@ -388,6 +484,12 @@ async function consume(task){
         (capture.source==='generator_9223'&&raster?.reason==='command_not_in_conversation'))break;
     }
     if(!raster?.ready)return {status:'waiting',reason:raster?.reason||'raster_not_ready'};
+    // Persist the exact original BEFORE checking the network receiver.
+    raster=cacheRaster(task,raster);
+    try{
+    const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttendencias-run-status?view=web-image-contract');
+    if(contract.web_image_receipt!==2)return {status:'waiting',reason:'receiver_update_pending'};
+    }catch{return {status:'waiting',reason:'receiver_update_pending'};}
     // Fresh job identity check immediately before sending raster bytes.
     const fresh=await readImageJob(task);
     if(!sameContext(task,fresh))return {status:'obsolete'};
@@ -486,8 +588,9 @@ async function once(){
       // Keep pending images recoverable for three days without ever allowing
       // a stuck/slow generation to delay later images.
       if(!Number.isFinite(Date.parse(task.created_at||''))||now-Date.parse(task.created_at)>72*3600000){
-        atomic(file,{...task,status:'expired',reason:'image_not_confirmed_within_72h',secret_dpapi:undefined});
-        console.log('TTENDENCIAS_WEB_IMAGE '+task.target_id+' expired_without_confirmation');
+        atomic(file,{...task,status:'needs_review',reason:'original_not_associated_within_72h',
+          paused_at:new Date().toISOString(),next_check_at:undefined});
+        console.log('TTENDENCIAS_WEB_IMAGE '+task.target_id+' needs_review_preserved_original');
         continue;
       }
       let result;
@@ -524,7 +627,7 @@ async function watch(){
     }
   }finally{try{const own=JSON.parse(fs.readFileSync(lock,'utf8'));if(own.pid===process.pid)fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once,siteReturnPrompt,siteReturnProbe,producerBusyFor,sameEditorialBeforeReturn,recoverSiteAfterUpload,newestActiveByTarget};
+module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,cacheRaster,loadCachedOriginal,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once,siteReturnPrompt,siteReturnProbe,producerBusyFor,sameEditorialBeforeReturn,recoverSiteAfterUpload,newestActiveByTarget};
 // Existing installed listeners invoke this file without arguments. Drain their
 // already-enrolled backlog too; do not require a new image to wake delivery.
 if(require.main===module)(process.argv.includes('--once')?once():watch()).catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
