@@ -5,26 +5,34 @@
   "canonical": true,
   "run_id": "tr-1793513820564-manual",
   "previous_run_id": "tr-1793513703839-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-01T07:17:00+01:00",
-  "updated_at": "2026-11-01T07:24:00+01:00",
-  "finished_at": "2026-11-01T07:24:00+01:00",
+  "updated_at": "2026-11-01T07:25:00+01:00",
+  "finished_at": null,
   "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 5,
+  "trend_id": "listas-auto-30620e264cab7828affa",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
   "processed_ids": [
     "002cc3abd023",
     "615c9aac32f0"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "listas-auto-30620e264cab7828affa",
+    "red-review-e6155cb227cfa12b7d19",
+    "red-review-1f12f1c6ae5cb8e7097d"
+  ],
+  "remaining_active_ids": [
+    "listas-auto-30620e264cab7828affa",
+    "red-review-e6155cb227cfa12b7d19",
+    "red-review-1f12f1c6ae5cb8e7097d"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
-    "observed": 2,
+    "observed": 5,
     "closed": 2,
     "explained": 2,
     "updates": 0,
@@ -33,7 +41,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -689,6 +697,13 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: cola 0 y ninguna revisión preparing/update ni rewrite_pending/reexplain vigente."
+    },
+    {
+      "at": "2026-11-01T07:25:00+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-30620e264cab7828affa",
+      "title": "Agrupación automática de Listas",
+      "message": "Reabierta la pasada tras detectar mantenimiento nuevo en main; revisión JIT del snapshot de agrupación."
     }
   ],
   "final_outcomes": {
@@ -742,7 +757,7 @@
     "note": "Koldo y jungkook fueron revalidados JIT; una ejecución inmediatamente anterior materializó las mismas revisiones durante esta pasada. Se respetaron los resultados más nuevos, se verificó sincronía en requests y telegram-manual-explained y la cola final quedó vacía. Sin ImageGen."
   },
   "source": "chat",
-  "message": "Pasada completada 2/2 por convergencia JIT con la ejecución inmediatamente anterior: Koldo y jungkook quedaron explicados y sincronizados en ambos registros. Cola final 0; sin rewrite_pending/reexplain, sin ImageGen y sin publicación.",
+  "message": "La relectura final detectó 3 trabajos nuevos; procesando agrupación automática (3/5). Sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
