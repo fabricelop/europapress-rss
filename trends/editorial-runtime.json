@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T072900+0100",
-  "previous_run_id": "tr-1793514130661-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T07:29:00+01:00",
-  "updated_at": "2026-11-01T07:29:30+01:00",
-  "finished_at": "2026-11-01T07:29:30+01:00",
+  "run_id": "tr-chat-20261101T074000+0100",
+  "previous_run_id": "tr-chat-20261101T072900+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T07:40:00+01:00",
+  "updated_at": "2026-11-01T07:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -785,7 +785,7 @@
     }
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T07:21:27+01:00",
+  "last_started_at": "2026-11-01T07:40:00+01:00",
   "last_completed_at": "2026-11-01T07:21:27+01:00",
   "last_run": {
     "run_id": "tr-1793514130661-manual",
@@ -811,7 +811,7 @@
     "note": "Las dos review_red observadas se cerraron stale por protección JIT frente a estados posteriores. No se generaron imágenes ni se publicó."
   },
   "source": "chat",
-  "message": "Pasada completada 2/2 por convergencia JIT. #laSextaXplica y Toledo quedaron review_completed/stale para no sobrescribir estados posteriores; cola final 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-chat-20261101T074000+0100: cola compacta 0. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1199,6 +1199,12 @@
       "phase": "closing",
       "run_id": "tr-1793514130661-manual",
       "message": "DONE 2/2 por convergencia JIT; 2 revisiones stale, ImageGen=0, publicaciones=0, cola final 0."
+    },
+    {
+      "at": "2026-11-01T07:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T074000+0100",
+      "message": "Inicio tr-chat-20261101T074000+0100: cola compacta 0. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación."
     }
   ],
   "history": [
