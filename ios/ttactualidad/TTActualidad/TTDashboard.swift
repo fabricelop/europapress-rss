@@ -1141,6 +1141,18 @@ private struct TrendTile: View {
                     .lineLimit(1).minimumScaleFactor(0.76)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
+                // Same indicator for Top 30, Listas and grouped cards.
+                // The validated Site AI catalog is the sole authority: archive
+                // photos, ImageGen jobs and queued images never trigger it.
+                if item.siteImageURL != nil && item.siteImageSHA256.count == 64 {
+                    Image(systemName: "photo.fill")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(TTTheme.teal)
+                        .frame(width: 14, height: 16)
+                        .accessibilityLabel("Imagen IA asociada")
+                        .help("Imagen IA asociada al Site y al catálogo")
+                }
+
                 if showRank {
                     Text(movementLabel)
                         .font(.system(size: 10, weight: .heavy, design: .rounded))
