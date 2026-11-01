@@ -3,13 +3,13 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T051000+0100",
-  "previous_run_id": "tr-chat-20261101T045500+0100",
+  "run_id": "tr-chat-20261101T052500+0100",
+  "previous_run_id": "tr-chat-20261101T051000+0100",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T05:10:00+01:00",
-  "updated_at": "2026-11-01T05:11:20+01:00",
-  "finished_at": "2026-11-01T05:11:20+01:00",
+  "started_at": "2026-11-01T05:25:00+01:00",
+  "updated_at": "2026-11-01T05:26:00+01:00",
+  "finished_at": "2026-11-01T05:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -566,17 +566,35 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T051000+0100",
       "message": "TTendencias cerrada 0/0 para tr-chat-20261101T051000+0100. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T05:25:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T052500+0100",
+      "message": "Inicio tr-chat-20261101T052500+0100: cola compacta 0. Revalidando main y reexplicaciones; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T05:26:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T052500+0100",
+      "message": "Barrera final de main: Top 30 capturado 05:20:50; editorial-queue actualizada 05:20:53 con 0 items; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T05:26:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T052500+0100",
+      "message": "TTendencias cerrada 0/0. ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T05:10:00+01:00",
-  "last_completed_at": "2026-11-01T05:11:20+01:00",
+  "last_started_at": "2026-11-01T05:25:00+01:00",
+  "last_completed_at": "2026-11-01T05:26:00+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T051000+0100",
+    "run_id": "tr-chat-20261101T052500+0100",
     "status": "DONE",
-    "started_at": "2026-11-01T05:10:00+01:00",
-    "finished_at": "2026-11-01T05:11:20+01:00",
+    "started_at": "2026-11-01T05:25:00+01:00",
+    "finished_at": "2026-11-01T05:26:00+01:00",
     "attempted": 0,
     "observed": 0,
     "closed": 0,
@@ -592,10 +610,10 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Top 30 renovado a las 05:10:58; cola editorial actualizada a las 05:11:02 y final 0. Sin rewrite_pending/reexplain detectado. Sin ImageGen ni publicaciones."
+    "note": "Top 30 capturado a las 05:20:50; cola editorial actualizada a las 05:20:53 y final 0. Sin rewrite_pending/reexplain detectado. Sin ImageGen ni publicaciones."
   },
   "source": "chat",
-  "message": "Pasada real completada 0/0: captura Top 30 de las 05:10:58, cola final 0 y sin rewrite_pending/reexplain; ImageGen 0 y publicaciones 0.",
+  "message": "Pasada real completada 0/0: Top 30 05:20:50, cola final 0 y sin rewrite_pending/reexplain; ImageGen 0 y publicaciones 0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -847,6 +865,18 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T044000+0100",
       "message": "DONE 0/0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T05:25:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T052500+0100",
+      "message": "Inicio tr-chat-20261101T052500+0100: cola compacta 0; revalidación final sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T05:26:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T052500+0100",
+      "message": "DONE 0/0; cola final 0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
