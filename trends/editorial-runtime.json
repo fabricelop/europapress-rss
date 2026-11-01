@@ -3,19 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793545880425-manual",
-  "previous_run_id": "tr-1793545682955-manual",
+  "run_id": "tr-1793545295401-manual",
+  "previous_run_id": "tr-1793545880425-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T16:11:30+01:00",
-  "updated_at": "2026-11-01T16:15:00+01:00",
-  "finished_at": "2026-11-01T16:15:00+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-01T16:01:45+01:00",
+  "updated_at": "2026-11-01T16:19:00+01:00",
+  "finished_at": "2026-11-01T16:19:00+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "listas-joint-f8769365147a3582",
+    "cb9bc0ab3d67",
     "red-review-83ebe32f690b4d2b469f",
     "red-review-fd05f8e91a6fb29a4e48"
   ],
@@ -23,10 +25,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 2,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -685,47 +687,133 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale. Barrera final de main: editorial-queue=0; sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T16:19:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793545295401-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 2,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "red-review-390031a6b4233c786de6",
+      "id": "listas-joint-f8769365147a3582",
+      "revision": 1,
+      "name": "Getafe-Sevilla · Kike Salas y Gudelj",
+      "outcome": "explained",
+      "applied": true,
+      "final_score": "3-1"
+    },
+    {
+      "id": "cb9bc0ab3d67",
       "revision": 0,
-      "title": "Jorge Martín",
-      "outcome": "updated",
+      "name": "#GetafeSevilla",
+      "outcome": "explained",
+      "applied": true,
+      "final_score": "3-1"
+    },
+    {
+      "id": "red-review-83ebe32f690b4d2b469f",
+      "revision": 0,
+      "name": "#laSextaXplica",
+      "outcome": "stale",
+      "applied": true,
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "red-review-fd05f8e91a6fb29a4e48",
+      "revision": 0,
+      "name": "Toledo",
+      "outcome": "stale",
       "applied": true,
       "via": "concurrent_convergence"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T16:10:35+01:00",
-  "last_completed_at": "2026-11-01T16:10:36+01:00",
+  "last_completed_at": "2026-11-01T16:19:00+01:00",
   "last_run": {
-    "run_id": "tr-1793544481477-manual",
+    "run_id": "tr-1793545295401-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T15:48:01.477+01:00",
-    "finished_at": "2026-11-01T15:56:00+01:00",
+    "started_at": "2026-11-01T16:01:45+01:00",
+    "finished_at": "2026-11-01T16:19:00+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 2,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 2,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
-    }
+      "concurrent_convergence": 2
+    },
+    "outcomes": [
+      {
+        "id": "listas-joint-f8769365147a3582",
+        "revision": 1,
+        "name": "Getafe-Sevilla · Kike Salas y Gudelj",
+        "outcome": "explained",
+        "applied": true,
+        "final_score": "3-1"
+      },
+      {
+        "id": "cb9bc0ab3d67",
+        "revision": 0,
+        "name": "#GetafeSevilla",
+        "outcome": "explained",
+        "applied": true,
+        "final_score": "3-1"
+      },
+      {
+        "id": "red-review-83ebe32f690b4d2b469f",
+        "revision": 0,
+        "name": "#laSextaXplica",
+        "outcome": "stale",
+        "applied": true,
+        "via": "concurrent_convergence"
+      },
+      {
+        "id": "red-review-fd05f8e91a6fb29a4e48",
+        "revision": 0,
+        "name": "Toledo",
+        "outcome": "stale",
+        "applied": true,
+        "via": "concurrent_convergence"
+      }
+    ],
+    "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; los outbox preparados no se aplicaron sobre fichas de origen ya no vigentes/terminales. Cola final 0; ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1731,6 +1819,33 @@
       "trend_id": "listas-joint-f8769365147a3582",
       "title": "Getafe-Sevilla · Kike Salas y Gudelj",
       "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:19:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793545295401-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 2,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -2648,17 +2763,60 @@
       "trend_id": "listas-joint-f8769365147a3582",
       "title": "Getafe-Sevilla · Kike Salas y Gudelj",
       "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:19:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793545295401-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 2,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
   "outcomes": [
+    {
+      "id": "listas-joint-f8769365147a3582",
+      "revision": 1,
+      "name": "Getafe-Sevilla · Kike Salas y Gudelj",
+      "outcome": "explained",
+      "applied": true,
+      "final_score": "3-1"
+    },
+    {
+      "id": "cb9bc0ab3d67",
+      "revision": 0,
+      "name": "#GetafeSevilla",
+      "outcome": "explained",
+      "applied": true,
+      "final_score": "3-1"
+    },
     {
       "id": "red-review-83ebe32f690b4d2b469f",
       "revision": 0,
       "name": "#laSextaXplica",
       "outcome": "stale",
       "applied": true,
-      "prepared_outcome": "updated"
+      "via": "concurrent_convergence"
     },
     {
       "id": "red-review-fd05f8e91a6fb29a4e48",
@@ -2666,7 +2824,7 @@
       "name": "Toledo",
       "outcome": "stale",
       "applied": true,
-      "prepared_outcome": "updated"
+      "via": "concurrent_convergence"
     }
   ],
   "current_item": null,
