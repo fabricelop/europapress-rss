@@ -3,32 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793549061243-manual",
-  "previous_run_id": "tr-chat-20261101T1712+0100",
+  "run_id": "tr-1793550218501-manual",
+  "previous_run_id": "tr-1793549061243-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T17:12:00+01:00",
-  "updated_at": "2026-11-01T17:27:00+01:00",
-  "finished_at": "2026-11-01T17:27:00+01:00",
-  "current": 17,
-  "total": 17,
+  "started_at": "2026-11-01T17:23:38.501+01:00",
+  "updated_at": "2026-11-01T17:28:00+01:00",
+  "finished_at": "2026-11-01T17:28:00+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "94a58cd3f7f4",
-    "9c13be489fe2",
-    "451c86e02a9f",
-    "fbcc0fc4a036",
-    "252573ec624f",
-    "5850dd71f0f2",
-    "aa3a852a8cf8",
-    "1059f968f961",
-    "9c737ccf96e9",
-    "0aee0c3ad94a",
-    "55135fd6b838",
-    "red-review-0396f5be3748cad9c883",
-    "red-review-8929019c45203f7ea8d3",
     "abde5d028f8b",
     "6c2a72c06497",
     "7e1e67ba93a6",
@@ -38,22 +25,22 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 17,
-    "observed": 17,
-    "closed": 17,
-    "explained": 15,
-    "updates": 1,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
+    "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 13
+    "concurrent_convergence": 4
   },
   "incident_count": 0,
   "incidents": [],
@@ -1122,6 +1109,44 @@
         "concurrent_convergence": 13
       },
       "message": "Pasada cerrada 17/17: 15 explicaciones (11 por convergencia JIT + 4 reelaboraciones aplicadas), 1 review updated (Día de Todos) y 1 review unchanged (#FelizDomingo). Cola 0, reexplicaciones 0, ImageGen=0, publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:23:38.501+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793550218501-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 4 reelaboraciones manuales preparing observadas en main (Fofana, Getafe, Viena y Alcaraz), ordenadas por requested_at y sujetas a validación JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:27:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793550218501-manual",
+      "message": "Convergencia JIT verificada: las cuatro revisiones r0 quedaron explained mediante el aplicador editorial; Viena y Alcaraz incorporan el resultado final 6-1, 6-4 de la final de Viena. Cola main=0; sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T17:28:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793550218501-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 4,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 4
+      },
+      "message": "Pasada cerrada 4/4 por convergencia JIT. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -1144,51 +1169,66 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T17:26:08+01:00",
-  "last_completed_at": "2026-11-01T17:26:08+01:00",
+  "last_started_at": "2026-11-01T17:23:38.501+01:00",
+  "last_completed_at": "2026-11-01T17:28:00+01:00",
   "last_run": {
-    "run_id": "tr-1793549980185-manual",
+    "run_id": "tr-1793550218501-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T17:19:40.185+01:00",
-    "finished_at": "2026-11-01T17:22:30+01:00",
+    "started_at": "2026-11-01T17:23:38.501+01:00",
+    "finished_at": "2026-11-01T17:28:00+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 1,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 4,
+      "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 1,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 4
     },
     "outcomes": [
       {
-        "id": "red-review-0396f5be3748cad9c883",
+        "id": "abde5d028f8b",
         "revision": 0,
-        "name": "Día de Todos",
-        "outcome": "updated",
+        "name": "Fofana",
+        "outcome": "explained",
         "applied": true,
-        "created_id": "trend-update-6f8efdbc5b4f98f241ed",
-        "via": "concurrent_convergence"
+        "via": "concurrent_convergence_jit"
       },
       {
-        "id": "red-review-8929019c45203f7ea8d3",
+        "id": "6c2a72c06497",
         "revision": 0,
-        "name": "#FelizDomingo",
-        "outcome": "unchanged",
+        "name": "Getafe",
+        "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence"
+        "via": "concurrent_convergence_jit"
+      },
+      {
+        "id": "7e1e67ba93a6",
+        "revision": 0,
+        "name": "Viena",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence_jit"
+      },
+      {
+        "id": "c4436566a609",
+        "revision": 0,
+        "name": "Alcaraz",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence_jit"
       }
     ],
-    "message": "Pasada cerrada 2/2 por convergencia JIT: Día de Todos quedó updated y #FelizDomingo unchanged; ambos review_red están review_completed y aplicados. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 4/4 por convergencia JIT: Fofana, Getafe, Viena y Alcaraz r0 quedaron explained y aplicadas en main. Barrera final observada: editorial-queue=0 y mobile-decisions sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
   "message": "Pasada cerrada 2/2 por convergencia JIT: Día de Todos updated; #FelizDomingo unchanged. Cola final 0; sin reelaboraciones pendientes; ImageGen=0; publicaciones=0.",
@@ -3249,106 +3289,12 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "94a58cd3f7f4",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "9c13be489fe2",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "451c86e02a9f",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "fbcc0fc4a036",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "252573ec624f",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "5850dd71f0f2",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "aa3a852a8cf8",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "1059f968f961",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "9c737ccf96e9",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "0aee0c3ad94a",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "55135fd6b838",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "red-review-0396f5be3748cad9c883",
-      "revision": 0,
-      "name": "Día de Todos",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-6f8efdbc5b4f98f241ed",
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "red-review-8929019c45203f7ea8d3",
-      "revision": 0,
-      "name": "#FelizDomingo",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
       "id": "abde5d028f8b",
       "revision": 0,
       "name": "Fofana",
       "outcome": "explained",
       "applied": true,
-      "via": "editorial_outbox"
+      "via": "concurrent_convergence_jit"
     },
     {
       "id": "6c2a72c06497",
@@ -3356,7 +3302,7 @@
       "name": "Getafe",
       "outcome": "explained",
       "applied": true,
-      "via": "editorial_outbox"
+      "via": "concurrent_convergence_jit"
     },
     {
       "id": "7e1e67ba93a6",
@@ -3364,7 +3310,7 @@
       "name": "Viena",
       "outcome": "explained",
       "applied": true,
-      "via": "editorial_outbox"
+      "via": "concurrent_convergence_jit"
     },
     {
       "id": "c4436566a609",
@@ -3372,7 +3318,7 @@
       "name": "Alcaraz",
       "outcome": "explained",
       "applied": true,
-      "via": "editorial_outbox"
+      "via": "concurrent_convergence_jit"
     }
   ],
   "current_item": null,
