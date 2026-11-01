@@ -8,10 +8,10 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T10:59:00+01:00",
-  "updated_at": "2026-11-01T11:02:00+01:00",
-  "finished_at": "2026-11-01T11:02:00+01:00",
-  "current": 1,
-  "total": 1,
+  "updated_at": "2026-11-01T11:03:00+01:00",
+  "finished_at": "2026-11-01T11:03:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -23,13 +23,13 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 1,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
+    "updates": 1,
+    "grouping_requests": 1,
+    "groups_created": 1,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -38,7 +38,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -1167,6 +1167,28 @@
       "run_id": "tr-1793526664502-manual",
       "status": "DONE",
       "message": "Cierre tr-1793526664502-manual: 5/5 obligaciones observadas cerradas (2 agrupaciones, Toledo stale JIT, Día de Todos updated y #CCubicos440 r1 explained). Cola final 0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:00:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793527057284-manual",
+      "trend_id": "236995aec110",
+      "title": "#CCubicos440",
+      "message": "Reelaboración r1 investigada desde cero: emisión de hoy de Centímetros Cúbicos corroborada con fuente oficial y patrón público de etiquetas semanales; la persistencia convergió en main antes de nuestra escritura."
+    },
+    {
+      "at": "2026-11-01T11:01:05+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793527057284-manual",
+      "trend_id": "listas-auto-50403cbc6f4acb2379c3",
+      "title": "Agrupación automática de Listas",
+      "message": "El job nuevo de agrupación desapareció en la barrera JIT antes de persistir nuestro outbox; se respetó la convergencia. Resultado aplicado: listas-joint-66aef034f7c9633e (Todos los Santos · Día de Todos y La Almudena)."
+    },
+    {
+      "at": "2026-11-01T11:03:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793527057284-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; requests/telegram-manual-explained/mobile-decisions sin rewrite_pending/reexplain. #CCubicos440 r1 coincide en ambos registros y la agrupación está aplicada. ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "final_outcomes": [
@@ -2399,6 +2421,23 @@
       "converged_with": "tr-1793523878329-manual",
       "grouping_created_ids": [
         "listas-joint-89705fdab1782025"
+      ]
+    },
+    {
+      "id": "236995aec110",
+      "revision": 1,
+      "outcome": "explained",
+      "applied": true,
+      "converged": true
+    },
+    {
+      "id": "listas-auto-50403cbc6f4acb2379c3",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "applied": true,
+      "converged": true,
+      "grouping_created_ids": [
+        "listas-joint-66aef034f7c9633e"
       ]
     }
   ]
