@@ -9,7 +9,7 @@ const {execFileSync,spawn}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
 const WEB_CAPTURE_VERSION=5;
-const WEB_DELIVERY_VERSION=6;
+const WEB_DELIVERY_VERSION=7;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -204,6 +204,77 @@ async function rememberConversation(input){
   enroll({...input,conversationUrl:url});
   return true;
 }
+// Safe, no-ImageGen Site/App follow-up using an original image already present.
+// Do not touch the generator's fixed tab: only an isolated relay, and never
+// while the producer for this exact command is still running.
+function producerBusyFor(task){
+  try{
+    const lock=JSON.parse(fs.readFileSync(path.join(__dirname,'ttendencias-image-bridge.lock.json'),'utf8'));
+    if(lock.command_id!==task.command_id||lock.target_id!==task.target_id)return false;
+    const pid=Number(lock.pid);
+    if(!Number.isSafeInteger(pid)||pid<1)return false;
+    process.kill(pid,0);return true;
+  }catch{return false;}
+}
+function siteReturnPrompt(task,job){
+  const snapshot=job.context_snapshot||{};
+  const context={project_id:'appgprj_6ae4dcf7d7488191a574e5b649e67370',
+    target_id:task.target_id,name:String(job.target_name||task.target_id),
+    revision:task.revision,scope:'editorial',explanation:String(snapshot.explanation||'').trim(),
+    explained_at:String(snapshot.explained_at||'')};
+  if(!context.explanation||!context.explained_at)throw Error('site_return_missing_editorial_identity');
+  return [
+    'TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+task.command_id+' '+task.target_id,
+    'SEGUIMIENTO AUTOMÁTICO DEL ENCARGO ORIGINAL. NO GENERES NINGUNA IMAGEN. NO uses ImageGen. La imagen ORIGINAL está arriba en ESTA MISMA CONVERSACIÓN y ha sido detectada en el turno de ImageGen del command_id indicado. No pidas ni descargues otro PNG, no te bases en el nombre de una tendencia, no asocies una captura.',
+    'CONTEXTO EXACTO Y AUTORITATIVO (revalídalo antes de escribir): '+JSON.stringify(context),
+    '1. Usa el conector TTendencias · TTActualidad: inspect_top30_images. El target_id, revision, explanation literal y explained_at del contexto deben coincidir con el Site vigente. Si la revisión cambió o no figura con esa misma identidad editorial, detente sin adjuntar.',
+    '2. Ejecuta verify_trend_image con context EXACTO. Si ya está verified, reutiliza la asociación. Si está missing y el original PNG de ESTA conversación está disponible como file, ejecuta attach_trend_image con ese file ORIGINAL y el mismo context. Nunca uses un thumbnail, URL inventada ni imagen de otro encargo.',
+    '3. Vuelve a ejecutar verify_trend_image y exige status verified y SHA-256 y URL reales. En otro caso responde SITE PENDING y conserva el PNG para reintento; NO repitas la generación.',
+    '4. Si Site verified, sincroniza SOLO ese (target_id, revision) en fabricelop/europapress-rss rama main trends/site-ai-images.json mediante GitHub fetch_file y update_file. Conserva todos los registros anteriores; usa explanation, explained_at, URL HTTPS y SHA-256 verificados, con relectura del catálogo.',
+    '5. Informa SITE verified/pending y APP manifest verified/pending por separado. No afirmes visualización física en el iPhone. No publiques en X ni Telegram. No digas que está asociado si no has usado las herramientas.'
+  ].join('\n\n');
+}
+function siteReturnProbe(commandId,targetId,marker){
+  return `(()=>{const marker=${JSON.stringify(marker)},original=${JSON.stringify('TTENDENCIAS_IMAGE_JOB_V4 '+commandId+' '+targetId)};
+    const users=(${userTurns.toString()})();const last=users[users.length-1];
+    const current=String(last&&(last.innerText||last.textContent)||'').trim();
+    if(current.startsWith(marker))return {status:'already_sent'};
+    if(!current.startsWith(original))return {status:'different_last_user_turn'};
+    if(document.querySelector('button[data-testid="stop-button"],button[aria-label*="Stop" i],button[aria-label*="Detener" i]'))return {status:'generating'};
+    const selector='#prompt-textarea,div.ProseMirror[contenteditable="true"],textarea[placeholder],div[contenteditable="true"][role="textbox"]';
+    const visible=c=>{const r=c.getBoundingClientRect(),v=getComputedStyle(c);return c.isConnected&&!c.disabled&&!c.readOnly&&r.width>12&&r.height>10&&v.display!=='none'&&v.visibility!=='hidden'&&!c.closest('[inert],[aria-hidden="true"]');};
+    const composer=[...document.querySelectorAll(selector)].find(visible);
+    if(!composer)return {status:'composer_missing'};
+    if(String(composer.value||composer.innerText||composer.textContent||'').trim())return {status:'existing_draft'};
+    composer.focus();
+    return {status:document.activeElement===composer?'ready':'focus_failed'};
+  })()`;
+}
+async function sendSiteReturnFromPublisher(cdp,task,job){
+  const marker='TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+task.command_id+' '+task.target_id;
+  const initial=await cdp.evaluate(siteReturnProbe(task.command_id,task.target_id,marker));
+  if(initial?.status!=='ready')return initial?.status||'probe_unavailable';
+  const message=siteReturnPrompt(task,job);
+  await cdp.call('Input.insertText',{text:message},15000);
+  const result=await cdp.evaluate(`(()=>{const marker=${JSON.stringify(marker)},suffix=${JSON.stringify(message.slice(-60))},min=${Math.floor(message.length*0.8)};
+    const selector='#prompt-textarea,div.ProseMirror[contenteditable="true"],textarea[placeholder],div[contenteditable="true"][role="textbox"]';
+    const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'');
+    const composer=[...document.querySelectorAll(selector)].find(c=>read(c).startsWith(marker)&&read(c).includes(suffix)&&read(c).length>=min);
+    if(!composer)return 'incomplete_draft';
+    const form=composer.closest('form');
+    const buttons=[...(form?[...form.querySelectorAll('button[type="submit"],button[data-testid*="send"],button[aria-label*="Send" i],button[aria-label*="Enviar" i]')]:[]),
+      ...document.querySelectorAll('button[data-testid="send-button"],button[data-testid="composer-submit-button"],#composer-submit-button')];
+    const btn=buttons.find(b=>{const r=b.getBoundingClientRect();return b.isConnected&&!b.disabled&&r.width>1&&r.height>1;});
+    if(btn){btn.click();return 'submitted';}
+    if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return 'submitted';}
+    return 'send_button_missing';
+  })()`);
+  if(result!=='submitted')return result||'not_submitted';
+  await sleep(1500);
+  const after=await cdp.evaluate(`(()=>{const users=(${userTurns.toString()})();const last=users[users.length-1];return String(last&&(last.innerText||last.textContent)||'').trim().startsWith(${JSON.stringify(marker)});})()`);
+  return after?'sent_verified':'submitted_not_yet_visible';
+}
+
 async function consume(task){
   const job=await readImageJob(task);
   if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
@@ -258,9 +329,18 @@ async function consume(task){
     const manual=await readEditorialState();
     const current=(manual.items||[]).filter(x=>String(x.id)===task.target_id).sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||Date.parse(b.explained_at||0)-Date.parse(a.explained_at||0))[0];
     if(!current||Number(current.revision||0)!==task.revision||crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')!==task.explanation_sha256)return {status:'obsolete'};
+    // Recover native Site/App attachment from the existing original only.
+    let siteReturnStatus=String(task.site_return_status||'');
+    if(capture.source==='relay_9234'&&!task.site_return_sent_at&&!producerBusyFor(task)){
+      try{siteReturnStatus=await sendSiteReturnFromPublisher(cdp,task,fresh);}
+      catch(e){siteReturnStatus='deferred_'+String(e?.message||e).replace(/https?:\/\/\S+/g,'[url]').slice(0,70);}
+    }
+    const siteReturnSent=siteReturnStatus==='already_sent'||siteReturnStatus==='sent_verified';
+    const siteReturnReceipt={site_return_status:siteReturnStatus,
+      ...(siteReturnSent?{site_return_sent_at:new Date().toISOString()}:{})};
     const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(45000),body:JSON.stringify({task:'web_image_upload',context_explanation_sha256:task.explanation_sha256,target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),image_data_url:raster.dataUrl,capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
     const result=await response.json();
-    if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',capture_browser:capture.source,sha256:String(result.sha256||''),image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString()};
+    if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'upload_accepted_awaiting_main_confirmation',capture_browser:capture.source,sha256:String(result.sha256||''),image_path:String(result.image_path||''),upload_accepted_at:new Date().toISOString(),...siteReturnReceipt};
     if([401,409,422].includes(response.status))return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
     throw Error('image_upload_HTTP_'+response.status);
   }finally{
