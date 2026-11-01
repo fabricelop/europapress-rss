@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:46:29.308670+00:00",
+  "updated_at": "2026-11-01T11:47:03.837726+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8823,7 +8823,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T11:46:29.308670+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:47:03.837726+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -124117,7 +124117,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T11:46:29.308670+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:47:03.837726+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -171694,12 +171694,21 @@
           "revision": 0
         }
       ],
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_status": "none",
       "image_choice": null,
       "image_pending": false,
       "telegram_package_status": "pending",
-      "news_disposition": "ignored"
+      "news_disposition": "ignored",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-0b02a4293109ec1a",
+      "covered_by_revision": 0,
+      "covered_by_name": "Urda · accidente e investigación de Adif",
+      "covered_source_revision": 0,
+      "covered_at": "2026-11-01T11:47:03.837726+00:00",
+      "grouping_request_id": "listas-auto-2ccea12644d585a5fd98",
+      "editorial_grouping_fingerprint": "7dfde3bb1f85b36f7fdb168c1827c4fd1be9ae2971977c39ca05fa2553b19718",
+      "editorial_grouping_checked_at": "2026-11-01T11:47:03.837726+00:00"
     },
     {
       "id": "2b20f3e40801",
@@ -171829,7 +171838,14 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "3c2868cae4ed4520874e0dd651ee2401c27d688ce0ca98c858ba16ff7266e3e8",
-      "editorial_grouping_checked_at": "2026-11-01T11:46:29.308670+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:47:03.837726+00:00",
+      "listas_group_role": "covered",
+      "covered_by_id": "listas-joint-0b02a4293109ec1a",
+      "covered_by_revision": 0,
+      "covered_by_name": "Urda · accidente e investigación de Adif",
+      "covered_source_revision": 0,
+      "covered_at": "2026-11-01T11:47:03.837726+00:00",
+      "grouping_request_id": "listas-auto-2ccea12644d585a5fd98"
     },
     {
       "id": "listas-auto-72ab19fbbb9d740fb0d8",
@@ -173697,12 +173713,12 @@
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T11:46:29.308670+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -175463,7 +175479,60 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T11:47:03.837726+00:00",
+      "grouping_created_ids": [
+        "listas-joint-0b02a4293109ec1a"
+      ],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "5cac96b432570c0fb9d245c07b14c19787db665408189128163a2380bca6a560"
+    },
+    {
+      "id": "listas-joint-0b02a4293109ec1a",
+      "revision": 0,
+      "name": "Urda · accidente e investigación de Adif",
+      "rank": 2,
+      "status": "explained",
+      "explanation": "TT#2 Urda y Adif son tendencia por el accidente ferroviario del 28 de octubre: este domingo siguen la búsqueda de restos biológicos y la investigación del fallo del LZB y de la autorización de marcha del AVE.\n#Urda #Adif #Toledo",
+      "closer_text": "",
+      "explained_at": "2026-11-01T11:47:03.837726+00:00",
+      "requested_at": "2026-11-01T11:47:03.837726+00:00",
+      "updated_at": "2026-11-01T11:47:03.837726+00:00",
+      "listas_group_role": "joint",
+      "listas_group_members": [
+        {
+          "id": "2480cbdd6701",
+          "revision": 0
+        },
+        {
+          "id": "5b13bbe6ae22",
+          "revision": 0
+        }
+      ],
+      "trend_names": [
+        "Urda",
+        "Adif"
+      ],
+      "group_title": "Urda · accidente e investigación de Adif",
+      "verification_sources": [
+        {
+          "url": "https://www.rtve.es/noticias/20261101/accidente-tren-directo-ultima-hora-heridos/17295258.shtml"
+        },
+        {
+          "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
+        }
+      ],
+      "grouping_reason": "Ambas fichas describen el mismo accidente ferroviario de Urda y su evolución e investigación actuales.",
+      "grouping_request_id": "listas-auto-2ccea12644d585a5fd98",
+      "source": "listas_grouping_editorial",
+      "auto_queued": false,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "editorial_grouping_state": "cleared",
+      "editorial_grouping_fingerprint": "e44a6623edb10d6a9d8c56caeaf8a9972f7f5708e3f7fc57896de89d88c66843",
+      "editorial_grouping_checked_at": "2026-11-01T11:47:03.837726+00:00"
     }
   ],
   "count": 574
