@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T042500+0100",
-  "previous_run_id": "tr-chat-20261101T041000+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T04:25:00+01:00",
-  "updated_at": "2026-11-01T04:26:00+01:00",
-  "finished_at": "2026-11-01T04:26:00+01:00",
+  "run_id": "tr-chat-20261101T044000+0100",
+  "previous_run_id": "tr-chat-20261101T042500+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T04:40:00+01:00",
+  "updated_at": "2026-11-01T04:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -509,11 +509,17 @@
       "at": "2026-11-01T04:26:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios de texto."
+    },
+    {
+      "at": "2026-11-01T04:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T044000+0100",
+      "message": "Inicio tr-chat-20261101T044000+0100: refresco real del Top 30 y relectura de main; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T04:10:00+01:00",
+  "last_started_at": "2026-11-01T04:40:00+01:00",
   "last_completed_at": "2026-11-01T04:11:15+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T041000+0100",
@@ -538,7 +544,7 @@
     "note": "Cola compacta 0 en inicio y relectura final; captura Top 30 renovada a las 04:10:58 y cola actualizada a las 04:11:02. Sin rewrite_pending/reexplain ni preparing/update detectados. Sin ImageGen ni publicaciones."
   },
   "source": "chat",
-  "message": "Pasada real completada 0/0: cola final 0, rewrite_pending/reexplain 0, ImageGen 0 y publicaciones 0.",
+  "message": "Pasada real en curso: refrescando Top 30 y revalidando la cola editorial; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -766,6 +772,12 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T041000+0100",
       "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T04:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T044000+0100",
+      "message": "Inicio tr-chat-20261101T044000+0100: refresco real del Top 30 y relectura de main; sin ImageGen ni publicación."
     }
   ],
   "history": [
