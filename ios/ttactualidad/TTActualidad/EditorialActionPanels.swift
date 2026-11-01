@@ -372,7 +372,7 @@ struct EditorialActions: View {
             ? "ILUSTRACIÓN PERIODÍSTICA RIGUROSA Y RESPETUOSA, sin humor ni caricaturas sobre víctimas, sin escenas gráficas ni afirmaciones visuales no documentadas."
             : "GAG EDITORIAL VISUAL: " + styles[styleIndex] +
               " Más gag, menos barroquismo: una sola idea visual fuerte, lectura en 1–2 segundos, uno a tres elementos protagonistas, fondo solo si ayuda al chiste. El gag nace de la IDEA del remate, nunca de reproducir el titular."
-        return [
+        let imagePrompt = [
             "Genera AHORA UNA SOLA imagen " + (sensitive ? "EDITORIAL PERIODÍSTICA" : "GAG IA") +
                 " para " + (news == nil ? "TTendencias" : "TTiTTulares") +
                 ". Composición horizontal 16:9, ilustración a sangre de borde a borde.",
@@ -387,6 +387,46 @@ struct EditorialActions: View {
                 (sensitive ? "Máximo respeto a las víctimas y a sus familiares." : "Metáfora visual ingeniosa, no ilustración literal del titular."),
             "ENTREGA ÚNICAMENTE UNA IMAGEN ILUSTRADA LIMPIA, SIN TEXTO Y SIN BANDA INFERIOR. No generar composición con fotografía y texto debajo."
         ].joined(separator: "\n\n")
+        // The manually copied GAG must carry the same immutable context as
+        // the button for associating an already-created image. Never use rank,
+        // title or a pending request ID as an upload authorization.
+        guard news == nil, let displayed = trend else { return imagePrompt }
+        let leader = displayed.isCovered
+            ? store.snapshot.trendListas.first(where: {
+                $0.editorialID == displayed.coveredByID && !$0.isCovered
+            })
+            : nil
+        let target = leader ?? displayed
+        let targetID = target.siteImageEditorialID
+        let explanation = target.explanation
+        let explainedAt = target.siteImageExplainedAt
+        let revision = target.siteImageRevision
+        guard !targetID.isEmpty, !targetID.hasPrefix("site-term-"),
+              !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !explainedAt.isEmpty, revision >= 0,
+              target.status != "EN ELABORACIÓN",
+              !(displayed.isCovered && leader == nil) else { return imagePrompt }
+        let context: [String: Any] = [
+            "project_id": "appgprj_6ae4dcf7d7488191a574e5b649e67370",
+            "target_id": targetID,
+            "name": target.name,
+            "revision": revision,
+            "scope": "editorial",
+            "explanation": explanation,
+            "explained_at": explainedAt
+        ]
+        guard let raw = try? JSONSerialization.data(withJSONObject: context, options: [.sortedKeys]),
+              let exactContext = String(data: raw, encoding: .utf8) else { return imagePrompt }
+        return imagePrompt + """
+
+        
+        TTENDENCIAS_GAG_AUTO_ATTACH_V1 — SEGUNDA FASE, DESPUÉS DE GENERAR ESTA IMAGEN.
+        El resultado de ImageGen es intermedio: genera UNA única imagen y usa SOLO el PNG ORIGINAL creado EN ESTA conversación. No generes otra, no uses una imagen de la galería ajena al encargo ni una miniatura.
+        Contexto autoritativo de la explicación a revalidar sin reescribir:
+        \(exactContext)
+        Después de ImageGen, sin intervención del usuario, utiliza el conector TTendencias · TTActualidad: inspect_top30_images; si la identidad exacta de la explicación y revisión es vigente y el Site aún no contiene imagen válida, attach_trend_image usando file=PNG ORIGINAL de esta generación y context=JSON exacto; verify_trend_image y confirma URL y SHA-256 reales. Si Site verified, sincroniza GitHub main trends/site-ai-images.json preservando todas las entradas y modificando solo (target_id,revision), con image_url y sha256 verificados y explanation/explained_at literales. Relee el catálogo y comunica SITE y APP por separado.
+        Si ImageGen finaliza el turno antes de ejecutar herramientas, informa que la asociación está PENDIENTE, no que se completó: el botón «Copiar imagen Site» permite asociar el original en esta misma conversación SIN repetir ImageGen. No inventes acceso a la galería, no sustituyas otra imagen válida y nunca afirmes éxito sin verify_trend_image y comprobación en GitHub.
+        """
     }
     // "Copiar imagen Site" is ONLY a safe existing-image attachment guide.
     // Prefer the ORIGINAL PNG already available in the same conversation.
