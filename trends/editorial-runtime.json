@@ -3,43 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793564218863-manual",
-  "previous_run_id": "tr-1793563876449-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T21:17:00+01:00",
-  "updated_at": "2026-11-01T21:22:00+01:00",
-  "finished_at": "2026-11-01T21:22:00+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-1793565318526-manual",
+  "previous_run_id": "tr-1793564218863-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T21:36:00+01:00",
+  "updated_at": "2026-11-01T21:36:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 6,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "a1f72cb31fee",
     "b4e57b51c750"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "0cd169a778b9",
+    "425e95efd6a8",
+    "5de2c2a7b20e",
+    "a91fa6a9490a",
+    "2982cf2cc5c4",
+    "82f5a317d5c7"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1596,7 +1586,7 @@
     "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 6 trabajos preparing observados en main; validación JIT activa. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3887,24 +3877,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "a1f72cb31fee",
-      "revision": 0,
-      "name": "elche",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox"
-    },
-    {
-      "id": "b4e57b51c750",
-      "revision": 0,
-      "name": "#DragRaceEs",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox"
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null,
   "completed_runs": [
@@ -4679,5 +4652,7 @@
       "incidents": [],
       "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
-  ]
+  ],
+  "command_id": "tr-1793565318526-manual",
+  "requested_at": "2026-11-01T21:36:00+01:00"
 }
