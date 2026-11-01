@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793533812781-manual",
-  "previous_run_id": "tr-1793533559573-manual",
+  "run_id": "tr-1793533948548-manual",
+  "previous_run_id": "tr-1793533812781-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T12:50:12.781+01:00",
-  "updated_at": "2026-11-01T12:52:00+01:00",
+  "started_at": "2026-11-01T12:55:02.577+01:00",
+  "updated_at": "2026-11-01T12:55:02.577+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
@@ -17,16 +17,16 @@
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
+    "listas-auto-e41651c718620ce133ce",
     "aea33831119b",
     "12beb07b0d96",
-    "24b026091f12",
-    "listas-auto-e41651c718620ce133ce"
+    "24b026091f12"
   ],
   "remaining_active_ids": [
+    "listas-auto-e41651c718620ce133ce",
     "aea33831119b",
     "12beb07b0d96",
-    "24b026091f12",
-    "listas-auto-e41651c718620ce133ce"
+    "24b026091f12"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -1317,6 +1317,12 @@
       "phase": "preparing",
       "run_id": "tr-1793533812781-manual",
       "message": "Inicio manual: 3 investigaciones explain y 1 agrupación automática vigentes en main. Se procesan primero explain en orden y después group_listas; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:55:02.577+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793533948548-manual",
+      "message": "Inicio manual: 4 trabajos preparing/update vigentes en main; revalidación JIT por id+revision, sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
