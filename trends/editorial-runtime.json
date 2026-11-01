@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793517832727-manual",
-  "previous_run_id": "tr-1793517621392-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T08:23:52.727+01:00",
-  "updated_at": "2026-11-01T08:29:00+01:00",
-  "finished_at": "2026-11-01T08:29:00+01:00",
+  "run_id": "tr-chat-20261101T084115+0100",
+  "previous_run_id": "tr-1793517832727-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T08:41:15+01:00",
+  "updated_at": "2026-11-01T08:41:15+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -35,7 +35,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -853,6 +853,12 @@
         "concurrent_convergence": 3
       },
       "message": "Pasada completada 0/0 por convergencia: cola final 0 y sin reexplicación vigente detectada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T08:41:15+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T084115+0100",
+      "message": "Inicio de pasada directa: editorial-queue=0 tras actualización 08:40:51. Revalidando main y reexplicaciones; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
