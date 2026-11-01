@@ -212,6 +212,11 @@ async function consume(task){
    task.conversation_url=found.url;task.browser_target_id=found.browser_target_id;
   }catch{return {status:'waiting',reason:'conversation_discovery_unavailable'};}
  }
+ // Fail closed during partial deployments; preserve the image for retry.
+ try{
+  const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttittulares-run-status?view=web-image-contract');
+  if(contract.web_image_receipt!==1)return {status:'waiting',reason:'receiver_update_pending'};
+ }catch{return {status:'waiting',reason:'receiver_update_pending'};}
  const capture=await selectExistingBrowser();let browserCDP,cdp,ownedTarget;
  try{
   if(capture.source==='generator_9223'){
