@@ -31514,12 +31514,14 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "615c9aac32f0",
@@ -31563,14 +31565,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://image.koreaboo.com/2026/10/FD2870-31.jpg",
+        "source": "www.koreaboo.com",
+        "source_url": "https://www.koreaboo.com/news/bts-jungkook-reposting-blackpink-member-instagram/",
+        "alt": "Imagen de archivo relacionada con jungkook",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://image.koreaboo.com/2026/10/FD2870-31.jpg",
+        "source": "www.koreaboo.com",
+        "source_url": "https://www.koreaboo.com/news/bts-jungkook-reposting-blackpink-member-instagram/",
+        "alt": "Imagen de archivo relacionada con jungkook",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-01T07:22:00+01:00",
+  "updated_at": "2026-11-01T06:23:07.895509Z",
   "count": 525
 }
