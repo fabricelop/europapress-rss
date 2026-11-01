@@ -104,6 +104,63 @@ class PublicTop30ParityTests(unittest.TestCase):
         wrong_id = {**IMAGES["images"][0], "target_id": HALLOWEEN_OLD["id"]}
         self.assertIsNone(make(catalog={"images": [wrong_id]})["items"][0]["image"])
 
+
+    def test_halloween_minor_editorial_refresh_keeps_existing_image_as_visual_fallback(self):
+        old = {
+            "id": "ecfab12c8f74", "name": "Halloween", "revision": 0,
+            "explained_at": "2026-11-01T12:23:00+01:00",
+            "explanation": ("TT#1 Halloween sigue siendo tendencia tras la noche del 31 de octubre: "
+                            "en España hubo unas 16.000 fiestas temáticas y en Madrid continúan "
+                            "hoy actos del fin de semana.\\n#Halloween2026\\n"
+                            "🌶️ Cayó en sábado y el disfraz se ha resistido a volver al armario."),
+        }
+        new = {
+            **old, "id": "trend-update-34d09b53c44c303099f7",
+            "explained_at": "2026-11-01T12:35:37.852557+00:00",
+            "updated_at": "2026-11-01T12:35:37.852557+00:00",
+            "explanation": old["explanation"].replace(
+                "tendencia tras la noche", "tendencia porque, tras la noche"),
+        }
+        png = {
+            "target_id": old["id"], "revision": 0,
+            "explained_at": old["explained_at"], "explanation": old["explanation"],
+            "image_url": ("https://ttactualidad-tendencias.rainyraven22.chatgpt.site/"
+                          "images/ttendencias/ecfab12c8f74-r0-e5248f793768.png"),
+            "sha256": "e5248f793768" + "f" * 52,
+        }
+        now = datetime(2026, 11, 1, 12, 40, tzinfo=timezone.utc)
+        out = make(manual=[old, new], catalog={"images": [png]},
+                   recent={"top30": ["Halloween"]}, now=now)["items"][0]
+        self.assertEqual(out["editorial_id"], new["id"])
+        self.assertEqual(out["image"]["source_target_id"], old["id"])
+        self.assertEqual(out["image"]["status"], "catalog_recorded_continuity")
+        self.assertEqual(out["image"]["url"], png["image_url"])
+
+        # Exact-new association wins immediately, without the old raster.
+        latest_png = {**png, "target_id": new["id"],
+                      "explained_at": new["explained_at"],
+                      "explanation": new["explanation"],
+                      "image_url": ("https://ttactualidad-tendencias.rainyraven22.chatgpt.site/"
+                                    "images/ttendencias/trend-update-34d09b53c44c303099f7-r0-"
+                                    "aaaaaaaaaaaa.png"),
+                      "sha256": "a" * 64}
+        out = make(manual=[old, new], catalog={"images": [png, latest_png]},
+                   recent={"top30": ["Halloween"]}, now=now)["items"][0]
+        self.assertEqual(out["image"]["status"], "catalog_recorded")
+        self.assertEqual(out["image"]["url"], latest_png["image_url"])
+
+        # A different fact or a changed closer must never inherit old art.
+        changed = {**new, "explanation": new["explanation"].replace(
+            "16.000 fiestas", "70.000 fiestas")}
+        out = make(manual=[old, changed], catalog={"images": [png]},
+                   recent={"top30": ["Halloween"]}, now=now)["items"][0]
+        self.assertIsNone(out["image"])
+        different_closer = {**new, "explanation": new["explanation"].replace(
+            "Cayó en sábado", "Cayó en martes")}
+        out = make(manual=[old, different_closer], catalog={"images": [png]},
+                   recent={"top30": ["Halloween"]}, now=now)["items"][0]
+        self.assertIsNone(out["image"])
+
     def test_timezone_and_search_numeration(self):
         self.assertEqual(norm("  Óscar   Puente "), "oscar puente")
         items = make()["items"]
