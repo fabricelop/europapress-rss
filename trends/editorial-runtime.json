@@ -548,6 +548,12 @@
       "at": "2026-11-01T01:12:30+01:00",
       "phase": "closing",
       "message": "Barrera final para tr-1793491791612-manual: editorial-queue=0; no se duplica el trabajo concurrente. Cierre 0/0; ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T01:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793491247699-manual",
+      "message": "Cierre tr-1793491247699-manual: 9/9 obligaciones observadas cerradas. Cola 0 y rewrite_pending 0; 2 revisiones actualizadas, 2 agrupaciones resueltas, 1 covered_by_existing. Sin ImageGen ni publicación. La ejecución concurrente vigente conserva sus campos canónicos."
     }
   ],
   "final_outcomes": [
@@ -589,18 +595,19 @@
   "last_started_at": "2026-11-01T01:09:51.612+01:00",
   "last_completed_at": "2026-11-01T01:12:30+01:00",
   "last_run": {
-    "run_id": "tr-1793491791612-manual",
+    "run_id": "tr-1793491247699-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T01:12:30+01:00",
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
+    "started_at": "2026-11-01T01:00:47.699+01:00",
+    "finished_at": "2026-11-01T01:12:00+01:00",
+    "observed": 9,
+    "closed": 9,
+    "explained": 5,
+    "applied_this_run": 4,
     "converged_concurrent": 1,
+    "updates": 2,
+    "grouping_requests": 2,
+    "groups_created": 0,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -608,7 +615,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Pasada real cerrada 0/0 tras revalidación JIT: el único group_listas observado al inicio ya había sido aplicado concurrentemente. Cola final 0; sin ImageGen ni publicación."
+    "note": "Pasada real cerrada tras barrera final: 5 explicaciones cerradas (Tusk por convergencia concurrente), 2 revisiones con actualización material, 2 agrupaciones automáticas; la agrupación final cubrió Alavés con la ficha Barça-Alavés ya publicada. Cola 0, rewrite_pending 0, sin ImageGen ni publicación."
   },
   "source": "chat",
   "message": "Barrera JIT: se observó inicialmente 1 group_listas, pero antes de tratarlo main ya mostraba el job aplicado por una ejecución concurrente. editorial-queue=0 y no se duplicó el trabajo; sin ImageGen ni publicación.",
@@ -722,6 +729,12 @@
       "at": "2026-11-01T01:12:30+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0 tras barrera JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793491247699-manual",
+      "message": "DONE: 9/9 cerrados; cola 0, rewrite_pending 0, ImageGen 0, publicaciones 0."
     }
   ]
 }
