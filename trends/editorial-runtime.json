@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T042500+0100",
   "previous_run_id": "tr-chat-20261101T041000+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T04:25:00+01:00",
-  "updated_at": "2026-11-01T04:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T04:26:00+01:00",
+  "finished_at": "2026-11-01T04:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -41,11 +41,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-01T00:31:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final de tr-1793489199351-manual: editorial-queue=0, preparing/update=0 y rewrite_pending=0; el único group_listas visto al inicio ya estaba grouping_completed al revalidarlo."
-    },
     {
       "at": "2026-11-01T00:31:00+01:00",
       "phase": "closing",
@@ -504,6 +499,16 @@
       "at": "2026-11-01T04:25:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-chat-20261101T042500+0100: cola compacta 0. Verificando main, rewrite_pending y resultados aplicados antes del cierre; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T04:26:00+01:00",
+      "phase": "verifying",
+      "message": "Relectura final de main: editorial-queue 0; rewrite_pending 0 en decisiones vigentes. No hay trabajo editorial activo que persistir."
+    },
+    {
+      "at": "2026-11-01T04:26:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios de texto."
     }
   ],
   "final_outcomes": [],
