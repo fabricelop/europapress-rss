@@ -35474,14 +35474,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://assets.eurosport.io/web/img/og/eurosport.jpg",
+        "source": "www.eurosport.es",
+        "source_url": "https://www.eurosport.es/tenis/atp-viena/2026/live-alex-de-minaur-carlos-alcaraz_mtc22037665/live.shtml",
+        "alt": "Imagen de archivo relacionada con De Miñaur",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://assets.eurosport.io/web/img/og/eurosport.jpg",
+        "source": "www.eurosport.es",
+        "source_url": "https://www.eurosport.es/tenis/atp-viena/2026/live-alex-de-minaur-carlos-alcaraz_mtc22037665/live.shtml",
+        "alt": "Imagen de archivo relacionada con De Miñaur",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "63b063f5b637",
@@ -35736,6 +35751,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-01T16:01:15.328889Z",
+  "updated_at": "2026-11-01T16:03:07.920253Z",
   "count": 588
 }
