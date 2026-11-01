@@ -36307,11 +36307,26 @@
         }
       ],
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
-      "image_status": "none",
-      "image_choice": "none",
-      "image_pending": false
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "fallback_image": {
+        "url": "https://img.asmedia.epimg.net/resizer/v2/MQN5VPI2O5FBFKJFVZHITJOXM4.jpg?auth=ae75964c8d39ec5683a4272428d02ad42fd4d107130bfc10655146556c71b709&width=1472&height=828&smart=true",
+        "source": "as.com",
+        "source_url": "https://as.com/meristation/noticias/todas-las-novedades-de-la-nueva-temporada-de-one-piece-en-fortnite-nuevas-skins-nuevo-mapa-poderes-y-mucho-mas-f202610-n/",
+        "alt": "Imagen de archivo relacionada con Fortnite",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.asmedia.epimg.net/resizer/v2/MQN5VPI2O5FBFKJFVZHITJOXM4.jpg?auth=ae75964c8d39ec5683a4272428d02ad42fd4d107130bfc10655146556c71b709&width=1472&height=828&smart=true",
+        "source": "as.com",
+        "source_url": "https://as.com/meristation/noticias/todas-las-novedades-de-la-nueva-temporada-de-one-piece-en-fortnite-nuevas-skins-nuevo-mapa-poderes-y-mucho-mas-f202610-n/",
+        "alt": "Imagen de archivo relacionada con Fortnite",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "64b7521f1d8d",
@@ -36346,7 +36361,28 @@
           "name": "Racing",
           "revision": 1
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://imagenes2.mundodeportivo.com/files/og_thumbnail/files/fp/uploads/2026/11/01/6ae760fc0d3dc.r_d.673-550-8996.jpeg",
+        "source": "www.mundodeportivo.com",
+        "source_url": "https://www.mundodeportivo.com/futbol/real-madrid/20261101/1004244043/racing-santander-real-madrid-directo-laliga-ea-sports-ext-pau.html?facet=amp",
+        "alt": "Imagen de archivo relacionada con Racing",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://imagenes2.mundodeportivo.com/files/og_thumbnail/files/fp/uploads/2026/11/01/6ae760fc0d3dc.r_d.673-550-8996.jpeg",
+        "source": "www.mundodeportivo.com",
+        "source_url": "https://www.mundodeportivo.com/futbol/real-madrid/20261101/1004244043/racing-santander-real-madrid-directo-laliga-ea-sports-ext-pau.html?facet=amp",
+        "alt": "Imagen de archivo relacionada con Racing",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "trend-update-6f8efdbc5b4f98f241ed",
@@ -36373,12 +36409,17 @@
       "distinct_episode": false,
       "new_facts": "Este domingo 1 de noviembre, cementerios de toda España reciben a familias que llevan flores y recuerdan a sus fallecidos por Todos los Santos.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-01T16:21:21.260935+00:00",
+  "updated_at": "2026-11-01T16:21:40.430725Z",
   "count": 600
 }
