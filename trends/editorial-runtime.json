@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T121100+0100",
   "previous_run_id": "tr-1793530989787-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T12:11:00+01:00",
-  "updated_at": "2026-11-01T12:11:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T12:12:00+01:00",
+  "finished_at": "2026-11-01T12:12:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -41,20 +41,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-01T07:24:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: cola 0 y ninguna revisión preparing/update ni rewrite_pending/reexplain vigente."
-    },
-    {
-      "at": "2026-11-01T07:25:00+01:00",
-      "phase": "investigating",
-      "trend_id": "listas-auto-30620e264cab7828affa",
-      "title": "Agrupación automática de Listas",
-      "message": "Reabierta la pasada tras detectar mantenimiento nuevo en main; revisión JIT del snapshot de agrupación."
-    },
     {
       "at": "2026-11-01T07:23:18+01:00",
       "phase": "verifying",
@@ -1229,6 +1215,18 @@
       "phase": "preparing",
       "run_id": "tr-chat-20261101T121100+0100",
       "message": "Inicio manual desde ChatGPT: cola compacta inicialmente vacía; revalidando main, reexplicaciones y mantenimiento antes de cerrar. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:12:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T121100+0100",
+      "message": "Barrera final de main: Top 30 capturado 12:10:54; editorial-queue actualizada 12:10:58 con 0 items; sin preparing/update ni rewrite_pending/reexplain. Últimos resultados de mantenimiento inspeccionados."
+    },
+    {
+      "at": "2026-11-01T12:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T121100+0100",
+      "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
     }
   ],
   "final_outcomes": [
@@ -1346,30 +1344,30 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T12:11:00+01:00",
-  "last_completed_at": "2026-11-01T11:08:44.789Z",
+  "last_completed_at": "2026-11-01T12:12:00+01:00",
   "last_run": {
-    "run_id": "tr-1793530989787-manual",
+    "run_id": "tr-chat-20261101T121100+0100",
     "status": "DONE",
-    "finished_at": "2026-11-01T11:08:44.789Z",
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "finished_at": "2026-11-01T12:12:00+01:00",
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "source": "chat",
-  "message": "Inicio manual desde ChatGPT: cola compacta inicialmente vacía; revalidando main, reexplicaciones y mantenimiento antes de cerrar. Sin ImageGen ni publicación.",
+  "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2047,6 +2045,37 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 2/2 por convergencia JIT: ambas revisiones de mantenimiento fueron investigadas y sus resultados materializados, pero el aplicador las cerró como stale porque las fichas origen ya no eran vigentes. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:12:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T121100+0100",
+      "message": "Barrera final de main: Top 30 capturado 12:10:54; editorial-queue actualizada 12:10:58 con 0 items; sin preparing/update ni rewrite_pending/reexplain. Últimos resultados de mantenimiento inspeccionados."
+    },
+    {
+      "at": "2026-11-01T12:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T121100+0100",
+      "status": "DONE",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
     }
   ],
   "history": [
@@ -2695,6 +2724,31 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 2/2 por convergencia JIT: ambas revisiones de mantenimiento fueron investigadas y sus resultados materializados, pero el aplicador las cerró como stale porque las fichas origen ya no eran vigentes. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T121100+0100",
+      "status": "DONE",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
     }
   ],
   "partial": false,
