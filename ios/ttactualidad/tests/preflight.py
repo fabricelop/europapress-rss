@@ -410,7 +410,7 @@ assert 'Eliminarás de Listas todas las' in dashboard
 assert 'groupListas(' in dashboard and 'removeCovered: cleanup ? selected : nil' in dashboard
 assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
 assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
-assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 2
+assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 1
 assert 'trend?.siteImageURL, news?.imageURL ?? trend?.imageURL' in actions
 assert 'UIPasteboard.general.image = image' in actions
 assert 'now.timeIntervalSince($0) <= 48 * 3600' in store
