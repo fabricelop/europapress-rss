@@ -3,13 +3,13 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793538157393-manual",
+  "run_id": "tr-chat-20261101T141000+0100",
   "previous_run_id": "tr-chat-20261101T1355+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T13:55:00+01:00",
-  "updated_at": "2026-11-01T13:05:23.135Z",
-  "finished_at": "2026-11-01T13:05:23.135Z",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T14:10:00+01:00",
+  "updated_at": "2026-11-01T14:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -249,7 +249,7 @@
     "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. Los dos review_red de la ejecución anterior ya convergieron como updated. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y sin rewrite_pending/reexplicación pendiente. Los dos review_red de la ejecución anterior ya convergieron como updated. ImageGen=0; publicaciones=0.",
+  "message": "Inicio de pasada manual real: cola autoritativa observada en 0; se ejecuta barrera final sobre main y reexplicaciones antes de cerrar. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1984,6 +1984,13 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada cerrada 3/3: las dos revisiones quedaron stale por validación JIT y el Radar de Mariah Carey quedó anticipation_prepared. Barrera final: cola 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T14:10:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T141000+0100",
+      "status": "RUNNING",
+      "message": "Inicio de pasada manual real: cola autoritativa observada en 0; se ejecuta barrera final sobre main y reexplicaciones antes de cerrar. Sin ImageGen ni publicación."
     }
   ],
   "partial": false,
