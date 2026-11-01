@@ -8,37 +8,36 @@
   "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-01T06:49:00+01:00",
-  "updated_at": "2026-11-01T06:52:00+01:00",
+  "updated_at": "2026-11-01T06:53:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 3,
-  "trend_id": "red-review-4c57a3edb7fa71916431",
-  "title": "Revisar novedades: #laSextaXplica",
+  "trend_id": "red-review-656a3fba6061d7d8bc4f",
+  "title": "Revisar novedades: Toledo",
   "queue_complete": false,
   "processed_ids": [
-    "listas-auto-600209548fe6e0ab5c4b"
+    "listas-auto-600209548fe6e0ab5c4b",
+    "red-review-4c57a3edb7fa71916431"
   ],
   "remaining_ids": [
-    "red-review-4c57a3edb7fa71916431",
     "red-review-656a3fba6061d7d8bc4f"
   ],
   "remaining_active_ids": [
-    "red-review-4c57a3edb7fa71916431",
     "red-review-656a3fba6061d7d8bc4f"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 3,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -560,6 +559,22 @@
       "trend_id": "red-review-4c57a3edb7fa71916431",
       "title": "Revisar novedades: #laSextaXplica",
       "message": "Revisando novedades JIT: episodio del 31 de octubre centrado en el accidente de Urda; comprobando si constituye actualización material distinta del episodio del 24 de octubre."
+    },
+    {
+      "at": "2026-11-01T06:52:04+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793512121167-manual",
+      "trend_id": "red-review-4c57a3edb7fa71916431",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Aplicador JIT retiró el job de la cola; actualización material por episodio distinto del 31 de octubre, sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-01T06:53:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793512121167-manual",
+      "trend_id": "red-review-656a3fba6061d7d8bc4f",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisando novedades: la investigación de Urda documenta fallos del LZB y protocolos incorrectos posteriores al texto original del 28 de octubre; comprobando continuidad y alcance."
     }
   ],
   "final_outcomes": {
@@ -612,7 +627,7 @@
     "note": "Rapha, Quiles y #realbetismálaga explicados y verificados en requests + telegram-manual-explained; cola final 0 y sin rewrite_pending/reexplain."
   },
   "source": "chat",
-  "message": "Agrupación aplicada. Revisando novedades de #laSextaXplica.",
+  "message": "#laSextaXplica cerrada como actualización material; revisando novedades de Toledo.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
