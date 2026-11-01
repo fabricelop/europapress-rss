@@ -1,68 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T12:29:45.520592+00:00",
+  "updated_at": "2026-11-01T13:31:13+01:00",
   "count": 3,
   "items": [
     {
       "id": "listas-auto-0def7a67b2e3bff3bc3a",
-      "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
       "requested_at": "2026-11-01T12:29:45.520592+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "group_listas",
-      "listas_grouping_request": true,
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
       "automatic_grouping": true,
-      "grouping_state": "pending",
-      "grouping_candidates": [
-        {
-          "id": "0ecf2a36f589",
-          "revision": 0,
-          "name": "La UCO",
-          "rank": 29,
-          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
-          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
-            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
-          ]
-        },
-        {
-          "id": "5e0d9fdf2cb2",
-          "revision": 0,
-          "name": "Feliz Sábado",
-          "rank": 30,
-          "explanation": "TT#30 Feliz Sábado aparece entre las tendencias de X en España durante este sábado y lleva horas entrando en las listas, sin que se haya podido confirmar un detonante concreto.",
-          "explanation_sha256": "2030035eece763e1b1f19fa63dd53790dc9ea80025f5b3ec830cf9a61a3e76bf",
-          "explained_at": "2026-10-31T23:58:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://trends24.in/spain/"
-            },
-            {
-              "url": "https://twitter-trends.snaplytics.io/spain/"
-            }
-          ]
-        },
-        {
-          "id": "7c590b18d53a",
-          "revision": 0,
-          "name": "Kerolin",
-          "rank": 13,
-          "explanation": "TT#13 Kerolin es tendencia porque ha marcado a los 4 minutos ante el Badalona su primer gol en Liga F con el Barça, tras asistencia de Aitana Bonmatí.\n#FCBarcelona #LigaF\n🌶️ Cuatro minutos le bastaron para abrir su cuenta liguera.",
-          "explanation_sha256": "3d6a048352b3eab640e036f0b41ac0adb899c0487336014aee9e0daf89c15b86",
-          "explained_at": "2026-11-01T13:29:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://as.com/futbol/femenino/badalona-barcelona-en-directo-liga-f-hoy-en-vivo-f202611-n/"
-            },
-            {
-              "url": "https://www.mundodeportivo.com/futbol/fc-barcelona/20261101/1004245562/badalona-women-barca-directo-liga-f-futbol-femenino.html"
-            }
-          ]
-        }
-      ],
       "published_context": [
         {
           "id": "09fb9ff32c5a",
@@ -1751,23 +1715,98 @@
           ]
         }
       ],
-      "with_image": false,
-      "disable_ai_image": true,
+      "listas_grouping_request": true,
+      "grouping_candidates": [
+        {
+          "id": "0ecf2a36f589",
+          "revision": 0,
+          "name": "La UCO",
+          "rank": 29,
+          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
+          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
+          ]
+        },
+        {
+          "id": "5e0d9fdf2cb2",
+          "revision": 0,
+          "name": "Feliz Sábado",
+          "rank": 30,
+          "explanation": "TT#30 Feliz Sábado aparece entre las tendencias de X en España durante este sábado y lleva horas entrando en las listas, sin que se haya podido confirmar un detonante concreto.",
+          "explanation_sha256": "2030035eece763e1b1f19fa63dd53790dc9ea80025f5b3ec830cf9a61a3e76bf",
+          "explained_at": "2026-10-31T23:58:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://trends24.in/spain/"
+            },
+            {
+              "url": "https://twitter-trends.snaplytics.io/spain/"
+            }
+          ]
+        },
+        {
+          "id": "7c590b18d53a",
+          "revision": 0,
+          "name": "Kerolin",
+          "rank": 13,
+          "explanation": "TT#13 Kerolin es tendencia porque ha marcado a los 4 minutos ante el Badalona su primer gol en Liga F con el Barça, tras asistencia de Aitana Bonmatí.\n#FCBarcelona #LigaF\n🌶️ Cuatro minutos le bastaron para abrir su cuenta liguera.",
+          "explanation_sha256": "3d6a048352b3eab640e036f0b41ac0adb899c0487336014aee9e0daf89c15b86",
+          "explained_at": "2026-11-01T13:29:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://as.com/futbol/femenino/badalona-barcelona-en-directo-liga-f-hoy-en-vivo-f202611-n/"
+            },
+            {
+              "url": "https://www.mundodeportivo.com/futbol/fc-barcelona/20261101/1004245562/badalona-women-barca-directo-liga-f-futbol-femenino.html"
+            }
+          ]
+        }
+      ],
+      "grouping_state": "pending",
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Agrupación automática de Listas"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     },
     {
       "id": "red-review-40e74cd77ce920da353e",
-      "revision": 0,
       "name": "Revisar novedades: Angrois",
       "rank": 7,
       "status": "preparing",
       "requested_at": "2026-11-01T12:29:45.520592+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "review_red",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
       "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
       "review_source": {
         "id": "trend-update-607ecdd2b7d2e6f993f5",
         "revision": 0,
@@ -1786,22 +1825,53 @@
         ],
         "fingerprint": "00468f478eb08dad57db9583c174356ef7cea8c1dbf663c1541b624d722a33f7"
       },
-      "with_image": false,
-      "disable_ai_image": true,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Revisar novedades: Angrois"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     },
     {
       "id": "red-review-d618f1f1401545108e64",
-      "revision": 0,
       "name": "Revisar novedades: Halloween",
       "rank": 1,
       "status": "preparing",
       "requested_at": "2026-11-01T12:29:45.520592+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "review_red",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
       "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
       "review_source": {
         "id": "1510c923e357",
         "revision": 0,
@@ -1820,10 +1890,31 @@
         ],
         "fingerprint": "cedcb96be43dc64c825f8345187963dceee96ca196c24b4b7705ebc3a903c732"
       },
-      "with_image": false,
-      "disable_ai_image": true,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Revisar novedades: Halloween"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
