@@ -6,16 +6,19 @@
   "run_id": "tr-1793527734709-manual",
   "previous_run_id": "tr-1793527469295-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T11:09:00+01:00",
-  "updated_at": "2026-11-01T11:09:00+01:00",
+  "updated_at": "2026-11-01T11:11:30+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
+  "current": 2,
+  "total": 3,
   "trend_id": "red-review-59f90d990dadda2724b7",
   "title": "Revisar novedades: Toledo",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "listas-auto-cbda911e727cb3be2693",
+    "red-review-1343290e6c52ef92fee0"
+  ],
   "remaining_ids": [
     "red-review-59f90d990dadda2724b7"
   ],
@@ -1244,6 +1247,22 @@
       "trend_id": "red-review-59f90d990dadda2724b7",
       "title": "Revisar novedades: Toledo",
       "message": "Inicio tr-1793527734709-manual: 1 trabajos preparing/update vigentes en main; orden cronológico y revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T11:11:20+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793527469295-manual",
+      "trend_id": "red-review-1343290e6c52ef92fee0",
+      "title": "Revisar novedades: #laSextaXplica",
+      "message": "Aplicador completado: actualización material por episodio distinto del 31 de octubre; job retirado de editorial-queue."
+    },
+    {
+      "at": "2026-11-01T11:11:30+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793527469295-manual",
+      "trend_id": "red-review-59f90d990dadda2724b7",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisando novedades JIT de Toledo/Urda frente a la explicación inicial del 28 de octubre; comprobando cadena LZB, protocolos y medidas posteriores."
     }
   ],
   "final_outcomes": [
