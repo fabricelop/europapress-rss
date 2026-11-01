@@ -5,21 +5,25 @@
   "canonical": true,
   "run_id": "tr-1793565318526-manual",
   "previous_run_id": "tr-1793564218863-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
+  "status": "PROCESSING",
+  "phase": "investigating",
   "started_at": "2026-11-01T21:36:00+01:00",
-  "updated_at": "2026-11-01T21:44:30+01:00",
-  "finished_at": "2026-11-01T21:44:30+01:00",
+  "updated_at": "2026-11-01T21:45:30+01:00",
+  "finished_at": null,
   "current": 7,
-  "total": 7,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 10,
+  "trend_id": "dc082e7257e6",
+  "title": "Aston Martin",
+  "queue_complete": false,
   "processed_ids": [
     "a4a691b7cac1"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "dc082e7257e6",
+    "a066ede401f4",
+    "728d35279d6e"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 7,
@@ -1651,7 +1655,7 @@
     "message": "Pasada cerrada 7/7: Iraola, Martínez Valero, El Sardinero, Dimitrievski, Goiria, Racing y Leclerc explicados y verificados en requests + Listas. Leclerc entró durante la ejecución y también fue procesado. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidente técnico inicial recuperado sin pérdida de estado."
   },
   "source": "chat",
-  "message": "Pasada cerrada 7/7: Iraola, Martínez Valero, El Sardinero, Dimitrievski, Goiria, Racing y Leclerc explicados y verificados en requests + Listas. Leclerc entró durante la ejecución y también fue procesado. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidente técnico inicial recuperado sin pérdida de estado.",
+  "message": "Continúa la pasada tras 3 nuevas entradas detectadas en la barrera final: Aston Martin, #NASCARenDAZN y Hamilton. 7/10 cerrados; validación JIT activa; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
