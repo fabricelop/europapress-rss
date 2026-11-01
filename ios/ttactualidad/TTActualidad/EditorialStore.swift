@@ -1765,7 +1765,7 @@ final class EditorialStore: ObservableObject {
             let leftRank = $0.rank > 0 ? $0.rank : Int.max
             let rightRank = $1.rank > 0 ? $1.rank : Int.max
             if leftRank != rightRank { return leftRank < rightRank }
-            if $0.isCovered != $1.isCovered { return !$0.isCovered }
+            // Keep the ordinary chronological tie-breaker for every trend.
             let leftDate = $0.lastExplained ?? .distantPast
             let rightDate = $1.lastExplained ?? .distantPast
             if leftDate != rightDate { return leftDate > rightDate }
