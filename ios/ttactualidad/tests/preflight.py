@@ -250,8 +250,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.45"' in project
-assert 'CURRENT_PROJECT_VERSION: "51"' in project
+assert 'MARKETING_VERSION: "0.4.46"' in project
+assert 'CURRENT_PROJECT_VERSION: "52"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -284,7 +284,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "51"' in project
+assert 'CURRENT_PROJECT_VERSION: "52"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -296,7 +296,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "51"' in project
+assert 'CURRENT_PROJECT_VERSION: "52"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -312,8 +312,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.45"' in project
-assert 'CURRENT_PROJECT_VERSION: "51"' in project
+assert 'MARKETING_VERSION: "0.4.46"' in project
+assert 'CURRENT_PROJECT_VERSION: "52"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -335,7 +335,7 @@ assert 'launchUrgentEditorial()' in actions
 assert 'openChatGPTApp()' in actions
 assert 'TTActualidad.chatGPTProjectLink.v1' not in actions
 assert 'openEditorialChat()' not in actions
-assert actions.count('quickLink("Proyecto TT"') == 2
+assert actions.count('quickLink("Proyecto TT"') == 3
 print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
 
 
@@ -418,8 +418,8 @@ assert 'Eliminarás de Listas todas las' in dashboard
 assert 'groupListas(' in dashboard and 'removeCovered: cleanup ? selected : nil' in dashboard
 assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
 assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
-assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 1
-assert 'trend?.siteImageURL, news?.imageURL ?? trend?.imageURL' in actions
+assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 2
+assert 'news?.siteImageURL, trend?.siteImageURL' in actions
 assert 'UIPasteboard.general.image = image' in actions
 assert 'now.timeIntervalSince($0) <= 48 * 3600' in store
 assert 'Text("Agrupada")' in dashboard
@@ -442,3 +442,30 @@ print("TT_ACTUALIDAD_IOS_0433_PURPLE_PHOTO_FRESHNESS_PREFLIGHT_OK")
 
 assert 'filterChip("Nuevas"' not in dashboard
 assert 'case nuevas = "Nuevas"' not in store
+
+# 0.4.46: real AI image parity for news, distinct from archive photographs.
+news_ai = (root / "TTActualidad/NewsAIImageCatalog.swift").read_text(encoding="utf8")
+assert (root.parents[1] / "ttittulares/site-ai-images.json").exists()
+assert 'ttittulares/site-ai-images.json' in news_ai
+assert 'ttittulares/generated-images/' in news_ai
+assert 'ai["generated"] as? Bool == true' in news_ai
+assert 'ai["provider"] as? String == "chat-imagegen"' in news_ai
+assert 'record.editorial_text == editorialText' in news_ai
+assert 'record.prepared_at == preparedAt' in news_ai
+assert 'NewsAIImageCatalog.load()' in store
+assert 'NewsAIImageCatalog.assigned(' in store
+assert 'NewsAIImageCatalog.preparedImage(' in store
+assert 'siteImageURL: verifiedAI?.url' in store
+assert 'siteImageSHA256: verifiedAI?.sha256' in store
+assert 'siteImageURL: item.siteImageURL' in store
+assert 'if let ai = item.siteImageURL' in dashboard
+assert 'if let archive = item.imageURL' in dashboard
+assert 'quickButton("Asociar imagen IA", "paperclip")' in actions
+assert 'TTITTULARES_GITHUB_ATTACH_EXISTING_V1' in actions
+assert 'quickLink("Proyecto TT", "folder"' in actions
+assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
+assert 'news?.verifiedFacts' in actions
+assert 'news?.siteImageURL, trend?.siteImageURL' in actions
+assert 'MARKETING_VERSION: "0.4.46"' in project
+assert 'CURRENT_PROJECT_VERSION: "52"' in project
+print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
