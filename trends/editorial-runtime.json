@@ -3,42 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793527213050-manual",
-  "previous_run_id": "tr-1793527057284-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T11:00:00+01:00",
-  "updated_at": "2026-11-01T11:01:30+01:00",
-  "finished_at": "2026-11-01T11:01:30+01:00",
-  "current": 1,
+  "run_id": "tr-1793527469295-manual",
+  "previous_run_id": "tr-1793527213050-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T11:05:00+01:00",
+  "updated_at": "2026-11-01T11:05:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-50403cbc6f4acb2379c3"
+  "trend_id": "listas-auto-cbda911e727cb3be2693",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-cbda911e727cb3be2693"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-cbda911e727cb3be2693"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 1,
-    "groups_created": 1,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1211,6 +1196,14 @@
       "run_id": "tr-1793527213050-manual",
       "status": "DONE",
       "message": "Pasada cerrada 1/1 por convergencia JIT. editorial-queue sin preparing/update; búsquedas de rewrite_pending/reexplain pendientes sin resultados. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:05:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793527469295-manual",
+      "trend_id": "listas-auto-cbda911e727cb3be2693",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio de la pasada manual: 1 trabajo group_listas preparing vigente en main; 0 investigaciones ordinarias preparing/update. Revalidación JIT del snapshot antes de persistir; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
