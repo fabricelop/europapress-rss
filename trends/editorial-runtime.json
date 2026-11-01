@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793536190307-manual",
+  "run_id": "tr-1793536283673-manual",
   "previous_run_id": "tr-chat-20261101T132500+0100",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T13:31:30+01:00",
-  "updated_at": "2026-11-01T13:31:30+01:00",
+  "started_at": "2026-11-01T13:32:30+01:00",
+  "updated_at": "2026-11-01T13:32:30+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "red-review-d618f1f1401545108e64",
+  "title": "Revisar novedades: Halloween",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -22,14 +22,13 @@
     "red-review-d618f1f1401545108e64"
   ],
   "remaining_active_ids": [
-    "listas-auto-0def7a67b2e3bff3bc3a",
-    "red-review-40e74cd77ce920da353e",
-    "red-review-d618f1f1401545108e64"
+    "red-review-d618f1f1401545108e64",
+    "listas-auto-55e9977fa75dd550026d"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 3,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -38,7 +37,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -96,7 +95,7 @@
     "message": "Pasada cerrada 1/1: Kerolin r0 explicada y persistida en requests.json y telegram-manual-explained.json; barrera final editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "La barrera final abrió 3 trabajos nuevos; se reabre la pasada: 1 group_listas y 2 review_red. Kerolin ya está explicada. Sin ImageGen ni publicación.",
+  "message": "Inicio de pasada real: 2 trabajos preparing/update vigentes en main; se procesan del más antiguo al más reciente con revalidación JIT. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -941,6 +940,14 @@
       "trend_id": "listas-auto-0def7a67b2e3bff3bc3a",
       "title": "Agrupación automática de Listas",
       "message": "La barrera final abrió 3 trabajos nuevos; se reabre la pasada: 1 group_listas y 2 review_red. Kerolin ya está explicada. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T13:32:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793536283673-manual",
+      "trend_id": "red-review-d618f1f1401545108e64",
+      "title": "Revisar novedades: Halloween",
+      "message": "Inicio de pasada real: 2 trabajos preparing/update vigentes en main; se procesan del más antiguo al más reciente con revalidación JIT. Sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -1758,15 +1765,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "7c590b18d53a",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "name": "Kerolin"
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null
 }
