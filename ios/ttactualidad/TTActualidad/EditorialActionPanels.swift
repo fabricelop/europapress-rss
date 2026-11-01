@@ -389,9 +389,10 @@ struct EditorialActions: View {
         ].joined(separator: "\n\n")
     }
     // "Copiar imagen Site" is ONLY a safe existing-image attachment guide.
-    // The user generates the artwork separately and uploads its ORIGINAL PNG
-    // to the project chat. A screenshot, thumbnail or shared-chat URL is NOT
-    // proof of an original upload. Neither this button nor its prompt generates.
+    // Prefer the ORIGINAL PNG already available in the same conversation.
+    // A gallery/other-chat image needs explicit attachment if it is not in
+    // current context; a thumbnail or shared URL is NOT the original.
+    // Neither this button nor its prompt starts image generation.
     private func copyTrendSiteImagePrompt() {
         guard let displayed = trend else { return }
 
@@ -440,12 +441,22 @@ struct EditorialActions: View {
                 "project_id: appgprj_6ae4dcf7d7488191a574e5b649e67370\n" +
                 "Catálogo para iPhone: fabricelop/europapress-rss, main, trends/site-ai-images.json.",
             editorialContext,
-            "ARCHIVO A ASOCIAR: la imagen PNG ORIGINAL creada previamente por el usuario " +
-                "y ADJUNTADA expresamente EN ESTE MISMO CHAT. Si no está adjunta o no puedes " +
-                "obtener su archivo real para el conector, SOLICITA QUE LA ADJUNTE y DETENTE. " +
-                "Un enlace a un chat compartido, la vista previa, una captura, un nombre de archivo " +
-                "o una ruta inventada NO sustituyen el original. " +
-                "No uses una imagen de otra tendencia ni la elijas por parecido.",
+            "ARCHIVO A ASOCIAR: primero identifica la ÚNICA imagen ORIGINAL ya " +
+                "generada o aportada por el usuario EN ESTA MISMA CONVERSACIÓN, " +
+                "preferiblemente en el mensaje al que se refiere expresamente " +
+                "al decir «Asocia esta imagen a la tendencia». Si el archivo original " +
+                "está disponible para attach_trend_image, REUTILÍZALO DIRECTAMENTE: " +
+                "no pidas copiar, descargar ni adjuntar de nuevo y NO generes otra imagen. " +
+                "Si hay varias candidatas, pregunta cuál de ellas debe asociarse; " +
+                "nunca adivines por el aspecto ni el nombre. " +
+                "Si la imagen está SOLO en otro chat o en la galería Imágenes y no " +
+                "tienes acceso a su archivo original desde ESTA conversación, " +
+                "pide al usuario que la seleccione/comparta o adjunte aquí mediante " +
+                "Imágenes o Biblioteca. No afirmes que puedes recorrer la galería " +
+                "personal automáticamente. " +
+                "Un enlace a un chat compartido, una vista previa, una captura " +
+                "o una ruta inventada NO sustituyen el archivo original requerido " +
+                "por el conector. No uses una imagen de otra tendencia.",
             "1. Ejecuta mcp__TTendencias___TTActualidad__inspect_top30_images para obtener " +
                 "el contexto editorial VIGENTE del Site. Resuelve exactamente la tendencia y, " +
                 "si está agrupada, la identidad de su grupo. El nombre y el puesto aquí son pistas " +
@@ -491,7 +502,7 @@ struct EditorialActions: View {
         ].joined(separator: "\n\n")
         copy(prompt)
         outcome = hasEditorialIdentity
-            ? "Instrucción de asociación copiada. Adjunta el PNG ORIGINAL al chat TT; no generará otra imagen."
+            ? "Guía copiada. Pégala donde creaste la imagen; solo selecciónala si el original no está accesible."
             : "Guía copiada. Esta ficha aún no tiene identidad editorial completa: primero debe explicarse. Conserva tu PNG."
     }
 
