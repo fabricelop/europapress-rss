@@ -3,28 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793535065891-manual",
-  "previous_run_id": "tr-1793534122544-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T13:11:05+01:00",
-  "updated_at": "2026-11-01T13:15:00+01:00",
-  "finished_at": "2026-11-01T13:15:00+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": "radar-prepare-1bb8e2ac5b536dac98f1",
-  "title": "Radar · Mariah Carey",
-  "queue_complete": true,
+  "run_id": "tr-chat-20261101T132500+0100",
+  "previous_run_id": "tr-1793535065891-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T13:25:00+01:00",
+  "updated_at": "2026-11-01T13:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "7c590b18d53a",
+  "title": "Kerolin",
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "radar-prepare-1bb8e2ac5b536dac98f1",
-    "red-review-c65467b99044e63e4911",
-    "red-review-cbc79c00e7ca740d8630"
+    "7c590b18d53a"
   ],
   "remaining_active_ids": [
-    "radar-prepare-1bb8e2ac5b536dac98f1",
-    "red-review-c65467b99044e63e4911",
-    "red-review-cbc79c00e7ca740d8630"
+    "7c590b18d53a"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -1476,6 +1472,15 @@
       "trend_id": "radar-prepare-1bb8e2ac5b536dac98f1",
       "title": "Radar · Mariah Carey",
       "message": "Investigando Radar · Mariah Carey r0; borrador anticipado, no ficha de Listas."
+    },
+    {
+      "at": "2026-11-01T13:25:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T132500+0100",
+      "status": "RUNNING",
+      "trend_id": "7c590b18d53a",
+      "title": "Kerolin",
+      "message": "Inicio de pasada manual: 1 trabajo preparing vigente (Kerolin, 7c590b18d53a r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
@@ -1531,7 +1536,7 @@
     ]
   },
   "source": "chat",
-  "message": "Pasada cerrada 3/3: las dos revisiones quedaron stale por validación JIT y el Radar de Mariah Carey quedó anticipation_prepared. Barrera final: cola 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Inicio de pasada manual: 1 trabajo preparing vigente (Kerolin, 7c590b18d53a r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2320,6 +2325,15 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio efectivo: 3 trabajos preparing vigentes (Koldo García, Ana Pastor y agrupación automática), ordenados por antigüedad y sujetos a validación JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T13:25:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T132500+0100",
+      "status": "RUNNING",
+      "trend_id": "7c590b18d53a",
+      "title": "Kerolin",
+      "message": "Inicio de pasada manual: 1 trabajo preparing vigente (Kerolin, 7c590b18d53a r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -3137,29 +3151,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-c65467b99044e63e4911",
-      "revision": 0,
-      "outcome": "stale",
-      "name": "#laSextaXplica",
-      "applied": true
-    },
-    {
-      "id": "red-review-cbc79c00e7ca740d8630",
-      "revision": 0,
-      "outcome": "stale",
-      "name": "Toledo",
-      "applied": true
-    },
-    {
-      "id": "radar-prepare-1bb8e2ac5b536dac98f1",
-      "revision": 0,
-      "outcome": "anticipation_prepared",
-      "name": "Mariah Carey",
-      "applied": true
-    }
-  ],
-  "current_item": null,
-  "current_title": null
+  "outcomes": [],
+  "current_item": "7c590b18d53a",
+  "current_title": "Kerolin"
 }
