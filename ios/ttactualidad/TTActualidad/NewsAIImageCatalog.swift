@@ -106,14 +106,34 @@ enum NewsAIImageCatalog {
 
     static func assigned(id: String, revision: Int, editorialText: String,
                          preparedAt: String, catalog: [String: Entry]) -> ValidatedImage? {
-        guard !editorialText.isEmpty, !preparedAt.isEmpty,
-              let record = catalog[key(id, revision)],
-              record.editorial_text == editorialText,
-              record.prepared_at == preparedAt,
-              let url = validAssignedURL(record.image_url, id: id,
-                                         revision: revision, sha: record.sha256)
-        else { return nil }
-        return ValidatedImage(url: url, sha256: record.sha256)
+        guard validID(id), revision >= 1,
+              !editorialText.isEmpty, !preparedAt.isEmpty else { return nil }
+
+        // Exact revision has priority. Never mix a stale manifest entry from
+        // the same revision with a different editor-approved text or timestamp.
+        if let current = catalog[key(id, revision)] {
+            guard current.editorial_text == editorialText,
+                  current.prepared_at == preparedAt,
+                  let url = validAssignedURL(current.image_url, id: id,
+                                             revision: revision, sha: current.sha256)
+            else { return nil }
+            return ValidatedImage(url: url, sha256: current.sha256)
+        }
+
+        // TTiTTulares event_id is stable across editorial revisions: a verified
+        // original remains attached to that SAME story when its text is edited.
+        // Do not use title similarity, other news IDs or a newer revision's art.
+        let previous = catalog.values
+            .filter { $0.target_id == id && $0.revision >= 1 && $0.revision < revision }
+            .sorted { $0.revision > $1.revision }
+        for record in previous {
+            guard isSHA(record.sha256),
+                  let url = validAssignedURL(record.image_url, id: id,
+                                             revision: record.revision, sha: record.sha256)
+            else { continue }
+            return ValidatedImage(url: url, sha256: record.sha256)
+        }
+        return nil
     }
 
     /// Already-generated news IA from the existing editorial pipeline.
