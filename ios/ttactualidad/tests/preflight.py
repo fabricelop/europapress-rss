@@ -173,7 +173,7 @@ common_actions = actions.split('quickLink("TTImages"', 1)[1].split('if !outcome.
 for label in ('Publicar en X', 'Copiar GAG', 'Copiar texto', 'Copiar foto',
               'Quitar de Listas', 'Elaborar desde cero', 'Aportar pistas'):
     assert 'quickButton("' + label + '"' in common_actions
-# 0.4.42: one explicit non-publication batch for every trend in Listas.
+# 0.4.43: one explicit non-publication batch for every trend in Listas.
 assert 'Label("Retirar todas las tendencias (' in dashboard
 assert 'private var allTrends: [TrendItem]' in dashboard
 assert 'store.snapshot.trendListas.filter(\\.inListas)' in dashboard
@@ -251,11 +251,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.42"' in project
-assert 'CURRENT_PROJECT_VERSION: "48"' in project
+assert 'MARKETING_VERSION: "0.4.43"' in project
+assert 'CURRENT_PROJECT_VERSION: "49"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.42: remove image deletion UI/API and trend→news UI. Keep news functionality.
+# 0.4.43: remove image deletion UI/API and trend→news UI. Keep news functionality.
 assert 'quickButton("Enviar a TTiTTulares"' not in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' not in actions
 assert 'originTrend: trend' not in actions
@@ -284,7 +284,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "48"' in project
+assert 'CURRENT_PROJECT_VERSION: "49"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -296,7 +296,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "48"' in project
+assert 'CURRENT_PROJECT_VERSION: "49"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -312,8 +312,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.42"' in project
-assert 'CURRENT_PROJECT_VERSION: "48"' in project
+assert 'MARKETING_VERSION: "0.4.43"' in project
+assert 'CURRENT_PROJECT_VERSION: "49"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -403,6 +403,17 @@ for text in ('trends/site-ai-images.json', 'site-ai-images.json', 'target_id',
              'ttactualidad-tendencias.rainyraven22.chatgpt.site'):
     assert text in ai, text
 assert 'record.explanation == explanation' in ai
+assert 'continuityAwareEntry(id: id, revision: revision' in ai
+assert 'private static func continuityParts(' in ai
+assert 'previous.topic == target.topic' in ai
+assert 'previous.tags == target.tags' in ai
+assert 'previous.closer == target.closer' in ai
+assert 'Double(overlap) / Double(union) >= 0.96' in ai
+assert 'delta >= 0, delta <= 12 * 3600' in ai
+assert 'disallowedContinuityTopics' in ai
+assert 'return record // Current exact association always wins.' in ai
+# UI continuity is read-only and never writes/duplicates a Site attachment.
+assert 'attach_trend_image' not in ai
 assert 'record.explained_at == explainedAt' in ai
 assert 'url.host?.lowercased() == siteHost' in ai
 assert 'siteImageURL: SiteAIImageCatalog.resolved(' in store
