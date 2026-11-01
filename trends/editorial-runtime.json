@@ -3,45 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793545682955-manual",
+  "run_id": "tr-1793545880425-manual",
   "previous_run_id": "tr-1793545682955-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T16:11:30+01:00",
-  "updated_at": "2026-11-01T16:13:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T16:15:00+01:00",
+  "finished_at": "2026-11-01T16:15:00+01:00",
   "current": 2,
-  "total": 4,
-  "trend_id": "red-review-83ebe32f690b4d2b469f",
-  "title": "Revisar novedades: #laSextaXplica",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "total": 2,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-83ebe32f690b4d2b469f",
     "red-review-fd05f8e91a6fb29a4e48"
   ],
-  "remaining_active_ids": [
-    "red-review-83ebe32f690b4d2b469f",
-    "red-review-fd05f8e91a6fb29a4e48"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -661,6 +658,33 @@
       "trend_id": "red-review-83ebe32f690b4d2b469f",
       "title": "Revisar novedades: #laSextaXplica",
       "message": "Revisando novedades 3/4: #laSextaXplica r0. La emisión del 31 de octubre constituye un episodio distinto, centrado en el accidente ferroviario de Urda; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T16:15:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793545880425-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale. Barrera final de main: editorial-queue=0; sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [
@@ -2627,7 +2651,24 @@
     }
   ],
   "partial": false,
-  "outcomes": [],
-  "current_item": "red-review-83ebe32f690b4d2b469f",
-  "current_title": "Revisar novedades: #laSextaXplica"
+  "outcomes": [
+    {
+      "id": "red-review-83ebe32f690b4d2b469f",
+      "revision": 0,
+      "name": "#laSextaXplica",
+      "outcome": "stale",
+      "applied": true,
+      "prepared_outcome": "updated"
+    },
+    {
+      "id": "red-review-fd05f8e91a6fb29a4e48",
+      "revision": 0,
+      "name": "Toledo",
+      "outcome": "stale",
+      "applied": true,
+      "prepared_outcome": "updated"
+    }
+  ],
+  "current_item": null,
+  "current_title": null
 }
