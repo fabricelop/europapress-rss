@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793564218863-manual",
   "previous_run_id": "tr-1793563876449-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T21:17:00+01:00",
-  "updated_at": "2026-11-01T21:20:42+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T21:22:00+01:00",
+  "finished_at": "2026-11-01T21:22:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "b4e57b51c750",
-  "title": "#DragRaceEs",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "a1f72cb31fee",
@@ -25,16 +25,16 @@
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 2,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
-    "rewrite_pending_remaining": null,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
@@ -1513,176 +1513,90 @@
       "trend_id": "b4e57b51c750",
       "title": "#DragRaceEs",
       "message": "Investigando #DragRaceEs: revalidado b4e57b51c750 r0 en main; emisión actual del episodio 6 y contexto oficial contrastados."
+    },
+    {
+      "at": "2026-11-01T21:21:30+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificados ambos IDs/revisiones en requests.json y telegram-manual-explained.json; cola releída en main."
+    },
+    {
+      "at": "2026-11-01T21:22:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "red-review-c74370b5fe5ef16a1ff8",
+      "id": "a1f72cb31fee",
       "revision": 0,
-      "name": "Revisar novedades: Día de Todos",
-      "status": "review_completed",
-      "outcome": "unchanged"
+      "name": "elche",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
     },
     {
-      "id": "red-review-b64f6d1ba98aa70b35a3",
+      "id": "b4e57b51c750",
       "revision": 0,
-      "name": "Revisar novedades: Heidi Klum",
-      "status": "review_completed",
-      "outcome": "stale"
-    },
-    {
-      "id": "c999199b2612",
-      "revision": 0,
-      "name": "Arsenal",
-      "status": "explained"
-    },
-    {
-      "id": "b2a574d098ac",
-      "revision": 0,
-      "name": "Martínez Quarta",
-      "status": "explained"
-    },
-    {
-      "id": "e9faebbb0c92",
-      "revision": 0,
-      "name": "#LaRoca252",
-      "status": "explained"
+      "name": "#DragRaceEs",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T21:20:42+01:00",
-  "last_completed_at": "2026-11-01T21:20:42+01:00",
+  "last_completed_at": "2026-11-01T21:22:00+01:00",
   "last_run": {
-    "run_id": "tr-1793563201597-manual",
+    "run_id": "tr-1793564218863-manual",
     "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-11-01T21:00:01+01:00",
-    "finished_at": "2026-11-01T20:14:29.553Z",
-    "current": 16,
-    "total": 16,
+    "started_at": "2026-11-01T21:17:00+01:00",
+    "finished_at": "2026-11-01T21:22:00+01:00",
     "summary": {
-      "attempted": 16,
-      "observed": 16,
-      "closed": 16,
-      "explained": 14,
-      "updates": 1,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 2,
+      "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 1,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 0
+      "incidents": 0,
+      "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "65474f67624f",
+        "id": "a1f72cb31fee",
         "revision": 0,
+        "name": "elche",
         "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "6a5ed83658ef",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "edba32c9b800",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "6f59ab22107f",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "d183843fa18b",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "ac27d9290f26",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "243e2e5cdeca",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "57575aaac677",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "a66b6c078db2",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "58e1effc2631",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "e2e1052886e9",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "9c967efd1ccb",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "07f189675870",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "1dfee49aa579",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "red-review-c6071d49583826af9ae6",
-        "revision": 0,
-        "outcome": "stale",
         "applied": true,
-        "note": "Toledo ya no estaba en el Top30 y el snapshot de origen no era vigente; no se creó actualización."
+        "via": "this_run_outbox"
       },
       {
-        "id": "red-review-406f9fdb710cc75ff2a0",
+        "id": "b4e57b51c750",
         "revision": 0,
-        "outcome": "updated",
+        "name": "#DragRaceEs",
+        "outcome": "explained",
         "applied": true,
-        "created_id": "trend-update-cba7ae26f75721ea1312"
+        "via": "this_run_outbox"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada cerrada 16/16: 14 investigaciones ordinarias explained, 1 revisión de Halloween actualizada y 1 revisión de Toledo cerrada stale por validación JIT (fuera del Top30/snapshot no vigente). Cola activa 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Investigando #DragRaceEs: revalidado b4e57b51c750 r0 en main; emisión actual del episodio 6 y contexto oficial contrastados.",
+  "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3975,49 +3889,24 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-c6071d49583826af9ae6",
+      "id": "a1f72cb31fee",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
+      "name": "elche",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "El Top30 fresco ya no contiene Toledo; Urda ocupa el puesto 21. No se crea una actualización obsoleta."
+      "via": "this_run_outbox"
     },
     {
-      "id": "red-review-406f9fdb710cc75ff2a0",
+      "id": "b4e57b51c750",
       "revision": 0,
-      "name": "Revisar novedades: Halloween",
-      "outcome": "updated",
+      "name": "#DragRaceEs",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "created_id": "trend-update-cba7ae26f75721ea1312"
+      "via": "this_run_outbox"
     }
   ],
-  "current_item": {
-    "id": "b4e57b51c750",
-    "name": "#DragRaceEs",
-    "rank": 9,
-    "revision": 0,
-    "status": "preparing",
-    "created_at": "2026-11-01T20:17:33.467089+00:00",
-    "requested_at": "2026-11-01T20:17:33.467089+00:00",
-    "updated_at": "2026-11-01T20:17:33.467089+00:00",
-    "task": "explain",
-    "auto_queued": false,
-    "request_source": "ttactualidad_direct_rework",
-    "with_image": true,
-    "disable_ai_image": false,
-    "rewrite_with_image": true,
-    "image_strategy": "ai_plus_fallback",
-    "fallback_image_status": "pending",
-    "ai_image_status": "pending",
-    "requested_together": [
-      "#DragRaceEs"
-    ],
-    "originated_from_prior_id": "manual-3947a38f094fc24523077cabd50a933a",
-    "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de #DragRaceEs, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
-  },
-  "current_title": "#DragRaceEs",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -4744,6 +4633,51 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada cerrada 2/2: Halloween updated y Toledo stale por validación JIT. editorial-queue=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793564218863-manual",
+      "status": "DONE",
+      "started_at": "2026-11-01T21:17:00+01:00",
+      "finished_at": "2026-11-01T21:22:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 2,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "a1f72cb31fee",
+          "revision": 0,
+          "name": "elche",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        },
+        {
+          "id": "b4e57b51c750",
+          "revision": 0,
+          "name": "#DragRaceEs",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_outbox"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ]
 }
