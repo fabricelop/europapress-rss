@@ -28,21 +28,33 @@ final class NewsAIImageCatalogTests: XCTestCase {
         XCTAssertEqual(result?.sha256, sha)
     }
 
-    func testDifferentNewsRevisionTextAndTimestampCannotShareArtwork() {
+    func testStableNewsIdKeepsArtworkWhenTextRevisionChanges() {
         let original = entry()
         let catalog = ["\(id):r1": original]
         XCTAssertNil(NewsAIImageCatalog.assigned(
-            id: "othernews", revision: 1, editorialText: text,
+            id: "othernews", revision: 2, editorialText: text,
             preparedAt: preparedAt, catalog: catalog))
+        // Same stable event_id: the original illustration remains attached.
+        XCTAssertEqual(NewsAIImageCatalog.assigned(
+            id: id, revision: 2, editorialText: text + " Nueva información.",
+            preparedAt: "2026-11-02T12:00:00Z", catalog: catalog)?.url.absoluteString,
+            original.image_url)
+        // A newly verified image for r2 takes precedence over the previous art.
+        let updated = entry(revision: 2,
+                            editorialText: text + " Nueva información.",
+                            prepared: "2026-11-02T12:00:00Z")
+        let newer = ["\(id):r1": original, "\(id):r2": updated]
+        XCTAssertEqual(NewsAIImageCatalog.assigned(
+            id: id, revision: 2, editorialText: updated.editorial_text,
+            preparedAt: updated.prepared_at, catalog: newer)?.url.absoluteString,
+            updated.image_url)
+        // A current-revision record with mismatched exact text is NOT trusted.
         XCTAssertNil(NewsAIImageCatalog.assigned(
-            id: id, revision: 2, editorialText: text,
+            id: id, revision: 2, editorialText: "Different content",
+            preparedAt: updated.prepared_at, catalog: newer))
+        XCTAssertNil(NewsAIImageCatalog.assigned(
+            id: id, revision: 1, editorialText: text + " other",
             preparedAt: preparedAt, catalog: catalog))
-        XCTAssertNil(NewsAIImageCatalog.assigned(
-            id: id, revision: 1, editorialText: text + " nueva información",
-            preparedAt: preparedAt, catalog: catalog))
-        XCTAssertNil(NewsAIImageCatalog.assigned(
-            id: id, revision: 1, editorialText: text,
-            preparedAt: "2026-11-02T15:51:20Z", catalog: catalog))
     }
 
     func testManualGitHubPNGAssignmentRequiresSHAInFilename() {
