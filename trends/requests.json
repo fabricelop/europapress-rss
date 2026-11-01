@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T13:11:10+01:00",
+  "updated_at": "2026-11-01T12:13:40.877032+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -179414,7 +179414,7 @@
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T12:11:00.928327+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -179437,14 +179437,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T12:13:40.877032+00:00",
+      "review_reason": "La ficha del 24 de octubre cubría los disturbios de Barcelona; la emisión del 31 de octubre es un episodio distinto, centrado en la tragedia ferroviaria de Urda."
     },
     {
       "id": "red-review-cbc79c00e7ca740d8630",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 21,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T12:11:00.928327+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -179468,7 +179471,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T12:13:40.877032+00:00",
+      "review_reason": "Validación JIT: Toledo ya no figura en el Top 30 fresco; la política de mantenimiento impide revisar o reescribir una ficha fuera del Top 30."
     },
     {
       "id": "radar-prepare-1bb8e2ac5b536dac98f1",
