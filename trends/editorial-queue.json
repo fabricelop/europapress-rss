@@ -1,106 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:50:07.806933+00:00",
-  "count": 1,
+  "updated_at": "2026-11-01T12:51:02+01:00",
+  "count": 4,
   "items": [
     {
       "id": "listas-auto-e41651c718620ce133ce",
-      "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
       "requested_at": "2026-11-01T11:50:07.806933+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "group_listas",
-      "listas_grouping_request": true,
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
       "automatic_grouping": true,
-      "grouping_state": "pending",
-      "grouping_candidates": [
-        {
-          "id": "0ecf2a36f589",
-          "revision": 0,
-          "name": "La UCO",
-          "rank": 29,
-          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
-          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
-            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
-          ]
-        },
-        {
-          "id": "5e0d9fdf2cb2",
-          "revision": 0,
-          "name": "Feliz Sábado",
-          "rank": 30,
-          "explanation": "TT#30 Feliz Sábado aparece entre las tendencias de X en España durante este sábado y lleva horas entrando en las listas, sin que se haya podido confirmar un detonante concreto.",
-          "explanation_sha256": "2030035eece763e1b1f19fa63dd53790dc9ea80025f5b3ec830cf9a61a3e76bf",
-          "explained_at": "2026-10-31T23:58:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://trends24.in/spain/"
-            },
-            {
-              "url": "https://twitter-trends.snaplytics.io/spain/"
-            }
-          ]
-        },
-        {
-          "id": "listas-joint-0b02a4293109ec1a",
-          "revision": 0,
-          "name": "Urda · accidente e investigación de Adif",
-          "rank": 2,
-          "explanation": "TT#2 Urda y Adif son tendencia por el accidente ferroviario del 28 de octubre: este domingo siguen la búsqueda de restos biológicos y la investigación del fallo del LZB y de la autorización de marcha del AVE.\n#Urda #Adif #Toledo",
-          "explanation_sha256": "b1b6d78d64fd6dcc4b02b9837b1c6f616fa36f0a1963d1868a0c7d83bc4ab2a5",
-          "explained_at": "2026-11-01T11:47:03.837726+00:00",
-          "verification_sources": [
-            {
-              "url": "https://www.rtve.es/noticias/20261101/accidente-tren-directo-ultima-hora-heridos/17295258.shtml"
-            },
-            {
-              "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
-            }
-          ]
-        },
-        {
-          "id": "2b20f3e40801",
-          "revision": 0,
-          "name": "Alavés",
-          "rank": 4,
-          "explanation": "TT#4 Alavés es tendencia por la derrota 6-1 ante el Barcelona este sábado en el Camp Nou, en la jornada 11 de LaLiga.\n#DeportivoAlavés #LaLiga\n🌶️ Halloween se alargó una noche en el marcador.",
-          "explanation_sha256": "39ffcf9b6904a1847815ec84cbf0b1ef37ec504083086fd05c8f4019b638077c",
-          "explained_at": "2026-11-01T12:45:00+01:00",
-          "verification_sources": [
-            {
-              "source": "LALIGA · 31/10/2026",
-              "url": "https://iaas-public-front-pro.laliga.com/partido/temporada-2026-2027-laliga-ea-sports-fc-barcelona-deportivo-alaves-11"
-            },
-            {
-              "source": "FC Barcelona · 31/10/2026",
-              "url": "https://www.fcbarcelona.es/es/futbol/primer-equipo/noticias/4602177/fc-barcelona-alaves-noche-dulce-de-halloween-6-1"
-            }
-          ]
-        },
-        {
-          "id": "5b13bbe6ae22",
-          "revision": 0,
-          "name": "Adif",
-          "rank": 5,
-          "explanation": "TT#5 Adif es tendencia por la investigación del accidente de Urda: se examinan el fallo del sistema LZB y las instrucciones de circulación previas al choque del 28 de octubre.\n#Adif #Urda",
-          "explanation_sha256": "a7bedc43ba01db3c7559a18b76ae37376a0a33dbf997b03b476b59b5c7f428bf",
-          "explained_at": "2026-11-01T12:45:00+01:00",
-          "verification_sources": [
-            {
-              "source": "RTVE · 31/10/2026",
-              "url": "https://www.rtve.es/noticias/20261031/por-reanudo-marcha-ave-fallo-sistemas-seguridad-incognitas-del-accidente-urda/17295123.shtml"
-            },
-            {
-              "source": "EL PAÍS · 31/10/2026",
-              "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
-            }
-          ]
-        }
-      ],
       "published_context": [
         {
           "id": "09fb9ff32c5a",
@@ -1789,11 +1715,270 @@
           ]
         }
       ],
-      "with_image": false,
-      "disable_ai_image": true,
+      "listas_grouping_request": true,
+      "grouping_candidates": [
+        {
+          "id": "0ecf2a36f589",
+          "revision": 0,
+          "name": "La UCO",
+          "rank": 29,
+          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
+          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
+          ]
+        },
+        {
+          "id": "5e0d9fdf2cb2",
+          "revision": 0,
+          "name": "Feliz Sábado",
+          "rank": 30,
+          "explanation": "TT#30 Feliz Sábado aparece entre las tendencias de X en España durante este sábado y lleva horas entrando en las listas, sin que se haya podido confirmar un detonante concreto.",
+          "explanation_sha256": "2030035eece763e1b1f19fa63dd53790dc9ea80025f5b3ec830cf9a61a3e76bf",
+          "explained_at": "2026-10-31T23:58:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://trends24.in/spain/"
+            },
+            {
+              "url": "https://twitter-trends.snaplytics.io/spain/"
+            }
+          ]
+        },
+        {
+          "id": "listas-joint-0b02a4293109ec1a",
+          "revision": 0,
+          "name": "Urda · accidente e investigación de Adif",
+          "rank": 2,
+          "explanation": "TT#2 Urda y Adif son tendencia por el accidente ferroviario del 28 de octubre: este domingo siguen la búsqueda de restos biológicos y la investigación del fallo del LZB y de la autorización de marcha del AVE.\n#Urda #Adif #Toledo",
+          "explanation_sha256": "b1b6d78d64fd6dcc4b02b9837b1c6f616fa36f0a1963d1868a0c7d83bc4ab2a5",
+          "explained_at": "2026-11-01T11:47:03.837726+00:00",
+          "verification_sources": [
+            {
+              "url": "https://www.rtve.es/noticias/20261101/accidente-tren-directo-ultima-hora-heridos/17295258.shtml"
+            },
+            {
+              "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
+            }
+          ]
+        },
+        {
+          "id": "2b20f3e40801",
+          "revision": 0,
+          "name": "Alavés",
+          "rank": 4,
+          "explanation": "TT#4 Alavés es tendencia por la derrota 6-1 ante el Barcelona este sábado en el Camp Nou, en la jornada 11 de LaLiga.\n#DeportivoAlavés #LaLiga\n🌶️ Halloween se alargó una noche en el marcador.",
+          "explanation_sha256": "39ffcf9b6904a1847815ec84cbf0b1ef37ec504083086fd05c8f4019b638077c",
+          "explained_at": "2026-11-01T12:45:00+01:00",
+          "verification_sources": [
+            {
+              "source": "LALIGA · 31/10/2026",
+              "url": "https://iaas-public-front-pro.laliga.com/partido/temporada-2026-2027-laliga-ea-sports-fc-barcelona-deportivo-alaves-11"
+            },
+            {
+              "source": "FC Barcelona · 31/10/2026",
+              "url": "https://www.fcbarcelona.es/es/futbol/primer-equipo/noticias/4602177/fc-barcelona-alaves-noche-dulce-de-halloween-6-1"
+            }
+          ]
+        },
+        {
+          "id": "5b13bbe6ae22",
+          "revision": 0,
+          "name": "Adif",
+          "rank": 5,
+          "explanation": "TT#5 Adif es tendencia por la investigación del accidente de Urda: se examinan el fallo del sistema LZB y las instrucciones de circulación previas al choque del 28 de octubre.\n#Adif #Urda",
+          "explanation_sha256": "a7bedc43ba01db3c7559a18b76ae37376a0a33dbf997b03b476b59b5c7f428bf",
+          "explained_at": "2026-11-01T12:45:00+01:00",
+          "verification_sources": [
+            {
+              "source": "RTVE · 31/10/2026",
+              "url": "https://www.rtve.es/noticias/20261031/por-reanudo-marcha-ave-fallo-sistemas-seguridad-incognitas-del-accidente-urda/17295123.shtml"
+            },
+            {
+              "source": "EL PAÍS · 31/10/2026",
+              "url": "https://elpais.com/espana/2026-10-31/una-cadena-de-fallos-tecnicos-tumbo-el-sistema-de-seguridad-ferroviaria-lzb-en-urda.html"
+            }
+          ]
+        }
+      ],
+      "grouping_state": "pending",
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Agrupación automática de Listas"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "aea33831119b",
+      "name": "Yamaha",
+      "rank": 11,
+      "status": "preparing",
+      "requested_at": "2026-11-01T12:51:02+01:00",
+      "revision": 0,
+      "rewrite_instruction": "",
+      "reexplain": false,
+      "rewrite_with_image": true,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": null,
+      "selected_tweet_image": null,
+      "task": "explain",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": "da56fc01c694",
+      "requested_together": [
+        "Yamaha"
+      ],
+      "captured_with": [
+        "Yamaha",
+        "Preparación",
+        "MotoGP"
+      ],
+      "auto_queued": true,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "12beb07b0d96",
+      "name": "Preparación",
+      "rank": 18,
+      "status": "preparing",
+      "requested_at": "2026-11-01T12:51:02+01:00",
+      "revision": 0,
+      "rewrite_instruction": "",
+      "reexplain": false,
+      "rewrite_with_image": true,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": null,
+      "selected_tweet_image": null,
+      "task": "explain",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": "da56fc01c694",
+      "requested_together": [
+        "Preparación"
+      ],
+      "captured_with": [
+        "Yamaha",
+        "Preparación",
+        "MotoGP"
+      ],
+      "auto_queued": true,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "24b026091f12",
+      "name": "MotoGP",
+      "rank": 27,
+      "status": "preparing",
+      "requested_at": "2026-11-01T12:51:02+01:00",
+      "revision": 0,
+      "rewrite_instruction": "",
+      "reexplain": false,
+      "rewrite_with_image": true,
+      "with_image": true,
+      "disable_ai_image": false,
+      "image_strategy": null,
+      "selected_tweet_image": null,
+      "task": "explain",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": "da56fc01c694",
+      "requested_together": [
+        "MotoGP"
+      ],
+      "captured_with": [
+        "Yamaha",
+        "Preparación",
+        "MotoGP"
+      ],
+      "auto_queued": true,
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
