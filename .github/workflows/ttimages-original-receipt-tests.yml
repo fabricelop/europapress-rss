@@ -67,6 +67,22 @@ jobs:
         run: node --test windows/tests/test_trend_durable_original.cjs
       - name: Continuidad de lectura móvil sin Cloudflare
         run: node --test tests/test_ttimages_mobile_continuity.cjs
+      - name: Auditoría pública de receptor Cloudflare real (GET, sin escrituras)
+        run: |
+          set -u
+          status="$(curl -sS -L --max-time 12 -w '%{http_code}' \
+            -o /tmp/ttimages-live-contract.json \
+            'https://tt-control.fabricelop.workers.dev/api/ttittulares-run-status?view=web-image-contract' || true)"
+          if [ "$status" = "200" ] && node -e '
+            const fs=require("fs");
+            try{const j=JSON.parse(fs.readFileSync("/tmp/ttimages-live-contract.json","utf8"));
+              process.exit(j.web_image_receipt===1&&j.project==="ttittulares"?0:1);
+            }catch{process.exit(1)}'; then
+            echo 'TTIMAGE_LIVE_RECEIVER READY version=1'
+          else
+            echo "TTIMAGE_LIVE_RECEIVER NOT_READY_OR_UNREACHABLE http=${status:-none}"
+            echo 'TTIMAGE_DEPLOYMENT_GATE CLOSED: no image upload should start'
+          fi
       - name: Catálogo de imágenes de noticias con SHA-256 real
         run: python3 -m unittest discover -s tests -p test_ttittulares_image_catalog.py -v
   windows-safety:
