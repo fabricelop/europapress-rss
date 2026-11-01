@@ -276,7 +276,8 @@ print("TT_ACTUALIDAD_IOS_TREND_TO_NEWS_PREFLIGHT_OK")
 # increments without blocking the rest of the interface.
 assert "retireAbandonedTrendOperations(" in store
 assert "await store.refreshIfStale(minInterval: 0)" in hints_sheet
-assert '["inactive", "problem", "failed"].contains(' in store
+assert 'guard !receiptExists else { continue }' in store
+assert 'guard !isWorking else { continue }' in store
 assert 'publicationEvents.append(PublicationEvent(' in store
 assert 'func requestEditorialRun(project: String)' in auth
 assert '"control/ttendencias-run-trigger"' in auth
