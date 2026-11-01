@@ -3,43 +3,43 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793527469295-manual",
-  "previous_run_id": "tr-1793527834213-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T11:05:00+01:00",
-  "updated_at": "2026-11-01T11:13:00+01:00",
-  "finished_at": "2026-11-01T11:13:00+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-cbda911e727cb3be2693",
-    "red-review-1343290e6c52ef92fee0",
-    "red-review-59f90d990dadda2724b7"
+  "run_id": "tr-chat-20261101T1125+0100",
+  "previous_run_id": "tr-1793527469295-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T11:29:30+01:00",
+  "updated_at": "2026-11-01T11:29:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "9be0fd1f462c",
+  "title": "#TodosSantos2026",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "9be0fd1f462c"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "9be0fd1f462c"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 1,
+    "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
-    "queue_remaining": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1365,6 +1365,14 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 3/3. 1 agrupación resuelta sin coincidencias y 2 revisiones stale por protección JIT/convergencia. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:29:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T1125+0100",
+      "trend_id": "9be0fd1f462c",
+      "title": "#TodosSantos2026",
+      "message": "Refresco manual completado con éxito. Cola JIT: 1 explicación preparing vigente (#TodosSantos2026 r0, puesto 15). Inicio de investigación editorial; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
