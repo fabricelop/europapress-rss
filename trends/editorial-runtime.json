@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T1140+0100",
   "previous_run_id": "tr-1793529403772-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T11:40:00+01:00",
-  "updated_at": "2026-11-01T11:44:08+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "231068a14860",
-  "title": "Heidi Klum",
+  "updated_at": "2026-11-01T11:47:00+01:00",
+  "finished_at": "2026-11-01T11:47:00+01:00",
+  "current": 2,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "231068a14860"
@@ -22,14 +22,14 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 1,
+    "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -37,7 +37,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1420,6 +1420,37 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada cerrada 1/1 por convergencia JIT: la agrupación observada fue resuelta por otra ejecución válida con 0 grupos nuevos y 1 cobertura por publicación existente. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:47:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T1140+0100",
+      "message": "Barrera final de main: Heidi Klum r0 explicada; group_listas listas-auto-c681e4c08e0e850727d5 grouping_completed con 0 grupos y 0 coberturas; editorial-queue=0; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T11:47:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T1140+0100",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 1,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "TTendencias cerrada 2/2. ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "final_outcomes": [
@@ -1525,25 +1556,28 @@
   "last_started_at": "2026-11-01T11:44:07+01:00",
   "last_completed_at": "2026-11-01T11:44:08+01:00",
   "last_run": {
-    "run_id": "tr-1793529403772-manual",
+    "run_id": "tr-chat-20261101T1140+0100",
     "status": "DONE",
-    "finished_at": "2026-11-01T11:39:00+01:00",
-    "attempted": 1,
-    "explained": 0,
+    "finished_at": "2026-11-01T11:47:00+01:00",
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 1,
+    "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
   "source": "manual",
-  "message": "Heidi Klum r0 revalidada JIT. Detonante actual verificado: 25.ª fiesta anual de Halloween en Nueva York y disfraz de réplica gigante amputada de su propia mano izquierda.",
+  "message": "Pasada cerrada 2/2: Heidi Klum r0 explicada y agrupación automática resuelta sin grupos ni coberturas. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2914,6 +2948,21 @@
           "published_id": "listas-joint-89705fdab1782025"
         }
       ]
+    },
+    {
+      "id": "231068a14860",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "name": "Heidi Klum"
+    },
+    {
+      "id": "listas-auto-c681e4c08e0e850727d5",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "applied": true,
+      "groups_created": 0,
+      "covered_by_existing": 0
     }
   ]
 }
