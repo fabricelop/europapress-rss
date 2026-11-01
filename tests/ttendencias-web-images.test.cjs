@@ -176,3 +176,25 @@ test('si solo hay navegador productor 9223, no se crea pestaña de recuperación
    assert.ok(calls.every(x=>!x.method||x.method==='GET'));
  }finally{global.fetch=original;}
 });
+
+test('TTImages: un nuevo encargo gana dentro de la misma identidad, sin bloquear otras tendencias',()=>{
+ const now=Date.parse('2026-11-01T11:53:00Z');
+ const older={task:{target_id:'target-1',command_id:'tr-img-old-1',revision:0,status:'waiting',created_at:'2026-11-01T09:00:00Z'}};
+ const newer={task:{target_id:'target-1',command_id:'tr-img-new-1',revision:0,status:'waiting',created_at:'2026-11-01T11:50:00Z'}};
+ const other={task:{target_id:'target-2',command_id:'tr-img-another',revision:0,status:'waiting',created_at:'2026-11-01T11:51:00Z'}};
+ const {newestActiveByTarget}=require('../windows/TTendenciasWebImages.cjs');
+ assert.equal(newestActiveByTarget([older,newer,other],now).get('target-1'),newer);
+ assert.deepEqual(dueTasks([older,newer,other],now),[other,newer]);
+ // Failure/expiry of newest allows eligible old fallback without deleting it.
+ newer.task.status='rejected';
+ assert.deepEqual(dueTasks([older,newer,other],now),[other,older]);
+});
+test('TTImages: una imagen nueva publicada desprioriza intentos previos del mismo ID',()=>{
+ const now=Date.parse('2026-11-01T11:53:00Z');
+ const older={task:{target_id:'joint-group-1',command_id:'tr-img-old',status:'waiting',created_at:'2026-11-01T11:10:00Z'}};
+ const newer={task:{target_id:'joint-group-1',command_id:'tr-img-new',status:'published',created_at:'2026-11-01T11:48:00Z',conversation_url:'https://chatgpt.com/c/6ae4adf9-f5b8-83ed-a524-37232d9b9992'}};
+ const unrelated={task:{target_id:'term-other',command_id:'tr-img-other',status:'waiting',created_at:'2026-11-01T11:49:00Z'}};
+ assert.deepEqual(dueTasks([older,newer,unrelated],now),[unrelated,newer]);
+ newer.task.site_return_sent_at='2026-11-01T11:50:00Z';
+ assert.deepEqual(dueTasks([older,newer,unrelated],now),[unrelated]);
+});
