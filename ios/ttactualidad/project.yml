@@ -20,14 +20,14 @@ targets:
         PRODUCT_NAME: TTActualidad
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_STYLE: Automatic
-        MARKETING_VERSION: "0.4.45"
-        CURRENT_PROJECT_VERSION: "51"
+        MARKETING_VERSION: "0.4.46"
+        CURRENT_PROJECT_VERSION: "52"
     info:
       path: TTActualidad/Info.plist
       properties:
         CFBundleDisplayName: TTActualidad
-        CFBundleShortVersionString: "0.4.45"
-        CFBundleVersion: "51"
+        CFBundleShortVersionString: "0.4.46"
+        CFBundleVersion: "52"
         ITSAppUsesNonExemptEncryption: false
         NSSupportsLiveActivities: true
         UILaunchScreen: {}
@@ -49,14 +49,14 @@ targets:
         PRODUCT_NAME: TTActualidadLive
         SKIP_INSTALL: YES
         CODE_SIGN_STYLE: Automatic
-        MARKETING_VERSION: "0.4.45"
-        CURRENT_PROJECT_VERSION: "51"
+        MARKETING_VERSION: "0.4.46"
+        CURRENT_PROJECT_VERSION: "52"
     info:
       path: TTActualidadLive/Info.plist
       properties:
         CFBundleDisplayName: TTActualidad Live Activity
-        CFBundleShortVersionString: "0.4.45"
-        CFBundleVersion: "51"
+        CFBundleShortVersionString: "0.4.46"
+        CFBundleVersion: "52"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
   TTQuickActionTests:
@@ -67,6 +67,7 @@ targets:
       - path: TTActualidad/HomeQuickActions.swift
       - path: TTActualidad/EditorialProgressPolicy.swift
       - path: TTActualidad/SiteAIImageCatalog.swift
+      - path: TTActualidad/NewsAIImageCatalog.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.fabricelop.ttactualidad.quick-action-tests
