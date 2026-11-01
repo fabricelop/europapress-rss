@@ -956,6 +956,18 @@ async function uploadImage(image){
   }
   return result;
 }
+// Handoff must refer to the precise tab that contains the submitted command.
+// The CDP handle has a WebSocket URL, not a fixedTargetId property.
+async function originalImageTargetId(cdp){
+  const ws=String(cdp?.url||"");
+  if(!ws)throw Error("missing_command_cdp_target");
+  const pages=await targets();
+  const matches=pages.filter(t=>t.type==="page"&&
+    String(t.webSocketDebuggerUrl||"")===ws&&
+    /^[A-Za-z0-9._-]{3,160}$/.test(String(t.id||"")));
+  if(matches.length!==1)throw Error("command_cdp_target_not_unique");
+  return String(matches[0].id);
+}
 async function optionalWebHandoff(handoff,remember=false){
   try{
     const publisher=require("./TTiTTularesWebImages.cjs");
@@ -1001,7 +1013,7 @@ async function optionalWebHandoff(handoff,remember=false){
       if(launchOnly){
         // The bridge never captures/forwards bytes. Enroll an independent,
         // command-scoped consumer before allowing the fixed tab to be reused.
-        webHandoff={job,commandId,targetId,browserTargetId:cdp.fixedTargetId,secret};
+        webHandoff={job,commandId,targetId,browserTargetId:await originalImageTargetId(cdp),secret};
         await optionalWebHandoff(webHandoff,false);
         for(let n=0;n<5;n++){
           if(await optionalWebHandoff(webHandoff,true))break;
