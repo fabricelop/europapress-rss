@@ -34993,12 +34993,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://album.mediaset.es/eimg/2026/10/18/jose-mourinho-antes-del-real-madrid-sevilla-16-9-aspect-ratio-default-0_da39.jpg",
+        "source": "www.eldesmarque.com",
+        "source_url": "https://www.eldesmarque.com/futbol/liga-1a-division/20261101/alineaciones-confirmadas-racing-santander-real-madrid-laliga-ea-sports_18_020591234.html",
+        "alt": "Imagen de archivo relacionada con Iker Luque",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://album.mediaset.es/eimg/2026/10/18/jose-mourinho-antes-del-real-madrid-sevilla-16-9-aspect-ratio-default-0_da39.jpg",
+        "source": "www.eldesmarque.com",
+        "source_url": "https://www.eldesmarque.com/futbol/liga-1a-division/20261101/alineaciones-confirmadas-racing-santander-real-madrid-laliga-ea-sports_18_020591234.html",
+        "alt": "Imagen de archivo relacionada con Iker Luque",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "063f5299a90f",
@@ -35033,9 +35050,30 @@
           "name": "Trent",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/PCPVPZJWFZBV7FBWMFV3CCOGO4.jpg?auth=6fae9f5d14750e0072d790c93773ae0fc457e7068f1c2ca8c5ed8019023be698&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/nacional/2026/11/01/racing-de-santander-real-madrid-en-directo-el-partido-de-la-jornada-11-en-vivo-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Trent",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/PCPVPZJWFZBV7FBWMFV3CCOGO4.jpg?auth=6fae9f5d14750e0072d790c93773ae0fc457e7068f1c2ca8c5ed8019023be698&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/nacional/2026/11/01/racing-de-santander-real-madrid-en-directo-el-partido-de-la-jornada-11-en-vivo-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Trent",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-01T15:46:30+01:00",
+  "updated_at": "2026-11-01T14:47:29.368207Z",
   "count": 577
 }
