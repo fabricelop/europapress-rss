@@ -3,36 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T094115+0100",
-  "previous_run_id": "tr-1793522249693-manual",
-  "status": "success",
+  "run_id": "tr-1793522752871-manual",
+  "previous_run_id": "tr-chat-20261101T094115+0100",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T09:41:15+01:00",
-  "updated_at": "2026-11-01T09:45:07+01:00",
+  "started_at": "2026-11-01T09:46:30+01:00",
+  "updated_at": "2026-11-01T09:46:30+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 8,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "55ccc5014f2a"
+  "total": 1,
+  "trend_id": "listas-auto-d962c519109a109bdc4b",
+  "title": "Agrupación automática de Listas",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-d962c519109a109bdc4b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "listas-auto-d962c519109a109bdc4b"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 8,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 8,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1035,6 +1037,14 @@
       "at": "2026-11-01T09:41:15+01:00",
       "phase": "preparing",
       "message": "Inicio tr-chat-20261101T094115+0100: 8 trabajos preparing/update vigentes en main; revalidación JIT antes de cada uno. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:46:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793522752871-manual: 1 trabajo group_listas preparing vigente en main. Revalidación JIT de id+revision y snapshot antes de persistir; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
@@ -1113,7 +1123,7 @@
     ]
   },
   "source": "chat",
-  "message": "Inicio tr-chat-20261101T094115+0100: 8 trabajos preparing/update vigentes en main; revalidación JIT antes de cada uno. Sin ImageGen ni publicación.",
+  "message": "Inicio tr-1793522752871-manual: 1 trabajo group_listas preparing vigente en main. Revalidación JIT de id+revision y snapshot antes de persistir; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1556,6 +1566,14 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada completada 0/0. Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T09:46:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793522752871-manual: 1 trabajo group_listas preparing vigente en main. Revalidación JIT de id+revision y snapshot antes de persistir; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -1843,6 +1861,14 @@
         }
       ],
       "message": "Cierre 5/5: #FelizDomingo y Día de Todos explicados; agrupación automática resuelta con Día de Todos cubierto por publicación previa; #laSextaXplica y Toledo actualizados, Toledo por convergencia concurrente. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T09:46:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793522752871-manual",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793522752871-manual: 1 trabajo group_listas preparing vigente en main. Revalidación JIT de id+revision y snapshot antes de persistir; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
