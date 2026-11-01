@@ -3,45 +3,23 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793544112796-manual",
-  "previous_run_id": "tr-chat-20261101T152500+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T15:43:00+01:00",
-  "updated_at": "2026-11-01T15:54:00+01:00",
-  "finished_at": "2026-11-01T15:54:00+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "063f5299a90f",
-    "caf37a6371a4",
-    "red-review-4c6a0ff63bcb29f18660",
-    "red-review-390031a6b4233c786de6"
-  ],
+  "run_id": "tr-1793544481477-manual",
+  "previous_run_id": "tr-1793544112796-manual",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-01T15:48:01.477+01:00",
+  "updated_at": "2026-11-01T15:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "red-review-390031a6b4233c786de6",
+  "title": "Revisar novedades: Jorge Martín",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
-    "updates": 2,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 3
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -571,6 +549,14 @@
         "concurrent_convergence": 3
       },
       "message": "Pasada cerrada 4/4: 2 explicaciones y 2 revisiones actualizadas. Se corrigió la continuidad de Jorge Martín antes de aplicar. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0; agrupación automática=0."
+    },
+    {
+      "at": "2026-11-01T15:55:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793544481477-manual",
+      "trend_id": "red-review-390031a6b4233c786de6",
+      "title": "Revisar novedades: Jorge Martín",
+      "message": "Jorge Martín r0 ya no figura en la cola JIT; existe outbox de mantenimiento updated y la ejecución concurrente previa terminó DONE. Se verifica cola y reexplicaciones antes del cierre."
     }
   ],
   "final_outcomes": [
@@ -600,7 +586,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T15:45:10+01:00",
+  "last_started_at": "2026-11-01T15:48:01.477+01:00",
   "last_completed_at": "2026-11-01T15:54:00+01:00",
   "last_run": {
     "run_id": "tr-1793544112796-manual",
@@ -627,7 +613,7 @@
     }
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
+  "message": "Pasada manual iniciada: 1 revisión observada al comienzo; al validar JIT, otra ejecución ya la materializó como updated. Verificando barrera final de main antes de cerrar. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1611,6 +1597,12 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T15:55:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793544481477-manual",
+      "message": "Convergencia JIT detectada para Jorge Martín r0; no se reabre ni sobrescribe."
     }
   ],
   "history": [
@@ -2498,6 +2490,6 @@
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": null,
-  "current_title": null
+  "current_item": "red-review-390031a6b4233c786de6",
+  "current_title": "Revisar novedades: Jorge Martín"
 }
