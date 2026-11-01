@@ -332,8 +332,12 @@ async function once(){
       // Keep pending images recoverable for three days without ever allowing
       // a stuck/slow generation to delay later images.
       if(!Number.isFinite(Date.parse(task.created_at||''))||now-Date.parse(task.created_at)>72*3600000){
-        atomic(file,{...task,status:'expired',reason:'image_not_confirmed_within_72h',secret_dpapi:undefined});
-        console.log('TTITTULARES_WEB_IMAGE '+task.target_id+' expired_without_confirmation');
+        // Do not silently lose an existing original during a multi-day
+        // outage. Keep the encrypted receipt for audited manual recovery.
+        // No automatic regeneration or unsafe late attachment is allowed.
+        atomic(file,{...task,status:'needs_review',reason:'original_not_associated_within_72h',
+          paused_at:new Date().toISOString(),next_check_at:undefined});
+        console.log('TTITTULARES_WEB_IMAGE '+task.target_id+' needs_review_preserved_original');
         continue;
       }
       let result;
