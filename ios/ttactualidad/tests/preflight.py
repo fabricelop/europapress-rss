@@ -250,8 +250,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "52"' in project
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -284,7 +284,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "52"' in project
+assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -296,7 +296,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "52"' in project
+assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -312,8 +312,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "52"' in project
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -466,6 +466,27 @@ assert 'quickLink("Proyecto TT", "folder"' in actions
 assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL, trend?.siteImageURL' in actions
-assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "52"' in project
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
+
+# 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
+assert 'TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V7' in actions
+assert 'TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V7 — GAG + WEB + APP' in actions
+assert 'TTITTULARES_MANUAL_IMAGE_AND_WEB_V1' in actions
+assert 'visualPrompt + "\\n\\n"' in actions or 'visualPrompt + "\n\n"' in actions
+assert 'automaticTrendImageBindingPrompt' in actions
+assert 'automaticNewsImageBindingPrompt' in actions
+assert 'inspect_top30_images' in actions and 'attach_trend_image' in actions
+assert 'verify_trend_image' in actions
+assert 'trends/site-ai-images.json' in actions
+assert 'ttittulares/site-ai-images.json' in actions
+assert 'ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.png' in actions
+assert 'SITE verified' in actions and 'APP verified' in actions
+assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
+assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
+assert 'No generes una segunda imagen' in actions
+assert 'GitHub' in actions
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "53"' in project
+print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
