@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T12:35:37.852557+00:00",
+  "updated_at": "2026-11-01T12:37:19.992779+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -8823,7 +8823,7 @@
       ],
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "a6067441dfb12dd19120c93303f0cf0bd53aefa7d0c71a1073bc97cce5a53c5b",
-      "editorial_grouping_checked_at": "2026-11-01T12:33:15.100809+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T12:37:19.992779+00:00"
     },
     {
       "id": "a025df62fa96",
@@ -124117,7 +124117,7 @@
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "94fe10611eed343d2a35a40627b1e2348ebf452cbf5462c97d5780239e4bfc5b",
-      "editorial_grouping_checked_at": "2026-11-01T12:33:15.100809+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T12:37:19.992779+00:00"
     },
     {
       "id": "listas-joint-bfc4455398856fcc",
@@ -179605,7 +179605,7 @@
       "image_pending": true,
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "fa1a3f534b750d9569dcf0d772a8782e549c9c7a5f20ae127261326a1c211b0e",
-      "editorial_grouping_checked_at": "2026-11-01T12:33:15.100809+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T12:37:19.992779+00:00"
     },
     {
       "id": "listas-auto-0def7a67b2e3bff3bc3a",
@@ -181475,7 +181475,7 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_fingerprint": "b0fd353063a9f4c5002ecbd12529edf85f0c2b9aba78c7e3ac92aaf76b181a66",
-      "editorial_grouping_checked_at": "2026-11-01T12:33:15.100809+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T12:37:19.992779+00:00"
     },
     {
       "id": "listas-auto-55e9977fa75dd550026d",
@@ -183281,21 +183281,23 @@
       "new_facts": "Tras la noche de Halloween, se mantiene el interés: España de Noche estimó cerca de 16.000 fiestas temáticas y Madrid conserva actividades programadas para el domingo 1 de noviembre.",
       "with_image": true,
       "disable_ai_image": false,
-      "editorial_grouping_state": "pending",
+      "editorial_grouping_state": "cleared",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "editorial_grouping_fingerprint": "33894a6d239df0128ad3dfceb911a4b5aebdf503ccab6d22c98bb379e0004787",
+      "editorial_grouping_checked_at": "2026-11-01T12:37:19.992779+00:00"
     },
     {
       "id": "listas-auto-ced6f329769524398859",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
-      "status": "preparing",
+      "status": "grouping_completed",
       "requested_at": "2026-11-01T12:35:37.852557+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
-      "grouping_state": "pending",
+      "grouping_state": "completed",
       "grouping_candidates": [
         {
           "id": "0ecf2a36f589",
@@ -185071,7 +185073,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "completed_at": "2026-11-01T12:37:19.992779+00:00",
+      "grouping_created_ids": [],
+      "grouping_skipped_stale": [],
+      "grouping_result_digest": "2b7cc2bd10fc5f9233ec02f64230012c3b5a3ae7733eeea640997e3f42656045"
     }
   ],
   "count": 576
