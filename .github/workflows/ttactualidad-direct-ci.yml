@@ -32,6 +32,8 @@ jobs:
           python3 -m py_compile pilot/apply-ttactualidad-action.py pilot/trends_hints.py
           python3 -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
           python3 -m unittest discover -s pilot -p 'test_trends_hints.py' -v
+          python3 -m py_compile pilot/listas_grouping.py
+          python3 -m unittest discover -s pilot -p 'test_listas_grouping.py' -v
           python3 -m py_compile ttittulares/request_pc_editorial.py
           python3 ttittulares/request_pc_editorial.py --selftest
           node pilot/ttactualidad-live/test_worker_live.mjs
