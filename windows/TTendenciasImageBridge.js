@@ -973,6 +973,36 @@ async function holdForWebImageReceipt(handoff,maxMs=360000,pollMs=10000){
 }
 // Optional delivery bookkeeping. Failure here is never a generation failure.
 // Keep this boundary separate from the pre-submit and launched receipts.
+
+// A second turn is needed when ImageGen finishes the first turn before
+// executing its Site connector instructions. Only the existing image may be used.
+function siteReturnAfterImagePrompt(job){
+  const original=buildMessage(job);
+  const start=original.indexOf("TTENDENCIAS_SITE_AUTO_RECEIPT_V5");
+  if(start<0)throw Error("site_return_contract_missing");
+  return [
+    "TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 "+commandId+" "+targetId,
+    "NO generes imágenes ni invoques ImageGen. El PNG original del encargo anterior ya se ha generado EN ESTA MISMA CONVERSACIÓN. Ahora asócialo al Site y sincroniza la app siguiendo el contrato. No reutilices una imagen de otro encargo. Si el original no está accesible, devuelve PENDING sin adjuntar nada.",
+    original.slice(start)
+  ].join("\n\n");
+}
+async function sendSiteReturnAfterImage(cdp,job){
+  if(!cdp)return "no_chat";
+  const live=await fetchJob();
+  if(String(live.command_id||"")!==commandId||
+     String(live.target_id||live.trend_id||"")!==targetId||
+     Number(live.revision||0)!==Number(job.revision||0)||
+     String(live.context_snapshot?.explanation||"").trim()!==String(job.context_snapshot?.explanation||"").trim())return "obsolete";
+  const marker="TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 "+commandId+" "+targetId;
+  const original="TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId;
+  const message=siteReturnAfterImagePrompt(job);
+  const probe=await cdp.eval("(()=>{const marker="+JSON.stringify(marker)+",original="+JSON.stringify(original)+",selector="+JSON.stringify(COMPOSER_SELECTOR)+";const users=[...document.querySelectorAll('[data-message-author-role=\"user\"]')],last=users[users.length-1];const text=String(last&&(last.innerText||last.textContent)||'').trim();if(text.startsWith(marker))return {ready:false,reason:'already_sent'};if(!text.startsWith(original))return {ready:false,reason:'different_last_user_turn'};if(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i]'))return {ready:false,reason:'generating'};if(![...document.images].some(i=>i.complete&&i.naturalWidth>=1024&&i.naturalHeight>=576))return {ready:false,reason:'original_raster_missing'};const visible=c=>{const r=c.getBoundingClientRect(),v=getComputedStyle(c);return c.isConnected&&!c.disabled&&!c.readOnly&&r.width>12&&r.height>10&&v.display!=='none'&&v.visibility!=='hidden'&&!c.closest('[inert],[aria-hidden=\"true\"]')};const c=[...document.querySelectorAll(selector)].find(visible);if(!c)return {ready:false,reason:'composer_missing'};if(String(c.value||c.innerText||c.textContent||'').trim())return {ready:false,reason:'existing_draft'};c.focus();return {ready:document.activeElement===c,reason:document.activeElement===c?'ready':'focus_failed'};})()");
+  if(!probe?.ready)return probe?.reason||"preflight_unavailable";
+  await cdp.call("Input.insertText",{text:message},15000);
+  const sent=await cdp.eval("(()=>{const marker="+JSON.stringify(marker)+",original="+JSON.stringify(original)+",suffix="+JSON.stringify(message.slice(-65))+",min="+Math.floor(message.length*0.8)+",selector="+JSON.stringify(COMPOSER_SELECTOR)+";const users=[...document.querySelectorAll('[data-message-author-role=\"user\"]')],last=users[users.length-1];if(!String(last&&(last.innerText||last.textContent)||'').trim().startsWith(original))return {sent:false,reason:'turn_changed'};if(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i]'))return {sent:false,reason:'generating'};const editors=[...document.querySelectorAll(selector)];const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'');const c=editors.find(x=>read(x).startsWith(marker)&&read(x).includes(suffix)&&read(x).length>=min);if(!c)return {sent:false,reason:'incomplete_draft'};const form=c.closest('form');const buttons=[...(form?[...form.querySelectorAll('button[type=\"submit\"],button[data-testid*=\"send\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i]')]:[]),...document.querySelectorAll('button[data-testid=\"send-button\"],button[data-testid=\"composer-submit-button\"],#composer-submit-button')];const btn=buttons.find(b=>{const r=b.getBoundingClientRect();return b.isConnected&&!b.disabled&&r.width>1&&r.height>1});if(btn){btn.click();return {sent:true}}if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return {sent:true}}return {sent:false,reason:'send_button_missing'};})()");
+  return sent?.sent?"sent":sent?.reason||"not_sent";
+}
+
 async function optionalWebHandoff(handoff,remember=false){
   try{
     const exporter=require("./TTendenciasWebImages.cjs");
@@ -1028,6 +1058,12 @@ async function optionalWebHandoff(handoff,remember=false){
         // same existing 9223 conversation without opening a new Chrome tab,
         // provided the producer does not immediately reuse it for the next job.
         const receipt=await holdForWebImageReceipt(webHandoff);
+        // An ImageGen tool turn cannot guarantee execution of its own follow-up.
+        // Submit the independent Site/App request only into THIS proven chat.
+        let siteReturn="not_attempted";
+        try{siteReturn=await sendSiteReturnAfterImage(cdp,job)}
+        catch(e){siteReturn="pending:"+String(e&&e.message||e).slice(0,120)}
+        console.log("TTENDENCIAS SITE RETURN "+siteReturn+" for "+commandId);
         console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED receipt="+receipt+"; bridge sin captura ni subida");
         return;
       }
