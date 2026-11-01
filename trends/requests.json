@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T01:33:38.539190+00:00",
+  "updated_at": "2026-11-01T01:35:07.021174+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -144483,7 +144483,7 @@
       "revision": 0,
       "name": "Revisar novedades: #UFCHBOMax",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T01:31:03.188068+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -144506,14 +144506,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T01:35:07.021174+00:00",
+      "review_reason": "La explicación anterior correspondía a UFC 333 del 24 de octubre; el hashtag vuelve a estar activo durante una velada distinta, la UFC Fight Night del 31 de octubre en Las Vegas, emitida en directo por HBO Max en España."
     },
     {
       "id": "red-review-2da670cbf1e4539a8644",
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "rank": 3,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T01:31:03.188068+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -144536,7 +144539,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T01:35:07.021174+00:00",
+      "review_reason": "La explicación anterior correspondía a la emisión del 24 de octubre sobre los disturbios de Barcelona; la emisión del 31 de octubre es un episodio distinto y centra la actualidad en el accidente ferroviario de Urda."
     }
   ],
   "count": 479
