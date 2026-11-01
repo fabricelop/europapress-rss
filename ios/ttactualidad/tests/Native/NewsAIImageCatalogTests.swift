@@ -48,13 +48,15 @@ final class NewsAIImageCatalogTests: XCTestCase {
             id: id, revision: 2, editorialText: updated.editorial_text,
             preparedAt: updated.prepared_at, catalog: newer)?.url.absoluteString,
             updated.image_url)
-        // A current-revision record with mismatched exact text is NOT trusted.
-        XCTAssertNil(NewsAIImageCatalog.assigned(
-            id: id, revision: 2, editorialText: "Different content",
-            preparedAt: updated.prepared_at, catalog: newer))
-        XCTAssertNil(NewsAIImageCatalog.assigned(
-            id: id, revision: 1, editorialText: text + " other",
-            preparedAt: preparedAt, catalog: catalog))
+        // The same immutable event_id retains its original after edits.
+        XCTAssertEqual(NewsAIImageCatalog.assigned(
+            id: id, revision: 2, editorialText: "Small correction",
+            preparedAt: updated.prepared_at, catalog: newer)?.url.absoluteString,
+            updated.image_url)
+        XCTAssertEqual(NewsAIImageCatalog.assigned(
+            id: id, revision: 1, editorialText: text + " correction",
+            preparedAt: preparedAt, catalog: catalog)?.url.absoluteString,
+            original.image_url)
     }
 
     func testManualGitHubPNGAssignmentRequiresSHAInFilename() {
