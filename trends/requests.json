@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T11:01:17+01:00",
+  "updated_at": "2026-11-01T10:58:30+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -156125,10 +156125,10 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "none",
-      "image_pending": true,
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "image_choice": null,
+      "image_pending": false,
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "#CCubicos440"
       ],
@@ -156152,24 +156152,24 @@
       "hints_verification_status": "unverified",
       "explained_at": "2026-11-01T10:58:30+01:00",
       "last_attempt_at": "2026-11-01T10:58:30+01:00",
-      "explanation": "TT#4 #CCubicos440 es tendencia por la emisión de hoy de Centímetros Cúbicos en Antena 3, el programa semanal de motor con pruebas, actualidad y competición.\n#CentímetrosCúbicos #Antena3\n🌶️ El domingo arrancó con el motor ya caliente.",
-      "closer_text": "🌶️ El domingo arrancó con el motor ya caliente.",
+      "explanation": "TT#4 #CCubicos440 es tendencia por la emisión de hoy de Centímetros Cúbicos en Antena 3, el programa semanal de motor de Atresmedia.\n#CentímetrosCúbicos #Motor\n🌶️ La mañana del domingo volvió a arrancar con el motor caliente.",
+      "closer_text": "🌶️ La mañana del domingo volvió a arrancar con el motor caliente.",
       "rank_at_explanation": 4,
       "category": "Motor",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
           "url": "https://www.movistarplus.es/deportes/programa/centimetros-cubicos-15/episodio-398/ficha?id=4433383&tipo=E"
         },
         {
-          "url": "https://www.mundodeportivo.com/guia-tv/programa/centimetros-cubicos-antena-3"
+          "url": "https://www.programacion-tv-hoy.es/canal/antena-3/2026-11-01"
         },
         {
-          "url": "https://we.twstalker.com/willydejaen"
+          "url": "https://www.sotwe.com/hashtag/PuntaApunta"
         }
       ],
-      "news_note": "",
+      "news_note": "La pista del editor se contrastó desde cero: dos guías actuales confirman la emisión de Centímetros Cúbicos este domingo 1 de noviembre en Antena 3, y el historial público del perfil del programa muestra el uso de hashtags numerados #CCúbicosN. No se identifica el 440 como número de episodio en las guías; no se afirma esa equivalencia.",
       "group_id": "grp-236995aec110",
       "explanation_group_id": "grp-236995aec110",
       "group_title": "#CCubicos440",
@@ -156180,14 +156180,16 @@
       "grouped_member_revisions": [
         {
           "id": "236995aec110",
+          "name": "#CCubicos440",
           "revision": 1
         }
       ],
       "editorial_grouping_state": "cleared",
-      "image_status": "pending",
+      "image_status": "none",
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "1ce232e6dd6af693f412daf3b26ec321f215a5939afbc38d742cf428b6c8819e",
-      "editorial_grouping_checked_at": "2026-11-01T10:01:02.062261+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T10:01:02.062261+00:00",
+      "news_disposition": "ignored"
     },
     {
       "id": "81b41bdbc3ee",
@@ -160276,5 +160278,5 @@
       "editorial_grouping_checked_at": "2026-11-01T10:01:02.062261+00:00"
     }
   ],
-  "count": 539
+  "count": 546
 }
