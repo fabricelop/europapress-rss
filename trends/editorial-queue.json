@@ -1,15 +1,79 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T12:44:00+01:00",
+  "updated_at": "2026-11-01T11:46:29.308670+00:00",
   "count": 3,
   "items": [
     {
-      "id": "listas-auto-72ab19fbbb9d740fb0d8",
+      "id": "red-review-d6d8bbb39e54433ec48c",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo García",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-01T11:45:54.640826+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "d7ef75f3aa45",
+        "revision": 0,
+        "name": "Koldo García",
+        "rank": 2,
+        "explanation": "TT#2 Koldo García es tendencia porque dos facturas atribuyen a Dos Mil Palabras, editora de OkDiario, 242.000 € por su defensa.\n#KoldoGarcía #OkDiario #AudienciaNacional\n🌶️ El misterio de la defensa acabó con IVA incluido.",
+        "explanation_sha256": "f4b6754c35b3788b60e15ab45ffe6bac6406b9b6a3c7b33845fc28d07e949f80",
+        "explained_at": "2026-10-29T14:16:00+01:00",
+        "verification_sources": [
+          "https://elpais.com/espana/2026-10-29/la-editora-de-okdiario-pago-242000-euros-para-costear-honorarios-y-gastos-de-la-defensa-de-koldo-garcia.html",
+          "https://cadenaser.com/nacional/2026/10/29/la-empresa-deditora-de-okdiario-pago-200000-euros-para-sufragar-la-defensa-de-koldo-garcia-cadena-ser/"
+        ],
+        "fingerprint": "037fa4c58e3ff511202e13154855db1825430dd6ab11dc9ee8d694b353daf5d9"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-4edd0e87b5dcad5065f6",
+      "revision": 0,
+      "name": "Revisar novedades: Ana Pastor",
+      "rank": 18,
+      "status": "preparing",
+      "requested_at": "2026-11-01T11:45:54.640826+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-635300762891ee06e043",
+        "revision": 0,
+        "name": "Ana Pastor",
+        "rank": 15,
+        "explanation": "TT#15 Ana Pastor sigue siendo tendencia por sus críticas a Óscar Puente tras Urda y porque laSexta ha trasladado al 10 de noviembre el debate electoral que moderará.\n#AnaPastor #ÓscarPuente #laSexta\n🌶️ El debate volvió a mover una casilla.",
+        "explanation_sha256": "403c2d5d172ce02de6b27daf0d49d7fa1732009aad3623e74a2138781e5ed3cd",
+        "explained_at": "2026-10-30T18:21:14.959869+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.lasexta.com/noticias/sociedad/ana-pastor-oscar-puente-impresentable-que-ministro-68-muertos-mas-adamuz-administracion-permita-lujo-atacar-prensa_202610286ae24bd4a5f83c2fb8e6e630.html"
+          },
+          {
+            "url": "https://www.lasexta.com/elecciones/generales/lasexta-traslada-debate-electoral-2-9-noviembre-accidente-ferroviario-urda_202610296ae3597602501232156c9ed7.html"
+          }
+        ],
+        "fingerprint": "2bae4f8c6f099ac6a4685d9fe64d9910c5af0e55ec7cf96fbc69ade65123f303"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "listas-auto-2ccea12644d585a5fd98",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
-      "requested_at": "2026-11-01T11:45:54.640826+00:00",
+      "requested_at": "2026-11-01T11:46:29.308670+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
@@ -46,40 +110,6 @@
           ]
         },
         {
-          "id": "2480cbdd6701",
-          "revision": 0,
-          "name": "Urda",
-          "rank": 2,
-          "explanation": "TT#2 Urda es tendencia por la evolución del accidente ferroviario del 28 de octubre: el balance sigue en 69 fallecidos, 56 ya identificados, y continúa la búsqueda de restos biológicos.\n#Urda #Toledo",
-          "explanation_sha256": "61fce7ac30c01f09f0dd00ad65bab7aa8fc83555363c1deaa8ced8b5d46500c2",
-          "explained_at": "2026-11-01T12:44:10+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.europapress.es/castilla-lamancha/noticia-identificadas-56-69-victimas-accidente-urda-ellas-todas-nacionalidad-espanola-20261101100534.html"
-            },
-            {
-              "url": "https://www.lasexta.com/noticias/sociedad/guardia-civil-blinda-urda-dia-mas-busqueda-restos-biologicos-mientras-baja-31-numero-hospitalizados_202611016ae70d896973466c29e50c53.html"
-            }
-          ]
-        },
-        {
-          "id": "2b20f3e40801",
-          "revision": 0,
-          "name": "Alavés",
-          "rank": 4,
-          "explanation": "TT#4 Alavés es tendencia por la goleada 6-1 sufrida ante el Barcelona el 31 de octubre en LaLiga; Mariano Díaz marcó el único gol vitoriano en el 84'.\n#FCBarcelona #LaLiga\n🌶️ Mariano abrió el casillero del Alavés cuando el Barça ya lo había cerrado.",
-          "explanation_sha256": "bea937bda75239906d0782ff9a44cb646e51ed8515c2e0bbe401e371103b40b8",
-          "explained_at": "2026-11-01T12:45:20+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-barcelona-deportivo-alaves-resumen-goles-resultado-partido-hoy-20261031230303.html"
-            },
-            {
-              "url": "https://www.reuters.com/sports/soccer/barcelona-bounce-back-with-big-win-over-alaves-2026-10-31/"
-            }
-          ]
-        },
-        {
           "id": "5b13bbe6ae22",
           "revision": 0,
           "name": "Adif",
@@ -93,6 +123,25 @@
             },
             {
               "url": "https://elpais.com/espana/2026-10-29/la-guardia-civil-investiga-en-que-circunstancias-se-produjo-el-error-humano-del-accidente-de-urda.html"
+            }
+          ]
+        },
+        {
+          "id": "2480cbdd6701",
+          "revision": 0,
+          "name": "Urda",
+          "rank": 2,
+          "explanation": "TT#2 Urda es tendencia por el accidente ferroviario del 28 de octubre: 69 personas han fallecido y la Guardia Civil mantiene este domingo la zona restringida mientras busca restos biológicos y preserva pruebas.\n#Urda #Toledo",
+          "explanation_sha256": "3bc73ab19f8484491a55850374cd01187d12a0fc56487abe8033e95f71513329",
+          "explained_at": "2026-11-01T12:44:00+01:00",
+          "verification_sources": [
+            {
+              "source": "EFE · 01/11/2026",
+              "url": "https://efe.com/castilla-la-mancha/accidente-trenes-urda-investigacion-guardia-civil/"
+            },
+            {
+              "source": "RTVE · 01/11/2026",
+              "url": "https://www.rtve.es/noticias/20261101/accidente-tren-directo-ultima-hora-heridos/17295258.shtml"
             }
           ]
         }
@@ -1790,70 +1839,6 @@
       "auto_queued": false,
       "request_source": "editorial_maintenance",
       "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
-    },
-    {
-      "id": "red-review-d6d8bbb39e54433ec48c",
-      "revision": 0,
-      "name": "Revisar novedades: Koldo García",
-      "rank": 20,
-      "status": "preparing",
-      "requested_at": "2026-11-01T11:45:54.640826+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "d7ef75f3aa45",
-        "revision": 0,
-        "name": "Koldo García",
-        "rank": 2,
-        "explanation": "TT#2 Koldo García es tendencia porque dos facturas atribuyen a Dos Mil Palabras, editora de OkDiario, 242.000 € por su defensa.\n#KoldoGarcía #OkDiario #AudienciaNacional\n🌶️ El misterio de la defensa acabó con IVA incluido.",
-        "explanation_sha256": "f4b6754c35b3788b60e15ab45ffe6bac6406b9b6a3c7b33845fc28d07e949f80",
-        "explained_at": "2026-10-29T14:16:00+01:00",
-        "verification_sources": [
-          "https://elpais.com/espana/2026-10-29/la-editora-de-okdiario-pago-242000-euros-para-costear-honorarios-y-gastos-de-la-defensa-de-koldo-garcia.html",
-          "https://cadenaser.com/nacional/2026/10/29/la-empresa-deditora-de-okdiario-pago-200000-euros-para-sufragar-la-defensa-de-koldo-garcia-cadena-ser/"
-        ],
-        "fingerprint": "037fa4c58e3ff511202e13154855db1825430dd6ab11dc9ee8d694b353daf5d9"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
-    },
-    {
-      "id": "red-review-4edd0e87b5dcad5065f6",
-      "revision": 0,
-      "name": "Revisar novedades: Ana Pastor",
-      "rank": 18,
-      "status": "preparing",
-      "requested_at": "2026-11-01T11:45:54.640826+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "trend-update-635300762891ee06e043",
-        "revision": 0,
-        "name": "Ana Pastor",
-        "rank": 15,
-        "explanation": "TT#15 Ana Pastor sigue siendo tendencia por sus críticas a Óscar Puente tras Urda y porque laSexta ha trasladado al 10 de noviembre el debate electoral que moderará.\n#AnaPastor #ÓscarPuente #laSexta\n🌶️ El debate volvió a mover una casilla.",
-        "explanation_sha256": "403c2d5d172ce02de6b27daf0d49d7fa1732009aad3623e74a2138781e5ed3cd",
-        "explained_at": "2026-10-30T18:21:14.959869+00:00",
-        "verification_sources": [
-          {
-            "url": "https://www.lasexta.com/noticias/sociedad/ana-pastor-oscar-puente-impresentable-que-ministro-68-muertos-mas-adamuz-administracion-permita-lujo-atacar-prensa_202610286ae24bd4a5f83c2fb8e6e630.html"
-          },
-          {
-            "url": "https://www.lasexta.com/elecciones/generales/lasexta-traslada-debate-electoral-2-9-noviembre-accidente-ferroviario-urda_202610296ae3597602501232156c9ed7.html"
-          }
-        ],
-        "fingerprint": "2bae4f8c6f099ac6a4685d9fe64d9910c5af0e55ec7cf96fbc69ade65123f303"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ]
 }
