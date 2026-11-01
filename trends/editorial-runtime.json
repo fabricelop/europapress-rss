@@ -5,30 +5,42 @@
   "canonical": true,
   "run_id": "tr-1793556220668-manual",
   "previous_run_id": "tr-1793555992698-manual",
-  "status": "PROCESSING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T19:04:00+01:00",
-  "updated_at": "2026-11-01T19:04:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T19:07:00+01:00",
+  "finished_at": "2026-11-01T19:07:00+01:00",
+  "current": 1,
   "total": 1,
   "trend_id": "red-review-4aa776ef0f7aa6c9554d",
   "title": "Revisar novedades: Blocus",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
     "536b6cb3934c",
     "affd096f80ce",
     "d8bedf30339e"
   ],
-  "remaining_ids": [
-    "red-review-4aa776ef0f7aa6c9554d",
-    "red-review-0a921ac388344c58f273"
-  ],
-  "remaining_active_ids": [
-    "red-review-4aa776ef0f7aa6c9554d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
+    "updates": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1388,6 +1400,31 @@
         "concurrent_convergence": 10
       },
       "message": "Pasada cerrada 10/10 por ejecución y convergencia JIT: 8 reelaboraciones manuales quedaron explicadas y verificadas en requests + Listas; las dos revisiones tardías de #laSextaXplica y Toledo quedaron review_completed/stale sin sobrescribir snapshots superados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T19:07:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793556220668-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada cerrada 1/1 por convergencia JIT: Blocus quedó review_completed/updated con nueva ficha trend-update; barrera final de main con editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [],
@@ -1395,16 +1432,16 @@
   "last_started_at": "2026-11-01T19:04:00+01:00",
   "last_completed_at": "2026-11-01T19:07:00+01:00",
   "last_run": {
-    "run_id": "tr-1793555992698-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-01T19:00:00+01:00",
+    "run_id": "tr-1793556220668-manual",
+    "status": "DONE",
+    "started_at": "2026-11-01T19:04:00+01:00",
     "finished_at": "2026-11-01T19:07:00+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
-      "updates": 2,
+      "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
@@ -1414,42 +1451,26 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 1,
+      "incidents": 0,
       "concurrent_convergence": 1
     },
     "outcomes": [
-      {
-        "id": "red-review-0a921ac388344c58f273",
-        "revision": 0,
-        "name": "Revisar novedades: Angrois",
-        "outcome": "updated",
-        "applied": true,
-        "created_id": "trend-update-aa28764bfc302659e3ad",
-        "via": "this_run_maintenance_outbox"
-      },
       {
         "id": "red-review-4aa776ef0f7aa6c9554d",
         "revision": 0,
         "name": "Revisar novedades: Blocus",
         "outcome": "updated",
         "applied": true,
-        "created_id": "trend-update-b6c2e842d295305cf677",
-        "via": "this_run_corrected_maintenance_outbox"
+        "via": "concurrent_convergence_jit",
+        "created_id": "trend-update-b6c2e842d295305cf677"
       }
     ],
-    "incident_count": 1,
-    "incidents": [
-      {
-        "code": "BLOCUS_CONTINUITY_VALIDATION_RETRY",
-        "id": "red-review-4aa776ef0f7aa6c9554d",
-        "revision": 0,
-        "message": "El primer outbox de Blocus fue rechazado por no usar el patrón estricto «sigue siendo tendencia por…». Se corrigió el mismo outbox y quedó aplicado."
-      }
-    ],
-    "message": "Pasada cerrada 2/2: Angrois y Blocus quedaron review_completed/updated con nuevas fichas persistidas en requests y Listas. Blocus requirió corregir el formato de continuidad del mismo outbox. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada cerrada 1/1 por convergencia JIT: Blocus quedó review_completed/updated con nueva ficha trend-update; barrera final de main con editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793556220668-manual: 1 revisión review_red preparing observada en main (Blocus). Validación JIT activa; ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 1/1 por convergencia JIT: Blocus quedó review_completed/updated con nueva ficha trend-update; barrera final de main con editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3742,88 +3763,17 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "64b7521f1d8d",
-      "revision": 2,
-      "name": "Racing",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "24e3a441d3d1",
+      "id": "red-review-4aa776ef0f7aa6c9554d",
       "revision": 0,
-      "name": "Mbappe",
-      "outcome": "explained",
+      "name": "Revisar novedades: Blocus",
+      "outcome": "updated",
       "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "c49977e1871e",
-      "revision": 0,
-      "name": "Mourinho",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "08376d731cac",
-      "revision": 1,
-      "name": "Penalti",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "252573ec624f",
-      "revision": 1,
-      "name": "Sardinero",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "5d3198c8b68a",
-      "revision": 0,
-      "name": "Bellingham",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "18dc47314a83",
-      "revision": 1,
-      "name": "Munuera",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "7b671362898c",
-      "revision": 0,
-      "name": "Bernardo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "red-review-1e1b9d135357dfda3d75",
-      "revision": 0,
-      "name": "Revisar novedades: #laSextaXplica",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "red-review-5add855adb1cf42cbd62",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
+      "via": "concurrent_convergence_jit",
+      "created_id": "trend-update-b6c2e842d295305cf677"
     }
   ],
-  "current_item": "red-review-4aa776ef0f7aa6c9554d",
-  "current_title": "Revisar novedades: Blocus",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -4465,6 +4415,44 @@
         }
       ],
       "message": "Pasada cerrada 2/2: Angrois y Blocus quedaron review_completed/updated con nuevas fichas persistidas en requests y Listas. Blocus requirió corregir el formato de continuidad del mismo outbox. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793556220668-manual",
+      "status": "DONE",
+      "started_at": "2026-11-01T19:04:00+01:00",
+      "finished_at": "2026-11-01T19:07:00+01:00",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "red-review-4aa776ef0f7aa6c9554d",
+          "revision": 0,
+          "name": "Revisar novedades: Blocus",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "created_id": "trend-update-b6c2e842d295305cf677"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada cerrada 1/1 por convergencia JIT: Blocus quedó review_completed/updated con nueva ficha trend-update; barrera final de main con editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ]
 }
