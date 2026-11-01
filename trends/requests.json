@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T16:33:12.031537+00:00",
+  "updated_at": "2026-11-01T16:34:50.974227+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -195292,6 +195292,74 @@
       "image_choice": "none",
       "image_pending": true,
       "telegram_package_status": "pending"
+    },
+    {
+      "id": "red-review-8c4e81a9fff60caff47a",
+      "revision": 0,
+      "name": "Revisar novedades: Alsina",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-11-01T16:34:50.974227+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "95bf73f9295e",
+        "revision": 0,
+        "name": "Alsina",
+        "rank": 20,
+        "explanation": "TT#20 Alsina aparece entre las tendencias en plena conversación sobre el accidente ferroviario de Urda: Carlos Alsina ha informado desde la zona y reclamó responsabilidades políticas. No está confirmado que ese episodio impulse el término.\n#Urda",
+        "explanation_sha256": "e9ca3380dc59e51780fa60ac05de3067c16509f669560e409f7600720b0c7bf4",
+        "explained_at": "2026-11-01T10:40:57+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.ondacero.es/temas/alsina-1"
+          },
+          {
+            "url": "https://www.lasexta.com/noticias/nacional/alsina-pide-que-puente-haga-cargo-tragedia-toledo-continuidad-hara-mas-facil-que-accidente-use-campana_202610296ae28e28a5f83c2fb8e73738.html"
+          }
+        ],
+        "fingerprint": "5f233c9fbb0a3959c7d32d0a5e4d99633389ddb976a15ef30b2bd733300741ff"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-bd128813cc4afbd44c58",
+      "revision": 0,
+      "name": "Revisar novedades: Kerolin",
+      "rank": 27,
+      "status": "preparing",
+      "requested_at": "2026-11-01T16:34:50.974227+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "7c590b18d53a",
+        "revision": 0,
+        "name": "Kerolin",
+        "rank": 13,
+        "explanation": "TT#13 Kerolin es tendencia porque ha marcado a los 4 minutos ante el Badalona su primer gol en Liga F con el Barça, tras asistencia de Aitana Bonmatí.\n#FCBarcelona #LigaF\n🌶️ Cuatro minutos le bastaron para abrir su cuenta liguera.",
+        "explanation_sha256": "3d6a048352b3eab640e036f0b41ac0adb899c0487336014aee9e0daf89c15b86",
+        "explained_at": "2026-11-01T13:29:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://as.com/futbol/femenino/badalona-barcelona-en-directo-liga-f-hoy-en-vivo-f202611-n/"
+          },
+          {
+            "url": "https://www.mundodeportivo.com/futbol/fc-barcelona/20261101/1004245562/badalona-women-barca-directo-liga-f-futbol-femenino.html"
+          }
+        ],
+        "fingerprint": "fa1a3f534b750d9569dcf0d772a8782e549c9c7a5f20ae127261326a1c211b0e"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
   "count": 642
