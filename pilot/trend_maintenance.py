@@ -33,11 +33,8 @@ def fingerprint(row):
 
 
 def image_allowed(row):
-    """A changed text invalidates clearance even if a producer reused revision 0."""
-    if row.get('anticipation_request') or row.get('listas_group_role') == 'covered':
-        return False
-    return (row.get('editorial_grouping_state') == 'cleared'
-            and row.get('editorial_grouping_fingerprint') == fingerprint(row))
+    """Manual grouping is optional; a finished individual explanation can have an image."""
+    return not (row.get('anticipation_request') or row.get('listas_group_role') == 'covered')
 
 
 def stamp_rows(state, row, **fields):
@@ -62,34 +59,14 @@ def add_job(state, job, at):
 
 
 def schedule(state, now, grouping):
-    """Call after applying results. New explanations, grouping, then reviews."""
-    at = now.isoformat()
+    """Only schedule factual reviews. Grouping is initiated by the editor from selected Listas."""
     if state[QUEUE].get('maintenance_pause'):
         return
-    reqs = state[REQUESTS]['requests']
-    live = [x for x in reqs if x.get('status') in ACTIVE]
-    current = grouping.eligible(state, now)
-    unchecked = [x for x in current.values() if not image_allowed(x)]
-    for row in unchecked:
-        stamp_rows(state, row, editorial_grouping_state='pending')
-    # Normal editorial requests (including manual reworks) always take priority.
-    if any(not x.get('listas_grouping_request') and not x.get('red_review_request') and not x.get('anticipation_request') for x in live):
+    live = [x for x in state[REQUESTS]['requests'] if x.get('status') in ACTIVE]
+    # Ordinary editorial requests, including an explicit manual grouping, keep priority.
+    if any(not x.get('listas_grouping_request') and not x.get('red_review_request')
+           and not x.get('anticipation_request') for x in live):
         return
-    if not any(x.get('listas_grouping_request') for x in live) and unchecked:
-        signature = '|'.join(sorted(fingerprint(x) for x in current.values()))
-        ident = 'listas-auto-'+hashlib.sha256(signature.encode()).hexdigest()[:20]
-        # Retrying a stale result must use a new snapshot, not reopen a closed job.
-        if any(x.get('id') == ident for x in reqs):
-            ident += '-'+str(int(now.timestamp()))
-        history = published_context(state, now, grouping)
-        job = dict(id=ident, revision=0, name='Agrupación automática de Listas', rank=0,
-                   status='preparing', requested_at=at, task='group_listas',
-                   listas_grouping_request=True, automatic_grouping=True,
-                   grouping_state='pending', grouping_candidates=[grouping.snapshot(x) for x in current.values()],
-                   published_context=history, with_image=False, disable_ai_image=True,
-                   auto_queued=False, request_source='editorial_maintenance',
-                   rewrite_instruction='Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.')
-        add_job(state, job, at)
     schedule_reviews(state, now, grouping)
 
 
