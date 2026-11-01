@@ -3,22 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793531820836-manual",
+  "run_id": "tr-1793532281494-manual",
   "previous_run_id": "tr-1793531820836-manual",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T12:25:00+01:00",
-  "updated_at": "2026-11-01T12:31:00+01:00",
-  "finished_at": "2026-11-01T12:31:00+01:00",
-  "current": 6,
-  "total": 6,
+  "updated_at": "2026-11-01T12:28:37+01:00",
+  "finished_at": "2026-11-01T12:28:37+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "e7a34c909e2e",
-    "ecfab12c8f74",
-    "d0d920c046f0",
     "listas-auto-d949d22fea9dcb5ca638",
     "red-review-5cea86122c498eb32753",
     "red-review-2c540cbea6cdfd2e7781"
@@ -27,22 +24,22 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "observed": 3,
-    "closed": 0,
+    "closed": 3,
     "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
+    "updates": 1,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3
   },
   "incident_count": 0,
   "incidents": [],
@@ -1359,28 +1356,28 @@
   "last_started_at": "2026-11-01T12:23:52+01:00",
   "last_completed_at": "2026-11-01T12:23:52+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T121100+0100",
+    "run_id": "tr-1793532281494-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T12:12:00+01:00",
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "finished_at": "2026-11-01T12:28:37+01:00",
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
+    "updates": 1,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3
   },
   "source": "chat",
-  "message": "Pasada editorial completada: 3 reelaboraciones explicadas, 1 agrupación cerrada sin grupos, Toledo resuelto como stale por convergencia y Óscar Muerte unchanged. Cola 0, rewrite_pending 0, ImageGen 0.",
+  "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación 0 grupos/0 coberturas, Toledo actualizado por novedades materiales y Óscar Muerte sin cambios sustanciales. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2762,52 +2759,61 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T12:28:37+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793532281494-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Los dos resultados de mantenimiento se reflejan en requests.json y telegram-manual-explained.json; la agrupación quedó aplicada. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T12:28:37+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793532281494-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      },
+      "message": "Pasada cerrada 3/3 por ejecución y convergencia JIT: agrupación 0 grupos/0 coberturas, Toledo actualizado por novedades materiales y Óscar Muerte sin cambios sustanciales. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "e7a34c909e2e",
-      "revision": 0,
-      "name": "#UFCHBOMax",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "ecfab12c8f74",
-      "revision": 0,
-      "name": "Halloween",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "d0d920c046f0",
-      "revision": 0,
-      "name": "Blocus",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
       "id": "listas-auto-d949d22fea9dcb5ca638",
       "revision": 0,
-      "name": "Agrupación automática de Listas",
       "outcome": "grouping_completed",
       "applied": true,
-      "groups_created": 0
+      "name": "Agrupación automática de Listas"
     },
     {
       "id": "red-review-5cea86122c498eb32753",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true
+      "outcome": "updated",
+      "applied": true,
+      "name": "Toledo"
     },
     {
       "id": "red-review-2c540cbea6cdfd2e7781",
       "revision": 0,
-      "name": "Revisar novedades: Óscar Muerte",
       "outcome": "unchanged",
-      "applied": true
+      "applied": true,
+      "name": "Óscar Muerte"
     }
   ]
 }
