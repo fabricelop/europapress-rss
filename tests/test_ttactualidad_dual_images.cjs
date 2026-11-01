@@ -48,6 +48,13 @@ for (const path of paths) {
     tweet: {text: "Updated factual news"}};
   assert.equal(verifiedNewsAI(edited), url, path + ": AI retained by event ID");
   assert.equal(archivedPhoto(edited), archive, path + ": archive retained by event ID");
+  // TTImages outbox stores a hash-verified file as -ai<attempt>.jpg (without
+  // the hash in the filename). The manifest carries the SHA-256.
+  const pipelineURL = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/newsABC-r1-ai1.jpg";
+  state.data.newsAi.images[0].image_url = pipelineURL;
+  assert.equal(verifiedNewsAI(edited), pipelineURL,
+    path + ": TTImages outbox original survives revision");
+  state.data.newsAi.images[0].image_url = url;
   assert.equal(verifiedNewsAI({...edited, event_id: "otherNews"}), "",
     path + ": no cross-ID AI");
   assert.notEqual(archivedPhoto({...edited, event_id: "otherNews"}), archive,
