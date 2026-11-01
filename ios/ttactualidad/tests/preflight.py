@@ -360,7 +360,8 @@ print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
 # Two new actions are available for trends only. The preexisting GAG button
 # must remain untouched; the Site route is an explicit copy and paste job.
 assert 'quickButton("Copiar imagen Site", "square.on.square")' in actions
-assert 'quickButton("Abrir chat TT", "plus.bubble")' in actions
+assert 'quickButton("Abrir chat TT", "plus.bubble")' not in actions
+assert 'quickLink("Proyecto TT", "folder"' in actions
 assert 'copyTrendSiteImagePrompt()' in actions
 assert 'openTTProject()' in actions
 assert 'TTENDENCIAS_SITE_ATTACH_EXISTING_V1' in actions
