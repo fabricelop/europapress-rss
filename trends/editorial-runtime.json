@@ -5,34 +5,35 @@
   "canonical": true,
   "run_id": "tr-1793521834896-manual",
   "previous_run_id": "tr-chat-20261101T091043+0100",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T09:31:35+01:00",
-  "updated_at": "2026-11-01T09:35:20+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-01T09:35:35+01:00",
+  "finished_at": "2026-11-01T09:35:35+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "7084b3e15859",
-  "title": "Día de Todos",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "b622600f47d4",
     "7084b3e15859"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
-    "closed": 1,
-    "explained": 1,
+    "closed": 2,
+    "explained": 2,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -931,6 +932,37 @@
       "trend_id": "7084b3e15859",
       "title": "Día de Todos",
       "message": "Revalidación JIT r0 completada. Contexto actual verificado: 1 de noviembre de 2026, Todos los Santos, domingo; nueve comunidades trasladan el descanso al lunes 2."
+    },
+    {
+      "at": "2026-11-01T09:35:35+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793521834896-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. #FelizDomingo r0 y Día de Todos r0 aplicados."
+    },
+    {
+      "at": "2026-11-01T09:35:35+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793521834896-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 2,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "TTendencias cerrada 2/2. ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "final_outcomes": {
@@ -1710,17 +1742,15 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-4c57a3edb7fa71916431",
+      "id": "b622600f47d4",
       "revision": 0,
-      "outcome": "updated",
-      "distinct_episode": true,
+      "outcome": "explained",
       "applied": true
     },
     {
-      "id": "red-review-656a3fba6061d7d8bc4f",
+      "id": "7084b3e15859",
       "revision": 0,
-      "outcome": "updated",
-      "distinct_episode": false,
+      "outcome": "explained",
       "applied": true
     }
   ]
