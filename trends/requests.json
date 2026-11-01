@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T08:38:22.752566+00:00",
+  "updated_at": "2026-11-01T08:39:21.754274+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -151865,7 +151865,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 3,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T08:35:54.992017+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -151889,7 +151889,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T08:39:21.754274+00:00",
+      "review_reason": "Mismo episodio con novedades sustanciales: la ficha del 28 de octubre describía el choque y el corte de la línea; la investigación posterior ha concretado la caída del LZB, la orden de reanudar la marcha y el balance de 69 fallecidos."
     }
   ],
   "count": 510
