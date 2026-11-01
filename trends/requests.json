@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T14:47:56.113084+00:00",
+  "updated_at": "2026-11-01T14:48:35.161733+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -59221,18 +59221,18 @@
       "telegram_package_status": "published",
       "published_at": "2026-10-31T08:56:00.544895+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-01T10:35:19.962210+00:00",
+      "red_review_checked_at": "2026-11-01T14:48:35.161733+00:00",
       "red_review_outcome": "updated",
-      "red_review_reason": "La retirada de Jorge Martín sigue siendo el mismo episodio, pero la carrera principal ya se ha disputado y ha cambiado materialmente su situación en el Mundial: Marc Márquez ganó y amplió la ventaja a 44 puntos.",
+      "red_review_reason": "Hay un desarrollo material posterior a la retirada: Marc Márquez ganó la carrera de Malasia y amplió a 44 puntos su ventaja sobre Jorge Martín, quedando con su primer match point en Qatar.",
       "red_review_sources": [
+        {
+          "url": "https://www.motogp.com/es/news/2026/11/01/masterclass-marc-marquez-marches-to-malaysia-victory-to-earn-2026-match-point/1179524"
+        },
         {
           "url": "https://www.reuters.com/sports/marquez-wins-malaysian-gp-extending-motogp-championship-lead-2026-11-01/"
         },
         {
-          "url": "https://www.motogp.com/en/news/2026/11/01/masterclass-marc-marquez-marches-to-malaysia-victory-to-earn-2026-match-point/1179524"
-        },
-        {
-          "url": "https://www.motogp.com/en/news/2026/10/31/martin-withdraws-the-89-wont-t-take-part-in-malaysia/1182474"
+          "url": "https://www.motogp.com/es/news/2026/10/31/martin-withdraws-the-89-wont-take-part-in-malaysia/1182474"
         }
       ]
     },
@@ -193069,7 +193069,7 @@
       "revision": 0,
       "name": "Revisar novedades: Jorge Martín",
       "rank": 14,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T14:46:01.578895+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -193097,7 +193097,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
-      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos"
+      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos",
+      "review_created_id": "trend-update-709cca55d913d04fcdec",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-01T14:48:35.161733+00:00",
+      "review_reason": "Hay un desarrollo material posterior a la retirada: Marc Márquez ganó la carrera de Malasia y amplió a 44 puntos su ventaja sobre Jorge Martín, quedando con su primer match point en Qatar."
     },
     {
       "id": "trend-update-61562a7196f2e8bf9104",
@@ -193129,6 +193133,46 @@
       "continuity_update": true,
       "distinct_episode": false,
       "new_facts": "Este 1 de noviembre, cementerios de toda España se han llenado de flores y familias que acuden a recordar a sus fallecidos; en Madrid también se ampliaron horarios y servicios para facilitar las visitas.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-709cca55d913d04fcdec",
+      "revision": 0,
+      "name": "Jorge Martín",
+      "rank": 14,
+      "status": "explained",
+      "requested_at": "2026-11-01T14:48:35.161733+00:00",
+      "explained_at": "2026-11-01T14:48:35.161733+00:00",
+      "updated_at": "2026-11-01T14:48:35.161733+00:00",
+      "explanation": "TT#14 Jorge Martín sigue siendo tendencia por su retirada del GP de Malasia: Marc Márquez ganó la carrera y elevó a 44 puntos su ventaja, con su primer 'match point' en Qatar.\n#MotoGP #MalaysianGP",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://www.motogp.com/es/news/2026/11/01/masterclass-marc-marquez-marches-to-malaysia-victory-to-earn-2026-match-point/1179524"
+        },
+        {
+          "url": "https://www.reuters.com/sports/marquez-wins-malaysian-gp-extending-motogp-championship-lead-2026-11-01/"
+        },
+        {
+          "url": "https://www.motogp.com/es/news/2026/10/31/martin-withdraws-the-89-wont-take-part-in-malaysia/1182474"
+        }
+      ],
+      "originated_from_prior_id": "trend-update-166ff7a9a68de41cad16",
+      "trend_names": [
+        "Jorge Martín",
+        "#AustralianGP",
+        "Marc Márquez",
+        "Marc",
+        "Martín"
+      ],
+      "red_review_job_id": "red-review-390031a6b4233c786de6",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Marc Márquez ganó el GP de Malasia del 1 de noviembre; con Jorge Martín ausente por la lesión de muñeca, la diferencia del Mundial subió a 44 puntos y Márquez puede tener opción de título en Qatar.",
       "with_image": true,
       "disable_ai_image": false,
       "editorial_grouping_state": "pending",
