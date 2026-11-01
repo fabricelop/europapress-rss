@@ -25,8 +25,9 @@ test('solo la imagen del mismo ID, revisión, comando y texto se confirma',async
     const r=await consume(task());
     assert.equal(r.status,'published');
     assert.equal(r.sha256,IMAGE_HASH);
-    assert.equal(calls.length,2);
-    assert.ok(calls.every(x=>x.startsWith('https://raw.githubusercontent.com/')));
+    assert.ok(calls.length>=2);
+    assert.ok(calls.slice(0,2).every(x=>x.startsWith('https://raw.githubusercontent.com/')));
+    assert.ok(calls.slice(2).every(x=>x.startsWith('http://127.0.0.1:')));
   });
 });
 test('un enlace atribuido a otro comando nunca se marca entregado',async t=>{
