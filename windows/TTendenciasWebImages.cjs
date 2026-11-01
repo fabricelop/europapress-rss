@@ -9,7 +9,7 @@ const {execFileSync,spawn}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
 const WEB_CAPTURE_VERSION=5;
-const WEB_DELIVERY_VERSION=9;
+const WEB_DELIVERY_VERSION=10;
 const ROOT=path.join(__dirname,'ttendencias-web-images');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const safeID=v=>/^[A-Za-z0-9._-]{3,160}$/.test(String(v||''));
@@ -419,9 +419,35 @@ async function telemetry(task,result){
     await fetch('https://tt-control.fabricelop.workers.dev/api/ttendencias-run',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(10000),body:JSON.stringify({task:'web_image_telemetry',target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),stage:result.status,reason:String(result.reason||'confirmed').slice(0,140),version:2})});
   }catch{}
 }
-function dueTasks(tasks,now){return tasks.filter(x=>x.task.status==='waiting'||(x.task.status==='published'&&!x.task.site_return_sent_at&&chatURL(x.task.conversation_url)&&Number.isFinite(Date.parse(x.task.created_at||''))&&now-Date.parse(x.task.created_at)<72*3600000))
-  .filter(x=>!Number.isFinite(Date.parse(x.task.next_check_at||''))||Date.parse(x.task.next_check_at)<=now)
-  .sort((a,b)=>Date.parse(a.task.checked_at||a.task.created_at||0)-Date.parse(b.task.checked_at||b.task.created_at||0));}
+// Prefer only the newest eligible command per exact editorial ID.
+// Older receipts remain on disk for fallback if the newer attempt fails;
+// they never steal capture time from a new image or a different target.
+function newestActiveByTarget(entries,now){
+  const active=new Map();
+  for(const entry of entries){
+    const task=entry.task||{},id=String(task.target_id||'');
+    if(!safeID(id)||!safeID(task.command_id))continue;
+    if(!['waiting','published'].includes(task.status))continue;
+    const created=Date.parse(task.created_at||'');
+    if(!Number.isFinite(created)||now-created>72*3600000)continue;
+    const old=active.get(id),oldDate=Date.parse(old?.task.created_at||'');
+    if(!old||created>oldDate||(created===oldDate&&task.command_id>old.task.command_id))active.set(id,entry);
+  }
+  return active;
+}
+function dueTasks(entries,now){
+  const current=newestActiveByTarget(entries,now);
+  return entries.filter(entry=>{
+    const t=entry.task||{};
+    if(!['waiting','published'].includes(t.status))return false;
+    if(current.has(t.target_id)&&current.get(t.target_id)!==entry)return false;
+    if(t.status==='published'&&
+      (t.site_return_sent_at||!chatURL(t.conversation_url)||
+       !Number.isFinite(Date.parse(t.created_at||''))||
+       now-Date.parse(t.created_at)>72*3600000))return false;
+    return !Number.isFinite(Date.parse(t.next_check_at||''))||Date.parse(t.next_check_at)<=now;
+  }).sort((a,b)=>Date.parse(b.task.created_at||0)-Date.parse(a.task.created_at||0));
+}
 function prioritizeOpenConversation(tasks,pages,currentCommand=null){
   // Opportunistic read of the completed current conversation before the
   // generator reuses its tab. This changes priority, never identity checks.
@@ -498,7 +524,7 @@ async function watch(){
     }
   }finally{try{const own=JSON.parse(fs.readFileSync(lock,'utf8'));if(own.pid===process.pid)fs.unlinkSync(lock);}catch{}}
 }
-module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once,siteReturnPrompt,siteReturnProbe,producerBusyFor,sameEditorialBeforeReturn,recoverSiteAfterUpload};
+module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,sameContext,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once,siteReturnPrompt,siteReturnProbe,producerBusyFor,sameEditorialBeforeReturn,recoverSiteAfterUpload,newestActiveByTarget};
 // Existing installed listeners invoke this file without arguments. Drain their
 // already-enrolled backlog too; do not require a new image to wake delivery.
 if(require.main===module)(process.argv.includes('--once')?once():watch()).catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
