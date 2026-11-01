@@ -71,9 +71,12 @@ class DirectReceiptTests(unittest.TestCase):
                 files = job._hydrate_chunked_ai(payload)
                 self.assertEqual(len(files), 1)
                 self.assertTrue(payload["ai_image"]["url"].startswith("data:image/png;base64,"))
-                payload["ai_image"]["chunk_sha256"] = "0" * 64
+                corrupted = {"ai_image": {
+                    "chunk_files": [name], "chunk_mime": "image/png",
+                    "chunk_sha256": "0" * 64,
+                }}
                 with self.assertRaisesRegex(ValueError, "SHA-256"):
-                    job._hydrate_chunked_ai(payload)
+                    job._hydrate_chunked_ai(corrupted)
             finally:
                 job.OUTBOX = old
 
