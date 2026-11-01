@@ -983,6 +983,7 @@ function siteReturnAfterImagePrompt(job){
   return [
     "TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 "+commandId+" "+targetId,
     "NO generes imágenes ni invoques ImageGen. El PNG original del encargo anterior ya se ha generado EN ESTA MISMA CONVERSACIÓN. Ahora asócialo al Site y sincroniza la app siguiendo el contrato. No reutilices una imagen de otro encargo. Si el original no está accesible, devuelve PENDING sin adjuntar nada.",
+    "EXPLICACIÓN EDITORIAL EXACTA (NO REESCRIBIR):\n"+String(job.context_snapshot?.explanation||"").trim(),
     original.slice(start)
   ].join("\n\n");
 }
