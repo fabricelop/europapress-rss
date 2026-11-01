@@ -5,10 +5,10 @@
   "canonical": true,
   "run_id": "tr-1793565318526-manual",
   "previous_run_id": "tr-1793564218863-manual",
-  "status": "PROCESSING",
+  "status": "waiting",
   "phase": "investigating",
   "started_at": "2026-11-01T21:36:00+01:00",
-  "updated_at": "2026-11-01T21:37:00+01:00",
+  "updated_at": "2026-11-01T21:41:22+01:00",
   "finished_at": null,
   "current": 0,
   "total": 6,
@@ -16,17 +16,21 @@
   "title": "Iraola",
   "queue_complete": false,
   "processed_ids": [
-    "a1f72cb31fee",
-    "b4e57b51c750"
-  ],
-  "remaining_ids": [],
-  "remaining_active_ids": [
     "0cd169a778b9",
     "425e95efd6a8",
-    "5de2c2a7b20e",
+    "5de2c2a7b20e"
+  ],
+  "remaining_ids": [
+    "82f5a317d5c7",
     "a91fa6a9490a",
     "2982cf2cc5c4",
-    "82f5a317d5c7"
+    "a4a691b7cac1"
+  ],
+  "remaining_active_ids": [
+    "82f5a317d5c7",
+    "a91fa6a9490a",
+    "2982cf2cc5c4",
+    "a4a691b7cac1"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
@@ -1538,7 +1542,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T21:20:42+01:00",
+  "last_started_at": "2026-11-01T21:41:22+01:00",
   "last_completed_at": "2026-11-01T21:22:00+01:00",
   "last_run": {
     "run_id": "tr-1793564218863-manual",
