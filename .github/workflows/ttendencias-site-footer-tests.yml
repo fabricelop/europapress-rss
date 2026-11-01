@@ -1,0 +1,39 @@
+name: TTendencias Site footer privacy and functionality tests
+on:
+  pull_request:
+    paths:
+      - 'site-patches/ttendencias-support-footer/**'
+      - '.github/workflows/ttendencias-site-footer-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'site-patches/ttendencias-support-footer/**'
+      - '.github/workflows/ttendencias-site-footer-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify email, Ko-fi and anonymous interaction events
+        run: node --test site-patches/ttendencias-support-footer/*.test.mjs
+      - name: Ensure footer has no unrelated image generation or personal tracking
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root=Path('site-patches/ttendencias-support-footer')
+          jsx=(root/'SupportFooter.jsx').read_text(encoding='utf-8')
+          analytics=(root/'analytics-events.mjs').read_text(encoding='utf-8')
+          assert 'data-umami-event' in jsx
+          assert 'ttactualidad@gmail.com' in (root/'footer-model.mjs').read_text()
+          assert 'ko-fi.com/ttactualidad' in (root/'footer-model.mjs').read_text()
+          assert 'window.location.href = url' in jsx
+          assert 'data-umami-event={METRIC_EVENTS.feedback}' in jsx
+          assert not any(s in jsx for s in ['Copiar prompt de imagen IA','paypal.me/', 'document.cookie', 'fetch('])
+          assert 'Number.isInteger(detail.rank)' in analytics
+          assert 'detail.search' not in analytics and 'detail.message' not in analytics
+          print('TT_SITE_FOOTER_PRIVACY_PASS')
+          PY
