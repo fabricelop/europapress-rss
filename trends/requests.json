@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T03:40:51+01:00",
+  "updated_at": "2026-11-01T02:42:22.533244+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -144549,7 +144549,7 @@
       "revision": 0,
       "name": "Revisar novedades: #UFCHBOMax",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T02:39:28.847007+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -144572,14 +144572,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T02:42:22.533244+00:00",
+      "review_reason": "Episodio distinto comprobado: la ficha original cubría UFC 333 del 24 de octubre; la tendencia actual coincide con UFC Vegas 123 / UFC Fight Night del 31 de octubre al 1 de noviembre, emitida en directo por HBO Max."
     },
     {
       "id": "red-review-006e56f6dc2852d7cdf0",
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "rank": 3,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T02:39:28.847007+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -144602,7 +144605,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T02:42:22.533244+00:00",
+      "review_reason": "Episodio distinto comprobado: la ficha original del 24 de octubre cubría los disturbios de Barcelona; la emisión actual de laSexta Xplica está centrada en la tragedia ferroviaria de Urda."
     }
   ],
   "count": 479
