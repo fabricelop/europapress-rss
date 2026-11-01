@@ -1,15 +1,15 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T00:07:58.166983+00:00",
-  "count": 3,
+  "updated_at": "2026-11-01T00:09:46.180531+00:00",
+  "count": 1,
   "items": [
     {
-      "id": "listas-auto-c2e98f2555a5a80353db",
+      "id": "listas-auto-f46948b56552f8daac10",
       "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
-      "requested_at": "2026-11-01T00:07:58.166983+00:00",
+      "requested_at": "2026-11-01T00:09:46.180531+00:00",
       "task": "group_listas",
       "listas_grouping_request": true,
       "automatic_grouping": true,
@@ -395,6 +395,23 @@
             },
             {
               "url": "https://www.lavanguardia.com/deportes/20261031/11673047/evacuado-ambulancia-jugador-sabadell-quadri-liameed-patada-cabeza.html"
+            }
+          ]
+        },
+        {
+          "id": "trend-update-7c8d21f3ad39dd8b2761",
+          "revision": 0,
+          "name": "Alavés",
+          "rank": 2,
+          "explanation": "TT#2 Alavés es tendencia por la goleada 6-1 encajada ante el Barça: Raphinha y Lamine firmaron dobletes, Fermín y Gordon completaron la goleada y Mariano hizo el tanto vitoriano.\n#Alavés #FCBarcelona #LaLiga\n🌶️ El Camp Nou convirtió una mala racha en goleada.",
+          "explanation_sha256": "b40c7e1734bdd0a3af02e81bec77c2e0fcb618ed3924252bdf88dae13d45a163",
+          "explained_at": "2026-11-01T00:09:46.180531+00:00",
+          "verification_sources": [
+            {
+              "url": "https://www.reuters.com/sports/soccer/barcelona-bounce-back-with-big-win-over-alaves-2026-10-31/"
+            },
+            {
+              "url": "https://iaas-public-front-pro.laliga.com/partido/temporada-2026-2027-laliga-ea-sports-fc-barcelona-deportivo-alaves-11"
             }
           ]
         }
@@ -1964,66 +1981,6 @@
       "auto_queued": false,
       "request_source": "editorial_maintenance",
       "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
-    },
-    {
-      "id": "red-review-0e6998c134c36aa734d1",
-      "revision": 0,
-      "name": "Revisar novedades: #laSextaXplica",
-      "rank": 1,
-      "status": "preparing",
-      "requested_at": "2026-11-01T00:07:58.166983+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "d438ccc039cc",
-        "revision": 0,
-        "name": "#laSextaXplica",
-        "rank": 4,
-        "explanation": "TT#4 #laSextaXplica es tendencia por la emisión de este sábado, que aborda los disturbios de Barcelona; Ignasi Guardans calificó de «inédito» el saqueo.\n#Barcelona #IgnasiGuardans #JoséYélamo",
-        "explanation_sha256": "2b9c3384e4056e1a1dc471fa2d5ac3ff02a9bfa0361c37cb07cc5a044a43a5ab",
-        "explained_at": "2026-10-24T22:48:55+02:00",
-        "verification_sources": [
-          "https://www.lasexta.com/programas/sexta-noche/guardans-violencia-calles-barcelona-saqueo-inedito-caldo-cultivo-francia-espana_202610246add0a2c1e66613d9f1c46ff.html",
-          "https://www.lasexta.com/programas/sexta-noche/"
-        ],
-        "fingerprint": "201d005c9598986dd02c5c3bb448e4fa6ecf177e05b953d6eb320c28346d9a5c"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
-    },
-    {
-      "id": "red-review-8dc8bb3b8fe5c0d01bca",
-      "revision": 0,
-      "name": "Revisar novedades: Alavés",
-      "rank": 2,
-      "status": "preparing",
-      "requested_at": "2026-11-01T00:07:58.166983+00:00",
-      "task": "review_red",
-      "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
-      "review_source": {
-        "id": "3653323c16ba",
-        "revision": 0,
-        "name": "Alavés",
-        "rank": 7,
-        "explanation": "TT#7 Alavés es tendencia por el 1-1 ante el Málaga en Mendizorroza: Adrián Niño adelantó a los andaluces y Aitor Mañas empató en el 89 tras un rechace.\n#Alavés #MálagaCF #LaLiga\n🌶️ El punto llegó con el reloj pidiendo la cuenta.",
-        "explanation_sha256": "9698b4ea34305b5168a54d503f29026ea9b47f7d9880c59f9514cee2b0dcbd6b",
-        "explained_at": "2026-10-23T23:49:00+02:00",
-        "verification_sources": [
-          "https://cadenaser.com/nacional/2026/10/23/alaves-1-1-malaga-resumen-resultado-y-goles-del-partido-de-la-jornada-10-de-laliga-ea-sports-cadena-ser/",
-          "https://as.com/futbol/manas-frustra-al-malaga-f202610-n/"
-        ],
-        "fingerprint": "3d9c936b2dee06f819c06044daf108eafaa083575202506f302cbfc9aeba2b8d"
-      },
-      "with_image": false,
-      "disable_ai_image": true,
-      "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ]
 }
