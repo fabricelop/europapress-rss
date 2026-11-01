@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T18:03:35.125883+00:00",
+  "updated_at": "2026-11-01T18:06:17.786431+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -93645,7 +93645,21 @@
       "editorial_grouping_checked_at": "2026-10-31T17:50:19.701748+00:00",
       "telegram_package_status": "published",
       "published_at": "2026-10-31T18:17:36.387659+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-01T18:06:17.786431+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Tras la revisión anterior hay novedades materiales del 31-O: el dispositivo en Cataluña terminó sin disturbios, con 2.264 identificados, y el 1-N se decretó prisión provisional para un presunto ideólogo de los altercados del 24-O.",
+      "red_review_sources": [
+        {
+          "url": "https://www.europapress.es/catalunya/noticia-parlon-eleva-2264-identificados-convocatorias-blocus-sabado-20261101100235.html"
+        },
+        {
+          "url": "https://www.europapress.es/catalunya/noticia-prision-provisional-presunto-ideologo-disturbios-24-octubre-barcelona-20261101140518.html"
+        },
+        {
+          "url": "https://www.rtve.es/noticias/20261101/blocus-barcelona-detenidos-1400-identificados/17295302.shtml"
+        }
+      ]
     },
     {
       "id": "listas-auto-f002da5c7fcb639fcffd",
@@ -196410,7 +196424,7 @@
       "revision": 0,
       "name": "Revisar novedades: Blocus",
       "rank": 21,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T17:59:47.210676+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -196438,7 +196452,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
-      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos"
+      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos",
+      "review_created_id": "trend-update-b6c2e842d295305cf677",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-01T18:06:17.786431+00:00",
+      "review_reason": "Tras la revisión anterior hay novedades materiales del 31-O: el dispositivo en Cataluña terminó sin disturbios, con 2.264 identificados, y el 1-N se decretó prisión provisional para un presunto ideólogo de los altercados del 24-O."
     },
     {
       "id": "red-review-0a921ac388344c58f273",
@@ -196505,6 +196523,42 @@
       "continuity_update": true,
       "distinct_episode": false,
       "new_facts": "Francisco José Garzón pidió al operador de Atocha que se aísle de la prensa y espere a que se conozca la verdad; Jesús Domínguez, portavoz de la Plataforma Víctimas Alvia 04155, reclamó aprender de Angrois y revisar los fallos de seguridad que, a juicio de la plataforma, siguen siendo relevantes tras Urda.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-b6c2e842d295305cf677",
+      "revision": 0,
+      "name": "Blocus",
+      "rank": 21,
+      "status": "explained",
+      "requested_at": "2026-11-01T18:06:17.786431+00:00",
+      "explained_at": "2026-11-01T18:06:17.786431+00:00",
+      "updated_at": "2026-11-01T18:06:17.786431+00:00",
+      "explanation": "TT#21 Blocus sigue siendo tendencia por las novedades tras el 31-O: Cataluña registró 2.264 identificados sin disturbios y un juez mandó a prisión provisional a un presunto ideólogo del 24-O.\n#Blocus #31Octubre\n🌶️ Hubo más controles que disturbios.",
+      "closer_text": "🌶️ Hubo más controles que disturbios.",
+      "verification_sources": [
+        {
+          "url": "https://www.europapress.es/catalunya/noticia-parlon-eleva-2264-identificados-convocatorias-blocus-sabado-20261101100235.html"
+        },
+        {
+          "url": "https://www.europapress.es/catalunya/noticia-prision-provisional-presunto-ideologo-disturbios-24-octubre-barcelona-20261101140518.html"
+        },
+        {
+          "url": "https://www.rtve.es/noticias/20261101/blocus-barcelona-detenidos-1400-identificados/17295302.shtml"
+        }
+      ],
+      "originated_from_prior_id": "trend-update-4a9b908648388275064e",
+      "trend_names": [
+        "Blocus"
+      ],
+      "red_review_job_id": "red-review-4aa776ef0f7aa6c9554d",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Cataluña contabilizó 2.264 identificados por las convocatorias de Blocus del 31-O sin disturbios; además, el Juzgado de Instrucción 14 de Barcelona decretó prisión provisional, comunicada y sin fianza para un detenido considerado presunto ideólogo de los altercados del 24-O.",
       "with_image": true,
       "disable_ai_image": false,
       "editorial_grouping_state": "pending",
