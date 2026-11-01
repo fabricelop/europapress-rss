@@ -3,44 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T185500+0100",
-  "previous_run_id": "tr-1793553845285-manual",
-  "status": "success",
-  "phase": "investigating",
-  "started_at": "2026-11-01T18:55:00+01:00",
-  "updated_at": "2026-11-01T18:59:05+01:00",
-  "finished_at": "2026-11-01T18:34:30+01:00",
+  "run_id": "tr-1793555992698-manual",
+  "previous_run_id": "tr-chat-20261101T185500+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T19:00:00+01:00",
+  "updated_at": "2026-11-01T19:00:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 3,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "536b6cb3934c",
     "affd096f80ce",
     "d8bedf30339e"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-4aa776ef0f7aa6c9554d",
+    "red-review-0a921ac388344c58f273"
+  ],
+  "remaining_active_ids": [
+    "red-review-4aa776ef0f7aa6c9554d",
+    "red-review-0a921ac388344c58f273"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 10,
-    "observed": 10,
-    "closed": 10,
-    "explained": 8,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 2,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 10
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1514,7 +1503,7 @@
     "message": "Pasada cerrada 10/10 por ejecución y convergencia JIT: 8 reelaboraciones manuales quedaron explicadas y verificadas en requests + Listas; las dos revisiones tardías de #laSextaXplica y Toledo quedaron review_completed/stale sin sobrescribir snapshots superados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 10/10 por ejecución y convergencia JIT: 8 reelaboraciones manuales quedaron explicadas y verificadas en requests + Listas; las dos revisiones tardías de #laSextaXplica y Toledo quedaron review_completed/stale sin sobrescribir snapshots superados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 2 revisiones review_red preparing observadas en main (Blocus y Angrois), con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2681,6 +2670,13 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada manual cerrada 0/0 tras refrescar el Top 30 y releer main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T19:00:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793555992698-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 2 revisiones review_red preparing observadas en main (Blocus y Angrois), con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
