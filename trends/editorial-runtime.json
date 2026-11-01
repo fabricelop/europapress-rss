@@ -3,31 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793529122070-manual",
-  "previous_run_id": "tr-chat-20261101T1125+0100",
+  "run_id": "tr-1793529403772-manual",
+  "previous_run_id": "tr-1793529122070-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T11:32:00+01:00",
-  "updated_at": "2026-11-01T11:32:00+01:00",
+  "started_at": "2026-11-01T11:36:43.772+01:00",
+  "updated_at": "2026-11-01T11:38:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
-  "trend_id": "listas-auto-8b2332b27503a8491151",
+  "total": 1,
+  "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
   "title": "Agrupación automática de Listas",
   "queue_complete": false,
-  "processed_ids": [
-    "9be0fd1f462c"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [
-    "listas-auto-8b2332b27503a8491151",
-    "red-review-26695e1ca8ee103d072d",
-    "red-review-c5cd03846ddf00f44455"
+    "listas-auto-4af3a50ea6a6cbe196b7"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
+    "attempted": 1,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -36,7 +32,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1383,6 +1379,14 @@
       "trend_id": "listas-auto-8b2332b27503a8491151",
       "title": "Agrupación automática de Listas",
       "message": "Inicio de pasada manual: 3 trabajos preparing vigentes en main (1 group_listas y 2 review_red), todos solicitados a las 10:31:57Z. Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T11:38:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793529403772-manual",
+      "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio de pasada manual: se observó 1 group_listas preparing en main y desapareció antes de la validación JIT; verificando convergencia real. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -1477,7 +1481,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T11:31:20+01:00",
+  "last_started_at": "2026-11-01T11:36:43.772+01:00",
   "last_completed_at": "2026-11-01T11:31:21+01:00",
   "last_run": {
     "run_id": "tr-1793527734709-manual",
@@ -1498,7 +1502,7 @@
     "incidents": 0
   },
   "source": "manual",
-  "message": "Pasada completada 1/1 por convergencia JIT: la revisión Toledo fue aplicada como review_completed/stale porque el estado editorial ya había sido superado. Cola final 0 y sin rewrite_pending/reexplain. Sin ImageGen ni publicaciones.",
+  "message": "Inicio de pasada manual: se observó 1 group_listas preparing en main y desapareció antes de la validación JIT; verificando convergencia real. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2055,6 +2059,14 @@
       "trend_id": "red-review-59f90d990dadda2724b7",
       "title": "Revisar novedades: Toledo",
       "message": "Revisando novedades de Toledo: contraste posterior al 28/10 confirma cambios materiales en balance e investigación; preparando resultado de mantenimiento, sin ImageGen."
+    },
+    {
+      "at": "2026-11-01T11:38:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793529403772-manual",
+      "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio de pasada manual: se observó 1 group_listas preparing en main y desapareció antes de la validación JIT; verificando convergencia real. Sin ImageGen ni publicación."
     }
   ],
   "history": [
