@@ -250,7 +250,7 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'MARKETING_VERSION: "0.4.46"' in project
 assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
@@ -312,7 +312,7 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'MARKETING_VERSION: "0.4.46"' in project
 assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
@@ -466,11 +466,11 @@ assert 'quickLink("Proyecto TT", "folder"' in actions
 assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL, trend?.siteImageURL' in actions
-assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'MARKETING_VERSION: "0.4.46"' in project
 assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
-# 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
+# 0.4.46: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
 assert 'TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V7' in actions
 assert 'TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V7 — GAG + WEB + APP' in actions
 assert 'TTITTULARES_MANUAL_IMAGE_AND_WEB_V1' in actions
@@ -487,6 +487,6 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'MARKETING_VERSION: "0.4.46"' in project
 assert 'CURRENT_PROJECT_VERSION: "53"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
