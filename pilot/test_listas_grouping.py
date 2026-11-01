@@ -168,4 +168,63 @@ class ListasGroupingTests(unittest.TestCase):
         self.state[m.DECISIONS]['items'][0]['updated_at']=self.now.isoformat()
         self.assertNotIn('a123',m.eligible(self.state,self.now))
 
+    def test_remove_all_trends_in_one_nonpublished_decision_independent_of_color(self):
+        state,_=m.apply_result(self.requested(),self.result(),self.now)
+        # a: green, b: yellow, c: red; a/b: purple covered originals;
+        # the fourth card is the joint summary. All must be eligible.
+        for path,field in ((m.MANUAL,'items'),(m.REQUESTS,'requests')):
+            for row in state[path][field]:
+                if row['id']=='b123':
+                    row['explained_at']=(self.now-timedelta(hours=15)).isoformat()
+                if row['id']=='c123':
+                    row['explained_at']=(self.now-timedelta(hours=30)).isoformat()
+        joint=state[m.MANUAL]['items'][-1]['id']
+        state[m.DELIVERIES]['items']=[{'event_id':'c123','revision':1,'status':'sent'}]
+        snapshot={row['id']:copy.deepcopy(row) for row in state[m.MANUAL]['items']}
+        command={'project':'ttendencias','decision':'remove_all_trends',
+                 'request_id':'52345678-1234-4234-8234-123456789abc',
+                 'items':[{'id':row['id'],'revision':row['revision']}
+                          for row in state[m.MANUAL]['items']]}
+        result,_=m.request(state,command,self.now)
+        self.assertEqual(result[m.RECEIPTS]['items'][-1]['status'],'applied')
+        self.assertEqual(result[m.RECEIPTS]['items'][-1]['removed_count'],4)
+        self.assertEqual(result[m.DELIVERIES]['items'][0]['status'],'deleted')
+        for row in result[m.MANUAL]['items']:
+            with self.subTest(row=row['id']):
+                old=snapshot[row['id']]
+                self.assertEqual(row['status'],'deleted')
+                self.assertEqual(row['explanation'],old['explanation'])
+                self.assertEqual(row['explained_at'],old['explained_at'])
+                self.assertEqual(row['revision'],old['revision'])
+                self.assertEqual(row.get('covered_by_id'),old.get('covered_by_id'))
+                self.assertEqual(row.get('listas_group_members'),old.get('listas_group_members'))
+        self.assertIn(joint,result[m.RECEIPTS]['items'][-1]['removed_ids'])
+        self.assertEqual({x['status'] for x in result[m.DECISIONS]['items']},{'deleted'})
+        self.assertEqual(m.request(result,command,self.now),(result,False))
+
+    def test_remove_all_rejects_stale_duplicate_or_invalid_selection_atomically(self):
+        for edit in ('stale', 'duplicate', 'unknown', 'empty'):
+            with self.subTest(edit=edit):
+                cmd={**self.payload,'decision':'remove_all_trends',
+                     'request_id':'62345678-1234-4234-8234-123456789abc'}
+                items=[{'id':x,'revision':1} for x in ['a123','b123','c123']]
+                if edit=='stale': items[1]['revision']=2
+                if edit=='duplicate': items[2]=copy.deepcopy(items[1])
+                if edit=='unknown': items[2]['id']='unknown'
+                if edit=='empty': items=[]
+                cmd['items']=items
+                result,_=m.request(self.state,cmd,self.now)
+                self.assertEqual(result[m.RECEIPTS]['items'][-1]['status'],'rejected')
+                for path in (m.MANUAL,m.REQUESTS,m.DECISIONS,m.DELIVERIES):
+                    self.assertEqual(result[path],self.state[path])
+
+    def test_remove_all_only_selected_snapshot_does_not_touch_new_arrivals(self):
+        cmd={'project':'ttendencias','decision':'remove_all_trends',
+             'request_id':'72345678-1234-4234-8234-123456789abc',
+             'items':[{'id':'a123','revision':1},{'id':'b123','revision':1}]}
+        result,_=m.request(self.state,cmd,self.now)
+        status={x['id']:x['status'] for x in result[m.MANUAL]['items']}
+        self.assertEqual(status,{'a123':'deleted','b123':'deleted','c123':'explained'})
+        self.assertEqual(result[m.RECEIPTS]['items'][-1]['removed_ids'],['a123','b123'])
+
 if __name__=='__main__':unittest.main()
