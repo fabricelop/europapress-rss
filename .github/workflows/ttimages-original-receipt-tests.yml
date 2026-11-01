@@ -7,6 +7,7 @@ on:
       - 'windows/TTiTTularesDedicatedListener.ps1'
       - 'windows/TT-AutoUpdater.ps1'
       - 'windows/Diagnosticar-TTImages-Asociacion-Safe.ps1'
+      - 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1'
       - 'windows/tests/test_headline_original_receipt.cjs'
       - 'windows/tests/test_trend_durable_original.cjs'
       - 'windows/TTendenciasWebImages.cjs'
@@ -79,17 +80,26 @@ jobs:
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/TT-AutoUpdater.ps1
             /windows/Diagnosticar-TTImages-Asociacion-Safe.ps1
+            /windows/Install-TTImages-Noticias-Receptor-Safe.ps1
             /windows/TTiTTularesWebImages.cjs
       - name: Sintaxis PowerShell sin ejecutar ni reiniciar procesos
         shell: powershell
         run: |
-          foreach($p in @('windows/TTiTTularesDedicatedListener.ps1','windows/TT-AutoUpdater.ps1','windows/Diagnosticar-TTImages-Asociacion-Safe.ps1')){
+          foreach($p in @('windows/TTiTTularesDedicatedListener.ps1','windows/TT-AutoUpdater.ps1','windows/Diagnosticar-TTImages-Asociacion-Safe.ps1','windows/Install-TTImages-Noticias-Receptor-Safe.ps1')){
             $tokens=$null; $errors=$null
             [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errors)|Out-Null
             if($errors.Count){throw "PowerShell inválido: $p"}
           }
           $updater=Get-Content 'windows/TT-AutoUpdater.ps1' -Raw
           if(-not $updater.Contains('TTiTTularesWebImages.cjs')){throw "Receptor ausente del auto-updater"}
+          $stage=Get-Content 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1' -Raw
+          if($stage -notmatch '\[switch\]\$Apply' -or $stage -notmatch 'if\(-not \$Apply\)'){
+            throw 'Instalador debe exigir -Apply'
+          }
+          if($stage -match 'Start-Process|Stop-Process|Restart-Service|git push|ImageGen'){
+            throw 'Instalador tiene operaciones no permitidas'
+          }
+          if($stage -match 'ToHexString|HashData\('){throw 'Instalador incompatible con Windows PowerShell 5.1'}
           $diagnostic=Get-Content 'windows/Diagnosticar-TTImages-Asociacion-Safe.ps1' -Raw
           if($diagnostic -match '(?im)^\s*(Remove-Item|Set-Content|Add-Content|Start-Process|Stop-Process|Restart-Computer|Invoke-Expression|git push)\b'){
             throw 'Diagnóstico contiene una operación prohibida'
