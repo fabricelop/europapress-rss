@@ -48,3 +48,26 @@ test("Consumer is a receiver only, never posts a second generation prompt",()=>{
  assert(backend.includes("upload_sha256"));
  assert(backend.includes('["DONE","PERSISTING"].includes'));
 });
+
+
+test("Original raster survives an outage, can be reused and rejects cross-news tampering",()=>{
+ const os=require("node:os"),crypto=require("node:crypto");
+ const temp=fs.mkdtempSync(path.join(os.tmpdir(),"ttimages-receipt-"));
+ try{
+   const raw=Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(15000,121)]);
+   const raster={ready:true,width:1536,height:864,dataUrl:"data:image/png;base64,"+raw.toString("base64")};
+   const first=mod.cacheRaster(base,raster,temp);
+   assert.equal(first.sha256,crypto.createHash("sha256").update(raw).digest("hex"));
+   assert.equal(first.source,"durable_local");
+   assert.equal(mod.loadCachedOriginal(base,temp).dataUrl,raster.dataUrl);
+   assert.equal(mod.cacheRaster(base,raster,temp).sha256,first.sha256);
+   assert.throws(()=>mod.loadCachedOriginal({...base,target_id:"cross-news"},temp),/original_context_mismatch/);
+   assert.throws(()=>mod.cacheRaster(base,{...raster,dataUrl:"data:image/png;base64,"+
+     Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(15000,120)]).toString("base64")},temp),/original_collision_same_command/);
+   const metaPath=path.join(temp,base.command_id+".json");
+   const meta=JSON.parse(fs.readFileSync(metaPath));
+   const imgPath=path.join(temp,base.command_id+"-"+meta.sha256+".png");
+   fs.appendFileSync(imgPath,Buffer.from("tampered"));
+   assert.throws(()=>mod.loadCachedOriginal(base,temp),/original_bytes_integrity_failed/);
+ }finally{fs.rmSync(temp,{recursive:true,force:true});}
+});
