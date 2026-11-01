@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793493958991-manual",
   "previous_run_id": "tr-1793493836050-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T01:56:00+01:00",
-  "updated_at": "2026-11-01T01:56:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T01:58:00+01:00",
+  "finished_at": "2026-11-01T01:58:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -645,69 +645,47 @@
       "at": "2026-11-01T01:56:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-1793493958991-manual: cola compacta inicial 0. Verificando main, preparing/update y rewrite_pending antes del cierre; sin ImageGen ni publicación."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "listas-auto-d4eed9cf53f94dcf03a6",
-      "revision": 0,
-      "status": "grouping_completed",
-      "groups_created": 1,
-      "created_ids": [
-        "listas-joint-b43dbd00ac0d1380"
-      ],
-      "members": [
-        {
-          "id": "beb5f267e132",
-          "revision": 0
-        },
-        {
-          "id": "7c83e4ed846c",
-          "revision": 0
-        }
-      ]
     },
     {
-      "id": "red-review-2fd64dafac53753fd63c",
-      "revision": 0,
-      "status": "review_completed",
-      "review_outcome": "stale"
+      "at": "2026-11-01T01:58:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y no se detecta rewrite_pending:true. Sin trabajo editorial pendiente."
     },
     {
-      "id": "red-review-db4f143e84b1a39c2c0d",
-      "revision": 0,
-      "status": "review_completed",
-      "review_outcome": "stale"
+      "at": "2026-11-01T01:58:00+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-1793493958991-manual. Sin ImageGen, sin publicación y sin cambios de texto."
     }
   ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T01:44:00+01:00",
-  "last_completed_at": "2026-11-01T01:48:00+01:00",
+  "last_started_at": "2026-11-01T01:56:00+01:00",
+  "last_completed_at": "2026-11-01T01:58:00+01:00",
   "last_run": {
-    "run_id": "tr-1793493836050-manual",
+    "run_id": "tr-1793493958991-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T01:44:00+01:00",
-    "finished_at": "2026-11-01T01:48:00+01:00",
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "started_at": "2026-11-01T01:56:00+01:00",
+    "finished_at": "2026-11-01T01:58:00+01:00",
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
-    "grouping_requests": 1,
-    "groups_created": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
     "covered_by_existing": 0,
     "converged_concurrent": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "3/3 obligaciones cerradas: 1 agrupación aplicada (Hamilton + Lewis Hamilton) y 2 review_red cerradas stale por revalidación JIT. Cola final 0."
+    "note": "Pasada real 0/0: la relectura final de main no dejó preparing/update ni reexplicaciones pendientes."
   },
   "source": "chat",
-  "message": "Pasada editorial en curso: verificando barrera final de main; sin ImageGen ni publicación.",
+  "message": "Barrera final limpia: editorial-queue=0 y sin reexplicaciones pendientes detectadas. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
