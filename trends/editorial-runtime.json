@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T074000+0100",
-  "previous_run_id": "tr-chat-20261101T072900+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T07:40:00+01:00",
-  "updated_at": "2026-11-01T07:41:05+01:00",
-  "finished_at": "2026-11-01T07:41:05+01:00",
+  "run_id": "tr-chat-20261101T075500+0100",
+  "previous_run_id": "tr-chat-20261101T074000+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T07:55:00+01:00",
+  "updated_at": "2026-11-01T07:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -739,6 +739,12 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T072900+0100",
       "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T07:55:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T075500+0100",
+      "message": "Inicio tr-chat-20261101T075500+0100: cola compacta 0 en la lectura inicial. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
@@ -785,7 +791,7 @@
     }
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T07:40:00+01:00",
+  "last_started_at": "2026-11-01T07:55:00+01:00",
   "last_completed_at": "2026-11-01T07:41:05+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T074000+0100",
@@ -811,7 +817,7 @@
     "note": "Cola final 0; sin preparing/update ni rewrite_pending/reexplain. No se generaron imágenes ni se publicó."
   },
   "source": "chat",
-  "message": "Pasada completada 0/0. Barrera final de main a las 07:40:55: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones.",
+  "message": "Inicio tr-chat-20261101T075500+0100: cola compacta 0 en la lectura inicial. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1217,6 +1223,12 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T074000+0100",
       "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T07:55:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T075500+0100",
+      "message": "Inicio tr-chat-20261101T075500+0100: cola compacta 0 en la lectura inicial. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -1365,6 +1377,12 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada completada 0/0. Barrera final de main a las 07:40:55: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T07:55:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T075500+0100",
+      "message": "Inicio tr-chat-20261101T075500+0100: cola compacta 0 en la lectura inicial. Revalidando main, reexplicaciones y estado final; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
