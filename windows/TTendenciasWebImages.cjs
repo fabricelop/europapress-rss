@@ -457,7 +457,9 @@ async function consume(task){
   }
   // Never create capture tabs in the generator profile. Its renderer already
   // failed before submission in the incident; web delivery must not add churn.
-  const capture=await selectExistingBrowser();
+  let capture;
+  try{capture=await selectExistingBrowser();}
+  catch{return {status:'waiting',reason:'browser_unavailable_original_not_captured'};}
   const browser=capture.browser;let browserCDP,cdp,ownedTarget;
   try{
     let readTarget;
