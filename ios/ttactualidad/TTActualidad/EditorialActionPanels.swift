@@ -477,8 +477,9 @@ struct EditorialActions: View {
                 "mcp__TTendencias___TTActualidad__verify_trend_image. Si ya existe una imagen " +
                 "Site válida, no la sustituyas: omite attach y pasa al catálogo de iPhone " +
                 "para verificar/reparar ÚNICAMENTE la asociación existente.",
-            "4. Si el Site no tiene una imagen válida, adjunta SOLO el PNG ORIGINAL subido " +
-                "por el usuario mediante mcp__TTendencias___TTActualidad__attach_trend_image " +
+            "4. Si el Site no tiene una imagen válida, adjunta el PNG ORIGINAL disponible " +
+                "en ESTA conversación, generado aquí o aportado por el usuario, mediante " +
+                "mcp__TTendencias___TTActualidad__attach_trend_image " +
                 "con su parámetro file real y context EXACTO: project_id, target_id, name, " +
                 "revision, scope, explanation, explained_at. " +
                 "Un encargo antiguo del PC con status LAUNCHED sin entrega NO prohíbe " +
