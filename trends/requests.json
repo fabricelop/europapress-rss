@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T14:46:01.578895+00:00",
+  "updated_at": "2026-11-01T15:46:30+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -192925,26 +192925,23 @@
       "auto_queued": true,
       "auto_queue_scope": "top30",
       "updated_at": "2026-11-01T15:47:00+01:00",
-      "explained_at": "2026-11-01T15:47:00+01:00",
-      "last_attempt_at": "2026-11-01T15:47:00+01:00",
-      "explanation": "TT#20 Trent es tendencia porque es titular con el Real Madrid ante el Racing: ocupa el lateral derecho tras la baja de Valverde y por delante de Dumfries.\n#RacingRealMadrid #RealMadrid\n🌶️ Valverde deja hueco y Trent aprovecha el carril.",
-      "closer_text": "🌶️ Valverde deja hueco y Trent aprovecha el carril.",
+      "explained_at": "2026-11-01T15:46:30+01:00",
+      "last_attempt_at": "2026-11-01T15:46:30+01:00",
+      "explanation": "TT#20 Trent es tendencia porque es titular con el Real Madrid ante el Racing: ocupa el lateral derecho por la baja de Valverde y por delante de Dumfries.\n#RealMadrid #Racing\n🌶️ El lateral vuelve a tener carril para hacerse sitio.",
+      "closer_text": "🌶️ El lateral vuelve a tener carril para hacerse sitio.",
       "rank_at_explanation": 20,
       "category": "Deportes",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
+          "url": "https://cadenaser.com/nacional/2026/11/01/racing-de-santander-real-madrid-en-directo-el-partido-de-la-jornada-11-en-vivo-cadena-ser/"
+        },
+        {
           "url": "https://www.eldesmarque.com/futbol/liga-1a-division/20261101/alineaciones-confirmadas-racing-santander-real-madrid-laliga-ea-sports_18_020591234.html"
-        },
-        {
-          "url": "https://as.com/futbol/trent-y-dumfries-en-el-alambre-f202611-n/"
-        },
-        {
-          "url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/previas/racing-real-madrid-a-por-la-sexta-victoria-consecutiva-01-11-2026"
         }
       ],
-      "news_note": "Alineación confirmada del Racing-Real Madrid: Trent titular en el lateral derecho; Valverde es baja.",
+      "news_note": "Once confirmado del Real Madrid ante el Racing; Valverde es baja y Trent parte por delante de Dumfries.",
       "group_id": "grp-063f5299a90f",
       "explanation_group_id": "grp-063f5299a90f",
       "group_title": "Trent",
@@ -192955,17 +192952,20 @@
       "grouped_member_revisions": [
         {
           "id": "063f5299a90f",
+          "name": "Trent",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored",
+      "disable_ai_image": false
     },
     {
       "id": "caf37a6371a4",
@@ -193095,5 +193095,5 @@
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
-  "count": 605
+  "count": 615
 }
