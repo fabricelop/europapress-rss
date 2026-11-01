@@ -30638,7 +30638,13 @@
           "name": "Tusk",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "930473fae55b",
@@ -30679,14 +30685,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.pressdigital.es/images/showid/8204743",
+        "source": "www.pressdigital.es",
+        "source_url": "https://www.pressdigital.es/articulo/economia/2026-10-30/6072527-puente-remarca-oposicion-psoe-nunca-pidio-dimision-ana-pastor-accidente-angrois",
+        "alt": "Imagen de archivo relacionada con Ana Pastor",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.pressdigital.es/images/showid/8204743",
+        "source": "www.pressdigital.es",
+        "source_url": "https://www.pressdigital.es/articulo/economia/2026-10-30/6072527-puente-remarca-oposicion-psoe-nunca-pidio-dimision-ana-pastor-accidente-angrois",
+        "alt": "Imagen de archivo relacionada con Ana Pastor",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-01T01:04:00+01:00",
+  "updated_at": "2026-11-01T00:05:12.251515Z",
   "count": 512
 }
