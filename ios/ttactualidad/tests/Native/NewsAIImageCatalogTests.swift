@@ -68,6 +68,22 @@ final class NewsAIImageCatalogTests: XCTestCase {
             preparedAt: preparedAt, catalog: ["\(id):r1": entry(url: wrong)]))
     }
 
+    func testVerifiedTTImagesPipelineManifestPersistsWithStableNewsID() {
+        let url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/\(id)-r1-ai1.jpg"
+        let original = entry(url: url)
+        XCTAssertEqual(NewsAIImageCatalog.assigned(
+            id: id, revision: 1, editorialText: text,
+            preparedAt: preparedAt, catalog: ["\(id):r1": original])?.url.absoluteString,
+            url)
+        XCTAssertEqual(NewsAIImageCatalog.assigned(
+            id: id, revision: 2, editorialText: text + " nueva revisión",
+            preparedAt: "2026-11-02T12:00:00Z", catalog: ["\(id):r1": original])?.url.absoluteString,
+            url)
+        XCTAssertNil(NewsAIImageCatalog.assigned(
+            id: "unrelated", revision: 2, editorialText: text,
+            preparedAt: preparedAt, catalog: ["\(id):r1": original]))
+    }
+
     func testOnlyPipelineVerifiedAIImageCanAppearAutomatically() {
         let imageURL = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/\(id)-r1-ai1.jpg"
         let ai: [String: Any] = [
