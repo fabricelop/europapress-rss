@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793535000000-manual",
+  "run_id": "tr-1793535065891-manual",
   "previous_run_id": "tr-1793534122544-manual",
   "status": "RUNNING",
   "phase": "investigating",
-  "started_at": "2026-11-01T13:10:00+01:00",
-  "updated_at": "2026-11-01T13:12:00+01:00",
+  "started_at": "2026-11-01T13:11:05+01:00",
+  "updated_at": "2026-11-01T13:11:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
@@ -3046,10 +3046,17 @@
       "trend_id": "2480cbdd6701",
       "title": "Urda",
       "message": "Urda r0: outbox editorial creado y validado (<280 caracteres, closer vacío por suceso sensible). Verificando aplicación real en ambos registros y retirada de la revisión exacta."
+    },
+    {
+      "at": "2026-11-01T13:11:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793535065891-manual",
+      "status": "RUNNING",
+      "message": "Inicio de pasada manual real: 3 trabajos preparing observados en main (2 review_red y 1 anticipate). Se validará cada id+revision JIT; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": "radar-prepare-1bb8e2ac5b536dac98f1",
-  "current_title": "Radar · Mariah Carey"
+  "current_item": null,
+  "current_title": null
 }
