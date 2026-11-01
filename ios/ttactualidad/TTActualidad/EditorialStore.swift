@@ -49,8 +49,12 @@ struct TrendItem: Identifiable {
     let inListas: Bool
     let editorialID: String
     let revision: Int
+    // Immutable editorial identity for the original image, not the current request.
     let imageURL: URL?
     let sourceURL: URL?
+    var imageEditorialID: String = ""
+    var imageRevision: Int = 0
+    var explainedAtRaw: String = ""
 
     func ageBand(now: Date = Date()) -> Int {
         guard let lastExplained else { return 0 }
@@ -394,6 +398,8 @@ final class EditorialStore: ObservableObject {
                              explanation: str(row, "explanation"), lastExplained: explained,
                              status: "EXPLICADA", inListas: true,
                              editorialID: id, revision: rev,
+                             imageEditorialID: id, imageRevision: rev,
+                             explainedAtRaw: str(row, "explained_at"),
                              imageURL: ArchivePhotoCatalog.resolved(
                                  project: "ttendencias", id: id, revision: rev,
                                  image: URL(string: str(archive, "url")),
@@ -423,6 +429,8 @@ final class EditorialStore: ObservableObject {
                       explanation: str(row, "explanation"), lastExplained: when(row, ["explained_at"]),
                       status: "EN ELABORACIÓN", inListas: false,
                       editorialID: str(row, "id"), revision: int(row, "revision"),
+                      imageEditorialID: str(row, "id"), imageRevision: int(row, "revision"),
+                      explainedAtRaw: str(row, "explained_at"),
                       imageURL: nil, sourceURL: URL(string: str(row, "source_url")))
         }
         .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
@@ -492,6 +500,9 @@ final class EditorialStore: ObservableObject {
                              explanation: text, lastExplained: text.isEmpty ? nil : date,
                              status: status, inListas: readyNames.contains(key),
                              editorialID: editorialID, revision: revision,
+                             imageEditorialID: str(explanation, "id"),
+                             imageRevision: int(explanation, "revision"),
+                             explainedAtRaw: str(explanation, "explained_at"),
                              imageURL: ArchivePhotoCatalog.resolved(
                                  project: "ttendencias", id: editorialID,
                                  revision: revision, image: URL(string: str(archive, "url")),
