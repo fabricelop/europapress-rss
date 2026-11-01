@@ -1,146 +1,32 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T09:50:59.526494+00:00",
+  "updated_at": "2026-11-01T10:51:11+01:00",
   "count": 3,
   "items": [
     {
       "id": "listas-auto-0b9e1d1295f72d565ff2",
-      "revision": 0,
       "name": "Agrupación automática de Listas",
       "rank": 0,
       "status": "preparing",
       "requested_at": "2026-11-01T09:50:59.526494+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "group_listas",
-      "listas_grouping_request": true,
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
+      "red_review_request": null,
+      "review_source": null,
+      "review_error": null,
       "automatic_grouping": true,
-      "grouping_state": "pending",
-      "grouping_candidates": [
-        {
-          "id": "0ecf2a36f589",
-          "revision": 0,
-          "name": "La UCO",
-          "rank": 29,
-          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
-          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
-          "explained_at": "2026-10-30T16:20:00+01:00",
-          "verification_sources": [
-            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
-            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
-          ]
-        },
-        {
-          "id": "5e0d9fdf2cb2",
-          "revision": 0,
-          "name": "Feliz Sábado",
-          "rank": 30,
-          "explanation": "TT#30 Feliz Sábado aparece entre las tendencias de X en España durante este sábado y lleva horas entrando en las listas, sin que se haya podido confirmar un detonante concreto.",
-          "explanation_sha256": "2030035eece763e1b1f19fa63dd53790dc9ea80025f5b3ec830cf9a61a3e76bf",
-          "explained_at": "2026-10-31T23:58:00+01:00",
-          "verification_sources": [
-            {
-              "url": "https://trends24.in/spain/"
-            },
-            {
-              "url": "https://twitter-trends.snaplytics.io/spain/"
-            }
-          ]
-        },
-        {
-          "id": "33040b2b4b87",
-          "revision": 0,
-          "name": "Bezz",
-          "rank": 29,
-          "explanation": "TT#29 Bezz es tendencia por el GP de Malasia de MotoGP: “Bezz” se usa para Marco Bezzecchi, tercero en el Sprint y sexto en la carrera de Sepang.\n#MotoGP #MalaysianGP",
-          "explanation_sha256": "6e77cd8508039ca2e0e9df2f665d8cb4b0213c8b0d66d59841831fcc27b8a8c5",
-          "explained_at": "2026-11-01T10:40:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.diariodealmeria.es/deportes/marc-marquez-domina-principio-sepang_0_2008398110.html"
-            },
-            {
-              "url": "https://www.canariasdiario.com/noticia/152583/deportes/acosta-gana-el-sprint-de-sepang-por-delante-de-marc-marquez-y-bezzecchi.html"
-            }
-          ]
-        },
-        {
-          "id": "4d2666aaff55",
-          "revision": 0,
-          "name": "Mugello",
-          "rank": 25,
-          "explanation": "TT#25 Mugello aparece entre las tendencias mientras el circuito celebra hoy el cierre del ACI Racing Weekend y el Trofeo Città di Firenze de ciclocross. No está confirmado cuál de los dos eventos impulsa el término.\n#Mugello",
-          "explanation_sha256": "8e2a309412f62f28b85a2fe29c4a94fdeff9667066c8f3ca85f6c816bf143ec7",
-          "explained_at": "2026-11-01T10:40:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.mugellocircuit.com/en/"
-            },
-            {
-              "url": "https://www.mugellocircuit.com/en/news-records/1602-cyclocross-returns-to-mugello-circuit-6th-trofeo-citta-di-firenze-on-november-1st"
-            }
-          ]
-        },
-        {
-          "id": "95bf73f9295e",
-          "revision": 0,
-          "name": "Alsina",
-          "rank": 20,
-          "explanation": "TT#20 Alsina aparece entre las tendencias en plena conversación sobre el accidente ferroviario de Urda: Carlos Alsina ha informado desde la zona y reclamó responsabilidades políticas. No está confirmado que ese episodio impulse el término.\n#Urda",
-          "explanation_sha256": "e9ca3380dc59e51780fa60ac05de3067c16509f669560e409f7600720b0c7bf4",
-          "explained_at": "2026-11-01T10:40:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.ondacero.es/temas/alsina-1"
-            },
-            {
-              "url": "https://www.lasexta.com/noticias/nacional/alsina-pide-que-puente-haga-cargo-tragedia-toledo-continuidad-hara-mas-facil-que-accidente-use-campana_202610296ae28e28a5f83c2fb8e73738.html"
-            }
-          ]
-        },
-        {
-          "id": "0ba80b8e92a9",
-          "revision": 0,
-          "name": "Almudena",
-          "rank": 27,
-          "explanation": "TT#27 Almudena aparece entre las tendencias en pleno Día de Todos los Santos, con refuerzos de transporte, horario especial y actos de recuerdo en el Cementerio de La Almudena de Madrid.\n#TodosLosSantos #Madrid",
-          "explanation_sha256": "893cfb66e4944ab4e67fb7a215aadbc13f9664d47cf0c0fc9c97d066532d6a7e",
-          "explained_at": "2026-11-01T10:40:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-de-Madrid-despliega-un-extenso-dispositivo-de-servicios-municipales-para-la-festividad-de-Todos-los-Santos/?vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD&vgnextfmt=default&vgnextoid=02bcb6977b681a10VgnVCM100000891ecb1aRCRD"
-            },
-            {
-              "url": "https://www.europapress.es/madrid/noticia-floristerias-almudena-preparan-dia-santos-pese-perdida-tradicion-hay-reinventarse-20261031084449.html"
-            }
-          ]
-        },
-        {
-          "id": "236995aec110",
-          "revision": 0,
-          "name": "#CCubicos440",
-          "rank": 4,
-          "explanation": "TT#4 #CCubicos440 aparece entre las tendencias de España. No se ha podido confirmar qué ha impulsado la etiqueta.",
-          "explanation_sha256": "c8d2257d05dc75e275cf686ead86d658a85933f17a6704bc8e6e182f4056fe89",
-          "explained_at": "2026-11-01T10:40:57+01:00",
-          "verification_sources": []
-        },
-        {
-          "id": "81b41bdbc3ee",
-          "revision": 0,
-          "name": "#1DeNoviembre",
-          "rank": 19,
-          "explanation": "TT#19 #1DeNoviembre es tendencia por la conversación sobre el Día de Todos los Santos, que se celebra hoy con homenajes y visitas a cementerios en toda España.\n#TodosLosSantos",
-          "explanation_sha256": "0e71a7cec1f6acf196dd9e2353aba86657789bd2ed08f03197abddb9c685214f",
-          "explained_at": "2026-11-01T10:40:57+01:00",
-          "verification_sources": [
-            {
-              "url": "https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-de-Madrid-despliega-un-extenso-dispositivo-de-servicios-municipales-para-la-festividad-de-Todos-los-Santos/?vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD&vgnextfmt=default&vgnextoid=02bcb6977b681a10VgnVCM100000891ecb1aRCRD"
-            },
-            {
-              "url": "https://diario.madrid.es/blog/2026/10/29/todos-los-santos-2026-madrid-cementerios-horarios-autobuses/"
-            }
-          ]
-        }
-      ],
       "published_context": [
         {
           "id": "09fb9ff32c5a",
@@ -1748,23 +1634,176 @@
           ]
         }
       ],
-      "with_image": false,
-      "disable_ai_image": true,
+      "listas_grouping_request": true,
+      "grouping_candidates": [
+        {
+          "id": "0ecf2a36f589",
+          "revision": 0,
+          "name": "La UCO",
+          "rank": 29,
+          "explanation": "TT#29 La UCO es tendencia por nuevos informes del caso Leire que sostienen que se mantuvieron investigaciones internas sobre la unidad pese a que se había descartado que filtrara correos de Pedro Sánchez.\n#CasoLeire #GuardiaCivil",
+          "explanation_sha256": "2f0f3cf2e133e5c51fbdd77ac7a9c4a9644525ecd4633a2f3791be2924b9af08",
+          "explained_at": "2026-10-30T16:20:00+01:00",
+          "verification_sources": [
+            "https://www.canalextremadura.es/noticias/nacional/la-uco-niega-haber-filtrado-los-correos-de-pedro-sanchez",
+            "https://www.heraldo.es/noticias/nacional/2026/10/30/uco-certifica-pedraz-que-hubo-ordenes-para-poner-fin-investigacion-hermano-sanchez-2064210.html"
+          ]
+        },
+        {
+          "id": "5e0d9fdf2cb2",
+          "revision": 0,
+          "name": "Feliz Sábado",
+          "rank": 30,
+          "explanation": "TT#30 Feliz Sábado aparece entre las tendencias de X en España durante este sábado y lleva horas entrando en las listas, sin que se haya podido confirmar un detonante concreto.",
+          "explanation_sha256": "2030035eece763e1b1f19fa63dd53790dc9ea80025f5b3ec830cf9a61a3e76bf",
+          "explained_at": "2026-10-31T23:58:00+01:00",
+          "verification_sources": [
+            {
+              "url": "https://trends24.in/spain/"
+            },
+            {
+              "url": "https://twitter-trends.snaplytics.io/spain/"
+            }
+          ]
+        },
+        {
+          "id": "33040b2b4b87",
+          "revision": 0,
+          "name": "Bezz",
+          "rank": 29,
+          "explanation": "TT#29 Bezz es tendencia por el GP de Malasia de MotoGP: “Bezz” se usa para Marco Bezzecchi, tercero en el Sprint y sexto en la carrera de Sepang.\n#MotoGP #MalaysianGP",
+          "explanation_sha256": "6e77cd8508039ca2e0e9df2f665d8cb4b0213c8b0d66d59841831fcc27b8a8c5",
+          "explained_at": "2026-11-01T10:40:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.diariodealmeria.es/deportes/marc-marquez-domina-principio-sepang_0_2008398110.html"
+            },
+            {
+              "url": "https://www.canariasdiario.com/noticia/152583/deportes/acosta-gana-el-sprint-de-sepang-por-delante-de-marc-marquez-y-bezzecchi.html"
+            }
+          ]
+        },
+        {
+          "id": "4d2666aaff55",
+          "revision": 0,
+          "name": "Mugello",
+          "rank": 25,
+          "explanation": "TT#25 Mugello aparece entre las tendencias mientras el circuito celebra hoy el cierre del ACI Racing Weekend y el Trofeo Città di Firenze de ciclocross. No está confirmado cuál de los dos eventos impulsa el término.\n#Mugello",
+          "explanation_sha256": "8e2a309412f62f28b85a2fe29c4a94fdeff9667066c8f3ca85f6c816bf143ec7",
+          "explained_at": "2026-11-01T10:40:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.mugellocircuit.com/en/"
+            },
+            {
+              "url": "https://www.mugellocircuit.com/en/news-records/1602-cyclocross-returns-to-mugello-circuit-6th-trofeo-citta-di-firenze-on-november-1st"
+            }
+          ]
+        },
+        {
+          "id": "95bf73f9295e",
+          "revision": 0,
+          "name": "Alsina",
+          "rank": 20,
+          "explanation": "TT#20 Alsina aparece entre las tendencias en plena conversación sobre el accidente ferroviario de Urda: Carlos Alsina ha informado desde la zona y reclamó responsabilidades políticas. No está confirmado que ese episodio impulse el término.\n#Urda",
+          "explanation_sha256": "e9ca3380dc59e51780fa60ac05de3067c16509f669560e409f7600720b0c7bf4",
+          "explained_at": "2026-11-01T10:40:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.ondacero.es/temas/alsina-1"
+            },
+            {
+              "url": "https://www.lasexta.com/noticias/nacional/alsina-pide-que-puente-haga-cargo-tragedia-toledo-continuidad-hara-mas-facil-que-accidente-use-campana_202610296ae28e28a5f83c2fb8e73738.html"
+            }
+          ]
+        },
+        {
+          "id": "0ba80b8e92a9",
+          "revision": 0,
+          "name": "Almudena",
+          "rank": 27,
+          "explanation": "TT#27 Almudena aparece entre las tendencias en pleno Día de Todos los Santos, con refuerzos de transporte, horario especial y actos de recuerdo en el Cementerio de La Almudena de Madrid.\n#TodosLosSantos #Madrid",
+          "explanation_sha256": "893cfb66e4944ab4e67fb7a215aadbc13f9664d47cf0c0fc9c97d066532d6a7e",
+          "explained_at": "2026-11-01T10:40:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-de-Madrid-despliega-un-extenso-dispositivo-de-servicios-municipales-para-la-festividad-de-Todos-los-Santos/?vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD&vgnextfmt=default&vgnextoid=02bcb6977b681a10VgnVCM100000891ecb1aRCRD"
+            },
+            {
+              "url": "https://www.europapress.es/madrid/noticia-floristerias-almudena-preparan-dia-santos-pese-perdida-tradicion-hay-reinventarse-20261031084449.html"
+            }
+          ]
+        },
+        {
+          "id": "236995aec110",
+          "revision": 0,
+          "name": "#CCubicos440",
+          "rank": 4,
+          "explanation": "TT#4 #CCubicos440 aparece entre las tendencias de España. No se ha podido confirmar qué ha impulsado la etiqueta.",
+          "explanation_sha256": "c8d2257d05dc75e275cf686ead86d658a85933f17a6704bc8e6e182f4056fe89",
+          "explained_at": "2026-11-01T10:40:57+01:00",
+          "verification_sources": []
+        },
+        {
+          "id": "81b41bdbc3ee",
+          "revision": 0,
+          "name": "#1DeNoviembre",
+          "rank": 19,
+          "explanation": "TT#19 #1DeNoviembre es tendencia por la conversación sobre el Día de Todos los Santos, que se celebra hoy con homenajes y visitas a cementerios en toda España.\n#TodosLosSantos",
+          "explanation_sha256": "0e71a7cec1f6acf196dd9e2353aba86657789bd2ed08f03197abddb9c685214f",
+          "explained_at": "2026-11-01T10:40:57+01:00",
+          "verification_sources": [
+            {
+              "url": "https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/El-Ayuntamiento-de-Madrid-despliega-un-extenso-dispositivo-de-servicios-municipales-para-la-festividad-de-Todos-los-Santos/?vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD&vgnextfmt=default&vgnextoid=02bcb6977b681a10VgnVCM100000891ecb1aRCRD"
+            },
+            {
+              "url": "https://diario.madrid.es/blog/2026/10/29/todos-los-santos-2026-madrid-cementerios-horarios-autobuses/"
+            }
+          ]
+        }
+      ],
+      "grouping_state": "pending",
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Agrupación automática de Listas"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "request_source": "editorial_maintenance",
-      "rewrite_instruction": "Comprueba el mismo acontecimiento; agrupa solo coincidencias verificadas. Compara también las publicaciones previas. Conserva originales. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     },
     {
       "id": "red-review-2c39bbbdb347acb280c8",
-      "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 3,
       "status": "preparing",
       "requested_at": "2026-11-01T09:50:59.526494+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "review_red",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
       "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
       "review_source": {
         "id": "24d64469c94e",
         "revision": 0,
@@ -1780,22 +1819,53 @@
         ],
         "fingerprint": "112eb948a5c209b81fac07a180a1b5789fc24256ce3abff36bf0287e6e4c4ffd"
       },
-      "with_image": false,
-      "disable_ai_image": true,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Revisar novedades: Toledo"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     },
     {
       "id": "red-review-b9480e99ceb0de1ae281",
-      "revision": 0,
       "name": "Revisar novedades: Día de Todos",
       "rank": 5,
       "status": "preparing",
       "requested_at": "2026-11-01T09:50:59.526494+00:00",
+      "revision": 0,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "reexplain": false,
+      "rewrite_with_image": false,
+      "with_image": false,
+      "disable_ai_image": true,
+      "image_strategy": null,
+      "selected_tweet_image": null,
       "task": "review_red",
+      "anticipation_request": false,
+      "anticipated_name": null,
+      "anticipation_signal": null,
+      "anticipation_origin_id": null,
+      "anticipation_draft": null,
       "red_review_request": true,
-      "review_color": "roja",
-      "review_priority": 0,
       "review_source": {
         "id": "83aa70bdac40",
         "revision": 0,
@@ -1810,10 +1880,31 @@
         ],
         "fingerprint": "aa43573fb3eca7dedb7366603a9356e161b6c3640f389b032147aac251bb9fe7"
       },
-      "with_image": false,
-      "disable_ai_image": true,
+      "review_error": null,
+      "automatic_grouping": null,
+      "published_context": null,
+      "listas_grouping_request": false,
+      "grouping_candidates": [],
+      "grouping_state": null,
+      "grouping_error": null,
+      "tremending_origin": false,
+      "tremending_id": null,
+      "article_title": null,
+      "source_url": null,
+      "selected_tweet": null,
+      "batch_id": null,
+      "requested_together": [
+        "Revisar novedades: Día de Todos"
+      ],
+      "captured_with": [],
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "anticipated": false,
+      "anticipated_at": null,
+      "anticipated_best_rank": null,
+      "anticipated_social_source_count": 0,
+      "anticipated_news_source_count": 0,
+      "anticipated_news_title": "",
+      "anticipated_entered_top10_at": null
     }
   ]
 }
