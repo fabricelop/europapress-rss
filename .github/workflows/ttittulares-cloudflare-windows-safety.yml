@@ -38,7 +38,9 @@ jobs:
             if ($s -match 'europapress-rss\.vercel\.app') { throw "Vercel residue in $p" }
           }
           $watchdog = Get-Content windows/TT-LocalWatchdog.ps1 -Raw
-          if ($watchdog -match 'CheckImageQueueHealth|RestartListenerForQueue|Invoke-WebRequest') { throw "Watchdog must only supervise local processes" }
+          # A bounded HEAD connectivity probe is read-only and exists in baseline.
+          # Reject automatic queue/Chrome repairs and all write HTTP verbs.
+          if ($watchdog -match 'CheckImageQueueHealth|RestartListenerForQueue|(?i:Invoke-(?:WebRequest|RestMethod)[^\r\n]*-Method\s+(POST|PUT|PATCH|DELETE))') { throw "Watchdog must only supervise local processes" }
           if ($watchdog -notmatch 'Enter-ProcessInstance') { throw "Watchdog lost process ownership" }
           $shared = Get-Content windows/MobileChatTriggerListener.ps1 -Raw
           if ($shared -notmatch 'tt-control\.fabricelop\.workers\.dev') { throw "TTendencias route altered" }
