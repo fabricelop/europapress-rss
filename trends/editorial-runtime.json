@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793533253097-manual",
+  "run_id": "tr-1793533354993-manual",
   "previous_run_id": "tr-chat-20261101T124000+0100",
-  "status": "success",
-  "phase": "persisting",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-11-01T12:41:20+01:00",
-  "updated_at": "2026-11-01T12:45:12+01:00",
+  "updated_at": "2026-11-01T12:45:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
+  "current": 1,
+  "total": 3,
   "trend_id": "2480cbdd6701",
   "title": "Urda",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "2b20f3e40801",
     "5b13bbe6ae22"
@@ -2088,6 +2088,15 @@
       "trend_id": "2480cbdd6701",
       "title": "Urda",
       "message": "Urda r0: outbox editorial creado y validado (<280 caracteres, closer vacío por suceso sensible). Verificando aplicación real en ambos registros y retirada de la revisión exacta."
+    },
+    {
+      "at": "2026-11-01T12:45:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793533354993-manual",
+      "status": "RUNNING",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio efectivo de la pasada: snapshot inicial 3 items; Urda r0 ya convergió por una ejecución concurrente válida. Quedan Alavés r0 y Adif r0, revalidados en main para investigación. Sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -2874,5 +2883,7 @@
       "outcome": "unchanged",
       "applied": true
     }
-  ]
+  ],
+  "current_item": null,
+  "current_title": null
 }
