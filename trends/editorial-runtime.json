@@ -3,25 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T091043+0100",
-  "previous_run_id": "tr-chat-20261101T084115+0100",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-01T09:10:43+01:00",
-  "updated_at": "2026-11-01T09:11:53+01:00",
-  "finished_at": "2026-11-01T09:11:53+01:00",
+  "run_id": "tr-1793521834896-manual",
+  "previous_run_id": "tr-chat-20261101T091043+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T09:31:35+01:00",
+  "updated_at": "2026-11-01T09:31:35+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "b622600f47d4",
+  "title": "#FelizDomingo",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "b622600f47d4",
+    "7084b3e15859"
+  ],
+  "remaining_active_ids": [
+    "b622600f47d4",
+    "7084b3e15859"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -30,20 +36,15 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "scope": "health-status",
-      "reason": "El chequeo de salud de TTendencias informa 201 estados inválidos en request_queue. editorial_queue permanece sana con 0 pendientes; la incidencia no bloquea esta pasada editorial."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -913,6 +914,13 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T091043+0100",
       "message": "TTendencias cerrada 0/0. Sin ImageGen ni publicación. Incidencia auxiliar: health-status detecta 201 estados inválidos en request_queue; editorial_queue sigue sana y vacía."
+    },
+    {
+      "at": "2026-11-01T09:31:35+01:00",
+      "phase": "preparing",
+      "trend_id": "b622600f47d4",
+      "title": "#FelizDomingo",
+      "message": "Inicio tr-1793521834896-manual: 2 reelaboraciones preparing vigentes (#FelizDomingo r0 y Día de Todos r0). Revalidación JIT e investigación desde cero; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
