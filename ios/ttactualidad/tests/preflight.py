@@ -167,7 +167,7 @@ assert '"No publicado · Quitar de Listas"' in actions
 covered_actions = actions.split('if let trend, trend.isCovered {', 1)[1].split('} else if let news', 1)[0]
 assert 'quickButton("Quitar de Listas"' in covered_actions
 assert 'quickButton("Volver a evaluar", "arrow.triangle.2.circlepath")' in covered_actions
-# 0.4.37: one explicit non-publication batch for every trend in Listas.
+# 0.4.38: one explicit non-publication batch for every trend in Listas.
 assert 'Label("Retirar todas las tendencias (' in dashboard
 assert 'private var allTrends: [TrendItem]' in dashboard
 assert 'store.snapshot.trendListas.filter(\\.inListas)' in dashboard
@@ -245,11 +245,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.37"' in project
-assert 'CURRENT_PROJECT_VERSION: "43"' in project
+assert 'MARKETING_VERSION: "0.4.38"' in project
+assert 'CURRENT_PROJECT_VERSION: "44"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.37: remove image deletion UI/API and trend→news UI. Keep news functionality.
+# 0.4.38: remove image deletion UI/API and trend→news UI. Keep news functionality.
 assert 'quickButton("Enviar a TTiTTulares"' not in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' not in actions
 assert 'originTrend: trend' not in actions
@@ -278,7 +278,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "43"' in project
+assert 'CURRENT_PROJECT_VERSION: "44"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -290,7 +290,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "43"' in project
+assert 'CURRENT_PROJECT_VERSION: "44"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -306,8 +306,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.37"' in project
-assert 'CURRENT_PROJECT_VERSION: "43"' in project
+assert 'MARKETING_VERSION: "0.4.38"' in project
+assert 'CURRENT_PROJECT_VERSION: "44"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -362,7 +362,7 @@ assert 'quickButton("Copiar imagen Site", "square.on.square")' in actions
 assert 'quickButton("Abrir chat TT", "plus.bubble")' in actions
 assert 'copyTrendSiteImagePrompt()' in actions
 assert 'openTTProject()' in actions
-assert 'TTENDENCIAS_SITE_IMAGE_V4' in actions
+assert 'TTENDENCIAS_SITE_ATTACH_EXISTING_V1' in actions
 assert 'attach_trend_image' in actions and 'verify_trend_image' in actions
 assert 'inspect_top30_images' in actions
 for token in ('siteImageEditorialID', 'siteImageRevision', 'siteImageExplainedAt'):
@@ -370,7 +370,18 @@ for token in ('siteImageEditorialID', 'siteImageRevision', 'siteImageExplainedAt
 assert 'UserDefaults.standard.set(url.absoluteString' in actions
 assert 'url.path.hasPrefix("/g/g-p-")' in actions
 assert 'guard let leader = store.snapshot.trendListas.first' in actions
-assert 'No se puede crear un prompt seguro.' in actions
+assert 'Esta ficha aún no tiene identidad editorial completa' in actions
+assert 'PENDIENTE DE EXPLICACIÓN' in actions
+assert 'site-term-' in actions and 'scope term' in actions
+assert 'adjunta el PNG ORIGINAL' in actions or 'Adjunta el PNG ORIGINAL' in actions
+assert 'LAUNCHED sin entrega NO prohíbe' in actions
+assert 'NO uses ImageGen ni generes' in actions
+assert 'utiliza ChatGPT Images AHORA' not in actions
+assert 'Si no está adjunta o no puedes' in actions
+assert 'no la sustituyas: omite attach' in actions
+assert 'status verified, ruta pública real y SHA-256' in actions
+assert 'Conserva tu PNG.' in actions
+assert 'No se puede crear un prompt seguro.' not in actions
 assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
 print("TT_ACTUALIDAD_IOS_SITE_IMAGE_CHAT_BUTTONS_OK")
 # v0.4.33: one original PNG appears in Site and in the matching trend card.
@@ -390,7 +401,7 @@ assert 'TrendSiteOrArchiveImage(aiURL: item.siteImageURL' in live
 assert 'archiveFallback' in live
 assert 'trends/site-ai-images.json' in actions
 assert 'APP: manifest verified/pending' in actions
-assert 'TTENDENCIAS_SITE_IMAGE_V4' in actions
+assert 'TTENDENCIAS_SITE_ATTACH_EXISTING_V1' in actions
 print("TT_ACTUALIDAD_IOS_0432_SITE_AI_IMAGES_PREFLIGHT_OK")
 # 0.4.33: purple originals only; joint group remains. AI photo is primary.
 assert 'filter { $0.isCovered && !$0.isJointGroup }' in dashboard
