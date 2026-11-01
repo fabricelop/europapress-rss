@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793535065891-manual",
   "previous_run_id": "tr-1793534122544-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T13:11:05+01:00",
-  "updated_at": "2026-11-01T13:13:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T13:15:00+01:00",
+  "finished_at": "2026-11-01T13:15:00+01:00",
+  "current": 3,
   "total": 3,
   "trend_id": "radar-prepare-1bb8e2ac5b536dac98f1",
   "title": "Radar · Mariah Carey",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [
     "radar-prepare-1bb8e2ac5b536dac98f1",
@@ -27,7 +27,25 @@
     "red-review-cbc79c00e7ca740d8630"
   ],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 0,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 2,
+    "anticipation_prepared": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1465,32 +1483,55 @@
   "last_started_at": "2026-11-01T13:10:00+01:00",
   "last_completed_at": "2026-11-01T12:49:00+01:00",
   "last_run": {
-    "run_id": "tr-1793534122544-manual",
+    "run_id": "tr-1793535065891-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T12:55:22.544+01:00",
-    "finished_at": "2026-11-01T12:58:30+01:00",
+    "started_at": "2026-11-01T13:11:05+01:00",
+    "finished_at": "2026-11-01T13:15:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
       "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 2,
+      "anticipation_prepared": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "message": "Pasada 0/0; cola y reelaboraciones pendientes a cero; sin ImageGen ni publicaciones."
+    "outcomes": [
+      {
+        "id": "red-review-c65467b99044e63e4911",
+        "revision": 0,
+        "outcome": "stale",
+        "name": "#laSextaXplica",
+        "applied": true
+      },
+      {
+        "id": "red-review-cbc79c00e7ca740d8630",
+        "revision": 0,
+        "outcome": "stale",
+        "name": "Toledo",
+        "applied": true
+      },
+      {
+        "id": "radar-prepare-1bb8e2ac5b536dac98f1",
+        "revision": 0,
+        "outcome": "anticipation_prepared",
+        "name": "Mariah Carey",
+        "applied": true
+      }
+    ]
   },
   "source": "chat",
-  "message": "Investigando Radar · Mariah Carey r0; borrador anticipado, no ficha de Listas.",
+  "message": "Pasada cerrada 3/3: las dos revisiones quedaron stale por validación JIT y el Radar de Mariah Carey quedó anticipation_prepared. Barrera final: cola 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3061,10 +3102,64 @@
       "trend_id": "red-review-c65467b99044e63e4911",
       "title": "#laSextaXplica",
       "message": "Revisión JIT r0 vigente y dentro del Top30 fresco. Cambio material verificado: la emisión del 31 de octubre se centró en la tragedia de Urda; episodio distinto respecto a la ficha del 24 de octubre sobre Barcelona. Suceso sensible: sin remate."
+    },
+    {
+      "at": "2026-11-01T13:14:50+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793535065891-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Mariah Carey figura anticipation_prepared; ambas revisiones review_red quedaron review_completed/stale por la validación del aplicador."
+    },
+    {
+      "at": "2026-11-01T13:15:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793535065891-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 2,
+        "anticipation_prepared": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada cerrada 3/3: las dos revisiones quedaron stale por validación JIT y el Radar de Mariah Carey quedó anticipation_prepared. Barrera final: cola 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
-  "outcomes": [],
-  "current_item": "red-review-c65467b99044e63e4911",
-  "current_title": "#laSextaXplica"
+  "outcomes": [
+    {
+      "id": "red-review-c65467b99044e63e4911",
+      "revision": 0,
+      "outcome": "stale",
+      "name": "#laSextaXplica",
+      "applied": true
+    },
+    {
+      "id": "red-review-cbc79c00e7ca740d8630",
+      "revision": 0,
+      "outcome": "stale",
+      "name": "Toledo",
+      "applied": true
+    },
+    {
+      "id": "radar-prepare-1bb8e2ac5b536dac98f1",
+      "revision": 0,
+      "outcome": "anticipation_prepared",
+      "name": "Mariah Carey",
+      "applied": true
+    }
+  ],
+  "current_item": null,
+  "current_title": null
 }
