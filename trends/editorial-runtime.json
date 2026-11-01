@@ -5,43 +5,40 @@
   "canonical": true,
   "run_id": "tr-1793563876449-manual",
   "previous_run_id": "tr-1793558264614-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T21:11:30+01:00",
-  "updated_at": "2026-11-01T20:14:29.553Z",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T21:16:00+01:00",
+  "finished_at": "2026-11-01T21:16:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-c6071d49583826af9ae6",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-c6071d49583826af9ae6",
     "red-review-406f9fdb710cc75ff2a0"
   ],
-  "remaining_active_ids": [
-    "red-review-c6071d49583826af9ae6",
-    "red-review-406f9fdb710cc75ff2a0"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -1460,6 +1457,41 @@
       "trend_id": "red-review-c6071d49583826af9ae6",
       "title": "Revisar novedades: Toledo",
       "message": "Inicio de pasada manual real: 2 revisiones review_red preparing vigentes en main (Toledo y Halloween), ordenadas por requested_at; validación JIT por id+revision antes de investigar. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T21:16:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793563876449-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin rewrite_pending/reexplain. Halloween quedó review_completed/updated con nueva ficha trend-update-cba7ae26f75721ea1312; Toledo quedó review_completed/stale al no seguir el término Toledo en el Top30 fresco (Urda figura en #21)."
+    },
+    {
+      "at": "2026-11-01T21:16:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793563876449-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por ejecución y convergencia JIT: Halloween updated; Toledo stale sin sobrescribir estado vigente. Cola final 0; reexplicaciones 0; ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -3922,13 +3954,22 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-4aa776ef0f7aa6c9554d",
+      "id": "red-review-c6071d49583826af9ae6",
       "revision": 0,
-      "name": "Revisar novedades: Blocus",
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "reason": "El Top30 fresco ya no contiene Toledo; Urda ocupa el puesto 21. No se crea una actualización obsoleta."
+    },
+    {
+      "id": "red-review-406f9fdb710cc75ff2a0",
+      "revision": 0,
+      "name": "Revisar novedades: Halloween",
       "outcome": "updated",
       "applied": true,
       "via": "concurrent_convergence_jit",
-      "created_id": "trend-update-b6c2e842d295305cf677"
+      "created_id": "trend-update-cba7ae26f75721ea1312"
     }
   ],
   "current_item": null,
@@ -4612,6 +4653,53 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada cerrada 1/1 por convergencia JIT: Blocus quedó review_completed/updated con nueva ficha trend-update; barrera final de main con editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793563876449-manual",
+      "status": "DONE",
+      "started_at": "2026-11-01T21:11:30+01:00",
+      "finished_at": "2026-11-01T21:16:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-c6071d49583826af9ae6",
+          "revision": 0,
+          "name": "Revisar novedades: Toledo",
+          "outcome": "stale",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "reason": "El Top30 fresco ya no contiene Toledo; Urda ocupa el puesto 21. No se crea una actualización obsoleta."
+        },
+        {
+          "id": "red-review-406f9fdb710cc75ff2a0",
+          "revision": 0,
+          "name": "Revisar novedades: Halloween",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "created_id": "trend-update-cba7ae26f75721ea1312"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada cerrada 2/2: Halloween updated y Toledo stale por validación JIT. editorial-queue=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
     }
   ]
 }
