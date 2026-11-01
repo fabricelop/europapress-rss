@@ -5,28 +5,23 @@
   "canonical": true,
   "run_id": "tr-1793527734709-manual",
   "previous_run_id": "tr-1793527469295-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T11:09:00+01:00",
-  "updated_at": "2026-11-01T11:10:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T11:12:00+01:00",
+  "finished_at": "2026-11-01T11:12:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "red-review-59f90d990dadda2724b7",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "listas-auto-cbda911e727cb3be2693",
-    "red-review-1343290e6c52ef92fee0"
-  ],
-  "remaining_ids": [
     "red-review-59f90d990dadda2724b7"
   ],
-  "remaining_active_ids": [
-    "red-review-59f90d990dadda2724b7"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": "Pasada completada 1/1 por convergencia JIT: la revisión Toledo fue aplicada como review_completed/stale porque el estado editorial ya había sido superado. Cola final 0 y sin rewrite_pending/reexplain. Sin ImageGen ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1271,6 +1266,22 @@
       "trend_id": "red-review-59f90d990dadda2724b7",
       "title": "Revisar novedades: Toledo",
       "message": "Revisando novedades de Toledo: contraste posterior al 28/10 confirma cambios materiales en balance e investigación; preparando resultado de mantenimiento, sin ImageGen."
+    },
+    {
+      "at": "2026-11-01T11:12:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793527734709-manual",
+      "trend_id": "red-review-59f90d990dadda2724b7",
+      "title": "Revisar novedades: Toledo",
+      "message": "Aplicación JIT verificada en main: job retirado de editorial-queue y marcado review_completed/stale; no se sobrescribe el estado editorial más reciente."
+    },
+    {
+      "at": "2026-11-01T11:12:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793527734709-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -1355,37 +1366,38 @@
       "status": "grouping_completed",
       "groups_created": 1,
       "converged_with": "tr-1793526664502-manual"
+    },
+    {
+      "id": "red-review-59f90d990dadda2724b7",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T10:59:31+01:00",
-  "last_completed_at": "2026-11-01T11:01:30+01:00",
+  "last_started_at": "2026-11-01T11:09:00+01:00",
+  "last_completed_at": "2026-11-01T11:12:00+01:00",
   "last_run": {
-    "run_id": "tr-1793527057284-manual",
+    "run_id": "tr-1793527734709-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T11:01:30+01:00",
-    "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 1,
-      "updates": 0,
-      "grouping_requests": 1,
-      "groups_created": 1,
-      "covered_by_existing": 0,
-      "unchanged_reviews": 0,
-      "stale_reviews": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
-    },
-    "message": "Cierre 2/2: #CCubicos440 r1 explicado y persistido; agrupación posterior de Todos los Santos aplicada. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "finished_at": "2026-11-01T11:12:00+01:00",
+    "attempted": 1,
+    "explained": 0,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0
   },
   "source": "manual",
-  "message": "Revisando novedades de Toledo: contraste posterior al 28/10 confirma cambios materiales en balance e investigación; preparando resultado de mantenimiento, sin ImageGen.",
+  "message": "Pasada completada 1/1 por convergencia JIT: la revisión Toledo fue aplicada como review_completed/stale porque el estado editorial ya había sido superado. Cola final 0 y sin rewrite_pending/reexplain. Sin ImageGen ni publicaciones.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
