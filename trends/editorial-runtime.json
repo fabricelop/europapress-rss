@@ -5,32 +5,25 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T061000+0100",
   "previous_run_id": "tr-chat-20261101T055500+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T06:10:00+01:00",
-  "updated_at": "2026-11-01T06:10:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T06:11:30+01:00",
+  "finished_at": "2026-11-01T06:11:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada en curso; verificando cola editorial y reexplicaciones pendientes.",
+  "summary": "Pasada completada 0/0. Cola final 0; sin reexplicaciones pendientes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-01T01:11:00+01:00",
-      "phase": "investigating",
-      "trend_id": "listas-auto-c2e98f2555a5a80353db",
-      "title": "Agrupación automática de Listas",
-      "message": "Comparación JIT del snapshot: no hay coincidencias inequívocas que justifiquen grupo nuevo o cobertura por publicación existente. Los solapamientos por Barça-Alavés, Chelsea-Manchester United, GP de México, Urda o nombres relacionados corresponden a ángulos distintos o causalidad ambigua."
-    },
     {
       "at": "2026-11-01T01:14:00+01:00",
       "phase": "persisting",
@@ -483,6 +476,16 @@
       "at": "2026-11-01T06:10:00+01:00",
       "phase": "preparing",
       "message": "Inicio tr-chat-20261101T061000+0100: cola compacta inicial 0. Verificando main, reexplicaciones y barrera final; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T06:11:03+01:00",
+      "phase": "verifying",
+      "message": "Barrera final: editorial-queue actualizada a las 06:11:03 con count 0; sin rewrite_pending/reexplain localizados en main."
+    },
+    {
+      "at": "2026-11-01T06:11:30+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación y sin cambios editoriales."
     }
   ],
   "final_outcomes": {
