@@ -196,13 +196,9 @@ struct EditorialActions: View {
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text(trend?.isCovered == true && intent == "deleted"
-                 ? "Ambas opciones retiran solo esta original; la ficha conjunta se conserva. Solo «Publicado» suma una publicación, después de la confirmación de GitHub."
-                 : intent == "deleted" && (news?.status == "LISTA" ||
+            Text(intent == "deleted" && (news?.status == "LISTA" ||
                                          trend?.inListas == true)
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
-                 : trend?.isCovered == true && intent == "rework"
-                 ? "Se pedirá una evaluación nueva e independiente de esta tendencia, sin reutilizar el texto ni la imagen antigua. La explicación original y la ficha conjunta se conservarán. Solo se marcará como solicitada cuando GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
                  : intent == "discard" && news?.status == "EN ELABORACIÓN"
