@@ -5,39 +5,36 @@
   "canonical": true,
   "run_id": "tr-1793512121167-manual",
   "previous_run_id": "tr-chat-20261101T064000+0100",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T06:49:00+01:00",
-  "updated_at": "2026-11-01T06:53:00+01:00",
-  "finished_at": null,
-  "current": 2,
+  "updated_at": "2026-11-01T06:54:00+01:00",
+  "finished_at": "2026-11-01T06:54:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "red-review-656a3fba6061d7d8bc4f",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "listas-auto-600209548fe6e0ab5c4b",
-    "red-review-4c57a3edb7fa71916431"
-  ],
-  "remaining_ids": [
+    "red-review-4c57a3edb7fa71916431",
     "red-review-656a3fba6061d7d8bc4f"
   ],
-  "remaining_active_ids": [
-    "red-review-656a3fba6061d7d8bc4f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 3,
     "observed": 3,
-    "closed": 2,
+    "closed": 3,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 2,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 1,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -575,59 +572,73 @@
       "trend_id": "red-review-656a3fba6061d7d8bc4f",
       "title": "Revisar novedades: Toledo",
       "message": "Revisando novedades: la investigación de Urda documenta fallos del LZB y protocolos incorrectos posteriores al texto original del 28 de octubre; comprobando continuidad y alcance."
+    },
+    {
+      "at": "2026-11-01T06:53:08+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793512121167-manual",
+      "trend_id": "red-review-656a3fba6061d7d8bc4f",
+      "title": "Revisar novedades: Toledo",
+      "message": "Aplicador JIT cerró la revisión como review_completed/stale; no se sobrescribe el estado posterior. Workflow completado correctamente y editorial-queue=0."
+    },
+    {
+      "at": "2026-11-01T06:54:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793512121167-manual",
+      "message": "Barrera final de main: editorial-queue=0; requests/telegram/mobile sin rewrite_pending:true ni reexplain:true. Cierre 3/3: 1 agrupación aplicada con 2 coberturas y 2 revisiones stale. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": {
     "last_run": {
-      "run_id": "tr-chat-20261101T064000+0100",
+      "run_id": "tr-1793512121167-manual",
       "status": "DONE",
-      "started_at": "2026-11-01T06:40:00+01:00",
-      "finished_at": "2026-11-01T06:48:30+01:00",
+      "started_at": "2026-11-01T06:49:00+01:00",
+      "finished_at": "2026-11-01T06:54:00+01:00",
       "attempted": 3,
       "observed": 3,
       "closed": 3,
-      "explained": 3,
+      "explained": 0,
       "updates": 0,
-      "grouping_requests": 0,
+      "grouping_requests": 1,
       "groups_created": 0,
-      "covered_by_existing": 0,
+      "covered_by_existing": 2,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 2,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "note": "Rapha, Quiles y #realbetismálaga explicados y verificados en requests + telegram-manual-explained; cola final 0 y sin rewrite_pending/reexplain."
+      "note": "Agrupación aplicada con Rapha y #realbetismálaga cubiertos por fichas conjuntas existentes. Las revisiones de #laSextaXplica y Toledo se cerraron stale por protección JIT frente a estados posteriores. Cola final 0; sin rewrite_pending/reexplain, ImageGen ni publicación."
     }
   },
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T06:49:00+01:00",
-  "last_completed_at": "2026-11-01T06:48:30+01:00",
+  "last_completed_at": "2026-11-01T06:54:00+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T064000+0100",
+    "run_id": "tr-1793512121167-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T06:40:00+01:00",
-    "finished_at": "2026-11-01T06:48:30+01:00",
+    "started_at": "2026-11-01T06:49:00+01:00",
+    "finished_at": "2026-11-01T06:54:00+01:00",
     "attempted": 3,
     "observed": 3,
     "closed": 3,
-    "explained": 3,
+    "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 0,
+    "covered_by_existing": 2,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Rapha, Quiles y #realbetismálaga explicados y verificados en requests + telegram-manual-explained; cola final 0 y sin rewrite_pending/reexplain."
+    "note": "Agrupación aplicada con Rapha y #realbetismálaga cubiertos por fichas conjuntas existentes. Las revisiones de #laSextaXplica y Toledo se cerraron stale por protección JIT frente a estados posteriores. Cola final 0; sin rewrite_pending/reexplain, ImageGen ni publicación."
   },
   "source": "chat",
-  "message": "#laSextaXplica cerrada como actualización material; revisando novedades de Toledo.",
+  "message": "TTendencias cerrada 3/3: 1 agrupación aplicada, 2 revisiones stale por JIT, cola final 0; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1048,6 +1059,27 @@
       "message": "TTendencias cerrada 0/0 para tr-1793495454000-manual. ImageGen=0, publicaciones=0, incidencias=0."
     }
   ],
-  "partial": true,
-  "outcomes": []
+  "partial": false,
+  "outcomes": [
+    {
+      "id": "listas-auto-600209548fe6e0ab5c4b",
+      "revision": 0,
+      "name": "Agrupación automática de Listas",
+      "outcome": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 2
+    },
+    {
+      "id": "red-review-4c57a3edb7fa71916431",
+      "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
+      "outcome": "stale"
+    },
+    {
+      "id": "red-review-656a3fba6061d7d8bc4f",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale"
+    }
+  ]
 }
