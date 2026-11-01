@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T124000+0100",
-  "previous_run_id": "tr-1793532422256-manual",
+  "run_id": "tr-1793533253097-manual",
+  "previous_run_id": "tr-chat-20261101T124000+0100",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-01T12:40:00+01:00",
-  "updated_at": "2026-11-01T12:43:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-01T12:41:20+01:00",
+  "updated_at": "2026-11-01T12:41:20+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -24,7 +24,7 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
     "closed": 0,
     "explained": 0,
@@ -1317,8 +1317,8 @@
     "incidents": 0,
     "concurrent_convergence": 2
   },
-  "source": "chat",
-  "message": "Pasada cerrada 2/2 por convergencia JIT: Toledo stale con prepared_outcome=updated y Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0.",
+  "source": "manual",
+  "message": "Inicio: 1 trabajo preparing vigente (Urda, 2480cbdd6701 r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2065,6 +2065,14 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 2/2 por convergencia JIT: Toledo stale con prepared_outcome=updated y Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:41:20+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793533253097-manual",
+      "trend_id": "2480cbdd6701",
+      "title": "Urda",
+      "message": "Inicio: 1 trabajo preparing vigente (Urda, 2480cbdd6701 r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -2807,6 +2815,15 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 2/2 por convergencia JIT: Toledo stale con prepared_outcome=updated y Óscar Muerte unchanged. Barrera final: cola 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:41:20+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793533253097-manual",
+      "status": "RUNNING",
+      "trend_id": "2480cbdd6701",
+      "title": "Urda",
+      "message": "Inicio: 1 trabajo preparing vigente (Urda, 2480cbdd6701 r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
