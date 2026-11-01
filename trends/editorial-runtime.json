@@ -3,35 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793529275191-manual",
+  "run_id": "tr-1793529403772-manual",
   "previous_run_id": "tr-1793529403772-manual",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T11:35:00+01:00",
-  "updated_at": "2026-11-01T11:37:15.116065+01:00",
-  "finished_at": "2026-11-01T11:37:15.116065+01:00",
-  "current": 3,
-  "total": 3,
+  "updated_at": "2026-11-01T11:39:00+01:00",
+  "finished_at": "2026-11-01T11:39:00+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-26695e1ca8ee103d072d",
-    "listas-auto-5044a484f28cfabeb0e7",
     "listas-auto-4af3a50ea6a6cbe196b7"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
-    "updates": 1,
-    "grouping_requests": 2,
+    "updates": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 2,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -39,7 +37,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
@@ -1389,6 +1387,39 @@
       "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
       "title": "Agrupación automática de Listas",
       "message": "Inicio de pasada manual: se observó 1 group_listas preparing en main y desapareció antes de la validación JIT; verificando convergencia real. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T11:38:45+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793529403772-manual",
+      "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "title": "Agrupación automática de Listas",
+      "message": "Convergencia JIT verificada: el job ya tiene outbox válido con 0 grupos nuevos y 1 covered_by_existing hacia listas-joint-89705fdab1782025. Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T11:39:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793529403772-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada cerrada 1/1 por convergencia JIT: la agrupación observada fue resuelta por otra ejecución válida con 0 grupos nuevos y 1 cobertura por publicación existente. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -1480,21 +1511,29 @@
       "name": "Revisar novedades: Toledo",
       "outcome": "stale",
       "applied": true
+    },
+    {
+      "id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "revision": 0,
+      "status": "grouping_completed",
+      "groups_created": 0,
+      "covered_by_existing": 1,
+      "converged": true
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T11:36:43.772+01:00",
-  "last_completed_at": "2026-11-01T11:37:15.116065+01:00",
+  "last_completed_at": "2026-11-01T11:39:00+01:00",
   "last_run": {
-    "run_id": "tr-1793529275191-manual",
+    "run_id": "tr-1793529403772-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T11:37:15.116065+01:00",
-    "attempted": 3,
+    "finished_at": "2026-11-01T11:39:00+01:00",
+    "attempted": 1,
     "explained": 0,
-    "updates": 1,
-    "grouping_requests": 2,
+    "updates": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
-    "covered_by_existing": 2,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -1504,7 +1543,7 @@
     "incidents": 0
   },
   "source": "manual",
-  "message": "TTendencias cerrada 3/3 por convergencia JIT: la revisión del Sprint de MotoGP en Sepang se aplicó como actualización por episodio distinto (carrera principal); dos agrupaciones automáticas quedaron cubiertas por la ficha conjunta vigente del GP de Malasia. Barrera final: editorial-queue=0 y rewrite_pending=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 1/1 por convergencia JIT: la agrupación observada fue resuelta por otra ejecución válida con 0 grupos nuevos y 1 cobertura por publicación existente. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2124,6 +2163,39 @@
         "concurrent_convergence": 3
       },
       "message": "TTendencias cerrada 3/3 por convergencia JIT: la revisión del Sprint de MotoGP en Sepang se aplicó como actualización por episodio distinto (carrera principal); dos agrupaciones automáticas quedaron cubiertas por la ficha conjunta vigente del GP de Malasia. Barrera final: editorial-queue=0 y rewrite_pending=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:38:45+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793529403772-manual",
+      "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "title": "Agrupación automática de Listas",
+      "message": "Convergencia JIT verificada: el job ya tiene outbox válido con 0 grupos nuevos y 1 covered_by_existing hacia listas-joint-89705fdab1782025. Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T11:39:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793529403772-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada cerrada 1/1 por convergencia JIT: la agrupación observada fue resuelta por otra ejecución válida con 0 grupos nuevos y 1 cobertura por publicación existente. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
     }
   ],
   "history": [
@@ -2660,6 +2732,39 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada completada 0/0 tras refresco real #625. Barrera final limpia: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T11:38:45+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793529403772-manual",
+      "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "title": "Agrupación automática de Listas",
+      "message": "Convergencia JIT verificada: el job ya tiene outbox válido con 0 grupos nuevos y 1 covered_by_existing hacia listas-joint-89705fdab1782025. Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T11:39:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793529403772-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada cerrada 1/1 por convergencia JIT: la agrupación observada fue resuelta por otra ejecución válida con 0 grupos nuevos y 1 cobertura por publicación existente. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
     }
   ],
   "partial": false,
