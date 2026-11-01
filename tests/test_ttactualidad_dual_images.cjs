@@ -32,12 +32,18 @@ for (const path of paths) {
       editorial_text: "Original factual news", image_url: url, sha256: sha
     }]},
     trendSiteAi: {schema_version: 1,
-      project_id: "appgprj_6ae4dcf7d7488191a574e5b649e67370", images: []}
+      project_id: "appgprj_6ae4dcf7d7488191a574e5b649e67370",
+      images: [{
+        target_id: "trendABC", revision: 0,
+        explained_at: "2026-11-01T14:00:00Z", explanation: "Grouped fact",
+        image_url: "https://ttactualidad-tendencias.rainyraven22.chatgpt.site/images/ttendencias/trendABC-r0-" + sha.slice(0,12) + ".png",
+        sha256: sha
+      }]}
   }};
   const funcs = new Function("state", "isHttp",
     js.slice(first, last) +
     ";return {archivedPhoto,verifiedNewsAI,verifiedTrendSiteAI};");
-  const {archivedPhoto, verifiedNewsAI} = funcs(state, isHttp);
+  const {archivedPhoto, verifiedNewsAI, verifiedTrendSiteAI} = funcs(state, isHttp);
   const original = {_kind: "tti", _status: "LISTA", event_id: id,
     revision: 1, prepared_at: "2026-11-01T16:00:00Z",
     tweet: {text: "Original factual news"}};
@@ -66,6 +72,13 @@ for (const path of paths) {
     path + ": rewrite pending image blocked");
   assert.equal(archivedPhoto({_kind: "tr", _id: "trendABC", revision: 0}),
     trendArchive, path + ": trend archive");
+  assert.equal(verifiedTrendSiteAI({
+    _kind: "tr", _status: "AGRUPADA", _id: "trendABC", revision: 0,
+    explanation: "Grouped fact", explained_at: "2026-11-01T14:00:00Z"
+  }), "https://ttactualidad-tendencias.rainyraven22.chatgpt.site/images/ttendencias/trendABC-r0-" + sha.slice(0,12) + ".png",
+    path + ": grouped trends keep normal verified AI");
+  assert(html.includes("['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x._status)"),
+    path + ": grouped trends retain normal image actions");
   assert(html.includes("const archive=archivedPhoto(x);"), path + ": archive rendered");
   assert(html.includes("const pictureHTML=artwork?"), path + ": AI and archive rendered");
   assert(html.includes("<figcaption>Fotografía de archivo</figcaption>"), path + ": photo label");
