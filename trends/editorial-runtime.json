@@ -5,21 +5,46 @@
   "canonical": true,
   "run_id": "tr-1793551137456-manual",
   "previous_run_id": "tr-1793550999335-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T17:38:57.456+01:00",
-  "updated_at": "2026-11-01T17:44:43+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-01T17:45:31+01:00",
+  "finished_at": "2026-11-01T17:45:31+01:00",
+  "current": 7,
   "total": 7,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-bd128813cc4afbd44c58",
+    "447e15e9015b",
+    "1bb64c22590e",
+    "18dc47314a83",
+    "743ba673b658",
+    "6ba934928aa1",
+    "c7ce07dc6179"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 6,
+    "updates": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 7
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1226,6 +1251,41 @@
         "concurrent_convergence": 20
       },
       "message": "Pasada cerrada 32/32 tras la barrera final real: 28 explicaciones ordinarias, 2 revisiones updated (Día de Todos y Kerolin) y 2 unchanged (#FelizDomingo y Alsina). Racing r1 fue reparada tras una sobrescritura concurrente obsoleta. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:45:31+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793551137456-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera JIT: los 6 trabajos llegados a las 17:41 ya convergieron como explained en requests y Listas; cola 0 y sin rewrite_pending/reexplain. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:45:31+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793551137456-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 6,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 7
+      },
+      "message": "Pasada cerrada 7/7 por ejecución y convergencia JIT: Kerolin quedó review_completed/updated con nueva ficha por su doblete; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso quedaron explicados y verificados en requests y Listas. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -3513,6 +3573,54 @@
       "applied": true,
       "via": "concurrent_convergence_jit",
       "result_id": "trend-update-df91a57b6555b4f60712"
+    },
+    {
+      "id": "447e15e9015b",
+      "revision": 0,
+      "name": "Vinicius",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "1bb64c22590e",
+      "revision": 0,
+      "name": "Negreira",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "18dc47314a83",
+      "revision": 0,
+      "name": "Munuera",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "743ba673b658",
+      "revision": 0,
+      "name": "Guler",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "6ba934928aa1",
+      "revision": 0,
+      "name": "DAZN",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "c7ce07dc6179",
+      "revision": 0,
+      "name": "Dudoso",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
     }
   ],
   "current_item": null,
@@ -3734,6 +3842,32 @@
         }
       ],
       "message": "Pasada cerrada 10/10 tras absorber 6 pendientes nuevos aparecidos en la barrera final. Guti y Diomande explained; Alsina unchanged; Kerolin updated con nuevo trend-update; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso explained. Barrera: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para una pasada concurrente posterior."
+    },
+    {
+      "run_id": "tr-1793551137456-manual",
+      "status": "DONE",
+      "finished_at": "2026-11-01T17:45:31+01:00",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 6,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 7
+      },
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada cerrada 7/7 por ejecución y convergencia JIT: Kerolin quedó review_completed/updated con nueva ficha por su doblete; Vinicius, Negreira, Munuera, Guler, DAZN y Dudoso quedaron explicados y verificados en requests y Listas. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ]
 }
