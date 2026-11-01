@@ -144,6 +144,10 @@ private struct ListasGroupingControls: View {
             case .pending:
                 message = github.notice
             case .failed:
+                // Explicit rejected receipts can be retried with a fresh
+                // snapshot; a possibly-running request keeps its same ID.
+                removeAllRequestID = UUID().uuidString.lowercased()
+                removeAllSelection = []
                 message = github.notice
             }
             await store.refreshIfStale(minInterval: 0)
