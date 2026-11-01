@@ -5,6 +5,7 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
+const githubOutbox=require('./TTiTTularesGithubOutbox.cjs');
 const {execFileSync,spawn}=require('node:child_process');
 const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
@@ -225,8 +226,10 @@ async function confirmedInMain(task,job){
    return {status:'obsolete',reason:'editorial_context_changed'};
  const ai=row.ai_image||{},guard=ai.context_guard||{};
  const sha=String(ai.sha256||''),expected=String(job.upload_sha256||task.sha256||'');
- if(expected&&ai.generated===true&&ai.provider==='chat-imagegen'&&
- String(ai.url||'').includes('/ttittulares/generated-images/')&&sha===expected&&
+ const direct=!!task.github_outbox_committed_at&&/^[a-f0-9]{64}$/.test(sha)&&
+   String(guard.editorial_sha256||'')===task.editorial_sha256;
+ if((direct||(expected&&sha===expected))&&ai.generated===true&&ai.provider==='chat-imagegen'&&
+ String(ai.url||'').includes('/ttittulares/generated-images/')&&
  String(guard.command_id||'')===task.command_id&&String(guard.event_id||'')===task.target_id&&
  Number(guard.revision||0)===task.revision)
  return {status:'published',sha256:sha,image_url:ai.url};
@@ -282,7 +285,8 @@ async function rememberConversation(input){
 async function consume(task){
  const job=await readImageJob(task);
  if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
- if(job.status==='DONE'||task.upload_accepted_at)return confirmedInMain(task,job);
+ if(job.status==='DONE'||task.upload_accepted_at||task.github_outbox_committed_at)
+   return confirmedInMain(task,job);
  if(['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))
    return {status:'obsolete',reason:'job_cancelled'};
 
@@ -330,11 +334,6 @@ async function consume(task){
    }
  }
  // No browser is needed for a retry after a prior successful local capture.
- // Fail closed when the Worker is old or offline, retaining local bytes.
- try{
-   const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttittulares-run-status?view=web-image-contract');
-   if(contract.web_image_receipt!==1)return {status:'waiting',reason:'receiver_update_pending'};
- }catch{return {status:'waiting',reason:'receiver_update_pending'};}
  const fresh=await readImageJob(task);
  if(!sameContext(task,fresh))return {status:'obsolete',reason:'job_changed_before_upload'};
  const state=await readEditorialState(),row=(state.items||[]).filter(x=>String(x.event_id||'')===task.target_id)
@@ -342,6 +341,20 @@ async function consume(task){
  if(!row||Number(row.revision||0)!==task.revision||
    headlineFingerprint({tweet_text:row.tweet?.text,factual_summary:row.factual_summary,remate:row.tweet?.remate})!==task.editorial_sha256)
    return {status:'obsolete',reason:'editorial_changed'};
+ // Prefer GitHub; keep the existing receiver only when Windows auth is absent.
+ try{
+   const direct=await githubOutbox.pushReceipt(task,row,raster);
+   if(direct.status==='committed')return {status:'waiting',
+     reason:'awaiting_github_actions_association',capture_browser:source,
+     sha256:direct.sha256,github_outbox_committed_at:direct.github_outbox_committed_at};
+ }catch(e){
+   console.log('TTITTULARES_GITHUB_OUTBOX deferred '+String(e?.message||'unavailable').replace(/https?:\/\/\S+/g,'[url]').slice(0,90));
+ }
+ // Never regenerate or discard the locally cached original on transport failure.
+ try{
+   const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttittulares-run-status?view=web-image-contract');
+   if(contract.web_image_receipt!==1)return {status:'waiting',reason:'receiver_update_pending'};
+ }catch{return {status:'waiting',reason:'receiver_update_pending'};}
  const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttittulares-run',{
    method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(55000),
    body:JSON.stringify({task:'web_image_upload',context_editorial_sha256:task.editorial_sha256,
