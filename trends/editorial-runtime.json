@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T035627+0100",
+  "run_id": "tr-chat-20261101T041000+0100",
   "previous_run_id": "tr-chat-20261101T0340+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T03:56:27+01:00",
-  "updated_at": "2026-11-01T03:56:52+01:00",
-  "finished_at": "2026-11-01T03:56:52+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T04:10:00+01:00",
+  "updated_at": "2026-11-01T04:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -829,7 +829,7 @@
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T03:56:27+01:00",
+  "last_started_at": "2026-11-01T04:10:00+01:00",
   "last_completed_at": "2026-11-01T03:56:52+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T035627+0100",
@@ -854,7 +854,7 @@
     "note": "Cola compacta 0 en inicio y relectura final; sin rewrite_pending ni reexplain vigentes. Sin ImageGen ni publicaciones."
   },
   "source": "chat",
-  "message": "Pasada real completada 0/0: cola final 0, rewrite_pending/reexplain 0, ImageGen 0 y publicaciones 0.",
+  "message": "Pasada real en curso: cola inicial 0; verificando main, reexplicaciones y barrera final. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1064,6 +1064,12 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T035627+0100",
       "message": "DONE 0/0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T04:10:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T041000+0100",
+      "message": "Inicio tr-chat-20261101T041000+0100: cola compacta 0 en la lectura inicial. Revalidando main y reexplicaciones antes del cierre; sin ImageGen ni publicación."
     }
   ],
   "history": [
