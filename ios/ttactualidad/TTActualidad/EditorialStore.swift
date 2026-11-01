@@ -744,6 +744,21 @@ final class EditorialStore: ObservableObject {
             retireAbandonedTrendOperations(requests: docs["trends/requests.json"] ?? [:],
                                            queue: docs["trends/editorial-queue.json"] ?? [:])
         }
+        // Only after all corresponding remote files were freshly downloaded:
+        // an old local "Sin confirmar" without a receipt or active queue
+        // is a failed confirmation, NOT a GitHub task still running.
+        if downloaded["pilot/ttactualidad-action-receipts.json"] != nil &&
+           downloaded["ttittulares/editorial-queue.json"] != nil &&
+           downloaded["ttittulares/prepared.json"] != nil &&
+           downloaded["trends/requests.json"] != nil &&
+           downloaded["trends/editorial-queue.json"] != nil {
+            retireOrphanedGitHubConfirmations(
+                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
+                newsQueue: docs["ttittulares/editorial-queue.json"] ?? [:],
+                readyNews: docs["ttittulares/prepared.json"] ?? [:],
+                trendRequests: docs["trends/requests.json"] ?? [:],
+                trendQueue: docs["trends/editorial-queue.json"] ?? [:])
+        }
         // A grouped explanation closes every member's request, even though
         // only the leader gets a separate card in Listas. Do not leave local
         // optimistic "En elaboración" overlays over confirmed explanations.
@@ -965,6 +980,70 @@ final class EditorialStore: ObservableObject {
                 action.phase = .confirmed
                 activeEditorialActions[operation.id] = action
             }
+        }
+    }
+
+    // Reconcile old local-only confirmations when the remote queue and
+    // authoritative receipt ledger are fresh. This does not retry, discard,
+    // or mark an action successful: it only removes an unprovable stale spinner.
+    // In-flight work takes precedence over expiration, even after an hour.
+    private func retireOrphanedGitHubConfirmations(
+        receipts: [String: Any], newsQueue: [String: Any], readyNews: [String: Any],
+        trendRequests: [String: Any], trendQueue: [String: Any]
+    ) {
+        let remote = Self.rows(receipts, "items")
+        let newsWork = Self.rows(newsQueue, "items")
+        let newsReady = Self.rows(readyNews, "items")
+        let trendWork = Self.rows(trendQueue, "items")
+        let trendReq = Self.rows(trendRequests, "requests")
+        for op in operationHistory where op.isOutstanding &&
+            Date().timeIntervalSince(op.createdAt) > 60 * 60 {
+            guard let identity = operationIdentity(op),
+                  ["ttittulares", "ttendencias"].contains(identity.project) else { continue }
+            let requestMatch = remote.contains { row in
+                if let req = op.requestID, !req.isEmpty {
+                    return Self.str(row, "request_id") == req
+                }
+                return Self.str(row, "project") == identity.project &&
+                       Self.str(row, "event_id") == identity.eventID &&
+                       Self.int(row, "revision") == identity.revision &&
+                       Self.str(row, "decision") == op.kind &&
+                       (Self.when(row, ["at"]) ?? .distantPast) >=
+                          op.createdAt.addingTimeInterval(-180)
+            }
+            if requestMatch { continue } // Existing receipts are reconciled elsewhere.
+            let active: Bool
+            if identity.project == "ttittulares" {
+                active = newsWork.contains { row in
+                    Self.str(row, "event_id") == identity.eventID &&
+                    ["PROCESSING", "UPDATE_PROCESSING"].contains(
+                        Self.str(row, "status").uppercased())
+                } || newsReady.contains { row in
+                    Self.str(row, "event_id") == identity.eventID &&
+                    Self.int(row, "revision") > identity.revision &&
+                    ["Nueva noticia", "De tendencia a noticia", "rework"].contains(op.kind)
+                }
+            } else {
+                active = trendWork.contains { row in
+                    Self.str(row, "id") == identity.eventID &&
+                    ["preparing", "update"].contains(
+                        Self.str(row, "status").lowercased())
+                } || trendReq.contains { row in
+                    Self.str(row, "id") == identity.eventID &&
+                    ["preparing", "update", "ready"].contains(
+                        Self.str(row, "status").lowercased()) &&
+                    Self.int(row, "revision") >= identity.revision &&
+                    ["rework", "prepare", "hints"].contains(op.kind)
+                }
+            }
+            if active { continue }
+            recordOperation(id: op.id, title: op.title, kind: op.kind,
+                            status: "Caducada", requestID: op.requestID,
+                            project: identity.project, eventID: identity.eventID,
+                            revision: identity.revision,
+                            detail: "No consta recibo ni trabajo activo en GitHub tras una hora. " +
+                                    "La acción no se ha repetido ni se considera confirmada.")
+            activeEditorialActions.removeValue(forKey: op.id)
         }
     }
 
