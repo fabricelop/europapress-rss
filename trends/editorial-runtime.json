@@ -3,41 +3,43 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793529403772-manual",
-  "previous_run_id": "tr-1793529122070-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-01T11:36:43.772+01:00",
-  "updated_at": "2026-11-01T11:38:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [
+  "run_id": "tr-1793529275191-manual",
+  "previous_run_id": "tr-1793529403772-manual",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-01T11:35:00+01:00",
+  "updated_at": "2026-11-01T11:37:15.116065+01:00",
+  "finished_at": "2026-11-01T11:37:15.116065+01:00",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-26695e1ca8ee103d072d",
+    "listas-auto-5044a484f28cfabeb0e7",
     "listas-auto-4af3a50ea6a6cbe196b7"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 0,
-    "updates": 0,
-    "grouping_requests": 1,
+    "updates": 1,
+    "grouping_requests": 2,
     "groups_created": 0,
-    "covered_by_existing": 0,
+    "covered_by_existing": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3
   },
   "incident_count": 0,
   "incidents": [],
@@ -1482,19 +1484,19 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T11:36:43.772+01:00",
-  "last_completed_at": "2026-11-01T11:31:21+01:00",
+  "last_completed_at": "2026-11-01T11:37:15.116065+01:00",
   "last_run": {
-    "run_id": "tr-1793527734709-manual",
+    "run_id": "tr-1793529275191-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T11:12:00+01:00",
-    "attempted": 1,
+    "finished_at": "2026-11-01T11:37:15.116065+01:00",
+    "attempted": 3,
     "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
+    "updates": 1,
+    "grouping_requests": 2,
     "groups_created": 0,
-    "covered_by_existing": 0,
+    "covered_by_existing": 2,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -1502,7 +1504,7 @@
     "incidents": 0
   },
   "source": "manual",
-  "message": "Inicio de pasada manual: se observó 1 group_listas preparing en main y desapareció antes de la validación JIT; verificando convergencia real. Sin ImageGen ni publicación.",
+  "message": "TTendencias cerrada 3/3 por convergencia JIT: la revisión del Sprint de MotoGP en Sepang se aplicó como actualización por episodio distinto (carrera principal); dos agrupaciones automáticas quedaron cubiertas por la ficha conjunta vigente del GP de Malasia. Barrera final: editorial-queue=0 y rewrite_pending=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2067,6 +2069,61 @@
       "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
       "title": "Agrupación automática de Listas",
       "message": "Inicio de pasada manual: se observó 1 group_listas preparing en main y desapareció antes de la validación JIT; verificando convergencia real. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T11:35:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793529275191-manual",
+      "message": "Inicio de pasada manual: 2 trabajos preparing observados en main; durante la convergencia apareció un tercer group_listas. Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T11:36:38.714079+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793529275191-manual",
+      "trend_id": "red-review-26695e1ca8ee103d072d",
+      "title": "Revisar novedades: Sprint de MotoGP en Sepang",
+      "message": "Convergencia JIT verificada: review_completed/updated por episodio distinto. La carrera principal sustituyó el contexto del sprint y creó trend-update-2b425c5e3dea7f90e862."
+    },
+    {
+      "at": "2026-11-01T11:36:38.714079+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793529275191-manual",
+      "trend_id": "listas-auto-5044a484f28cfabeb0e7",
+      "title": "Agrupación automática de Listas",
+      "message": "grouping_completed: Jorge Martín quedó covered_by_existing por listas-joint-89705fdab1782025; no se creó grupo nuevo."
+    },
+    {
+      "at": "2026-11-01T11:37:15.116065+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793529275191-manual",
+      "trend_id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "title": "Agrupación automática de Listas",
+      "message": "grouping_completed: la actualización del GP de Malasia quedó covered_by_existing por listas-joint-89705fdab1782025. Barrera final limpia: cola 0 y rewrite_pending 0."
+    },
+    {
+      "at": "2026-11-01T11:37:15.116065+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793529275191-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 2,
+        "groups_created": 0,
+        "covered_by_existing": 2,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      },
+      "message": "TTendencias cerrada 3/3 por convergencia JIT: la revisión del Sprint de MotoGP en Sepang se aplicó como actualización por episodio distinto (carrera principal); dos agrupaciones automáticas quedaron cubiertas por la ficha conjunta vigente del GP de Malasia. Barrera final: editorial-queue=0 y rewrite_pending=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -2701,6 +2758,42 @@
       "outcome": "stale",
       "applied": true,
       "converged_with": "tr-1793527734709-manual"
+    },
+    {
+      "id": "red-review-26695e1ca8ee103d072d",
+      "revision": 0,
+      "outcome": "updated",
+      "applied": true,
+      "converged": true,
+      "created_id": "trend-update-2b425c5e3dea7f90e862"
+    },
+    {
+      "id": "listas-auto-5044a484f28cfabeb0e7",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "applied": true,
+      "converged": true,
+      "groups_created": 0,
+      "covered_by_existing": [
+        {
+          "id": "trend-update-1fd56c057396312298e4",
+          "published_id": "listas-joint-89705fdab1782025"
+        }
+      ]
+    },
+    {
+      "id": "listas-auto-4af3a50ea6a6cbe196b7",
+      "revision": 0,
+      "outcome": "grouping_completed",
+      "applied": true,
+      "converged": true,
+      "groups_created": 0,
+      "covered_by_existing": [
+        {
+          "id": "trend-update-2b425c5e3dea7f90e862",
+          "published_id": "listas-joint-89705fdab1782025"
+        }
+      ]
     }
   ]
 }
