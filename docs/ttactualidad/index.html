@@ -1369,7 +1369,10 @@ function render(){
  const editorialQueue=state.app==='tr'?(state.data.editorialQueue?.items||[]).filter(x=>['preparing','update'].includes(String(x.status||'').toLowerCase())):[];
  const oldest=editorialQueue.reduce((n,x)=>Math.min(n,Date.parse(x.requested_at||'')||Date.now()),Date.now());
  const stalled=editorialQueue.length>0&&Date.now()-oldest>15*60000;
- $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'')+(state.app==='tr'?' · Interfaz V8':'')+(stalled?' · <strong style="color:var(--orange)">Atención: '+editorialQueue.length+' tendencias llevan más de 15 min en cola sin cierre editorial confirmado</strong>':'');
+ const radarAge=Number.isFinite(Date.parse(last||''))?Math.max(0,Math.round((Date.now()-Date.parse(last))/60000)):null;
+ const oldRadar=state.app==='tr'&&(radarAge===null||radarAge>25);
+ const localRadarCache=state.app==='tr'&&state.data.recent?._ttLocalCache===true;
+ $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'')+(localRadarCache?' · <strong style="color:var(--orange)">Radar en caché local</strong>':'')+(oldRadar?' · <strong style="color:var(--orange)">Radar retrasado'+(radarAge===null?'':': '+radarAge+' min')+'</strong>':'')+(state.app==='tr'?' · Interfaz V8':'')+(stalled?' · <strong style="color:var(--orange)">Atención: '+editorialQueue.length+' tendencias llevan más de 15 min en cola sin cierre editorial confirmado</strong>':'');
 }
 function ttiRowsFor(section){const saved=state.tab;state.tab=section;try{return ttiRows()}finally{state.tab=saved}}
 function trendRowsFor(section){const saved=state.tab;state.tab=section;try{return trendRows()}finally{state.tab=saved}}
@@ -1419,6 +1422,11 @@ $('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){void load(true);void checkPendingDeletes();}});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
+ // The radar changes while a mobile tab stays open for hours.
+ // Fetch new GitHub data without any editorial action or publishing.
+ setInterval(()=>{
+  if(!document.hidden&&state.app==='tr'&&!state.busy&&Date.now()-state.updated>180000)void load();
+ },60000);
 window.addEventListener('pageshow',()=>{if(ON_PAGES){void load(true);void checkPendingDeletes();}});
 // Recalculate colors on every render and when Safari comes back into view.
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateTop30AgeColors()});
