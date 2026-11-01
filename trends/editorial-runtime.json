@@ -6,21 +6,25 @@
   "run_id": "tr-chat-20261101T064000+0100",
   "previous_run_id": "tr-chat-20261101T062500+0100",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-01T06:40:00+01:00",
-  "updated_at": "2026-11-01T06:42:00+01:00",
+  "updated_at": "2026-11-01T06:46:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 1,
-  "trend_id": "55d77a86fd5f",
-  "title": "Rapha",
+  "current": 3,
+  "total": 3,
+  "trend_id": "fbc796aef3ba",
+  "title": "#realbetismálaga",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "55d77a86fd5f"
+    "55d77a86fd5f",
+    "f7f7be947d1c",
+    "fbc796aef3ba"
   ],
   "remaining_active_ids": [
-    "55d77a86fd5f"
+    "55d77a86fd5f",
+    "f7f7be947d1c",
+    "fbc796aef3ba"
   ],
   "remaining_problematic_ids": [],
   "summary": "Pasada completada 0/0. Cola final 0; sin reexplicaciones pendientes.",
@@ -560,7 +564,7 @@
     "note": "Top 30 05:50:49; cola 05:50:52 y final 0. Sin rewrite_pending ni reexplain."
   },
   "source": "chat",
-  "message": "Investigando Rapha (R0, puesto 25); revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Persistidos outbox de Quiles y #realbetismálaga tras revalidación JIT; esperando aplicación y verificando Rapha.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -876,6 +880,28 @@
       "trend_id": "55d77a86fd5f",
       "title": "Rapha",
       "message": "Rapha corresponde a Raphinha: tras el Barcelona-Alavés 6-1, el capitán brasileño firmó un doblete. Verificando fuentes y causalidad del pico actual."
+    },
+    {
+      "at": "2026-11-01T06:45:20+01:00",
+      "phase": "investigating",
+      "run_id": "tr-chat-20261101T064000+0100",
+      "trend_id": "f7f7be947d1c",
+      "title": "Quiles",
+      "message": "Resultado final verificado: Máximo Quiles ganó la carrera de Moto3 del GP de Malasia en Sepang desde la pole."
+    },
+    {
+      "at": "2026-11-01T06:45:40+01:00",
+      "phase": "investigating",
+      "run_id": "tr-chat-20261101T064000+0100",
+      "trend_id": "fbc796aef3ba",
+      "title": "#realbetismálaga",
+      "message": "Resultado final verificado: Real Betis 2-1 Málaga en La Cartuja, jornada 11 de LaLiga."
+    },
+    {
+      "at": "2026-11-01T06:46:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-chat-20261101T064000+0100",
+      "message": "Outbox textual persistido para Quiles y #realbetismálaga; ImageGen=0 y publicaciones=0."
     }
   ],
   "history": [
