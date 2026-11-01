@@ -47,6 +47,34 @@ class NewsImageCatalogTests(unittest.TestCase):
             self.assertEqual(n, 0)
             self.assertEqual(len(after_edit["images"]), 1)
 
+    def test_real_command_suffix_is_accepted_only_with_exact_hash(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            files = root / "ttittulares/generated-images"
+            files.mkdir(parents=True)
+            filename = "newsABC-r1-ai2-1793566037182.png"
+            data = b"\\x89PNG\\r\\n\\x1a\\n" + b"v" * 300
+            (files / filename).write_bytes(data)
+            sha = hashlib.sha256(data).hexdigest()
+            row = {
+                "event_id": "newsABC", "revision": 1,
+                "prepared_at": "2026-11-01T19:30:00Z",
+                "tweet": {"text": "Exact headline"},
+                "ai_image_status": "ready",
+                "ai_image": {
+                    "generated": True, "provider": "chat-imagegen",
+                    "sha256": sha,
+                    "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/" + filename,
+                    "context_guard": {"event_id": "newsABC", "revision": 1,
+                                      "command_id": "tt-img-auto-test-r1"}
+                }
+            }
+            got = from_ready(row, root)
+            self.assertIsNotNone(got)
+            self.assertEqual(got["sha256"], sha)
+            row["ai_image"]["context_guard"]["event_id"] = "other"
+            self.assertIsNone(from_ready(row, root))
+
     def test_rejects_missing_bytes_bad_sha_and_cross_news_context(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)

@@ -149,7 +149,11 @@ jobs:
           const tr=fs.readFileSync('windows/TTendenciasImageBridge.js','utf8');
           // This variable must be in the outer job scope, not inside the ACK if.
           assert.match(tt,/const launchOnly=String\(job\.delivery_mode\|\|""\)==="launch_only";[\s\S]*?if\(!launchOnly\)throw Error\("legacy_raster_mode_disabled_request_launch_only_job"\);[\s\S]*?cdp=await openFreshDedicatedConversation\(\)/);
-          assert.match(tt,/if\(launchOnly\)\s*\{[\s\S]*?BRIDGE LAUNCH ONLY CONFIRMED/);
+           // launch_only still forbids direct capture, but now enrolls a passive
+           // receiver bound to the exact generated command.
+           assert.match(tt,/if\(launchOnly\)\s*\{[\s\S]*?BRIDGE LAUNCHED; WEB RECEIPT INDEPENDENT/);
+           assert.match(tt,/await optionalWebHandoff\(webHandoff,false\)/);
+           assert.match(tt,/const publisher=require\("\.\/TTiTTularesWebImages\.cjs"\)/);
           assert.match(tr,/const launchOnly=String\(job\.delivery_mode\|\|""\)==="launch_only"/);
           assert.match(tr,/if\(!launchOnly\)throw Error\("legacy_raster_mode_disabled_request_launch_only_job"\)/);
           assert.match(tr,/await confirmPromptLaunched\(\)/);

@@ -408,6 +408,8 @@ async function requestImagePcAck(req,res){
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
   // Once the chat accepted the prompt, no later error can undo that launch.
   if(String(job.delivery_mode||"")==="launch_only"&&job.pc_launched_at){
+    if(["DONE","PERSISTING"].includes(String(job.status||"").toUpperCase()))
+      return res.status(200).json({ok:true,idempotent:true,...job});
     if(String(job.status||"").toUpperCase()==="LAUNCHED")
       return res.status(200).json({ok:true,idempotent:true,...job});
     const healed={...job,status:"LAUNCHED",phase:"pc_launched",
@@ -632,7 +634,7 @@ async function requestImageRun(req,res){
       visual:"Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
       sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
       political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-      lifecycle:"Una sola orden en ChatGPT Images; confirmar envío, cerrar LAUNCHED y nunca capturar ni persistir raster."
+      lifecycle:"Una sola orden en ChatGPT Images; LAUNCHED confirma solo el envío. El receptor independiente recupera el original y valida persistencia y asociación sin regenerar."
     },
     message:"Solicitud registrada; esperando al PC para abrir un chat de imagen."
   };
