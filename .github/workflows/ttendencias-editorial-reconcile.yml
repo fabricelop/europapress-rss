@@ -1,4 +1,5 @@
 name: TTendencias consolidar editorial directo
+
 on:
   workflow_dispatch:
   schedule:
@@ -25,42 +26,6 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python3 shared/ttendencias_queue_reconcile.py
-            python3 - <<'PY'
-          import json
-          from pathlib import Path
-          from datetime import datetime, timezone
-
-          tid="64b7521f1d8d"
-          rev=1
-          explanation="TT#10 Racing es tendencia por el 0-3 del Real Madrid al descanso en El Sardinero, con goles de Mbappé, Bellingham y Diomande.\n#RacingRealMadrid #LaLiga\n🌶️ Tres golpes blancos antes del descanso."
-          closer="🌶️ Tres golpes blancos antes del descanso."
-          sources=[{"url":"https://www.europapress.es/deportes/partidos-en-directo/noticia-racing-real-madrid-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261101151614.html"}]
-          stamp=datetime.now(timezone.utc).isoformat()
-
-          def patch(path,key):
-              p=Path(path)
-              doc=json.loads(p.read_text(encoding="utf-8"))
-              row=next((x for x in doc.get(key,[]) if str(x.get("id") or "")==tid and int(x.get("revision") or 0)==rev),None)
-              if row is None:
-                  raise RuntimeError(f"Racing r1 missing in {path}")
-              row.update({
-                  "status":"explained",
-                  "explanation":explanation,
-                  "closer_text":closer,
-                  "explained_at":stamp,
-                  "updated_at":stamp,
-                  "last_attempt_at":stamp,
-                  "source":"editorial_reconcile_repair",
-                  "verification_sources":sources,
-                  "news_note":"Corrección de convergencia concurrente: 0-3 al descanso verificado en Europa Press; sin ImageGen ni publicación."
-              })
-              doc["updated_at"]=stamp
-              p.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-
-          patch("trends/requests.json","requests")
-          patch("trends/telegram-manual-explained.json","items")
-          print("TTENDENCIAS_RACING_R1_REPAIRED",flush=True)
-          PY
             python3 trends/export_site_top30.py
             git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json trends/site-top30-current.json
             if git diff --cached --quiet; then exit 0; fi
@@ -69,5 +34,3 @@ jobs:
             sleep "$attempt"
           done
           exit 1
-
-# one-shot reconciliation trigger: tr-1793549768380-manual
