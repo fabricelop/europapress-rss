@@ -6,20 +6,22 @@
   "run_id": "tr-chat-20261101T1140+0100",
   "previous_run_id": "tr-1793529403772-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T11:40:00+01:00",
-  "updated_at": "2026-11-01T11:40:00+01:00",
+  "updated_at": "2026-11-01T11:43:03+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 1,
+  "trend_id": "231068a14860",
+  "title": "Heidi Klum",
   "queue_complete": false,
   "processed_ids": [
     "listas-auto-4af3a50ea6a6cbe196b7"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "231068a14860"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
@@ -1543,7 +1545,7 @@
     "incidents": 0
   },
   "source": "manual",
-  "message": "Inicio de pasada manual: cola autoritativa observada en 0; verificando barrera JIT de main, reexplicaciones y mantenimiento. Sin ImageGen ni publicación.",
+  "message": "Heidi Klum r0 revalidada JIT. Detonante actual verificado: 25.ª fiesta anual de Halloween en Nueva York y disfraz de réplica gigante amputada de su propia mano izquierda.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2772,6 +2774,14 @@
       "run_id": "tr-chat-20261101T1140+0100",
       "status": "RUNNING",
       "message": "Inicio de pasada manual: cola autoritativa observada en 0; verificando barrera JIT de main, reexplicaciones y mantenimiento. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T11:43:03+01:00",
+      "phase": "investigating",
+      "run_id": "tr-chat-20261101T1140+0100",
+      "trend_id": "231068a14860",
+      "title": "Heidi Klum",
+      "message": "Heidi Klum r0 revalidada JIT. Detonante actual verificado: 25.ª fiesta anual de Halloween en Nueva York y disfraz de réplica gigante amputada de su propia mano izquierda."
     }
   ],
   "partial": false,
