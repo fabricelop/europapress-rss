@@ -1,0 +1,74 @@
+name: TTImages - recibo y asociación de originales
+on:
+  pull_request:
+    paths:
+      - 'windows/TTiTTularesWebImages.cjs'
+      - 'windows/TTiTTularesImageBridge.js'
+      - 'windows/TTiTTularesDedicatedListener.ps1'
+      - 'windows/TT-AutoUpdater.ps1'
+      - 'windows/tests/test_headline_original_receipt.cjs'
+      - 'vercel-webhook/lib/ttittulares-run-handler.js'
+      - 'vercel-webhook/lib/ttendencias-run-handler.js'
+      - 'no-vercel/ttittulares-worker/src/index.js'
+      - 'ttittulares/sync_site_ai_images.py'
+      - 'tests/test_ttittulares_image_catalog.py'
+      - '.github/workflows/ttimages-original-receipt-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-receipt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesWebImages.cjs
+            /windows/TTiTTularesImageBridge.js
+            /windows/TTendenciasWebImages.cjs
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/TT-AutoUpdater.ps1
+            /windows/tests/test_headline_original_receipt.cjs
+            /vercel-webhook/lib/ttittulares-run-handler.js
+            /vercel-webhook/lib/ttendencias-run-handler.js
+            /no-vercel/ttittulares-worker/src/index.js
+            /ttittulares/sync_site_ai_images.py
+            /tests/test_ttittulares_image_catalog.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar JS de productor, receptor y Worker
+        run: |
+          node --check windows/TTiTTularesImageBridge.js
+          node --check windows/TTiTTularesWebImages.cjs
+          node --check windows/TTendenciasWebImages.cjs
+          node --check vercel-webhook/lib/ttittulares-run-handler.js
+          node --check vercel-webhook/lib/ttendencias-run-handler.js
+          node --check no-vercel/ttittulares-worker/src/index.js
+      - name: Contrato exacto de asociación y no duplicación
+        run: node --test windows/tests/test_headline_original_receipt.cjs
+      - name: Catálogo de imágenes de noticias con SHA-256 real
+        run: python3 -m unittest discover -s tests -p test_ttittulares_image_catalog.py -v
+  windows-safety:
+    runs-on: windows-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/TT-AutoUpdater.ps1
+            /windows/TTiTTularesWebImages.cjs
+      - name: Sintaxis PowerShell sin ejecutar ni reiniciar procesos
+        shell: powershell
+        run: |
+          foreach($p in @('windows/TTiTTularesDedicatedListener.ps1','windows/TT-AutoUpdater.ps1')){
+            $tokens=$null; $errors=$null
+            [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errors)|Out-Null
+            if($errors.Count){throw "PowerShell inválido: $p"}
+          }
+          $updater=Get-Content 'windows/TT-AutoUpdater.ps1' -Raw
+          if(-not $updater.Contains('TTiTTularesWebImages.cjs')){throw "Receptor ausente del auto-updater"}
