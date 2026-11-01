@@ -8,7 +8,7 @@
   "status": "success",
   "phase": "completed",
   "started_at": "2026-11-01T19:38:00+01:00",
-  "updated_at": "2026-11-01T21:10:18+01:00",
+  "updated_at": "2026-11-01T20:11:04.747Z",
   "finished_at": "2026-11-01T19:49:03+01:00",
   "current": 5,
   "total": 5,
@@ -1501,15 +1501,118 @@
   "last_completed_at": "2026-11-01T21:10:18+01:00",
   "last_run": {
     "run_id": "tr-1793563201597-manual",
-    "status": "RUNNING",
-    "phase": "investigating",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-11-01T21:00:01+01:00",
-    "finished_at": null,
-    "current": 0,
-    "total": 12,
-    "trend_id": "65474f67624f",
-    "title": "Sadiq",
-    "message": "Pasada manual real iniciada: 12 preparing observados en main; investigación y validación JIT activas. ImageGen=0; publicaciones=0."
+    "finished_at": "2026-11-01T20:11:04.747Z",
+    "current": 14,
+    "total": 14,
+    "summary": {
+      "attempted": 14,
+      "observed": 14,
+      "closed": 14,
+      "explained": 14,
+      "updates": 0,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "unchanged_reviews": 0,
+      "stale_reviews": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "publications": 0,
+      "incidents": 0
+    },
+    "outcomes": [
+      {
+        "id": "65474f67624f",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "6a5ed83658ef",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "edba32c9b800",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "6f59ab22107f",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "d183843fa18b",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "ac27d9290f26",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "243e2e5cdeca",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "57575aaac677",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "a66b6c078db2",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "58e1effc2631",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "e2e1052886e9",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "9c967efd1ccb",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "07f189675870",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "1dfee49aa579",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      }
+    ],
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada cerrada 14/14: las 14 revisiones quedaron explained y sincronizadas en requests/Listas mediante el aplicador editorial; barrera de main con cola activa 0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
   "message": "Pasada cerrada 1/1 por convergencia JIT: Blocus quedó review_completed/updated con nueva ficha trend-update; barrera final de main con editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
