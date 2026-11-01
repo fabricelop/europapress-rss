@@ -19,7 +19,9 @@ test("Fingerprint ties exact tweet/facts/remate to job and revision",()=>{
 });
 test("No attachment based on a previous or missing image turn",()=>{
  const probe=mod.rasterProbe(job.command_id);
- assert(probe.includes("later_user_turn"));
+ assert(probe.includes("duplicate_command"));
+ assert(probe.includes("const user=found[0]"));
+ assert(probe.includes("img.compareDocumentPosition(next)&following"));
  assert(probe.includes("ambiguous_or_missing_raster"));
  assert(probe.includes("naturalWidth>=1024"));
  assert(!probe.includes("SITE_RETURN"));
@@ -81,4 +83,51 @@ test("Producer hands the exact CDP target to receiver instead of undefined fixed
  const consumer=fs.readFileSync(path.join(__dirname,"..","TTiTTularesWebImages.cjs"),"utf8");
  assert(consumer.includes("if((!url&&!safeID(browserTargetId))"));
  assert(consumer.includes("String(job.command_id)!==commandId"));
+});
+
+
+test("Image recovery scopes the exact command despite later user turns",async()=>{
+ const vm=require("node:vm");
+ const id=job.command_id;
+ const node=(pos,txt="")=>({pos,innerText:txt,textContent:txt,
+   compareDocumentPosition(other){return other.pos>pos?4:2},
+   contains(){return false}});
+ const oldUser=node(0,"TTITTULARES_IMAGE_JOB_V4 old-command old-item\nAnother prompt");
+ const exactUser=node(1,"TTITTULARES_IMAGE_JOB_V4 "+id+" newsABC\nOne image");
+ const laterUser=node(3,"TTITTULARES_IMAGE_JOB_V4 another-command newsXYZ\nOther image");
+ const image=(pos,src)=>({...node(pos),complete:true,naturalWidth:1536,naturalHeight:864,alt:"",src,currentSrc:src});
+ const correct=image(2,"https://images.invalid/correct.png");
+ const wrong=image(4,"https://images.invalid/another.png");
+ const bytes=Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),Buffer.alloc(15000,75)]);
+ const evaluate=async(images,turns=[oldUser,exactUser,laterUser])=>{
+  const requested=[];
+  const document={querySelector:()=>null,querySelectorAll:selector=>selector==="img"?images:turns};
+  const result=await vm.runInNewContext(mod.rasterProbe(id),{
+   document,Node:{DOCUMENT_POSITION_FOLLOWING:4},
+   fetch:async url=>{requested.push(url);return {ok:true,blob:async()=>({
+     type:"image/png",size:bytes.length,arrayBuffer:async()=>Uint8Array.from(bytes).buffer
+   })}},
+   btoa:binary=>Buffer.from(binary,"binary").toString("base64"),
+   Uint8Array,String
+  });
+  return {result,requested};
+ };
+ const a=await evaluate([correct,wrong]);
+ assert.equal(a.result.ready,true);
+ assert.deepEqual(a.requested,[correct.src]);
+ assert.equal(Buffer.from(a.result.dataUrl.split(",")[1],"base64").toString("hex"),bytes.toString("hex"));
+ const b=await evaluate([wrong]);
+ assert.equal(b.result.reason,"ambiguous_or_missing_raster");
+ assert.deepEqual(b.requested,[]);
+ const c=await evaluate([correct,image(2.5,"https://images.invalid/duplicate.png"),wrong]);
+ assert.equal(c.result.reason,"ambiguous_or_missing_raster");
+ assert.deepEqual(c.requested,[]);
+ const d=await evaluate([correct,wrong],[oldUser,laterUser]);
+ assert.equal(d.result.reason,"command_not_in_conversation");
+ const probe=vm.runInNewContext(mod.conversationProbe(id,true),{
+   document:{querySelectorAll:()=>[oldUser,exactUser,laterUser]},
+   location:{href:"https://chatgpt.com/c/exact-conversation"},String
+ });
+ assert.equal(probe.reason,"matched");
+ assert.equal(probe.url,"https://chatgpt.com/c/exact-conversation");
 });
