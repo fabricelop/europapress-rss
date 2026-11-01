@@ -3,13 +3,13 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T0310+0100",
-  "previous_run_id": "tr-chat-20261101T0255+0100",
+  "run_id": "tr-chat-20261101T0325+0100",
+  "previous_run_id": "tr-chat-20261101T0310+0100",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-01T03:10:00+01:00",
-  "updated_at": "2026-11-01T03:10:45+01:00",
-  "finished_at": "2026-11-01T03:10:45+01:00",
+  "started_at": "2026-11-01T03:25:00+01:00",
+  "updated_at": "2026-11-01T03:28:10+01:00",
+  "finished_at": "2026-11-01T03:28:10+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -750,6 +750,21 @@
       "at": "2026-11-01T03:10:45+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0 para tr-chat-20261101T0310+0100. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T03:25:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-chat-20261101T0325+0100: se dispara refresco manual #621 y se relee la cola vigente; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T03:28:07+01:00",
+      "phase": "verifying",
+      "message": "Refresco manual #621 completado success. Nuevo Top 30 capturado a las 03:27:56; editorial-queue=0, preparing/update=0 y rewrite_pending=0."
+    },
+    {
+      "at": "2026-11-01T03:28:10+01:00",
+      "phase": "closing",
+      "message": "TTendencias cerrada 0/0 para tr-chat-20261101T0325+0100. ImageGen=0, publicaciones=0, incidencias=0."
     }
   ],
   "final_outcomes": [
@@ -771,33 +786,32 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T02:34:00+01:00",
-  "last_completed_at": "2026-11-01T02:35:20+01:00",
+  "last_started_at": "2026-11-01T03:25:00+01:00",
+  "last_completed_at": "2026-11-01T03:28:10+01:00",
   "last_run": {
-    "run_id": "tr-1793496668273-manual",
+    "run_id": "tr-chat-20261101T0325+0100",
     "status": "DONE",
-    "started_at": "2026-11-01T02:34:00+01:00",
-    "finished_at": "2026-11-01T02:35:20+01:00",
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "started_at": "2026-11-01T03:25:00+01:00",
+    "finished_at": "2026-11-01T03:28:10+01:00",
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "converged_concurrent": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Dos review_red investigadas; ambos resultados quedaron stale en la barrera JIT del aplicador, sin crear actualización. Cola final 0."
+    "note": "Refresco manual #621 success; Top 30 03:27:56; cola final 0."
   },
   "source": "chat",
-  "message": "Pasada real cerrada 2/2 observados: las dos revisiones fueron investigadas y materializadas en maintenance-outbox, pero el aplicador JIT las cerró como stale para no pisar estado terminal/posterior. Cola 0, rewrite_pending/reexplain 0, ImageGen 0, publicaciones 0.",
+  "message": "Pasada real completada 0/0 tras refresco manual #621: Top 30 capturado a las 03:27:56; cola autoritativa final 0 y rewrite_pending 0. ImageGen 0 y publicaciones 0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
