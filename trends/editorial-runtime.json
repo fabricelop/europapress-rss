@@ -3,43 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793533354993-manual",
-  "previous_run_id": "tr-chat-20261101T124000+0100",
+  "run_id": "tr-1793533559573-manual",
+  "previous_run_id": "tr-1793533354993-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T12:41:20+01:00",
-  "updated_at": "2026-11-01T12:45:00+01:00",
+  "started_at": "2026-11-01T12:46:00+01:00",
+  "updated_at": "2026-11-01T12:46:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 0,
   "total": 3,
-  "trend_id": "2480cbdd6701",
-  "title": "Urda",
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "2b20f3e40801",
-    "5b13bbe6ae22"
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-d6d8bbb39e54433ec48c",
+    "red-review-4edd0e87b5dcad5065f6",
+    "listas-auto-2ccea12644d585a5fd98"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-d6d8bbb39e54433ec48c",
+    "red-review-4edd0e87b5dcad5065f6",
+    "listas-auto-2ccea12644d585a5fd98"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1317,7 +1305,7 @@
     "concurrent_convergence": 2
   },
   "source": "manual",
-  "message": "Urda r0: outbox editorial creado y validado (<280 caracteres, closer vacío por suceso sensible). Verificando aplicación real en ambos registros y retirada de la revisión exacta.",
+  "message": "Inicio efectivo: 3 trabajos preparing vigentes (Koldo García, Ana Pastor y agrupación automática), ordenados por antigüedad y sujetos a validación JIT. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2097,6 +2085,15 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio efectivo de la pasada: snapshot inicial 3 items; Urda r0 ya convergió por una ejecución concurrente válida. Quedan Alavés r0 y Adif r0, revalidados en main para investigación. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:46:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793533559573-manual",
+      "status": "RUNNING",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio efectivo: 3 trabajos preparing vigentes (Koldo García, Ana Pastor y agrupación automática), ordenados por antigüedad y sujetos a validación JIT. Sin ImageGen ni publicación."
     }
   ],
   "history": [
