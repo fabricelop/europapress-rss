@@ -3,41 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793549768380-manual",
-  "previous_run_id": "tr-1793549061243-manual",
-  "status": "success",
-  "phase": "preparing",
-  "started_at": "2026-11-01T17:16:00+01:00",
-  "updated_at": "2026-11-01T17:18:56+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 1,
+  "run_id": "tr-1793549980185-manual",
+  "previous_run_id": "tr-1793549768380-manual",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-01T17:19:40.185+01:00",
+  "updated_at": "2026-11-01T17:22:30+01:00",
+  "finished_at": "2026-11-01T17:22:30+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "64b7521f1d8d"
+    "red-review-0396f5be3748cad9c883",
+    "red-review-8929019c45203f7ea8d3"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -995,26 +996,44 @@
       "message": "Inicio de pasada manual real: 1 trabajos preparing/update vigentes en main, ordenados del más antiguo al más reciente. Revalidación JIT de (id,revision) antes de cada tratamiento. Sin ImageGen ni publicación."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-0396f5be3748cad9c883",
+      "revision": 0,
+      "name": "Día de Todos",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-6f8efdbc5b4f98f241ed",
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "red-review-8929019c45203f7ea8d3",
+      "revision": 0,
+      "name": "#FelizDomingo",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence"
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T17:18:56+01:00",
-  "last_completed_at": "2026-11-01T17:18:56+01:00",
+  "last_started_at": "2026-11-01T17:19:40.185+01:00",
+  "last_completed_at": "2026-11-01T17:22:30+01:00",
   "last_run": {
-    "run_id": "tr-1793545295401-manual",
+    "run_id": "tr-1793549980185-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T16:01:45+01:00",
-    "finished_at": "2026-11-01T16:19:00+01:00",
+    "started_at": "2026-11-01T17:19:40.185+01:00",
+    "finished_at": "2026-11-01T17:22:30+01:00",
     "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
-      "explained": 2,
-      "updates": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 0,
-      "stale_reviews": 2,
+      "unchanged_reviews": 1,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -1024,42 +1043,27 @@
     },
     "outcomes": [
       {
-        "id": "listas-joint-f8769365147a3582",
-        "revision": 1,
-        "name": "Getafe-Sevilla · Kike Salas y Gudelj",
-        "outcome": "explained",
-        "applied": true,
-        "final_score": "3-1"
-      },
-      {
-        "id": "cb9bc0ab3d67",
+        "id": "red-review-0396f5be3748cad9c883",
         "revision": 0,
-        "name": "#GetafeSevilla",
-        "outcome": "explained",
+        "name": "Día de Todos",
+        "outcome": "updated",
         "applied": true,
-        "final_score": "3-1"
-      },
-      {
-        "id": "red-review-83ebe32f690b4d2b469f",
-        "revision": 0,
-        "name": "#laSextaXplica",
-        "outcome": "stale",
-        "applied": true,
+        "created_id": "trend-update-6f8efdbc5b4f98f241ed",
         "via": "concurrent_convergence"
       },
       {
-        "id": "red-review-fd05f8e91a6fb29a4e48",
+        "id": "red-review-8929019c45203f7ea8d3",
         "revision": 0,
-        "name": "Toledo",
-        "outcome": "stale",
+        "name": "#FelizDomingo",
+        "outcome": "unchanged",
         "applied": true,
         "via": "concurrent_convergence"
       }
     ],
-    "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 2/2 por convergencia JIT: Día de Todos quedó updated y #FelizDomingo unchanged; ambos review_red están review_completed y aplicados. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Revisando novedades: Toledo r0 revalidado JIT. Hay cambio material desde el 28 de octubre: balance de 69 fallecidos, 56 identificados y diligencias activas para preservar pruebas y localizar restos biológicos.",
+  "message": "Pasada cerrada 2/2 por convergencia JIT: Día de Todos updated; #FelizDomingo unchanged. Cola final 0; sin reelaboraciones pendientes; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2092,6 +2096,44 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:19:40.185+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793549980185-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 2 revisiones review_red preparing observadas en main (Día de Todos y #FelizDomingo), con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:22:10+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793549980185-manual",
+      "message": "Convergencia JIT verificada: Día de Todos review_completed/updated con nueva ficha trend-update-6f8efdbc5b4f98f241ed; #FelizDomingo review_completed/unchanged. Cola main=0; mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T17:22:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793549980185-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3036,10 +3078,66 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T17:19:40.185+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793549980185-manual",
+      "status": "RUNNING",
+      "message": "Inicio: 2 revisiones review_red preparing observadas en main (Día de Todos y #FelizDomingo), con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T17:22:10+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793549980185-manual",
+      "message": "Convergencia JIT verificada: Día de Todos review_completed/updated con nueva ficha trend-update-6f8efdbc5b4f98f241ed; #FelizDomingo review_completed/unchanged. Cola main=0; mobile-decisions sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-01T17:22:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793549980185-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
-  "outcomes": [],
-  "current_item": "64b7521f1d8d",
-  "current_title": "Racing"
+  "outcomes": [
+    {
+      "id": "red-review-0396f5be3748cad9c883",
+      "revision": 0,
+      "name": "Día de Todos",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-6f8efdbc5b4f98f241ed",
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "red-review-8929019c45203f7ea8d3",
+      "revision": 0,
+      "name": "#FelizDomingo",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence"
+    }
+  ],
+  "current_item": null,
+  "current_title": null
 }
