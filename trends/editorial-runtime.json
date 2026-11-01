@@ -5,44 +5,50 @@
   "canonical": true,
   "run_id": "tr-1793522752871-manual",
   "previous_run_id": "tr-chat-20261101T094115+0100",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T09:46:30+01:00",
-  "updated_at": "2026-11-01T09:48:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T09:48:35+01:00",
+  "finished_at": "2026-11-01T09:48:35+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "listas-auto-d962c519109a109bdc4b",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "listas-auto-d962c519109a109bdc4b"
   ],
-  "remaining_active_ids": [
-    "listas-auto-d962c519109a109bdc4b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 1,
-    "groups_created": 0,
-    "covered_by_existing": 0,
+    "groups_created": 1,
+    "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 1,
+    "concurrent_convergence": 2
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-01T09:48:35+01:00",
+      "phase": "persisting",
+      "trend_id": "listas-auto-d962c519109a109bdc4b",
+      "title": "Agrupación automática de Listas",
+      "reason": "Una corrección concurrente añadió Sepang, que no figuraba en el snapshot de candidatos; el aplicador la rechazó como miembro fuera de solicitud y la agrupación se corrigió contra el snapshot JIT antes de aplicar."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -1053,6 +1059,31 @@
       "trend_id": "listas-auto-d962c519109a109bdc4b",
       "title": "Agrupación automática de Listas",
       "message": "Agrupación verificada: Malasia+Acosta+Bezzecchi comparten la carrera MotoGP de Sepang; #TodosLosSantos+Mt 5 comparten la solemnidad del 1 de noviembre y su Evangelio. Resto del snapshot sin coincidencia inequívoca ni cobertura previa sin novedades."
+    },
+    {
+      "at": "2026-11-01T09:48:35+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793522752871-manual",
+      "status": "DONE",
+      "message": "Agrupación aplicada y verificada: GP de Malasia consolidado; #TodosLosSantos cubierto por publicación previa. Cola final 0; rewrite_pending/reexplain 0; ImageGen 0; publicaciones 0.",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 1,
+        "groups_created": 1,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 2
+      }
     }
   ],
   "final_outcomes": {
@@ -1102,18 +1133,18 @@
   "last_started_at": "2026-11-01T09:45:07+01:00",
   "last_completed_at": "2026-11-01T09:45:07+01:00",
   "last_run": {
-    "run_id": "tr-1793522159076-manual",
+    "run_id": "tr-1793522752871-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T09:36:00+01:00",
-    "finished_at": "2026-11-01T09:40:00+01:00",
+    "started_at": "2026-11-01T09:46:30+01:00",
+    "finished_at": "2026-11-01T09:48:35+01:00",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
-      "updates": 2,
+      "updates": 0,
       "grouping_requests": 1,
-      "groups_created": 0,
+      "groups_created": 1,
       "covered_by_existing": 1,
       "unchanged_reviews": 0,
       "stale_reviews": 0,
@@ -1121,17 +1152,15 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 0,
+      "incidents": 1,
       "concurrent_convergence": 2
     },
     "processed_ids": [
-      "listas-auto-02d7268c0acfb734e9df",
-      "red-review-c833262dd375349d1e78",
-      "red-review-05204f713c2b87317710"
+      "listas-auto-d962c519109a109bdc4b"
     ]
   },
   "source": "chat",
-  "message": "Agrupación verificada: Malasia+Acosta+Bezzecchi comparten la carrera MotoGP de Sepang; #TodosLosSantos+Mt 5 comparten la solemnidad del 1 de noviembre y su Evangelio. Resto del snapshot sin coincidencia inequívoca ni cobertura previa sin novedades.",
+  "message": "Agrupación aplicada y verificada: GP de Malasia consolidado; #TodosLosSantos cubierto por publicación previa. Cola final 0; rewrite_pending/reexplain 0; ImageGen 0; publicaciones 0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
