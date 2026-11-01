@@ -3,27 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T0155+0100",
+  "run_id": "tr-1793494954665-manual",
   "previous_run_id": "tr-1793494749102-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-01T02:00:27+01:00",
-  "updated_at": "2026-11-01T02:03:10+01:00",
-  "finished_at": null,
-  "current": 2,
-  "total": 3,
-  "trend_id": "listas-auto-94db61aafb611837eff8",
-  "title": "Agrupación automática de Listas",
-  "queue_complete": false,
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-01T02:02:00+01:00",
+  "updated_at": "2026-11-01T02:04:10+01:00",
+  "finished_at": "2026-11-01T02:04:10+01:00",
+  "current": 1,
+  "total": 1,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [
     "red-review-554afd2590fab3a9e8d0",
     "red-review-91320aa8d4488d9d8f38"
   ],
-  "remaining_active_ids": [
-    "red-review-554afd2590fab3a9e8d0",
-    "red-review-91320aa8d4488d9d8f38"
-  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -670,22 +667,22 @@
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T02:00:27+01:00",
-  "last_completed_at": "2026-11-01T01:58:00+01:00",
+  "last_started_at": "2026-11-01T02:02:00+01:00",
+  "last_completed_at": "2026-11-01T02:04:10+01:00",
   "last_run": {
-    "run_id": "tr-1793493958991-manual",
+    "run_id": "tr-1793494954665-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T01:56:00+01:00",
-    "finished_at": "2026-11-01T01:58:00+01:00",
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "started_at": "2026-11-01T02:02:00+01:00",
+    "finished_at": "2026-11-01T02:04:10+01:00",
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "updates": 0,
-    "grouping_requests": 0,
+    "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "converged_concurrent": 0,
+    "converged_concurrent": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -693,10 +690,10 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Pasada real 0/0: la relectura final de main no dejó preparing/update ni reexplicaciones pendientes."
+    "note": "El único group_listas fue revalidado JIT y convergió con una ejecución concurrente que ya había persistido groups=[] y covered_by_existing=[]; el aplicador terminó grouping_completed."
   },
   "source": "chat",
-  "message": "Agrupación automática JIT: sin coincidencias inequívocas para crear grupo ni cobertura por publicación existente; persistiendo resultado vacío.",
+  "message": "TTendencias cerrada 1/1 para tr-1793494954665-manual por convergencia concurrente. 0 grupos nuevos, 0 covered_by_existing, ImageGen=0, publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -827,6 +824,27 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final: la ejecución concurrente ya aplicó el job; Alavés quedó cubierto por la ficha conjunta Barça-Alavés · goleada y Lamine. editorial-queue=0 y rewrite_pending=0; 0 grupos nuevos, 1 covered_by_existing."
+    },
+    {
+      "at": "2026-11-01T02:02:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-94db61aafb611837eff8",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793494954665-manual: 1 group_listas observado y revalidado JIT; el resultado vacío ya estaba siendo persistido por ejecución concurrente. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T02:04:09+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-94db61aafb611837eff8",
+      "title": "Agrupación automática de Listas",
+      "message": "Barrera final: job grouping_completed, workflow de agrupación success, editorial-queue=0 y rewrite_pending=0 en requests/telegram-manual-explained."
+    },
+    {
+      "at": "2026-11-01T02:04:10+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias cerrada 1/1 para tr-1793494954665-manual por convergencia concurrente. 0 grupos nuevos, 0 covered_by_existing, ImageGen=0, publicaciones=0."
     }
   ],
   "history": [
@@ -850,6 +868,28 @@
       "trend_id": "listas-auto-94db61aafb611837eff8",
       "title": "Agrupación automática de Listas",
       "message": "Agrupación automática JIT: sin coincidencias inequívocas para crear grupo ni cobertura por publicación existente; persistiendo resultado vacío."
+    },
+    {
+      "at": "2026-11-01T02:02:00+01:00",
+      "phase": "preparing",
+      "trend_id": "listas-auto-94db61aafb611837eff8",
+      "title": "Agrupación automática de Listas",
+      "message": "Inicio tr-1793494954665-manual: 1 group_listas observado y revalidado JIT; el resultado vacío ya estaba siendo persistido por ejecución concurrente. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T02:04:09+01:00",
+      "phase": "verifying",
+      "trend_id": "listas-auto-94db61aafb611837eff8",
+      "title": "Agrupación automática de Listas",
+      "message": "Barrera final: job grouping_completed, workflow de agrupación success, editorial-queue=0 y rewrite_pending=0 en requests/telegram-manual-explained."
+    },
+    {
+      "at": "2026-11-01T02:04:10+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias cerrada 1/1 para tr-1793494954665-manual por convergencia concurrente. 0 grupos nuevos, 0 covered_by_existing, ImageGen=0, publicaciones=0."
     }
-  ]
+  ],
+  "partial": false
 }
