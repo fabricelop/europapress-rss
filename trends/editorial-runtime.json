@@ -3,36 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793537952192-manual",
-  "previous_run_id": "tr-chat-20261101T1355+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T13:59:12.192+01:00",
-  "updated_at": "2026-11-01T14:03:30+01:00",
-  "finished_at": "2026-11-01T14:03:30+01:00",
-  "current": 4,
-  "total": 4,
+  "run_id": "tr-1793538157393-manual",
+  "previous_run_id": "tr-1793537952192-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T13:04:39.749Z",
+  "updated_at": "2026-11-01T13:04:39.749Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-auto-9148c4e93e7874393006",
-    "red-review-9784187f84465ce8bfed",
-    "red-review-ac14b6831079d0920521",
-    "listas-auto-183f4f308cb84673006b"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
-    "updates": 2,
-    "grouping_requests": 2,
+    "updates": 0,
+    "grouping_requests": 0,
     "groups_created": 0,
-    "covered_by_existing": 1,
+    "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -40,7 +35,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -175,6 +170,14 @@
         "concurrent_convergence": 3
       },
       "message": "TTendencias cerrada con 2 actualizaciones, 0 grupos nuevos, 1 cobertura por publicación existente, cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T13:04:39.749Z",
+      "phase": "preparing",
+      "run_id": "tr-1793538157393-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio tr-1793538157393-manual: cola compacta 0; barrera JIT sobre main y reexplicaciones. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -300,7 +303,7 @@
     "message": "Pasada cerrada: Alavés y Mazón actualizados; Alavés quedó cubierto por la ficha conjunta publicada del 6-1; la actualización de Mazón quedó independiente. Barrera final limpia. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada: 2 revisiones actualizadas (Alavés y Mazón), 2 agrupaciones observadas en la pasada más la agrupación derivada de Alavés resuelta por convergencia; 0 grupos nuevos y 1 cobertura por publicación existente. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793538157393-manual: cola compacta 0; barrera JIT sobre main y reexplicaciones. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1209,6 +1212,12 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada 0/0 tras barrera JIT: editorial-queue=0 y sin rewrite_pending/reexplicación pendiente en requests/telegram-manual-explained. Radar reciente sin nuevas entradas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T13:04:39.749Z",
+      "phase": "preparing",
+      "run_id": "tr-1793538157393-manual",
+      "message": "Inicio tr-1793538157393-manual: cola compacta 0; barrera JIT sobre main y reexplicaciones. Sin ImageGen ni publicación."
     }
   ],
   "history": [
