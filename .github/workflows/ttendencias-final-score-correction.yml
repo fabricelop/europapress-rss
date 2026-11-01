@@ -1,0 +1,154 @@
+name: TTendencias correction Getafe-Sevilla final score
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttendencias-final-score-correction.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-final-score-correction
+  cancel-in-progress: false
+
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Corregir marcador final en registros editoriales
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-editorial"
+          git config user.email "actions@users.noreply.github.com"
+
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            python3 - <<'PY'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          stamp = datetime.now(ZoneInfo("Europe/Madrid")).isoformat(timespec="seconds")
+          targets = {
+              "listas-joint-f8769365147a3582": {
+                  "revision": 1,
+                  "text": "TT#5 Getafe-Sevilla · Kike Salas y Gudelj sigue siendo tendencia tras el 3-1 del Getafe: Kike Salas adelantó al Sevilla, pero el equipo azulón remontó; Gudelj fue titular ante su exequipo.\n#GetafeSevilla #LaLiga\n🌶️ Salas abrió; el Getafe dio la vuelta al guion.",
+                  "closer": "🌶️ Salas abrió; el Getafe dio la vuelta al guion.",
+                  "sources": [
+                      {"url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-getafe-sevilla-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261101130113.html"},
+                      {"url": "https://www.europapress.es/deportes/futbol-00162/noticia-getafe-refuerza-exsevillista-nemanja-gudelj-20260830152347.html"},
+                  ],
+                  "note": "Resultado final verificado: Getafe 3-1 Sevilla. Kike Salas abrió el marcador; el Getafe remontó y Gudelj fue titular ante su exequipo.",
+              },
+              "cb9bc0ab3d67": {
+                  "revision": 0,
+                  "text": "TT#10 #GetafeSevilla sigue siendo tendencia tras el 3-1 del Getafe: Kike Salas adelantó al Sevilla, pero Enes Ünal y Satriano iniciaron la remontada, cerrada en el descuento.\n#LaLiga #GetafeCF #SevillaFC\n🌶️ Del 0-1 al 3-1: el segundo tiempo cambió el partido.",
+                  "closer": "🌶️ Del 0-1 al 3-1: el segundo tiempo cambió el partido.",
+                  "sources": [
+                      {"url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-getafe-sevilla-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261101130113.html"},
+                  ],
+                  "note": "Resultado final verificado: Getafe 3-1 Sevilla. Kike Salas hizo el 0-1; Enes Ünal empató, Martín Satriano puso el 2-1 y el Getafe cerró el resultado en el descuento.",
+              },
+          }
+
+          def load(path):
+              return json.loads(Path(path).read_text(encoding="utf-8"))
+
+          def save(path, obj):
+              Path(path).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          req_path = "trends/requests.json"
+          req = load(req_path)
+          seen = set()
+          for item in req.get("requests", []):
+              cfg = targets.get(str(item.get("id") or ""))
+              if not cfg or int(item.get("revision") or 0) != cfg["revision"]:
+                  continue
+              if str(item.get("status") or "") not in {"explained", "published", "deleted"}:
+                  raise SystemExit(f"Estado inesperado para {item.get('id')}: {item.get('status')}")
+              item["explanation"] = cfg["text"]
+              item["closer_text"] = cfg["closer"]
+              item["verification_sources"] = cfg["sources"]
+              item["news_note"] = cfg["note"]
+              item["updated_at"] = stamp
+              item["explained_at"] = stamp
+              item["last_attempt_at"] = stamp
+              item["final_result_verified_at"] = stamp
+              seen.add(item["id"])
+          if seen != set(targets):
+              raise SystemExit(f"No se localizaron ambos targets en requests: {seen}")
+          req["updated_at"] = stamp
+          save(req_path, req)
+
+          manual_path = "trends/telegram-manual-explained.json"
+          manual = load(manual_path)
+          seen = set()
+          for item in manual.get("items", []):
+              cfg = targets.get(str(item.get("id") or ""))
+              if not cfg or int(item.get("revision") or 0) != cfg["revision"]:
+                  continue
+              item["explanation"] = cfg["text"]
+              item["closer_text"] = cfg["closer"]
+              item["verification_sources"] = cfg["sources"]
+              item["news_note"] = cfg["note"]
+              item["updated_at"] = stamp
+              item["explained_at"] = stamp
+              item["final_result_verified_at"] = stamp
+              seen.add(item["id"])
+          if seen != set(targets):
+              raise SystemExit(f"No se localizaron ambos targets en Listas: {seen}")
+          manual["updated_at"] = stamp
+          manual["count"] = len(manual.get("items", []))
+          save(manual_path, manual)
+
+          prepared_path = Path("trends/prepared.json")
+          if prepared_path.exists():
+              prepared = load(prepared_path)
+              changed = False
+              for item in prepared.get("items", []):
+                  cfg = targets.get(str(item.get("id") or ""))
+                  if not cfg or int(item.get("revision") or 0) != cfg["revision"]:
+                      continue
+                  item["explanation"] = cfg["text"]
+                  item["closer_text"] = cfg["closer"]
+                  item["verification_sources"] = cfg["sources"]
+                  item["news_note"] = cfg["note"]
+                  item["generated_at"] = stamp
+                  if isinstance(item.get("primary"), dict):
+                      item["primary"]["text"] = cfg["text"]
+                  if isinstance(item.get("alternatives"), list):
+                      for alt in item["alternatives"]:
+                          if isinstance(alt, dict):
+                              alt["tweet_text"] = cfg["text"]
+                  changed = True
+              if changed:
+                  prepared["updated_at"] = stamp
+                  save(prepared_path, prepared)
+
+          # Reexporta la capa pública con el texto corregido.
+          PY
+
+            python3 trends/export_site_top30.py
+
+            git rm -f .github/workflows/ttendencias-final-score-correction.yml
+            git add trends/requests.json trends/telegram-manual-explained.json trends/prepared.json trends/site-top30-current.json 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "Sin cambios que persistir"
+              exit 0
+            fi
+            git commit -m "TTendencias: corregir Getafe-Sevilla al 3-1 final"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+          exit 1
