@@ -6,9 +6,9 @@
   "run_id": "tr-1793491683102-manual",
   "previous_run_id": "tr-1793491247699-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T01:08:03.102+01:00",
-  "updated_at": "2026-11-01T01:08:03.102+01:00",
+  "updated_at": "2026-11-01T01:11:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
@@ -514,6 +514,13 @@
       "trend_id": "listas-auto-c2e98f2555a5a80353db",
       "title": "Agrupación automática de Listas",
       "message": "Inicio tr-1793491683102-manual: 3 trabajos preparing/update vigentes en main. Procesando group_listas y después review_red con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:11:00+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-c2e98f2555a5a80353db",
+      "title": "Agrupación automática de Listas",
+      "message": "Comparación JIT del snapshot: no hay coincidencias inequívocas que justifiquen grupo nuevo o cobertura por publicación existente. Los solapamientos por Barça-Alavés, Chelsea-Manchester United, GP de México, Urda o nombres relacionados corresponden a ángulos distintos o causalidad ambigua."
     }
   ],
   "final_outcomes": [
@@ -573,7 +580,7 @@
     "note": "Pasada real completada: 4 explicaciones, 2 revisiones sin novedades materiales y 1 agrupación sin coincidencias; cola final 0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793491683102-manual: 3 trabajos preparing/update vigentes en main. Procesando group_listas y después review_red con revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Comparación JIT del snapshot: no hay coincidencias inequívocas que justifiquen grupo nuevo o cobertura por publicación existente. Los solapamientos por Barça-Alavés, Chelsea-Manchester United, GP de México, Urda o nombres relacionados corresponden a ángulos distintos o causalidad ambigua.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -643,6 +650,13 @@
       "trend_id": "listas-auto-c2e98f2555a5a80353db",
       "title": "Agrupación automática de Listas",
       "message": "Inicio tr-1793491683102-manual: 3 trabajos preparing/update vigentes en main. Procesando group_listas y después review_red con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:11:00+01:00",
+      "phase": "investigating",
+      "trend_id": "listas-auto-c2e98f2555a5a80353db",
+      "title": "Agrupación automática de Listas",
+      "message": "Comparación JIT del snapshot: no hay coincidencias inequívocas que justifiquen grupo nuevo o cobertura por publicación existente. Los solapamientos por Barça-Alavés, Chelsea-Manchester United, GP de México, Urda o nombres relacionados corresponden a ángulos distintos o causalidad ambigua."
     }
   ]
 }
