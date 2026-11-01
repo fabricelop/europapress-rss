@@ -956,8 +956,19 @@ async function uploadImage(image){
   }
   return result;
 }
+async function optionalWebHandoff(handoff,remember=false){
+  try{
+    const publisher=require("./TTiTTularesWebImages.cjs");
+    if(remember)return await publisher.rememberConversation(handoff);
+    publisher.enroll(handoff);return true;
+  }catch(e){
+    console.log("TTITTULARES WEB IMAGE RECEIPT DEFERRED "+String(e&&e.message||e).slice(0,140));
+    return false;
+  }
+}
 (async()=>{
   let cdp;
+  let webHandoff=null;
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
@@ -988,9 +999,26 @@ async function uploadImage(image){
         await confirmPromptLaunched();
       }
       if(launchOnly){
-        // Éxito: el prompt existe en ChatGPT Images y quedó registrado en GitHub.
-        // No descargar imágenes, esperar raster, ni enviar nada a Telegram.
-        console.log("BRIDGE LAUNCH ONLY CONFIRMED :: ChatGPT Images, sin recuperación");
+        // The bridge never captures/forwards bytes. Enroll an independent,
+        // command-scoped consumer before allowing the fixed tab to be reused.
+        webHandoff={job,commandId,targetId,browserTargetId:cdp.fixedTargetId,secret};
+        await optionalWebHandoff(webHandoff,false);
+        for(let n=0;n<5;n++){
+          if(await optionalWebHandoff(webHandoff,true))break;
+          await sleep(800);
+        }
+        // Retain this verified conversation long enough for a slow ImageGen
+        // result; the independent publisher continues after bridge exit.
+        const until=Date.now()+90000;
+        while(Date.now()<until){
+          await sleep(2500);
+          let current;
+          try{current=await fetchJob()}catch{continue}
+          if(String(current.command_id||"")!==commandId)break;
+          if(String(current.status||"").toUpperCase()==="DONE"&&current.upload_sha256)break;
+          if(["CANCELLED","SUPERSEDED"].includes(String(current.status||"").toUpperCase()))break;
+        }
+        console.log("BRIDGE LAUNCHED; WEB RECEIPT INDEPENDENT "+commandId);
         return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
@@ -1028,5 +1056,8 @@ async function uploadImage(image){
     console.error("BRIDGE ERROR :: "+String(e&&e.message||e));
     await fail(e&&e.message||e);
     process.exitCode=1;
-  }finally{try{cdp&&cdp.close()}catch{}}
+  }finally{
+    if(webHandoff)await optionalWebHandoff(webHandoff,true);
+    try{cdp&&cdp.close()}catch{}
+  }
 })();
