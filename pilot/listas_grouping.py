@@ -128,12 +128,73 @@ def request(state, payload, now):
     """Return a new state; malformed/rejected commands never partially mutate."""
     state = copy.deepcopy(state)
     if (payload.get('project') != 'ttendencias' or not UUID.fullmatch(str(payload.get('request_id') or ''))
-            or payload.get('decision') not in {'group_listas', 'remove_covered'}):
+            or payload.get('decision') not in {'group_listas', 'remove_covered', 'remove_all_trends'}):
         raise ValueError('Orden de agrupación no válida')
     rid = payload['request_id'].lower()
     if any(x.get('request_id') == rid for x in state[RECEIPTS]['items']):
         return state, False
     at = now.isoformat()
+    if payload['decision'] == 'remove_all_trends':
+        # One confirmed click = one exact snapshot of the trends visible in
+        # Listas, regardless of age/color or whether cards are joint/covered.
+        # Never touch TTiTTulares, the X publication counter or a newer revision.
+        selected = payload.get('items')
+        if not isinstance(selected, list) or not 1 <= len(selected) <= 500:
+            receipt(state, payload, 'rejected', at,
+                    error='Selecciona entre 1 y 500 tendencias de Listas')
+            return state, True
+        current = eligible(state, now, include_covered=True)
+        ids = []
+        for member in selected:
+            if not isinstance(member, dict):
+                receipt(state, payload, 'rejected', at, error='Selección no válida')
+                return state, True
+            ident, expected = str(member.get('id') or ''), member.get('revision')
+            if (ident not in current or type(expected) is not int
+                    or revision(current[ident]) != expected):
+                receipt(state, payload, 'rejected', at,
+                        error='Una tendencia ha cambiado o ya no está en Listas; actualiza y reintenta')
+                return state, True
+            # Even a duplicate snapshot from a different ledger cannot allow
+            # an older edition to be closed if a newer revision already exists.
+            for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
+                if any(x.get('id') == ident and revision(x) > expected
+                       for x in state[path][field]):
+                    receipt(state, payload, 'rejected', at,
+                            error='Hay una revisión editorial posterior; actualiza Listas')
+                    return state, True
+            ids.append(ident)
+        if len(set(ids)) != len(ids):
+            receipt(state, payload, 'rejected', at,
+                    error='La selección contiene tendencias duplicadas')
+            return state, True
+
+        # All identities were revalidated first. Apply without partial success,
+        # preserving original explanations, image pointers and group references.
+        selected_revisions = {member['id']: member['revision'] for member in selected}
+        for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
+            for row in state[path][field]:
+                ident = str(row.get('id') or '')
+                if ident in selected_revisions and revision(row) == selected_revisions[ident]:
+                    row.update(status='deleted', telegram_package_status='deleted',
+                               deleted_at=at, decision_source='listas_bulk_not_published')
+            state[path]['updated_at'] = at
+        for row in state[DELIVERIES]['items']:
+            ident = str(row.get('event_id') or '')
+            if (ident in selected_revisions and revision(row) == selected_revisions[ident]
+                    and str(row.get('status') or '').lower() == 'sent'):
+                row.update(status='deleted', updated_at=at)
+        state[DELIVERIES]['updated_at'] = at
+        state[DECISIONS]['items'] = [x for x in state[DECISIONS]['items']
+                                     if str(x.get('id') or '') not in selected_revisions]
+        state[DECISIONS]['items'].extend(
+            {'id': ident, 'revision': expected, 'status': 'deleted',
+             'updated_at': at, 'source': 'listas_bulk_not_published'}
+            for ident, expected in selected_revisions.items())
+        state[DECISIONS]['updated_at'] = at
+        receipt(state, payload, 'applied', at,
+                removed_ids=ids, removed_count=len(ids), skipped_count=0)
+        return state, True
     if payload['decision'] == 'remove_covered':
         selected = payload.get('items')
         if not isinstance(selected, list) or not 1 <= len(selected) <= 500:
