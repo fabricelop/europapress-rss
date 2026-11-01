@@ -31522,16 +31522,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
       "editorial_grouping_fingerprint": "d6c6bd5eb4dba2dcb6c4c590d166110a1a8bc961ec779d0e39524169350244d2",
-      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00",
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/SH3XCAOYQ5EURBHNZN2VG5XKKA.jpg?auth=e2ddd3a14f689bbd4de5e406918670ad84ada0e4e684800ca3222a748e837871&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/2026-10-29/la-editora-de-okdiario-pago-242000-euros-para-costear-honorarios-y-gastos-de-la-defensa-de-koldo-garcia.html",
+        "alt": "Imagen de archivo relacionada con Koldo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/SH3XCAOYQ5EURBHNZN2VG5XKKA.jpg?auth=e2ddd3a14f689bbd4de5e406918670ad84ada0e4e684800ca3222a748e837871&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/2026-10-29/la-editora-de-okdiario-pago-242000-euros-para-costear-honorarios-y-gastos-de-la-defensa-de-koldo-garcia.html",
+        "alt": "Imagen de archivo relacionada con Koldo",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "615c9aac32f0",
@@ -31602,6 +31617,6 @@
       "editorial_grouping_checked_at": "2026-11-01T06:23:18.675331+00:00"
     }
   ],
-  "updated_at": "2026-11-01T06:24:25.974861+00:00",
+  "updated_at": "2026-11-01T06:25:50.168701Z",
   "count": 525
 }
