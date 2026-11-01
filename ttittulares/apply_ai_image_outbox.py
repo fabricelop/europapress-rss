@@ -292,6 +292,12 @@ def main():
                 status = "failed"
                 payload["reason"] = str(exc)[:500]
 
+        if status == "failed" and payload.get("command_id"):
+            # Never discard a verified, already-generated original because of
+            # an association/validation error. Keep it available for review.
+            waiting.append(path.name + ":delivery_needs_review")
+            continue
+
         if status == "failed":
             reason = str(payload.get("reason") or "No se pudo materializar la imagen IA.")[:500]
             item["ai_image_attempt"] = attempt
