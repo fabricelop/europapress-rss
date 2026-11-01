@@ -3,33 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793538052385-manual",
-  "previous_run_id": "tr-1793538157393-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
-  "started_at": "2026-11-01T14:00:52.385+01:00",
-  "updated_at": "2026-11-01T14:03:40+01:00",
-  "finished_at": null,
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-chat-20261101T1355+0100",
+  "previous_run_id": "tr-1793538052385-manual",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-01T13:55:00+01:00",
+  "updated_at": "2026-11-01T14:04:00+01:00",
+  "finished_at": "2026-11-01T14:04:00+01:00",
+  "current": 6,
+  "total": 6,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-ac14b6831079d0920521",
+    "f7361b47a759",
+    "listas-auto-9148c4e93e7874393006",
+    "red-review-9784187f84465ce8bfed",
     "listas-auto-df687bbd5831bc34b13b",
+    "red-review-ac14b6831079d0920521",
     "listas-auto-183f4f308cb84673006b"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 0,
-    "updates": 1,
-    "grouping_requests": 2,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 1,
+    "updates": 2,
+    "grouping_requests": 3,
     "groups_created": 0,
     "covered_by_existing": 1,
     "unchanged_reviews": 0,
@@ -39,7 +42,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
@@ -204,70 +207,80 @@
       "trend_id": "listas-auto-183f4f308cb84673006b",
       "title": "Agrupación automática de Listas",
       "message": "Convergencia JIT: las agrupaciones quedaron aplicadas; la primera cubrió Alavés por la ficha Barça-Alavés ya publicada y la posterior cerró sin nuevos grupos ni coberturas."
+    },
+    {
+      "at": "2026-11-01T14:04:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T1355+0100",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada editorial completada 6/6 tras convergencia concurrente: Mariah Carey explicada; dos revisiones rojas actualizadas (Alavés y Mazón); tres barreras de agrupación cerradas, con Alavés cubierto por la ficha conjunta ya publicada. Cola final 0 y sin rewrite_pending. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "listas-auto-9148c4e93e7874393006",
+      "id": "f7361b47a759",
+      "type": "explain",
+      "name": "Mariah Carey",
       "revision": 0,
+      "outcome": "explained",
+      "rank": 30
+    },
+    {
+      "id": "listas-auto-9148c4e93e7874393006",
+      "type": "group_listas",
       "outcome": "grouping_completed",
-      "name": "Agrupación automática de Listas",
-      "applied": true,
       "groups_created": 0,
       "covered_by_existing": 0
     },
     {
       "id": "red-review-9784187f84465ce8bfed",
-      "revision": 0,
+      "type": "review_red",
+      "name": "Alavés",
       "outcome": "updated",
-      "name": "Revisar novedades: Alavés",
-      "applied": true,
-      "resulting_id": "trend-update-4c825446d88ed4e9b100",
+      "created_id": "trend-update-4c825446d88ed4e9b100",
       "distinct_episode": true
     },
     {
       "id": "listas-auto-df687bbd5831bc34b13b",
-      "revision": 0,
+      "type": "group_listas",
       "outcome": "grouping_completed",
-      "name": "Agrupación automática de Listas",
-      "applied": true,
       "groups_created": 0,
-      "covered_by_existing": 1
+      "covered_by_existing": 1,
+      "covered_id": "trend-update-4c825446d88ed4e9b100",
+      "published_id": "listas-joint-1873f405d5b5996d"
     },
     {
       "id": "red-review-ac14b6831079d0920521",
-      "revision": 0,
+      "type": "review_red",
+      "name": "Mazón",
       "outcome": "updated",
-      "name": "Revisar novedades: Mazón",
-      "applied": true,
-      "resulting_id": "trend-update-ce4f4a1477a1efb0edd3",
+      "created_id": "trend-update-ce4f4a1477a1efb0edd3",
       "distinct_episode": false
     },
     {
       "id": "listas-auto-183f4f308cb84673006b",
-      "revision": 0,
+      "type": "group_listas",
       "outcome": "grouping_completed",
-      "name": "Agrupación automática de Listas",
-      "applied": true,
       "groups_created": 0,
       "covered_by_existing": 0
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T13:59:12.192+01:00",
-  "last_completed_at": "2026-11-01T14:03:30+01:00",
+  "last_started_at": "2026-11-01T13:55:00+01:00",
+  "last_completed_at": "2026-11-01T14:04:00+01:00",
   "last_run": {
-    "run_id": "tr-1793537952192-manual",
+    "run_id": "tr-chat-20261101T1355+0100",
     "status": "DONE",
-    "started_at": "2026-11-01T13:59:12.192+01:00",
-    "finished_at": "2026-11-01T14:03:30+01:00",
+    "started_at": "2026-11-01T13:55:00+01:00",
+    "finished_at": "2026-11-01T14:04:00+01:00",
     "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
-      "explained": 0,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 1,
       "updates": 2,
-      "grouping_requests": 2,
+      "grouping_requests": 3,
       "groups_created": 0,
       "covered_by_existing": 1,
       "unchanged_reviews": 0,
@@ -277,59 +290,61 @@
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 3
+      "concurrent_convergence": 1
     },
     "outcomes": [
       {
-        "id": "listas-auto-9148c4e93e7874393006",
+        "id": "f7361b47a759",
+        "type": "explain",
+        "name": "Mariah Carey",
         "revision": 0,
+        "outcome": "explained",
+        "rank": 30
+      },
+      {
+        "id": "listas-auto-9148c4e93e7874393006",
+        "type": "group_listas",
         "outcome": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "applied": true,
         "groups_created": 0,
         "covered_by_existing": 0
       },
       {
         "id": "red-review-9784187f84465ce8bfed",
-        "revision": 0,
+        "type": "review_red",
+        "name": "Alavés",
         "outcome": "updated",
-        "name": "Revisar novedades: Alavés",
-        "applied": true,
-        "resulting_id": "trend-update-4c825446d88ed4e9b100",
+        "created_id": "trend-update-4c825446d88ed4e9b100",
         "distinct_episode": true
       },
       {
         "id": "listas-auto-df687bbd5831bc34b13b",
-        "revision": 0,
+        "type": "group_listas",
         "outcome": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "applied": true,
         "groups_created": 0,
-        "covered_by_existing": 1
+        "covered_by_existing": 1,
+        "covered_id": "trend-update-4c825446d88ed4e9b100",
+        "published_id": "listas-joint-1873f405d5b5996d"
       },
       {
         "id": "red-review-ac14b6831079d0920521",
-        "revision": 0,
+        "type": "review_red",
+        "name": "Mazón",
         "outcome": "updated",
-        "name": "Revisar novedades: Mazón",
-        "applied": true,
-        "resulting_id": "trend-update-ce4f4a1477a1efb0edd3",
+        "created_id": "trend-update-ce4f4a1477a1efb0edd3",
         "distinct_episode": false
       },
       {
         "id": "listas-auto-183f4f308cb84673006b",
-        "revision": 0,
+        "type": "group_listas",
         "outcome": "grouping_completed",
-        "name": "Agrupación automática de Listas",
-        "applied": true,
         "groups_created": 0,
         "covered_by_existing": 0
       }
     ],
-    "message": "Pasada cerrada: Alavés y Mazón actualizados; Alavés quedó cubierto por la ficha conjunta publicada del 6-1; la actualización de Mazón quedó independiente. Barrera final limpia. ImageGen=0; publicaciones=0."
+    "message": "Pasada editorial completada 6/6 tras convergencia concurrente: Mariah Carey explicada; dos revisiones rojas actualizadas (Alavés y Mazón); tres barreras de agrupación cerradas, con Alavés cubierto por la ficha conjunta ya publicada. Cola final 0 y sin rewrite_pending. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Verificación final: Mazón actualizado por novedad material; dos agrupaciones aplicadas (0 grupos nuevos, 1 cobertura de Alavés por ficha previa). Releyendo main antes del cierre; ImageGen=0, publicaciones=0.",
+  "message": "Pasada editorial completada 6/6 tras convergencia concurrente: Mariah Carey explicada; dos revisiones rojas actualizadas (Alavés y Mazón); tres barreras de agrupación cerradas, con Alavés cubierto por la ficha conjunta ya publicada. Cola final 0 y sin rewrite_pending. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
