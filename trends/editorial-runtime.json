@@ -5,21 +5,26 @@
   "canonical": true,
   "run_id": "tr-1793531820836-manual",
   "previous_run_id": "tr-chat-20261101T121100+0100",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "investigating",
   "started_at": "2026-11-01T12:17:00+01:00",
-  "updated_at": "2026-11-01T12:18:00+01:00",
+  "updated_at": "2026-11-01T12:21:31+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
   "trend_id": "e7a34c909e2e",
   "title": "#UFCHBOMax",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [],
+  "processed_ids": [
+    "e7a34c909e2e"
+  ],
+  "remaining_ids": [
+    "ecfab12c8f74",
+    "d0d920c046f0"
+  ],
   "remaining_active_ids": [
-    "e7a34c909e2e",
-    "ecfab12c8f74"
+    "ecfab12c8f74",
+    "d0d920c046f0"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -1346,7 +1351,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T12:11:00+01:00",
+  "last_started_at": "2026-11-01T12:21:31+01:00",
   "last_completed_at": "2026-11-01T12:12:00+01:00",
   "last_run": {
     "run_id": "tr-chat-20261101T121100+0100",
