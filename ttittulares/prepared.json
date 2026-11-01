@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-01T21:30:12.863198Z",
+  "updated_at": "2026-11-01T21:32:40Z",
   "items": [
     {
       "event_id": "fff27da12d07",
@@ -732,8 +732,8 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "fallback_image_status": "none",
+      "image_choice": "none",
       "archive_image_search_attempted_at": "2026-11-01T21:30:12.863198Z",
       "fallback_image_search_attempted_at": "2026-11-01T21:30:12.863198Z",
       "archive_image_failure_reason": "Las imágenes localizadas eran de archivo o de contexto policial y no documentaban de forma específica la resolución judicial; no se asocia una imagen no específica al hecho.",
@@ -743,14 +743,6 @@
       "image_app_available": false,
       "image_delivery": "none",
       "archive_image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261101183335_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/castilla-y-leon/noticia-pasa-disposicion-judicial-detenido-apunalamiento-mortal-tordehumos-valladolid-20261101183335.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Prisión comunicada y sin fianza para el presunto autor del apuñalamiento mortal en Tordehumos (Valladolid)"
-      },
-      "fallback_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261101183335_1200.jpg",
         "source": "www.europapress.es",
         "source_url": "https://www.europapress.es/castilla-y-leon/noticia-pasa-disposicion-judicial-detenido-apunalamiento-mortal-tordehumos-valladolid-20261101183335.html",
@@ -860,11 +852,11 @@
       "source_count": 3,
       "prepared_at": "2026-11-01T20:39:00Z",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
+      "fallback_image_status": "none",
       "ai_image_status": "none",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "fallback",
+      "image_choice": "none",
       "image_status": "none",
       "image_app_available": false,
       "image_delivery": "none",
@@ -879,17 +871,77 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Más de 100 policías heridos y 54 detenidos en los disturbios de Frankfurt"
-      },
-      "fallback_image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261101171347_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/internacional/noticia-mas-100-policias-heridos-54-detenidos-disturbios-frankfurt-20261101171347.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Más de 100 policías heridos y 54 detenidos en los disturbios de Frankfurt"
       }
+    },
+    {
+      "event_id": "6d84fe66e752",
+      "revision": 1,
+      "title": "Mueren las nueve personas a bordo de un Learjet 60 que se estrelló en Palm Beach (Florida)",
+      "url": "https://www.europapress.es/internacional/noticia-avion-privado-nueve-personas-bordo-estrella-zona-residencial-florida-20261101215157.html",
+      "factual_summary": "Un Learjet 60 con nueve personas a bordo se estrelló el 1 de noviembre en Palm Beach County (Florida) tras despegar de Austin-Bergstrom con destino North Eleuthera, en Bahamas. La FAA confirmó que viajaban nueve personas y fuentes posteriores que citan al secretario de Transporte de EE.UU., Sean Duffy, confirmaron la muerte de los nueve ocupantes. La causa sigue bajo investigación.",
+      "explanation": "La FAA y Associated Press coinciden en el tipo de avión, los nueve ocupantes, la zona del impacto y la ruta Austin-Bahamas. La información inicial no cerraba el balance de víctimas; una actualización posterior citó al secretario de Transporte Sean Duffy confirmando la muerte de las nueve personas a bordo. Se evita atribuir una causa mientras la investigación sigue abierta.",
+      "tweet": {
+        "text": "Un Learjet 60 con nueve personas a bordo cayó en Palm Beach (Florida) tras despegar de Austin rumbo a Bahamas. Las autoridades confirmaron la muerte de los nueve ocupantes.\n\n#Florida #PalmBeach #Learjet60\n🌶️ La investigación debe explicar el desplome.",
+        "remate": "🌶️ La investigación debe explicar el desplome.",
+        "url": "https://twitter.com/intent/tweet?text=Un%20Learjet%2060%20con%20nueve%20personas%20a%20bordo%20cay%C3%B3%20en%20Palm%20Beach%20%28Florida%29%20tras%20despegar%20de%20Austin%20rumbo%20a%20Bahamas.%20Las%20autoridades%20confirmaron%20la%20muerte%20de%20los%20nueve%20ocupantes.%0A%0A%23Florida%20%23PalmBeach%20%23Learjet60%0A%F0%9F%8C%B6%EF%B8%8F%20La%20investigaci%C3%B3n%20debe%20explicar%20el%20desplome."
+      },
+      "sources_at_draft": [
+        "Europa Press",
+        "20minutos",
+        "EL PAÍS",
+        "Cadena SER",
+        "ABC News / FAA",
+        "Associated Press",
+        "Business Insider / Sean Duffy"
+      ],
+      "source_evidence": [
+        {
+          "source": "Europa Press",
+          "url": "https://www.europapress.es/internacional/noticia-avion-privado-nueve-personas-bordo-estrella-zona-residencial-florida-20261101215157.html",
+          "supports": "Confirma el siniestro de un avión privado con nueve personas a bordo en una zona residencial de Florida."
+        },
+        {
+          "source": "ABC News / FAA",
+          "url": "https://abcnews.com/US/learjet-9-aboard-crashes-palm-beach-florida-faa/story?id=137753599",
+          "supports": "La FAA identifica un Learjet 60 con nueve personas, procedente de Austin y con destino Bahamas."
+        },
+        {
+          "source": "Associated Press",
+          "url": "https://apnews.com/article/ffdee609e7916ff7fcd178d2b8e69b39",
+          "supports": "Confirma el impacto del Learjet 60 en Palm Beach County, nueve personas a bordo y la investigación abierta."
+        },
+        {
+          "source": "Business Insider / Sean Duffy",
+          "url": "https://www.businessinsider.com/private-jet-crash-florida-2026-11",
+          "supports": "Cita al secretario de Transporte de EE.UU. confirmando la muerte de las nueve personas a bordo."
+        },
+        {
+          "source": "EL PAÍS",
+          "url": "https://elpais.com/us/2026-11-01/personas-mueren-al-estrellarse-un-jet-privado-en-florida.html",
+          "supports": "Recoge el balance mortal de al menos nueve personas en el accidente."
+        },
+        {
+          "source": "Cadena SER",
+          "url": "https://cadenaser.com/nacional/2026/11/01/al-menos-nueve-personas-mueren-tras-estrellarse-un-avion-privado-en-palm-beach-florida-cadena-ser/",
+          "supports": "Recoge el balance de nueve fallecidos en Palm Beach."
+        }
+      ],
+      "drafted_source_count": 7,
+      "source_count": 5,
+      "prepared_at": "2026-11-01T21:32:40Z",
+      "selection_mode": "AUTO_WEB",
+      "archive_image_status": "none",
+      "fallback_image_status": "none",
+      "ai_image_status": "none",
+      "image_mode": "ai_plus_fallback",
+      "image_strategy": "ai_plus_fallback",
+      "image_choice": "none",
+      "image_status": "none",
+      "image_pending": false,
+      "image_app_available": false,
+      "image_delivery": "none"
     }
   ],
-  "count": 16,
+  "count": 17,
   "delivery_refresh_requested_at": "2026-10-26T01:33:00Z"
 }
