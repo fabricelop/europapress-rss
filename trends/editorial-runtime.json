@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793529403772-manual",
+  "run_id": "tr-chat-20261101T1140+0100",
   "previous_run_id": "tr-1793529403772-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T11:35:00+01:00",
-  "updated_at": "2026-11-01T11:39:00+01:00",
-  "finished_at": "2026-11-01T11:39:00+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T11:40:00+01:00",
+  "updated_at": "2026-11-01T11:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "listas-auto-4af3a50ea6a6cbe196b7"
   ],
@@ -1543,7 +1543,7 @@
     "incidents": 0
   },
   "source": "manual",
-  "message": "Pasada cerrada 1/1 por convergencia JIT: la agrupación observada fue resuelta por otra ejecución válida con 0 grupos nuevos y 1 cobertura por publicación existente. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0.",
+  "message": "Inicio de pasada manual: cola autoritativa observada en 0; verificando barrera JIT de main, reexplicaciones y mantenimiento. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2765,6 +2765,13 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada cerrada 1/1 por convergencia JIT: la agrupación observada fue resuelta por otra ejecución válida con 0 grupos nuevos y 1 cobertura por publicación existente. Cola final 0, reexplicaciones 0, ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T11:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-chat-20261101T1140+0100",
+      "status": "RUNNING",
+      "message": "Inicio de pasada manual: cola autoritativa observada en 0; verificando barrera JIT de main, reexplicaciones y mantenimiento. Sin ImageGen ni publicación."
     }
   ],
   "partial": false,
