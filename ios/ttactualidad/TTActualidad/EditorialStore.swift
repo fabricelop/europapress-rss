@@ -40,7 +40,11 @@ struct NewsItem: Identifiable {
     let sources: Int
     var editorial: String { text }
     var status: String = "LISTA"
-
+    // News AI assignments are bound to the literal READY text and timestamp.
+    var preparedAtISO: String = ""
+    var verifiedFacts: String = ""
+    var siteImageURL: URL? = nil
+    var siteImageSHA256: String = ""
 }
 
 struct TrendItem: Identifiable {
@@ -595,11 +599,13 @@ final class EditorialStore: ObservableObject {
         // Archive photographs and verified Sites PNGs are separate catalogs.
         async let archivePhotosTask = ArchivePhotoCatalog.load()
         async let siteImagesTask = SiteAIImageCatalog.load()
+        async let newsImagesTask = NewsAIImageCatalog.load()
         let archivePhotos = await archivePhotosTask
         let siteImages = await siteImagesTask
+        let newsImages = await newsImagesTask
         let news = Self.buildNews(prepared: docs["ttittulares/prepared.json"]!,
                                   decisions: docs["ttittulares/decisions.json"]!,
-                                  archivePhotos: archivePhotos)
+                                  archivePhotos: archivePhotos, newsImages: newsImages)
         let ready = Self.buildTrendListas(
             manual: docs["trends/telegram-manual-explained.json"]!,
             requests: docs["trends/requests.json"]!,
@@ -1401,7 +1407,9 @@ final class EditorialStore: ObservableObject {
                  publishedAt: item.publishedAt, revision: item.revision,
                  sourceURL: item.sourceURL, imageURL: item.imageURL,
                  factual: item.factual, closer: item.closer, sources: item.sources,
-                 status: status)
+                 status: status, preparedAtISO: item.preparedAtISO,
+                 verifiedFacts: item.verifiedFacts, siteImageURL: item.siteImageURL,
+                 siteImageSHA256: item.siteImageSHA256)
     }
 
     private func applyOptimisticOverlay() {
@@ -1633,7 +1641,8 @@ final class EditorialStore: ObservableObject {
     }
 
     private static func buildNews(prepared: [String: Any], decisions: [String: Any],
-                                  archivePhotos: [String: URL]) -> [NewsItem] {
+                                  archivePhotos: [String: URL],
+                                  newsImages: [String: NewsAIImageCatalog.Entry]) -> [NewsItem] {
         var statuses: [String: String] = [:]
         for item in rows(decisions, "items") {
             statuses[str(item, "event_id")] = str(item, "status").lowercased()
@@ -1648,6 +1657,13 @@ final class EditorialStore: ObservableObject {
             let preferred = text.isEmpty ? factual : text
             let archive = item["archive_image"] as? [String: Any] ??
                           item["fallback_image"] as? [String: Any] ?? [:]
+            let revision = int(item, "revision")
+            let preparedAt = str(item, "prepared_at")
+            let verifiedAI = NewsAIImageCatalog.assigned(
+                id: id, revision: revision, editorialText: preferred,
+                preparedAt: preparedAt, catalog: newsImages
+            ) ?? NewsAIImageCatalog.preparedImage(
+                id: id, revision: revision, item: item)
             return NewsItem(id: id, title: str(item, "title"),
                             text: preferred,
                             publishedAt: when(item, ["prepared_at", "selected_at"]),
@@ -1660,7 +1676,11 @@ final class EditorialStore: ObservableObject {
                                 catalog: archivePhotos),
                             factual: factual,
                             closer: str(tweet, "remate").isEmpty ? str(item, "closer_text") : str(tweet, "remate"),
-                            sources: int(item, "source_count"))
+                            sources: int(item, "source_count"),
+                            preparedAtISO: preparedAt,
+                            verifiedFacts: str(item, "factual_summary"),
+                            siteImageURL: verifiedAI?.url,
+                            siteImageSHA256: verifiedAI?.sha256 ?? "")
         }
     }
 
