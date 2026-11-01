@@ -3,37 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793494749102-manual",
-  "previous_run_id": "tr-1793494954665-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T02:02:00+01:00",
-  "updated_at": "2026-11-01T02:04:38+01:00",
-  "finished_at": "2026-11-01T02:04:38+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793495454000-manual",
+  "previous_run_id": "tr-1793494749102-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T02:10:54+01:00",
+  "updated_at": "2026-11-01T02:10:54+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-554afd2590fab3a9e8d0",
-    "red-review-91320aa8d4488d9d8f38",
-    "listas-auto-94db61aafb611837eff8"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
-    "grouping_requests": 1,
+    "updates": 0,
+    "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "converged_concurrent": 1,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "remaining_active": 0,
     "queue_remaining": 0,
@@ -664,6 +659,11 @@
       "at": "2026-11-01T02:00:27+01:00",
       "phase": "investigating",
       "message": "Inicio tr-chat-20261101T0155+0100 tras refresco manual #619: 2 review_red preparing vigentes (Mazón y Óscar Puente). Revalidación JIT e investigación actual; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T02:10:54+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-1793495454000-manual: editorial-queue=0 tras la actualización de las 02:10:54. Verificando barrera de main y ausencia de reexplicaciones vigentes; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
@@ -900,28 +900,13 @@
       "at": "2026-11-01T02:04:38+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 3/3 observados. ImageGen=0, publicaciones=0, incidencias=0."
+    },
+    {
+      "at": "2026-11-01T02:10:54+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-1793495454000-manual: editorial-queue=0 tras la actualización de las 02:10:54. Verificando barrera de main y ausencia de reexplicaciones vigentes; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-554afd2590fab3a9e8d0",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-bf269abb9154f3f0cc87"
-    },
-    {
-      "id": "red-review-91320aa8d4488d9d8f38",
-      "revision": 0,
-      "outcome": "unchanged",
-      "converged_concurrent": true
-    },
-    {
-      "id": "listas-auto-94db61aafb611837eff8",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 0,
-      "covered_by_existing": 0
-    }
-  ]
+  "outcomes": []
 }
