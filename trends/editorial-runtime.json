@@ -3,27 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793565885959-manual",
-  "previous_run_id": "tr-1793565318526-manual",
-  "status": "success",
+  "run_id": "tr-1793566180882-manual",
+  "previous_run_id": "tr-1793565885959-manual",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T21:45:00+01:00",
-  "updated_at": "2026-11-01T21:48:48+01:00",
+  "started_at": "2026-11-01T21:50:00+01:00",
+  "updated_at": "2026-11-01T21:50:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 4,
-  "trend_id": "dc082e7257e6",
-  "title": "Aston Martin",
-  "queue_complete": true,
-  "processed_ids": [
-    "e0e35ef59ec3"
+  "total": 2,
+  "trend_id": "red-review-97335a3df43ba0574b3c",
+  "title": "Revisar novedades: Alavés",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-97335a3df43ba0574b3c",
+    "red-review-80bf283ec7dd3b50f7b7"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-97335a3df43ba0574b3c",
+    "red-review-80bf283ec7dd3b50f7b7"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -32,7 +36,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1526,6 +1530,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T21:50:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793566180882-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-97335a3df43ba0574b3c",
+      "title": "Revisar novedades: Alavés",
+      "message": "Inicio: 2 revisiones review_red preparing observadas en main. Orden JIT: Alavés, Blocus. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -1643,7 +1658,7 @@
     "message": "Pasada cerrada 7/7: Iraola, Martínez Valero, El Sardinero, Dimitrievski, Goiria, Racing y Leclerc explicados y verificados en requests + Listas. Leclerc entró durante la ejecución y también fue procesado. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidente técnico inicial recuperado sin pérdida de estado."
   },
   "source": "chat",
-  "message": "Inicio: 4 trabajos preparing observados en main. Orden JIT: Aston Martin, #NASCARenDAZN, Hamilton, Honda. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 2 revisiones review_red preparing observadas en main. Orden JIT: Alavés, Blocus. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3944,66 +3959,9 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "0cd169a778b9",
-      "revision": 0,
-      "name": "Iraola",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "425e95efd6a8",
-      "revision": 0,
-      "name": "Martínez Valero",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "5de2c2a7b20e",
-      "revision": 0,
-      "name": "El Sardinero",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "a91fa6a9490a",
-      "revision": 0,
-      "name": "Dimitrievski",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "2982cf2cc5c4",
-      "revision": 0,
-      "name": "Goiria",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "82f5a317d5c7",
-      "revision": 0,
-      "name": "Racing",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "a4a691b7cac1",
-      "revision": 0,
-      "name": "Leclerc",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    }
-  ],
-  "current_item": "dc082e7257e6",
-  "current_title": "Aston Martin",
+  "outcomes": [],
+  "current_item": "red-review-97335a3df43ba0574b3c",
+  "current_title": "Revisar novedades: Alavés",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -4777,6 +4735,6 @@
       "message": "Pasada cerrada 2/2: elche y #DragRaceEs explicadas y verificadas en requests + Listas. Barrera final: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793565885959-manual",
+  "command_id": "tr-1793566180882-manual",
   "requested_at": "2026-11-01T21:45:00+01:00"
 }
