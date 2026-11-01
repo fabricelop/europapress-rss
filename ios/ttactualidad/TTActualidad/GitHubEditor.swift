@@ -667,8 +667,21 @@ final class GitHubEditor: ObservableObject {
                 ["id": $0.editorialID, "revision": $0.revision] as [String: Any]
             }
         ]
-        return await dispatch("ttactualidad_group_listas_v1", payload: payload,
-                              label: "Retirar todas las tendencias · No publicadas")
+        let result = await dispatch("ttactualidad_group_listas_v1", payload: payload,
+                                    label: "Retirar todas las tendencias · No publicadas")
+        // An explicitly rejected receipt is not a still-pending dispatch.
+        // Preserve retry ID only when the outcome is truly uncertain.
+        if case .pending = result {
+            if let receiptDocument = try? await readMainJSON("pilot/ttactualidad-action-receipts.json"),
+               let receipt = (receiptDocument["items"] as? [[String: Any]])?.first(where: {
+                   ($0["request_id"] as? String) == requestID
+               }), (receipt["status"] as? String) == "rejected" {
+                notice = (receipt["error"] as? String) ??
+                    "La selección ha cambiado. Actualiza Listas y vuelve a intentarlo."
+                return .failed
+            }
+        }
+        return result
     }
 
     func addNews(title: String, url: String, instructions: String,
