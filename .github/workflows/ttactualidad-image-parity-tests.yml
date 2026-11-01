@@ -1,0 +1,48 @@
+name: TTActualidad · verificar fotos de archivo e IA
+on:
+  push:
+    branches: [main]
+    paths:
+      - "pilot/ttactualidad-live/index.html"
+      - "docs/ttactualidad/index.html"
+      - "shared/archive-photo-index.json"
+      - "shared/build_archive_photo_index.py"
+      - "ttittulares/sync_site_ai_images.py"
+      - "ttittulares/site-ai-images.json"
+      - "tests/test_ttactualidad_dual_images.cjs"
+      - "tests/test_ttittulares_image_catalog.py"
+      - ".github/workflows/ttactualidad-image-parity-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regression de archivos originales por ID/revisión y SHA-256
+        run: python3 -m unittest discover -s tests -p test_ttittulares_image_catalog.py -v
+      - name: Validación real del código web de noticias y tendencias
+        run: node tests/test_ttactualidad_dual_images.cjs
+      - name: Comprobar índice público (solo fotos de archivo reales)
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re
+          idx=json.loads(pathlib.Path('shared/archive-photo-index.json').read_text())
+          assert idx.get('schema_version')==1 and idx.get('kind')=='archive_only'
+          photos=idx['photos']
+          assert len(photos)>=400
+          for key,url in photos.items():
+              project,event_and_rev=key.split(':',1)
+              assert project in ('ttittulares','ttendencias')
+              assert re.fullmatch(r'[A-Za-z0-9_-]+:r\d+',event_and_rev),key
+              folder='ttittulares' if project=='ttittulares' else 'trends'
+              prefix='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/'+folder+'/archive-images/'
+              assert url.startswith(prefix) and '/generated-images/' not in url
+              local=pathlib.Path(url.removeprefix('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/'))
+              assert local.is_file(),str(local)
+          print('TT_ACTUALIDAD_ARCHIVE_INDEX_OK',len(photos))
+          PY
