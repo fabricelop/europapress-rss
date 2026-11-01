@@ -31724,14 +31724,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://twitter-trends.snaplytics.io/assets/img/twitter-trending-featured-img.jpg",
+        "source": "twitter-trends.snaplytics.io",
+        "source_url": "https://twitter-trends.snaplytics.io/spain/2026-10-25/",
+        "alt": "Imagen de archivo relacionada con #FelizDomingo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://twitter-trends.snaplytics.io/assets/img/twitter-trending-featured-img.jpg",
+        "source": "twitter-trends.snaplytics.io",
+        "source_url": "https://twitter-trends.snaplytics.io/spain/2026-10-25/",
+        "alt": "Imagen de archivo relacionada con #FelizDomingo",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-01T09:33:57+01:00",
+  "updated_at": "2026-11-01T08:35:12.613677Z",
   "count": 527
 }
