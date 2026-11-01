@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T09:57:33.895935+00:00",
+  "updated_at": "2026-11-01T09:57:46.198520+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -17197,7 +17197,21 @@
       "editorial_grouping_checked_at": "2026-10-30T18:43:36.944295+00:00",
       "telegram_package_status": "published",
       "published_at": "2026-10-30T19:07:14.351346+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-01T09:57:46.198520+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "La explicación original hablaba de la cercanía de la festividad. Ahora es 1 de noviembre y Todos los Santos se está celebrando, con visitas y dispositivos especiales en cementerios; es una evolución material del mismo episodio.",
+      "red_review_sources": [
+        {
+          "url": "https://www.europapress.es/economia/noticia-festivo-noviembre-2026-donde-traslada-lunes-comunidades-tendran-puente-20261021075946.html"
+        },
+        {
+          "url": "https://diario.madrid.es/blog/2026/10/29/todos-los-santos-2026-madrid-cementerios-horarios-autobuses/"
+        },
+        {
+          "url": "https://www.dgt.es/comunicacion/notas-de-prensa/20261029-dispositivo-especial-festividad-todos-los-santos"
+        }
+      ]
     },
     {
       "id": "listas-auto-fbd62020f199c2c1dc63",
@@ -158260,7 +158274,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 3,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T09:50:59.526494+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -158284,14 +158298,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-01T09:57:46.198520+00:00",
+      "review_reason": "No hay una novedad sustancial posterior que cambie de nuevo la explicación: continúa el mismo accidente de Urda/Toledo y sus consecuencias. La identificación de 56 de las 69 víctimas, la investigación de las causas y el corte de la línea forman parte de la evolución ya conocida del mismo episodio."
     },
     {
       "id": "red-review-b9480e99ceb0de1ae281",
       "revision": 0,
       "name": "Revisar novedades: Día de Todos",
       "rank": 5,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-01T09:50:59.526494+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -158314,7 +158331,11 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-a921e4524a9526d88f2e",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-01T09:57:46.198520+00:00",
+      "review_reason": "La explicación original hablaba de la cercanía de la festividad. Ahora es 1 de noviembre y Todos los Santos se está celebrando, con visitas y dispositivos especiales en cementerios; es una evolución material del mismo episodio."
     },
     {
       "id": "listas-joint-85bd5193377e8bdc",
@@ -158362,6 +158383,42 @@
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "6f120eace4ad06b250bc2c143416be6c27046cad185b41678572454e83e9fba6",
       "editorial_grouping_checked_at": "2026-11-01T09:55:01.564863+00:00"
+    },
+    {
+      "id": "trend-update-a921e4524a9526d88f2e",
+      "revision": 0,
+      "name": "Día de Todos",
+      "rank": 5,
+      "status": "explained",
+      "requested_at": "2026-11-01T09:57:46.198520+00:00",
+      "explained_at": "2026-11-01T09:57:46.198520+00:00",
+      "updated_at": "2026-11-01T09:57:46.198520+00:00",
+      "explanation": "TT#5 Día de Todos sigue siendo tendencia porque hoy se celebra Todos los Santos: se concentran las visitas a cementerios y nueve comunidades trasladan el festivo al lunes 2.\n#TodosLosSantos #Festivos",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://www.europapress.es/economia/noticia-festivo-noviembre-2026-donde-traslada-lunes-comunidades-tendran-puente-20261021075946.html"
+        },
+        {
+          "url": "https://diario.madrid.es/blog/2026/10/29/todos-los-santos-2026-madrid-cementerios-horarios-autobuses/"
+        },
+        {
+          "url": "https://www.dgt.es/comunicacion/notas-de-prensa/20261029-dispositivo-especial-festividad-todos-los-santos"
+        }
+      ],
+      "originated_from_prior_id": "83aa70bdac40",
+      "trend_names": [
+        "Día de Todos"
+      ],
+      "red_review_job_id": "red-review-b9480e99ceb0de1ae281",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Hoy 1 de noviembre se celebra Todos los Santos; Madrid concentra refuerzos de transporte y horarios especiales de cementerios, y nueve comunidades trasladan el festivo al lunes 2.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 539
