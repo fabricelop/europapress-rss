@@ -6,9 +6,9 @@
   "run_id": "tr-1793526906818-manual",
   "previous_run_id": "tr-1793526664502-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-01T10:55:00+01:00",
-  "updated_at": "2026-11-01T10:55:00+01:00",
+  "updated_at": "2026-11-01T10:56:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -47,11 +47,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-01T04:55:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-chat-20261101T045500+0100: cola compacta observada 0. Revalidando main, rewrite_pending y barrera final; sin ImageGen ni publicación."
-    },
     {
       "at": "2026-11-01T04:55:30+01:00",
       "phase": "verifying",
@@ -1085,6 +1080,13 @@
       "trend_id": "red-review-2c39bbbdb347acb280c8",
       "title": "Revisar novedades: Toledo",
       "message": "Inicio tr-1793526906818-manual: 2 trabajos preparing/update vigentes en main. Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T10:56:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-2c39bbbdb347acb280c8",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revalidación JIT r0 completada. Revisando novedades sustanciales sobre Toledo frente a la explicación del 28 de octubre."
     }
   ],
   "final_outcomes": [
