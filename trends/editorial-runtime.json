@@ -3,40 +3,23 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793534122544-manual",
-  "previous_run_id": "tr-1793533948548-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T12:55:22.544+01:00",
-  "updated_at": "2026-11-01T12:58:30+01:00",
-  "finished_at": "2026-11-01T12:58:30+01:00",
+  "run_id": "tr-1793535000000-manual",
+  "previous_run_id": "tr-1793534122544-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T13:10:00+01:00",
+  "updated_at": "2026-11-01T13:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -1452,27 +1435,18 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada completada 0/0 tras relectura autoritativa de main. Sin ImageGen, sin publicación y sin cambios editoriales."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "red-review-5cea86122c498eb32753",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "prepared_outcome": "updated"
     },
     {
-      "id": "red-review-2c540cbea6cdfd2e7781",
-      "revision": 0,
-      "name": "Revisar novedades: Óscar Muerte",
-      "outcome": "unchanged",
-      "applied": true
+      "at": "2026-11-01T13:10:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793535000000-manual",
+      "status": "RUNNING",
+      "message": "Inicio efectivo de pasada manual; verificando cola autoritativa, reexplicaciones y mantenimiento. Sin ImageGen ni publicaciones."
     }
   ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T12:55:12+01:00",
+  "last_started_at": "2026-11-01T13:10:00+01:00",
   "last_completed_at": "2026-11-01T12:49:00+01:00",
   "last_run": {
     "run_id": "tr-1793534122544-manual",
@@ -1499,8 +1473,8 @@
     },
     "message": "Pasada 0/0; cola y reelaboraciones pendientes a cero; sin ImageGen ni publicaciones."
   },
-  "source": "manual",
-  "message": "Inicio efectivo: 3 trabajos preparing vigentes (Koldo García, Ana Pastor y agrupación automática), ordenados por antigüedad y sujetos a validación JIT. Sin ImageGen ni publicación.",
+  "source": "chat",
+  "message": "Inicio efectivo de pasada manual; verificando cola autoritativa, reexplicaciones y mantenimiento. Sin ImageGen ni publicaciones.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
