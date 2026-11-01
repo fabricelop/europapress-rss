@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T041000+0100",
-  "previous_run_id": "tr-chat-20261101T0340+0100",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T04:10:00+01:00",
-  "updated_at": "2026-11-01T04:11:15+01:00",
-  "finished_at": "2026-11-01T04:11:15+01:00",
+  "run_id": "tr-chat-20261101T042500+0100",
+  "previous_run_id": "tr-chat-20261101T041000+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T04:25:00+01:00",
+  "updated_at": "2026-11-01T04:25:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -41,332 +41,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-10-31T21:26:24.942Z",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicaciones y sin cambios de texto."
-    },
-    {
-      "at": "2026-10-31T22:26:30+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0; rewrite_pending 0. Últimos resultados de mantenimiento y agrupación ya resueltos; sin escrituras editoriales pendientes."
-    },
-    {
-      "at": "2026-10-31T22:26:30+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicaciones y sin cambios de texto."
-    },
-    {
-      "at": "2026-10-31T22:41:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio: 6 trabajos en cola. Revalidación JIT e investigación actual en curso; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T22:46:00+01:00",
-      "phase": "verifying",
-      "message": "Persistencia comprobada en main: las 6 revisiones figuran como explained en requests y telegram-manual-explained; cola compacta 0."
-    },
-    {
-      "at": "2026-10-31T22:46:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 6/6. Sin ImageGen, sin publicación en X y sin pendientes editoriales en la cola."
-    },
-    {
-      "at": "2026-10-31T22:46:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio manual: cola compacta 0. Verificando main, rewrite_pending y estado final antes de cerrar; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T22:48:00+01:00",
-      "phase": "investigating",
-      "message": "Relectura de main: llegaron 3 trabajos nuevos. Procesando primero agrupación automática, después dos revisiones de novedades; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T22:50:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-1793483381118-manual: 1 trabajos activos en cola. Revalidando cada id+revision antes de investigar; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T22:52:00+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0; rewrite_pending 0; los 4 trabajos figuran aplicados en requests y las 3 fichas nuevas/actualizadas están explained y cleared."
-    },
-    {
-      "at": "2026-10-31T22:52:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 4/4. Sin ImageGen, sin publicación en X y sin pendientes editoriales en la cola."
-    },
-    {
-      "at": "2026-10-31T22:53:00+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0 y rewrite_pending 0. #laSextaXplica review_completed/stale; Urda updated y sincronizada; agrupación grouping_completed sin grupos."
-    },
-    {
-      "at": "2026-10-31T22:53:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0 para este run: no quedaba trabajo activo al llegar a la barrera JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-10-31T22:55:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-chat-20261031T2255+0100: cola compacta 0. Verificando main, rewrite_pending y resultados aplicados antes del cierre; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T22:56:30+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0; no rewrite_pending en decisiones vigentes; no hay nuevos commits editoriales posteriores a la última aplicación y los últimos resultados de mantenimiento están persistidos."
-    },
-    {
-      "at": "2026-10-31T22:56:30+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios de texto."
-    },
-    {
-      "at": "2026-10-31T23:04:00+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-joint-8b5b19c2fe8dda63",
-      "title": "Barça-Alavés · partido y protagonistas",
-      "message": "Inicio tr-1793484216269-manual: 1 trabajo active en cola. Revalidando id+revision y preparando investigación actual; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T23:05:00+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-joint-8b5b19c2fe8dda63",
-      "title": "Barça-Alavés · partido y protagonistas",
-      "message": "Inicio tr-1793484331290-manual: 3 trabajos preparing/update en cola. Revalidación JIT e investigación actual; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T23:04:00+01:00",
-      "phase": "investigating",
-      "trend_id": "listas-joint-8b5b19c2fe8dda63",
-      "title": "Barça-Alavés · partido y protagonistas",
-      "message": "Resultado final verificado: Barcelona 6-1 Alavés; dobletes de Raphinha y Lamine Yamal, goles de Fermín y Anthony Gordon; Mariano Díaz marcó para Alavés."
-    },
-    {
-      "at": "2026-10-31T23:04:00+01:00",
-      "phase": "drafting",
-      "trend_id": "listas-joint-8b5b19c2fe8dda63",
-      "title": "Barça-Alavés · partido y protagonistas",
-      "message": "Redactando desde cero y comprobando límite de X. Foto web del partido localizada como fallback; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T23:11:00+01:00",
-      "phase": "preparing",
-      "trend_id": "0e9ddd785dc2",
-      "title": "Grimaldo",
-      "message": "Inicio tr-chat-20261031T2311+0100: 3 trabajos preparing vigentes tras relectura de main. Revalidación JIT antes de cada investigación; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T23:14:00+01:00",
-      "phase": "investigating",
-      "trend_id": "348f94331bf0",
-      "title": "#laSextaXplica",
-      "message": "Detonante verificado: la emisión de este sábado de laSexta Xplica está dedicada esencialmente al accidente ferroviario de Urda; emisión vigente en parrilla."
-    },
-    {
-      "at": "2026-10-31T23:14:00+01:00",
-      "phase": "drafting",
-      "trend_id": "348f94331bf0",
-      "title": "#laSextaXplica",
-      "message": "Texto factual redactado desde cero. Sin remate humorístico por tratarse de una tragedia; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T23:14:00+01:00",
-      "phase": "persisting",
-      "trend_id": "348f94331bf0",
-      "title": "#laSextaXplica",
-      "message": "Revisión 0 revalidada JIT en main; enviando resultado al aplicador editorial."
-    },
-    {
-      "at": "2026-10-31T23:12:20+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-6e922bcc692d7eb03194",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio tr-1793484740569-manual: 3 trabajos preparing/update vigentes en main. Procesando agrupación y después revisiones Toledo/Renfe, con revalidación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T23:15:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-ba61767e4f3587475df3",
-      "title": "Revisar novedades: Toledo",
-      "message": "Revisando novedades: fuentes de hoy documentan fallos del LZB/comunicaciones y la investigación de los protocolos de reanudación de marcha."
-    },
-    {
-      "at": "2026-10-31T23:15:00+01:00",
-      "phase": "drafting",
-      "trend_id": "red-review-ba61767e4f3587475df3",
-      "title": "Revisar novedades: Toledo",
-      "message": "Actualización material redactada en continuidad, sin remate por tragedia; revalidando id+revision antes de persistir."
-    },
-    {
-      "at": "2026-10-31T23:16:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-e1e22bc4e0a17ee83c48",
-      "title": "Revisar novedades: Renfe",
-      "message": "Revisando novedades: autorización de marcha del AVE sin limitación tras caída del LZB y con Iryo detenido por delante."
-    },
-    {
-      "at": "2026-10-31T23:16:00+01:00",
-      "phase": "drafting",
-      "trend_id": "red-review-e1e22bc4e0a17ee83c48",
-      "title": "Revisar novedades: Renfe",
-      "message": "Actualización material redactada en continuidad, sin remate por tragedia; revalidación JIT completada."
-    },
-    {
-      "at": "2026-10-31T23:17:00+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0. Revisiones Toledo/Renfe figuran review_completed; agrupaciones aplicadas y sin trabajo activo restante."
-    },
-    {
-      "at": "2026-10-31T23:17:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada. Sin ImageGen, sin publicación en X y sin incidencias editoriales."
-    },
-    {
-      "at": "2026-10-31T22:16:50.602Z",
-      "phase": "preparing",
-      "message": "Inicio tr-1793484863722-manual: cola compacta 0 tras el cierre concurrente anterior. Revalidando main y rewrite_pending; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T22:17:08.872Z",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0; sin preparing/update ni rewrite_pending detectado."
-    },
-    {
-      "at": "2026-10-31T22:17:08.872Z",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0 para tr-1793484863722-manual. Sin ImageGen, sin publicación y sin cambios editoriales."
-    },
-    {
-      "at": "2026-10-31T23:40:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-chat-20261031T2340+0100: 4 trabajos preparing vigentes en main (Mariano, Honda, Aston Martin, #frac1). Revalidando id+revision antes de investigar; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T23:50:00+01:00",
-      "phase": "investigating",
-      "trend_id": "b15f4091648a",
-      "title": "Gavi",
-      "message": "Entraron 3 trabajos nuevos durante la pasada. Gavi, Tobajas y José Muñoz se procesan en la misma ejecución; Tobajas verificado, Gavi con contexto de suplencia y José Muñoz sin detonante causal único acreditado."
-    },
-    {
-      "at": "2026-10-31T23:54:00+01:00",
-      "phase": "verifying",
-      "message": "Relectura final de main: editorial-queue 0; los 7 IDs quedaron explicados y persistidos en requests + telegram-manual-explained; sin rewrite_pending detectado."
-    },
-    {
-      "at": "2026-10-31T23:54:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 7/7 para tr-chat-20261031T2340+0100. Sin ImageGen ni publicación en X."
-    },
-    {
-      "at": "2026-10-31T23:50:00+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-7466c03e6699a628e806",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio tr-1793486988618-manual: 3 trabajos preparing vigentes en main. Procesando agrupación automática y después revisiones #MalasLenguasN/Mazón, con revalidación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T23:53:00+01:00",
-      "phase": "preparing",
-      "trend_id": "7b18f8c98739",
-      "title": "#RayoCelta",
-      "message": "Inicio tr-1793487168174-manual: 9 trabajos preparing/update en main. Revalidando id+revision y decisiones terminales antes de investigar; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-10-31T23:55:00+01:00",
-      "phase": "investigating",
-      "trend_id": "7b18f8c98739",
-      "title": "#RayoCelta",
-      "message": "Entraron 7 investigaciones nuevas durante la pasada. Se incorporan a la misma ejecución; total activo observado 10. Investigación actual y revalidación JIT en curso; sin ImageGen."
-    },
-    {
-      "at": "2026-10-31T23:59:00+01:00",
-      "phase": "persisting",
-      "trend_id": "7b18f8c98739",
-      "title": "#RayoCelta",
-      "message": "Agrupación y dos revisiones ya aplicadas. Lote de 7 explicaciones enviado por TTENDENCIAS_CHAT_OUTBOX_V1; aplicador en curso. Se releerá main antes del cierre."
-    },
-    {
-      "at": "2026-10-31T23:59:30+01:00",
-      "phase": "done",
-      "trend_id": null,
-      "title": null,
-      "message": "Cierre tras relectura de main: editorial-queue count=0, sin preparing/update ni reexplicaciones pendientes. 7 explicaciones + 2 revisiones + 1 agrupación. ImageGen 0, publicaciones 0."
-    },
-    {
-      "at": "2026-10-31T23:59:35+01:00",
-      "phase": "preparing",
-      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
-      "title": "Agrupación automática de Listas",
-      "message": "Inicio tr-1793487575059-manual: 1 trabajo preparing vigente. Revalidando id+revision y comparando candidatas con publicaciones recientes; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:01:20+01:00",
-      "phase": "investigating",
-      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
-      "title": "Agrupación automática de Listas",
-      "message": "Comparación verificada: #RayoCelta coincide exactamente con Rayo 3-0 Celta ya publicado; El Atleti coincide con Levante 0-2 Atlético ya publicado. Xabi Alonso aporta una declaración posterior y no se cubre; el resto no presenta coincidencia inequívoca."
-    },
-    {
-      "at": "2026-11-01T00:01:40+01:00",
-      "phase": "persisting",
-      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
-      "title": "Agrupación automática de Listas",
-      "message": "Resultado persistido en listas-grouping-outbox: 0 grupos nuevos y 2 covered_by_existing; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:02:13+01:00",
-      "phase": "verifying",
-      "trend_id": "listas-auto-361a8dfbf515b7c44a2c",
-      "title": "Agrupación automática de Listas",
-      "message": "Aplicador confirmado en main: job grouping_completed; #RayoCelta cubierto por listas-joint-30a1d7da7017e769 y El Atleti por listas-joint-880801e46031546b. Cola editorial=0."
-    },
-    {
-      "at": "2026-11-01T00:02:30+01:00",
-      "phase": "closing",
-      "message": "Relectura final de main: editorial-queue=0 y rewrite_pending=0. Pasada cerrada 1/1; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:10:00+01:00",
-      "phase": "preparing",
-      "message": "Inicio tr-chat-20261101T0010+0100: editorial-queue=0 en snapshot inicial. Verificando estado auxiliar, rewrite_pending y barrera final de main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T00:11:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending=0. Los últimos resultados de mantenimiento y agrupación constan aplicados."
-    },
-    {
-      "at": "2026-11-01T00:11:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales pendientes."
-    },
-    {
-      "at": "2026-11-01T00:29:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Gordon r0 figura explained y cleared; agrupación grouping_completed con covered_by_existing."
-    },
-    {
-      "at": "2026-11-01T00:29:00+01:00",
-      "phase": "closing",
-      "message": "TTendencias cerrada 4/4 con 1 incidencia de transporte recuperada sin impacto final. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-01T00:29:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending=0. Dos revisiones stale, Gordon explicado y agrupación completada con cobertura por ficha existente."
-    },
-    {
-      "at": "2026-11-01T00:29:00+01:00",
-      "phase": "closing",
-      "message": "Ejecución cerrada tras converger con tr-1793488725947-manual. ImageGen=0 y publicaciones=0."
-    },
-    {
-      "at": "2026-11-01T00:29:00+01:00",
-      "phase": "verifying",
-      "message": "Inicio tr-1793489199351-manual: se observó inicialmente 1 group_listas, pero la revalidación JIT de main confirmó que una ejecución concurrente ya lo aplicó. Verificando barrera final; sin ImageGen ni publicación."
-    },
     {
       "at": "2026-11-01T00:31:00+01:00",
       "phase": "verifying",
@@ -825,6 +499,11 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T035627+0100",
       "message": "TTendencias cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T04:25:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-chat-20261101T042500+0100: cola compacta 0. Verificando main, rewrite_pending y resultados aplicados antes del cierre; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
