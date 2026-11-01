@@ -369,7 +369,8 @@ for token in ('siteImageEditorialID', 'siteImageRevision', 'siteImageExplainedAt
     assert token in store, token
 assert 'UserDefaults.standard.set(url.absoluteString' in actions
 assert 'url.path.hasPrefix("/g/g-p-")' in actions
-assert 'guard let leader = store.snapshot.trendListas.first' in actions
+assert 'let leader = displayed.isCovered' in actions
+assert '$0.editorialID == displayed.coveredByID && !$0.isCovered' in actions
 assert 'Esta ficha aún no tiene identidad editorial completa' in actions
 assert 'PENDIENTE DE EXPLICACIÓN' in actions
 assert 'site-term-' in actions and 'scope term' in actions
