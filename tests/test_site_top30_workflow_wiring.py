@@ -27,6 +27,16 @@ class SiteFeedWorkflowWiringTest(unittest.TestCase):
                     "Site feed must be staged (explicitly or by git add -A trends)",
                 )
 
+    def test_periodic_self_healing_when_bot_commits_skip_push_events(self):
+        sync = (WORKFLOWS / "ttendencias-site-top30-sync.yml").read_text(encoding="utf-8")
+        self.assertIn("schedule:", sync)
+        self.assertIn("cron: '*/5 * * * *'", sync)
+        self.assertIn("cancel-in-progress: false", sync)
+        self.assertIn("git reset --hard origin/main", sync)
+        self.assertIn("feed['radar_captured_at']==recent['captured_at']", sync)
+        self.assertIn("expected==published", sync)
+        self.assertIn("git add trends/site-top30-current.json", sync)
+
     def test_export_is_not_only_a_separate_push_trigger(self):
         s = (WORKFLOWS / "ttendencias-refresh.yml").read_text(encoding="utf-8")
         self.assertIn("python3 trends/export_site_top30.py", s)
