@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-01T21:48:48+01:00",
+  "updated_at": "2026-11-01T20:49:33.922384+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -198690,6 +198690,70 @@
       "image_choice": "none",
       "image_pending": true,
       "telegram_package_status": "pending"
+    },
+    {
+      "id": "red-review-97335a3df43ba0574b3c",
+      "revision": 0,
+      "name": "Revisar novedades: Alavés",
+      "rank": 18,
+      "status": "preparing",
+      "requested_at": "2026-11-01T20:49:33.922384+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "3653323c16ba",
+        "revision": 0,
+        "name": "Alavés",
+        "rank": 7,
+        "explanation": "TT#7 Alavés es tendencia por el 1-1 ante el Málaga en Mendizorroza: Adrián Niño adelantó a los andaluces y Aitor Mañas empató en el 89 tras un rechace.\n#Alavés #MálagaCF #LaLiga\n🌶️ El punto llegó con el reloj pidiendo la cuenta.",
+        "explanation_sha256": "9698b4ea34305b5168a54d503f29026ea9b47f7d9880c59f9514cee2b0dcbd6b",
+        "explained_at": "2026-10-23T23:49:00+02:00",
+        "verification_sources": [
+          "https://cadenaser.com/nacional/2026/10/23/alaves-1-1-malaga-resumen-resultado-y-goles-del-partido-de-la-jornada-10-de-laliga-ea-sports-cadena-ser/",
+          "https://as.com/futbol/manas-frustra-al-malaga-f202610-n/"
+        ],
+        "fingerprint": "3d9c936b2dee06f819c06044daf108eafaa083575202506f302cbfc9aeba2b8d"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-80bf283ec7dd3b50f7b7",
+      "revision": 0,
+      "name": "Revisar novedades: Blocus",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-11-01T20:49:33.922384+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-4a9b908648388275064e",
+        "revision": 0,
+        "name": "Blocus",
+        "rank": 10,
+        "explanation": "TT#10 Blocus sigue siendo tendencia por las convocatorias del 31-O: el presunto fundador ha ingresado en prisión provisional y Palma dejó 200 identificados, mientras varias ciudades refuerzan sus dispositivos.\n#Blocus #31Octubre",
+        "explanation_sha256": "fb4a9726e10fa7227764cefcbeaed41c1d809255dcdf91ea8049afb460ac8d0d",
+        "explained_at": "2026-10-31T17:48:14.207870+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261031/blocus-detenido-arrestados-lider-espana/17294774.shtml"
+          },
+          {
+            "url": "https://www.elespanol.com/valencia/20261031/impulsor-blocus-espana-detenido-pasan-sabado-disposicion-judicial/1003744442287_0.html"
+          }
+        ],
+        "fingerprint": "d6fa2b939a440749817e248e125b296afee9bb66df6935fc9f62ac561d6f0501"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
   "count": 642
