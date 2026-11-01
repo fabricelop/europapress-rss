@@ -6,9 +6,9 @@
   "run_id": "tr-1793527469295-manual",
   "previous_run_id": "tr-1793527213050-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-01T11:05:00+01:00",
-  "updated_at": "2026-11-01T11:06:00+01:00",
+  "updated_at": "2026-11-01T11:08:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -1212,6 +1212,14 @@
       "trend_id": "listas-auto-cbda911e727cb3be2693",
       "title": "Agrupación automática de Listas",
       "message": "Snapshot JIT validado: 6 candidatos. No hay dos fichas del snapshot que describan inequívocamente el mismo acontecimiento; Todos los Santos aporta hechos materiales posteriores a Día de Todos, Feliz Sábado/Feliz Domingo son fenómenos distintos y Alsina no se autocubre con su propio ID histórico."
+    },
+    {
+      "at": "2026-11-01T11:08:30+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793527469295-manual",
+      "trend_id": "listas-auto-cbda911e727cb3be2693",
+      "title": "Agrupación automática de Listas",
+      "message": "Outbox persistido para el mismo job con groups:[] y covered_by_existing:[]. Workflow ttactualidad-group-listas en ejecución; pruebas de agrupación superadas y aplicador persistiendo resultado."
     }
   ],
   "final_outcomes": [
