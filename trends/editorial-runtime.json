@@ -5,28 +5,26 @@
   "canonical": true,
   "run_id": "tr-1793533948548-manual",
   "previous_run_id": "tr-1793533812781-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-01T12:55:02.577+01:00",
-  "updated_at": "2026-11-01T12:55:02.577+01:00",
+  "updated_at": "2026-11-01T12:55:13+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "listas-auto-e41651c718620ce133ce",
-    "aea33831119b",
+  "processed_ids": [
     "12beb07b0d96",
-    "24b026091f12"
+    "24b026091f12",
+    "aea33831119b"
+  ],
+  "remaining_ids": [
+    "listas-auto-e41651c718620ce133ce"
   ],
   "remaining_active_ids": [
-    "listas-auto-e41651c718620ce133ce",
-    "aea33831119b",
-    "12beb07b0d96",
-    "24b026091f12"
+    "listas-auto-e41651c718620ce133ce"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -1343,7 +1341,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T12:45:12+01:00",
+  "last_started_at": "2026-11-01T12:55:12+01:00",
   "last_completed_at": "2026-11-01T12:49:00+01:00",
   "last_run": {
     "run_id": "tr-1793533559573-manual",
