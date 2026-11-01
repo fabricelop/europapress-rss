@@ -5,21 +5,21 @@
   "canonical": true,
   "run_id": "tr-chat-20261101T055500+0100",
   "previous_run_id": "tr-chat-20261101T054000+0100",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T05:55:00+01:00",
-  "updated_at": "2026-11-01T05:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T05:55:45+01:00",
+  "finished_at": "2026-11-01T05:55:45+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada iniciada. Cola compacta inicial 0; revalidando main, reexplicaciones y mantenimiento.",
+  "summary": "Pasada completada 0/0. Cola final 0; sin reexplicaciones pendientes.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -591,17 +591,52 @@
       "phase": "preparing",
       "run_id": "tr-chat-20261101T055500+0100",
       "message": "Inicio tr-chat-20261101T055500+0100: cola compacta 0. Revalidando main, reexplicaciones y mantenimiento; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T05:55:40+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T055500+0100",
+      "message": "Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T05:55:45+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T055500+0100",
+      "message": "DONE 0/0; incidencias=0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": {
+    "last_run": {
+      "run_id": "tr-chat-20261101T055500+0100",
+      "status": "DONE",
+      "started_at": "2026-11-01T05:55:00+01:00",
+      "finished_at": "2026-11-01T05:55:45+01:00",
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
+      "updates": 0,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "unchanged_reviews": 0,
+      "stale_reviews": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "publications": 0,
+      "incidents": 0,
+      "note": "Top 30 05:50:49; cola 05:50:52 y final 0. Sin rewrite_pending ni reexplain."
+    }
+  },
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T05:55:00+01:00",
-  "last_completed_at": "2026-11-01T05:41:15+01:00",
+  "last_completed_at": "2026-11-01T05:55:45+01:00",
   "last_run": {
-    "run_id": "tr-chat-20261101T054000+0100",
+    "run_id": "tr-chat-20261101T055500+0100",
     "status": "DONE",
-    "started_at": "2026-11-01T05:40:00+01:00",
-    "finished_at": "2026-11-01T05:41:15+01:00",
+    "started_at": "2026-11-01T05:55:00+01:00",
+    "finished_at": "2026-11-01T05:55:45+01:00",
     "attempted": 0,
     "observed": 0,
     "closed": 0,
@@ -617,10 +652,10 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "note": "Top 30 05:40:51; cola 05:40:56 y final 0. Sin rewrite_pending ni reexplain."
+    "note": "Top 30 05:50:49; cola 05:50:52 y final 0. Sin rewrite_pending ni reexplain."
   },
   "source": "chat",
-  "message": "Inicio de TTendencias: cola inicial 0. Revalidando barrera final; sin ImageGen ni publicación.",
+  "message": "TTendencias cerrada 0/0; cola final 0; sin reexplicaciones pendientes.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -908,6 +943,18 @@
       "phase": "preparing",
       "run_id": "tr-chat-20261101T055500+0100",
       "message": "Inicio tr-chat-20261101T055500+0100: cola compacta 0. Revalidando main, reexplicaciones y mantenimiento; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T05:55:40+01:00",
+      "phase": "verifying",
+      "run_id": "tr-chat-20261101T055500+0100",
+      "message": "Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-01T05:55:45+01:00",
+      "phase": "closing",
+      "run_id": "tr-chat-20261101T055500+0100",
+      "message": "DONE 0/0; incidencias=0."
     }
   ],
   "history": [
