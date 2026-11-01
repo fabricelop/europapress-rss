@@ -3,25 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-chat-20261101T0225+0100",
-  "previous_run_id": "tr-1793495454000-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T02:25:00+01:00",
-  "updated_at": "2026-11-01T02:26:00+01:00",
-  "finished_at": "2026-11-01T02:26:00+01:00",
+  "run_id": "tr-1793496668273-manual",
+  "previous_run_id": "tr-chat-20261101T0225+0100",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T02:31:30+01:00",
+  "updated_at": "2026-11-01T02:31:30+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "red-review-26907ba4832f3cac99fb",
+  "title": "Revisar novedades: #UFCHBOMax",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-26907ba4832f3cac99fb",
+    "red-review-2da670cbf1e4539a8644"
+  ],
+  "remaining_active_ids": [
+    "red-review-26907ba4832f3cac99fb",
+    "red-review-2da670cbf1e4539a8644"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -30,8 +36,8 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "remaining_active": 0,
-    "queue_remaining": 0,
+    "remaining_active": 2,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -689,6 +695,13 @@
       "at": "2026-11-01T02:26:00+01:00",
       "phase": "closing",
       "message": "TTendencias cerrada 0/0 para tr-chat-20261101T0225+0100. Sin ImageGen, sin publicación en X y sin cambios de texto."
+    },
+    {
+      "at": "2026-11-01T02:31:30+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-26907ba4832f3cac99fb",
+      "title": "Revisar novedades: #UFCHBOMax",
+      "message": "Inicio tr-1793496668273-manual: 2 revisiones de novedades preparing vigentes en main (#UFCHBOMax y #laSextaXplica). Revalidación JIT antes de cada tratamiento; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [],
@@ -719,7 +732,7 @@
     "note": "Cola autoritativa vacía en inicio y barrera final; no había preparing/update ni rewrite_pending. Último mantenimiento de Mazón ya aplicado."
   },
   "source": "chat",
-  "message": "Pasada real cerrada 3/3 observados: Mazón actualizado y aplicado; Óscar Puente convergió concurrentemente como unchanged; agrupación automática aplicada sin grupos ni coberturas. Cola 0, rewrite_pending/reexplain 0, ImageGen 0, publicaciones 0.",
+  "message": "Pasada editorial real en curso: 2 revisiones review_red preparing observadas; revalidación JIT antes de cada investigación. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
