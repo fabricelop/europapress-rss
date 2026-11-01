@@ -351,50 +351,76 @@ struct EditorialActions: View {
                 (sensitive ? "Máximo respeto a las víctimas y a sus familiares." : "Metáfora visual ingeniosa, no ilustración literal del titular."),
             "ENTREGA ÚNICAMENTE UNA IMAGEN ILUSTRADA LIMPIA, SIN TEXTO Y SIN BANDA INFERIOR. No generar composición con fotografía y texto debajo."
         ].joined(separator: "\n\n")
-        // The manually copied GAG must carry the same immutable context as
-        // the button for associating an already-created image. Never use rank,
-        // title or a pending request ID as an upload authorization.
+        // A covered original may have an archived group leader not loaded in
+        // this iPhone snapshot. Do NOT treat absence of that leader as evidence
+        // that the authoritative Site identity is absent.
         guard news == nil, let displayed = trend else { return imagePrompt }
+        let groupID = displayed.isCovered ? displayed.coveredByID : ""
         let leader = displayed.isCovered
             ? store.snapshot.trendListas.first(where: {
-                $0.editorialID == displayed.coveredByID && !$0.isCovered
+                $0.siteImageEditorialID == groupID && !$0.isCovered
+            }) ?? store.snapshot.top30.first(where: {
+                $0.siteImageEditorialID == groupID && !$0.isCovered
             })
             : nil
+        // An original within a group must never borrow its own explanation as
+        // if it belonged to a joint card. The Site resolves the group exactly.
         let target = leader ?? displayed
-        let targetID = target.siteImageEditorialID
-        let explanation = target.explanation
-        let explainedAt = target.siteImageExplainedAt
-        let revision = target.siteImageRevision
-        guard !targetID.isEmpty, !targetID.hasPrefix("site-term-"),
-              !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-              !explainedAt.isEmpty, revision >= 0,
-              target.status != "EN ELABORACIÓN",
-              !(displayed.isCovered && leader == nil) else {
-            // Do not silently generate a PNG that cannot be associated.
-            return "TTENDENCIAS_GAG_SITE_SYNC_V3 — CONTEXTO EDITORIAL NO DISPONIBLE. " +
-                "Actualiza Listas para obtener target_id, revisión, explicación literal y fecha de la ficha " +
-                "o de su agrupación. No generes ni asocies una imagen sin identidad exacta."
-        }
-        let context: [String: Any] = [
-            "project_id": "appgprj_6ae4dcf7d7488191a574e5b649e67370",
-            "target_id": targetID,
-            "name": target.name,
-            "revision": revision,
-            "scope": "editorial",
-            "explanation": explanation,
-            "explained_at": explainedAt
+        let targetID = displayed.isCovered && leader == nil
+            ? groupID : target.siteImageEditorialID
+        let targetName = displayed.isCovered && leader == nil
+            ? displayed.coveredByName : target.name
+        let metadata: [String: Any] = [
+            "name": displayed.name,
+            "rank": displayed.rank,
+            "displayed_explanation": displayed.explanation,
+            "displayed_editorial_id": displayed.siteImageEditorialID,
+            "displayed_revision": displayed.siteImageRevision,
+            "displayed_explained_at": displayed.siteImageExplainedAt,
+            "in_listas": displayed.inListas,
+            "is_covered": displayed.isCovered,
+            "group_id": groupID,
+            "group_name": displayed.coveredByName,
+            "candidate_target_id": targetID,
+            "candidate_target_name": targetName
         ]
-        guard let raw = try? JSONSerialization.data(withJSONObject: context, options: [.sortedKeys]),
-              let exactContext = String(data: raw, encoding: .utf8) else { return imagePrompt }
+        let resolved = targetID.range(of: "^[A-Za-z0-9_-]{3,160}$",
+                                      options: .regularExpression) != nil &&
+            !targetID.hasPrefix("site-term-") &&
+            !target.explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+            !target.siteImageExplainedAt.isEmpty &&
+            target.siteImageRevision >= 0 &&
+            target.status != "EN ELABORACIÓN" &&
+            !(displayed.isCovered && leader == nil)
+        var contextDescription = "IDENTIDAD PENDIENTE DE VERIFICAR EN SITE"
+        if resolved {
+            let context: [String: Any] = [
+                "project_id": "appgprj_6ae4dcf7d7488191a574e5b649e67370",
+                "target_id": targetID,
+                "name": target.name,
+                "revision": target.siteImageRevision,
+                "scope": "editorial",
+                "explanation": target.explanation,
+                "explained_at": target.siteImageExplainedAt
+            ]
+            if let raw = try? JSONSerialization.data(withJSONObject: context, options: [.sortedKeys]),
+               let json = String(data: raw, encoding: .utf8) {
+                contextDescription = json
+            }
+        }
+        guard let hintData = try? JSONSerialization.data(withJSONObject: metadata, options: [.sortedKeys]),
+              let exactHint = String(data: hintData, encoding: .utf8) else { return imagePrompt }
         return imagePrompt + """
 
         
         TTENDENCIAS_GAG_SITE_SYNC_V3 — UNA SOLA CONVERSACIÓN, UNA IMAGEN Y SU ENTREGA.
         Es un único encargo de ChatGPT dentro del proyecto PROYECTOS APP: generar la imagen y, sin pedir un segundo mensaje, asociar el PNG ORIGINAL generado AQUÍ al Site TTendencias existente y sincronizar el catálogo iPhone. No intervienen TTImages, el PC, scripts locales, bots, API de pago ni una segunda generación.
-        IDENTIDAD EDITORIAL INMUTABLE (JSON exacto para la herramienta context, NO reescribir):
-        \(exactContext)
+        IDENTIDAD CANDIDATA (si es JSON completo, revalidar; si es pendiente, resolver del Site antes de ImageGen):
+        \(contextDescription)
+        INDICIOS DE FICHA Y AGRUPACIÓN — NO AUTORIZAN ASOCIAR POR SÍ SOLOS:
+        \(exactHint)
 
-        FASE 1 — IDENTIDAD, ANTES DE DIBUJAR: ejecuta mcp__TTendencias___TTActualidad__inspect_top30_images y busca EXACTAMENTE target_id, revision, explanation y explained_at vigentes. El nombre y el número TT# solo son ayudas visuales; para una ficha agrupada usa exclusivamente el contexto editorial exacto del grupo que figura arriba. Si el Site está desactualizado, falta identidad o no coincide, no asocies a otra ficha ni inventes datos. Informa BLOQUEADO POR CONTEXTO y no declares la entrega.
+        FASE 1 — IDENTIDAD, ANTES DE DIBUJAR: ejecuta mcp__TTendencias___TTActualidad__inspect_top30_images. Si hay contexto JSON completo, revalida coincidencia LITERAL de target_id, revision, explanation y explained_at con el Site vigente. Si el contexto es PENDIENTE, recupera la identidad EXACTA desde el Site: para una original agrupada usa group_id, NUNCA el ID de la original ni solo el nombre del grupo; para una ficha no agrupada usa candidate_target_id válido, o busca la única entrada que coincida en nombre y rango y comprueba además la explicación factual cuando esté disponible. El número TT# no basta. Obtén del Site project_id, target_id, revision, scope editorial, name, explanation y explained_at TODOS vigentes; no copies campos antiguos del teléfono. Si hay ambigüedad, el grupo no figura, la ficha es scope term, el Site está obsoleto o no hay identidad exacta, detente ANTES de ImageGen e informa BLOQUEADO POR CONTEXTO. Nunca atribuyas una imagen a otra tendencia. Usa el context COMPLETO devuelto por el Site para todas las herramientas.
         FASE 2 — GENERACIÓN: usa ImageGen UNA sola vez para producir la ilustración limpia 16:9 conforme a las reglas visuales anteriores, sin texto, bandas ni logotipos. Conserva el archivo PNG ORIGINAL y el identificador real de este resultado para la asociación en ESTA MISMA conversación.
         FASE 3 — SITE, INMEDIATAMENTE DESPUÉS DE IMAGEGEN: no termines la tarea al generar el raster. Invoca mcp__TTendencias___TTActualidad__verify_trend_image con context literal. Si no existe imagen, llama mcp__TTendencias___TTActualidad__attach_trend_image con file=PNG ORIGINAL de este resultado y el MISMO context. Después llama otra vez a verify_trend_image; exige status verified, URL pública y sha256 reales. Si ya había una imagen DIFERENTE para el mismo ID/revisión, la nueva es la preferida, pero sustituye SOLO si el conector lo autoriza; si no lo permite, conserva la anterior e informa REEMPLAZO NO DISPONIBLE, sin fingir que la nueva quedó asociada. Un job TTImages antiguo con estado LAUNCHED no impide esta asociación si Site la admite.
         FASE 4 — CATÁLOGO IPHONE: solo después de confirmar SITE verified para ESTA imagen, lee mediante GitHub fetch_file el archivo fabricelop/europapress-rss, rama main, trends/site-ai-images.json. Conserva todas las demás entradas, y crea o actualiza SOLO (target_id, revision) con explanation y explained_at literales del contexto, image_url HTTPS y sha256 reales verificados del Site. Usa GitHub update_file con el SHA actual; ante conflicto relee, reconcilia y comprueba después el registro leyendo main de nuevo. No dupliques entradas.
