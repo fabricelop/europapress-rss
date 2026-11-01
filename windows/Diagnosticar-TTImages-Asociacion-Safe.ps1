@@ -79,6 +79,21 @@ function CheckCdp([int]$Port){
 }
 Emit 'START' 'READ_ONLY' (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
 Emit 'ROOT' $(if(Test-Path -LiteralPath $BaseDir){'PRESENT'}else{'ABSENT'})
+# Auth discovery only. Do not print, store or submit any credentials.
+$githubAuth='NONE'
+if($env:TT_IMAGES_GITHUB_TOKEN -or $env:GH_TOKEN -or $env:GITHUB_TOKEN){
+  $githubAuth='ENV_PRESENT_WRITE_UNVERIFIED'
+}else{
+  $gh=Get-Command gh.exe -ErrorAction SilentlyContinue
+  if($gh){
+    $githubAuth='GH_NOT_AUTHENTICATED'
+    try{
+      & $gh.Source auth status -h github.com 2>$null 1>$null
+      if($LASTEXITCODE -eq 0){$githubAuth='GH_AUTHENTICATED_WRITE_UNVERIFIED'}
+    }catch{}
+  }else{$githubAuth='GH_CLI_MISSING'}
+}
+Emit 'NEWS_GITHUB_AUTH' $githubAuth
 LocalFiles 'NEWS' $NewsId
 LocalFiles 'TRENDS' $TrendId
 CheckCdp 9223
