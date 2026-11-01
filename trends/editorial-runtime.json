@@ -5,45 +5,41 @@
   "canonical": true,
   "run_id": "tr-1793522159076-manual",
   "previous_run_id": "tr-1793521834896-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T09:36:00+01:00",
-  "updated_at": "2026-11-01T09:39:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-01T09:40:00+01:00",
+  "finished_at": "2026-11-01T09:40:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "red-review-c833262dd375349d1e78",
-  "title": "Revisar novedades: #laSextaXplica",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "listas-auto-02d7268c0acfb734e9df"
-  ],
-  "remaining_ids": [
+    "listas-auto-02d7268c0acfb734e9df",
     "red-review-c833262dd375349d1e78",
     "red-review-05204f713c2b87317710"
   ],
-  "remaining_active_ids": [
-    "red-review-c833262dd375349d1e78",
-    "red-review-05204f713c2b87317710"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 3,
     "observed": 3,
-    "closed": 1,
+    "closed": 3,
     "explained": 0,
-    "updates": 0,
+    "updates": 2,
     "grouping_requests": 1,
     "groups_created": 0,
     "covered_by_existing": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -999,6 +995,37 @@
       "run_id": "tr-1793521834896-manual",
       "status": "DONE_WITH_INCIDENTS",
       "message": "tr-1793521834896-manual cerrada 5/5 por convergencia parcial con tr-1793522159076-manual; cola 0, reexplicaciones 0, ImageGen 0."
+    },
+    {
+      "at": "2026-11-01T09:40:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793522159076-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. El aplicador de Toledo terminó success y persistió requests, telegram-manual-explained y cola. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:40:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793522159076-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "updates": 2,
+        "grouping_requests": 1,
+        "groups_created": 0,
+        "covered_by_existing": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "TTendencias cerrada 3/3: 1 agrupación resuelta por convergencia y 2 review_red actualizadas. ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "final_outcomes": {
@@ -1048,23 +1075,21 @@
   "last_started_at": "2026-11-01T09:35:20+01:00",
   "last_completed_at": "2026-11-01T09:35:20+01:00",
   "last_run": {
-    "run_id": "tr-1793517621392-manual",
+    "run_id": "tr-1793522159076-manual",
     "status": "DONE",
-    "started_at": "2026-11-01T08:21:00+01:00",
-    "finished_at": "2026-11-01T08:28:30+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-11-01T09:36:00+01:00",
+    "finished_at": "2026-11-01T09:40:00+01:00",
     "summary": {
       "attempted": 3,
       "observed": 3,
       "closed": 3,
       "explained": 0,
-      "updates": 0,
+      "updates": 2,
       "grouping_requests": 1,
       "groups_created": 0,
-      "covered_by_existing": 0,
+      "covered_by_existing": 1,
       "unchanged_reviews": 0,
-      "stale_reviews": 2,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -1072,10 +1097,14 @@
       "incidents": 0,
       "concurrent_convergence": 2
     },
-    "message": "Pasada completada 3/3 por convergencia JIT: 1 agrupación sin grupos nuevos y 2 revisiones stale; cola final 0, reexplicaciones 0, ImageGen 0, publicaciones 0."
+    "processed_ids": [
+      "listas-auto-02d7268c0acfb734e9df",
+      "red-review-c833262dd375349d1e78",
+      "red-review-05204f713c2b87317710"
+    ]
   },
   "source": "chat",
-  "message": "Pasada completada 0/0. Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones.",
+  "message": "Pasada completada 3/3: agrupación automática aplicada con 0 grupos nuevos y cobertura de Día de Todos por publicación previa; #laSextaXplica actualizada como episodio distinto del 31/10; Toledo actualizado como continuidad del accidente de Urda. Cola final 0; sin reexplicaciones, ImageGen ni publicaciones.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
