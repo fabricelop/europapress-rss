@@ -3,24 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793531820836-manual",
-  "previous_run_id": "tr-chat-20261101T121100+0100",
+  "run_id": "tr-1793532281494-manual",
+  "previous_run_id": "tr-1793531820836-manual",
   "status": "RUNNING",
-  "phase": "verifying",
-  "started_at": "2026-11-01T12:17:00+01:00",
-  "updated_at": "2026-11-01T12:29:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-01T12:25:00+01:00",
+  "updated_at": "2026-11-01T12:25:30+01:00",
   "finished_at": null,
-  "current": 3,
-  "total": 6,
-  "trend_id": "listas-auto-d949d22fea9dcb5ca638",
-  "title": "Agrupación automática de Listas",
+  "current": 0,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "e7a34c909e2e",
-    "ecfab12c8f74",
-    "d0d920c046f0"
+  "processed_ids": [],
+  "remaining_ids": [
+    "listas-auto-d949d22fea9dcb5ca638",
+    "red-review-5cea86122c498eb32753",
+    "red-review-2c540cbea6cdfd2e7781"
   ],
-  "remaining_ids": [],
   "remaining_active_ids": [
     "listas-auto-d949d22fea9dcb5ca638",
     "red-review-5cea86122c498eb32753",
@@ -29,7 +29,7 @@
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -38,7 +38,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1235,6 +1235,12 @@
       "phase": "closing",
       "run_id": "tr-chat-20261101T121100+0100",
       "message": "Pasada cerrada 0/0. Sin ImageGen, sin publicación en X y sin cambios editoriales."
+    },
+    {
+      "at": "2026-11-01T12:25:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793532281494-manual",
+      "message": "Inicio de pasada manual: 3 trabajos preparing vigentes en main (1 group_listas y 2 review_red). Revalidación JIT por id+revision; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -2760,27 +2766,5 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "e7a34c909e2e",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "name": "#UFCHBOMax"
-    },
-    {
-      "id": "ecfab12c8f74",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "name": "Halloween"
-    },
-    {
-      "id": "d0d920c046f0",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "name": "Blocus"
-    }
-  ]
+  "outcomes": []
 }
