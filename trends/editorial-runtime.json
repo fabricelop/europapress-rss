@@ -3,45 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793545295401-manual",
-  "previous_run_id": "tr-1793545880425-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-01T16:01:45+01:00",
-  "updated_at": "2026-11-01T16:19:00+01:00",
-  "finished_at": "2026-11-01T16:19:00+01:00",
-  "current": 4,
-  "total": 4,
+  "run_id": "tr-1793548588490-manual",
+  "previous_run_id": "tr-1793545295401-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-01T16:57:00+01:00",
+  "updated_at": "2026-11-01T16:57:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 8,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "listas-joint-f8769365147a3582",
-    "cb9bc0ab3d67",
-    "red-review-83ebe32f690b4d2b469f",
-    "red-review-fd05f8e91a6fb29a4e48"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "2d00f5e3e658",
+    "64b7521f1d8d",
+    "4e4384519ea7",
+    "f4ae195585a9",
+    "63b063f5b637",
+    "b77ac0afa366",
+    "107d210b8318",
+    "57b80a6a7dd2"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "2d00f5e3e658",
+    "64b7521f1d8d",
+    "4e4384519ea7",
+    "f4ae195585a9",
+    "63b063f5b637",
+    "b77ac0afa366",
+    "107d210b8318",
+    "57b80a6a7dd2"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 2,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -714,6 +710,15 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T16:57:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793548588490-manual",
+      "status": "RUNNING",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio de pasada manual real: 8 trabajos preparing vigentes en main (Manu, Racing, Mangala, Satriano, Isaac, García Plaza, Boselli y De Miñaur), ordenados por requested_at. Revalidación JIT de id+revision antes de cada tratamiento. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -2793,40 +2798,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "listas-joint-f8769365147a3582",
-      "revision": 1,
-      "name": "Getafe-Sevilla · Kike Salas y Gudelj",
-      "outcome": "explained",
-      "applied": true,
-      "final_score": "3-1"
-    },
-    {
-      "id": "cb9bc0ab3d67",
-      "revision": 0,
-      "name": "#GetafeSevilla",
-      "outcome": "explained",
-      "applied": true,
-      "final_score": "3-1"
-    },
-    {
-      "id": "red-review-83ebe32f690b4d2b469f",
-      "revision": 0,
-      "name": "#laSextaXplica",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-fd05f8e91a6fb29a4e48",
-      "revision": 0,
-      "name": "Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null
 }
