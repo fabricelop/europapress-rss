@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793521834896-manual",
   "previous_run_id": "tr-chat-20261101T091043+0100",
-  "status": "waiting",
-  "phase": "preparing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-01T09:31:35+01:00",
-  "updated_at": "2026-11-01T09:33:57+01:00",
+  "updated_at": "2026-11-01T09:34:05+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "b622600f47d4",
-  "title": "#FelizDomingo",
+  "trend_id": "7084b3e15859",
+  "title": "Día de Todos",
   "queue_complete": false,
   "processed_ids": [
     "b622600f47d4"
@@ -26,17 +26,17 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -921,6 +921,20 @@
       "trend_id": "b622600f47d4",
       "title": "#FelizDomingo",
       "message": "Inicio tr-1793521834896-manual: 2 reelaboraciones preparing vigentes (#FelizDomingo r0 y Día de Todos r0). Revalidación JIT e investigación desde cero; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:34:05+01:00",
+      "phase": "verifying",
+      "trend_id": "b622600f47d4",
+      "title": "#FelizDomingo",
+      "message": "#FelizDomingo r0 aplicado y retirado de la cola; texto sincronizado por el aplicador en requests y ficha explained. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:34:05+01:00",
+      "phase": "investigating",
+      "trend_id": "7084b3e15859",
+      "title": "Día de Todos",
+      "message": "Revalidación JIT r0 completada. Contexto actual verificado: 1 de noviembre de 2026, Todos los Santos, domingo; nueve comunidades trasladan el descanso al lunes 2."
     }
   ],
   "final_outcomes": {
