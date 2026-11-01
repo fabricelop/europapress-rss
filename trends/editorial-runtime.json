@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793522249693-manual",
-  "previous_run_id": "tr-1793522159076-manual",
+  "run_id": "tr-chat-20261101T094115+0100",
+  "previous_run_id": "tr-1793522249693-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-01T09:37:29.693+01:00",
-  "updated_at": "2026-11-01T09:41:30+01:00",
+  "started_at": "2026-11-01T09:41:15+01:00",
+  "updated_at": "2026-11-01T09:41:15+01:00",
   "finished_at": null,
   "current": 0,
   "total": 8,
@@ -1046,6 +1046,11 @@
       "phase": "preparing",
       "run_id": "tr-1793522249693-manual",
       "message": "Inicio de pasada manual: 8 trabajos preparing vigentes en main (#TodosLosSantos, Rivola, Mt 5, Acosta, Malasia, Sepang, Bezzecchi y Qatar). Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T09:41:15+01:00",
+      "phase": "preparing",
+      "message": "Inicio tr-chat-20261101T094115+0100: 8 trabajos preparing/update vigentes en main; revalidación JIT antes de cada uno. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": {
@@ -1092,7 +1097,7 @@
     }
   },
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-01T09:35:20+01:00",
+  "last_started_at": "2026-11-01T09:41:15+01:00",
   "last_completed_at": "2026-11-01T09:35:20+01:00",
   "last_run": {
     "run_id": "tr-1793522159076-manual",
@@ -1124,7 +1129,7 @@
     ]
   },
   "source": "chat",
-  "message": "Pasada completada 3/3: agrupación automática aplicada con 0 grupos nuevos y cobertura de Día de Todos por publicación previa; #laSextaXplica actualizada como episodio distinto del 31/10; Toledo actualizado como continuidad del accidente de Urda. Cola final 0; sin reexplicaciones, ImageGen ni publicaciones.",
+  "message": "Inicio tr-chat-20261101T094115+0100: 8 trabajos preparing/update vigentes en main; revalidación JIT antes de cada uno. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
