@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793517832727-manual",
   "previous_run_id": "tr-1793517621392-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T08:23:52.727+01:00",
-  "updated_at": "2026-11-01T08:27:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-01T08:29:00+01:00",
+  "finished_at": "2026-11-01T08:29:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -35,7 +35,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3
   },
   "incident_count": 0,
   "incidents": [],
@@ -822,6 +822,37 @@
       "phase": "preparing",
       "run_id": "tr-1793517832727-manual",
       "message": "Inicio de pasada manual: editorial-queue observada en 0. Revalidando main, reexplicaciones y los tres resultados de la ejecución concurrente anterior; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T08:28:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793517832727-manual",
+      "message": "Barrera final de main: editorial-queue=0 en relectura; no hay preparing/update. mobile-decisions no contiene rewrite/reexplain vigente. Los 3 trabajos de la ejecución anterior ya tienen outbox y no se duplican."
+    },
+    {
+      "at": "2026-11-01T08:29:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793517832727-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      },
+      "message": "Pasada completada 0/0 por convergencia: cola final 0 y sin reexplicación vigente detectada. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": {
@@ -1520,6 +1551,31 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada completada 0/0. Barrera final de main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-01T08:29:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793517832727-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      },
+      "message": "Cierre 0/0. Se respetó la convergencia de 3 trabajos previamente atendidos; cola final 0, ImageGen 0 y publicaciones 0."
     }
   ],
   "partial": false,
