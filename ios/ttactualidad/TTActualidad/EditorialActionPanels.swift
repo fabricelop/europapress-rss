@@ -691,7 +691,8 @@ struct EditorialActions: View {
     private func copyPhoto() async {
         // Prefer the verified AI image that is displayed in the trend card.
         // Fall back to the archive only if there is no accessible IA file.
-        let sources: [URL] = [trend?.siteImageURL, news?.imageURL ?? trend?.imageURL].compactMap { $0 }
+        let sources: [URL] = [news?.siteImageURL, trend?.siteImageURL,
+                              news?.imageURL ?? trend?.imageURL].compactMap { $0 }
         guard !sources.isEmpty else {
             outcome = "No hay imagen IA ni foto de archivo disponible."
             return
@@ -702,8 +703,8 @@ struct EditorialActions: View {
                 guard (response as? HTTPURLResponse)?.statusCode == 200,
                       let image = UIImage(data: data) else { continue }
                 UIPasteboard.general.image = image
-                outcome = "Foto copiada: " + (index == 0 && trend?.siteImageURL != nil
-                    ? "imagen IA" : "archivo")
+                let copiedAI = url == news?.siteImageURL || url == trend?.siteImageURL
+                outcome = "Foto copiada: " + (copiedAI ? "imagen IA" : "archivo")
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 return
             } catch {
