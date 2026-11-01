@@ -3,28 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793490930000-manual",
-  "previous_run_id": "tr-1793490690446-manual",
+  "run_id": "tr-1793491247699-manual",
+  "previous_run_id": "tr-1793490930000-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-01T00:55:30+01:00",
-  "updated_at": "2026-11-01T01:02:00+01:00",
+  "phase": "investigating",
+  "started_at": "2026-11-01T01:00:47.699+01:00",
+  "updated_at": "2026-11-01T01:03:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
+  "total": 5,
   "trend_id": "34773b6871a6",
   "title": "Tusk",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "34773b6871a6"
+    "34773b6871a6",
+    "930473fae55b",
+    "c1d3d1afb9e9",
+    "2fa9bd880a4d",
+    "e66f5cfee46f"
   ],
   "remaining_active_ids": [
-    "34773b6871a6"
+    "34773b6871a6",
+    "930473fae55b",
+    "c1d3d1afb9e9",
+    "2fa9bd880a4d",
+    "e66f5cfee46f"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 5,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
@@ -32,8 +40,8 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "remaining_active": 1,
-    "queue_remaining": 1,
+    "remaining_active": 5,
+    "queue_remaining": 5,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -489,6 +497,13 @@
       "trend_id": "34773b6871a6",
       "title": "Tusk",
       "message": "Revisión 0 revalidada JIT en main; enviando resultado al aplicador editorial."
+    },
+    {
+      "at": "2026-11-01T01:03:00+01:00",
+      "phase": "investigating",
+      "trend_id": "34773b6871a6",
+      "title": "Tusk",
+      "message": "Inicio tr-1793491247699-manual: 5 trabajos preparing vigentes tras relectura de main. Investigación actual y revalidación JIT por id+revision; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -610,6 +625,13 @@
       "trend_id": "listas-auto-09ccc1fc32302336fef0",
       "title": "Agrupación automática de Listas",
       "message": "Inicio tr-1793490579211-manual: 1 group_listas preparing vigente en main. Revalidando snapshot y publicaciones recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T01:03:00+01:00",
+      "phase": "investigating",
+      "trend_id": "34773b6871a6",
+      "title": "Tusk",
+      "message": "Inicio tr-1793491247699-manual: 5 trabajos preparing vigentes tras relectura de main. Investigación actual y revalidación JIT por id+revision; sin ImageGen ni publicación."
     }
   ]
 }
