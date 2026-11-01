@@ -8,10 +8,10 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-01T12:55:22.544+01:00",
-  "updated_at": "2026-11-01T12:58:04.023+01:00",
-  "finished_at": "2026-11-01T12:58:04.023+01:00",
-  "current": 5,
-  "total": 5,
+  "updated_at": "2026-11-01T12:58:30+01:00",
+  "finished_at": "2026-11-01T12:58:30+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -26,13 +26,13 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
-    "grouping_requests": 2,
-    "groups_created": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -41,7 +41,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 5
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -1427,6 +1427,37 @@
         "concurrent_convergence": 5
       },
       "message": "TTendencias cerrada 5/5 por ejecución y convergencia JIT: 3 explicaciones y 2 agrupaciones resueltas; una agrupación creó MotoGP · Qatar y retirada de Yamaha. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T12:58:20+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793534122544-manual",
+      "message": "Barrera final de main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. No entró trabajo nuevo durante la pasada."
+    },
+    {
+      "at": "2026-11-01T12:58:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793534122544-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada completada 0/0 tras relectura autoritativa de main. Sin ImageGen, sin publicación y sin cambios editoriales."
     }
   ],
   "final_outcomes": [
@@ -1450,25 +1481,29 @@
   "last_started_at": "2026-11-01T12:55:12+01:00",
   "last_completed_at": "2026-11-01T12:49:00+01:00",
   "last_run": {
-    "run_id": "tr-1793533559573-manual",
+    "run_id": "tr-1793534122544-manual",
     "status": "DONE",
-    "finished_at": "2026-11-01T12:49:00+01:00",
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 1,
-    "groups_created": 1,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 2,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 3
+    "started_at": "2026-11-01T12:55:22.544+01:00",
+    "finished_at": "2026-11-01T12:58:30+01:00",
+    "summary": {
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
+      "updates": 0,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "unchanged_reviews": 0,
+      "stale_reviews": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "publications": 0,
+      "incidents": 0,
+      "concurrent_convergence": 0
+    },
+    "message": "Pasada 0/0; cola y reelaboraciones pendientes a cero; sin ImageGen ni publicaciones."
   },
   "source": "manual",
   "message": "Inicio efectivo: 3 trabajos preparing vigentes (Koldo García, Ana Pastor y agrupación automática), ordenados por antigüedad y sujetos a validación JIT. Sin ImageGen ni publicación.",
@@ -3030,39 +3065,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "listas-auto-e41651c718620ce133ce",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 0
-    },
-    {
-      "id": "aea33831119b",
-      "revision": 0,
-      "outcome": "explained",
-      "name": "Yamaha"
-    },
-    {
-      "id": "12beb07b0d96",
-      "revision": 0,
-      "outcome": "explained",
-      "name": "Preparación"
-    },
-    {
-      "id": "24b026091f12",
-      "revision": 0,
-      "outcome": "explained",
-      "name": "MotoGP"
-    },
-    {
-      "id": "listas-auto-bc8dfbb410389cba37b7",
-      "revision": 0,
-      "outcome": "grouping_completed",
-      "groups_created": 1,
-      "joint_id": "listas-joint-eee3db5b7d223989"
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null
 }
