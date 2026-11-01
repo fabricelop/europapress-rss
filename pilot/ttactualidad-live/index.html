@@ -190,9 +190,9 @@ function verifiedNewsAI(x){
       Number(row.revision)>=1&&Number(row.revision)<=rev);
   const exact=sameID.find(row=>Number(row.revision)===rev);
   if(exact){
-   // Current revision with a mismatched text/clock is not valid. Do not
-   // silently use an older image over a newer but different story version.
-   if(exact.prepared_at!==prepared||exact.editorial_text!==text)return '';
+   // Same immutable event_id means the existing illustration remains even if
+   // the editor fixes text or prepared_at within the same revision.
+   // A rework still hides the old card via rewrite_pending.
    const hash=String(exact.sha256||''),url=String(exact.image_url||'');
    const valid=check(url,hash,'manual',rev)||check(url,hash,'site',rev)||check(url,hash,'pipeline',rev);
    if(valid)return valid;
