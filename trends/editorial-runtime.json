@@ -3,50 +3,54 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793533948548-manual",
+  "run_id": "tr-1793533812781-manual",
   "previous_run_id": "tr-1793533812781-manual",
-  "status": "waiting",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-01T12:55:02.577+01:00",
-  "updated_at": "2026-11-01T12:55:13+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 4,
+  "updated_at": "2026-11-01T12:57:30+01:00",
+  "finished_at": "2026-11-01T12:57:30+01:00",
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
+    "aea33831119b",
     "12beb07b0d96",
     "24b026091f12",
-    "aea33831119b"
+    "listas-auto-e41651c718620ce133ce",
+    "listas-auto-bc8dfbb410389cba37b7"
   ],
-  "remaining_ids": [
-    "listas-auto-e41651c718620ce133ce"
-  ],
-  "remaining_active_ids": [
-    "listas-auto-e41651c718620ce133ce"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
     "updates": 0,
-    "grouping_requests": 1,
-    "groups_created": 0,
+    "grouping_requests": 2,
+    "groups_created": 1,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 1,
+    "concurrent_convergence": 5
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-01T12:55:00+01:00",
+      "code": "github_transport_h2",
+      "message": "Error de transporte al intentar persistir Yamaha; la relectura JIT confirmó que el aplicador concurrente ya había persistido correctamente la misma revisión. No se sobrescribió el resultado."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -1321,6 +1325,37 @@
       "phase": "preparing",
       "run_id": "tr-1793533948548-manual",
       "message": "Inicio manual: 4 trabajos preparing/update vigentes en main; revalidación JIT por id+revision, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-01T12:57:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793533812781-manual",
+      "message": "Barrera final: las tres investigaciones r0 están explained; dos jobs group_listas están grouping_completed y el segundo creó listas-joint-eee3db5b7d223989 para Yamaha+MotoGP."
+    },
+    {
+      "at": "2026-11-01T12:57:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793533812781-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 2,
+        "groups_created": 1,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 5
+      },
+      "message": "Pasada cerrada 5/5. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Sin ImageGen y sin publicaciones."
     }
   ],
   "final_outcomes": [
