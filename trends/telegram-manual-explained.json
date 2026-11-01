@@ -31792,10 +31792,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "listas_group_role": "covered",
@@ -31807,9 +31807,26 @@
       "coverage_reason": "already_published_same_event",
       "grouping_request_id": "listas-auto-02d7268c0acfb734e9df",
       "editorial_grouping_fingerprint": "2bf86b6ead9b6333f310bf4c531a358360a578b269be6ecf3d631492a967477e",
-      "editorial_grouping_checked_at": "2026-11-01T08:37:24.697767+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T08:37:24.697767+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261021075946_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/economia/noticia-festivo-noviembre-2026-donde-traslada-lunes-comunidades-tendran-puente-20261021075946.html",
+        "alt": "Imagen de archivo relacionada con Día de Todos",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261021075946_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/economia/noticia-festivo-noviembre-2026-donde-traslada-lunes-comunidades-tendran-puente-20261021075946.html",
+        "alt": "Imagen de archivo relacionada con Día de Todos",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-01T09:35:20+01:00",
+  "updated_at": "2026-11-01T08:37:44.909893Z",
   "count": 528
 }
