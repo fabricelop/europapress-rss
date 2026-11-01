@@ -5,43 +5,40 @@
   "canonical": true,
   "run_id": "tr-1793566180882-manual",
   "previous_run_id": "tr-1793565885959-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-01T21:50:00+01:00",
-  "updated_at": "2026-11-01T21:50:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-01T21:55:00+01:00",
+  "finished_at": "2026-11-01T21:55:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-97335a3df43ba0574b3c",
-  "title": "Revisar novedades: Alavés",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-97335a3df43ba0574b3c",
     "red-review-80bf283ec7dd3b50f7b7"
   ],
-  "remaining_active_ids": [
-    "red-review-97335a3df43ba0574b3c",
-    "red-review-80bf283ec7dd3b50f7b7"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
+    "updates": 2,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -1541,40 +1538,83 @@
       "trend_id": "red-review-97335a3df43ba0574b3c",
       "title": "Revisar novedades: Alavés",
       "message": "Inicio: 2 revisiones review_red preparing observadas en main. Orden JIT: Alavés, Blocus. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-01T21:53:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793566180882-manual",
+      "trend_id": "red-review-97335a3df43ba0574b3c",
+      "title": "Revisar novedades: Alavés",
+      "message": "Convergencia JIT: Alavés r0 quedó review_completed/updated y creó trend-update-370534e45554c0945874."
+    },
+    {
+      "at": "2026-11-01T21:53:42+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793566180882-manual",
+      "trend_id": "red-review-80bf283ec7dd3b50f7b7",
+      "title": "Revisar novedades: Blocus",
+      "message": "Convergencia JIT: Blocus r0 quedó review_completed/updated y creó trend-update-2ba913bbc41e6b1c893e."
+    },
+    {
+      "at": "2026-11-01T21:55:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793566180882-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada cerrada 2/2 por convergencia JIT: Alavés updated por el 6-1 ante el Barcelona y Blocus updated con el balance posterior del 31-O y dos detenciones en Fuengirola. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "a1f72cb31fee",
+      "id": "red-review-97335a3df43ba0574b3c",
       "revision": 0,
-      "name": "elche",
-      "outcome": "explained",
+      "name": "Revisar novedades: Alavés",
+      "outcome": "updated",
       "applied": true,
-      "via": "this_run_outbox"
+      "via": "concurrent_convergence_jit",
+      "created_id": "trend-update-370534e45554c0945874"
     },
     {
-      "id": "b4e57b51c750",
+      "id": "red-review-80bf283ec7dd3b50f7b7",
       "revision": 0,
-      "name": "#DragRaceEs",
-      "outcome": "explained",
+      "name": "Revisar novedades: Blocus",
+      "outcome": "updated",
       "applied": true,
-      "via": "this_run_outbox"
+      "via": "concurrent_convergence_jit",
+      "created_id": "trend-update-2ba913bbc41e6b1c893e"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-01T21:48:48+01:00",
-  "last_completed_at": "2026-11-01T21:48:48+01:00",
+  "last_completed_at": "2026-11-01T21:55:00+01:00",
   "last_run": {
-    "run_id": "tr-1793565318526-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-01T21:36:00+01:00",
-    "finished_at": "2026-11-01T21:44:30+01:00",
+    "run_id": "tr-1793566180882-manual",
+    "status": "DONE",
+    "started_at": "2026-11-01T21:50:00+01:00",
+    "finished_at": "2026-11-01T21:55:00+01:00",
     "summary": {
-      "attempted": 7,
-      "observed": 7,
-      "closed": 7,
-      "explained": 7,
-      "updates": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "updates": 2,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
@@ -1584,81 +1624,35 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 1,
-      "new_arrivals_during_run": 1
+      "incidents": 0,
+      "concurrent_convergence": 2
     },
     "outcomes": [
       {
-        "id": "0cd169a778b9",
+        "id": "red-review-97335a3df43ba0574b3c",
         "revision": 0,
-        "name": "Iraola",
-        "outcome": "explained",
+        "name": "Revisar novedades: Alavés",
+        "outcome": "updated",
         "applied": true,
-        "via": "editorial_outbox"
+        "via": "concurrent_convergence_jit",
+        "created_id": "trend-update-370534e45554c0945874"
       },
       {
-        "id": "425e95efd6a8",
+        "id": "red-review-80bf283ec7dd3b50f7b7",
         "revision": 0,
-        "name": "Martínez Valero",
-        "outcome": "explained",
+        "name": "Revisar novedades: Blocus",
+        "outcome": "updated",
         "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "5de2c2a7b20e",
-        "revision": 0,
-        "name": "El Sardinero",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "a91fa6a9490a",
-        "revision": 0,
-        "name": "Dimitrievski",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "2982cf2cc5c4",
-        "revision": 0,
-        "name": "Goiria",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "82f5a317d5c7",
-        "revision": 0,
-        "name": "Racing",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "a4a691b7cac1",
-        "revision": 0,
-        "name": "Leclerc",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
+        "via": "concurrent_convergence_jit",
+        "created_id": "trend-update-2ba913bbc41e6b1c893e"
       }
     ],
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-11-01T21:38:00+01:00",
-        "phase": "persisting",
-        "trend_id": "0cd169a778b9",
-        "title": "Iraola",
-        "reason": "El primer intento de commit atómico directo devolvió un error de protocolo h2 sin modificar main. Se releyó el estado y se recuperó mediante el aplicador editorial oficial, sin duplicados ni pérdida de revisión."
-      }
-    ],
-    "message": "Pasada cerrada 7/7: Iraola, Martínez Valero, El Sardinero, Dimitrievski, Goiria, Racing y Leclerc explicados y verificados en requests + Listas. Leclerc entró durante la ejecución y también fue procesado. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidente técnico inicial recuperado sin pérdida de estado."
+    "message": "Pasada cerrada 2/2 por convergencia JIT: Alavés updated por el 6-1 ante el Barcelona y Blocus updated con el balance posterior del 31-O y dos detenciones en Fuengirola. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "incident_count": 0,
+    "incidents": []
   },
   "source": "chat",
-  "message": "Inicio: 2 revisiones review_red preparing observadas en main. Orden JIT: Alavés, Blocus. ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 2/2 por convergencia JIT: Alavés updated por el 6-1 ante el Barcelona y Blocus updated con el balance posterior del 31-O y dos detenciones en Fuengirola. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3983,9 +3977,28 @@
     }
   ],
   "partial": false,
-  "outcomes": [],
-  "current_item": "red-review-97335a3df43ba0574b3c",
-  "current_title": "Revisar novedades: Alavés",
+  "outcomes": [
+    {
+      "id": "red-review-97335a3df43ba0574b3c",
+      "revision": 0,
+      "name": "Revisar novedades: Alavés",
+      "outcome": "updated",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "created_id": "trend-update-370534e45554c0945874"
+    },
+    {
+      "id": "red-review-80bf283ec7dd3b50f7b7",
+      "revision": 0,
+      "name": "Revisar novedades: Blocus",
+      "outcome": "updated",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "created_id": "trend-update-2ba913bbc41e6b1c893e"
+    }
+  ],
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -4838,6 +4851,53 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793565885959-manual cerrada 6/6: Aston Martin, #NASCARenDAZN, Hamilton y Honda quedaron explained por convergencia JIT; la barrera final incorporó y actualizó las revisiones de Alavés y Blocus. editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de una ejecución concurrente posterior."
+    },
+    {
+      "run_id": "tr-1793566180882-manual",
+      "status": "DONE",
+      "started_at": "2026-11-01T21:50:00+01:00",
+      "finished_at": "2026-11-01T21:55:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-97335a3df43ba0574b3c",
+          "revision": 0,
+          "name": "Revisar novedades: Alavés",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "created_id": "trend-update-370534e45554c0945874"
+        },
+        {
+          "id": "red-review-80bf283ec7dd3b50f7b7",
+          "revision": 0,
+          "name": "Revisar novedades: Blocus",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "created_id": "trend-update-2ba913bbc41e6b1c893e"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada cerrada 2/2 por convergencia JIT: Alavés updated por el 6-1 ante el Barcelona y Blocus updated con el balance posterior del 31-O y dos detenciones en Fuengirola. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "command_id": "tr-1793566180882-manual",
