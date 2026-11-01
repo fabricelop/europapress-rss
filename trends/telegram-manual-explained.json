@@ -34008,14 +34008,16 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "editorial_grouping_fingerprint": "1a4372aaace2e12a94de47338085551182c6f10229c6ae926c5eb1721ab3e558",
-      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "24b026091f12",
@@ -34056,10 +34058,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "listas_group_role": "covered",
@@ -34070,7 +34072,24 @@
       "covered_at": "2026-11-01T11:56:25.694991+00:00",
       "grouping_request_id": "listas-auto-bc8dfbb410389cba37b7",
       "editorial_grouping_fingerprint": "96d72abd4a2714a57a9fdfa8d1a22e4dc27b8dbf45601e0d1aaae350d6c8fdd3",
-      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://resources.motogp.pulselive.com/photo-resources/2026/11/01/922a7304-90ec-4265-993f-6d7778e7576e/LG9_0260-1-.jpg?width=1024&height=512",
+        "source": "www.motogp.com",
+        "source_url": "https://www.motogp.com/en/news/2026/11/01/statements-from-yamaha-motor-co-ltd-motogp-group/1183172",
+        "alt": "Imagen de archivo relacionada con MotoGP",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://resources.motogp.pulselive.com/photo-resources/2026/11/01/922a7304-90ec-4265-993f-6d7778e7576e/LG9_0260-1-.jpg?width=1024&height=512",
+        "source": "www.motogp.com",
+        "source_url": "https://www.motogp.com/en/news/2026/11/01/statements-from-yamaha-motor-co-ltd-motogp-group/1183172",
+        "alt": "Imagen de archivo relacionada con MotoGP",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "aea33831119b",
@@ -34111,10 +34130,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "cleared",
       "telegram_package_status": "pending",
       "listas_group_role": "covered",
@@ -34125,7 +34144,24 @@
       "covered_at": "2026-11-01T11:56:25.694991+00:00",
       "grouping_request_id": "listas-auto-bc8dfbb410389cba37b7",
       "editorial_grouping_fingerprint": "f197add7f0ffd29d11fa4d96a37bf9265be539178a79705dfb1f8a2e6db7fc52",
-      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://resources.motogp.pulselive.com/photo-resources/2026/11/01/922a7304-90ec-4265-993f-6d7778e7576e/LG9_0260-1-.jpg?width=1024&height=512",
+        "source": "www.motogp.com",
+        "source_url": "https://www.motogp.com/en/news/2026/11/01/statements-from-yamaha-motor-co-ltd-motogp-group/1183172",
+        "alt": "Imagen de archivo relacionada con Yamaha",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://resources.motogp.pulselive.com/photo-resources/2026/11/01/922a7304-90ec-4265-993f-6d7778e7576e/LG9_0260-1-.jpg?width=1024&height=512",
+        "source": "www.motogp.com",
+        "source_url": "https://www.motogp.com/en/news/2026/11/01/statements-from-yamaha-motor-co-ltd-motogp-group/1183172",
+        "alt": "Imagen de archivo relacionada con Yamaha",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "listas-joint-eee3db5b7d223989",
@@ -34167,14 +34203,34 @@
       "source": "listas_grouping_editorial",
       "auto_queued": false,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "editorial_grouping_state": "cleared",
       "editorial_grouping_fingerprint": "80851316fbdbeecfb3dfed60a3489525e4db5e7a77e3ca8c734f27ff60129cbb",
-      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00"
+      "editorial_grouping_checked_at": "2026-11-01T11:56:25.694991+00:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://resources.motogp.pulselive.com/photo-resources/2026/11/01/922a7304-90ec-4265-993f-6d7778e7576e/LG9_0260-1-.jpg?width=1024&height=512",
+        "source": "www.motogp.com",
+        "source_url": "https://www.motogp.com/en/news/2026/11/01/statements-from-yamaha-motor-co-ltd-motogp-group/1183172",
+        "alt": "Imagen de archivo relacionada con MotoGP · Qatar y retirada de Yamaha",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://resources.motogp.pulselive.com/photo-resources/2026/11/01/922a7304-90ec-4265-993f-6d7778e7576e/LG9_0260-1-.jpg?width=1024&height=512",
+        "source": "www.motogp.com",
+        "source_url": "https://www.motogp.com/en/news/2026/11/01/statements-from-yamaha-motor-co-ltd-motogp-group/1183172",
+        "alt": "Imagen de archivo relacionada con MotoGP · Qatar y retirada de Yamaha",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-01T11:56:25.694991+00:00",
+  "updated_at": "2026-11-01T11:57:24.362138Z",
   "count": 563
 }
