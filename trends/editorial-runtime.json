@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793663459",
   "previous_run_id": "tr-1793661950902-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "drafting",
   "started_at": "2026-11-03T00:51:20+01:00",
-  "updated_at": "2026-11-03T00:51:20+01:00",
+  "updated_at": "2026-11-03T00:54:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "drafting",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:25:50+01:00",
@@ -92,14 +92,8 @@
     "message": "Pasada cerrada 1/1: revisión Hamilton R0 aplicada como actualización material del mismo GP de México. Ficha nueva trend-update-77f5db7129dcd06a9fc8 sincronizada en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Preparando Loureiro R0: revalidación JIT e investigación del detonante actual. Sin ImageGen ni publicación.",
+  "message": "Loureiro R0 investigado; redactando y preparando persistencia sincronizada.",
   "events": [
-    {
-      "at": "2026-11-01T14:24:54.257Z",
-      "phase": "verifying",
-      "run_id": "tr-1793542709832-manual",
-      "message": "Barrera final JIT verificada en main: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Los dos review_red quedaron review_completed/stale por validación del aplicador."
-    },
     {
       "at": "2026-11-01T14:24:54.257Z",
       "phase": "closing",
@@ -1146,6 +1140,20 @@
       "trend_id": "466d3740ad7e",
       "title": "Loureiro",
       "message": "Inicio tr-autoguard-1793663459: 1 trabajo preparing vigente en main. Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T00:54:30+01:00",
+      "phase": "investigating",
+      "trend_id": "466d3740ad7e",
+      "title": "Loureiro",
+      "message": "Detonante razonablemente identificado: actuación de Miguel Loureiro en el Deportivo-Osasuna, titular en el 2-1; DXT Campeón lo destacó con 8/10 por cortes y correcciones defensivas."
+    },
+    {
+      "at": "2026-11-03T00:54:30+01:00",
+      "phase": "drafting",
+      "trend_id": "466d3740ad7e",
+      "title": "Loureiro",
+      "message": "Explicación factual redactada y validada (243 caracteres Unicode); preparando persistencia sin ImageGen."
     }
   ],
   "history": [
