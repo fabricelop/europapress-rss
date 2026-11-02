@@ -6,14 +6,14 @@
   "run_id": "tr-1793663849907-manual",
   "previous_run_id": "tr-autoguard-1793663459",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "review_red",
   "started_at": "2026-11-03T00:57:29.907+01:00",
-  "updated_at": "2026-11-03T00:59:10+01:00",
+  "updated_at": "2026-11-03T01:00:30+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-5acdc18cd526baa17504",
-  "title": "Revisar novedades: Adif",
+  "current": 2,
+  "total": 4,
+  "trend_id": "red-review-a20d736ad083a5a16a1d",
+  "title": "Revisar novedades: Pepe Mel",
   "queue_complete": false,
   "processed_ids": [
     "466d3740ad7e",
@@ -49,7 +49,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "review_red",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:57:14+01:00",
@@ -97,46 +97,8 @@
     "message": "Pasada cerrada 1/1: revisión Hamilton R0 aplicada como actualización material del mismo GP de México. Ficha nueva trend-update-77f5db7129dcd06a9fc8 sincronizada en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Revisando novedades de Adif R0 tras revalidación JIT; se contrasta el posible uso repetido del protocolo LZB4 y las medidas posteriores. Sin ImageGen ni publicación.",
+  "message": "Adif enviado como actualización material; revisando Pepe Mel R0. Sin ImageGen ni publicación.",
   "events": [
-    {
-      "at": "2026-11-01T17:19:40.185+01:00",
-      "phase": "preparing",
-      "run_id": "tr-1793549980185-manual",
-      "status": "RUNNING",
-      "message": "Inicio: 2 revisiones review_red preparing observadas en main (Día de Todos y #FelizDomingo), con validación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T17:22:10+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793549980185-manual",
-      "message": "Convergencia JIT verificada: Día de Todos review_completed/updated con nueva ficha trend-update-6f8efdbc5b4f98f241ed; #FelizDomingo review_completed/unchanged. Cola main=0; mobile-decisions sin rewrite_pending/reexplain."
-    },
-    {
-      "at": "2026-11-01T17:22:30+01:00",
-      "phase": "closing",
-      "run_id": "tr-1793549980185-manual",
-      "status": "DONE",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "updates": 1,
-        "grouping_requests": 0,
-        "groups_created": 0,
-        "covered_by_existing": 0,
-        "unchanged_reviews": 1,
-        "stale_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "message": "Pasada cerrada 2/2 por convergencia JIT. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
-    },
     {
       "at": "2026-11-01T16:35:20.382Z",
       "phase": "closing",
@@ -1135,6 +1097,13 @@
       "trend_id": "red-review-5acdc18cd526baa17504",
       "title": "Revisar novedades: Adif",
       "message": "Revisando novedades de Adif R0 tras revalidación JIT; se contrasta el posible uso repetido del protocolo LZB4 y las medidas posteriores. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T01:00:30+01:00",
+      "phase": "review_red",
+      "trend_id": "red-review-a20d736ad083a5a16a1d",
+      "title": "Revisar novedades: Pepe Mel",
+      "message": "Pepe Mel R0 revalidado JIT. Las fuentes publicadas durante el 2/11 siguen describiendo el mismo estado de la ficha original: operación satisfactoria, ingreso en UCI y pendiente de evolución; no hay parte médico nuevo material."
     }
   ],
   "history": [
