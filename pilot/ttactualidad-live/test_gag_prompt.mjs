@@ -21,8 +21,8 @@ const files=['./index.html','../../docs/ttactualidad/index.html'];
 for(const file of files){
  test('Copiar GAG sin texto ni tarjeta en '+file,()=>{
   const make=getManualPrompt(file);
-  const news={_kind:'tti',_id:'demo',revision:1,title:'Una factura',factual_summary:'La empresa pagó una factura verificada.',tweet:{text:'Texto factual confirmado.\n\n#Factura #Empresa\n🌶️ El papel pasó por caja.',remate:'🌶️ El papel pasó por caja.'}};
-  const trends={_kind:'tr',_id:'tendencia',revision:0,name:'Factura',title:'Factura',rank:3,explanation:'TT#3 Factura es tendencia por un hecho confirmado.\n#Factura #Empresa\n🌶️ El papel pasó por caja.',closer_text:'🌶️ El papel pasó por caja.'};
+  const news={_kind:'tti',_id:'demo',event_id:'demo',_status:'LISTA',prepared_at:'2026-11-02T13:00:00Z',revision:1,title:'Una factura',factual_summary:'La empresa pagó una factura verificada.',tweet:{text:'Texto factual confirmado.\n\n#Factura #Empresa\n🌶️ El papel pasó por caja.',remate:'🌶️ El papel pasó por caja.'}};
+  const trends={_kind:'tr',_id:'tendencia',_status:'EXPLICADA',explained_at:'2026-11-02T13:00:00Z',revision:0,name:'Factura',title:'Factura',rank:3,explanation:'TT#3 Factura es tendencia por un hecho confirmado.\n#Factura #Empresa\n🌶️ El papel pasó por caja.',closer_text:'🌶️ El papel pasó por caja.'};
   for(const item of [news,trends]){
    const p=make(item);
    for(const required of [
@@ -36,8 +36,9 @@ for(const file of files){
   }
  });
  test('Copiar GAG mantiene tratamiento respetuoso en '+file,()=>{
-  const p=getManualPrompt(file)({_kind:'tti',_id:'sensitive',title:'Accidente con víctimas',tweet:{text:'Accidente con víctimas confirmadas.\n\n#Hechos #Sucesos\n🌶️ Respetar a las familias.',remate:'🌶️ Respetar a las familias.'}});
+  const p=getManualPrompt(file)({_kind:'tti',_id:'sensitive',event_id:'sensitive',revision:1,_status:'LISTA',prepared_at:'2026-11-02T13:00:00Z',title:'Accidente con víctimas',tweet:{text:'Accidente con víctimas confirmadas.\n\n#Hechos #Sucesos\n🌶️ Respetar a las familias.',remate:'🌶️ Respetar a las familias.'}});
   assert.match(p,/PERIODÍSTICA SOBRIA Y RESPETUOSA/);
   assert.match(p,/sin humor/);
  });
 }
+
