@@ -8,12 +8,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-02T07:00:00+01:00",
-  "updated_at": "2026-11-02T07:11:00+01:00",
+  "updated_at": "2026-11-02T07:12:00+01:00",
   "finished_at": null,
-  "current": 5,
+  "current": 6,
   "total": 7,
-  "trend_id": "red-review-3344126e127e5f6a9343",
-  "title": "Revisar novedades: Chiqui",
+  "trend_id": "red-review-cd0e4631a1e15682c33d",
+  "title": "Revisar novedades: Toledo",
   "queue_complete": false,
   "processed_ids": [
     "8b882d17d961"
@@ -1891,6 +1891,38 @@
       "run_id": "tr-1793599231716-manual",
       "trend_id": "red-review-3344126e127e5f6a9343",
       "title": "Revisar novedades: Chiqui",
+      "message": "Persistiendo resultado updated en maintenance-outbox tras revalidación JIT de id+revision."
+    },
+    {
+      "at": "2026-11-02T07:12:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "red-review-cd0e4631a1e15682c33d",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisando novedades: desde la ficha del 28/10 el balance subió a 69 fallecidos; a 2/11 hay 66 identificados y la investigación sigue abierta sobre la reanudación de la marcha del AVE."
+    },
+    {
+      "at": "2026-11-02T07:12:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "red-review-cd0e4631a1e15682c33d",
+      "title": "Revisar novedades: Toledo",
+      "message": "Actualización de continuidad redactada para TT#26 con los nuevos datos confirmados; sin remate por tratarse de una tragedia."
+    },
+    {
+      "at": "2026-11-02T07:12:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "red-review-cd0e4631a1e15682c33d",
+      "title": "Revisar novedades: Toledo",
+      "message": "closer_text vacío por sensibilidad: accidente mortal con víctimas."
+    },
+    {
+      "at": "2026-11-02T07:12:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "red-review-cd0e4631a1e15682c33d",
+      "title": "Revisar novedades: Toledo",
       "message": "Persistiendo resultado updated en maintenance-outbox tras revalidación JIT de id+revision."
     }
   ],
