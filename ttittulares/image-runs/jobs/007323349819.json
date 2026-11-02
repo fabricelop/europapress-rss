@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-007323349819-r1-a1-1793449867138",
+  "requested_at": "2026-10-31T12:31:07.050064Z",
+  "updated_at": "2026-10-31T12:44:33.169098Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "007323349819",
+  "event_id": "007323349819",
+  "target_name": "Page pide a todos los españoles que se unan en torno al dolor de las víctimas de Urda",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Page pide a todos los españoles que se unan en torno al dolor de las víctimas de Urda",
+    "revision": 1,
+    "factual_summary": "Emiliano García-Page ha agradecido la solidaridad desplegada tras el accidente de Urda y ha llamado a los españoles a unirse en el dolor de las víctimas. El Gobierno regional informa hoy de 34 hospitalizados, 15 en UCI.",
+    "tweet_text": "García-Page agradece la solidaridad tras Urda y pide a todos los españoles unirse en el dolor de las víctimas. La región mantiene 34 heridos ingresados, 15 en UCI.\n\n#Urda #CastillaLaMancha\n🌶️ Hoy toca acompañar, no añadir ruido.",
+    "remate": "🌶️ Hoy toca acompañar, no añadir ruido.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nGarcía-Page agradece la solidaridad tras Urda y pide a todos los españoles unirse en el dolor de las víctimas. La región mantiene 34 heridos ingresados, 15 en UCI.\n\n#Urda #CastillaLaMancha\n🌶️ Hoy toca acompañar, no añadir ruido.\n\nREMATE EXACTO:\n🌶️ Hoy toca acompañar, no añadir ruido.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEmiliano García-Page ha agradecido la solidaridad desplegada tras el accidente de Urda y ha llamado a los españoles a unirse en el dolor de las víctimas. El Gobierno regional informa hoy de 34 hospitalizados, 15 en UCI.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.rtve.es/noticias/20261031/accidente-tren-directo-ultima-hora-heridos/17294654.shtml",
+    "citations": [
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261031/accidente-tren-directo-ultima-hora-heridos/17294654.shtml"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/castilla-la-mancha/toledo/page-pide-los-espanoles-que-se-unan-dolor-por-las-victimas-accidente-urda_7055786_0.html"
+      },
+      {
+        "source": "laSexta Noticias",
+        "url": "https://www.lasexta.com/noticias/nacional/page-pone-valor-inmensa-solidaridad-accidente-urda-pone-manifiesto-forma-ser-espanoles_202610316ae5d4236973466c29e45ccb.html"
+      },
+      {
+        "source": "Gobierno de Castilla-La Mancha",
+        "url": "https://www.castillalamancha.es/actualidad/notasdeprensa/el-gobierno-de-castilla-la-mancha-continua-el-seguimiento-de-la-emergencia-por-el-accidente"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "f5799b920799169c1d104cd62cc4121de5116683fc2b46b4c2bfbd1efca0a4fb",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-31T12:31:34.884Z",
+  "pc_launched_at": "2026-10-31T12:31:43.690Z",
+  "finished_at": "2026-10-31T12:31:43.690Z"
+}

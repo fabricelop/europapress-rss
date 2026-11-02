@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-6c5403dc80dc-r1-a5-1791378703833",
+  "requested_at": "2026-10-07T13:11:43.832648Z",
+  "updated_at": "2026-10-07T13:11:43.832648Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "6c5403dc80dc",
+  "event_id": "6c5403dc80dc",
+  "target_name": "Isabel Díaz Ayuso publicará «Íntimo», su primer libro",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 5,
+  "manual_retry_version": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Isabel Díaz Ayuso publicará «Íntimo», su primer libro",
+    "revision": 1,
+    "factual_summary": "Isabel Díaz Ayuso publicará el 2 de diciembre su primer libro, Íntimo, editado por Planeta, con un recorrido personal y político por su vida.",
+    "tweet_text": "Isabel Díaz Ayuso publicará el 2 de diciembre «Íntimo», su primer libro, una memoria personal y política editada por Planeta.\n\n🌶️ El prólogo ha llegado justo cuando empieza la precampaña.",
+    "remate": "🌶️ El prólogo ha llegado justo cuando empieza la precampaña.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nIsabel Díaz Ayuso publicará el 2 de diciembre «Íntimo», su primer libro, una memoria personal y política editada por Planeta.\n\n🌶️ El prólogo ha llegado justo cuando empieza la precampaña.\n\nREMATE EXACTO:\n🌶️ El prólogo ha llegado justo cuando empieza la precampaña.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nIsabel Díaz Ayuso publicará el 2 de diciembre su primer libro, Íntimo, editado por Planeta, con un recorrido personal y político por su vida.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.20minutos.es/libros/isabel-diaz-ayuso-da-salto-literatura-con-intimo-su-primer-libro_7045869_0.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/madrid/2026-10-07/ayuso-debuta-en-el-mundo-editorial-con-intimo-un-libro-escrito-durante-su-peor-crisis-politica.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/cmadrid/2026/10/07/de-presidenta-a-escritora-ayuso-publicara-su-primer-libro-en-diciembre-radio-madrid/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reintento manual de imagen IA desde Telegram."
+}

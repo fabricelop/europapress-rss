@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-3ce79ae91da6-r1-a1-1792953271532",
+  "requested_at": "2026-10-25T18:34:31.484549Z",
+  "updated_at": "2026-10-25T19:36:53.878616Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "3ce79ae91da6",
+  "event_id": "3ce79ae91da6",
+  "target_name": "Al menos 12 heridos, tres de ellos graves, tras un tiroteo multitudinario en Tallahassee, Florida",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Al menos 12 heridos, tres de ellos graves, tras un tiroteo multitudinario en Tallahassee, Florida",
+    "revision": 1,
+    "factual_summary": "Doce personas resultaron heridas el sábado por la noche en un tiroteo en Perry Street, cerca del estadio de Florida A&M en Tallahassee, tras el partido de homecoming. Once sufrieron heridas de bala y seis víctimas son menores. El domingo, cinco habían recibido el alta, seis seguían hospitalizadas y una permanecía en estado crítico. No había detenidos y la Policía investigaba un altercado previo.",
+    "tweet_text": "Doce personas, seis menores, resultan heridas en un tiroteo tras un partido de Florida A&M en Tallahassee. Once recibieron disparos; una sigue crítica y no hay detenidos.\n\n#Tallahassee #FAMU\n🌶️ El homecoming terminó con la Policía buscando respuestas.",
+    "remate": "🌶️ El homecoming terminó con la Policía buscando respuestas.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nDoce personas, seis menores, resultan heridas en un tiroteo tras un partido de Florida A&M en Tallahassee. Once recibieron disparos; una sigue crítica y no hay detenidos.\n\n#Tallahassee #FAMU\n🌶️ El homecoming terminó con la Policía buscando respuestas.\n\nREMATE EXACTO:\n🌶️ El homecoming terminó con la Policía buscando respuestas.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nDoce personas resultaron heridas el sábado por la noche en un tiroteo en Perry Street, cerca del estadio de Florida A&M en Tallahassee, tras el partido de homecoming. Once sufrieron heridas de bala y seis víctimas son menores. El domingo, cinco habían recibido el alta, seis seguían hospitalizadas y una permanecía en estado crítico. No había detenidos y la Policía investigaba un altercado previo.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.huffingtonpost.es/global/al-12-heridos-tres-graves-tiroteo-multitudinario-tallahassee-florida-f202610.html",
+    "citations": [
+      {
+        "source": "WCTV",
+        "url": "https://www.wctv.tv/2026/10/25/tpd-12-injured-shooting-perry-street-including-6-minors/"
+      },
+      {
+        "source": "AP",
+        "url": "https://apnews.com/article/eece0228b1476cbe0f2a9864c7e4fd4f"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/deportes/heridos-menores-tiroteo-tras-partido-futbol-florida_7053178_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "09840c1955f487cf0890b17d06b808ceeb5a6f5ab85522e1dca4929078737fd3",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-25T18:36:23.756Z",
+  "pc_launched_at": "2026-10-25T18:36:32.399Z",
+  "finished_at": "2026-10-25T18:36:32.399Z"
+}

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-50f26f250fbf-r1-a1-1791274736960",
+  "requested_at": "2026-10-06T08:18:56.960362Z",
+  "updated_at": "2026-10-06T08:20:15.067Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "50f26f250fbf",
+  "event_id": "50f26f250fbf",
+  "target_name": "Los Mossos buscan un segundo desaparecido por el temporal en Granollers: un niño autista de 12 años que salió de casa asustado por la tormenta - Cadena SER",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Los Mossos buscan un segundo desaparecido por el temporal en Granollers: un niño autista de 12 años que salió de casa asustado por la tormenta - Cadena SER",
+    "revision": 1,
+    "factual_summary": "Los Mossos d'Esquadra y los Bomberos buscan a Rami, de 12 años, desaparecido en Granollers desde la madrugada del domingo. La desaparición coincide con el temporal y las autoridades han difundido su imagen y pedido colaboración ciudadana para localizarlo.",
+    "tweet_text": "Los Mossos y los Bomberos buscan a Rami, de 12 años, desaparecido en Granollers desde la madrugada del domingo. La policía ha difundido su imagen y pide colaboración ciudadana.\n\n🌶️ La prioridad es localizarlo y comunicar cualquier pista a los Mossos.",
+    "remate": "🌶️ La prioridad es localizarlo y comunicar cualquier pista a los Mossos.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos Mossos y los Bomberos buscan a Rami, de 12 años, desaparecido en Granollers desde la madrugada del domingo. La policía ha difundido su imagen y pide colaboración ciudadana.\n\n🌶️ La prioridad es localizarlo y comunicar cualquier pista a los Mossos.\n\nREMATE EXACTO:\n🌶️ La prioridad es localizarlo y comunicar cualquier pista a los Mossos.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLos Mossos d'Esquadra y los Bomberos buscan a Rami, de 12 años, desaparecido en Granollers desde la madrugada del domingo. La desaparición coincide con el temporal y las autoridades han difundido su imagen y pedido colaboración ciudadana para localizarlo.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://cadenaser.com/cataluna/2026/10/05/los-mossos-buscan-un-segundo-desaparecido-por-el-temporal-en-granollers-un-nino-autista-de-12-anos-que-salio-de-casa-asustado-por-la-tormenta-radio-barcelona/",
+    "citations": [
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/cataluna/2026/10/05/los-mossos-buscan-un-segundo-desaparecido-por-el-temporal-en-granollers-un-nino-autista-de-12-anos-que-salio-de-casa-asustado-por-la-tormenta-radio-barcelona/"
+      },
+      {
+        "source": "Telecinco Noticias",
+        "url": "https://www.telecinco.es/noticias/sucesos/20261005/buscan-rami-nino-desaparecido-granollers_18_020351954.html?amp=true"
+      },
+      {
+        "source": "laSexta Noticias",
+        "url": "https://www.lasexta.com/noticias/sociedad/mossos-buscan-rami-nino-autista-12-anos-desaparecido-granollers-temporal_202610066ac4aa51a4297764c3aa99de.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "CDP timeout Page.navigate",
+  "pc_upload_secret_hash": "9860d174db1063ebae42fbcc3e0732f86fca2f01103d9282ea3b1a6a7e168f5c",
+  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-06T08:19:44.633Z",
+  "finished_at": "2026-10-06T08:20:15.067Z"
+}

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-fbb0f654d094-r1-a1-1792836382140",
+  "requested_at": "2026-10-24T10:06:22.070247Z",
+  "updated_at": "2026-10-24T11:06:18.570680Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "fbb0f654d094",
+  "event_id": "fbb0f654d094",
+  "target_name": "Las llamas destruyen El Nido del Águila, la famosa residencia de Hitler en los Alpes",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Las llamas destruyen El Nido del Águila, la famosa residencia de Hitler en los Alpes",
+    "revision": 1,
+    "factual_summary": "Un incendio declarado la noche del 23 de octubre de 2026 causó graves daños en el Kehlsteinhaus, conocido como el «Nido del Águila», en Berchtesgaden (Baviera). No se encontraron personas dentro y las autoridades no informaron de heridos. La policía detuvo a una persona como posible sospechosa, pero todavía no había establecido su relación con el fuego ni la causa definitiva. La autoridad turística señaló que aún no podía determinarse qué partes del edificio podrían conservarse.",
+    "tweet_text": "Un incendio dañó gravemente el Kehlsteinhaus, el «Nido del Águila» nazi, en los Alpes bávaros. No hubo heridos. La policía detuvo a un sospechoso, pero aún no lo vincula con el fuego.\n\n#Baviera #Kehlsteinhaus\n🌶️ Historia en llamas; causa por aclarar.",
+    "remate": "🌶️ Historia en llamas; causa por aclarar.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn incendio dañó gravemente el Kehlsteinhaus, el «Nido del Águila» nazi, en los Alpes bávaros. No hubo heridos. La policía detuvo a un sospechoso, pero aún no lo vincula con el fuego.\n\n#Baviera #Kehlsteinhaus\n🌶️ Historia en llamas; causa por aclarar.\n\nREMATE EXACTO:\n🌶️ Historia en llamas; causa por aclarar.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUn incendio declarado la noche del 23 de octubre de 2026 causó graves daños en el Kehlsteinhaus, conocido como el «Nido del Águila», en Berchtesgaden (Baviera). No se encontraron personas dentro y las autoridades no informaron de heridos. La policía detuvo a una persona como posible sospechosa, pero todavía no había establecido su relación con el fuego ni la causa definitiva. La autoridad turística señaló que aún no podía determinarse qué partes del edificio podrían conservarse.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/internacional/2026-10-24/las-llamas-destruyen-el-nido-del-aguila-la-famosa-residencia-de-hitler-en-los-alpes.html",
+    "citations": [
+      {
+        "source": "Reuters",
+        "url": "https://www.reuters.com/world/europe/suspect-arrested-fire-engulfs-hitlers-eagles-nest-retreat-german-police-say-2026-10-24/"
+      },
+      {
+        "source": "Associated Press",
+        "url": "https://apnews.com/article/338ec9bbec52ecf52d1c127546d01eed"
+      },
+      {
+        "source": "Kehlsteinhaus (sitio oficial)",
+        "url": "https://www.kehlsteinhaus.de/english/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "62a9b05bbec9a2b7f4439ddd657438ba62a47db6a3d5cf36d65b5146906f325d",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-24T10:08:16.492Z",
+  "pc_launched_at": "2026-10-24T10:08:24.699Z",
+  "finished_at": "2026-10-24T10:08:24.699Z"
+}

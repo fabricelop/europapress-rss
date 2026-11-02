@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-e43c2bde235e-r1-a1-1792174101457",
+  "requested_at": "2026-10-16T18:08:21.417165Z",
+  "updated_at": "2026-10-16T18:11:16.222513Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "e43c2bde235e",
+  "event_id": "e43c2bde235e",
+  "target_name": "Al menos 31 detenidos tras los disturbios en las protestas universitarias de Buenos Aires",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Al menos 31 detenidos tras los disturbios en las protestas universitarias de Buenos Aires",
+    "revision": 1,
+    "factual_summary": "Al menos 31 personas fueron detenidas tras los disturbios ocurridos al final de la quinta Marcha Federal Universitaria en Buenos Aires. La protesta reclamaba el cumplimiento de la Ley de Financiamiento Universitario. Las fuerzas de seguridad emplearon gases lacrimógenos y camiones hidrantes; el Ministerio de Seguridad informó de ocho agentes heridos.",
+    "tweet_text": "Al menos 31 personas fueron detenidas tras disturbios al final de la Marcha Federal Universitaria en Buenos Aires, que exige cumplir la ley de financiación universitaria.\n\n#Argentina #Universidades\n🌶️ La ley llegó al campus con escolta antidisturbios.",
+    "remate": "🌶️ La ley llegó al campus con escolta antidisturbios.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nAl menos 31 personas fueron detenidas tras disturbios al final de la Marcha Federal Universitaria en Buenos Aires, que exige cumplir la ley de financiación universitaria.\n\n#Argentina #Universidades\n🌶️ La ley llegó al campus con escolta antidisturbios.\n\nREMATE EXACTO:\n🌶️ La ley llegó al campus con escolta antidisturbios.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nAl menos 31 personas fueron detenidas tras los disturbios ocurridos al final de la quinta Marcha Federal Universitaria en Buenos Aires. La protesta reclamaba el cumplimiento de la Ley de Financiamiento Universitario. Las fuerzas de seguridad emplearon gases lacrimógenos y camiones hidrantes; el Ministerio de Seguridad informó de ocho agentes heridos.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.rtve.es/noticias/20261016/argentina-buenos-aires-protestas-disturbios-detenidos/17269139.shtml",
+    "citations": [
+      {
+        "source": "RTVE",
+        "title": "Al menos 31 personas detenidas tras los disturbios en las protestas universitarias de Buenos Aires",
+        "url": "https://www.rtve.es/noticias/20261016/argentina-buenos-aires-protestas-disturbios-detenidos/17269139.shtml"
+      },
+      {
+        "source": "Europa Press",
+        "title": "Más de una treintena de personas detenidas en protestas universitarias en Buenos Aires",
+        "url": "https://www.europapress.es/internacional/noticia-mas-treintena-personas-detenidas-protestas-universitarias-buenos-aires-20261016042740.html"
+      },
+      {
+        "source": "EFE",
+        "title": "La policía reprime una masiva manifestación contra Milei en Buenos Aires",
+        "url": "https://efe.com/mundo/2026-10-15/protesta-milei-buenos-aires-policia/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "e830d05d2ceb57a7ffa7d1f72a7d108d97a092974a32de1d7ca53748fe97445d",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T18:09:45.086Z",
+  "pc_launched_at": "2026-10-16T18:10:05.724Z",
+  "finished_at": "2026-10-16T18:10:05.724Z"
+}

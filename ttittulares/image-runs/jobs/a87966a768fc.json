@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-a87966a768fc-r1-a1-1792321657158",
+  "requested_at": "2026-10-18T11:07:37.128774Z",
+  "updated_at": "2026-10-18T11:11:12.851356Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "a87966a768fc",
+  "event_id": "a87966a768fc",
+  "target_name": "Madre del joven asesinado por error en Málaga: \"Cómo hemos llegado a que asesinatos empiezan a estar a la orden del día\"",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Madre del joven asesinado por error en Málaga: \"Cómo hemos llegado a que asesinatos empiezan a estar a la orden del día\"",
+    "revision": 1,
+    "factual_summary": "Al cumplirse un mes del asesinato por error de Nacho, de 20 años, en Málaga, su madre ha reclamado justicia y más medios frente al crimen organizado. Tres hombres investigados por el homicidio permanecen en prisión provisional.",
+    "tweet_text": "Un mes después del asesinato por error de Nacho, de 20 años, en Málaga, su madre pide justicia y más medios contra el crimen organizado. Tres investigados siguen en prisión provisional.\n\n#Málaga #Nacho\n🌶️ La causa sigue abierta.",
+    "remate": "🌶️ La causa sigue abierta.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn mes después del asesinato por error de Nacho, de 20 años, en Málaga, su madre pide justicia y más medios contra el crimen organizado. Tres investigados siguen en prisión provisional.\n\n#Málaga #Nacho\n🌶️ La causa sigue abierta.\n\nREMATE EXACTO:\n🌶️ La causa sigue abierta.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nAl cumplirse un mes del asesinato por error de Nacho, de 20 años, en Málaga, su madre ha reclamado justicia y más medios frente al crimen organizado. Tres hombres investigados por el homicidio permanecen en prisión provisional.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-madre-joven-asesinado-error-malaga-hemos-llegado-asesinatos-empiezan-estar-orden-dia-20261018113047.html",
+    "citations": [
+      {
+        "source": "Telecinco Noticias",
+        "title": "Emotiva carta de la madre de Nacho, asesinado por error en Málaga",
+        "url": "https://www.telecinco.es/noticias/andalucia/20261018/carta-emotiva-madre-joven-asesinado-error-malaga_18_020465796.html"
+      },
+      {
+        "source": "Cadena SER",
+        "title": "La madre de Nacho, un mes después de su asesinato en Málaga: \"El odio no es el camino\"",
+        "url": "https://cadenaser.com/andalucia/2026/10/18/la-madre-de-nacho-un-mes-despues-de-su-asesinato-en-malaga-el-odio-no-es-el-camino-ser-malaga/"
+      },
+      {
+        "source": "Málaga Hoy",
+        "title": "Carta de la madre de Nacho, un mes de su crimen a tiros en Málaga: \"El odio no es el camino\"",
+        "url": "https://www.malagahoy.es/malaga/carta-madre-nacho-crimen-malaga_0_2008272202.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "d8cfb4c7a72084ef5750d4f5bc598922541677dd98f03f9603d4a8416572c0fc",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-18T11:09:30.076Z",
+  "pc_launched_at": "2026-10-18T11:09:39.972Z",
+  "finished_at": "2026-10-18T11:09:39.972Z"
+}
