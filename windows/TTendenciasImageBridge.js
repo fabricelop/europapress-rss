@@ -404,7 +404,7 @@ function buildMessage(job){
   // in ordinary project chats; the old @Sites route is not a reliable dependency.
   // This handoff is best effort. The independent existing Windows read-only
   // consumer remains the fallback when ImageGen ends a turn before upload.
-  const siteReturn=[
+  const legacySiteReturn=[
     "TTENDENCIAS_SITE_AUTO_RECEIPT_V5 — PASO POSTERIOR A IMAGEGEN. Este mensaje se ha lanzado automáticamente para el command_id "+commandId+". La imagen generada es un resultado INTERMEDIO. Completa la asociación y la sincronización sin pedir otro prompt ni repetir la generación.",
     "SITE EXISTENTE: https://ttactualidad-tendencias.rainyraven22.chatgpt.site/ . Utiliza el conector TTendencias · TTActualidad con las operaciones mcp__TTendencias___TTActualidad__inspect_top30_images, mcp__TTendencias___TTActualidad__attach_trend_image y mcp__TTendencias___TTActualidad__verify_trend_image. NO uses @Sites: no está disponible de forma fiable en estos chats. NO crees otro Site ni publiques otra URL.",
     "CONTEXTO EDITORIAL EXACTO PARA EL OBJETO context: "+JSON.stringify(siteContext)+". Este encargo tiene command_id="+commandId+". No asocies por nombre, tema, rango o fecha aproximada. Si hay una imagen previa de la misma identidad, la NUEVA generada tiene prioridad editorial para reemplazarla, siempre que el Site ofrezca sustitución autorizada y verificable. No cambies una imagen de otra identidad.",
@@ -415,6 +415,7 @@ function buildMessage(job){
     "5. Relee trends/site-ai-images.json desde main y confirma que conserva todos los datos anteriores y la nueva entrada idéntica al Site. Declara APP SYNC VERIFIED solo después de esta comprobación; si GitHub no está conectado, comunica APP SYNC PENDING sin deshacer la asociación del Site.",
     "6. Informa con precisión SITE verified/pending y APP verified/pending. No afirmes que el iPhone la mostró físicamente sin comprobarlo. Si ImageGen termina el turno antes de ejecutar las herramientas, no se ha producido una asociación: el consumidor independiente del PC podrá recuperar el raster original asociado a command_id cuando esté disponible. Nunca prometas que un prompt por sí solo ejecutó el retorno ni solicites un nuevo PNG."
   ].join("\n\n");
+  const siteReturn="APROBACIÓN MANUAL OBLIGATORIA: genera y conserva solo el original de este encargo. No asocies, subas ni publiques la imagen en APP o web. Espera una aprobación expresa posterior del editor.";
   const NO_PEPPER="REGLA VISUAL OBLIGATORIA: el emoji 🌶️ solo es un marcador del remate ESCRITO, nunca un elemento de la imagen. PROHIBIDO representar guindillas, chiles, pimientos picantes, iconos de guindilla, logotipos, mascotas o símbolos equivalentes, ni en fondo, objetos, carteles, ropa, decoraciones o firmas. Convierte exclusivamente el SIGNIFICADO del remate en un gag visual, nunca su emoji.";
   if(String(job.editorial_image_mode||ctx.editorial_image_mode||"")==="rigor"){
     return ["TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ChatGPT Images y genera UNA imagen periodística RIGUROSA y RESPETUOSA sobre '"+name+"'.",
@@ -939,6 +940,8 @@ async function confirmPromptLaunched(){
   throw Error("image_launch_ack_not_persisted "+last)
 }
 async function uploadImage(image){
+  throw Error("manual_approval_required");
+
   let result;
   for(let attempt=1;attempt<=3;attempt++){
     result=await post({task:"image_upload",target_id:targetId,command_id:commandId,upload_secret:secret,image_data_url:image.dataUrl,capture:{method:image.capture,width:image.width,height:image.height}});
@@ -955,6 +958,8 @@ async function uploadImage(image){
 // for the independent read-only publisher to receive the raster. Never request
 // another generation, navigate away, or touch the other project's fixed tab.
 async function holdForWebImageReceipt(handoff,cdp,job,maxMs=360000,pollMs=10000){
+  return "manual_approval_required";
+
   const deadline=Date.now()+maxMs;
   let siteReturnSentAt=0;
   while(Date.now()<deadline){
@@ -1009,6 +1014,8 @@ function siteReturnAfterImagePrompt(job){
   ].join("\n\n");
 }
 async function sendSiteReturnAfterImage(cdp,job){
+  return "manual_approval_required";
+
   if(!cdp)return "no_chat";
   const live=await fetchJob();
   if(String(live.command_id||"")!==commandId||
@@ -1127,3 +1134,4 @@ async function optionalWebHandoff(handoff,remember=false){
     try{cdp&&cdp.close()}catch{}
   }
 })();
+
