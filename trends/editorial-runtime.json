@@ -8,29 +8,26 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-02T20:21:00+01:00",
-  "updated_at": "2026-11-02T20:24:00+01:00",
+  "updated_at": "2026-11-02T20:26:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-b8b3c0ef673cc4c603ec",
-  "title": "Revisar novedades: Morales",
+  "trend_id": "red-review-83eb429a3983e4f3d3cb",
+  "title": "Revisar novedades: Adif",
   "queue_complete": false,
   "processed_ids": [
-    "red-review-b8b3c0ef673cc4c603ec"
-  ],
-  "remaining_ids": [
+    "red-review-b8b3c0ef673cc4c603ec",
     "red-review-83eb429a3983e4f3d3cb"
   ],
-  "remaining_active_ids": [
-    "red-review-83eb429a3983e4f3d3cb"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
     "closed": 0,
     "explained": 0,
-    "updates": 1,
+    "updates": 2,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
@@ -419,7 +416,7 @@
     "message": "Pasada tr-1793646243399-manual cerrada tras barrera final de main: editorial-queue=0, requests preparing/update=0 y rewrite_pending/reexplain=0. Convergieron 22 explicaciones ya persistidas por la recuperación concurrente; #LaFuerzaDeLaGente r0 quedó terminal deleted tras conciliación exacta. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
   },
   "source": "chat",
-  "message": "Morales: resultado de mantenimiento persistido como updated/distinct_episode; esperando aplicación y pasando a Adif.",
+  "message": "Adif: resultado de mantenimiento persistido como updated/continuity; revalidando aplicación y barrera final de main.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1912,6 +1909,14 @@
       "trend_id": "red-review-b8b3c0ef673cc4c603ec",
       "title": "Revisar novedades: Morales",
       "message": "Morales: resultado de mantenimiento persistido como updated/distinct_episode; esperando aplicación y pasando a Adif."
+    },
+    {
+      "at": "2026-11-02T20:26:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793647194927-manual",
+      "trend_id": "red-review-83eb429a3983e4f3d3cb",
+      "title": "Revisar novedades: Adif",
+      "message": "Adif: resultado de mantenimiento persistido como updated/continuity; revalidando aplicación y barrera final de main."
     }
   ],
   "history": [
