@@ -29,6 +29,8 @@ targets:
         CFBundleShortVersionString: "0.4.48"
         CFBundleVersion: "59"
         ITSAppUsesNonExemptEncryption: false
+        # Set only to the approved private HTTPS Worker endpoint in a controlled iOS build.
+        TTImageApprovalAPIBaseURL: ""
         NSSupportsLiveActivities: true
         UILaunchScreen: {}
         CFBundleURLTypes:
