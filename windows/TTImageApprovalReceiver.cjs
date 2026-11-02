@@ -34,12 +34,16 @@ async function once(base=__dirname){
  try{const old=JSON.parse(fs.readFileSync(lockPath,'utf8'));try{process.kill(old.pid,0);return}catch{fs.unlinkSync(lockPath)}}catch{}
  let lock;try{lock=fs.openSync(lockPath,'wx');fs.writeFileSync(lock,JSON.stringify({pid:process.pid,at:Date.now()}))}catch{return}
  try{
-  const tasks=fs.readdirSync(root).filter(x=>x.endsWith('.json')&&!x.endsWith('.tmp')).map(file=>{try{return JSON.parse(fs.readFileSync(path.join(root,file),'utf8'))}catch{return null}}).filter(x=>x&&x.secret_dpapi&&x.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(x.command_id)).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)).filter(task=>!fs.existsSync(path.join(receipts,task.command_id+'.json'))).slice(0,4);
+  const statusFile=path.join(receipts,'receiver-status.json');let progress={};try{progress=JSON.parse(fs.readFileSync(statusFile,'utf8'))}catch{}
+  function report(task,reason){progress[task.command_id]={checkedAt:Date.now(),reason};const tmp=statusFile+'.tmp';fs.writeFileSync(tmp,JSON.stringify(progress,null,2),{mode:0o600});fs.renameSync(tmp,statusFile);console.log('PRIVATE_INBOX '+task.command_id+' '+reason)}
+  const tasks=fs.readdirSync(root).filter(x=>x.endsWith('.json')&&!x.endsWith('.tmp')).map(file=>{try{return JSON.parse(fs.readFileSync(path.join(root,file),'utf8'))}catch{return null}}).filter(x=>x&&x.secret_dpapi&&x.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(x.command_id)).sort((a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at)).filter(task=>!fs.existsSync(path.join(receipts,task.command_id+'.json'))).slice(0,4);
+  console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
   for(const task of tasks){
    const receiptFile=path.join(receipts,task.command_id+'.json');if(fs.existsSync(receiptFile))continue;
    let cdp,browser,ownedTarget;
    try{
     const job=await source.readImageJob(task),meta=metadata(task,job);
+    if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
     let target;
     // Reuse an exact existing conversation first; never create tabs in the generator.
     for(const port of [9223,9234]){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&source.chatURL(p.url)&&((task.conversation_url&&source.chatURL(p.url)===source.chatURL(task.conversation_url))||p.id===task.browser_target_id));if(target)break}catch{}}
@@ -52,16 +56,16 @@ async function once(base=__dirname){
       for(let n=0;n<5;n++){const q=await fetch('http://127.0.0.1:9234/json/list',{signal:AbortSignal.timeout(3000)});target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);if(target)break;await new Promise(r=>setTimeout(r,500))}
      }catch{}
     }
-    if(!target)continue;cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
+    if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
     for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(raster?.ready||['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
-    if(!raster?.ready)continue;
-    if(!String(raster.dataUrl).startsWith('data:image/png;base64,'))continue;
+    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
+    if(!String(raster.dataUrl).startsWith('data:image/png;base64,')){report(task,'ORIGINAL_FORMAT_NOT_PNG');continue;}
     const bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
     const fresh=metadata(task,await source.readImageJob(task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
     const receipt=await send(meta,bytes,unprotect(task.secret_dpapi));
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
-    console.log('PRIVATE_INBOX_RECEIVED '+task.command_id+' '+receipt.state);
-   }catch{console.error('PRIVATE_INBOX_DEFERRED '+task.command_id)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
+    report(task,'RECEIVED_'+receipt.state);
+   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
