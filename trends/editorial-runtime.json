@@ -5,34 +5,36 @@
   "canonical": true,
   "run_id": "tr-1793648428381-manual",
   "previous_run_id": "tr-1793647194927-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T20:42:00+01:00",
-  "updated_at": "2026-11-02T20:46:21+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-02T20:47:00+01:00",
+  "finished_at": "2026-11-02T20:47:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "red-review-af039aacbc3fc75190c3",
-  "title": "Revisar novedades: Toledo",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-af039aacbc3fc75190c3",
+    "red-review-234cb2f959e0030c8deb",
     "9f3e1ea405dd"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 3,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -42,48 +44,53 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-b8b3c0ef673cc4c603ec",
+      "id": "red-review-af039aacbc3fc75190c3",
       "revision": 0,
-      "name": "Revisar novedades: Morales",
-      "outcome": "updated",
-      "distinct_episode": true,
-      "created_id": "trend-update-d606653875b7f1242c0e",
-      "applied": true
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "applied": true,
+      "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
     },
     {
-      "id": "red-review-83eb429a3983e4f3d3cb",
+      "id": "red-review-234cb2f959e0030c8deb",
       "revision": 0,
-      "name": "Revisar novedades: Adif",
-      "outcome": "updated",
-      "distinct_episode": false,
-      "created_id": "trend-update-fb211c7d76abc8d6ed38",
+      "name": "Revisar novedades: #EnBocaDeTodos",
+      "outcome": "stale",
+      "applied": true,
+      "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
+    },
+    {
+      "id": "9f3e1ea405dd",
+      "revision": 0,
+      "name": "Morata",
+      "outcome": "explained",
       "applied": true
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T20:46:20+01:00",
-  "last_completed_at": "2026-11-02T20:46:21+01:00",
+  "last_started_at": "2026-11-02T20:42:00+01:00",
+  "last_completed_at": "2026-11-02T20:47:00+01:00",
   "last_run": {
-    "run_id": "tr-1793647194927-manual",
-    "command_id": "tr-1793647194927-manual",
+    "run_id": "tr-1793648428381-manual",
+    "command_id": "tr-1793648428381-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-02T20:21:00+01:00",
-    "finished_at": "2026-11-02T20:28:00+01:00",
+    "started_at": "2026-11-02T20:42:00+01:00",
+    "finished_at": "2026-11-02T20:47:00+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 2,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 1,
+      "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 2,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -93,30 +100,35 @@
     },
     "outcomes": [
       {
-        "id": "red-review-b8b3c0ef673cc4c603ec",
+        "id": "red-review-af039aacbc3fc75190c3",
         "revision": 0,
-        "name": "Revisar novedades: Morales",
-        "outcome": "updated",
-        "distinct_episode": true,
-        "created_id": "trend-update-d606653875b7f1242c0e",
-        "applied": true
+        "name": "Revisar novedades: Toledo",
+        "outcome": "stale",
+        "applied": true,
+        "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
       },
       {
-        "id": "red-review-83eb429a3983e4f3d3cb",
+        "id": "red-review-234cb2f959e0030c8deb",
         "revision": 0,
-        "name": "Revisar novedades: Adif",
-        "outcome": "updated",
-        "distinct_episode": false,
-        "created_id": "trend-update-fb211c7d76abc8d6ed38",
+        "name": "Revisar novedades: #EnBocaDeTodos",
+        "outcome": "stale",
+        "applied": true,
+        "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
+      },
+      {
+        "id": "9f3e1ea405dd",
+        "revision": 0,
+        "name": "Morata",
+        "outcome": "explained",
         "applied": true
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada cerrada 2/2: Morales updated por episodio distinto y Adif updated por continuidad material. Barrera final de main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 3/3: Toledo y #EnBocaDeTodos quedaron stale por salir del Top 30 antes de la revisión JIT; Morata quedó explicado y persistido. Barrera final de main: editorial-queue=0 y sin reexplicaciones activas en la cola autoritativa. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793648428381-manual: 3 trabajos preparing vigentes en main (Toledo, #EnBocaDeTodos y Morata), en orden por requested_at. Revalidación JIT por id+revision; sin ImageGen ni publicación.",
+  "message": "Pasada cerrada 3/3: Toledo y #EnBocaDeTodos quedaron stale por salir del Top 30 antes de la revisión JIT; Morata quedó explicado y persistido. Barrera final de main: editorial-queue=0 y sin reexplicaciones activas en la cola autoritativa. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1656,6 +1668,44 @@
       "trend_id": "red-review-af039aacbc3fc75190c3",
       "title": "Revisar novedades: Toledo",
       "message": "Inicio tr-1793648428381-manual: 3 trabajos preparing vigentes en main (Toledo, #EnBocaDeTodos y Morata), en orden por requested_at. Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-02T20:44:34+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793648428381-manual",
+      "trend_id": "red-review-af039aacbc3fc75190c3",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisión cerrada stale por barrera JIT: Toledo ya no estaba en el Top 30 fresco; no se reescribió la ficha."
+    },
+    {
+      "at": "2026-11-02T20:44:34+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793648428381-manual",
+      "trend_id": "red-review-234cb2f959e0030c8deb",
+      "title": "Revisar novedades: #EnBocaDeTodos",
+      "message": "Revisión cerrada stale por barrera JIT: #EnBocaDeTodos ya no estaba en el Top 30 fresco; no se reescribió la ficha."
+    },
+    {
+      "at": "2026-11-02T20:45:16+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793648428381-manual",
+      "trend_id": "9f3e1ea405dd",
+      "title": "Morata",
+      "message": "Texto verificado de Morata persistido en outbox editorial; sin ImageGen."
+    },
+    {
+      "at": "2026-11-02T20:46:21+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793648428381-manual",
+      "trend_id": "9f3e1ea405dd",
+      "title": "Morata",
+      "message": "Aplicación confirmada: Morata r0 está explained en requests y telegram-manual-explained; cola autoritativa=0."
+    },
+    {
+      "at": "2026-11-02T20:47:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793648428381-manual",
+      "message": "Pasada cerrada 3/3: Toledo y #EnBocaDeTodos quedaron stale por salir del Top 30 antes de la revisión JIT; Morata quedó explicado y persistido. Barrera final de main: editorial-queue=0 y sin reexplicaciones activas en la cola autoritativa. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
