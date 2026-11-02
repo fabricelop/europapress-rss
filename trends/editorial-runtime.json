@@ -5,42 +5,43 @@
   "canonical": true,
   "run_id": "tr-1793599231716-manual",
   "previous_run_id": "tr-1793584563848-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T07:00:00+01:00",
-  "updated_at": "2026-11-02T07:12:00+01:00",
-  "finished_at": null,
-  "current": 6,
+  "updated_at": "2026-11-02T07:13:00+01:00",
+  "finished_at": "2026-11-02T07:13:00+01:00",
+  "current": 7,
   "total": 7,
-  "trend_id": "red-review-cd0e4631a1e15682c33d",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
+    "a90056474d8d",
+    "da0b535b0cd9",
+    "6d122a2106a9",
+    "7ec28bdd90bc",
     "8b882d17d961"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [
-    "red-review-3344126e127e5f6a9343",
-    "red-review-cd0e4631a1e15682c33d"
-  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 5,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 4,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -1924,6 +1925,22 @@
       "trend_id": "red-review-cd0e4631a1e15682c33d",
       "title": "Revisar novedades: Toledo",
       "message": "Persistiendo resultado updated en maintenance-outbox tras revalidación JIT de id+revision."
+    },
+    {
+      "at": "2026-11-02T07:13:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: editorial-queue=0; 5 explicaciones ordinarias verificadas en requests+telegram-manual-explained mediante commits aplicadores; 2 revisiones de novedades cerradas como stale por protección JIT; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-02T07:13:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada 7/7. Texto explicado 5; revisiones stale 2; ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "final_outcomes": [
@@ -1948,53 +1965,65 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T07:07:50+01:00",
-  "last_completed_at": "2026-11-02T07:07:50+01:00",
+  "last_completed_at": "2026-11-02T07:13:00+01:00",
   "last_run": {
-    "run_id": "tr-1793584563848-manual",
+    "run_id": "tr-1793599231716-manual",
     "status": "DONE",
-    "started_at": "2026-11-02T02:56:00+01:00",
-    "finished_at": "2026-11-02T03:05:00+01:00",
-    "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 1,
-      "grouping_requests": 0,
-      "groups_created": 0,
-      "covered_by_existing": 0,
-      "unchanged_reviews": 0,
-      "stale_reviews": 1,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 2
-    },
+    "started_at": "2026-11-02T07:00:00+01:00",
+    "finished_at": "2026-11-02T07:13:00+01:00",
+    "attempted": 7,
+    "closed": 7,
+    "explained": 5,
+    "stale_reviews": 2,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "queue_remaining": 0,
     "outcomes": [
       {
-        "id": "red-review-d06b28ee8d8eda53ca65",
+        "id": "a90056474d8d",
         "revision": 0,
-        "name": "Revisar novedades: #ElChiringuitoenCuatro",
-        "outcome": "updated",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "created_id": "trend-update-602a83c51acb91914f59"
+        "name": "#elsecreto",
+        "outcome": "explained"
       },
       {
-        "id": "red-review-202ab61a30d7c964755e",
+        "id": "da0b535b0cd9",
+        "revision": 0,
+        "name": "Kimi Antonelli",
+        "outcome": "explained"
+      },
+      {
+        "id": "6d122a2106a9",
+        "revision": 0,
+        "name": "Ivana",
+        "outcome": "explained"
+      },
+      {
+        "id": "7ec28bdd90bc",
+        "revision": 0,
+        "name": "#MexicoGP",
+        "outcome": "explained"
+      },
+      {
+        "id": "8b882d17d961",
+        "revision": 0,
+        "name": "Berenguer",
+        "outcome": "explained"
+      },
+      {
+        "id": "red-review-3344126e127e5f6a9343",
         "revision": 0,
         "name": "Revisar novedades: Chiqui",
         "outcome": "stale",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "reason": "El aplicador invalidó el snapshot al converger con el estado vigente; no se creó una actualización obsoleta."
+        "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
+      },
+      {
+        "id": "red-review-cd0e4631a1e15682c33d",
+        "revision": 0,
+        "name": "Revisar novedades: Toledo",
+        "outcome": "stale",
+        "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
       }
-    ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada concurrente cerrada 2/2 por convergencia JIT: #ElChiringuitoenCuatro updated con nueva ficha; Chiqui quedó stale al invalidarse su snapshot. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    ]
   },
   "source": "chat",
   "message": "Pasada concurrente cerrada 2/2 por convergencia JIT: #ElChiringuitoenCuatro updated con nueva ficha; Chiqui quedó stale al invalidarse su snapshot. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
@@ -4372,22 +4401,48 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-d06b28ee8d8eda53ca65",
+      "id": "a90056474d8d",
       "revision": 0,
-      "name": "Revisar novedades: #ElChiringuitoenCuatro",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "created_id": "trend-update-602a83c51acb91914f59"
+      "name": "#elsecreto",
+      "outcome": "explained"
     },
     {
-      "id": "red-review-202ab61a30d7c964755e",
+      "id": "da0b535b0cd9",
+      "revision": 0,
+      "name": "Kimi Antonelli",
+      "outcome": "explained"
+    },
+    {
+      "id": "6d122a2106a9",
+      "revision": 0,
+      "name": "Ivana",
+      "outcome": "explained"
+    },
+    {
+      "id": "7ec28bdd90bc",
+      "revision": 0,
+      "name": "#MexicoGP",
+      "outcome": "explained"
+    },
+    {
+      "id": "8b882d17d961",
+      "revision": 0,
+      "name": "Berenguer",
+      "outcome": "explained"
+    },
+    {
+      "id": "red-review-3344126e127e5f6a9343",
       "revision": 0,
       "name": "Revisar novedades: Chiqui",
       "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "El aplicador invalidó el snapshot al converger con el estado vigente; no se creó una actualización obsoleta."
+      "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
+    },
+    {
+      "id": "red-review-cd0e4631a1e15682c33d",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
     }
   ],
   "current_item": null,
