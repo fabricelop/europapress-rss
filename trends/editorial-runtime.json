@@ -5,85 +5,129 @@
   "canonical": true,
   "run_id": "tr-1793620099556-manual",
   "previous_run_id": "tr-1793611644017-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T12:48:00+01:00",
-  "updated_at": "2026-11-02T12:56:14+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-02T12:56:39+01:00",
+  "finished_at": "2026-11-02T12:56:39+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "232ca96063fe",
-  "title": "Pepe Mel",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "232ca96063fe",
-    "5eda99cdb848"
+    "3d2fe92648f7",
+    "b768658f71c9",
+    "da50b7b74074",
+    "bb4e12d9fa04",
+    "5eda99cdb848",
+    "232ca96063fe"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 6,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-18041079a0266bec70ff",
+      "id": "3d2fe92648f7",
       "revision": 0,
-      "name": "Revisar novedades: Día de Todos",
-      "outcome": "unchanged",
+      "name": "La Palma",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit"
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "b768658f71c9",
+      "revision": 0,
+      "name": "Iván",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "da50b7b74074",
+      "revision": 0,
+      "name": "Adif y Renfe",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "bb4e12d9fa04",
+      "revision": 0,
+      "name": "Peinado",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "5eda99cdb848",
+      "revision": 0,
+      "name": "Iván Redondo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "232ca96063fe",
+      "revision": 0,
+      "name": "Pepe Mel",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T12:56:13+01:00",
-  "last_completed_at": "2026-11-02T12:56:14+01:00",
+  "last_completed_at": "2026-11-02T12:56:39+01:00",
   "last_run": {
-    "run_id": "tr-1793611644017-manual",
+    "run_id": "tr-1793620099556-manual",
     "status": "DONE",
-    "started_at": "2026-11-02T10:27:00+01:00",
-    "finished_at": "2026-11-02T10:30:30+01:00",
+    "started_at": "2026-11-02T12:48:00+01:00",
+    "finished_at": "2026-11-02T12:56:39+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 6,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 1,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1793611644017-manual cerrada 1/1 por convergencia JIT: Día de Todos quedó unchanged con texto y fecha originales conservados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 6/6: seis explicaciones ordinarias aplicadas y sincronizadas entre requests y telegram-manual-explained. Barrera previa: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Investigando Pepe Mel r0: ictus, operación con éxito en Sevilla e ingreso en UCI verificados por varias fuentes actuales; cierre factual sin remate.",
+  "message": "Pasada cerrada 6/6: seis explicaciones ordinarias aplicadas y sincronizadas entre requests y telegram-manual-explained. Barrera previa: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1423,6 +1467,18 @@
       "trend_id": "232ca96063fe",
       "title": "Pepe Mel",
       "message": "Investigando Pepe Mel r0: ictus, operación con éxito en Sevilla e ingreso en UCI verificados por varias fuentes actuales; cierre factual sin remate."
+    },
+    {
+      "at": "2026-11-02T12:56:39+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793620099556-manual",
+      "message": "Verificación: 6/6 fichas coinciden entre requests y telegram-manual-explained; editorial-queue=0; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-02T12:56:39+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793620099556-manual",
+      "message": "TTendencias cerrada 6/6. ImageGen=0; publicaciones=0; incidencias=0."
     }
   ],
   "history": [
