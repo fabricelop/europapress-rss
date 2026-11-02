@@ -40,25 +40,10 @@ async function run({existing=true,matching=true,replaced=false}={}){
  const result=await module.exports.consume(task);
  return {result,methods,uploads};
 }
-test('without relay or an existing exact conversation, waits without creating/navigating any generator tab',async()=>{
- const {result,methods,uploads}=await run({existing:false});
- assert.equal(result.reason,'awaiting_relay_or_existing_conversation');assert.deepEqual(methods,[]);assert.equal(uploads.length,0);
-});
-test('existing generator conversation is inspected read-only and its original raster is uploaded with exact identity',async()=>{
- const {result,methods,uploads}=await run();
- assert.equal(result.reason,'upload_accepted_awaiting_main_confirmation');
- assert.deepEqual(methods,['Runtime.evaluate']);assert.equal(uploads.length,1);
- assert.equal(uploads[0].task,'web_image_upload');assert.equal(uploads[0].command_id,COMMAND);assert.equal(uploads[0].context_explanation_sha256,hash);
-});
-test('a reused generator tab with a different command never uploads or navigates',async()=>{
- const {result,methods,uploads}=await run({matching:false});
- assert.equal(result.reason,'command_not_in_conversation');assert.deepEqual(methods,['Runtime.evaluate']);assert.equal(uploads.length,0);
-});
-test('after producer replaces its pinned target, delivery finds only that owned replacement and proves the exact command before upload',async()=>{
- const {result,methods,uploads}=await run({replaced:true});
- assert.equal(result.reason,'upload_accepted_awaiting_main_confirmation');
- assert.deepEqual(methods,['Runtime.evaluate','Runtime.evaluate']);assert.equal(uploads.length,1);
- assert.equal(uploads[0].command_id,COMMAND);
- const wrong=await run({replaced:true,matching:false});
- assert.equal(wrong.result.reason,'awaiting_command_conversation:last_user_command_differs');assert.equal(wrong.uploads.length,0);
+test('unapproved originals never inspect, navigate or upload, with or without an existing conversation',async()=>{
+ for(const input of [{existing:false},{},{matching:false},{replaced:true},{replaced:true,matching:false}]){
+  const {result,methods,uploads}=await run(input);
+  assert.equal(result.status,'waiting');assert.equal(result.reason,'manual_approval_required');
+  assert.deepEqual(methods,[]);assert.equal(uploads.length,0);
+ }
 });
