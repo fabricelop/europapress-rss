@@ -3,31 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793650762871-manual",
-  "previous_run_id": "tr-autoguard-1793650268",
+  "run_id": "tr-1793651013499-manual",
+  "previous_run_id": "tr-1793650762871-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-02T21:20:30+01:00",
-  "updated_at": "2026-11-02T21:20:30+01:00",
+  "started_at": "2026-11-02T21:24:00+01:00",
+  "updated_at": "2026-11-02T21:24:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 2,
-  "trend_id": "red-review-f894d38a06b32c1267a9",
-  "title": "Revisar novedades: Pepe Mel",
+  "total": 1,
+  "trend_id": "red-review-0b5f468fc7c7ca43d8b1",
+  "title": "Revisar novedades: Endesa",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "red-review-f894d38a06b32c1267a9",
     "red-review-0b5f468fc7c7ca43d8b1"
   ],
   "remaining_active_ids": [
-    "red-review-f894d38a06b32c1267a9",
     "red-review-0b5f468fc7c7ca43d8b1"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
+    "attempted": 1,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -36,7 +34,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -146,7 +144,7 @@
     "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada en curso: 2 revisiones de novedades detectadas en main. Procesando con validación JIT id+revision; sin ImageGen ni publicación.",
+  "message": "Pasada en curso: 1 revisión de novedades vigente en main (Endesa). Validación JIT id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1772,6 +1770,14 @@
       "trend_id": "red-review-f894d38a06b32c1267a9",
       "title": "Revisar novedades: Pepe Mel",
       "message": "Cola autoritativa releída: 2 review_red preparando. Inicio por Pepe Mel; validación JIT antes de investigar y persistir."
+    },
+    {
+      "at": "2026-11-02T21:24:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793651013499-manual",
+      "trend_id": "red-review-0b5f468fc7c7ca43d8b1",
+      "title": "Revisar novedades: Endesa",
+      "message": "Inicio tr-1793651013499-manual: tras relectura de main queda 1 review_red preparing vigente (Endesa R0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
     }
   ],
   "history": [
