@@ -8,25 +8,27 @@
   "status": "PROCESSING",
   "phase": "persisting",
   "started_at": "2026-11-02T09:21:30+01:00",
-  "updated_at": "2026-11-02T09:27:00+01:00",
+  "updated_at": "2026-11-02T09:31:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 4,
-  "trend_id": "0c6cf8f9deed",
-  "title": "Fieles Difuntos",
+  "current": 1,
+  "total": 5,
+  "trend_id": "501ee9a82cfe",
+  "title": "#FelizLunes",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "585534718a18"
+  ],
   "remaining_ids": [
-    "585534718a18",
     "a6d459a1c556",
     "c90fa0e26588",
-    "0c6cf8f9deed"
+    "0c6cf8f9deed",
+    "501ee9a82cfe"
   ],
   "remaining_active_ids": [
-    "585534718a18",
     "a6d459a1c556",
     "c90fa0e26588",
-    "0c6cf8f9deed"
+    "0c6cf8f9deed",
+    "501ee9a82cfe"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
@@ -2174,6 +2176,46 @@
       "trend_id": "0c6cf8f9deed",
       "title": "Fieles Difuntos",
       "message": "Preparando salida textual para requests + Listas."
+    },
+    {
+      "at": "2026-11-02T09:31:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793607643",
+      "trend_id": "585534718a18",
+      "title": "#FielesDifuntos",
+      "message": "Convergencia confirmada en main: la revisión 0 ya salió de editorial-queue."
+    },
+    {
+      "at": "2026-11-02T09:31:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793607643",
+      "trend_id": "501ee9a82cfe",
+      "title": "#FelizLunes",
+      "message": "Reelaboración desde cero: ranking español actual y publicaciones de esta mañana confirman el uso predominante de #FelizLunes como saludo para iniciar el lunes 2 de noviembre."
+    },
+    {
+      "at": "2026-11-02T09:31:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793607643",
+      "trend_id": "501ee9a82cfe",
+      "title": "#FelizLunes",
+      "message": "Texto nuevo centrado en saludos y mensajes de primera hora; no reutiliza la explicación previa."
+    },
+    {
+      "at": "2026-11-02T09:31:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793607643",
+      "trend_id": "501ee9a82cfe",
+      "title": "#FelizLunes",
+      "message": "Remate nuevo y específico sobre el inicio del lunes."
+    },
+    {
+      "at": "2026-11-02T09:31:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793607643",
+      "trend_id": "501ee9a82cfe",
+      "title": "#FelizLunes",
+      "message": "Salida textual enviada al aplicador con id/revisión exactos; la petición visual queda fuera de esta pasada."
     }
   ],
   "final_outcomes": [
@@ -2225,7 +2267,7 @@
     "message": "Pasada cerrada 0/0 tras relectura final de main; cola y reexplicaciones en 0."
   },
   "source": "chat",
-  "message": "Persistiendo 4/4: Fieles Difuntos r0.",
+  "message": "1/5 ya aplicado; #FelizLunes r0 investigado y enviado. Los otros tres trabajos originales siguen convergiendo.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -4644,8 +4686,8 @@
       "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
     }
   ],
-  "current_item": "0c6cf8f9deed",
-  "current_title": "Fieles Difuntos",
+  "current_item": "501ee9a82cfe",
+  "current_title": "#FelizLunes",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
