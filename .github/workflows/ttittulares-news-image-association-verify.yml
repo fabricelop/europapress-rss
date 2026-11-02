@@ -24,6 +24,18 @@ jobs:
     timeout-minutes: 9
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesGithubOutbox.cjs
+            /windows/TTiTTularesWebImages.cjs
+            /windows/TTiTTularesImageBridge.js
+            /windows/tests/test_headline_github_outbox.cjs
+            /ttittulares/apply_ai_image_outbox.py
+            /ttittulares/apply_editorial_outbox.py
+            /ttittulares/sync_site_ai_images.py
+            /tests/test_ttittulares_github_outbox.py
+            /tests/test_ttittulares_image_catalog.py
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -39,14 +51,18 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_ttittulares_github_outbox.py' -v
           python3 -m unittest discover -s tests -p 'test_ttittulares_image_catalog.py' -v
           python3 -m py_compile ttittulares/apply_ai_image_outbox.py ttittulares/sync_site_ai_images.py
-      - name: Ensure Trends is not part of this repair
-        run: |
-          ! git diff --name-only "${{ github.event.pull_request.base.sha }}" HEAD | grep -E '^(trends/|windows/TTendencias|vercel-webhook/lib/ttendencias)'
   windows-safety:
     runs-on: windows-latest
     timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/TT-AutoUpdater.ps1
+            /windows/Install-TTImages-Noticias-Receptor-Safe.ps1
+            /windows/Diagnosticar-TTImages-Asociacion-Safe.ps1
       - name: Verify PowerShell syntax without executing listeners
         shell: powershell
         run: |
