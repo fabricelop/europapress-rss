@@ -335,7 +335,6 @@ async function consume(task){
          if(candidate!==cdp)candidate.close();
        }
        if(!cdp)return {status:'waiting',reason:'exact_generator_conversation_missing'};
-     if(!cdp)return {status:'waiting',reason:'export_tab_not_ready'};
      for(let n=0;n<35;n++){
        await sleep(1200);raster=await cdp.evaluate(rasterProbe(task.command_id));
        if(raster?.ready||['capture_requires_sign_in','later_user_turn'].includes(raster?.reason))break;
