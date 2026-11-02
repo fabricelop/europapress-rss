@@ -6,11 +6,11 @@
   "run_id": "tr-autoguard-1793583771",
   "previous_run_id": "tr-1793566374532-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-02T02:43:30+01:00",
-  "updated_at": "2026-11-02T02:43:30+01:00",
+  "updated_at": "2026-11-02T03:01:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 33,
   "total": 33,
   "trend_id": null,
   "title": null,
@@ -1619,6 +1619,14 @@
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada autoguard real: 33 revisiones preparing vigentes en main, ordenadas por requested_at. Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-02T03:01:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793583771",
+      "trend_id": null,
+      "title": null,
+      "message": "33/33 revisiones investigadas, redactadas y revalidadas JIT; outboxes textuales integrados en main en un único merge. Aplicador editorial pendiente de convertirlos a requests + Listas. ImageGen=0."
     }
   ],
   "final_outcomes": [
