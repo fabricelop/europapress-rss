@@ -26,6 +26,10 @@ async function send(meta,bytes,secret,fetcher=fetch){
  if(!r.ok||!['pending','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(receipt.id))throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
  return {...receipt,rasterSHA256:meta.rasterSHA256};
 }
+function selectTarget(pages,task,chatURL){
+ const expected=chatURL(task.conversation_url);
+ return pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&chatURL(p.url)&&(expected?chatURL(p.url)===expected:p.id===task.browser_target_id));
+}
 async function once(base=__dirname){
  if(process.platform!=='win32')throw Error('WINDOWS_REQUIRED');
  const dependency=path.join(base,'TTendenciasWebImages.cjs');if(!fs.readFileSync(dependency,'utf8').includes("return {status:'waiting',reason:'manual_approval_required'}"))throw Error('INSTALL_ASSOCIATION_PAUSE_FIRST');
@@ -44,9 +48,10 @@ async function once(base=__dirname){
    try{
     const job=await source.readImageJob(task),meta=metadata(task,job);
     if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
+    if(!source.chatURL(task.conversation_url)){const found=await source.discoverConversation(task.command_id,task.browser_target_id,true);if(found?.url)task.conversation_url=found.url;}
     let target;
     // Reuse an exact existing conversation first; never create tabs in the generator.
-    for(const port of [9223,9234]){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&source.chatURL(p.url)&&((task.conversation_url&&source.chatURL(p.url)===source.chatURL(task.conversation_url))||p.id===task.browser_target_id));if(target)break}catch{}}
+    for(const port of [9223,9234]){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=selectTarget(pages,task,source.chatURL);if(target)break}catch{}}
     if(!target&&source.chatURL(task.conversation_url)){
      // Recover a known closed conversation only in the separate relay profile.
      // Nothing is typed or submitted; this temporary tab belongs to this receiver.
@@ -57,7 +62,7 @@ async function once(base=__dirname){
      }catch{}
     }
     if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
-    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(raster?.ready||['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
+    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(raster?.ready||['later_user_turn','capture_requires_sign_in','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
     if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
     if(!String(raster.dataUrl).startsWith('data:image/png;base64,')){report(task,'ORIGINAL_FORMAT_NOT_PNG');continue;}
     const bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
@@ -69,5 +74,5 @@ async function once(base=__dirname){
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
-module.exports={metadata,episode,send,once,ENDPOINT};
+module.exports={metadata,episode,send,once,ENDPOINT,selectTarget};
 if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
