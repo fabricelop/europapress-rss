@@ -109,14 +109,34 @@ def known_run(project):
     runtime_file=CONFIG[project].get("runtime")
     if runtime_file:
         doc=load(runtime_file,{})
-        r=doc.get("last_run") or {}
-        date=moment(r.get("updated_at") or doc.get("updated_at"))
+        last=doc.get("last_run") or {}
+        current_id=str(doc.get("run_id") or "")
+        current_status=str(doc.get("status") or "")
+        last_id=str(last.get("run_id") or "")
+        # The runtime has TWO distinct concepts:
+        #   doc.* = the CURRENT execution, possibly RUNNING
+        #   doc.last_run = the previous completed execution
+        # Never put the previous DONE status onto doc.updated_at from a new
+        # RUNNING execution. That incorrectly acknowledged the new run as DONE
+        # and allowed duplicate watchdog dispatches while an editor was active.
+        current_is_distinct=bool(current_id and current_status and (
+            current_id!=last_id or not last_id))
+        if current_is_distinct:
+            r={"run_id":current_id,"status":current_status,
+               "started_at":doc.get("started_at"),
+               "updated_at":doc.get("updated_at"),
+               "finished_at":doc.get("finished_at") if current_status.upper() not in
+                   {"RUNNING","IN_PROGRESS","PROCESSING"} else None}
+        else:
+            r=last if last else doc
+        date=moment(r.get("updated_at") or r.get("finished_at") or
+                    (doc.get("updated_at") if r is doc else None))
         if date and (not moment(trace.get("updated_at")) or date>moment(trace.get("updated_at"))):
-            trace={"id":r.get("run_id") or doc.get("run_id"),
-                   "status":r.get("status") or doc.get("status"),
+            trace={"id":r.get("run_id"),
+                   "status":r.get("status"),
                    "started_at":r.get("started_at"),
                    "updated_at":date.isoformat(),
-                   "finished_at":r.get("finished_at") or doc.get("last_completed_at"),
+                   "finished_at":r.get("finished_at"),
                    "source":"editorial_runtime"}
     return trace
 
@@ -331,6 +351,34 @@ def selftest():
             active=evaluate("ttittulares",now,{},run={"status":"RUNNING",
                     "updated_at":now.isoformat()},command=commands["ttittulares"])
             assert active["status"]=="editor_running_acknowledged",active
+            # Fresh RUNNING must not inherit DONE from last_run in runtime.
+            # Reproduces TTendencias 02-Nov: 6 pending, previous DONE, new 0/6.
+            old_trace_fetch=globals()["latest_trace"]
+            try:
+                globals()["latest_trace"]=lambda p:{}
+                current_time=now.isoformat()
+                save("trends/editorial-runtime.json",{
+                    "run_id":"tr-current-6","status":"RUNNING",
+                    "started_at":current_time,"updated_at":current_time,
+                    "current":0,"total":6,
+                    "last_run":{"run_id":"tr-previous","status":"DONE",
+                                "finished_at":(now-timedelta(hours=2)).isoformat()}})
+                known=known_run("ttendencias")
+                assert known["id"]=="tr-current-6",known
+                assert known["status"]=="RUNNING",known
+                assert known["finished_at"] is None,known
+                assert known["source"]=="editorial_runtime",known
+                # A recognized in-flight execution must NOT trigger a second
+                # command even though its previous run was already DONE.
+                save("trends/editorial-queue.json",{"items":[{
+                    "id":"trend-6","name":"La Palma","status":"preparing",
+                    "requested_at":(now-timedelta(hours=2)).isoformat()}]})
+                status=evaluate("ttendencias",now,{},run=known,
+                                command=commands["ttendencias"])
+                assert status["status"]=="editor_running_acknowledged",status
+                assert not status["should_dispatch"],status
+            finally:
+                globals()["latest_trace"]=old_trace_fetch
             done=evaluate("ttittulares",now,{},run={"status":"DONE",
                     "finished_at":(now-timedelta(minutes=2)).isoformat()},command=commands["ttittulares"])
             assert done["status"]=="editorial_run_finished_delivery_unverified",done
