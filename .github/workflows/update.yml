@@ -93,6 +93,9 @@ jobs:
           exit 1
 
       - name: Despertar editor de pendientes TTendencias persistidas
+        # A control-channel outage must not stop RSS/news/radar persistence.
+        # The durable watchdog retains the recovery responsibility.
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 trends/ensure_pc_editorial.py
