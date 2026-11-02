@@ -5,19 +5,29 @@
   "canonical": true,
   "run_id": "tr-1793656762873-manual",
   "previous_run_id": "tr-1793656604711-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-02T22:59:22.873+01:00",
-  "updated_at": "2026-11-02T22:05:45.514Z",
+  "updated_at": "2026-11-02T23:05:54+01:00",
   "finished_at": null,
   "current": 2,
   "total": 5,
   "trend_id": "9dc1b6003e39",
   "title": "Auba",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "processed_ids": [
+    "00db0e3844a0",
+    "9dc1b6003e39",
+    "a157f21d8369"
+  ],
+  "remaining_ids": [
+    "b5c96ee7e280",
+    "80bdd4d8965a"
+  ],
+  "remaining_active_ids": [
+    "b5c96ee7e280",
+    "80bdd4d8965a"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "incident_count": 0,
@@ -47,7 +57,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T22:58:00+01:00",
+  "last_started_at": "2026-11-02T23:05:54+01:00",
   "last_completed_at": "2026-11-02T23:02:00+01:00",
   "last_run": {
     "run_id": "tr-1793656604711-manual",
