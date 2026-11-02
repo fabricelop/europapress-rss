@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T21:28:20.524429+00:00",
+  "updated_at": "2026-11-02T21:29:20.013200+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -203380,7 +203380,18 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-11-02T16:18:40.395879+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-02T21:29:20.013200+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Hay una novedad material posterior a la explicación original: el CD Tenerife comunicó que Jesús de Miguel permanece ingresado en la UCI, estable dentro de la gravedad.",
+      "red_review_sources": [
+        {
+          "url": "https://www.europapress.es/deportes/futbol-00162/noticia-jesus-miguel-ingresa-uci-estable-dentro-gravedad-20261102183059.html"
+        },
+        {
+          "url": "https://as.com/futbol/segunda/suspendido-el-tenerife-andorra-por-un-terrible-golpe-a-jesus-de-miguel-f202611-n/"
+        }
+      ]
     },
     {
       "id": "c1f986a9e525",
@@ -206520,7 +206531,7 @@
       "revision": 0,
       "name": "Revisar novedades: Jesús de Miguel",
       "rank": 2,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T21:25:06.965351+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -206548,7 +206559,11 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
-      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos"
+      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos",
+      "review_created_id": "trend-update-0e36ea7cace17e7fa060",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-02T21:29:20.013200+00:00",
+      "review_reason": "Hay una novedad material posterior a la explicación original: el CD Tenerife comunicó que Jesús de Miguel permanece ingresado en la UCI, estable dentro de la gravedad."
     },
     {
       "id": "red-review-d3ccc8ceb69df56d74dd",
@@ -206586,6 +206601,39 @@
       "review_outcome": "unchanged",
       "completed_at": "2026-11-02T21:28:20.524429+00:00",
       "review_reason": "No hay una novedad material posterior a la explicación original: el desmantelamiento de la MINURSO y las reacciones de Rabat y del Polisario siguen siendo consecuencias del mismo bloqueo que impidió renovar el mandato."
+    },
+    {
+      "id": "trend-update-0e36ea7cace17e7fa060",
+      "revision": 0,
+      "name": "Jesús de Miguel",
+      "rank": 2,
+      "status": "explained",
+      "requested_at": "2026-11-02T21:29:20.013200+00:00",
+      "explained_at": "2026-11-02T21:29:20.013200+00:00",
+      "updated_at": "2026-11-02T21:29:20.013200+00:00",
+      "explanation": "TT#2 Jesús de Miguel sigue siendo tendencia por su evolución tras el choque con Owono en el Tenerife-Andorra: el delantero permanece ingresado en la UCI, estable dentro de la gravedad.\n#CDTenerife #FCAndorra",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://www.europapress.es/deportes/futbol-00162/noticia-jesus-miguel-ingresa-uci-estable-dentro-gravedad-20261102183059.html"
+        },
+        {
+          "url": "https://as.com/futbol/segunda/suspendido-el-tenerife-andorra-por-un-terrible-golpe-a-jesus-de-miguel-f202611-n/"
+        }
+      ],
+      "originated_from_prior_id": "b88d2954e28e",
+      "trend_names": [
+        "Jesús de Miguel"
+      ],
+      "red_review_job_id": "red-review-0db3208fce64ce117764",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Tras el traslado al hospital, el CD Tenerife informó de que Jesús de Miguel está ingresado en la UCI del Hospital Universitario Nuestra Señora de Candelaria, estable dentro de la gravedad.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 841
