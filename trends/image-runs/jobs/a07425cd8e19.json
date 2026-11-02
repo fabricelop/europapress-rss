@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-a07425cd8e19-r0-a1-1791467851920",
+  "requested_at": "2026-10-08T13:57:31.919429Z",
+  "updated_at": "2026-10-08T14:26:13.112Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "a07425cd8e19",
+  "trend_id": "a07425cd8e19",
+  "target_name": "Bergerot",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Bergerot",
+    "revision": 0,
+    "explanation": "TT#10 Bergerot es tendencia porque Manuela Bergerot dijo que «en las calles de Madrid no va a haber paz» tras la muerte de Maricarmen; Ayuso preguntó si era una amenaza.",
+    "closer_text": "",
+    "trend_names": [
+      "Bergerot"
+    ],
+    "group_title": "Bergerot",
+    "rank_at_explanation": 10,
+    "explained_at": "2026-10-08T15:55:00.000+02:00",
+    "verification_sources": [
+      "https://elpais.com/espana/madrid/2026-10-08/un-luto-discutido-en-la-asamblea-de-madrid-por-la-muerte-de-maricarmen.html",
+      "https://www.huffingtonpost.es/politica/isabel-diaz-ayuso-sesion-control-asamblea-mas-madrid-psoe-maricarmen-rio-ella-vida-f202610.html"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "6ea149a66759bbe07ae0351cd325e83dd2b4ec81083003b2a937671727ecd5c2",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-08T14:24:33.077Z",
+  "pc_launched_at": "2026-10-08T14:24:45.526Z",
+  "upload_received_at": "2026-10-08T14:26:04.336Z",
+  "upload_sha256": "b2797a7d4fe54147a2d8691cb74bcaf25d5550ae70f6ec8f83608271d2df2046",
+  "upload_bytes": 2497930,
+  "finished_at": "2026-10-08T14:26:13.112Z"
+}
