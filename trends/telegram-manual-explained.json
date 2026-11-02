@@ -44030,14 +44030,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/Naser-Burita.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/mundo/marruecos-consejo-seguridad-onu-sahara-oportunidad/",
+        "alt": "Imagen de archivo relacionada con Rabat",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/Naser-Burita.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/mundo/marruecos-consejo-seguridad-onu-sahara-oportunidad/",
+        "alt": "Imagen de archivo relacionada con Rabat",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "fed9af79780a",
@@ -44103,6 +44118,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-02T16:02:42.331769+00:00",
+  "updated_at": "2026-11-02T16:03:31.340817Z",
   "count": 726
 }
