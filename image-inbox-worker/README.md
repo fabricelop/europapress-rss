@@ -25,3 +25,47 @@ API:
 `node image-inbox-worker/tools/send-original.mjs --image ORIGINAL.png --metadata FICHA.json`
 
 La captura de Images y la comprobación de episodio siguen pendientes; este comando no las sustituye. No ejecutar con datos inventados ni cambiar los consumidores mientras no se hayan validado los procesos activos.
+
+## Revalidación editorial y entrega privada al publicador (extensión de seguridad)
+
+**No hay publicación automática.** El servicio solo recibe, lista, decide y permite recuperar
+privadamente el PNG que haya sido aprobado. No modifica las fichas, los catálogos ni Sites.
+
+La huella `episodeFingerprint` se calcula exclusivamente como
+`SHA256(UTF8(JSON.stringify({project, editorialId, revision, editorialText})))`.
+El importador calcula la huella y el SHA-256 del PNG a partir de los bytes reales.
+No se admite una huella declarada que no coincida. `editorialText` debe coincidir
+exactamente con el texto canónico vigente de la noticia (`tweet.text` en
+`ttittulares/prepared.json`) o tendencia (`explanation` en `trends/prepared.json`),
+incluidos saltos de línea, hashtags y remate.
+
+Antes de **Aprobar** el servicio lee el documento preparado desde la API GitHub
+(ref `main`, sin caché), con el OAuth ya autorizado del editor. Comprueba ID,
+revisión, unicidad y texto completo. Si hay cambio, desaparición, documento
+ambiguo, falta de red o error de lectura, **no aprueba**. **Rechazar** no requiere
+que GitHub esté accesible, porque solo retira la tarjeta y conserva el PNG.
+
+El publicador futuro debe usar un secreto independiente `PUBLISH_TOKEN` (>=32
+caracteres) almacenado como *Worker Secret*, y el servicio requiere además
+`GITHUB_SOURCE_READ_TOKEN` (GitHub con lectura de Contents, almacenado SOLO como
+Worker Secret) para revalidar antes de entregar bytes:
+
+- `GET /v1/publications`: `X-TT-Publish-Key`, relación privada de imágenes
+  `approved_awaiting_publication`; no incluye URL pública ni contenido binario.
+- `GET /v1/publications/{id}/original`: misma cabecera; solo imágenes aprobadas.
+  Relee GitHub `main` **otra vez**, compara el texto/revisión/identidad, recupera
+  el raster de R2, verifica SHA-256 y devuelve el PNG original privado y la
+  cabecera `X-Original-SHA256`. Si el episodio cambió o el original no coincide,
+  devuelve un error y no entrega nada.
+
+Es un **traspaso privado**, no una señal de publicación exitosa: aún falta un
+publicador integrado que efectúe la vinculación en APP y Sites, consulte ambos
+catálogos con identidades exactas y registre recibos auténticos de cada destino.
+Una comprobación final del texto/revisión debe realizarse inmediatamente antes
+de la escritura pública (el contenido puede cambiar después del traspaso).
+No marcar `published` sin verificar ambos destinos. No usar `PUBLISH_TOKEN`
+para ingestión ni para iniciar sesión en la APP. Los secretos no se incluyen en
+el repositorio ni se colocan en `wrangler.jsonc`.
+
+Hasta que haya recursos R2/D1 reales, secretos, endpoint HTTPS, receptor del PC,
+publicador de Sites y nueva IPA configurada: **bandeja no operativa**.
