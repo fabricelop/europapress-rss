@@ -3,37 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793647194927-manual",
-  "previous_run_id": "tr-1793646243399-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T20:21:00+01:00",
-  "updated_at": "2026-11-02T20:28:00+01:00",
-  "finished_at": "2026-11-02T20:28:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-b8b3c0ef673cc4c603ec",
-    "red-review-83eb429a3983e4f3d3cb"
+  "run_id": "tr-1793648428381-manual",
+  "previous_run_id": "tr-1793647194927-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T20:42:00+01:00",
+  "updated_at": "2026-11-02T20:42:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
+  "trend_id": "red-review-af039aacbc3fc75190c3",
+  "title": "Revisar novedades: Toledo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-af039aacbc3fc75190c3",
+    "red-review-234cb2f959e0030c8deb",
+    "9f3e1ea405dd"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-af039aacbc3fc75190c3",
+    "red-review-234cb2f959e0030c8deb",
+    "9f3e1ea405dd"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 3,
+    "closed": 0,
     "explained": 0,
-    "updates": 2,
+    "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -43,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-b8b3c0ef673cc4c603ec",
@@ -117,7 +122,7 @@
     "message": "Pasada cerrada 2/2: Morales updated por episodio distinto y Adif updated por continuidad material. Barrera final de main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2: Morales updated por episodio distinto y Adif updated por continuidad material. Barrera final de main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793648428381-manual: 3 trabajos preparing vigentes en main (Toledo, #EnBocaDeTodos y Morata), en orden por requested_at. Revalidación JIT por id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1649,6 +1654,14 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 2/2: Morales updated por episodio distinto y Adif updated por continuidad material. Barrera final de main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T20:42:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793648428381-manual",
+      "trend_id": "red-review-af039aacbc3fc75190c3",
+      "title": "Revisar novedades: Toledo",
+      "message": "Inicio tr-1793648428381-manual: 3 trabajos preparing vigentes en main (Toledo, #EnBocaDeTodos y Morata), en orden por requested_at. Revalidación JIT por id+revision; sin ImageGen ni publicación."
     }
   ],
   "history": [
