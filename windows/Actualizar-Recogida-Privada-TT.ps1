@@ -1,11 +1,11 @@
 #requires -Version 5.1
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='ced56017a03551d3055b34f5deb39de216124a15'
+$pin='43dde6e55674207876ca4485dee3eba7a201f6a3'
 $files=@{
  'TTendenciasImageBridge.js'='bce8c33c58fcf300cd2e8f2f48febf792a155ed930455afaa3809b8e34079ce6'
  'TTiTTularesImageBridge.js'='9cdcb6fce51bd7d89af4a1d0415fbaf5ff62c430838680a10c31d45be4b6670e'
- 'TTImageApprovalReceiver.cjs'='03b178e4a6b83a95faa6efcc525ac3673768fbd022f7280d2995ef72560940a4'
+ 'TTImageApprovalReceiver.cjs'='f82ae3f70006f5bc1d1c0ae1b8a2c9b85a18c62b476bb6d76e0a8fdb39b810fa'
 }
 function Assert-Idle {
  $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js'})
@@ -15,7 +15,7 @@ Assert-Idle
 $allowed=@{
  'TTendenciasImageBridge.js'=@('416069b713104821be1a76c53f3cf332f647ff83331aa293c993ef21f84a3283','bce8c33c58fcf300cd2e8f2f48febf792a155ed930455afaa3809b8e34079ce6')
  'TTiTTularesImageBridge.js'=@('f5c2c3918184e10b4f9854191bed53bb4abf6fde76d69c1266067fdd27540851','9cdcb6fce51bd7d89af4a1d0415fbaf5ff62c430838680a10c31d45be4b6670e')
- 'TTImageApprovalReceiver.cjs'=@('1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58','af14c45846e3d41298522146326f25e9f1ff43061649df3688568f3793cb2083','fdcfe30087edae8ac68db35e201e2058d22cf0371e07adfe3a7697730145df38','03b178e4a6b83a95faa6efcc525ac3673768fbd022f7280d2995ef72560940a4')
+ 'TTImageApprovalReceiver.cjs'=@('1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58','af14c45846e3d41298522146326f25e9f1ff43061649df3688568f3793cb2083','fdcfe30087edae8ac68db35e201e2058d22cf0371e07adfe3a7697730145df38','f82ae3f70006f5bc1d1c0ae1b8a2c9b85a18c62b476bb6d76e0a8fdb39b810fa','03b178e4a6b83a95faa6efcc525ac3673768fbd022f7280d2995ef72560940a4')
 }
 foreach($name in $files.Keys){
  $local=Join-Path $base $name
