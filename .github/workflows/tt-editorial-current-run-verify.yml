@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "shared/tt_editorial_run_guard.py"
+      - "tests/test_editorial_trigger_conflict.py"
       - ".github/workflows/tt-editorial-current-run-verify.yml"
   workflow_dispatch:
 permissions:
@@ -17,3 +18,4 @@ jobs:
         run: |
           python3 -m py_compile shared/tt_editorial_run_guard.py
           python3 shared/tt_editorial_run_guard.py selftest
+          python3 -m unittest discover -s tests -p test_editorial_trigger_conflict.py -v
