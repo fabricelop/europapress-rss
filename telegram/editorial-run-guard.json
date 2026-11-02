@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "checked_at": "2026-11-01T22:27:42.418359+00:00",
+  "checked_at": "2026-11-02T01:42:51.037850+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-01T22:27:42.418359+00:00",
+      "checked_at": "2026-11-02T01:42:51.037850+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tt-chat-20261101T220000000Z",
+        "id": "tt-chat-20261102T013000Z",
         "status": "DONE",
-        "started_at": "2026-11-01T22:00:00Z",
-        "updated_at": "2026-11-01T22:01:00+00:00",
-        "finished_at": "2026-11-01T22:01:00Z",
+        "started_at": "2026-11-02T01:33:04.531Z",
+        "updated_at": "2026-11-02T01:39:37.978000+00:00",
+        "finished_at": "2026-11-02T01:39:37.978Z",
         "source": "github_pr_trace"
       },
       "control_command": "tt-chat-20261101T220000000Z",
@@ -25,11 +25,291 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-01T22:27:42.418359+00:00",
-      "status": "guard_error",
-      "error": "GITHUB_HTTP_409 {\"message\":\"is at ab3bf06722fa8b629cbf8ae601fc8f0ae977cdae but expected c3d806361e5751925fa403e4a23529accf9382f0\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"status\":",
-      "pending_count": 13,
-      "should_dispatch": false
+      "checked_at": "2026-11-02T01:42:51.037850+00:00",
+      "pending_count": 32,
+      "pending_ids": [
+        "852bc9d693d2",
+        "d3cbe44e3ca8",
+        "9d6bff465407",
+        "3b39f6eccb69",
+        "0710cf37c7ab",
+        "885aa8b6c362",
+        "f8d77adad927",
+        "072724b6a35d",
+        "cc9091b36b3b",
+        "ff5aa449aa6e",
+        "8fa1231fe82e",
+        "f03247d1c40e",
+        "0eb183243950",
+        "1781e388eb4e",
+        "5e2ead308a72",
+        "639897ea9580",
+        "8c5ab4afd440",
+        "b8187c2f1a64",
+        "5d7dacc3da71",
+        "cf4e86826ff9",
+        "80441a0a28dc",
+        "cf46c29b551e",
+        "93e9356f8e94",
+        "5b77bb84e984",
+        "e0d70f83158c",
+        "0a13d9520697",
+        "19649a7e10aa",
+        "68b1fa61df02",
+        "c625ca574188",
+        "6076da3c6742",
+        "3d6977e14685",
+        "33861c127e0a"
+      ],
+      "oldest_at": "2026-11-01T22:10:57+01:00",
+      "latest_run": {
+        "id": "tr-1793566180882-manual",
+        "status": "DONE",
+        "started_at": "2026-11-01T21:50:00+01:00",
+        "updated_at": "2026-11-01T20:59:00+00:00",
+        "finished_at": "2026-11-01T21:55:00+01:00",
+        "source": "editorial_runtime"
+      },
+      "control_command": "tr-1793566374532-manual",
+      "last_command_at": "2026-11-01T20:52:54.532Z",
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
+      "item_execution": [
+        {
+          "id": "852bc9d693d2",
+          "entered_at": "2026-11-01T22:10:57+01:00",
+          "should_start_by": "2026-11-01T21:15:57+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "d3cbe44e3ca8",
+          "entered_at": "2026-11-01T22:10:57+01:00",
+          "should_start_by": "2026-11-01T21:15:57+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "9d6bff465407",
+          "entered_at": "2026-11-01T22:10:57+01:00",
+          "should_start_by": "2026-11-01T21:15:57+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "3b39f6eccb69",
+          "entered_at": "2026-11-01T22:10:57+01:00",
+          "should_start_by": "2026-11-01T21:15:57+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "0710cf37c7ab",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "885aa8b6c362",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "f8d77adad927",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "072724b6a35d",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "cc9091b36b3b",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "ff5aa449aa6e",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "8fa1231fe82e",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "f03247d1c40e",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "0eb183243950",
+          "entered_at": "2026-11-01T22:44:03+01:00",
+          "should_start_by": "2026-11-01T21:49:03+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "1781e388eb4e",
+          "entered_at": "2026-11-01T23:41:04+01:00",
+          "should_start_by": "2026-11-01T22:46:04+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "5e2ead308a72",
+          "entered_at": "2026-11-01T23:41:04+01:00",
+          "should_start_by": "2026-11-01T22:46:04+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "639897ea9580",
+          "entered_at": "2026-11-01T23:41:04+01:00",
+          "should_start_by": "2026-11-01T22:46:04+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "8c5ab4afd440",
+          "entered_at": "2026-11-01T23:41:04+01:00",
+          "should_start_by": "2026-11-01T22:46:04+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "b8187c2f1a64",
+          "entered_at": "2026-11-01T23:41:04+01:00",
+          "should_start_by": "2026-11-01T22:46:04+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "5d7dacc3da71",
+          "entered_at": "2026-11-01T23:41:04+01:00",
+          "should_start_by": "2026-11-01T22:46:04+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "cf4e86826ff9",
+          "entered_at": "2026-11-02T00:01:22+01:00",
+          "should_start_by": "2026-11-01T23:06:22+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "80441a0a28dc",
+          "entered_at": "2026-11-02T00:11:01+01:00",
+          "should_start_by": "2026-11-01T23:16:01+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "cf46c29b551e",
+          "entered_at": "2026-11-02T00:31:12+01:00",
+          "should_start_by": "2026-11-01T23:36:12+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "93e9356f8e94",
+          "entered_at": "2026-11-02T00:31:12+01:00",
+          "should_start_by": "2026-11-01T23:36:12+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "5b77bb84e984",
+          "entered_at": "2026-11-02T00:31:12+01:00",
+          "should_start_by": "2026-11-01T23:36:12+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "e0d70f83158c",
+          "entered_at": "2026-11-02T00:31:12+01:00",
+          "should_start_by": "2026-11-01T23:36:12+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "0a13d9520697",
+          "entered_at": "2026-11-02T00:31:12+01:00",
+          "should_start_by": "2026-11-01T23:36:12+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "19649a7e10aa",
+          "entered_at": "2026-11-02T00:41:00+01:00",
+          "should_start_by": "2026-11-01T23:46:00+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "68b1fa61df02",
+          "entered_at": "2026-11-02T00:41:00+01:00",
+          "should_start_by": "2026-11-01T23:46:00+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "c625ca574188",
+          "entered_at": "2026-11-02T00:41:00+01:00",
+          "should_start_by": "2026-11-01T23:46:00+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "6076da3c6742",
+          "entered_at": "2026-11-02T00:41:00+01:00",
+          "should_start_by": "2026-11-01T23:46:00+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "3d6977e14685",
+          "entered_at": "2026-11-02T00:41:00+01:00",
+          "should_start_by": "2026-11-01T23:46:00+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "33861c127e0a",
+          "entered_at": "2026-11-02T02:40:58+01:00",
+          "should_start_by": "2026-11-02T01:45:58+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "48bed556eb577926",
+      "expected_start_by": "2026-11-01T21:15:57+00:00",
+      "attempts": 1,
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1793583771",
+        "requested_at": "2026-11-02T01:42:51.037850Z"
+      },
+      "last_request_at": "2026-11-02T01:42:51.037850+00:00",
+      "last_requested_command_id": "tr-autoguard-1793583771"
     }
   },
   "policy": {
