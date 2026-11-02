@@ -1,7 +1,7 @@
 #requires -Version 5.1
 <#
- Instalador manual seguro del receptor de Noticias y su helper GitHub.
- Sin -Apply: SOLO LECTURA. Con -Apply: descarga/valida los dos modulos,
+ Instalador manual seguro del receptor de Noticias, helper GitHub y bridge.
+ Sin -Apply: SOLO LECTURA. Con -Apply: descarga/valida los tres modulos,
  copia versiones previas y sustituye archivos. Nunca inicia generacion,
  Chrome, listeners, Telegram, X, Instagram ni ningun Worker.
  Para version de pruebas usar -Ref fix/ttimages-original-association-v1.
@@ -16,7 +16,8 @@ $ErrorActionPreference='Stop'
 $root='C:\TTiTTulares'
 $files=@(
   @{ Name='TTiTTularesGithubOutbox.cjs'; Checks=@('function buildReceipt(task,row,raster)','async function pushReceipt(task,row,raster') },
-  @{ Name='TTiTTularesWebImages.cjs'; Checks=@('function rasterProbe(command)','function cacheRaster(task,raster','TTiTTularesGithubOutbox.cjs','module.exports=') }
+  @{ Name='TTiTTularesWebImages.cjs'; Checks=@('function rasterProbe(command)','function cacheRaster(task,raster','TTiTTularesGithubOutbox.cjs','module.exports=') },
+  @{ Name='TTiTTularesImageBridge.js'; Checks=@('holdForHeadlineOriginalReceipt','optionalWebHandoff','BRIDGE LAUNCH ONLY CONFIRMED') }
 )
 function Sha256Bytes([byte[]]$bytes){
   $sha=[Security.Cryptography.SHA256]::Create()
@@ -26,7 +27,7 @@ function Sha256Bytes([byte[]]$bytes){
 function Report([string]$status,[string]$detail=''){
   Write-Host ('TTIMAGE_NEWS_STAGE '+$status+' '+$detail)
 }
-Report 'START' $(if($Apply){'APPLY_TWO_MODULES_ONLY'}else{'READ_ONLY'})
+Report 'START' $(if($Apply){'APPLY_THREE_MODULES_ONLY'}else{'READ_ONLY'})
 Report 'ROOT' $(if(Test-Path -LiteralPath $root){'PRESENT'}else{'MISSING'})
 foreach($entry in $files){
   $dest=Join-Path $root ([string]$entry.Name)
@@ -43,7 +44,7 @@ if(-not $node){throw 'Node.js no encontrado: instalacion cancelada'}
 $staged=@()
 $installed=@()
 try{
-  # Descargar y validar AMBOS antes de sustituir ningun archivo.
+  # Descargar y validar los TRES antes de sustituir ningun archivo.
   foreach($entry in $files){
     $name=[string]$entry.Name
     $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$Ref+'/windows/'+$name
@@ -91,5 +92,5 @@ try{
     Remove-Item -LiteralPath $item.Temp -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath ($item.Dest+'.stage-new.cjs') -Force -ErrorAction SilentlyContinue
   }
-  Report 'END' 'MODULES_ONLY'
+  Report 'END' 'THREE_MODULES_ONLY'
 }
