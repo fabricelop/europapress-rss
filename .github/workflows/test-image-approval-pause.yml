@@ -20,3 +20,14 @@ jobs:
           node --check windows/TTendenciasWebImages.cjs
           node --check windows/TTiTTularesWebImages.cjs
           node --test windows/tests/test-manual-image-approval-pause.cjs
+
+  windows-installer:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate installer without executing it
+        shell: powershell
+        run: |
+          $tokens=$null; $errors=$null
+          [Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD 'windows/Pausar-Asociacion-Automatica-TT.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count){$errors | Format-List; exit 1}
