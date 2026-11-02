@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T15:58:11.742569+00:00",
+  "updated_at": "2026-11-02T16:01:48.878831+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -203442,7 +203442,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 22,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T15:58:11.742569+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -203466,7 +203466,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-02T16:01:48.878831+00:00",
+      "review_reason": "La revalidación JIT detecta que Toledo ya no figura en el Top 30 fresco de recent.json; por contrato no se revisa por debajo del Top 30 y el aplicador debe cerrarla como stale."
     },
     {
       "id": "red-review-edd34ae844e5e60c2835",
