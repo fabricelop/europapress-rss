@@ -3,28 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793607643",
-  "previous_run_id": "tr-1793601909530-manual",
+  "run_id": "tr-1793607889040-manual",
+  "previous_run_id": "tr-autoguard-1793607643",
   "status": "PROCESSING",
-  "phase": "persisting",
-  "started_at": "2026-11-02T09:21:30+01:00",
-  "updated_at": "2026-11-02T09:31:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-02T09:32:30+01:00",
+  "updated_at": "2026-11-02T09:32:30+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 0,
   "total": 5,
-  "trend_id": "501ee9a82cfe",
-  "title": "#FelizLunes",
+  "trend_id": "585534718a18",
+  "title": "#FielesDifuntos",
   "queue_complete": false,
-  "processed_ids": [
-    "585534718a18"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
+    "585534718a18",
     "a6d459a1c556",
     "c90fa0e26588",
     "0c6cf8f9deed",
     "501ee9a82cfe"
   ],
   "remaining_active_ids": [
+    "585534718a18",
     "a6d459a1c556",
     "c90fa0e26588",
     "0c6cf8f9deed",
@@ -2216,6 +2216,14 @@
       "trend_id": "501ee9a82cfe",
       "title": "#FelizLunes",
       "message": "Salida textual enviada al aplicador con id/revisión exactos; la petición visual queda fuera de esta pasada."
+    },
+    {
+      "at": "2026-11-02T09:32:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793607889040-manual",
+      "trend_id": "585534718a18",
+      "title": "#FielesDifuntos",
+      "message": "Inicio manual: 5 trabajos activos observados; validación JIT antes de cada resultado. Se absorberá convergencia concurrente válida sin duplicar. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -2267,7 +2275,7 @@
     "message": "Pasada cerrada 0/0 tras relectura final de main; cola y reexplicaciones en 0."
   },
   "source": "chat",
-  "message": "1/5 ya aplicado; #FelizLunes r0 investigado y enviado. Los otros tres trabajos originales siguen convergiendo.",
+  "message": "Inicio manual: 5 trabajos activos observados; validación JIT antes de cada resultado. Se absorberá convergencia concurrente válida sin duplicar. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -4686,8 +4694,8 @@
       "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
     }
   ],
-  "current_item": "501ee9a82cfe",
-  "current_title": "#FelizLunes",
+  "current_item": "585534718a18",
+  "current_title": "#FielesDifuntos",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -5741,6 +5749,6 @@
       "message": "Pasada concurrente cerrada 2/2 por convergencia JIT: #ElChiringuitoenCuatro updated con nueva ficha; Chiqui quedó stale al invalidarse su snapshot. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-autoguard-1793607643",
+  "command_id": "tr-1793607889040-manual",
   "requested_at": "2026-11-01T21:53:00+01:00"
 }
