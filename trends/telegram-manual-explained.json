@@ -45677,14 +45677,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://statics-maker.llt-services.com/vll/images/2024/06/11/large/9cecccd8-ebff-4b21-ad7c-aca2d4f6165e-89.png",
+        "source": "www.realvalladolid.es",
+        "source_url": "https://www.realvalladolid.es/partidos/temporada-2026-2027-laliga-hypermotion-12-real-valladolid-cf-vs-cd-leganes-3431",
+        "alt": "Imagen de archivo relacionada con Pucela",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://statics-maker.llt-services.com/vll/images/2024/06/11/large/9cecccd8-ebff-4b21-ad7c-aca2d4f6165e-89.png",
+        "source": "www.realvalladolid.es",
+        "source_url": "https://www.realvalladolid.es/partidos/temporada-2026-2027-laliga-hypermotion-12-real-valladolid-cf-vs-cd-leganes-3431",
+        "alt": "Imagen de archivo relacionada con Pucela",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "6b9031df0583",
@@ -45939,6 +45954,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-02T20:28:33.488114Z",
+  "updated_at": "2026-11-02T20:32:25.734800Z",
   "count": 758
 }
