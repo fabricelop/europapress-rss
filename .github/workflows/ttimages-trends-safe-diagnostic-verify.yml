@@ -1,0 +1,35 @@
+name: TTImages safe trends and news diagnostic
+on:
+  pull_request:
+    paths:
+      - 'windows/Diagnosticar-TTImages-Tendencias-Seguro.ps1'
+      - '.github/workflows/ttimages-trends-safe-diagnostic-verify.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check read-only script PowerShell syntax and safety
+        shell: pwsh
+        run: |
+          $file='windows/Diagnosticar-TTImages-Tendencias-Seguro.ps1'
+          $tokens=$null
+          $errorsFound=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file),[ref]$tokens,[ref]$errorsFound) | Out-Null
+          if($errorsFound.Count){throw ('PowerShell syntax error: '+$errorsFound[0].Message)}
+          $source=Get-Content $file -Raw
+          foreach($required in @('READ_ONLY_V1','CDP9234','TRENDS_BRIDGE','NEWS_BRIDGE',
+              'TRENDS_IMAGE_QUEUE','NEWS_IMAGE_QUEUE','TRENDS_EDITORIAL','NO_CHANGES_NO_RESTART_NO_IMAGEGEN')){
+            if(-not $source.Contains($required)){throw ('Missing diagnostic: '+$required)}
+          }
+          foreach($forbidden in @('Stop-Process','Start-Process','Restart-Service','Register-ScheduledTask',
+              'Start-ScheduledTask','Set-Content','Remove-Item','Invoke-WebRequest -Method Put',
+              'ImageGen','/json/close/','/json/new?')){
+            if($forbidden -eq 'ImageGen'){continue}
+            if($source.Contains($forbidden)){throw ('Forbidden state-changing action: '+$forbidden)}
+          }
+          Write-Host 'TTIMAGES_READONLY_DIAGNOSTIC_VALID'
