@@ -40,10 +40,8 @@ for(const path of ['pilot/ttactualidad-live/index.html','docs/ttactualidad/index
  assert(!html.includes("'https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial"),path+' no old links');
  assert(html.includes("Copiar GAG + asociar IA"));
  assert(html.includes("Asociar JPEG/PNG"));
- const prompt=vm.runInContext('imageWorkflowPrompt',vm.createContext({
-  itemData:x=>({title:x.title}),
-  String,Number,JSON,Array
- }))({
+ runtime.itemData=x=>({title:x.title});
+ const prompt=vm.runInContext('imageWorkflowPrompt',runtime)({
   _kind:'tti',_status:'LISTA',event_id:'news123456',
   revision:1,prepared_at:'2026-11-02T08:06:00Z',
   title:'Noticia',tweet:{text:'Hechos verificables'}
