@@ -251,8 +251,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.47"' in project
-assert 'CURRENT_PROJECT_VERSION: "58"' in project
+assert 'MARKETING_VERSION: "0.4.48"' in project
+assert 'CURRENT_PROJECT_VERSION: "59"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
