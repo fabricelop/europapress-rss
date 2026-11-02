@@ -3,38 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793652373470-manual",
-  "previous_run_id": "tr-autoguard-1793652102",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T21:46:00+01:00",
-  "updated_at": "2026-11-02T20:55:59.674Z",
-  "finished_at": "2026-11-02T20:55:59.674Z",
-  "current": 3,
+  "run_id": "tr-autoguard-1793653885",
+  "previous_run_id": "tr-1793652373470-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T22:11:30+01:00",
+  "updated_at": "2026-11-02T22:11:30+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-40001ebb08d71fb3aec4",
-    "red-review-d97c62b7575f6ec9b3db",
-    "13ab80a5ba95"
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "b73c43b052f7",
+    "86e7500184a2",
+    "26734863a6f4"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "b73c43b052f7",
+    "86e7500184a2",
+    "26734863a6f4"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 3,
-    "explained": 1,
-    "updates": 2,
+    "closed": 0,
+    "explained": 0,
+    "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -44,19 +48,10 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-0b5f468fc7c7ca43d8b1",
-      "revision": 0,
-      "name": "Revisar novedades: Endesa",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T21:46:00+01:00",
+  "last_started_at": "2026-11-02T22:11:30+01:00",
   "last_completed_at": "2026-11-02T20:55:59.674Z",
   "last_run": {
     "run_id": "tr-1793652373470-manual",
@@ -117,7 +112,7 @@
     "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793653885: 3 trabajos preparing vigentes (Yeremay, Tenerife y Budimir, R0). Revalidación JIT antes de cada item; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1784,6 +1779,12 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T22:11:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793653885",
+      "message": "Inicio tr-autoguard-1793653885: 3 trabajos preparing vigentes (Yeremay, Tenerife y Budimir, R0). Revalidación JIT antes de cada item; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -4736,7 +4737,7 @@
       "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual."
     }
   ],
-  "command_id": "tr-1793652373470-manual",
+  "command_id": "tr-autoguard-1793653885",
   "requested_at": "2026-11-02T21:20:30+01:00",
   "runs": [
     {
