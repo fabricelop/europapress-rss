@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-02T19:09:16.090121+00:00",
+  "checked_at": "2026-11-02T19:16:59.024424+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.1,
-      "run_id": 41506767461,
+      "age_minutes": 3.0,
+      "run_id": 41507995632,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,28 +77,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 1,
-      "overdue_count": 1,
-      "oldest_age_minutes": 138.1,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "c8490403e466",
-          "name": "#LaFuerzaDeLaGente",
-          "status": "preparing",
-          "age_minutes": 138.1
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "c8490403e466"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -109,10 +100,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 284 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 138.1 min"
+    "cola con 284 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 284 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 138.1 min"
+  "last_alert_signature": "cola con 284 estado(s) inválido(s)"
 }
