@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T01:55:58.950564+00:00",
+  "updated_at": "2026-11-02T01:59:16.619329+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -200960,7 +200960,7 @@
       "revision": 0,
       "name": "Revisar novedades: #ElChiringuitoenCuatro",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T01:55:58.950564+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -200983,14 +200983,18 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-602a83c51acb91914f59",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-02T01:59:16.619329+00:00",
+      "review_reason": "Es un episodio posterior y distinto al especial Champions del 22 de octubre: el 1 de noviembre el programa emitió su edición dominical en Cuatro y centró el debate en la jornada de LaLiga, incluido Racing-Real Madrid y la polémica Aramburu-Nico Williams del derbi vasco."
     },
     {
       "id": "red-review-202ab61a30d7c964755e",
       "revision": 0,
       "name": "Revisar novedades: Chiqui",
       "rank": 5,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T01:55:58.950564+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -201013,7 +201017,43 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-02T01:59:16.619329+00:00",
+      "review_reason": "Es un episodio posterior y distinto a la gala 7 y a la repesca: el 1 de noviembre Chiqui volvió a ser protagonista en Conexión Honduras 8 por un gesto durante los posicionamientos que provocó la decepción de Asraf."
+    },
+    {
+      "id": "trend-update-602a83c51acb91914f59",
+      "revision": 0,
+      "name": "#ElChiringuitoenCuatro",
+      "rank": 11,
+      "status": "explained",
+      "requested_at": "2026-11-02T01:59:16.619329+00:00",
+      "explained_at": "2026-11-02T01:59:16.619329+00:00",
+      "updated_at": "2026-11-02T01:59:16.619329+00:00",
+      "explanation": "TT#11 #ElChiringuitoenCuatro es tendencia por la emisión dominical de Cuatro, centrada en el Racing-Real Madrid y la polémica Aramburu-Nico Williams del derbi vasco.\n#ElChiringuito #LaLiga\n🌶️ La mesa se quedó con todo el tiempo añadido de la jornada.",
+      "closer_text": "🌶️ La mesa se quedó con todo el tiempo añadido de la jornada.",
+      "verification_sources": [
+        {
+          "url": "https://www.mediasetinfinity.es/noticias/el-chiringuito-da-el-salto-energy-cuatro-manteniendo-esencia-fecha-estreno-horario-colaboradores_t1kr5JHAv5LedJdt0LBvZwe"
+        },
+        {
+          "url": "https://www.sotwe.com/elchiringuitotv"
+        }
+      ],
+      "originated_from_prior_id": "f3a8feea67d8",
+      "trend_names": [
+        "#ElChiringuitoenCuatro"
+      ],
+      "red_review_job_id": "red-review-d06b28ee8d8eda53ca65",
+      "continuity_update": false,
+      "distinct_episode": true,
+      "new_facts": "El Chiringuito se emite los domingos en Cuatro. En la edición del 1 de noviembre, el programa analizó el Racing-Real Madrid y el Athletic-Real Sociedad, con debate sobre las jugadas de Mbappé y de Aramburu con Nico Williams.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 642
