@@ -5,39 +5,40 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793650268",
   "previous_run_id": "tr-1793648428381-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T21:12:00+01:00",
-  "updated_at": "2026-11-02T21:17:45+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-02T21:19:30+01:00",
+  "finished_at": "2026-11-02T21:19:30+01:00",
+  "current": 7,
   "total": 7,
-  "trend_id": "e7f55edd3770",
-  "title": "Renfe y Adif",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "358fb89fcdaa",
+    "e7f55edd3770",
     "62a356cab514",
+    "358fb89fcdaa",
     "6b9031df0583",
+    "a1ced7a7483f",
     "78c2be79ed36",
-    "8f79a4e7f99e",
-    "a1ced7a7483f"
+    "8f79a4e7f99e"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 7,
     "observed": 7,
-    "closed": 0,
-    "explained": 0,
+    "closed": 7,
+    "explained": 7,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 7,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -47,53 +48,93 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-af039aacbc3fc75190c3",
+      "id": "e7f55edd3770",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
-    },
-    {
-      "id": "red-review-234cb2f959e0030c8deb",
-      "revision": 0,
-      "name": "Revisar novedades: #EnBocaDeTodos",
-      "outcome": "stale",
-      "applied": true,
-      "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
-    },
-    {
-      "id": "9f3e1ea405dd",
-      "revision": 0,
-      "name": "Morata",
+      "name": "Renfe y Adif",
       "outcome": "explained",
-      "applied": true
+      "applied": true,
+      "via": "this_run_editorial_outbox",
+      "apply_commit": "77f2d1b409fcd68ec1fc36bd178814dc715644c5"
+    },
+    {
+      "id": "62a356cab514",
+      "revision": 0,
+      "name": "Pucela",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox",
+      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+    },
+    {
+      "id": "358fb89fcdaa",
+      "revision": 0,
+      "name": "Leganés",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox",
+      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+    },
+    {
+      "id": "6b9031df0583",
+      "revision": 0,
+      "name": "Washington",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox",
+      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+    },
+    {
+      "id": "a1ced7a7483f",
+      "revision": 0,
+      "name": "#PazCasaTrabajo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox",
+      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+    },
+    {
+      "id": "78c2be79ed36",
+      "revision": 0,
+      "name": "Zorrilla",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox",
+      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+    },
+    {
+      "id": "8f79a4e7f99e",
+      "revision": 0,
+      "name": "Kast",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox",
+      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T21:17:45+01:00",
-  "last_completed_at": "2026-11-02T21:17:45+01:00",
+  "last_started_at": "2026-11-02T21:12:00+01:00",
+  "last_completed_at": "2026-11-02T21:19:30+01:00",
   "last_run": {
-    "run_id": "tr-1793648428381-manual",
-    "command_id": "tr-1793648428381-manual",
+    "run_id": "tr-autoguard-1793650268",
+    "command_id": "tr-autoguard-1793650268",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-02T20:42:00+01:00",
-    "finished_at": "2026-11-02T20:47:00+01:00",
+    "started_at": "2026-11-02T21:12:00+01:00",
+    "finished_at": "2026-11-02T21:19:30+01:00",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 7,
+      "observed": 7,
+      "closed": 7,
+      "explained": 7,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 2,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -103,35 +144,75 @@
     },
     "outcomes": [
       {
-        "id": "red-review-af039aacbc3fc75190c3",
+        "id": "e7f55edd3770",
         "revision": 0,
-        "name": "Revisar novedades: Toledo",
-        "outcome": "stale",
-        "applied": true,
-        "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
-      },
-      {
-        "id": "red-review-234cb2f959e0030c8deb",
-        "revision": 0,
-        "name": "Revisar novedades: #EnBocaDeTodos",
-        "outcome": "stale",
-        "applied": true,
-        "reason": "Fuera del Top 30 fresco en la barrera JIT; no se fuerza revisión."
-      },
-      {
-        "id": "9f3e1ea405dd",
-        "revision": 0,
-        "name": "Morata",
+        "name": "Renfe y Adif",
         "outcome": "explained",
-        "applied": true
+        "applied": true,
+        "via": "this_run_editorial_outbox",
+        "apply_commit": "77f2d1b409fcd68ec1fc36bd178814dc715644c5"
+      },
+      {
+        "id": "62a356cab514",
+        "revision": 0,
+        "name": "Pucela",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox",
+        "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+      },
+      {
+        "id": "358fb89fcdaa",
+        "revision": 0,
+        "name": "Leganés",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox",
+        "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+      },
+      {
+        "id": "6b9031df0583",
+        "revision": 0,
+        "name": "Washington",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox",
+        "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+      },
+      {
+        "id": "a1ced7a7483f",
+        "revision": 0,
+        "name": "#PazCasaTrabajo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox",
+        "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+      },
+      {
+        "id": "78c2be79ed36",
+        "revision": 0,
+        "name": "Zorrilla",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox",
+        "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+      },
+      {
+        "id": "8f79a4e7f99e",
+        "revision": 0,
+        "name": "Kast",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox",
+        "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada cerrada 3/3: Toledo y #EnBocaDeTodos quedaron stale por salir del Top 30 antes de la revisión JIT; Morata quedó explicado y persistido. Barrera final de main: editorial-queue=0 y sin reexplicaciones activas en la cola autoritativa. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793650268: 7 trabajos preparing vigentes en main; revalidación JIT por id+revision antes de cada tratamiento. Sin ImageGen ni publicación.",
+  "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1717,6 +1798,38 @@
       "trend_id": "e7f55edd3770",
       "title": "Renfe y Adif",
       "message": "Inicio tr-autoguard-1793650268: 7 trabajos preparing vigentes en main; revalidación JIT por id+revision antes de cada tratamiento. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-02T21:13:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793650268",
+      "trend_id": "e7f55edd3770",
+      "title": "Renfe y Adif",
+      "message": "Investigación actual y contraste multifuente; tratamiento sensible sin remate."
+    },
+    {
+      "at": "2026-11-02T21:16:49+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793650268",
+      "trend_id": null,
+      "title": null,
+      "message": "Siete resultados textuales preparados con revalidación JIT id+revision; sin ImageGen. El aplicador editorial consume los outboxes."
+    },
+    {
+      "at": "2026-11-02T21:18:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793650268",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificados los commits de aplicación: los siete R0 pasan a explained en requests y telegram-manual-explained; cola autoritativa 0."
+    },
+    {
+      "at": "2026-11-02T21:19:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793650268",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -4576,5 +4689,101 @@
     }
   ],
   "command_id": "tr-autoguard-1793650268",
-  "requested_at": "2026-11-02T12:48:00+01:00"
+  "requested_at": "2026-11-02T21:12:00+01:00",
+  "runs": [
+    {
+      "run_id": "tr-autoguard-1793650268",
+      "command_id": "tr-autoguard-1793650268",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-02T21:12:00+01:00",
+      "finished_at": "2026-11-02T21:19:30+01:00",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 7,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "e7f55edd3770",
+          "revision": 0,
+          "name": "Renfe y Adif",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "77f2d1b409fcd68ec1fc36bd178814dc715644c5"
+        },
+        {
+          "id": "62a356cab514",
+          "revision": 0,
+          "name": "Pucela",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+        },
+        {
+          "id": "358fb89fcdaa",
+          "revision": 0,
+          "name": "Leganés",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+        },
+        {
+          "id": "6b9031df0583",
+          "revision": 0,
+          "name": "Washington",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+        },
+        {
+          "id": "a1ced7a7483f",
+          "revision": 0,
+          "name": "#PazCasaTrabajo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+        },
+        {
+          "id": "78c2be79ed36",
+          "revision": 0,
+          "name": "Zorrilla",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+        },
+        {
+          "id": "8f79a4e7f99e",
+          "revision": 0,
+          "name": "Kast",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0."
+    }
+  ]
 }
