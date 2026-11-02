@@ -56,7 +56,7 @@ function activeIdentities(project,document,decisions,now=Date.now()){
  }
  return result;
 }
-function selectCurrentTasks(tasks,progress,active){return tasks.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).sort((a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at)).slice(0,8);}
+function selectCurrentTasks(tasks,progress,active){const current=x=>active.has(x.project+':'+x.target_id+':'+x.revision)?1:0;return [...tasks].sort((a,b)=>current(b)-current(a)||(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at)).slice(0,8);}
 async function liveIdentities(sources){
  const all=new Set();
  for(const project of ['ttendencias','ttittulares']){
@@ -85,7 +85,7 @@ async function once(base=__dirname){
    for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&task.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
   }
   const active=await liveIdentities(sources),selected=selectCurrentTasks(tasks,progress,active);
-  fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,currentEditorial:active.size,selectedCurrent:selected.length,excludedHistorical:tasks.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length},null,2));
+  fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,currentEditorial:active.size,selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,historicalQueued:tasks.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length},null,2));
   tasks.splice(0,tasks.length,...selected);
   console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
   for(const task of tasks){
