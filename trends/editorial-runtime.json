@@ -3223,6 +3223,58 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793635315319-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update y sin rewrite_pending/reexplain vigentes. La pasada inmediatamente anterior ya había cerrado Toledo (stale) y Halloween (unchanged). ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793650762871-manual",
+      "command_id": "tr-1793650762871-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-02T21:20:30+01:00",
+      "finished_at": "2026-11-02T21:27:15+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "red-review-f894d38a06b32c1267a9",
+          "revision": 0,
+          "name": "Revisar novedades: Pepe Mel",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "apply_commit": "8cb184a5210e82d1c6bb6987ca439542fae2b760",
+          "reason": "Sin novedad material; se conserva texto y fecha originales."
+        },
+        {
+          "id": "red-review-0b5f468fc7c7ca43d8b1",
+          "revision": 0,
+          "name": "Revisar novedades: Endesa",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "apply_commit": "bc1bff525af9d29162dd9919b667c6f919279bfa",
+          "reason": "Sin novedad material posterior; se conserva texto y fecha originales."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual.",
+      "at": "2026-11-02T21:27:15+01:00"
     }
   ],
   "partial": false,
@@ -4625,6 +4677,57 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793635315319-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update y sin rewrite_pending/reexplain vigentes. La pasada inmediatamente anterior ya había cerrado Toledo (stale) y Halloween (unchanged). ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793650762871-manual",
+      "command_id": "tr-1793650762871-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-02T21:20:30+01:00",
+      "finished_at": "2026-11-02T21:27:15+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "red-review-f894d38a06b32c1267a9",
+          "revision": 0,
+          "name": "Revisar novedades: Pepe Mel",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "apply_commit": "8cb184a5210e82d1c6bb6987ca439542fae2b760",
+          "reason": "Sin novedad material; se conserva texto y fecha originales."
+        },
+        {
+          "id": "red-review-0b5f468fc7c7ca43d8b1",
+          "revision": 0,
+          "name": "Revisar novedades: Endesa",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "apply_commit": "bc1bff525af9d29162dd9919b667c6f919279bfa",
+          "reason": "Sin novedad material posterior; se conserva texto y fecha originales."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual."
     }
   ],
   "command_id": "tr-1793650762871-manual",
