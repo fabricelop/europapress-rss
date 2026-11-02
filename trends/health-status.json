@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-01T22:16:28.280544+00:00",
+  "checked_at": "2026-11-02T01:32:27.094085+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 3,
       "captured_age_minutes": 0.1,
       "noise_count": 0
     },
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.2,
-      "run_id": 41356102026,
+      "age_minutes": 2.3,
+      "run_id": 41372799065,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -78,70 +78,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 14,
-      "overdue_count": 14,
-      "oldest_age_minutes": 65.5,
+      "pending_count": 32,
+      "overdue_count": 32,
+      "oldest_age_minutes": 261.5,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "852bc9d693d2",
           "name": "Remiro",
           "status": "preparing",
-          "age_minutes": 65.5
+          "age_minutes": 261.5
         },
         {
           "id": "d3cbe44e3ca8",
           "name": "Sucic",
           "status": "preparing",
-          "age_minutes": 65.5
+          "age_minutes": 261.5
         },
         {
           "id": "9d6bff465407",
           "name": "San Mamés",
           "status": "preparing",
-          "age_minutes": 65.5
+          "age_minutes": 261.5
         },
         {
           "id": "3b39f6eccb69",
           "name": "#AthleticRealSociedad",
           "status": "preparing",
-          "age_minutes": 65.5
+          "age_minutes": 261.5
         },
         {
           "id": "0710cf37c7ab",
           "name": "Bottas",
           "status": "preparing",
-          "age_minutes": 32.4
+          "age_minutes": 228.4
         },
         {
           "id": "885aa8b6c362",
           "name": "Aramburu",
           "status": "preparing",
-          "age_minutes": 32.4
+          "age_minutes": 228.4
         },
         {
           "id": "f8d77adad927",
           "name": "#ConexionHonduras8",
           "status": "preparing",
-          "age_minutes": 32.4
+          "age_minutes": 228.4
         },
         {
           "id": "072724b6a35d",
           "name": "#SalvadosAlmudenaCid",
           "status": "preparing",
-          "age_minutes": 32.4
+          "age_minutes": 228.4
         },
         {
           "id": "cc9091b36b3b",
           "name": "Antonelli",
           "status": "preparing",
-          "age_minutes": 32.4
+          "age_minutes": 228.4
         },
         {
           "id": "6e5f3712838f",
           "name": "Nico",
           "status": "preparing",
-          "age_minutes": 32.4
+          "age_minutes": 228.4
         }
       ],
       "repairable": false
@@ -164,7 +164,25 @@
         "ff5aa449aa6e",
         "8fa1231fe82e",
         "f03247d1c40e",
-        "0eb183243950"
+        "0eb183243950",
+        "1781e388eb4e",
+        "5e2ead308a72",
+        "639897ea9580",
+        "8c5ab4afd440",
+        "b8187c2f1a64",
+        "5d7dacc3da71",
+        "cf4e86826ff9",
+        "80441a0a28dc",
+        "cf46c29b551e",
+        "93e9356f8e94",
+        "5b77bb84e984",
+        "e0d70f83158c",
+        "0a13d9520697",
+        "19649a7e10aa",
+        "68b1fa61df02",
+        "c625ca574188",
+        "6076da3c6742",
+        "3d6977e14685"
       ],
       "contradictory_success": false
     },
@@ -177,9 +195,9 @@
   "repairs_started": [],
   "blocking": [
     "cola con 270 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 65.5 min"
+    "cola de explicaciones retrasada: 32 pendiente(s) superan 30 min; más antigua 261.5 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 270 estado(s) inválido(s) | cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 65.5 min"
+  "last_alert_signature": "cola con 270 estado(s) inválido(s) | cola de explicaciones retrasada: 32 pendiente(s) superan 30 min; más antigua 261.5 min"
 }
