@@ -137,14 +137,15 @@ requests = requests_doc.setdefault("requests", [])
 now_dt = datetime.now(MADRID)
 reconciled = False
 
-# Terminal editor decisions are authoritative only for the request/revision
-# they actually postdate. Historical Telegram ledgers remain readable for
-# compatibility, but must never close a newer radar occurrence that reused an ID.
+# Terminal editor decisions are authoritative for the exact (id, revision).
+# Legacy ledgers without a revision still use timestamps so an old occurrence
+# cannot close a genuinely newer radar episode that only reused an ID.
 CLOSED = {"published", "dismissed", "deleted", "removed",
           "delete_pending", "delete_failed"}
 deliveries = load("telegram-image-deliveries.json", {"items": []})
 mobile_decisions = load("mobile-decisions.json", {"items": []})
 closed_by_id = {}
+closed_by_revision = {}
 recently_closed_names = set()
 recently_closed_topics = {}
 
@@ -152,6 +153,12 @@ def remember_closed_id(item_id, outcome, when, revision=None):
     item_id = str(item_id or "")
     if not item_id or outcome not in CLOSED:
         return
+    if revision is not None:
+        exact_key = (item_id, int(revision))
+        exact_current = closed_by_revision.get(exact_key)
+        exact_when = exact_current[1] if exact_current else None
+        if exact_current is None or (when and (exact_when is None or when > exact_when)):
+            closed_by_revision[exact_key] = (outcome, when, int(revision))
     current = closed_by_id.get(item_id)
     if current is None:
         closed_by_id[item_id] = (outcome, when, revision)
@@ -196,18 +203,22 @@ for decision in (mobile_decisions.get("items") or []):
         revision = int(revision) if revision is not None else None
         remember_closed_id(str(decision["id"]), outcome, when, revision)
 for request in requests:
-    closed = closed_by_id.get(str(request.get("id") or ""))
+    request_id = str(request.get("id") or "")
+    request_revision = int(request.get("revision") or 0)
+    exact_closed = closed_by_revision.get((request_id, request_revision))
+    closed = exact_closed or closed_by_id.get(request_id)
     if not closed or str(request.get("status") or "").lower() in CLOSED:
         continue
     outcome, decision_when, decision_revision = closed
-    request_revision = int(request.get("revision") or 0)
     requested_at = parse_timestamp(request.get("requested_at"))
-    # A decision from an earlier revision or from before this request belongs
-    # to a historical occurrence, even when deterministic IDs collide.
-    if decision_revision is not None and decision_revision != request_revision:
-        continue
-    if requested_at and (decision_when is None or decision_when < requested_at):
-        continue
+    # An explicit decision for this exact revision is terminal even if a later
+    # radar refresh recreates the deterministic request with a newer timestamp.
+    # Timestamp protection remains only for legacy decisions lacking revision.
+    if exact_closed is None:
+        if decision_revision is not None and decision_revision != request_revision:
+            continue
+        if requested_at and (decision_when is None or decision_when < requested_at):
+            continue
     request["status"] = "deleted" if outcome.startswith("delete_") else outcome
     request["telegram_package_status"] = request["status"]
     request["reexplain"] = False

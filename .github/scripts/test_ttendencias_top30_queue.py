@@ -67,7 +67,9 @@ with tempfile.TemporaryDirectory() as foldername:
 
     # The same revision of a closed card never reopens just because rank 28
     # is now automatic. A currently explained rank 27 is not researched again.
-    fresh = datetime.now(ZoneInfo("Europe/Madrid")).isoformat(timespec="seconds")
+    fresh_dt = datetime.now(ZoneInfo("Europe/Madrid"))
+    fresh = fresh_dt.isoformat(timespec="seconds")
+    older_terminal = (fresh_dt - timedelta(hours=1)).isoformat(timespec="seconds")
     request_rows = [x for x in after if x["rank"] not in {27, 28}]
     request_rows += [
         {"id": "already-ready", "name": "Tendencia 27", "rank": 27,
@@ -79,9 +81,11 @@ with tempfile.TemporaryDirectory() as foldername:
     put(folder / "requests.json", {"requests": request_rows})
     put(folder / "telegram-manual-explained.json", {"items": [request_rows[-2]]})
     put(folder / "mobile-decisions.json", {"items": [{"id": "already-closed",
-        "revision": 0, "status": "published", "updated_at": fresh}]})
+        "revision": 0, "status": "published", "updated_at": older_terminal}]})
     after = run()
-    assert next(x for x in after if x["id"] == "already-closed")["status"] == "published"
+    assert next(x for x in after if x["id"] == "already-closed")["status"] == "published", (
+        "An exact (id, revision) terminal decision must survive a later radar timestamp"
+    )
     assert next(x for x in after if x["id"] == "already-ready")["status"] == "explained"
     assert not any(x["id"] in {"already-ready", "already-closed"}
                    for x in load(folder / "editorial-queue.json")["items"])
