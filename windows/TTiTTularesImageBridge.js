@@ -984,53 +984,19 @@ async function optionalWebHandoff(handoff,remember=false){
 // has durably persisted its original bytes. TTendencias keeps up to 6 minutes;
 // the old 90-second News release raced slow ImageGen renders and lost originals.
 async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
-  return "manual_approval_required";
-
   const fs=require('node:fs'),path=require('node:path');
-  const receiptPath=path.join(__dirname,'ttittulares-web-images',commandId+'.json');
+  const receiptPath=path.join(__dirname,'image-approval-receipts',commandId+'.json');
   const deadline=Date.now()+maxMs;
-  let nextRememberAt=0,checked=0;
   while(Date.now()<deadline){
-    await sleep(3000);
-    if(Date.now()>=nextRememberAt){
-      nextRememberAt=Date.now()+10000;
-      try{await optionalWebHandoff(handoff,true);}catch{}
-    }
-    // A real receipt must be command- and revision-scoped. DONE on its own
-    // does not prove that this image exists in the app or in GitHub.
-    try{
-      const receipt=JSON.parse(fs.readFileSync(receiptPath,'utf8'));
-      if(String(receipt.command_id)===commandId&&
-         String(receipt.target_id)===targetId&&
-         Number(receipt.revision||0)===Number(job.revision||0)){
-        if(receipt.github_outbox_committed_at||receipt.upload_accepted_at||
-           receipt.status==='published'){
-          console.log('TTITTULARES ORIGINAL RECEIPT PERSISTED command='+commandId+
-            ' stage='+String(receipt.status||'waiting'));
-          return 'original_persisted';
-        }
-        if(['obsolete','rejected','needs_review'].includes(receipt.status)){
-          console.log('TTITTULARES ORIGINAL RECEIPT NEEDS REVIEW command='+commandId+
-            ' reason='+String(receipt.reason||receipt.status).slice(0,100));
-          return 'receipt_needs_review';
-        }
+    if(handoff)await optionalWebHandoff(handoff,true);
+    try{const receipt=JSON.parse(fs.readFileSync(receiptPath,'utf8'));
+      if(receipt.commandId===commandId&&receipt.editorialId===targetId&&/^[a-f0-9]{64}$/.test(receipt.rasterSHA256||'')&&receipt.id){
+        console.log('PRIVATE_ORIGINAL_RECEIVED '+commandId);return 'private_original_received';
       }
     }catch{}
-    // Fewer remote calls while a renderer is in progress. Never interpret a
-    // transient status fetch error as proof of an image-upload failure.
-    if(++checked%4!==0)continue;
-    try{
-      const current=await fetchJob();
-      if(String(current.command_id||'')!==commandId)return 'job_superseded';
-      if(['CANCELLED','SUPERSEDED'].includes(String(current.status||'').toUpperCase()))
-        return 'job_cancelled';
-      if(String(current.status||'').toUpperCase()==='DONE'&&current.upload_sha256)
-        return 'server_receipt_persisted';
-    }catch{}
+    await sleep(3000);
   }
-  console.log('TTITTULARES ORIGINAL RECEIPT STILL PENDING command='+commandId+
-    ' no_regeneration; local receiver continues retries');
-  return 'original_pending';
+  console.log('PRIVATE_ORIGINAL_PENDING '+commandId);return 'private_original_pending';
 }
 
 (async()=>{
