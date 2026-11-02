@@ -43,6 +43,29 @@ async function editorialJob(source,task){
  }
  return job;
 }
+function activeIdentities(project,document,decisions,now=Date.now()){
+ if(!Array.isArray(document?.items)||!Array.isArray(decisions?.items))throw Error('CURRENT_EDITORIAL_UNAVAILABLE');
+ const closed=new Set(['deleted','dismissed','published','removed','delete_pending','delete_failed']),latest=new Map();
+ for(const row of document.items){const id=String(project==='ttendencias'?row.id:row.event_id);const previous=latest.get(id);if(!previous||Number(row.revision||0)>Number(previous.revision||0)||Number(row.revision||0)===Number(previous.revision||0)&&Date.parse(row.explained_at||row.prepared_at)>Date.parse(previous.explained_at||previous.prepared_at))latest.set(id,row);}
+ const result=new Set();
+ for(const [id,row] of latest){const rev=Number(row.revision||0),date=Date.parse(row.explained_at||row.prepared_at);
+  if(closed.has(String(row.status||'').toLowerCase())||closed.has(String(row.telegram_package_status||'').toLowerCase())||row.rewrite_pending)continue;
+  if(project==='ttendencias'&&(row.status!=='explained'||!row.explanation||!Number.isFinite(date)||now-date>48*3600000||date-now>3600000))continue;
+  if(decisions.items.some(x=>String(x.id||x.event_id)===id&&closed.has(String(x.status||'').toLowerCase())&&(project==='ttittulares'||Number(x.revision||0)>rev||Number(x.revision||0)===rev&&(!Number.isFinite(Date.parse(x.updated_at))||Date.parse(x.updated_at)>=date-60000))))continue;
+  result.add(project+':'+id+':'+rev);
+ }
+ return result;
+}
+function selectCurrentTasks(tasks,progress,active){return tasks.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).sort((a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at)).slice(0,8);}
+async function liveIdentities(sources){
+ const all=new Set();
+ for(const project of ['ttendencias','ttittulares']){
+  const path=project==='ttendencias'?'trends/mobile-decisions.json':'ttittulares/decisions.json';
+  const [doc,response]=await Promise.all([sources[project].readEditorialState(),fetch('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/'+path+'?t='+Date.now(),{signal:AbortSignal.timeout(15000),cache:'no-store'})]);if(!response.ok)throw Error('CURRENT_EDITORIAL_UNAVAILABLE');
+  for(const id of activeIdentities(project,doc,await response.json()))all.add(id);
+ }
+ return all;
+}
 async function once(base=__dirname){
  if(process.platform!=='win32')throw Error('WINDOWS_REQUIRED');
  const sources={};
@@ -61,7 +84,9 @@ async function once(base=__dirname){
    const dir=path.join(base,project+'-web-images');if(!fs.existsSync(dir))continue;
    for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&task.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
   }
-  tasks.sort((a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at));tasks.splice(8);
+  const active=await liveIdentities(sources),selected=selectCurrentTasks(tasks,progress,active);
+  fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,currentEditorial:active.size,selectedCurrent:selected.length,excludedHistorical:tasks.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length},null,2));
+  tasks.splice(0,tasks.length,...selected);
   console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
   for(const task of tasks){
    const source=sources[task.project];
@@ -101,5 +126,5 @@ async function once(base=__dirname){
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
-module.exports={metadata,episode,send,once,ENDPOINT,selectTarget};
+module.exports={metadata,episode,send,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks};
 if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
