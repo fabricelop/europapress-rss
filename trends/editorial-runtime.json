@@ -1,29 +1,26 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-editorial",
+  "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
   "run_id": "tr-autoguard-1793659867",
   "previous_run_id": "tr-1793656762873-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-02T23:51:07+01:00",
-  "updated_at": "2026-11-02T23:53:17+01:00",
+  "updated_at": "2026-11-02T23:54:42+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
   "trend_id": "48bd70057066",
   "title": "#LaIslaDeLasTentaciones16",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "48bd70057066",
     "faedd59cc0a6"
   ],
-  "remaining_active_ids": [
-    "48bd70057066",
-    "faedd59cc0a6"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -90,8 +87,8 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T23:07:29+01:00",
-  "last_completed_at": "2026-11-02T23:08:18.554+01:00",
+  "last_started_at": "2026-11-02T23:54:41+01:00",
+  "last_completed_at": "2026-11-02T23:54:42+01:00",
   "last_run": {
     "run_id": "tr-1793656762873-manual",
     "command_id": "tr-1793656762873-manual",
