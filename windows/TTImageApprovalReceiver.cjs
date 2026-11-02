@@ -21,7 +21,7 @@ function metadata(task,job){
 async function send(meta,bytes,secret,fetcher=fetch){
  if(bytes.length>8388608||bytes.length<24||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('ORIGINAL_PNG_REQUIRED');
  meta={...meta,rasterSHA256:sha(bytes)};const form=new FormData();form.set('metadata',JSON.stringify(meta));form.set('image',new Blob([bytes],{type:'image/png'}),'original.png');
- const r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret},body:form,redirect:'error',signal:AbortSignal.timeout(45000)});const receipt=await r.json();
+ const r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret,'User-Agent':'TTActualidad/0.4.50'},body:form,redirect:'error',signal:AbortSignal.timeout(45000)});const receipt=await r.json();
  if(!r.ok||!['pending','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(receipt.id))throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
  return {...receipt,rasterSHA256:meta.rasterSHA256};
 }
