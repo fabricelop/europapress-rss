@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T19:58:00+01:00",
+  "updated_at": "2026-11-02T20:06:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -201448,7 +201448,7 @@
       "name": "Berenguer",
       "rank": 19,
       "revision": 1,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T19:03:58.046545+00:00",
       "updated_at": "2026-11-02T19:03:58.046545+00:00",
       "reexplain": false,
@@ -201460,14 +201460,48 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "none",
-      "image_pending": true,
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "image_choice": null,
+      "image_pending": false,
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Berenguer"
       ],
-      "rewrite_instruction": "Elaboración desde cero por información desfasada. Investiga hechos y marcador o resultado ACTUALES antes de escribir. Redacta un texto factual nuevo y un remate nuevo. Busca y valida una foto de archivo nueva para esta revisión. No reutilices texto, remate ni imágenes de revisiones anteriores."
+      "rewrite_instruction": "Elaboración desde cero por información desfasada. Investiga hechos y marcador o resultado ACTUALES antes de escribir. Redacta un texto factual nuevo y un remate nuevo. Busca y valida una foto de archivo nueva para esta revisión. No reutilices texto, remate ni imágenes de revisiones anteriores.",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#19 Berenguer es tendencia por Álex Berenguer, autor de penalti del 2-1 con el que el Athletic ganó el derbi vasco a la Real Sociedad en San Mamés.\n#AthleticClub #RealSociedad\n🌶️ El derbi se decidió desde los once metros.",
+      "closer_text": "🌶️ El derbi se decidió desde los once metros.",
+      "rank_at_explanation": 19,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "101TV · 02/11/2026",
+          "url": "https://www.101tv.es/deportes/los-williams-y-unai-simon-ganan-el-derbi-vasco-para-el-athletic/"
+        },
+        {
+          "source": "Radio Nervión · 01/11/2026",
+          "url": "https://www.radionervion.com/2026/11/01/golpe-sobre-la-mesa-del-athletic-en-el-derbi-vasco/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Álex Berenguer marcó de penalti el 2-1 definitivo del derbi vasco en San Mamés.",
+      "group_id": "grp-8b882d17d961",
+      "explanation_group_id": "grp-8b882d17d961",
+      "group_title": "Berenguer",
+      "group_leader_id": "8b882d17d961",
+      "trend_names": [
+        "Berenguer"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "8b882d17d961",
+          "name": "Berenguer",
+          "revision": 1
+        }
+      ],
+      "image_status": "none"
     },
     {
       "id": "red-review-3344126e127e5f6a9343",
@@ -203536,8 +203570,8 @@
       ],
       "auto_queued": true,
       "auto_queue_scope": "top30",
-      "explained_at": "2026-11-02T19:58:00+01:00",
-      "last_attempt_at": "2026-11-02T19:58:00+01:00",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
       "explanation": "TT#10 Heliodoro es tendencia por el Tenerife-Andorra disputado en el Heliodoro Rodríguez López, suspendido tras una grave colisión entre un guardameta y un delantero.\n#CDTenerife #FCAndorra",
       "closer_text": "",
       "rank_at_explanation": 10,
@@ -203581,7 +203615,7 @@
       "id": "9767e3b44c3a",
       "name": "Calero",
       "rank": 13,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203605,13 +203639,53 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#13 Calero es tendencia por Julián Calero, técnico del Oviedo, tras la derrota 2-3 ante Las Palmas en el Tartiere.\n#RealOviedo #UDLasPalmas\n🌶️ El 0-3 pesó más que la remontada.",
+      "closer_text": "🌶️ El 0-3 pesó más que la remontada.",
+      "rank_at_explanation": 13,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Real Oviedo · 02/11/2026",
+          "url": "https://www.realoviedo.es/noticias/el-real-oviedo-cae-en-el-tartiere-ante-la-ud-las-palmas"
+        },
+        {
+          "source": "La Voz de Asturias · 02/11/2026",
+          "url": "https://www.lavozdeasturias.es/noticia/azulcarbayon/2026/11/02/calero-tras-derrota-oviedo-ante-palmasequipos-buenos-sostienen-encajan-hoy-lastre-era-grande/00031793641626671299867.htm"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Derrota 2-3 del Oviedo y reacción posterior de Julián Calero.",
+      "group_id": "grp-9767e3b44c3a",
+      "explanation_group_id": "grp-9767e3b44c3a",
+      "group_title": "Calero",
+      "group_leader_id": "9767e3b44c3a",
+      "trend_names": [
+        "Calero"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "9767e3b44c3a",
+          "name": "Calero",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "f4c4d4189222",
       "name": "Falcón",
       "rank": 15,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203635,13 +203709,53 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#15 Falcón aparece entre las tendencias mientras María Cristina Falcón figura en las listas de SALF para las generales del 29N. No se ha podido confirmar que esa candidatura impulse el término.\n#Elecciones29N #SALF",
+      "closer_text": "",
+      "rank_at_explanation": 15,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "eldiario.es · 31/10/2026",
+          "url": "https://www.eldiario.es/politica/alvise-acude-primeras-generales-rodeado-ejecutiva-abandonado-candidatos-europeas_1_13622159.html"
+        },
+        {
+          "source": "El Español · 01/11/2026",
+          "url": "https://www.elespanol.com/aragon/actualidad/20261101/aragon-vive-cambio-caras-elecciones-generales-paso-adelante-mujeres-candidatas/1003744440799_0.amp.html"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "La candidatura de María Cristina Falcón está verificada; no se atribuye causalidad exclusiva al término ambiguo.",
+      "group_id": "grp-f4c4d4189222",
+      "explanation_group_id": "grp-f4c4d4189222",
+      "group_title": "Falcón",
+      "group_leader_id": "f4c4d4189222",
+      "trend_names": [
+        "Falcón"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "f4c4d4189222",
+          "name": "Falcón",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "48e556d153eb",
       "name": "Félix",
       "rank": 19,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203665,13 +203779,49 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#19 Félix aparece entre las tendencias mientras José Félix Díaz denuncia amenazas recibidas tras votar a Mbappé por delante de Lamine Yamal en el Balón de Oro. No se ha podido confirmar que ese sea el motivo del término.\n#BalónDeOro",
+      "closer_text": "",
+      "rank_at_explanation": 19,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "ElDesmarque · 02/11/2026",
+          "url": "https://www.eldesmarque.com/futbol/internacional/20261102/jose-felix-diaz-amenazas-votar-mbappe-delante-lamine-yamal_18_020593164.html?amp=true"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Contexto actual verificado sobre José Félix Díaz, pero el término «Félix» es ambiguo; sin atribución causal exclusiva ni remate por tratarse de amenazas.",
+      "group_id": "grp-48e556d153eb",
+      "explanation_group_id": "grp-48e556d153eb",
+      "group_title": "Félix",
+      "group_leader_id": "48e556d153eb",
+      "trend_names": [
+        "Félix"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "48e556d153eb",
+          "name": "Félix",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "ea1898970906",
       "name": "Suecia",
       "rank": 20,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203695,13 +203845,53 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#20 Suecia aparece entre las tendencias mientras un ciberataque afecta a sistemas de refrigeración de supermercados de Suecia y otros países europeos. No se ha podido confirmar que ese incidente impulse el término.\n#Ciberseguridad",
+      "closer_text": "",
+      "rank_at_explanation": 20,
+      "category": "Internacional",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "El Español · 02/11/2026",
+          "url": "https://www.elespanol.com/mundo/europa/20261102/nuevo-ciberataque-dispara-temperatura-frigorificos-supermercados-belgica-suecia/1003744443203_0.html"
+        },
+        {
+          "source": "Libertad Digital · 02/11/2026",
+          "url": "https://www.libertaddigital.com/libremercado/2026-11-02/oleada-de-ciberataques-en-europa-contra-los-sistemas-de-refrigeracion-de-90-supermercados-7485543/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Incidente actual verificado en Suecia; no se fuerza causalidad para un término geográfico amplio.",
+      "group_id": "grp-ea1898970906",
+      "explanation_group_id": "grp-ea1898970906",
+      "group_title": "Suecia",
+      "group_leader_id": "ea1898970906",
+      "trend_names": [
+        "Suecia"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "ea1898970906",
+          "name": "Suecia",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "75f572510033",
       "name": "Woody Allen",
       "rank": 22,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203725,13 +203915,53 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#22 Woody Allen es tendencia por su estancia en Madrid, donde rueda su 51.ª película y ha sido visto estos días recorriendo la ciudad.\n#WoodyAllen #Madrid\n🌶️ Madrid le sirve de plató y de paseo.",
+      "closer_text": "🌶️ Madrid le sirve de plató y de paseo.",
+      "rank_at_explanation": 22,
+      "category": "Cultura",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "El Español · 01/11/2026",
+          "url": "https://www.elespanol.com/corazon/celebrities/20261101/hotel-estrellas-zoo-tienda-emblematica-madrid-hoja-ruta-woody-allen-mujer-capital/1003744441065_0.html"
+        },
+        {
+          "source": "Infobae España · 01/11/2026",
+          "url": "https://www.infobae.com/espana/2026/11/01/la-hoja-de-ruta-de-woody-allen-y-su-mujer-por-madrid-del-hotel-ritz-al-museo-del-prado-y-una-visita-muy-especial-al-zoo/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Estancia y rodaje en Madrid contrastados por dos fuentes actuales.",
+      "group_id": "grp-75f572510033",
+      "explanation_group_id": "grp-75f572510033",
+      "group_title": "Woody Allen",
+      "group_leader_id": "75f572510033",
+      "trend_names": [
+        "Woody Allen"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "75f572510033",
+          "name": "Woody Allen",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "e7ab60b9a756",
       "name": "Ocarina",
       "rank": 23,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203755,13 +203985,53 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#23 Ocarina es tendencia por el regreso de The Legend of Zelda: Ocarina of Time en Switch 2: el remake sale el 5 de noviembre y Nintendo ha publicado hoy una entrevista con sus desarrolladores.\n#Zelda #Switch2\n🌶️ Hyrule vuelve con fecha y lavado de cara.",
+      "closer_text": "🌶️ Hyrule vuelve con fecha y lavado de cara.",
+      "rank_at_explanation": 23,
+      "category": "Videojuegos",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Nintendo España · 02/11/2026",
+          "url": "https://www.nintendo.com/es-es/Noticias/2026/Noviembre/Pregunta-al-desarrollador-volumen-24-The-Legend-of-Zelda-Ocarina-of-Time-Capitulo-2-3230319.html"
+        },
+        {
+          "source": "Nintenderos · 02/11/2026",
+          "url": "https://www.nintenderos.com/nintendo-switch-2/google-lanza-esta-genial-animacion-de-zelda-ocarina-of-time-en-su-buscador/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Lanzamiento del remake esta semana y contenido oficial publicado hoy.",
+      "group_id": "grp-e7ab60b9a756",
+      "explanation_group_id": "grp-e7ab60b9a756",
+      "group_title": "Ocarina",
+      "group_leader_id": "e7ab60b9a756",
+      "trend_names": [
+        "Ocarina"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "e7ab60b9a756",
+          "name": "Ocarina",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "586304ff2756",
       "name": "SALF",
       "rank": 24,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203785,13 +204055,53 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#24 SALF es tendencia por las generales del 29N: Se Acabó La Fiesta presenta candidaturas al Congreso en 26 circunscripciones y encara sus primeras elecciones generales.\n#Elecciones29N #SALF\n🌶️ La campaña ya ha empezado antes de que lleguen las papeletas.",
+      "closer_text": "🌶️ La campaña ya ha empezado antes de que lleguen las papeletas.",
+      "rank_at_explanation": 24,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "El Debate · 01/11/2026",
+          "url": "https://www.eldebate.com/espana/comunidad-valenciana/20261101/encuestas-electorales-29n-resultados-partido-alvise-quienes-son-numeros-comunidad-valenciana_474808.html"
+        },
+        {
+          "source": "eldiario.es · 31/10/2026",
+          "url": "https://www.eldiario.es/politica/alvise-acude-primeras-generales-rodeado-ejecutiva-abandonado-candidatos-europeas_1_13622159.html"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Candidaturas de SALF para el 29N verificadas. Remate neutral sobre el calendario de campaña.",
+      "group_id": "grp-586304ff2756",
+      "explanation_group_id": "grp-586304ff2756",
+      "group_title": "SALF",
+      "group_leader_id": "586304ff2756",
+      "trend_names": [
+        "SALF"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "586304ff2756",
+          "name": "SALF",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "2c11a365b2f8",
       "name": "Viajar",
       "rank": 25,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203815,13 +204125,53 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#25 Viajar aparece entre las tendencias mientras crecen en España los microviajes de una a tres noches, impulsados por puentes y escapadas fuera de temporada. No se ha podido confirmar que esa conversación explique el término.\n#Viajes #Turismo",
+      "closer_text": "",
+      "rank_at_explanation": 25,
+      "category": "Sociedad",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "laSexta · 01/11/2026",
+          "url": "https://www.lasexta.com/noticias/sociedad/mas-escapadas-menos-dias-todo-ano-microviajes-nueva-forma-viajar-que-gana-terreno-espana_202611016ae7751b004b78127abc47c4.html"
+        },
+        {
+          "source": "Qué! · 02/11/2026",
+          "url": "https://www.que.es/2026/11/02/microviajes-espana-escapadas-cortas/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Contexto actual sobre microviajes verificado; el término genérico «Viajar» no permite atribuir un detonante único.",
+      "group_id": "grp-2c11a365b2f8",
+      "explanation_group_id": "grp-2c11a365b2f8",
+      "group_title": "Viajar",
+      "group_leader_id": "2c11a365b2f8",
+      "trend_names": [
+        "Viajar"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "2c11a365b2f8",
+          "name": "Viajar",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "ffa167f72646",
       "name": "Igualito",
       "rank": 27,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203845,13 +204195,44 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#27 Igualito aparece entre las tendencias de España, pero no se ha podido confirmar qué hecho o conversación concreta ha impulsado el término.\n#Igualito",
+      "closer_text": "",
+      "rank_at_explanation": 27,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [],
+      "news_disposition": "ignored",
+      "news_note": "Dos búsquedas independientes no identifican un detonante actual fiable. Se conserva la aparición observada en el Top 30 y se explicita la incertidumbre.",
+      "group_id": "grp-ffa167f72646",
+      "explanation_group_id": "grp-ffa167f72646",
+      "group_title": "Igualito",
+      "group_leader_id": "ffa167f72646",
+      "trend_names": [
+        "Igualito"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "ffa167f72646",
+          "name": "Igualito",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "c48db1cddfcf",
       "name": "El Manual",
       "rank": 29,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T17:11:24+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203875,7 +204256,38 @@
         "El Manual"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#29 El Manual aparece entre las tendencias de España, pero las búsquedas actuales apuntan a referencias distintas y no se ha podido confirmar qué conversación concreta impulsa el término.\n#ElManual",
+      "closer_text": "",
+      "rank_at_explanation": 29,
+      "category": "Actualidad",
+      "source": "editorial_chat_direct",
+      "verification_sources": [],
+      "news_disposition": "ignored",
+      "news_note": "Dos búsquedas actuales devuelven referencias incompatibles; no se fuerza una causa única para el término ambiguo.",
+      "group_id": "grp-c48db1cddfcf",
+      "explanation_group_id": "grp-c48db1cddfcf",
+      "group_title": "El Manual",
+      "group_leader_id": "c48db1cddfcf",
+      "trend_names": [
+        "El Manual"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "c48db1cddfcf",
+          "name": "El Manual",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "c8490403e466",
@@ -203901,7 +204313,7 @@
       "id": "dd28d1d571de",
       "name": "Tartiere",
       "rank": 10,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T18:11:18+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203915,13 +204327,53 @@
         "Tartiere"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#10 Tartiere es tendencia por el Real Oviedo-Las Palmas jugado hoy en el Carlos Tartiere, resuelto 2-3 para el conjunto canario tras un 0-3 inicial.\n#RealOviedo #UDLasPalmas\n🌶️ El Tartiere vio una remontada que se quedó a un gol.",
+      "closer_text": "🌶️ El Tartiere vio una remontada que se quedó a un gol.",
+      "rank_at_explanation": 10,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Real Oviedo · 02/11/2026",
+          "url": "https://www.realoviedo.es/noticias/el-real-oviedo-cae-en-el-tartiere-ante-la-ud-las-palmas"
+        },
+        {
+          "source": "Mundo Deportivo · 02/11/2026",
+          "url": "https://www.mundodeportivo.com/futbol/liga-segunda-division/20261102/1004244463/real-oviedo-palmas-directo-laliga-hypermotion-segunda-division.html?facet=amp"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Partido y marcador final verificados.",
+      "group_id": "grp-dd28d1d571de",
+      "explanation_group_id": "grp-dd28d1d571de",
+      "group_title": "Tartiere",
+      "group_leader_id": "dd28d1d571de",
+      "trend_names": [
+        "Tartiere"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "dd28d1d571de",
+          "name": "Tartiere",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "37757598646d",
       "name": "Jesé",
       "rank": 28,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T18:41:05+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203935,13 +204387,53 @@
         "Jesé"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#28 Jesé es tendencia porque marcó uno de los goles de Las Palmas en el 2-3 ante el Real Oviedo en el Tartiere.\n#UDLasPalmas #RealOviedo\n🌶️ Su gol terminó contando en una victoria por la mínima.",
+      "closer_text": "🌶️ Su gol terminó contando en una victoria por la mínima.",
+      "rank_at_explanation": 28,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Killer Asturias · 02/11/2026",
+          "url": "https://killerasturias.com/node/19830"
+        },
+        {
+          "source": "Canarias en Pleno · 02/11/2026",
+          "url": "https://www.canariasenpleno.com/ud-las-palmas-oviedo-2/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Jesé anotó el 0-2 de penalti; Las Palmas ganó 2-3.",
+      "group_id": "grp-37757598646d",
+      "explanation_group_id": "grp-37757598646d",
+      "group_title": "Jesé",
+      "group_leader_id": "37757598646d",
+      "trend_names": [
+        "Jesé"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "37757598646d",
+          "name": "Jesé",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "59e7d31e6d57",
       "name": "Enzo",
       "rank": 7,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T19:11:06+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203958,13 +204450,53 @@
         "#YOVOTOPODEMOS"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#7 Enzo aparece entre las tendencias tras el Oviedo-Las Palmas, un partido con Enzo Pérez en el equipo asturiano y Enzo Loiodice en el canario. No se ha podido confirmar cuál de los dos impulsa el término.\n#RealOviedo #UDLasPalmas",
+      "closer_text": "",
+      "rank_at_explanation": 7,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Killer Asturias · 02/11/2026",
+          "url": "https://killerasturias.com/node/19830"
+        },
+        {
+          "source": "AS · 02/11/2026",
+          "url": "https://as.com/resultados/futbol/segunda/2026_2027/directo/regular_a_12_6a44993ebedbc27/alineaciones/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "El mismo partido incluye a Enzo Pérez y Enzo Loiodice; se evita atribuir el término ambiguo a uno de ellos sin evidencia.",
+      "group_id": "grp-59e7d31e6d57",
+      "explanation_group_id": "grp-59e7d31e6d57",
+      "group_title": "Enzo",
+      "group_leader_id": "59e7d31e6d57",
+      "trend_names": [
+        "Enzo"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "59e7d31e6d57",
+          "name": "Enzo",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "d8fc6f0e3250",
       "name": "Mingo",
       "rank": 12,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T19:11:06+01:00",
       "revision": 0,
       "reexplain": false,
@@ -203981,13 +204513,53 @@
         "#YOVOTOPODEMOS"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#12 Mingo es tendencia porque Víctor Mingo volvió al once del Real Oviedo como referencia ofensiva ante Las Palmas en el Tartiere.\n#RealOviedo #UDLasPalmas\n🌶️ El nueve del Oviedo volvió a tener nombre propio.",
+      "closer_text": "🌶️ El nueve del Oviedo volvió a tener nombre propio.",
+      "rank_at_explanation": 12,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Killer Asturias · 02/11/2026",
+          "url": "https://killerasturias.com/node/19830"
+        },
+        {
+          "source": "UDLasPalmas.net · 02/11/2026",
+          "url": "https://www.udlaspalmas.net/2026/11/02/alineaciones-real-oviedo-vs-ud-las-palmas-onces-confirmados/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Víctor Mingo volvió al once como punta del Oviedo; la crónica confirma la apuesta de Calero.",
+      "group_id": "grp-d8fc6f0e3250",
+      "explanation_group_id": "grp-d8fc6f0e3250",
+      "group_title": "Mingo",
+      "group_leader_id": "d8fc6f0e3250",
+      "trend_names": [
+        "Mingo"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "d8fc6f0e3250",
+          "name": "Mingo",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "791b68e7bf71",
       "name": "Pronta",
       "rank": 14,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T19:11:06+01:00",
       "revision": 0,
       "reexplain": false,
@@ -204004,13 +204576,53 @@
         "#YOVOTOPODEMOS"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#14 Pronta aparece entre las tendencias mientras numerosos clubes desean una pronta recuperación a Pepe Mel, operado tras sufrir un accidente cerebrovascular. No se ha podido confirmar que esos mensajes expliquen por sí solos el término.\n#PepeMel",
+      "closer_text": "",
+      "rank_at_explanation": 14,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Notimérica · 02/11/2026",
+          "url": "https://www.notimerica.com/deportes/noticia-pepe-mel-operado-sufrir-accidente-cerebrovascular-20261102145900.html"
+        },
+        {
+          "source": "RTVC · 02/11/2026",
+          "url": "https://rtvc.es/pepe-mel-sufre-accidente-cerebrovascular-2-noviembre-2026/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Numerosos clubes han publicado mensajes de pronta recuperación tras la operación de Pepe Mel. Tratamiento sensible, sin remate.",
+      "group_id": "grp-791b68e7bf71",
+      "explanation_group_id": "grp-791b68e7bf71",
+      "group_title": "Pronta",
+      "group_leader_id": "791b68e7bf71",
+      "trend_names": [
+        "Pronta"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "791b68e7bf71",
+          "name": "Pronta",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "09c4a2596486",
       "name": "#YOVOTOPODEMOS",
       "rank": 29,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T19:11:06+01:00",
       "revision": 0,
       "reexplain": false,
@@ -204027,13 +204639,53 @@
         "#YOVOTOPODEMOS"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#29 #YOVOTOPODEMOS es tendencia por mensajes de simpatizantes de Podemos que animan a votar al partido de cara a las generales del 29N.\n#Elecciones29N #Podemos\n🌶️ En campaña, hasta el verbo votar cabe en un hashtag.",
+      "closer_text": "🌶️ En campaña, hasta el verbo votar cabe en un hashtag.",
+      "rank_at_explanation": 29,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Publicaciones sociales indexadas · 02/11/2026",
+          "url": "https://teapaw.org/doozenart"
+        },
+        {
+          "source": "Seguimiento público de hashtag · 02/11/2026",
+          "url": "https://www.sotwe.com/hashtag/VotoPodemos"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Uso actual del hashtag por simpatizantes de Podemos ante las generales del 29N. Remate neutral y descriptivo.",
+      "group_id": "grp-09c4a2596486",
+      "explanation_group_id": "grp-09c4a2596486",
+      "group_title": "#YOVOTOPODEMOS",
+      "group_leader_id": "09c4a2596486",
+      "trend_names": [
+        "#YOVOTOPODEMOS"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "09c4a2596486",
+          "name": "#YOVOTOPODEMOS",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "7bd9d0e04342",
       "name": "Las Palmas",
       "rank": 9,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T20:02:13+01:00",
       "revision": 0,
       "reexplain": false,
@@ -204050,13 +204702,53 @@
         "Coalición Canaria"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#9 Las Palmas es tendencia por su victoria 2-3 ante el Real Oviedo en el Tartiere, en el debut de Albert Sánchez como técnico amarillo.\n#UDLasPalmas #RealOviedo\n🌶️ Debutó con tres goles y acabó defendiendo uno.",
+      "closer_text": "🌶️ Debutó con tres goles y acabó defendiendo uno.",
+      "rank_at_explanation": 9,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "EFE/Infobae · 02/11/2026",
+          "url": "https://www.infobae.com/espana/agencias/2026/11/02/2-3-las-palmas-sorprende-al-oviedo-en-el-debut-de-albert-sanchez/"
+        },
+        {
+          "source": "Canarias en Pleno · 02/11/2026",
+          "url": "https://www.canariasenpleno.com/ud-las-palmas-oviedo-3/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Victoria 2-3 y debut de Albert Sánchez verificados.",
+      "group_id": "grp-7bd9d0e04342",
+      "explanation_group_id": "grp-7bd9d0e04342",
+      "group_title": "Las Palmas",
+      "group_leader_id": "7bd9d0e04342",
+      "trend_names": [
+        "Las Palmas"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "7bd9d0e04342",
+          "name": "Las Palmas",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "38713259193a",
       "name": "Ouigo e Iryo",
       "rank": 22,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T20:02:13+01:00",
       "revision": 0,
       "reexplain": false,
@@ -204073,13 +204765,53 @@
         "Coalición Canaria"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#22 Ouigo e Iryo aparecen entre las tendencias mientras siguen afectadas sus conexiones Madrid-Andalucía tras el accidente de Urda; Ouigo canceló hasta hoy e Iryo no había fijado la reanudación.\n#AltaVelocidad #Urda",
+      "closer_text": "",
+      "rank_at_explanation": 22,
+      "category": "Actualidad",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Hosteltur · 29/10/2026",
+          "url": "https://www.hosteltur.com/179566_puente-de-todos-los-santos-que-pasa-con-las-conexiones-de-alta-velocidad-en-el-corredor-madrid-andalucia.html"
+        },
+        {
+          "source": "EL PAÍS · 29/10/2026",
+          "url": "https://elpais.com/economia/2026-10-29/renfe-suspende-para-hoy-todos-los-viajes-de-alta-velocidad-entre-madrid-y-andalucia-y-ofrecera-un-plan-alternativo-a-partir-de-manana.html?comments_container=true"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Contexto ferroviario verificado tras Urda. Tratamiento sensible y causalidad prudente; sin remate.",
+      "group_id": "grp-38713259193a",
+      "explanation_group_id": "grp-38713259193a",
+      "group_title": "Ouigo e Iryo",
+      "group_leader_id": "38713259193a",
+      "trend_names": [
+        "Ouigo e Iryo"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "38713259193a",
+          "name": "Ouigo e Iryo",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "02e65daf4a85",
       "name": "#YoVotoIreneMontero",
       "rank": 26,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T20:02:13+01:00",
       "revision": 0,
       "reexplain": false,
@@ -204096,13 +204828,53 @@
         "Coalición Canaria"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#26 #YoVotoIreneMontero es tendencia por mensajes de apoyo a Irene Montero, candidata de Podemos para el 29N y cabeza de lista por Madrid.\n#Elecciones29N #Podemos\n🌶️ La campaña electoral también se disputa carácter a carácter.",
+      "closer_text": "🌶️ La campaña electoral también se disputa carácter a carácter.",
+      "rank_at_explanation": 26,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Guía Elecciones · 28/10/2026",
+          "url": "https://www.guiaelecciones.com/elecciones/generales/2026-noviembre/candidatos/"
+        },
+        {
+          "source": "RTVE · 18/10/2026",
+          "url": "https://www.rtve.es/noticias/20261018/pactos-izquierda-mapa-circunscripciones-29n/17270677.shtml"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Candidatura de Irene Montero y cabeza de lista por Madrid verificadas. El propio hashtag expresa apoyo electoral; remate neutral.",
+      "group_id": "grp-02e65daf4a85",
+      "explanation_group_id": "grp-02e65daf4a85",
+      "group_title": "#YoVotoIreneMontero",
+      "group_leader_id": "02e65daf4a85",
+      "trend_names": [
+        "#YoVotoIreneMontero"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "02e65daf4a85",
+          "name": "#YoVotoIreneMontero",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "33e2e8c86648",
       "name": "Coalición Canaria",
       "rank": 29,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-02T20:02:13+01:00",
       "revision": 0,
       "reexplain": false,
@@ -204119,7 +204891,47 @@
         "Coalición Canaria"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top30"
+      "auto_queue_scope": "top30",
+      "explained_at": "2026-11-02T20:06:00+01:00",
+      "last_attempt_at": "2026-11-02T20:06:00+01:00",
+      "explanation": "TT#29 Coalición Canaria aparece entre las tendencias en plena precampaña del 29N y después de que Cristina Valido reclamara hoy medidas por el apagón de La Palma. No se ha podido confirmar qué hecho impulsa el término.\n#Elecciones29N #LaPalma",
+      "closer_text": "",
+      "rank_at_explanation": 29,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "PressDigital · 02/11/2026",
+          "url": "https://www.pressdigital.es/articulo/politica/2026-11-02/6074531-valido-cc-ve-intolerable-apagon-palma-exige-gobierno-garantice-vez-seguridad-electrica"
+        },
+        {
+          "source": "Libertad Digital Canarias · 02/11/2026",
+          "url": "https://www.libertaddigital.com/canarias/2026-11-02/las-candidaturas-del-29n-se-proclaman-este-lunes-y-se-publicaran-manana-en-el-boe-7485414/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Hay dos contextos actuales verificables —apagón de La Palma y proclamación de candidaturas—; no se fuerza cuál impulsa el término.",
+      "group_id": "grp-33e2e8c86648",
+      "explanation_group_id": "grp-33e2e8c86648",
+      "group_title": "Coalición Canaria",
+      "group_leader_id": "33e2e8c86648",
+      "trend_names": [
+        "Coalición Canaria"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "33e2e8c86648",
+          "name": "Coalición Canaria",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     }
   ],
   "count": 818
