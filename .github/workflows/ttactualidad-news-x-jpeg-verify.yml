@@ -1,0 +1,25 @@
+name: TTActualidad - Links X, news order, image JPEG instructions
+on:
+  pull_request:
+    paths:
+      - 'pilot/ttactualidad-live/index.html'
+      - 'docs/ttactualidad/index.html'
+      - 'ios/ttactualidad/TTActualidad/EditorialStore.swift'
+      - 'pilot/ttactualidad-live/test_news_x_workflow.mjs'
+      - '.github/workflows/ttactualidad-news-x-jpeg-verify.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test URLs and image JPG/PNG workflow, news chronology
+        run: |
+          node --check pilot/ttactualidad-live/test_news_x_workflow.mjs
+          node pilot/ttactualidad-live/test_news_x_workflow.mjs
