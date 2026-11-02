@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T20:21:21+01:00",
+  "updated_at": "2026-11-02T19:24:10.350707+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -1476,7 +1476,18 @@
       "image_strategy": "ai_plus_fallback",
       "telegram_package_status": "published",
       "published_at": "2026-10-29T21:06:31.031399+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-02T19:24:10.350707+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Episodio distinto comprobado: la explicación anterior correspondía a la eliminación copera ante el Numancia; el 2 de noviembre Morales vuelve a estar ligado a un partido diferente, el Real Oviedo-Las Palmas de Liga.",
+      "red_review_sources": [
+        {
+          "url": "https://www.realoviedo.es/partidos/temporada-2026-2027-laliga-hypermotion-12-real-oviedo-vs-ud-las-palmas-3429"
+        },
+        {
+          "url": "https://cadenaser.com/resultados/futbol/segunda/2026_2027/directo/regular_a_12_6a44993ebedbc27/alineaciones/"
+        }
+      ]
     },
     {
       "id": "d7783f7a9db9",
@@ -201723,7 +201734,27 @@
       "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "red_review_checked_at": "2026-11-02T19:24:10.350707+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Novedad material dentro del mismo episodio de Urda: la ficha anterior indicaba que Renfe preparaba limitar la marcha a 40 km/h; la consigna ya ha sido enviada con carácter obligatorio. La investigación sobre si Adif aplicó el protocolo LZB4 en más ocasiones sigue abierta.",
+      "red_review_sources": [
+        {
+          "url": "https://www.rtve.es/noticias/20261101/renfe-consigna-maquinistas-limitar-velocidad-40-km-sistema-lzb/17295757.shtml"
+        },
+        {
+          "url": "https://elpais.com/espana/2026-11-02/la-investigacion-del-siniestro-de-urda-analiza-si-adif-uso-el-protocolo-erroneo-mas-veces.html"
+        },
+        {
+          "url": "https://efe.com/espana/2026-11-02/iryo-pide-revisar-protocolos-seguridad-ferroviaria-tras-accidente-urda/"
+        }
+      ],
+      "listas_group_role": "covered",
+      "covered_by_id": "trend-update-fb211c7d76abc8d6ed38",
+      "covered_by_name": "Adif",
+      "covered_by_revision": 0,
+      "covered_source_revision": 0,
+      "covered_at": "2026-11-02T19:24:10.350707+00:00"
     },
     {
       "id": "585534718a18",
@@ -204987,7 +205018,7 @@
       "revision": 0,
       "name": "Revisar novedades: Morales",
       "rank": 10,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T19:19:49.156547+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -205010,14 +205041,18 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-d606653875b7f1242c0e",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-02T19:24:10.350707+00:00",
+      "review_reason": "Episodio distinto comprobado: la explicación anterior correspondía a la eliminación copera ante el Numancia; el 2 de noviembre Morales vuelve a estar ligado a un partido diferente, el Real Oviedo-Las Palmas de Liga."
     },
     {
       "id": "red-review-83eb429a3983e4f3d3cb",
       "revision": 0,
       "name": "Revisar novedades: Adif",
       "rank": 20,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T19:19:49.156547+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -205044,7 +205079,80 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-fb211c7d76abc8d6ed38",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-02T19:24:10.350707+00:00",
+      "review_reason": "Novedad material dentro del mismo episodio de Urda: la ficha anterior indicaba que Renfe preparaba limitar la marcha a 40 km/h; la consigna ya ha sido enviada con carácter obligatorio. La investigación sobre si Adif aplicó el protocolo LZB4 en más ocasiones sigue abierta."
+    },
+    {
+      "id": "trend-update-fb211c7d76abc8d6ed38",
+      "revision": 0,
+      "name": "Adif",
+      "rank": 20,
+      "status": "explained",
+      "requested_at": "2026-11-02T19:24:10.350707+00:00",
+      "explained_at": "2026-11-02T19:24:10.350707+00:00",
+      "updated_at": "2026-11-02T19:24:10.350707+00:00",
+      "explanation": "TT#20 Adif sigue siendo tendencia por Urda: Renfe ya obliga a sus maquinistas a limitar a 40 km/h la marcha si cae el LZB, mientras se investiga si Adif aplicó más veces el protocolo LZB4.\n#Urda #SeguridadFerroviaria",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://www.rtve.es/noticias/20261101/renfe-consigna-maquinistas-limitar-velocidad-40-km-sistema-lzb/17295757.shtml"
+        },
+        {
+          "url": "https://elpais.com/espana/2026-11-02/la-investigacion-del-siniestro-de-urda-analiza-si-adif-uso-el-protocolo-erroneo-mas-veces.html"
+        },
+        {
+          "url": "https://efe.com/espana/2026-11-02/iryo-pide-revisar-protocolos-seguridad-ferroviaria-tras-accidente-urda/"
+        }
+      ],
+      "originated_from_prior_id": "trend-update-5f646e3ab040e06ebb03",
+      "trend_names": [
+        "Adif"
+      ],
+      "red_review_job_id": "red-review-83eb429a3983e4f3d3cb",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Renfe ha enviado una consigna obligatoria para que, ante una caída del LZB, la reanudación de la marcha sea a la vista y sin superar 40 km/h. Paralelamente continúa la revisión de antecedentes de fallos LZB y de los telefonemas emitidos por Adif.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-d606653875b7f1242c0e",
+      "revision": 0,
+      "name": "Morales",
+      "rank": 10,
+      "status": "explained",
+      "requested_at": "2026-11-02T19:24:10.350707+00:00",
+      "explained_at": "2026-11-02T19:24:10.350707+00:00",
+      "updated_at": "2026-11-02T19:24:10.350707+00:00",
+      "explanation": "TT#10 Morales es tendencia porque José Luis Morales jugó la segunda parte del Oviedo-Las Palmas, que acabó 2-3 en el Tartiere, cuatro días después de la eliminación copera ante el Numancia.\n#RealOviedo #UDLasPalmas\n🌶️ De la tanda al Tartiere, sin escala.",
+      "closer_text": "🌶️ De la tanda al Tartiere, sin escala.",
+      "verification_sources": [
+        {
+          "url": "https://www.realoviedo.es/partidos/temporada-2026-2027-laliga-hypermotion-12-real-oviedo-vs-ud-las-palmas-3429"
+        },
+        {
+          "url": "https://cadenaser.com/resultados/futbol/segunda/2026_2027/directo/regular_a_12_6a44993ebedbc27/alineaciones/"
+        }
+      ],
+      "originated_from_prior_id": "6f005a186898",
+      "trend_names": [
+        "Morales"
+      ],
+      "red_review_job_id": "red-review-b8b3c0ef673cc4c603ec",
+      "continuity_update": false,
+      "distinct_episode": true,
+      "new_facts": "José Luis Morales participó en la segunda parte del Real Oviedo-Las Palmas del 2 de noviembre de 2026, finalizado 2-3 en el Carlos Tartiere.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 818
