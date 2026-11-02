@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793652102",
+  "run_id": "tr-1793652373470-manual",
   "previous_run_id": "tr-1793651013499-manual",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-02T21:42:00+01:00",
-  "updated_at": "2026-11-02T21:45:12+01:00",
+  "started_at": "2026-11-02T21:46:00+01:00",
+  "updated_at": "2026-11-02T21:46:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "f650d7250dbb",
-  "title": "Lola Herrera",
+  "trend_id": "red-review-40001ebb08d71fb3aec4",
+  "title": "Revisar novedades: Morales",
   "queue_complete": true,
   "processed_ids": [
     "5d88729177b6",
@@ -97,7 +97,7 @@
     "message": "Pasada tr-1793651013499-manual cerrada 1/1: Endesa revisada sin novedades sustanciales; se conserva texto y fecha. Verificación final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793652102: 2 trabajos preparing vigentes en main (Lola Herrera y Riazor), procesados por antigüedad con validación JIT de id+revision; sin ImageGen ni publicación.",
+  "message": "Inicio tr-1793652373470-manual: 2 revisiones review_red preparing vigentes en main (Morales y La Palma), en orden de cola y con validación JIT de id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -4702,7 +4702,7 @@
       "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual."
     }
   ],
-  "command_id": "tr-autoguard-1793652102",
+  "command_id": "tr-1793652373470-manual",
   "requested_at": "2026-11-02T21:20:30+01:00",
   "runs": [
     {
