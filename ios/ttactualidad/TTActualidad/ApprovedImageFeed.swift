@@ -13,6 +13,7 @@ enum ApprovedImageFeed {
             else { return legacy }
             var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 12)
             request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        request.setValue("TTActualidad/0.4.50", forHTTPHeaderField: "User-Agent")
             let (data, response) = try await URLSession.shared.data(for: request)
             guard (response as? HTTPURLResponse)?.statusCode == 200, data.count < 2_000_000,
                   let value = try JSONSerialization.jsonObject(with: data) as? [String: Any],
