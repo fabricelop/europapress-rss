@@ -35,8 +35,16 @@ function wakePublisher(){
   }catch{}
   try{
     const env={...process.env};delete env.TT_IMAGE_UPLOAD_SECRET;
-    const child=spawn(process.execPath,[__filename,'--watch'],{detached:true,stdio:'ignore',windowsHide:true,env});
-    child.on('error',()=>{});child.unref();
+    // A detached receiver with ignored stdio hides the precise failure stage.
+    // Keep append-only local diagnostic files, never image bytes or auth tokens.
+    fs.mkdirSync(ROOT,{recursive:true});
+    const output=fs.openSync(path.join(ROOT,'receiver.log'),'a',0o600);
+    const errors=fs.openSync(path.join(ROOT,'receiver.err.log'),'a',0o600);
+    try{
+      const child=spawn(process.execPath,[__filename,'--watch'],{
+        detached:true,stdio:['ignore',output,errors],windowsHide:true,env});
+      child.on('error',()=>{});child.unref();
+    }finally{fs.closeSync(output);fs.closeSync(errors);}
   }catch{}
 }
 function enroll({job,commandId,targetId,conversationUrl,browserTargetId,secret,startPublisher=true}){
@@ -305,10 +313,23 @@ async function consume(task){
    try{
      if(capture.source==='generator_9223'){
        const pages=await http(capture.base+'/json/list');
-       const own=pages.find(x=>x.type==='page'&&chatURL(x.url)===task.conversation_url&&
-         String(x.id||'')===String(task.browser_target_id||'')&&x.webSocketDebuggerUrl);
-       if(!own)return {status:'waiting',reason:'exact_generator_conversation_missing'};
-       cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();
+       // A recovered/restored Chrome tab gets a new CDP target ID. The durable
+       // conversation URL plus an exact user-turn command are the identity;
+       // the old target ID is only a hint and must not block original recovery.
+       const candidates=pages.filter(x=>x.type==='page'&&
+         chatURL(x.url)===task.conversation_url&&x.webSocketDebuggerUrl)
+         .sort((a,b)=>Number(String(b.id)===String(task.browser_target_id||''))-
+                       Number(String(a.id)===String(task.browser_target_id||'')));
+       for(const own of candidates){
+         const candidate=new CDP(own.webSocketDebuggerUrl);
+         try{
+           await candidate.open();
+           const proven=await candidate.evaluate(conversationProbe(task.command_id));
+           if(chatURL(proven)===task.conversation_url){cdp=candidate;break;}
+         }catch{}
+         if(candidate!==cdp)candidate.close();
+       }
+       if(!cdp)return {status:'waiting',reason:'exact_generator_conversation_missing'};
      }else{
        browserCDP=new CDP(capture.browser.webSocketDebuggerUrl);await browserCDP.open();
        const made=await browserCDP.call('Target.createTarget',{url:task.conversation_url,background:true});
