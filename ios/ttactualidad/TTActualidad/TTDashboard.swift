@@ -199,6 +199,7 @@ struct TTDashboard: View {
     @State private var search = ""
     @State private var showNewStory = false
     @State private var showSettings = false
+    @State private var showImageInbox = false
     @State private var showCombinedListas = false
     @State private var publicationSheet: PublicationSheetRoute?
     @State private var requestingEditorialRun = false
@@ -302,6 +303,9 @@ struct TTDashboard: View {
         .sheet(isPresented: $showSettings) {
             GitHubConnectionSheet(github: github).presentationDetents([.medium, .large])
         }
+        .sheet(isPresented: $showImageInbox) {
+            ImageApprovalInbox(github: github).presentationDetents([.large])
+        }
         .sheet(item: $publicationSheet) { selection in
             PublishedHistorySheet(project: selection.project)
                 .environmentObject(store)
@@ -316,6 +320,7 @@ struct TTDashboard: View {
     private func openQuickAction(_ action: TTQuickAction) {
         showNewStory = false
         showSettings = false
+        showImageInbox = false
         publicationSheet = nil
         showCombinedListas = false
         search = ""
@@ -375,6 +380,14 @@ struct TTDashboard: View {
                     .tracking(2.2).foregroundStyle(TTTheme.teal)
             }
             Spacer(minLength: 0)
+            Button { showImageInbox = true } label: {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .foregroundStyle(TTTheme.teal)
+                    .font(.system(size: 20))
+                    .frame(width: 42, height: 42)
+                    .background(TTTheme.panel, in: Circle())
+            }
+            .accessibilityLabel("Imágenes pendientes")
             Button { showSettings = true } label: {
                 Image(systemName: github.authenticated ? "checkmark.shield.fill" : "person.crop.circle.badge.questionmark")
                     .foregroundStyle(github.authenticated ? TTTheme.teal : TTTheme.muted)
