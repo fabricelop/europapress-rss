@@ -184,7 +184,8 @@ test('only a separate publisher secret can see approved candidates and exact ras
  const result=await handleRequest(q,env,editor);
  assert.equal(result.status,200);
  const {items}=await result.json(); assert.equal(items.length,1);
- assert.equal(items[0].id,row.id);assert.equal(items[0].identity.rasterSHA256,row.identity.rasterSHA256);
+ assert.equal(items[0].id,row.id);assert.equal(items[0].state,'approved_awaiting_publication');
+ assert.equal(items[0].identity.rasterSHA256,row.identity.rasterSHA256);
  const download=req(`/v1/publications/${row.id}/original`,'GET',null,null);
  download.headers.set('X-TT-Publish-Key',env.PUBLISH_TOKEN);
  const response=await handleRequest(download,env,editor);
