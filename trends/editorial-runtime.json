@@ -3,25 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793599715566-manual",
-  "previous_run_id": "tr-1793599231716-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T07:19:00+01:00",
-  "updated_at": "2026-11-02T07:23:00+01:00",
-  "finished_at": "2026-11-02T07:23:00+01:00",
+  "run_id": "tr-1793601909530-manual",
+  "previous_run_id": "tr-1793599715566-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T07:45:09.530+01:00",
+  "updated_at": "2026-11-02T07:45:09.530+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "red-review-3365df6753b4e87e7e89",
+  "title": "Revisar novedades: GP de México · Alonso y #MexicoGP",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-3365df6753b4e87e7e89",
+    "red-review-8117d53cd1a62500cd5f"
+  ],
+  "remaining_active_ids": [
+    "red-review-3365df6753b4e87e7e89",
+    "red-review-8117d53cd1a62500cd5f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -30,7 +36,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -1978,6 +1984,14 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 0/0 tras relectura final de main: no queda trabajo editorial activo ni reelaboración pendiente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T07:45:09.530+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793601909530-manual",
+      "trend_id": "red-review-3365df6753b4e87e7e89",
+      "title": "Revisar novedades: GP de México · Alonso y #MexicoGP",
+      "message": "Inicio de pasada manual real: 2 review_red preparing vigentes en main, ordenadas por requested_at y cola; revalidación JIT de id+revision antes de cada investigación. Sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -5503,6 +5517,6 @@
       "message": "Pasada concurrente cerrada 2/2 por convergencia JIT: #ElChiringuitoenCuatro updated con nueva ficha; Chiqui quedó stale al invalidarse su snapshot. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793599715566-manual",
+  "command_id": "tr-1793601909530-manual",
   "requested_at": "2026-11-01T21:53:00+01:00"
 }
