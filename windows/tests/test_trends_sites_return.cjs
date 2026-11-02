@@ -7,51 +7,17 @@ const command='tr-img-auto-trend-test-r2-a1-1234567890',target='trend-test';
 const build=new Function('commandId','targetId',source.slice(start,end)+';return buildMessage;')(command,target);
 const context={explanation:'TT#17 Álex & Marc.\n#MotoGP\n🌶️ Texto exacto.',explained_at:'2026-10-31T11:16:00Z',image_style:'Estilo asignado exacto',image_style_name:'test-style',closer_text:'🌶️ Texto exacto.'};
 
-for(const mode of ['humor','rigor'])test(mode+': ImageGen only once, then native Site and App receipt with exact editorial identity',()=>{
-  const prompt=build({revision:2,target_name:'Álex & Marc',editorial_image_mode:mode,context_snapshot:context});
-  assert.ok(prompt.startsWith('TTENDENCIAS_IMAGE_JOB_V4 '+command+' '+target));
-  assert.ok(prompt.includes(context.explanation));assert.ok(prompt.includes(context.image_style));
-  assert.ok(prompt.includes('TTENDENCIAS_SITE_AUTO_RECEIPT_V5'));
-  assert.ok(prompt.includes('mcp__TTendencias___TTActualidad__inspect_top30_images'));
-  assert.ok(prompt.includes('mcp__TTendencias___TTActualidad__attach_trend_image'));
-  assert.ok(prompt.includes('mcp__TTendencias___TTActualidad__verify_trend_image'));
-  assert.ok(prompt.includes('trends/site-ai-images.json'));
-  assert.ok(prompt.includes('fabricelop/europapress-rss'));
-  assert.ok(prompt.includes('rama main'));
-  assert.ok(prompt.includes('El estado LAUNCHED del MISMO command_id es esperado'));
-  assert.ok(prompt.includes(command));
-  assert.ok(prompt.includes('sin pedir otro prompt ni repetir la generación'));
-  assert.ok(prompt.includes('sin deshacer la asociación del Site'));
-  assert.ok(!prompt.includes('[@Sites](plugin://sites@openai-curated-remote)'));
-  assert.ok(!prompt.includes('scripts/attach-image.mjs'));
-  const marker='CONTEXTO EDITORIAL EXACTO PARA EL OBJETO context: ';
-  const pos=prompt.indexOf(marker)+marker.length;
-  assert.ok(pos>=marker.length,'context marker is present');
-  const encoded=prompt.slice(pos,prompt.indexOf('}',pos)+1);
-  const identity=JSON.parse(encoded);
-  assert.equal(identity.target_id,target);assert.equal(identity.revision,2);
-  assert.equal(identity.project_id,'appgprj_6ae4dcf7d7488191a574e5b649e67370');
-  assert.equal(identity.name,'Álex & Marc');
-  assert.equal(identity.scope,'editorial');
-  assert.equal(identity.explanation,context.explanation);
-  assert.equal(identity.explained_at,context.explained_at);
-  assert.ok(prompt.indexOf('genera UNA')<prompt.indexOf('TTENDENCIAS_SITE_AUTO_RECEIPT_V5'));
-  if(mode==='rigor')assert.ok(prompt.includes('No hagas humor ni sátira'));
+for(const mode of ['humor','rigor'])test(mode+': preserves image generation and waits for approval without an automatic Site/App contract',()=>{
+ const prompt=build({revision:2,target_name:'Álex & Marc',editorial_image_mode:mode,context_snapshot:context});
+ assert.ok(prompt.startsWith('TTENDENCIAS_IMAGE_JOB_V4 '+command+' '+target));
+ assert.ok(prompt.includes(context.explanation));assert.ok(prompt.includes(context.image_style));
+ assert.match(prompt,/APROBACIÓN MANUAL OBLIGATORIA/);
+ for(const automatic of ['TTENDENCIAS_SITE_AUTO_RECEIPT_V5','attach_trend_image','verify_trend_image','Sincroniza automáticamente'])assert.ok(!prompt.includes(automatic));
+ if(mode==='rigor')assert.ok(prompt.includes('No hagas humor ni sátira'));
 });
-
-
-test('TTImages emits a second original-only Site/App turn after ImageGen when required',()=>{
-  const begin=source.indexOf('function siteReturnAfterImagePrompt(job){');
-  const end=source.indexOf('\nasync function sendSiteReturnAfterImage(',begin);
-  assert.ok(begin>0&&end>begin,'Site-return follow-up builder exists');
-  const followup=new Function('commandId','targetId','buildMessage',
-    source.slice(begin,end)+';return siteReturnAfterImagePrompt;')(command,target,build);
-  const output=followup({revision:2,target_name:'Álex & Marc',context_snapshot:context});
-  assert.ok(output.startsWith('TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+command+' '+target));
-  assert.ok(output.includes(context.explanation));
-  assert.ok(output.includes('TTENDENCIAS_SITE_AUTO_RECEIPT_V5'));
-  assert.ok(output.includes('NO generes imágenes ni invoques ImageGen'));
-  assert.ok(output.includes('mcp__TTendencias___TTActualidad__attach_trend_image'));
-  assert.match(source,/await sendSiteReturnAfterImage\(cdp,job\)/);
-  assert.match(source,/await holdForWebImageReceipt\(webHandoff,cdp,job\)/);
+test('automatic Site-return follow-up is blocked before accessing ChatGPT or uploading an original',async()=>{
+ const begin=source.indexOf('async function sendSiteReturnAfterImage(cdp,job){');
+ const end=source.indexOf('\nasync function optionalWebHandoff(',begin);
+ const send=new Function(source.slice(begin,end)+';return sendSiteReturnAfterImage;')();
+ assert.equal(await send({},{}),'manual_approval_required');
 });
