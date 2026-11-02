@@ -6,16 +6,19 @@
   "run_id": "tr-1793663849907-manual",
   "previous_run_id": "tr-autoguard-1793663459",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "review_red",
   "started_at": "2026-11-03T00:57:29.907+01:00",
-  "updated_at": "2026-11-03T00:57:29.907+01:00",
+  "updated_at": "2026-11-03T00:59:20+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
+  "current": 2,
+  "total": 4,
   "trend_id": "red-review-5acdc18cd526baa17504",
   "title": "Revisar novedades: Adif",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "466d3740ad7e",
+    "78f0c897a505"
+  ],
   "remaining_ids": [
     "red-review-5acdc18cd526baa17504",
     "red-review-a20d736ad083a5a16a1d"
@@ -26,10 +29,10 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 2,
+    "explained": 2,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -46,7 +49,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "review_red",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:57:14+01:00",
@@ -94,51 +97,8 @@
     "message": "Pasada cerrada 1/1: revisión Hamilton R0 aplicada como actualización material del mismo GP de México. Ficha nueva trend-update-77f5db7129dcd06a9fc8 sincronizada en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Adif y Pepe Mel), ordenadas por cola y con revalidación JIT; sin ImageGen ni publicación.",
+  "message": "2/4 cerrados. Revisando Adif R0; sin ImageGen ni publicación.",
   "events": [
-    {
-      "at": "2026-11-01T15:56:00+01:00",
-      "phase": "closing",
-      "run_id": "tr-1793544481477-manual",
-      "status": "DONE",
-      "message": "Pasada cerrada 1/1 por convergencia JIT: Jorge Martín r0 ya había sido actualizado por la ejecución concurrente tr-1793544112796-manual; se verificó su outbox updated, editorial-queue=0 y ausencia de rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-01T16:01:45+01:00",
-      "phase": "investigating",
-      "run_id": "tr-1793545295401-manual",
-      "status": "RUNNING",
-      "trend_id": "listas-joint-f8769365147a3582",
-      "title": "Getafe-Sevilla · Kike Salas y Gudelj",
-      "message": "Investigando Getafe-Sevilla · Kike Salas y Gudelj r1 tras revalidación JIT: marcador actual 2-1 para Getafe, Kike Salas abrió el marcador y Gudelj es titular ante su exequipo. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-01T16:19:00+01:00",
-      "phase": "closing",
-      "run_id": "tr-1793545295401-manual",
-      "status": "DONE",
-      "trend_id": null,
-      "title": null,
-      "summary": {
-        "attempted": 4,
-        "observed": 4,
-        "closed": 4,
-        "explained": 2,
-        "updates": 0,
-        "grouping_requests": 0,
-        "groups_created": 0,
-        "covered_by_existing": 0,
-        "unchanged_reviews": 0,
-        "stale_reviews": 2,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "message": "Pasada cerrada 4/4: Getafe-Sevilla · Kike Salas y Gudelj r1 y #GetafeSevilla r0 explicadas y corregidas al resultado final 3-1; las revisiones de #laSextaXplica y Toledo convergieron como review_completed/stale. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
-    },
     {
       "at": "2026-11-01T17:19:40.185+01:00",
       "phase": "preparing",
@@ -1150,6 +1110,20 @@
       "trend_id": "red-review-5acdc18cd526baa17504",
       "title": "Revisar novedades: Adif",
       "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Adif y Pepe Mel), ordenadas por cola y con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T00:59:20+01:00",
+      "phase": "verifying",
+      "trend_id": "78f0c897a505",
+      "title": "Aroca",
+      "message": "Aroca R0 aplicado y retirado de la cola; commit de aplicación verificado en requests/telegram."
+    },
+    {
+      "at": "2026-11-03T00:59:20+01:00",
+      "phase": "review_red",
+      "trend_id": "red-review-5acdc18cd526baa17504",
+      "title": "Revisar novedades: Adif",
+      "message": "Revisión Adif R0 revalidada JIT. Novedad material detectada: la investigación amplía el foco a decenas de fallos previos del LZB para saber si el protocolo erróneo era habitual y se prepara una respuesta única de marcha a la vista."
     }
   ],
   "history": [
