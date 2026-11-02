@@ -5,38 +5,35 @@
   "canonical": true,
   "run_id": "tr-1793620625571-manual",
   "previous_run_id": "tr-1793620099556-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T12:58:00+01:00",
-  "updated_at": "2026-11-02T13:01:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-02T13:03:00+01:00",
+  "finished_at": "2026-11-02T13:03:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-cd93325eb8c17bd267a6",
-  "title": "Revisar novedades: Chiqui",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-cd93325eb8c17bd267a6",
     "red-review-9f8cf554ab08b4dd53d2"
   ],
-  "remaining_active_ids": [
-    "red-review-cd93325eb8c17bd267a6",
-    "red-review-9f8cf554ab08b4dd53d2"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -46,27 +43,44 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "red-review-cd93325eb8c17bd267a6",
+      "revision": 0,
+      "name": "Revisar novedades: Chiqui",
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_applicator_jit"
+    },
+    {
+      "id": "red-review-9f8cf554ab08b4dd53d2",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_applicator_jit"
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T12:56:13+01:00",
-  "last_completed_at": "2026-11-02T12:56:39+01:00",
+  "last_started_at": "2026-11-02T12:58:00+01:00",
+  "last_completed_at": "2026-11-02T13:03:00+01:00",
   "last_run": {
-    "run_id": "tr-1793620099556-manual",
+    "run_id": "tr-1793620625571-manual",
     "status": "DONE",
-    "started_at": "2026-11-02T12:48:00+01:00",
-    "finished_at": "2026-11-02T12:56:39+01:00",
+    "started_at": "2026-11-02T12:58:00+01:00",
+    "finished_at": "2026-11-02T13:03:00+01:00",
     "summary": {
-      "attempted": 6,
-      "observed": 6,
-      "closed": 6,
-      "explained": 6,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 2,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -74,10 +88,10 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "message": "Pasada cerrada 6/6: seis explicaciones ordinarias aplicadas y sincronizadas entre requests y telegram-manual-explained. Barrera previa: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 2/2: Chiqui y Toledo fueron consumidas por el aplicador y cerradas stale tras la barrera JIT. Chiqui tenía una novedad material investigada, pero el snapshot ya no era aplicable y no se creó actualización; Toledo ya había salido del Top 30 fresco. Cola final 0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Revisando novedades de Chiqui: la emisión del 1 de noviembre abrió la recta final, expulsó a Ivana Icardi y dejó a Chiqui nominada directamente por Víctor Janeiro junto a Asraf Beno y Yola Berrocal.",
+  "message": "Pasada cerrada 2/2: Chiqui y Toledo fueron consumidas por el aplicador y cerradas stale tras la barrera JIT. Chiqui tenía una novedad material investigada, pero el snapshot ya no era aplicable y no se creó actualización; Toledo ya había salido del Top 30 fresco. Cola final 0; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1445,6 +1459,40 @@
       "trend_id": "red-review-cd93325eb8c17bd267a6",
       "title": "Revisar novedades: Chiqui",
       "message": "Revisando novedades de Chiqui: la emisión del 1 de noviembre abrió la recta final, expulsó a Ivana Icardi y dejó a Chiqui nominada directamente por Víctor Janeiro junto a Asraf Beno y Yola Berrocal."
+    },
+    {
+      "at": "2026-11-02T13:03:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-1793620625571-manual",
+      "trend_id": "red-review-cd93325eb8c17bd267a6",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Se redactó una actualización candidata sobre la nominación de Chiqui en Conexión Honduras del 1 de noviembre, respetando el formato de episodio distinto."
+    },
+    {
+      "at": "2026-11-02T13:03:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-1793620625571-manual",
+      "trend_id": "red-review-cd93325eb8c17bd267a6",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Se seleccionó un remate factual y no sensible para la actualización candidata; el aplicador JIT debía decidir si el snapshot seguía vigente."
+    },
+    {
+      "at": "2026-11-02T13:03:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793620625571-manual",
+      "message": "Resultados guardados en maintenance-outbox para Chiqui y Toledo; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-02T13:03:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793620625571-manual",
+      "message": "Commit 038d7fcf03cca237527e9c997ffb76a2ba2f621f confirmó ambos jobs como review_completed/stale y dejó editorial-queue en 0."
+    },
+    {
+      "at": "2026-11-02T13:03:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793620625571-manual",
+      "message": "Pasada cerrada 2/2: Chiqui y Toledo fueron consumidas por el aplicador y cerradas stale tras la barrera JIT. Chiqui tenía una novedad material investigada, pero el snapshot ya no era aplicable y no se creó actualización; Toledo ya había salido del Top 30 fresco. Cola final 0; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
