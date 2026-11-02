@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  issues: read
 
 concurrency:
   group: ttittulares-repo-write-v2
@@ -90,6 +91,11 @@ jobs:
 
           echo "ERROR: no se pudo guardar TTendencias tras 4 recálculos seguros."
           exit 1
+
+      - name: Despertar editor de pendientes TTendencias persistidas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 trends/ensure_pc_editorial.py
 
       - name: Recuperación editorial TTendencias por API
         env:
