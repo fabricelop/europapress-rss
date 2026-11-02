@@ -77,7 +77,24 @@ jobs:
               exit "$apply_status"
             fi
             git commit -m "Aplicar resultados editoriales TTendencias"
-            if git push origin HEAD:main; then
+
+            # Reducir carreras con otros escritores de main: si el remoto
+            # avanza después del commit, rebasar el mismo resultado validado
+            # sobre la punta nueva antes de volver a aplicar desde cero.
+            pushed=0
+            for push_attempt in 1 2 3 4 5 6 7 8; do
+              git fetch --depth=1 origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                break
+              fi
+              if git push origin HEAD:main; then
+                pushed=1
+                break
+              fi
+              sleep 1
+            done
+            if [ "$pushed" -eq 1 ]; then
               exit "$apply_status"
             fi
             echo "Push editorial falló (intento $attempt); reaplicando estado fresco"
