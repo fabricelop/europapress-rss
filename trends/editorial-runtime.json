@@ -6,14 +6,14 @@
   "run_id": "tr-autoguard-1793656283",
   "previous_run_id": "tr-1793655192906-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-02T22:51:23+01:00",
-  "updated_at": "2026-11-02T22:51:23+01:00",
+  "updated_at": "2026-11-02T22:54:11+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "5f810de04443",
+  "title": "#ElPerroAndaluzTVE",
   "queue_complete": false,
   "processed_ids": [
     "734c9156bd10"
@@ -104,7 +104,7 @@
     "message": "Pasada tr-1793655192906-manual cerrada 1/1: Leo Román R0 quedó explicado y sincronizado en requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Imagen permanece pendiente en el circuito visual separado; ImageGen=0; publicaciones=0."
   },
   "source": "autoguard",
-  "message": "Pasada oficial en curso 0/2. Preparando #ElPerroAndaluzTVE R0 y Ferllo R0; ImageGen desactivado.",
+  "message": "Persistiendo #ElPerroAndaluzTVE R0 (1/2); texto verificado, sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1894,6 +1894,17 @@
       "current": 0,
       "total": 2,
       "message": "Pasada oficial en curso 0/2. Preparando #ElPerroAndaluzTVE R0 y Ferllo R0; ImageGen desactivado."
+    },
+    {
+      "at": "2026-11-02T22:54:11+01:00",
+      "run_id": "tr-autoguard-1793656283",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "trend_id": "5f810de04443",
+      "title": "#ElPerroAndaluzTVE",
+      "current": 0,
+      "total": 2,
+      "message": "Persistiendo #ElPerroAndaluzTVE R0 (1/2); texto verificado, sin ImageGen."
     }
   ],
   "history": [
@@ -3490,8 +3501,8 @@
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": null,
-  "current_title": null,
+  "current_item": "5f810de04443",
+  "current_title": "#ElPerroAndaluzTVE",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
