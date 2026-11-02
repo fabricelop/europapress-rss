@@ -22,14 +22,13 @@ jobs:
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $file),[ref]$tokens,[ref]$errorsFound) | Out-Null
           if($errorsFound.Count){throw ('PowerShell syntax error: '+$errorsFound[0].Message)}
           $source=Get-Content $file -Raw
-          foreach($required in @('READ_ONLY_V1','CDP9234','TRENDS_BRIDGE','NEWS_BRIDGE',
+          foreach($required in @('READ_ONLY_V1','ProbeChrome 9234','ProbeChrome 9223','TRENDS_BRIDGE','NEWS_BRIDGE',
               'TRENDS_IMAGE_QUEUE','NEWS_IMAGE_QUEUE','TRENDS_EDITORIAL','NO_CHANGES_NO_RESTART_NO_IMAGEGEN')){
             if(-not $source.Contains($required)){throw ('Missing diagnostic: '+$required)}
           }
           foreach($forbidden in @('Stop-Process','Start-Process','Restart-Service','Register-ScheduledTask',
               'Start-ScheduledTask','Set-Content','Remove-Item','Invoke-WebRequest -Method Put',
-              'ImageGen','/json/close/','/json/new?')){
-            if($forbidden -eq 'ImageGen'){continue}
+              '/json/close/','/json/new?')){
             if($source.Contains($forbidden)){throw ('Forbidden state-changing action: '+$forbidden)}
           }
           Write-Host 'TTIMAGES_READONLY_DIAGNOSTIC_VALID'
