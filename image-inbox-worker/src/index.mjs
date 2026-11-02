@@ -1,3 +1,4 @@
+import { episodeFingerprint, verifyEditorialNow, EditorialUnavailable } from './editorial-truth.mjs';
 // Private TTActualidad inbox. No automatic publication path and no public R2 links.
 const SHA = /^[a-f0-9]{64}$/;
 const IDENTIFIER = /^[A-Za-z0-9_-]{3,160}$/;
@@ -84,6 +85,11 @@ async function ingest(request, env) {
   }
   const title = assertText(meta.title, 300);
   const editorialText = assertText(meta.editorialText, 4000);
+  // A self-declared hash is insufficient: bind the episode to the exact
+  // editorial bytes and identity, including revision 0 after a new episode.
+  if ((await episodeFingerprint({ ...i, editorialText })) !== i.episodeFingerprint) {
+    return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
+  }
   const id = await candidateID(i);
   const r2key = `private/${id}/${originalSHA}.png`;
   await env.ORIGINALS.put(r2key, original, { httpMetadata: { contentType: 'image/png' } });
@@ -124,11 +130,68 @@ async function preview(env, id) {
     'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff',
   } });
 }
-async function decide(request, env, id, actor) {
+function publisher(request, env) {
+  // Separate scoped secret, never reusing the editor OAuth or the ingest key.
+  const given = request.headers.get('X-TT-Publish-Key') || '';
+  return Boolean(env.PUBLISH_TOKEN && env.PUBLISH_TOKEN.length >= 32 &&
+    given.length === env.PUBLISH_TOKEN.length && given === env.PUBLISH_TOKEN);
+}
+async function publicationQueue(env) {
+  const r = await env.DB.prepare(`SELECT id, project, editorial_id, revision,
+    episode_fingerprint, command_id, raster_sha256, title, editorial_text, decided_at
+    FROM image_candidates WHERE status='approved_awaiting_publication'
+    ORDER BY decided_at ASC LIMIT 100`).all();
+  return json({ items: (r.results || []).map(row => ({
+    id: row.id, identity: rowIdentity(row), title: row.title,
+    editorialText: row.editorial_text, approvedAt: row.decided_at,
+  })) });
+}
+async function publicationOriginal(env, id, githubFetch) {
+  const row = await env.DB.prepare(`SELECT object_key, raster_sha256, project, editorial_id, revision,
+      episode_fingerprint, command_id, editorial_text FROM image_candidates
+    WHERE id=? AND status='approved_awaiting_publication'`).bind(id).first();
+  if (!row) return error(404, 'NOT_APPROVED');
+  // Revalidate at hand-off: an approval for a later-changed READY entry
+  // must never yield bytes to a publisher. Publisher re-checks again before
+  // the actual remote Sites/APP commit.
+  if (!env.GITHUB_SOURCE_READ_TOKEN) return error(503, 'SOURCE_VERIFICATION_NOT_CONFIGURED');
+  if (await verifyEditorialNow(rowIdentity(row), row.editorial_text,
+    githubFetch, env.GITHUB_SOURCE_READ_TOKEN) !== 'current') {
+    return error(409, 'EDITORIAL_CHANGED_OR_NOT_READY');
+  }
+  const obj = await env.ORIGINALS.get(row.object_key);
+  if (!obj) return error(503, 'ORIGINAL_NOT_FOUND');
+  const bytes = await obj.arrayBuffer();
+  if ((await hash(bytes)) !== row.raster_sha256) return error(409, 'RASTER_CHANGED');
+  return new Response(bytes, { headers: {
+    'Content-Type': 'image/png', 'Cache-Control': 'private, no-store',
+    'Content-Disposition': 'attachment; filename="approved-original.png"',
+    'X-Original-SHA256': row.raster_sha256, 'X-Content-Type-Options': 'nosniff',
+  } });
+}
+async function decide(request, env, id, actor, githubFetch) {
   const input = await request.json();
   if (!input || !['approve', 'reject'].includes(input.action)) return error(400, 'INVALID_ACTION');
   const expected = identity(input.expectedIdentity);
   if ((await candidateID(expected)) !== id) return error(409, 'STALE_CANDIDATE');
+  // Approval must re-check main; rejection only clears the private inbox.
+  // A stale/removed READY row can never receive a new approval.
+  if (input.action === 'approve') {
+    const current = await env.DB.prepare(`SELECT editorial_text, status FROM image_candidates
+      WHERE id=? AND status='pending'`).bind(id).first();
+    if (!current) {
+      const prior = await env.DB.prepare(`SELECT status FROM image_candidates WHERE id=?`).bind(id).first();
+      if (prior?.status === 'approved_awaiting_publication') {
+        return json({ id, state: prior.status, alreadyApplied: true });
+      }
+      return error(409, 'ALREADY_DECIDED_OR_STALE');
+    }
+    if ((await episodeFingerprint({ ...expected, editorialText: current.editorial_text })) !== expected.episodeFingerprint) {
+      return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
+    }
+    const verdict = await verifyEditorialNow(expected, current.editorial_text, githubFetch, token(request));
+    if (verdict !== 'current') return error(409, 'EDITORIAL_CHANGED_OR_NOT_READY');
+  }
   const status = input.action === 'approve' ? 'approved_awaiting_publication' : 'rejected';
   const result = await env.DB.prepare(`UPDATE image_candidates SET status=?, decided_at=?,
     decided_by=? WHERE id=? AND status='pending' AND project=? AND editorial_id=?
@@ -151,6 +214,15 @@ export async function handleRequest(request, env, githubFetch = fetch) {
     const url = new URL(request.url);
     if (!env.DB || !env.ORIGINALS) return error(503, 'STORAGE_NOT_CONFIGURED');
     if (url.pathname === '/healthz' && request.method === 'GET') return json({ ok: true });
+    // Publish hand-off is PRIVATE and read-only: this service never writes
+    // publicly visible catalogs or changes the 'published' state.
+    if (url.pathname === '/v1/publications' || url.pathname.startsWith('/v1/publications/')) {
+      if (!publisher(request, env)) return error(401, 'UNAUTHORIZED_PUBLISHER');
+      if (url.pathname === '/v1/publications' && request.method === 'GET') return await publicationQueue(env);
+      const allowed = /^\/v1\/publications\/([a-f0-9]{64})\/original$/.exec(url.pathname);
+      if (allowed && request.method === 'GET') return await publicationOriginal(env, allowed[1], githubFetch);
+      return error(404, 'NOT_FOUND');
+    }
     if (url.pathname === PREFIX + '/ingest' && request.method === 'POST') return await ingest(request, env);
     const who = await editor(request, env, githubFetch);
     if (!who) return error(401, 'UNAUTHORIZED_EDITOR');
@@ -159,9 +231,10 @@ export async function handleRequest(request, env, githubFetch = fetch) {
     if (!match) return error(404, 'NOT_FOUND');
     const [, id, action] = match;
     if (request.method === 'GET' && action === 'original') return await preview(env, id);
-    if (request.method === 'POST' && action === 'decision') return await decide(request, env, id, who);
+    if (request.method === 'POST' && action === 'decision') return await decide(request, env, id, who, githubFetch);
     return error(405, 'METHOD_NOT_ALLOWED');
   } catch (e) {
+    if (e instanceof EditorialUnavailable) return error(503, 'EDITORIAL_SOURCE_UNAVAILABLE');
     if (e instanceof SyntaxError || e instanceof TypeError) return error(400, 'INVALID_REQUEST');
     // Never leak tokens, original bytes, private object names, SQL internals.
     return error(503, 'TEMPORARILY_UNAVAILABLE');
