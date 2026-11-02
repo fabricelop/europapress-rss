@@ -1682,6 +1682,16 @@ final class EditorialStore: ObservableObject {
                             siteImageURL: verifiedAI?.url,
                             siteImageSHA256: verifiedAI?.sha256 ?? "")
         }
+        // NEWS / LISTAS ONLY: the backend's append order is not a chronology.
+        // Use the real preparation date (fall back to selected_at via publishedAt).
+        // Never mutate the source JSON or alter trend, revision or history ordering.
+        .sorted { left, right in
+            let leftDate = left.publishedAt ?? .distantPast
+            let rightDate = right.publishedAt ?? .distantPast
+            if leftDate != rightDate { return leftDate > rightDate }
+            if left.revision != right.revision { return left.revision > right.revision }
+            return left.id > right.id
+        }
     }
 
     private static func isListasCovered(_ row: [String: Any]) -> Bool {

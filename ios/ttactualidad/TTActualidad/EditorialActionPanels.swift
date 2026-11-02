@@ -16,6 +16,73 @@ enum TTTheme {
     static let cardHighlight = Color(red: 0.19, green: 0.29, blue: 0.40)
 }
 
+// Native PlumeImpactor IPA: links are appended when the user taps Publicar en X.
+// X shortens this exact HTTPS URL to a 23-unit t.co link. Reserve 2 newlines.
+// Keep the editorial suffix (#hashtags and the independent 🌶️ remate) intact.
+enum TTActualidadXPost {
+    static let newsURL = "https://ttactualidad.rainyraven22.chatgpt.site/noticias"
+    static let trendsURL = "https://ttactualidad.rainyraven22.chatgpt.site/tendencias"
+    private static let contentBudget = 280 - 23 - 2
+
+    static func weight(_ value: String) -> Int {
+        value.reduce(into: 0) { total, glyph in
+            let scalars = glyph.unicodeScalars
+            if scalars.contains(where: { $0.properties.isEmojiPresentation }) {
+                total += 2
+                return
+            }
+            for scalar in scalars {
+                let n = scalar.value
+                if n == 0xFE0F || n == 0x200D { continue }
+                total += (n <= 0x10FF ||
+                          (0x2000...0x200D).contains(n) ||
+                          (0x2010...0x201F).contains(n) ||
+                          (0x2032...0x2037).contains(n)) ? 1 : 2
+            }
+        }
+    }
+
+    private static func shortened(_ value: String, maxWeight: Int) -> String {
+        guard weight(value) > maxWeight else { return value }
+        guard maxWeight > 2 else { return "" }
+        var result = ""
+        var used = 0
+        for glyph in value {
+            let piece = String(glyph)
+            let size = weight(piece)
+            if used + size + 2 > maxWeight { break }
+            result.append(glyph)
+            used += size
+        }
+        return result.trimmingCharacters(in: .whitespacesAndNewlines) + "…"
+    }
+
+    static func payload(editorial: String, news: Bool) -> String {
+        let site = news ? newsURL : trendsURL
+        var text = editorial.trimmingCharacters(in: .whitespacesAndNewlines)
+        if text.hasSuffix(site) {
+            text = String(text.dropLast(site.count))
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        if weight(text) > contentBudget {
+            let suffixStart = text.range(of: "\n\n#", options: .backwards)?.lowerBound ??
+                              text.range(of: "\n🌶️", options: .backwards)?.lowerBound
+            if let suffixStart {
+                let prefix = String(text[..<suffixStart])
+                let suffix = String(text[suffixStart...])
+                if weight(suffix) < contentBudget - 35 {
+                    text = shortened(prefix, maxWeight: contentBudget - weight(suffix)) + suffix
+                } else {
+                    text = shortened(text, maxWeight: contentBudget)
+                }
+            } else {
+                text = shortened(text, maxWeight: contentBudget)
+            }
+        }
+        return text + "\n\n" + site
+    }
+}
+
 struct EditorialActions: View {
     var news: NewsItem? = nil
     var trend: TrendItem? = nil
@@ -667,17 +734,20 @@ struct EditorialActions: View {
               "proveedor chat-imagegen para el MISMO ID/revisión; o un registro válido " +
               "en ttittulares/site-ai-images.json. Si existe y su archivo público " +
               "es legible, no lo sustituyas ni dupliques. La APP lo leerá al actualizar.",
-            "3. Solo si NO existe una imagen asociada válida, exige que el usuario haya " +
-              "ADJUNTADO el archivo ORIGINAL PNG en ESTE chat. No uses miniaturas, " +
-              "capturas, URLs de chats compartidos, otras noticias ni rutas supuestas. " +
-              "Si no hay adjunto original o no hay herramienta para subir bytes binarios " +
-              "reales a GitHub, DETENTE e indica exactamente qué falta.",
-            "4. Comprueba que el PNG real es imagen válida, calcula su SHA-256 real " +
-              "y guarda los bytes originales en " +
-              "ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.png " +
-              "mediante una herramienta de subida binaria compatible (blob GitHub en " +
-              "base64 y commit sobre HEAD fresco, o equivalente). No escribas base64 " +
-              "como texto del archivo, ni crees un marcador en lugar del PNG.",
+            "3. Solo si NO existe una imagen asociada válida, acepta la imagen ORIGINAL " +
+              "JPG/JPEG, PNG o WebP PEGADA o ADJUNTADA por el usuario EN ESTE chat. " +
+              "Una foto JPEG copiada desde ChatGPT Images es válida si se reciben " +
+              "sus bytes reales; no exijas PNG ni conviertas un JPEG renombrándolo. " +
+              "No uses miniaturas, capturas, URLs de chats compartidos, otras noticias " +
+              "ni rutas supuestas. Si solo hay una vista previa pero no bytes accesibles " +
+              "o no hay herramienta de subida binaria, DETENTE e indica qué falta.",
+            "4. Verifica la firma binaria y MIME REAL (image/jpeg, image/png o image/webp), " +
+              "calcula SHA-256 de los bytes originales y guárdalos SIN cambiar formato " +
+              "en ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.<ext> " +
+              "donde <ext> corresponda al formato detectado (.jpg, .png o .webp). " +
+              "Usa subida binaria GitHub compatible (blob base64 real y commit sobre HEAD " +
+              "fresco, o equivalente). No escribas base64 como texto, no conviertas " +
+              "por renombrar y no fabriques un PNG ficticio.",
             "5. Relee el archivo binario en su URL pública HTTPS, verifica acceso y SHA. " +
               "Luego lee el manifiesto actual, preserva TODAS sus entradas y añade " +
               "EXACTAMENTE UNA entrada de schema_version 1, project ttittulares: " +
@@ -694,7 +764,7 @@ struct EditorialActions: View {
         ].joined(separator: "\n\n")
         copy(prompt)
         outcome = ready
-            ? "Guía de asociación copiada. Adjunta el PNG ORIGINAL en Proyecto TT y pega la guía."
+            ? "Orden copiada. Pega la imagen JPEG/PNG/WebP REAL en Proyecto TT junto con la orden."
             : "Guía copiada. No se puede asociar aún: falta una noticia READY con identidad editorial completa."
     }
 
@@ -832,7 +902,9 @@ struct EditorialActions: View {
             return
         }
         var parts = URLComponents(string: "https://twitter.com/intent/tweet")
-        parts?.queryItems = [URLQueryItem(name: "text", value: fullText)]
+        parts?.queryItems = [URLQueryItem(name: "text",
+                                          value: TTActualidadXPost.payload(
+                                            editorial: fullText, news: news != nil))]
         if let url = parts?.url { openURL(url) }
     }
 
