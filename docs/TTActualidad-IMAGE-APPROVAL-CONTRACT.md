@@ -35,3 +35,20 @@ No se reactiva Telegram. La APP de referencia es **build59** de `feature/ttactua
 ## Implementación parcial en este commit
 
 `shared/image-approval-policy.cjs` define normalización, identidad estable, decisión y puerta de publicación verificable de forma pura. `tests/image-approval-policy.test.cjs` cubre aprobación sin escrituras, rechazo sin borrado, hashes cambiados, episodio r0 reutilizado, revisión obsoleta, idempotencia y conflictos. No se conecta todavía a servicios: intencionadamente evita colar imágenes en producción o crear una bandeja que fingiría funcionar.
+
+## Extensión — puerta editorial doble y traspaso privado (02/11/2026)
+
+El contrato se concreta en el PR274, sin publicarlo. Antes de registrar `approve`,
+el Worker comprueba que el texto EXACTO de `prepared.json` en GitHub `main`
+para el ID/revisión sigue coincidiendo. El importador calcula la huella del
+episodio a partir de identidad+texto completo, no de nombres o parecido visual.
+Antes de entregar el PNG aprobado a un publicador separado se vuelve a comprobar
+`main` y el SHA de los bytes. El traspaso privado exige un secreto de publicador
+y una credencial Github de lectura independientes de los del receptor/APP.
+`reject` solo elimina la fila del buzón visible, sin borrar original.
+
+Ninguna ruta hace pública una imagen, reanuda los WebImages anteriores, elimina
+fotos de archivo ni escribe Sites. Se sigue necesitando un publicador que valide
+por tercera vez inmediatamente antes de publicar en los dos catálogos y confirme
+que las dos fichas muestran el mismo raster aprobado. Sin ese puente la aprobación
+NO equivale a publicación.
