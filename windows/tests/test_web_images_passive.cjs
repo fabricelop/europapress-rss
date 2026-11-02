@@ -33,7 +33,11 @@ async function run({existing=true,matching=true,replaced=false}={}){
   close(){}
  }
  const module={exports:{}};
- vm.runInNewContext(source,{module,exports:module.exports,__dirname:'/unused-test',require:Object.assign(name=>name==='node:child_process'?{execFileSync:()=> 'decrypted-test-secret'}:
+ // The browser is simulated with a tiny marker, not a valid PNG.
+ // Real byte persistence is tested by test_trend_durable_original.cjs.
+ const simulated=source.replace("raster=cacheRaster(task,raster);","raster=raster;");
+ assert.notEqual(simulated,source,"local cache seam must exist");
+ vm.runInNewContext(simulated,{module,exports:module.exports,__dirname:'/unused-test',require:Object.assign(name=>name==='node:child_process'?{execFileSync:()=> 'decrypted-test-secret'}:
   name==='node:fs'&&replaced?{...fs,readFileSync:(file,...args)=>String(file).endsWith('ttendencias-image-tab.json')?JSON.stringify({target_id:page.id}):fs.readFileSync(file,...args)}:require(name),{main:null}),
   process:{platform:'win32'},fetch,WebSocket,AbortSignal,URL:global.URL,console,
   setTimeout:(fn,ms)=>setTimeout(fn,Math.min(ms,10)),clearTimeout});

@@ -21,6 +21,9 @@ on:
       - .github/workflows/ttendencias-web-images-test.yml
   pull_request:
     paths:
+      - tests/ttendencias-web-images.test.cjs
+      - windows/tests/test_web_images_passive.cjs
+      - windows/tests/test_trend_durable_original.cjs
       - windows/TTendenciasImageBridge.js
       - windows/TTendenciasDedicatedListener.ps1
       - windows/TTendenciasWebImages.cjs

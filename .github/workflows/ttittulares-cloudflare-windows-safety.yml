@@ -38,7 +38,14 @@ jobs:
             if ($s -match 'europapress-rss\.vercel\.app') { throw "Vercel residue in $p" }
           }
           $watchdog = Get-Content windows/TT-LocalWatchdog.ps1 -Raw
-          if ($watchdog -match 'CheckImageQueueHealth|RestartListenerForQueue|Invoke-WebRequest') { throw "Watchdog must only supervise local processes" }
+          # Preserve the existing, strictly local CDP PUT used to open a Chrome tab.
+          # Reject queue restarts and every other mutating HTTP request.
+          if ($watchdog -match 'CheckImageQueueHealth|RestartListenerForQueue') { throw "Unexpected auto-repair in watchdog" }
+          $writes = @($watchdog -split '\r?\n' | Where-Object {
+            $_ -match 'Invoke-(?:WebRequest|RestMethod)\s+-Method\s+(?:POST|PUT|PATCH|DELETE)\b' -and
+            $_ -notmatch '^\s*\$tab=Invoke-RestMethod -Method Put -Uri \("http://127\.0\.0\.1:9223/json/new\?'
+          })
+          if ($writes.Count -gt 0) { throw "Unexpected mutating watchdog HTTP request" }
           if ($watchdog -notmatch 'Enter-ProcessInstance') { throw "Watchdog lost process ownership" }
           $shared = Get-Content windows/MobileChatTriggerListener.ps1 -Raw
           if ($shared -notmatch 'tt-control\.fabricelop\.workers\.dev') { throw "TTendencias route altered" }

@@ -265,6 +265,25 @@ async function imageEligibility(targetId){
   // que la nueva se materialice correctamente.
   return {eligible:true,reason:hasAi?"regenerate":"ready",row,hasAi}
 }
+
+function headlineEditorialFingerprint(snapshot){
+  const text=String(snapshot?.tweet_text||"").trim();
+  const facts=String(snapshot?.factual_summary||"").trim();
+  const closer=String(snapshot?.remate||"").trim();
+  if(!text||!facts)return "";
+  return crypto.createHash("sha256").update([text,facts,closer].join("\n"),"utf8").digest("hex");
+}
+function validHeadlineWebReceipt(job,row,submittedHash){
+  if(String(job.delivery_mode||"")!=="launch_only")return "not_launch_only";
+  if(!row||String(row.event_id||"")!==String(job.target_id||""))return "not_ready";
+  if(Number(row.revision||0)!==Number(job.revision||0))return "revision_changed";
+  const original=headlineEditorialFingerprint(job.context_snapshot);
+  const current=headlineEditorialFingerprint({
+    tweet_text:row.tweet?.text,factual_summary:row.factual_summary,remate:row.tweet?.remate
+  });
+  if(!original||!current||original!==current||submittedHash!==original)return "editorial_context_changed";
+  return "";
+}
 function uploadSecretHash(value){return crypto.createHash("sha256").update(String(value||""),"utf8").digest("hex")}
 function validUploadSecret(job,secret){
   const expected=String(job?.pc_upload_secret_hash||"").toLowerCase(),actual=uploadSecretHash(secret);
@@ -371,7 +390,20 @@ async function persistAiImageDirect({target_id,revision,command_id,buf,mime,sha2
   const ext=mime==="image/png"?"png":mime==="image/webp"?"webp":"jpg";
   const suffix=command_id.replace(/[^A-Za-z0-9_-]/g,"").slice(-12)||Date.now();
   const imagePath="ttittulares/generated-images/"+target_id+"-r"+revision+"-ai"+attempt+"-"+suffix+"."+ext;
-  await writeMainBinary(imagePath,buf,"TTiTTulares: guardar raster ImageGen "+target_id);
+  // A lost acknowledgement must never overwrite a different immutable raster.
+  const prior=await gh("https://api.github.com/repos/"+REPO+"/contents/"+imagePath+"?ref="+encodeURIComponent(MAIN_BRANCH),{cache:"no-store"});
+  if(prior.ok){
+    const file=await prior.json();let encoded=String(file.content||"").replace(/\s/g,"");
+    if(!encoded&&file.sha){
+      const blob=await gh("https://api.github.com/repos/"+REPO+"/git/blobs/"+encodeURIComponent(file.sha));
+      if(!blob.ok)throw Error("raster_read_failed");
+      encoded=String((await blob.json()).content||"").replace(/\s/g,"");
+    }
+    if(crypto.createHash("sha256").update(Buffer.from(encoded,"base64")).digest("hex")!==sha256)
+      throw Error("generated_image_path_collision");
+  }else if(prior.status===404){
+    await writeMainBinary(imagePath,buf,"TTiTTulares: guardar raster ImageGen "+target_id);
+  }else throw Error("raster_read_HTTP_"+prior.status);
 
   const rawUrl="https://raw.githubusercontent.com/"+REPO+"/main/"+imagePath;
   const sourceUrl="https://github.com/"+REPO+"/blob/main/"+imagePath;
@@ -485,6 +517,8 @@ async function requestImagePcAck(req,res){
   // The submitted prompt is an irreversible side-effect in ChatGPT Images.
   // Never demote it to ERROR when a bridge exits after the launch ACK.
   if(String(job.delivery_mode||"")==="launch_only"&&job.pc_launched_at){
+    if(["DONE","PERSISTING"].includes(String(job.status||"").toUpperCase()))
+      return res.status(200).json({ok:true,idempotent:true,...job});
     if(String(job.status||"").toUpperCase()==="LAUNCHED")
       return res.status(200).json({ok:true,idempotent:true,...job});
     const healed={...job,status:"LAUNCHED",phase:"pc_launched",
@@ -579,26 +613,32 @@ async function requestImagePcAck(req,res){
   }
 }
 
-async function requestImageUpload(req,res){
+async function requestImageUpload(req,res,webReceipt=false){
   const target_id=safeTargetId(req.body?.target_id||req.body?.event_id||req.body?.id);
   const command_id=String(req.body?.command_id||"").trim(),upload_secret=String(req.body?.upload_secret||""),data=String(req.body?.image_data_url||"");
   const captureMethod=String(req.body?.capture?.method||"");
   const captureFromImage=/^(original-fetch-img|canvas-from-img-)/.test(captureMethod);
   if(!command_id||!upload_secret||!data.startsWith("data:image/"))return res.status(400).json({ok:false,error:"Carga de imagen incompleta"});
   if(!captureFromImage)return res.status(422).json({ok:false,error:"Raster rechazado: el bridge no acredita captura del elemento de imagen",capture_method:captureMethod||null});
-  if(data.length>4*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
+  if(data.length>(webReceipt?12:4)*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJsonAuthoritative(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es actual"});
   if(!validUploadSecret(job,upload_secret))return res.status(401).json({ok:false,error:"Secreto de imagen no válido"});
-  if(["DONE","ERROR","CANCELLED","SUPERSEDED","LAUNCHED"].includes(String(job.status||"").toUpperCase())||job.pc_launched_at&&job.delivery_mode==="launch_only")return res.status(409).json({ok:false,error:"job terminal",status:job.status});
+  if((webReceipt?["CANCELLED","SUPERSEDED"]:["DONE","ERROR","CANCELLED","SUPERSEDED","LAUNCHED"]).includes(String(job.status||"").toUpperCase())||
+     (!webReceipt&&job.pc_launched_at&&job.delivery_mode==="launch_only"))
+    return res.status(409).json({ok:false,error:"job terminal",status:job.status});
   const eligible=await imageEligibility(target_id);
+  if(webReceipt){
+    const contextError=validHeadlineWebReceipt(job,eligible.row,String(req.body?.context_editorial_sha256||""));
+    if(contextError)return res.status(409).json({ok:false,error:contextError});
+  }
   const revisionChanged=Boolean(eligible.row)&&Number(eligible.row.revision||0)!==Number(job.revision||0);
   if(!eligible.eligible||revisionChanged)return res.status(409).json({ok:false,error:"target_no_elegible",reason:revisionChanged?"revision_changed":eligible.reason});
   const m=data.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
   if(!m)return res.status(400).json({ok:false,error:"Formato de raster no admitido"});
   const buf=Buffer.from(m[2],"base64");
-  if(buf.length<12000||buf.length>3*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
+  if(buf.length<12000||buf.length>(webReceipt?8:3)*1024*1024)return res.status(400).json({ok:false,error:"Tamaño de raster no válido",bytes:buf.length});
   const meta=await sharp(buf,{animated:false}).metadata(),width=Number(meta.width||0),height=Number(meta.height||0);
   if(width<640||height<360)return res.status(400).json({ok:false,error:"Raster inferior a 640x360",width,height});
   // La geometría puede variar según la salida real de ImageGen. La garantía
@@ -609,6 +649,10 @@ async function requestImageUpload(req,res){
     return res.status(422).json({ok:false,error:"Raster rechazado: geometría anómala",width,height,aspect:Number(aspect.toFixed(3))});
   }
   const sha256=crypto.createHash("sha256").update(buf).digest("hex"),now=new Date().toISOString();
+  if(webReceipt&&eligible.row.ai_image?.sha256===sha256&&
+      eligible.row.ai_image?.context_guard?.command_id===command_id){
+    return res.status(200).json({ok:true,idempotent:true,status:"DONE",target_id,command_id,sha256,width,height,bytes:buf.length});
+  }
   let persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido; guardando Gag IA en main."};
   let persistWrite=null,persistBase=existing;
   for(let n=0;n<6;n++){
@@ -694,7 +738,7 @@ async function requestImageRun(req,res){
       visual:"Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
       sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso, menores en contexto sensible o sufrimiento humano en objeto del gag.",
       political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-      lifecycle:"Enviar una sola orden a ChatGPT Images, confirmar el prompt y cerrar LAUNCHED. Nunca descargar, capturar, subir ni entregar el raster."
+      lifecycle:"Enviar una sola orden a ChatGPT Images. LAUNCHED solo confirma generación solicitada; el receptor independiente debe recuperar el raster original, persistirlo y comprobar su asociación sin otra generación."
     },
     message:"Solicitud registrada; esperando al PC."
   };
@@ -721,8 +765,8 @@ export default async function handler(req,res){
     try{return await requestImagePcAck(req,res)}
     catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
   }
-  if(rawTask==="image_upload"){
-    try{return await requestImageUpload(req,res)}
+  if(rawTask==="image_upload"||rawTask==="web_image_upload"){
+    try{return await requestImageUpload(req,res,rawTask==="web_image_upload")}
     catch(e){console.error(e);return res.status(500).json({ok:false,error:String(e.message||e)})}
   }
   if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});

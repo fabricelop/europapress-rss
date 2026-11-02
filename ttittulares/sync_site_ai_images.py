@@ -20,7 +20,7 @@ GENERATED = ROOT / "ttittulares/generated-images"
 PREFIX = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
 ID = re.compile(r"^[A-Za-z0-9_-]{3,160}$")
 SHA = re.compile(r"^[0-9a-f]{64}$", re.I)
-FILE = re.compile(r"^[A-Za-z0-9_-]+-r[0-9]+-ai[0-9]+\.(?:png|jpe?g|webp)$", re.I)
+FILE = re.compile(r"^[A-Za-z0-9_-]+-r[0-9]+-ai[0-9]+(?:-[A-Za-z0-9_-]+)?\.(?:png|jpe?g|webp)$", re.I)
 
 
 def from_ready(item: dict[str, Any], root: Path = ROOT) -> dict | None:

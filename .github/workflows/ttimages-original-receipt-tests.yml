@@ -1,0 +1,148 @@
+name: TTImages - recibo y asociación de originales
+on:
+  pull_request:
+    paths:
+      - 'windows/TTiTTularesWebImages.cjs'
+      - 'windows/TTiTTularesGithubOutbox.cjs'
+      - 'windows/tests/test_headline_github_outbox.cjs'
+      - 'ttittulares/apply_ai_image_outbox.py'
+      - 'tests/test_ttittulares_github_outbox.py'
+      - 'windows/TTiTTularesImageBridge.js'
+      - 'windows/TTiTTularesDedicatedListener.ps1'
+      - 'windows/TT-AutoUpdater.ps1'
+      - 'windows/Diagnosticar-TTImages-Asociacion-Safe.ps1'
+      - 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1'
+      - 'windows/tests/test_headline_original_receipt.cjs'
+      - 'windows/tests/test_trend_durable_original.cjs'
+      - 'windows/TTendenciasWebImages.cjs'
+      - 'tests/test_ttimages_mobile_continuity.cjs'
+      - 'vercel-webhook/lib/ttittulares-run-handler.js'
+      - 'vercel-webhook/lib/ttittulares-run-status-handler.js'
+      - 'vercel-webhook/lib/ttendencias-run-handler.js'
+      - 'no-vercel/ttittulares-worker/src/index.js'
+      - 'ttittulares/sync_site_ai_images.py'
+      - 'tests/test_ttittulares_image_catalog.py'
+      - '.github/workflows/ttimages-original-receipt-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-receipt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesWebImages.cjs
+            /windows/TTiTTularesGithubOutbox.cjs
+            /windows/tests/test_headline_github_outbox.cjs
+            /ttittulares/apply_ai_image_outbox.py
+            /ttittulares/apply_editorial_outbox.py
+            /tests/test_ttittulares_github_outbox.py
+            /windows/TTiTTularesImageBridge.js
+            /windows/TTendenciasWebImages.cjs
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/TT-AutoUpdater.ps1
+            /windows/Diagnosticar-TTImages-Asociacion-Safe.ps1
+            /windows/tests/test_headline_original_receipt.cjs
+            /windows/tests/test_trend_durable_original.cjs
+            /tests/test_ttimages_mobile_continuity.cjs
+            /ios/ttactualidad/TTActualidad/EditorialStore.swift
+            /pilot/ttactualidad-live/index.html
+            /docs/ttactualidad/index.html
+            /vercel-webhook/lib/ttittulares-run-handler.js
+            /vercel-webhook/lib/ttittulares-run-status-handler.js
+            /vercel-webhook/lib/ttendencias-run-handler.js
+            /no-vercel/ttittulares-worker/src/index.js
+            /ttittulares/sync_site_ai_images.py
+            /tests/test_ttittulares_image_catalog.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar JS de productor, receptor y Worker
+        run: |
+          node --check windows/TTiTTularesImageBridge.js
+          node --check windows/TTiTTularesWebImages.cjs
+          node --check windows/TTiTTularesGithubOutbox.cjs
+          node --check windows/TTendenciasWebImages.cjs
+          node --check vercel-webhook/lib/ttittulares-run-handler.js
+          node --check vercel-webhook/lib/ttittulares-run-status-handler.js
+          node --check vercel-webhook/lib/ttendencias-run-handler.js
+          node --check no-vercel/ttittulares-worker/src/index.js
+      - name: Contrato exacto de asociación y no duplicación
+        run: node --test windows/tests/test_headline_original_receipt.cjs
+      - name: Transporte GitHub directo de Noticias sin regenerar
+        run: node --test windows/tests/test_headline_github_outbox.cjs
+      - name: Conservar el original de TTendencias cuando falle el receptor
+        run: node --test windows/tests/test_trend_durable_original.cjs
+      - name: Continuidad de lectura móvil sin Cloudflare
+        run: node --test tests/test_ttimages_mobile_continuity.cjs
+      - name: Auditar destinatario real de imágenes (GET, sin redirecciones)
+        run: |
+          set -u
+          for service in tt-control ttittulares-no-vercel-test; do
+            host="$service.fabricelop.workers.dev"
+            status="$(curl -sS --connect-timeout 5 --max-time 14 \
+              -D /tmp/tti-receiver.headers \
+              -o /tmp/tti-receiver.body \
+              -w '%{http_code}' \
+              "https://$host/api/ttittulares-run-status?view=web-image-contract" || true)"
+            content_type="$(grep -i '^content-type:' /tmp/tti-receiver.headers 2>/dev/null | tail -1 | tr -d '\r' || true)"
+            echo "TTIMAGE_REMOTE_CHECK service=$service http=${status:-none} ${content_type:0:96}"
+            if [ "$status" = "200" ] && node -e '
+                const fs=require("fs");
+                try{const j=JSON.parse(fs.readFileSync("/tmp/tti-receiver.body","utf8"));
+                  process.exit(j.web_image_receipt===1&&j.project==="ttittulares"?0:1);
+                }catch{process.exit(1)}'; then
+              echo "TTIMAGE_LIVE_RECEIVER READY service=$service version=1"
+            else
+              echo "TTIMAGE_LIVE_RECEIVER NOT_READY service=$service"
+            fi
+          done
+          echo 'No uploads, deployment or modifications were attempted'
+      - name: Recibos de Noticias: identidad editorial y SHA-256 del original
+        run: python3 -m unittest discover -s tests -p test_ttittulares_github_outbox.py -v
+      - name: Catálogo de imágenes de noticias con SHA-256 real
+        run: python3 -m unittest discover -s tests -p test_ttittulares_image_catalog.py -v
+  windows-safety:
+    runs-on: windows-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/TT-AutoUpdater.ps1
+            /windows/Diagnosticar-TTImages-Asociacion-Safe.ps1
+            /windows/Install-TTImages-Noticias-Receptor-Safe.ps1
+            /windows/TTiTTularesWebImages.cjs
+            /windows/TTiTTularesGithubOutbox.cjs
+            /windows/tests/test_headline_github_outbox.cjs
+            /ttittulares/apply_ai_image_outbox.py
+            /ttittulares/apply_editorial_outbox.py
+            /tests/test_ttittulares_github_outbox.py
+      - name: Sintaxis PowerShell sin ejecutar ni reiniciar procesos
+        shell: powershell
+        run: |
+          foreach($p in @('windows/TTiTTularesDedicatedListener.ps1','windows/TT-AutoUpdater.ps1','windows/Diagnosticar-TTImages-Asociacion-Safe.ps1','windows/Install-TTImages-Noticias-Receptor-Safe.ps1')){
+            $tokens=$null; $errors=$null
+            [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errors)|Out-Null
+            if($errors.Count){throw "PowerShell inválido: $p"}
+          }
+          $updater=Get-Content 'windows/TT-AutoUpdater.ps1' -Raw
+          if(-not $updater.Contains('TTiTTularesWebImages.cjs')){throw "Receptor ausente del auto-updater"}
+          $stage=Get-Content 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1' -Raw
+          if($stage -notmatch '\[switch\]\$Apply' -or $stage -notmatch 'if\(-not \$Apply\)'){
+            throw 'Instalador debe exigir -Apply'
+          }
+          if($stage -match 'Start-Process|Stop-Process|Restart-Service|git push|ImageGen'){
+            throw 'Instalador tiene operaciones no permitidas'
+          }
+          if($stage -match 'ToHexString|HashData\('){throw 'Instalador incompatible con Windows PowerShell 5.1'}
+          $diagnostic=Get-Content 'windows/Diagnosticar-TTImages-Asociacion-Safe.ps1' -Raw
+          if($diagnostic -match '(?im)^\s*(Remove-Item|Set-Content|Add-Content|Start-Process|Stop-Process|Restart-Computer|Invoke-Expression|git push)\b'){
+            throw 'Diagnóstico contiene una operación prohibida'
+          }

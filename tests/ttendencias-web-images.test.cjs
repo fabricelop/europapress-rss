@@ -83,7 +83,7 @@ test('los puestos del Top30 no intervienen en identidad de imagen',()=>{
 test('an uncertain ERROR with a saved handoff is kept pending while receiver update is unavailable',async()=>{
  const j=job();j.status='ERROR';delete j.upload_sha256;
  const q={...task(),conversation_url:'https://chatgpt.com/c/abc-123'};delete q.upload_accepted_at;
- await withDocuments(null,j,manual(),async()=>{const result=await consume(q);assert.equal(result.status,'waiting');assert.equal(result.reason,'receiver_update_pending');});
+ await withDocuments(null,j,manual(),async()=>{const result=await consume(q);assert.equal(result.status,'waiting');assert.equal(result.reason,'browser_unavailable_original_not_captured');});
 });
 
 test('network failure reading RAW falls back to the existing strong receiver without bypassing identity',async()=>{

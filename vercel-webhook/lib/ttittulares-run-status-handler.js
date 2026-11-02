@@ -293,6 +293,9 @@ export default async function handler(req,res){
   if(req.method!=="GET")return res.status(405).json({ok:false,error:"Método no permitido"});
   try{
     const view=String(req.query?.view||"").toLowerCase();
+    // Capability handshake: never ship original rasters to an old Worker.
+    if(view==="web-image-contract")
+      return res.status(200).json({ok:true,web_image_receipt:1,project:"ttittulares",identity:"command_id+target_id+revision+editorial_sha256"});
     if(view==="listener-snapshot"){
       const strong=String(req.query?.strong||"")==="1";
       const [trigger,imageIndex0]=await Promise.all([
