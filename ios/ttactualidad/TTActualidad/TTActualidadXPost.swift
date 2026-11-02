@@ -1,11 +1,16 @@
 import Foundation
 
-// Share editorial text only. Do not append a portal URL that generates an X card.
-// Strip the legacy section suffix from previously composed payloads.
+// Prepare a manual X draft with the fixed section URL as plain text, not a
+// custom website card. X may independently unfurl links; the app never attaches
+// a card, and the editor can attach the chosen original photo in X.
+// Strip an existing copy of the same section URL to keep it unique.
 enum TTActualidadXPost {
     static let newsURL = "https://ttactualidad.rainyraven22.chatgpt.site/noticias"
     static let trendsURL = "https://ttactualidad.rainyraven22.chatgpt.site/tendencias"
     private static let contentBudget = 280
+    // X weighs each t.co URL at 23 characters, irrespective of display length.
+    private static let sectionURLBudget = 23
+    private static let sectionSeparator = "\n\n"
 
     static func weight(_ value: String) -> Int {
         value.reduce(into: 0) { total, glyph in
@@ -47,22 +52,22 @@ enum TTActualidadXPost {
             text = String(text.dropLast(site.count))
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        if weight(text) > contentBudget {
+        let editorialBudget = contentBudget - sectionURLBudget - weight(sectionSeparator)
+        if weight(text) > editorialBudget {
             let suffixStart = text.range(of: "\n\n#", options: .backwards)?.lowerBound ??
                               text.range(of: "\n🌶️", options: .backwards)?.lowerBound
             if let suffixStart {
                 let prefix = String(text[..<suffixStart])
                 let suffix = String(text[suffixStart...])
-                if weight(suffix) < contentBudget - 35 {
-                    text = shortened(prefix, maxWeight: contentBudget - weight(suffix)) + suffix
+                if weight(suffix) < editorialBudget - 35 {
+                    text = shortened(prefix, maxWeight: editorialBudget - weight(suffix)) + suffix
                 } else {
-                    text = shortened(text, maxWeight: contentBudget)
+                    text = shortened(text, maxWeight: editorialBudget)
                 }
             } else {
                 text = shortened(text, maxWeight: contentBudget)
             }
         }
-        return text
+        return text + sectionSeparator + site
     }
 }
-
