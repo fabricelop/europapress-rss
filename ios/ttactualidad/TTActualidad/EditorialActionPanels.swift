@@ -107,34 +107,66 @@ struct EditorialActions: View {
 
     var body: some View {
         VStack(spacing: 7) {
-            // Search is useful in every trend state, especially when research
-            // needs clues. It never depends on Listas, text or GitHub login.
-            if let trend {
-                quickButton("Buscar en X", "magnifyingglass") {
-                    var parts = URLComponents(string: "https://x.com/search")
-                    parts?.queryItems = [URLQueryItem(name: "q", value: trend.name),
-                                         URLQueryItem(name: "f", value: "live")]
-                    if let url = parts?.url { openURL(url) }
-                }
-            }
-            // Shared image controls for every editorial card. The text of
-            // "Copiar GAG" itself requests generation + attachment + verification.
-            // Association-only is the recovery route for an existing original.
+            // Identical primary controls for Noticias and Tendencias.
             HStack(spacing: 7) {
-                quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
-                quickLink("Proyecto TT", "folder",
-                    "https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project")
+                quickLink("GPT Images", "photo.badge.plus", EditorialActionPolicy.imagesURL)
+                quickLink("Proyecto TT", "folder", EditorialActionPolicy.projectURL)
             }
-            HStack(spacing: 7) {
-                quickButton("Asociar imagen IA", "paperclip") {
-                    if news != nil {
-                        copyNewsImageAssociationPrompt()
-                    } else {
-                        copyTrendSiteImagePrompt()
+            if archivePhotoURL != nil || aiPhotoURL != nil {
+                HStack(spacing: 7) {
+                    if archivePhotoURL != nil {
+                        quickButton("Copiar F Archivo", "photo") {
+                            Task { await copyPhoto(ai: false) }
+                        }
+                    }
+                    if aiPhotoURL != nil {
+                        quickButton("Copiar Foto IA", "sparkles.rectangle.stack") {
+                            Task { await copyPhoto(ai: true) }
+                        }
                     }
                 }
-                quickButton("Copiar foto", "photo.on.rectangle") {
-                    Task { await copyPhoto() }
+            }
+            HStack(spacing: 7) {
+                quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
+                    .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                quickButton("Copiar Texto", "doc.on.doc") { copy(xText) }
+                    .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+            HStack(spacing: 7) {
+                quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
+                    .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
+                quickButton("Elaborar desde 0", "arrow.triangle.2.circlepath") {
+                    if news != nil && news?.status != "LISTA" { request("prepare") }
+                    else { request("rework") }
+                }
+                    .disabled(news?.status == "EN ELABORACIÓN" || trend?.status == "EN ELABORACIÓN")
+            }
+            quickButton("Aportar Pistas", "lightbulb") {
+                if github.authenticated { showHints = true } else { showSettings = true }
+            }
+                .disabled(news != nil && news?.status != "LISTA")
+            HStack(spacing: 7) {
+                quickButton("Crear Foto IA", "photo.badge.plus") {
+                    copy(imageOnlyPrompt)
+                    outcome = "Prompt visual copiado. Abre GPT Images, pégalo y envíalo."
+                }
+                    .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                quickButton("Crear y Asociar IA", "sparkles") {
+                    copy(gagPrompt)
+                    outcome = "Orden copiada. Abre Proyecto TT, pégala y envíala."
+                }
+                    .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+            // Keep recovery/search available without duplicating the primary panel.
+            Menu("Más opciones") {
+                Button("Buscar en X") {
+                    var parts = URLComponents(string: "https://x.com/search")
+                    parts?.queryItems = [URLQueryItem(name: "q", value: title), URLQueryItem(name: "f", value: "live")]
+                    if let url = parts?.url { openURL(url) }
+                }
+                Button("Asociar imagen existente") {
+                    if news != nil { copyNewsImageAssociationPrompt() }
+                    else { copyTrendSiteImagePrompt() }
                 }
             }
             // A grouped original retains the same editorial actions as a normal trend.
@@ -171,7 +203,6 @@ struct EditorialActions: View {
                 }
                 if ["CRECIENDO", "REVISIÓN"].contains(news.status) {
                     HStack(spacing: 7) {
-                        quickButton("Elaborar desde cero", "sparkles") { request("prepare") }
                         quickButton("Desestimar", "xmark.circle", danger: true) { request("discard") }
                     }
                 } else if news.status == "TREMENDING" {
@@ -197,55 +228,14 @@ struct EditorialActions: View {
                 quickButton("Copiar orden editorial", "doc.on.doc") {
                     copyManualEditorialPrompt()
                 }
-            } else {
-            // Publication/editing remains independent of the image flow.
-            HStack(spacing: 7) {
-                quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }
-                quickButton("Copiar texto", "doc.on.doc") { copy(fullText) }
-            }
-            HStack(spacing: 7) {
-                if news != nil || trend?.inListas == true {
-                    quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
-                }
-                if trend != nil {
-                    // A single backend-supported fresh investigation for both
-                    // unexplained Top 30 entries and already-explained trends.
-                    quickButton("Elaborar desde cero", "arrow.triangle.2.circlepath") {
-                        request("rework")
-                    }
-                } else {
-                    // This action is served by the same authenticated direct
-                    // GitHub dispatch as trend rework, once deployed to main.
-                    quickButton("Elaborar desde cero", "arrow.triangle.2.circlepath") {
-                        request("rework")
-                    }
-                }
-            }
-            if let trend, trend.status != "EN ELABORACIÓN" {
-                quickButton("Aportar pistas", "lightbulb") {
-                    if github.authenticated {
-                        showHints = true
-                    } else {
-                        showSettings = true
-                    }
-                }
-            }
-            if news != nil {
-                quickButton("Buscar en X", "magnifyingglass") {
-                    var parts = URLComponents(string: "https://x.com/search")
-                    parts?.queryItems = [URLQueryItem(name: "q", value: title),
-                                         URLQueryItem(name: "f", value: "live")]
-                    if let url = parts?.url { openURL(url) }
-                }
-            }
             }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .sheet(isPresented: $showHints) {
-            if let trend {
-                TrendHintsSheet(trend: trend, github: github)
+            if news != nil || trend != nil {
+                TrendHintsSheet(trend: trend, news: news, github: github)
                     .environmentObject(store)
                     .presentationDetents([.medium, .large])
             }
@@ -367,17 +357,22 @@ struct EditorialActions: View {
 
     // GAG_VISUAL_NATIVE_V2: misma dirección artística de la elaboración automática,
     // sin las tarjetas de texto que se producían al copiar el prompt antiguo.
-    private var gagPrompt: String {
+    private var archivePhotoURL: URL? { news?.imageURL ?? trend?.imageURL }
+    private var aiPhotoURL: URL? { news?.siteImageURL ?? trend?.siteImageURL }
+    private var xText: String { TTActualidadXPost.payload(editorial: fullText, news: news != nil) }
+    private var imageOnlyPrompt: String { imagePrompt(associate: false) }
+    private var gagPrompt: String { imagePrompt(associate: true) }
+    private func imagePrompt(associate: Bool) -> String {
         // Do not run ImageGen on an identity that cannot be bound after generation.
         if let item = news, (item.status != "LISTA" || item.preparedAtISO.isEmpty ||
                             item.editorial.isEmpty) {
-            return automaticNewsImageBindingPrompt
+            return associate ? automaticNewsImageBindingPrompt : "NO generes todavía: primero prepara y sincroniza esta noticia."
         }
         if let item = trend, (item.siteImageEditorialID.isEmpty ||
                              item.siteImageExplainedAt.isEmpty ||
                              item.explanation.isEmpty ||
                              item.status == "EN ELABORACIÓN") {
-            return automaticTrendImageBindingPrompt
+            return associate ? automaticTrendImageBindingPrompt : "NO generes todavía: primero explica y sincroniza esta tendencia."
         }
         let lines = fullText.components(separatedBy: "\n")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -441,9 +436,9 @@ struct EditorialActions: View {
         // V0.4.44 COMPATIBILITY: a GAG is not finished until its original PNG
         // has been bound to the current editorial identity and the app/web
         // have independently verified their public records.
-        return visualPrompt + "\n\n" +
-            (news == nil ? automaticTrendImageBindingPrompt :
-                              automaticNewsImageBindingPrompt)
+        return EditorialActionPolicy.prompt(visual: visualPrompt,
+            association: news == nil ? automaticTrendImageBindingPrompt : automaticNewsImageBindingPrompt,
+            associate: associate)
     }
 
     private var automaticTrendImageBindingPrompt: String {
@@ -478,7 +473,7 @@ struct EditorialActions: View {
             .flatMap { String(data: $0, encoding: .utf8) } ?? ""
         return """
         TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V7 — GAG + WEB + APP (RESTABLECIDO DE V6)
-        ESTE GAG viene de «Copiar GAG» de TTActualidad. La ilustración sola
+        ESTE GAG viene de «Crear y Asociar IA» de TTActualidad. La ilustración sola
         NO constituye una entrega terminada. Ejecuta los pasos siguientes
         EN ESTA MISMA CONVERSACIÓN, SIN PEDIR OTRO BOTÓN NI OTRA ORDEN.
         No uses procesos Windows, PC, APIs de pago, Telegram ni publicación en X.
@@ -903,36 +898,31 @@ struct EditorialActions: View {
         }
         var parts = URLComponents(string: "https://twitter.com/intent/tweet")
         parts?.queryItems = [URLQueryItem(name: "text",
-                                          value: TTActualidadXPost.payload(
-                                            editorial: fullText, news: news != nil))]
+                                          value: xText)]
         if let url = parts?.url { openURL(url) }
     }
 
-    private func copyPhoto() async {
-        // Prefer the verified AI image that is displayed in the trend card.
-        // Fall back to the archive only if there is no accessible IA file.
-        let sources: [URL] = [news?.siteImageURL, trend?.siteImageURL,
-                              news?.imageURL ?? trend?.imageURL].compactMap { $0 }
-        guard !sources.isEmpty else {
-            outcome = "No hay imagen IA ni foto de archivo disponible."
+    private func copyPhoto(ai: Bool) async {
+        guard let url = EditorialActionPolicy.imageURL(ai: ai,
+            archive: archivePhotoURL, generated: aiPhotoURL) else {
+            outcome = ai ? "No hay foto IA disponible." : "No hay foto de archivo disponible."
             return
         }
-        for (index, url) in sources.enumerated() {
-            do {
-                let (data, response) = try await URLSession.shared.data(from: url)
-                guard (response as? HTTPURLResponse)?.statusCode == 200,
-                      let image = UIImage(data: data) else { continue }
-                UIPasteboard.general.image = image
-                let copiedAI = url == news?.siteImageURL || url == trend?.siteImageURL
-                outcome = "Foto copiada: " + (copiedAI ? "imagen IA" : "archivo")
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            guard (response as? HTTPURLResponse)?.statusCode == 200,
+                  let image = UIImage(data: data) else {
+                outcome = "No se pudo descargar la foto seleccionada."
                 return
-            } catch {
-                continue
             }
+            UIPasteboard.general.image = image
+            outcome = ai ? "Foto IA copiada." : "Foto de archivo copiada."
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        } catch {
+            outcome = "No se pudo descargar la foto seleccionada. Reintenta tras actualizar."
         }
-        outcome = "No se pudo descargar ninguna imagen. Reintenta tras actualizar."
     }
+
 }
 
 struct NewsSubmissionSheet: View {
