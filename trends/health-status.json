@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-02T08:13:50.773825+00:00",
+  "checked_at": "2026-11-02T18:23:18.837433+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.8,
-      "run_id": 41411172633,
+      "age_minutes": 2.5,
+      "run_id": 41499669891,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -68,7 +68,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 276,
+      "invalid_count": 284,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -78,16 +78,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 4,
-      "overdue_count": 1,
-      "oldest_age_minutes": 32.8,
+      "pending_count": 18,
+      "overdue_count": 14,
+      "oldest_age_minutes": 131.9,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "585534718a18",
-          "name": "#FielesDifuntos",
+          "id": "40d50f46e75e",
+          "name": "Heliodoro",
           "status": "preparing",
-          "age_minutes": 32.8
+          "age_minutes": 131.9
+        },
+        {
+          "id": "9767e3b44c3a",
+          "name": "Calero",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "f4c4d4189222",
+          "name": "Falcón",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "48e556d153eb",
+          "name": "Félix",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "ea1898970906",
+          "name": "Suecia",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "75f572510033",
+          "name": "Woody Allen",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "e7ab60b9a756",
+          "name": "Ocarina",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "586304ff2756",
+          "name": "SALF",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "2c11a365b2f8",
+          "name": "Viajar",
+          "status": "preparing",
+          "age_minutes": 131.9
+        },
+        {
+          "id": "ffa167f72646",
+          "name": "Igualito",
+          "status": "preparing",
+          "age_minutes": 131.9
         }
       ],
       "repairable": false
@@ -97,10 +151,24 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "585534718a18",
-        "a6d459a1c556",
-        "c90fa0e26588",
-        "0c6cf8f9deed"
+        "40d50f46e75e",
+        "9767e3b44c3a",
+        "f4c4d4189222",
+        "48e556d153eb",
+        "ea1898970906",
+        "75f572510033",
+        "e7ab60b9a756",
+        "586304ff2756",
+        "2c11a365b2f8",
+        "ffa167f72646",
+        "c48db1cddfcf",
+        "c8490403e466",
+        "dd28d1d571de",
+        "37757598646d",
+        "59e7d31e6d57",
+        "d8fc6f0e3250",
+        "791b68e7bf71",
+        "09c4a2596486"
       ],
       "contradictory_success": false
     },
@@ -112,10 +180,10 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 276 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.8 min"
+    "cola con 284 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 131.9 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 276 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.8 min"
+  "last_alert_signature": "cola con 284 estado(s) inválido(s) | cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 131.9 min"
 }
