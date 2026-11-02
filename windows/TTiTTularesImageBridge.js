@@ -990,7 +990,7 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
   while(Date.now()<deadline){
     if(handoff)await optionalWebHandoff(handoff,true);
     try{const receipt=JSON.parse(fs.readFileSync(receiptPath,'utf8'));
-      if(receipt.commandId===commandId&&receipt.editorialId===targetId&&/^[a-f0-9]{64}$/.test(receipt.rasterSHA256||'')&&receipt.id){
+      if(String(receipt.commandId)===commandId&&receipt.editorialId===targetId&&Number(receipt.revision||0)===Number(job.revision||0)&&/^[a-f0-9]{64}$/.test(receipt.rasterSHA256||'')&&receipt.id){
         console.log('PRIVATE_ORIGINAL_RECEIVED '+commandId);return 'private_original_received';
       }
     }catch{}
