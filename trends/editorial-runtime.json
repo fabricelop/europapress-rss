@@ -6,14 +6,14 @@
   "run_id": "tr-autoguard-1793653885",
   "previous_run_id": "tr-1793652373470-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-02T22:11:30+01:00",
-  "updated_at": "2026-11-02T22:11:30+01:00",
+  "updated_at": "2026-11-02T22:13:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "b73c43b052f7",
+  "title": "Yeremay",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -48,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T22:11:30+01:00",
@@ -112,7 +112,7 @@
     "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793653885: 3 trabajos preparing vigentes (Yeremay, Tenerife y Budimir, R0). Revalidación JIT antes de cada item; sin ImageGen ni publicación.",
+  "message": "Investigando Yeremay R0: titular del Deportivo-Osasuna en Riazor; contraste del directo y alineación confirmada.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1785,6 +1785,14 @@
       "phase": "preparing",
       "run_id": "tr-autoguard-1793653885",
       "message": "Inicio tr-autoguard-1793653885: 3 trabajos preparing vigentes (Yeremay, Tenerife y Budimir, R0). Revalidación JIT antes de cada item; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-02T22:13:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793653885",
+      "trend_id": "b73c43b052f7",
+      "title": "Yeremay",
+      "message": "Investigando Yeremay R0: titular del Deportivo-Osasuna en Riazor; contraste del directo y alineación confirmada."
     }
   ],
   "history": [
