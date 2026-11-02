@@ -326,6 +326,48 @@ final class GitHubEditor: ObservableObject {
         }
     }
 
+    // Immutable endpoint supplied at build time, never typed by an untrusted page.
+    // The editor GitHub OAuth token is sent only to this explicitly configured HTTPS host.
+    private var imageInboxBaseURL: URL? {
+        guard let raw = Bundle.main.object(forInfoDictionaryKey: "TTImageApprovalAPIBaseURL") as? String,
+              !raw.isEmpty,
+              let url = URL(string: raw),
+              url.scheme == "https", let host = url.host, !host.isEmpty,
+              url.user == nil, url.password == nil, url.port == nil,
+              (url.path == "" || url.path == "/"),
+              url.query == nil, url.fragment == nil
+        else { return nil }
+        return url
+    }
+
+    var imageInboxConfigured: Bool { imageInboxBaseURL != nil }
+
+    func privateImageInboxRequest(path: String, method: String = "GET",
+                                  jsonBody: Data? = nil) async throws -> (Data, Int) {
+        guard let base = imageInboxBaseURL else {
+            throw GitHubError.message("El servicio privado de imágenes no está configurado.")
+        }
+        guard path.range(of: "^/v1/images(?:/[a-f0-9]{64}/(?:original|decision))?$",
+                         options: .regularExpression) != nil,
+              ["GET", "POST"].contains(method),
+              let url = URL(string: base.absoluteString.trimmingCharacters(in: CharacterSet(charactersIn: "/")) + path)
+        else { throw GitHubError.message("Ruta privada no permitida.") }
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 25)
+        request.httpMethod = method
+        request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
+        request.setValue("no-store", forHTTPHeaderField: "Cache-Control")
+        if let jsonBody {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonBody
+        }
+        let (bytes, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse else {
+            throw GitHubError.message("No hay respuesta HTTP verificable.")
+        }
+        return (bytes, http.statusCode)
+    }
+
     // HTTP 204 is only a transport acknowledgement. Verify the committed state.
     private func readMainJSON(_ path: String) async throws -> [String: Any] {
         var url = URLComponents(string: "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + path)!
