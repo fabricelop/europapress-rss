@@ -9,6 +9,17 @@ $files=@{
  'TTendenciasImageBridge.js'='416069b713104821be1a76c53f3cf332f647ff83331aa293c993ef21f84a3283'
  'TTiTTularesImageBridge.js'='f5c2c3918184e10b4f9854191bed53bb4abf6fde76d69c1266067fdd27540851'
 }
+$allowed=@{
+ 'TTendenciasWebImages.cjs'=@('d16e7bda8d76b9b8b39d86d4123a6a2f72d7ce0e414de674e6f6ab7d6c677753','d20ed1b1c5568f49cb9791bb4879a8ca4711254d84a16e69bfa481a894e4ba29')
+ 'TTiTTularesWebImages.cjs'=@('4ac71521b9f529d9d66b8555a3ddb8a798dbe1f678827701a6c8f29dde445ded','13e04527eba31ebbdb0e1b93979ab3a91ee5af4068eee0e019fa75e7d0afa9a6')
+ 'TTendenciasImageBridge.js'=@('013f86210fb4f673378ca300ccc866f063e38acb3c2b0960a580222210b114a8','344f7a6dca4ac5e78fec1a07c032fd85a70ba1d7bd544893e7077440dc531923')
+ 'TTiTTularesImageBridge.js'=@('df615c30387aa720fb5880b11ea1306ab372492330956808e2c32951099ae53e','fbd23150bfcea704de79395a093083e42be88b6c3effe7c44b1751f1c1b42985')
+}
+function Get-NormalizedHash([string]$file) {
+ $text=[IO.File]::ReadAllText($file).Replace("`r`n","`n").TrimEnd([char[]]"`r`n")
+ $sha=[Security.Cryptography.SHA256]::Create()
+ try{return ([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($text)))).Replace('-','').ToLowerInvariant()}finally{$sha.Dispose()}
+}
 if(-not(Test-Path -LiteralPath $base)){throw 'No existe C:\TTiTTulares. Sin cambios.'}
 $node=(Get-Command node.exe -ErrorAction Stop).Source
 function Assert-GenerationIdle {
@@ -19,6 +30,9 @@ function Assert-GenerationIdle {
 }
 Assert-GenerationIdle
 foreach($name in $files.Keys){if(-not(Test-Path -LiteralPath (Join-Path $base $name))){throw ('Falta '+$name+'. Sin cambios.')}}
+foreach($name in $files.Keys){
+ if($allowed[$name] -notcontains (Get-NormalizedHash (Join-Path $base $name))){throw ('Version local no reconocida: '+$name+'. No se sustituye; necesita revision para conservar cambios.')}
+}
 $temp=Join-Path $env:TEMP ('TT-ImagePause-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $temp | Out-Null
 $backup=Join-Path $base ('image-pause-backup-'+(Get-Date -Format 'yyyyMMdd-HHmmss'))
