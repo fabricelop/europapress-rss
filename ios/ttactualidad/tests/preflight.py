@@ -252,7 +252,7 @@ assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
 assert 'MARKETING_VERSION: "0.4.47"' in project
-assert 'CURRENT_PROJECT_VERSION: "57"' in project
+assert 'CURRENT_PROJECT_VERSION: "58"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -285,7 +285,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "57"' in project
+assert 'CURRENT_PROJECT_VERSION: "58"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -297,7 +297,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "57"' in project
+assert 'CURRENT_PROJECT_VERSION: "58"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -314,7 +314,7 @@ assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
 assert 'MARKETING_VERSION: "0.4.47"' in project
-assert 'CURRENT_PROJECT_VERSION: "57"' in project
+assert 'CURRENT_PROJECT_VERSION: "58"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -470,7 +470,7 @@ assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
 assert 'MARKETING_VERSION: "0.4.47"' in project
-assert 'CURRENT_PROJECT_VERSION: "57"' in project
+assert 'CURRENT_PROJECT_VERSION: "58"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
 # 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
@@ -491,7 +491,7 @@ assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
 assert 'MARKETING_VERSION: "0.4.47"' in project
-assert 'CURRENT_PROJECT_VERSION: "57"' in project
+assert 'CURRENT_PROJECT_VERSION: "58"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.47 build 53: one identical image-action panel for news and trends.
@@ -510,7 +510,7 @@ assert 'if let archive = item.imageURL' in live
 assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
-assert 'CURRENT_PROJECT_VERSION: "57"' in project
+assert 'CURRENT_PROJECT_VERSION: "58"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
 
 
@@ -539,12 +539,13 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert project.count('CURRENT_PROJECT_VERSION: "57"') == 2
-assert project.count('CFBundleVersion: "57"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "58"') == 2
+assert project.count('CFBundleVersion: "58"') == 2
 assert 'TTActualidadXPost.payload(' in actions
-assert 'https://ttactualidad.rainyraven22.chatgpt.site/noticias' in actions
-assert 'https://ttactualidad.rainyraven22.chatgpt.site/tendencias' in actions
-assert 'contentBudget = 280 - 23 - 2' in actions
+x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
+assert 'private static let contentBudget = 280' in x_post
+assert 'return text + ' not in x_post
+assert 'TTActualidad/TTActualidadXPost.swift' in project
 assert 'value: xText' in actions
 assert 'JPEG' in actions and 'image/jpeg' in actions
 assert 'PEGADA o ADJUNTADA' in actions
