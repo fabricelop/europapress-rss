@@ -20,21 +20,38 @@ final class EditorialActionPolicyTests: XCTestCase {
         XCTAssertEqual(EditorialActionPolicy.prompt(visual: "HECHOS Y DIRECCIÓN VISUAL", association: "ASOCIAR ESTE ORIGINAL", associate: false), "HECHOS Y DIRECCIÓN VISUAL")
         XCTAssertEqual(EditorialActionPolicy.prompt(visual: "VISUAL", association: "ASOCIAR ESTE ORIGINAL", associate: true), "VISUAL\n\nASOCIAR ESTE ORIGINAL")
     }
-    func testXPayloadDoesNotAppendPortalLinkForEitherProject() {
+    func testXPayloadAppendsExactlyOneSectionLinkForEachProject() {
         let text = "Noticia comprobada.\n\n#Actualidad\n🌶️ Remate."
         for news in [true, false] {
-            XCTAssertEqual(TTActualidadXPost.payload(editorial: text, news: news), text)
+            let site = news ? TTActualidadXPost.newsURL : TTActualidadXPost.trendsURL
+            let payload = TTActualidadXPost.payload(editorial: text, news: news)
+            XCTAssertEqual(payload, text + "\n\n" + site)
+            XCTAssertEqual(TTActualidadXPost.payload(
+                editorial: text + "\n\n" + site, news: news), payload)
+            XCTAssertEqual(payload.components(separatedBy: site).count, 2)
         }
-        XCTAssertEqual(TTActualidadXPost.payload(editorial: text + "\n\n" + TTActualidadXPost.newsURL, news: true), text)
-        XCTAssertEqual(TTActualidadXPost.payload(editorial: text + "\n\n" + TTActualidadXPost.trendsURL, news: false), text)
     }
 
-    func testXPayloadKeepsFull280BudgetAndEditorialSuffix() {
+    func testXPayloadReservesTcoWeightAndPreservesHashtagsAndRemate() {
         let text = String(repeating: "a", count: 270)
-        XCTAssertEqual(TTActualidadXPost.payload(editorial: text, news: true), text)
+        for news in [true, false] {
+            let site = news ? TTActualidadXPost.newsURL : TTActualidadXPost.trendsURL
+            let payload = TTActualidadXPost.payload(editorial: text, news: news)
+            XCTAssertTrue(payload.hasSuffix("\n\n" + site))
+            let editorial = String(payload.dropLast(site.count + 2))
+            XCTAssertLessThanOrEqual(TTActualidadXPost.weight(editorial) + 2 + 23, 280)
+            XCTAssertTrue(editorial.hasSuffix("…"))
+        }
         let long = String(repeating: "a", count: 300) + "\n\n#Tema\n🌶️ Remate."
         let result = TTActualidadXPost.payload(editorial: long, news: true)
-        XCTAssertLessThanOrEqual(TTActualidadXPost.weight(result), 280)
-        XCTAssertTrue(result.hasSuffix("#Tema\n🌶️ Remate."))
+        XCTAssertTrue(result.hasSuffix("#Tema\n🌶️ Remate.\n\n" + TTActualidadXPost.newsURL))
+        let editorial = String(result.dropLast(TTActualidadXPost.newsURL.count + 2))
+        XCTAssertLessThanOrEqual(TTActualidadXPost.weight(editorial) + 2 + 23, 280)
+    }
+
+    func testXPayloadDoesNotMutateEditorialUrlsOtherThanDuplicateSectionSuffix() {
+        let text = "Consulta https://example.com/prueba y la noticia."
+        let payload = TTActualidadXPost.payload(editorial: text, news: false)
+        XCTAssertEqual(payload, text + "\n\n" + TTActualidadXPost.trendsURL)
     }
 }
