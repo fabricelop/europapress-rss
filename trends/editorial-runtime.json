@@ -5,106 +5,166 @@
   "canonical": true,
   "run_id": "tr-1793656762873-manual",
   "previous_run_id": "tr-1793656604711-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T22:59:22.873+01:00",
-  "updated_at": "2026-11-02T23:07:29+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-02T23:08:18.554+01:00",
+  "finished_at": "2026-11-02T23:08:18.554+01:00",
+  "current": 5,
   "total": 5,
-  "trend_id": "80bdd4d8965a",
-  "title": "Hidalgo",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "80bdd4d8965a",
-    "b5c96ee7e280"
+    "a157f21d8369",
+    "00db0e3844a0",
+    "9dc1b6003e39",
+    "b5c96ee7e280",
+    "80bdd4d8965a"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 5,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-9ac2d7454d6902a922fc",
+      "id": "a157f21d8369",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
+      "name": "#FirstDates2N",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "90e5abcf8938970284d13b86ae755444bfbb57b2",
-      "reason": "La validación JIT encontró que Toledo ya no estaba en el Top 30 fresco; no se creó una actualización obsoleta."
+      "via": "this_run_editorial_outbox"
     },
     {
-      "id": "red-review-8d2db5cc94e6c8cae41f",
+      "id": "00db0e3844a0",
       "revision": 0,
-      "name": "Revisar novedades: Diomande",
-      "outcome": "unchanged",
+      "name": "adama",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "c443a19478c6b0b4c1c47f1a0b060cd8d3478500",
-      "reason": "Sin novedad material: la cobertura posterior sigue centrada en el mismo 0-3 al Racing; texto y fecha originales conservados."
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "9dc1b6003e39",
+      "revision": 0,
+      "name": "Auba",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "b5c96ee7e280",
+      "revision": 0,
+      "name": "Mella",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "80bdd4d8965a",
+      "revision": 0,
+      "name": "Hidalgo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T23:07:29+01:00",
-  "last_completed_at": "2026-11-02T23:07:29+01:00",
+  "last_completed_at": "2026-11-02T23:08:18.554+01:00",
   "last_run": {
-    "run_id": "tr-1793656604711-manual",
-    "command_id": "tr-1793656604711-manual",
+    "run_id": "tr-1793656762873-manual",
+    "command_id": "tr-1793656762873-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-02T22:58:00+01:00",
-    "finished_at": "2026-11-02T23:02:00+01:00",
+    "started_at": "2026-11-02T22:59:22.873+01:00",
+    "finished_at": "2026-11-02T23:08:18.554+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
+      "explained": 5,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 1,
-      "stale_reviews": 1,
+      "unchanged_reviews": 0,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "red-review-9ac2d7454d6902a922fc",
+        "id": "a157f21d8369",
         "revision": 0,
-        "name": "Revisar novedades: Toledo",
-        "outcome": "stale",
+        "name": "#FirstDates2N",
+        "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "90e5abcf8938970284d13b86ae755444bfbb57b2",
-        "reason": "La validación JIT encontró que Toledo ya no estaba en el Top 30 fresco; no se creó una actualización obsoleta."
+        "via": "this_run_editorial_outbox"
       },
       {
-        "id": "red-review-8d2db5cc94e6c8cae41f",
+        "id": "00db0e3844a0",
         "revision": 0,
-        "name": "Revisar novedades: Diomande",
-        "outcome": "unchanged",
+        "name": "adama",
+        "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "c443a19478c6b0b4c1c47f1a0b060cd8d3478500",
-        "reason": "Sin novedad material: la cobertura posterior sigue centrada en el mismo 0-3 al Racing; texto y fecha originales conservados."
+        "via": "this_run_editorial_outbox"
+      },
+      {
+        "id": "9dc1b6003e39",
+        "revision": 0,
+        "name": "Auba",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox"
+      },
+      {
+        "id": "b5c96ee7e280",
+        "revision": 0,
+        "name": "Mella",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox"
+      },
+      {
+        "id": "80bdd4d8965a",
+        "revision": 0,
+        "name": "Hidalgo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "this_run_editorial_outbox"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793656604711-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Diomande unchanged al no haber novedad material. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Persistiendo Hidalgo (5/5) tras validación JIT.",
+  "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3542,46 +3602,48 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "5f810de04443",
+      "id": "a157f21d8369",
       "revision": 0,
-      "name": "#ElPerroAndaluzTVE",
+      "name": "#FirstDates2N",
       "outcome": "explained",
       "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "1e0cf1f9f55204f032cc3d37e3e016c0c920199b"
+      "via": "this_run_editorial_outbox"
     },
     {
-      "id": "570491eda2ef",
+      "id": "00db0e3844a0",
       "revision": 0,
-      "name": "Ferllo",
+      "name": "adama",
       "outcome": "explained",
       "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "508388501a3a2dd57eea356fd0773d4ef5964c0c"
+      "via": "this_run_editorial_outbox"
     },
     {
-      "id": "red-review-9ac2d7454d6902a922fc",
+      "id": "9dc1b6003e39",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
+      "name": "Auba",
+      "outcome": "explained",
       "applied": true,
-      "via": "this_run_maintenance_outbox",
-      "apply_commit": "90e5abcf8938970284d13b86ae755444bfbb57b2",
-      "reason": "El aplicador JIT marcó la revisión como stale y no creó una actualización nueva."
+      "via": "this_run_editorial_outbox"
     },
     {
-      "id": "red-review-8d2db5cc94e6c8cae41f",
+      "id": "b5c96ee7e280",
       "revision": 0,
-      "name": "Revisar novedades: Diomande",
-      "outcome": "unchanged",
+      "name": "Mella",
+      "outcome": "explained",
       "applied": true,
-      "via": "this_run_maintenance_outbox",
-      "apply_commit": "c443a19478c6b0b4c1c47f1a0b060cd8d3478500",
-      "reason": "Sin novedad material; texto y fecha originales conservados."
+      "via": "this_run_editorial_outbox"
+    },
+    {
+      "id": "80bdd4d8965a",
+      "revision": 0,
+      "name": "Hidalgo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_editorial_outbox"
     }
   ],
-  "current_item": "80bdd4d8965a",
-  "current_title": "Hidalgo",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -5029,6 +5091,77 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual."
+    },
+    {
+      "run_id": "tr-1793656762873-manual",
+      "command_id": "tr-1793656762873-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-02T22:59:22.873+01:00",
+      "finished_at": "2026-11-02T23:08:18.554+01:00",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "a157f21d8369",
+          "revision": 0,
+          "name": "#FirstDates2N",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "00db0e3844a0",
+          "revision": 0,
+          "name": "adama",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "9dc1b6003e39",
+          "revision": 0,
+          "name": "Auba",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "b5c96ee7e280",
+          "revision": 0,
+          "name": "Mella",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "80bdd4d8965a",
+          "revision": 0,
+          "name": "Hidalgo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0."
     }
   ],
   "command_id": "tr-1793656762873-manual",
@@ -5476,6 +5609,77 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793656604711-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Diomande unchanged al no haber novedad material. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793656762873-manual",
+      "command_id": "tr-1793656762873-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-02T22:59:22.873+01:00",
+      "finished_at": "2026-11-02T23:08:18.554+01:00",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "a157f21d8369",
+          "revision": 0,
+          "name": "#FirstDates2N",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "00db0e3844a0",
+          "revision": 0,
+          "name": "adama",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "9dc1b6003e39",
+          "revision": 0,
+          "name": "Auba",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "b5c96ee7e280",
+          "revision": 0,
+          "name": "Mella",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "80bdd4d8965a",
+          "revision": 0,
+          "name": "Hidalgo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0."
     }
   ]
 }
