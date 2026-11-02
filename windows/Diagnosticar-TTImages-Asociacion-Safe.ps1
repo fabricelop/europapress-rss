@@ -54,6 +54,32 @@ function LocalFiles([string]$Project,[string]$TargetId){
   }
   if($hits -eq 0){Emit ($Project+'_RECEIPT') 'NO_MATCH' ('id='+$TargetId)}
 }
+function LocalNewsReceiverTrace([string]$TargetId){
+  # Only status markers, no PNG/base64/Chrome URLs, credentials or user text.
+  $folder=Join-Path $BaseDir 'ttittulares-web-images'
+  foreach($file in @(
+    (Join-Path $folder 'receiver.log'),
+    (Join-Path $folder 'receiver.err.log'),
+    (Join-Path $BaseDir 'ttittulares-web-images.log'),
+    (Join-Path $BaseDir 'ttittulares-web-images.err.log')
+  )){
+    if(-not(Test-Path -LiteralPath $file)){continue}
+    $lines=@(Get-Content -LiteralPath $file -Tail 200 -ErrorAction SilentlyContinue)
+    $found=@($lines | Where-Object {
+      $_ -match [regex]::Escape($TargetId) -and
+      $_ -match 'TTITTULARES_WEB_IMAGE|ORIGINAL RECEIPT|WEB IMAGE RECEIPT'
+    } | Select-Object -Last 3)
+    if($found.Count -eq 0){
+      Emit 'NEWS_RECEIVER_TRACE' 'NO_MATCH' ('file='+[IO.Path]::GetFileName($file))
+      continue
+    }
+    foreach($line in $found){
+      $status=if($line -match 'published|PERSISTED'){'PERSISTED'}elseif($line -match 'waiting|PENDING'){'WAITING'}elseif($line -match 'rejected|obsolete|REVIEW'){'REVIEW'}else{'INFO'}
+      $reason=if($line -match 'reason=([A-Za-z0-9_:-]+)'){$Matches[1]}else{'not_reported'}
+      Emit 'NEWS_RECEIVER_TRACE' $status ('file='+[IO.Path]::GetFileName($file)+' reason='+$reason)
+    }
+  }
+}
 function ReadPublicJob([string]$Project,[string]$TargetId){
   $branch=if($Project -eq 'NEWS'){'control/ttittulares-run-trigger-v2'}else{'control/ttendencias-run-trigger'}
   $folder=if($Project -eq 'NEWS'){'ttittulares'}else{'trends'}
@@ -95,6 +121,7 @@ if($env:TT_IMAGES_GITHUB_TOKEN -or $env:GH_TOKEN -or $env:GITHUB_TOKEN){
 }
 Emit 'NEWS_GITHUB_AUTH' $githubAuth
 LocalFiles 'NEWS' $NewsId
+LocalNewsReceiverTrace $NewsId
 LocalFiles 'TRENDS' $TrendId
 CheckCdp 9223
 CheckCdp 9234
