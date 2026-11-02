@@ -1037,7 +1037,7 @@ async function optionalWebHandoff(handoff,remember=false){
           if(String(current.status||"").toUpperCase()==="DONE"&&current.upload_sha256)break;
           if(["CANCELLED","SUPERSEDED"].includes(String(current.status||"").toUpperCase()))break;
         }
-        console.log("BRIDGE LAUNCHED; WEB RECEIPT INDEPENDENT "+commandId);
+        console.log("BRIDGE LAUNCH ONLY CONFIRMED; WEB RECEIPT INDEPENDENT "+commandId);
         return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
