@@ -5,19 +5,20 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793650268",
   "previous_run_id": "tr-1793648428381-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-02T21:12:00+01:00",
-  "updated_at": "2026-11-02T21:12:00+01:00",
+  "updated_at": "2026-11-02T21:16:15+01:00",
   "finished_at": null,
   "current": 0,
   "total": 7,
   "trend_id": "e7f55edd3770",
   "title": "Renfe y Adif",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "e7f55edd3770"
+  ],
   "remaining_ids": [
-    "e7f55edd3770",
     "62a356cab514",
     "358fb89fcdaa",
     "6b9031df0583",
@@ -26,7 +27,6 @@
     "8f79a4e7f99e"
   ],
   "remaining_active_ids": [
-    "e7f55edd3770",
     "62a356cab514",
     "358fb89fcdaa",
     "6b9031df0583",
@@ -83,7 +83,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T21:12:00+01:00",
+  "last_started_at": "2026-11-02T21:16:15+01:00",
   "last_completed_at": "2026-11-02T20:47:00+01:00",
   "last_run": {
     "run_id": "tr-1793648428381-manual",
