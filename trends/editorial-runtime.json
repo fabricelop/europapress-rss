@@ -3,46 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793651013499-manual",
-  "previous_run_id": "tr-1793650762871-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T21:24:00+01:00",
-  "updated_at": "2026-11-02T21:28:00+01:00",
-  "finished_at": "2026-11-02T21:28:00+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-0b5f468fc7c7ca43d8b1"
+  "run_id": "tr-autoguard-1793652102",
+  "previous_run_id": "tr-1793651013499-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T21:42:00+01:00",
+  "updated_at": "2026-11-02T21:42:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "f650d7250dbb",
+  "title": "Lola Herrera",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "f650d7250dbb",
+    "5d88729177b6"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "f650d7250dbb",
+    "5d88729177b6"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-0b5f468fc7c7ca43d8b1",
@@ -96,7 +100,7 @@
     "message": "Pasada tr-1793651013499-manual cerrada 1/1: Endesa revisada sin novedades sustanciales; se conserva texto y fecha. Verificación final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793651013499-manual cerrada 1/1: Endesa revisada sin novedades sustanciales; se conserva texto y fecha. Verificación final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793652102: 2 trabajos preparing vigentes en main (Lola Herrera y Riazor), procesados por antigüedad con validación JIT de id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1742,6 +1746,13 @@
       "phase": "closing",
       "run_id": "tr-1793651013499-manual",
       "message": "TTendencias cerrada 1/1: Endesa revisada sin novedades materiales. ImageGen=0; publicaciones=0; incidencias=0."
+    },
+    {
+      "at": "2026-11-02T21:42:00+01:00",
+      "phase": "preparing",
+      "trend_id": "f650d7250dbb",
+      "title": "Lola Herrera",
+      "message": "Inicio tr-autoguard-1793652102: 2 trabajos preparing vigentes en main (Lola Herrera y Riazor), procesados por antigüedad con validación JIT de id+revision; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -4694,7 +4705,7 @@
       "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual."
     }
   ],
-  "command_id": "tr-1793650762871-manual",
+  "command_id": "tr-autoguard-1793652102",
   "requested_at": "2026-11-02T21:20:30+01:00",
   "runs": [
     {
