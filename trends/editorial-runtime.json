@@ -3,23 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793611644017-manual",
-  "previous_run_id": "tr-1793611314712-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T10:27:00+01:00",
-  "updated_at": "2026-11-02T10:30:30+01:00",
-  "finished_at": "2026-11-02T10:30:30+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-18041079a0266bec70ff"
+  "run_id": "tr-1793620099556-manual",
+  "previous_run_id": "tr-1793611644017-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T12:48:00+01:00",
+  "updated_at": "2026-11-02T12:48:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 6,
+  "trend_id": "3d2fe92648f7",
+  "title": "La Palma",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "3d2fe92648f7",
+    "b768658f71c9",
+    "da50b7b74074",
+    "bb4e12d9fa04",
+    "5eda99cdb848",
+    "232ca96063fe"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "3d2fe92648f7",
+    "b768658f71c9",
+    "da50b7b74074",
+    "bb4e12d9fa04",
+    "5eda99cdb848",
+    "232ca96063fe"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
@@ -42,7 +54,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-18041079a0266bec70ff",
@@ -82,7 +94,7 @@
     "message": "Pasada tr-1793611644017-manual cerrada 1/1 por convergencia JIT: Día de Todos quedó unchanged con texto y fecha originales conservados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793611644017-manual cerrada 1/1 por convergencia JIT: Día de Todos quedó unchanged con texto y fecha originales conservados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793620099556-manual: 6 investigaciones preparing vigentes en main. Procesado JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1366,6 +1378,14 @@
       "current": 1,
       "total": 1,
       "message": "Pasada tr-1793611644017-manual cerrada 1/1 por convergencia JIT: Día de Todos quedó unchanged con texto y fecha originales conservados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T12:48:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793620099556-manual",
+      "trend_id": "3d2fe92648f7",
+      "title": "La Palma",
+      "message": "Inicio tr-1793620099556-manual: 6 investigaciones preparing vigentes en main. Procesado JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -4021,6 +4041,6 @@
       "message": "Pasada tr-1793611644017-manual cerrada 1/1 por convergencia JIT: Día de Todos quedó unchanged con texto y fecha originales conservados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793611644017-manual",
-  "requested_at": "2026-11-02T10:27:00+01:00"
+  "command_id": "tr-1793620099556-manual",
+  "requested_at": "2026-11-02T12:48:00+01:00"
 }
