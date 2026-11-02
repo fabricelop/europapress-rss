@@ -4,35 +4,37 @@
   "version": 1,
   "canonical": true,
   "run_id": "tr-1793652373470-manual",
-  "previous_run_id": "tr-1793651013499-manual",
-  "status": "success",
-  "phase": "investigating",
+  "previous_run_id": "tr-autoguard-1793652102",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T21:46:00+01:00",
-  "updated_at": "2026-11-02T21:54:49+01:00",
-  "finished_at": null,
-  "current": 2,
-  "total": 4,
-  "trend_id": "red-review-40001ebb08d71fb3aec4",
-  "title": "Revisar novedades: Morales",
+  "updated_at": "2026-11-02T20:55:59.674Z",
+  "finished_at": "2026-11-02T20:55:59.674Z",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-40001ebb08d71fb3aec4",
+    "red-review-d97c62b7575f6ec9b3db",
     "13ab80a5ba95"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 1,
+    "updates": 2,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -42,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "red-review-0b5f468fc7c7ca43d8b1",
@@ -54,49 +56,68 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T21:54:49+01:00",
-  "last_completed_at": "2026-11-02T21:54:49+01:00",
+  "last_started_at": "2026-11-02T21:46:00+01:00",
+  "last_completed_at": "2026-11-02T20:55:59.674Z",
   "last_run": {
-    "run_id": "tr-1793651013499-manual",
-    "command_id": "tr-1793651013499-manual",
+    "run_id": "tr-1793652373470-manual",
+    "command_id": "tr-1793652373470-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-02T21:24:00+01:00",
-    "finished_at": "2026-11-02T21:28:00+01:00",
+    "started_at": "2026-11-02T21:46:00+01:00",
+    "finished_at": "2026-11-02T20:55:59.674Z",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
-      "updates": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 1,
+      "updates": 2,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 1,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "red-review-0b5f468fc7c7ca43d8b1",
+        "id": "red-review-40001ebb08d71fb3aec4",
         "revision": 0,
-        "name": "Revisar novedades: Endesa",
-        "outcome": "unchanged",
+        "name": "Revisar novedades: Morales",
+        "outcome": "updated",
         "applied": true,
-        "via": "concurrent_convergence_jit"
+        "created_id": "trend-update-b47a1bb9fd626142b550",
+        "via": "maintenance_outbox"
+      },
+      {
+        "id": "red-review-d97c62b7575f6ec9b3db",
+        "revision": 0,
+        "name": "Revisar novedades: La Palma",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-eb1736cfc17df070d771",
+        "via": "maintenance_outbox"
+      },
+      {
+        "id": "13ab80a5ba95",
+        "revision": 0,
+        "name": "Catena",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "apply_commit": "ff9232121b7fb634e3e12cb93196bc287a7814bb"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793651013499-manual cerrada 1/1: Endesa revisada sin novedades sustanciales; se conserva texto y fecha. Verificación final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Barrera ampliada a 4 trabajos: Lola Herrera y Riazor ya aplicados; revisando Morales y La Palma con validación JIT y sin ImageGen.",
+  "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1756,6 +1777,13 @@
       "trend_id": "red-review-40001ebb08d71fb3aec4",
       "title": "Revisar novedades: Morales",
       "message": "Barrera ampliada a 4 trabajos: Lola Herrera y Riazor ya aplicados; revisando Morales y La Palma con validación JIT y sin ImageGen."
+    },
+    {
+      "at": "2026-11-02T20:55:59.674Z",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -4804,6 +4832,141 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1793652102",
+      "command_id": "tr-autoguard-1793652102",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-02T21:42:00+01:00",
+      "finished_at": "2026-11-02T20:55:59.674Z",
+      "superseded_by": "tr-1793652373470-manual",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "f650d7250dbb",
+          "revision": 0,
+          "name": "Lola Herrera",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "02bf2b912c178a23404a1fd8dc1fac6f8f2b4ada"
+        },
+        {
+          "id": "5d88729177b6",
+          "revision": 0,
+          "name": "Riazor",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox",
+          "apply_commit": "02bf2b912c178a23404a1fd8dc1fac6f8f2b4ada"
+        },
+        {
+          "id": "red-review-40001ebb08d71fb3aec4",
+          "revision": 0,
+          "name": "Revisar novedades: Morales",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-b47a1bb9fd626142b550",
+          "via": "concurrent_convergence"
+        },
+        {
+          "id": "red-review-d97c62b7575f6ec9b3db",
+          "revision": 0,
+          "name": "Revisar novedades: La Palma",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-eb1736cfc17df070d771",
+          "via": "concurrent_convergence"
+        },
+        {
+          "id": "13ab80a5ba95",
+          "revision": 0,
+          "name": "Catena",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox_after_successor",
+          "apply_commit": "ff9232121b7fb634e3e12cb93196bc287a7814bb"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Autoguard tr-autoguard-1793652102 cerrado 5/5 tras absorber trabajo entrante durante la barrera: Lola Herrera, Riazor y Catena explicados; Morales y La Palma actualizados por el sucesor concurrente. Cola final 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793652373470-manual",
+      "command_id": "tr-1793652373470-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-02T21:46:00+01:00",
+      "finished_at": "2026-11-02T20:55:59.674Z",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "red-review-40001ebb08d71fb3aec4",
+          "revision": 0,
+          "name": "Revisar novedades: Morales",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-b47a1bb9fd626142b550",
+          "via": "maintenance_outbox"
+        },
+        {
+          "id": "red-review-d97c62b7575f6ec9b3db",
+          "revision": 0,
+          "name": "Revisar novedades: La Palma",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-eb1736cfc17df070d771",
+          "via": "maintenance_outbox"
+        },
+        {
+          "id": "13ab80a5ba95",
+          "revision": 0,
+          "name": "Catena",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox",
+          "apply_commit": "ff9232121b7fb634e3e12cb93196bc287a7814bb"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0."
     }
   ]
 }
