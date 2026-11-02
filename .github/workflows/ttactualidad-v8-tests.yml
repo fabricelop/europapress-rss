@@ -83,7 +83,7 @@ jobs:
           assert 'id="manual-headline"' in html and 'id="manual-url"' in html
           assert 'current-explained>48*3600000' in html
           assert 'Probar Desestimar' not in html and '¿Cómo funciona este piloto?' not in html
-          for token in ('TTImages','Publicar en X','Copiar GAG Completo','Abrir ChatGPTImages','Copiar Texto','Copiar Foto Archivo','Quitar de Listas','Buscar en X'):
+          for token in ('Proyecto TT','Publicar en X','Copiar GAG + asociar IA','https://chatgpt.com/images','Copiar Texto','Copiar Foto Archivo','Quitar de Listas','Buscar en X'):
               assert token in html,token
           worker=Path('pilot/ttactualidad-live/worker.js').read_text()
           assert "signed_cookie_v1" in worker

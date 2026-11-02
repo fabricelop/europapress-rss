@@ -8,6 +8,7 @@ const take=(start,end)=>{
  return page.slice(a,b);
 };
 const funcs=[
+ take('function newestNewsFirst(rows){','\nfunction ttiListasRows(data){'),
  take('function ttiListasRows(data){','\nfunction ttiRows(){'),
  take('function trendListasRows(data){','\nfunction trendRows(){'),
  take('function badgeCount(){','\nfunction badgeActivationUi(){')
@@ -52,5 +53,6 @@ for(const marker of [
  'navigator.clearAppBadge()','paintListasBadge();',
  "['tti','tr'].map(async app=>"
 ])assert(page.includes(marker),'missing badge wiring '+marker);
-assert(!page.includes("setInterval("),'no new polling or background memory usage');
+assert(!funcs.includes("setInterval("),'badge selectors must not start polling');
+assert(!take('function badgeActivationUi(){','\nfunction newestNewsFirst(rows){').includes('setInterval('), 'badge activation and rendering must not start polling');
 console.log('TTActualidad iOS Listas badge counts, exclusions, permissions and no polling OK');

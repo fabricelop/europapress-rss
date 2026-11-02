@@ -58,7 +58,8 @@ jobs:
               # same dedicated Windows/ChatGPT runner as the iOS run button.
               if [ "${{ github.event.client_payload.project }}" = "ttittulares" ] &&
                  { [ "${{ github.event.client_payload.decision }}" = "prepare" ] ||
-                   [ "${{ github.event.client_payload.decision }}" = "rework" ]; }; then
+                   [ "${{ github.event.client_payload.decision }}" = "rework" ] ||
+                   [ "${{ github.event.client_payload.decision }}" = "hints" ]; }; then
                 python3 ttittulares/request_pc_editorial.py --trigger
               fi
               exit 0
@@ -68,3 +69,4 @@ jobs:
           done
           echo "Could not persist action after seven attempts" >&2
           exit 1
+

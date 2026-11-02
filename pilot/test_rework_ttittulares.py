@@ -43,6 +43,38 @@ class ReworkReadyNewsTest(unittest.TestCase):
         decisions = {"items": []}
         return prepared, queue, mirror, decisions
 
+    def test_news_hints_are_preserved_as_unverified_in_both_queues(self):
+        docs = self.fixture()
+        before = json.dumps(docs, sort_keys=True)
+        clue = "Comprueba esta pista y su enlace https://example.org/nuevo"
+        out = rework_ready_news(self.ID, 4, *docs, hints=clue)
+        for path in ("ttittulares/editorial-queue.json", "telegram/editorial-processing.json"):
+            row = next(x for x in out[path]["items"] if x["event_id"] == self.ID)
+            self.assertEqual(row["revision"], 5)
+            self.assertEqual(row["editor_hints"], clue)
+            self.assertIn("NO VERIFICADAS", row["rewrite_request"])
+            self.assertIn(clue, row["rewrite_request"])
+            self.assertNotIn("Texto ANTIGUO", row["rewrite_request"])
+        self.assertEqual(json.dumps(docs, sort_keys=True), before)
+        self.assertIsNone(rework_ready_news(self.ID, 4,
+            out["ttittulares/prepared.json"], out["ttittulares/editorial-queue.json"],
+            out["telegram/editorial-processing.json"], docs[3], hints=clue))
+        with self.assertRaises(ValueError):
+            rework_ready_news(self.ID, 4, out["ttittulares/prepared.json"],
+                out["ttittulares/editorial-queue.json"], out["telegram/editorial-processing.json"],
+                docs[3], hints="Otras pistas diferentes no deben perderse")
+
+    def test_news_hints_keep_revision_terminal_and_input_guards(self):
+        for clue in ("abc", "x" * 6001):
+            with self.assertRaises(ValueError):
+                rework_ready_news(self.ID, 4, *self.fixture(), hints=clue)
+        with self.assertRaises(ValueError):
+            rework_ready_news(self.ID, 3, *self.fixture(), hints="Una pista válida para investigar")
+        docs = self.fixture()
+        docs[3]["items"] = [{"event_id": self.ID, "status": "published"}]
+        with self.assertRaises(ValueError):
+            rework_ready_news(self.ID, 4, *docs, hints="Una pista válida para investigar")
+
     def request(self, *fixture):
         return rework_ready_news(self.ID, 4, *fixture,
                                  now="2026-10-27T12:00:00+00:00")
@@ -124,3 +156,4 @@ class ReworkReadyNewsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
