@@ -957,45 +957,20 @@ async function uploadImage(image){
 // After LAUNCHED, protect only this already-submitted conversation long enough
 // for the independent read-only publisher to receive the raster. Never request
 // another generation, navigate away, or touch the other project's fixed tab.
-async function holdForWebImageReceipt(handoff,cdp,job,maxMs=360000,pollMs=10000){
-  return "manual_approval_required";
-
+async function holdForWebImageReceipt(handoff,cdp,job,maxMs=360000,pollMs=3000){
+  const fs=require('node:fs'),path=require('node:path');
+  const receiptPath=path.join(__dirname,'image-approval-receipts',commandId+'.json');
   const deadline=Date.now()+maxMs;
-  let siteReturnSentAt=0;
   while(Date.now()<deadline){
-    await sleep(Math.min(pollMs,Math.max(1,deadline-Date.now())));
-    // A conversation URL often becomes durable only after the ImageGen turn starts.
-    // Retry enrollment throughout the hold, before this fixed tab is recycled.
     if(handoff)await optionalWebHandoff(handoff,true);
-    // ImageGen often ends its response without running tools; launch its exact
-    // no-generation Site/App association turn as soon as the original raster
-    // appears, never while another command or an incomplete image is active.
-    if(!siteReturnSentAt){
-      try{
-        const outcome=await sendSiteReturnAfterImage(cdp,job);
-        if(outcome==="sent"||outcome==="already_sent"){
-          siteReturnSentAt=Date.now();
-          console.log("TTENDENCIAS SITE RETURN "+outcome+" for "+commandId);
-        }else if(outcome==="obsolete"||outcome==="different_last_user_turn"){
-          console.log("TTENDENCIAS SITE RETURN PENDING "+outcome);
-          return outcome;
-        }
-      }catch(e){console.log("TTENDENCIAS SITE RETURN DEFERRED "+String(e&&e.message||e).slice(0,100))}
-    }
-    let current;
-    try{current=await fetchJob();}catch{continue}
-    if(String(current.command_id||"")!==commandId)return "superseded";
-    const status=String(current.status||"").toUpperCase();
-    if(status==="CANCELLED"||status==="SUPERSEDED")return "cancelled";
-    // Web receiver state and Site/App state are independent. A receiver DONE
-    // must not suppress the Site/App request, but can stop after it was sent.
-    if(siteReturnSentAt&&status==="DONE"&&current.upload_sha256)return "web_image_done_and_site_return_sent";
-    if(siteReturnSentAt&&String(current.web_image?.stage||"")==="published")return "web_image_published_and_site_return_sent";
-    // Browser can be reused once the exact follow-up has been submitted and
-    // allowed time to process; the delivery watcher keeps retrying independently.
-    if(siteReturnSentAt&&Date.now()-siteReturnSentAt>90000)return "site_return_sent_delivery_independent";
+    try{const receipt=JSON.parse(fs.readFileSync(receiptPath,'utf8'));
+      if(String(receipt.commandId)===commandId&&receipt.editorialId===targetId&&Number(receipt.revision||0)===Number(job.revision||0)&&/^[a-f0-9]{64}$/.test(receipt.rasterSHA256||'')&&receipt.id){
+        console.log('PRIVATE_ORIGINAL_RECEIVED '+commandId);return 'private_original_received';
+      }
+    }catch{}
+    await sleep(3000);
   }
-  return siteReturnSentAt?"site_return_sent_delivery_independent":"receipt_not_confirmed_within_hold";
+  console.log('PRIVATE_ORIGINAL_PENDING '+commandId);return 'private_original_pending';
 }
 // Optional delivery bookkeeping. Failure here is never a generation failure.
 // Keep this boundary separate from the pre-submit and launched receipts.

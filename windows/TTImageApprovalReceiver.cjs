@@ -1,0 +1,105 @@
+'use strict';
+// Reads only an existing exact command conversation. Never generates or edits,
+// associates, posts chat messages, touches catalogs or calls the legacy uploader.
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const {execFileSync}=require('node:child_process');
+const ENDPOINT='https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images/ingest';
+const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
+const episode=m=>sha(JSON.stringify({project:m.project,editorialId:m.editorialId,revision:m.revision,editorialText:m.editorialText,editorialAt:m.editorialAt}));
+class CDP{
+ constructor(url){this.url=url;this.seq=0;this.pending=new Map()}
+ async open(){this.ws=new WebSocket(this.url);await new Promise((ok,bad)=>{const t=setTimeout(()=>bad(Error('CDP_TIMEOUT')),5000);this.ws.addEventListener('open',()=>{clearTimeout(t);ok()},{once:true});this.ws.addEventListener('error',()=>{clearTimeout(t);bad(Error('CDP_UNAVAILABLE'))},{once:true})});this.ws.addEventListener('message',e=>{const m=JSON.parse(String(e.data)),p=this.pending.get(m.id);if(!p)return;this.pending.delete(m.id);clearTimeout(p.t);m.error?p.bad(Error('CDP_EVALUATION_FAILED')):p.ok(m.result)})}
+ async call(method,params){const id=++this.seq;const r=await new Promise((ok,bad)=>{const t=setTimeout(()=>{this.pending.delete(id);bad(Error('CDP_TIMEOUT'))},20000);this.pending.set(id,{ok,bad,t});this.ws.send(JSON.stringify({id,method,params}))});return r}
+ async evaluate(expression){const r=await this.call('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error('RASTER_READ_FAILED');return r.result?.value}
+ close(){for(const p of this.pending.values()){clearTimeout(p.t);p.bad(Error('CDP_CLOSED'))}this.pending.clear();try{this.ws?.close()}catch{}}
+}
+function unprotect(value){const code='$s=ConvertTo-SecureString ([Console]::In.ReadToEnd());$p=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($s);try{[Console]::Write([Runtime.InteropServices.Marshal]::PtrToStringBSTR($p))}finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($p)}';return execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',code],{input:value,encoding:'utf8',windowsHide:true,timeout:15000,maxBuffer:65536}).trim()}
+function metadata(task,job){
+ const news=task.project==='ttittulares',snapshot=job.context_snapshot||{};
+ const text=String(news?snapshot.tweet_text:snapshot.explanation||'').trim();
+ const date=news?snapshot.prepared_at:snapshot.explained_at;
+ const fingerprint=news?sha([text,String(snapshot.factual_summary||'').trim(),String(snapshot.remate||'').trim()].join('\n')):sha(text);
+ if(job.command_id!==task.command_id||String(job.target_id||job.trend_id||job.event_id)!==task.target_id||Number(job.revision||0)!==task.revision||fingerprint!==(news?task.editorial_sha256:task.explanation_sha256)||!text||!Number.isFinite(Date.parse(date))||['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))throw Error('STALE_EXACT_JOB');
+ const m={project:news?'ttittulares':'ttendencias',editorialId:task.target_id,revision:task.revision,commandId:task.command_id,editorialText:text,editorialAt:date,title:String(snapshot.name||snapshot.title||job.target_name||job.name||task.target_id)};m.episodeFingerprint=episode(m);return m;
+}
+async function send(meta,bytes,secret,fetcher=fetch){
+ if(bytes.length>8388608||bytes.length<24||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('ORIGINAL_PNG_REQUIRED');
+ meta={...meta,rasterSHA256:sha(bytes)};const form=new FormData();form.set('metadata',JSON.stringify(meta));form.set('image',new Blob([bytes],{type:'image/png'}),'original.png');
+ const r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret,'User-Agent':'TTActualidad/0.4.50'},body:form,redirect:'error',signal:AbortSignal.timeout(45000)});const receipt=await r.json();
+ if(!r.ok||!['pending','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(receipt.id))throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
+ return {...receipt,rasterSHA256:meta.rasterSHA256};
+}
+function selectTarget(pages,task,chatURL){
+ const expected=chatURL(task.conversation_url);
+ return pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&chatURL(p.url)&&(expected?chatURL(p.url)===expected:p.id===task.browser_target_id));
+}
+async function editorialJob(source,task){
+ const job=await source.readImageJob(task);
+ if(task.project==='ttittulares'&&!job.context_snapshot?.prepared_at){
+  const r=await fetch('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/prepared.json?t='+Date.now(),{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('EDITORIAL_SOURCE_UNAVAILABLE');
+  const doc=await r.json(),row=(doc.items||[]).find(x=>x.event_id===task.target_id&&Number(x.revision)===task.revision&&String(x.tweet?.text||'').trim()===String(job.context_snapshot?.tweet_text||'').trim());
+  if(!row||!row.prepared_at||row.rewrite_pending)throw Error('STALE_EXACT_JOB');
+  return {...job,context_snapshot:{...job.context_snapshot,prepared_at:row.prepared_at}};
+ }
+ return job;
+}
+async function once(base=__dirname){
+ if(process.platform!=='win32')throw Error('WINDOWS_REQUIRED');
+ const sources={};
+ for(const [project,file] of [['ttendencias','TTendenciasWebImages.cjs'],['ttittulares','TTiTTularesWebImages.cjs']]){
+  const dependency=path.join(base,file);if(!fs.readFileSync(dependency,'utf8').includes("return {status:'waiting',reason:'manual_approval_required'}"))throw Error('INSTALL_ASSOCIATION_PAUSE_FIRST');sources[project]=require(dependency);
+ }
+ const receipts=path.join(base,'image-approval-receipts');fs.mkdirSync(receipts,{recursive:true});
+ const lockPath=path.join(receipts,'receiver.lock');
+ try{const old=JSON.parse(fs.readFileSync(lockPath,'utf8'));try{process.kill(old.pid,0);return}catch{fs.unlinkSync(lockPath)}}catch{}
+ let lock;try{lock=fs.openSync(lockPath,'wx');fs.writeFileSync(lock,JSON.stringify({pid:process.pid,at:Date.now()}))}catch{return}
+ try{
+  const statusFile=path.join(receipts,'receiver-status.json');let progress={};try{progress=JSON.parse(fs.readFileSync(statusFile,'utf8'))}catch{}
+  function report(task,reason){progress[task.command_id]={...progress[task.command_id],checkedAt:Date.now(),reason};const tmp=statusFile+'.tmp';fs.writeFileSync(tmp,JSON.stringify(progress,null,2),{mode:0o600});fs.renameSync(tmp,statusFile);console.log('PRIVATE_INBOX '+task.command_id+' '+reason)}
+  const tasks=[];
+  for(const project of ['ttendencias','ttittulares']){
+   const dir=path.join(base,project+'-web-images');if(!fs.existsSync(dir))continue;
+   for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&task.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
+  }
+  tasks.sort((a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at));tasks.splice(8);
+  console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
+  for(const task of tasks){
+   const source=sources[task.project];
+   const receiptFile=path.join(receipts,task.command_id+'.json');if(fs.existsSync(receiptFile))continue;
+   let cdp,browser,ownedTarget;
+   try{
+    const job=await editorialJob(source,task),meta=metadata(task,job);
+    if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
+    if(!source.chatURL(task.conversation_url)){const found=await source.discoverConversation(task.command_id,task.browser_target_id,true);if(found?.url)task.conversation_url=found.url;}
+    let target;
+    // Reuse an exact existing conversation first; never create tabs in the generator.
+    for(const port of (task.project==='ttittulares'?[9223]:[9223,9234])){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=selectTarget(pages,task,source.chatURL);if(target)break}catch{}}
+    if(task.project==='ttendencias'&&!source.chatURL(task.conversation_url)){
+     // Recover candidate URLs from the SAME producer tab's navigation history.
+     // A URL is only a candidate; rasterProbe must still prove this command.
+     try{const r=await fetch('http://127.0.0.1:9223/json/list',{signal:AbortSignal.timeout(3000)});const own=(await r.json()).find(x=>x.id===task.browser_target_id&&x.webSocketDebuggerUrl);if(own){const history=new CDP(own.webSocketDebuggerUrl);try{await history.open();const h=await history.call('Page.getNavigationHistory',{});const urls=[...new Set((h.entries||[]).map(x=>source.chatURL(x.url)).filter(Boolean))].reverse();if(urls.length){const index=progress[task.command_id]?.recoveryIndex||0;task.conversation_url=urls[index%urls.length];progress[task.command_id]={...progress[task.command_id],recoveryIndex:index+1};target=null;}}finally{history.close()}}}catch{}
+    }
+    if(task.project==='ttendencias'&&!target&&source.chatURL(task.conversation_url)){
+     // Recover a known closed conversation only in the separate relay profile.
+     // Nothing is typed or submitted; this temporary tab belongs to this receiver.
+     try{
+      const r=await fetch('http://127.0.0.1:9234/json/version',{signal:AbortSignal.timeout(3000)});const version=await r.json();browser=new CDP(version.webSocketDebuggerUrl);await browser.open();
+      ownedTarget=(await browser.call('Target.createTarget',{url:source.chatURL(task.conversation_url),background:true})).targetId;
+      for(let n=0;n<5;n++){const q=await fetch('http://127.0.0.1:9234/json/list',{signal:AbortSignal.timeout(3000)});target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);if(target)break;await new Promise(r=>setTimeout(r,500))}
+     }catch{}
+    }
+    if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
+    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(raster?.ready||['later_user_turn','capture_requires_sign_in','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
+    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
+    if(!String(raster.dataUrl).startsWith('data:image/png;base64,')){report(task,'ORIGINAL_FORMAT_NOT_PNG');continue;}
+    const bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
+    const fresh=metadata(task,await editorialJob(source,task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
+    const receipt=await send(meta,bytes,unprotect(task.secret_dpapi));
+    const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({project:meta.project,revision:meta.revision,commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
+    report(task,'RECEIVED_'+receipt.state);
+   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
+  }
+ }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
+}
+module.exports={metadata,episode,send,once,ENDPOINT,selectTarget};
+if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});

@@ -11,8 +11,10 @@ test('News waits as long as Trends (6 minutes) for the real image receipt',()=>{
  assert.match(bridge,/async function holdForHeadlineOriginalReceipt\(handoff,job,maxMs=360000\)/);
  assert.match(bridge,/await holdForHeadlineOriginalReceipt\(webHandoff,job\)/);
  assert.doesNotMatch(bridge,/const until=Date\.now\(\)\+90000/);
- assert.match(bridge,/receipt\.github_outbox_committed_at\|\|receipt\.upload_accepted_at/);
- assert.match(bridge,/String\(receipt\.command_id\)===commandId/);
+ assert.match(bridge,/image-approval-receipts/);
+ assert.match(bridge,/receipt\.rasterSHA256/);
+ assert.match(bridge,/PRIVATE_ORIGINAL_RECEIVED/);
+ assert.match(bridge,/String\(receipt\.commandId\)===commandId/);
  assert.match(bridge,/Number\(receipt\.revision\|\|0\)===Number\(job\.revision\|\|0\)/);
  assert.match(bridge,/await optionalWebHandoff\(handoff,true\)/);
 });
