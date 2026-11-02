@@ -734,17 +734,20 @@ struct EditorialActions: View {
               "proveedor chat-imagegen para el MISMO ID/revisión; o un registro válido " +
               "en ttittulares/site-ai-images.json. Si existe y su archivo público " +
               "es legible, no lo sustituyas ni dupliques. La APP lo leerá al actualizar.",
-            "3. Solo si NO existe una imagen asociada válida, exige que el usuario haya " +
-              "ADJUNTADO el archivo ORIGINAL PNG en ESTE chat. No uses miniaturas, " +
-              "capturas, URLs de chats compartidos, otras noticias ni rutas supuestas. " +
-              "Si no hay adjunto original o no hay herramienta para subir bytes binarios " +
-              "reales a GitHub, DETENTE e indica exactamente qué falta.",
-            "4. Comprueba que el PNG real es imagen válida, calcula su SHA-256 real " +
-              "y guarda los bytes originales en " +
-              "ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.png " +
-              "mediante una herramienta de subida binaria compatible (blob GitHub en " +
-              "base64 y commit sobre HEAD fresco, o equivalente). No escribas base64 " +
-              "como texto del archivo, ni crees un marcador en lugar del PNG.",
+            "3. Solo si NO existe una imagen asociada válida, acepta la imagen ORIGINAL " +
+              "JPG/JPEG, PNG o WebP PEGADA o ADJUNTADA por el usuario EN ESTE chat. " +
+              "Una foto JPEG copiada desde ChatGPT Images es válida si se reciben " +
+              "sus bytes reales; no exijas PNG ni conviertas un JPEG renombrándolo. " +
+              "No uses miniaturas, capturas, URLs de chats compartidos, otras noticias " +
+              "ni rutas supuestas. Si solo hay una vista previa pero no bytes accesibles " +
+              "o no hay herramienta de subida binaria, DETENTE e indica qué falta.",
+            "4. Verifica la firma binaria y MIME REAL (image/jpeg, image/png o image/webp), " +
+              "calcula SHA-256 de los bytes originales y guárdalos SIN cambiar formato " +
+              "en ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.<ext> " +
+              "donde <ext> corresponda al formato detectado (.jpg, .png o .webp). " +
+              "Usa subida binaria GitHub compatible (blob base64 real y commit sobre HEAD " +
+              "fresco, o equivalente). No escribas base64 como texto, no conviertas " +
+              "por renombrar y no fabriques un PNG ficticio.",
             "5. Relee el archivo binario en su URL pública HTTPS, verifica acceso y SHA. " +
               "Luego lee el manifiesto actual, preserva TODAS sus entradas y añade " +
               "EXACTAMENTE UNA entrada de schema_version 1, project ttittulares: " +
@@ -761,7 +764,7 @@ struct EditorialActions: View {
         ].joined(separator: "\n\n")
         copy(prompt)
         outcome = ready
-            ? "Guía de asociación copiada. Adjunta el PNG ORIGINAL en Proyecto TT y pega la guía."
+            ? "Orden copiada. Pega la imagen JPEG/PNG/WebP REAL en Proyecto TT junto con la orden."
             : "Guía copiada. No se puede asociar aún: falta una noticia READY con identidad editorial completa."
     }
 
