@@ -45348,10 +45348,30 @@
       "distinct_episode": false,
       "new_facts": "Renfe ha enviado una consigna obligatoria para que, ante una caída del LZB, la reanudación de la marcha sea a la vista y sin superar 40 km/h. Paralelamente continúa la revisión de antecedentes de fallos LZB y de los telefonemas emitidos por Adif.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/renfe-consigna-maquinistas-limitar-velocidad-40-km-sistema-lzb/01793565435549.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261101/renfe-consigna-maquinistas-limitar-velocidad-40-km-sistema-lzb/17295757.shtml",
+        "alt": "Imagen de archivo relacionada con Adif",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/renfe-consigna-maquinistas-limitar-velocidad-40-km-sistema-lzb/01793565435549.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261101/renfe-consigna-maquinistas-limitar-velocidad-40-km-sistema-lzb/17295757.shtml",
+        "alt": "Imagen de archivo relacionada con Adif",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "trend-update-d606653875b7f1242c0e",
@@ -45381,12 +45401,17 @@
       "distinct_episode": true,
       "new_facts": "José Luis Morales participó en la segunda parte del Real Oviedo-Las Palmas del 2 de noviembre de 2026, finalizado 2-3 en el Carlos Tartiere.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-02T19:24:10.350707+00:00",
+  "updated_at": "2026-11-02T19:27:00.684273Z",
   "count": 748
 }
