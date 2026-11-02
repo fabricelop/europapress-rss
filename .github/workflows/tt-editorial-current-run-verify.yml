@@ -1,0 +1,19 @@
+name: TT editorial active run guard regression
+on:
+  pull_request:
+    paths:
+      - "shared/tt_editorial_run_guard.py"
+      - ".github/workflows/tt-editorial-current-run-verify.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify active vs previous and nonduplicating watchdog
+        run: |
+          python3 -m py_compile shared/tt_editorial_run_guard.py
+          python3 shared/tt_editorial_run_guard.py selftest
