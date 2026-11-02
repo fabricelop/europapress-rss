@@ -1349,14 +1349,14 @@ final class EditorialStore: ObservableObject {
                 let stillOriginal = originalNews.contains {
                     $0.id == action.id && $0.revision == action.revision
                 }
-                if action.decision == "prepare" || action.decision == "rework" {
+                if ["prepare", "rework", "hints"].contains(action.decision) {
                     let readyRevision = canonicalSnapshot.news.filter { $0.id == action.id }
                         .map(\.revision).max()
                     if EditorialProgressPolicy.finishedNewsAction(
                         decision: action.decision, originalRevision: action.revision,
                         readyRevision: readyRevision) || canonicalSnapshot.newsElaboracion.contains(where: {
                         $0.id == action.id &&
-                        $0.revision >= action.revision + (action.decision == "rework" ? 1 : 0)
+                        $0.revision >= EditorialActionPolicy.targetRevision(decision: action.decision, current: action.revision)
                     }) {
                         activeEditorialActions.removeValue(forKey: key)
                     }
@@ -1433,7 +1433,7 @@ final class EditorialStore: ObservableObject {
                     updated.newsRevision.removeAll(where: sameNews)
                     updated.newsCreciendo.removeAll(where: sameNews)
                     updated.newsTremending.removeAll(where: sameNews)
-                } else if action.decision == "prepare" || action.decision == "rework" {
+                } else if ["prepare", "rework", "hints"].contains(action.decision) {
                     let source = (updated.news + updated.newsRevision +
                                   updated.newsCreciendo).first(where: sameNews)
                     updated.news.removeAll(where: sameNews)
@@ -1448,7 +1448,7 @@ final class EditorialStore: ObservableObject {
                             NewsItem(id: source.id, title: source.title,
                                      text: "Nueva investigación solicitada a GitHub",
                                      publishedAt: Date(),
-                                     revision: source.revision + (action.decision == "rework" ? 1 : 0),
+                                     revision: EditorialActionPolicy.targetRevision(decision: action.decision, current: source.revision),
                                      sourceURL: source.sourceURL, imageURL: nil,
                                      factual: "", closer: "", sources: source.sources,
                                      status: "EN ELABORACIÓN"), at: 0)
