@@ -5,63 +5,77 @@
   "canonical": true,
   "run_id": "tr-1793635097814-manual",
   "previous_run_id": "tr-20261102-pending-editorial-recovery-01",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T16:58:30+01:00",
-  "updated_at": "2026-11-02T17:00:10+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-02T17:03:30+01:00",
+  "finished_at": "2026-11-02T17:03:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-c6446e4f7a6c073f0906",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-c6446e4f7a6c073f0906",
     "red-review-edd34ae844e5e60c2835"
   ],
-  "remaining_active_ids": [
-    "red-review-c6446e4f7a6c073f0906",
-    "red-review-edd34ae844e5e60c2835"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "unchanged_reviews": 1,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "red-review-c6446e4f7a6c073f0906",
+      "revision": 0,
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_applicator_jit"
+    },
+    {
+      "id": "red-review-edd34ae844e5e60c2835",
+      "revision": 0,
+      "name": "Revisar novedades: Halloween",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_applicator_jit"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T16:57:20+01:00",
-  "last_completed_at": "2026-11-02T16:57:21+01:00",
+  "last_completed_at": "2026-11-02T17:03:30+01:00",
   "last_run": {
-    "run_id": "tr-20261102-pending-editorial-recovery-01",
-    "command_id": "tr-20261102-pending-editorial-recovery-01",
+    "run_id": "tr-1793635097814-manual",
+    "command_id": "tr-1793635097814-manual",
     "status": "DONE",
-    "started_at": "2026-11-02T16:45:00+01:00",
-    "finished_at": "2026-11-02T17:02:42+01:00",
+    "started_at": "2026-11-02T16:58:30+01:00",
+    "finished_at": "2026-11-02T17:03:30+01:00",
     "summary": {
-      "attempted": 15,
-      "observed": 15,
-      "closed": 15,
-      "explained": 13,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -77,109 +91,12 @@
     },
     "outcomes": [
       {
-        "id": "c9d48615f2ca",
-        "revision": 0,
-        "name": "Bélgica",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "bda4f2269ee3",
-        "revision": 0,
-        "name": "Comprarse",
-        "outcome": "explained",
-        "applied": true,
-        "note": "causa no confirmada, ranking verificado"
-      },
-      {
-        "id": "3045db42e1f5",
-        "revision": 0,
-        "name": "#Mañaneros2N",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "5e188e3012d7",
-        "revision": 0,
-        "name": "Endesa",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "1a8dca45b46d",
-        "revision": 0,
-        "name": "#أديبك",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "067545f4a7fc",
-        "revision": 0,
-        "name": "#سلطان_الجابر",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "357402e6e903",
-        "revision": 0,
-        "name": "#ADIPEC",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "f84895c47d54",
-        "revision": 0,
-        "name": "Red Eléctrica",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "e2b4555233b1",
-        "revision": 0,
-        "name": "Rabat",
-        "outcome": "explained",
-        "applied": true,
-        "note": "formulación prudente"
-      },
-      {
-        "id": "b88d2954e28e",
-        "revision": 0,
-        "name": "Jesús de Miguel",
-        "outcome": "explained",
-        "applied": true,
-        "note": "sensible, sin remate"
-      },
-      {
-        "id": "c1f986a9e525",
-        "revision": 0,
-        "name": "Owono",
-        "outcome": "explained",
-        "applied": true,
-        "note": "sensible, sin remate"
-      },
-      {
-        "id": "fed9af79780a",
-        "revision": 0,
-        "name": "#TEM2N",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "3e340be4de18",
-        "revision": 0,
-        "name": "Andorra",
-        "outcome": "explained",
-        "applied": true,
-        "note": "sensible, sin remate"
-      },
-      {
         "id": "red-review-c6446e4f7a6c073f0906",
         "revision": 0,
         "name": "Revisar novedades: Toledo",
         "outcome": "stale",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "reason": "Fuera del Top 30 fresco en la revalidación JIT."
+        "via": "maintenance_applicator_jit"
       },
       {
         "id": "red-review-edd34ae844e5e60c2835",
@@ -187,15 +104,15 @@
         "name": "Revisar novedades: Halloween",
         "outcome": "unchanged",
         "applied": true,
-        "reason": "Sin novedad material; se conserva texto y fecha originales."
+        "via": "maintenance_applicator_jit"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada de recuperación cerrada 15/15 tras absorber dos review_red aparecidas en la barrera final: 13 explicaciones ordinarias, Toledo stale por salir del Top 30 fresco y Halloween unchanged sin novedad material. Cola final 0; sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 2/2: Toledo quedó stale por salir del Top 30 fresco; Halloween quedó unchanged tras revisión sin novedad material. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Revisando novedades: Revisar novedades: Toledo. Revalidación JIT confirma que ya no sigue en el Top 30 fresco.",
+  "message": "Pasada cerrada 2/2: Toledo quedó stale por salir del Top 30 fresco; Halloween quedó unchanged tras revisión sin novedad material. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1612,6 +1529,18 @@
       "trend_id": "red-review-c6446e4f7a6c073f0906",
       "title": "Revisar novedades: Toledo",
       "message": "Revisando novedades: Revisar novedades: Toledo. Revalidación JIT confirma que ya no sigue en el Top 30 fresco."
+    },
+    {
+      "at": "2026-11-02T17:03:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793635097814-manual",
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Toledo review_completed/stale; Halloween review_completed/unchanged."
+    },
+    {
+      "at": "2026-11-02T17:03:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793635097814-manual",
+      "message": "Pasada cerrada 2/2: Toledo quedó stale por salir del Top 30 fresco; Halloween quedó unchanged tras revisión sin novedad material. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
