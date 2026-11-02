@@ -20,6 +20,7 @@ private struct PendingImage: Decodable, Identifiable {
     let title: String
     let editorialText: String
     let createdAt: String
+    let state: String?
 }
 
 private struct PendingImageResponse: Decodable {
@@ -33,6 +34,8 @@ private struct ApprovalDecision: Encodable {
 
 private struct DecisionResponse: Decodable {
     let state: String
+    let appVerified: Bool?
+    let sitesVerified: Bool?
 }
 
 @MainActor
@@ -96,14 +99,22 @@ private final class ApprovalInboxModel: ObservableObject {
                 path: "/v1/images/\(item.id)/decision", method: "POST", jsonBody: body)
             guard status == 200 else { throw InboxError.http(status) }
             let response = try JSONDecoder().decode(DecisionResponse.self, from: data)
-            guard response.state == (action == "approve" ?
-                    "approved_awaiting_publication" : "rejected") else {
+            if action == "approve" && response.state == "approved_awaiting_publication" {
+                notice = "Aprobación guardada. Publicación pendiente; pulsa Aprobar para reintentar sin generar otra imagen."
+                return
+            }
+            guard response.state == (action == "approve" ? "published" : "rejected"),
+                  action != "approve" || (response.appVerified == true && response.sitesVerified == true) else {
                 throw InboxError.unexpectedResponse
+            }
+            if action == "approve" {
+                await SiteAIImageCatalog.invalidateCache()
+                await NewsAIImageCatalog.invalidateCache()
             }
             images.removeAll { $0.id == item.id }
             previews.removeValue(forKey: item.id)
             notice = action == "approve" ?
-                "Aprobada. Pendiente de comprobar su publicación en la APP y Sites." :
+                "Aprobada y publicada en la APP y la web." :
                 "Rechazada. Solo se ha retirado de la bandeja; original conservado."
         } catch {
             notice = "No se ha confirmado la decisión: \(error.localizedDescription)"
