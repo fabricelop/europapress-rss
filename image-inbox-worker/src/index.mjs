@@ -143,6 +143,7 @@ async function publicationQueue(env) {
     ORDER BY decided_at ASC LIMIT 100`).all();
   return json({ items: (r.results || []).map(row => ({
     id: row.id, identity: rowIdentity(row), title: row.title,
+    state: 'approved_awaiting_publication',
     editorialText: row.editorial_text, approvedAt: row.decided_at,
   })) });
 }
