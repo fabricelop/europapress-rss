@@ -978,6 +978,57 @@ async function optionalWebHandoff(handoff,remember=false){
     return false;
   }
 }
+// Keep the original ChatGPT conversation alive until the independent receiver
+// has durably persisted its original bytes. TTendencias keeps up to 6 minutes;
+// the old 90-second News release raced slow ImageGen renders and lost originals.
+async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
+  const fs=require('node:fs'),path=require('node:path');
+  const receiptPath=path.join(__dirname,'ttittulares-web-images',commandId+'.json');
+  const deadline=Date.now()+maxMs;
+  let nextRememberAt=0,checked=0;
+  while(Date.now()<deadline){
+    await sleep(3000);
+    if(Date.now()>=nextRememberAt){
+      nextRememberAt=Date.now()+10000;
+      try{await optionalWebHandoff(handoff,true);}catch{}
+    }
+    // A real receipt must be command- and revision-scoped. DONE on its own
+    // does not prove that this image exists in the app or in GitHub.
+    try{
+      const receipt=JSON.parse(fs.readFileSync(receiptPath,'utf8'));
+      if(String(receipt.command_id)===commandId&&
+         String(receipt.target_id)===targetId&&
+         Number(receipt.revision||0)===Number(job.revision||0)){
+        if(receipt.github_outbox_committed_at||receipt.upload_accepted_at||
+           receipt.status==='published'){
+          console.log('TTITTULARES ORIGINAL RECEIPT PERSISTED command='+commandId+
+            ' stage='+String(receipt.status||'waiting'));
+          return 'original_persisted';
+        }
+        if(['obsolete','rejected','needs_review'].includes(receipt.status)){
+          console.log('TTITTULARES ORIGINAL RECEIPT NEEDS REVIEW command='+commandId+
+            ' reason='+String(receipt.reason||receipt.status).slice(0,100));
+          return 'receipt_needs_review';
+        }
+      }
+    }catch{}
+    // Fewer remote calls while a renderer is in progress. Never interpret a
+    // transient status fetch error as proof of an image-upload failure.
+    if(++checked%4!==0)continue;
+    try{
+      const current=await fetchJob();
+      if(String(current.command_id||'')!==commandId)return 'job_superseded';
+      if(['CANCELLED','SUPERSEDED'].includes(String(current.status||'').toUpperCase()))
+        return 'job_cancelled';
+      if(String(current.status||'').toUpperCase()==='DONE'&&current.upload_sha256)
+        return 'server_receipt_persisted';
+    }catch{}
+  }
+  console.log('TTITTULARES ORIGINAL RECEIPT STILL PENDING command='+commandId+
+    ' no_regeneration; local receiver continues retries');
+  return 'original_pending';
+}
+
 (async()=>{
   let cdp;
   let webHandoff=null;
@@ -1026,18 +1077,9 @@ async function optionalWebHandoff(handoff,remember=false){
           if(await optionalWebHandoff(webHandoff,true))break;
           await sleep(800);
         }
-        // Retain this verified conversation long enough for a slow ImageGen
-        // result; the independent publisher continues after bridge exit.
-        const until=Date.now()+90000;
-        while(Date.now()<until){
-          await sleep(2500);
-          let current;
-          try{current=await fetchJob()}catch{continue}
-          if(String(current.command_id||"")!==commandId)break;
-          if(String(current.status||"").toUpperCase()==="DONE"&&current.upload_sha256)break;
-          if(["CANCELLED","SUPERSEDED"].includes(String(current.status||"").toUpperCase()))break;
-        }
-        console.log("BRIDGE LAUNCH ONLY CONFIRMED; WEB RECEIPT INDEPENDENT "+commandId);
+        const receipt=await holdForHeadlineOriginalReceipt(webHandoff,job);
+        console.log("BRIDGE LAUNCH ONLY CONFIRMED; WEB RECEIPT INDEPENDENT "+
+          commandId+" status="+receipt);
         return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
