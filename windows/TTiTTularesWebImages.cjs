@@ -341,32 +341,55 @@ async function consume(task){
  if(!row||Number(row.revision||0)!==task.revision||
    headlineFingerprint({tweet_text:row.tweet?.text,factual_summary:row.factual_summary,remate:row.tweet?.remate})!==task.editorial_sha256)
    return {status:'obsolete',reason:'editorial_changed'};
- // Prefer GitHub; keep the existing receiver only when Windows auth is absent.
+ // Same primary transport as TTendencias: original ImageGen raster -> the
+ // existing authenticated tt-control web_image_upload receiver -> GitHub main.
+ // If NEWS receiver is not yet deployed, use the GitHub outbox consumer; it
+ // produces the SAME verified READY image and iPhone/web manifest.
+ // Neither route ever starts another generation.
+ let localSecret;
+ try{localSecret=protect(task.secret_dpapi,true);}
+ catch{return {status:'waiting',reason:'secure_receipt_unavailable'};}
+ const expectedSecret=String(fresh.pc_upload_secret_hash||'').toLowerCase();
+ const actualSecret=crypto.createHash('sha256').update(localSecret).digest('hex');
+ if(!/^[a-f0-9]{64}$/.test(expectedSecret)||
+    !crypto.timingSafeEqual(Buffer.from(expectedSecret,'hex'),Buffer.from(actualSecret,'hex')))
+   return {status:'rejected',reason:'image_job_secret_mismatch'};
+ let workerReady=false;
+ try{
+   const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttittulares-run-status?view=web-image-contract');
+   workerReady=contract.web_image_receipt===1&&contract.project==='ttittulares';
+ }catch{}
+ if(workerReady){
+   try{
+     const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttittulares-run',{
+       method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(55000),
+       body:JSON.stringify({task:'web_image_upload',context_editorial_sha256:task.editorial_sha256,
+         target_id:task.target_id,command_id:task.command_id,upload_secret:localSecret,
+         image_data_url:raster.dataUrl,
+         capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
+     const result=await response.json();
+     if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'awaiting_main_confirmation',
+       capture_browser:source,sha256:String(result.sha256||''),image_path:String(result.image_path||''),
+       upload_accepted_at:new Date().toISOString()};
+     if([401,409,422].includes(response.status))
+       return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
+     // Unknown remote result: retry the receiver, not the alternate transport,
+     // because the server could already have committed the bytes.
+     return {status:'waiting',reason:'worker_upload_status_'+response.status};
+   }catch{return {status:'waiting',reason:'worker_upload_result_unknown'};}
+ }
+ // The news-specific web endpoint is not ready. Reuse the existing GitHub
+ // outbox+Actions path, preserving local bytes across outages.
  try{
    const direct=await githubOutbox.pushReceipt(task,row,raster);
    if(direct.status==='committed')return {status:'waiting',
      reason:'awaiting_github_actions_association',capture_browser:source,
      sha256:direct.sha256,github_outbox_committed_at:direct.github_outbox_committed_at};
+   return {status:'waiting',reason:direct.reason||'github_transport_unavailable'};
  }catch(e){
-   console.log('TTITTULARES_GITHUB_OUTBOX deferred '+String(e?.message||'unavailable').replace(/https?:\/\/\S+/g,'[url]').slice(0,90));
+   console.log('TTITTULARES_GITHUB_OUTBOX deferred '+String(e?.message||'unavailable').replace(/https?:\/\/\\S+/g,'[url]').slice(0,90));
+   return {status:'waiting',reason:'github_transport_retry'};
  }
- // Never regenerate or discard the locally cached original on transport failure.
- try{
-   const contract=await http('https://tt-control.fabricelop.workers.dev/api/ttittulares-run-status?view=web-image-contract');
-   if(contract.web_image_receipt!==1)return {status:'waiting',reason:'receiver_update_pending'};
- }catch{return {status:'waiting',reason:'receiver_update_pending'};}
- const response=await fetch('https://tt-control.fabricelop.workers.dev/api/ttittulares-run',{
-   method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(55000),
-   body:JSON.stringify({task:'web_image_upload',context_editorial_sha256:task.editorial_sha256,
-     target_id:task.target_id,command_id:task.command_id,upload_secret:protect(task.secret_dpapi,true),
-     image_data_url:raster.dataUrl,
-     capture:{method:'original-fetch-img-web-consumer',width:raster.width,height:raster.height}})});
- const result=await response.json();
- if(response.ok&&result.status==='DONE')return {status:'waiting',reason:'awaiting_main_confirmation',
-     capture_browser:source,sha256:String(result.sha256||''),image_path:String(result.image_path||''),
-     upload_accepted_at:new Date().toISOString()};
- if([401,409,422].includes(response.status))return {status:'rejected',reason:String(result.error||'context_rejected').slice(0,140)};
- throw Error('image_upload_HTTP_'+response.status);
 }
 async function telemetry(task,result){
  if(result.status!=='waiting')console.log('TTITTULARES_WEB_IMAGE '+task.target_id+' '+result.status);
