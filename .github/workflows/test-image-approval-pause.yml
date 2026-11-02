@@ -1,0 +1,22 @@
+name: Verify manual image approval pause
+on:
+  push:
+    branches: ['fix/pause-automatic-image-association-20261102']
+  pull_request:
+    paths: ['windows/*ImageBridge.js', 'windows/*WebImages.cjs', 'windows/tests/test-manual-image-approval-pause.cjs']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          node --check windows/TTendenciasImageBridge.js
+          node --check windows/TTiTTularesImageBridge.js
+          node --check windows/TTendenciasWebImages.cjs
+          node --check windows/TTiTTularesWebImages.cjs
+          node --test windows/tests/test-manual-image-approval-pause.cjs
