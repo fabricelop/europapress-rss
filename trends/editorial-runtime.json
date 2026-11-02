@@ -3,52 +3,49 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793653885",
-  "previous_run_id": "tr-1793652373470-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-02T22:11:30+01:00",
-  "updated_at": "2026-11-02T22:24:40+01:00",
-  "finished_at": "2026-11-02T22:24:40+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793654715991-manual",
+  "previous_run_id": "tr-autoguard-1793653885",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T22:25:15+01:00",
+  "updated_at": "2026-11-02T22:25:15+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "b73c43b052f7",
     "86e7500184a2",
     "26734863a6f4"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-0db3208fce64ce117764",
+    "red-review-d3ccc8ceb69df56d74dd"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "apply_push_race",
-      "message": "El primer aplicador validó y procesó los tres resultados pero perdió cuatro carreras de push contra escritores concurrentes de main. Se reforzó el aplicador con rebase sobre main fresco y el siguiente run persistió y verificó los tres cierres.",
-      "recovered": true
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
@@ -142,7 +139,7 @@
     "message": "Pasada tr-autoguard-1793653885 cerrada 3/3: Yeremay, Tenerife y Budimir R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidencia recuperada: carrera de push del aplicador corregida con rebase sobre main fresco."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793653885 cerrada 3/3: Yeremay, Tenerife y Budimir R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidencia recuperada: carrera de push del aplicador corregida con rebase sobre main fresco.",
+  "message": "Pasada editorial manual en curso: 2 revisiones de novedades pendientes; ImageGen desactivado.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3354,11 +3351,54 @@
       "incidents": [],
       "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual.",
       "at": "2026-11-02T21:27:15+01:00"
+    },
+    {
+      "run_id": "tr-autoguard-1793653885",
+      "command_id": "tr-autoguard-1793653885",
+      "canonical": true,
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-02T22:11:30+01:00",
+      "finished_at": "2026-11-02T22:24:40+01:00",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "apply_push_race",
+          "message": "El primer aplicador validó y procesó los tres resultados pero perdió cuatro carreras de push contra escritores concurrentes de main. Se reforzó el aplicador con rebase sobre main fresco y el siguiente run persistió y verificó los tres cierres.",
+          "recovered": true
+        }
+      ],
+      "message": "Pasada tr-autoguard-1793653885 cerrada 3/3: Yeremay, Tenerife y Budimir R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidencia recuperada: carrera de push del aplicador corregida con rebase sobre main fresco.",
+      "at": "2026-11-02T22:24:40+01:00"
     }
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": "red-review-f894d38a06b32c1267a9",
+  "current_item": {
+    "id": "red-review-0db3208fce64ce117764",
+    "revision": 0,
+    "name": "Revisar novedades: Jesús de Miguel",
+    "phase": "preparing",
+    "message": "Revalidando ID+revisión y preparando revisión de novedades."
+  },
   "current_title": "Revisar novedades: Pepe Mel",
   "completed_runs": [
     {
@@ -4809,7 +4849,7 @@
       "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual."
     }
   ],
-  "command_id": "tr-autoguard-1793653885",
+  "command_id": "tr-1793654715991-manual",
   "requested_at": "2026-11-02T21:20:30+01:00",
   "runs": [
     {
