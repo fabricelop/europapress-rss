@@ -25,6 +25,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /ios/ttactualidad/
+            /pilot/rework_ttittulares.py
+            /pilot/test_rework_ttittulares.py
+            /ttittulares/site-ai-images.json
       - name: Install XcodeGen
         run: brew install xcodegen librsvg
       - name: Render AppIcon asset
