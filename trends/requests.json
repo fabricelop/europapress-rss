@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T13:11:08+01:00",
+  "updated_at": "2026-11-02T13:21:25+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -202633,6 +202633,48 @@
       "review_outcome": "stale",
       "completed_at": "2026-11-02T12:02:04.695594+00:00",
       "review_reason": "La revalidación JIT detecta que Toledo ya no figura en el Top 30 fresco de recent.json; por contrato no se revisa por debajo del Top 30 y el aplicador debe cerrarla como stale."
+    },
+    {
+      "id": "c9d48615f2ca",
+      "name": "Bélgica",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-02T13:21:25+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "aeef66d5ed47",
+      "requested_together": [
+        "Bélgica"
+      ],
+      "captured_with": [
+        "Bélgica",
+        "Comprarse"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "bda4f2269ee3",
+      "name": "Comprarse",
+      "rank": 25,
+      "status": "preparing",
+      "requested_at": "2026-11-02T13:21:25+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "aeef66d5ed47",
+      "requested_together": [
+        "Comprarse"
+      ],
+      "captured_with": [
+        "Bélgica",
+        "Comprarse"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 770
