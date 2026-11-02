@@ -6,37 +6,37 @@
   "run_id": "tr-1793601909530-manual",
   "previous_run_id": "tr-1793599715566-manual",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "investigating",
   "started_at": "2026-11-02T07:45:09.530+01:00",
-  "updated_at": "2026-11-02T07:49:00+01:00",
+  "updated_at": "2026-11-02T07:51:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "red-review-3365df6753b4e87e7e89",
-  "title": "Revisar novedades: GP de México · Alonso y #MexicoGP",
+  "trend_id": "red-review-8117d53cd1a62500cd5f",
+  "title": "Revisar novedades: Adif",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-3365df6753b4e87e7e89"
+  ],
   "remaining_ids": [
-    "red-review-3365df6753b4e87e7e89",
     "red-review-8117d53cd1a62500cd5f"
   ],
   "remaining_active_ids": [
-    "red-review-3365df6753b4e87e7e89",
     "red-review-8117d53cd1a62500cd5f"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -2008,6 +2008,22 @@
       "trend_id": "red-review-3365df6753b4e87e7e89",
       "title": "Revisar novedades: GP de México · Alonso y #MexicoGP",
       "message": "Resultado updated persistido en maintenance-outbox; esperando únicamente la aplicación JIT automática para cerrar la revisión."
+    },
+    {
+      "at": "2026-11-02T07:51:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793601909530-manual",
+      "trend_id": "red-review-3365df6753b4e87e7e89",
+      "title": "Revisar novedades: GP de México · Alonso y #MexicoGP",
+      "message": "1/2 aplicado y verificado en requests + Listas como trend-update-204b9324125e9b9de1b5."
+    },
+    {
+      "at": "2026-11-02T07:51:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793601909530-manual",
+      "trend_id": "red-review-8117d53cd1a62500cd5f",
+      "title": "Revisar novedades: Adif",
+      "message": "Revisando novedades de Adif tras revalidar id+revision en main; se comparan hechos posteriores con la explicación sobre fallos técnicos y LZB."
     }
   ],
   "final_outcomes": [
