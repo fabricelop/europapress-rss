@@ -3,13 +3,13 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261102-editorial-queue-recovery-02",
-  "previous_run_id": "tr-1793635315319-manual",
+  "run_id": "tr-1793646243399-manual",
+  "previous_run_id": "tr-20261102-editorial-queue-recovery-02",
   "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
   "started_at": "2026-11-02T19:55:00+01:00",
-  "updated_at": "2026-11-02T20:15:00+01:00",
-  "finished_at": "2026-11-02T20:10:30+01:00",
+  "updated_at": "2026-11-02T20:20:30+01:00",
+  "finished_at": "2026-11-02T20:20:30+01:00",
   "current": 23,
   "total": 23,
   "trend_id": null,
@@ -58,26 +58,20 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 3,
-    "concurrent_convergence": 1
+    "incidents": 2,
+    "concurrent_convergence": 22
   },
-  "incident_count": 3,
+  "incident_count": 2,
   "incidents": [
     {
-      "type": "outbox_concurrency_recovery",
-      "message": "Los outboxes individuales fueron cancelándose por concurrencia; se sustituyeron por un único outbox atómico, aplicado correctamente."
+      "type": "concurrent_run_overlap",
+      "message": "La pasada tr-20261102-editorial-queue-recovery-02 persistió 22 explicaciones mientras esta ejecución estaba activa; se aceptó la convergencia exacta id+revision tras relectura de main."
     },
     {
-      "type": "terminal_requeue_regression",
+      "type": "terminal_revision_race",
       "trend_id": "c8490403e466",
       "revision": 0,
-      "message": "#LaFuerzaDeLaGente r0 fue reinsertada por el refresco Top30 pese a decisión terminal deleted; se retiró de nuevo tras validación JIT."
-    },
-    {
-      "type": "concurrent_terminal_outbox",
-      "trend_id": "c8490403e466",
-      "revision": 0,
-      "message": "Una carrera concurrente llegó a persistir una explicación para una revisión con decisión terminal deleted. Se corrigió auto_queue_new para que el (id, revision) terminal prevalezca sobre timestamps posteriores; commit ca59561f2365f0bb6f97d2d5f2d43839ef888d15."
+      "message": "#LaFuerzaDeLaGente r0 reapareció por una carrera de refresco; la regla terminal vigente del mismo (id,revision) prevalece y ambos espejos quedaron reconciliados como deleted."
     }
   ],
   "error": null,
@@ -88,154 +82,154 @@
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "9767e3b44c3a",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "f4c4d4189222",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "48e556d153eb",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "ea1898970906",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "75f572510033",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "e7ab60b9a756",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "586304ff2756",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "2c11a365b2f8",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "ffa167f72646",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "c48db1cddfcf",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "dd28d1d571de",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "37757598646d",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "8b882d17d961",
       "revision": 1,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "59e7d31e6d57",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "d8fc6f0e3250",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "791b68e7bf71",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "09c4a2596486",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "7bd9d0e04342",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "38713259193a",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "02e65daf4a85",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "33e2e8c86648",
       "revision": 0,
       "outcome": "explained",
       "applied": true,
-      "via": "atomic_chat_outbox"
+      "via": "concurrent_convergence"
     },
     {
       "id": "c8490403e466",
@@ -243,19 +237,19 @@
       "name": "#LaFuerzaDeLaGente",
       "outcome": "terminal_deleted",
       "applied": true,
-      "via": "jit_terminal_cleanup"
+      "via": "jit_terminal_reconcile"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T19:55:00+01:00",
-  "last_completed_at": "2026-11-02T20:10:30+01:00",
+  "last_completed_at": "2026-11-02T20:20:30+01:00",
   "last_run": {
-    "run_id": "tr-20261102-editorial-queue-recovery-02",
-    "command_id": "tr-20261102-editorial-queue-recovery-02",
+    "run_id": "tr-1793646243399-manual",
+    "command_id": "tr-1793646243399-manual",
     "canonical": true,
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-02T19:55:00+01:00",
-    "finished_at": "2026-11-02T20:10:30+01:00",
+    "started_at": "2026-11-02T20:04:00+01:00",
+    "finished_at": "2026-11-02T20:20:30+01:00",
     "summary": {
       "attempted": 23,
       "observed": 23,
@@ -271,8 +265,8 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 3,
-      "concurrent_convergence": 1
+      "incidents": 2,
+      "concurrent_convergence": 22
     },
     "outcomes": [
       {
@@ -280,154 +274,154 @@
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "9767e3b44c3a",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "f4c4d4189222",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "48e556d153eb",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "ea1898970906",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "75f572510033",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "e7ab60b9a756",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "586304ff2756",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "2c11a365b2f8",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "ffa167f72646",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "c48db1cddfcf",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "dd28d1d571de",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "37757598646d",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "8b882d17d961",
         "revision": 1,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "59e7d31e6d57",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "d8fc6f0e3250",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "791b68e7bf71",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "09c4a2596486",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "7bd9d0e04342",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "38713259193a",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "02e65daf4a85",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "33e2e8c86648",
         "revision": 0,
         "outcome": "explained",
         "applied": true,
-        "via": "atomic_chat_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "c8490403e466",
@@ -435,32 +429,26 @@
         "name": "#LaFuerzaDeLaGente",
         "outcome": "terminal_deleted",
         "applied": true,
-        "via": "jit_terminal_cleanup"
+        "via": "jit_terminal_reconcile"
       }
     ],
-    "incident_count": 3,
+    "incident_count": 2,
     "incidents": [
       {
-        "type": "outbox_concurrency_recovery",
-        "message": "Los outboxes individuales fueron cancelándose por concurrencia; se sustituyeron por un único outbox atómico, aplicado correctamente."
+        "type": "concurrent_run_overlap",
+        "message": "La pasada tr-20261102-editorial-queue-recovery-02 persistió 22 explicaciones mientras esta ejecución estaba activa; se aceptó la convergencia exacta id+revision tras relectura de main."
       },
       {
-        "type": "terminal_requeue_regression",
+        "type": "terminal_revision_race",
         "trend_id": "c8490403e466",
         "revision": 0,
-        "message": "#LaFuerzaDeLaGente r0 fue reinsertada por el refresco Top30 pese a decisión terminal deleted; se retiró de nuevo tras validación JIT."
-      },
-      {
-        "type": "concurrent_terminal_outbox",
-        "trend_id": "c8490403e466",
-        "revision": 0,
-        "message": "Una carrera concurrente llegó a persistir una explicación para una revisión con decisión terminal deleted. Se corrigió auto_queue_new para que el (id, revision) terminal prevalezca sobre timestamps posteriores; commit ca59561f2365f0bb6f97d2d5f2d43839ef888d15."
+        "message": "#LaFuerzaDeLaGente r0 reapareció por una carrera de refresco; la regla terminal vigente del mismo (id,revision) prevalece y ambos espejos quedaron reconciliados como deleted."
       }
     ],
-    "message": "Pasada editorial cerrada: 22 revisiones ordinarias válidas persistidas y 1 revisión terminal excluida del cómputo editorial. Cola main actualmente vacía. Se corrigió la reinserción de decisiones terminales exactas; ImageGen=0 llamadas desde esta pasada y publicaciones=0."
+    "message": "Pasada tr-1793646243399-manual cerrada tras barrera final de main: editorial-queue=0, requests preparing/update=0 y rewrite_pending/reexplain=0. Convergieron 22 explicaciones ya persistidas por la recuperación concurrente; #LaFuerzaDeLaGente r0 quedó terminal deleted tras conciliación exacta. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada editorial cerrada: 22 revisiones ordinarias válidas persistidas y 1 revisión terminal excluida del cómputo editorial. Cola main actualmente vacía. Se corrigió la reinserción de decisiones terminales exactas; ImageGen=0 llamadas desde esta pasada y publicaciones=0.",
+  "message": "Pasada tr-1793646243399-manual cerrada tras barrera final de main: editorial-queue=0, requests preparing/update=0 y rewrite_pending/reexplain=0. Convergieron 22 explicaciones ya persistidas por la recuperación concurrente; #LaFuerzaDeLaGente r0 quedó terminal deleted tras conciliación exacta. ImageGen=0 llamadas desde esta pasada; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -4795,6 +4783,6 @@
       "message": "Pasada tr-1793635315319-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update y sin rewrite_pending/reexplain vigentes. La pasada inmediatamente anterior ya había cerrado Toledo (stale) y Halloween (unchanged). ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-20261102-editorial-queue-recovery-02",
+  "command_id": "tr-1793646243399-manual",
   "requested_at": "2026-11-02T12:48:00+01:00"
 }
