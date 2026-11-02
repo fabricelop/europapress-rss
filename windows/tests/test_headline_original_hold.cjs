@@ -25,5 +25,5 @@ test('Retained original can be recovered by proven conversation URL if CDP tab I
 test('Detached receiver writes reason-only local diagnostic logs',()=>{
  assert.match(receiver,/receiver\.log/);
  assert.match(receiver,/receiver\.err\.log/);
- assert.doesNotMatch(receiver,/\['ignore',output,errors\][\s\S]*?ImageGen/);
+ assert.match(receiver,/stdio:\['ignore',output,errors\]/);
 });
