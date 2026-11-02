@@ -6,12 +6,12 @@
   "run_id": "tr-1793663849907-manual",
   "previous_run_id": "tr-autoguard-1793663459",
   "status": "RUNNING",
-  "phase": "review_red",
+  "phase": "investigating",
   "started_at": "2026-11-03T00:57:29.907+01:00",
-  "updated_at": "2026-11-03T00:59:20+01:00",
+  "updated_at": "2026-11-03T00:59:10+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 4,
+  "current": 0,
+  "total": 2,
   "trend_id": "red-review-5acdc18cd526baa17504",
   "title": "Revisar novedades: Adif",
   "queue_complete": false,
@@ -49,7 +49,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "review_red",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:57:14+01:00",
@@ -97,7 +97,7 @@
     "message": "Pasada cerrada 1/1: revisión Hamilton R0 aplicada como actualización material del mismo GP de México. Ficha nueva trend-update-77f5db7129dcd06a9fc8 sincronizada en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "2/4 cerrados. Revisando Adif R0; sin ImageGen ni publicación.",
+  "message": "Revisando novedades de Adif R0 tras revalidación JIT; se contrasta el posible uso repetido del protocolo LZB4 y las medidas posteriores. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T17:19:40.185+01:00",
@@ -1124,6 +1124,17 @@
       "trend_id": "red-review-5acdc18cd526baa17504",
       "title": "Revisar novedades: Adif",
       "message": "Revisión Adif R0 revalidada JIT. Novedad material detectada: la investigación amplía el foco a decenas de fallos previos del LZB para saber si el protocolo erróneo era habitual y se prepara una respuesta única de marcha a la vista."
+    },
+    {
+      "at": "2026-11-03T00:59:10+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793663849907-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-5acdc18cd526baa17504",
+      "title": "Revisar novedades: Adif",
+      "message": "Revisando novedades de Adif R0 tras revalidación JIT; se contrasta el posible uso repetido del protocolo LZB4 y las medidas posteriores. Sin ImageGen ni publicación."
     }
   ],
   "history": [
