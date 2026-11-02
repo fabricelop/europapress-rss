@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T20:41:14+01:00",
+  "updated_at": "2026-11-02T19:44:34.661153+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -205159,7 +205159,7 @@
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 19,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T19:40:23.023361+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -205183,14 +205183,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-02T19:44:34.661153+00:00",
+      "review_reason": "Revisión obsoleta por barrera JIT: Toledo ya no figura en el Top 30 fresco (2026-11-02T20:41:10+01:00); el contrato impide revisar por debajo del Top 30, por lo que no se fuerza una actualización."
     },
     {
       "id": "red-review-234cb2f959e0030c8deb",
       "revision": 0,
       "name": "Revisar novedades: #EnBocaDeTodos",
       "rank": 10,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T19:40:23.023361+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -205213,7 +205216,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-02T19:44:34.661153+00:00",
+      "review_reason": "Revisión obsoleta por barrera JIT: #EnBocaDeTodos ya no figura en el Top 30 fresco (2026-11-02T20:41:10+01:00); el contrato impide revisar por debajo del Top 30, por lo que no se fuerza una actualización."
     },
     {
       "id": "9f3e1ea405dd",
