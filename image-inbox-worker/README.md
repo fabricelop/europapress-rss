@@ -17,3 +17,11 @@ API:
 **Garantía:** `approve` solo marca `approved_awaiting_publication`. No hay rutas públicas ni código de publicación en este Worker. La publicación requiere un publicador independiente que valide nuevamente episodio/revisión/hash y confirme APP+Sites. El Worker **no considera publicada una imagen al aprobarla**, porque aún no está integrado con los dos catálogos. `reject` solo saca el candidato de la bandeja; original intacto.
 
 **Antes de producción:** verificar autorización al GitHub App y permisos, proteger endpoints de ingestión, conectarlo al receptor del PC, completar verificación contra fuentes editoriales de main antes de publicar, integración real con el Sites v38 y la app, y pruebas E2E con PNG real. Mantener la pausa de PR270 hasta el final.
+
+## PC — preparación del traslado privado (NO conectado a los consumidores vivos)
+
+`tools/send-original.mjs` es un importador **opt-in**, sin instalación, reinicio ni tarea programada. Solo lee el PNG existente y su ficha/identidad JSON, comprueba SHA-256 y entrega por HTTPS al buzón; no escribe web ni catálogos. Requiere el endpoint seguro y el secreto cargados en variables de entorno del PC (no pasarlos en línea de comandos).
+
+`node image-inbox-worker/tools/send-original.mjs --image ORIGINAL.png --metadata FICHA.json`
+
+La captura de Images y la comprobación de episodio siguen pendientes; este comando no las sustituye. No ejecutar con datos inventados ni cambiar los consumidores mientras no se hayan validado los procesos activos.
