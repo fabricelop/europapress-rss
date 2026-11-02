@@ -3,24 +3,49 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793620625571-manual",
-  "previous_run_id": "tr-1793620099556-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T12:58:00+01:00",
-  "updated_at": "2026-11-02T13:03:00+01:00",
-  "finished_at": "2026-11-02T13:03:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-cd93325eb8c17bd267a6",
-    "red-review-9f8cf554ab08b4dd53d2"
+  "run_id": "tr-20261102-pending-editorial-recovery-01",
+  "previous_run_id": "tr-1793620625571-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T16:45:00+01:00",
+  "updated_at": "2026-11-02T16:45:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 13,
+  "trend_id": "c9d48615f2ca",
+  "title": "Bélgica",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "c9d48615f2ca",
+    "bda4f2269ee3",
+    "3045db42e1f5",
+    "5e188e3012d7",
+    "1a8dca45b46d",
+    "067545f4a7fc",
+    "357402e6e903",
+    "f84895c47d54",
+    "e2b4555233b1",
+    "b88d2954e28e",
+    "c1f986a9e525",
+    "fed9af79780a",
+    "3e340be4de18"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "c9d48615f2ca",
+    "bda4f2269ee3",
+    "3045db42e1f5",
+    "5e188e3012d7",
+    "1a8dca45b46d",
+    "067545f4a7fc",
+    "357402e6e903",
+    "f84895c47d54",
+    "e2b4555233b1",
+    "b88d2954e28e",
+    "c1f986a9e525",
+    "fed9af79780a",
+    "3e340be4de18"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -91,7 +116,7 @@
     "message": "Pasada cerrada 2/2: Chiqui y Toledo fueron consumidas por el aplicador y cerradas stale tras la barrera JIT. Chiqui tenía una novedad material investigada, pero el snapshot ya no era aplicable y no se creó actualización; Toledo ya había salido del Top 30 fresco. Cola final 0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2: Chiqui y Toledo fueron consumidas por el aplicador y cerradas stale tras la barrera JIT. Chiqui tenía una novedad material investigada, pero el snapshot ya no era aplicable y no se creó actualización; Toledo ya había salido del Top 30 fresco. Cola final 0; ImageGen=0; publicaciones=0.",
+  "message": "Recuperación editorial en curso: 13 pendientes vigentes; comenzando por Bélgica. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -4148,6 +4173,6 @@
       "message": "Pasada tr-1793611644017-manual cerrada 1/1 por convergencia JIT: Día de Todos quedó unchanged con texto y fecha originales conservados. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793620099556-manual",
+  "command_id": "tr-20261102-pending-editorial-recovery-01",
   "requested_at": "2026-11-02T12:48:00+01:00"
 }
