@@ -265,20 +265,27 @@ async function currentPinnedCommand(pages){
 }
 async function discoverConversation(commandId,browserTargetId,diagnostic=false){
   const pages=await http(GENERATOR_BASE+'/json/list');
-  // The producer can recover/replace its fixed target during submission. The
-  // enrollment may still carry the former target. Inspect only the recorded
-  // target and the producer's OWN current pinned target, never arbitrary tabs.
-  let reason='pinned_target_missing';
-  for(const id of new Set([String(browserTargetId||''),pinnedTargetId()].filter(Boolean))){
+  // Prefer original pinned target. Chrome may however have closed the tab:
+  // the user can reopen their ORIGINAL ChatGPT conversation in this same
+  // already-running CDP browser. Inspect those existing chat tabs as a safe
+  // fallback, never create a tab or navigate one from this automatic worker.
+  // Every candidate MUST prove the exact command user turn before acceptance.
+  const chatPages=pages.filter(x=>x.type==='page'&&x.webSocketDebuggerUrl&&chatURL(x.url));
+  const preferred=[String(browserTargetId||''),pinnedTargetId()].filter(Boolean);
+  const ids=[...new Set([...preferred,...chatPages.slice(0,20).map(x=>String(x.id||''))])];
+  let reason=chatPages.length?'command_not_in_open_conversations':'no_chatgpt_conversation_tab';
+  for(const id of ids){
     const own=pages.find(x=>String(x.id||'')===id&&x.webSocketDebuggerUrl);
-    if(!own)continue;
-    if(!chatURL(own.url)){reason='pinned_url_not_durable';continue;}
+    if(!own||!chatURL(own.url))continue;
     const cdp=new CDP(own.webSocketDebuggerUrl);
-    try{await cdp.open();const result=await cdp.evaluate(conversationProbe(commandId,diagnostic));
+    try{
+      await cdp.open();
+      const result=await cdp.evaluate(conversationProbe(commandId,diagnostic));
       const url=chatURL(diagnostic?result?.url:result);
-      if(url)return diagnostic?{url,reason:'matched',browser_target_id:id}:url;
-      reason=diagnostic?(result?.reason||'conversation_probe_unavailable'):'last_user_command_differs';
-    }finally{cdp.close();}
+      if(url&&url===chatURL(own.url))
+        return diagnostic?{url,reason:'matched',browser_target_id:id}:url;
+    }catch{reason='conversation_probe_unavailable';}
+    finally{cdp.close();}
   }
   return diagnostic?{url:null,reason}:null;
 }
