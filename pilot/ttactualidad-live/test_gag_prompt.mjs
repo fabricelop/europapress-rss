@@ -10,7 +10,10 @@ function getManualPrompt(path){
   const end=html.indexOf('\nasync function copyText(',begin);
   assert.ok(begin>=0&&end>begin,'Funciones editoriales: '+path);
   const ctx=vm.createContext({String,Math,Array,Number,RegExp});
-  vm.runInContext(html.slice(begin,end),ctx);
+  const workflowBegin=html.indexOf('function imageWorkflowPrompt(');
+  const workflowEnd=html.indexOf('\nconst fields=',workflowBegin);
+  assert.ok(workflowBegin>=0&&workflowEnd>workflowBegin,'Flujo de asociación real: '+path);
+  vm.runInContext(html.slice(workflowBegin,workflowEnd)+'\n'+html.slice(begin,end),ctx);
   return ctx.manualPrompt;
 }
 const files=['./index.html','../../docs/ttactualidad/index.html'];
