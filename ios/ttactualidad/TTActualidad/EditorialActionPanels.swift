@@ -625,7 +625,7 @@ struct EditorialActions: View {
                 "Da URL y SHA-256 solo si están realmente verificados. " +
                 "Procesa UNA tendencia y UNA imagen. No cambies ni el texto ni el PC."
         ].joined(separator: "\n\n")
-        copy(prompt)
+        copy(ImageApprovalInstructions.manual(project: "ttendencias", id: hasEditorialIdentity ? targetID : "", revision: targetRevision, title: target.name, text: explanation, date: explainedAt, create: false))
         outcome = hasEditorialIdentity
             ? "Instrucción de asociación copiada. Adjunta el PNG ORIGINAL al chat TT; no generará otra imagen."
             : "Guía copiada. Esta ficha aún no tiene identidad editorial completa: primero debe explicarse. Conserva tu PNG."
@@ -691,7 +691,7 @@ struct EditorialActions: View {
               "no afirmes haber actualizado ChatGPT Sites sin un conector real. " +
               "Procesa UNA sola noticia; no alteres texto, remate ni fotos de archivo."
         ].joined(separator: "\n\n")
-        copy(prompt)
+        copy(ImageApprovalInstructions.manual(project: "ttittulares", id: ready ? item.id : "", revision: item.revision, title: item.title, text: item.editorial, date: item.preparedAtISO, create: false))
         outcome = ready
             ? "Orden copiada. Pega la imagen JPEG/PNG/WebP REAL en Proyecto TT junto con la orden."
             : "Guía copiada. No se puede asociar aún: falta una noticia READY con identidad editorial completa."
