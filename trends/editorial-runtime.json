@@ -5,28 +5,30 @@
   "canonical": true,
   "run_id": "tr-1793599231716-manual",
   "previous_run_id": "tr-1793584563848-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-02T07:00:00+01:00",
-  "updated_at": "2026-11-02T07:04:00+01:00",
+  "updated_at": "2026-11-02T07:04:38+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": "a90056474d8d",
   "title": "#elsecreto",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "a90056474d8d"
+  ],
   "remaining_ids": [
-    "a90056474d8d",
     "da0b535b0cd9",
     "6d122a2106a9",
-    "7ec28bdd90bc"
+    "7ec28bdd90bc",
+    "8b882d17d961"
   ],
   "remaining_active_ids": [
-    "a90056474d8d",
     "da0b535b0cd9",
     "6d122a2106a9",
-    "7ec28bdd90bc"
+    "7ec28bdd90bc",
+    "8b882d17d961"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -1760,7 +1762,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T02:55:17+01:00",
+  "last_started_at": "2026-11-02T07:04:38+01:00",
   "last_completed_at": "2026-11-02T03:05:00+01:00",
   "last_run": {
     "run_id": "tr-1793584563848-manual",
