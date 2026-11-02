@@ -3,40 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793660134476-manual",
+  "run_id": "tr-autoguard-1793659867",
   "previous_run_id": "tr-autoguard-1793659867",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T23:56:00+01:00",
-  "updated_at": "2026-11-02T23:56:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-f23642f24df4f8e5cb19",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "updated_at": "2026-11-02T23:59:50+01:00",
+  "finished_at": "2026-11-02T23:59:50+01:00",
+  "current": 4,
+  "total": 4,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "48bd70057066",
+    "faedd59cc0a6",
     "red-review-f23642f24df4f8e5cb19",
     "red-review-c3769957c10ea840e5b4"
   ],
-  "remaining_active_ids": [
-    "red-review-f23642f24df4f8e5cb19",
-    "red-review-c3769957c10ea840e5b4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 2,
+    "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -49,67 +48,62 @@
   "activity": "investigating",
   "final_outcomes": [
     {
-      "id": "a157f21d8369",
+      "id": "48bd70057066",
       "revision": 0,
-      "name": "#FirstDates2N",
+      "name": "#LaIslaDeLasTentaciones16",
       "outcome": "explained",
       "applied": true,
       "via": "this_run_editorial_outbox"
     },
     {
-      "id": "00db0e3844a0",
+      "id": "faedd59cc0a6",
       "revision": 0,
-      "name": "adama",
+      "name": "Mario Soriano",
       "outcome": "explained",
       "applied": true,
       "via": "this_run_editorial_outbox"
     },
     {
-      "id": "9dc1b6003e39",
+      "id": "red-review-f23642f24df4f8e5cb19",
       "revision": 0,
-      "name": "Auba",
-      "outcome": "explained",
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
       "applied": true,
-      "via": "this_run_editorial_outbox"
+      "via": "this_run_maintenance_outbox",
+      "reason": "La revisión quedó obsoleta al revalidarse contra el estado actual; no se reescribió la ficha original."
     },
     {
-      "id": "b5c96ee7e280",
+      "id": "red-review-c3769957c10ea840e5b4",
       "revision": 0,
-      "name": "Mella",
-      "outcome": "explained",
+      "name": "Revisar novedades: Racing",
+      "outcome": "updated",
       "applied": true,
-      "via": "this_run_editorial_outbox"
-    },
-    {
-      "id": "80bdd4d8965a",
-      "revision": 0,
-      "name": "Hidalgo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox"
+      "via": "this_run_maintenance_outbox",
+      "created_id": "trend-update-068bdb8f15caf3939800",
+      "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla, baja para el resto de la temporada."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T23:54:41+01:00",
-  "last_completed_at": "2026-11-02T23:54:42+01:00",
+  "last_completed_at": "2026-11-02T23:59:50+01:00",
   "last_run": {
-    "run_id": "tr-1793656762873-manual",
-    "command_id": "tr-1793656762873-manual",
+    "run_id": "tr-autoguard-1793659867",
+    "command_id": "tr-autoguard-1793659867",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-02T22:59:22.873+01:00",
-    "finished_at": "2026-11-02T23:08:18.554+01:00",
+    "started_at": "2026-11-02T23:56:00+01:00",
+    "finished_at": "2026-11-02T23:59:50+01:00",
     "summary": {
-      "attempted": 5,
-      "observed": 5,
-      "closed": 5,
-      "explained": 5,
-      "updates": 0,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 2,
+      "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -119,52 +113,47 @@
     },
     "outcomes": [
       {
-        "id": "a157f21d8369",
+        "id": "48bd70057066",
         "revision": 0,
-        "name": "#FirstDates2N",
+        "name": "#LaIslaDeLasTentaciones16",
         "outcome": "explained",
         "applied": true,
         "via": "this_run_editorial_outbox"
       },
       {
-        "id": "00db0e3844a0",
+        "id": "faedd59cc0a6",
         "revision": 0,
-        "name": "adama",
+        "name": "Mario Soriano",
         "outcome": "explained",
         "applied": true,
         "via": "this_run_editorial_outbox"
       },
       {
-        "id": "9dc1b6003e39",
+        "id": "red-review-f23642f24df4f8e5cb19",
         "revision": 0,
-        "name": "Auba",
-        "outcome": "explained",
+        "name": "Revisar novedades: Toledo",
+        "outcome": "stale",
         "applied": true,
-        "via": "this_run_editorial_outbox"
+        "via": "this_run_maintenance_outbox",
+        "reason": "La revisión quedó obsoleta al revalidarse contra el estado actual; no se reescribió la ficha original."
       },
       {
-        "id": "b5c96ee7e280",
+        "id": "red-review-c3769957c10ea840e5b4",
         "revision": 0,
-        "name": "Mella",
-        "outcome": "explained",
+        "name": "Revisar novedades: Racing",
+        "outcome": "updated",
         "applied": true,
-        "via": "this_run_editorial_outbox"
-      },
-      {
-        "id": "80bdd4d8965a",
-        "revision": 0,
-        "name": "Hidalgo",
-        "outcome": "explained",
-        "applied": true,
-        "via": "this_run_editorial_outbox"
+        "via": "this_run_maintenance_outbox",
+        "created_id": "trend-update-068bdb8f15caf3939800",
+        "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla, baja para el resto de la temporada."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1793659867 cerrada 4/4: #LaIslaDeLasTentaciones16 y Mario Soriano explicados; revisión de Racing actualizada por la lesión de Álvaro Mantilla; revisión de Toledo descartada como stale tras revalidación JIT. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio manual: 2 revisiones review_red vigentes en main (Toledo y Racing). Revalidación JIT por ID+revisión; sin ImageGen ni publicación.",
+  "message": "Pasada tr-autoguard-1793659867 cerrada 4/4: #LaIslaDeLasTentaciones16 y Mario Soriano explicados; revisión de Racing actualizada por la lesión de Álvaro Mantilla; revisión de Toledo descartada como stale tras revalidación JIT. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -3610,48 +3599,43 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "a157f21d8369",
+      "id": "48bd70057066",
       "revision": 0,
-      "name": "#FirstDates2N",
+      "name": "#LaIslaDeLasTentaciones16",
       "outcome": "explained",
       "applied": true,
       "via": "this_run_editorial_outbox"
     },
     {
-      "id": "00db0e3844a0",
+      "id": "faedd59cc0a6",
       "revision": 0,
-      "name": "adama",
+      "name": "Mario Soriano",
       "outcome": "explained",
       "applied": true,
       "via": "this_run_editorial_outbox"
     },
     {
-      "id": "9dc1b6003e39",
+      "id": "red-review-f23642f24df4f8e5cb19",
       "revision": 0,
-      "name": "Auba",
-      "outcome": "explained",
+      "name": "Revisar novedades: Toledo",
+      "outcome": "stale",
       "applied": true,
-      "via": "this_run_editorial_outbox"
+      "via": "this_run_maintenance_outbox",
+      "reason": "La revisión quedó obsoleta al revalidarse contra el estado actual; no se reescribió la ficha original."
     },
     {
-      "id": "b5c96ee7e280",
+      "id": "red-review-c3769957c10ea840e5b4",
       "revision": 0,
-      "name": "Mella",
-      "outcome": "explained",
+      "name": "Revisar novedades: Racing",
+      "outcome": "updated",
       "applied": true,
-      "via": "this_run_editorial_outbox"
-    },
-    {
-      "id": "80bdd4d8965a",
-      "revision": 0,
-      "name": "Hidalgo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox"
+      "via": "this_run_maintenance_outbox",
+      "created_id": "trend-update-068bdb8f15caf3939800",
+      "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla, baja para el resto de la temporada."
     }
   ],
-  "current_item": "48bd70057066",
-  "current_title": "#LaIslaDeLasTentaciones16",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -5170,6 +5154,72 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1793659867",
+      "command_id": "tr-autoguard-1793659867",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-02T23:56:00+01:00",
+      "finished_at": "2026-11-02T23:59:50+01:00",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 2,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "48bd70057066",
+          "revision": 0,
+          "name": "#LaIslaDeLasTentaciones16",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "faedd59cc0a6",
+          "revision": 0,
+          "name": "Mario Soriano",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "red-review-f23642f24df4f8e5cb19",
+          "revision": 0,
+          "name": "Revisar novedades: Toledo",
+          "outcome": "stale",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "reason": "La revisión quedó obsoleta al revalidarse contra el estado actual; no se reescribió la ficha original."
+        },
+        {
+          "id": "red-review-c3769957c10ea840e5b4",
+          "revision": 0,
+          "name": "Revisar novedades: Racing",
+          "outcome": "updated",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "created_id": "trend-update-068bdb8f15caf3939800",
+          "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla, baja para el resto de la temporada."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793659867 cerrada 4/4: #LaIslaDeLasTentaciones16 y Mario Soriano explicados; revisión de Racing actualizada por la lesión de Álvaro Mantilla; revisión de Toledo descartada como stale tras revalidación JIT. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "command_id": "tr-autoguard-1793659867",
@@ -5688,6 +5738,72 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1793659867",
+      "command_id": "tr-autoguard-1793659867",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-02T23:56:00+01:00",
+      "finished_at": "2026-11-02T23:59:50+01:00",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 2,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "48bd70057066",
+          "revision": 0,
+          "name": "#LaIslaDeLasTentaciones16",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "faedd59cc0a6",
+          "revision": 0,
+          "name": "Mario Soriano",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "red-review-f23642f24df4f8e5cb19",
+          "revision": 0,
+          "name": "Revisar novedades: Toledo",
+          "outcome": "stale",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "reason": "La revisión quedó obsoleta al revalidarse contra el estado actual; no se reescribió la ficha original."
+        },
+        {
+          "id": "red-review-c3769957c10ea840e5b4",
+          "revision": 0,
+          "name": "Revisar novedades: Racing",
+          "outcome": "updated",
+          "applied": true,
+          "via": "this_run_maintenance_outbox",
+          "created_id": "trend-update-068bdb8f15caf3939800",
+          "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla, baja para el resto de la temporada."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793659867 cerrada 4/4: #LaIslaDeLasTentaciones16 y Mario Soriano explicados; revisión de Racing actualizada por la lesión de Álvaro Mantilla; revisión de Toledo descartada como stale tras revalidación JIT. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ]
 }
