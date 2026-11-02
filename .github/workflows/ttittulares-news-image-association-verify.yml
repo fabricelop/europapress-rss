@@ -14,6 +14,9 @@ on:
       - 'ttittulares/sync_site_ai_images.py'
       - 'tests/test_ttittulares_github_outbox.py'
       - 'tests/test_ttittulares_image_catalog.py'
+      - 'tests/test_news_ai_icon.cjs'
+      - 'pilot/ttactualidad-live/index.html'
+      - 'docs/ttactualidad/index.html'
       - '.github/workflows/ttittulares-news-image-association-verify.yml'
   workflow_dispatch:
 permissions:
@@ -36,6 +39,9 @@ jobs:
             /ttittulares/sync_site_ai_images.py
             /tests/test_ttittulares_github_outbox.py
             /tests/test_ttittulares_image_catalog.py
+            /tests/test_news_ai_icon.cjs
+            /pilot/ttactualidad-live/index.html
+            /docs/ttactualidad/index.html
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -45,6 +51,7 @@ jobs:
           node --check windows/TTiTTularesWebImages.cjs
           node --check windows/TTiTTularesGithubOutbox.cjs
           node --test windows/tests/test_headline_github_outbox.cjs
+          node --test tests/test_news_ai_icon.cjs
       - name: Verify original, target/revision and iPhone/web manifest
         run: |
           python3 -m pip install --quiet Pillow
