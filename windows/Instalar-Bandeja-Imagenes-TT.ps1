@@ -2,8 +2,8 @@
 # Separate private receiver; never restarts generators, Chrome or listeners.
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='0ea0a1d53ad2f77fe5c6ba5a0ccc03db9d58dfcb'
-$expected='92f1fbfe3d35afd14263f76df3e802fd8ec8f4913213da3667bb41da00b8ed5d'
+$pin='11421928b5c9bda3f35e0090edd2b9a9abd6651a'
+$expected='1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58'
 $node=(Get-Command node.exe -ErrorAction Stop).Source
 foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')) {
  $p=Join-Path $base $name
@@ -26,5 +26,5 @@ try {
  Register-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP' -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Force | Out-Null
  Start-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP'
  Write-Host 'Receptor privado instalado. La aprobacion se hace solo en APP; no se publica automaticamente.' -ForegroundColor Green
- Write-Host 'Solo recupera PNGs de conversaciones existentes y reconocidas. No genera ni abre pestanas.'
+ Write-Host 'Solo recupera PNGs de conversaciones reconocidas. Si hace falta, usa una pestana temporal del relay 9234; nunca escribe ni genera.'
 } finally {Remove-Item -LiteralPath $temp -ErrorAction SilentlyContinue}
