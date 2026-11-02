@@ -5,27 +5,41 @@
   "canonical": true,
   "run_id": "tr-1793608239847-manual",
   "previous_run_id": "tr-1793607889040-manual",
-  "status": "PROCESSING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T09:34:56+01:00",
-  "updated_at": "2026-11-02T09:34:56+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-02T09:37:23+01:00",
+  "finished_at": "2026-11-02T09:37:23+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-eff341dc6df256a4741d",
-  "title": "Revisar novedades: Toledo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-eff341dc6df256a4741d",
     "red-review-315fb9aeef2feaf58e62"
   ],
-  "remaining_active_ids": [
-    "red-review-eff341dc6df256a4741d",
-    "red-review-315fb9aeef2feaf58e62"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "updates": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -2242,58 +2256,93 @@
       "current": 7,
       "total": 7,
       "message": "Pasada manual cerrada 7/7 tras absorber trabajo que apareció durante la barrera final: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico se conserva en la ejecución concurrente posterior."
+    },
+    {
+      "at": "2026-11-02T09:37:23+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793608239847-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT verificada: editorial-queue=0; preparing/update=0; mobile-decisions sin rewrite_pending/reexplain. Resultados aplicados: Toledo stale y Óscar Puente updated."
+    },
+    {
+      "at": "2026-11-02T09:37:23+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793608239847-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada tr-1793608239847-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Óscar Puente quedó updated con la nueva ficha trend-update-d4519792604eca140a93. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
     {
-      "id": "red-review-d06b28ee8d8eda53ca65",
+      "id": "red-review-eff341dc6df256a4741d",
       "revision": 0,
-      "name": "Revisar novedades: #ElChiringuitoenCuatro",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "created_id": "trend-update-602a83c51acb91914f59"
-    },
-    {
-      "id": "red-review-202ab61a30d7c964755e",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
+      "name": "Revisar novedades: Toledo",
       "outcome": "stale",
       "applied": true,
       "via": "concurrent_convergence_jit",
-      "reason": "El aplicador invalidó el snapshot al converger con el estado vigente; no se creó una actualización obsoleta."
+      "reason": "La validación JIT encontró que Toledo ya no estaba en el Top 30; no se creó una actualización obsoleta."
+    },
+    {
+      "id": "red-review-315fb9aeef2feaf58e62",
+      "revision": 0,
+      "name": "Revisar novedades: Óscar Puente",
+      "outcome": "updated",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "created_id": "trend-update-d4519792604eca140a93"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T09:29:47+01:00",
-  "last_completed_at": "2026-11-02T09:29:48+01:00",
+  "last_completed_at": "2026-11-02T09:37:23+01:00",
   "last_run": {
-    "run_id": "tr-1793599715566-manual",
+    "run_id": "tr-1793608239847-manual",
     "status": "DONE",
-    "started_at": "2026-11-02T07:19:00+01:00",
-    "finished_at": "2026-11-02T07:23:00+01:00",
+    "started_at": "2026-11-02T09:34:56+01:00",
+    "finished_at": "2026-11-02T09:37:23+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
-      "updates": 0,
+      "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "message": "Pasada cerrada 0/0 tras relectura final de main; cola y reexplicaciones en 0."
+    "message": "Pasada tr-1793608239847-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Óscar Puente quedó updated con la nueva ficha trend-update-d4519792604eca140a93. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio manual: 5 trabajos activos observados; validación JIT antes de cada resultado. Se absorberá convergencia concurrente válida sin duplicar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793608239847-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Óscar Puente quedó updated con la nueva ficha trend-update-d4519792604eca140a93. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -4711,53 +4760,51 @@
         "concurrent_convergence": 3
       },
       "message": "Pasada manual cerrada 7/7 tras absorber trabajo que apareció durante la barrera final: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico se conserva en la ejecución concurrente posterior."
+    },
+    {
+      "at": "2026-11-02T09:37:23+01:00",
+      "run_id": "tr-1793608239847-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada tr-1793608239847-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Óscar Puente quedó updated con la nueva ficha trend-update-d4519792604eca140a93. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "a90056474d8d",
-      "revision": 0,
-      "name": "#elsecreto",
-      "outcome": "explained"
-    },
-    {
-      "id": "da0b535b0cd9",
-      "revision": 0,
-      "name": "Kimi Antonelli",
-      "outcome": "explained"
-    },
-    {
-      "id": "6d122a2106a9",
-      "revision": 0,
-      "name": "Ivana",
-      "outcome": "explained"
-    },
-    {
-      "id": "7ec28bdd90bc",
-      "revision": 0,
-      "name": "#MexicoGP",
-      "outcome": "explained"
-    },
-    {
-      "id": "8b882d17d961",
-      "revision": 0,
-      "name": "Berenguer",
-      "outcome": "explained"
-    },
-    {
-      "id": "red-review-3344126e127e5f6a9343",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
-      "outcome": "stale",
-      "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
-    },
-    {
-      "id": "red-review-cd0e4631a1e15682c33d",
+      "id": "red-review-eff341dc6df256a4741d",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "outcome": "stale",
-      "reason": "Protección JIT: el snapshot de origen ya no era aplicable al materializar el resultado."
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "reason": "La validación JIT encontró que Toledo ya no estaba en el Top 30; no se creó una actualización obsoleta."
+    },
+    {
+      "id": "red-review-315fb9aeef2feaf58e62",
+      "revision": 0,
+      "name": "Revisar novedades: Óscar Puente",
+      "outcome": "updated",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "created_id": "trend-update-d4519792604eca140a93"
     }
   ],
   "current_item": "585534718a18",
@@ -5991,6 +6038,55 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada manual cerrada 7/7 tras absorber trabajo que apareció durante la barrera final: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico se conserva en la ejecución concurrente posterior."
+    },
+    {
+      "run_id": "tr-1793608239847-manual",
+      "command_id": "tr-1793608239847-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-02T09:34:56+01:00",
+      "finished_at": "2026-11-02T09:37:23+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-eff341dc6df256a4741d",
+          "revision": 0,
+          "name": "Revisar novedades: Toledo",
+          "outcome": "stale",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "reason": "La validación JIT encontró que Toledo ya no estaba en el Top 30; no se creó una actualización obsoleta."
+        },
+        {
+          "id": "red-review-315fb9aeef2feaf58e62",
+          "revision": 0,
+          "name": "Revisar novedades: Óscar Puente",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "created_id": "trend-update-d4519792604eca140a93"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793608239847-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Óscar Puente quedó updated con la nueva ficha trend-update-d4519792604eca140a93. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "command_id": "tr-1793608239847-manual",
