@@ -18,3 +18,13 @@ test('news receipt identity uses its own original text, date and fingerprint',()
  const job={command_id:'news-job',event_id:'news-abc',revision:1,context_snapshot:{tweet_text:'Texto noticia',factual_summary:'Hechos',remate:'Remate',prepared_at:'2026-11-02T12:00:00Z'}};
  const m=metadata(task,job);assert.equal(m.project,'ttittulares');assert.equal(m.editorialId,'news-abc');assert.equal(m.editorialText,'Texto noticia');assert.throws(()=>metadata(task,{...job,revision:2}));
 });
+for(const [file,name,news] of [['TTendenciasImageBridge.js','holdForWebImageReceipt',false],['TTiTTularesImageBridge.js','holdForHeadlineOriginalReceipt',true]]){
+ for(const valid of [true,false])test(file+' private hold accepts only exact revision '+valid,async()=>{
+  const vm=require('node:vm'),fs=require('node:fs'),text=fs.readFileSync(require('node:path').join(__dirname,"..",file),'utf8');
+  const match=text.match(new RegExp('async function '+name+'\\([^\\n]*\\)\\{[\\s\\S]*?\\n\\}'));assert.ok(match);
+  let now=0,remembered=0;
+  const hold=vm.runInNewContext('('+match[0]+')',{require:n=>n==='node:fs'?{readFileSync(p){assert.ok(p.includes('image-approval-receipts'));return JSON.stringify({commandId:'job-abc',editorialId:'trend-abc',revision:valid?1:2,rasterSHA256:'a'.repeat(64),id:'b'.repeat(64)})}}:require(n),__dirname,commandId:'job-abc',targetId:'trend-abc',Date:{now:()=>now},sleep:async ms=>{now+=ms},optionalWebHandoff:async()=>{remembered++;return true},console:{log(){}}});
+  const result=news?await hold({}, {revision:1},5000):await hold({},null,{revision:1},5000);
+  assert.equal(result,valid?'private_original_received':'private_original_pending');assert.ok(remembered>0);
+ });
+}
