@@ -5,17 +5,18 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793661198",
   "previous_run_id": "tr-1793660134476-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-03T00:13:30+01:00",
-  "updated_at": "2026-11-03T00:20:24+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T00:21:35+01:00",
+  "finished_at": "2026-11-03T00:21:35+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "1e03ad2efe6a",
-  "title": "Paola",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "1e03ad2efe6a",
     "64a8657cfbb4",
     "c1e5fdc8cf2a"
   ],
@@ -23,107 +24,133 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 3,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "direct_atomic_transport_fallback",
+      "message": "La primera escritura atómica directa de Paola se abortó por un error de transporte h2 antes de mover main; se cambió al outbox/aplicador contractual y las tres revisiones quedaron persistidas y verificadas.",
+      "recovered": true
+    }
+  ],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-f23642f24df4f8e5cb19",
+      "id": "1e03ad2efe6a",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
+      "name": "Paola",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox_jit",
-      "apply_commit": "f1fea27d282b0815955244b91df9e9ded5c1459f",
-      "reason": "Toledo ya no figuraba en el Top 30 fresco; no se creó actualización obsoleta."
+      "via": "editorial_outbox_applied",
+      "explained_at": "2026-11-03T00:17:20+01:00"
     },
     {
-      "id": "red-review-c3769957c10ea840e5b4",
+      "id": "64a8657cfbb4",
       "revision": 0,
-      "name": "Revisar novedades: Racing",
-      "outcome": "updated",
+      "name": "Josue",
+      "outcome": "explained",
       "applied": true,
-      "created_id": "trend-update-068bdb8f15caf3939800",
-      "via": "maintenance_outbox_jit",
-      "apply_commit": "f1fea27d282b0815955244b91df9e9ded5c1459f",
-      "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla confirmada por el Racing."
+      "via": "editorial_outbox_applied",
+      "explained_at": "2026-11-03T00:18:05+01:00",
+      "reason": "Contexto actual verificado; el detonante concreto del nombre no pudo aislarse y se redactó con incertidumbre explícita."
+    },
+    {
+      "id": "c1e5fdc8cf2a",
+      "revision": 0,
+      "name": "Kico",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "explained_at": "2026-11-03T00:18:45+01:00"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:20:24+01:00",
-  "last_completed_at": "2026-11-03T00:20:24+01:00",
+  "last_completed_at": "2026-11-03T00:21:35+01:00",
   "last_run": {
-    "run_id": "tr-1793660134476-manual",
-    "command_id": "tr-1793660134476-manual",
+    "run_id": "tr-autoguard-1793661198",
+    "command_id": "tr-autoguard-1793661198",
     "canonical": true,
-    "status": "DONE",
-    "started_at": "2026-11-02T23:56:00+01:00",
-    "finished_at": "2026-11-02T23:59:57+01:00",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-03T00:13:30+01:00",
+    "finished_at": "2026-11-03T00:21:35+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 1,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 3,
+      "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 1,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 2
+      "incidents": 1,
+      "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "red-review-f23642f24df4f8e5cb19",
+        "id": "1e03ad2efe6a",
         "revision": 0,
-        "name": "Revisar novedades: Toledo",
-        "outcome": "stale",
+        "name": "Paola",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox_jit",
-        "apply_commit": "f1fea27d282b0815955244b91df9e9ded5c1459f",
-        "reason": "Toledo ya no figuraba en el Top 30 fresco; no se creó actualización obsoleta."
+        "via": "editorial_outbox_applied",
+        "explained_at": "2026-11-03T00:17:20+01:00"
       },
       {
-        "id": "red-review-c3769957c10ea840e5b4",
+        "id": "64a8657cfbb4",
         "revision": 0,
-        "name": "Revisar novedades: Racing",
-        "outcome": "updated",
+        "name": "Josue",
+        "outcome": "explained",
         "applied": true,
-        "created_id": "trend-update-068bdb8f15caf3939800",
-        "via": "maintenance_outbox_jit",
-        "apply_commit": "f1fea27d282b0815955244b91df9e9ded5c1459f",
-        "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla confirmada por el Racing."
+        "via": "editorial_outbox_applied",
+        "explained_at": "2026-11-03T00:18:05+01:00",
+        "reason": "Contexto actual verificado; el detonante concreto del nombre no pudo aislarse y se redactó con incertidumbre explícita."
+      },
+      {
+        "id": "c1e5fdc8cf2a",
+        "revision": 0,
+        "name": "Kico",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "explained_at": "2026-11-03T00:18:45+01:00"
       }
     ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada cerrada 2/2: Toledo stale por JIT al no estar en el Top 30 fresco; Racing updated por la lesión confirmada de Álvaro Mantilla. Barrera final main: editorial-queue=0 y sin reexplicaciones activas detectadas. ImageGen=0; publicaciones=0."
+    "incident_count": 1,
+    "incidents": [
+      {
+        "type": "direct_atomic_transport_fallback",
+        "message": "La primera escritura atómica directa de Paola se abortó por un error de transporte h2 antes de mover main; se cambió al outbox/aplicador contractual y las tres revisiones quedaron persistidas y verificadas.",
+        "recovered": true
+      }
+    ],
+    "message": "Pasada cerrada 3/3: Paola, Josue y Kico R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Josue se cerró con causa concreta no confirmada y sin remate. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Persistiendo Paola R0 en requests + ficha explained y retirando solo su revisión exacta de la cola.",
+  "message": "Pasada cerrada 3/3: Paola, Josue y Kico R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Josue se cerró con causa concreta no confirmada y sin remate. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2039,6 +2066,24 @@
       "current": 0,
       "total": 3,
       "message": "Persistiendo Paola R0 en requests + ficha explained y retirando solo su revisión exacta de la cola."
+    },
+    {
+      "at": "2026-11-03T00:21:35+01:00",
+      "run_id": "tr-autoguard-1793661198",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "current": 3,
+      "total": 3,
+      "message": "Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0; las tres revisiones coinciden entre requests y explained."
+    },
+    {
+      "at": "2026-11-03T00:21:35+01:00",
+      "run_id": "tr-autoguard-1793661198",
+      "status": "DONE_WITH_INCIDENTS",
+      "phase": "closing",
+      "current": 3,
+      "total": 3,
+      "message": "Pasada cerrada 3/3: Paola, Josue y Kico R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Josue se cerró con causa concreta no confirmada y sin remate. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3636,43 +3681,36 @@
   "partial": false,
   "outcomes": [
     {
-      "id": "48bd70057066",
+      "id": "1e03ad2efe6a",
       "revision": 0,
-      "name": "#LaIslaDeLasTentaciones16",
+      "name": "Paola",
       "outcome": "explained",
       "applied": true,
-      "via": "this_run_editorial_outbox"
+      "via": "editorial_outbox_applied",
+      "explained_at": "2026-11-03T00:17:20+01:00"
     },
     {
-      "id": "faedd59cc0a6",
+      "id": "64a8657cfbb4",
       "revision": 0,
-      "name": "Mario Soriano",
+      "name": "Josue",
       "outcome": "explained",
       "applied": true,
-      "via": "this_run_editorial_outbox"
+      "via": "editorial_outbox_applied",
+      "explained_at": "2026-11-03T00:18:05+01:00",
+      "reason": "Contexto actual verificado; el detonante concreto del nombre no pudo aislarse y se redactó con incertidumbre explícita."
     },
     {
-      "id": "red-review-f23642f24df4f8e5cb19",
+      "id": "c1e5fdc8cf2a",
       "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
+      "name": "Kico",
+      "outcome": "explained",
       "applied": true,
-      "via": "this_run_maintenance_outbox",
-      "reason": "La revisión quedó obsoleta al revalidarse contra el estado actual; no se reescribió la ficha original."
-    },
-    {
-      "id": "red-review-c3769957c10ea840e5b4",
-      "revision": 0,
-      "name": "Revisar novedades: Racing",
-      "outcome": "updated",
-      "applied": true,
-      "via": "this_run_maintenance_outbox",
-      "created_id": "trend-update-068bdb8f15caf3939800",
-      "reason": "Novedad material: rotura del ligamento cruzado anterior de Álvaro Mantilla, baja para el resto de la temporada."
+      "via": "editorial_outbox_applied",
+      "explained_at": "2026-11-03T00:18:45+01:00"
     }
   ],
-  "current_item": 0,
-  "current_title": "Paola",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -5893,6 +5931,71 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada cerrada 2/2: Toledo stale por JIT al no estar en el Top 30 fresco; Racing updated por la lesión confirmada de Álvaro Mantilla. Barrera final main: editorial-queue=0 y sin reexplicaciones activas detectadas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1793661198",
+      "command_id": "tr-autoguard-1793661198",
+      "canonical": true,
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-03T00:13:30+01:00",
+      "finished_at": "2026-11-03T00:21:35+01:00",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "1e03ad2efe6a",
+          "revision": 0,
+          "name": "Paola",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "explained_at": "2026-11-03T00:17:20+01:00"
+        },
+        {
+          "id": "64a8657cfbb4",
+          "revision": 0,
+          "name": "Josue",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "explained_at": "2026-11-03T00:18:05+01:00",
+          "reason": "Contexto actual verificado; el detonante concreto del nombre no pudo aislarse y se redactó con incertidumbre explícita."
+        },
+        {
+          "id": "c1e5fdc8cf2a",
+          "revision": 0,
+          "name": "Kico",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "explained_at": "2026-11-03T00:18:45+01:00"
+        }
+      ],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "direct_atomic_transport_fallback",
+          "message": "La primera escritura atómica directa de Paola se abortó por un error de transporte h2 antes de mover main; se cambió al outbox/aplicador contractual y las tres revisiones quedaron persistidas y verificadas.",
+          "recovered": true
+        }
+      ],
+      "message": "Pasada cerrada 3/3: Paola, Josue y Kico R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Josue se cerró con causa concreta no confirmada y sin remate. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ]
 }
