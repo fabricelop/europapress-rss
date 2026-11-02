@@ -358,6 +358,7 @@ final class GitHubEditor: ObservableObject {
         request.httpMethod = method
         request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
         request.setValue("no-store", forHTTPHeaderField: "Cache-Control")
+        request.setValue("TTActualidad/0.4.50", forHTTPHeaderField: "User-Agent")
         if let jsonBody {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonBody
