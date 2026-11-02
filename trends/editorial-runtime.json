@@ -5,27 +5,23 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793653885",
   "previous_run_id": "tr-1793652373470-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-02T22:11:30+01:00",
-  "updated_at": "2026-11-02T22:15:30+01:00",
+  "updated_at": "2026-11-02T22:24:14+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "b73c43b052f7",
+  "queue_complete": true,
+  "processed_ids": [
+    "26734863a6f4",
     "86e7500184a2",
-    "26734863a6f4"
+    "b73c43b052f7"
   ],
-  "remaining_active_ids": [
-    "b73c43b052f7",
-    "86e7500184a2",
-    "26734863a6f4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
@@ -51,8 +47,8 @@
   "activity": "persisting",
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T22:11:30+01:00",
-  "last_completed_at": "2026-11-02T20:55:59.674Z",
+  "last_started_at": "2026-11-02T22:24:14+01:00",
+  "last_completed_at": "2026-11-02T22:24:14+01:00",
   "last_run": {
     "run_id": "tr-1793652373470-manual",
     "command_id": "tr-1793652373470-manual",
