@@ -18,7 +18,18 @@ final class EditorialActionPolicyTests: XCTestCase {
 
     func testImagesPromptNeverIncludesTheProjectAssociationInstructions() {
         XCTAssertEqual(EditorialActionPolicy.prompt(visual: "HECHOS Y DIRECCIÓN VISUAL", association: "ASOCIAR ESTE ORIGINAL", associate: false), "HECHOS Y DIRECCIÓN VISUAL")
-        XCTAssertEqual(EditorialActionPolicy.prompt(visual: "VISUAL", association: "ASOCIAR ESTE ORIGINAL", associate: true), "VISUAL\n\nASOCIAR ESTE ORIGINAL")
+        XCTAssertTrue(EditorialActionPolicy.prompt(visual: "VISUAL", association: "ASOCIAR ESTE ORIGINAL", associate: true).contains("BLOQUEADO"))
+        let legacy = """
+        CONTEXTO:
+        {"target_id":"trend-abc","revision":0,"name":"Tema","explanation":"Texto exacto","explained_at":"2026-11-02T12:00:00Z"}
+        Publica directamente y actualiza el catálogo.
+        """
+        let result = EditorialActionPolicy.prompt(visual: "VISUAL", association: legacy, associate: true)
+        XCTAssertTrue(result.hasPrefix("VISUAL\n\n"))
+        XCTAssertTrue(result.contains("submit_image_for_approval"))
+        XCTAssertTrue(result.contains("APROBACIÓN SOLO EN APP"))
+        XCTAssertFalse(result.contains("Publica directamente"))
+        XCTAssertFalse(result.contains("actualiza el catálogo"))
     }
     func testXPayloadAppendsExactlyOneSectionLinkForEachProject() {
         let text = "Noticia comprobada.\n\n#Actualidad\n🌶️ Remate."
