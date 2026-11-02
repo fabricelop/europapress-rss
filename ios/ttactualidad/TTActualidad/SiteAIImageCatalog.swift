@@ -16,6 +16,7 @@ enum SiteAIImageCatalog {
         let explanation: String
         let image_url: String
         let sha256: String
+        var approval_id: String? = nil
     }
 
     private struct Manifest: Decodable {
@@ -46,7 +47,7 @@ enum SiteAIImageCatalog {
         } catch {
             data = try? Data(contentsOf: disk)
         }
-        guard let data,
+        guard let data = await ApprovedImageFeed.merge(data, project: "ttendencias"),
               let manifest = try? JSONDecoder().decode(Manifest.self, from: data),
               manifest.schema_version == 1, manifest.project_id == projectID,
               manifest.images.count <= 1_000 else { return [:] }
@@ -95,7 +96,7 @@ enum SiteAIImageCatalog {
         // revisions, or a substantially changed text/closer/hashtags.
         guard revision > 0 else { return nil }
         return catalog.values
-            .filter { $0.target_id == id && $0.revision < revision &&
+            .filter { $0.approval_id == nil && $0.target_id == id && $0.revision < revision &&
                       revision - $0.revision <= 2 &&
                       minorEditorialEdit(old: $0.explanation, new: explanation) &&
                       recentEnough(old: $0.explained_at, new: explainedAt) }

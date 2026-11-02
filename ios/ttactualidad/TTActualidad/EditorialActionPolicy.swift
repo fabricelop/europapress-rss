@@ -14,6 +14,6 @@ enum EditorialActionPolicy {
     }
 
     static func prompt(visual: String, association: String, associate: Bool) -> String {
-        associate ? visual + "\n\n" + association : visual
+        associate ? visual + "\n\n" + ImageApprovalInstructions.replacingLegacy(association) : visual
     }
 }

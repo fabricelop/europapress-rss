@@ -334,7 +334,8 @@ final class GitHubEditor: ObservableObject {
               let url = URL(string: raw),
               url.scheme == "https", let host = url.host, !host.isEmpty,
               url.user == nil, url.password == nil, url.port == nil,
-              (url.path == "" || url.path == "/"),
+              url.host == "ttactualidad.rainyraven22.chatgpt.site",
+              url.path == "/api/image-inbox",
               url.query == nil, url.fragment == nil
         else { return nil }
         return url
@@ -357,6 +358,7 @@ final class GitHubEditor: ObservableObject {
         request.httpMethod = method
         request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
         request.setValue("no-store", forHTTPHeaderField: "Cache-Control")
+        request.setValue("TTActualidad/0.4.50", forHTTPHeaderField: "User-Agent")
         if let jsonBody {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonBody

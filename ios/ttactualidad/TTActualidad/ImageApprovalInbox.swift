@@ -2,6 +2,7 @@ import Combine
 import CryptoKit
 import SwiftUI
 import UIKit
+import ImageIO
 
 // The original PNG is fetched only from the authenticated private inbox.
 // It never uses AsyncImage or a public CDN/cache URL.
@@ -20,6 +21,7 @@ private struct PendingImage: Decodable, Identifiable {
     let title: String
     let editorialText: String
     let createdAt: String
+    let state: String?
 }
 
 private struct PendingImageResponse: Decodable {
@@ -33,6 +35,8 @@ private struct ApprovalDecision: Encodable {
 
 private struct DecisionResponse: Decodable {
     let state: String
+    let appVerified: Bool?
+    let sitesVerified: Bool?
 }
 
 @MainActor
@@ -55,7 +59,7 @@ private final class ApprovalInboxModel: ObservableObject {
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
             notice = items.isEmpty ? "No hay imágenes pendientes de aprobación." : ""
-            for image in items where previews[image.id] == nil {
+            for image in items.prefix(4) where previews[image.id] == nil {
                 await loadOriginal(image, using: github)
             }
         } catch {
@@ -63,19 +67,26 @@ private final class ApprovalInboxModel: ObservableObject {
         }
     }
 
-    private func loadOriginal(_ item: PendingImage, using github: GitHubEditor) async {
+    func loadOriginal(_ item: PendingImage, using github: GitHubEditor) async {
         do {
-            guard item.id.count == 64, item.id.allSatisfy(\.isHexDigit) else { return }
+            guard previews[item.id] == nil, item.id.count == 64, item.id.allSatisfy(\.isHexDigit) else { return }
             let (data, status) = try await github.privateImageInboxRequest(
                 path: "/v1/images/\(item.id)/original")
             guard status == 200, data.count < 11_000_000 else { return }
             // Never trust a preview with bytes from another raster or revision.
             let digest = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
-            guard digest == item.identity.rasterSHA256, let image = UIImage(data: data) else {
+            guard digest == item.identity.rasterSHA256,
+                  let source = CGImageSourceCreateWithData(data as CFData, nil),
+                  let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
+                    kCGImageSourceCreateThumbnailFromImageAlways: true,
+                    kCGImageSourceThumbnailMaxPixelSize: 1200,
+                    kCGImageSourceCreateThumbnailWithTransform: true
+                  ] as CFDictionary) else {
                 notice = "El original no coincide con la huella registrada. No se aprobará automáticamente."
                 return
             }
-            previews[item.id] = image
+            if previews.count >= 8, let oldest = previews.keys.first { previews.removeValue(forKey: oldest) }
+            previews[item.id] = UIImage(cgImage: thumbnail)
         } catch {
             // A temporarily missing PNG must not erase or approve its card.
         }
@@ -96,14 +107,22 @@ private final class ApprovalInboxModel: ObservableObject {
                 path: "/v1/images/\(item.id)/decision", method: "POST", jsonBody: body)
             guard status == 200 else { throw InboxError.http(status) }
             let response = try JSONDecoder().decode(DecisionResponse.self, from: data)
-            guard response.state == (action == "approve" ?
-                    "approved_awaiting_publication" : "rejected") else {
+            if action == "approve" && response.state == "approved_awaiting_publication" {
+                notice = "Aprobación guardada. Publicación pendiente; pulsa Aprobar para reintentar sin generar otra imagen."
+                return
+            }
+            guard response.state == (action == "approve" ? "published" : "rejected"),
+                  action != "approve" || (response.appVerified == true && response.sitesVerified == true) else {
                 throw InboxError.unexpectedResponse
+            }
+            if action == "approve" {
+                await SiteAIImageCatalog.invalidateCache()
+                await NewsAIImageCatalog.invalidateCache()
             }
             images.removeAll { $0.id == item.id }
             previews.removeValue(forKey: item.id)
             notice = action == "approve" ?
-                "Aprobada. Pendiente de comprobar su publicación en la APP y Sites." :
+                "Aprobada y publicada en la APP y la web." :
                 "Rechazada. Solo se ha retirado de la bandeja; original conservado."
         } catch {
             notice = "No se ha confirmado la decisión: \(error.localizedDescription)"
@@ -189,6 +208,7 @@ struct ImageApprovalInbox: View {
                                 .disabled(model.actionID != nil || model.previews[item.id] == nil)
                             }
                             .padding(.vertical, 7)
+                            .task(id: item.id) { await model.loadOriginal(item, using: github) }
                         }
                         if !model.loading && model.images.isEmpty && model.notice.isEmpty {
                             Text("No hay imágenes pendientes.")

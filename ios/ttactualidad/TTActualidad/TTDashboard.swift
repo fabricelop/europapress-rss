@@ -303,7 +303,7 @@ struct TTDashboard: View {
         .sheet(isPresented: $showSettings) {
             GitHubConnectionSheet(github: github).presentationDetents([.medium, .large])
         }
-        .sheet(isPresented: $showImageInbox) {
+        .sheet(isPresented: $showImageInbox, onDismiss: { Task { await store.refresh(manual: true) } }) {
             ImageApprovalInbox(github: github).presentationDetents([.large])
         }
         .sheet(item: $publicationSheet) { selection in

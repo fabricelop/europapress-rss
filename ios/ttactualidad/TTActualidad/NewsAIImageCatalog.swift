@@ -10,6 +10,7 @@ enum NewsAIImageCatalog {
         let editorial_text: String
         let image_url: String
         let sha256: String
+        var approval_id: String? = nil
     }
 
     struct ValidatedImage {
@@ -83,7 +84,7 @@ enum NewsAIImageCatalog {
         let disk = FileManager.default.urls(for: .cachesDirectory,
                                             in: .userDomainMask)[0]
             .appendingPathComponent("ttactualidad-news-ai-index-v1.json")
-        let data: Data
+        var data: Data?
         var network = false
         do {
             var request = URLRequest(url: manifestURL,
@@ -96,10 +97,10 @@ enum NewsAIImageCatalog {
             data = received
             network = true
         } catch {
-            guard let saved = try? Data(contentsOf: disk) else { return [:] }
-            data = saved
+            data = try? Data(contentsOf: disk)
         }
-        guard let manifest = try? JSONDecoder().decode(Manifest.self, from: data),
+        guard let data = await ApprovedImageFeed.merge(data, project: "ttittulares"),
+              let manifest = try? JSONDecoder().decode(Manifest.self, from: data),
               manifest.schema_version == 1, manifest.project == "ttittulares",
               manifest.images.count <= 1_000 else { return [:] }
         var result: [String: Entry] = [:]
@@ -128,6 +129,7 @@ enum NewsAIImageCatalog {
         // A new original always takes priority when explicitly associated,
         // while rewrite_pending still suppresses the old READY card.
         if let current = catalog[key(id, revision)] {
+            if current.approval_id != nil && (current.editorial_text != editorialText || current.prepared_at != preparedAt) { return nil }
             guard let url = validAssignedURL(current.image_url, id: id,
                                              revision: revision, sha: current.sha256)
             else { return nil }
@@ -138,7 +140,7 @@ enum NewsAIImageCatalog {
         // original remains attached to that SAME story when its text is edited.
         // Do not use title similarity, other news IDs or a newer revision's art.
         let previous = catalog.values
-            .filter { $0.target_id == id && $0.revision >= 1 && $0.revision < revision }
+            .filter { $0.approval_id == nil && $0.target_id == id && $0.revision >= 1 && $0.revision < revision }
             .sorted { $0.revision > $1.revision }
         for record in previous {
             guard isSHA(record.sha256),
@@ -149,6 +151,8 @@ enum NewsAIImageCatalog {
         }
         return nil
     }
+
+    static func invalidateCache() async { await memory.invalidate() }
 
     /// Already-generated news IA from the existing editorial pipeline.
     /// Only the exact current READY event/revision and generated raster qualify.
@@ -184,6 +188,8 @@ private actor NewsAIImageMemory {
         guard Date().timeIntervalSince(at) < 90 else { return nil }
         return stored
     }
+
+    func invalidate() { stored = nil; at = .distantPast }
 
     func store(_ value: [String: NewsAIImageCatalog.Entry]) {
         stored = value
