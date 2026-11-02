@@ -2,7 +2,8 @@ import SwiftUI
 
 // One free-form field. Editor-supplied information is always unverified.
 struct TrendHintsSheet: View {
-    let trend: TrendItem
+    var trend: TrendItem? = nil
+    var news: NewsItem? = nil
     @ObservedObject var github: GitHubEditor
     @EnvironmentObject private var store: EditorialStore
     @Environment(\.dismiss) private var dismiss
@@ -15,7 +16,7 @@ struct TrendHintsSheet: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 14) {
-                Text(trend.name)
+                Text(news?.title ?? trend?.name ?? "")
                     .font(.headline)
                 Text("Incluye lo que has descubierto, enlaces, contexto, nombres o hipótesis. La investigación comprobará los hechos antes de publicar nada.")
                     .font(.subheadline).foregroundStyle(.secondary)
@@ -61,22 +62,23 @@ struct TrendHintsSheet: View {
         }
         guard !submitting else { return }
         submitting = true
-        let id = trend.editorialID
-        let revision = trend.revision
-        let name = trend.name
-        let rank = trend.rank
+        let id = news?.id ?? trend?.editorialID ?? ""
+        let project = news == nil ? "ttendencias" : "ttittulares"
+        let revision = news?.revision ?? trend?.revision ?? 0
+        let name = news?.title ?? trend?.name ?? ""
+        let rank = trend?.rank ?? 0
         let text = clean
         let requestID = UUID().uuidString.lowercased()
         Task {
             var accepted = store.beginEditorialAction(
-                project: "ttendencias", id: id, revision: revision,
+                project: project, id: id, revision: revision,
                 decision: "hints", title: name, rank: rank, requestID: requestID)
             if !accepted {
                 // A stale local 14:29 request must be reconciled with fresh
                 // authoritative GitHub state before refusing editor clues.
                 await store.refreshIfStale(minInterval: 0)
                 accepted = store.beginEditorialAction(
-                    project: "ttendencias", id: id, revision: revision,
+                    project: project, id: id, revision: revision,
                     decision: "hints", title: name, rank: rank,
                     requestID: requestID)
             }
@@ -87,9 +89,9 @@ struct TrendHintsSheet: View {
             }
             dismiss()
             let result = await github.submitTrendHints(
-                eventID: id, revision: revision,
+                project: project, eventID: id, revision: revision,
                 title: name, rank: rank, hints: text, requestID: requestID)
-            store.completeEditorialAction(project: "ttendencias", id: id,
+            store.completeEditorialAction(project: project, id: id,
                                           revision: revision, requestID: requestID,
                                           result: result, detail: github.notice)
             submitting = false
