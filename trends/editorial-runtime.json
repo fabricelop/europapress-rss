@@ -5,18 +5,17 @@
   "canonical": true,
   "run_id": "tr-20261102-editorial-queue-recovery-02",
   "previous_run_id": "tr-1793635315319-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-02T19:55:00+01:00",
-  "updated_at": "2026-11-02T19:55:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 18,
+  "updated_at": "2026-11-02T20:10:30+01:00",
+  "finished_at": "2026-11-02T20:10:30+01:00",
+  "current": 23,
+  "total": 23,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "40d50f46e75e",
     "9767e3b44c3a",
     "f4c4d4189222",
@@ -28,93 +27,428 @@
     "2c11a365b2f8",
     "ffa167f72646",
     "c48db1cddfcf",
-    "c8490403e466",
     "dd28d1d571de",
     "37757598646d",
+    "8b882d17d961",
     "59e7d31e6d57",
     "d8fc6f0e3250",
     "791b68e7bf71",
-    "09c4a2596486"
+    "09c4a2596486",
+    "7bd9d0e04342",
+    "38713259193a",
+    "02e65daf4a85",
+    "33e2e8c86648",
+    "c8490403e466"
   ],
-  "remaining_active_ids": [
-    "40d50f46e75e",
-    "9767e3b44c3a",
-    "f4c4d4189222",
-    "48e556d153eb",
-    "ea1898970906",
-    "75f572510033",
-    "e7ab60b9a756",
-    "586304ff2756",
-    "2c11a365b2f8",
-    "ffa167f72646",
-    "c48db1cddfcf",
-    "c8490403e466",
-    "dd28d1d571de",
-    "37757598646d",
-    "59e7d31e6d57",
-    "d8fc6f0e3250",
-    "791b68e7bf71",
-    "09c4a2596486"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 18,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 23,
+    "observed": 23,
+    "closed": 23,
+    "explained": 22,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 18,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 2,
+    "concurrent_convergence": 1
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 2,
+  "incidents": [
+    {
+      "type": "outbox_concurrency_recovery",
+      "message": "Los outboxes individuales fueron cancelándose por concurrencia; se sustituyeron por un único outbox atómico, aplicado correctamente."
+    },
+    {
+      "type": "terminal_requeue_regression",
+      "trend_id": "c8490403e466",
+      "revision": 0,
+      "message": "#LaFuerzaDeLaGente r0 fue reinsertada por el refresco Top30 pese a decisión terminal deleted; se retiró de nuevo tras validación JIT."
+    }
+  ],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "40d50f46e75e",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "9767e3b44c3a",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "f4c4d4189222",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "48e556d153eb",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "ea1898970906",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "75f572510033",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "e7ab60b9a756",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "586304ff2756",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "2c11a365b2f8",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "ffa167f72646",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "c48db1cddfcf",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "dd28d1d571de",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "37757598646d",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "8b882d17d961",
+      "revision": 1,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "59e7d31e6d57",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "d8fc6f0e3250",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "791b68e7bf71",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "09c4a2596486",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "7bd9d0e04342",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "38713259193a",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "02e65daf4a85",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "33e2e8c86648",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "atomic_chat_outbox"
+    },
+    {
+      "id": "c8490403e466",
+      "revision": 0,
+      "name": "#LaFuerzaDeLaGente",
+      "outcome": "terminal_deleted",
+      "applied": true,
+      "via": "jit_terminal_cleanup"
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T17:05:07.264+01:00",
-  "last_completed_at": "2026-11-02T17:07:32.294+01:00",
+  "last_started_at": "2026-11-02T19:55:00+01:00",
+  "last_completed_at": "2026-11-02T20:10:30+01:00",
   "last_run": {
-    "run_id": "tr-1793635315319-manual",
-    "command_id": "tr-1793635315319-manual",
+    "run_id": "tr-20261102-editorial-queue-recovery-02",
+    "command_id": "tr-20261102-editorial-queue-recovery-02",
     "canonical": true,
-    "status": "DONE",
-    "started_at": "2026-11-02T17:05:07.264+01:00",
-    "finished_at": "2026-11-02T17:07:32.294+01:00",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-02T19:55:00+01:00",
+    "finished_at": "2026-11-02T20:10:30+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 23,
+      "observed": 23,
+      "closed": 23,
+      "explained": 22,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
+      "incidents": 2,
+      "concurrent_convergence": 1
     },
-    "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-1793635315319-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update y sin rewrite_pending/reexplain vigentes. La pasada inmediatamente anterior ya había cerrado Toledo (stale) y Halloween (unchanged). ImageGen=0; publicaciones=0."
+    "outcomes": [
+      {
+        "id": "40d50f46e75e",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "9767e3b44c3a",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "f4c4d4189222",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "48e556d153eb",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "ea1898970906",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "75f572510033",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "e7ab60b9a756",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "586304ff2756",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "2c11a365b2f8",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "ffa167f72646",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "c48db1cddfcf",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "dd28d1d571de",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "37757598646d",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "8b882d17d961",
+        "revision": 1,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "59e7d31e6d57",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "d8fc6f0e3250",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "791b68e7bf71",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "09c4a2596486",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "7bd9d0e04342",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "38713259193a",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "02e65daf4a85",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "33e2e8c86648",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "atomic_chat_outbox"
+      },
+      {
+        "id": "c8490403e466",
+        "revision": 0,
+        "name": "#LaFuerzaDeLaGente",
+        "outcome": "terminal_deleted",
+        "applied": true,
+        "via": "jit_terminal_cleanup"
+      }
+    ],
+    "incident_count": 2,
+    "incidents": [
+      {
+        "type": "outbox_concurrency_recovery",
+        "message": "Los outboxes individuales fueron cancelándose por concurrencia; se sustituyeron por un único outbox atómico, aplicado correctamente."
+      },
+      {
+        "type": "terminal_requeue_regression",
+        "trend_id": "c8490403e466",
+        "revision": 0,
+        "message": "#LaFuerzaDeLaGente r0 fue reinsertada por el refresco Top30 pese a decisión terminal deleted; se retiró de nuevo tras validación JIT."
+      }
+    ],
+    "message": "Pasada cerrada 23/23: 22 revisiones explicadas y persistidas; #LaFuerzaDeLaGente r0 respetada como deleted y retirada de la cola. Barrera final de main: editorial-queue=0, sin preparing/update/reexplain vigentes. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada de recuperación iniciada con 18 trabajos preparing observados en main; revalidación JIT por id+revision. #LaFuerzaDeLaGente r0 tiene decisión terminal deleted y no se resucitará. Sin ImageGen ni publicación.",
+  "message": "Pasada cerrada 23/23: 22 revisiones explicadas y persistidas; #LaFuerzaDeLaGente r0 respetada como deleted y retirada de la cola. Barrera final de main: editorial-queue=0, sin preparing/update/reexplain vigentes. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1567,6 +1901,24 @@
       "phase": "preparing",
       "run_id": "tr-20261102-editorial-queue-recovery-02",
       "message": "Pasada de recuperación iniciada con 18 trabajos preparing observados en main; revalidación JIT por id+revision. #LaFuerzaDeLaGente r0 tiene decisión terminal deleted y no se resucitará. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-02T20:06:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-20261102-editorial-queue-recovery-02",
+      "message": "Outbox atómico aplicado en main con 22 explicaciones; el transporte visual posterior es independiente del cierre textual."
+    },
+    {
+      "at": "2026-11-02T20:10:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-20261102-editorial-queue-recovery-02",
+      "message": "Barrera final: #LaFuerzaDeLaGente r0 seguía terminal deleted y fue retirada tras una reinserción del selector Top30."
+    },
+    {
+      "at": "2026-11-02T20:10:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-20261102-editorial-queue-recovery-02",
+      "message": "Pasada cerrada 23/23: 22 revisiones explicadas y persistidas; #LaFuerzaDeLaGente r0 respetada como deleted y retirada de la cola. Barrera final de main: editorial-queue=0, sin preparing/update/reexplain vigentes. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
