@@ -27,3 +27,10 @@ test('Detached receiver writes reason-only local diagnostic logs',()=>{
  assert.match(receiver,/receiver\.err\.log/);
  assert.match(receiver,/stdio:\['ignore',output,errors\]/);
 });
+
+test('Manual recovery retries only a previously enrolled exact news item',()=>{
+ assert.match(receiver,/process\.argv\.indexOf\('--once-id'\)/);
+ assert.match(receiver,/onlyTargetId\?newestActiveByTarget\(tasks,now\)\.get\(onlyTargetId\)/);
+ assert.match(receiver,/if\(onlyTargetId&&!due\.length\)console\.log\('TTITTULARES_WEB_IMAGE_RECOVERY_NO_PENDING_RECEIPT '/);
+ assert.match(receiver,/if\(onlyTargetId!==null&&!safeID\(onlyTargetId\)\)throw Error/);
+});
