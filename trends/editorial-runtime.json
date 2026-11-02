@@ -3,23 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793607889040-manual",
-  "previous_run_id": "tr-autoguard-1793607643",
-  "status": "success",
+  "run_id": "tr-1793608239847-manual",
+  "previous_run_id": "tr-1793607889040-manual",
+  "status": "PROCESSING",
   "phase": "preparing",
-  "started_at": "2026-11-02T09:32:30+01:00",
-  "updated_at": "2026-11-02T09:29:48+01:00",
+  "started_at": "2026-11-02T09:34:56+01:00",
+  "updated_at": "2026-11-02T09:34:56+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 5,
-  "trend_id": "585534718a18",
-  "title": "#FielesDifuntos",
-  "queue_complete": true,
-  "processed_ids": [
-    "501ee9a82cfe"
+  "total": 2,
+  "trend_id": "red-review-eff341dc6df256a4741d",
+  "title": "Revisar novedades: Toledo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-eff341dc6df256a4741d",
+    "red-review-315fb9aeef2feaf58e62"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-eff341dc6df256a4741d",
+    "red-review-315fb9aeef2feaf58e62"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "incident_count": 0,
@@ -2214,6 +2218,14 @@
       "trend_id": "585534718a18",
       "title": "#FielesDifuntos",
       "message": "Inicio manual: 5 trabajos activos observados; validación JIT antes de cada resultado. Se absorberá convergencia concurrente válida sin duplicar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T09:34:56+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793608239847-manual",
+      "trend_id": "red-review-eff341dc6df256a4741d",
+      "title": "Revisar novedades: Toledo",
+      "message": "Inicio manual: 2 revisiones review_red preparing vigentes en main (Toledo y Óscar Puente), en orden de cola y con validación JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
@@ -5739,6 +5751,6 @@
       "message": "Pasada concurrente cerrada 2/2 por convergencia JIT: #ElChiringuitoenCuatro updated con nueva ficha; Chiqui quedó stale al invalidarse su snapshot. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793607889040-manual",
-  "requested_at": "2026-11-01T21:53:00+01:00"
+  "command_id": "tr-1793608239847-manual",
+  "requested_at": "2026-11-02T09:30:39.847+01:00"
 }
