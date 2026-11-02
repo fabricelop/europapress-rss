@@ -11,6 +11,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -251,12 +252,6 @@ def evaluate(project,now,previous,command=None,run=None):
 def request(project,now,report):
     cfg=CONFIG[project]
     path="contents/"+cfg["control"]
-    current=api(path,branch=cfg["branch"])
-    old=json.loads(base64.b64decode(current["content"]).decode("utf8"))
-    existing=moment(old.get("requested_at"))
-    if existing and now-existing<RETRY_AFTER:
-        return {"requested":False,"reason":"remote_recent_command",
-                "command_id":old.get("command_id"),"requested_at":old.get("requested_at")}
     # Existing, supported Windows/ChatGPT handoff, never claim it executed.
     req_id=("tt" if project=="ttittulares" else "tr")+"-autoguard-"+str(int(now.timestamp()))
     payload={"version":2,"command_id":req_id,"requested_at":now.isoformat().replace("+00:00","Z"),
@@ -265,10 +260,26 @@ def request(project,now,report):
       "source":"tt_autoheal_editorial_watchdog",
       "reason":"editorial_not_started_in_time","pending_ids":report["pending_ids"][:30]}
     data=base64.b64encode((json.dumps(payload,ensure_ascii=False,indent=2)+"\n").encode()).decode()
-    api(path,method="PUT",payload={"branch":cfg["branch"],"sha":current["sha"],
-        "message":"TT editorial watchdog: pedir elaboración atrasada "+req_id,
-        "content":data})
-    return {"requested":True,"command_id":req_id,"requested_at":payload["requested_at"]}
+    # Image jobs and editorial ACKs share this branch. A branch-head race
+    # can return 409 even if this file's blob did not change. Re-read before
+    # each bounded retry, including the recent-command deduplication gate.
+    for attempt in range(5):
+        current=api(path,branch=cfg["branch"])
+        old=json.loads(base64.b64decode(current["content"]).decode("utf8"))
+        existing=moment(old.get("requested_at"))
+        if existing and now-existing<RETRY_AFTER:
+            return {"requested":False,"reason":"remote_recent_command",
+                    "command_id":old.get("command_id"),"requested_at":old.get("requested_at")}
+        try:
+            api(path,method="PUT",payload={"branch":cfg["branch"],"sha":current["sha"],
+                "message":"TT editorial watchdog: pedir elaboración atrasada "+req_id,
+                "content":data})
+            return {"requested":True,"command_id":req_id,"requested_at":payload["requested_at"]}
+        except RuntimeError as exc:
+            if not str(exc).startswith("GITHUB_HTTP_409 ") or attempt==4:
+                raise
+            time.sleep(0.4*(attempt+1))
+    raise RuntimeError("EDITORIAL_TRIGGER_RETRY_EXHAUSTED")
 
 def check(now=None,fix=True,trace_fetch=known_run,control_fetch=None,dispatch=request):
     now=now or datetime.now(timezone.utc)
