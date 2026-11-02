@@ -1,6 +1,12 @@
 import XCTest
 
 final class EditorialActionPolicyTests: XCTestCase {
+    func testCluesAndFreshRewriteTrackTheNewRevision() {
+        XCTAssertEqual(EditorialActionPolicy.targetRevision(decision: "hints", current: 4), 5)
+        XCTAssertEqual(EditorialActionPolicy.targetRevision(decision: "rework", current: 4), 5)
+        XCTAssertEqual(EditorialActionPolicy.targetRevision(decision: "prepare", current: 4), 4)
+    }
+
     func testCopiesOnlyTheExplicitlySelectedImageSource() {
         let archive = URL(string: "https://example.org/archive.jpg")!
         let ai = URL(string: "https://example.org/original.png")!
