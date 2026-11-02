@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793599231716-manual",
   "previous_run_id": "tr-1793584563848-manual",
-  "status": "waiting",
+  "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-02T07:00:00+01:00",
-  "updated_at": "2026-11-02T07:05:34+01:00",
+  "updated_at": "2026-11-02T07:08:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 4,
-  "trend_id": "7ec28bdd90bc",
-  "title": "#MexicoGP",
+  "current": 4,
+  "total": 5,
+  "trend_id": "8b882d17d961",
+  "title": "Berenguer",
   "queue_complete": false,
   "processed_ids": [
     "6d122a2106a9",
@@ -1831,6 +1831,38 @@
       "trend_id": "7ec28bdd90bc",
       "title": "#MexicoGP",
       "message": "Persistiendo #MexicoGP r0 mediante editorial-outbox tras revalidación JIT de id+revision."
+    },
+    {
+      "at": "2026-11-02T07:08:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "8b882d17d961",
+      "title": "Berenguer",
+      "message": "Investigación desde cero: Álex Berenguer convirtió el penalti señalado tras la acción de Aramburu sobre Nico Williams y firmó el 2-1 definitivo del Athletic ante la Real Sociedad el 1 de noviembre."
+    },
+    {
+      "at": "2026-11-02T07:08:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "8b882d17d961",
+      "title": "Berenguer",
+      "message": "Texto y remate nuevos cerrados para TT#19 y validados por debajo de 280 caracteres; no se reutiliza ninguna ficha anterior."
+    },
+    {
+      "at": "2026-11-02T07:08:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "8b882d17d961",
+      "title": "Berenguer",
+      "message": "Remate único ligado al gol decisivo desde el punto de penalti; sin ImageGen ni recuperación de imágenes antiguas."
+    },
+    {
+      "at": "2026-11-02T07:08:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "8b882d17d961",
+      "title": "Berenguer",
+      "message": "Persistiendo Berenguer r0 mediante editorial-outbox tras revalidación JIT de id+revision."
     }
   ],
   "final_outcomes": [
