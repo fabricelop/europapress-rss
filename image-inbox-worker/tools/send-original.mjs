@@ -1,3 +1,4 @@
+import { episodeFingerprint } from '../src/editorial-truth.mjs';
 // Opt-in PC importer: never invoked automatically by the existing image consumers.
 // Reads existing original PNG only, sends it to a PRIVATE inbox, never edits catalogs.
 import { readFile } from 'node:fs/promises';
@@ -31,8 +32,15 @@ export async function prepare(originalBytes, metadata) {
   if (metadata.identity.rasterSHA256 && metadata.identity.rasterSHA256 !== hash) {
     throw Error('The original PNG does not match the supplied SHA-256');
   }
+  const fingerprint = await episodeFingerprint({
+    ...metadata.identity, editorialText: metadata.editorialText,
+  });
+  if (metadata.identity.episodeFingerprint && metadata.identity.episodeFingerprint !== fingerprint) {
+    throw Error('Episode fingerprint is not the exact current editorial text');
+  }
   const exactMetadata = {
-    ...metadata, identity: { ...metadata.identity, rasterSHA256: hash },
+    ...metadata, identity: { ...metadata.identity,
+      episodeFingerprint: fingerprint, rasterSHA256: hash },
   };
   const form = new FormData();
   form.set('image', new Blob([raster], { type: 'image/png' }), 'original.png');
