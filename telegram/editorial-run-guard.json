@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "checked_at": "2026-11-02T18:58:40.715109+00:00",
+  "checked_at": "2026-11-02T19:06:13.585869+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-02T18:58:40.715109+00:00",
+      "checked_at": "2026-11-02T19:06:13.585869+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tt-chat-20261102T183000000Z",
+        "id": "tt-chat-20261102T190000000Z",
         "status": "DONE",
-        "started_at": "2026-11-02T18:30:00Z",
-        "updated_at": "2026-11-02T18:40:00+00:00",
-        "finished_at": "2026-11-02T18:40:00Z",
+        "started_at": "2026-11-02T19:00:00Z",
+        "updated_at": "2026-11-02T19:00:20+00:00",
+        "finished_at": "2026-11-02T19:00:20Z",
         "source": "github_pr_trace"
       },
       "control_command": "tt-chat-20261102T171500000Z",
@@ -25,10 +25,9 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-02T18:58:40.715109+00:00",
-      "pending_count": 18,
+      "checked_at": "2026-11-02T19:06:13.585869+00:00",
+      "pending_count": 22,
       "pending_ids": [
-        "40d50f46e75e",
         "9767e3b44c3a",
         "f4c4d4189222",
         "48e556d153eb",
@@ -45,7 +44,12 @@
         "59e7d31e6d57",
         "d8fc6f0e3250",
         "791b68e7bf71",
-        "09c4a2596486"
+        "09c4a2596486",
+        "7bd9d0e04342",
+        "38713259193a",
+        "02e65daf4a85",
+        "33e2e8c86648",
+        "8b882d17d961"
       ],
       "oldest_at": "2026-11-02T17:11:24+01:00",
       "latest_run": {
@@ -56,18 +60,11 @@
         "finished_at": null,
         "source": "editorial_runtime"
       },
-      "control_command": "tr-20261102-editorial-queue-recovery-02",
-      "last_command_at": "2026-11-02T18:54:22.348Z",
+      "control_command": "tr-1793646243399-manual",
+      "last_command_at": "2026-11-02T19:04:03.399Z",
       "status": "editor_running_acknowledged",
       "should_dispatch": false,
       "item_execution": [
-        {
-          "id": "40d50f46e75e",
-          "entered_at": "2026-11-02T17:11:24+01:00",
-          "should_start_by": "2026-11-02T16:16:24+00:00",
-          "global_run_after_entry": true,
-          "final_telegram_delivery_confirmed": false
-        },
         {
           "id": "9767e3b44c3a",
           "entered_at": "2026-11-02T17:11:24+01:00",
@@ -186,9 +183,44 @@
           "should_start_by": "2026-11-02T18:16:06+00:00",
           "global_run_after_entry": true,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "7bd9d0e04342",
+          "entered_at": "2026-11-02T20:02:13+01:00",
+          "should_start_by": "2026-11-02T19:07:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "38713259193a",
+          "entered_at": "2026-11-02T20:02:13+01:00",
+          "should_start_by": "2026-11-02T19:07:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "02e65daf4a85",
+          "entered_at": "2026-11-02T20:02:13+01:00",
+          "should_start_by": "2026-11-02T19:07:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "33e2e8c86648",
+          "entered_at": "2026-11-02T20:02:13+01:00",
+          "should_start_by": "2026-11-02T19:07:13+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "8b882d17d961",
+          "entered_at": "2026-11-02T19:03:58.046545+00:00",
+          "should_start_by": "2026-11-02T19:08:58.046545+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "cf8d14c1c7ae44be",
+      "backlog_signature": "cf36abf78492d4fa",
       "expected_start_by": "2026-11-02T16:16:24+00:00",
       "attempts": 0,
       "actual_start_at": "2026-11-02T18:55:00+00:00",
