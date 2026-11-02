@@ -2234,6 +2234,14 @@
       "current": 7,
       "total": 7,
       "message": "Pasada autoguard cerrada 7/7 tras absorber trabajo aparecido durante las barreras: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior."
+    },
+    {
+      "at": "2026-11-02T09:36:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793607889040-manual",
+      "current": 7,
+      "total": 7,
+      "message": "Pasada manual cerrada 7/7 tras absorber trabajo que apareció durante la barrera final: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico se conserva en la ejecución concurrente posterior."
     }
   ],
   "final_outcomes": [
@@ -4679,6 +4687,30 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada autoguard cerrada 7/7 tras absorber trabajo aparecido durante las barreras: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior."
+    },
+    {
+      "at": "2026-11-02T09:36:00+01:00",
+      "run_id": "tr-1793607889040-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 5,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      },
+      "message": "Pasada manual cerrada 7/7 tras absorber trabajo que apareció durante la barrera final: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico se conserva en la ejecución concurrente posterior."
     }
   ],
   "partial": false,
@@ -5870,6 +5902,95 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada autoguard cerrada 7/7 tras absorber trabajo aparecido durante las barreras: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior."
+    },
+    {
+      "run_id": "tr-1793607889040-manual",
+      "command_id": "tr-1793607889040-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-02T09:25:00+01:00",
+      "finished_at": "2026-11-02T09:36:00+01:00",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 5,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      },
+      "outcomes": [
+        {
+          "id": "585534718a18",
+          "revision": 0,
+          "name": "#FielesDifuntos",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit"
+        },
+        {
+          "id": "a6d459a1c556",
+          "revision": 0,
+          "name": "#CarrefourConPokémon",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "c90fa0e26588",
+          "revision": 0,
+          "name": "#LaHora2N",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "0c6cf8f9deed",
+          "revision": 0,
+          "name": "Fieles Difuntos",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "501ee9a82cfe",
+          "revision": 0,
+          "name": "#FelizLunes",
+          "outcome": "explained",
+          "applied": true,
+          "via": "this_run_editorial_outbox"
+        },
+        {
+          "id": "red-review-eff341dc6df256a4741d",
+          "revision": 0,
+          "name": "Revisar novedades: Toledo",
+          "outcome": "stale",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "reason": "La validación JIT encontró que Toledo ya no estaba en el Top 30; no se creó una actualización obsoleta."
+        },
+        {
+          "id": "red-review-315fb9aeef2feaf58e62",
+          "revision": 0,
+          "name": "Revisar novedades: Óscar Puente",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "created_id": "trend-update-d4519792604eca140a93"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada manual cerrada 7/7 tras absorber trabajo que apareció durante la barrera final: 5 explicaciones ordinarias, Óscar Puente updated y Toledo stale por validación JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0. El RUNTRACE canónico se conserva en la ejecución concurrente posterior."
     }
   ],
   "command_id": "tr-1793608239847-manual",
