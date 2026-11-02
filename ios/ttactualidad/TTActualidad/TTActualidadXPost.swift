@@ -65,7 +65,7 @@ enum TTActualidadXPost {
                     text = shortened(text, maxWeight: editorialBudget)
                 }
             } else {
-                text = shortened(text, maxWeight: contentBudget)
+                text = shortened(text, maxWeight: editorialBudget)
             }
         }
         return text + sectionSeparator + site
