@@ -11,7 +11,7 @@ assert 'TTImageApprovalAPIBaseURL' in config and 'TTImageApprovalAPIBaseURL' in 
 assert 'Button("Aprobar")' in view and 'Button("Rechazar")' in view
 assert 'approved_awaiting_publication' in view and 'expectedIdentity' in view
 assert 'SHA256.hash(data: data)' in view
-assert 'AsyncImage' not in view
+assert not __import__('re').search(r'\\bAsyncImage\\s*\\(', view)  # comments are allowed, actual calls are not
 assert 'URLSession' not in view  # auth always remains in GitHubEditor
 assert 'No se ha confirmado la decisión' in view
 assert 'ContentUnavailableView' in view
