@@ -1,0 +1,32 @@
+name: TTendencias · recuperar cola editorial atascada
+
+on:
+  schedule:
+    - cron: '4,14,24,34,44,54 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "trends/editorial_stall_guard.py"
+      - "trends/test_editorial_stall_guard.py"
+      - ".github/workflows/ttendencias-editorial-stall-guard.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-editorial-stall-guard
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar seguridad e idempotencia
+        run: python3 -m unittest discover -s trends -p 'test_editorial_stall_guard.py' -v
+      - name: Recuperar solo si hay cola atrasada sin consumidor activo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 trends/editorial_stall_guard.py
