@@ -53,7 +53,7 @@ assert 'ArchivePhotoCatalog.resolved(' in store
 # Archive-photo support inside each expanded editorial card remains available.
 assert 'chip("Fotos archivo"' not in dashboard
 assert 'ArchivePhotoGallery' not in dashboard
-assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
+assert 'quickButton("Copiar F Archivo", "photo")' in actions
 assert 'lineLimit(expanded ? nil : 2)' in dashboard
 assert 'movementLabel' in dashboard and 'rankColor' in dashboard
 assert 'Copiar foto de archivo' in gallery
@@ -69,7 +69,8 @@ assert 'URL(string: "com.openai.chat://")' in actions
 assert 'UIApplication.shared.open(primary, options: [:])' in actions
 assert 'openChatGPTApp()' in actions
 assert 'URL(string: "https://chatgpt.com/")' not in actions
-assert 'https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project' in actions
+assert 'https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project' in (root / 'TTActualidad/EditorialActionPolicy.swift').read_text()
+assert 'EditorialActionPolicy.projectURL' in actions
 
 # Editorial UX and durable GitHub session contract.
 assert "SecureSession" in auth and 'save("session", value: saved)' in auth
@@ -98,10 +99,10 @@ assert 'updateRadarEntrants(' in store and 'TTActualidad.radar.lastVersion.v1' i
 assert 'TTActualidad.unread.news.v1' in store and 'TTActualidad.unread.trends.v1' in store
 assert 'quickButton("Preparar novedad"' not in actions
 assert 'quickButton("Reelaborar"' not in actions
-assert 'quickButton("Elaborar desde cero"' in actions
+assert 'quickButton("Elaborar desde 0"' in actions
 
 # Fresh news rewrite keeps 0.4.3 semantics consistent across iOS and backend.
-assert 'quickButton("Elaborar desde cero"' in actions
+assert 'quickButton("Elaborar desde 0"' in actions
 assert 'action.decision == "rework"' in store
 assert 'item["rewrite_pending"] as? Bool != true' in store
 assert (root.parents[1] / "pilot/rework_ttittulares.py").exists()
@@ -168,8 +169,8 @@ assert '"No publicado · Quitar de Listas"' in actions
 # Grouped originals must use precisely the same actions as ordinary trends.
 assert 'if let trend, trend.isCovered {' not in actions
 assert 'quickButton("Quitar de Listas"' in actions
-assert 'quickButton("Elaborar desde cero"' in actions
-assert 'quickButton("Copiar GAG", "sparkles")' in actions
+assert 'quickButton("Elaborar desde 0"' in actions
+assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
 assert 'quickLink("Proyecto TT", "folder"' in actions
 assert 'quickButton("Volver a evaluar"' not in actions
 # 0.4.45: one explicit non-publication batch for every trend in Listas.
@@ -240,7 +241,7 @@ hints_sheet = (root / "TTActualidad" / "TrendHintsSheet.swift").read_text()
 assert 'TextEditor(text: $hints)' in hints_sheet
 assert 'submitTrendHints(' in hints_sheet and 'requestID: requestID' in hints_sheet
 assert 'decision: "hints"' in hints_sheet
-assert 'quickButton("Aportar pistas"' in actions
+assert 'quickButton("Aportar Pistas"' in actions
 assert 'case "hints": return "Aportar pistas e investigar"' in store
 assert 'var unexplainedTrends: [TrendItem]' in store
 assert 'buildUnexplainedTrends(' in store
@@ -250,8 +251,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "57"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -284,7 +285,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'CURRENT_PROJECT_VERSION: "57"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -296,7 +297,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'CURRENT_PROJECT_VERSION: "57"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -312,8 +313,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "57"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -360,7 +361,7 @@ print("TT_ACTUALIDAD_IOS_0421_COMPACT_ISLAND_PREFLIGHT_OK")
 assert 'GAG_VISUAL_NATIVE_V2' in actions
 for token in ('SOLO IMAGEN', 'SIN NINGÚN TEXTO', 'franja inferior', 'SIN BANDA INFERIOR', 'Más gag, menos barroquismo', 'PROHIBIDO dibujar guindillas'):
     assert token in actions, token
-assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
+assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
 print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
 # Two new actions are available for trends only. The preexisting GAG button
 # must remain untouched; the Site route is an explicit copy and paste job.
@@ -390,7 +391,7 @@ assert 'no la sustituyas: omite attach' in actions
 assert 'status verified, ruta pública real y SHA-256' in actions
 assert 'Conserva tu PNG.' in actions
 assert 'No se puede crear un prompt seguro.' not in actions
-assert 'quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }' in actions
+assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
 print("TT_ACTUALIDAD_IOS_SITE_IMAGE_CHAT_BUTTONS_OK")
 # v0.4.33: one original PNG appears in Site and in the matching trend card.
 # Archive-photo gallery stays archive-only; no new paid API or PC pipeline.
@@ -417,9 +418,10 @@ assert 'Text("Eliminar agrupadas (\\(covered.count))")' in dashboard
 assert 'Eliminarás de Listas todas las' in dashboard
 assert 'groupListas(' in dashboard and 'removeCovered: cleanup ? selected : nil' in dashboard
 assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
-assert 'quickButton("Copiar foto", "photo.on.rectangle")' in actions
-assert actions.count('quickButton("Copiar foto", "photo.on.rectangle")') == 1
-assert 'news?.siteImageURL, trend?.siteImageURL' in actions
+assert 'quickButton("Copiar F Archivo", "photo")' in actions
+assert actions.count('quickButton("Copiar F Archivo", "photo")') == 1
+assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
+assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
 assert 'UIPasteboard.general.image = image' in actions
 assert 'now.timeIntervalSince($0) <= 48 * 3600' in store
 assert 'Text("Agrupada")' in dashboard
@@ -443,7 +445,7 @@ print("TT_ACTUALIDAD_IOS_0433_PURPLE_PHOTO_FRESHNESS_PREFLIGHT_OK")
 assert 'filterChip("Nuevas"' not in dashboard
 assert 'case nuevas = "Nuevas"' not in store
 
-# 0.4.46: real AI image parity for news, distinct from archive photographs.
+# 0.4.47: real AI image parity for news, distinct from archive photographs.
 news_ai = (root / "TTActualidad/NewsAIImageCatalog.swift").read_text(encoding="utf8")
 assert (root.parents[1] / "ttittulares/site-ai-images.json").exists()
 assert 'ttittulares/site-ai-images.json' in news_ai
@@ -460,21 +462,22 @@ assert 'siteImageSHA256: verifiedAI?.sha256' in store
 assert 'siteImageURL: item.siteImageURL' in store
 assert 'if let ai = item.siteImageURL' in dashboard
 assert 'if let archive = item.imageURL' in dashboard
-assert 'quickButton("Asociar imagen IA", "paperclip")' in actions
+assert 'quickButton("Crear Foto IA", "photo.badge.plus")' in actions
 assert 'TTITTULARES_GITHUB_ATTACH_EXISTING_V1' in actions
 assert 'quickLink("Proyecto TT", "folder"' in actions
 assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
-assert 'news?.siteImageURL, trend?.siteImageURL' in actions
-assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
+assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "57"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
-# 0.4.46: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
+# 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
 assert 'TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V7' in actions
 assert 'TTENDENCIAS_MANUAL_IMAGE_AND_SITE_V7 — GAG + WEB + APP' in actions
 assert 'TTITTULARES_MANUAL_IMAGE_AND_WEB_V1' in actions
-assert 'visualPrompt + "\\n\\n"' in actions or 'visualPrompt + "\n\n"' in actions
+assert "EditorialActionPolicy.prompt(visual: visualPrompt" in actions
 assert 'automaticTrendImageBindingPrompt' in actions
 assert 'automaticNewsImageBindingPrompt' in actions
 assert 'inspect_top30_images' in actions and 'attach_trend_image' in actions
@@ -487,13 +490,13 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.46"' in project
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'MARKETING_VERSION: "0.4.47"' in project
+assert 'CURRENT_PROJECT_VERSION: "57"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
-# 0.4.46 build 53: one identical image-action panel for news and trends.
-assert actions.count('quickButton("Copiar GAG", "sparkles")') == 1
-assert actions.count('quickButton("Asociar imagen IA", "paperclip")') == 1
+# 0.4.47 build 53: one identical image-action panel for news and trends.
+assert actions.count('quickButton("Crear y Asociar IA", "sparkles")') == 1
+assert actions.count('quickButton("Crear Foto IA", "photo.badge.plus")') == 1
 assert actions.count('quickLink("Proyecto TT", "folder"') == 1
 assert 'copyTrendSiteImagePrompt()' in actions and 'copyNewsImageAssociationPrompt()' in actions
 assert 'news == nil ? automaticTrendImageBindingPrompt' in actions
@@ -507,7 +510,7 @@ assert 'if let archive = item.imageURL' in live
 assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'CURRENT_PROJECT_VERSION: "57"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
 
 
@@ -534,15 +537,15 @@ assert 'EditorialActions(news: item, github: github, showSettings: $settings)' i
 print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 
-# 0.4.46 build56: native-only changes from the installed build55.
+# 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert project.count('CURRENT_PROJECT_VERSION: "56"') == 2
-assert project.count('CFBundleVersion: "56"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "57"') == 2
+assert project.count('CFBundleVersion: "57"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 assert 'https://ttactualidad.rainyraven22.chatgpt.site/noticias' in actions
 assert 'https://ttactualidad.rainyraven22.chatgpt.site/tendencias' in actions
 assert 'contentBudget = 280 - 23 - 2' in actions
-assert 'value: TTActualidadXPost.payload(' in actions
+assert 'value: xText' in actions
 assert 'JPEG' in actions and 'image/jpeg' in actions
 assert 'PEGADA o ADJUNTADA' in actions
 assert '<sha12>.<ext>' in actions
@@ -553,11 +556,24 @@ assert 'if leftDate != rightDate { return leftDate > rightDate }' in store
 assert 'when(item, ["prepared_at", "selected_at"])' in store
 assert 'if left.revision != right.revision' in store
 assert 'TTActualidad.chatgpt.projectTT.url' in actions
-assert 'quickButton("Asociar imagen IA", "paperclip")' in actions
-assert 'quickButton("Copiar GAG", "sparkles")' in actions
+assert 'quickButton("Crear Foto IA", "photo.badge.plus")' in actions
+assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
 assert 'quickButton("Publicar en X", "square.and.arrow.up")' in actions
 # Preserve original stacked dual-image UI, verified images and Live Activity.
 assert 'private static func buildNews' in store
 assert 'NewsAIImageCatalog.assigned(' in store
 assert 'LiveCountsAttributes' in shared
 print("NATIVE_BUILD56_LINKS_NEWS_ORDER_JPEG_NO_REGRESSION_OK")
+
+# Build57: same primary actions, exact-source copies, separate prompts and X text parity.
+for label in ("GPT Images", "Proyecto TT", "Copiar F Archivo", "Copiar Foto IA",
+              "Publicar en X", "Copiar Texto", "Quitar de Listas", "Elaborar desde 0",
+              "Aportar Pistas", "Crear Foto IA", "Crear y Asociar IA"):
+    assert actions.count('quickButton("'+label+'"') + actions.count('quickLink("'+label+'"') == 1, label
+assert 'copy(xText)' in actions and 'value: xText' in actions
+assert 'await copyPhoto(ai: false)' in actions and 'await copyPhoto(ai: true)' in actions
+assert 'imagePrompt(associate: false)' in actions and 'imagePrompt(associate: true)' in actions
+assert 'news: news, github: github' in actions
+assert 'project: project, eventID: id' in hints_sheet
+assert '"project": project' in auth
+print("NATIVE_BUILD57_UNIFIED_ACTIONS_OK")
