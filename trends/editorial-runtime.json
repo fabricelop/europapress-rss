@@ -3,36 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793663459",
-  "previous_run_id": "tr-1793661950902-manual",
-  "status": "success",
-  "phase": "investigating",
-  "started_at": "2026-11-03T00:51:20+01:00",
-  "updated_at": "2026-11-03T00:57:14+01:00",
+  "run_id": "tr-1793663849907-manual",
+  "previous_run_id": "tr-autoguard-1793663459",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T00:57:29.907+01:00",
+  "updated_at": "2026-11-03T00:57:29.907+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 0,
   "total": 2,
-  "trend_id": "78f0c897a505",
-  "title": "Aroca",
-  "queue_complete": true,
-  "processed_ids": [
-    "78f0c897a505"
+  "trend_id": "red-review-5acdc18cd526baa17504",
+  "title": "Revisar novedades: Adif",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-5acdc18cd526baa17504",
+    "red-review-a20d736ad083a5a16a1d"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-5acdc18cd526baa17504",
+    "red-review-a20d736ad083a5a16a1d"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
-    "explained": 1,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -42,7 +46,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:57:14+01:00",
@@ -90,7 +94,7 @@
     "message": "Pasada cerrada 1/1: revisión Hamilton R0 aplicada como actualización material del mismo GP de México. Ficha nueva trend-update-77f5db7129dcd06a9fc8 sincronizada en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "1/2 cerrado. Investigando Aroca R0 con causalidad prudente; sin ImageGen ni publicación.",
+  "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Adif y Pepe Mel), ordenadas por cola y con revalidación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T15:56:00+01:00",
@@ -1135,6 +1139,17 @@
       "trend_id": "78f0c897a505",
       "title": "Aroca",
       "message": "Aroca R0 revalidado JIT. Fuentes actuales relacionan a Javier Aroca con el debate ferroviario tras Urda: artículo del 1/11 sobre liberalización/inversión y una intervención en Malas Lenguas con preguntas sobre inversión y liberalización. El detonante preciso del término no puede aislarse."
+    },
+    {
+      "at": "2026-11-03T00:57:29.907+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793663849907-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-5acdc18cd526baa17504",
+      "title": "Revisar novedades: Adif",
+      "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Adif y Pepe Mel), ordenadas por cola y con revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
