@@ -3,42 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793650268",
-  "previous_run_id": "tr-1793648428381-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T21:12:00+01:00",
-  "updated_at": "2026-11-02T21:19:30+01:00",
-  "finished_at": "2026-11-02T21:19:30+01:00",
-  "current": 7,
-  "total": 7,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "e7f55edd3770",
-    "62a356cab514",
-    "358fb89fcdaa",
-    "6b9031df0583",
-    "a1ced7a7483f",
-    "78c2be79ed36",
-    "8f79a4e7f99e"
+  "run_id": "tr-1793650762871-manual",
+  "previous_run_id": "tr-autoguard-1793650268",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T21:20:30+01:00",
+  "updated_at": "2026-11-02T21:20:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-f894d38a06b32c1267a9",
+  "title": "Revisar novedades: Pepe Mel",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-f894d38a06b32c1267a9",
+    "red-review-0b5f468fc7c7ca43d8b1"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-f894d38a06b32c1267a9",
+    "red-review-0b5f468fc7c7ca43d8b1"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 7,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -48,72 +46,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "e7f55edd3770",
-      "revision": 0,
-      "name": "Renfe y Adif",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "77f2d1b409fcd68ec1fc36bd178814dc715644c5"
-    },
-    {
-      "id": "62a356cab514",
-      "revision": 0,
-      "name": "Pucela",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
-    },
-    {
-      "id": "358fb89fcdaa",
-      "revision": 0,
-      "name": "Leganés",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
-    },
-    {
-      "id": "6b9031df0583",
-      "revision": 0,
-      "name": "Washington",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
-    },
-    {
-      "id": "a1ced7a7483f",
-      "revision": 0,
-      "name": "#PazCasaTrabajo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
-    },
-    {
-      "id": "78c2be79ed36",
-      "revision": 0,
-      "name": "Zorrilla",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
-    },
-    {
-      "id": "8f79a4e7f99e",
-      "revision": 0,
-      "name": "Kast",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "76763c699abe05ddcc3a4d66d7606f5bf84ea4b2"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T21:12:00+01:00",
   "last_completed_at": "2026-11-02T21:19:30+01:00",
@@ -212,7 +146,7 @@
     "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0.",
+  "message": "Pasada en curso: 2 revisiones de novedades detectadas en main. Procesando con validación JIT id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1830,6 +1764,14 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793650268 cerrada 7/7: Renfe y Adif, Pucela, Leganés, Washington, #PazCasaTrabajo, Zorrilla y Kast quedaron explicados y persistidos. Verificación de aplicación: requests.json y telegram-manual-explained.json recibieron las revisiones R0; editorial-queue=0 y no quedan rewrite_pending/reexplain vigentes. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T21:20:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793650762871-manual",
+      "trend_id": "red-review-f894d38a06b32c1267a9",
+      "title": "Revisar novedades: Pepe Mel",
+      "message": "Cola autoritativa releída: 2 review_red preparando. Inicio por Pepe Mel; validación JIT antes de investigar y persistir."
     }
   ],
   "history": [
@@ -3278,18 +3220,9 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-18041079a0266bec70ff",
-      "revision": 0,
-      "name": "Revisar novedades: Día de Todos",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    }
-  ],
-  "current_item": null,
-  "current_title": null,
+  "outcomes": [],
+  "current_item": "red-review-f894d38a06b32c1267a9",
+  "current_title": "Revisar novedades: Pepe Mel",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -4688,8 +4621,8 @@
       "message": "Pasada tr-1793635315319-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update y sin rewrite_pending/reexplain vigentes. La pasada inmediatamente anterior ya había cerrado Toledo (stale) y Halloween (unchanged). ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-autoguard-1793650268",
-  "requested_at": "2026-11-02T21:12:00+01:00",
+  "command_id": "tr-1793650762871-manual",
+  "requested_at": "2026-11-02T21:20:30+01:00",
   "runs": [
     {
       "run_id": "tr-autoguard-1793650268",
