@@ -3,48 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261102-pending-editorial-recovery-01",
-  "previous_run_id": "tr-1793620625571-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-02T16:45:00+01:00",
-  "updated_at": "2026-11-02T16:58:00+01:00",
-  "finished_at": "2026-11-02T16:58:00+01:00",
-  "current": 13,
-  "total": 13,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "c9d48615f2ca",
-    "bda4f2269ee3",
-    "3045db42e1f5",
-    "5e188e3012d7",
-    "1a8dca45b46d",
-    "067545f4a7fc",
-    "357402e6e903",
-    "f84895c47d54",
-    "e2b4555233b1",
-    "b88d2954e28e",
-    "c1f986a9e525",
-    "fed9af79780a",
-    "3e340be4de18"
+  "run_id": "tr-1793635097814-manual",
+  "previous_run_id": "tr-20261102-pending-editorial-recovery-01",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T16:58:30+01:00",
+  "updated_at": "2026-11-02T16:58:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-c6446e4f7a6c073f0906",
+  "title": "Revisar novedades: Toledo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-c6446e4f7a6c073f0906",
+    "red-review-edd34ae844e5e60c2835"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-c6446e4f7a6c073f0906",
+    "red-review-edd34ae844e5e60c2835"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
-    "queue_remaining": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -54,25 +46,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-cd93325eb8c17bd267a6",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_applicator_jit"
-    },
-    {
-      "id": "red-review-9f8cf554ab08b4dd53d2",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_applicator_jit"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T16:57:20+01:00",
   "last_completed_at": "2026-11-02T16:57:21+01:00",
@@ -203,7 +178,7 @@
     "message": "Pasada de recuperación cerrada 13/13: los 13 preparing vigentes quedaron explained y persistidos en requests + Listas mediante el aplicador editorial. Comprarse se cerró con causa no confirmada tras verificación de ranking; Jesús de Miguel, Owono y Andorra sin remate por sensibilidad. Barrera final: editorial-queue=0 y sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada de recuperación cerrada 13/13: los 13 preparing vigentes quedaron explained y persistidos en requests + Listas mediante el aplicador editorial. Comprarse se cerró con causa no confirmada tras verificación de ranking; Jesús de Miguel, Owono y Andorra sin remate por sensibilidad. Barrera final: editorial-queue=0 y sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793635097814-manual: 2 trabajos preparing/update vigentes en main. Revalidación JIT por id+revision; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1605,6 +1580,14 @@
       "phase": "closing",
       "run_id": "tr-1793620625571-manual",
       "message": "Pasada cerrada 2/2: Chiqui y Toledo fueron consumidas por el aplicador y cerradas stale tras la barrera JIT. Chiqui tenía una novedad material investigada, pero el snapshot ya no era aplicable y no se creó actualización; Toledo ya había salido del Top 30 fresco. Cola final 0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T16:58:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793635097814-manual",
+      "trend_id": "red-review-c6446e4f7a6c073f0906",
+      "title": "Revisar novedades: Toledo",
+      "message": "Inicio tr-1793635097814-manual: 2 trabajos preparing/update vigentes en main. Revalidación JIT por id+revision; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
