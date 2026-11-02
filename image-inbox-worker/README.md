@@ -69,3 +69,26 @@ el repositorio ni se colocan en `wrangler.jsonc`.
 
 Hasta que haya recursos R2/D1 reales, secretos, endpoint HTTPS, receptor del PC,
 publicador de Sites y nueva IPA configurada: **bandeja no operativa**.
+
+
+## Prueba de integración del publicador (SIN escritores reales)
+
+`tools/publish-approved-once.mjs` implementa el **orden verificable** de una
+publicación aprobada, con dependencias explícitamente inyectadas. No contiene
+adaptadores reales ni credenciales; no se ejecuta en producción por sí solo:
+
+1. Obtener la aprobación exacta por `id` derivado de la identidad completa y los
+   bytes del PNG original privado. Comprobar el SHA-256 antes de cualquier escritura.
+2. Leer el documento editorial vigente, publicar en la ficha exacta de la APP
+   mediante un adaptador autenticado, leer la imagen en APP y comprobar los bytes.
+3. Volver a verificar la ficha editorial, publicar mediante el adaptador Sites,
+   leer la ficha e imagen en Sites, comprobar de nuevo los bytes y el texto.
+4. Solo después de verificar **ambos** destinos y el texto actual, emitir un
+   recibo auditable de éxito. Si falla uno, jamás declarar publicación completa;
+   conservar el estado para reintento idempotente y reparación manual.
+
+Pruebas de regresión cubren la ausencia de aprobación, cambio de episodio,
+identidad inconsistente, raster adulterado, fallo de lectura en APP/Sites y
+cambio editorial en medio de la operación. Los adaptadores reales y el almacén
+de recibos con readback siguen pendientes: **no afirmar que la aprobación ya
+sube imágenes a APP/Sites**.
