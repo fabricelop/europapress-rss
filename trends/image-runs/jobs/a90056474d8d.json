@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-a90056474d8d-r0-a2-1791159426504",
-  "requested_at": "2026-10-05T00:17:06.473672Z",
-  "updated_at": "2026-10-05T00:18:48.604Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-a90056474d8d-r0-a1-1793599525114",
+  "requested_at": "2026-11-02T06:05:25.064905Z",
+  "updated_at": "2026-11-02T06:05:25.064905Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -14,51 +16,45 @@
   "trend_id": "a90056474d8d",
   "target_name": "#elsecreto",
   "revision": 0,
-  "attempt": 2,
+  "attempt": 1,
   "auto_repair": true,
-  "auto_repair_attempt": 2,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
-  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "#elsecreto",
     "revision": 0,
-    "explanation": "TT#9 #elsecreto es tendencia por el capítulo de El secreto emitido esta noche en Antena 3: Berrak despierta, recuerda el accidente y regresa a casa mientras Serhat intenta averiguar quién es el padre de Kader.\n🌶️ La serie ya necesita caja fuerte para tanto secreto.",
-    "closer_text": "🌶️ La serie ya necesita caja fuerte para tanto secreto.",
+    "explanation": "TT#21 #elsecreto es tendencia por la emisión dominical de El secreto en Antena 3, con nuevos episodios de la historia de Berrak, Serhat y Kader.\n#Antena3 #Series\n🌶️ La parrilla reservó tres bloques para una serie que vive de guardar secretos.",
+    "closer_text": "🌶️ La parrilla reservó tres bloques para una serie que vive de guardar secretos.",
     "trend_names": [
       "#elsecreto"
     ],
-    "group_title": "El secreto · capítulo del 4 de octubre",
-    "rank_at_explanation": 9,
-    "explained_at": "2026-10-05T01:51:10+02:00",
+    "group_title": "#elsecreto",
+    "rank_at_explanation": 21,
+    "explained_at": "2026-11-02T07:04:00+01:00",
     "verification_sources": [
       {
-        "source": "Antena 3 · 4/10/2026",
-        "url": "https://www.antena3.com/series/secreto/avances/recuerdo-todo-berrak-prepara-enfrentarse-serhat_202610046ac21d58f7f8f566d14cd8df.html"
+        "url": "https://xtrends.iamrohit.in/spain"
       },
       {
-        "source": "El Televisero · 3/10/2026",
-        "url": "https://eltelevisero.huffingtonpost.es/2026/10/el-secreto-avance-del-proximo-capitulo-del-domingo-4-de-octubre-los-planes-ocultos-de-berrak-en-la-serie-de-antena-3/"
+        "url": "https://www.antena3.com/series/"
+      },
+      {
+        "url": "https://www.movistarplus.es/programacion-tv/a3/2026-11-01"
       }
     ],
-    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
-    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "6b74edc5b983210582dd33e452cd1664b3ba8ea34ddbcd8d83c7b4c12da3f1c8",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-05T00:17:36.812Z",
-  "bridge_version": null,
-  "target_handoff_id": "77DEDA26F5B468BD4EEDBA34105FFCE8",
-  "target_handoff_at": "2026-10-05T00:17:44.297Z",
-  "pc_launched_at": "2026-10-05T00:17:45.981Z",
-  "upload_received_at": "2026-10-05T00:18:43.736Z",
-  "upload_sha256": "f87cd302c051342974d2b8b1ee4b892f06b63bcea90c6e7246e17bdd53c9f334",
-  "upload_bytes": 2373364,
-  "finished_at": "2026-10-05T00:18:48.604Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
