@@ -121,6 +121,9 @@ jobs:
           # Los cierres, explicaciones vigentes y revisiones siguen protegidos.
 
       - name: Despertar editor de pendientes TTendencias persistidas
+        # A control-channel outage must not stop RSS/news/radar persistence.
+        # The durable watchdog retains the recovery responsibility.
+        continue-on-error: true
         # Recheck all pending work, including rows queued by the other radar.
         # The shared guard preserves active runs and recent control commands.
         env:
