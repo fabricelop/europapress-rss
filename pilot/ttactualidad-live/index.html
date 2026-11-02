@@ -218,6 +218,8 @@ function verifiedNewsAI(x){
 
 // TT_ACTUALIDAD_TREND_SITE_IMAGE_V1: display only the exact Site image registered for this editorial revision.
 function verifiedTrendSiteAI(x){
+ // WEB TAKEDOWN: do not render withdrawn artwork even if a stale cache still holds it.
+ if(['b88d2954e28e','c1f986a9e525','3e340be4de18'].includes(String(x?._id||x?.id||'')))return '';
  if(x?._kind!=='tr'||!['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x?._status))return '';
  const id=String(x._id||x.id||''),rev=Number(x.revision||0);
  const explanation=String(x.explanation||''),at=String(x.explained_at||'');
