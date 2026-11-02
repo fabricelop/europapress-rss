@@ -10,6 +10,7 @@ import sys
 import os
 import base64
 import hashlib
+import re
 from urllib.request import Request, urlopen
 from datetime import datetime, timezone
 from pathlib import Path
@@ -134,8 +135,51 @@ def _hydrate_chunked_ai(payload):
     mime = str(ai.pop("chunk_mime", "image/jpeg") or "image/jpeg").casefold()
     if mime not in {"image/jpeg", "image/png", "image/webp"}:
         raise ValueError("mime de chunks IA no permitido")
-    ai["url"] = f"data:{mime};base64," + "".join(parts)
+    joined = "".join(parts)
+    expected_sha = str(ai.pop("chunk_sha256", "") or "").lower()
+    if expected_sha:
+        if not re.fullmatch(r"[a-f0-9]{64}", expected_sha):
+            raise ValueError("SHA original inválido")
+        raw = base64.b64decode(joined, validate=True)
+        if hashlib.sha256(raw).hexdigest() != expected_sha:
+            raise ValueError("SHA-256 del original de GitHub no coincide")
+    ai["url"] = f"data:{mime};base64," + joined
     return files
+
+
+def _direct_receipt_matches(payload: dict, item: dict) -> bool:
+    """Fail closed for the new command-scoped GitHub transport.
+
+    Legacy manual outboxes without command_id keep their existing handling.
+    No image or READY text is changed on a mismatch; the receipt stays for review.
+    """
+    command = str(payload.get("command_id") or "")
+    if not command:
+        return True
+    if not re.fullmatch(r"[A-Za-z0-9._-]{3,160}", command):
+        return False
+    ai = payload.get("ai_image") or {}
+    if not isinstance(ai, dict):
+        return False
+    guard = ai.get("context_guard") or {}
+    if not isinstance(guard, dict) or str(guard.get("command_id") or "") != command:
+        return False
+    if (guard.get("event_id") != payload.get("event_id") or
+            int(guard.get("revision") or 0) != int(payload.get("revision") or 0)):
+        return False
+    chunks = ai.get("chunk_files") or []
+    if chunks != [command + ".b64"]:
+        return False
+    tweet = item.get("tweet") or {}
+    text = str(tweet.get("text") or "").strip()
+    facts = str(item.get("factual_summary") or "").strip()
+    remate = str(tweet.get("remate") or "").strip()
+    if not text or not facts:
+        return False
+    fingerprint = hashlib.sha256("\n".join((text, facts, remate)).encode("utf-8")).hexdigest()
+    return (str(payload.get("editorial_sha256") or "") == fingerprint and
+            str(guard.get("editorial_sha256") or "") == fingerprint)
+
 
 
 def main():
@@ -173,6 +217,10 @@ def main():
             waiting.append(path.name)
             continue
 
+        if not _direct_receipt_matches(payload, item):
+            waiting.append(path.name + ":identity_needs_review")
+            continue
+
         if _ai_image_disabled(item):
             item.pop("ai_image", None)
             item["disable_ai_image"] = True
@@ -188,6 +236,9 @@ def main():
         current_attempt = int(item.get("ai_image_attempt") or 0)
         expected_attempt = current_attempt or 1
         if attempt != expected_attempt:
+            if payload.get("command_id"):
+                waiting.append(path.name + ":attempt_needs_review")
+                continue
             path.unlink(missing_ok=True)
             processed.append(eid + ":attempt-mismatch")
             changed = True
@@ -240,6 +291,12 @@ def main():
             except Exception as exc:
                 status = "failed"
                 payload["reason"] = str(exc)[:500]
+
+        if status == "failed" and payload.get("command_id"):
+            # Never discard a verified, already-generated original because of
+            # an association/validation error. Keep it available for review.
+            waiting.append(path.name + ":delivery_needs_review")
+            continue
 
         if status == "failed":
             reason = str(payload.get("reason") or "No se pudo materializar la imagen IA.")[:500]

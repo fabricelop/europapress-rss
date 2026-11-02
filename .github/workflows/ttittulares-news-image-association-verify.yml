@@ -1,0 +1,89 @@
+name: TTiTTulares - News image association without Trend changes
+on:
+  pull_request:
+    paths:
+      - 'windows/TTiTTularesGithubOutbox.cjs'
+      - 'windows/TTiTTularesWebImages.cjs'
+      - 'windows/TTiTTularesImageBridge.js'
+      - 'windows/TTiTTularesDedicatedListener.ps1'
+      - 'windows/TT-AutoUpdater.ps1'
+      - 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1'
+      - 'windows/Diagnosticar-TTImages-Asociacion-Safe.ps1'
+      - 'windows/tests/test_headline_github_outbox.cjs'
+      - 'ttittulares/apply_ai_image_outbox.py'
+      - 'ttittulares/sync_site_ai_images.py'
+      - 'tests/test_ttittulares_github_outbox.py'
+      - 'tests/test_ttittulares_image_catalog.py'
+      - 'tests/test_news_ai_icon.cjs'
+      - 'pilot/ttactualidad-live/index.html'
+      - 'docs/ttactualidad/index.html'
+      - '.github/workflows/ttittulares-news-image-association-verify.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  image-association:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesGithubOutbox.cjs
+            /windows/TTiTTularesWebImages.cjs
+            /windows/TTiTTularesImageBridge.js
+            /windows/tests/test_headline_github_outbox.cjs
+            /ttittulares/apply_ai_image_outbox.py
+            /ttittulares/apply_editorial_outbox.py
+            /ttittulares/sync_site_ai_images.py
+            /tests/test_ttittulares_github_outbox.py
+            /tests/test_ttittulares_image_catalog.py
+            /tests/test_news_ai_icon.cjs
+            /pilot/ttactualidad-live/index.html
+            /docs/ttactualidad/index.html
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate receivers, bridge and original transport
+        run: |
+          node --check windows/TTiTTularesImageBridge.js
+          node --check windows/TTiTTularesWebImages.cjs
+          node --check windows/TTiTTularesGithubOutbox.cjs
+          node --test windows/tests/test_headline_github_outbox.cjs
+          node --test tests/test_news_ai_icon.cjs
+      - name: Verify original, target/revision and iPhone/web manifest
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 -m unittest discover -s tests -p 'test_ttittulares_github_outbox.py' -v
+          python3 -m unittest discover -s tests -p 'test_ttittulares_image_catalog.py' -v
+          python3 -m py_compile ttittulares/apply_ai_image_outbox.py ttittulares/sync_site_ai_images.py
+  windows-safety:
+    runs-on: windows-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/TT-AutoUpdater.ps1
+            /windows/Install-TTImages-Noticias-Receptor-Safe.ps1
+            /windows/Diagnosticar-TTImages-Asociacion-Safe.ps1
+      - name: Verify PowerShell syntax without executing listeners
+        shell: powershell
+        run: |
+          foreach($p in @('windows/TTiTTularesDedicatedListener.ps1','windows/TT-AutoUpdater.ps1','windows/Install-TTImages-Noticias-Receptor-Safe.ps1','windows/Diagnosticar-TTImages-Asociacion-Safe.ps1')){
+            $tokens=$null;$errors=$null
+            [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errors)|Out-Null
+            if($errors.Count){throw "PowerShell invalido: $p"}
+          }
+          $updater=Get-Content 'windows/TT-AutoUpdater.ps1' -Raw
+          foreach($module in @('TTiTTularesWebImages.cjs','TTiTTularesGithubOutbox.cjs')){
+            if(-not $updater.Contains($module)){throw "Modulo no instalado por AutoUpdater: $module"}
+          }
+          $installer=Get-Content 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1' -Raw
+          if($installer -notmatch 'if\(-not \$Apply\)'){throw "El instalador debe ser read-only por defecto"}
+          if($installer -match 'Start-Process|Stop-Process|Restart-Service|git push|ImageGen'){
+            throw "El instalador no debe lanzar procesos ni generar imagenes"
+          }
