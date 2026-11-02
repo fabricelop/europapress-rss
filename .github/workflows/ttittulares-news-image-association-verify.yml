@@ -5,6 +5,7 @@ on:
       - 'windows/TTiTTularesGithubOutbox.cjs'
       - 'windows/TTiTTularesWebImages.cjs'
       - 'windows/TTiTTularesImageBridge.js'
+      - 'windows/tests/test_headline_original_hold.cjs'
       - 'windows/TTiTTularesDedicatedListener.ps1'
       - 'windows/TT-AutoUpdater.ps1'
       - 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1'
@@ -33,6 +34,7 @@ jobs:
             /windows/TTiTTularesGithubOutbox.cjs
             /windows/TTiTTularesWebImages.cjs
             /windows/TTiTTularesImageBridge.js
+            /windows/tests/test_headline_original_hold.cjs
             /windows/tests/test_headline_github_outbox.cjs
             /ttittulares/apply_ai_image_outbox.py
             /ttittulares/apply_editorial_outbox.py
@@ -51,6 +53,7 @@ jobs:
           node --check windows/TTiTTularesWebImages.cjs
           node --check windows/TTiTTularesGithubOutbox.cjs
           node --test windows/tests/test_headline_github_outbox.cjs
+          node --test windows/tests/test_headline_original_hold.cjs
           node --test tests/test_news_ai_icon.cjs
       - name: Verify original, target/revision and iPhone/web manifest
         run: |
