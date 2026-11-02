@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T22:59:16.044729+00:00",
+  "updated_at": "2026-11-03T00:01:32+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -4076,7 +4076,7 @@
       "id": "22601009b977",
       "name": "#30OctubrESP",
       "rank": 20,
-      "status": "inactive",
+      "status": "deleted",
       "requested_at": "2026-10-30T13:51:10+01:00",
       "revision": 0,
       "reexplain": false,
@@ -4099,7 +4099,8 @@
       "problematic_attempts": 2,
       "editorial_engine": "chatgpt-automation-outbox",
       "inactive_at": "2026-10-30T14:11:05+01:00",
-      "inactive_reason": "left-top30-radar"
+      "inactive_reason": "left-top30-radar",
+      "telegram_package_status": "deleted"
     },
     {
       "id": "listas-grouping-dd889893-c036-4aa6-bda0-4550de9768b6",
@@ -7748,7 +7749,7 @@
       "id": "dc90fe5a413e",
       "name": "#30OctubrESP",
       "rank": 20,
-      "status": "inactive",
+      "status": "deleted",
       "requested_at": "2026-10-30T15:02:11+01:00",
       "revision": 0,
       "reexplain": false,
@@ -7798,7 +7799,8 @@
         }
       ],
       "inactive_at": "2026-10-30T15:41:14+01:00",
-      "inactive_reason": "left-top30-radar"
+      "inactive_reason": "left-top30-radar",
+      "telegram_package_status": "deleted"
     },
     {
       "id": "listas-grouping-6e6dca47-14c1-4f81-a7a4-99583089a185",
@@ -207458,6 +207460,72 @@
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending"
+    },
+    {
+      "id": "1e03ad2efe6a",
+      "name": "Paola",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-11-03T00:01:32+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "4d6c62c2fd16",
+      "requested_together": [
+        "Paola"
+      ],
+      "captured_with": [
+        "Paola",
+        "Josue",
+        "Kico"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "64a8657cfbb4",
+      "name": "Josue",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-11-03T00:01:32+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "4d6c62c2fd16",
+      "requested_together": [
+        "Josue"
+      ],
+      "captured_with": [
+        "Paola",
+        "Josue",
+        "Kico"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "c1e5fdc8cf2a",
+      "name": "Kico",
+      "rank": 15,
+      "status": "preparing",
+      "requested_at": "2026-11-03T00:01:32+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "4d6c62c2fd16",
+      "requested_together": [
+        "Kico"
+      ],
+      "captured_with": [
+        "Paola",
+        "Josue",
+        "Kico"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 841
