@@ -39,7 +39,7 @@ for(const path of ['pilot/ttactualidad-live/index.html','docs/ttactualidad/index
  assert.equal((html.match(/xIntentLink\(x,/g)||[]).length,4,path+' all three buttons plus helper');
  assert(!html.includes("'https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial"),path+' no old links');
  assert(html.includes("Copiar GAG + asociar IA"));
- assert(html.includes("Asociar JPEG/PNG"));
+ assert(html.includes("Copiar orden: asociar JPEG/PNG"));
  runtime.itemData=x=>({title:x.title});
  const prompt=vm.runInContext('imageWorkflowPrompt',runtime)({
   _kind:'tti',_status:'LISTA',event_id:'news123456',
