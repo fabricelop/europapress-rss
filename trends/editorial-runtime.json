@@ -5,12 +5,12 @@
   "canonical": true,
   "run_id": "tr-1793661749861-manual",
   "previous_run_id": "tr-autoguard-1793661198",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-03T00:23:30+01:00",
-  "updated_at": "2026-11-03T00:25:50+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-03T00:31:20+01:00",
+  "finished_at": "2026-11-03T00:31:20+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
@@ -83,25 +83,25 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:20:24+01:00",
-  "last_completed_at": "2026-11-03T00:21:35+01:00",
+  "last_completed_at": "2026-11-03T00:31:20+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793661198",
-    "command_id": "tr-autoguard-1793661198",
+    "run_id": "tr-1793661749861-manual",
+    "command_id": "tr-1793661749861-manual",
     "canonical": true,
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-03T00:13:30+01:00",
-    "finished_at": "2026-11-03T00:21:35+01:00",
+    "started_at": "2026-11-03T00:23:30+01:00",
+    "finished_at": "2026-11-03T00:31:20+01:00",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 3,
-      "updates": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -111,46 +111,39 @@
     },
     "outcomes": [
       {
-        "id": "1e03ad2efe6a",
+        "id": "red-review-0644f5900b64e7a2afc9",
         "revision": 0,
-        "name": "Paola",
-        "outcome": "explained",
+        "name": "Revisar novedades: Toledo",
+        "outcome": "stale",
         "applied": true,
-        "via": "editorial_outbox_applied",
-        "explained_at": "2026-11-03T00:17:20+01:00"
+        "via": "maintenance_outbox_applied",
+        "completed_at": "2026-11-03T00:25:44.912074+01:00",
+        "reason": "La revisión quedó obsoleta en la validación JIT del aplicador y no se creó una nueva ficha."
       },
       {
-        "id": "64a8657cfbb4",
+        "id": "red-review-4617c6234a7fb1cd3290",
         "revision": 0,
-        "name": "Josue",
-        "outcome": "explained",
+        "name": "Revisar novedades: Hamilton",
+        "outcome": "updated",
         "applied": true,
-        "via": "editorial_outbox_applied",
-        "explained_at": "2026-11-03T00:18:05+01:00",
-        "reason": "Contexto actual verificado; el detonante concreto del nombre no pudo aislarse y se redactó con incertidumbre explícita."
-      },
-      {
-        "id": "c1e5fdc8cf2a",
-        "revision": 0,
-        "name": "Kico",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "explained_at": "2026-11-03T00:18:45+01:00"
+        "via": "maintenance_outbox_applied",
+        "created_id": "trend-update-77f5db7129dcd06a9fc8",
+        "completed_at": "2026-11-03T00:29:26.809655+01:00"
       }
     ],
     "incident_count": 1,
     "incidents": [
       {
-        "type": "direct_atomic_transport_fallback",
-        "message": "La primera escritura atómica directa de Paola se abortó por un error de transporte h2 antes de mover main; se cambió al outbox/aplicador contractual y las tres revisiones quedaron persistidas y verificadas.",
+        "type": "maintenance_format_correction",
+        "id": "red-review-4617c6234a7fb1cd3290",
+        "message": "El primer resultado de Hamilton usó «sigue siendo tendencia tras» y el aplicador lo rechazó por el contrato de continuidad. Se corrigió el MISMO outbox a «sigue siendo tendencia por» y quedó aplicado.",
         "recovered": true
       }
     ],
-    "message": "Pasada cerrada 3/3: Paola, Josue y Kico R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Josue se cerró con causa concreta no confirmada y sin remate. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 2/2: Toledo R0 terminó stale por la validación JIT del aplicador; Hamilton R0 quedó updated y creó trend-update-77f5db7129dcd06a9fc8. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Toledo aplicado como actualización material y retirado de la cola. Hamilton R0 sigue activo; su outbox de actualización ya está persistido y se verifica la aplicación.",
+  "message": "Pasada cerrada 2/2: Toledo R0 terminó stale por la validación JIT del aplicador; Hamilton R0 quedó updated y creó trend-update-77f5db7129dcd06a9fc8. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2106,6 +2099,18 @@
       "trend_id": "red-review-4617c6234a7fb1cd3290",
       "title": "Revisar novedades: Hamilton",
       "message": "Toledo aplicado como actualización material y retirado de la cola. Hamilton R0 sigue activo; su outbox de actualización ya está persistido y se verifica la aplicación."
+    },
+    {
+      "at": "2026-11-03T00:31:20+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793661749861-manual",
+      "message": "Barrera final: editorial-queue=0; requests sin rewrite_pending/reexplain activos; Hamilton persistido en requests y telegram-manual-explained; Toledo cerrado stale por JIT."
+    },
+    {
+      "at": "2026-11-03T00:31:20+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793661749861-manual",
+      "message": "DONE_WITH_INCIDENTS 2/2; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3731,11 +3736,7 @@
       "explained_at": "2026-11-03T00:18:45+01:00"
     }
   ],
-  "current_item": {
-    "id": "red-review-4617c6234a7fb1cd3290",
-    "revision": 0,
-    "name": "Revisar novedades: Hamilton"
-  },
+  "current_item": null,
   "current_title": null,
   "completed_runs": [
     {
