@@ -6,9 +6,9 @@
   "run_id": "tr-1793601909530-manual",
   "previous_run_id": "tr-1793599715566-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-02T07:45:09.530+01:00",
-  "updated_at": "2026-11-02T07:51:00+01:00",
+  "updated_at": "2026-11-02T07:54:00+01:00",
   "finished_at": null,
   "current": 1,
   "total": 2,
@@ -2024,6 +2024,14 @@
       "trend_id": "red-review-8117d53cd1a62500cd5f",
       "title": "Revisar novedades: Adif",
       "message": "Revisando novedades de Adif tras revalidar id+revision en main; se comparan hechos posteriores con la explicación sobre fallos técnicos y LZB."
+    },
+    {
+      "at": "2026-11-02T07:54:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793601909530-manual",
+      "trend_id": "red-review-8117d53cd1a62500cd5f",
+      "title": "Revisar novedades: Adif",
+      "message": "Resultado updated persistido en maintenance-outbox con closer vacío por sensibilidad; pendiente de aplicación JIT automática."
     }
   ],
   "final_outcomes": [
