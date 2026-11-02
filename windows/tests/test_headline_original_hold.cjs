@@ -34,3 +34,14 @@ test('Manual recovery retries only a previously enrolled exact news item',()=>{
  assert.match(receiver,/if\(onlyTargetId&&!due\.length\)console\.log\('TTITTULARES_WEB_IMAGE_RECOVERY_NO_PENDING_RECEIPT '/);
  assert.match(receiver,/if\(onlyTargetId!==null&&!safeID\(onlyTargetId\)\)throw Error/);
 });
+
+// TTImages relay (Chrome 9234) is independent from the news ImageGen bridge.
+// Never create even temporary conversation tabs in that viewer browser.
+test('News receiver cannot steal TTImages relay 9234 or close its gallery',()=>{
+ assert.match(receiver,/const base=GENERATOR_BASE,source='generator_9223'/);
+ assert.match(receiver,/const capture=await selectExistingBrowser\(\);let cdp/);
+ assert.doesNotMatch(receiver,/\[\[BASE,'relay_9234'\]/);
+ assert.doesNotMatch(receiver,/Target\.createTarget|Target\.closeTarget/);
+ assert.doesNotMatch(receiver,/browserCDP=new CDP/);
+ assert.match(receiver,/exact_generator_conversation_missing/);
+});
