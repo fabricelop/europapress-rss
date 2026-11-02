@@ -453,10 +453,11 @@ function prioritizeOpenConversation(tasks,pages,currentCommand=null){
     (!chatURL(entry.task.conversation_url)&&targets.has(String(entry.task.browser_target_id||'')))}))
     .sort((a,b)=>Number(b.current)-Number(a.current)||Number(b.open)-Number(a.open)||a.index-b.index).map(x=>x.entry);
 }
-async function once(){
+async function once(onlyTargetId=null){
+  if(onlyTargetId!==null&&!safeID(onlyTargetId))throw Error('invalid_news_recovery_target');
   fs.mkdirSync(ROOT,{recursive:true});const lock=path.join(ROOT,'publisher.lock');
   try{const fd=fs.openSync(lock,'wx');fs.writeSync(fd,JSON.stringify({pid:process.pid,at:Date.now()}));fs.closeSync(fd);}catch{
-    try{const previous=JSON.parse(fs.readFileSync(lock));process.kill(previous.pid,0);return;}catch{try{fs.unlinkSync(lock);}catch{}return;}
+    try{const previous=JSON.parse(fs.readFileSync(lock));process.kill(previous.pid,0);if(onlyTargetId)console.log('TTITTULARES_WEB_IMAGE_RECOVERY_BUSY '+onlyTargetId);return;}catch{try{fs.unlinkSync(lock);}catch{}return;}
   }
   try{
     const now=Date.now();
@@ -465,8 +466,12 @@ async function once(){
     const tasks=fs.readdirSync(ROOT).filter(x=>x.endsWith('.json')).flatMap(name=>{
       try{return [{file:path.join(ROOT,name),task:JSON.parse(fs.readFileSync(path.join(ROOT,name),'utf8'))}];}catch{return [];}
     });
-    let due=dueTasks(tasks,now);
-    try{const pages=await http(GENERATOR_BASE+'/json/list');due=prioritizeOpenConversation(due,pages,await currentPinnedCommand(pages));}catch{}
+    // Targeted manual recovery retries ONLY an existing pending receipt.
+    // It cannot generate images, revive a rejected job, or steal another item.
+    const existing=onlyTargetId?newestActiveByTarget(tasks,now).get(onlyTargetId):null;
+    let due=onlyTargetId?(existing?[existing]:[]):dueTasks(tasks,now);
+    if(onlyTargetId&&!due.length)console.log('TTITTULARES_WEB_IMAGE_RECOVERY_NO_PENDING_RECEIPT '+onlyTargetId);
+    if(!onlyTargetId)try{const pages=await http(GENERATOR_BASE+'/json/list');due=prioritizeOpenConversation(due,pages,await currentPinnedCommand(pages));}catch{}
     for(const {file,task} of due.slice(0,1)){
       if(!safeID(task.target_id)||!safeID(task.command_id)||(!chatURL(task.conversation_url)&&!safeID(task.browser_target_id))||
         !/^[a-f0-9]{64}$/.test(String(task.editorial_sha256||''))||
@@ -523,4 +528,11 @@ async function watch(){
 module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverConversation,rasterProbe,cacheRaster,loadCachedOriginal,sameContext,headlineFingerprint,confirmedInMain,dueTasks,prioritizeOpenConversation,readImageJob,readEditorialState,selectExistingBrowser,consume,wakePublisher,watch,once,newestActiveByTarget};
 // Existing installed listeners invoke this file without arguments. Drain their
 // already-enrolled backlog too; do not require a new image to wake delivery.
-if(require.main===module)(process.argv.includes('--once')?once():watch()).catch(()=>{console.error('TTITTULARES_WEB_IMAGE exporter unavailable');process.exitCode=1;});
+if(require.main===module){
+  const index=process.argv.indexOf('--once-id');
+  (index>=0?once(String(process.argv[index+1]||'')):
+   process.argv.includes('--once')?once():watch()).catch(e=>{
+    console.error('TTITTULARES_WEB_IMAGE exporter unavailable '+String(e?.message||'').slice(0,90));
+    process.exitCode=1;
+  });
+}
