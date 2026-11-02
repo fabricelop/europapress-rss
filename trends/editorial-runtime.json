@@ -5,38 +5,35 @@
   "canonical": true,
   "run_id": "tr-1793601909530-manual",
   "previous_run_id": "tr-1793599715566-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T07:45:09.530+01:00",
-  "updated_at": "2026-11-02T07:54:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-02T07:55:00+01:00",
+  "finished_at": "2026-11-02T07:55:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-8117d53cd1a62500cd5f",
-  "title": "Revisar novedades: Adif",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-3365df6753b4e87e7e89"
-  ],
-  "remaining_ids": [
+    "red-review-3365df6753b4e87e7e89",
     "red-review-8117d53cd1a62500cd5f"
   ],
-  "remaining_active_ids": [
-    "red-review-8117d53cd1a62500cd5f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
-    "updates": 1,
+    "updates": 2,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -2032,6 +2029,23 @@
       "trend_id": "red-review-8117d53cd1a62500cd5f",
       "title": "Revisar novedades: Adif",
       "message": "Resultado updated persistido en maintenance-outbox con closer vacío por sensibilidad; pendiente de aplicación JIT automática."
+    },
+    {
+      "at": "2026-11-02T07:55:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793601909530-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final verificada: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0; ambas revisiones updated están sincronizadas en requests + Listas."
+    },
+    {
+      "at": "2026-11-02T07:55:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793601909530-manual",
+      "status": "DONE",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada 2/2: GP de México · Alonso y #MexicoGP y Adif actualizados. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [
