@@ -1,0 +1,55 @@
+'use strict';
+// Reads only an existing exact command conversation. Never generates, navigates,
+// associates, posts chat messages, touches catalogs or calls the legacy uploader.
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const {execFileSync}=require('node:child_process');
+const ENDPOINT='https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images/ingest';
+const sha=value=>crypto.createHash('sha256').update(value).digest('hex');
+const episode=m=>sha(JSON.stringify({project:m.project,editorialId:m.editorialId,revision:m.revision,editorialText:m.editorialText,editorialAt:m.editorialAt}));
+class CDP{
+ constructor(url){this.url=url;this.seq=0;this.pending=new Map()}
+ async open(){this.ws=new WebSocket(this.url);await new Promise((ok,bad)=>{const t=setTimeout(()=>bad(Error('CDP_TIMEOUT')),5000);this.ws.addEventListener('open',()=>{clearTimeout(t);ok()},{once:true});this.ws.addEventListener('error',()=>{clearTimeout(t);bad(Error('CDP_UNAVAILABLE'))},{once:true})});this.ws.addEventListener('message',e=>{const m=JSON.parse(String(e.data)),p=this.pending.get(m.id);if(!p)return;this.pending.delete(m.id);clearTimeout(p.t);m.error?p.bad(Error('CDP_EVALUATION_FAILED')):p.ok(m.result)})}
+ async evaluate(expression){const id=++this.seq;const r=await new Promise((ok,bad)=>{const t=setTimeout(()=>{this.pending.delete(id);bad(Error('CDP_TIMEOUT'))},20000);this.pending.set(id,{ok,bad,t});this.ws.send(JSON.stringify({id,method:'Runtime.evaluate',params:{expression,awaitPromise:true,returnByValue:true}}))});if(r.exceptionDetails)throw Error('RASTER_READ_FAILED');return r.result?.value}
+ close(){for(const p of this.pending.values()){clearTimeout(p.t);p.bad(Error('CDP_CLOSED'))}this.pending.clear();try{this.ws?.close()}catch{}}
+}
+function unprotect(value){const code='$s=ConvertTo-SecureString ([Console]::In.ReadToEnd());$p=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($s);try{[Console]::Write([Runtime.InteropServices.Marshal]::PtrToStringBSTR($p))}finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($p)}';return execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',code],{input:value,encoding:'utf8',windowsHide:true,timeout:15000,maxBuffer:65536}).trim()}
+function metadata(task,job){
+ const s=job.context_snapshot||{},text=String(s.explanation||'').trim();
+ if(job.command_id!==task.command_id||String(job.target_id||job.trend_id)!==task.target_id||Number(job.revision||0)!==task.revision||sha(text)!==task.explanation_sha256||!Number.isFinite(Date.parse(s.explained_at))||['CANCELLED','SUPERSEDED'].includes(String(job.status).toUpperCase()))throw Error('STALE_EXACT_JOB');
+ const m={project:'ttendencias',editorialId:task.target_id,revision:task.revision,commandId:task.command_id,editorialText:text,editorialAt:s.explained_at,title:String(s.name||s.trend_name||job.name||task.target_id)};m.episodeFingerprint=episode(m);return m;
+}
+async function send(meta,bytes,secret,fetcher=fetch){
+ if(bytes.length>8388608||bytes.length<24||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('ORIGINAL_PNG_REQUIRED');
+ meta={...meta,rasterSHA256:sha(bytes)};const form=new FormData();form.set('metadata',JSON.stringify(meta));form.set('image',new Blob([bytes],{type:'image/png'}),'original.png');
+ const r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret},body:form,redirect:'error',signal:AbortSignal.timeout(45000)});const receipt=await r.json();
+ if(!r.ok||!['pending','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(receipt.id))throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
+ return {...receipt,rasterSHA256:meta.rasterSHA256};
+}
+async function once(base=__dirname){
+ if(process.platform!=='win32')throw Error('WINDOWS_REQUIRED');
+ const dependency=path.join(base,'TTendenciasWebImages.cjs');if(!fs.readFileSync(dependency,'utf8').includes("return {status:'waiting',reason:'manual_approval_required'}"))throw Error('INSTALL_ASSOCIATION_PAUSE_FIRST');
+ const source=require(dependency),root=path.join(base,'ttendencias-web-images'),receipts=path.join(base,'image-approval-receipts');fs.mkdirSync(receipts,{recursive:true});
+ let lock;try{lock=fs.openSync(path.join(receipts,'receiver.lock'),'wx')}catch{return}
+ try{
+  const tasks=fs.readdirSync(root).filter(x=>x.endsWith('.json')&&!x.endsWith('.tmp')).map(file=>{try{return JSON.parse(fs.readFileSync(path.join(root,file),'utf8'))}catch{return null}}).filter(x=>x&&x.secret_dpapi&&x.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(x.command_id)).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)).slice(0,50);
+  for(const task of tasks){
+   const receiptFile=path.join(receipts,task.command_id+'.json');if(fs.existsSync(receiptFile))continue;
+   let cdp;
+   try{
+    const job=await source.readImageJob(task),meta=metadata(task,job);
+    let target;
+    // No new tab even when the original conversation has already been closed.
+    for(const port of [9223,9234]){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&source.chatURL(p.url)&&((task.conversation_url&&source.chatURL(p.url)===source.chatURL(task.conversation_url))||p.id===task.browser_target_id));if(target)break}catch{}}
+    if(!target)continue;cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();const raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(!raster?.ready)continue;
+    if(!String(raster.dataUrl).startsWith('data:image/png;base64,'))continue;
+    const bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
+    const fresh=metadata(task,await source.readImageJob(task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
+    const receipt=await send(meta,bytes,unprotect(task.secret_dpapi));
+    const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
+    console.log('PRIVATE_INBOX_RECEIVED '+task.command_id+' '+receipt.state);
+   }catch{console.error('PRIVATE_INBOX_DEFERRED '+task.command_id)}finally{cdp?.close()}
+  }
+ }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
+}
+module.exports={metadata,episode,send,once,ENDPOINT};
+if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
