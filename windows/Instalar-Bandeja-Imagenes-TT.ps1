@@ -24,6 +24,9 @@ try {
  $principal=New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive -RunLevel Limited
  $settings=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 8) -StartWhenAvailable
  Register-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP' -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Force | Out-Null
+ $hiddenFix=Join-Path $base 'Ocultar-Receptor-Imagenes-TT.ps1'
+ Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/fabricelop/europapress-rss/1b3b950b7846b61bb87e29e0c4876acb2d4a7f7c/windows/Ocultar-Receptor-Imagenes-TT.ps1' -OutFile $hiddenFix -TimeoutSec 40
+ & $hiddenFix
  Start-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP'
  Write-Host 'Receptor privado instalado. La aprobacion se hace solo en APP; no se publica automaticamente.' -ForegroundColor Green
  Write-Host 'Solo recupera PNGs de conversaciones reconocidas. Si hace falta, usa una pestana temporal del relay 9234; nunca escribe ni genera.'
