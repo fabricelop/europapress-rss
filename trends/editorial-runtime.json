@@ -5,20 +5,20 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793653885",
   "previous_run_id": "tr-1793652373470-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-02T22:11:30+01:00",
-  "updated_at": "2026-11-02T22:24:14+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-02T22:24:40+01:00",
+  "finished_at": "2026-11-02T22:24:40+01:00",
+  "current": 3,
   "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "26734863a6f4",
+    "b73c43b052f7",
     "86e7500184a2",
-    "b73c43b052f7"
+    "26734863a6f4"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -26,42 +26,73 @@
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 3,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "apply_push_race",
+      "message": "El primer aplicador validó y procesó los tres resultados pero perdió cuatro carreras de push contra escritores concurrentes de main. Se reforzó el aplicador con rebase sobre main fresco y el siguiente run persistió y verificó los tres cierres.",
+      "recovered": true
+    }
+  ],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "b73c43b052f7",
+      "revision": 0,
+      "name": "Yeremay",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_rebase_recovery"
+    },
+    {
+      "id": "86e7500184a2",
+      "revision": 0,
+      "name": "Tenerife",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_rebase_recovery"
+    },
+    {
+      "id": "26734863a6f4",
+      "revision": 0,
+      "name": "Budimir",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_rebase_recovery"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T22:24:14+01:00",
-  "last_completed_at": "2026-11-02T22:24:14+01:00",
+  "last_completed_at": "2026-11-02T22:24:40+01:00",
   "last_run": {
-    "run_id": "tr-1793652373470-manual",
-    "command_id": "tr-1793652373470-manual",
+    "run_id": "tr-autoguard-1793653885",
+    "command_id": "tr-autoguard-1793653885",
     "canonical": true,
-    "status": "DONE",
-    "started_at": "2026-11-02T21:46:00+01:00",
-    "finished_at": "2026-11-02T20:55:59.674Z",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-02T22:11:30+01:00",
+    "finished_at": "2026-11-02T22:24:40+01:00",
     "summary": {
       "attempted": 3,
       "observed": 3,
       "closed": 3,
-      "explained": 1,
-      "updates": 2,
+      "explained": 3,
+      "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
@@ -71,44 +102,47 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 0,
+      "incidents": 1,
       "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "red-review-40001ebb08d71fb3aec4",
+        "id": "b73c43b052f7",
         "revision": 0,
-        "name": "Revisar novedades: Morales",
-        "outcome": "updated",
-        "applied": true,
-        "created_id": "trend-update-b47a1bb9fd626142b550",
-        "via": "maintenance_outbox"
-      },
-      {
-        "id": "red-review-d97c62b7575f6ec9b3db",
-        "revision": 0,
-        "name": "Revisar novedades: La Palma",
-        "outcome": "updated",
-        "applied": true,
-        "created_id": "trend-update-eb1736cfc17df070d771",
-        "via": "maintenance_outbox"
-      },
-      {
-        "id": "13ab80a5ba95",
-        "revision": 0,
-        "name": "Catena",
+        "name": "Yeremay",
         "outcome": "explained",
         "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "ff9232121b7fb634e3e12cb93196bc287a7814bb"
+        "via": "editorial_outbox_rebase_recovery"
+      },
+      {
+        "id": "86e7500184a2",
+        "revision": 0,
+        "name": "Tenerife",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_rebase_recovery"
+      },
+      {
+        "id": "26734863a6f4",
+        "revision": 0,
+        "name": "Budimir",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_rebase_recovery"
       }
     ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada sucesora cerrada 3/3: Morales y La Palma actualizados por revisión; Catena explicado y aplicado. Verificación final: editorial-queue=0, preparing/update=0 y no queda reexplain/rewrite_pending en la cola autoritativa. ImageGen=0; publicaciones=0."
+    "incident_count": 1,
+    "incidents": [
+      {
+        "type": "apply_push_race",
+        "message": "El primer aplicador validó y procesó los tres resultados pero perdió cuatro carreras de push contra escritores concurrentes de main. Se reforzó el aplicador con rebase sobre main fresco y el siguiente run persistió y verificó los tres cierres.",
+        "recovered": true
+      }
+    ],
+    "message": "Pasada tr-autoguard-1793653885 cerrada 3/3: Yeremay, Tenerife y Budimir R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidencia recuperada: carrera de push del aplicador corregida con rebase sobre main fresco."
   },
   "source": "chat",
-  "message": "Tres resultados textuales preparados y validados JIT; esperando aplicación atómica en requests.json y telegram-manual-explained.json. ImageGen=0.",
+  "message": "Pasada tr-autoguard-1793653885 cerrada 3/3: Yeremay, Tenerife y Budimir R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidencia recuperada: carrera de push del aplicador corregida con rebase sobre main fresco.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1811,6 +1845,18 @@
       "phase": "persisting",
       "run_id": "tr-autoguard-1793653885",
       "message": "Tres resultados textuales preparados y validados JIT; esperando aplicación atómica en requests.json y telegram-manual-explained.json. ImageGen=0."
+    },
+    {
+      "at": "2026-11-02T22:24:32+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793653885",
+      "message": "Barrera final: los tres ID/R0 coinciden entre requests.json y telegram-manual-explained.json; editorial-queue=0 y no quedan rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-02T22:24:40+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793653885",
+      "message": "Pasada tr-autoguard-1793653885 cerrada 3/3: Yeremay, Tenerife y Budimir R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Incidencia recuperada: carrera de push del aplicador corregida con rebase sobre main fresco."
     }
   ],
   "history": [
