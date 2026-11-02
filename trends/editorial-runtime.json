@@ -3,36 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793656283",
-  "previous_run_id": "tr-1793655192906-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-02T22:51:23+01:00",
-  "updated_at": "2026-11-02T22:55:58+01:00",
+  "run_id": "tr-1793656604711-manual",
+  "previous_run_id": "tr-autoguard-1793656283",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-02T22:58:00+01:00",
+  "updated_at": "2026-11-02T22:58:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 0,
   "total": 2,
-  "trend_id": "570491eda2ef",
-  "title": "Ferllo",
-  "queue_complete": true,
-  "processed_ids": [
-    "570491eda2ef"
+  "trend_id": "red-review-9ac2d7454d6902a922fc",
+  "title": "Revisar novedades: Toledo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-9ac2d7454d6902a922fc",
+    "red-review-8d2db5cc94e6c8cae41f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-9ac2d7454d6902a922fc",
+    "red-review-8d2db5cc94e6c8cae41f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -42,18 +46,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "734c9156bd10",
-      "revision": 0,
-      "name": "Leo Román",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_editorial_outbox",
-      "apply_commit": "fe195d15c7e4a805c05a478c848f61e37058823a"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T22:55:58+01:00",
   "last_completed_at": "2026-11-02T22:55:58+01:00",
@@ -97,8 +91,8 @@
     "incidents": [],
     "message": "Pasada tr-1793655192906-manual cerrada 1/1: Leo Román R0 quedó explicado y sincronizado en requests.json y telegram-manual-explained.json. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Imagen permanece pendiente en el circuito visual separado; ImageGen=0; publicaciones=0."
   },
-  "source": "autoguard",
-  "message": "Persistiendo Ferllo R0 (2/2); contexto verificado, sin ImageGen.",
+  "source": "manual",
+  "message": "Pasada manual oficial en curso 0/2. Revalidando Toledo R0 y Diomande R0; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1910,6 +1904,14 @@
       "current": 1,
       "total": 2,
       "message": "Persistiendo Ferllo R0 (2/2); contexto verificado, sin ImageGen."
+    },
+    {
+      "at": "2026-11-02T22:58:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793656604711-manual",
+      "trend_id": "red-review-9ac2d7454d6902a922fc",
+      "title": "Revisar novedades: Toledo",
+      "message": "Inicio manual: 2 review_red preparing vigentes en main (Toledo y Diomande). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -4957,7 +4959,7 @@
       "message": "Pasada tr-1793650762871-manual cerrada 2/2: Pepe Mel y Endesa quedaron unchanged, con texto y fecha originales conservados. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico quedó en manos de la ejecución concurrente posterior tr-1793651013499-manual."
     }
   ],
-  "command_id": "tr-autoguard-1793656283",
+  "command_id": "tr-1793656604711-manual",
   "requested_at": "2026-11-02T22:33:30+01:00",
   "runs": [
     {
