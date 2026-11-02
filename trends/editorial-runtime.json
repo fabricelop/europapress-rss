@@ -6,9 +6,9 @@
   "run_id": "tr-1793661749861-manual",
   "previous_run_id": "tr-autoguard-1793661198",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T00:23:30+01:00",
-  "updated_at": "2026-11-03T00:23:30+01:00",
+  "updated_at": "2026-11-03T00:24:15+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -150,7 +150,7 @@
     "message": "Pasada cerrada 3/3: Paola, Josue y Kico R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Josue se cerró con causa concreta no confirmada y sin remate. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793661749861-manual: 2 revisiones review_red preparing vigentes en main (Toledo y Hamilton). Revalidación JIT por id+revision antes de cada tratamiento; sin ImageGen ni publicación.",
+  "message": "Revisando novedades: Toledo. Revalidación JIT del job R0 superada; contrastando desarrollos posteriores del accidente de Urda/Toledo.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2090,6 +2090,14 @@
       "phase": "preparing",
       "run_id": "tr-1793661749861-manual",
       "message": "Inicio tr-1793661749861-manual: 2 revisiones review_red preparing vigentes en main (Toledo y Hamilton). Revalidación JIT por id+revision antes de cada tratamiento; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T00:24:15+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793661749861-manual",
+      "trend_id": "red-review-0644f5900b64e7a2afc9",
+      "title": "Revisar novedades: Toledo",
+      "message": "Revisando novedades: Toledo. Revalidación JIT del job R0 superada; contrastando desarrollos posteriores del accidente de Urda/Toledo."
     }
   ],
   "history": [
@@ -3715,7 +3723,11 @@
       "explained_at": "2026-11-03T00:18:45+01:00"
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "red-review-0644f5900b64e7a2afc9",
+    "revision": 0,
+    "name": "Revisar novedades: Toledo"
+  },
   "current_title": null,
   "completed_runs": [
     {
