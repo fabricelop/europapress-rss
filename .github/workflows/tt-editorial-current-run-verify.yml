@@ -4,6 +4,10 @@ on:
     paths:
       - "shared/tt_editorial_run_guard.py"
       - "tests/test_editorial_trigger_conflict.py"
+      - "tests/test_editorial_radar_wakeup.py"
+      - "trends/ensure_pc_editorial.py"
+      - ".github/workflows/update.yml"
+      - ".github/workflows/ttendencias-refresh.yml"
       - ".github/workflows/tt-editorial-current-run-verify.yml"
   workflow_dispatch:
 permissions:
@@ -19,3 +23,4 @@ jobs:
           python3 -m py_compile shared/tt_editorial_run_guard.py
           python3 shared/tt_editorial_run_guard.py selftest
           python3 -m unittest discover -s tests -p test_editorial_trigger_conflict.py -v
+          python3 -m unittest discover -s tests -p test_editorial_radar_wakeup.py -v

@@ -188,8 +188,8 @@ def pending(project):
     for eid in closed|finalized:by_id.pop(eid,None)
     return sorted(by_id.values(),key=lambda x:(moment(x.get("start")) or datetime.max.replace(tzinfo=timezone.utc)))
 
-def evaluate(project,now,previous,command=None,run=None):
-    rows=pending(project)
+def evaluate(project,now,previous,command=None,run=None,rows=None):
+    rows=pending(project) if rows is None else rows
     out={"project":project,"checked_at":now.isoformat(),"pending_count":len(rows),
          "pending_ids":[x["id"] for x in rows[:35]],
          "oldest_at":(min((x["start"] for x in rows if x.get("start")),default=None)),
