@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793647194927-manual",
   "previous_run_id": "tr-1793646243399-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-02T20:21:00+01:00",
-  "updated_at": "2026-11-02T20:26:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-02T20:28:00+01:00",
+  "finished_at": "2026-11-02T20:28:00+01:00",
   "current": 2,
   "total": 2,
-  "trend_id": "red-review-83eb429a3983e4f3d3cb",
-  "title": "Revisar novedades: Adif",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "red-review-b8b3c0ef673cc4c603ec",
     "red-review-83eb429a3983e4f3d3cb"
@@ -25,7 +25,7 @@
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 2,
     "grouping_requests": 0,
@@ -33,7 +33,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -43,380 +43,81 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "40d50f46e75e",
+      "id": "red-review-b8b3c0ef673cc4c603ec",
       "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
+      "name": "Revisar novedades: Morales",
+      "outcome": "updated",
+      "distinct_episode": true,
+      "created_id": "trend-update-d606653875b7f1242c0e",
+      "applied": true
     },
     {
-      "id": "9767e3b44c3a",
+      "id": "red-review-83eb429a3983e4f3d3cb",
       "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "f4c4d4189222",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "48e556d153eb",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "ea1898970906",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "75f572510033",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "e7ab60b9a756",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "586304ff2756",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "2c11a365b2f8",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "ffa167f72646",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "c48db1cddfcf",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "dd28d1d571de",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "37757598646d",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "8b882d17d961",
-      "revision": 1,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "59e7d31e6d57",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "d8fc6f0e3250",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "791b68e7bf71",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "09c4a2596486",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "7bd9d0e04342",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "38713259193a",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "02e65daf4a85",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "33e2e8c86648",
-      "revision": 0,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "c8490403e466",
-      "revision": 0,
-      "name": "#LaFuerzaDeLaGente",
-      "outcome": "terminal_deleted",
-      "applied": true,
-      "via": "jit_terminal_reconcile"
+      "name": "Revisar novedades: Adif",
+      "outcome": "updated",
+      "distinct_episode": false,
+      "created_id": "trend-update-fb211c7d76abc8d6ed38",
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T19:55:00+01:00",
-  "last_completed_at": "2026-11-02T20:20:30+01:00",
+  "last_started_at": "2026-11-02T20:21:00+01:00",
+  "last_completed_at": "2026-11-02T20:28:00+01:00",
   "last_run": {
-    "run_id": "tr-1793646243399-manual",
-    "command_id": "tr-1793646243399-manual",
+    "run_id": "tr-1793647194927-manual",
+    "command_id": "tr-1793647194927-manual",
     "canonical": true,
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-02T20:04:00+01:00",
-    "finished_at": "2026-11-02T20:20:30+01:00",
+    "status": "DONE",
+    "started_at": "2026-11-02T20:21:00+01:00",
+    "finished_at": "2026-11-02T20:28:00+01:00",
     "summary": {
-      "attempted": 23,
-      "observed": 23,
-      "closed": 23,
-      "explained": 22,
-      "updates": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "updates": 2,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 1,
+      "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 2,
-      "concurrent_convergence": 22
+      "incidents": 0,
+      "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "40d50f46e75e",
+        "id": "red-review-b8b3c0ef673cc4c603ec",
         "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
+        "name": "Revisar novedades: Morales",
+        "outcome": "updated",
+        "distinct_episode": true,
+        "created_id": "trend-update-d606653875b7f1242c0e",
+        "applied": true
       },
       {
-        "id": "9767e3b44c3a",
+        "id": "red-review-83eb429a3983e4f3d3cb",
         "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "f4c4d4189222",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "48e556d153eb",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "ea1898970906",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "75f572510033",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "e7ab60b9a756",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "586304ff2756",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "2c11a365b2f8",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "ffa167f72646",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "c48db1cddfcf",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "dd28d1d571de",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "37757598646d",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "8b882d17d961",
-        "revision": 1,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "59e7d31e6d57",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "d8fc6f0e3250",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "791b68e7bf71",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "09c4a2596486",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "7bd9d0e04342",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "38713259193a",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "02e65daf4a85",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "33e2e8c86648",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "c8490403e466",
-        "revision": 0,
-        "name": "#LaFuerzaDeLaGente",
-        "outcome": "terminal_deleted",
-        "applied": true,
-        "via": "jit_terminal_reconcile"
+        "name": "Revisar novedades: Adif",
+        "outcome": "updated",
+        "distinct_episode": false,
+        "created_id": "trend-update-fb211c7d76abc8d6ed38",
+        "applied": true
       }
     ],
-    "incident_count": 2,
-    "incidents": [
-      {
-        "type": "concurrent_run_overlap",
-        "message": "La pasada tr-20261102-editorial-queue-recovery-02 persistió 22 explicaciones mientras esta ejecución estaba activa; se aceptó la convergencia exacta id+revision tras relectura de main."
-      },
-      {
-        "type": "terminal_revision_race",
-        "trend_id": "c8490403e466",
-        "revision": 0,
-        "message": "#LaFuerzaDeLaGente r0 reapareció por una carrera de refresco; la regla terminal vigente del mismo (id,revision) prevalece y ambos espejos quedaron reconciliados como deleted."
-      }
-    ],
-    "message": "Pasada tr-1793646243399-manual cerrada tras barrera final de main: editorial-queue=0, requests preparing/update=0 y rewrite_pending/reexplain=0. Convergieron 22 explicaciones ya persistidas por la recuperación concurrente; #LaFuerzaDeLaGente r0 quedó terminal deleted tras conciliación exacta. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada cerrada 2/2: Morales updated por episodio distinto y Adif updated por continuidad material. Barrera final de main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Adif: resultado de mantenimiento persistido como updated/continuity; revalidando aplicación y barrera final de main.",
+  "message": "Pasada cerrada 2/2: Morales updated por episodio distinto y Adif updated por continuidad material. Barrera final de main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1917,6 +1618,37 @@
       "trend_id": "red-review-83eb429a3983e4f3d3cb",
       "title": "Revisar novedades: Adif",
       "message": "Adif: resultado de mantenimiento persistido como updated/continuity; revalidando aplicación y barrera final de main."
+    },
+    {
+      "at": "2026-11-02T20:28:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793647194927-manual",
+      "message": "Barrera final JIT: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Ambos review_red están aplicados en requests y telegram-manual-explained."
+    },
+    {
+      "at": "2026-11-02T20:28:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793647194927-manual",
+      "status": "DONE",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 2,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 2/2: Morales updated por episodio distinto y Adif updated por continuidad material. Barrera final de main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
