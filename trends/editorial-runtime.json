@@ -5,22 +5,23 @@
   "canonical": true,
   "run_id": "tr-20261102-pending-editorial-recovery-01",
   "previous_run_id": "tr-1793620625571-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-02T16:45:00+01:00",
-  "updated_at": "2026-11-02T16:48:00+01:00",
+  "updated_at": "2026-11-02T16:54:26+01:00",
   "finished_at": null,
   "current": 3,
   "total": 13,
   "trend_id": "5e188e3012d7",
   "title": "Endesa",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "c9d48615f2ca",
-    "bda4f2269ee3",
+  "processed_ids": [
     "3045db42e1f5",
     "5e188e3012d7",
+    "bda4f2269ee3",
+    "c9d48615f2ca"
+  ],
+  "remaining_ids": [
     "1a8dca45b46d",
     "067545f4a7fc",
     "357402e6e903",
@@ -32,10 +33,6 @@
     "3e340be4de18"
   ],
   "remaining_active_ids": [
-    "c9d48615f2ca",
-    "bda4f2269ee3",
-    "3045db42e1f5",
-    "5e188e3012d7",
     "1a8dca45b46d",
     "067545f4a7fc",
     "357402e6e903",
@@ -88,7 +85,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-02T12:58:00+01:00",
+  "last_started_at": "2026-11-02T16:54:25+01:00",
   "last_completed_at": "2026-11-02T13:03:00+01:00",
   "last_run": {
     "run_id": "tr-1793620625571-manual",
