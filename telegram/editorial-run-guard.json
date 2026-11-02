@@ -1,92 +1,66 @@
 {
   "version": 1,
-  "checked_at": "2026-11-02T11:59:40.682385+00:00",
+  "checked_at": "2026-11-02T18:33:42.543352+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-02T11:59:40.682385+00:00",
-      "pending_count": 2,
+      "checked_at": "2026-11-02T18:33:42.543352+00:00",
+      "pending_count": 3,
       "pending_ids": [
-        "5e99369c9875",
-        "383483ab8844"
+        "1cad8920916b",
+        "c20791eecd0d",
+        "9f7f00a2d6df"
       ],
-      "oldest_at": "2026-11-02T11:59:25.072405Z",
+      "oldest_at": "2026-11-02T18:16:11.886389Z",
       "latest_run": {
-        "id": "tt-chat-20261102T113000Z",
-        "status": "DONE",
-        "started_at": "2026-11-02T11:30:00Z",
-        "updated_at": "2026-11-02T11:34:30+00:00",
-        "finished_at": "2026-11-02T11:34:30Z",
+        "id": "tt-chat-20261102T183000000Z",
+        "status": "RUNNING",
+        "started_at": "2026-11-02T18:30:00Z",
+        "updated_at": "2026-11-02T18:30:20+00:00",
+        "finished_at": null,
         "source": "github_pr_trace"
       },
-      "control_command": "tt-chat-20261102T070000000Z",
-      "last_command_at": "2026-11-02T07:00:00.000Z",
-      "status": "within_start_window",
+      "control_command": "tt-chat-20261102T171500000Z",
+      "last_command_at": "2026-11-02T17:15:00.000Z",
+      "status": "editor_running_acknowledged",
       "should_dispatch": false,
       "item_execution": [
         {
-          "id": "5e99369c9875",
-          "entered_at": "2026-11-02T11:59:25.072405Z",
-          "should_start_by": "2026-11-02T12:04:25.072405+00:00",
-          "global_run_after_entry": false,
+          "id": "1cad8920916b",
+          "entered_at": "2026-11-02T18:16:11.886389Z",
+          "should_start_by": "2026-11-02T18:21:11.886389+00:00",
+          "global_run_after_entry": true,
           "final_telegram_delivery_confirmed": false
         },
         {
-          "id": "383483ab8844",
-          "entered_at": "2026-11-02T11:59:25.388654Z",
-          "should_start_by": "2026-11-02T12:04:25.388654+00:00",
-          "global_run_after_entry": false,
+          "id": "c20791eecd0d",
+          "entered_at": "2026-11-02T18:25:59.304851Z",
+          "should_start_by": "2026-11-02T18:30:59.304851+00:00",
+          "global_run_after_entry": true,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "9f7f00a2d6df",
+          "entered_at": "2026-11-02T18:25:59.739712Z",
+          "should_start_by": "2026-11-02T18:30:59.739712+00:00",
+          "global_run_after_entry": true,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "ed30530ff747fc72",
-      "expected_start_by": "2026-11-02T12:04:25.072405+00:00",
+      "backlog_signature": "31b8093ba59ba4be",
+      "expected_start_by": "2026-11-02T18:21:11.886389+00:00",
       "attempts": 0,
+      "actual_start_at": "2026-11-02T18:30:00+00:00",
+      "start_delay_seconds": 828,
       "last_request_at": "2026-10-30T07:45:44.079112+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-02T11:59:40.682385+00:00",
-      "pending_count": 2,
-      "pending_ids": [
-        "red-review-cd93325eb8c17bd267a6",
-        "red-review-9f8cf554ab08b4dd53d2"
-      ],
-      "oldest_at": "2026-11-02T11:57:00.258719+00:00",
-      "latest_run": {
-        "id": "tr-1793620625571-manual",
-        "status": "RUNNING",
-        "started_at": "2026-11-02T12:58:00+01:00",
-        "updated_at": "2026-11-02T11:58:00+00:00",
-        "finished_at": null,
-        "source": "editorial_runtime"
-      },
-      "control_command": "tr-1793620625571-manual",
-      "last_command_at": "2026-11-02T11:57:05.571Z",
-      "status": "within_start_window",
-      "should_dispatch": false,
-      "item_execution": [
-        {
-          "id": "red-review-cd93325eb8c17bd267a6",
-          "entered_at": "2026-11-02T11:57:00.258719+00:00",
-          "should_start_by": "2026-11-02T12:02:00.258719+00:00",
-          "global_run_after_entry": true,
-          "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "red-review-9f8cf554ab08b4dd53d2",
-          "entered_at": "2026-11-02T11:57:00.258719+00:00",
-          "should_start_by": "2026-11-02T12:02:00.258719+00:00",
-          "global_run_after_entry": true,
-          "final_telegram_delivery_confirmed": false
-        }
-      ],
-      "backlog_signature": "67db0f49dedb8a9d",
-      "expected_start_by": "2026-11-02T12:02:00.258719+00:00",
-      "attempts": 0,
-      "actual_start_at": "2026-11-02T11:58:00+00:00",
-      "start_delay_seconds": 60,
-      "last_request_at": "2026-11-02T08:20:43.110570+00:00"
+      "checked_at": "2026-11-02T18:33:42.543352+00:00",
+      "status": "guard_error",
+      "error": "GITHUB_HTTP_409 {\"message\":\"is at f5eb79d6ca798f8568d1ed1bbfdde63c107b0900 but expected 41440a1be604c888dc82d5e2ba5826442004a41f\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#create-or-update-file-contents\",\"status\":",
+      "pending_count": 18,
+      "should_dispatch": false
     }
   },
   "policy": {
