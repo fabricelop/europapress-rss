@@ -989,6 +989,13 @@ async function optionalWebHandoff(handoff,remember=false){
     // Safety invariant: this bridge may submit prompts only, never capture,
     // download, rasterize, upload, or forward generated images.
     if(!launchOnly)throw Error("legacy_raster_mode_disabled_request_launch_only_job");
+    // Mirror TTendencias: a launched ImageGen job MUST have an installed,
+    // independent receiver before the prompt is sent. Otherwise LAUNCHED
+    // leaves a generated image with no way to reach its READY card.
+    const receiver=require("./TTiTTularesWebImages.cjs");
+    if(typeof receiver.enroll!=="function"||typeof receiver.rememberConversation!=="function"||
+       typeof receiver.wakePublisher!=="function")
+      throw Error("TTITTULARES_NEWS_RECEIVER_NOT_READY_BEFORE_IMAGEGEN");
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
