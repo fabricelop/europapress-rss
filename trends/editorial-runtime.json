@@ -8,7 +8,7 @@
   "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
   "started_at": "2026-11-02T19:55:00+01:00",
-  "updated_at": "2026-11-02T20:10:30+01:00",
+  "updated_at": "2026-11-02T20:15:00+01:00",
   "finished_at": "2026-11-02T20:10:30+01:00",
   "current": 23,
   "total": 23,
@@ -58,10 +58,10 @@
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 2,
+    "incidents": 3,
     "concurrent_convergence": 1
   },
-  "incident_count": 2,
+  "incident_count": 3,
   "incidents": [
     {
       "type": "outbox_concurrency_recovery",
@@ -72,6 +72,12 @@
       "trend_id": "c8490403e466",
       "revision": 0,
       "message": "#LaFuerzaDeLaGente r0 fue reinsertada por el refresco Top30 pese a decisión terminal deleted; se retiró de nuevo tras validación JIT."
+    },
+    {
+      "type": "concurrent_terminal_outbox",
+      "trend_id": "c8490403e466",
+      "revision": 0,
+      "message": "Una carrera concurrente llegó a persistir una explicación para una revisión con decisión terminal deleted. Se corrigió auto_queue_new para que el (id, revision) terminal prevalezca sobre timestamps posteriores; commit ca59561f2365f0bb6f97d2d5f2d43839ef888d15."
     }
   ],
   "error": null,
@@ -265,7 +271,7 @@
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
-      "incidents": 2,
+      "incidents": 3,
       "concurrent_convergence": 1
     },
     "outcomes": [
@@ -432,7 +438,7 @@
         "via": "jit_terminal_cleanup"
       }
     ],
-    "incident_count": 2,
+    "incident_count": 3,
     "incidents": [
       {
         "type": "outbox_concurrency_recovery",
@@ -443,12 +449,18 @@
         "trend_id": "c8490403e466",
         "revision": 0,
         "message": "#LaFuerzaDeLaGente r0 fue reinsertada por el refresco Top30 pese a decisión terminal deleted; se retiró de nuevo tras validación JIT."
+      },
+      {
+        "type": "concurrent_terminal_outbox",
+        "trend_id": "c8490403e466",
+        "revision": 0,
+        "message": "Una carrera concurrente llegó a persistir una explicación para una revisión con decisión terminal deleted. Se corrigió auto_queue_new para que el (id, revision) terminal prevalezca sobre timestamps posteriores; commit ca59561f2365f0bb6f97d2d5f2d43839ef888d15."
       }
     ],
-    "message": "Pasada cerrada 23/23: 22 revisiones explicadas y persistidas; #LaFuerzaDeLaGente r0 respetada como deleted y retirada de la cola. Barrera final de main: editorial-queue=0, sin preparing/update/reexplain vigentes. ImageGen=0; publicaciones=0."
+    "message": "Pasada editorial cerrada: 22 revisiones ordinarias válidas persistidas y 1 revisión terminal excluida del cómputo editorial. Cola main actualmente vacía. Se corrigió la reinserción de decisiones terminales exactas; ImageGen=0 llamadas desde esta pasada y publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 23/23: 22 revisiones explicadas y persistidas; #LaFuerzaDeLaGente r0 respetada como deleted y retirada de la cola. Barrera final de main: editorial-queue=0, sin preparing/update/reexplain vigentes. ImageGen=0; publicaciones=0.",
+  "message": "Pasada editorial cerrada: 22 revisiones ordinarias válidas persistidas y 1 revisión terminal excluida del cómputo editorial. Cola main actualmente vacía. Se corrigió la reinserción de decisiones terminales exactas; ImageGen=0 llamadas desde esta pasada y publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1919,6 +1931,12 @@
       "phase": "closing",
       "run_id": "tr-20261102-editorial-queue-recovery-02",
       "message": "Pasada cerrada 23/23: 22 revisiones explicadas y persistidas; #LaFuerzaDeLaGente r0 respetada como deleted y retirada de la cola. Barrera final de main: editorial-queue=0, sin preparing/update/reexplain vigentes. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-02T20:15:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-20261102-editorial-queue-recovery-02",
+      "message": "Pasada editorial cerrada: 22 revisiones ordinarias válidas persistidas y 1 revisión terminal excluida del cómputo editorial. Cola main actualmente vacía. Se corrigió la reinserción de decisiones terminales exactas; ImageGen=0 llamadas desde esta pasada y publicaciones=0."
     }
   ],
   "history": [
