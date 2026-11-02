@@ -532,3 +532,31 @@ assert 'archive != item.siteImageURL' in _news_ui
 assert 'archiveURL != aiURL' in _trend_ui
 assert 'EditorialActions(news: item, github: github, showSettings: $settings)' in _news_ui
 print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
+
+
+# 0.4.46 build56: native-only changes from the installed build55.
+# No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
+assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert 'TTActualidadXPost.payload(' in actions
+assert 'https://ttactualidad.rainyraven22.chatgpt.site/noticias' in actions
+assert 'https://ttactualidad.rainyraven22.chatgpt.site/tendencias' in actions
+assert 'contentBudget = 280 - 23 - 2' in actions
+assert 'value: TTActualidadXPost.payload(' in actions
+assert 'JPEG' in actions and 'image/jpeg' in actions
+assert 'PEGADA o ADJUNTADA' in actions
+assert '<sha12>.<ext>' in actions
+assert 'TTENDENCIAS_SITE_ATTACH_EXISTING_V1' in actions
+assert 'mcp__TTendencias___TTActualidad__attach_trend_image' in actions
+assert 'let leftDate = left.publishedAt ?? .distantPast' in store
+assert 'if leftDate != rightDate { return leftDate > rightDate }' in store
+assert 'when(item, ["prepared_at", "selected_at"])' in store
+assert 'if left.revision != right.revision' in store
+assert 'TTActualidad.chatgpt.projectTT.url' in actions
+assert 'quickButton("Asociar imagen IA", "paperclip")' in actions
+assert 'quickButton("Copiar GAG", "sparkles")' in actions
+assert 'quickButton("Publicar en X", "square.and.arrow.up")' in actions
+# Preserve original stacked dual-image UI, verified images and Live Activity.
+assert 'private static func buildNews' in store
+assert 'NewsAIImageCatalog.assigned(' in store
+assert 'LiveCountsAttributes' in shared
+print("NATIVE_BUILD56_LINKS_NEWS_ORDER_JPEG_NO_REGRESSION_OK")
