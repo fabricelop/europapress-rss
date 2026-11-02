@@ -1,5 +1,5 @@
 'use strict';
-// Reads only an existing exact command conversation. Never generates, navigates,
+// Reads only an existing exact command conversation. Never generates or edits,
 // associates, posts chat messages, touches catalogs or calls the legacy uploader.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {execFileSync}=require('node:child_process');
@@ -9,7 +9,8 @@ const episode=m=>sha(JSON.stringify({project:m.project,editorialId:m.editorialId
 class CDP{
  constructor(url){this.url=url;this.seq=0;this.pending=new Map()}
  async open(){this.ws=new WebSocket(this.url);await new Promise((ok,bad)=>{const t=setTimeout(()=>bad(Error('CDP_TIMEOUT')),5000);this.ws.addEventListener('open',()=>{clearTimeout(t);ok()},{once:true});this.ws.addEventListener('error',()=>{clearTimeout(t);bad(Error('CDP_UNAVAILABLE'))},{once:true})});this.ws.addEventListener('message',e=>{const m=JSON.parse(String(e.data)),p=this.pending.get(m.id);if(!p)return;this.pending.delete(m.id);clearTimeout(p.t);m.error?p.bad(Error('CDP_EVALUATION_FAILED')):p.ok(m.result)})}
- async evaluate(expression){const id=++this.seq;const r=await new Promise((ok,bad)=>{const t=setTimeout(()=>{this.pending.delete(id);bad(Error('CDP_TIMEOUT'))},20000);this.pending.set(id,{ok,bad,t});this.ws.send(JSON.stringify({id,method:'Runtime.evaluate',params:{expression,awaitPromise:true,returnByValue:true}}))});if(r.exceptionDetails)throw Error('RASTER_READ_FAILED');return r.result?.value}
+ async call(method,params){const id=++this.seq;const r=await new Promise((ok,bad)=>{const t=setTimeout(()=>{this.pending.delete(id);bad(Error('CDP_TIMEOUT'))},20000);this.pending.set(id,{ok,bad,t});this.ws.send(JSON.stringify({id,method,params}))});return r}
+ async evaluate(expression){const r=await this.call('Runtime.evaluate',{expression,awaitPromise:true,returnByValue:true});if(r.exceptionDetails)throw Error('RASTER_READ_FAILED');return r.result?.value}
  close(){for(const p of this.pending.values()){clearTimeout(p.t);p.bad(Error('CDP_CLOSED'))}this.pending.clear();try{this.ws?.close()}catch{}}
 }
 function unprotect(value){const code='$s=ConvertTo-SecureString ([Console]::In.ReadToEnd());$p=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($s);try{[Console]::Write([Runtime.InteropServices.Marshal]::PtrToStringBSTR($p))}finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($p)}';return execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',code],{input:value,encoding:'utf8',windowsHide:true,timeout:15000,maxBuffer:65536}).trim()}
@@ -36,20 +37,31 @@ async function once(base=__dirname){
   const tasks=fs.readdirSync(root).filter(x=>x.endsWith('.json')&&!x.endsWith('.tmp')).map(file=>{try{return JSON.parse(fs.readFileSync(path.join(root,file),'utf8'))}catch{return null}}).filter(x=>x&&x.secret_dpapi&&x.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(x.command_id)).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)).filter(task=>!fs.existsSync(path.join(receipts,task.command_id+'.json'))).slice(0,4);
   for(const task of tasks){
    const receiptFile=path.join(receipts,task.command_id+'.json');if(fs.existsSync(receiptFile))continue;
-   let cdp;
+   let cdp,browser,ownedTarget;
    try{
     const job=await source.readImageJob(task),meta=metadata(task,job);
     let target;
-    // No new tab even when the original conversation has already been closed.
+    // Reuse an exact existing conversation first; never create tabs in the generator.
     for(const port of [9223,9234]){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&source.chatURL(p.url)&&((task.conversation_url&&source.chatURL(p.url)===source.chatURL(task.conversation_url))||p.id===task.browser_target_id));if(target)break}catch{}}
-    if(!target)continue;cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();const raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(!raster?.ready)continue;
+    if(!target&&source.chatURL(task.conversation_url)){
+     // Recover a known closed conversation only in the separate relay profile.
+     // Nothing is typed or submitted; this temporary tab belongs to this receiver.
+     try{
+      const r=await fetch('http://127.0.0.1:9234/json/version',{signal:AbortSignal.timeout(3000)});const version=await r.json();browser=new CDP(version.webSocketDebuggerUrl);await browser.open();
+      ownedTarget=(await browser.call('Target.createTarget',{url:source.chatURL(task.conversation_url),background:true})).targetId;
+      for(let n=0;n<5;n++){const q=await fetch('http://127.0.0.1:9234/json/list',{signal:AbortSignal.timeout(3000)});target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);if(target)break;await new Promise(r=>setTimeout(r,500))}
+     }catch{}
+    }
+    if(!target)continue;cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
+    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(raster?.ready||['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
+    if(!raster?.ready)continue;
     if(!String(raster.dataUrl).startsWith('data:image/png;base64,'))continue;
     const bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
     const fresh=metadata(task,await source.readImageJob(task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
     const receipt=await send(meta,bytes,unprotect(task.secret_dpapi));
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
     console.log('PRIVATE_INBOX_RECEIVED '+task.command_id+' '+receipt.state);
-   }catch{console.error('PRIVATE_INBOX_DEFERRED '+task.command_id)}finally{cdp?.close()}
+   }catch{console.error('PRIVATE_INBOX_DEFERRED '+task.command_id)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
