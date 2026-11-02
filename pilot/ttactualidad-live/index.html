@@ -257,7 +257,7 @@ function imageWorkflowPrompt(x,associationOnly=false){
  const common=[
   'Este encargo viene del editor TTActualidad. Una imagen visible en ChatGPT NO demuestra que esté guardada en la web o en el iPhone.',
   'IDENTIDAD LITERAL (revalidar en GitHub o conector antes de modificar): '+identity,
-  'Usa exclusivamente el PNG ORIGINAL de ESTA conversación; no uses capturas, imágenes parecidas, miniaturas, enlaces compartidos ni rutas inventadas.',
+  news?'Admite una imagen JPEG/JPG, PNG o WebP REAL adjunta o pegada por el usuario en este chat; una foto JPEG copiada y pegada desde ChatGPT Images ES una entrada válida si sus bytes están disponibles. No exijas PNG ni conviertas un JPEG en PNG por cambiar la extensión. No uses imágenes parecidas, miniaturas ni URLs imaginadas.':'Usa exclusivamente el PNG ORIGINAL de ESTA conversación para Tendencias; no uses capturas, imágenes parecidas, miniaturas, enlaces compartidos ni rutas inventadas.',
   'No publiques en X ni cambies el texto editorial; no sobreescribas otra imagen válida.'
  ];
  if(news)return [
@@ -265,8 +265,8 @@ function imageWorkflowPrompt(x,associationOnly=false){
   ...common,
   '1. Lee ttittulares/prepared.json y decisions.json desde main. Verifica el mismo event_id, revision, prepared_at y tweet.text y ausencia de cierre o rewrite_pending. Si cambia, detente.',
   '2. Comprueba ai_image_status ready y su archivo original; consulta ttittulares/site-ai-images.json. Si existe imagen válida, no la regeneres.',
-  associationOnly?'3. No generes: exige que el PNG original esté adjunto EN ESTE CHAT; si falta, solicítalo y detente.':'3. Si falta imagen, genera UNA SOLA con ImageGen siguiendo el GAG anterior. Conserva el PNG original y continúa SIN OTRA ORDEN.',
-  '4. Con acceso real a los bytes PNG, calcula SHA-256 y guarda en GitHub main el original en ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.png mediante una herramienta binaria. No guardar texto base64 como si fuese el PNG.',
+  associationOnly?'3. NO generes: usa la imagen JPG/JPEG, PNG o WebP pegada o adjunta a ESTE mensaje, incluso si el portapapeles la entrega como JPEG. Si no hay bytes accesibles, dilo claramente.':'3. Si falta imagen verificada, genera UNA SOLA con ImageGen siguiendo el GAG anterior y asocia ese resultado en este mismo encargo; no des por terminada la tarea al mostrar una imagen.',
+  '4. Con bytes REALES de la imagen JPG/JPEG, PNG o WebP, detecta el MIME por la firma, calcula SHA-256 y guarda el archivo binario en GitHub main bajo ttittulares/generated-images/<event_id>-r<revision>-manual-<sha12>.<extensión real>. El formato y extensión deben coincidir; no guardar texto Base64 como archivo de imagen ni fingir una subida sin bytes.',
   '5. Relee y verifica el archivo público HTTPS y su SHA. Conserva todas las entradas de ttittulares/site-ai-images.json y escribe una sola asociación del ID/revisión/texto/fecha vigentes, con image_url real y sha256 real; usa SHA actual para evitar conflictos.',
   '6. Relee el catálogo y verifica el editor WEB y la disponibilidad para iPhone por separado. Si no hay herramienta de subida binaria o el original queda inaccesible, informa «IMAGEN GENERADA; WEB Y APP PENDIENTES», sin prometer éxito ni regenerar.'
  ].join('\n\n');
@@ -442,12 +442,21 @@ $('badge-enable').addEventListener('click',async()=>{
  }catch{showToast('No se pudo activar el badge; revisa Ajustes del iPhone')}
 });
 
+// Orden editorial de Noticias: preparado más recientemente primero.
+// No modifica la fecha ni reordena la sección de Tendencias.
+function newestNewsFirst(rows){
+ return [...rows].sort((a,b)=>{
+  const date=x=>{const n=Date.parse(String(x.prepared_at||x.selected_at||''));return Number.isFinite(n)?n:0};
+  return date(b)-date(a)||Number(b.revision||0)-Number(a.revision||0)||
+    String(b.event_id||'').localeCompare(String(a.event_id||''));
+ });
+}
 function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['listas','Listas'],['elaboracion','En elaboración']]}
 function ttiListasRows(data){
  const statuses=new Map((data.decisions?.items||[]).map(x=>[String(x.event_id),String(x.status||'').toLowerCase()]));
- return (data.prepared?.items||[])
+ return newestNewsFirst((data.prepared?.items||[])
   .filter(x=>!isClosed(statuses.get(String(x.event_id))))
-  .map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
+  .map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'})));
 }
 function ttiRows(){
  const snap=state.data.status||{}, d=decisions(), queue=state.data.ttiQueue?.items||[];
@@ -1309,6 +1318,46 @@ function compactTop30Card(out,x){
  if(ageBand)out.classList.add(ageBand);
  return out;
 }
+// X counts the trailing Site URL as a t.co link (23 units), not raw URL length.
+// Keep hashtag/remate lines intact whenever possible; never send an overlong
+// prefilled post whose last URL X would silently drop.
+function xIntentLink(x,body){
+ const site='https://ttactualidad.rainyraven22.chatgpt.site/'+(x._kind==='tti'?'noticias':'tendencias');
+ const budget=280-23-2; // URL + two line breaks
+ const units=s=>{
+  const parts=typeof Intl.Segmenter==='function'
+   ?[...new Intl.Segmenter('es',{granularity:'grapheme'}).segment(s)].map(y=>y.segment)
+   :Array.from(s);
+  return parts.map(g=>{
+   if(/\p{Extended_Pictographic}/u.test(g))return 2;
+   return [...g].reduce((n,ch)=>{
+    const cp=ch.codePointAt(0);
+    if(cp===0xfe0f||cp===0x200d)return n;
+    return n+(cp<=0x10ff||(cp>=0x2000&&cp<=0x200d)||
+      (cp>=0x2010&&cp<=0x201f)||(cp>=0x2032&&cp<=0x2037)?1:2);
+   },0);
+  });
+ };
+ const weight=s=>units(s).reduce((n,u)=>n+u,0);
+ const trim=(text,max)=>{
+  if(weight(text)<=max)return text;
+  const glyphs=typeof Intl.Segmenter==='function'
+   ?[...new Intl.Segmenter('es',{granularity:'grapheme'}).segment(text)].map(y=>y.segment)
+   :Array.from(text);
+  let kept='',len=0;
+  for(const g of glyphs){const w=weight(g);if(len+w+2>max)break;kept+=g;len+=w;}
+  return kept.trimEnd().replace(/[,;:—-]$/,'')+'…';
+ };
+ let editorial=String(body||'').trim();
+ if(weight(editorial)>budget){
+  const cut=editorial.indexOf('\n\n');
+  const suffix=cut>=0?editorial.slice(cut):'';
+  if(suffix&&weight(suffix)<budget-40){
+   editorial=trim(editorial.slice(0,cut),budget-weight(suffix))+suffix;
+  }else editorial=trim(editorial,budget);
+ }
+ return 'https://twitter.com/intent/tweet?text='+encodeURIComponent(editorial+'\n\n'+site);
+}
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
  const newsAI=verifiedNewsAI(x);
@@ -1340,11 +1389,11 @@ function rowCard(x,i){
   const external=(label,url)=>{
    const el=link(label,url,true);el.classList.add('external');return el
   };
-  external('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial||d.title));
+  external('Publicar en X',xIntentLink(x,d.editorial||d.title));
   external('Proyecto TT','https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project');
-  btn('Copiar GAG Completo',()=>copyText(manualPrompt(x),'GAG completo'));
+  btn('Copiar GAG + asociar IA',()=>copyText(manualPrompt(x),'Orden para generar y asociar IA'));
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
-  btn('Asociar imagen IA',()=>copyText(imageWorkflowPrompt(x,true),'Orden de asociación'));
+  btn('Copiar orden: asociar JPEG/PNG',()=>copyText(imageWorkflowPrompt(x,true),'Orden de asociación (adjunta también tu JPEG/PNG)'));
   btn('Copiar Foto Archivo',()=>archive?copyArchive(archive,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
   if(artwork)btn('Copiar imagen IA',()=>copyArchive(artwork,d.title));
   if(x._kind==='tr'){
@@ -1399,7 +1448,7 @@ function rowCard(x,i){
    btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    // Never promote an old explanation as the reason for today's trend.
    if(x._alreadyExplained&&!x._priorReason){
-    link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
+    link('Publicar en X',xIntentLink(x,d.editorial),true);
     command('Quitar de Listas','deleted');
    }
   }
@@ -1426,7 +1475,7 @@ function rowCard(x,i){
   if(x._kind==='tr')link('Proyecto TT','https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project');
   else if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
   if(img)btn('📷 Copiar foto de archivo',()=>copyArchive(img,d.title));
-  if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
+  if(d.editorial)link('Publicar en X',xIntentLink(x,d.editorial),true);
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   if(showControls){command('Quitar de Listas','deleted')}
   else if(x._kind==='tti'&&x._status==='PROBLEMÁTICA'){command('Pasar a En Elaboración','prepare');command('Desestimar','discard')}

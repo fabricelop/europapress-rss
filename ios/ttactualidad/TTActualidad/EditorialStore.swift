@@ -317,6 +317,12 @@ final class EditorialStore: ObservableObject {
                             closer: str(tweet, "remate").isEmpty ? str(item, "closer_text") : str(tweet, "remate"),
                             sources: int(item, "source_count"))
         }
+        // Mismo orden que el panel web: última preparación editorial primero.
+        .sorted {
+            let left = $0.publishedAt ?? .distantPast
+            let right = $1.publishedAt ?? .distantPast
+            return left == right ? $0.id > $1.id : left > right
+        }
     }
 
     private static func buildTrendListas(
