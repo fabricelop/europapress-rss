@@ -17,8 +17,8 @@ for(const path of ['pilot/ttactualidad-live/index.html','docs/ttactualidad/index
   {event_id:'c',prepared_at:'2026-11-02T08:00:00Z',revision:1}
  ];
  const sorted=vm.runInContext('newestNewsFirst',runtime)(rows);
- assert.deepEqual(sorted.map(x=>x.event_id),['a','b','c'],path+' newest first');
- assert.deepEqual(rows.map(x=>x.event_id),['b','a','c'],path+' does not mutate source');
+ assert.deepEqual(Array.from(sorted,x=>x.event_id),['a','b','c'],path+' newest first');
+ assert.deepEqual(Array.from(rows,x=>x.event_id),['b','a','c'],path+' does not mutate source');
  if(path.startsWith('pilot')){
   assert.match(html,/return newestNewsFirst\(\(data\.prepared\?\.items\|\|\[\]\)/);
  }else assert.match(html,/if\(state\.tab==='listas'\)return newestNewsFirst\(prepared\.map/);
