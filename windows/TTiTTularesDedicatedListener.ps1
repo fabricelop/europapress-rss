@@ -854,6 +854,24 @@ function Publish-ImageTargetHint([string]$BeforeSnapshot,[string]$HintPath,[stri
   }
 }
 
+# Recover previously generated originals even after Chrome/listener restarts.
+# This consumer neither sends prompts nor posts to Telegram.
+$script:WebImageLastCheck=[DateTimeOffset]::MinValue
+function Start-HeadlineWebImagePublisher {
+  if((([DateTimeOffset]::UtcNow)-$script:WebImageLastCheck).TotalSeconds -lt 70){return}
+  $script:WebImageLastCheck=[DateTimeOffset]::UtcNow
+  $file=Join-Path $BaseDir "TTiTTularesWebImages.cjs"
+  if(-not (Test-Path -LiteralPath $file)){return}
+  try {
+    $node=Get-Command node.exe -ErrorAction Stop
+    $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue | Where-Object {
+      [string]$_.CommandLine -like ("*"+$file+"*")
+    })
+    if($busy.Count -gt 0){return}
+    Start-Process -FilePath $node.Source -ArgumentList @($file,"--once") -WindowStyle Hidden -RedirectStandardOutput (Join-Path $BaseDir "ttittulares-web-images.log") -RedirectStandardError (Join-Path $BaseDir "ttittulares-web-images.err.log") -ErrorAction Stop | Out-Null
+  } catch { Write-Log "TTITTULARES WEB IMAGE RECOVERY DEFERRED" }
+}
+
 function Start-ImageBridge([string]$CommandId,[string]$TargetId,[string]$UploadSecret,[string]$TargetSnapshot = "[]",[string]$TargetHintPath = "") {
   $node = Get-Command node.exe -ErrorAction SilentlyContinue
   if (-not $node) { $node = Get-Command node -ErrorAction SilentlyContinue }
@@ -1287,6 +1305,7 @@ $loopCount = 0
 
 while ($true) {
   $loopCount++
+  Start-HeadlineWebImagePublisher
 
   try {
     $doc = Read-Trigger
