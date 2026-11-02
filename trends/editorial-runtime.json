@@ -6,21 +6,27 @@
   "run_id": "tr-1793652373470-manual",
   "previous_run_id": "tr-1793651013499-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-02T21:46:00+01:00",
-  "updated_at": "2026-11-02T21:46:00+01:00",
+  "updated_at": "2026-11-02T20:49:23.448Z",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
+  "current": 2,
+  "total": 4,
   "trend_id": "red-review-40001ebb08d71fb3aec4",
   "title": "Revisar novedades: Morales",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "5d88729177b6",
     "f650d7250dbb"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-40001ebb08d71fb3aec4",
+    "red-review-d97c62b7575f6ec9b3db"
+  ],
+  "remaining_active_ids": [
+    "red-review-40001ebb08d71fb3aec4",
+    "red-review-d97c62b7575f6ec9b3db"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -43,7 +49,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "red-review-0b5f468fc7c7ca43d8b1",
@@ -97,7 +103,7 @@
     "message": "Pasada tr-1793651013499-manual cerrada 1/1: Endesa revisada sin novedades sustanciales; se conserva texto y fecha. Verificación final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793652373470-manual: 2 revisiones review_red preparing vigentes en main (Morales y La Palma), en orden de cola y con validación JIT de id+revision; sin ImageGen ni publicación.",
+  "message": "Barrera ampliada a 4 trabajos: Lola Herrera y Riazor ya aplicados; revisando Morales y La Palma con validación JIT y sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1750,6 +1756,13 @@
       "trend_id": "f650d7250dbb",
       "title": "Lola Herrera",
       "message": "Inicio tr-autoguard-1793652102: 2 trabajos preparing vigentes en main (Lola Herrera y Riazor), procesados por antigüedad con validación JIT de id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-02T20:49:23.448Z",
+      "phase": "investigating",
+      "trend_id": "red-review-40001ebb08d71fb3aec4",
+      "title": "Revisar novedades: Morales",
+      "message": "Barrera ampliada a 4 trabajos: Lola Herrera y Riazor ya aplicados; revisando Morales y La Palma con validación JIT y sin ImageGen."
     }
   ],
   "history": [
