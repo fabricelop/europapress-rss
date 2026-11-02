@@ -1,11 +1,11 @@
 #requires -Version 5.1
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='4e02727999c1346675909ccfa7d0b6a6abbbc259'
+$pin='ced56017a03551d3055b34f5deb39de216124a15'
 $files=@{
- 'TTendenciasImageBridge.js'='3056dc2d0a1022d9a6235704a9114ec35da880dcc8a7beba7308b44788b959ff'
- 'TTiTTularesImageBridge.js'='09661d238caccbb74be71b9c3f546da76db1bbcf51325cf46ff956c4a2cf43a8'
- 'TTImageApprovalReceiver.cjs'='822293d695cb27d09df2741e21b575be0dcc5f4c845ddc16ac50d39c3c0648da'
+ 'TTendenciasImageBridge.js'='bce8c33c58fcf300cd2e8f2f48febf792a155ed930455afaa3809b8e34079ce6'
+ 'TTiTTularesImageBridge.js'='9cdcb6fce51bd7d89af4a1d0415fbaf5ff62c430838680a10c31d45be4b6670e'
+ 'TTImageApprovalReceiver.cjs'='03b178e4a6b83a95faa6efcc525ac3673768fbd022f7280d2995ef72560940a4'
 }
 function Assert-Idle {
  $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js'})
@@ -13,9 +13,9 @@ function Assert-Idle {
 }
 Assert-Idle
 $allowed=@{
- 'TTendenciasImageBridge.js'=@('416069b713104821be1a76c53f3cf332f647ff83331aa293c993ef21f84a3283','3056dc2d0a1022d9a6235704a9114ec35da880dcc8a7beba7308b44788b959ff')
- 'TTiTTularesImageBridge.js'=@('f5c2c3918184e10b4f9854191bed53bb4abf6fde76d69c1266067fdd27540851','09661d238caccbb74be71b9c3f546da76db1bbcf51325cf46ff956c4a2cf43a8')
- 'TTImageApprovalReceiver.cjs'=@('1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58','af14c45846e3d41298522146326f25e9f1ff43061649df3688568f3793cb2083','fdcfe30087edae8ac68db35e201e2058d22cf0371e07adfe3a7697730145df38','822293d695cb27d09df2741e21b575be0dcc5f4c845ddc16ac50d39c3c0648da')
+ 'TTendenciasImageBridge.js'=@('416069b713104821be1a76c53f3cf332f647ff83331aa293c993ef21f84a3283','bce8c33c58fcf300cd2e8f2f48febf792a155ed930455afaa3809b8e34079ce6')
+ 'TTiTTularesImageBridge.js'=@('f5c2c3918184e10b4f9854191bed53bb4abf6fde76d69c1266067fdd27540851','9cdcb6fce51bd7d89af4a1d0415fbaf5ff62c430838680a10c31d45be4b6670e')
+ 'TTImageApprovalReceiver.cjs'=@('1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58','af14c45846e3d41298522146326f25e9f1ff43061649df3688568f3793cb2083','fdcfe30087edae8ac68db35e201e2058d22cf0371e07adfe3a7697730145df38','03b178e4a6b83a95faa6efcc525ac3673768fbd022f7280d2995ef72560940a4')
 }
 foreach($name in $files.Keys){
  $local=Join-Path $base $name
