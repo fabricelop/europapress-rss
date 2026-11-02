@@ -6,6 +6,8 @@ on:
       - 'windows/TTiTTularesWebImages.cjs'
       - 'windows/TTiTTularesImageBridge.js'
       - 'windows/tests/test_headline_original_hold.cjs'
+      - 'windows/tests/test_headline_restored_chat.cjs'
+      - 'windows/Recuperar-TTImages-Noticias-Chat-Existente-Safe.ps1'
       - 'windows/TTiTTularesDedicatedListener.ps1'
       - 'windows/TT-AutoUpdater.ps1'
       - 'windows/Install-TTImages-Noticias-Receptor-Safe.ps1'
@@ -35,6 +37,8 @@ jobs:
             /windows/TTiTTularesWebImages.cjs
             /windows/TTiTTularesImageBridge.js
             /windows/tests/test_headline_original_hold.cjs
+            /windows/tests/test_headline_restored_chat.cjs
+            /windows/Recuperar-TTImages-Noticias-Chat-Existente-Safe.ps1
             /windows/tests/test_headline_github_outbox.cjs
             /ttittulares/apply_ai_image_outbox.py
             /ttittulares/apply_editorial_outbox.py
@@ -54,6 +58,7 @@ jobs:
           node --check windows/TTiTTularesGithubOutbox.cjs
           node --test windows/tests/test_headline_github_outbox.cjs
           node --test windows/tests/test_headline_original_hold.cjs
+          node --test windows/tests/test_headline_restored_chat.cjs
           node --test tests/test_news_ai_icon.cjs
       - name: Verify original, target/revision and iPhone/web manifest
         run: |
@@ -73,10 +78,11 @@ jobs:
             /windows/TT-AutoUpdater.ps1
             /windows/Install-TTImages-Noticias-Receptor-Safe.ps1
             /windows/Diagnosticar-TTImages-Asociacion-Safe.ps1
+            /windows/Recuperar-TTImages-Noticias-Chat-Existente-Safe.ps1
       - name: Verify PowerShell syntax without executing listeners
         shell: powershell
         run: |
-          foreach($p in @('windows/TTiTTularesDedicatedListener.ps1','windows/TT-AutoUpdater.ps1','windows/Install-TTImages-Noticias-Receptor-Safe.ps1','windows/Diagnosticar-TTImages-Asociacion-Safe.ps1')){
+          foreach($p in @('windows/TTiTTularesDedicatedListener.ps1','windows/TT-AutoUpdater.ps1','windows/Install-TTImages-Noticias-Receptor-Safe.ps1','windows/Diagnosticar-TTImages-Asociacion-Safe.ps1','windows/Recuperar-TTImages-Noticias-Chat-Existente-Safe.ps1')){
             $tokens=$null;$errors=$null
             [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errors)|Out-Null
             if($errors.Count){throw "PowerShell invalido: $p"}
