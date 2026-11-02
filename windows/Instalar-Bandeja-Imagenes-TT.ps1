@@ -2,8 +2,8 @@
 # Separate private receiver; never restarts generators, Chrome or listeners.
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='07b03f8dd06ea2b02af00261ea1e3d8936b23832'
-$expected='62e88437392870230c8b9ed5aa341ba91c13f0e9f69b746b68c67b4632df287c'
+$pin='0ea0a1d53ad2f77fe5c6ba5a0ccc03db9d58dfcb'
+$expected='92f1fbfe3d35afd14263f76df3e802fd8ec8f4913213da3667bb41da00b8ed5d'
 $node=(Get-Command node.exe -ErrorAction Stop).Source
 foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')) {
  $p=Join-Path $base $name
