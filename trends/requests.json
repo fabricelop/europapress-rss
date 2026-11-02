@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T21:59:15.240587+00:00",
+  "updated_at": "2026-11-02T22:00:06.674110+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -195623,7 +195623,18 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-11-01T17:07:46.452808+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-02T22:00:06.674110+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "No hay una novedad material que cambie la explicación: las publicaciones posteriores siguen centradas en el mismo 0-3 de Diomande ante el Racing. La medición de 120,2 km/h y el balance de siete titularidades con siete victorias añaden contexto, pero no constituyen un episodio distinto.",
+      "red_review_sources": [
+        {
+          "url": "https://as.com/futbol/diomande-se-hace-intocable-f202611-n/"
+        },
+        {
+          "url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/cronicas/cronica-racing-rm-j11-liga-01-11-2026"
+        }
+      ]
     },
     {
       "id": "trend-update-df91a57b6555b4f60712",
@@ -206860,7 +206871,7 @@
       "revision": 0,
       "name": "Revisar novedades: Diomande",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T21:56:39.252526+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -206884,7 +206895,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-02T22:00:06.674110+00:00",
+      "review_reason": "No hay una novedad material que cambie la explicación: las publicaciones posteriores siguen centradas en el mismo 0-3 de Diomande ante el Racing. La medición de 120,2 km/h y el balance de siete titularidades con siete victorias añaden contexto, pero no constituyen un episodio distinto."
     }
   ],
   "count": 841
