@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T07:11:22+01:00",
+  "updated_at": "2026-11-02T06:11:47.847109+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -201472,7 +201472,7 @@
       "revision": 0,
       "name": "Revisar novedades: Chiqui",
       "rank": 17,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T06:08:28.982280+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -201495,14 +201495,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-02T06:11:47.847109+00:00",
+      "review_reason": "Es un episodio posterior y distinto a la gala del 22-23 de octubre: el 1 de noviembre Chiqui seguía en concurso durante la recta final y Asraf mostró su decepción por un gesto de ella en los posicionamientos."
     },
     {
       "id": "red-review-cd0e4631a1e15682c33d",
       "revision": 0,
       "name": "Revisar novedades: Toledo",
       "rank": 26,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T06:08:28.982280+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -201526,7 +201529,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-02T06:11:47.847109+00:00",
+      "review_reason": "La explicación del 28 de octubre quedó materialmente desactualizada: el balance se elevó a 69 fallecidos, 66 estaban identificados el 2 de noviembre y la investigación ha concretado nuevas incógnitas sobre la reanudación de la marcha del AVE."
     }
   ],
   "count": 642
