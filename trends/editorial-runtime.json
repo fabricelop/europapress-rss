@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793663459",
   "previous_run_id": "tr-1793661950902-manual",
-  "status": "waiting",
-  "phase": "drafting",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-03T00:51:20+01:00",
-  "updated_at": "2026-11-03T00:55:00+01:00",
+  "updated_at": "2026-11-03T00:57:20+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "466d3740ad7e",
-  "title": "Loureiro",
+  "current": 1,
+  "total": 2,
+  "trend_id": "78f0c897a505",
+  "title": "Aroca",
   "queue_complete": false,
   "processed_ids": [
     "466d3740ad7e"
@@ -26,10 +26,10 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 1,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -46,7 +46,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "drafting",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:54:59+01:00",
@@ -94,39 +94,8 @@
     "message": "Pasada cerrada 1/1: revisión Hamilton R0 aplicada como actualización material del mismo GP de México. Ficha nueva trend-update-77f5db7129dcd06a9fc8 sincronizada en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Loureiro R0 investigado; redactando y preparando persistencia sincronizada.",
+  "message": "1/2 cerrado. Investigando Aroca R0 con causalidad prudente; sin ImageGen ni publicación.",
   "events": [
-    {
-      "at": "2026-11-01T14:24:54.257Z",
-      "phase": "closing",
-      "run_id": "tr-1793542709832-manual",
-      "status": "DONE",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "updates": 0,
-        "grouping_requests": 0,
-        "groups_created": 0,
-        "covered_by_existing": 0,
-        "unchanged_reviews": 0,
-        "stale_reviews": 2,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "message": "Pasada cerrada 2/2 por convergencia JIT: #laSextaXplica y Toledo quedaron review_completed/stale; no se sobrescribió estado vigente. Cola final 0; rewrite_pending/reexplain 0; ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-01T15:55:00+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793544481477-manual",
-      "message": "Convergencia JIT detectada para Jorge Martín r0; no se reabre ni sobrescribe."
-    },
     {
       "at": "2026-11-01T15:56:00+01:00",
       "phase": "closing",
@@ -1156,6 +1125,20 @@
       "trend_id": "466d3740ad7e",
       "title": "Loureiro",
       "message": "Explicación factual redactada y validada (243 caracteres Unicode); preparando persistencia sin ImageGen."
+    },
+    {
+      "at": "2026-11-03T00:57:20+01:00",
+      "phase": "verifying",
+      "trend_id": "466d3740ad7e",
+      "title": "Loureiro",
+      "message": "Loureiro R0 ya fue aplicado por el outbox: retirado de editorial-queue; processed_ids confirma el cierre."
+    },
+    {
+      "at": "2026-11-03T00:57:20+01:00",
+      "phase": "investigating",
+      "trend_id": "78f0c897a505",
+      "title": "Aroca",
+      "message": "Aroca R0 revalidado JIT. Fuentes actuales relacionan a Javier Aroca con el debate ferroviario tras Urda: artículo del 1/11 sobre liberalización/inversión y una intervención en Malas Lenguas con preguntas sobre inversión y liberalización. El detonante preciso del término no puede aislarse."
     }
   ],
   "history": [
