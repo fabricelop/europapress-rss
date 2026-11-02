@@ -321,14 +321,18 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
         return delete_tremending(event_id, revision)
     if decision in {"deleted", "published"}:
         return apply(project, event_id, decision, revision)
-    if project == "ttittulares" and decision == "rework":
-        outputs = rework_ready_news(
-            event_id, revision,
-            load("ttittulares/prepared.json", {"items": []}),
-            load("ttittulares/editorial-queue.json", {"items": []}),
-            load("telegram/editorial-processing.json", {"items": []}),
-            load("ttittulares/decisions.json", {"items": []}),
-        )
+    if project == "ttittulares" and decision in {"rework", "hints"}:
+        try:
+            outputs = rework_ready_news(
+                event_id, revision,
+                load("ttittulares/prepared.json", {"items": []}),
+                load("ttittulares/editorial-queue.json", {"items": []}),
+                load("telegram/editorial-processing.json", {"items": []}),
+                load("ttittulares/decisions.json", {"items": []}),
+                hints=trend_hints if decision == "hints" else "",
+            )
+        except ValueError as exc:
+            fail(str(exc))
         return ({}, "already_applied") if outputs is None else (outputs, "applied")
     now = datetime.now(timezone.utc).isoformat()
     if project == "ttittulares":
@@ -619,7 +623,7 @@ def main():
         fail("Identificadores invalidos")
     if decision not in {"deleted", "published", "discard", "prepare", "rework", "hints"}:
         fail("Decision no admitida")
-    if decision == "hints" and (project != "ttendencias" or not isinstance(trend_hints, str) or not 8 <= len(trend_hints.strip()) <= 6000):
+    if decision == "hints" and (not isinstance(trend_hints, str) or not 8 <= len(trend_hints.strip()) <= 6000):
         fail("Pistas invalidas o proyecto no admitido")
     if event_id.startswith("pilot-"):
         fail("Los casos sinteticos no pueden modificar datos editoriales")
@@ -682,4 +686,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
