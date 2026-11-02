@@ -7,7 +7,6 @@ const path=require('node:path');
 const crypto=require('node:crypto');
 const githubOutbox=require('./TTiTTularesGithubOutbox.cjs');
 const {execFileSync,spawn}=require('node:child_process');
-const BASE='http://127.0.0.1:9234';
 const GENERATOR_BASE='http://127.0.0.1:9223';
 const WEB_CAPTURE_VERSION=5;
 const WEB_DELIVERY_VERSION=10;
@@ -173,18 +172,18 @@ async function readEditorialState(){
  const doc=await http('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/prepared.json?t='+Date.now());
  if(!Array.isArray(doc.items))throw Error('editorial_state_invalid');return doc;
 }
+// News may inspect ONLY the pre-existing generator browser 9223. Browser
+// 9234 belongs to TTImages' independent gallery capture / Tendencias relay.
+// Opening conversation tabs on 9234 can interrupt the gallery's capture
+// invariant; it is NOT a fallback or a recovery path for News.
 async function selectExistingBrowser(){
-  const failures=[];
-  for(const [base,source] of [[BASE,'relay_9234'],[GENERATOR_BASE,'generator_9223']]){
-    try{
-      const browser=await http(base+'/json/version');
-      if(!browser.webSocketDebuggerUrl)throw Error(source+'_debugger_missing');
-      const pages=await http(base+'/json/list');
-      if(!Array.isArray(pages)||!pages.some(x=>x.type==='page'&&/^https:\/\/chatgpt\.com\//.test(x.url||'')))throw Error(source+'_chat_page_missing');
-      return {base,source,browser};
-    }catch(e){failures.push(String(e.message||e));}
-  }
-  throw Error(failures.join(';').slice(0,140));
+  const base=GENERATOR_BASE,source='generator_9223';
+  const browser=await http(base+'/json/version');
+  if(!browser.webSocketDebuggerUrl)throw Error('generator_9223_debugger_missing');
+  const pages=await http(base+'/json/list');
+  if(!Array.isArray(pages)||!pages.some(x=>x.type==='page'&&/^https:\/\/chatgpt\.com\//.test(x.url||'')))
+    throw Error('generator_9223_chat_page_missing');
+  return {base,source,browser};
 }
 // The user turn carrying this exact command is the only permitted image scope.
 // Rejects a later user turn, avatars, previews and unfinished generations.
@@ -316,9 +315,8 @@ async function consume(task){
    }
    // Capture and persist first. A Cloudflare outage must never discard an
    // already-generated original or require a second ImageGen call.
-   const capture=await selectExistingBrowser();let browserCDP,cdp,ownedTarget;
+   const capture=await selectExistingBrowser();let cdp;
    try{
-     if(capture.source==='generator_9223'){
        const pages=await http(capture.base+'/json/list');
        // A recovered/restored Chrome tab gets a new CDP target ID. The durable
        // conversation URL plus an exact user-turn command are the identity;
@@ -337,16 +335,6 @@ async function consume(task){
          if(candidate!==cdp)candidate.close();
        }
        if(!cdp)return {status:'waiting',reason:'exact_generator_conversation_missing'};
-     }else{
-       browserCDP=new CDP(capture.browser.webSocketDebuggerUrl);await browserCDP.open();
-       const made=await browserCDP.call('Target.createTarget',{url:task.conversation_url,background:true});
-       ownedTarget=made.targetId;
-       for(let n=0;n<8;n++){
-         const pages=await http(capture.base+'/json/list'),own=pages.find(x=>x.id===ownedTarget);
-         if(own?.webSocketDebuggerUrl){cdp=new CDP(own.webSocketDebuggerUrl);await cdp.open();break;}
-         await sleep(400);
-       }
-     }
      if(!cdp)return {status:'waiting',reason:'export_tab_not_ready'};
      for(let n=0;n<35;n++){
        await sleep(1200);raster=await cdp.evaluate(rasterProbe(task.command_id));
@@ -357,8 +345,6 @@ async function consume(task){
      source=capture.source;
    }finally{
      cdp?.close();
-     if(ownedTarget)try{await browserCDP?.call('Target.closeTarget',{targetId:ownedTarget});}catch{}
-     browserCDP?.close();
    }
  }
  // No browser is needed for a retry after a prior successful local capture.
