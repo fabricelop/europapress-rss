@@ -257,7 +257,7 @@ function imageWorkflowPrompt(x,associationOnly=false){
  const common=[
   'Este encargo viene del editor TTActualidad. Una imagen visible en ChatGPT NO demuestra que esté guardada en la web o en el iPhone.',
   'IDENTIDAD LITERAL (revalidar en GitHub o conector antes de modificar): '+identity,
-  'Admite una imagen JPEG/JPG, PNG o WebP REAL adjunta o pegada por el usuario en este chat; una foto JPEG copiada y pegada desde ChatGPT Images ES una entrada válida si sus bytes están disponibles. No exijas PNG ni conviertas un JPEG en PNG por cambiar la extensión. No uses imágenes parecidas, miniaturas ni URLs imaginadas.',
+  news?'Admite una imagen JPEG/JPG, PNG o WebP REAL adjunta o pegada por el usuario en este chat; una foto JPEG copiada y pegada desde ChatGPT Images ES una entrada válida si sus bytes están disponibles. No exijas PNG ni conviertas un JPEG en PNG por cambiar la extensión. No uses imágenes parecidas, miniaturas ni URLs imaginadas.':'Usa exclusivamente el PNG ORIGINAL de ESTA conversación para Tendencias; no uses capturas, imágenes parecidas, miniaturas, enlaces compartidos ni rutas inventadas.',
   'No publiques en X ni cambies el texto editorial; no sobreescribas otra imagen válida.'
  ];
  if(news)return [
@@ -275,8 +275,8 @@ function imageWorkflowPrompt(x,associationOnly=false){
   ...common,
   '1. Ejecuta inspect_top30_images y revalida target_id, revision, name, explanation y explained_at del Site. Si Top 30 está anticuado o no coincide, detente.',
   '2. Ejecuta verify_trend_image con el contexto editorial exacto. Si hay imagen verificada, no regeneres otra.',
-  associationOnly?'3. NO generes: acepta el JPEG/JPG, PNG o WebP pegado/adjunto por el usuario a ESTE mensaje; comprueba bytes y MIME reales.':'3. Si falta imagen válida, genera UNA SOLA con ImageGen y asocia su imagen original verificable en este mismo encargo.',
-  '4. Ejecuta attach_trend_image con file=IMAGEN REAL JPEG/PNG/WebP de esta conversación (no imagen inventada) y context=identidad exacta, después verify_trend_image. No afirmes éxito sin status verified y SHA-256 real.',
+  associationOnly?'3. No generes: exige el PNG original adjunto en ESTE CHAT.':'3. Si falta imagen válida, genera UNA SOLA con ImageGen y conserva el original para asociación en este mismo encargo.',
+  '4. Ejecuta attach_trend_image con file=PNG ORIGINAL REAL y context=identidad exacta, después verify_trend_image. No afirmes éxito sin status verified y SHA-256 real.',
   '5. Sincroniza solo (target_id,revision) en trends/site-ai-images.json de GitHub main, conservando todas las entradas, con explanation, explained_at, image_url y SHA verificados.',
   '6. Relee GitHub, el archivo del Site y verifica disponibilidad web y de iPhone. Si ImageGen termina el turno sin acceso al original, informa «IMAGEN GENERADA; SITE Y APP PENDIENTES». Nunca crees otro GAG para encubrir el fallo.'
  ].join('\n\n');
