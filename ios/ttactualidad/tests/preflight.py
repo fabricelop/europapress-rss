@@ -536,7 +536,8 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 # 0.4.46 build56: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert 'CURRENT_PROJECT_VERSION: "56"' in project
+assert project.count('CURRENT_PROJECT_VERSION: "56"') == 2
+assert project.count('CFBundleVersion: "56"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 assert 'https://ttactualidad.rainyraven22.chatgpt.site/noticias' in actions
 assert 'https://ttactualidad.rainyraven22.chatgpt.site/tendencias' in actions
