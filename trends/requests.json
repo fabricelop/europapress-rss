@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T21:17:45+01:00",
+  "updated_at": "2026-11-02T20:19:16.629631+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -205714,6 +205714,74 @@
       "image_choice": "none",
       "image_pending": true,
       "telegram_package_status": "pending"
+    },
+    {
+      "id": "red-review-f894d38a06b32c1267a9",
+      "revision": 0,
+      "name": "Revisar novedades: Pepe Mel",
+      "rank": 29,
+      "status": "preparing",
+      "requested_at": "2026-11-02T20:19:16.629631+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "232ca96063fe",
+        "revision": 0,
+        "name": "Pepe Mel",
+        "rank": 30,
+        "explanation": "TT#30 Pepe Mel es tendencia porque el entrenador sufrió un ictus en Sevilla y fue operado con éxito; permanece ingresado en la UCI a la espera de evolución.\n#PepeMel #Fútbol",
+        "explanation_sha256": "f2ce878a66fe4e9b030dc402b7851a54ecf6268a85a3dcf8befcc90ccbc06cfb",
+        "explained_at": "2026-11-02T12:56:02+01:00",
+        "verification_sources": [
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/02/pepe-mel-en-la-uci-despues-de-sufrir-un-accidente-vascular-cerebral-cadena-ser/"
+          },
+          {
+            "url": "https://www.lavozdegalicia.es/noticia/torremarathon/2026/11/02/pepe-mel-uci-tras-operado-ictus-sevilla/00031793611396756290829.htm"
+          }
+        ],
+        "fingerprint": "3493e7f30c153e2ffd626a2df75739db60d4458f5499adad0f5b994f8c554ce8"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-0b5f468fc7c7ca43d8b1",
+      "revision": 0,
+      "name": "Revisar novedades: Endesa",
+      "rank": 23,
+      "status": "preparing",
+      "requested_at": "2026-11-02T20:19:16.629631+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "5e188e3012d7",
+        "revision": 0,
+        "name": "Endesa",
+        "rank": 29,
+        "explanation": "TT#29 Endesa es tendencia por el cero energético de La Palma: más de 50.500 clientes quedaron sin suministro y la compañía participó en la reposición, completada tras casi cuatro horas.\n#LaPalma #Apagón\n🌶️ La luz volvió antes que las explicaciones.",
+        "explanation_sha256": "c3501d28658c624c77a7b289c31eafbe9c29fa14bccbd439d3bc123ccf5710da",
+        "explained_at": "2026-11-02T16:52:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/islas-canarias/noticia-mas-50500-clientes-suministro-electrico-palma-cero-energetico-20261102095456.html"
+          },
+          {
+            "url": "https://www.europapress.es/islas-canarias/noticia-repuesto-suministro-electrico-palma-cero-energetico-casi-cuatro-horas-20261102115511.html"
+          }
+        ],
+        "fingerprint": "a3732e6b4b85ea8ff84a145285f528e070521fff83754b3b70781b24ce85acf3"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
   "count": 818
