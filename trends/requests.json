@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T06:48:34.274280+00:00",
+  "updated_at": "2026-11-02T06:50:59.736386+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -132068,7 +132068,18 @@
       "editorial_grouping_fingerprint": "58df3b7ac1294309d22812a3f269d4e1fa1840d054b83608fa0205a5c292e411",
       "editorial_grouping_checked_at": "2026-11-01T01:03:50.792834+00:00",
       "published_at": "2026-11-01T01:32:55.028919+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-02T06:50:59.736386+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "La explicación anterior recogía cuatro fallos técnicos previos y el análisis general del LZB. La investigación ha avanzado: ahora revisa si Adif aplicó el protocolo LZB4 de marcha normal en otras caídas anteriores, mientras se prepara una limitación de 40 km/h cuando falle el LZB.",
+      "red_review_sources": [
+        {
+          "url": "https://elpais.com/espana/2026-11-02/la-investigacion-del-siniestro-de-urda-analiza-si-adif-uso-el-protocolo-erroneo-mas-veces.html"
+        },
+        {
+          "url": "https://www.elnacional.cat/es/sociedad/renfe-ordena-maquinistas-no-superar-40-km-h-si-falla-lzb-sistema-cayo-en-urda_1718932_102.html"
+        }
+      ]
     },
     {
       "id": "listas-auto-09ccc1fc32302336fef0",
@@ -201593,7 +201604,7 @@
       "revision": 0,
       "name": "Revisar novedades: Adif",
       "rank": 27,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-02T06:45:04.688207+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -201620,7 +201631,11 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-5f646e3ab040e06ebb03",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-02T06:50:59.736386+00:00",
+      "review_reason": "La explicación anterior recogía cuatro fallos técnicos previos y el análisis general del LZB. La investigación ha avanzado: ahora revisa si Adif aplicó el protocolo LZB4 de marcha normal en otras caídas anteriores, mientras se prepara una limitación de 40 km/h cuando falle el LZB."
     },
     {
       "id": "trend-update-204b9324125e9b9de1b5",
@@ -201653,6 +201668,39 @@
       "continuity_update": true,
       "distinct_episode": false,
       "new_facts": "La carrera del 1 de noviembre ya se disputó: Verstappen ganó; Antonelli aseguró el título; Alonso abandonó en la vuelta 5 y Aston Martin terminó con sus dos coches fuera.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-5f646e3ab040e06ebb03",
+      "revision": 0,
+      "name": "Adif",
+      "rank": 27,
+      "status": "explained",
+      "requested_at": "2026-11-02T06:50:59.736386+00:00",
+      "explained_at": "2026-11-02T06:50:59.736386+00:00",
+      "updated_at": "2026-11-02T06:50:59.736386+00:00",
+      "explanation": "TT#27 Adif sigue siendo tendencia por Urda: la investigación analiza si el centro de control aplicó el protocolo LZB4 de marcha normal en más fallos anteriores y Adif recopila esos antecedentes; Renfe prepara limitar a 40 km/h la marcha sin LZB.\n#Urda #AccidenteFerroviario",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://elpais.com/espana/2026-11-02/la-investigacion-del-siniestro-de-urda-analiza-si-adif-uso-el-protocolo-erroneo-mas-veces.html"
+        },
+        {
+          "url": "https://www.elnacional.cat/es/sociedad/renfe-ordena-maquinistas-no-superar-40-km-h-si-falla-lzb-sistema-cayo-en-urda_1718932_102.html"
+        }
+      ],
+      "originated_from_prior_id": "8c4ad00d976c",
+      "trend_names": [
+        "Adif"
+      ],
+      "red_review_job_id": "red-review-8117d53cd1a62500cd5f",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "AITAT y la policía judicial revisan antecedentes de caídas del LZB para determinar si el protocolo LZB4 se usó de forma habitual; Adif recopila documentación de esos episodios y Renfe prepara una consigna de marcha a la vista a un máximo de 40 km/h sin LZB.",
       "with_image": true,
       "disable_ai_image": false,
       "editorial_grouping_state": "pending",
