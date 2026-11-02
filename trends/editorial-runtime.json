@@ -3,24 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793659867",
-  "previous_run_id": "tr-1793656762873-manual",
-  "status": "success",
+  "run_id": "tr-1793660134476-manual",
+  "previous_run_id": "tr-autoguard-1793659867",
+  "status": "RUNNING",
   "phase": "investigating",
-  "started_at": "2026-11-02T23:51:07+01:00",
-  "updated_at": "2026-11-02T23:54:42+01:00",
+  "started_at": "2026-11-02T23:56:00+01:00",
+  "updated_at": "2026-11-02T23:56:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "48bd70057066",
-  "title": "#LaIslaDeLasTentaciones16",
-  "queue_complete": true,
-  "processed_ids": [
-    "48bd70057066",
-    "faedd59cc0a6"
+  "trend_id": "red-review-f23642f24df4f8e5cb19",
+  "title": "Revisar novedades: Toledo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-f23642f24df4f8e5cb19",
+    "red-review-c3769957c10ea840e5b4"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-f23642f24df4f8e5cb19",
+    "red-review-c3769957c10ea840e5b4"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -43,7 +46,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "a157f21d8369",
@@ -161,7 +164,7 @@
     "message": "Pasada tr-1793656762873-manual cerrada 5/5: #FirstDates2N, adama, Auba, Mella e Hidalgo explicados y materializados en Listas. #FirstDates2N se cerró con causa concreta no confirmada; los cuatro términos deportivos se verificaron contra el Deportivo-Osasuna. Barrera final de main: editorial-queue=0 y sin reexplicaciones vigentes detectadas. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Investigando #LaIslaDeLasTentaciones16 (1/2); revisiones R0 validadas JIT en main. ImageGen=0.",
+  "message": "Inicio manual: 2 revisiones review_red vigentes en main (Toledo y Racing). Revalidación JIT por ID+revisión; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -2002,6 +2005,14 @@
       "phase": "closing",
       "run_id": "tr-1793656604711-manual",
       "message": "DONE 2/2 por convergencia JIT. ImageGen=0; publicaciones=0; incidencias=0."
+    },
+    {
+      "at": "2026-11-02T23:56:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793660134476-manual",
+      "trend_id": "red-review-f23642f24df4f8e5cb19",
+      "title": "Revisar novedades: Toledo",
+      "message": "Inicio manual: 2 revisiones review_red vigentes en main (Toledo y Racing). Revalidación JIT por ID+revisión; sin ImageGen ni publicación."
     }
   ],
   "history": [
