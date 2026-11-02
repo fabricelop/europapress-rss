@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-02T09:32:38+01:00",
+  "updated_at": "2026-11-02T09:35:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -201972,30 +201972,32 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "#FelizLunes"
       ],
       "originated_from_prior_id": "manual-3d26c7597620c1c45cc8eeb2653e6e58",
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de #FelizLunes, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "explained_at": "2026-11-02T09:36:00+01:00",
-      "last_attempt_at": "2026-11-02T09:36:00+01:00",
+      "explained_at": "2026-11-02T09:35:00+01:00",
+      "last_attempt_at": "2026-11-02T09:35:00+01:00",
       "explanation": "TT#1 #FelizLunes es tendencia por los mensajes de saludo con los que usuarios arrancan este lunes 2 de noviembre; no aparece ligado a un partido ni a un único acontecimiento.\n#BuenosDías #Lunes\n🌶️ El lunes ya tiene hashtag; el ánimo se negocia aparte.",
       "closer_text": "🌶️ El lunes ya tiene hashtag; el ánimo se negocia aparte.",
       "rank_at_explanation": 1,
       "category": "Conversación social",
-      "source": "editorial_outbox_applied",
+      "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "verification_sources": [
         {
+          "source": "Snaplytics · tendencias España 02/11/2026",
           "url": "https://twitter-trends.snaplytics.io/spain/"
         },
         {
+          "source": "LiveQuote · publicaciones #FelizLunes 02/11/2026",
           "url": "https://www.livequote.org/hashtag/felizlunes"
         }
       ],
-      "news_note": "Reelaboración desde cero. La etiqueta figura en el ranking actual y en publicaciones contemporáneas de saludo genérico; no se encontró marcador deportivo ni acontecimiento único. Texto y remate nuevos; imagen queda fuera de esta pasada.",
+      "news_note": "Investigación desde cero. La etiqueta aparece en el ranking actual y en publicaciones contemporáneas de saludo genérico de lunes; no se ha encontrado un marcador deportivo ni un acontecimiento único que la explique. Texto y remate nuevos; imagen queda fuera de esta pasada editorial.",
       "group_id": "grp-501ee9a82cfe",
       "explanation_group_id": "grp-501ee9a82cfe",
       "group_title": "#FelizLunes",
@@ -202006,14 +202008,16 @@
       "grouped_member_revisions": [
         {
           "id": "501ee9a82cfe",
+          "name": "#FelizLunes",
           "revision": 0
         }
       ],
       "editorial_grouping_state": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "news_disposition": "ignored"
     },
     {
       "id": "red-review-eff341dc6df256a4741d",
@@ -202078,5 +202082,5 @@
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
-  "count": 768
+  "count": 770
 }
