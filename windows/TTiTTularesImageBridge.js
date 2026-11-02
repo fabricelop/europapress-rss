@@ -943,6 +943,8 @@ async function confirmPromptLaunched(){
   throw Error("image_launch_ack_not_persisted "+last);
 }
 async function uploadImage(image){
+  throw Error("manual_approval_required");
+
   let result;
   for(let attempt=1;attempt<=3;attempt++){
     assertAutomaticInTime();
@@ -982,6 +984,8 @@ async function optionalWebHandoff(handoff,remember=false){
 // has durably persisted its original bytes. TTendencias keeps up to 6 minutes;
 // the old 90-second News release raced slow ImageGen renders and lost originals.
 async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
+  return "manual_approval_required";
+
   const fs=require('node:fs'),path=require('node:path');
   const receiptPath=path.join(__dirname,'ttittulares-web-images',commandId+'.json');
   const deadline=Date.now()+maxMs;
@@ -1122,3 +1126,4 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
     try{cdp&&cdp.close()}catch{}
   }
 })();
+

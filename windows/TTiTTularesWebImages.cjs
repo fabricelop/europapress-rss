@@ -297,6 +297,9 @@ async function rememberConversation(input){
 }
 
 async function consume(task){
+  // Editorial pause: automatic association is disabled; preserve queued originals.
+  return {status:'waiting',reason:'manual_approval_required'};
+
  const job=await readImageJob(task);
  if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
  if(job.status==='DONE'||task.upload_accepted_at||task.github_outbox_committed_at)
@@ -528,3 +531,4 @@ if(require.main===module){
     process.exitCode=1;
   });
 }
+

@@ -251,6 +251,8 @@ function siteReturnProbe(commandId,targetId,marker){
   })()`;
 }
 async function sendSiteReturnFromPublisher(cdp,task,job){
+  return {status:'waiting',reason:'manual_approval_required'};
+
   const marker='TTENDENCIAS_SITE_RETURN_AFTER_IMAGE_V1 '+task.command_id+' '+task.target_id;
   const initial=await cdp.evaluate(siteReturnProbe(task.command_id,task.target_id,marker));
   if(initial?.status!=='ready')return initial?.status||'probe_unavailable';
@@ -281,6 +283,8 @@ function sameEditorialBeforeReturn(task,manual){
   return !!current&&Number(current.revision||0)===task.revision&&crypto.createHash('sha256').update(String(current.explanation||'').trim()).digest('hex')===task.explanation_sha256;
 }
 async function recoverSiteAfterUpload(task,job){
+  return {status:'waiting',reason:'manual_approval_required'};
+
   const remote=await confirmedInMain(task,job);
   if(task.site_return_sent_at)return remote;
   if(producerBusyFor(task))return {...remote,site_return_status:'producer_still_running'};
@@ -341,6 +345,9 @@ async function recoverSiteAfterUpload(task,job){
 }
 
 async function consume(task){
+  // Editorial pause: automatic association is disabled; preserve queued originals.
+  return {status:'waiting',reason:'manual_approval_required'};
+
   const job=await readImageJob(task);
   if(!sameContext(task,job))return {status:'obsolete',reason:'job_identity_changed'};
   if((job.status==='DONE'&&job.upload_sha256)||task.upload_accepted_at||task.status==='published')return recoverSiteAfterUpload(task,job);
@@ -528,3 +535,4 @@ module.exports={chatURL,enroll,rememberConversation,conversationProbe,discoverCo
 // Existing installed listeners invoke this file without arguments. Drain their
 // already-enrolled backlog too; do not require a new image to wake delivery.
 if(require.main===module)(process.argv.includes('--once')?once():watch()).catch(()=>{console.error('TTENDENCIAS_WEB_IMAGE exporter unavailable');process.exitCode=1;});
+
