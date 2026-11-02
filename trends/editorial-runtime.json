@@ -8,12 +8,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-02T07:00:00+01:00",
-  "updated_at": "2026-11-02T07:06:00+01:00",
+  "updated_at": "2026-11-02T07:07:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
-  "trend_id": "6d122a2106a9",
-  "title": "Ivana",
+  "trend_id": "7ec28bdd90bc",
+  "title": "#MexicoGP",
   "queue_complete": false,
   "processed_ids": [
     "a90056474d8d"
@@ -1803,6 +1803,38 @@
       "trend_id": "6d122a2106a9",
       "title": "Ivana",
       "message": "Persistiendo Ivana r0 mediante editorial-outbox tras revalidación JIT de id+revision."
+    },
+    {
+      "at": "2026-11-02T07:07:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "7ec28bdd90bc",
+      "title": "#MexicoGP",
+      "message": "Investigación desde cero: Verstappen ganó el GP de México por 0,799 s sobre Hamilton; Antonelli terminó tercero y aseguró el Mundial 2026."
+    },
+    {
+      "at": "2026-11-02T07:07:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "7ec28bdd90bc",
+      "title": "#MexicoGP",
+      "message": "Texto y remate nuevos cerrados para TT#11 y validados por debajo de 280 caracteres; no se reutiliza la ficha anterior borrada."
+    },
+    {
+      "at": "2026-11-02T07:07:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "7ec28bdd90bc",
+      "title": "#MexicoGP",
+      "message": "Remate único ligado a la victoria de Verstappen y al título de Antonelli desde la tercera plaza; sin ImageGen."
+    },
+    {
+      "at": "2026-11-02T07:07:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793599231716-manual",
+      "trend_id": "7ec28bdd90bc",
+      "title": "#MexicoGP",
+      "message": "Persistiendo #MexicoGP r0 mediante editorial-outbox tras revalidación JIT de id+revision."
     }
   ],
   "final_outcomes": [
