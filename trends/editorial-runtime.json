@@ -5,24 +5,24 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793661198",
   "previous_run_id": "tr-1793660134476-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-03T00:13:30+01:00",
-  "updated_at": "2026-11-03T00:16:20+01:00",
+  "updated_at": "2026-11-03T00:19:29+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
   "trend_id": "1e03ad2efe6a",
   "title": "Paola",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "1e03ad2efe6a"
+  ],
   "remaining_ids": [
-    "1e03ad2efe6a",
     "64a8657cfbb4",
     "c1e5fdc8cf2a"
   ],
   "remaining_active_ids": [
-    "1e03ad2efe6a",
     "64a8657cfbb4",
     "c1e5fdc8cf2a"
   ],
@@ -73,7 +73,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T00:13:30+01:00",
+  "last_started_at": "2026-11-03T00:19:29+01:00",
   "last_completed_at": "2026-11-02T23:59:57+01:00",
   "last_run": {
     "run_id": "tr-1793660134476-manual",
