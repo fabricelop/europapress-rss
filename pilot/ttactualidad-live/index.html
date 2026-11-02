@@ -1329,7 +1329,7 @@ function xIntentLink(x,body){
    ?[...new Intl.Segmenter('es',{granularity:'grapheme'}).segment(s)].map(y=>y.segment)
    :Array.from(s);
   return parts.map(g=>{
-   if(/\\p{Extended_Pictographic}/u.test(g))return 2;
+   if(/\p{Extended_Pictographic}/u.test(g))return 2;
    return [...g].reduce((n,ch)=>{
     const cp=ch.codePointAt(0);
     if(cp===0xfe0f||cp===0x200d)return n;
@@ -1350,13 +1350,13 @@ function xIntentLink(x,body){
  };
  let editorial=String(body||'').trim();
  if(weight(editorial)>budget){
-  const cut=editorial.indexOf('\\n\\n');
+  const cut=editorial.indexOf('\n\n');
   const suffix=cut>=0?editorial.slice(cut):'';
   if(suffix&&weight(suffix)<budget-40){
    editorial=trim(editorial.slice(0,cut),budget-weight(suffix))+suffix;
   }else editorial=trim(editorial,budget);
  }
- return 'https://twitter.com/intent/tweet?text='+encodeURIComponent(editorial+'\\n\\n'+site);
+ return 'https://twitter.com/intent/tweet?text='+encodeURIComponent(editorial+'\n\n'+site);
 }
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
