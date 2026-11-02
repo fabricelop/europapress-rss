@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793611314712-manual",
-  "previous_run_id": "tr-1793608239847-manual",
+  "run_id": "tr-1793611644017-manual",
+  "previous_run_id": "tr-1793611314712-manual",
   "status": "PROCESSING",
   "phase": "investigating",
-  "started_at": "2026-11-02T10:22:00+01:00",
-  "updated_at": "2026-11-02T10:27:20+01:00",
+  "started_at": "2026-11-02T10:27:00+01:00",
+  "updated_at": "2026-11-02T10:28:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 2,
+  "current": 0,
+  "total": 1,
   "trend_id": "red-review-18041079a0266bec70ff",
   "title": "Revisar novedades: Día de Todos",
   "queue_complete": false,
@@ -23,47 +23,12 @@
     "red-review-18041079a0266bec70ff"
   ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 1,
-    "observed": 2,
-    "closed": 1,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 1,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "investigating",
-  "final_outcomes": [
-    {
-      "id": "red-review-eff341dc6df256a4741d",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "La validación JIT encontró que Toledo ya no estaba en el Top 30; no se creó una actualización obsoleta."
-    },
-    {
-      "id": "red-review-315fb9aeef2feaf58e62",
-      "revision": 0,
-      "name": "Revisar novedades: Óscar Puente",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "created_id": "trend-update-d4519792604eca140a93"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-02T09:29:47+01:00",
   "last_completed_at": "2026-11-02T09:37:23+01:00",
@@ -93,7 +58,7 @@
     "message": "Pasada tr-1793608239847-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Óscar Puente quedó updated con la nueva ficha trend-update-d4519792604eca140a93. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "1/2 cerrado: Toledo quedó stale al salir del Top 30. Revisando novedades de Día de Todos; JIT confirma que sigue en el puesto 24.",
+  "message": "Revisando novedades: el motivo original sigue vigente; contrastando fuentes posteriores antes de resolver el mantenimiento. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T00:40:00+01:00",
@@ -1357,6 +1322,17 @@
       "trend_id": "red-review-18041079a0266bec70ff",
       "title": "Revisar novedades: Día de Todos",
       "message": "Revisando novedades"
+    },
+    {
+      "at": "2026-11-02T10:28:00+01:00",
+      "run_id": "tr-1793611644017-manual",
+      "status": "PROCESSING",
+      "phase": "investigating",
+      "current": 0,
+      "total": 1,
+      "trend_id": "red-review-18041079a0266bec70ff",
+      "title": "Revisar novedades: Día de Todos",
+      "message": "Revisando novedades"
     }
   ],
   "history": [
@@ -2569,19 +2545,22 @@
       "trend_id": "red-review-3db04e9c57ab7c023ceb",
       "title": "Revisar novedades: Toledo",
       "message": "Inicio de pasada manual; 2 revisiones pendientes."
+    },
+    {
+      "run_id": "tr-1793611644017-manual",
+      "status": "PROCESSING",
+      "phase": "investigating",
+      "started_at": "2026-11-02T10:27:00+01:00",
+      "updated_at": "2026-11-02T10:28:00+01:00",
+      "current": 0,
+      "total": 1,
+      "trend_id": "red-review-18041079a0266bec70ff",
+      "title": "Revisar novedades: Día de Todos",
+      "message": "Inicio de pasada manual; 1 revisión pendiente."
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-3db04e9c57ab7c023ceb",
-      "revision": 0,
-      "name": "Revisar novedades: Toledo",
-      "outcome": "stale",
-      "applied": true,
-      "reason": "Validación JIT: Toledo ya no figura en el Top 30 fresco; la revisión se cerró sin reescritura."
-    }
-  ],
+  "outcomes": [],
   "current_item": "red-review-18041079a0266bec70ff",
   "current_title": "Revisar novedades: Día de Todos",
   "completed_runs": [
@@ -3864,6 +3843,6 @@
       "message": "Pasada tr-1793608239847-manual cerrada 2/2 por convergencia JIT: Toledo quedó stale al salir del Top 30 y Óscar Puente quedó updated con la nueva ficha trend-update-d4519792604eca140a93. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793611314712-manual",
-  "requested_at": "2026-11-02T10:22:00+01:00"
+  "command_id": "tr-1793611644017-manual",
+  "requested_at": "2026-11-02T10:27:00+01:00"
 }
