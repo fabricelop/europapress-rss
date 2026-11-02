@@ -1297,7 +1297,7 @@ function rowCard(x,i){
   external('Proyecto TT','https://chatgpt.com/g/g-p-6aad81af6424819194017c5a04d611db/project');
   btn('Copiar GAG + asociar IA',()=>copyText(manualPrompt(x),'Orden para generar y asociar IA'));
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
-  btn('Asociar JPEG/PNG',()=>copyText(imageWorkflowPrompt(x,true),'Orden de asociación (adjunta también tu JPEG/PNG)'));
+  btn('Copiar orden: asociar JPEG/PNG',()=>copyText(imageWorkflowPrompt(x,true),'Orden de asociación (adjunta también tu JPEG/PNG)'));
   btn('Copiar Foto Archivo',()=>archive?copyArchive(archive,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
   if(artwork)btn('Copiar imagen IA',()=>copyArchive(artwork,d.title));
   if(x._kind==='tr'&&x._status==='EXPLICADA'){
