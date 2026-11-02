@@ -29,9 +29,11 @@ async function once(base=__dirname){
  if(process.platform!=='win32')throw Error('WINDOWS_REQUIRED');
  const dependency=path.join(base,'TTendenciasWebImages.cjs');if(!fs.readFileSync(dependency,'utf8').includes("return {status:'waiting',reason:'manual_approval_required'}"))throw Error('INSTALL_ASSOCIATION_PAUSE_FIRST');
  const source=require(dependency),root=path.join(base,'ttendencias-web-images'),receipts=path.join(base,'image-approval-receipts');fs.mkdirSync(receipts,{recursive:true});
- let lock;try{lock=fs.openSync(path.join(receipts,'receiver.lock'),'wx')}catch{return}
+ const lockPath=path.join(receipts,'receiver.lock');
+ try{const old=JSON.parse(fs.readFileSync(lockPath,'utf8'));try{process.kill(old.pid,0);return}catch{fs.unlinkSync(lockPath)}}catch{}
+ let lock;try{lock=fs.openSync(lockPath,'wx');fs.writeFileSync(lock,JSON.stringify({pid:process.pid,at:Date.now()}))}catch{return}
  try{
-  const tasks=fs.readdirSync(root).filter(x=>x.endsWith('.json')&&!x.endsWith('.tmp')).map(file=>{try{return JSON.parse(fs.readFileSync(path.join(root,file),'utf8'))}catch{return null}}).filter(x=>x&&x.secret_dpapi&&x.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(x.command_id)).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)).slice(0,50);
+  const tasks=fs.readdirSync(root).filter(x=>x.endsWith('.json')&&!x.endsWith('.tmp')).map(file=>{try{return JSON.parse(fs.readFileSync(path.join(root,file),'utf8'))}catch{return null}}).filter(x=>x&&x.secret_dpapi&&x.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(x.command_id)).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)).filter(task=>!fs.existsSync(path.join(receipts,task.command_id+'.json'))).slice(0,4);
   for(const task of tasks){
    const receiptFile=path.join(receipts,task.command_id+'.json');if(fs.existsSync(receiptFile))continue;
    let cdp;
