@@ -8,6 +8,7 @@ const take=(start,end)=>{
  return page.slice(a,b);
 };
 const funcs=[
+ take('function newestNewsFirst(rows){','\nfunction ttiListasRows(data){'),
  take('function ttiListasRows(data){','\nfunction ttiRows(){'),
  take('function trendListasRows(data){','\nfunction trendRows(){'),
  take('function badgeCount(){','\nfunction badgeActivationUi(){')
