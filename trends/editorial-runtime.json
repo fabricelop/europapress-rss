@@ -6,9 +6,9 @@
   "run_id": "tr-1793728809883-manual",
   "previous_run_id": "tr-autoguard-1793728164",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T19:01:00+01:00",
-  "updated_at": "2026-11-03T19:01:00+01:00",
+  "updated_at": "2026-11-03T18:03:36.585Z",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -107,7 +107,7 @@
     "at": "2026-11-03T18:59:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada editorial en curso: preparando 2 revisiones de novedades (Andorra y Rudiger). ImageGen desactivado; publicaciones=0.",
+  "message": "Andorra: novedad material verificada; resultado updated persistido en maintenance-outbox y pendiente de aplicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3193,6 +3193,17 @@
       "trend_id": "red-review-17550a4646eae76f9c9b",
       "title": "Revisar novedades: Andorra",
       "message": "Inicio de pasada manual; 2 trabajos de mantenimiento revalidados desde la cola inicial."
+    },
+    {
+      "at": "2026-11-03T18:03:36.585Z",
+      "run_id": "tr-1793728809883-manual",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-17550a4646eae76f9c9b",
+      "title": "Revisar novedades: Andorra",
+      "message": "Resultado updated persistido; esperando aplicación autoritativa."
     }
   ],
   "history": [
