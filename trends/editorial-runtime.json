@@ -3,36 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793715065",
-  "previous_run_id": "tr-autoguard-1793713672",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T15:11:00+01:00",
-  "updated_at": "2026-11-03T15:18:00+01:00",
-  "finished_at": "2026-11-03T15:18:00+01:00",
-  "current": 1,
+  "run_id": "tr-1793715998214-manual",
+  "previous_run_id": "tr-autoguard-1793715065",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T15:27:00+01:00",
+  "updated_at": "2026-11-03T15:27:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "3a9e052d70ef"
+  "trend_id": "2e00a1a9eeae",
+  "title": "Owono",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "2e00a1a9eeae"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "2e00a1a9eeae"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -42,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "3a9e052d70ef",
@@ -101,7 +103,7 @@
     "at": "2026-11-03T15:18:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793715065 cerrada 1/1: Cantabria r0 explicada y verificada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793715998214-manual: Owono r0 es la única reelaboración preparing vigente en main; investigación desde cero con validación JIT. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2294,6 +2296,17 @@
       "current": 1,
       "total": 1,
       "message": "Pasada tr-autoguard-1793715065 cerrada 1/1: Cantabria r0 explicada y verificada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T15:27:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793715998214-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "2e00a1a9eeae",
+      "title": "Owono",
+      "message": "Inicio tr-1793715998214-manual: Owono r0 es la única reelaboración preparing vigente en main; investigación desde cero con validación JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
