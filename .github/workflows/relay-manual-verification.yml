@@ -18,3 +18,5 @@ jobs:
           if($errors.Count){throw ($errors | Out-String)}
           $source=Get-Content 'windows/Abrir-Verificacion-Manual-Relay-TT.ps1' -Raw
           if($source -match 'Stop-Process|taskkill|Remove-Item.+ChromeProfile|--disable-blink-features|--user-agent'){throw 'Forbidden broad process/profile/fingerprint change'}
+          if($source -match 'https://chatgpt\.com/c/[a-f0-9-]{20,}') { throw 'Manual handoff must not depend on an individual conversation' }
+          if($source -notmatch "'https://chatgpt\.com/'") { throw 'Manual handoff must open the neutral ChatGPT entry point' }
