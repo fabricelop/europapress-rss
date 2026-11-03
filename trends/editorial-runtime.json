@@ -6,9 +6,9 @@
   "run_id": "tr-1793718615811-manual",
   "previous_run_id": "tr-1793717537752-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-03T15:10:30Z",
-  "updated_at": "2026-11-03T15:16:44.194Z",
+  "updated_at": "2026-11-03T15:16:52.268Z",
   "finished_at": null,
   "current": 0,
   "total": 9,
@@ -58,7 +58,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": "977127837131-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas",
-  "activity": "investigating",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "2e00a1a9eeae",
@@ -117,7 +117,7 @@
     "at": "2026-11-03T14:58:20.200Z"
   },
   "source": "chat",
-  "message": "Rudiger r0 revalidada JIT. Investigación actual contrastada; sin ImageGen ni publicación.",
+  "message": "Rudiger r0: resultado editorial preparado en outbox; esperando aplicación JIT. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2550,6 +2550,17 @@
       "trend_id": "ee213c47d89f",
       "title": "Rudiger",
       "message": "Rudiger r0 revalidada JIT. Investigación actual contrastada; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T15:16:52.268Z",
+      "phase": "persisting",
+      "run_id": "tr-1793718615811-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 9,
+      "trend_id": "ee213c47d89f",
+      "title": "Rudiger",
+      "message": "Rudiger r0: resultado editorial preparado en outbox; esperando aplicación JIT. ImageGen=0."
     }
   ],
   "history": [
