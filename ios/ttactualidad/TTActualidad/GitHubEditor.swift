@@ -3,6 +3,15 @@ import Combine
 import Security
 import UIKit
 
+private final class EditorialRelationsNoRedirect: NSObject, URLSessionTaskDelegate {
+    func urlSession(_ session: URLSession, task: URLSessionTask,
+                    willPerformHTTPRedirection response: HTTPURLResponse,
+                    newRequest request: URLRequest,
+                    completionHandler: @escaping (URLRequest?) -> Void) {
+        completionHandler(nil)
+    }
+}
+
 // Direct GitHub App user authorization. No embedded secret, personal token prompt,
 // Cloudflare Worker or broad GitHub OAuth "repo" scope.
 @MainActor
@@ -342,6 +351,37 @@ final class GitHubEditor: ObservableObject {
     }
 
     var imageInboxConfigured: Bool { imageInboxBaseURL != nil }
+
+    // Only this immutable owner-private endpoint may receive the editor token.
+    // No path, host, redirect target or credential is supplied by content/search.
+    func privateEditorialRelationsRequest(path: String, method: String = "GET",
+                                         jsonBody: Data? = nil) async throws -> (Data, Int) {
+        guard (path == "/v1/snapshot" && method == "GET") ||
+              (path == "/v1/decisions" && method == "POST"),
+              let url = URL(string: "https://ttactualidad.rainyraven22.chatgpt.site/api/editorial-relations" + path)
+        else { throw GitHubError.message("Ruta privada de relaciones no permitida.") }
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 30)
+        request.httpMethod = method
+        request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
+        request.setValue("no-store", forHTTPHeaderField: "Cache-Control")
+        request.setValue("TTActualidad/0.4.53", forHTTPHeaderField: "User-Agent")
+        if let jsonBody {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonBody
+        }
+        let session = URLSession(configuration: .ephemeral,
+                                 delegate: EditorialRelationsNoRedirect(), delegateQueue: nil)
+        defer { session.finishTasksAndInvalidate() }
+        let (bytes, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse,
+              http.url?.scheme == "https",
+              http.url?.host == "ttactualidad.rainyraven22.chatgpt.site",
+              http.url?.path == url.path else {
+            throw GitHubError.message("No hay respuesta privada verificable.")
+        }
+        return (bytes, http.statusCode)
+    }
 
     func privateImageInboxRequest(path: String, method: String = "GET",
                                   jsonBody: Data? = nil) async throws -> (Data, Int) {

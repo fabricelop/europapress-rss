@@ -27,6 +27,7 @@ struct EditorialActions: View {
     @State private var intent = "deleted"
     @State private var outcome = ""
     @State private var showHints = false
+    @State private var showRelations = false
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
@@ -79,6 +80,10 @@ struct EditorialActions: View {
                 if github.authenticated { showHints = true } else { showSettings = true }
             }
                 .disabled(news != nil && news?.status != "LISTA")
+            quickButton("Relaciones", "point.3.connected.trianglepath.dotted") {
+                if github.authenticated { showRelations = true } else { showSettings = true }
+            }
+            .disabled(editorialID.isEmpty)
             HStack(spacing: 7) {
                 quickButton("Crear Foto IA", "photo.badge.plus") {
                     copy(imageOnlyPrompt)
@@ -173,6 +178,11 @@ struct EditorialActions: View {
                     .environmentObject(store)
                     .presentationDetents([.medium, .large])
             }
+        }
+        .sheet(isPresented: $showRelations) {
+            EditorialRelationsView(github: github, scope: EditorialRelationsScope(
+                project: project, id: editorialID, revision: revision, title: title))
+                .presentationDetents([.large])
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?
