@@ -3,48 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793695104407-manual",
-  "previous_run_id": "tr-1793694895596-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T09:38:00+01:00",
-  "updated_at": "2026-11-03T09:44:00+01:00",
-  "finished_at": "2026-11-03T09:44:00+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "run_id": "tr-autoguard-1793696493",
+  "previous_run_id": "tr-1793695104407-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T10:02:00+01:00",
+  "updated_at": "2026-11-03T10:02:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "ed34f5eeccea",
+  "title": "Dirección General de Seguridad",
+  "queue_complete": false,
   "processed_ids": [
     "red-review-a42c8de328095e2e5d5e",
     "red-review-f9d2e974655d598e5496",
     "ca4337605844"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "ed34f5eeccea",
+    "033a07896805"
+  ],
+  "remaining_active_ids": [
+    "ed34f5eeccea",
+    "033a07896805"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 2,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 3
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-a42c8de328095e2e5d5e",
@@ -145,7 +134,7 @@
     "at": "2026-11-03T09:44:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-1793695104407-manual cerrada 3/3: Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores vigentes; durante la barrera entró Jesús de Miguel r0 y quedó explicado con el fallecimiento comunicado por el CD Tenerife, sin remate por sensibilidad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Iniciando pasada tr-autoguard-1793696493: 2 trabajo(s) activo(s); revalidando Dirección General de Seguridad.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1660,6 +1649,17 @@
         "concurrent_convergence": 3
       },
       "message": "Pasada tr-1793695104407-manual cerrada 3/3: Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores vigentes; durante la barrera entró Jesús de Miguel r0 y quedó explicado con el fallecimiento comunicado por el CD Tenerife, sin remate por sensibilidad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T10:02:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793696493",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "ed34f5eeccea",
+      "title": "Dirección General de Seguridad",
+      "message": "Iniciando pasada tr-autoguard-1793696493: 2 trabajo(s) activo(s); revalidando Dirección General de Seguridad."
     }
   ],
   "history": [
@@ -3619,8 +3619,8 @@
       "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
     }
   ],
-  "current_item": "red-review-bd3b564c5b7eb04ccd20",
-  "current_title": "Revisar novedades: Halloween",
+  "current_item": "ed34f5eeccea",
+  "current_title": "Dirección General de Seguridad",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -5460,7 +5460,7 @@
       "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793694655913-manual",
+  "command_id": "tr-autoguard-1793696493",
   "requested_at": "2026-11-03T09:12:30+01:00",
   "runs": [
     {
@@ -6848,6 +6848,17 @@
       "current": 3,
       "total": 3,
       "message": "Pasada tr-1793695104407-manual cerrada 3/3: Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores vigentes; durante la barrera entró Jesús de Miguel r0 y quedó explicado con el fallecimiento comunicado por el CD Tenerife, sin remate por sensibilidad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T10:02:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793696493",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "ed34f5eeccea",
+      "title": "Dirección General de Seguridad",
+      "message": "Iniciando pasada tr-autoguard-1793696493: 2 trabajo(s) activo(s); revalidando Dirección General de Seguridad."
     }
   ],
   "converged_run_ids": [
