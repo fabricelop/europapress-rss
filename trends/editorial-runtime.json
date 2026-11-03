@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793742976079-manual",
+  "run_id": "tr-1793743346303-manual",
   "previous_run_id": "tr-1793742814208-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T21:57:00Z",
-  "updated_at": "2026-11-03T21:59:48.302Z",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T22:02:26.303Z",
+  "updated_at": "2026-11-03T22:04:00.000Z",
   "finished_at": "2026-11-03T21:59:48.302Z",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "e573493d55f2",
+  "title": "#ChampionsLeague",
   "queue_complete": true,
   "processed_ids": [
     "red-review-5331dae929b3cc0542af"
@@ -73,7 +73,7 @@
     "summary": "1/1 cerrada por convergencia JIT: Villarreal updated ya aplicado; cola final 0; sin reexplicaciones; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793742976079-manual cerrada 1/1 por convergencia JIT: la revisión de Villarreal ya quedó review_completed/updated con la nueva ficha trend-update-2454ffeac830bf71aa0b. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain ni status preparing/update. ImageGen=0; publicaciones=0.",
+  "message": "Inicio de pasada manual: 2 preparing/update vigentes en main (#ChampionsLeague r1 y Metropolitano r1), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -6529,6 +6529,17 @@
       "current": 0,
       "total": 5,
       "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T22:04:00.000Z",
+      "phase": "preparing",
+      "run_id": "tr-1793743346303-manual",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "e573493d55f2",
+      "title": "#ChampionsLeague",
+      "message": "Inicio de pasada manual: 2 preparing/update vigentes en main (#ChampionsLeague r1 y Metropolitano r1), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
@@ -9254,7 +9265,7 @@
       "converged_with": "tr-1793735926010-manual"
     }
   ],
-  "command_id": "tr-1793742814208-manual",
+  "command_id": "tr-1793743346303-manual",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
