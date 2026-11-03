@@ -202,7 +202,9 @@ struct TTDashboard: View {
             ImageApprovalInbox(github: github).presentationDetents([.large])
         }
         .sheet(isPresented: $showRelations) {
-            EditorialRelationsView(github: github).presentationDetents([.large])
+            EditorialRelationsView(github: github,
+                                   top30Names: store.snapshot.top30.map(\.name))
+                .presentationDetents([.large])
         }
         .sheet(item: $publicationSheet) { selection in
             PublishedHistorySheet(project: selection.project)
