@@ -1717,6 +1717,15 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793699033179-manual cerrada 2/2 por ejecución y convergencia JIT: Halloween y Aramburu review_completed/unchanged; textos y fechas se conservan. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T10:50:00+01:00",
+      "run_id": "tr-1793698723967-manual",
+      "status": "DONE",
+      "phase": "closing",
+      "current": 3,
+      "total": 3,
+      "message": "Pasada tr-1793698723967-manual cerrada 3/3: Descanse explicada; Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793699033179-manual conserva la propiedad canónica del RUNTRACE."
     }
   ],
   "history": [
@@ -5966,6 +5975,70 @@
       "incidents": [],
       "message": "Pasada tr-1793697150072-manual cerrada 3/3 por convergencia JIT: #GMMTVNEXT y Muchísima ya quedaron explained y Racing review_completed/unchanged en la ejecución concurrente; no se duplicó ninguna escritura. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T10:17:00+01:00"
+    },
+    {
+      "run_id": "tr-1793698723967-manual",
+      "command_id": "tr-1793698723967-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T10:40:00+01:00",
+      "finished_at": "2026-11-03T10:50:00+01:00",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "34f0363eea88",
+          "revision": 0,
+          "name": "Descanse",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "5820cf581b7250ae3c28eab63da3d56913c6ff05",
+          "explained_at": "2026-11-03T10:42:00+01:00",
+          "reason": "Contexto actual verificado: mensajes de pésame tras el fallecimiento de Jesús de Miguel; fecha y marcador 2-2 del Tenerife-Andorra comprobados."
+        },
+        {
+          "id": "red-review-f2e2d59a1d1b083d750c",
+          "revision": 0,
+          "name": "Revisar novedades: Halloween",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "e35de36f6a7fe90a01b639bfb9bef35f9652f523",
+          "reason": "La explicación vigente ya incorpora el balance posterior de Halloween/Blocus; sin novedad material posterior."
+        },
+        {
+          "id": "red-review-d1c3c48cd3987e0d29a9",
+          "revision": 0,
+          "name": "Revisar novedades: Aramburu",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "d59b031dcedc74479a2f82c3d7c44f45dacc1467",
+          "reason": "La explicación vigente ya incorpora la confirmación del CTA sobre el desfase del Connected Ball y el toque de Aramburu; sin novedad material posterior."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793698723967-manual cerrada 3/3: Descanse explicada; Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793699033179-manual conserva la propiedad canónica del RUNTRACE.",
+      "at": "2026-11-03T10:50:00+01:00",
+      "converged_with": "tr-1793699033179-manual"
     }
   ],
   "command_id": "tr-1793697150072-manual",
@@ -7226,6 +7299,70 @@
       "incidents": [],
       "message": "Pasada tr-1793697150072-manual cerrada 3/3 por convergencia JIT: #GMMTVNEXT y Muchísima ya quedaron explained y Racing review_completed/unchanged en la ejecución concurrente; no se duplicó ninguna escritura. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T10:17:00+01:00"
+    },
+    {
+      "run_id": "tr-1793698723967-manual",
+      "command_id": "tr-1793698723967-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T10:40:00+01:00",
+      "finished_at": "2026-11-03T10:50:00+01:00",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "34f0363eea88",
+          "revision": 0,
+          "name": "Descanse",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "5820cf581b7250ae3c28eab63da3d56913c6ff05",
+          "explained_at": "2026-11-03T10:42:00+01:00",
+          "reason": "Contexto actual verificado: mensajes de pésame tras el fallecimiento de Jesús de Miguel; fecha y marcador 2-2 del Tenerife-Andorra comprobados."
+        },
+        {
+          "id": "red-review-f2e2d59a1d1b083d750c",
+          "revision": 0,
+          "name": "Revisar novedades: Halloween",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "e35de36f6a7fe90a01b639bfb9bef35f9652f523",
+          "reason": "La explicación vigente ya incorpora el balance posterior de Halloween/Blocus; sin novedad material posterior."
+        },
+        {
+          "id": "red-review-d1c3c48cd3987e0d29a9",
+          "revision": 0,
+          "name": "Revisar novedades: Aramburu",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "d59b031dcedc74479a2f82c3d7c44f45dacc1467",
+          "reason": "La explicación vigente ya incorpora la confirmación del CTA sobre el desfase del Connected Ball y el toque de Aramburu; sin novedad material posterior."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793698723967-manual cerrada 3/3: Descanse explicada; Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793699033179-manual conserva la propiedad canónica del RUNTRACE.",
+      "at": "2026-11-03T10:50:00+01:00",
+      "converged_with": "tr-1793699033179-manual"
     }
   ],
   "activity_log": [
@@ -7647,6 +7784,7 @@
     "tr-1793689327846-manual",
     "tr-autoguard-1793693463",
     "tr-autoguard-1793696493",
-    "tr-1793696945461-manual"
+    "tr-1793696945461-manual",
+    "tr-1793698723967-manual"
   ]
 }
