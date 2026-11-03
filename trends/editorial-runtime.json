@@ -6,14 +6,14 @@
   "run_id": "tr-1793702646001-manual",
   "previous_run_id": "tr-1793702191137-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T11:44:06+01:00",
-  "updated_at": "2026-11-03T11:46:00+01:00",
+  "updated_at": "2026-11-03T11:50:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "red-review-ca984f801cd012b43bd9",
-  "title": "Revisar novedades: #AccidenteFerroviario",
+  "trend_id": "red-review-f1fadc7c92bc5acac655",
+  "title": "Revisar novedades: La RFEF",
   "queue_complete": false,
   "processed_ids": [
     "026a3977ac74",
@@ -21,36 +21,34 @@
     "f9afae6ceb1f"
   ],
   "remaining_ids": [
-    "red-review-ca984f801cd012b43bd9",
     "red-review-f1fadc7c92bc5acac655"
   ],
   "remaining_active_ids": [
-    "red-review-ca984f801cd012b43bd9",
     "red-review-f1fadc7c92bc5acac655"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "01ac1d20b1fb",
@@ -197,7 +195,7 @@
     "at": "2026-11-03T11:20:00+01:00"
   },
   "source": "chat",
-  "message": "Inicio tr-1793702646001-manual: 2 revisiones review_red preparing vigentes en main (#AccidenteFerroviario y La RFEF). Revalidación JIT por id+revision; sin ImageGen ni publicación.",
+  "message": "Revisando novedades: La RFEF r0. Detectado episodio distinto y posterior: la RFEF ha suspendido los partidos de Copa del Rey y Copa de la Reina del 3 de noviembre tras el fallecimiento de Jesús de Miguel.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1865,6 +1863,17 @@
       "trend_id": "red-review-ca984f801cd012b43bd9",
       "title": "Revisar novedades: #AccidenteFerroviario",
       "message": "Inicio tr-1793702646001-manual: 2 revisiones review_red preparing vigentes en main (#AccidenteFerroviario y La RFEF). Revalidación JIT por id+revision; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T11:50:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793702646001-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 2,
+      "trend_id": "red-review-f1fadc7c92bc5acac655",
+      "title": "Revisar novedades: La RFEF",
+      "message": "Revisando novedades: La RFEF r0. Detectado episodio distinto y posterior: la RFEF ha suspendido los partidos de Copa del Rey y Copa de la Reina del 3 de noviembre tras el fallecimiento de Jesús de Miguel."
     }
   ],
   "history": [
