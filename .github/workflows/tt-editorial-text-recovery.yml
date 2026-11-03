@@ -1,0 +1,60 @@
+name: TT editorial text-first recovery
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'
+  push:
+    branches: [main]
+    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml']
+  pull_request:
+    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml']
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+concurrency:
+  group: tt-autorepair-coordinator
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/tt_editorial_run_guard.py
+            /shared/test_editorial_text_first.py
+            /ttittulares/editorial-queue.json
+            /ttittulares/prepared.json
+            /ttittulares/decisions.json
+            /trends/editorial-queue.json
+            /trends/telegram-manual-explained.json
+            /trends/mobile-decisions.json
+            /trends/editorial-runtime.json
+            /telegram/editorial-run-guard.json
+      - name: Verify text-only recovery
+        run: |
+          python3 shared/tt_editorial_run_guard.py selftest
+          python3 -m unittest discover -s shared -p 'test_editorial_text_first.py' -v
+      - name: Recover only authoritative editorial work
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4 5; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 shared/tt_editorial_run_guard.py
+            git add --sparse telegram/editorial-run-guard.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Record text-first editorial recovery'
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$attempt"
+          done
+          exit 1

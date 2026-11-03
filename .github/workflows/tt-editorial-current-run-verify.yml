@@ -18,6 +18,13 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/
+            /tests/
+            /trends/*.py
+            /.github/workflows/
       - name: Verify active vs previous and nonduplicating watchdog
         run: |
           python3 -m py_compile shared/tt_editorial_run_guard.py

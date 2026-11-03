@@ -26,6 +26,7 @@ RETRY_AFTER=timedelta(minutes=15)
 ACTIVE_TTL=timedelta(minutes=12)
 RECENT_DONE_GRACE=timedelta(minutes=5)
 MAX_RETRIES=3
+SLOW_RETRY_AFTER=timedelta(minutes=60)
 TERMINAL={"deleted","dismissed","published","removed","delete_pending","delete_failed"}
 CONFIG={
     "ttittulares":{
@@ -86,24 +87,23 @@ def api(path,method="GET",payload=None,branch=None):
 def latest_trace(project):
     cfg=CONFIG[project]
     issue=api("issues/"+str(cfg["issue"]))
-    count=int(issue.get("comments") or 0)
-    if not count:return {}
-    # Get only the last page; a stream of old outbox comments must not
-    # make us believe the editor is RUNNING today.
-    page=max(1,(count-1)//20+1)
-    comments=api("issues/"+str(cfg["issue"])+"/comments?per_page=20&page="+str(page))
-    for item in reversed(comments):
-        body=str(item.get("body") or "")
-        if not body.startswith(cfg["trace"]+"\n"):continue
-        try:
-            trace=json.loads(body.split("\n",1)[1])
-        except ValueError:continue
-        if not isinstance(trace,dict):continue
-        trace_time=moment(trace.get("updated_at") or trace.get("finished_at") or item.get("created_at"))
-        if trace_time:return {"id":trace.get("run_id"),"status":str(trace.get("status") or ""),
-           "started_at":trace.get("started_at"),"updated_at":trace_time.isoformat(),
-           "finished_at":trace.get("finished_at"),"source":"github_pr_trace"}
-    return {}
+    if not int(issue.get("comments") or 0):return {}
+    # Comments may be edited in place. A last-created-page read misses a live
+    # RUNTRACE updated on an old comment and can launch duplicate editors.
+    since=(datetime.now(timezone.utc)-timedelta(hours=6)).isoformat()
+    found=[]
+    for page in range(1,4):
+        comments=api("issues/"+str(cfg["issue"])+"/comments?per_page=100&page="+str(page)+"&since="+urllib.parse.quote(since,safe=""))
+        for item in comments:
+            body=str(item.get("body") or "")
+            if not body.startswith(cfg["trace"]+"\n"):continue
+            try:trace=json.loads(body.split("\n",1)[1])
+            except ValueError:continue
+            if not isinstance(trace,dict):continue
+            trace_time=moment(trace.get("updated_at") or trace.get("finished_at") or item.get("updated_at"))
+            if trace_time:found.append((trace_time,{"id":trace.get("run_id"),"status":str(trace.get("status") or ""),"started_at":trace.get("started_at"),"updated_at":trace_time.isoformat(),"finished_at":trace.get("finished_at"),"source":"github_pr_trace"}))
+        if len(comments)<100:break
+    return max(found,key=lambda value:value[0])[1] if found else {}
 
 def known_run(project):
     trace=latest_trace(project)
@@ -142,51 +142,41 @@ def known_run(project):
     return trace
 
 def pending(project):
+    """Text-only truth: private/image/Telegram delivery never holds Listas open."""
     cfg=CONFIG[project]
-    q=load(cfg["queue"],{"items":[]}).get("items") or []
-    d=load(cfg["ledger"],{"items":[]}).get("items") or []
-    checkpoint=load("telegram/lifecycle-baseline.json",{})
-    ps=(checkpoint.get("project_state") or {}).get(project,{})
-    watermark=int(ps.get("historic_max_message_id") or cfg["cutoff"])
-    cutoff=moment(checkpoint.get("activated_at"))
-    protected={str(x) for x in ps.get("preserve_pending_ids",[])}
+    if not (ROOT/cfg["queue"]).is_file():
+        raise RuntimeError("AUTHORITATIVE_EDITORIAL_QUEUE_UNAVAILABLE")
+    queue=load(cfg["queue"],{})
+    rows=list(queue.get("items") or [])
+    news=project=="ttittulares"
+    prepared=load("ttittulares/prepared.json" if news else "trends/telegram-manual-explained.json",{})
+    decisions=load("ttittulares/decisions.json" if news else "trends/mobile-decisions.json",{})
+    ident=lambda row:str(row.get("event_id") or row.get("id") or "")
+    revision=lambda row:int(row.get("revision") or 0)
+    closed={}
+    for row in decisions.get("items",[]):
+        if str(row.get("status") or "").lower() in TERMINAL:
+            closed[ident(row)]=max(closed.get(ident(row),-1),int(row.get("revision") or (1 if news else 0)))
+    ready={}
+    for row in prepared.get("items",[]):
+        text=(row.get("tweet") or {}).get("text") if news else row.get("explanation")
+        if ident(row) and str(text or "").strip() and not row.get("rewrite_pending"):
+            ready[ident(row)]=max(ready.get(ident(row),-1),revision(row))
+        if news and row.get("rewrite_pending"):
+            rows.append(dict(row,status="UPDATE_PROCESSING",revision=row.get("rewrite_target_revision",revision(row)+1),requested_at=row.get("rewrite_requested_at") or row.get("updated_at")))
     by_id={}
-    closed=set()
-    finalized=set()
-    for entry in d:
-        eid=str(entry.get("event_id") or "")
-        mid=int(entry.get("telegram_message_id") or 0)
-        if mid<=watermark or not eid:continue
-        state=str(entry.get("status") or "").lower()
-        if state in TERMINAL:closed.add(eid)
-        if state=="sent" and entry.get("final") is True:finalized.add(eid)
-        if state=="sent" and entry.get("final") is False:
-            by_id[eid]={"id":eid,
-              "start":entry.get("started_at") or entry.get("delivered_at"),
-              "title":entry.get("name") or entry.get("title") or eid,
-              "reason":"telegram_provisional"}
-    extra=load("ttittulares/status.json",{}) if project=="ttittulares" else load("trends/requests.json",{})
-    if project=="ttittulares":
-        q=list(q)+[dict(x,status="processing") for x in extra.get("processing_items",[])]
-    else:
-        q=list(q)+[x for x in extra.get("requests",[]) if
-                    str(x.get("status") or "").lower() in {"preparing","update","ready"}]
-    for row in q:
-        eid=str(row.get("id") or row.get("event_id") or "")
-        status=str(row.get("status") or "").lower()
-        if not eid or eid in closed or eid in finalized or status not in {
-                "processing","preparing","update","ready","in_progress","explained"}:
+    active={"processing","update_processing"} if news else {"preparing","update"}
+    for row in rows:
+        eid=ident(row)
+        if not eid or str(row.get("status") or "").lower() not in active or row.get("listas_grouping_request"):
             continue
-        at=row.get("selected_at") or row.get("requested_at")
-        started=moment(at)
-        if cutoff and eid not in protected and (not started or started<=cutoff):continue
-        if eid not in by_id:
-            by_id[eid]={"id":eid,"start":at,
-              "title":row.get("name") or row.get("title") or eid,
-              "reason":"app_awaiting_editorial"}
-    # An empty queue can conceal an unresolved older provisional. No omission.
-    for eid in closed|finalized:by_id.pop(eid,None)
-    return sorted(by_id.values(),key=lambda x:(moment(x.get("start")) or datetime.max.replace(tzinfo=timezone.utc)))
+        rev=revision(row)
+        if ready.get(eid,-1)>=rev or closed.get(eid,-1)>=rev:
+            continue
+        key=eid+":r"+str(rev)
+        at=row.get("selected_at") or row.get("requested_at") or row.get("created_at") or queue.get("updated_at")
+        by_id[key]={"id":eid,"revision":rev,"start":at,"title":row.get("name") or row.get("title") or eid,"reason":"text_awaiting_editorial"}
+    return sorted(by_id.values(),key=lambda x:(moment(x.get("start")) or datetime.max.replace(tzinfo=timezone.utc),x["id"],x["revision"]))
 
 def evaluate(project,now,previous,command=None,run=None,rows=None):
     rows=pending(project) if rows is None else rows
@@ -211,7 +201,7 @@ def evaluate(project,now,previous,command=None,run=None,rows=None):
     if not oldest:
         out["status"]="missing_event_timestamp"
         return out
-    key=hashlib.sha256("|".join(sorted(x["id"] for x in rows)).encode()).hexdigest()[:16]
+    key=hashlib.sha256("|".join(sorted(x["id"]+":r"+str(x.get("revision",0)) for x in rows)).encode()).hexdigest()[:16]
     out["backlog_signature"]=key
     out["expected_start_by"]=(oldest+START_AFTER).isoformat()
     out["attempts"]=(int(previous.get("attempts") or 0)
@@ -243,6 +233,10 @@ def evaluate(project,now,previous,command=None,run=None,rows=None):
     out["attempts"]=tries
     if tries>=MAX_RETRIES:
         out["status"]="editorial_executor_unresponsive"
+        out["retry_after"]=(last+SLOW_RETRY_AFTER).isoformat() if last else now.isoformat()
+        if last and now-last<SLOW_RETRY_AFTER:
+            return out
+        out.update(status="editorial_recovery_retry",should_dispatch=True)
         return out
     if last and previous_key==key and now-last<RETRY_AFTER:
         out["status"]="retry_cooldown";return out
@@ -323,7 +317,7 @@ def check(now=None,fix=True,trace_fetch=known_run,control_fetch=None,dispatch=re
                   "pending_count":len(pending(project)),
                   "should_dispatch":False}
     save(REPORT,{"version":1,"checked_at":now.isoformat(),"projects":outcomes,
-       "policy":{"due_minutes":5,"ack_grace_minutes":15,"max_requests_per_backlog":3,
+       "policy":{"due_minutes":5,"ack_grace_minutes":15,"fast_retry_limit":3,"slow_retry_minutes":60,"text_ready_independent_of_images":True,
                  "no_auto_editorial_content":True,"execution_requires_confirmation":True}})
     print("TT_EDITORIAL_RUN_GUARD "+json.dumps({k:{
         "status":v["status"],"pending":v.get("pending_count",0),
@@ -393,7 +387,8 @@ def selftest():
             done=evaluate("ttittulares",now,{},run={"status":"DONE",
                     "finished_at":(now-timedelta(minutes=2)).isoformat()},command=commands["ttittulares"])
             assert done["status"]=="editorial_run_finished_delivery_unverified",done
-            # Terminal Telegram decisions suppress re-trigger even with a stale APP queue.
+            # Public editorial completion, never a Telegram/image ACK, ends work.
+            save("ttittulares/prepared.json",{"items":[{"event_id":"a","revision":0,"tweet":{"text":"Texto validado"}}]})
             save("telegram/ttittulares-deliveries.json",{"items":[
                 {"event_id":"a","telegram_message_id":3582,"status":"deleted","final":False}]})
             assert pending("ttittulares")==[]
@@ -403,3 +398,4 @@ def selftest():
 if __name__=="__main__":
     if "selftest" in sys.argv:selftest()
     else:check()
+
