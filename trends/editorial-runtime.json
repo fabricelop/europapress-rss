@@ -5,151 +5,123 @@
   "canonical": true,
   "run_id": "tr-1793693801397-manual",
   "previous_run_id": "tr-autoguard-1793693463",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T09:16:41.397+01:00",
-  "updated_at": "2026-11-03T09:20:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T09:21:00+01:00",
+  "finished_at": "2026-11-03T09:21:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-bd3b564c5b7eb04ccd20",
-  "title": "Revisar novedades: Halloween",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-bd3b564c5b7eb04ccd20",
     "red-review-a8889f3e3c2b543de4b4"
   ],
-  "remaining_active_ids": [
-    "red-review-bd3b564c5b7eb04ccd20",
-    "red-review-a8889f3e3c2b543de4b4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 2,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "4b85f530992d",
+      "id": "red-review-bd3b564c5b7eb04ccd20",
       "revision": 0,
-      "name": "Puerta del Sol",
-      "outcome": "explained",
+      "name": "Revisar novedades: Halloween",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:15:00+01:00"
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+      "reason": "Sin novedad material posterior que cambie la explicación vigente."
     },
     {
-      "id": "223974f8f55f",
+      "id": "red-review-a8889f3e3c2b543de4b4",
       "revision": 0,
-      "name": "Qeshm",
-      "outcome": "explained",
+      "name": "Revisar novedades: Aramburu",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:16:00+01:00"
-    },
-    {
-      "id": "515388bfd4fc",
-      "revision": 0,
-      "name": "#LaHora3N",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:17:00+01:00",
-      "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
-    },
-    {
-      "id": "938baf64b989",
-      "revision": 0,
-      "name": "Lc 14",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:18:00+01:00"
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+      "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T09:16:41.397+01:00",
-  "last_completed_at": "2026-11-03T09:19:00+01:00",
+  "last_completed_at": "2026-11-03T09:21:00+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793693463",
-    "command_id": "tr-autoguard-1793693463",
+    "run_id": "tr-1793693801397-manual",
+    "command_id": "tr-1793693801397-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T09:12:30+01:00",
-    "finished_at": "2026-11-03T09:19:00+01:00",
+    "started_at": "2026-11-03T09:16:41.397+01:00",
+    "finished_at": "2026-11-03T09:21:00+01:00",
     "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
-      "explained": 4,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 0,
+      "unchanged_reviews": 2,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
     "outcomes": [
       {
-        "id": "4b85f530992d",
+        "id": "red-review-bd3b564c5b7eb04ccd20",
         "revision": 0,
-        "name": "Puerta del Sol",
-        "outcome": "explained",
+        "name": "Revisar novedades: Halloween",
+        "outcome": "unchanged",
         "applied": true,
-        "via": "editorial_outbox_applied",
-        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-        "explained_at": "2026-11-03T09:15:00+01:00"
+        "via": "concurrent_convergence_jit",
+        "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+        "reason": "Sin novedad material posterior que cambie la explicación vigente."
       },
       {
-        "id": "223974f8f55f",
+        "id": "red-review-a8889f3e3c2b543de4b4",
         "revision": 0,
-        "name": "Qeshm",
-        "outcome": "explained",
+        "name": "Revisar novedades: Aramburu",
+        "outcome": "unchanged",
         "applied": true,
-        "via": "editorial_outbox_applied",
-        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-        "explained_at": "2026-11-03T09:16:00+01:00"
-      },
-      {
-        "id": "515388bfd4fc",
-        "revision": 0,
-        "name": "#LaHora3N",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-        "explained_at": "2026-11-03T09:17:00+01:00",
-        "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
-      },
-      {
-        "id": "938baf64b989",
-        "revision": 0,
-        "name": "Lc 14",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-        "explained_at": "2026-11-03T09:18:00+01:00"
+        "via": "concurrent_convergence_jit",
+        "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+        "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Revisando novedades: la cobertura posterior sigue vinculada a la misma celebración de Halloween y a sus prolongaciones inmediatas; no aparece un episodio material distinto.",
+  "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1478,6 +1450,15 @@
       "trend_id": "red-review-bd3b564c5b7eb04ccd20",
       "title": "Revisar novedades: Halloween",
       "message": "Revisando novedades: la cobertura posterior sigue vinculada a la misma celebración de Halloween y a sus prolongaciones inmediatas; no aparece un episodio material distinto."
+    },
+    {
+      "at": "2026-11-03T09:21:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793693801397-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3206,7 +3187,7 @@
     {
       "run_id": "tr-autoguard-1793693463",
       "command_id": "tr-autoguard-1793693463",
-      "canonical": true,
+      "canonical": false,
       "status": "DONE",
       "started_at": "2026-11-03T09:12:30+01:00",
       "finished_at": "2026-11-03T09:19:00+01:00",
@@ -3273,52 +3254,83 @@
       ],
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La barrera posterior detectó dos review_red nuevas, absorbidas y cerradas por la ejecución sucesora tr-1793693801397-manual.",
       "at": "2026-11-03T09:19:00+01:00"
+    },
+    {
+      "run_id": "tr-1793693801397-manual",
+      "command_id": "tr-1793693801397-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T09:16:41.397+01:00",
+      "finished_at": "2026-11-03T09:21:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-bd3b564c5b7eb04ccd20",
+          "revision": 0,
+          "name": "Revisar novedades: Halloween",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+          "reason": "Sin novedad material posterior que cambie la explicación vigente."
+        },
+        {
+          "id": "red-review-a8889f3e3c2b543de4b4",
+          "revision": 0,
+          "name": "Revisar novedades: Aramburu",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+          "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T09:21:00+01:00"
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "4b85f530992d",
+      "id": "red-review-bd3b564c5b7eb04ccd20",
       "revision": 0,
-      "name": "Puerta del Sol",
-      "outcome": "explained",
+      "name": "Revisar novedades: Halloween",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:15:00+01:00"
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+      "reason": "Sin novedad material posterior que cambie la explicación vigente."
     },
     {
-      "id": "223974f8f55f",
+      "id": "red-review-a8889f3e3c2b543de4b4",
       "revision": 0,
-      "name": "Qeshm",
-      "outcome": "explained",
+      "name": "Revisar novedades: Aramburu",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:16:00+01:00"
-    },
-    {
-      "id": "515388bfd4fc",
-      "revision": 0,
-      "name": "#LaHora3N",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:17:00+01:00",
-      "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
-    },
-    {
-      "id": "938baf64b989",
-      "revision": 0,
-      "name": "Lc 14",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
-      "explained_at": "2026-11-03T09:18:00+01:00"
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+      "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
     }
   ],
   "current_item": "red-review-bd3b564c5b7eb04ccd20",
@@ -5041,7 +5053,7 @@
     {
       "run_id": "tr-autoguard-1793693463",
       "command_id": "tr-autoguard-1793693463",
-      "canonical": true,
+      "canonical": false,
       "status": "DONE",
       "started_at": "2026-11-03T09:12:30+01:00",
       "finished_at": "2026-11-03T09:19:00+01:00",
@@ -5108,7 +5120,58 @@
       ],
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La barrera posterior detectó dos review_red nuevas, absorbidas y cerradas por la ejecución sucesora tr-1793693801397-manual."
+    },
+    {
+      "run_id": "tr-1793693801397-manual",
+      "command_id": "tr-1793693801397-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T09:16:41.397+01:00",
+      "finished_at": "2026-11-03T09:21:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-bd3b564c5b7eb04ccd20",
+          "revision": 0,
+          "name": "Revisar novedades: Halloween",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+          "reason": "Sin novedad material posterior que cambie la explicación vigente."
+        },
+        {
+          "id": "red-review-a8889f3e3c2b543de4b4",
+          "revision": 0,
+          "name": "Revisar novedades: Aramburu",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+          "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "command_id": "tr-1793693801397-manual",
@@ -5996,7 +6059,7 @@
     {
       "run_id": "tr-autoguard-1793693463",
       "command_id": "tr-autoguard-1793693463",
-      "canonical": true,
+      "canonical": false,
       "status": "DONE",
       "started_at": "2026-11-03T09:12:30+01:00",
       "finished_at": "2026-11-03T09:19:00+01:00",
@@ -6063,18 +6126,58 @@
       ],
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La barrera posterior detectó dos review_red nuevas, absorbidas y cerradas por la ejecución sucesora tr-1793693801397-manual."
     },
     {
       "run_id": "tr-1793693801397-manual",
       "command_id": "tr-1793693801397-manual",
       "canonical": true,
-      "status": "RUNNING",
+      "status": "DONE",
       "started_at": "2026-11-03T09:16:41.397+01:00",
-      "updated_at": "2026-11-03T09:20:00+01:00",
-      "current": 0,
-      "total": 2,
-      "message": "Inicio manual: 2 review_red vigentes en main (Halloween y Aramburu), en orden de cola y con revalidación JIT; sin ImageGen ni publicación."
+      "finished_at": "2026-11-03T09:21:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-bd3b564c5b7eb04ccd20",
+          "revision": 0,
+          "name": "Revisar novedades: Halloween",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+          "reason": "Sin novedad material posterior que cambie la explicación vigente."
+        },
+        {
+          "id": "red-review-a8889f3e3c2b543de4b4",
+          "revision": 0,
+          "name": "Revisar novedades: Aramburu",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
+          "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "activity_log": [
@@ -6316,10 +6419,20 @@
       "trend_id": "red-review-bd3b564c5b7eb04ccd20",
       "title": "Revisar novedades: Halloween",
       "message": "Revisando novedades: la cobertura posterior sigue vinculada a la misma celebración de Halloween y a sus prolongaciones inmediatas; no aparece un episodio material distinto."
+    },
+    {
+      "at": "2026-11-03T09:21:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793693801397-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
     "tr-1793688569006-manual",
-    "tr-1793689327846-manual"
+    "tr-1793689327846-manual",
+    "tr-autoguard-1793693463"
   ]
 }
