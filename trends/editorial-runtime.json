@@ -3,46 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793698723967-manual",
-  "previous_run_id": "tr-1793697150072-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-03T10:40:00+01:00",
-  "updated_at": "2026-11-03T10:43:05+01:00",
-  "finished_at": "2026-11-03T10:17:00+01:00",
+  "run_id": "tr-1793699033179-manual",
+  "previous_run_id": "tr-1793698723967-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T10:44:00+01:00",
+  "updated_at": "2026-11-03T10:44:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "34f0363eea88"
+  "total": 2,
+  "trend_id": "red-review-f2e2d59a1d1b083d750c",
+  "title": "Revisar novedades: Halloween",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-f2e2d59a1d1b083d750c",
+    "red-review-d1c3c48cd3987e0d29a9"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-f2e2d59a1d1b083d750c",
+    "red-review-d1c3c48cd3987e0d29a9"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "e0f6e33a38dc",
@@ -139,7 +143,7 @@
     "at": "2026-11-03T10:17:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-1793697150072-manual cerrada 3/3 por convergencia JIT: #GMMTVNEXT y Muchísima ya quedaron explained y Racing review_completed/unchanged en la ejecución concurrente; no se duplicó ninguna escritura. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793699033179-manual: 2 revisiones review_red preparing vigentes en main (Halloween y Aramburu), por orden de cola y con revalidación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1718,6 +1722,17 @@
       "current": 7,
       "total": 7,
       "message": "Pasada tr-autoguard-1793696493 cerrada 7/7 por ejecución y convergencia: Dirección General de Seguridad, Delegación del Gobierno, Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final heredada y revalidada con la ejecución sucesora tr-1793696945461-manual: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico se preserva para la ejecución manual más nueva."
+    },
+    {
+      "at": "2026-11-03T10:44:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793699033179-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-f2e2d59a1d1b083d750c",
+      "title": "Revisar novedades: Halloween",
+      "message": "Inicio tr-1793699033179-manual: 2 revisiones review_red preparing vigentes en main (Halloween y Aramburu), por orden de cola y con revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
