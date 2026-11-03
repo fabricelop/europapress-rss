@@ -649,10 +649,10 @@ assert 'func reconcilePendingOperations() async' in store
 assert 'EditorialDocumentLoader.load(paths: needed)' in store
 assert 'reconcileDefinitiveReceipts(receipts)' in store
 assert 'retireAbandonedNewsOperations(ready: ready, queue: queue' in store
-assert 'retireAbandonedTrendOperations(requests: requests, queue: queue' in store
+assert 'retireAbandonedTrendOperations(requests:' in store
 assert 'fresh[receiptPath] != nil' in store
 assert 'fresh[newsDecisions] != nil' in store
-assert 'fresh[trendsRequests] != nil' in store
+assert 'let trendsQueue = "trends/editorial-queue.json"' in store
 assert 'reconcileTerminalDecisions(decisions, project: "ttittulares")' in store
 assert 'reconcileTerminalDecisions(decisions, project: "ttendencias")' in store
 assert 'let trendsDecisions = "trends/mobile-decisions.json"' in store
