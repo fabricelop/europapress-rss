@@ -289,7 +289,7 @@ struct TTDashboard: View {
                 Image(systemName: "photo.on.rectangle.angled")
                     .foregroundStyle(TTTheme.teal)
                     .font(.system(size: 20))
-                    .frame(width: 35, height: 35)
+                    .frame(width: 44, height: 44)
                     .background(TTTheme.panel, in: Circle())
             }
             .accessibilityLabel("Imágenes pendientes")
@@ -297,7 +297,7 @@ struct TTDashboard: View {
                 Image(systemName: github.authenticated ? "checkmark.shield.fill" : "person.crop.circle.badge.questionmark")
                     .foregroundStyle(github.authenticated ? TTTheme.teal : TTTheme.muted)
                     .font(.system(size: 20))
-                    .frame(width: 35, height: 35)
+                    .frame(width: 44, height: 44)
                     .background(TTTheme.panel, in: Circle())
             }
             .accessibilityLabel("Conexión GitHub")
@@ -310,7 +310,7 @@ struct TTDashboard: View {
                             .font(.system(size: 19, weight: .bold))
                     }
                 }
-                .frame(width: 35, height: 35)
+                .frame(width: 44, height: 44)
                 .background(TTTheme.panel, in: Circle())
             }
             .tint(TTTheme.teal)
