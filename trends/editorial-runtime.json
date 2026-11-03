@@ -3,30 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793745926226-manual",
-  "previous_run_id": "tr-1793745388331-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-03T23:45:30+01:00",
-  "updated_at": "2026-11-03T23:51:47+01:00",
+  "run_id": "tr-1793746342613-manual",
+  "previous_run_id": "tr-1793745926226-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T23:53:00+01:00",
+  "updated_at": "2026-11-03T23:53:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "c93d8047df91",
-    "f21e3899c88b"
+  "trend_id": "red-review-f4a3a4525c7a5aaeb4af",
+  "title": "Revisar novedades: Rufián",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-f4a3a4525c7a5aaeb4af",
+    "red-review-57cb9cfcbb7a836792b2"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-f4a3a4525c7a5aaeb4af",
+    "red-review-57cb9cfcbb7a836792b2"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Inicio tr-1793745926226-manual: 1 trabajo preparing/update vigente en main (Le Normand r0); validación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "summary": "Inicio tr-1793746342613-manual: 2 revisiones review_red preparing vigentes en main (Rufián y Accidente de Urda). Validación JIT antes de investigar y persistir; ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T23:51:47+01:00",
@@ -46,7 +49,7 @@
     "summary": "Pasada 2/2 completada: Cristina Fernández Cubas review_red r0 unchanged; Pepa Millán review_red r0 updated como continuidad en trend-update-14b8db0da15fd78b3b85. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Le Normand r0 y Sorloth r0 investigados y redactados desde cero; outboxes oficiales creados y workflow de aplicación en curso. Sin ImageGen ni publicación.",
+  "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Rufián y Accidente de Urda). Revalidación JIT por id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3899,6 +3902,17 @@
       "trend_id": null,
       "title": null,
       "message": "Le Normand r0 y Sorloth r0 investigados y redactados desde cero; outboxes oficiales creados y workflow de aplicación en curso. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T23:53:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793746342613-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-f4a3a4525c7a5aaeb4af",
+      "title": "Revisar novedades: Rufián",
+      "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Rufián y Accidente de Urda). Revalidación JIT por id+revision; sin ImageGen ni publicación."
     }
   ],
   "history": [
