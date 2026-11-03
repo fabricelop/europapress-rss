@@ -31,6 +31,39 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertNil(object["rank"])
     }
 
+    func testCanonicalRelationDoesNotSuggestAlreadyLinkedPairAgain() throws {
+        let payload = #"""
+        {"items":[
+          {"id":"suggestion","news":{"id":"n1","revision":2,"episodeFingerprint":"N","title":"Noticia","text":"Hechos"},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tema","text":"Explicación"},"state":"suggested","origin":"automatic","reason":"Similar"},
+          {"id":"link","news":{"id":"n1","revision":2,"episodeFingerprint":"N","title":"Noticia","text":"Hechos"},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tema","text":"Explicación"},"state":"linked","origin":"manual","reason":"Aprobada"},
+          {"id":"other-episode","news":{"id":"n1","revision":2,"episodeFingerprint":"N2","title":"Noticia","text":"Otros hechos"},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tema","text":"Explicación"},"state":"suggested","origin":"automatic","reason":"Otro caso"}
+        ],"news":[],"trends":[]}
+        """#
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+                                               from: Data(payload.utf8))
+        let canonical = EditorialRelationsPolicy.canonical(snapshot.items)
+        XCTAssertEqual(canonical.count, 2)
+        XCTAssertEqual(canonical[0].state, "linked")
+        XCTAssertEqual(canonical[0].origin, "manual")
+        XCTAssertEqual(canonical[1].state, "suggested")
+        XCTAssertEqual(canonical[1].news.episodeFingerprint, "N2")
+    }
+
+    func testManualBlockPreventsDuplicateAutomaticRelink() throws {
+        let payload = #"""
+        {"items":[
+          {"id":"auto","news":{"id":"n1","revision":1,"episodeFingerprint":"N","title":"Noticia","text":""},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tendencia","text":""},"state":"linked","origin":"automatic","reason":""},
+          {"id":"veto","news":{"id":"n1","revision":1,"episodeFingerprint":"N","title":"Noticia","text":""},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tendencia","text":""},"state":"blocked","origin":"manual","reason":""}
+        ],"news":[],"trends":[]}
+        """#
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+                                               from: Data(payload.utf8))
+        let canonical = EditorialRelationsPolicy.canonical(snapshot.items)
+        XCTAssertEqual(canonical.count, 1)
+        XCTAssertEqual(canonical[0].state, "blocked")
+        XCTAssertEqual(canonical[0].id, "veto")
+    }
+
     func testOnlyConfirmedDecisionCountsAsSaved() {
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "linked", relationId: "r"), action: "link"))
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "blocked", relationId: "r"), action: "unlink"))
