@@ -3,26 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793696493",
-  "previous_run_id": "tr-1793695104407-manual",
-  "status": "waiting",
-  "phase": "investigating",
-  "started_at": "2026-11-03T10:02:00+01:00",
-  "updated_at": "2026-11-03T10:15:12+01:00",
+  "run_id": "tr-1793697150072-manual",
+  "previous_run_id": "tr-autoguard-1793696493",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T10:16:00+01:00",
+  "updated_at": "2026-11-03T10:16:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 7,
-  "trend_id": "0445de67536b",
-  "title": "Terrible",
+  "current": 0,
+  "total": 3,
+  "trend_id": "e0f6e33a38dc",
+  "title": "#GMMTVNEXT",
   "queue_complete": false,
   "processed_ids": [
     "83bc11acedc0",
     "e0f6e33a38dc"
   ],
   "remaining_ids": [
+    "e0f6e33a38dc",
+    "83bc11acedc0",
     "red-review-fbd7aee9c1be9f3e8544"
   ],
   "remaining_active_ids": [
+    "e0f6e33a38dc",
+    "83bc11acedc0",
     "red-review-fbd7aee9c1be9f3e8544"
   ],
   "remaining_problematic_ids": [],
@@ -131,7 +135,7 @@
     "at": "2026-11-03T09:44:00+01:00"
   },
   "source": "chat",
-  "message": "Entraron tres investigaciones nuevas durante la barrera; se priorizan antes del mantenimiento restante.",
+  "message": "Inicio manual tras convergencia con tr-autoguard-1793696493: quedan #GMMTVNEXT, Muchísima y review_red de Racing; revalidación JIT antes de cada resultado. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3660,8 +3664,8 @@
       "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
     }
   ],
-  "current_item": "0445de67536b",
-  "current_title": "Terrible",
+  "current_item": "e0f6e33a38dc",
+  "current_title": "#GMMTVNEXT",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -5501,7 +5505,7 @@
       "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-autoguard-1793696493",
+  "command_id": "tr-1793697150072-manual",
   "requested_at": "2026-11-03T09:12:30+01:00",
   "runs": [
     {
@@ -6944,6 +6948,17 @@
       "trend_id": "0445de67536b",
       "title": "Terrible",
       "message": "Entraron tres investigaciones nuevas durante la barrera; se priorizan antes del mantenimiento restante."
+    },
+    {
+      "at": "2026-11-03T10:16:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793697150072-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 3,
+      "trend_id": "e0f6e33a38dc",
+      "title": "#GMMTVNEXT",
+      "message": "Inicio manual tras convergencia con tr-autoguard-1793696493: quedan #GMMTVNEXT, Muchísima y review_red de Racing; revalidación JIT antes de cada resultado. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
