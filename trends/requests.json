@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T12:05:55.813660+00:00",
+  "updated_at": "2026-11-03T12:10:48.431146+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -209517,7 +209517,21 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-11-03T07:16:16.241333+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-03T12:10:48.431146+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "Sigue siendo el saludo recurrente de los martes y no aparece un acontecimiento nuevo que cambie la explicación original.",
+      "red_review_sources": [
+        {
+          "url": "https://twitter-trends.snaplytics.io/spain/"
+        },
+        {
+          "url": "https://fowtools.com/x-trends/spain"
+        },
+        {
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json"
+        }
+      ]
     },
     {
       "id": "red-review-f0796a0cf9b6cf9a49a9",
@@ -211875,7 +211889,7 @@
       "revision": 0,
       "name": "Revisar novedades: #FelizMartes",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T11:59:17.748272+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -211905,7 +211919,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-03T12:10:48.431146+00:00",
+      "review_reason": "Sigue siendo el saludo recurrente de los martes y no aparece un acontecimiento nuevo que cambie la explicación original."
     },
     {
       "id": "a802ef44d342",
