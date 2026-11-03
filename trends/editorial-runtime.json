@@ -3,48 +3,51 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793719469374-manual",
-  "previous_run_id": "tr-1793719374883-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T15:24:29.374Z",
-  "updated_at": "2026-11-03T15:30:03.791Z",
-  "finished_at": "2026-11-03T15:30:03.791Z",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-f1246dd1ae1527fa7694",
-    "red-review-80ac53a8b916e1789b96"
+  "run_id": "tr-autoguard-1793722297",
+  "previous_run_id": "tr-1793719469374-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T17:12:00+01:00",
+  "updated_at": "2026-11-03T17:12:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 5,
+  "trend_id": "e47f706121da",
+  "title": "Mark Twain",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "e47f706121da",
+    "44365581404a",
+    "3553f8c0304e",
+    "4aa3329968cd",
+    "6b1ca96d0ae5"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "e47f706121da",
+    "44365581404a",
+    "3553f8c0304e",
+    "4aa3329968cd",
+    "6b1ca96d0ae5"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "updates": 1,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 1,
-    "terminal_decisions": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": [
+    {
+      "at": "2026-11-03T17:12:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793722297",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
+    }
+  ],
   "final_outcomes": [
     {
       "id": "red-review-f1246dd1ae1527fa7694",
@@ -67,7 +70,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T15:24:29.374Z",
+  "last_started_at": "2026-11-03T17:12:00+01:00",
   "last_completed_at": "2026-11-03T15:30:03.791Z",
   "last_run": {
     "run_id": "tr-1793719469374-manual",
@@ -123,7 +126,7 @@
     "converged_with": "tr-1793719374883-manual"
   },
   "source": "chat",
-  "message": "Pasada tr-1793719469374-manual cerrada 2/2 por convergencia JIT: #AccidenteFerroviario review_completed/stale sin duplicar actualización y Andorra review_completed/updated con nueva ficha trend-update-c2473ec51973d40570af. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2758,6 +2761,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793719469374-manual cerrada 2/2 por convergencia JIT: #AccidenteFerroviario review_completed/stale sin duplicar actualización y Andorra review_completed/updated con nueva ficha trend-update-c2473ec51973d40570af. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T17:12:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793722297",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -5192,8 +5206,8 @@
       "reason": "Novedad material aplicada: fallecimiento de Jesús de Miguel tras el choque del Tenerife-Andorra; continuidad sin remate por sensibilidad."
     }
   ],
-  "current_item": null,
-  "current_title": null,
+  "current_item": "e47f706121da",
+  "current_title": "Mark Twain",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -7653,8 +7667,8 @@
       "converged_with": "tr-1793719374883-manual"
     }
   ],
-  "command_id": "tr-1793719469374-manual",
-  "requested_at": "2026-11-03T15:24:29.374Z",
+  "command_id": "tr-autoguard-1793722297",
+  "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
       "run_id": "tr-autoguard-1793650268",
@@ -9801,6 +9815,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793719469374-manual cerrada 2/2 por convergencia JIT: #AccidenteFerroviario review_completed/stale sin duplicar actualización y Andorra review_completed/updated con nueva ficha trend-update-c2473ec51973d40570af. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T17:12:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793722297",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
     }
   ],
   "converged_run_ids": [
