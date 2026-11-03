@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793716769930-manual",
-  "previous_run_id": "tr-1793715998214-manual",
+  "run_id": "tr-1793717127884-manual",
+  "previous_run_id": "tr-1793716769930-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-03T15:40:00+01:00",
-  "updated_at": "2026-11-03T15:48:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-03T14:45:27.884Z",
+  "updated_at": "2026-11-03T14:48:11.265Z",
   "finished_at": null,
-  "current": 3,
-  "total": 5,
-  "trend_id": "red-review-d00b2b43f390fd07b0f3",
-  "title": "Revisar novedades: Adif y Renfe",
+  "current": 0,
+  "total": 0,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [
     "2e00a1a9eeae",
@@ -24,23 +24,20 @@
     "red-review-d00b2b43f390fd07b0f3",
     "red-review-dc5f11c3da031c51fbd1"
   ],
-  "remaining_active_ids": [
-    "red-review-d00b2b43f390fd07b0f3",
-    "red-review-dc5f11c3da031c51fbd1"
-  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 5,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -98,7 +95,7 @@
     "at": "2026-11-03T15:33:00+01:00"
   },
   "source": "chat",
-  "message": "Revisando novedades de Adif y Renfe tras barrera final: mantener texto y fecha salvo desarrollo sustancial posterior al 2-N. Sin ImageGen ni publicación.",
+  "message": "Inicio tr-1793717127884-manual: 0 trabajos preparing/update vigentes en main; revalidación JIT antes de cada investigación y persistencia. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4682,53 +4679,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "8a7d05b3a180",
-      "revision": 0,
-      "name": "de la Constitución",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "Detonante concreto no confirmado; explicación prudente."
-    },
-    {
-      "id": "e4a5391b8b6d",
-      "revision": 0,
-      "name": "Porky",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "Contexto actual verificado; causalidad en España no confirmada."
-    },
-    {
-      "id": "b5ca00019dcd",
-      "revision": 0,
-      "name": "Cumbre Iberoamericana",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
-    },
-    {
-      "id": "b33d12f2e43e",
-      "revision": 0,
-      "name": "Schumacher",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:23:30+01:00",
-      "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
-    },
-    {
-      "id": "b6bdde0356db",
-      "revision": 0,
-      "name": "Alejandra",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "Dos contextos actuales plausibles; identidad detonante no confirmada."
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null,
   "completed_runs": [
@@ -7095,7 +7046,7 @@
       "at": "2026-11-03T14:27:30+01:00"
     }
   ],
-  "command_id": "tr-autoguard-1793711487",
+  "command_id": "tr-1793717127884-manual",
   "requested_at": "2026-11-03T11:46:18.700+01:00",
   "runs": [
     {
