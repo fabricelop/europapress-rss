@@ -135,7 +135,6 @@ struct EditorialRelationsView: View {
     @State private var showManualLinking = false
     @State private var search = ""
     @State private var selectedNews: EditorialRelationEndpoint?
-    @State private var selectedTrend: EditorialRelationEndpoint?
     @State private var picker: EndpointPickerRoute?
 
     private struct EndpointPickerRoute: Identifiable {
@@ -197,36 +196,18 @@ struct EditorialRelationsView: View {
                                 newsCard(news)
                             }
                         }
-                        Section {
-                            DisclosureGroup("Vincular otra ficha (opcional)", isExpanded: $showManualLinking) {
-                                Text("Las relaciones claras se presentan directamente como confirmadas. Las ambiguas se revisan por separado. Una decisión afecta a ambos sentidos y no modifica publicaciones ni imágenes.")
-                                .font(.footnote).foregroundStyle(.secondary)
-                            if scope == nil {
-                                Button { picker = EndpointPickerRoute(project: "ttittulares") } label: {
-                                    Label(selectedNews?.title ?? "Seleccionar noticia", systemImage: "newspaper")
-                                }
-                                Button { picker = EndpointPickerRoute(project: "ttendencias") } label: {
-                                    Label(selectedTrend?.title ?? "Seleccionar tendencia", systemImage: "chart.line.uptrend.xyaxis")
-                                }
-                                Button("Vincular selección") {
-                                    guard let news = selectedNews, let trend = selectedTrend else { return }
-                                    Task { await model.decide(news: news, trend: trend, action: "link", using: github) }
-                                }.disabled(selectedNews == nil || selectedTrend == nil || model.saving)
-                            } else if let endpoint = scopedEndpoint, let scope {
-                                TextField(scope.project == "ttittulares" ? "Buscar tendencia" : "Buscar noticia", text: $search)
-                                    .textInputAutocapitalization(.never).autocorrectionDisabled()
-                                ForEach(candidates) { candidate in
-                                    VStack(alignment: .leading, spacing: 7) {
-                                        Text(candidate.title).font(.subheadline.weight(.semibold))
-                                        Text(candidate.text).font(.caption).foregroundStyle(.secondary).lineLimit(3)
-                                        Button("Vincular") {
-                                            let news = scope.project == "ttittulares" ? endpoint : candidate
-                                            let trend = scope.project == "ttendencias" ? endpoint : candidate
-                                            Task { await model.decide(news: news, trend: trend, action: "link", using: github) }
-                                        }.disabled(model.saving)
+                        if filter == "suggested" {
+                            Section {
+                                DisclosureGroup("Elegir otra noticia", isExpanded: $showManualLinking) {
+                                    Text("Si no encuentras una noticia entre las propuestas, selecciónala aquí. Aparecerá una sola vez con el Top 30 para marcar todas sus tendencias.")
+                                        .font(.footnote).foregroundStyle(.secondary)
+                                    Button {
+                                        picker = EndpointPickerRoute(project: "ttittulares")
+                                    } label: {
+                                        Label(selectedNews?.title ?? "Buscar noticia",
+                                              systemImage: "newspaper")
                                     }
                                 }
-                            }
                             }
                         }
                     }
@@ -276,10 +257,19 @@ struct EditorialRelationsView: View {
     // or server refreshes refer to it.
     private var newsGroups: [EditorialRelationEndpoint] {
         var seen = Set<String>()
-        return relations.compactMap { item in
+        var group = relations.compactMap { item -> EditorialRelationEndpoint? in
             let news = item.news
             return seen.insert(news.stableIdentity).inserted ? news : nil
         }
+        // An editor may choose a news item which has no proposals yet. The
+        // complete Top 30 is still available in that news's disclosure.
+        let explicit: EditorialRelationEndpoint? =
+            selectedNews ?? (scope?.project == "ttittulares" ? scopedEndpoint : nil)
+        if let explicit, seen.insert(explicit.stableIdentity).inserted,
+           filter == "suggested" {
+            group.insert(explicit, at: 0)
+        }
+        return group
     }
 
     private func rows(for news: EditorialRelationEndpoint) -> [EditorialRelation] {
