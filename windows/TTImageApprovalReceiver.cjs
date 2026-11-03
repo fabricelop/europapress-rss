@@ -85,7 +85,7 @@ async function once(base=__dirname){
    for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&task.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
   }
   const active=await liveIdentities(sources),selected=selectCurrentTasks(tasks,progress,active);
-  fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,currentEditorial:active.size,selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,historicalQueued:tasks.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length},null,2));
+  fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,currentEditorial:active.size,selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,historicalQueued:tasks.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{queued:tasks.filter(x=>x.project===project).length,selected:selected.filter(x=>x.project===project).length}]))},null,2));
   tasks.splice(0,tasks.length,...selected);
   console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
   for(const task of tasks){
@@ -98,13 +98,13 @@ async function once(base=__dirname){
     if(!source.chatURL(task.conversation_url)){const found=await source.discoverConversation(task.command_id,task.browser_target_id,true);if(found?.url)task.conversation_url=found.url;}
     let target;
     // Reuse an exact existing conversation first; never create tabs in the generator.
-    for(const port of (task.project==='ttittulares'?[9223]:[9223,9234])){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=selectTarget(pages,task,source.chatURL);if(target)break}catch{}}
-    if(task.project==='ttendencias'&&!source.chatURL(task.conversation_url)){
+    for(const port of [9223,9234]){try{const r=await fetch('http://127.0.0.1:'+port+'/json/list',{signal:AbortSignal.timeout(3000)});const pages=await r.json();target=selectTarget(pages,task,source.chatURL);if(target)break}catch{}}
+    if(!source.chatURL(task.conversation_url)){
      // Recover candidate URLs from the SAME producer tab's navigation history.
      // A URL is only a candidate; rasterProbe must still prove this command.
      try{const r=await fetch('http://127.0.0.1:9223/json/list',{signal:AbortSignal.timeout(3000)});const own=(await r.json()).find(x=>x.id===task.browser_target_id&&x.webSocketDebuggerUrl);if(own){const history=new CDP(own.webSocketDebuggerUrl);try{await history.open();const h=await history.call('Page.getNavigationHistory',{});const urls=[...new Set((h.entries||[]).map(x=>source.chatURL(x.url)).filter(Boolean))].reverse();if(urls.length){const index=progress[task.command_id]?.recoveryIndex||0;task.conversation_url=urls[index%urls.length];progress[task.command_id]={...progress[task.command_id],recoveryIndex:index+1};target=null;}}finally{history.close()}}}catch{}
     }
-    if(task.project==='ttendencias'&&!target&&source.chatURL(task.conversation_url)){
+    if(!target&&source.chatURL(task.conversation_url)){
      // Recover a known closed conversation only in the separate relay profile.
      // Nothing is typed or submitted; this temporary tab belongs to this receiver.
      try{
