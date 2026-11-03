@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793740699",
   "previous_run_id": "tr-1793739489427-manual",
-  "status": "PROCESSING",
-  "phase": "preparing",
+  "status": "ERROR",
+  "phase": "closing",
   "started_at": "2026-11-03T21:20:00Z",
-  "updated_at": "2026-11-03T21:20:00Z",
-  "finished_at": null,
+  "updated_at": "2026-11-03T21:31:00Z",
+  "finished_at": "2026-11-03T21:31:00Z",
   "current": 0,
   "total": 5,
-  "trend_id": "3042104459b7",
-  "title": "Dimite Óscar Puente",
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -31,49 +31,123 @@
     "8e970ba43f06"
   ],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
+  "summary": {
+    "attempted": 5,
+    "observed": 5,
+    "closed": 0,
+    "explained": 0,
+    "updates": 0,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 5,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 1,
+    "concurrent_convergence": 0
+  },
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "authoritative_requests_persist_failed",
+      "message": "Las 5 explicaciones quedaron redactadas, verificadas y persistidas en Listas/prepared, pero requests.json (~12 MB) no pudo actualizarse por límite de transporte h2 del conector. El workflow de editorial-outbox y el reconciliador TTENDENCIAS_CHAT_OUTBOX_V1 no consumieron el lote durante esta ejecución; editorial-queue sigue con las 5 revisiones r0 en preparing.",
+      "transport_comment_id": 6615818636
+    }
+  ],
+  "error": "Las 5 explicaciones quedaron redactadas, verificadas y persistidas en Listas/prepared, pero requests.json (~12 MB) no pudo actualizarse por límite de transporte h2 del conector. El workflow de editorial-outbox y el reconciliador TTENDENCIAS_CHAT_OUTBOX_V1 no consumieron el lote durante esta ejecución; editorial-queue sigue con las 5 revisiones r0 en preparing.",
   "activity": "closing",
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "3042104459b7",
+      "revision": 0,
+      "name": "Dimite Óscar Puente",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "c8363f291102",
+      "revision": 0,
+      "name": "Bayern",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "cd7275e8b277",
+      "revision": 0,
+      "name": "El PSG",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "919fc31e93a5",
+      "revision": 0,
+      "name": "Metropolitano",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "8e970ba43f06",
+      "revision": 0,
+      "name": "#XbiteSweepstakes",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T20:59:11.302Z",
   "last_completed_at": "2026-11-03T21:02:43.563Z",
   "last_run": {
-    "run_id": "tr-1793739489427-manual",
-    "status": "DONE",
-    "started_at": "2026-11-03T20:59:11.302Z",
-    "finished_at": "2026-11-03T21:02:43.563Z",
-    "current": 2,
-    "total": 2,
-    "closed": [
+    "run_id": "tr-autoguard-1793740699",
+    "status": "ERROR",
+    "started_at": "2026-11-03T21:20:00Z",
+    "finished_at": "2026-11-03T21:31:00Z",
+    "current": 0,
+    "total": 5,
+    "closed": [],
+    "pending": [
       {
-        "id": "red-review-ee597c1e01b0fd4cfc7e",
+        "id": "3042104459b7",
         "revision": 0,
-        "name": "Revisar novedades: Puerta del Sol",
-        "outcome": "unchanged",
-        "applied": true,
-        "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
-        "source_id": "4b85f530992d",
-        "reason": "Sin novedad material; texto y fecha originales conservados."
+        "name": "Dimite Óscar Puente",
+        "outcome": "prepared_pending_authoritative_apply",
+        "applied": false
       },
       {
-        "id": "red-review-47f15fd9beb8f34c4726",
+        "id": "c8363f291102",
         "revision": 0,
-        "name": "Revisar novedades: Jesús de Miguel",
-        "outcome": "updated",
-        "applied": true,
-        "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
-        "source_id": "ca4337605844",
-        "created_id": "trend-update-5beed5401b51fc0e13a5",
-        "reason": "Novedad material: investigación de Homicidios y judicialización del caso; la RFEF amplió a tres días la suspensión de sus competiciones."
+        "name": "Bayern",
+        "outcome": "prepared_pending_authoritative_apply",
+        "applied": false
+      },
+      {
+        "id": "cd7275e8b277",
+        "revision": 0,
+        "name": "El PSG",
+        "outcome": "prepared_pending_authoritative_apply",
+        "applied": false
+      },
+      {
+        "id": "919fc31e93a5",
+        "revision": 0,
+        "name": "Metropolitano",
+        "outcome": "prepared_pending_authoritative_apply",
+        "applied": false
+      },
+      {
+        "id": "8e970ba43f06",
+        "revision": 0,
+        "name": "#XbiteSweepstakes",
+        "outcome": "prepared_pending_authoritative_apply",
+        "applied": false
       }
     ],
-    "summary": "Pasada tr-1793739489427-manual cerrada 2/2: Puerta del Sol review_completed/unchanged y Jesús de Miguel review_completed/updated con nueva ficha trend-update-5beed5401b51fc0e13a5. Aplicación confirmada en 33f52ac30a14b4343d2060a3c0df4a0a25d98025. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "summary": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación.",
+  "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3698,6 +3772,15 @@
       "trend_id": "3042104459b7",
       "title": "Dimite Óscar Puente",
       "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T21:31:00Z",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793740699",
+      "status": "ERROR",
+      "current": 0,
+      "total": 5,
+      "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -6464,10 +6547,55 @@
       "current": 0,
       "total": 5,
       "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T21:31:00Z",
+      "run_id": "tr-autoguard-1793740699",
+      "status": "ERROR",
+      "phase": "closing",
+      "current": 0,
+      "total": 5,
+      "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "3042104459b7",
+      "revision": 0,
+      "name": "Dimite Óscar Puente",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "c8363f291102",
+      "revision": 0,
+      "name": "Bayern",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "cd7275e8b277",
+      "revision": 0,
+      "name": "El PSG",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "919fc31e93a5",
+      "revision": 0,
+      "name": "Metropolitano",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    },
+    {
+      "id": "8e970ba43f06",
+      "revision": 0,
+      "name": "#XbiteSweepstakes",
+      "outcome": "prepared_pending_authoritative_apply",
+      "applied": false
+    }
+  ],
   "current_item": {
     "id": "3042104459b7",
     "revision": 0,
@@ -11585,6 +11713,15 @@
       "trend_id": "3042104459b7",
       "title": "Dimite Óscar Puente",
       "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T21:31:00Z",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793740699",
+      "status": "ERROR",
+      "current": 0,
+      "total": 5,
+      "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
