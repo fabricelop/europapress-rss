@@ -626,7 +626,14 @@ assert 'EditorialReceiptPolicy.resolution(' in store
 assert 'receipt["request_id"] as? String == requestID' in receipt_policy
 assert 'receipt["episodeFingerprint"]' not in receipt_policy  # Receipt identity is event + revision.
 assert 'private var showManualLinking = false' in relations
-assert 'DisclosureGroup("Vincular otra ficha (opcional)"' in relations
-assert '@State private var filter = "linked"' in relations
+assert 'DisclosureGroup("Elegir otra noticia"' in relations
+assert '@State private var filter = "suggested"' in relations
+assert 'ForEach(newsGroups, id: \\.stableIdentity)' in relations
+assert 'Label("Guardar vínculos seleccionados (' in relations
+assert 'DisclosureGroup(isExpanded: expansion(news))' in relations
+assert 'Array(top30Names.prefix(30).enumerated())' in relations
+assert 'model.linkSelected(news: news, trends: trends' in relations
+assert 'UserDefaults.standard.set(commands, forKey: commandStorageKey)' in relations
+assert 'selectedTrend = endpoint' not in relations
 assert 'EditorialReceiptPolicy.swift' in project
 print("NATIVE_BUILD65_COMPACT_HEADER_AND_EXACT_RECEIPT_REGRESSION_OK")
