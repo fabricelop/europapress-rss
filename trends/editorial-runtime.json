@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793728164",
   "previous_run_id": "tr-1793727035708-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T18:49:00+01:00",
-  "updated_at": "2026-11-03T18:58:38+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T18:59:00+01:00",
+  "finished_at": "2026-11-03T18:59:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "b94b4292caf0",
-  "title": "#HuelgaGeneral11N",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "b94b4292caf0"
@@ -22,10 +22,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -33,7 +33,7 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "terminal_decisions": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -46,46 +46,32 @@
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-b3a0eb34d8383a980867",
+      "id": "b94b4292caf0",
       "revision": 0,
-      "name": "Revisar novedades: La RFEF",
-      "outcome": "updated",
+      "name": "#HuelgaGeneral11N",
+      "outcome": "explained",
       "applied": true,
-      "created_id": "trend-update-7360d124546062f7dd5f",
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "b02245a7b09b9031b57bcacd7c2c3e7caac65418",
-      "source_id": "trend-update-5c8cd4849eee905da8cd",
-      "reason": "La RFEF amplió la suspensión a los días 3, 4 y 5 de noviembre, hasta el 6."
-    },
-    {
-      "id": "red-review-28b3ef65f153c78c6efe",
-      "revision": 0,
-      "name": "Revisar novedades: Pedro Casares",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-af20a1ce41687813e494",
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "b02245a7b09b9031b57bcacd7c2c3e7caac65418",
-      "source_id": "0e07aa45ec55",
-      "reason": "El concejal negó la agresión y el PP abrió una investigación interna, novedad material del mismo episodio."
+      "via": "editorial_outbox_applied",
+      "apply_commit": "35b85259d37bf853896ecebb047b7769c8b24240",
+      "reason": "Huelga general del 11 de noviembre por vivienda, salarios y coste de vida; la convocatoria supera 4.300 adhesiones comunicadas."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T18:58:38+01:00",
-  "last_completed_at": "2026-11-03T18:58:38+01:00",
+  "last_completed_at": "2026-11-03T18:59:00+01:00",
   "last_run": {
-    "run_id": "tr-1793727035708-manual",
-    "command_id": "tr-1793727035708-manual",
+    "run_id": "tr-autoguard-1793728164",
+    "command_id": "tr-autoguard-1793728164",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T18:31:00+01:00",
-    "finished_at": "2026-11-03T18:35:30+01:00",
+    "started_at": "2026-11-03T18:49:00+01:00",
+    "finished_at": "2026-11-03T18:59:00+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 2,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 1,
+      "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
@@ -101,37 +87,23 @@
     },
     "outcomes": [
       {
-        "id": "red-review-b3a0eb34d8383a980867",
+        "id": "b94b4292caf0",
         "revision": 0,
-        "name": "Revisar novedades: La RFEF",
-        "outcome": "updated",
+        "name": "#HuelgaGeneral11N",
+        "outcome": "explained",
         "applied": true,
-        "created_id": "trend-update-7360d124546062f7dd5f",
-        "via": "maintenance_outbox_applied",
-        "apply_commit": "b02245a7b09b9031b57bcacd7c2c3e7caac65418",
-        "source_id": "trend-update-5c8cd4849eee905da8cd",
-        "reason": "La RFEF amplió la suspensión a los días 3, 4 y 5 de noviembre, hasta el 6."
-      },
-      {
-        "id": "red-review-28b3ef65f153c78c6efe",
-        "revision": 0,
-        "name": "Revisar novedades: Pedro Casares",
-        "outcome": "updated",
-        "applied": true,
-        "created_id": "trend-update-af20a1ce41687813e494",
-        "via": "maintenance_outbox_applied",
-        "apply_commit": "b02245a7b09b9031b57bcacd7c2c3e7caac65418",
-        "source_id": "0e07aa45ec55",
-        "reason": "El concejal negó la agresión y el PP abrió una investigación interna, novedad material del mismo episodio."
+        "via": "editorial_outbox_applied",
+        "apply_commit": "35b85259d37bf853896ecebb047b7769c8b24240",
+        "reason": "Huelga general del 11 de noviembre por vivienda, salarios y coste de vida; la convocatoria supera 4.300 adhesiones comunicadas."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793727035708-manual cerrada 2/2: La RFEF y Pedro Casares quedaron review_completed/updated con nuevas fichas persistidas en Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T18:35:30+01:00"
+    "message": "Pasada tr-autoguard-1793728164 cerrada 1/1: #HuelgaGeneral11N r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador (commit 35b85259). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T18:59:00+01:00"
   },
   "source": "chat",
-  "message": "#HuelgaGeneral11N r0 revalidada JIT. Detonante verificado: huelga general del 11-N por vivienda, salarios y coste de vida, con más de 4.300 adhesiones comunicadas. Persistiendo texto; ImageGen=0.",
+  "message": "Pasada tr-autoguard-1793728164 cerrada 1/1: #HuelgaGeneral11N r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador (commit 35b85259). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3195,6 +3167,17 @@
       "trend_id": "b94b4292caf0",
       "title": "#HuelgaGeneral11N",
       "message": "#HuelgaGeneral11N r0 revalidada JIT. Detonante verificado: huelga general del 11-N por vivienda, salarios y coste de vida, con más de 4.300 adhesiones comunicadas. Persistiendo texto; ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T18:59:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793728164",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793728164 cerrada 1/1: #HuelgaGeneral11N r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador (commit 35b85259). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -5670,81 +5653,62 @@
       "current": 8,
       "total": 8,
       "message": "Pasada tr-autoguard-1793725731 cerrada 8/8: Skyrim, Bethesda, The Elder Scrolls, 212 GB, Juanma Moreno, Amancio Ortega, Policía Nacional e Inditex r0 explicadas y sincronizadas en requests/Listas. Barrera final verificada: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1793728164",
+      "command_id": "tr-autoguard-1793728164",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T18:49:00+01:00",
+      "finished_at": "2026-11-03T18:59:00+01:00",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 1,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "terminal_decisions": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "b94b4292caf0",
+          "revision": 0,
+          "name": "#HuelgaGeneral11N",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "35b85259d37bf853896ecebb047b7769c8b24240",
+          "reason": "Huelga general del 11 de noviembre por vivienda, salarios y coste de vida; la convocatoria supera 4.300 adhesiones comunicadas."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793728164 cerrada 1/1: #HuelgaGeneral11N r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador (commit 35b85259). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T18:59:00+01:00"
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "6fffc2182bc6",
+      "id": "b94b4292caf0",
       "revision": 0,
-      "name": "Skyrim",
+      "name": "#HuelgaGeneral11N",
       "outcome": "explained",
       "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "75ed7ba01dcb",
-      "revision": 0,
-      "name": "Bethesda",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "6b1527a11052",
-      "revision": 0,
-      "name": "The Elder Scrolls",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "1055c1f7c2d8",
-      "revision": 0,
-      "name": "212 GB",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "e3556c5fad4c",
-      "revision": 0,
-      "name": "Juanma Moreno",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "9ecae1686395",
-      "revision": 0,
-      "name": "Amancio Ortega",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "6106415081f7",
-      "revision": 0,
-      "name": "Policía Nacional",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "febcfc700f77",
-      "revision": 0,
-      "name": "Inditex",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+      "via": "editorial_outbox_applied",
+      "apply_commit": "35b85259d37bf853896ecebb047b7769c8b24240",
+      "reason": "Huelga general del 11 de noviembre por vivienda, salarios y coste de vida; la convocatoria supera 4.300 adhesiones comunicadas."
     }
   ],
   "current_item": null,
@@ -10600,6 +10564,17 @@
       "trend_id": "b94b4292caf0",
       "title": "#HuelgaGeneral11N",
       "message": "#HuelgaGeneral11N r0 revalidada JIT. Detonante verificado: huelga general del 11-N por vivienda, salarios y coste de vida, con más de 4.300 adhesiones comunicadas. Persistiendo texto; ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T18:59:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793728164",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793728164 cerrada 1/1: #HuelgaGeneral11N r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador (commit 35b85259). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
