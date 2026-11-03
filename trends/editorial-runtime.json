@@ -3,13 +3,13 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793744866688-manual",
+  "run_id": "tr-1793744747504-manual",
   "previous_run_id": "tr-1793744548832-manual",
-  "status": "DONE",
+  "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
   "started_at": "2026-11-03T23:29:00+01:00",
-  "updated_at": "2026-11-03T23:38:30+01:00",
-  "finished_at": "2026-11-03T23:38:30+01:00",
+  "updated_at": "2026-11-03T23:37:30+01:00",
+  "finished_at": "2026-11-03T23:37:30+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -22,49 +22,44 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 1,
-    "updates": 1,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
-  },
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada 2/2 completada: Mazón review_red r0 actualizado como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explicado y sincronizado. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "incident_count": 2,
+  "incidents": [
+    {
+      "phase": "persisting",
+      "trend_id": "red-review-b1e5a814997a025e46f2",
+      "reason": "El primer maintenance-outbox fue rechazado por formato de episodio distinto; se corrigió el mismo job/revisión a «es tendencia por…» y se aplicó como trend-update-81449c510b4dde5f6a50."
+    },
+    {
+      "phase": "persisting",
+      "trend_id": "41baa9afe047",
+      "reason": "El aplicador issue_comment tenía runs antiguos atascados en checkout. Se aplicó un checkout mínimo de los tres JSON autoritativos y una barrera JIT de status; Óscar r0 quedó sincronizado y los runs obsoletos recibieron cancelación."
+    }
+  ],
   "error": null,
-  "activity": "verifying",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "red-review-b1e5a814997a025e46f2",
       "revision": 0,
-      "name": "Mazón",
-      "outcome": "review_completed/updated",
-      "applied": true,
-      "created_id": "trend-update-81449c510b4dde5f6a50"
+      "outcome": "updated",
+      "applied_id": "trend-update-81449c510b4dde5f6a50"
     },
     {
       "id": "41baa9afe047",
       "revision": 0,
-      "name": "Óscar Puente",
       "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T23:37:00+01:00"
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T23:12:47+01:00",
-  "last_completed_at": "2026-11-03T23:38:30+01:00",
+  "last_completed_at": "2026-11-03T23:37:30+01:00",
   "last_run": {
-    "run_id": "tr-1793744866688-manual",
-    "status": "DONE",
+    "run_id": "tr-1793744747504-manual",
+    "status": "DONE_WITH_INCIDENTS",
     "started_at": "2026-11-03T23:29:00+01:00",
-    "finished_at": "2026-11-03T23:38:30+01:00",
+    "finished_at": "2026-11-03T23:37:30+01:00",
     "current": 2,
     "total": 2,
     "closed": [
@@ -72,10 +67,10 @@
       "41baa9afe047"
     ],
     "pending": [],
-    "summary": "Pasada tr-1793744866688-manual cerrada 2/2 por convergencia JIT: Mazón review_completed/updated como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explained y sincronizado en requests/Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Outbox obsoleto de Óscar retirado. ImageGen=0; publicaciones=0."
+    "summary": "Pasada 2/2 completada: Mazón review_red r0 actualizado como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explicado y sincronizado. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793744866688-manual cerrada 2/2 por convergencia JIT: Mazón review_completed/updated como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explained y sincronizado en requests/Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Outbox obsoleto de Óscar retirado. ImageGen=0; publicaciones=0.",
+  "message": "Pasada 2/2 completada: Mazón review_red r0 actualizado como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explicado y sincronizado. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3842,6 +3837,15 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-1793744866688-manual cerrada 2/2 por convergencia JIT: Mazón review_completed/updated como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explained y sincronizado en requests/Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Outbox obsoleto de Óscar retirado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T23:37:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793744747504-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada 2/2 completada: Mazón review_red r0 actualizado como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explicado y sincronizado. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
