@@ -1066,7 +1066,7 @@ final class EditorialStore: ObservableObject {
                         operation.createdAt.addingTimeInterval(-180)
             }
             if hasReceipt {
-                if operation.requestID == nil, let identity,
+                if operation.requestID?.isEmpty != false, let identity,
                    let later = receipts.first(where: { row in
                        Self.str(row, "project") == identity.project &&
                        Self.str(row, "event_id") == identity.eventID &&
