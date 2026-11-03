@@ -5,40 +5,36 @@
   "canonical": true,
   "run_id": "tr-1793702646001-manual",
   "previous_run_id": "tr-1793702191137-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T11:44:06+01:00",
-  "updated_at": "2026-11-03T11:50:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-03T11:48:30+01:00",
+  "finished_at": "2026-11-03T11:48:30+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": "red-review-f1fadc7c92bc5acac655",
   "title": "Revisar novedades: La RFEF",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
     "026a3977ac74",
     "2517c2998d33",
     "f9afae6ceb1f"
   ],
-  "remaining_ids": [
-    "red-review-f1fadc7c92bc5acac655"
-  ],
-  "remaining_active_ids": [
-    "red-review-f1fadc7c92bc5acac655"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 1,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -48,154 +44,84 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "01ac1d20b1fb",
+      "id": "red-review-ca984f801cd012b43bd9",
       "revision": 0,
-      "name": "Tetê",
-      "outcome": "explained",
+      "name": "Revisar novedades: #AccidenteFerroviario",
+      "outcome": "stale",
       "applied": true,
-      "rank": 11,
-      "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
+      "apply_commit": "863465750d3ca2ca1fadb7b4bcee7f6461faa774",
+      "reason": "Había novedades materiales posteriores al 28/10, pero la tendencia ya no seguía en el Top 30 fresco al aplicar; el job quedó review_completed/stale sin crear una nueva ficha."
     },
     {
-      "id": "1a63e1bd818c",
+      "id": "red-review-f1fadc7c92bc5acac655",
       "revision": 0,
-      "name": "QEPD",
-      "outcome": "explained",
+      "name": "Revisar novedades: La RFEF",
+      "outcome": "updated",
       "applied": true,
-      "rank": 12,
-      "reason": "Mensajes de pésame tras el fallecimiento de Jesús de Miguel; tratamiento sensible sin remate."
-    },
-    {
-      "id": "93fd9a90a9c2",
-      "revision": 0,
-      "name": "Homicidio",
-      "outcome": "explained",
-      "applied": true,
-      "rank": 6,
-      "reason": "Debate jurídico actual verificado; se deja explícito que no consta imputación."
-    },
-    {
-      "id": "ead261969f29",
-      "revision": 0,
-      "name": "Involuntaria",
-      "outcome": "explained",
-      "applied": true,
-      "rank": 10,
-      "reason": "Coberturas actuales plantean homicidio imprudente/involuntario como hipótesis jurídica; no consta imputación."
-    },
-    {
-      "id": "ac8fba260938",
-      "revision": 0,
-      "name": "Neuer",
-      "outcome": "explained",
-      "applied": true,
-      "rank": 13,
-      "reason": "Regreso al entrenamiento y viaje a Madrid verificados antes del Atlético-Bayern; titularidad aún pendiente."
-    },
-    {
-      "id": "3f67b198a6c5",
-      "revision": 0,
-      "name": "Higuain",
-      "outcome": "explained",
-      "applied": true,
-      "rank": 14,
-      "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
+      "created_id": "trend-update-5c8cd4849eee905da8cd",
+      "apply_commit": "b52ac84444688a2a5808bc6f0b924db6d59450d7",
+      "reason": "Episodio distinto comprobado: el 3 de noviembre la RFEF volvió a suspender partidos, esta vez Copa del Rey y Copa de la Reina tras el fallecimiento de Jesús de Miguel."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T11:43:19+01:00",
-  "last_completed_at": "2026-11-03T11:43:19+01:00",
+  "last_completed_at": "2026-11-03T11:48:30+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793700663",
-    "command_id": "tr-autoguard-1793700663",
+    "run_id": "tr-1793702646001-manual",
+    "command_id": "tr-1793702646001-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T11:11:00+01:00",
-    "finished_at": "2026-11-03T11:20:00+01:00",
+    "started_at": "2026-11-03T11:44:06+01:00",
+    "finished_at": "2026-11-03T11:48:30+01:00",
     "summary": {
-      "attempted": 6,
-      "observed": 6,
-      "closed": 6,
-      "explained": 6,
-      "updates": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
     "outcomes": [
       {
-        "id": "01ac1d20b1fb",
+        "id": "red-review-ca984f801cd012b43bd9",
         "revision": 0,
-        "name": "Tetê",
-        "outcome": "explained",
+        "name": "Revisar novedades: #AccidenteFerroviario",
+        "outcome": "stale",
         "applied": true,
-        "rank": 11,
-        "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
+        "apply_commit": "863465750d3ca2ca1fadb7b4bcee7f6461faa774",
+        "reason": "Había novedades materiales posteriores al 28/10, pero la tendencia ya no seguía en el Top 30 fresco al aplicar; el job quedó review_completed/stale sin crear una nueva ficha."
       },
       {
-        "id": "1a63e1bd818c",
+        "id": "red-review-f1fadc7c92bc5acac655",
         "revision": 0,
-        "name": "QEPD",
-        "outcome": "explained",
+        "name": "Revisar novedades: La RFEF",
+        "outcome": "updated",
         "applied": true,
-        "rank": 12,
-        "reason": "Mensajes de pésame tras el fallecimiento de Jesús de Miguel; tratamiento sensible sin remate."
-      },
-      {
-        "id": "93fd9a90a9c2",
-        "revision": 0,
-        "name": "Homicidio",
-        "outcome": "explained",
-        "applied": true,
-        "rank": 6,
-        "reason": "Debate jurídico actual verificado; se deja explícito que no consta imputación."
-      },
-      {
-        "id": "ead261969f29",
-        "revision": 0,
-        "name": "Involuntaria",
-        "outcome": "explained",
-        "applied": true,
-        "rank": 10,
-        "reason": "Coberturas actuales plantean homicidio imprudente/involuntario como hipótesis jurídica; no consta imputación."
-      },
-      {
-        "id": "ac8fba260938",
-        "revision": 0,
-        "name": "Neuer",
-        "outcome": "explained",
-        "applied": true,
-        "rank": 13,
-        "reason": "Regreso al entrenamiento y viaje a Madrid verificados antes del Atlético-Bayern; titularidad aún pendiente."
-      },
-      {
-        "id": "3f67b198a6c5",
-        "revision": 0,
-        "name": "Higuain",
-        "outcome": "explained",
-        "applied": true,
-        "rank": 14,
-        "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
+        "created_id": "trend-update-5c8cd4849eee905da8cd",
+        "apply_commit": "b52ac84444688a2a5808bc6f0b924db6d59450d7",
+        "reason": "Episodio distinto comprobado: el 3 de noviembre la RFEF volvió a suspender partidos, esta vez Copa del Rey y Copa de la Reina tras el fallecimiento de Jesús de Miguel."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1793700663 cerrada 6/6: Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain persistidos como explained. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T11:20:00+01:00"
+    "message": "Pasada tr-1793702646001-manual cerrada 2/2: #AccidenteFerroviario review_completed/stale al no seguir en el Top 30 fresco; La RFEF review_completed/updated como episodio distinto, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final observada: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T11:48:30+01:00"
   },
   "source": "chat",
-  "message": "Revisando novedades: La RFEF r0. Detectado episodio distinto y posterior: la RFEF ha suspendido los partidos de Copa del Rey y Copa de la Reina del 3 de noviembre tras el fallecimiento de Jesús de Miguel.",
+  "message": "Pasada tr-1793702646001-manual cerrada 2/2: #AccidenteFerroviario review_completed/stale al no seguir en el Top 30 fresco; La RFEF review_completed/updated como episodio distinto, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final observada: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1883,6 +1809,15 @@
       "current": 6,
       "total": 6,
       "message": "Pasada tr-1793702191137-manual cerrada por convergencia 6/6: Andorra, Tinerfeña, Silvia Intxaurrondo y Que Dios explicadas; #AccidenteFerroviario cerrada stale sin duplicar; La RFEF actualizada como episodio distinto por la pasada concurrente más nueva. Barrera final main: editorial-queue=0, preparing/update=0 y sin rewrite_pending localizado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T11:48:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793702646001-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793702646001-manual cerrada 2/2: #AccidenteFerroviario review_completed/stale al no seguir en el Top 30 fresco; La RFEF review_completed/updated como episodio distinto, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final observada: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
