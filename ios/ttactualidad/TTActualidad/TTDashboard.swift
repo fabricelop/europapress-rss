@@ -1,58 +1,20 @@
 import SwiftUI
 import UIKit
 
-// Manual override: submit exactly the selected IDs and revisions.
-private struct ListasGroupingControls: View {
+// Bulk removal remains available independently of retired trend grouping.
+private struct ListasTrendControls: View {
     @EnvironmentObject private var store: EditorialStore
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
-    @State private var showSelection = false
-    @State private var selectedIDs = Set<String>()
-    @State private var submittedGroup: [TrendItem]? = nil
-    @State private var confirmCleanup = false
     @State private var busy = false
     @State private var message = ""
-    @State private var groupRequestID = UUID().uuidString.lowercased()
-    @State private var cleanupRequestID = UUID().uuidString.lowercased()
     @State private var confirmRemoveAllTrends = false
     @State private var removeAllRequestID = UUID().uuidString.lowercased()
     @State private var removeAllSelection: [TrendItem] = []
-
-    // Grouped originals are eligible for cleanup, without special styling.
-    // Backend also revalidates listas_group_role == covered before deleting.
-    private var covered: [TrendItem] {
-        store.snapshot.trendListas.filter { $0.isCovered && !$0.isJointGroup }
-    }
-    private var ungrouped: [TrendItem] { store.snapshot.trendListas.filter { !$0.isCovered } }
-    // All ready trends, including joint/covered
-    // cards. Never select news or filter by the current search query.
     private var allTrends: [TrendItem] { store.snapshot.trendListas.filter(\.inListas) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
-            HStack(spacing: 8) {
-                Button {
-                    if github.authenticated {
-                        selectedIDs = []
-                        groupRequestID = UUID().uuidString.lowercased()
-                        showSelection = true
-                    } else { settings = true }
-                } label: {
-                    Label("Agrupar", systemImage: "rectangle.3.group")
-                        .frame(maxWidth: .infinity).padding(.vertical, 10)
-                }
-                .disabled(busy || ungrouped.count < 2)
-                .background(TTTheme.teal.opacity(0.16), in: RoundedRectangle(cornerRadius: 10))
-                Button {
-                    if github.authenticated { confirmCleanup = true } else { settings = true }
-                } label: {
-                    Text("Eliminar agrupadas (\(covered.count))")
-                        .frame(maxWidth: .infinity).padding(.vertical, 10)
-                }
-                .disabled(busy || covered.isEmpty)
-                .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 10))
-            }
-            .font(.system(size: 12, weight: .semibold)).foregroundStyle(TTTheme.teal)
             Button {
                 if github.authenticated {
                     removeAllSelection = allTrends
@@ -67,55 +29,7 @@ private struct ListasGroupingControls: View {
             .disabled(busy || allTrends.isEmpty)
             .background(TTTheme.red.opacity(0.55), in: RoundedRectangle(cornerRadius: 10))
             .accessibilityHint("Retirar en una sola operación todas las tendencias de Listas como no publicadas")
-            if !message.isEmpty {
-                Text(message).font(.caption2).foregroundStyle(TTTheme.muted)
-            }
-        }
-        .sheet(isPresented: $showSelection) {
-            NavigationStack {
-                List(ungrouped) { trend in
-                    Button {
-                        if selectedIDs.contains(trend.editorialID) { selectedIDs.remove(trend.editorialID) }
-                        else { selectedIDs.insert(trend.editorialID) }
-                    } label: {
-                        HStack(alignment: .top, spacing: 10) {
-                            Image(systemName: selectedIDs.contains(trend.editorialID) ? "checkmark.circle.fill" : "circle")
-                                .foregroundStyle(TTTheme.teal)
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text(trend.name).font(.headline)
-                                Text(trend.explanation).font(.caption).foregroundStyle(.secondary).lineLimit(4)
-                            }
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(trend.name + (selectedIDs.contains(trend.editorialID) ? ", seleccionada" : ", sin seleccionar"))
-                }
-                .navigationTitle("Seleccionar tendencias")
-                .safeAreaInset(edge: .bottom) {
-                    Text("Selecciona al menos dos. Solo se agruparán estas tarjetas; las originales conservarán su explicación.")
-                        .font(.caption).padding().frame(maxWidth: .infinity).background(.regularMaterial)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancelar") { showSelection = false }
-                    }
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Agrupar (\(selectedIDs.count))") {
-                            submittedGroup = ungrouped.filter { selectedIDs.contains($0.editorialID) }
-                            showSelection = false
-                            submit(cleanup: false)
-                        }.disabled(selectedIDs.count < 2 || busy)
-                    }
-                }
-            }.preferredColorScheme(.dark)
-        }
-        .alert("¿Eliminar todas las agrupadas?", isPresented: $confirmCleanup) {
-            Button("Eliminar \(covered.count) · No publicadas", role: .destructive) {
-                submit(cleanup: true)
-            }
-            Button("Cancelar", role: .cancel) {}
-        } message: {
-            Text("Eliminarás de Listas todas las \(covered.count) tendencias previamente agrupadas, registradas como NO PUBLICADAS. Las explicaciones conjuntas se conservan y no se suman publicaciones en X.")
+            if !message.isEmpty { Text(message).font(.caption2).foregroundStyle(TTTheme.muted) }
         }
         .confirmationDialog("¿Retirar todas las tendencias de Listas?",
                             isPresented: $confirmRemoveAllTrends, titleVisibility: .visible) {
@@ -155,32 +69,6 @@ private struct ListasGroupingControls: View {
         }
     }
 
-    private func submit(cleanup: Bool) {
-        guard !busy else { return }
-        let selected = cleanup ? covered : (submittedGroup ?? [])
-        guard cleanup || selected.count >= 2 else { return }
-        busy = true
-        message = "Registrando la solicitud en GitHub…"
-        Task {
-            let result = await github.groupListas(
-                requestID: cleanup ? cleanupRequestID : groupRequestID,
-                removeCovered: cleanup ? selected : nil,
-                selected: cleanup ? nil : selected)
-            switch result {
-            case .verified:
-                if cleanup { cleanupRequestID = UUID().uuidString.lowercased() }
-                else { groupRequestID = UUID().uuidString.lowercased(); submittedGroup = nil }
-                message = cleanup ? "Agrupadas eliminadas como no publicadas · confirmado en GitHub." :
-                    "Agrupación de la selección solicitada. Consulta En elaboración; las originales se conservan."
-            case .pending:
-                message = "Solicitud pendiente de confirmación. Se conservará el mismo identificador si reintentas."
-            case .failed:
-                message = github.notice
-            }
-            await store.refreshIfStale(minInterval: 0)
-            busy = false
-        }
-    }
 }
 
 // Each counter opens only its own project's confirmed publications.
@@ -200,6 +88,7 @@ struct TTDashboard: View {
     @State private var showNewStory = false
     @State private var showSettings = false
     @State private var showImageInbox = false
+    @State private var showRelations = false
     @State private var showCombinedListas = false
     @State private var publicationSheet: PublicationSheetRoute?
     @State private var requestingEditorialRun = false
@@ -215,6 +104,12 @@ struct TTDashboard: View {
             VStack(spacing: 0) {
                 topBar
                 topSections
+                Button { showRelations = true } label: {
+                    Label("Relaciones por revisar", systemImage: "point.3.connected.trianglepath.dotted")
+                        .font(.system(size: 12, weight: .semibold))
+                        .frame(maxWidth: .infinity).padding(.vertical, 8)
+                }
+                .foregroundStyle(TTTheme.teal)
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 14) {
                         if let quickOverview {
@@ -242,7 +137,7 @@ struct TTDashboard: View {
                                 editorialRunControl
                             }
                             if showCombinedListas || (store.section == .trends && store.trendFilter == .listas) {
-                                ListasGroupingControls(github: github, settings: $showSettings)
+                                ListasTrendControls(github: github, settings: $showSettings)
                             }
                             searchField
                             if showCombinedListas { combinedListasContent }
@@ -306,6 +201,9 @@ struct TTDashboard: View {
         .sheet(isPresented: $showImageInbox, onDismiss: { Task { await store.refresh(manual: true) } }) {
             ImageApprovalInbox(github: github).presentationDetents([.large])
         }
+        .sheet(isPresented: $showRelations) {
+            EditorialRelationsView(github: github).presentationDetents([.large])
+        }
         .sheet(item: $publicationSheet) { selection in
             PublishedHistorySheet(project: selection.project)
                 .environmentObject(store)
@@ -321,6 +219,7 @@ struct TTDashboard: View {
         showNewStory = false
         showSettings = false
         showImageInbox = false
+        showRelations = false
         publicationSheet = nil
         showCombinedListas = false
         search = ""
