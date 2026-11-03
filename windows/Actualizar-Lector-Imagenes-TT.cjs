@@ -3,8 +3,8 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {spawnSync}=require('node:child_process');
 const source='https://raw.githubusercontent.com/fabricelop/europapress-rss/98c529bc3ff8eb044c8f2b810b01b83b5f280c12/windows/';
 const files=[
- ['TTendenciasWebImages.cjs','bc94a77f3a6516cce4e1b3feb21e3b7ae354b30e278f379d53fc8d12125eb1c4','0fa7529a5dcc9696ac9562bd4ffccf268d87c151cb1b770772c8d0c10520b0e5'],
- ['TTiTTularesWebImages.cjs','e442633ab0c7e0fd8a773607413361bb764f391aae8c1ce6f2181091c50ffdc0','738dd97e84bacba93ac93407b663ec5de83a02941e15abda300279bfec7abdb5']
+ ['TTendenciasWebImages.cjs','595425bcb143776ae378a7d7a5e37bdabe0aa496631da39a9214adadb3580774','a67d8e90ae3c9aac6167687d05ee76f0323c40e5dfc1f0440a5ce9a2f15b2f0b'],
+ ['TTiTTularesWebImages.cjs','8ef3c4c1da5e4dfa0556c1f83e2db8e3f862a1ff028a168199dd562553e0467c','daf8574088b31b0e058619fb72a1ed8925209224773cdc843a9d1d4d6f036e66']
 ];
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 function validateCurrent(bytes,oldHash,newHash){
