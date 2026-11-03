@@ -5,92 +5,77 @@
   "canonical": true,
   "run_id": "tr-1793744866688-manual",
   "previous_run_id": "tr-1793744548832-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T23:29:00+01:00",
-  "updated_at": "2026-11-03T23:29:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "41baa9afe047",
-  "title": "Óscar Puente",
-  "queue_complete": false,
+  "updated_at": "2026-11-03T23:38:30+01:00",
+  "finished_at": "2026-11-03T23:38:30+01:00",
+  "current": 2,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-8d63523a1fb9a2a698e2"
-  ],
-  "remaining_ids": [
+    "red-review-b1e5a814997a025e46f2",
     "41baa9afe047"
   ],
-  "remaining_active_ids": [
-    "41baa9afe047"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "1/3 cerrado: revisión de Óscar Puente aplicada. Mazón r0 sigue activa tras corregir el formato del mismo resultado; 41baa9afe047 r0 espera aplicación. ImageGen=0; publicaciones=0.",
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 1,
+    "updates": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "verifying",
   "final_outcomes": [
     {
-      "id": "e573493d55f2",
-      "outcome": "explained_or_converged"
+      "id": "red-review-b1e5a814997a025e46f2",
+      "revision": 0,
+      "name": "Mazón",
+      "outcome": "review_completed/updated",
+      "applied": true,
+      "created_id": "trend-update-81449c510b4dde5f6a50"
     },
     {
-      "id": "919fc31e93a5",
-      "outcome": "explained_or_converged"
-    },
-    {
-      "id": "trend-update-2454ffeac830bf71aa0b",
-      "outcome": "explained_or_converged"
-    },
-    {
-      "id": "15763ea0d688",
-      "outcome": "explained_or_converged"
-    },
-    {
-      "id": "381b284f49ec",
-      "outcome": "explained_or_converged"
-    },
-    {
-      "id": "af1c68478673",
-      "outcome": "explained_or_converged"
-    },
-    {
-      "id": "9b4b10c8f7a7",
-      "outcome": "terminal_deleted_jit"
-    },
-    {
-      "id": "a04af111227a",
-      "outcome": "terminal_deleted_jit"
+      "id": "41baa9afe047",
+      "revision": 0,
+      "name": "Óscar Puente",
+      "outcome": "explained",
+      "applied": true,
+      "explained_at": "2026-11-03T23:37:00+01:00"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T23:12:47+01:00",
-  "last_completed_at": "2026-11-03T22:16:30.580Z",
+  "last_completed_at": "2026-11-03T23:38:30+01:00",
   "last_run": {
-    "run_id": "tr-1793743726792-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-03T23:12:13+01:00",
-    "finished_at": "2026-11-03T22:16:30.580Z",
-    "current": 8,
-    "total": 8,
+    "run_id": "tr-1793744866688-manual",
+    "status": "DONE",
+    "started_at": "2026-11-03T23:29:00+01:00",
+    "finished_at": "2026-11-03T23:38:30+01:00",
+    "current": 2,
+    "total": 2,
     "closed": [
-      "e573493d55f2",
-      "919fc31e93a5",
-      "trend-update-2454ffeac830bf71aa0b",
-      "15763ea0d688",
-      "381b284f49ec",
-      "af1c68478673"
-    ],
-    "terminal_skipped": [
-      "9b4b10c8f7a7",
-      "a04af111227a"
+      "red-review-b1e5a814997a025e46f2",
+      "41baa9afe047"
     ],
     "pending": [],
-    "summary": "8/8 resueltos por barrera JIT: 6 revisiones explained y sincronizadas en requests/Listas; Lookman r0 y Patxi r0 quedaron terminales deleted antes de persistir. Cola final 0; preparando/update/rewrite_pending final 0; ImageGen=0; publicaciones=0."
+    "summary": "Pasada tr-1793744866688-manual cerrada 2/2 por convergencia JIT: Mazón review_completed/updated como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explained y sincronizado en requests/Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Outbox obsoleto de Óscar retirado. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio por convergencia JIT: main ya cerró la revisión de Mazón durante otra pasada concurrente; queda 1/1 activo, Óscar Puente 41baa9afe047 r0. Investigación desde cero con fuentes actuales; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793744866688-manual cerrada 2/2 por convergencia JIT: Mazón review_completed/updated como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explained y sincronizado en requests/Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Outbox obsoleto de Óscar retirado. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3835,6 +3820,28 @@
       "trend_id": "41baa9afe047",
       "title": "Óscar Puente",
       "message": "Inicio por convergencia JIT: main ya cerró la revisión de Mazón durante otra pasada concurrente; queda 1/1 activo, Óscar Puente 41baa9afe047 r0. Investigación desde cero con fuentes actuales; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T23:38:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793744866688-manual",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT verificada: editorial-queue=0; requests preparing/update=0; rewrite_pending/reexplain=0; Óscar Puente r0 figura explained en requests y Listas; Mazón review_completed/updated."
+    },
+    {
+      "at": "2026-11-03T23:38:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793744866688-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-1793744866688-manual cerrada 2/2 por convergencia JIT: Mazón review_completed/updated como episodio distinto (trend-update-81449c510b4dde5f6a50) y Óscar Puente r0 explained y sincronizado en requests/Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Outbox obsoleto de Óscar retirado. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -11786,6 +11793,7 @@
     "tr-1793719469374-manual",
     "tr-autoguard-1793725731",
     "tr-1793734298171-manual",
-    "tr-autoguard-1793735352"
+    "tr-autoguard-1793735352",
+    "tr-1793744866688-manual"
   ]
 }
