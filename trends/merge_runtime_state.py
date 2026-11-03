@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse, json
 from pathlib import Path
+from requests_json import dumps_for_path
 
 STATUS_ORDER = {"preparing": 1, "update": 1, "ready": 2, "problematic": 3, "dismissed": 4, "explained": 4, "inactive": 5}
 
@@ -199,7 +200,7 @@ def main():
     remote_requests = load(root / "requests.json", {"requests": []})
     local_requests = load(args.local_requests, {"requests": []}) if args.local_requests else {"requests": []}
     merged_requests = merge_requests(remote_requests, local_requests)
-    (root / "requests.json").write_text(json.dumps(merged_requests, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (root / "requests.json").write_text(dumps_for_path(root / "requests.json", merged_requests), encoding="utf-8")
 
     if args.local_state:
         remote_state = load(root / "telegram-bot-state.json", {})
