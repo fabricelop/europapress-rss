@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-03T11:21:10Z",
+  "updated_at": "2026-11-03T11:23:27.375229Z",
   "items": [
     {
       "event_id": "23d116e6e595",
@@ -209,14 +209,16 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
+      "archive_image_status": "none",
       "fallback_image_status": "none",
       "prepared_at": "2026-11-03T11:18:30Z",
       "image_choice": "none",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-03T11:23:27.375229Z",
+      "fallback_image_search_attempted_at": "2026-11-03T11:23:27.375229Z"
     },
     {
       "event_id": "f92f5dc2c0f7",
@@ -257,14 +259,32 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "prepared_at": "2026-11-03T11:21:10Z",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-03T11:23:27.375229Z",
+      "fallback_image_search_attempted_at": "2026-11-03T11:23:27.375229Z",
+      "archive_image": {
+        "url": "https://e01-phantom-elmundo.uecdn.es/9c29bd4ce246faf9921ea3dc0026fd3e/crop/0x125/1500x1125/resize/1200/f/webp/assets/multimedia/imagenes/2026/11/03/17936974660595.jpg",
+        "source": "www.elmundo.es",
+        "source_url": "https://www.elmundo.es/internacional/2026/11/03/6ae9a714fc6c8371578b45aa.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Muere un turista y otro resulta herido en Nepal tras chocar dos helicpteros en el Everest"
+      },
+      "fallback_image": {
+        "url": "https://e01-phantom-elmundo.uecdn.es/9c29bd4ce246faf9921ea3dc0026fd3e/crop/0x125/1500x1125/resize/1200/f/webp/assets/multimedia/imagenes/2026/11/03/17936974660595.jpg",
+        "source": "www.elmundo.es",
+        "source_url": "https://www.elmundo.es/internacional/2026/11/03/6ae9a714fc6c8371578b45aa.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Muere un turista y otro resulta herido en Nepal tras chocar dos helicpteros en el Everest"
+      }
     }
   ],
   "count": 5,
