@@ -5,21 +5,27 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793696493",
   "previous_run_id": "tr-1793695104407-manual",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-03T10:02:00+01:00",
-  "updated_at": "2026-11-03T10:08:20+01:00",
+  "updated_at": "2026-11-03T10:10:30+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 2,
-  "trend_id": "033a07896805",
-  "title": "Delegación del Gobierno",
-  "queue_complete": true,
+  "current": 2,
+  "total": 4,
+  "trend_id": "red-review-296d82743b1a96e08346",
+  "title": "Revisar novedades: Diomande",
+  "queue_complete": false,
   "processed_ids": [
     "033a07896805"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "0445de67536b",
+    "e0f6e33a38dc",
+    "83bc11acedc0",
+    "red-review-296d82743b1a96e08346",
+    "red-review-fbd7aee9c1be9f3e8544"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "incident_count": 0,
@@ -126,7 +132,7 @@
     "at": "2026-11-03T09:44:00+01:00"
   },
   "source": "chat",
-  "message": "Detonante actual verificado: la Delegación del Gobierno en Madrid justificó como último recurso el desalojo de la acampada de Sol; 334 desalojados y dos detenidos.",
+  "message": "Revisando novedades de Diomande: la cobertura posterior localizada sigue derivando del 0-3 ante el Racing y de su gol; no aparece un episodio distinto ni un cambio material posterior.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1674,6 +1680,17 @@
       "trend_id": "033a07896805",
       "title": "Delegación del Gobierno",
       "message": "Detonante actual verificado: la Delegación del Gobierno en Madrid justificó como último recurso el desalojo de la acampada de Sol; 334 desalojados y dos detenidos."
+    },
+    {
+      "at": "2026-11-03T10:10:30+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793696493",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 4,
+      "trend_id": "red-review-296d82743b1a96e08346",
+      "title": "Revisar novedades: Diomande",
+      "message": "Revisando novedades de Diomande: la cobertura posterior localizada sigue derivando del 0-3 ante el Racing y de su gol; no aparece un episodio distinto ni un cambio material posterior."
     }
   ],
   "history": [
@@ -3633,8 +3650,8 @@
       "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
     }
   ],
-  "current_item": "033a07896805",
-  "current_title": "Delegación del Gobierno",
+  "current_item": "red-review-296d82743b1a96e08346",
+  "current_title": "Revisar novedades: Diomande",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -6895,6 +6912,17 @@
       "trend_id": "033a07896805",
       "title": "Delegación del Gobierno",
       "message": "Detonante actual verificado: la Delegación del Gobierno en Madrid justificó como último recurso el desalojo de la acampada de Sol; 334 desalojados y dos detenidos."
+    },
+    {
+      "at": "2026-11-03T10:10:30+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793696493",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 4,
+      "trend_id": "red-review-296d82743b1a96e08346",
+      "title": "Revisar novedades: Diomande",
+      "message": "Revisando novedades de Diomande: la cobertura posterior localizada sigue derivando del 0-3 ante el Racing y de su gol; no aparece un episodio distinto ni un cambio material posterior."
     }
   ],
   "converged_run_ids": [
