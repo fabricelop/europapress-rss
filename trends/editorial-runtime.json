@@ -5,27 +5,42 @@
   "canonical": true,
   "run_id": "tr-1793723144849-manual",
   "previous_run_id": "tr-autoguard-1793722297",
-  "status": "PROCESSING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T17:26:00+01:00",
-  "updated_at": "2026-11-03T17:32:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T17:32:10+01:00",
+  "finished_at": "2026-11-03T17:32:10+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-c5fda321e7a6dd39a345",
-  "title": "Revisar novedades: Homicidio",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-f1d1417d433ed88d5205",
     "red-review-c5fda321e7a6dd39a345"
   ],
-  "remaining_active_ids": [
-    "red-review-f1d1417d433ed88d5205",
-    "red-review-c5fda321e7a6dd39a345"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "updates": 1,
+    "grouping_requests": 0,
+    "groups_created": 0,
+    "covered_by_existing": 0,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
+    "terminal_decisions": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -266,75 +281,90 @@
   ],
   "final_outcomes": [
     {
-      "id": "e47f706121da",
+      "id": "red-review-f1d1417d433ed88d5205",
       "revision": 0,
-      "name": "Mark Twain",
-      "outcome": "explained",
+      "name": "Revisar novedades: #GMMTVNEXT",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Óscar Puente citó a Mark Twain al explicar la revisión de protocolos tras el accidente de Urda; sin remate por sensibilidad."
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+      "source_id": "e0f6e33a38dc",
+      "reason": "Los anuncios de proyectos forman parte de la misma presentación GMMTVNEXT ya explicada; texto y fecha conservados."
     },
     {
-      "id": "44365581404a",
+      "id": "red-review-c5fda321e7a6dd39a345",
       "revision": 0,
-      "name": "Pedraz",
-      "outcome": "explained",
+      "name": "Revisar novedades: Homicidio",
+      "outcome": "updated",
       "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Prórroga hasta el 10 de junio de 2027 de la instrucción del caso Leire Díez por diligencias pendientes."
-    },
-    {
-      "id": "3553f8c0304e",
-      "revision": 0,
-      "name": "Région",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Top30 actual verificado, pero sin detonante concreto acreditado tras contraste; cierre explícito con causa no confirmada."
-    },
-    {
-      "id": "4aa3329968cd",
-      "revision": 0,
-      "name": "Huelga General",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Convocatoria estatal del 11 de noviembre y debate reactivado hoy sobre su continuidad."
-    },
-    {
-      "id": "6b1ca96d0ae5",
-      "revision": 0,
-      "name": "Carcel",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Debate actual sobre posibles consecuencias penales tras la muerte de Jesús de Miguel, dejando claro que la investigación sigue abierta y no hay conclusión penal."
+      "created_id": "trend-update-12b590032108f1ff8dbd",
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+      "source_id": "93fd9a90a9c2",
+      "reason": "Novedad material: investigación formal del Grupo de Homicidios y diligencias judiciales; continuidad del mismo episodio, sin remate por sensibilidad."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T17:19:38+01:00",
-  "last_completed_at": "2026-11-03T17:23:00+01:00",
+  "last_completed_at": "2026-11-03T17:32:10+01:00",
   "last_run": {
     "run_id": "tr-1793723144849-manual",
     "command_id": "tr-1793723144849-manual",
     "canonical": true,
-    "status": "PROCESSING",
+    "status": "DONE",
     "started_at": "2026-11-03T17:26:00+01:00",
-    "finished_at": null,
-    "summary": null,
-    "outcomes": [],
+    "finished_at": "2026-11-03T17:32:10+01:00",
+    "summary": {
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "updates": 1,
+      "grouping_requests": 0,
+      "groups_created": 0,
+      "covered_by_existing": 0,
+      "unchanged_reviews": 1,
+      "stale_reviews": 0,
+      "terminal_decisions": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "publications": 0,
+      "incidents": 0,
+      "concurrent_convergence": 0
+    },
+    "outcomes": [
+      {
+        "id": "red-review-f1d1417d433ed88d5205",
+        "revision": 0,
+        "name": "Revisar novedades: #GMMTVNEXT",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+        "source_id": "e0f6e33a38dc",
+        "reason": "Los anuncios de proyectos forman parte de la misma presentación GMMTVNEXT ya explicada; texto y fecha conservados."
+      },
+      {
+        "id": "red-review-c5fda321e7a6dd39a345",
+        "revision": 0,
+        "name": "Revisar novedades: Homicidio",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-12b590032108f1ff8dbd",
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+        "source_id": "93fd9a90a9c2",
+        "reason": "Novedad material: investigación formal del Grupo de Homicidios y diligencias judiciales; continuidad del mismo episodio, sin remate por sensibilidad."
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Homicidio: novedad material verificada; investigación formal del Grupo de Homicidios y diligencias judiciales. Persistiendo updated en continuidad, sin remate por sensibilidad.",
-    "at": "2026-11-03T17:32:00+01:00"
+    "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T17:32:10+01:00"
   },
   "source": "chat",
-  "message": "Homicidio: novedad material verificada; investigación formal del Grupo de Homicidios y diligencias judiciales. Persistiendo updated en continuidad, sin remate por sensibilidad.",
+  "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3257,6 +3287,28 @@
       "trend_id": "red-review-c5fda321e7a6dd39a345",
       "title": "Revisar novedades: Homicidio",
       "message": "Homicidio: novedad material verificada; investigación formal del Grupo de Homicidios y diligencias judiciales. Persistiendo updated en continuidad, sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-03T17:32:10+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793723144849-manual",
+      "status": "PROCESSING",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT verificada: editorial-queue=0; #GMMTVNEXT review_completed/unchanged y Homicidio review_completed/updated con trend-update-12b590032108f1ff8dbd, aplicados en 08e5e2bd99e5a0b366e046f80b4c08cc1f433403. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T17:32:10+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793723144849-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -5667,63 +5719,92 @@
       "message": "Pasada tr-1793719469374-manual cerrada 2/2 por convergencia JIT: #AccidenteFerroviario review_completed/stale sin duplicar actualización y Andorra review_completed/updated con nueva ficha trend-update-c2473ec51973d40570af. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T15:30:03.791Z",
       "converged_with": "tr-1793719374883-manual"
+    },
+    {
+      "run_id": "tr-1793723144849-manual",
+      "command_id": "tr-1793723144849-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T17:26:00+01:00",
+      "finished_at": "2026-11-03T17:32:10+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "terminal_decisions": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "red-review-f1d1417d433ed88d5205",
+          "revision": 0,
+          "name": "Revisar novedades: #GMMTVNEXT",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+          "source_id": "e0f6e33a38dc",
+          "reason": "Los anuncios de proyectos forman parte de la misma presentación GMMTVNEXT ya explicada; texto y fecha conservados."
+        },
+        {
+          "id": "red-review-c5fda321e7a6dd39a345",
+          "revision": 0,
+          "name": "Revisar novedades: Homicidio",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-12b590032108f1ff8dbd",
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+          "source_id": "93fd9a90a9c2",
+          "reason": "Novedad material: investigación formal del Grupo de Homicidios y diligencias judiciales; continuidad del mismo episodio, sin remate por sensibilidad."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T17:32:10+01:00"
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "e47f706121da",
+      "id": "red-review-f1d1417d433ed88d5205",
       "revision": 0,
-      "name": "Mark Twain",
-      "outcome": "explained",
+      "name": "Revisar novedades: #GMMTVNEXT",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Óscar Puente citó a Mark Twain al explicar la revisión de protocolos tras el accidente de Urda; sin remate por sensibilidad."
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+      "source_id": "e0f6e33a38dc",
+      "reason": "Los anuncios de proyectos forman parte de la misma presentación GMMTVNEXT ya explicada; texto y fecha conservados."
     },
     {
-      "id": "44365581404a",
+      "id": "red-review-c5fda321e7a6dd39a345",
       "revision": 0,
-      "name": "Pedraz",
-      "outcome": "explained",
+      "name": "Revisar novedades: Homicidio",
+      "outcome": "updated",
       "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Prórroga hasta el 10 de junio de 2027 de la instrucción del caso Leire Díez por diligencias pendientes."
-    },
-    {
-      "id": "3553f8c0304e",
-      "revision": 0,
-      "name": "Région",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Top30 actual verificado, pero sin detonante concreto acreditado tras contraste; cierre explícito con causa no confirmada."
-    },
-    {
-      "id": "4aa3329968cd",
-      "revision": 0,
-      "name": "Huelga General",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Convocatoria estatal del 11 de noviembre y debate reactivado hoy sobre su continuidad."
-    },
-    {
-      "id": "6b1ca96d0ae5",
-      "revision": 0,
-      "name": "Carcel",
-      "outcome": "explained",
-      "applied": true,
-      "via": "this_run_outbox",
-      "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-      "reason": "Debate actual sobre posibles consecuencias penales tras la muerte de Jesús de Miguel, dejando claro que la investigación sigue abierta y no hay conclusión penal."
+      "created_id": "trend-update-12b590032108f1ff8dbd",
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+      "source_id": "93fd9a90a9c2",
+      "reason": "Novedad material: investigación formal del Grupo de Homicidios y diligencias judiciales; continuidad del mismo episodio, sin remate por sensibilidad."
     }
   ],
-  "current_item": "red-review-c5fda321e7a6dd39a345",
-  "current_title": "Revisar novedades: Homicidio",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -8181,6 +8262,62 @@
       "message": "Pasada tr-1793719469374-manual cerrada 2/2 por convergencia JIT: #AccidenteFerroviario review_completed/stale sin duplicar actualización y Andorra review_completed/updated con nueva ficha trend-update-c2473ec51973d40570af. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T15:30:03.791Z",
       "converged_with": "tr-1793719374883-manual"
+    },
+    {
+      "run_id": "tr-1793723144849-manual",
+      "command_id": "tr-1793723144849-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T17:26:00+01:00",
+      "finished_at": "2026-11-03T17:32:10+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "terminal_decisions": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "red-review-f1d1417d433ed88d5205",
+          "revision": 0,
+          "name": "Revisar novedades: #GMMTVNEXT",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+          "source_id": "e0f6e33a38dc",
+          "reason": "Los anuncios de proyectos forman parte de la misma presentación GMMTVNEXT ya explicada; texto y fecha conservados."
+        },
+        {
+          "id": "red-review-c5fda321e7a6dd39a345",
+          "revision": 0,
+          "name": "Revisar novedades: Homicidio",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-12b590032108f1ff8dbd",
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+          "source_id": "93fd9a90a9c2",
+          "reason": "Novedad material: investigación formal del Grupo de Homicidios y diligencias judiciales; continuidad del mismo episodio, sin remate por sensibilidad."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T17:32:10+01:00"
     }
   ],
   "command_id": "tr-1793723144849-manual",
@@ -9693,6 +9830,62 @@
       "message": "Pasada tr-1793719469374-manual cerrada 2/2 por convergencia JIT: #AccidenteFerroviario review_completed/stale sin duplicar actualización y Andorra review_completed/updated con nueva ficha trend-update-c2473ec51973d40570af. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T15:30:03.791Z",
       "converged_with": "tr-1793719374883-manual"
+    },
+    {
+      "run_id": "tr-1793723144849-manual",
+      "command_id": "tr-1793723144849-manual",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T17:26:00+01:00",
+      "finished_at": "2026-11-03T17:32:10+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "terminal_decisions": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "red-review-f1d1417d433ed88d5205",
+          "revision": 0,
+          "name": "Revisar novedades: #GMMTVNEXT",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+          "source_id": "e0f6e33a38dc",
+          "reason": "Los anuncios de proyectos forman parte de la misma presentación GMMTVNEXT ya explicada; texto y fecha conservados."
+        },
+        {
+          "id": "red-review-c5fda321e7a6dd39a345",
+          "revision": 0,
+          "name": "Revisar novedades: Homicidio",
+          "outcome": "updated",
+          "applied": true,
+          "created_id": "trend-update-12b590032108f1ff8dbd",
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
+          "source_id": "93fd9a90a9c2",
+          "reason": "Novedad material: investigación formal del Grupo de Homicidios y diligencias judiciales; continuidad del mismo episodio, sin remate por sensibilidad."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T17:32:10+01:00"
     }
   ],
   "activity_log": [
@@ -10419,6 +10612,28 @@
       "trend_id": "red-review-c5fda321e7a6dd39a345",
       "title": "Revisar novedades: Homicidio",
       "message": "Homicidio: novedad material verificada; investigación formal del Grupo de Homicidios y diligencias judiciales. Persistiendo updated en continuidad, sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-03T17:32:10+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793723144849-manual",
+      "status": "PROCESSING",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT verificada: editorial-queue=0; #GMMTVNEXT review_completed/unchanged y Homicidio review_completed/updated con trend-update-12b590032108f1ff8dbd, aplicados en 08e5e2bd99e5a0b366e046f80b4c08cc1f433403. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T17:32:10+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793723144849-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
