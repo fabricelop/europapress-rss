@@ -1,4 +1,4 @@
-"""Conditional trend research and the text-before-images grouping gate.
+"""Conditional trend research independent of retired grouping.
 
 Research is performed by the existing editorial chat, never by this scheduler.
 All result application is on a fresh state with exact revision/text guards.
@@ -33,7 +33,7 @@ def fingerprint(row):
 
 
 def image_allowed(row):
-    """Manual grouping is optional; a finished individual explanation can have an image."""
+    """Independent explanations need no grouping clearance; historical coverage remains."""
     return not (row.get('anticipation_request') or row.get('listas_group_role') == 'covered')
 
 
@@ -59,11 +59,11 @@ def add_job(state, job, at):
 
 
 def schedule(state, now, grouping):
-    """Only schedule factual reviews. Grouping is initiated by the editor from selected Listas."""
+    """Only schedule factual reviews; grouping is retired."""
     if state[QUEUE].get('maintenance_pause'):
         return
     live = [x for x in state[REQUESTS]['requests'] if x.get('status') in ACTIVE]
-    # Ordinary editorial requests, including an explicit manual grouping, keep priority.
+    # Ordinary editorial requests keep priority; retired grouping jobs never block research.
     if any(not x.get('listas_grouping_request') and not x.get('red_review_request')
            and not x.get('anticipation_request') for x in live):
         return
@@ -231,3 +231,4 @@ def apply_review(state, command, now, grouping):
     state[REQUESTS]['updated_at'] = at
     state[MANUAL]['updated_at'] = at
     return state, True
+

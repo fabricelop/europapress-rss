@@ -175,17 +175,17 @@ class MaintenanceTests(unittest.TestCase):
                              for x in self.state[g.REQUESTS]['requests']))
         self.assertTrue(m.image_allowed(self.state[g.MANUAL]['items'][1]))
 
-    def test_manual_selection_excludes_other_listas_and_rejects_stale(self):
+    def test_manual_grouping_is_retired_without_mutating_editorial_cards(self):
         self.add({**self.row, 'id': 'b', 'name': 'Atocha'})
-        self.add({**self.row, 'id': 'c', 'name': 'Copa'})
         p = dict(project='ttendencias', decision='group_listas', request_id='12345678-1234-4234-8234-123456789abc',
                  items=[dict(id='a', revision=1), dict(id='b', revision=1)])
-        final, _ = g.request(self.state, p, self.now)
-        self.assertEqual({x['id'] for x in final[g.QUEUE]['items'][-1]['grouping_candidates']}, {'a', 'b'})
-        p['items'][1]['revision'] = 0
+        before = copy.deepcopy(self.state)
         final, _ = g.request(self.state, p, self.now)
         self.assertFalse(final[g.QUEUE]['items'])
         self.assertEqual(final[g.RECEIPTS]['items'][-1]['status'], 'rejected')
+        self.assertEqual(final[g.RECEIPTS]['items'][-1]['code'], 'TREND_GROUPING_RETIRED')
+        for path in (g.MANUAL, g.REQUESTS, g.DECISIONS, g.DELIVERIES):
+            self.assertEqual(final[path], before[path])
 
     def test_new_hashtag_is_not_automatically_covered_by_published_story(self):
         self.state[g.REQUESTS]['requests'][0]['status'] = 'published'
@@ -205,3 +205,4 @@ class MaintenanceTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
