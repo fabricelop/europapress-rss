@@ -5,17 +5,20 @@
   "canonical": true,
   "run_id": "tr-1793743726792-manual",
   "previous_run_id": "tr-1793743346303-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-03T23:12:13+01:00",
-  "updated_at": "2026-11-03T23:12:47+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 3,
-  "trend_id": "15763ea0d688",
-  "title": "Laimer",
+  "updated_at": "2026-11-03T22:16:30.580Z",
+  "finished_at": "2026-11-03T22:16:30.580Z",
+  "current": 8,
+  "total": 8,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "e573493d55f2",
+    "919fc31e93a5",
+    "trend-update-2454ffeac830bf71aa0b",
     "15763ea0d688",
     "381b284f49ec",
     "af1c68478673"
@@ -23,42 +26,88 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "8/8 resueltos por barrera JIT: 6 revisiones explained y sincronizadas en requests/Listas; Lookman r0 y Patxi r0 quedaron terminales deleted antes de persistir. Cola final 0; preparando/update/rewrite_pending final 0; ImageGen=0; publicaciones=0.",
+  "incident_count": 2,
+  "incidents": [
+    {
+      "type": "queue_request_desync",
+      "ids": [
+        "9b4b10c8f7a7",
+        "a04af111227a"
+      ],
+      "detail": "Lookman r0 y Patxi r0 seguían preparing en requests.json aunque habían desaparecido de editorial-queue.json. La barrera JIT detectó después estado terminal deleted en ambos; se abortó su persistencia y se neutralizó el outbox tardío."
+    },
+    {
+      "type": "connector_transport",
+      "ids": [
+        "15763ea0d688"
+      ],
+      "detail": "Error h2 durante un intento de persistencia de Laimer r0. La relectura JIT mostró la revisión ya aplicada de forma completa por convergencia concurrente, sin duplicar ni sobrescribir."
+    }
+  ],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-5331dae929b3cc0542af",
-      "revision": 0,
-      "name": "Revisar novedades: Villarreal-Espanyol y debut de Sergio García",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-2454ffeac830bf71aa0b",
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "95caee627a2e52f25dda0f0c16a0295eece8c4cb",
-      "reason": "Episodio distinto ya aplicado por la pasada concurrente: Villarreal-PSG en la jornada 4 de Champions, separado del Villarreal-Espanyol del 30 de octubre."
+      "id": "e573493d55f2",
+      "outcome": "explained_or_converged"
+    },
+    {
+      "id": "919fc31e93a5",
+      "outcome": "explained_or_converged"
+    },
+    {
+      "id": "trend-update-2454ffeac830bf71aa0b",
+      "outcome": "explained_or_converged"
+    },
+    {
+      "id": "15763ea0d688",
+      "outcome": "explained_or_converged"
+    },
+    {
+      "id": "381b284f49ec",
+      "outcome": "explained_or_converged"
+    },
+    {
+      "id": "af1c68478673",
+      "outcome": "explained_or_converged"
+    },
+    {
+      "id": "9b4b10c8f7a7",
+      "outcome": "terminal_deleted_jit"
+    },
+    {
+      "id": "a04af111227a",
+      "outcome": "terminal_deleted_jit"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T23:12:47+01:00",
-  "last_completed_at": "2026-11-03T23:12:47+01:00",
+  "last_completed_at": "2026-11-03T22:16:30.580Z",
   "last_run": {
-    "run_id": "tr-1793742976079-manual",
-    "status": "DONE",
-    "started_at": "2026-11-03T21:57:00Z",
-    "finished_at": "2026-11-03T21:59:48.302Z",
-    "current": 1,
-    "total": 1,
+    "run_id": "tr-1793743726792-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-03T23:12:13+01:00",
+    "finished_at": "2026-11-03T22:16:30.580Z",
+    "current": 8,
+    "total": 8,
     "closed": [
-      "red-review-5331dae929b3cc0542af"
+      "e573493d55f2",
+      "919fc31e93a5",
+      "trend-update-2454ffeac830bf71aa0b",
+      "15763ea0d688",
+      "381b284f49ec",
+      "af1c68478673"
+    ],
+    "terminal_skipped": [
+      "9b4b10c8f7a7",
+      "a04af111227a"
     ],
     "pending": [],
-    "summary": "1/1 cerrada por convergencia JIT: Villarreal updated ya aplicado; cola final 0; sin reexplicaciones; ImageGen=0; publicaciones=0."
+    "summary": "8/8 resueltos por barrera JIT: 6 revisiones explained y sincronizadas en requests/Listas; Lookman r0 y Patxi r0 quedaron terminales deleted antes de persistir. Cola final 0; preparando/update/rewrite_pending final 0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada manual real iniciada: 3 preparing/update vigentes en main; orden antiguo→nuevo y validación JIT por (id,revision). ImageGen=0; publicaciones=0.",
+  "message": "8/8 resueltos por barrera JIT: 6 revisiones explained y sincronizadas en requests/Listas; Lookman r0 y Patxi r0 quedaron terminales deleted antes de persistir. Cola final 0; preparando/update/rewrite_pending final 0; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3749,6 +3798,16 @@
       "trend_id": "15763ea0d688",
       "title": "Laimer",
       "message": "Pasada manual real iniciada: 3 preparing/update vigentes en main; orden antiguo→nuevo y validación JIT por (id,revision). ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793743726792-manual",
+      "at": "2026-11-03T22:16:30.580Z",
+      "phase": "closing",
+      "current": 8,
+      "total": 8,
+      "trend_id": null,
+      "title": null,
+      "message": "8/8 resueltos por barrera JIT: 6 revisiones explained y sincronizadas en requests/Listas; Lookman r0 y Patxi r0 quedaron terminales deleted antes de persistir. Cola final 0; preparando/update/rewrite_pending final 0; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -6560,8 +6619,8 @@
       "reason": "Sin novedad material posterior: se mantiene la prórroga de la instrucción hasta el 10 de junio de 2027 y las diligencias pendientes."
     }
   ],
-  "current_item": "15763ea0d688",
-  "current_title": "Laimer",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
