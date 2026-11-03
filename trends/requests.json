@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T01:51:14.879292+00:00",
+  "updated_at": "2026-11-03T01:54:29.061229+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -195627,15 +195627,15 @@
       "telegram_package_status": "published",
       "published_at": "2026-11-01T17:07:46.452808+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-02T22:00:06.674110+00:00",
+      "red_review_checked_at": "2026-11-03T01:54:29.061229+00:00",
       "red_review_outcome": "unchanged",
-      "red_review_reason": "No hay una novedad material que cambie la explicación: las publicaciones posteriores siguen centradas en el mismo 0-3 de Diomande ante el Racing. La medición de 120,2 km/h y el balance de siete titularidades con siete victorias añaden contexto, pero no constituyen un episodio distinto.",
+      "red_review_reason": "La cobertura posterior añade análisis y estadísticas sobre el rendimiento de Yan Diomande, pero no cambia el motivo sustancial ya explicado: su gol en el 0-3 del Real Madrid ante el Racing. No se verifica un desarrollo posterior distinto que altere la explicación.",
       "red_review_sources": [
         {
-          "url": "https://as.com/futbol/diomande-se-hace-intocable-f202611-n/"
+          "url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/cronicas/cronica-racing-rm-j11-liga-01-11-2026"
         },
         {
-          "url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/cronicas/cronica-racing-rm-j11-liga-01-11-2026"
+          "url": "https://as.com/futbol/diomande-se-hace-intocable-f202611-n/"
         }
       ]
     },
@@ -198502,15 +198502,15 @@
       "telegram_package_status": "published",
       "published_at": "2026-11-01T21:02:49.042812+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-02T22:59:16.044729+00:00",
-      "red_review_outcome": "updated",
-      "red_review_reason": "Hay una novedad material posterior al 0-3: las pruebas médicas han confirmado que Álvaro Mantilla sufrió ante el Real Madrid una rotura del ligamento cruzado anterior de la rodilla derecha, pasará por quirófano y se perderá el resto de la temporada.",
+      "red_review_checked_at": "2026-11-03T01:54:29.061229+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "No se verifica una novedad adicional que cambie la explicación vigente. La lesión de Álvaro Mantilla fue confirmada el 2 de noviembre y ya quedó materializada en una actualización anterior de Racing; la cobertura posterior sigue referida a ese mismo desarrollo y al 0-3 ante el Real Madrid.",
       "red_review_sources": [
         {
-          "url": "https://www.notimerica.com/deportes/noticia-alvaro-mantilla-sufre-rotura-ligamento-cruzado-anterior-20261102131716.html"
+          "url": "https://www.realracingclub.es/noticias/mantilla-tiene-roto-el-ligamento-cruzado-anterior-de-la-rodilla-derecha"
         },
         {
-          "url": "https://as.com/futbol/primera/mantilla-dice-adios-a-la-temporada-f202611-n/"
+          "url": "https://www.europapress.es/deportes/futbol-00162/noticia-alvaro-mantilla-sufre-rotura-ligamento-cruzado-anterior-20261102131654.html"
         }
       ]
     },
@@ -208748,7 +208748,7 @@
       "revision": 0,
       "name": "Revisar novedades: Diomande",
       "rank": 20,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T01:51:14.879292+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -208772,14 +208772,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-03T01:54:29.061229+00:00",
+      "review_reason": "La cobertura posterior añade análisis y estadísticas sobre el rendimiento de Yan Diomande, pero no cambia el motivo sustancial ya explicado: su gol en el 0-3 del Real Madrid ante el Racing. No se verifica un desarrollo posterior distinto que altere la explicación."
     },
     {
       "id": "red-review-359b77490f7f8f1da133",
       "revision": 0,
       "name": "Revisar novedades: Racing",
       "rank": 8,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T01:51:14.879292+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -208806,7 +208809,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-03T01:54:29.061229+00:00",
+      "review_reason": "No se verifica una novedad adicional que cambie la explicación vigente. La lesión de Álvaro Mantilla fue confirmada el 2 de noviembre y ya quedó materializada en una actualización anterior de Racing; la cobertura posterior sigue referida a ese mismo desarrollo y al 0-3 ante el Real Madrid."
     }
   ],
   "count": 841
