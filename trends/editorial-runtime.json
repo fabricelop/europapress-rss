@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793708434762-manual",
+  "run_id": "tr-1793708667075-manual",
   "previous_run_id": "tr-1793707968204-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T13:21:00+01:00",
-  "updated_at": "2026-11-03T13:27:00+01:00",
-  "finished_at": "2026-11-03T13:27:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T13:37:10+01:00",
+  "updated_at": "2026-11-03T13:37:10+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -118,7 +118,7 @@
     "at": "2026-11-03T13:27:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-1793708434762-manual cerrada 2/2: Puerta del Sol y Jesús de Miguel review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio manual: editorial-queue.json está vacía en main; verificando requests/explicadas y releyendo la barrera final antes de permitir cierre 0/0. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2116,6 +2116,15 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793708434762-manual cerrada 2/2: Puerta del Sol y Jesús de Miguel review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T13:37:10+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793708667075-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 0,
+      "message": "Inicio manual: editorial-queue.json está vacía en main; verificando requests/explicadas y releyendo la barrera final antes de permitir cierre 0/0. Sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -6660,7 +6669,7 @@
       "converged_with": "tr-1793702646001-manual"
     }
   ],
-  "command_id": "tr-1793708434762-manual",
+  "command_id": "tr-1793708667075-manual",
   "requested_at": "2026-11-03T11:46:18.700+01:00",
   "runs": [
     {
