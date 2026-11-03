@@ -5,10 +5,10 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793667063",
   "previous_run_id": "tr-autoguard-1793665313",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "investigating",
   "started_at": "2026-11-03T01:51:00+01:00",
-  "updated_at": "2026-11-03T01:52:00+01:00",
+  "updated_at": "2026-11-03T01:54:55+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -16,11 +16,14 @@
   "title": "Nacho",
   "queue_complete": false,
   "processed_ids": [
-    "red-review-656a94ab649a01f2e45d",
-    "red-review-1b17769431b2683c7bcd"
+    "179ac7f4ce3a"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "bbcfff2e3fc1"
+  ],
+  "remaining_active_ids": [
+    "bbcfff2e3fc1"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -68,7 +71,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T01:26:32+01:00",
+  "last_started_at": "2026-11-03T01:54:55+01:00",
   "last_completed_at": "2026-11-03T01:33:03+01:00",
   "last_run": {
     "run_id": "tr-1793665638734-manual",
