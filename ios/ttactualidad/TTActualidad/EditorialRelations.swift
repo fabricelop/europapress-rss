@@ -10,6 +10,10 @@ struct EditorialRelationEndpoint: Codable, Identifiable, Equatable {
     let text: String
     let path: String?
 
+    var stableIdentity: String {
+        [id, String(revision), episodeFingerprint].joined(separator: "|")
+    }
+
     var identity: EditorialRelationIdentity {
         EditorialRelationIdentity(id: id, revision: revision,
                                   episodeFingerprint: episodeFingerprint)
