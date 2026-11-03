@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793734298171-manual",
-  "previous_run_id": "tr-autoguard-1793733684",
+  "run_id": "tr-1793734393929-manual",
+  "previous_run_id": "tr-1793734298171-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-03T20:32:00+01:00",
-  "updated_at": "2026-11-03T20:36:00+01:00",
+  "phase": "investigating",
+  "started_at": "2026-11-03T20:34:30+01:00",
+  "updated_at": "2026-11-03T20:34:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "red-review-9a71892bb9956d201185",
-  "title": "Revisar novedades: Mark Twain",
+  "trend_id": "red-review-6b46dc14e6d405480d99",
+  "title": "Revisar novedades: Andorra",
   "queue_complete": false,
   "processed_ids": [
     "2d7d1097f7f8",
@@ -93,7 +93,7 @@
     "summary": "3/3 explicadas y aplicadas; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Sin novedades materiales: persistiendo revisión unchanged de Mark Twain.",
+  "message": "Convergencia JIT: Andorra ya tiene resultado updated preparado por la ejecución anterior y sigue pendiente de aplicación; a continuación se revisa Mark Twain. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3425,6 +3425,17 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 2/2: La Policía y QEPD quedaron review_completed/unchanged; se conservaron texto y explained_at originales y se registraron las comprobaciones red_review. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T20:34:30+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793734393929-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-6b46dc14e6d405480d99",
+      "title": "Revisar novedades: Andorra",
+      "message": "Convergencia JIT: Andorra ya tiene resultado updated preparado por la ejecución anterior y sigue pendiente de aplicación; a continuación se revisa Mark Twain. ImageGen=0."
     }
   ],
   "history": [
