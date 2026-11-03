@@ -13,14 +13,15 @@ function Read-Json([string]$uri) {
 }
 function Rows-From([object]$doc) {
  if($null -eq $doc){return @()}
- $candidates=@($doc)
+ $candidates=@()
+ $candidates+=,($doc)
  foreach($key in @('data','result','feed','current','top30','trends','payload')) {
-  if($null -ne $doc.$key){$candidates+=@($doc.$key)}
+  if($null -ne $doc.$key){$candidates+=,($doc.$key)}
  }
  $more=@($candidates)
  foreach($candidate in $more){
   foreach($key in @('top30','trends','items','rows','data')) {
-   if($null -ne $candidate -and $null -ne $candidate.$key){$candidates+=@($candidate.$key)}
+   if($null -ne $candidate -and $null -ne $candidate.$key){$candidates+=,($candidate.$key)}
   }
  }
  foreach($candidate in $candidates){
