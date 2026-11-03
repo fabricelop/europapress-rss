@@ -27,6 +27,7 @@ from urllib.parse import quote
 from zoneinfo import ZoneInfo
 
 import requests
+from requests_json import dumps_for_path
 
 ROOT = Path(__file__).resolve().parent.parent
 REQ_PATH = ROOT / "trends" / "requests.json"
@@ -58,7 +59,7 @@ def load(path: Path, default):
 
 
 def save(path: Path, data):
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(dumps_for_path(path, data), encoding="utf-8")
 
 
 def parse_dt(value: str | None):
