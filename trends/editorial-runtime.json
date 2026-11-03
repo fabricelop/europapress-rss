@@ -8,12 +8,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-03T19:01:00+01:00",
-  "updated_at": "2026-11-03T18:03:36.585Z",
+  "updated_at": "2026-11-03T18:04:27.506Z",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "red-review-17550a4646eae76f9c9b",
-  "title": "Revisar novedades: Andorra",
+  "trend_id": "red-review-c54fd4196905e362f7b5",
+  "title": "Revisar novedades: Rudiger",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -107,7 +107,7 @@
     "at": "2026-11-03T18:59:00+01:00"
   },
   "source": "chat",
-  "message": "Andorra: novedad material verificada; resultado updated persistido en maintenance-outbox y pendiente de aplicación.",
+  "message": "Rudiger: sin novedades sustanciales; resultado unchanged persistido en maintenance-outbox y pendiente de aplicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3204,6 +3204,17 @@
       "trend_id": "red-review-17550a4646eae76f9c9b",
       "title": "Revisar novedades: Andorra",
       "message": "Resultado updated persistido; esperando aplicación autoritativa."
+    },
+    {
+      "at": "2026-11-03T18:04:27.506Z",
+      "run_id": "tr-1793728809883-manual",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "current": 1,
+      "total": 2,
+      "trend_id": "red-review-c54fd4196905e362f7b5",
+      "title": "Revisar novedades: Rudiger",
+      "message": "Resultado unchanged persistido; esperando aplicación autoritativa."
     }
   ],
   "history": [
@@ -5737,8 +5748,8 @@
       "reason": "Huelga general del 11 de noviembre por vivienda, salarios y coste de vida; la convocatoria supera 4.300 adhesiones comunicadas."
     }
   ],
-  "current_item": "red-review-17550a4646eae76f9c9b",
-  "current_title": "Revisar novedades: Andorra",
+  "current_item": "red-review-c54fd4196905e362f7b5",
+  "current_title": "Revisar novedades: Rudiger",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
