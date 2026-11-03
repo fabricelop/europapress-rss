@@ -65,7 +65,7 @@ Elegir un solo remate breve, concreto, original y ligado a hechos documentados, 
 
 ## Persistencia ordinaria y Listas
 
-Para cada tendencia redactar y guardar su propia explicación. La comparación semántica posterior crea las conjuntas sin reescribir originales. No usar el antiguo mecanismo que copia una explicación canónica a todas las requests o marca `grouped` y oculta miembros.
+Para cada tendencia redactar y guardar su propia explicación. No crear comparaciones de agrupación ni fichas conjuntas; las relaciones de lectura no alteran los textos. No usar el antiguo mecanismo que copia una explicación canónica a todas las requests o marca `grouped` y oculta miembros.
 
 Persistir atómicamente en main tanto una explicación de causa confirmada como una explicación prudente de causa no confirmada con ficha `status:explained` en `telegram-manual-explained.json` y su request, con ID, revisión, explanation, closer_text y explained_at idénticos. Conservar fuentes verificadas y los metadatos históricos; ninguna explicación individual espera una agrupación. El mismo contrato se aplica a una nueva revisión manual. Retirar solo el mismo ID/revisión de la cola después de releer ambos registros. Un texto en requests sin ficha no está terminado. Si falla una escritura, releer SHA y reparar la misma revisión sin redactar otra ni resucitar estados cerrados.
 
