@@ -26,6 +26,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          # Text READY must not wait for the historical raster collection.
+          # Sparse checkout uses a blobless fetch and keeps all editorial data
+          # and Python modules needed by the existing applicator.
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /ttittulares/*.py
+            /ttittulares/*.json
+            /ttittulares/editorial-outbox/
+            /telegram/*.py
+            /telegram/*.json
+            /shared/*.py
+            /pilot/*.py
 
       - name: Preparar dependencias
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow
