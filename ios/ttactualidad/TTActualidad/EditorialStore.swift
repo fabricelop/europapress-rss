@@ -539,6 +539,58 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    // Dedicated action-receipt reconciliation, independent of the large radar
+    // and image catalogs. It never dispatches a new command or invents success.
+    // Expiry requires fresh authoritative evidence for the SAME editorial item.
+    func reconcilePendingOperations() async {
+        guard !isLoading else { return }
+        isLoading = true
+        isManuallyRefreshing = true
+        defer {
+            isLoading = false
+            isManuallyRefreshing = false
+            updateHomeQuickActions()
+        }
+        let receiptPath = "pilot/ttactualidad-action-receipts.json"
+        let newsReady = "ttittulares/prepared.json"
+        let newsQueue = "ttittulares/editorial-queue.json"
+        let newsDecisions = "ttittulares/decisions.json"
+        let trendsRequests = "trends/requests.json"
+        let trendsQueue = "trends/editorial-queue.json"
+        let needed = [receiptPath, newsReady, newsQueue, newsDecisions,
+                      trendsRequests, trendsQueue]
+        let loaded = await EditorialDocumentLoader.load(paths: needed)
+        let docs = loaded.docs
+        let fresh = loaded.downloaded
+
+        if fresh[receiptPath] != nil, let receipts = docs[receiptPath] {
+            reconcileDefinitiveReceipts(receipts)
+        }
+        if fresh[newsReady] != nil, fresh[newsQueue] != nil,
+           fresh[newsDecisions] != nil, fresh[receiptPath] != nil,
+           let ready = docs[newsReady], let queue = docs[newsQueue],
+           let decisions = docs[newsDecisions], let receipts = docs[receiptPath] {
+            retireAbandonedNewsOperations(ready: ready, queue: queue,
+                                          receipts: receipts, decisions: decisions)
+        }
+        if fresh[trendsRequests] != nil, fresh[trendsQueue] != nil,
+           fresh[receiptPath] != nil,
+           let requests = docs[trendsRequests], let queue = docs[trendsQueue],
+           let receipts = docs[receiptPath] {
+            retireAbandonedTrendOperations(requests: requests, queue: queue,
+                                           receipts: receipts)
+        }
+        // Terminal decisions are authoritative even with unrelated files
+        // unavailable. Keep the last canonical news/trends snapshot, updating
+        // only documented closures and any resolved optimistic overlays.
+        accumulateConfirmedTerminals(docs, fresh)
+        canonicalSnapshot = applyConfirmedTerminals(canonicalSnapshot)
+        applyOptimisticOverlay()
+        message = loaded.partial
+            ? "Comprobación parcial de órdenes: faltan fuentes de GitHub"
+            : "Órdenes contrastadas con los recibos y las colas de GitHub"
+    }
+
     func refresh(manual: Bool = false) async {
         guard !isLoading else { return }
         isLoading = true
@@ -574,6 +626,26 @@ final class EditorialStore: ObservableObject {
         if downloaded["pilot/ttactualidad-action-receipts.json"] != nil,
            let exactReceipts = docs["pilot/ttactualidad-action-receipts.json"] {
             reconcileDefinitiveReceipts(exactReceipts)
+        }
+        // Independent closeout: do not let an unrelated news/trends/image
+        // download block expiry when the exact three/four ledgers are fresh.
+        if downloaded["ttittulares/prepared.json"] != nil &&
+           downloaded["ttittulares/editorial-queue.json"] != nil &&
+           downloaded["pilot/ttactualidad-action-receipts.json"] != nil &&
+           downloaded["ttittulares/decisions.json"] != nil {
+            retireAbandonedNewsOperations(
+                ready: docs["ttittulares/prepared.json"] ?? [:],
+                queue: docs["ttittulares/editorial-queue.json"] ?? [:],
+                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
+                decisions: docs["ttittulares/decisions.json"] ?? [:])
+        }
+        if downloaded["trends/requests.json"] != nil &&
+           downloaded["trends/editorial-queue.json"] != nil &&
+           downloaded["pilot/ttactualidad-action-receipts.json"] != nil {
+            retireAbandonedTrendOperations(
+                requests: docs["trends/requests.json"] ?? [:],
+                queue: docs["trends/editorial-queue.json"] ?? [:],
+                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:])
         }
         // Never turn a temporary network error into false zeros in the Live Activity.
         guard docs["ttittulares/prepared.json"] != nil,
