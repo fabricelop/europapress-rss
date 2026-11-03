@@ -8,16 +8,14 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-03T08:07:00+01:00",
-  "updated_at": "2026-11-03T08:14:00+01:00",
-  "finished_at": "2026-11-03T08:14:00+01:00",
-  "current": 4,
-  "total": 4,
+  "updated_at": "2026-11-03T08:10:00+01:00",
+  "finished_at": "2026-11-03T08:10:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "6109385892c0",
-    "7fff6a1ec2a6",
     "red-review-f0796a0cf9b6cf9a49a9",
     "red-review-19e62b87b798ca9f89df"
   ],
@@ -25,10 +23,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -40,39 +38,21 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "done",
+  "activity": "closing",
   "final_outcomes": [
-    {
-      "id": "6109385892c0",
-      "revision": 0,
-      "name": "La Policía",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "reason": "Desalojo de la acampada 26S en Sol verificado con versiones atribuidas; cierre sin remate por sensibilidad."
-    },
-    {
-      "id": "7fff6a1ec2a6",
-      "revision": 0,
-      "name": "#FelizMartes",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "reason": "Reinvestigación desde cero: saludo recurrente de martes; sin evento o marcador concreto verificado."
-    },
     {
       "id": "red-review-f0796a0cf9b6cf9a49a9",
       "revision": 0,
       "name": "Revisar novedades: Diomande",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "La cobertura posterior sigue centrada en el mismo 0-3 y el mismo gol; no cambia materialmente la explicación."
+      "via": "maintenance_outbox_jit",
+      "reason": "Sin novedad material: la cobertura posterior sigue centrada en el gol del 0-3 al Racing y su consolidación deportiva."
     },
     {
       "id": "red-review-19e62b87b798ca9f89df",
@@ -80,25 +60,25 @@
       "name": "Revisar novedades: Racing",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "No se verificó una nueva novedad material que justificara otra actualización de la explicación vigente."
+      "via": "maintenance_outbox_jit",
+      "reason": "La lesión de Mantilla ya estaba materializada; no se verificó un anuncio oficial posterior que justificase otra actualización."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T08:05:42+01:00",
-  "last_completed_at": "2026-11-03T08:14:00+01:00",
+  "last_completed_at": "2026-11-03T08:10:00+01:00",
   "last_run": {
     "run_id": "tr-1793689605241-manual",
     "command_id": "tr-1793689605241-manual",
     "canonical": true,
     "status": "DONE",
     "started_at": "2026-11-03T08:07:00+01:00",
-    "finished_at": "2026-11-03T08:14:00+01:00",
+    "finished_at": "2026-11-03T08:10:00+01:00",
     "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
-      "explained": 2,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -110,35 +90,17 @@
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
     "outcomes": [
-      {
-        "id": "6109385892c0",
-        "revision": 0,
-        "name": "La Policía",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "reason": "Desalojo de la acampada 26S en Sol verificado con versiones atribuidas; cierre sin remate por sensibilidad."
-      },
-      {
-        "id": "7fff6a1ec2a6",
-        "revision": 0,
-        "name": "#FelizMartes",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "reason": "Reinvestigación desde cero: saludo recurrente de martes; sin evento o marcador concreto verificado."
-      },
       {
         "id": "red-review-f0796a0cf9b6cf9a49a9",
         "revision": 0,
         "name": "Revisar novedades: Diomande",
         "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "reason": "La cobertura posterior sigue centrada en el mismo 0-3 y el mismo gol; no cambia materialmente la explicación."
+        "via": "maintenance_outbox_jit",
+        "reason": "Sin novedad material: la cobertura posterior sigue centrada en el gol del 0-3 al Racing y su consolidación deportiva."
       },
       {
         "id": "red-review-19e62b87b798ca9f89df",
@@ -146,20 +108,16 @@
         "name": "Revisar novedades: Racing",
         "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "reason": "No se verificó una nueva novedad material que justificara otra actualización de la explicación vigente."
+        "via": "maintenance_outbox_jit",
+        "reason": "La lesión de Mantilla ya estaba materializada; no se verificó un anuncio oficial posterior que justificase otra actualización."
       }
-    ],
-    "converged_run_ids": [
-      "tr-1793688569006-manual",
-      "tr-1793689327846-manual"
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada canónica tr-1793689605241-manual cerrada 4/4 por convergencia: La Policía y #FelizMartes explicadas; Diomande y Racing review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada canónica tr-1793689605241-manual cerrada 4/4 por convergencia: La Policía y #FelizMartes explicadas; Diomande y Racing review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1437,6 +1395,15 @@
       "current": 4,
       "total": 4,
       "message": "Pasada canónica tr-1793689605241-manual cerrada 4/4 por convergencia: La Policía y #FelizMartes explicadas; Diomande y Racing review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T08:10:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793689605241-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -5976,6 +5943,15 @@
       "trend_id": "6109385892c0",
       "title": "La Policía",
       "message": "Inicio canónico: La Policía r0 es 10 s anterior a #FelizMartes r0 al normalizar zona horaria. Investigación JIT; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T08:10:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793689605241-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
