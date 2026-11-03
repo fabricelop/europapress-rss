@@ -48319,12 +48319,14 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "12a5405887d7",
@@ -48365,12 +48367,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://arquidiocesisdevalencia.org/compartir.jpg",
+        "source": "arquidiocesisdevalencia.org",
+        "source_url": "https://arquidiocesisdevalencia.org/liturgia/2026-11-03/oficio",
+        "alt": "Imagen de archivo relacionada con San Martín de Porres",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://arquidiocesisdevalencia.org/compartir.jpg",
+        "source": "arquidiocesisdevalencia.org",
+        "source_url": "https://arquidiocesisdevalencia.org/liturgia/2026-11-03/oficio",
+        "alt": "Imagen de archivo relacionada con San Martín de Porres",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "c03b4a139272",
@@ -48412,14 +48431,31 @@
         }
       ],
       "with_image": true,
-      "image_strategy": "fallback_only",
+      "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/acampada-sol-madrid-desalojo-policia-nacional/01793680440922.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261103/acampada-sol-madrid-desalojo-policia-nacional/17296910.shtml",
+        "alt": "Imagen de archivo relacionada con La Policía Nacional",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/acampada-sol-madrid-desalojo-policia-nacional/01793680440922.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261103/acampada-sol-madrid-desalojo-policia-nacional/17296910.shtml",
+        "alt": "Imagen de archivo relacionada con La Policía Nacional",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "97a95c81482a",
@@ -48458,16 +48494,33 @@
         }
       ],
       "with_image": true,
-      "image_strategy": "fallback_only",
+      "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/DVDHFZHMXBE4PC65ME2L27UPFQ.png?auth=779d269aec5178abe74d7782dcdfb8d7ad752327362811d4ae252b576d267ed8&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/nacional/2026/11/03/empeora-la-situacion-medica-del-jugador-del-tenerife-jesus-de-miguel-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Jesús de Miguel",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/DVDHFZHMXBE4PC65ME2L27UPFQ.png?auth=779d269aec5178abe74d7782dcdfb8d7ad752327362811d4ae252b576d267ed8&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/nacional/2026/11/03/empeora-la-situacion-medica-del-jugador-del-tenerife-jesus-de-miguel-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Jesús de Miguel",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-03T07:49:00+01:00",
+  "updated_at": "2026-11-03T06:48:53.681666Z",
   "count": 799
 }
