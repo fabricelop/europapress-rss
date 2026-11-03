@@ -27,6 +27,18 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /pilot/
+            /shared/
+            /tests/
+            /ttittulares/*.py
+            /trends/*.py
+            /trends/*.json
+            /telegram/*.json
+            /docs/
+            /.github/workflows/
       - name: Validate direct Listas remove and isolation
         run: |
           python3 -m py_compile pilot/apply-ttactualidad-action.py pilot/trends_hints.py
