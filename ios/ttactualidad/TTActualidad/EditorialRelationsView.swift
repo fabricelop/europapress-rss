@@ -82,7 +82,8 @@ struct EditorialRelationsView: View {
     var scope: EditorialRelationsScope? = nil
     @Environment(\.dismiss) private var dismiss
     @StateObject private var model = EditorialRelationsModel()
-    @State private var filter = "suggested"
+    @State private var filter = "linked"
+    @State private var showManualLinking = false
     @State private var search = ""
     @State private var selectedNews: EditorialRelationEndpoint?
     @State private var selectedTrend: EditorialRelationEndpoint?
@@ -131,20 +132,21 @@ struct EditorialRelationsView: View {
                         }
                         Section {
                             Picker("Estado de relaciones", selection: $filter) {
-                                Text("Sugeridas").tag("suggested")
-                                Text("Vinculadas").tag("linked")
+                                Text("Por revisar").tag("suggested")
+                                Text("Confirmadas").tag("linked")
                                 Text("Bloqueadas").tag("blocked")
                             }.pickerStyle(.segmented)
                         }
-                        Section(filter == "suggested" ? "Relaciones por revisar" :
-                                filter == "linked" ? "Relaciones vinculadas" : "Decisiones manuales") {
+                        Section(filter == "suggested" ? "Solo relaciones dudosas" :
+                                filter == "linked" ? "Relaciones confirmadas, incluidas las automáticas" : "Relaciones bloqueadas") {
                             if relations.isEmpty && !model.loading {
                                 Text("No hay relaciones en este estado.").foregroundStyle(.secondary)
                             }
                             ForEach(relations) { item in relationRow(item) }
                         }
-                        Section("Buscar y vincular") {
-                            Text("La relación se guarda una sola vez y aparece en ambos sentidos. No publica en X ni cambia textos o imágenes.")
+                        Section {
+                            DisclosureGroup("Vincular otra ficha (opcional)", isExpanded: $showManualLinking) {
+                                Text("Las relaciones claras se presentan directamente como confirmadas. Las ambiguas se revisan por separado. Una decisión afecta a ambos sentidos y no modifica publicaciones ni imágenes.")
                                 .font(.footnote).foregroundStyle(.secondary)
                             if scope == nil {
                                 Button { picker = EndpointPickerRoute(project: "ttittulares") } label: {
@@ -171,6 +173,7 @@ struct EditorialRelationsView: View {
                                         }.disabled(model.saving)
                                     }
                                 }
+                            }
                             }
                         }
                     }
