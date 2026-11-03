@@ -309,8 +309,6 @@ final class EditorialStore: ObservableObject {
             forKey: "TTActualidad.unread.news.v1") ?? [])
         unreviewedTrends = Set(UserDefaults.standard.stringArray(
             forKey: "TTActualidad.unread.trends.v1") ?? [])
-        radarNewNames = Set(UserDefaults.standard.stringArray(
-            forKey: "TTActualidad.radar.newNames.v1") ?? [])
         if let stored = UserDefaults.standard.data(forKey: "TTActualidad.operations.v1"),
            let decoded = try? JSONDecoder().decode([EditorialOperation].self, from: stored) {
             operationHistory = Array(decoded.prefix(60))
@@ -494,34 +492,10 @@ final class EditorialStore: ObservableObject {
         storeUnread()
     }
 
-    // The radar's 'movement: new' describes an aggregate comparison and may
-    // mark a long-existing topic as new. Track actual entrances between
-    // complete, distinct radar snapshots this iPhone has seen instead.
+    // Use the same authoritative first-entry history as the public website.
+    // A returning known topic is not new; older snapshot-difference flags are untrusted.
     private func updateRadarEntrants(_ recent: [String: Any]) {
-        let currentVersion = Self.str(recent, "updated_at")
-        guard !currentVersion.isEmpty else { return }
-        let current = Set(Self.rows(recent, "items").prefix(30).compactMap {
-            let name = Self.str($0, "name").trimmingCharacters(in: .whitespacesAndNewlines)
-            return name.isEmpty ? nil : name
-        })
-        guard !current.isEmpty else { return }
-        let defaults = UserDefaults.standard
-        let versionKey = "TTActualidad.radar.lastVersion.v1"
-        let namesKey = "TTActualidad.radar.lastNames.v1"
-        let newKey = "TTActualidad.radar.newNames.v1"
-        if defaults.string(forKey: versionKey) == currentVersion {
-            radarNewNames = Set(defaults.stringArray(forKey: newKey) ?? [])
-                .intersection(current)
-            return
-        }
-        if let previousNames = defaults.stringArray(forKey: namesKey) {
-            radarNewNames = current.subtracting(Set(previousNames))
-        } else {
-            radarNewNames = [] // First complete sync only establishes baseline.
-        }
-        defaults.set(currentVersion, forKey: versionKey)
-        defaults.set(Array(current), forKey: namesKey)
-        defaults.set(Array(radarNewNames), forKey: newKey)
+        radarNewNames = RankMovement.newNames(Self.rows(recent, "items"))
     }
     private var draftNews = [String: NewsItem]()
 
@@ -1998,7 +1972,7 @@ final class EditorialStore: ObservableObject {
                              sourceURL: URL(string: source),
                              rankDelta: int(trendMovement, "rank_delta"),
                              movement: str(trendMovement, "movement"),
-                             enteredAt: when(trendMovement, ["entered_top10_at", "entered_at"]),
+                             enteredAt: when(trendMovement, ["entered_top30_at", "entered_top10_at", "entered_at"]),
                              problemReason: str(request, "problem_reason"),
                              coveredByID: isListasCovered(request) ? str(request, "covered_by_id") : "",
                              coveredByName: isListasCovered(request) ? str(request, "covered_by_name") : "",
