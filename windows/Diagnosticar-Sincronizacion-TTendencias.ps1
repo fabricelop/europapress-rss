@@ -3,13 +3,35 @@
 # Does not touch iPhone, editorial decisions, images, browsers or tasks.
 param(
  [string]$SiteBase = 'https://ttactualidad.rainyraven22.chatgpt.site',
- [ValidateRange(5,60)][int]$TimeoutSeconds = 20
+ [ValidateRange(5,60)][int]$TimeoutSeconds = 20,
+ [switch]$SelfTest
 )
 $ErrorActionPreference='Stop'
+# PowerShell 5.1 may decode .Content as ISO-8859-1 when charset is absent,
+# turning e.g. U+00FA into the two visible characters U+00C3 U+00BA.
+# Always decode the original response bytes as strict UTF-8 instead.
+function ConvertFrom-UTF8JsonBytes([byte[]]$bytes) {
+ if($null -eq $bytes -or $bytes.Length -eq 0){throw 'RESPUESTA_JSON_VACIA'}
+ $utf8=[System.Text.UTF8Encoding]::new($false,$true)
+ return ($utf8.GetString($bytes) | ConvertFrom-Json)
+}
 function Read-Json([string]$uri) {
  $answer=Invoke-WebRequest -UseBasicParsing -Uri $uri -TimeoutSec $TimeoutSeconds -Headers @{'Cache-Control'='no-cache';'Pragma'='no-cache'}
  if([int]$answer.StatusCode -ne 200){throw ('HTTP '+[int]$answer.StatusCode)}
- return ($answer.Content | ConvertFrom-Json)
+ if($null -eq $answer.RawContentStream){throw 'RESPUESTA_SIN_BYTES'}
+ return (ConvertFrom-UTF8JsonBytes ([byte[]]$answer.RawContentStream.ToArray()))
+}
+if($SelfTest){
+ $expected='Jes'+[char]0x00FA+'s de Miguel'
+ $json='{"items":[{"rank":1,"name":"'+$expected+'"}]}'
+ $value=ConvertFrom-UTF8JsonBytes ([Text.Encoding]::UTF8.GetBytes($json))
+ if([string]$value.items[0].name -cne $expected){throw 'SELFTEST_UTF8_FAILED'}
+ $invalid=([byte[]]@(0x7B,0x22,0x78,0x22,0x3A,0x22,0xC3,0x28,0x22,0x7D))
+ $rejected=$false
+ try { $null=ConvertFrom-UTF8JsonBytes $invalid }catch {$rejected=$true}
+ if(-not $rejected){throw 'SELFTEST_INVALID_UTF8_ACCEPTED'}
+ Write-Host 'SELFTEST_UTF8_OK'
+ return
 }
 function Rows-From([object]$doc) {
  if($null -eq $doc){return @()}
