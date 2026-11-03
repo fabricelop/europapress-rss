@@ -10,6 +10,7 @@ on:
       - 'trends/editorial_api.py'
       - 'trends/apply_direct_reconcile.py'
       - 'trends/merge_runtime_state.py'
+      - 'pilot/listas_grouping.py'
       - '.github/workflows/ttendencias-requests-capacity-hotfix.yml'
   push:
     branches: [main]
@@ -22,6 +23,7 @@ on:
       - 'trends/editorial_api.py'
       - 'trends/apply_direct_reconcile.py'
       - 'trends/merge_runtime_state.py'
+      - 'pilot/listas_grouping.py'
       - '.github/workflows/ttendencias-requests-capacity-hotfix.yml'
   workflow_dispatch:
 permissions:
