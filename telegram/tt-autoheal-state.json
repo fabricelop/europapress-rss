@@ -2,102 +2,96 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-03T17:53:54.238721+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-11-03T18:03:12.323698+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "f6efe93e90a6",
-          "title": "Sónar 2027 recupera su \"ADN fundacional\" con Carl Cox, Bonobo, Tokischa y Peggy Gou entre sus primer",
-          "seconds": 545,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1583981,
+          "seconds": 1584540,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
-        "telegram-pinned-index.yml"
-      ],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "c72c1e9c3745aaf9428854d0acc280a3ddb3c3c48bf66c67ea1bd3697d5d0eb6",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-03T17:53:54.238721+00:00",
-      "issue_count": 8,
+      "checked_at": "2026-11-03T18:03:12.323698+00:00",
+      "issue_count": 9,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "b94b4292caf0",
-          "title": "#HuelgaGeneral11N",
-          "seconds": 889,
+          "id": "red-review-17550a4646eae76f9c9b",
+          "title": "Revisar novedades: Andorra",
+          "seconds": 191,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "red-review-c54fd4196905e362f7b5",
+          "title": "Revisar novedades: Rudiger",
+          "seconds": 191,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "b73c43b052f7",
           "title": "Yeremay",
-          "seconds": 75123,
+          "seconds": 75681,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "5f810de04443",
           "title": "#ElPerroAndaluzTVE",
-          "seconds": 72778,
+          "seconds": 73336,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "1e03ad2efe6a",
           "title": "Paola",
-          "seconds": 67942,
+          "seconds": 68500,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "8191aa70b3fb",
           "title": "Náyades",
-          "seconds": 63777,
+          "seconds": 64335,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "trend-update-af20a1ce41687813e494",
           "title": "Pedro Casares",
-          "seconds": 1145,
+          "seconds": 1703,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "trend-update-7360d124546062f7dd5f",
           "title": "La RFEF",
-          "seconds": 1145,
+          "seconds": 1703,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1583981,
+          "seconds": 1584539,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
-        "telegram-pinned-index.yml"
-      ],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "610d7e47df3e2563b5f446869a63bdc59e330ae64990639232f18a17809880b2",
+      "open_signature": "66353b7dbbac98ca250a78e6af0d7221cf5b11ad09e8237ee8e2e277821738d6",
       "repair_via_workflow_run": false,
-      "escalation_required": 4
+      "escalation_required": 6
     }
   },
   "attempts": {
@@ -106,5 +100,5 @@
     "ttendencias:telegram-pinned-index.yml": "2026-11-03T17:53:54.238721+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-03T17:53:54.238721+00:00"
   },
-  "checked_at": "2026-11-03T17:53:54.238721+00:00"
+  "checked_at": "2026-11-03T18:03:12.323698+00:00"
 }
