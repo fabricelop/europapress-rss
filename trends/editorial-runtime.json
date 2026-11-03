@@ -6,9 +6,9 @@
   "run_id": "tr-1793739489427-manual",
   "previous_run_id": "tr-autoguard-1793737610",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T20:59:11.302Z",
-  "updated_at": "2026-11-03T20:59:11.302Z",
+  "updated_at": "2026-11-03T20:59:42.893Z",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -46,7 +46,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "652f65e6db28",
@@ -164,7 +164,7 @@
     "summary": "Pasada tr-autoguard-1793737610 cerrada 7/7: 6 explicaciones sincronizadas en requests y Listas (Martorell, Ester Muñoz, TeleAyuso, #ChampionsLeague, Audiencia Nacional y Mitya); #LaPromesa r0 no se resucitó por existir deleted r1 y se corrigió la protección terminal para evitar reinserciones. Barrera: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793739489427-manual: 2 revisiones review_red preparing vigentes en main (Puerta del Sol y Jesús de Miguel), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
+  "message": "Puerta del Sol r0 revalidada JIT: sin novedad material que cambie el motivo; las informaciones posteriores siguen describiendo el mismo desalojo de 334 personas y dos detenciones. Persistiendo unchanged; texto y fecha se conservan.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3734,6 +3734,17 @@
       "trend_id": "red-review-ee597c1e01b0fd4cfc7e",
       "title": "Revisar novedades: Puerta del Sol",
       "message": "Inicio tr-1793739489427-manual: 2 revisiones review_red preparing vigentes en main (Puerta del Sol y Jesús de Miguel), por antigüedad y con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T20:59:42.893Z",
+      "phase": "persisting",
+      "run_id": "tr-1793739489427-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-ee597c1e01b0fd4cfc7e",
+      "title": "Revisar novedades: Puerta del Sol",
+      "message": "Puerta del Sol r0 revalidada JIT: sin novedad material que cambie el motivo; las informaciones posteriores siguen describiendo el mismo desalojo de 334 personas y dos detenciones. Persistiendo unchanged; texto y fecha se conservan."
     }
   ],
   "history": [
