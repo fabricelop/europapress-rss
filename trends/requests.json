@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T08:40:39.687939+00:00",
+  "updated_at": "2026-11-03T08:40:47.010953+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -132092,9 +132092,9 @@
       "editorial_grouping_checked_at": "2026-11-01T01:03:50.792834+00:00",
       "published_at": "2026-11-01T01:32:55.028919+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-03T06:51:33.137671+00:00",
-      "red_review_outcome": "updated",
-      "red_review_reason": "Hay una novedad material posterior a la explicación original: la investigación del siniestro de Urda ha ampliado el foco para comprobar si el protocolo incorrecto aplicado tras la caída del LZB se utilizó también en incidencias anteriores de la línea Madrid-Sevilla.",
+      "red_review_checked_at": "2026-11-03T08:40:47.010953+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "La novedad material sobre la ampliación de la investigación del protocolo LZB ya está incorporada en una actualización posterior vigente de Adif; este snapshot anterior no debe generar otra actualización.",
       "red_review_sources": [
         {
           "url": "https://elpais.com/espana/2026-11-02/la-investigacion-del-siniestro-de-urda-analiza-si-adif-uso-el-protocolo-erroneo-mas-veces.html"
@@ -198757,9 +198757,9 @@
       "telegram_package_status": "published",
       "published_at": "2026-11-01T22:05:03.876862+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-03T06:51:33.137671+00:00",
-      "red_review_outcome": "updated",
-      "red_review_reason": "Novedad material y corrección factual respecto a la explicación anterior: el GP de México ya terminó; Hamilton fue segundo a 0,799 s de Verstappen y la sanción de cinco segundos por ganar ventaja fuera de pista fue para Leclerc, que acabó cuarto.",
+      "red_review_checked_at": "2026-11-03T08:40:47.010953+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "El resultado final del GP de México y la corrección de que la sanción de cinco segundos fue para Leclerc ya están incorporados en una actualización posterior vigente de Hamilton; este snapshot anterior no debe generar otra actualización.",
       "red_review_sources": [
         {
           "url": "https://www.formula1.com/en/results/2026/races/1298/mexico/race-result"
@@ -210001,7 +210001,7 @@
       "revision": 0,
       "name": "Revisar novedades: Adif",
       "rank": 18,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T08:38:18.101411+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -210028,14 +210028,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-03T08:40:47.010953+00:00",
+      "review_reason": "La novedad material sobre la ampliación de la investigación del protocolo LZB ya está incorporada en una actualización posterior vigente de Adif; este snapshot anterior no debe generar otra actualización."
     },
     {
       "id": "red-review-f9d2e974655d598e5496",
       "revision": 0,
       "name": "Revisar novedades: Hamilton",
       "rank": 23,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T08:38:18.101411+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -210062,7 +210065,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-03T08:40:47.010953+00:00",
+      "review_reason": "El resultado final del GP de México y la corrección de que la sanción de cinco segundos fue para Leclerc ya están incorporados en una actualización posterior vigente de Hamilton; este snapshot anterior no debe generar otra actualización."
     },
     {
       "id": "ca4337605844",
