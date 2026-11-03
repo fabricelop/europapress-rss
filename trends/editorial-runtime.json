@@ -5,10 +5,10 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793740699",
   "previous_run_id": "tr-1793739489427-manual",
-  "status": "ERROR",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-03T21:20:00Z",
-  "updated_at": "2026-11-03T21:31:00Z",
+  "updated_at": "2026-11-03T22:38:13+01:00",
   "finished_at": "2026-11-03T21:31:00Z",
   "current": 0,
   "total": 5,
@@ -17,18 +17,20 @@
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "3042104459b7",
-    "c8363f291102",
-    "cd7275e8b277",
-    "919fc31e93a5",
-    "8e970ba43f06"
+    "cb7b89c8aacc",
+    "54657dd0b9eb",
+    "c7fb37b243f7",
+    "21e85bc57a98",
+    "7e325f21b5b5",
+    "f72c141ffa78"
   ],
   "remaining_active_ids": [
-    "3042104459b7",
-    "c8363f291102",
-    "cd7275e8b277",
-    "919fc31e93a5",
-    "8e970ba43f06"
+    "cb7b89c8aacc",
+    "54657dd0b9eb",
+    "c7fb37b243f7",
+    "21e85bc57a98",
+    "7e325f21b5b5",
+    "f72c141ffa78"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -57,7 +59,7 @@
       "transport_comment_id": 6615818636
     }
   ],
-  "error": "Las 5 explicaciones quedaron redactadas, verificadas y persistidas en Listas/prepared, pero requests.json (~12 MB) no pudo actualizarse por límite de transporte h2 del conector. El workflow de editorial-outbox y el reconciliador TTENDENCIAS_CHAT_OUTBOX_V1 no consumieron el lote durante esta ejecución; editorial-queue sigue con las 5 revisiones r0 en preparing.",
+  "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
@@ -97,7 +99,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T20:59:11.302Z",
+  "last_started_at": "2026-11-03T22:38:12+01:00",
   "last_completed_at": "2026-11-03T21:02:43.563Z",
   "last_run": {
     "run_id": "tr-autoguard-1793740699",
