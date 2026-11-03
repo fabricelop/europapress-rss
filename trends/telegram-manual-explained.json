@@ -55659,7 +55659,6 @@
       "distinct_episode": false,
       "new_facts": "Óscar Puente ha presentado su dimisión como ministro de Transportes el 3 de noviembre durante su comparecencia en el Congreso. La dimisión llega después de los accidentes ferroviarios de Urda y Adamuz y revierte expresamente el contexto de la explicación anterior, en la que descartaba dimitir.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending"
@@ -55692,10 +55691,30 @@
       "distinct_episode": true,
       "new_facts": "Primer aniversario de la dimisión de Carlos Mazón como president y nuevas reclamaciones políticas sobre su escaño y las dietas de kilometraje.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261103133857_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/comunitat-valenciana/noticia-izquierda-exige-mazon-deje-acta-ano-dimision-devuelva-2000-euros-kilometraje-20261103133857.html",
+        "alt": "Imagen de archivo relacionada con Mazón",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261103133857_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/comunitat-valenciana/noticia-izquierda-exige-mazon-deje-acta-ano-dimision-devuelva-2000-euros-kilometraje-20261103133857.html",
+        "alt": "Imagen de archivo relacionada con Mazón",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "a04af111227a",
@@ -55730,7 +55749,13 @@
           "name": "Patxi",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "9b4b10c8f7a7",
@@ -55765,7 +55790,28 @@
           "name": "Lookman",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://imagenes2.mundodeportivo.com/files/og_thumbnail/files/fp/uploads/2026/02/24/699e033084770.r_d.1638-576-7550.jpeg",
+        "source": "www.mundodeportivo.com",
+        "source_url": "https://www.mundodeportivo.com/futbol/atletico-madrid/20261102/1004246245/mensaje-cholo-lookman-no-quiero-frustre.html",
+        "alt": "Imagen de archivo relacionada con Lookman",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://imagenes2.mundodeportivo.com/files/og_thumbnail/files/fp/uploads/2026/02/24/699e033084770.r_d.1638-576-7550.jpeg",
+        "source": "www.mundodeportivo.com",
+        "source_url": "https://www.mundodeportivo.com/futbol/atletico-madrid/20261102/1004246245/mensaje-cholo-lookman-no-quiero-frustre.html",
+        "alt": "Imagen de archivo relacionada con Lookman",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "41baa9afe047",
@@ -55830,12 +55876,32 @@
       "distinct_episode": false,
       "new_facts": "Óscar Puente anunció su dimisión como ministro de Transportes después de la comparecencia en la que Pepa Millán había exigido su renuncia.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/oscar-puente-diputacion-permanente-congreso-accidente-tren-cronica/01793737951316.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261103/oscar-puente-diputacion-permanente-congreso-accidente-tren-cronica/17298150.shtml",
+        "alt": "Imagen de archivo relacionada con Pepa Millán",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/oscar-puente-diputacion-permanente-congreso-accidente-tren-cronica/01793737951316.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261103/oscar-puente-diputacion-permanente-congreso-accidente-tren-cronica/17298150.shtml",
+        "alt": "Imagen de archivo relacionada con Pepa Millán",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-03T22:39:14.826475+00:00",
+  "updated_at": "2026-11-03T22:43:04.174129Z",
   "count": 916
 }
