@@ -9,7 +9,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: ttendencias-chat-outbox-unblocked-20261103-2339
+  group: ttendencias-chat-outbox
   cancel-in-progress: false
 
 jobs:
@@ -69,6 +69,8 @@ jobs:
                   continue
               x=bykey[k]
               if int(r.get('revision',0)) != int(x.get('revision',0)):
+                  continue
+              if str(r.get('status') or '') not in {'preparing','update'}:
                   continue
 
               link=x.get('link_existing') or {}
