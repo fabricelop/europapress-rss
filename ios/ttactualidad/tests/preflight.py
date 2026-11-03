@@ -629,10 +629,15 @@ assert 'private var showManualLinking = false' in relations
 assert 'DisclosureGroup("Elegir otra noticia"' in relations
 assert '@State private var filter = "suggested"' in relations
 assert 'ForEach(newsGroups, id: \\.stableIdentity)' in relations
-assert 'Label("Guardar vínculos seleccionados (' in relations
+assert 'Label("Guardar: ' in relations
 assert 'DisclosureGroup(isExpanded: expansion(news))' in relations
 assert 'Array(top30Names.prefix(30).enumerated())' in relations
-assert 'model.linkSelected(news: news, trends: trends' in relations
+assert 'model.saveSelection(news: news, links: links' in relations
+assert 'suggestionsToDismiss(for: news)' in relations
+assert 'action: "dismiss"' in relations
+assert 'Al guardar, las propuestas sin marcar se descartarán' in relations
+assert 'EditorialRelationsPolicy.canonical(' in relations
+assert 'static func canonical(_ items: [EditorialRelation])' in relation_models
 assert 'UserDefaults.standard.set(commands, forKey: commandStorageKey)' in relations
 assert 'selectedTrend = endpoint' not in relations
 assert 'EditorialReceiptPolicy.swift' in project
