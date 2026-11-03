@@ -1888,6 +1888,62 @@
       "current": 1,
       "total": 1,
       "message": "Pasada tr-1793705511806-manual cerrada 1/1 por convergencia JIT: #TEM2N review_completed/unchanged; texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T12:36:36.515+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793705408571-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-320fd4417a0981289e1f",
+          "revision": 0,
+          "name": "Revisar novedades: #ADIPEC",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "converged_with": "tr-autoguard-1793704864",
+          "source_id": "357402e6e903",
+          "reason": "ADIPEC 2026 sigue en curso del 2 al 5 de noviembre; los desarrollos del 3-N no cambian el motivo de la explicación vigente."
+        },
+        {
+          "id": "red-review-c588ccdc71a7eefc0351",
+          "revision": 0,
+          "name": "Revisar novedades: #TEM2N",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "converged_with": "tr-autoguard-1793704864",
+          "source_id": "fed9af79780a",
+          "outbox_commit": "ecb76d283fdfb8ff28e0e5e4658f0857656c2590",
+          "reason": "Sin episodio distinto ni cambio material verificado respecto a la explicación del 2 de noviembre; texto y fecha originales conservados."
+        }
+      ],
+      "message": "Pasada tr-1793705408571-manual cerrada 2/2 por ejecución y convergencia JIT: #ADIPEC y #TEM2N review_completed/unchanged; textos y fechas originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. No se pisa el RUNTRACE canónico porque la ejecución posterior tr-1793705511806-manual ya lo cerró.",
+      "converged_with": [
+        "tr-autoguard-1793704864",
+        "tr-1793705511806-manual"
+      ]
     }
   ],
   "history": [
@@ -8480,6 +8536,7 @@
     "tr-1793698723967-manual",
     "tr-1793699033179-manual",
     "tr-1793702191137-manual",
-    "tr-autoguard-1793704864"
+    "tr-autoguard-1793704864",
+    "tr-1793705408571-manual"
   ]
 }
