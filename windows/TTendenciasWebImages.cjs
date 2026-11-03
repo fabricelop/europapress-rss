@@ -104,7 +104,7 @@ async function selectExistingBrowser(){
 // The user turn carrying this exact command is the only permitted image scope.
 // Rejects a later user turn, avatars, previews and unfinished generations.
 function userTurns(){
- const nodes=[...document.querySelectorAll('[data-message-author-role="user"],[data-testid*="user-message" i],[class*="user-message" i],article[data-turn="user"]')];
+ const nodes=[...document.querySelectorAll('[data-user-message-bubble="true"],[data-message-author-role="user"],[data-testid*="user-message" i],[class*="user-message" i],article[data-turn="user"]')];
  // Multiple selectors can describe nested wrappers of the same user turn.
  return nodes.filter(el=>!nodes.some(other=>other!==el&&typeof el.contains==='function'&&el.contains(other)));
 }
