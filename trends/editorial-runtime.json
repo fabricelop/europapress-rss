@@ -5,19 +5,19 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793693463",
   "previous_run_id": "tr-1793689605241-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T09:12:30+01:00",
-  "updated_at": "2026-11-03T09:15:52+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T09:19:00+01:00",
+  "finished_at": "2026-11-03T09:19:00+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "4b85f530992d",
-  "title": "Puerta del Sol",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "223974f8f55f",
     "4b85f530992d",
+    "223974f8f55f",
     "515388bfd4fc",
     "938baf64b989"
   ],
@@ -25,15 +25,15 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -48,44 +48,67 @@
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-f0796a0cf9b6cf9a49a9",
+      "id": "4b85f530992d",
       "revision": 0,
-      "name": "Revisar novedades: Diomande",
-      "outcome": "unchanged",
+      "name": "Puerta del Sol",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox_jit",
-      "reason": "Sin novedad material: la cobertura posterior sigue centrada en el gol del 0-3 al Racing y su consolidación deportiva."
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:15:00+01:00"
     },
     {
-      "id": "red-review-19e62b87b798ca9f89df",
+      "id": "223974f8f55f",
       "revision": 0,
-      "name": "Revisar novedades: Racing",
-      "outcome": "unchanged",
+      "name": "Qeshm",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox_jit",
-      "reason": "La lesión de Mantilla ya estaba materializada; no se verificó un anuncio oficial posterior que justificase otra actualización."
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:16:00+01:00"
+    },
+    {
+      "id": "515388bfd4fc",
+      "revision": 0,
+      "name": "#LaHora3N",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:17:00+01:00",
+      "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
+    },
+    {
+      "id": "938baf64b989",
+      "revision": 0,
+      "name": "Lc 14",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:18:00+01:00"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T09:15:52+01:00",
-  "last_completed_at": "2026-11-03T09:15:52+01:00",
+  "last_completed_at": "2026-11-03T09:19:00+01:00",
   "last_run": {
-    "run_id": "tr-1793689605241-manual",
-    "command_id": "tr-1793689605241-manual",
+    "run_id": "tr-autoguard-1793693463",
+    "command_id": "tr-autoguard-1793693463",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T08:07:00+01:00",
-    "finished_at": "2026-11-03T08:10:00+01:00",
+    "started_at": "2026-11-03T09:12:30+01:00",
+    "finished_at": "2026-11-03T09:19:00+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 4,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 2,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -96,30 +119,53 @@
     },
     "outcomes": [
       {
-        "id": "red-review-f0796a0cf9b6cf9a49a9",
+        "id": "4b85f530992d",
         "revision": 0,
-        "name": "Revisar novedades: Diomande",
-        "outcome": "unchanged",
+        "name": "Puerta del Sol",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox_jit",
-        "reason": "Sin novedad material: la cobertura posterior sigue centrada en el gol del 0-3 al Racing y su consolidación deportiva."
+        "via": "editorial_outbox_applied",
+        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+        "explained_at": "2026-11-03T09:15:00+01:00"
       },
       {
-        "id": "red-review-19e62b87b798ca9f89df",
+        "id": "223974f8f55f",
         "revision": 0,
-        "name": "Revisar novedades: Racing",
-        "outcome": "unchanged",
+        "name": "Qeshm",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox_jit",
-        "reason": "La lesión de Mantilla ya estaba materializada; no se verificó un anuncio oficial posterior que justificase otra actualización."
+        "via": "editorial_outbox_applied",
+        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+        "explained_at": "2026-11-03T09:16:00+01:00"
+      },
+      {
+        "id": "515388bfd4fc",
+        "revision": 0,
+        "name": "#LaHora3N",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+        "explained_at": "2026-11-03T09:17:00+01:00",
+        "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
+      },
+      {
+        "id": "938baf64b989",
+        "revision": 0,
+        "name": "Lc 14",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+        "explained_at": "2026-11-03T09:18:00+01:00"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio: 4 investigaciones preparing vigentes en main (Puerta del Sol, Qeshm, #LaHora3N y Lc 14), por antigüedad y con revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1417,6 +1463,15 @@
       "trend_id": "4b85f530992d",
       "title": "Puerta del Sol",
       "message": "Inicio: 4 investigaciones preparing vigentes en main (Puerta del Sol, Qeshm, #LaHora3N y Lc 14), por antigüedad y con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T09:19:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793693463",
+      "status": "DONE",
+      "current": 4,
+      "total": 4,
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3141,30 +3196,123 @@
       "incidents": [],
       "message": "Pasada tr-1793678744665-manual cerrada 2/2: Aramburu updated por el desfase de sincronización confirmado por el CTA en la acción del penalti; Halloween unchanged y conserva texto/fecha. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T05:11:21+01:00"
+    },
+    {
+      "run_id": "tr-autoguard-1793693463",
+      "command_id": "tr-autoguard-1793693463",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T09:12:30+01:00",
+      "finished_at": "2026-11-03T09:19:00+01:00",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 4,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "4b85f530992d",
+          "revision": 0,
+          "name": "Puerta del Sol",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:15:00+01:00"
+        },
+        {
+          "id": "223974f8f55f",
+          "revision": 0,
+          "name": "Qeshm",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:16:00+01:00"
+        },
+        {
+          "id": "515388bfd4fc",
+          "revision": 0,
+          "name": "#LaHora3N",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:17:00+01:00",
+          "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
+        },
+        {
+          "id": "938baf64b989",
+          "revision": 0,
+          "name": "Lc 14",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:18:00+01:00"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T09:19:00+01:00"
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-0b91adbac16406d31de8",
+      "id": "4b85f530992d",
       "revision": 0,
-      "name": "Revisar novedades: Aramburu",
-      "outcome": "updated",
+      "name": "Puerta del Sol",
+      "outcome": "explained",
       "applied": true,
-      "created_id": "trend-update-f54c1ca75e9efff745ab",
-      "via": "maintenance_outbox_jit",
-      "apply_commit": "a8ec171cd4cc9ec98964bd5e1cd32d5b8f4ac82d",
-      "reason": "Novedad material posterior a la explicación original: el CTA confirmó un ligero desfase de sincronización entre la señal del Connected Ball y el vídeo usado por el VAR; al resincronizar, la señal encaja con el toque de Aramburu al balón."
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:15:00+01:00"
     },
     {
-      "id": "red-review-ae92bccec617c3faf7b0",
+      "id": "223974f8f55f",
       "revision": 0,
-      "name": "Revisar novedades: Halloween",
-      "outcome": "unchanged",
+      "name": "Qeshm",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox_jit",
-      "apply_commit": "a8ec171cd4cc9ec98964bd5e1cd32d5b8f4ac82d",
-      "reason": "No se verifica una novedad sustancial posterior que cambie la explicación vigente: la cobertura localizada sigue referida a la celebración de Halloween del 31 de octubre, sus fiestas, disfraces y dispositivos asociados. Se conserva el texto y la fecha originales."
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:16:00+01:00"
+    },
+    {
+      "id": "515388bfd4fc",
+      "revision": 0,
+      "name": "#LaHora3N",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:17:00+01:00",
+      "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
+    },
+    {
+      "id": "938baf64b989",
+      "revision": 0,
+      "name": "Lc 14",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+      "explained_at": "2026-11-03T09:18:00+01:00"
     }
   ],
   "current_item": "6109385892c0",
@@ -4883,6 +5031,78 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793678744665-manual cerrada 2/2: Aramburu updated por el desfase de sincronización confirmado por el CTA en la acción del penalti; Halloween unchanged y conserva texto/fecha. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1793693463",
+      "command_id": "tr-autoguard-1793693463",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T09:12:30+01:00",
+      "finished_at": "2026-11-03T09:19:00+01:00",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 4,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "4b85f530992d",
+          "revision": 0,
+          "name": "Puerta del Sol",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:15:00+01:00"
+        },
+        {
+          "id": "223974f8f55f",
+          "revision": 0,
+          "name": "Qeshm",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:16:00+01:00"
+        },
+        {
+          "id": "515388bfd4fc",
+          "revision": 0,
+          "name": "#LaHora3N",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:17:00+01:00",
+          "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
+        },
+        {
+          "id": "938baf64b989",
+          "revision": 0,
+          "name": "Lc 14",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:18:00+01:00"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "command_id": "tr-autoguard-1793693463",
@@ -5766,6 +5986,78 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793678744665-manual cerrada 2/2: Aramburu updated por el desfase de sincronización confirmado por el CTA en la acción del penalti; Halloween unchanged y conserva texto/fecha. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1793693463",
+      "command_id": "tr-autoguard-1793693463",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T09:12:30+01:00",
+      "finished_at": "2026-11-03T09:19:00+01:00",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 4,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "4b85f530992d",
+          "revision": 0,
+          "name": "Puerta del Sol",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:15:00+01:00"
+        },
+        {
+          "id": "223974f8f55f",
+          "revision": 0,
+          "name": "Qeshm",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:16:00+01:00"
+        },
+        {
+          "id": "515388bfd4fc",
+          "revision": 0,
+          "name": "#LaHora3N",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:17:00+01:00",
+          "reason": "Emisión de La Hora de La 1 verificada; sin atribuir el impulso a un momento concreto no demostrado."
+        },
+        {
+          "id": "938baf64b989",
+          "revision": 0,
+          "name": "Lc 14",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d9e223043d434a015879ad3d20ae9a5f6f91a0d",
+          "explained_at": "2026-11-03T09:18:00+01:00"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "activity_log": [
@@ -5976,6 +6268,15 @@
       "trend_id": "4b85f530992d",
       "title": "Puerta del Sol",
       "message": "Inicio: 4 investigaciones preparing vigentes en main (Puerta del Sol, Qeshm, #LaHora3N y Lc 14), por antigüedad y con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T09:19:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793693463",
+      "status": "DONE",
+      "current": 4,
+      "total": 4,
+      "message": "Pasada tr-autoguard-1793693463 cerrada 4/4: Puerta del Sol, Qeshm, #LaHora3N y Lc 14 R0 explicadas y sincronizadas entre requests.json y telegram-manual-explained.json. #LaHora3N se cerró con causa concreta no atribuida a un momento específico. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
