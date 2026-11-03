@@ -3,42 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793747839940-manual",
-  "previous_run_id": "tr-1793747657358-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T00:18:00+01:00",
-  "updated_at": "2026-11-04T00:21:04+01:00",
-  "finished_at": "2026-11-04T00:21:04+01:00",
-  "current": 1,
+  "run_id": "tr-autoguard-1793749880",
+  "previous_run_id": "tr-1793747839940-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T00:51:20+01:00",
+  "updated_at": "2026-11-04T00:51:20+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-374a862baa2b8625f92b"
+  "trend_id": "59330137c24c",
+  "title": "#LaNoche24h",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "59330137c24c"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "59330137c24c"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0.",
+  "summary": "Inicio tr-autoguard-1793749880: 1 investigación preparing vigente en main (#LaNoche24h r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-374a862baa2b8625f92b",
-      "revision": 0,
-      "name": "Simeone",
-      "outcome": "updated",
-      "applied": true,
-      "distinct_episode": true,
-      "via": "concurrent_maintenance_outbox_applied"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T00:18:00+01:00",
+  "last_started_at": "2026-11-04T00:51:20+01:00",
   "last_completed_at": "2026-11-04T00:21:04+01:00",
   "last_run": {
     "run_id": "tr-1793747839940-manual",
@@ -54,7 +46,7 @@
     "summary": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793749880: 1 investigación preparing vigente en main (#LaNoche24h r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4157,6 +4149,17 @@
       "current": 1,
       "total": 1,
       "message": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T00:51:20+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793749880",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "59330137c24c",
+      "title": "#LaNoche24h",
+      "message": "Inicio tr-autoguard-1793749880: 1 investigación preparing vigente en main (#LaNoche24h r0). Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
     }
   ],
   "history": [
