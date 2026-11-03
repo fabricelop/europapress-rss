@@ -28,6 +28,10 @@ class TextFirstRecovery(unittest.TestCase):
   self.assertEqual(g.pending('ttittulares')[0]['revision'],2)
   g.save('ttittulares/decisions.json',{'items':[{'event_id':'news','revision':2,'status':'deleted'}]})
   self.assertEqual(g.pending('ttittulares'),[])
+ def test_terminal_without_revision_blocks_all_stale_work_for_that_identity(self):
+  g.save('ttittulares/editorial-queue.json',{'items':[{**self.row,'revision':4}]})
+  g.save('ttittulares/decisions.json',{'items':[{'event_id':'news','status':'deleted'}]})
+  self.assertEqual(g.pending('ttittulares'),[])
  def test_retry_cap_never_permanently_abandons_backlog_and_respects_live_editor(self):
   rows=g.pending('ttittulares');first=g.evaluate('ttittulares',self.now,{},rows=rows)
   previous={'backlog_signature':first['backlog_signature'],'attempts':3,'last_request_at':(self.now-timedelta(minutes=20)).isoformat()}
