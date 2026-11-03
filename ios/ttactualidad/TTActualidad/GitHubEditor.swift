@@ -629,6 +629,37 @@ final class GitHubEditor: ObservableObject {
         }
     }
 
+    func setTrendImportance(name: String, important: Bool) async -> Bool {
+        guard authenticated else {
+            notice = "Conecta GitHub para marcar una tendencia como importante."
+            return false
+        }
+        let key = "trend-importance:" + TrendImportance.key(name)
+        guard !inFlightKeys.contains(key) else { return false }
+        inFlightKeys.insert(key)
+        defer { inFlightKeys.remove(key) }
+        do {
+            var request = URLRequest(url: TrendImportance.endpoint,
+                                     cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 45)
+            request.httpMethod = "POST"
+            request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("no-store", forHTTPHeaderField: "Cache-Control")
+            request.setValue("TTActualidad/0.4.51", forHTTPHeaderField: "User-Agent")
+            request.httpBody = try JSONSerialization.data(withJSONObject: ["name": name, "important": important])
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard (response as? HTTPURLResponse)?.statusCode == 200,
+                  try TrendImportance.confirms(data, name: name, important: important) else {
+                throw GitHubError.message("No se ha confirmado la marca. Actualiza el Top 30 y vuelve a intentarlo.")
+            }
+            notice = important ? "Tendencia marcada como Importante en APP y web." : "Marca Importante retirada."
+            return true
+        } catch {
+            notice = error.localizedDescription
+            return false
+        }
+    }
+
     func decide(project: String, eventID: String, revision: Int, decision: String,
                 title: String, rank: Int = 0,
                 requestID: String = UUID().uuidString.lowercased()) async -> WriteResult {

@@ -262,6 +262,17 @@ final class EditorialStore: ObservableObject {
     var recentOperations: [EditorialOperation] {
         Array(operationHistory.filter { !$0.isOutstanding }.prefix(5))
     }
+    @Published private(set) var importantTrendNames = Set<String>()
+    private var importanceGeneration = 0
+    func isImportantTrend(_ name: String) -> Bool {
+        importantTrendNames.contains(TrendImportance.key(name))
+    }
+    func confirmTrendImportance(name: String, important: Bool) {
+        importanceGeneration += 1
+        let key = TrendImportance.key(name)
+        if important { importantTrendNames.insert(key) } else { importantTrendNames.remove(key) }
+        UserDefaults.standard.set(Array(importantTrendNames), forKey: "TTActualidad.trend-importance.v1")
+    }
     private var canonicalSnapshot = EditorialSnapshot()
     private var terminalMarks: [String: EditorialTombstone] = [:]
     private var terminalMarksNeedSave = false
@@ -288,6 +299,7 @@ final class EditorialStore: ObservableObject {
     }
 
     init() {
+        importantTrendNames = Set(UserDefaults.standard.stringArray(forKey: "TTActualidad.trend-importance.v1") ?? [])
         if let saved = UserDefaults.standard.data(forKey: tombstoneStorageKey),
            let tombstones = try? JSONDecoder().decode(
                 [String: EditorialTombstone].self, from: saved) {
@@ -597,12 +609,18 @@ final class EditorialStore: ObservableObject {
         let fresh = !downloaded.isEmpty
         let now = fresh ? Date() : (snapshot.updatedAt ?? Date())
         // Archive photographs and verified Sites PNGs are separate catalogs.
+        let importanceStartedAt = importanceGeneration
+        async let importanceTask = TrendImportance.load()
         async let archivePhotosTask = ArchivePhotoCatalog.load()
         async let siteImagesTask = SiteAIImageCatalog.load()
         async let newsImagesTask = NewsAIImageCatalog.load()
         let archivePhotos = await archivePhotosTask
         let siteImages = await siteImagesTask
         let newsImages = await newsImagesTask
+        if let names = await importanceTask, importanceStartedAt == importanceGeneration {
+            importantTrendNames = names
+            UserDefaults.standard.set(Array(names), forKey: "TTActualidad.trend-importance.v1")
+        }
         let news = Self.buildNews(prepared: docs["ttittulares/prepared.json"]!,
                                   decisions: docs["ttittulares/decisions.json"]!,
                                   archivePhotos: archivePhotos, newsImages: newsImages)
