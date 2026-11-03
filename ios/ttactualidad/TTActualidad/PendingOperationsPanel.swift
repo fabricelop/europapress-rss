@@ -5,6 +5,12 @@ import SwiftUI
 struct PendingOperationsPanel: View {
     @EnvironmentObject private var store: EditorialStore
     @State private var expanded: Bool
+    @State private var showEveryPending = false
+
+    private var visiblePending: [EditorialOperation] {
+        showEveryPending ? store.outstandingOperations :
+            Array(store.outstandingOperations.prefix(15))
+    }
 
     init(initiallyExpanded: Bool = false) {
         _expanded = State(initialValue: initiallyExpanded)
@@ -31,12 +37,29 @@ struct PendingOperationsPanel: View {
                         .font(.subheadline)
                         .foregroundStyle(TTTheme.teal)
                 } else {
-                    ForEach(store.outstandingOperations.prefix(15)) { operation in
+                    ForEach(visiblePending) { operation in
                         operationRow(operation)
-                        if operation.id != store.outstandingOperations.prefix(15).last?.id {
+                        if operation.id != visiblePending.last?.id {
                             Rectangle().fill(Color.white.opacity(0.09)).frame(height: 1)
                         }
                     }
+                }
+
+                if store.outstandingOperations.count > 15 {
+                    Button(showEveryPending ?
+                           "Mostrar solo las primeras 15" :
+                           "Ver las \(store.outstandingOperations.count) órdenes sin confirmar") {
+                        showEveryPending.toggle()
+                    }
+                    .font(.system(size: 12, weight: .semibold))
+                    .tint(TTTheme.teal)
+                }
+
+                if !store.reconciliationSummary.isEmpty {
+                    Text(store.reconciliationSummary)
+                        .font(.system(size: 12))
+                        .foregroundStyle(TTTheme.muted)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 if !store.recentOperations.isEmpty {
@@ -152,6 +175,7 @@ struct PendingOperationsPanel: View {
         case "Confirmada", "En Listas", "Verificada", "Retirada": return "checkmark.circle.fill"
         case "Rechazada": return "xmark.octagon.fill"
         case "Caducada": return "clock.badge.xmark"
+        case "No verificable": return "questionmark.circle"
         case "En elaboración": return "square.and.pencil"
         case "Sin confirmar": return "exclamationmark.triangle.fill"
         default: return "clock.fill"
@@ -162,7 +186,7 @@ struct PendingOperationsPanel: View {
         switch status {
         case "Confirmada", "En Listas", "Verificada", "Retirada": return TTTheme.teal
         case "Rechazada": return Color.red
-        case "Caducada": return Color.orange
+        case "Caducada", "No verificable": return Color.orange
         case "En elaboración": return TTTheme.blue
         default: return Color.orange
         }
