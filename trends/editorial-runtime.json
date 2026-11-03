@@ -3,44 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793732300083-manual",
-  "previous_run_id": "tr-1793731920527-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T19:59:00+01:00",
-  "updated_at": "2026-11-03T20:04:00+01:00",
-  "finished_at": "2026-11-03T20:04:00+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-autoguard-1793733684",
+  "previous_run_id": "tr-1793732300083-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T20:21:24+01:00",
+  "updated_at": "2026-11-03T20:21:24+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "red-review-387a2f52f0109bcca575",
     "red-review-fd68c1cbd8dc96f91827"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "2d7d1097f7f8",
+    "f0f53e2c6918",
+    "593d203e740f"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 2,
-    "stale_reviews": 0,
-    "terminal_decisions": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -90,7 +76,7 @@
     "summary": "Pasada cerrada 2/2: La Policía y QEPD quedaron review_completed/unchanged; se conservaron texto y explained_at originales y se registraron las comprobaciones red_review. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2: La Policía y QEPD quedaron review_completed/unchanged; se conservaron texto y explained_at originales y se registraron las comprobaciones red_review. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada editorial real iniciada: 3 preparing/update observados en main; se procesarán por requested_at con validación JIT de id+revision. ImageGen desactivado.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -5999,31 +5985,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-17550a4646eae76f9c9b",
-      "revision": 0,
-      "name": "Revisar novedades: Andorra",
-      "outcome": "updated",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "3e340be4de18",
-      "created_id": "trend-update-532141fc7c39c40d8029",
-      "apply_commit": "bc8cb4c2de5dffd40bec26257ef0e8ef7998a0cb",
-      "reason": "Novedad material: fallecimiento de Jesús de Miguel e investigación policial bajo supervisión judicial."
-    },
-    {
-      "id": "red-review-c54fd4196905e362f7b5",
-      "revision": 0,
-      "name": "Revisar novedades: Rudiger",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "ee213c47d89f",
-      "apply_commit": "bc8cb4c2de5dffd40bec26257ef0e8ef7998a0cb",
-      "reason": "Sin novedad sustancial; se conserva texto y fecha de la explicación vigente."
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null,
   "completed_runs": [
@@ -8541,7 +8503,7 @@
       "at": "2026-11-03T17:32:10+01:00"
     }
   ],
-  "command_id": "tr-1793728809883-manual",
+  "command_id": "tr-autoguard-1793733684",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
