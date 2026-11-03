@@ -3,47 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793722297",
-  "previous_run_id": "tr-1793719469374-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T17:12:00+01:00",
-  "updated_at": "2026-11-03T17:23:00+01:00",
-  "finished_at": "2026-11-03T17:23:00+01:00",
-  "current": 5,
-  "total": 5,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "e47f706121da",
-    "44365581404a",
-    "3553f8c0304e",
-    "4aa3329968cd",
-    "6b1ca96d0ae5"
+  "run_id": "tr-1793723144849-manual",
+  "previous_run_id": "tr-autoguard-1793722297",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T17:26:00+01:00",
+  "updated_at": "2026-11-03T17:26:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-f1d1417d433ed88d5205",
+  "title": "Revisar novedades: #GMMTVNEXT",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-f1d1417d433ed88d5205",
+    "red-review-c5fda321e7a6dd39a345"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-f1d1417d433ed88d5205",
+    "red-review-c5fda321e7a6dd39a345"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 5,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "terminal_decisions": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -338,90 +320,21 @@
   "last_started_at": "2026-11-03T17:19:38+01:00",
   "last_completed_at": "2026-11-03T17:23:00+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793722297",
-    "command_id": "tr-autoguard-1793722297",
+    "run_id": "tr-1793723144849-manual",
+    "command_id": "tr-1793723144849-manual",
     "canonical": true,
-    "status": "DONE",
-    "started_at": "2026-11-03T17:12:00+01:00",
-    "finished_at": "2026-11-03T17:23:00+01:00",
-    "summary": {
-      "attempted": 5,
-      "observed": 5,
-      "closed": 5,
-      "explained": 5,
-      "updates": 0,
-      "grouping_requests": 0,
-      "groups_created": 0,
-      "covered_by_existing": 0,
-      "unchanged_reviews": 0,
-      "stale_reviews": 0,
-      "terminal_decisions": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
-    },
-    "outcomes": [
-      {
-        "id": "e47f706121da",
-        "revision": 0,
-        "name": "Mark Twain",
-        "outcome": "explained",
-        "applied": true,
-        "via": "this_run_outbox",
-        "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-        "reason": "Óscar Puente citó a Mark Twain al explicar la revisión de protocolos tras el accidente de Urda; sin remate por sensibilidad."
-      },
-      {
-        "id": "44365581404a",
-        "revision": 0,
-        "name": "Pedraz",
-        "outcome": "explained",
-        "applied": true,
-        "via": "this_run_outbox",
-        "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-        "reason": "Prórroga hasta el 10 de junio de 2027 de la instrucción del caso Leire Díez por diligencias pendientes."
-      },
-      {
-        "id": "3553f8c0304e",
-        "revision": 0,
-        "name": "Région",
-        "outcome": "explained",
-        "applied": true,
-        "via": "this_run_outbox",
-        "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-        "reason": "Top30 actual verificado, pero sin detonante concreto acreditado tras contraste; cierre explícito con causa no confirmada."
-      },
-      {
-        "id": "4aa3329968cd",
-        "revision": 0,
-        "name": "Huelga General",
-        "outcome": "explained",
-        "applied": true,
-        "via": "this_run_outbox",
-        "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-        "reason": "Convocatoria estatal del 11 de noviembre y debate reactivado hoy sobre su continuidad."
-      },
-      {
-        "id": "6b1ca96d0ae5",
-        "revision": 0,
-        "name": "Carcel",
-        "outcome": "explained",
-        "applied": true,
-        "via": "this_run_outbox",
-        "apply_commit": "78254fb728b246cd61e342dc01b0adeab6057df7",
-        "reason": "Debate actual sobre posibles consecuencias penales tras la muerte de Jesús de Miguel, dejando claro que la investigación sigue abierta y no hay conclusión penal."
-      }
-    ],
+    "status": "PROCESSING",
+    "started_at": "2026-11-03T17:26:00+01:00",
+    "finished_at": null,
+    "summary": null,
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1793722297 cerrada 5/5: Mark Twain, Pedraz, Région, Huelga General y Carcel r0 quedaron explicadas y sincronizadas en requests y Listas. Région se cerró con causa no confirmada tras contraste; las otras cuatro con contexto actual verificado. Aplicación confirmada en commit 78254fb728b246cd61e342dc01b0adeab6057df7. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T17:23:00+01:00"
+    "message": "Inicio tr-1793723144849-manual: 2 revisiones preparing/update vigentes en main; revalidación JIT antes de investigar y aplicar cada resultado. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T17:26:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793722297 cerrada 5/5: Mark Twain, Pedraz, Région, Huelga General y Carcel r0 quedaron explicadas y sincronizadas en requests y Listas. Région se cerró con causa no confirmada tras contraste; las otras cuatro con contexto actual verificado. Aplicación confirmada en commit 78254fb728b246cd61e342dc01b0adeab6057df7. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793723144849-manual: 2 revisiones preparing/update vigentes en main; revalidación JIT antes de investigar y aplicar cada resultado. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3289,6 +3202,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793722297 cerrada 5/5: Mark Twain, Pedraz, Région, Huelga General y Carcel r0 quedaron explicadas y sincronizadas en requests y Listas. Région se cerró con causa no confirmada tras contraste; las otras cuatro con contexto actual verificado. Aplicación confirmada en commit 78254fb728b246cd61e342dc01b0adeab6057df7. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T17:26:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793723144849-manual",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-f1d1417d433ed88d5205",
+      "title": "Revisar novedades: #GMMTVNEXT",
+      "message": "Inicio tr-1793723144849-manual: 2 revisiones preparing/update vigentes en main; revalidación JIT antes de investigar y aplicar cada resultado. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -5754,8 +5678,8 @@
       "reason": "Debate actual sobre posibles consecuencias penales tras la muerte de Jesús de Miguel, dejando claro que la investigación sigue abierta y no hay conclusión penal."
     }
   ],
-  "current_item": null,
-  "current_title": null,
+  "current_item": "red-review-f1d1417d433ed88d5205",
+  "current_title": "Revisar novedades: #GMMTVNEXT",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -8215,7 +8139,7 @@
       "converged_with": "tr-1793719374883-manual"
     }
   ],
-  "command_id": "tr-autoguard-1793722297",
+  "command_id": "tr-1793723144849-manual",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
@@ -10396,6 +10320,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793722297 cerrada 5/5: Mark Twain, Pedraz, Région, Huelga General y Carcel r0 quedaron explicadas y sincronizadas en requests y Listas. Région se cerró con causa no confirmada tras contraste; las otras cuatro con contexto actual verificado. Aplicación confirmada en commit 78254fb728b246cd61e342dc01b0adeab6057df7. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T17:26:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793723144849-manual",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-f1d1417d433ed88d5205",
+      "title": "Revisar novedades: #GMMTVNEXT",
+      "message": "Inicio tr-1793723144849-manual: 2 revisiones preparing/update vigentes en main; revalidación JIT antes de investigar y aplicar cada resultado. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
