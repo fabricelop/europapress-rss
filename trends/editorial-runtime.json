@@ -5,11 +5,11 @@
   "canonical": true,
   "run_id": "tr-1793708667075-manual",
   "previous_run_id": "tr-1793707968204-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T13:37:10+01:00",
-  "updated_at": "2026-11-03T13:37:10+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-03T13:37:50+01:00",
+  "finished_at": "2026-11-03T13:37:50+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -68,22 +68,22 @@
   "last_started_at": "2026-11-03T13:21:00+01:00",
   "last_completed_at": "2026-11-03T13:27:00+01:00",
   "last_run": {
-    "run_id": "tr-1793708434762-manual",
-    "command_id": "tr-1793708434762-manual",
+    "run_id": "tr-1793708667075-manual",
+    "command_id": "tr-1793708667075-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T13:21:00+01:00",
-    "finished_at": "2026-11-03T13:27:00+01:00",
+    "started_at": "2026-11-03T13:37:10+01:00",
+    "finished_at": "2026-11-03T13:37:50+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 2,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -92,33 +92,14 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "outcomes": [
-      {
-        "id": "red-review-8a017ee88147198bf503",
-        "revision": 0,
-        "name": "Revisar novedades: Puerta del Sol",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "apply_commit": "f4cf6d90459b987ea5a4f95ebdede661560d6608"
-      },
-      {
-        "id": "red-review-af2730f0fd6d6ae8eb89",
-        "revision": 0,
-        "name": "Revisar novedades: Jesús de Miguel",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "apply_commit": "26cd8b6bc86ffadd35cecc8628fd4d76fdce6a9c"
-      }
-    ],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793708434762-manual cerrada 2/2: Puerta del Sol y Jesús de Miguel review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T13:27:00+01:00"
+    "message": "Pasada tr-1793708667075-manual cerrada 0/0: no había trabajos preparing/update ni reexplicaciones pendientes tras releer main. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T13:37:50+01:00"
   },
   "source": "chat",
-  "message": "Inicio manual: editorial-queue.json está vacía en main; verificando requests/explicadas y releyendo la barrera final antes de permitir cierre 0/0. Sin ImageGen ni publicación.",
+  "message": "Pasada tr-1793708667075-manual cerrada 0/0: no había trabajos preparing/update ni reexplicaciones pendientes tras releer main. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2125,6 +2106,24 @@
       "current": 0,
       "total": 0,
       "message": "Inicio manual: editorial-queue.json está vacía en main; verificando requests/explicadas y releyendo la barrera final antes de permitir cierre 0/0. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T13:37:50+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793708667075-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 0,
+      "message": "Barrera final JIT verificada en main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-03T13:37:50+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793708667075-manual",
+      "status": "DONE",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-1793708667075-manual cerrada 0/0: no había trabajos preparing/update ni reexplicaciones pendientes tras releer main. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
