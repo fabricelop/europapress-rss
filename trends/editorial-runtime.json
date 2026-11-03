@@ -1734,6 +1734,15 @@
       "trend_id": "0445de67536b",
       "title": "Terrible",
       "message": "Entraron tres investigaciones nuevas durante la barrera; se priorizan antes del mantenimiento restante."
+    },
+    {
+      "at": "2026-11-03T10:16:20+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793696493",
+      "status": "DONE",
+      "current": 7,
+      "total": 7,
+      "message": "Pasada tr-autoguard-1793696493 cerrada 7/7 por ejecución y convergencia: Dirección General de Seguridad, Delegación del Gobierno, Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final heredada y revalidada con la ejecución sucesora tr-1793696945461-manual: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico se preserva para la ejecución manual más nueva."
     }
   ],
   "history": [
@@ -3668,6 +3677,114 @@
       "incidents": [],
       "message": "Pasada tr-1793694895596-manual cerrada 5/5 tras absorber trabajo entrante: #Buenosdías, Mantilla y Jesús de Miguel explicados; Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793695104407-manual conserva la propiedad canónica del RUNTRACE.",
       "at": "2026-11-03T09:42:30+01:00"
+    },
+    {
+      "run_id": "tr-autoguard-1793696493",
+      "command_id": "tr-autoguard-1793696493",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T10:02:00+01:00",
+      "finished_at": "2026-11-03T10:16:20+01:00",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 5,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "ed34f5eeccea",
+          "revision": 0,
+          "name": "Dirección General de Seguridad",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "02c9b401721a14edafcef9ce7a3561f06ee5799a",
+          "explained_at": "2026-11-03T10:05:00+01:00",
+          "reason": "Contexto actual de Sol y antecedente histórico de la DGS verificados; detonante exacto no confirmado, redacción prudente sin remate."
+        },
+        {
+          "id": "033a07896805",
+          "revision": 0,
+          "name": "Delegación del Gobierno",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "7deff6777d5e7470bb6ea2d15460761c6919e509",
+          "explained_at": "2026-11-03T10:07:30+01:00",
+          "reason": "Detonante actual verificado: justificación del desalojo de la acampada de Sol como último recurso."
+        },
+        {
+          "id": "0445de67536b",
+          "revision": 0,
+          "name": "Terrible",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "1c50ce9fd187fa8b6d45c7aacdd7f7a8e41dbf63",
+          "explained_at": "2026-11-03T10:12:30+01:00",
+          "reason": "Causa exacta no confirmada; contexto ligado a Jesús de Miguel redactado con cautela y sin remate por sensibilidad."
+        },
+        {
+          "id": "e0f6e33a38dc",
+          "revision": 0,
+          "name": "#GMMTVNEXT",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18903a0d43a5fe146baca68f7845f06293dd2b15",
+          "explained_at": "2026-11-03T10:13:00+01:00",
+          "reason": "Evento GMMTVNEXT: GENERATION HAPPY de hoy en Bangkok verificado."
+        },
+        {
+          "id": "83bc11acedc0",
+          "revision": 0,
+          "name": "Muchísima",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18903a0d43a5fe146baca68f7845f06293dd2b15",
+          "explained_at": "2026-11-03T10:13:30+01:00",
+          "reason": "Indicio público de mensajes «Muchísima fuerza, Jesús»; detonante exacto no confirmado, sin remate por sensibilidad."
+        },
+        {
+          "id": "red-review-296d82743b1a96e08346",
+          "revision": 0,
+          "name": "Revisar novedades: Diomande",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "e85b77d1df9e27527055df5dde2b39128293b7b2",
+          "reason": "Sin desarrollo material posterior que cambie la explicación vigente."
+        },
+        {
+          "id": "red-review-fbd7aee9c1be9f3e8544",
+          "revision": 0,
+          "name": "Revisar novedades: Racing",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "e1b2283930b2f34b029c8a57670aa27095aeddfc",
+          "reason": "La lesión de Mantilla ya estaba materializada; la planificación del recambio para enero no constituye un episodio distinto."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793696493 cerrada 7/7 por ejecución y convergencia: Dirección General de Seguridad, Delegación del Gobierno, Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final heredada y revalidada con la ejecución sucesora tr-1793696945461-manual: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico se preserva para la ejecución manual más nueva.",
+      "at": "2026-11-03T10:16:20+01:00",
+      "converged_with": "tr-1793696945461-manual"
     }
   ],
   "partial": false,
@@ -5640,6 +5757,114 @@
       "incidents": [],
       "message": "Pasada tr-1793696945461-manual cerrada 5/5 por ejecución y convergencia JIT: Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T10:16:10+01:00"
+    },
+    {
+      "run_id": "tr-autoguard-1793696493",
+      "command_id": "tr-autoguard-1793696493",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T10:02:00+01:00",
+      "finished_at": "2026-11-03T10:16:20+01:00",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 5,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "ed34f5eeccea",
+          "revision": 0,
+          "name": "Dirección General de Seguridad",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "02c9b401721a14edafcef9ce7a3561f06ee5799a",
+          "explained_at": "2026-11-03T10:05:00+01:00",
+          "reason": "Contexto actual de Sol y antecedente histórico de la DGS verificados; detonante exacto no confirmado, redacción prudente sin remate."
+        },
+        {
+          "id": "033a07896805",
+          "revision": 0,
+          "name": "Delegación del Gobierno",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "7deff6777d5e7470bb6ea2d15460761c6919e509",
+          "explained_at": "2026-11-03T10:07:30+01:00",
+          "reason": "Detonante actual verificado: justificación del desalojo de la acampada de Sol como último recurso."
+        },
+        {
+          "id": "0445de67536b",
+          "revision": 0,
+          "name": "Terrible",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "1c50ce9fd187fa8b6d45c7aacdd7f7a8e41dbf63",
+          "explained_at": "2026-11-03T10:12:30+01:00",
+          "reason": "Causa exacta no confirmada; contexto ligado a Jesús de Miguel redactado con cautela y sin remate por sensibilidad."
+        },
+        {
+          "id": "e0f6e33a38dc",
+          "revision": 0,
+          "name": "#GMMTVNEXT",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18903a0d43a5fe146baca68f7845f06293dd2b15",
+          "explained_at": "2026-11-03T10:13:00+01:00",
+          "reason": "Evento GMMTVNEXT: GENERATION HAPPY de hoy en Bangkok verificado."
+        },
+        {
+          "id": "83bc11acedc0",
+          "revision": 0,
+          "name": "Muchísima",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18903a0d43a5fe146baca68f7845f06293dd2b15",
+          "explained_at": "2026-11-03T10:13:30+01:00",
+          "reason": "Indicio público de mensajes «Muchísima fuerza, Jesús»; detonante exacto no confirmado, sin remate por sensibilidad."
+        },
+        {
+          "id": "red-review-296d82743b1a96e08346",
+          "revision": 0,
+          "name": "Revisar novedades: Diomande",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "e85b77d1df9e27527055df5dde2b39128293b7b2",
+          "reason": "Sin desarrollo material posterior que cambie la explicación vigente."
+        },
+        {
+          "id": "red-review-fbd7aee9c1be9f3e8544",
+          "revision": 0,
+          "name": "Revisar novedades: Racing",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "e1b2283930b2f34b029c8a57670aa27095aeddfc",
+          "reason": "La lesión de Mantilla ya estaba materializada; la planificación del recambio para enero no constituye un episodio distinto."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793696493 cerrada 7/7 por ejecución y convergencia: Dirección General de Seguridad, Delegación del Gobierno, Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final heredada y revalidada con la ejecución sucesora tr-1793696945461-manual: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico se preserva para la ejecución manual más nueva.",
+      "at": "2026-11-03T10:16:20+01:00",
+      "converged_with": "tr-1793696945461-manual"
     }
   ],
   "command_id": "tr-1793696945461-manual",
@@ -6731,6 +6956,114 @@
       "incidents": [],
       "message": "Pasada tr-1793694895596-manual cerrada 5/5 tras absorber trabajo entrante: #Buenosdías, Mantilla y Jesús de Miguel explicados; Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793695104407-manual conserva la propiedad canónica del RUNTRACE.",
       "at": "2026-11-03T09:42:30+01:00"
+    },
+    {
+      "run_id": "tr-autoguard-1793696493",
+      "command_id": "tr-autoguard-1793696493",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T10:02:00+01:00",
+      "finished_at": "2026-11-03T10:16:20+01:00",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 5,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "ed34f5eeccea",
+          "revision": 0,
+          "name": "Dirección General de Seguridad",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "02c9b401721a14edafcef9ce7a3561f06ee5799a",
+          "explained_at": "2026-11-03T10:05:00+01:00",
+          "reason": "Contexto actual de Sol y antecedente histórico de la DGS verificados; detonante exacto no confirmado, redacción prudente sin remate."
+        },
+        {
+          "id": "033a07896805",
+          "revision": 0,
+          "name": "Delegación del Gobierno",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "7deff6777d5e7470bb6ea2d15460761c6919e509",
+          "explained_at": "2026-11-03T10:07:30+01:00",
+          "reason": "Detonante actual verificado: justificación del desalojo de la acampada de Sol como último recurso."
+        },
+        {
+          "id": "0445de67536b",
+          "revision": 0,
+          "name": "Terrible",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "1c50ce9fd187fa8b6d45c7aacdd7f7a8e41dbf63",
+          "explained_at": "2026-11-03T10:12:30+01:00",
+          "reason": "Causa exacta no confirmada; contexto ligado a Jesús de Miguel redactado con cautela y sin remate por sensibilidad."
+        },
+        {
+          "id": "e0f6e33a38dc",
+          "revision": 0,
+          "name": "#GMMTVNEXT",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18903a0d43a5fe146baca68f7845f06293dd2b15",
+          "explained_at": "2026-11-03T10:13:00+01:00",
+          "reason": "Evento GMMTVNEXT: GENERATION HAPPY de hoy en Bangkok verificado."
+        },
+        {
+          "id": "83bc11acedc0",
+          "revision": 0,
+          "name": "Muchísima",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18903a0d43a5fe146baca68f7845f06293dd2b15",
+          "explained_at": "2026-11-03T10:13:30+01:00",
+          "reason": "Indicio público de mensajes «Muchísima fuerza, Jesús»; detonante exacto no confirmado, sin remate por sensibilidad."
+        },
+        {
+          "id": "red-review-296d82743b1a96e08346",
+          "revision": 0,
+          "name": "Revisar novedades: Diomande",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "e85b77d1df9e27527055df5dde2b39128293b7b2",
+          "reason": "Sin desarrollo material posterior que cambie la explicación vigente."
+        },
+        {
+          "id": "red-review-fbd7aee9c1be9f3e8544",
+          "revision": 0,
+          "name": "Revisar novedades: Racing",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "e1b2283930b2f34b029c8a57670aa27095aeddfc",
+          "reason": "La lesión de Mantilla ya estaba materializada; la planificación del recambio para enero no constituye un episodio distinto."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793696493 cerrada 7/7 por ejecución y convergencia: Dirección General de Seguridad, Delegación del Gobierno, Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final heredada y revalidada con la ejecución sucesora tr-1793696945461-manual: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico se preserva para la ejecución manual más nueva.",
+      "at": "2026-11-03T10:16:20+01:00",
+      "converged_with": "tr-1793696945461-manual"
     }
   ],
   "activity_log": [
@@ -7105,11 +7438,21 @@
       "current": 5,
       "total": 5,
       "message": "Pasada tr-1793696945461-manual cerrada 5/5 por ejecución y convergencia JIT: Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T10:16:20+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793696493",
+      "status": "DONE",
+      "current": 7,
+      "total": 7,
+      "message": "Pasada tr-autoguard-1793696493 cerrada 7/7 por ejecución y convergencia: Dirección General de Seguridad, Delegación del Gobierno, Terrible, #GMMTVNEXT y Muchísima explicadas; Diomande y Racing review_completed/unchanged. Barrera final heredada y revalidada con la ejecución sucesora tr-1793696945461-manual: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico se preserva para la ejecución manual más nueva."
     }
   ],
   "converged_run_ids": [
     "tr-1793688569006-manual",
     "tr-1793689327846-manual",
-    "tr-autoguard-1793693463"
+    "tr-autoguard-1793693463",
+    "tr-autoguard-1793696493"
   ]
 }
