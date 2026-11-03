@@ -5,53 +5,69 @@
   "canonical": true,
   "run_id": "tr-1793747657358-manual",
   "previous_run_id": "tr-1793746489773-manual",
-  "status": "PROCESSING",
-  "phase": "persisting",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-04T00:15:30+01:00",
-  "updated_at": "2026-11-04T00:20:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T00:19:27.736267+01:00",
+  "finished_at": "2026-11-04T00:19:27.736267+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": "red-review-374a862baa2b8625f92b",
   "title": "Revisar novedades: Simeone",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-67fb96527801cf560c29",
     "red-review-374a862baa2b8625f92b"
   ],
-  "remaining_active_ids": [
-    "red-review-67fb96527801cf560c29",
-    "red-review-374a862baa2b8625f92b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada 4/4 completada: Le Normand r0 y Sorloth r0 quedaron explained; Rufián review_red r0 cerró stale por barrera JIT/convergencia sin duplicar; Accidente de Urda review_red r0 quedó updated como continuidad en trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada 2/2 cerrada por convergencia: Gracias Ministro quedó updated en continuidad y Simeone updated como episodio distinto. Simeone requirió corregir el prefijo exigido por el validador. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "red-review-374a862baa2b8625f92b",
+      "revision": 0,
+      "kind": "validation_format",
+      "resolved": true,
+      "message": "El primer outbox de Simeone usó «es tendencia tras…» con distinct_episode=true; se corrigió el mismo outbox a «es tendencia por…» y el aplicador lo aceptó."
+    }
+  ],
   "error": null,
   "activity": "persisting",
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-67fb96527801cf560c29",
+      "revision": 0,
+      "outcome": "updated",
+      "created_id": "trend-update-8230af1954601fc10686"
+    },
+    {
+      "id": "red-review-374a862baa2b8625f92b",
+      "revision": 0,
+      "outcome": "updated",
+      "created_id": "trend-update-35c47da02d21c05a1e59"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T00:13:39+01:00",
-  "last_completed_at": "2026-11-04T00:13:39+01:00",
+  "last_completed_at": "2026-11-04T00:19:27.736267+01:00",
   "last_run": {
-    "run_id": "tr-1793745926226-manual",
+    "run_id": "tr-1793747657358-manual",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-03T23:53:00+01:00",
-    "finished_at": "2026-11-03T23:55:36+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-11-04T00:15:30+01:00",
+    "finished_at": "2026-11-04T00:19:27.736267+01:00",
+    "current": 2,
+    "total": 2,
     "closed": [
-      "f21e3899c88b",
-      "c93d8047df91",
-      "red-review-f4a3a4525c7a5aaeb4af",
-      "red-review-57cb9cfcbb7a836792b2"
+      "red-review-67fb96527801cf560c29",
+      "red-review-374a862baa2b8625f92b"
     ],
     "pending": [],
-    "summary": "Pasada 4/4 completada: Le Normand r0 y Sorloth r0 quedaron explained; Rufián review_red r0 cerró stale por barrera JIT/convergencia sin duplicar; Accidente de Urda review_red r0 quedó updated como continuidad en trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "summary": "Pasada 2/2 cerrada por convergencia: Gracias Ministro quedó updated en continuidad y Simeone updated como episodio distinto. Simeone requirió corregir el prefijo exigido por el validador. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Resultados de Gracias Ministro y Simeone persistidos en maintenance-outbox tras revalidación JIT. Ambos son updated; Simeone es episodio distinto. Pendiente verificar aplicación autoritativa.",
+  "message": "Pasada 2/2 cerrada por convergencia: Gracias Ministro quedó updated en continuidad y Simeone updated como episodio distinto. Simeone requirió corregir el prefijo exigido por el validador. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4118,6 +4134,33 @@
       "trend_id": "red-review-374a862baa2b8625f92b",
       "title": "Revisar novedades: Simeone",
       "message": "Resultados de Gracias Ministro y Simeone persistidos en maintenance-outbox tras revalidación JIT. Ambos son updated; Simeone es episodio distinto. Pendiente verificar aplicación autoritativa."
+    },
+    {
+      "at": "2026-11-04T00:19:27.736267+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793747657358-manual",
+      "status": "PROCESSING",
+      "current": 2,
+      "total": 2,
+      "message": "Barrera final main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Gracias Ministro y Simeone constan aplicadas."
+    },
+    {
+      "at": "2026-11-04T00:19:27.736267+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793747657358-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada 2/2 cerrada por convergencia: Gracias Ministro quedó updated en continuidad y Simeone updated como episodio distinto. Simeone requirió corregir el prefijo exigido por el validador. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T00:19:27.736267+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793746489773-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "current": 7,
+      "total": 7,
+      "message": "Pasada solicitada cerrada 7/7: 5 explicaciones ordinarias + 2 revisiones de novedades absorbidas en convergencia. Simeone requirió una corrección de formato del mismo outbox. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -6907,7 +6950,20 @@
     }
   ],
   "partial": false,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-67fb96527801cf560c29",
+      "revision": 0,
+      "outcome": "updated",
+      "created_id": "trend-update-8230af1954601fc10686"
+    },
+    {
+      "id": "red-review-374a862baa2b8625f92b",
+      "revision": 0,
+      "outcome": "updated",
+      "created_id": "trend-update-35c47da02d21c05a1e59"
+    }
+  ],
   "current_item": "a3e01c595b24",
   "current_title": "#TierraDeNadie8",
   "completed_runs": [
