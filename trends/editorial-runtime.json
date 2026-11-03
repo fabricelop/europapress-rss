@@ -5,29 +5,24 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793693463",
   "previous_run_id": "tr-1793689605241-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-03T09:12:30+01:00",
-  "updated_at": "2026-11-03T09:12:30+01:00",
+  "updated_at": "2026-11-03T09:15:52+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": "4b85f530992d",
   "title": "Puerta del Sol",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "4b85f530992d",
+  "queue_complete": true,
+  "processed_ids": [
     "223974f8f55f",
+    "4b85f530992d",
     "515388bfd4fc",
     "938baf64b989"
   ],
-  "remaining_active_ids": [
-    "4b85f530992d",
-    "223974f8f55f",
-    "515388bfd4fc",
-    "938baf64b989"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -72,8 +67,8 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T08:05:42+01:00",
-  "last_completed_at": "2026-11-03T08:10:00+01:00",
+  "last_started_at": "2026-11-03T09:15:52+01:00",
+  "last_completed_at": "2026-11-03T09:15:52+01:00",
   "last_run": {
     "run_id": "tr-1793689605241-manual",
     "command_id": "tr-1793689605241-manual",
