@@ -3,59 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793705511806-manual",
-  "previous_run_id": "tr-autoguard-1793704864",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T12:33:20+01:00",
-  "updated_at": "2026-11-03T12:35:37.745+01:00",
-  "finished_at": "2026-11-03T12:35:37.745+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-c588ccdc71a7eefc0351"
+  "run_id": "tr-1793707164713-manual",
+  "previous_run_id": "tr-1793705511806-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T13:00:00+01:00",
+  "updated_at": "2026-11-03T13:00:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-ada21339baf89ff47cd1",
+  "title": "Revisar novedades: Andorra",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-ada21339baf89ff47cd1",
+    "red-review-e068f87f863786913794"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-ada21339baf89ff47cd1",
+    "red-review-e068f87f863786913794"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 1,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-c588ccdc71a7eefc0351",
-      "revision": 0,
-      "name": "Revisar novedades: #TEM2N",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "converged_with": "tr-autoguard-1793704864",
-      "source_id": "fed9af79780a",
-      "reason": "Sin cambio material respecto a la explicación del 2 de noviembre; el resultado review_completed/unchanged ya estaba aplicado en main y la emisión del 3-N aún no había comenzado durante la revisión."
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T12:33:20+01:00",
   "last_completed_at": "2026-11-03T12:35:37.745+01:00",
@@ -104,7 +79,7 @@
     "converged_with": "tr-autoguard-1793704864"
   },
   "source": "chat",
-  "message": "Pasada tr-1793705511806-manual cerrada 1/1 por convergencia JIT: #TEM2N review_completed/unchanged; texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793707164713-manual iniciada: 2 revisión(es) preparing/update en main; validación JIT antes de cada tratamiento. ImageGen desactivado en esta pasada.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1944,6 +1919,15 @@
         "tr-autoguard-1793704864",
         "tr-1793705511806-manual"
       ]
+    },
+    {
+      "at": "2026-11-03T13:00:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793707164713-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "message": "Pasada tr-1793707164713-manual iniciada: 2 revisión(es) preparing/update en main; validación JIT antes de cada tratamiento. ImageGen desactivado en esta pasada."
     }
   ],
   "history": [
