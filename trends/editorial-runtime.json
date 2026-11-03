@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-03T20:34:30+01:00",
-  "updated_at": "2026-11-03T20:36:00+01:00",
-  "finished_at": "2026-11-03T20:36:00+01:00",
+  "updated_at": "2026-11-03T20:38:00+01:00",
+  "finished_at": "2026-11-03T20:38:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -36,7 +36,6 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "terminal_decisions": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -56,9 +55,9 @@
       "outcome": "updated",
       "applied": true,
       "created_id": "trend-update-755bb08544bac83f4bc3",
-      "via": "maintenance_outbox_applied",
+      "via": "maintenance_outbox_convergence",
       "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
-      "reason": "Novedad material: fallecimiento de Jesús de Miguel e investigación de la Policía Nacional bajo supervisión judicial; continuidad del mismo episodio y sin remate por sensibilidad."
+      "reason": "Fallecimiento de Jesús de Miguel e investigación policial/judicial posterior."
     },
     {
       "id": "red-review-9a71892bb9956d201185",
@@ -66,45 +65,48 @@
       "name": "Revisar novedades: Mark Twain",
       "outcome": "unchanged",
       "applied": true,
-      "via": "maintenance_outbox_applied",
+      "via": "maintenance_outbox_convergence",
       "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
-      "reason": "Sin novedad material posterior: se mantiene la cita de Mark Twain usada por Óscar Puente al explicar cambios de protocolos tras Urda; texto y fecha conservados."
+      "reason": "Sin novedad material; se mantiene la cita de Óscar Puente y la explicación original."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T20:29:44+01:00",
-  "last_completed_at": "2026-11-03T20:36:00+01:00",
+  "last_started_at": "2026-11-03T20:34:30+01:00",
+  "last_completed_at": "2026-11-03T20:38:00+01:00",
   "last_run": {
     "run_id": "tr-1793734393929-manual",
-    "command_id": "tr-1793734298171-manual",
     "status": "DONE",
     "started_at": "2026-11-03T20:34:30+01:00",
-    "finished_at": "2026-11-03T20:36:00+01:00",
+    "finished_at": "2026-11-03T20:38:00+01:00",
     "current": 2,
     "total": 2,
-    "closed": 2,
-    "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 1,
-      "grouping_requests": 0,
-      "groups_created": 0,
-      "covered_by_existing": 0,
-      "unchanged_reviews": 1,
-      "stale_reviews": 0,
-      "terminal_decisions": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 2
-    }
+    "closed": [
+      {
+        "id": "red-review-6b46dc14e6d405480d99",
+        "revision": 0,
+        "name": "Revisar novedades: Andorra",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-755bb08544bac83f4bc3",
+        "via": "maintenance_outbox_convergence",
+        "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
+        "reason": "Fallecimiento de Jesús de Miguel e investigación policial/judicial posterior."
+      },
+      {
+        "id": "red-review-9a71892bb9956d201185",
+        "revision": 0,
+        "name": "Revisar novedades: Mark Twain",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_convergence",
+        "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
+        "reason": "Sin novedad material; se mantiene la cita de Óscar Puente y la explicación original."
+      }
+    ],
+    "summary": "2/2 cerradas: Andorra updated y Mark Twain unchanged; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793734298171-manual cerrada por convergencia con tr-1793734393929-manual: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3 y Mark Twain review_completed/unchanged, conservando su texto y fecha. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793734393929-manual cerrada 2/2 por ejecución y convergencia JIT: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3; Mark Twain review_completed/unchanged con texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3488,6 +3490,42 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada tr-1793734298171-manual cerrada por convergencia con tr-1793734393929-manual: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3 y Mark Twain review_completed/unchanged, conservando su texto y fecha. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T20:38:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793734393929-manual",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 2,
+      "message": "Barrera final JIT verificada en main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Andorra aplicada como updated y Mark Twain como unchanged."
+    },
+    {
+      "at": "2026-11-03T20:38:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793734393929-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada tr-1793734393929-manual cerrada 2/2 por ejecución y convergencia JIT: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3; Mark Twain review_completed/unchanged con texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
