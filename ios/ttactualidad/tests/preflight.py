@@ -653,6 +653,12 @@ assert 'retireAbandonedTrendOperations(requests: requests, queue: queue' in stor
 assert 'fresh[receiptPath] != nil' in store
 assert 'fresh[newsDecisions] != nil' in store
 assert 'fresh[trendsRequests] != nil' in store
+assert 'reconcileTerminalDecisions(decisions, project: "ttittulares")' in store
+assert 'reconcileTerminalDecisions(decisions, project: "ttendencias")' in store
+assert 'let trendsDecisions = "trends/mobile-decisions.json"' in store
+assert 'operation.createdAt.addingTimeInterval(-180)' in store
+assert 'Esta ficha ya tiene cierre posterior confirmado en GitHub' in store
+assert '["deleted", "dismissed", "published"]' in store
 focused = store[store.index('func reconcilePendingOperations() async'):store.index('func refresh(manual: Bool = false)')]
 assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
