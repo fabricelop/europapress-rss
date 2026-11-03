@@ -81,9 +81,12 @@ try {
    if($available){throw 'El relay aun no ha cerrado. No se fuerza.'}
   }
  }
- Write-Host 'Se abre una ventana MANUAL para completar la verificacion o iniciar sesion en ChatGPT.'
- Start-Process -FilePath $chrome -ArgumentList @('--remote-debugging-address=127.0.0.1','--remote-debugging-port=9234',('--user-data-dir="'+$ttRelayProfile+'"'),'--no-first-run','--no-default-browser-check','https://chatgpt.com/c/6ae9d467-b2f8-83eb-9eea-c8e020f48fad') | Out-Null
- Read-Host 'Completa tu mismo la verificacion. Cuando veas la conversacion, vuelve aqui y pulsa INTRO' | Out-Null
+ # A past command conversation may have been deleted, revoked or belong to a different account.
+ # The manual handoff only needs the signed-in ChatGPT entry point; the receiver
+ # independently validates exact task conversations, without creating chat messages.
+ Write-Host 'Se abre ChatGPT en el perfil del relay para verificar la sesion manualmente.'
+ Start-Process -FilePath $chrome -ArgumentList @('--remote-debugging-address=127.0.0.1','--remote-debugging-port=9234',('--user-data-dir="'+$ttRelayProfile+'"'),'--no-first-run','--no-default-browser-check','https://chatgpt.com/') | Out-Null
+ Read-Host 'Comprueba que ChatGPT abre y, si deseas, entra en una conversacion propia desde la barra lateral. Despues pulsa INTRO' | Out-Null
  Write-Host 'Se reactivan las tareas que estaban activadas. Puedes minimizar esa ventana de Chrome.'
  Write-Host 'Actualizar la bandeja tras el siguiente ciclo. No se ha generado ni aprobado ninguna imagen.'
 } finally {
