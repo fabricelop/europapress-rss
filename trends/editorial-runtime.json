@@ -47,19 +47,19 @@
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T00:57:14+01:00",
-  "last_completed_at": "2026-11-03T01:01:32.715+01:00",
+  "last_completed_at": "2026-11-03T01:00:41+01:00",
   "last_run": {
-    "run_id": "tr-1793663849907-manual",
-    "command_id": "tr-1793663849907-manual",
-    "canonical": true,
+    "run_id": "tr-autoguard-1793663459",
+    "command_id": "tr-autoguard-1793663459",
+    "canonical": false,
     "status": "DONE",
-    "started_at": "2026-11-03T00:57:29.907+01:00",
-    "finished_at": "2026-11-03T01:01:32.715+01:00",
+    "started_at": "2026-11-03T00:51:20+01:00",
+    "finished_at": "2026-11-03T01:00:41+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 2,
       "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -71,34 +71,50 @@
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 1
     },
     "outcomes": [
       {
+        "id": "466d3740ad7e",
+        "revision": 0,
+        "name": "Loureiro",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "reason": "Causa verificada: actuación destacada como titular en el 2-1 del Deportivo ante Osasuna."
+      },
+      {
+        "id": "78f0c897a505",
+        "revision": 0,
+        "name": "Aroca",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "reason": "Contexto actual verificado sobre Javier Aroca y el debate ferroviario tras Urda; detonante exacto no confirmado, por lo que se cerró con causalidad prudente y sin remate."
+      },
+      {
         "id": "red-review-5acdc18cd526baa17504",
         "revision": 0,
-        "name": "Revisar novedades: Adif",
+        "name": "Adif",
         "outcome": "updated",
         "applied": true,
         "created_id": "trend-update-f1f681d37e952be49138",
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "9b557be5d9e0ad0cad0bae801905d8656ceb51e4",
-        "reason": "Novedad material: la investigación revisa decenas de antecedentes del LZB para determinar si el protocolo que permitió reanudar la marcha normal se utilizó de forma habitual."
+        "via": "maintenance_outbox_applied",
+        "reason": "La investigación amplió el foco a decenas de fallos previos del LZB y al posible uso habitual del protocolo de reanudación a marcha normal."
       },
       {
         "id": "red-review-a20d736ad083a5a16a1d",
         "revision": 0,
-        "name": "Revisar novedades: Pepe Mel",
+        "name": "Pepe Mel",
         "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "9b557be5d9e0ad0cad0bae801905d8656ceb51e4",
-        "reason": "Sin novedad médica material: sigue ingresado en UCI tras una intervención satisfactoria y pendiente de evolución, sin nuevo parte oficial."
+        "via": "maintenance_outbox_applied",
+        "reason": "Sin novedad médica material: sigue operado con éxito, ingresado en UCI y pendiente de evolución, sin nuevo parte oficial."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793663849907-manual cerrada 2/2 por convergencia JIT: Adif quedó updated con nueva ficha trend-update-f1f681d37e952be49138 y Pepe Mel unchanged, conservando texto y fecha. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada por convergencia 4/4: Loureiro y Aroca explicados; revisión Adif actualizada y Pepe Mel sin cambios. Barrera final main: editorial-queue=0, preparing/update=0 y escaneo completo de requests.json sin rewrite_pending:true, reexplain:true ni status update. ImageGen=0; publicaciones=0. Un run manual más nuevo (tr-1793663849907-manual) conserva la telemetría canónica y no fue sobrescrito."
   },
   "source": "chat",
   "message": "Pasada tr-1793663849907-manual cerrada 2/2 por convergencia JIT: Adif quedó updated con nueva ficha trend-update-f1f681d37e952be49138 y Pepe Mel unchanged, conservando texto y fecha. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
