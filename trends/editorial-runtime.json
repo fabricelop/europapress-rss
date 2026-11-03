@@ -3,28 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793665313",
-  "previous_run_id": "tr-1793663849907-manual",
-  "status": "success",
+  "run_id": "tr-1793665638734-manual",
+  "previous_run_id": "tr-autoguard-1793665313",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-03T01:22:00+01:00",
-  "updated_at": "2026-11-03T01:26:32+01:00",
+  "started_at": "2026-11-03T01:27:00+01:00",
+  "updated_at": "2026-11-03T01:27:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 6,
-  "trend_id": "7b880b959d71",
-  "title": "IRINI",
-  "queue_complete": true,
-  "processed_ids": [
-    "19dbd39b0df0",
-    "253387e8620e",
-    "7b880b959d71",
-    "8191aa70b3fb",
-    "b0cb39c41dfc",
-    "d37f78ec86d1"
+  "total": 2,
+  "trend_id": "red-review-656a94ab649a01f2e45d",
+  "title": "Revisar novedades: Leo Román",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-656a94ab649a01f2e45d",
+    "red-review-1b17769431b2683c7bcd"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-656a94ab649a01f2e45d",
+    "red-review-1b17769431b2683c7bcd"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "incident_count": 0,
@@ -104,7 +103,7 @@
     "message": "Pasada cerrada por convergencia 4/4: Loureiro y Aroca explicados; revisión Adif actualizada y Pepe Mel sin cambios. Barrera final main: editorial-queue=0, preparing/update=0 y escaneo completo de requests.json sin rewrite_pending:true, reexplain:true ni status update. ImageGen=0; publicaciones=0. Un run manual más nuevo (tr-1793663849907-manual) conserva la telemetría canónica y no fue sobrescrito."
   },
   "source": "chat",
-  "message": "Inicio: 6 trabajos preparing vigentes en main (IRINI, Náyades, Andrea, Mallorca, Sergio Herrera y Kiko), procesados por antigüedad con validación JIT por id+revision. Sin ImageGen ni publicación.",
+  "message": "Inicio manual: 2 revisiones de novedades preparing vigentes en main (Leo Román y #ElPerroAndaluzTVE), en orden de cola y con validación JIT por id+revision. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2746,38 +2745,9 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "1e03ad2efe6a",
-      "revision": 0,
-      "name": "Paola",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-03T00:17:20+01:00"
-    },
-    {
-      "id": "64a8657cfbb4",
-      "revision": 0,
-      "name": "Josue",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-03T00:18:05+01:00",
-      "reason": "Contexto actual verificado; el detonante concreto del nombre no pudo aislarse y se redactó con incertidumbre explícita."
-    },
-    {
-      "id": "c1e5fdc8cf2a",
-      "revision": 0,
-      "name": "Kico",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-03T00:18:45+01:00"
-    }
-  ],
-  "current_item": null,
-  "current_title": null,
+  "outcomes": [],
+  "current_item": "red-review-656a94ab649a01f2e45d",
+  "current_title": "Revisar novedades: Leo Román",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -4364,7 +4334,7 @@
       "message": "Pasada tr-autoguard-1793659867 cerrada 4/4: #LaIslaDeLasTentaciones16 y Mario Soriano explicados; revisión de Racing actualizada por la lesión de Álvaro Mantilla; revisión de Toledo descartada como stale tras revalidación JIT. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-autoguard-1793663459",
+  "command_id": "tr-1793665638734-manual",
   "requested_at": "2026-11-02T22:58:00+01:00",
   "runs": [
     {
