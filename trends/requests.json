@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T13:04:40+01:00",
+  "updated_at": "2026-11-03T12:05:55.813660+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -203652,7 +203652,21 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-11-02T18:35:30.265440+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-03T12:05:55.813660+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Hay una novedad material posterior a la explicación original: Jesús de Miguel falleció el 3 de noviembre tras permanecer hospitalizado por el choque sufrido en el Tenerife-Andorra; el FC Andorra y Gerard Piqué han expresado sus condolencias.",
+      "red_review_sources": [
+        {
+          "url": "https://www.clubdeportivotenerife.es/noticias/comunicado-oficial-fallecimiento-de-jesus-de-miguel"
+        },
+        {
+          "url": "https://www.europapress.es/deportes/futbol-00162/noticia-andorra-corazon-roto-devastado-muerte-jesus-miguel-20261103102935.html"
+        },
+        {
+          "url": "https://www.reuters.com/sports/soccer/tenerife-striker-jesus-de-miguel-dies-after-collision-match-2026-11-03/"
+        }
+      ]
     },
     {
       "id": "red-review-c6446e4f7a6c073f0906",
@@ -211823,7 +211837,7 @@
       "revision": 0,
       "name": "Revisar novedades: Andorra",
       "rank": 3,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T11:59:17.748272+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -211850,7 +211864,11 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-f4277746f9b811af259b",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-03T12:05:55.813660+00:00",
+      "review_reason": "Hay una novedad material posterior a la explicación original: Jesús de Miguel falleció el 3 de noviembre tras permanecer hospitalizado por el choque sufrido en el Tenerife-Andorra; el FC Andorra y Gerard Piqué han expresado sus condolencias."
     },
     {
       "id": "red-review-e068f87f863786913794",
@@ -212008,6 +212026,42 @@
       ],
       "auto_queued": true,
       "auto_queue_scope": "top30"
+    },
+    {
+      "id": "trend-update-f4277746f9b811af259b",
+      "revision": 0,
+      "name": "Andorra",
+      "rank": 3,
+      "status": "explained",
+      "requested_at": "2026-11-03T12:05:55.813660+00:00",
+      "explained_at": "2026-11-03T12:05:55.813660+00:00",
+      "updated_at": "2026-11-03T12:05:55.813660+00:00",
+      "explanation": "TT#3 Andorra sigue siendo tendencia por la muerte de Jesús de Miguel tras el choque con Owono en el Tenerife-Andorra; el FC Andorra y Gerard Piqué han trasladado sus condolencias.\n#JesúsDeMiguel #FCAndorra",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://www.clubdeportivotenerife.es/noticias/comunicado-oficial-fallecimiento-de-jesus-de-miguel"
+        },
+        {
+          "url": "https://www.europapress.es/deportes/futbol-00162/noticia-andorra-corazon-roto-devastado-muerte-jesus-miguel-20261103102935.html"
+        },
+        {
+          "url": "https://www.reuters.com/sports/soccer/tenerife-striker-jesus-de-miguel-dies-after-collision-match-2026-11-03/"
+        }
+      ],
+      "originated_from_prior_id": "3e340be4de18",
+      "trend_names": [
+        "Andorra"
+      ],
+      "red_review_job_id": "red-review-ada21339baf89ff47cd1",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "El CD Tenerife comunicó el fallecimiento de Jesús de Miguel a las 8:00 del 3 de noviembre. Después, el FC Andorra trasladó su pésame y Gerard Piqué lamentó públicamente la muerte del jugador.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 933
