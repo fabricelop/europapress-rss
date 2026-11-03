@@ -53,46 +53,79 @@
   "last_started_at": "2026-11-03T15:44:31+01:00",
   "last_completed_at": "2026-11-03T15:44:32+01:00",
   "last_run": {
-    "run_id": "tr-1793715998214-manual",
-    "command_id": "tr-1793715998214-manual",
-    "canonical": true,
+    "run_id": "tr-1793716769930-manual",
+    "command_id": "tr-1793716769930-manual",
+    "canonical": false,
     "status": "DONE",
-    "started_at": "2026-11-03T15:27:00+01:00",
-    "finished_at": "2026-11-03T15:33:00+01:00",
+    "started_at": "2026-11-03T15:40:00+01:00",
+    "finished_at": "2026-11-03T15:49:00+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 1,
-      "updates": 0,
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
+      "explained": 3,
+      "updates": 1,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 0,
+      "unchanged_reviews": 1,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
     "outcomes": [
       {
         "id": "2e00a1a9eeae",
-        "revision": 0,
+        "revision": 1,
         "name": "Owono",
         "outcome": "explained",
         "applied": true,
-        "explained_at": "2026-11-03T15:30:00+01:00",
-        "apply_commit": "3876b8c9ff9c209a69387a5001d29b587531bc06",
-        "reason": "Fallecimiento de Jesús de Miguel el 3-N tras el choque con Jesús Owono en el Tenerife-Andorra del 2-N, suspendido 2-2; investigación policial abierta."
+        "apply_commit": "ee910711497148e03d07833e32df3048b3f5366f",
+        "reason": "Pista de carta no corroborada; sí quedó verificada la intención de disculparse en privado con la familia y el contexto del fallecimiento/investigación."
+      },
+      {
+        "id": "49a74700dad6",
+        "revision": 0,
+        "name": "Marta Gastón",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "ee910711497148e03d07833e32df3048b3f5366f"
+      },
+      {
+        "id": "7edc8de0baa4",
+        "revision": 0,
+        "name": "Silvia",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "ee910711497148e03d07833e32df3048b3f5366f",
+        "reason": "Causa concreta no confirmada; coincidencia verificada con Santa Silvia."
+      },
+      {
+        "id": "red-review-d00b2b43f390fd07b0f3",
+        "revision": 0,
+        "name": "Revisar novedades: Adif y Renfe",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "cfef6d11e5fa289bd2d559e9eeacc30d9ee92d32"
+      },
+      {
+        "id": "red-review-dc5f11c3da031c51fbd1",
+        "revision": 0,
+        "name": "Revisar novedades: La Palma",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-da9dec68f79f3b121421",
+        "apply_commit": "cfef6d11e5fa289bd2d559e9eeacc30d9ee92d32"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793715998214-manual cerrada 1/1: Owono r0 reelaborada desde cero y sincronizada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T15:33:00+01:00"
+    "message": "Pasada tr-1793716769930-manual cerrada 5/5 por ejecución y convergencia JIT: 3 explicaciones, 1 revisión unchanged y 1 revisión updated. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico pertenece a la ejecución sucesora tr-1793717127884-manual.",
+    "at": "2026-11-03T15:49:00+01:00"
   },
   "source": "chat",
   "message": "Inicio tr-1793717127884-manual: 0 trabajos preparing/update vigentes en main; revalidación JIT antes de cada investigación y persistencia. ImageGen=0; publicaciones=0.",
@@ -2361,6 +2394,15 @@
       "trend_id": "red-review-d00b2b43f390fd07b0f3",
       "title": "Revisar novedades: Adif y Renfe",
       "message": "Revisando novedades de Adif y Renfe tras barrera final: mantener texto y fecha salvo desarrollo sustancial posterior al 2-N. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T15:49:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793716769930-manual",
+      "status": "DONE",
+      "current": 5,
+      "total": 5,
+      "message": "Pasada tr-1793716769930-manual cerrada 5/5 por ejecución y convergencia JIT: 3 explicaciones, 1 revisión unchanged y 1 revisión updated. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. El RUNTRACE canónico pertenece a la ejecución sucesora tr-1793717127884-manual."
     }
   ],
   "history": [
