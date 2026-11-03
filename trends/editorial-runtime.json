@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793718615811-manual",
   "previous_run_id": "tr-1793717537752-manual",
-  "status": "failure",
-  "phase": "investigating",
+  "status": "RUNNING",
+  "phase": "persisting",
   "started_at": "2026-11-03T15:10:30Z",
-  "updated_at": "2026-11-03T16:16:17+01:00",
+  "updated_at": "2026-11-03T15:16:25.598Z",
   "finished_at": null,
   "current": 0,
   "total": 9,
-  "trend_id": "977127837131",
-  "title": "#TEM3N",
+  "trend_id": "b7ba366af35c",
+  "title": "Michel",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -58,7 +58,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": "977127837131-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas",
-  "activity": "investigating",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "2e00a1a9eeae",
@@ -117,7 +117,7 @@
     "at": "2026-11-03T14:58:20.200Z"
   },
   "source": "chat",
-  "message": "#TEM3N r0 revalidada JIT. Investigando la etiqueta de la emisión de hoy de Todo es mentira; sin ImageGen ni publicación.",
+  "message": "Michel r0: resultado editorial preparado en outbox; esperando aplicación JIT. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2506,6 +2506,17 @@
       "trend_id": "977127837131",
       "title": "#TEM3N",
       "message": "#TEM3N r0 revalidada JIT. Investigando la etiqueta de la emisión de hoy de Todo es mentira; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T15:16:25.598Z",
+      "phase": "persisting",
+      "run_id": "tr-1793718615811-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 9,
+      "trend_id": "b7ba366af35c",
+      "title": "Michel",
+      "message": "Michel r0: resultado editorial preparado en outbox; esperando aplicación JIT. ImageGen=0."
     }
   ],
   "history": [
