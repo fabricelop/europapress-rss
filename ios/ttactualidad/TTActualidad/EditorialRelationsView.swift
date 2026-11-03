@@ -79,34 +79,48 @@ private final class EditorialRelationsModel: ObservableObject {
         }
     }
 
-    // One save action per news card; every selected pair receives its own
-    // episode-checked, idempotent server decision. Refresh just once at end.
-    func linkSelected(news: EditorialRelationEndpoint,
-                      trends: [EditorialRelationEndpoint],
-                      using github: GitHubEditor) async {
-        guard !saving, !trends.isEmpty else { return }
+    // One save per news card: checked proposals are linked, unchecked
+    // proposals explicitly dismissed for this episode. Other, unselected
+    // Top30 entries are NOT dismissed. Every pair has its own verified receipt.
+    func saveSelection(news: EditorialRelationEndpoint,
+                       links: [EditorialRelationEndpoint],
+                       dismissals: [EditorialRelationEndpoint],
+                       using github: GitHubEditor) async {
+        guard !saving, !links.isEmpty || !dismissals.isEmpty else { return }
         saving = true
         defer { saving = false }
-        var confirmed = 0
-        var lastError: String?
+        let operations: [(trend: EditorialRelationEndpoint, action: String)] =
+            links.map { (trend: $0, action: "link") } +
+            dismissals.map { (trend: $0, action: "dismiss") }
+        var linked = 0
+        var dismissed = 0
+        var errorMessage: String?
         var seen = Set<String>()
-        for trend in trends {
-            let identity = [trend.id, String(trend.revision),
+        for operation in operations {
+            let trend = operation.trend
+            let action = operation.action
+            let identity = [action, trend.id, String(trend.revision),
                             trend.episodeFingerprint].joined(separator: "|")
             guard seen.insert(identity).inserted else { continue }
             do {
-                try await postDecision(news: news, trend: trend, action: "link",
-                                       using: github)
-                confirmed += 1
+                try await postDecision(news: news, trend: trend,
+                                       action: action, using: github)
+                if action == "link" { linked += 1 } else { dismissed += 1 }
             } catch {
-                lastError = error.localizedDescription
+                errorMessage = error.localizedDescription
+                // A stale episode means every remaining decision needs a
+                // fresh identity and conscious editor review.
+                if let failure = error as? RelationsError,
+                   case .http(409) = failure { break }
             }
         }
         await load(using: github)
-        if let lastError {
-            notice = "\(confirmed) vínculos confirmados. Hay vínculos sin confirmar: \(lastError). Puedes reintentar sin duplicar órdenes."
+        let completed = "\(linked) vinculadas · \(dismissed) descartadas"
+        if let errorMessage {
+            notice = completed + ". Hay decisiones sin confirmar: " +
+                errorMessage + ". Revisa el estado antes de reintentar."
         } else {
-            notice = "\(confirmed) vínculos guardados y confirmados para «\(news.title)»."
+            notice = completed + " para «\(news.title)»."
         }
     }
 
@@ -317,6 +331,14 @@ struct EditorialRelationsView: View {
         }
     }
 
+    private func suggestionsToDismiss(for news: EditorialRelationEndpoint)
+        -> [EditorialRelationEndpoint] {
+        rows(for: news).filter { relation in
+            relation.state == "suggested" &&
+            !selectedPairs.contains(pairKey(news, relation.trend))
+        }.map(\.trend)
+    }
+
     private func newsCard(_ news: EditorialRelationEndpoint) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Label(news.title, systemImage: "newspaper")
@@ -370,15 +392,23 @@ struct EditorialRelationsView: View {
                     Label("Añadir otras tendencias · Top 30", systemImage: "chevron.down.circle")
                         .font(.subheadline.weight(.medium))
                 }
+                Text("Al guardar, las propuestas sin marcar se descartarán para este episodio. Las otras tendencias del Top 30 no se modificarán.")
+                    .font(.footnote).foregroundStyle(.secondary)
                 Button {
-                    let trends = selectedTrends(for: news)
-                    Task { await model.linkSelected(news: news, trends: trends, using: github) }
+                    let links = selectedTrends(for: news)
+                    let dismissals = suggestionsToDismiss(for: news)
+                    Task {
+                        await model.saveSelection(news: news, links: links,
+                                                  dismissals: dismissals,
+                                                  using: github)
+                    }
                 } label: {
-                    Label("Guardar vínculos seleccionados (\(selectedTrends(for: news).count))",
+                    Label("Guardar: \(selectedTrends(for: news).count) vincular · \(suggestionsToDismiss(for: news).count) descartar",
                           systemImage: "checkmark.circle.fill")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(model.saving || selectedTrends(for: news).isEmpty)
+                .disabled(model.saving || (selectedTrends(for: news).isEmpty &&
+                                          suggestionsToDismiss(for: news).isEmpty))
             }
         }
         .padding(.vertical, 7)
