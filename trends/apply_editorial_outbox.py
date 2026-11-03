@@ -285,12 +285,29 @@ def image_queue_policy():
 
 def sync_queue(requests_doc):
     image_mode, image_instruction = image_queue_policy()
+    # Do not resurrect stale work when the editor has already taken a
+    # terminal action on the same deterministic ID in the same or a newer
+    # revision. This is a JIT safety barrier, independent of image state.
+    terminal_states = {"published", "dismissed", "deleted", "removed", "delete_pending", "delete_failed"}
+    terminal_revision_by_id = {}
+    decisions = load(TRENDS / "mobile-decisions.json", {"items": []}) or {}
+    for decision in decisions.get("items", []) or []:
+        item_id = str(decision.get("id") or "")
+        state = str(decision.get("status") or "").lower()
+        if not item_id or state not in terminal_states:
+            continue
+        rev = int(decision.get("revision") or 0)
+        terminal_revision_by_id[item_id] = max(rev, terminal_revision_by_id.get(item_id, -1))
     recent = load(TRENDS / "recent.json", {})
     top30_names = {norm(x.get("name")) for x in (recent.get("items") or recent.get("top10") or []) if 1 <= int(x.get("rank") or 0) <= 30 and x.get("name")}
     items = []
     for req in requests_doc.get("requests", []) or []:
         status = str(req.get("status") or "")
         if status not in ACTIVE:
+            continue
+        req_id = str(req.get("id") or "")
+        req_revision = int(req.get("revision") or 0)
+        if terminal_revision_by_id.get(req_id, -1) >= req_revision:
             continue
         if status == "problematic" and norm(req.get("name")) not in top30_names:
             continue

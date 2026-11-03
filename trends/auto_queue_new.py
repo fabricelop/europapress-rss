@@ -216,9 +216,13 @@ for request in requests:
     # radar refresh recreates the deterministic request with a newer timestamp.
     # Timestamp protection remains only for legacy decisions lacking revision.
     if exact_closed is None:
-        if decision_revision is not None and decision_revision != request_revision:
-            continue
-        if requested_at and (decision_when is None or decision_when < requested_at):
+        # Revision ordering is authoritative for the same deterministic ID:
+        # a terminal decision from a NEWER revision supersedes any stale
+        # older request that a delayed radar/queue writer may have revived.
+        if decision_revision is not None:
+            if decision_revision < request_revision:
+                continue
+        elif requested_at and (decision_when is None or decision_when < requested_at):
             continue
     request["status"] = "deleted" if outcome.startswith("delete_") else outcome
     request["telegram_package_status"] = request["status"]
