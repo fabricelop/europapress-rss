@@ -2,103 +2,137 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-03T18:03:12.323698+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-03T21:18:23.446439+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "a00e3d8e1c16",
+          "title": "Profesores en huelga interrumpen la emisión en directo de Telemadrid ante la contrariedad de Christi",
+          "seconds": 1153,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1584540,
+          "seconds": 1596251,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "42d6a1140f0281286f1e736d1da2625269c731419e59107e62f1b31eb9814d92",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-03T18:03:12.323698+00:00",
-      "issue_count": 9,
+      "checked_at": "2026-11-03T21:18:23.446439+00:00",
+      "issue_count": 12,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "red-review-17550a4646eae76f9c9b",
-          "title": "Revisar novedades: Andorra",
-          "seconds": 191,
+          "id": "3042104459b7",
+          "title": "Dimite Óscar Puente",
+          "seconds": 647,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "red-review-c54fd4196905e362f7b5",
-          "title": "Revisar novedades: Rudiger",
-          "seconds": 191,
+          "id": "c8363f291102",
+          "title": "Bayern",
+          "seconds": 647,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "b73c43b052f7",
-          "title": "Yeremay",
-          "seconds": 75681,
+          "id": "919fc31e93a5",
+          "title": "Metropolitano",
+          "seconds": 647,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "5f810de04443",
-          "title": "#ElPerroAndaluzTVE",
-          "seconds": 73336,
+          "id": "8e970ba43f06",
+          "title": "#XbiteSweepstakes",
+          "seconds": 647,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "1e03ad2efe6a",
-          "title": "Paola",
-          "seconds": 68500,
+          "id": "e94ac2055ecf",
+          "title": "Ubieto",
+          "seconds": 11131,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "8191aa70b3fb",
-          "title": "Náyades",
-          "seconds": 64335,
+          "id": "2d7d1097f7f8",
+          "title": "Cristina Fernández Cubas",
+          "seconds": 7537,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "trend-update-af20a1ce41687813e494",
-          "title": "Pedro Casares",
-          "seconds": 1703,
+          "id": "f0f53e2c6918",
+          "title": "Pepa Millán",
+          "seconds": 7537,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "trend-update-7360d124546062f7dd5f",
-          "title": "La RFEF",
-          "seconds": 1703,
+          "id": "trend-update-755bb08544bac83f4bc3",
+          "title": "Andorra",
+          "seconds": 6143,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-5b04d3e8630fd169afad",
+          "title": "Aramburu",
+          "seconds": 4461,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f0644ac471e0",
+          "title": "Ester Muñoz",
+          "seconds": 3729,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-5beed5401b51fc0e13a5",
+          "title": "Jesús de Miguel",
+          "seconds": 1040,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1584539,
+          "seconds": 1596250,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "66353b7dbbac98ca250a78e6af0d7221cf5b11ad09e8237ee8e2e277821738d6",
+      "open_signature": "1c297f02621dc8f65ea5bac833306a0a7a9360a947e095c1ae45a65fc7349c2f",
       "repair_via_workflow_run": false,
       "escalation_required": 6
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-03T17:53:54.238721+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-03T17:53:54.238721+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-03T17:53:54.238721+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-03T17:53:54.238721+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-03T21:18:23.446439+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-03T21:18:23.446439+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-03T21:18:23.446439+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-03T21:18:23.446439+00:00"
   },
-  "checked_at": "2026-11-03T18:03:12.323698+00:00"
+  "checked_at": "2026-11-03T21:18:23.446439+00:00"
 }
