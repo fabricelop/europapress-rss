@@ -3,51 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793717127884-manual",
-  "previous_run_id": "tr-1793716769930-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T14:45:27.884Z",
-  "updated_at": "2026-11-03T14:50:48.489Z",
-  "finished_at": "2026-11-03T14:50:48.489Z",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "2e00a1a9eeae",
-    "49a74700dad6",
-    "7edc8de0baa4"
-  ],
+  "run_id": "tr-1793717537752-manual",
+  "previous_run_id": "tr-1793717127884-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T14:52:17.752Z",
+  "updated_at": "2026-11-03T14:52:17.752Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "2e00a1a9eeae",
+  "title": "Owono",
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [
-    "red-review-d00b2b43f390fd07b0f3",
-    "red-review-dc5f11c3da031c51fbd1"
+    "2e00a1a9eeae"
   ],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "2e00a1a9eeae"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "updates": 1,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 1,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T15:44:31+01:00",
@@ -111,7 +91,7 @@
     ]
   },
   "source": "chat",
-  "message": "Pasada tr-1793717127884-manual cerrada 2/2 por convergencia JIT: Adif y Renfe review_completed/unchanged y La Palma review_completed/updated (nueva ficha trend-update-da9dec68f79f3b121421), ambos aplicados por tr-1793716769930-manual. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793717537752-manual: 1 preparing/update vigente(s) en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2438,6 +2418,17 @@
         }
       ],
       "message": "Pasada tr-1793717127884-manual cerrada 2/2 por convergencia JIT: Adif y Renfe review_completed/unchanged y La Palma review_completed/updated (nueva ficha trend-update-da9dec68f79f3b121421), ambos aplicados por tr-1793716769930-manual. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T14:52:17.752Z",
+      "phase": "preparing",
+      "run_id": "tr-1793717537752-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "2e00a1a9eeae",
+      "title": "Owono",
+      "message": "Inicio tr-1793717537752-manual: 1 preparing/update vigente(s) en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -4755,34 +4746,10 @@
       "at": "2026-11-03T14:27:30+01:00"
     }
   ],
-  "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-d00b2b43f390fd07b0f3",
-      "revision": 0,
-      "name": "Revisar novedades: Adif y Renfe",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "converged_with": "tr-1793716769930-manual",
-      "source_id": "da50b7b74074",
-      "apply_commit": "cfef6d11e5fa289bd2d559e9eeacc30d9ee92d32"
-    },
-    {
-      "id": "red-review-dc5f11c3da031c51fbd1",
-      "revision": 0,
-      "name": "Revisar novedades: La Palma",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "converged_with": "tr-1793716769930-manual",
-      "source_id": "3d2fe92648f7",
-      "created_id": "trend-update-da9dec68f79f3b121421",
-      "apply_commit": "cfef6d11e5fa289bd2d559e9eeacc30d9ee92d32"
-    }
-  ],
-  "current_item": null,
-  "current_title": null,
+  "partial": true,
+  "outcomes": [],
+  "current_item": "2e00a1a9eeae",
+  "current_title": "Owono",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -7147,8 +7114,8 @@
       "at": "2026-11-03T14:27:30+01:00"
     }
   ],
-  "command_id": "tr-1793717127884-manual",
-  "requested_at": "2026-11-03T11:46:18.700+01:00",
+  "command_id": "tr-1793717537752-manual",
+  "requested_at": "2026-11-03T14:52:17.752Z",
   "runs": [
     {
       "run_id": "tr-autoguard-1793650268",
@@ -9184,6 +9151,17 @@
       "current": 7,
       "total": 7,
       "message": "Pasada tr-autoguard-1793704864 cerrada 7/7: 5 explicaciones ordinarias (Sanción, #LaFuerzaDeLaGentePSOE, Azov, Kiev y Piqué) y 2 revisiones unchanged (#ADIPEC y #TEM2N). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T14:52:17.752Z",
+      "phase": "preparing",
+      "run_id": "tr-1793717537752-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "2e00a1a9eeae",
+      "title": "Owono",
+      "message": "Inicio tr-1793717537752-manual: 1 preparing/update vigente(s) en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
