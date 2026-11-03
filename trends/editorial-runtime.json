@@ -5,25 +5,22 @@
   "canonical": true,
   "run_id": "tr-1793745926226-manual",
   "previous_run_id": "tr-1793745388331-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-03T23:45:30+01:00",
-  "updated_at": "2026-11-03T23:49:00+01:00",
+  "updated_at": "2026-11-03T23:51:47+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "f21e3899c88b",
-    "c93d8047df91"
+  "queue_complete": true,
+  "processed_ids": [
+    "c93d8047df91",
+    "f21e3899c88b"
   ],
-  "remaining_active_ids": [
-    "f21e3899c88b",
-    "c93d8047df91"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": "Inicio tr-1793745926226-manual: 1 trabajo preparing/update vigente en main (Le Normand r0); validación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
@@ -32,8 +29,8 @@
   "activity": "persisting",
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T23:12:47+01:00",
-  "last_completed_at": "2026-11-03T23:40:00+01:00",
+  "last_started_at": "2026-11-03T23:51:47+01:00",
+  "last_completed_at": "2026-11-03T23:51:47+01:00",
   "last_run": {
     "run_id": "tr-1793745388331-manual",
     "status": "DONE_WITH_INCIDENTS",
