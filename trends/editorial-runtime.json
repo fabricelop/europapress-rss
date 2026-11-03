@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793715065",
   "previous_run_id": "tr-autoguard-1793713672",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-03T15:11:00+01:00",
-  "updated_at": "2026-11-03T15:13:00+01:00",
+  "updated_at": "2026-11-03T15:14:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "persisting",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T15:11:00+01:00",
@@ -92,7 +92,7 @@
     "at": "2026-11-03T14:55:30+01:00"
   },
   "source": "chat",
-  "message": "Cantabria r0 revalidada JIT en main (rank actual 14). Investigando la denuncia de Pedro Casares por una presunta agresión de un concejal del PP y la posterior investigación interna del partido; sin ImageGen ni publicación.",
+  "message": "Cantabria r0 redactada y verificada; resultado enviado por TTENDENCIAS_CHAT_OUTBOX_V1 para persistencia atómica en requests/Listas y retirada de la misma revisión de la cola. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2243,6 +2243,39 @@
       "trend_id": "3a9e052d70ef",
       "title": "Cantabria",
       "message": "Cantabria r0 revalidada JIT en main (rank actual 14). Investigando la denuncia de Pedro Casares por una presunta agresión de un concejal del PP y la posterior investigación interna del partido; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T15:14:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793715065",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "3a9e052d70ef",
+      "title": "Cantabria",
+      "message": "Texto final bajo 280 caracteres preparado con atribución explícita de la denuncia y la negación del edil."
+    },
+    {
+      "at": "2026-11-03T15:14:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793715065",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "3a9e052d70ef",
+      "title": "Cantabria",
+      "message": "Remate político neutral seleccionado: «La feria acabó con denuncia y expediente interno.»"
+    },
+    {
+      "at": "2026-11-03T15:14:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793715065",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "3a9e052d70ef",
+      "title": "Cantabria",
+      "message": "Cantabria r0 redactada y verificada; resultado enviado por TTENDENCIAS_CHAT_OUTBOX_V1 para persistencia atómica en requests/Listas y retirada de la misma revisión de la cola. ImageGen=0."
     }
   ],
   "history": [
