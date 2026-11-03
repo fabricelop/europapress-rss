@@ -5,34 +5,29 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793737610",
   "previous_run_id": "tr-1793735926010-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-03T21:27:00+01:00",
-  "updated_at": "2026-11-03T21:27:00+01:00",
+  "updated_at": "2026-11-03T21:37:51+01:00",
   "finished_at": null,
   "current": 0,
   "total": 7,
   "trend_id": "652f65e6db28",
   "title": "Martorell",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "652f65e6db28",
-    "f0644ac471e0",
+  "processed_ids": [
     "234685b89a93",
-    "3d2bfcd082db",
-    "e573493d55f2",
     "62ccad1f247f",
-    "bbee254182fe"
+    "652f65e6db28",
+    "bbee254182fe",
+    "e573493d55f2",
+    "f0644ac471e0"
+  ],
+  "remaining_ids": [
+    "3d2bfcd082db"
   ],
   "remaining_active_ids": [
-    "652f65e6db28",
-    "f0644ac471e0",
-    "234685b89a93",
-    "3d2bfcd082db",
-    "e573493d55f2",
-    "62ccad1f247f",
-    "bbee254182fe"
+    "3d2bfcd082db"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -81,7 +76,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T20:56:57+01:00",
+  "last_started_at": "2026-11-03T21:37:51+01:00",
   "last_completed_at": "2026-11-03T21:06:30+01:00",
   "last_run": {
     "run_id": "tr-1793735926010-manual",
