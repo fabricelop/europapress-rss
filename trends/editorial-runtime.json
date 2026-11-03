@@ -5,41 +5,38 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793711487",
   "previous_run_id": "tr-1793708667075-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T14:12:00+01:00",
-  "updated_at": "2026-11-03T14:22:00+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-03T14:27:30+01:00",
+  "finished_at": "2026-11-03T14:27:30+01:00",
+  "current": 5,
   "total": 5,
-  "trend_id": "b33d12f2e43e",
-  "title": "Schumacher",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "8a7d05b3a180",
     "e4a5391b8b6d",
     "b5ca00019dcd",
+    "b33d12f2e43e",
     "b6bdde0356db"
   ],
-  "remaining_ids": [
-    "b33d12f2e43e"
-  ],
-  "remaining_active_ids": [
-    "b33d12f2e43e"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
+    "attempted": 5,
     "observed": 5,
-    "closed": 4,
-    "explained": 4,
+    "closed": 5,
+    "explained": 5,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -79,6 +76,15 @@
       "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
     },
     {
+      "id": "b33d12f2e43e",
+      "revision": 0,
+      "name": "Schumacher",
+      "outcome": "explained",
+      "applied": true,
+      "explained_at": "2026-11-03T14:23:30+01:00",
+      "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
+    },
+    {
       "id": "b6bdde0356db",
       "revision": 0,
       "name": "Alejandra",
@@ -90,19 +96,19 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T13:21:00+01:00",
-  "last_completed_at": "2026-11-03T13:27:00+01:00",
+  "last_completed_at": "2026-11-03T14:27:30+01:00",
   "last_run": {
-    "run_id": "tr-1793708667075-manual",
-    "command_id": "tr-1793708667075-manual",
+    "run_id": "tr-autoguard-1793711487",
+    "command_id": "tr-autoguard-1793711487",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T13:37:10+01:00",
-    "finished_at": "2026-11-03T13:37:50+01:00",
+    "started_at": "2026-11-03T14:12:00+01:00",
+    "finished_at": "2026-11-03T14:27:30+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
+      "explained": 5,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -116,14 +122,60 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "8a7d05b3a180",
+        "revision": 0,
+        "name": "de la Constitución",
+        "outcome": "explained",
+        "applied": true,
+        "explained_at": "2026-11-03T14:14:30+01:00",
+        "reason": "Detonante concreto no confirmado; explicación prudente."
+      },
+      {
+        "id": "e4a5391b8b6d",
+        "revision": 0,
+        "name": "Porky",
+        "outcome": "explained",
+        "applied": true,
+        "explained_at": "2026-11-03T14:14:30+01:00",
+        "reason": "Contexto actual verificado; causalidad en España no confirmada."
+      },
+      {
+        "id": "b5ca00019dcd",
+        "revision": 0,
+        "name": "Cumbre Iberoamericana",
+        "outcome": "explained",
+        "applied": true,
+        "explained_at": "2026-11-03T14:14:30+01:00",
+        "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
+      },
+      {
+        "id": "b33d12f2e43e",
+        "revision": 0,
+        "name": "Schumacher",
+        "outcome": "explained",
+        "applied": true,
+        "explained_at": "2026-11-03T14:23:30+01:00",
+        "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
+      },
+      {
+        "id": "b6bdde0356db",
+        "revision": 0,
+        "name": "Alejandra",
+        "outcome": "explained",
+        "applied": true,
+        "explained_at": "2026-11-03T14:14:30+01:00",
+        "reason": "Dos contextos actuales plausibles; identidad detonante no confirmada."
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793708667075-manual cerrada 0/0: no había trabajos preparing/update ni reexplicaciones pendientes tras releer main. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T13:37:50+01:00"
+    "message": "Pasada tr-autoguard-1793711487 cerrada 5/5: de la Constitución, Porky, Cumbre Iberoamericana, Schumacher y Alejandra explicadas y verificadas en ambos registros. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T14:27:30+01:00"
   },
   "source": "chat",
-  "message": "4/5 aplicados y verificados en ambos registros; queda Schumacher r0 preparing. Su primer outbox no se considera aplicado porque el workflow quedó cancelado en espera por concurrencia.",
+  "message": "Pasada tr-autoguard-1793711487 cerrada 5/5: de la Constitución, Porky, Cumbre Iberoamericana, Schumacher y Alejandra explicadas y verificadas en ambos registros. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2170,6 +2222,15 @@
       "trend_id": "b33d12f2e43e",
       "title": "Schumacher",
       "message": "4/5 aplicados y verificados en ambos registros; queda Schumacher r0 preparing. Su primer outbox no se considera aplicado porque el workflow quedó cancelado en espera por concurrencia."
+    },
+    {
+      "at": "2026-11-03T14:27:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793711487",
+      "status": "DONE",
+      "current": 5,
+      "total": 5,
+      "message": "Pasada tr-autoguard-1793711487 cerrada 5/5: de la Constitución, Porky, Cumbre Iberoamericana, Schumacher y Alejandra explicadas y verificadas en ambos registros. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -4408,6 +4469,83 @@
       "message": "Pasada tr-1793702778700-manual cerrada 1/1 por convergencia JIT: La RFEF review_completed/updated como episodio distinto del 3 de noviembre, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T11:48:30+01:00",
       "converged_with": "tr-1793702646001-manual"
+    },
+    {
+      "run_id": "tr-autoguard-1793711487",
+      "command_id": "tr-autoguard-1793711487",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T14:12:00+01:00",
+      "finished_at": "2026-11-03T14:27:30+01:00",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "8a7d05b3a180",
+          "revision": 0,
+          "name": "de la Constitución",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "Detonante concreto no confirmado; explicación prudente."
+        },
+        {
+          "id": "e4a5391b8b6d",
+          "revision": 0,
+          "name": "Porky",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "Contexto actual verificado; causalidad en España no confirmada."
+        },
+        {
+          "id": "b5ca00019dcd",
+          "revision": 0,
+          "name": "Cumbre Iberoamericana",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
+        },
+        {
+          "id": "b33d12f2e43e",
+          "revision": 0,
+          "name": "Schumacher",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:23:30+01:00",
+          "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
+        },
+        {
+          "id": "b6bdde0356db",
+          "revision": 0,
+          "name": "Alejandra",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "Dos contextos actuales plausibles; identidad detonante no confirmada."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793711487 cerrada 5/5: de la Constitución, Porky, Cumbre Iberoamericana, Schumacher y Alejandra explicadas y verificadas en ambos registros. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T14:27:30+01:00"
     }
   ],
   "partial": false,
@@ -4440,6 +4578,15 @@
       "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
     },
     {
+      "id": "b33d12f2e43e",
+      "revision": 0,
+      "name": "Schumacher",
+      "outcome": "explained",
+      "applied": true,
+      "explained_at": "2026-11-03T14:23:30+01:00",
+      "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
+    },
+    {
       "id": "b6bdde0356db",
       "revision": 0,
       "name": "Alejandra",
@@ -4449,8 +4596,8 @@
       "reason": "Dos contextos actuales plausibles; identidad detonante no confirmada."
     }
   ],
-  "current_item": "b33d12f2e43e",
-  "current_title": "Schumacher",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -6736,6 +6883,83 @@
       "message": "Pasada tr-1793702778700-manual cerrada 1/1 por convergencia JIT: La RFEF review_completed/updated como episodio distinto del 3 de noviembre, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T11:48:30+01:00",
       "converged_with": "tr-1793702646001-manual"
+    },
+    {
+      "run_id": "tr-autoguard-1793711487",
+      "command_id": "tr-autoguard-1793711487",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-03T14:12:00+01:00",
+      "finished_at": "2026-11-03T14:27:30+01:00",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "8a7d05b3a180",
+          "revision": 0,
+          "name": "de la Constitución",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "Detonante concreto no confirmado; explicación prudente."
+        },
+        {
+          "id": "e4a5391b8b6d",
+          "revision": 0,
+          "name": "Porky",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "Contexto actual verificado; causalidad en España no confirmada."
+        },
+        {
+          "id": "b5ca00019dcd",
+          "revision": 0,
+          "name": "Cumbre Iberoamericana",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
+        },
+        {
+          "id": "b33d12f2e43e",
+          "revision": 0,
+          "name": "Schumacher",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:23:30+01:00",
+          "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
+        },
+        {
+          "id": "b6bdde0356db",
+          "revision": 0,
+          "name": "Alejandra",
+          "outcome": "explained",
+          "applied": true,
+          "explained_at": "2026-11-03T14:14:30+01:00",
+          "reason": "Dos contextos actuales plausibles; identidad detonante no confirmada."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793711487 cerrada 5/5: de la Constitución, Porky, Cumbre Iberoamericana, Schumacher y Alejandra explicadas y verificadas en ambos registros. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T14:27:30+01:00"
     }
   ],
   "command_id": "tr-autoguard-1793711487",
