@@ -3,47 +3,60 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793735926010-manual",
-  "previous_run_id": "tr-autoguard-1793735352",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T20:59:00+01:00",
-  "updated_at": "2026-11-03T21:06:30+01:00",
-  "finished_at": "2026-11-03T21:06:30+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-d9f754531f711481d251",
-    "red-review-423e34942e629bdd1ccc"
+  "run_id": "tr-autoguard-1793737610",
+  "previous_run_id": "tr-1793735926010-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T21:27:00+01:00",
+  "updated_at": "2026-11-03T21:27:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 7,
+  "trend_id": "652f65e6db28",
+  "title": "Martorell",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "652f65e6db28",
+    "f0644ac471e0",
+    "234685b89a93",
+    "3d2bfcd082db",
+    "e573493d55f2",
+    "62ccad1f247f",
+    "bbee254182fe"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "652f65e6db28",
+    "f0644ac471e0",
+    "234685b89a93",
+    "3d2bfcd082db",
+    "e573493d55f2",
+    "62ccad1f247f",
+    "bbee254182fe"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 7,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
-    "queue_remaining": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 7,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-d9f754531f711481d251",
@@ -103,7 +116,7 @@
     "summary": "2/2 cerradas: Rufián stale por decisión terminal JIT y Aramburu updated; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2: Rufián r0 quedó stale por barrera terminal JIT y no se resucitó; Aramburu r0 quedó updated con trend-update-5b04d3e8630fd169afad sincronizado en requests y Listas. Barrera: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793737610: 7 trabajos preparing observados en main; revalidación JIT por id+revision, de antiguos a recientes. #LaPromesa r0 tiene una decisión terminal deleted r1 y no se resucitará. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3633,6 +3646,17 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada tr-1793735926010-manual cerrada 2/2: Rufián review_completed/stale sin duplicar ficha y Aramburu review_completed/updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T21:27:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793737610",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 7,
+      "trend_id": "652f65e6db28",
+      "title": "Martorell",
+      "message": "Inicio tr-autoguard-1793737610: 7 trabajos preparing observados en main; revalidación JIT por id+revision, de antiguos a recientes. #LaPromesa r0 tiene una decisión terminal deleted r1 y no se resucitará. Sin ImageGen ni publicación."
     }
   ],
   "history": [
