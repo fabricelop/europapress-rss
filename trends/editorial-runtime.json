@@ -3,46 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793694895596-manual",
-  "previous_run_id": "tr-1793694655913-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-03T09:35:40+01:00",
-  "updated_at": "2026-11-03T09:37:20+01:00",
+  "run_id": "tr-1793695104407-manual",
+  "previous_run_id": "tr-1793694895596-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T09:38:00+01:00",
+  "updated_at": "2026-11-03T09:38:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 0,
   "total": 2,
-  "trend_id": "e5dcf278abcf",
-  "title": "Mantilla",
-  "queue_complete": true,
-  "processed_ids": [
-    "e5dcf278abcf"
+  "trend_id": "red-review-a42c8de328095e2e5d5e",
+  "title": "Revisar novedades: Adif",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-a42c8de328095e2e5d5e",
+    "red-review-f9d2e974655d598e5496"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-a42c8de328095e2e5d5e",
+    "red-review-f9d2e974655d598e5496"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 2,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-bd3b564c5b7eb04ccd20",
@@ -120,7 +124,7 @@
     "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Persistiendo Mantilla r0 mediante editorial-outbox; ImageGen=0.",
+  "message": "Inicio tr-1793695104407-manual: 2 review_red preparing vigentes en main (Adif y Hamilton), por orden de cola y con revalidación JIT; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1579,6 +1583,17 @@
       "trend_id": "e5dcf278abcf",
       "title": "Mantilla",
       "message": "Persistiendo Mantilla r0 mediante editorial-outbox; ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T09:38:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793695104407-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-a42c8de328095e2e5d5e",
+      "title": "Revisar novedades: Adif",
+      "message": "Inicio tr-1793695104407-manual: 2 review_red preparing vigentes en main (Adif y Hamilton), por orden de cola y con revalidación JIT; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -6559,6 +6574,17 @@
       "trend_id": "e5dcf278abcf",
       "title": "Mantilla",
       "message": "Inicio tr-1793694895596-manual: #Buenosdías r0 ya está siendo absorbida por la ejecución concurrente anterior; queda Mantilla r0 vigente en main. Revalidación JIT antes de investigar y persistir; ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T09:38:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793695104407-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-a42c8de328095e2e5d5e",
+      "title": "Revisar novedades: Adif",
+      "message": "Inicio tr-1793695104407-manual: 2 review_red preparing vigentes en main (Adif y Hamilton), por orden de cola y con revalidación JIT; ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
