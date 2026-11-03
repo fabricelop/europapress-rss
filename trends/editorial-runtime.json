@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793713672",
   "previous_run_id": "tr-autoguard-1793711487",
   "status": "RUNNING",
-  "phase": "remate_selection",
+  "phase": "persisting",
   "started_at": "2026-11-03T14:48:00+01:00",
-  "updated_at": "2026-11-03T14:49:30+01:00",
+  "updated_at": "2026-11-03T14:50:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "remate_selection",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "8a7d05b3a180",
@@ -173,7 +173,7 @@
     "at": "2026-11-03T14:27:30+01:00"
   },
   "source": "chat",
-  "message": "Murcia r0 investigada y redactada; remate neutral seleccionado. Pendiente persistencia JIT en ambos registros.",
+  "message": "Murcia r0 enviada al outbox editorial para aplicación atómica en requests y Listas; verificando persistencia en main.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2273,6 +2273,17 @@
       "trend_id": "734702c95d97",
       "title": "Murcia",
       "message": "Seleccionado remate neutral sobre la declaración simbólica del pleno; texto completo validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-03T14:50:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793713672",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "734702c95d97",
+      "title": "Murcia",
+      "message": "Murcia r0 enviada al outbox editorial para aplicación atómica en requests y Listas; verificando persistencia en main."
     }
   ],
   "history": [
