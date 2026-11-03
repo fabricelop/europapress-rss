@@ -3,11 +3,25 @@ on:
   pull_request:
     paths:
       - 'trends/compact_requests_losslessly.py'
+      - 'trends/requests_json.py'
+      - 'trends/test_requests_json.py'
+      - 'trends/auto_queue_new.py'
+      - 'trends/apply_editorial_outbox.py'
+      - 'trends/editorial_api.py'
+      - 'trends/apply_direct_reconcile.py'
+      - 'trends/merge_runtime_state.py'
       - '.github/workflows/ttendencias-requests-capacity-hotfix.yml'
   push:
     branches: [main]
     paths:
       - 'trends/compact_requests_losslessly.py'
+      - 'trends/requests_json.py'
+      - 'trends/test_requests_json.py'
+      - 'trends/auto_queue_new.py'
+      - 'trends/apply_editorial_outbox.py'
+      - 'trends/editorial_api.py'
+      - 'trends/apply_direct_reconcile.py'
+      - 'trends/merge_runtime_state.py'
       - '.github/workflows/ttendencias-requests-capacity-hotfix.yml'
   workflow_dispatch:
 permissions:
@@ -23,6 +37,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify semantic safety, UTF-16 byte budget and no writes
         run: |
+          python3 -m unittest trends.test_requests_json
           python3 trends/compact_requests_losslessly.py --selftest
           python3 trends/compact_requests_losslessly.py --check
           git diff --exit-code -- trends/requests.json
