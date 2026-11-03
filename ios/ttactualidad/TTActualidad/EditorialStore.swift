@@ -557,14 +557,21 @@ final class EditorialStore: ObservableObject {
         let newsDecisions = "ttittulares/decisions.json"
         let trendsRequests = "trends/requests.json"
         let trendsQueue = "trends/editorial-queue.json"
+        let trendsDecisions = "trends/mobile-decisions.json"
         let needed = [receiptPath, newsReady, newsQueue, newsDecisions,
-                      trendsRequests, trendsQueue]
+                      trendsRequests, trendsQueue, trendsDecisions]
         let loaded = await EditorialDocumentLoader.load(paths: needed)
         let docs = loaded.docs
         let fresh = loaded.downloaded
 
         if fresh[receiptPath] != nil, let receipts = docs[receiptPath] {
             reconcileDefinitiveReceipts(receipts)
+        }
+        if fresh[newsDecisions] != nil, let decisions = docs[newsDecisions] {
+            reconcileTerminalDecisions(decisions, project: "ttittulares")
+        }
+        if fresh[trendsDecisions] != nil, let decisions = docs[trendsDecisions] {
+            reconcileTerminalDecisions(decisions, project: "ttendencias")
         }
         if fresh[newsReady] != nil, fresh[newsQueue] != nil,
            fresh[newsDecisions] != nil, fresh[receiptPath] != nil,
@@ -626,6 +633,14 @@ final class EditorialStore: ObservableObject {
         if downloaded["pilot/ttactualidad-action-receipts.json"] != nil,
            let exactReceipts = docs["pilot/ttactualidad-action-receipts.json"] {
             reconcileDefinitiveReceipts(exactReceipts)
+        }
+        if downloaded["ttittulares/decisions.json"] != nil,
+           let decisions = docs["ttittulares/decisions.json"] {
+            reconcileTerminalDecisions(decisions, project: "ttittulares")
+        }
+        if downloaded["trends/mobile-decisions.json"] != nil,
+           let decisions = docs["trends/mobile-decisions.json"] {
+            reconcileTerminalDecisions(decisions, project: "ttendencias")
         }
         // Independent closeout: do not let an unrelated news/trends/image
         // download block expiry when the exact three/four ledgers are fresh.
@@ -936,6 +951,37 @@ final class EditorialStore: ObservableObject {
         let id = String(raw[raw.index(after: prefix)..<revisionMark.lowerBound])
         guard !id.isEmpty else { return nil }
         return (project, id, revision)
+    }
+
+    // Older request receipts can rotate out of the 2,000-item rolling
+    // register. A definitive later decision for the SAME item/revision
+    // closes a stale local pending indicator; it does NOT prove that the
+    // original request succeeded. Do not use unrelated or older closures.
+    private func reconcileTerminalDecisions(_ document: [String: Any],
+                                            project: String) {
+        guard ["ttittulares", "ttendencias"].contains(project) else { return }
+        let records = Self.rows(document, "items")
+        for operation in operationHistory where operation.isOutstanding {
+            guard let identity = operationIdentity(operation),
+                  identity.project == project else { continue }
+            let identityKey = project == "ttittulares" ? "event_id" : "id"
+            let closed = records.contains { row in
+                Self.str(row, identityKey) == identity.eventID &&
+                Self.int(row, "revision") >= identity.revision &&
+                ["deleted", "dismissed", "published"].contains(
+                    Self.str(row, "status").lowercased()) &&
+                (Self.when(row, ["updated_at", "deleted_at", "published_at",
+                                 "dismissed_at"]) ?? .distantPast) >=
+                    operation.createdAt.addingTimeInterval(-180)
+            }
+            guard closed else { continue }
+            recordOperation(id: operation.id, title: operation.title,
+                            kind: operation.kind, status: "Retirada",
+                            requestID: operation.requestID, project: identity.project,
+                            eventID: identity.eventID, revision: identity.revision,
+                            detail: "Esta ficha ya tiene cierre posterior confirmado en GitHub; no se atribuye éxito a la solicitud original.")
+            activeEditorialActions.removeValue(forKey: operation.id)
+        }
     }
 
     // A complete radar/listas snapshot is not necessary to resolve an exact
