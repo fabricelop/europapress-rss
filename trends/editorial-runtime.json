@@ -3,36 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793725731",
-  "previous_run_id": "tr-1793724088501-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T18:10:32+01:00",
-  "updated_at": "2026-11-03T18:23:01+01:00",
-  "finished_at": "2026-11-03T18:23:01+01:00",
-  "current": 8,
-  "total": 8,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "6fffc2182bc6",
-    "75ed7ba01dcb",
-    "6b1527a11052",
-    "1055c1f7c2d8",
-    "e3556c5fad4c",
-    "9ecae1686395",
-    "6106415081f7",
-    "febcfc700f77"
+  "run_id": "tr-1793727035708-manual",
+  "previous_run_id": "tr-autoguard-1793725731",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T18:31:00+01:00",
+  "updated_at": "2026-11-03T18:31:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-b3a0eb34d8383a980867",
+  "title": "Revisar novedades: La RFEF",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-b3a0eb34d8383a980867",
+    "red-review-28b3ef65f153c78c6efe"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-b3a0eb34d8383a980867",
+    "red-review-28b3ef65f153c78c6efe"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 8,
-    "observed": 8,
-    "closed": 8,
-    "explained": 8,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -40,99 +37,18 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "terminal_decisions": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 1
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-03T18:23:01+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "reason": "El aplicador ordinario quedó retenido varios minutos en actions/checkout sobre un repositorio de ~2,1 GB. Se aplicó el mismo estado verificado mediante un workflow temporal sin checkout; después el aplicador ordinario convergió sin diferencias."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "6fffc2182bc6",
-      "revision": 0,
-      "name": "Skyrim",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "75ed7ba01dcb",
-      "revision": 0,
-      "name": "Bethesda",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "6b1527a11052",
-      "revision": 0,
-      "name": "The Elder Scrolls",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "1055c1f7c2d8",
-      "revision": 0,
-      "name": "212 GB",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "e3556c5fad4c",
-      "revision": 0,
-      "name": "Juanma Moreno",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "9ecae1686395",
-      "revision": 0,
-      "name": "Amancio Ortega",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "6106415081f7",
-      "revision": 0,
-      "name": "Policía Nacional",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    },
-    {
-      "id": "febcfc700f77",
-      "revision": 0,
-      "name": "Inditex",
-      "outcome": "explained",
-      "applied": true,
-      "via": "verified_outbox_fast_apply",
-      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T17:41:00+01:00",
   "last_completed_at": "2026-11-03T17:50:00+01:00",
@@ -193,7 +109,7 @@
     "at": "2026-11-03T17:50:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793725731 cerrada 8/8: Skyrim, Bethesda, The Elder Scrolls, 212 GB, Juanma Moreno, Amancio Ortega, Policía Nacional e Inditex r0 explicadas y sincronizadas en requests/Listas. Barrera final verificada: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-1793727035708-manual: 2 revisiones review_red preparing vigentes en main (La RFEF y Pedro Casares), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3197,6 +3113,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793725731 cerrada 8/8: Skyrim, Bethesda, The Elder Scrolls, 212 GB, Juanma Moreno, Amancio Ortega, Policía Nacional e Inditex r0 explicadas y sincronizadas en requests/Listas. Barrera final verificada: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T18:31:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793727035708-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-b3a0eb34d8383a980867",
+      "title": "Revisar novedades: La RFEF",
+      "message": "Inicio: 2 revisiones review_red preparing vigentes en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -8266,7 +8193,7 @@
       "at": "2026-11-03T17:32:10+01:00"
     }
   ],
-  "command_id": "tr-autoguard-1793725731",
+  "command_id": "tr-1793727035708-manual",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
