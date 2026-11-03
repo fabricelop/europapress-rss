@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793735352",
   "previous_run_id": "tr-1793734298171-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T20:49:10+01:00",
-  "updated_at": "2026-11-03T20:49:10+01:00",
+  "updated_at": "2026-11-03T20:53:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -109,7 +109,7 @@
     "summary": "2/2 cerradas: Andorra updated y Mark Twain unchanged; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793735352: 2 investigaciones preparing/update vigentes en main (Premio Cervantes 2026 r0 y 128 de la Constitución r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
+  "message": "Premio Cervantes 2026 r0 revalidada JIT. Detonante verificado con Europa Press y RTVE: Cristina Fernández Cubas, ganadora del Cervantes 2026. Outbox textual creado; aplicador en curso. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -6169,6 +6169,17 @@
       "trend_id": "eba4d1b3df0b",
       "title": "Premio Cervantes 2026",
       "message": "Inicio tr-autoguard-1793735352: 2 investigaciones preparing/update vigentes en main (Premio Cervantes 2026 r0 y 128 de la Constitución r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T20:53:30+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793735352",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "eba4d1b3df0b",
+      "title": "Premio Cervantes 2026",
+      "message": "Premio Cervantes 2026 r0 revalidada JIT. Detonante verificado con Europa Press y RTVE: Cristina Fernández Cubas, ganadora del Cervantes 2026. Outbox textual creado; aplicador en curso. ImageGen=0."
     }
   ],
   "partial": false,
