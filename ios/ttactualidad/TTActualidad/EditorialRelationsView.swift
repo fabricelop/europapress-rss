@@ -14,8 +14,12 @@ private final class EditorialRelationsModel: ObservableObject {
     @Published private(set) var loading = false
     @Published private(set) var saving = false
     @Published var notice = ""
-    // Keep a possibly accepted command ID for a conscious retry after a timeout.
-    private var commands: [String: String] = [:]
+    // Persist retry identities across reopening the APP, so an uncertain
+    // response cannot accidentally create a second command.
+    private let commandStorageKey = "TTActualidad.editorial-relation-commandIds.v1"
+    private var commands: [String: String] =
+        UserDefaults.standard.dictionary(forKey: "TTActualidad.editorial-relation-commandIds.v1")
+        as? [String: String] ?? [:]
 
     func load(using github: GitHubEditor) async {
         guard !loading else { return }
@@ -30,37 +34,77 @@ private final class EditorialRelationsModel: ObservableObject {
         }
     }
 
+    private func postDecision(news: EditorialRelationEndpoint,
+                              trend: EditorialRelationEndpoint,
+                              action: String, using github: GitHubEditor) async throws {
+        let key = [action, news.id, String(news.revision), news.episodeFingerprint,
+                   trend.id, String(trend.revision), trend.episodeFingerprint].joined(separator: "|")
+        let command = commands[key] ?? UUID().uuidString.lowercased()
+        commands[key] = command
+        UserDefaults.standard.set(commands, forKey: commandStorageKey)
+        let body = try JSONEncoder().encode(EditorialRelationDecision(
+            action: action, expectedNews: news.identity, expectedTrend: trend.identity,
+            commandId: command))
+        let (data, status) = try await github.privateEditorialRelationsRequest(
+            path: "/v1/decisions", method: "POST", jsonBody: body)
+        if status == 409 {
+            commands.removeValue(forKey: key)
+            UserDefaults.standard.set(commands, forKey: commandStorageKey)
+            throw RelationsError.http(status)
+        }
+        guard status == 200 else { throw RelationsError.http(status) }
+        let receipt = try JSONDecoder().decode(EditorialRelationReceipt.self, from: data)
+        guard EditorialRelationsPolicy.confirms(receipt, action: action) else {
+            throw RelationsError.unconfirmed
+        }
+        commands.removeValue(forKey: key)
+        UserDefaults.standard.set(commands, forKey: commandStorageKey)
+    }
+
     func decide(news: EditorialRelationEndpoint, trend: EditorialRelationEndpoint,
                 action: String, using github: GitHubEditor) async {
         guard !saving, ["link", "unlink", "dismiss"].contains(action) else { return }
         saving = true
         defer { saving = false }
-        let key = [action, news.id, String(news.revision), news.episodeFingerprint,
-                   trend.id, String(trend.revision), trend.episodeFingerprint].joined(separator: "|")
-        let command = commands[key] ?? UUID().uuidString.lowercased()
-        commands[key] = command
         do {
-            let body = try JSONEncoder().encode(EditorialRelationDecision(
-                action: action, expectedNews: news.identity, expectedTrend: trend.identity,
-                commandId: command))
-            let (data, status) = try await github.privateEditorialRelationsRequest(
-                path: "/v1/decisions", method: "POST", jsonBody: body)
-            if status == 409 {
-                commands.removeValue(forKey: key)
-                await load(using: github)
-                throw RelationsError.http(status)
-            }
-            guard status == 200 else { throw RelationsError.http(status) }
-            let receipt = try JSONDecoder().decode(EditorialRelationReceipt.self, from: data)
-            guard EditorialRelationsPolicy.confirms(receipt, action: action) else {
-                throw RelationsError.unconfirmed
-            }
-            commands.removeValue(forKey: key)
+            try await postDecision(news: news, trend: trend, action: action, using: github)
             await load(using: github)
             notice = action == "link" ? "Relación vinculada en ambos sentidos." :
                 "Relación bloqueada para este episodio. El automatismo no volverá a añadirla."
         } catch {
+            if case RelationsError.http(409) = error { await load(using: github) }
             notice = "No se ha confirmado la decisión: \(error.localizedDescription)"
+        }
+    }
+
+    // One save action per news card; every selected pair receives its own
+    // episode-checked, idempotent server decision. Refresh just once at end.
+    func linkSelected(news: EditorialRelationEndpoint,
+                      trends: [EditorialRelationEndpoint],
+                      using github: GitHubEditor) async {
+        guard !saving, !trends.isEmpty else { return }
+        saving = true
+        defer { saving = false }
+        var confirmed = 0
+        var lastError: String?
+        var seen = Set<String>()
+        for trend in trends {
+            let identity = [trend.id, String(trend.revision),
+                            trend.episodeFingerprint].joined(separator: "|")
+            guard seen.insert(identity).inserted else { continue }
+            do {
+                try await postDecision(news: news, trend: trend, action: "link",
+                                       using: github)
+                confirmed += 1
+            } catch {
+                lastError = error.localizedDescription
+            }
+        }
+        await load(using: github)
+        if let lastError {
+            notice = "\(confirmed) vínculos confirmados. Hay vínculos sin confirmar: \(lastError). Puedes reintentar sin duplicar órdenes."
+        } else {
+            notice = "\(confirmed) vínculos guardados y confirmados para «\(news.title)»."
         }
     }
 
