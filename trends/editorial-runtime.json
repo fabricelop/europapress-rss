@@ -3,57 +3,47 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793699033179-manual",
-  "previous_run_id": "tr-1793698723967-manual",
+  "run_id": "tr-1793699283928-manual",
+  "previous_run_id": "tr-1793699033179-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-03T10:44:00+01:00",
-  "updated_at": "2026-11-03T10:49:39+01:00",
-  "finished_at": "2026-11-03T10:49:39+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-03T10:48:03+01:00",
+  "updated_at": "2026-11-03T10:48:53+01:00",
+  "finished_at": "2026-11-03T10:48:53+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-f2e2d59a1d1b083d750c",
     "red-review-d1c3c48cd3987e0d29a9"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
-    {
-      "id": "red-review-f2e2d59a1d1b083d750c",
-      "revision": 0,
-      "name": "Revisar novedades: Halloween",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "La explicación vigente ya incorpora el balance posterior de Halloween y las convocatorias de Blocus; no se verifica un desarrollo material posterior que cambie el motivo actual de la tendencia."
-    },
     {
       "id": "red-review-d1c3c48cd3987e0d29a9",
       "revision": 0,
@@ -65,43 +55,34 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T10:43:05+01:00",
-  "last_completed_at": "2026-11-03T10:49:39+01:00",
+  "last_started_at": "2026-11-03T10:48:03+01:00",
+  "last_completed_at": "2026-11-03T10:48:53+01:00",
   "last_run": {
-    "run_id": "tr-1793699033179-manual",
-    "command_id": "tr-1793699033179-manual",
+    "run_id": "tr-1793699283928-manual",
+    "command_id": "tr-1793699283928-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T10:44:00+01:00",
-    "finished_at": "2026-11-03T10:49:39+01:00",
+    "started_at": "2026-11-03T10:48:03+01:00",
+    "finished_at": "2026-11-03T10:48:53+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 2,
+      "unchanged_reviews": 1,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 1
     },
     "outcomes": [
-      {
-        "id": "red-review-f2e2d59a1d1b083d750c",
-        "revision": 0,
-        "name": "Revisar novedades: Halloween",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "reason": "La explicación vigente ya incorpora el balance posterior de Halloween y las convocatorias de Blocus; no se verifica un desarrollo material posterior que cambie el motivo actual de la tendencia."
-      },
       {
         "id": "red-review-d1c3c48cd3987e0d29a9",
         "revision": 0,
@@ -114,8 +95,8 @@
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793699033179-manual cerrada 2/2 por ejecución y convergencia JIT: Halloween y Aramburu review_completed/unchanged; textos y fechas se conservan. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T10:49:39+01:00"
+    "message": "Pasada tr-1793699283928-manual cerrada 1/1 por convergencia JIT: Aramburu review_completed/unchanged; la explicación vigente ya incorpora la corrección del CTA sobre Connected Ball/VAR. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente detectada. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T10:48:53+01:00"
   },
   "source": "chat",
   "message": "Pasada tr-1793699033179-manual cerrada 2/2 por ejecución y convergencia JIT: Halloween y Aramburu review_completed/unchanged; textos y fechas se conservan. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
@@ -7777,6 +7758,35 @@
       "trend_id": "34f0363eea88",
       "title": "Descanse",
       "message": "Texto verificado preparado para Descanse r0; persistiendo mediante editorial-outbox. IA no generada; imagen queda en flujo paralelo."
+    },
+    {
+      "at": "2026-11-03T10:48:03+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793699283928-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "red-review-d1c3c48cd3987e0d29a9",
+      "title": "Revisar novedades: Aramburu",
+      "message": "Inicio JIT: Aramburu r0 era el único preparing visible en main; una ejecución concurrente ya estaba procesando mantenimiento. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T10:48:53+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793699283928-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 1,
+      "message": "Convergencia confirmada: maintenance-outbox de Aramburu=unchanged y editorial-queue.json quedó vacía tras aplicación."
+    },
+    {
+      "at": "2026-11-03T10:48:53+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793699283928-manual",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "message": "Pasada tr-1793699283928-manual cerrada 1/1 por convergencia JIT: Aramburu review_completed/unchanged; la explicación vigente ya incorpora la corrección del CTA sobre Connected Ball/VAR. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente detectada. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
@@ -7785,6 +7795,7 @@
     "tr-autoguard-1793693463",
     "tr-autoguard-1793696493",
     "tr-1793696945461-manual",
-    "tr-1793698723967-manual"
+    "tr-1793698723967-manual",
+    "tr-1793699033179-manual"
   ]
 }
