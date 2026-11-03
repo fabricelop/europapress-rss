@@ -3,37 +3,46 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793708667075-manual",
-  "previous_run_id": "tr-1793707968204-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T13:37:10+01:00",
-  "updated_at": "2026-11-03T13:37:50+01:00",
-  "finished_at": "2026-11-03T13:37:50+01:00",
+  "run_id": "tr-autoguard-1793711487",
+  "previous_run_id": "tr-1793708667075-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T14:12:00+01:00",
+  "updated_at": "2026-11-03T14:12:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-8a017ee88147198bf503",
-    "red-review-af2730f0fd6d6ae8eb89"
+  "total": 5,
+  "trend_id": "8a7d05b3a180",
+  "title": "de la Constitución",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "8a7d05b3a180",
+    "e4a5391b8b6d",
+    "b5ca00019dcd",
+    "b33d12f2e43e",
+    "b6bdde0356db"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "8a7d05b3a180",
+    "e4a5391b8b6d",
+    "b5ca00019dcd",
+    "b33d12f2e43e",
+    "b6bdde0356db"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 5,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 5,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -44,26 +53,7 @@
   "incidents": [],
   "error": null,
   "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-8a017ee88147198bf503",
-      "revision": 0,
-      "name": "Revisar novedades: Puerta del Sol",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "f4cf6d90459b987ea5a4f95ebdede661560d6608"
-    },
-    {
-      "id": "red-review-af2730f0fd6d6ae8eb89",
-      "revision": 0,
-      "name": "Revisar novedades: Jesús de Miguel",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "26cd8b6bc86ffadd35cecc8628fd4d76fdce6a9c"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T13:21:00+01:00",
   "last_completed_at": "2026-11-03T13:27:00+01:00",
@@ -99,7 +89,7 @@
     "at": "2026-11-03T13:37:50+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-1793708667075-manual cerrada 0/0: no había trabajos preparing/update ni reexplicaciones pendientes tras releer main. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793711487: 5 investigaciones preparing/update vigentes en main, por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2124,6 +2114,17 @@
       "current": 0,
       "total": 0,
       "message": "Pasada tr-1793708667075-manual cerrada 0/0: no había trabajos preparing/update ni reexplicaciones pendientes tras releer main. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T14:12:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793711487",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "8a7d05b3a180",
+      "title": "de la Constitución",
+      "message": "Inicio tr-autoguard-1793711487: 5 investigaciones preparing/update vigentes en main, por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -4365,22 +4366,9 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-f1fadc7c92bc5acac655",
-      "revision": 0,
-      "name": "Revisar novedades: La RFEF",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-5c8cd4849eee905da8cd",
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "b52ac84444688a2a5808bc6f0b924db6d59450d7",
-      "converged_with": "tr-1793702646001-manual",
-      "reason": "Episodio distinto del 03/11: suspensión de Copa del Rey y Copa de la Reina tras el fallecimiento de Jesús de Miguel."
-    }
-  ],
-  "current_item": null,
-  "current_title": null,
+  "outcomes": [],
+  "current_item": "8a7d05b3a180",
+  "current_title": "de la Constitución",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -6668,7 +6656,7 @@
       "converged_with": "tr-1793702646001-manual"
     }
   ],
-  "command_id": "tr-1793708667075-manual",
+  "command_id": "tr-autoguard-1793711487",
   "requested_at": "2026-11-03T11:46:18.700+01:00",
   "runs": [
     {
