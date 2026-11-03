@@ -6,26 +6,30 @@
   "run_id": "tr-1793716769930-manual",
   "previous_run_id": "tr-1793715998214-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T15:40:00+01:00",
-  "updated_at": "2026-11-03T15:40:00+01:00",
+  "updated_at": "2026-11-03T15:43:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
+  "total": 3,
   "trend_id": "2e00a1a9eeae",
   "title": "Owono",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
-    "2e00a1a9eeae"
+    "2e00a1a9eeae",
+    "49a74700dad6",
+    "7edc8de0baa4"
   ],
   "remaining_active_ids": [
-    "2e00a1a9eeae"
+    "2e00a1a9eeae",
+    "49a74700dad6",
+    "7edc8de0baa4"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 1,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -34,7 +38,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "publications": 0,
@@ -44,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T15:27:00+01:00",
@@ -92,7 +96,7 @@
     "at": "2026-11-03T15:33:00+01:00"
   },
   "source": "chat",
-  "message": "Inicio: Owono r1 preparing vigente en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Investigando Owono r1 tras revalidación JIT; cola ampliada a 3 trabajos por nuevas entradas. La pista de una carta de disculpas no está corroborada; se contrasta el acontecimiento actual sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2336,6 +2340,17 @@
       "trend_id": "2e00a1a9eeae",
       "title": "Owono",
       "message": "Inicio: Owono r1 preparing vigente en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T15:43:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793716769930-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 3,
+      "trend_id": "2e00a1a9eeae",
+      "title": "Owono",
+      "message": "Investigando Owono r1 tras revalidación JIT; cola ampliada a 3 trabajos por nuevas entradas. La pista de una carta de disculpas no está corroborada; se contrasta el acontecimiento actual sin ImageGen."
     }
   ],
   "history": [
