@@ -15,7 +15,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: ttactualidad-ios-${{ github.head_ref || github.ref_name }}
+  # Separate push and PR runs; otherwise one cancels the other before jobs start.
+  group: ttactualidad-ios-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
