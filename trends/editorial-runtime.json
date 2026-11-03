@@ -3,24 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793735352",
-  "previous_run_id": "tr-1793734298171-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-03T20:49:10+01:00",
-  "updated_at": "2026-11-03T20:56:57+01:00",
+  "run_id": "tr-1793735926010-manual",
+  "previous_run_id": "tr-autoguard-1793735352",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T20:59:00+01:00",
+  "updated_at": "2026-11-03T20:59:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "eba4d1b3df0b",
-  "title": "Premio Cervantes 2026",
-  "queue_complete": true,
+  "trend_id": "red-review-d9f754531f711481d251",
+  "title": "Revisar novedades: Rufián",
+  "queue_complete": false,
   "processed_ids": [
     "8bd2126f457f",
     "eba4d1b3df0b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-d9f754531f711481d251",
+    "red-review-423e34942e629bdd1ccc"
+  ],
+  "remaining_active_ids": [
+    "red-review-d9f754531f711481d251",
+    "red-review-423e34942e629bdd1ccc"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -43,7 +49,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-6b46dc14e6d405480d99",
@@ -103,7 +109,7 @@
     "summary": "2/2 cerradas: Andorra updated y Mark Twain unchanged; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Premio Cervantes 2026 r0 revalidada JIT. Detonante verificado con Europa Press y RTVE: Cristina Fernández Cubas, ganadora del Cervantes 2026. Outbox textual creado; aplicador en curso. ImageGen=0.",
+  "message": "Inicio manual: 2 revisiones review_red vigentes en main (Rufián r0 y Aramburu r0). Se procesan por orden con validación JIT, sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3523,6 +3529,17 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada tr-1793734393929-manual cerrada 2/2 por ejecución y convergencia JIT: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3; Mark Twain review_completed/unchanged con texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T20:59:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793735926010-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-d9f754531f711481d251",
+      "title": "Revisar novedades: Rufián",
+      "message": "Inicio manual: 2 revisiones review_red vigentes en main (Rufián r0 y Aramburu r0). Se procesan por orden con validación JIT, sin ImageGen ni publicación."
     }
   ],
   "history": [
