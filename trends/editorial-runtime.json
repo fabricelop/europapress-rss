@@ -67,19 +67,19 @@
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T09:42:19+01:00",
-  "last_completed_at": "2026-11-03T09:42:19+01:00",
+  "last_completed_at": "2026-11-03T09:42:30+01:00",
   "last_run": {
-    "run_id": "tr-1793693801397-manual",
-    "command_id": "tr-1793693801397-manual",
-    "canonical": true,
+    "run_id": "tr-1793694895596-manual",
+    "command_id": "tr-1793694895596-manual",
+    "canonical": false,
     "status": "DONE",
-    "started_at": "2026-11-03T09:16:41.397+01:00",
-    "finished_at": "2026-11-03T09:21:00+01:00",
+    "started_at": "2026-11-03T09:35:40+01:00",
+    "finished_at": "2026-11-03T09:42:30+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
+      "explained": 3,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -91,33 +91,67 @@
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 1
     },
     "outcomes": [
       {
-        "id": "red-review-bd3b564c5b7eb04ccd20",
+        "id": "22a5b74e73c8",
         "revision": 0,
-        "name": "Revisar novedades: Halloween",
-        "outcome": "unchanged",
+        "name": "#Buenosdías",
+        "outcome": "explained",
         "applied": true,
         "via": "concurrent_convergence_jit",
-        "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
-        "reason": "Sin novedad material posterior que cambie la explicación vigente."
+        "apply_commit": "a9816385c9bd68b2f1e238c27e43203ca43df5a6",
+        "explained_at": "2026-11-03T09:34:00+01:00",
+        "note": "La ficha fue borrada posteriormente por decisión editorial del usuario; no se resucitó."
       },
       {
-        "id": "red-review-a8889f3e3c2b543de4b4",
+        "id": "e5dcf278abcf",
         "revision": 0,
-        "name": "Revisar novedades: Aramburu",
+        "name": "Mantilla",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "bcfc416cfdaa01fe3aa6e5974a0290deee24c5ce",
+        "explained_at": "2026-11-03T09:39:00+01:00",
+        "reason": "Parte médico actualizado; rango JIT corregido a TT#22 y remate omitido por sensibilidad."
+      },
+      {
+        "id": "red-review-a42c8de328095e2e5d5e",
+        "revision": 0,
+        "name": "Revisar novedades: Adif",
         "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "cca859c203fde3bc23eaff2783ea303c032d1f9f",
-        "reason": "El desfase del Connected Ball ya había sido materializado; sin desarrollo material posterior adicional."
+        "via": "maintenance_outbox_jit",
+        "apply_commit": "c959ca7e6bd63ee9b852fdf90b588c55fee625c5",
+        "reason": "La ampliación de la investigación del protocolo LZB ya estaba incorporada en una actualización posterior vigente."
+      },
+      {
+        "id": "red-review-f9d2e974655d598e5496",
+        "revision": 0,
+        "name": "Revisar novedades: Hamilton",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_jit",
+        "apply_commit": "c959ca7e6bd63ee9b852fdf90b588c55fee625c5",
+        "reason": "El resultado final y la corrección de la sanción a Leclerc ya estaban incorporados en una actualización posterior vigente."
+      },
+      {
+        "id": "ca4337605844",
+        "revision": 0,
+        "name": "Jesús de Miguel",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "d181cab07bb627f35bb7a94664953e2ff14460e0",
+        "explained_at": "2026-11-03T09:41:30+01:00",
+        "reason": "Fallecimiento confirmado; remate omitido por sensibilidad."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793694895596-manual cerrada 5/5 tras absorber trabajo entrante: #Buenosdías, Mantilla y Jesús de Miguel explicados; Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793695104407-manual conserva la propiedad canónica del RUNTRACE.",
+    "at": "2026-11-03T09:42:30+01:00"
   },
   "source": "chat",
   "message": "Inicio tr-1793695104407-manual: 2 review_red preparing vigentes en main (Adif y Hamilton), por orden de cola y con revalidación JIT; ImageGen=0; publicaciones=0.",
@@ -1590,6 +1624,15 @@
       "trend_id": "red-review-a42c8de328095e2e5d5e",
       "title": "Revisar novedades: Adif",
       "message": "Inicio tr-1793695104407-manual: 2 review_red preparing vigentes en main (Adif y Hamilton), por orden de cola y con revalidación JIT; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T09:42:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793694895596-manual",
+      "status": "DONE",
+      "current": 5,
+      "total": 5,
+      "message": "Pasada tr-1793694895596-manual cerrada 5/5 tras absorber trabajo entrante: #Buenosdías, Mantilla y Jesús de Miguel explicados; Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793695104407-manual conserva la propiedad canónica del RUNTRACE."
     }
   ],
   "history": [
@@ -3439,6 +3482,91 @@
       "incidents": [],
       "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T09:21:00+01:00"
+    },
+    {
+      "run_id": "tr-1793694895596-manual",
+      "command_id": "tr-1793694895596-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T09:35:40+01:00",
+      "finished_at": "2026-11-03T09:42:30+01:00",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "22a5b74e73c8",
+          "revision": 0,
+          "name": "#Buenosdías",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "a9816385c9bd68b2f1e238c27e43203ca43df5a6",
+          "explained_at": "2026-11-03T09:34:00+01:00",
+          "note": "La ficha fue borrada posteriormente por decisión editorial del usuario; no se resucitó."
+        },
+        {
+          "id": "e5dcf278abcf",
+          "revision": 0,
+          "name": "Mantilla",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "bcfc416cfdaa01fe3aa6e5974a0290deee24c5ce",
+          "explained_at": "2026-11-03T09:39:00+01:00",
+          "reason": "Parte médico actualizado; rango JIT corregido a TT#22 y remate omitido por sensibilidad."
+        },
+        {
+          "id": "red-review-a42c8de328095e2e5d5e",
+          "revision": 0,
+          "name": "Revisar novedades: Adif",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "c959ca7e6bd63ee9b852fdf90b588c55fee625c5",
+          "reason": "La ampliación de la investigación del protocolo LZB ya estaba incorporada en una actualización posterior vigente."
+        },
+        {
+          "id": "red-review-f9d2e974655d598e5496",
+          "revision": 0,
+          "name": "Revisar novedades: Hamilton",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "c959ca7e6bd63ee9b852fdf90b588c55fee625c5",
+          "reason": "El resultado final y la corrección de la sanción a Leclerc ya estaban incorporados en una actualización posterior vigente."
+        },
+        {
+          "id": "ca4337605844",
+          "revision": 0,
+          "name": "Jesús de Miguel",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d181cab07bb627f35bb7a94664953e2ff14460e0",
+          "explained_at": "2026-11-03T09:41:30+01:00",
+          "reason": "Fallecimiento confirmado; remate omitido por sensibilidad."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793694895596-manual cerrada 5/5 tras absorber trabajo entrante: #Buenosdías, Mantilla y Jesús de Miguel explicados; Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793695104407-manual conserva la propiedad canónica del RUNTRACE.",
+      "at": "2026-11-03T09:42:30+01:00"
     }
   ],
   "partial": false,
@@ -6309,6 +6437,91 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793694895596-manual",
+      "command_id": "tr-1793694895596-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T09:35:40+01:00",
+      "finished_at": "2026-11-03T09:42:30+01:00",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "22a5b74e73c8",
+          "revision": 0,
+          "name": "#Buenosdías",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "a9816385c9bd68b2f1e238c27e43203ca43df5a6",
+          "explained_at": "2026-11-03T09:34:00+01:00",
+          "note": "La ficha fue borrada posteriormente por decisión editorial del usuario; no se resucitó."
+        },
+        {
+          "id": "e5dcf278abcf",
+          "revision": 0,
+          "name": "Mantilla",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "bcfc416cfdaa01fe3aa6e5974a0290deee24c5ce",
+          "explained_at": "2026-11-03T09:39:00+01:00",
+          "reason": "Parte médico actualizado; rango JIT corregido a TT#22 y remate omitido por sensibilidad."
+        },
+        {
+          "id": "red-review-a42c8de328095e2e5d5e",
+          "revision": 0,
+          "name": "Revisar novedades: Adif",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "c959ca7e6bd63ee9b852fdf90b588c55fee625c5",
+          "reason": "La ampliación de la investigación del protocolo LZB ya estaba incorporada en una actualización posterior vigente."
+        },
+        {
+          "id": "red-review-f9d2e974655d598e5496",
+          "revision": 0,
+          "name": "Revisar novedades: Hamilton",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "c959ca7e6bd63ee9b852fdf90b588c55fee625c5",
+          "reason": "El resultado final y la corrección de la sanción a Leclerc ya estaban incorporados en una actualización posterior vigente."
+        },
+        {
+          "id": "ca4337605844",
+          "revision": 0,
+          "name": "Jesús de Miguel",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d181cab07bb627f35bb7a94664953e2ff14460e0",
+          "explained_at": "2026-11-03T09:41:30+01:00",
+          "reason": "Fallecimiento confirmado; remate omitido por sensibilidad."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793694895596-manual cerrada 5/5 tras absorber trabajo entrante: #Buenosdías, Mantilla y Jesús de Miguel explicados; Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793695104407-manual conserva la propiedad canónica del RUNTRACE.",
+      "at": "2026-11-03T09:42:30+01:00"
     }
   ],
   "activity_log": [
@@ -6581,6 +6794,15 @@
       "trend_id": "red-review-a42c8de328095e2e5d5e",
       "title": "Revisar novedades: Adif",
       "message": "Inicio tr-1793695104407-manual: 2 review_red preparing vigentes en main (Adif y Hamilton), por orden de cola y con revalidación JIT; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T09:42:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793694895596-manual",
+      "status": "DONE",
+      "current": 5,
+      "total": 5,
+      "message": "Pasada tr-1793694895596-manual cerrada 5/5 tras absorber trabajo entrante: #Buenosdías, Mantilla y Jesús de Miguel explicados; Adif y Hamilton review_completed/unchanged porque sus novedades ya estaban incorporadas en actualizaciones posteriores. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793695104407-manual conserva la propiedad canónica del RUNTRACE."
     }
   ],
   "converged_run_ids": [
