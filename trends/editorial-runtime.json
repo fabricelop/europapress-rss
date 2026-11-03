@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793694655913-manual",
-  "previous_run_id": "tr-1793693801397-manual",
-  "status": "waiting",
-  "phase": "persisting",
-  "started_at": "2026-11-03T09:32:00+01:00",
-  "updated_at": "2026-11-03T09:35:22+01:00",
+  "run_id": "tr-1793694895596-manual",
+  "previous_run_id": "tr-1793694655913-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T09:35:40+01:00",
+  "updated_at": "2026-11-03T09:35:40+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
-  "trend_id": "22a5b74e73c8",
-  "title": "#Buenosdías",
+  "trend_id": "e5dcf278abcf",
+  "title": "Mantilla",
   "queue_complete": false,
-  "processed_ids": [
-    "22a5b74e73c8"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "e5dcf278abcf"
   ],
@@ -46,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-bd3b564c5b7eb04ccd20",
@@ -70,7 +68,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T09:35:21+01:00",
+  "last_started_at": "2026-11-03T09:35:40+01:00",
   "last_completed_at": "2026-11-03T09:21:00+01:00",
   "last_run": {
     "run_id": "tr-1793693801397-manual",
@@ -124,7 +122,7 @@
     "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Persistiendo #Buenosdías r0 mediante editorial-outbox; texto 257 caracteres, ImageGen=0.",
+  "message": "Inicio tr-1793694895596-manual: #Buenosdías r0 ya está siendo absorbida por la ejecución concurrente anterior; queda Mantilla r0 vigente en main. Revalidación JIT antes de investigar y persistir; ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1517,6 +1515,17 @@
       "trend_id": "22a5b74e73c8",
       "title": "#Buenosdías",
       "message": "Persistiendo #Buenosdías r0 mediante editorial-outbox; texto 257 caracteres, ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T09:35:40+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793694895596-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "e5dcf278abcf",
+      "title": "Mantilla",
+      "message": "Inicio tr-1793694895596-manual: #Buenosdías r0 ya está siendo absorbida por la ejecución concurrente anterior; queda Mantilla r0 vigente en main. Revalidación JIT antes de investigar y persistir; ImageGen=0."
     }
   ],
   "history": [
@@ -6486,6 +6495,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T09:35:40+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793694895596-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "e5dcf278abcf",
+      "title": "Mantilla",
+      "message": "Inicio tr-1793694895596-manual: #Buenosdías r0 ya está siendo absorbida por la ejecución concurrente anterior; queda Mantilla r0 vigente en main. Revalidación JIT antes de investigar y persistir; ImageGen=0."
     }
   ],
   "converged_run_ids": [
