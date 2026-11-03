@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T08:05:42+01:00",
+  "updated_at": "2026-11-03T07:06:37.192039+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -209468,6 +209468,71 @@
       "image_choice": "none",
       "image_pending": true,
       "telegram_package_status": "pending"
+    },
+    {
+      "id": "red-review-f0796a0cf9b6cf9a49a9",
+      "revision": 0,
+      "name": "Revisar novedades: Diomande",
+      "rank": 19,
+      "status": "preparing",
+      "requested_at": "2026-11-03T07:06:37.192039+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7184eb72d1ea",
+        "revision": 0,
+        "name": "Diomande",
+        "rank": 1,
+        "explanation": "TT#1 Diomande es tendencia porque Yan Diomande marcó el 0-3 del Real Madrid ante el Racing en El Sardinero, con un disparo desde fuera del área en el 37'.\n#RealMadrid #LaLiga\n🌶️ Desde fuera del área puso el tercero.",
+        "explanation_sha256": "1a5e351be26bb6cdf35078dd7e28a4bc2da22b3ea8bd51926978c54247cc6380",
+        "explained_at": "2026-11-01T16:37:50.517Z",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-racing-real-madrid-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261101151614.html"
+          }
+        ],
+        "fingerprint": "376a2fa6a40ba48fabbc89ef89c2a9787f6225ec2a36ffe9e321f69c2a2c0c95"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-19e62b87b798ca9f89df",
+      "revision": 0,
+      "name": "Revisar novedades: Racing",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-11-03T07:06:37.192039+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "82f5a317d5c7",
+        "revision": 0,
+        "name": "Racing",
+        "rank": 2,
+        "explanation": "TT#2 Racing es tendencia tras caer 0-3 ante el Real Madrid en El Sardinero: Mbappé, Bellingham y Diomande marcaron los tres goles antes del descanso.\n#Racing #RealMadrid #LaLiga\n🌶️ El 0-3 ya estaba escrito antes del descanso.",
+        "explanation_sha256": "164dd8660c77a75dd7e3fdba2acf135b11dbca23f4c37cd31791eb95cbc47cbc",
+        "explained_at": "2026-11-01T21:39:50+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/sports/soccer/real-madrid-extend-winning-run-with-3-0-victory-racing-santander-2026-11-01/"
+          },
+          {
+            "url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/cronicas/cronica-racing-rm-j11-liga-01-11-2026"
+          }
+        ],
+        "fingerprint": "f9fd4c6ce9d067698098d3bb6baede2fb498a48d5d6b2f3d9ee9cdf63966dcd6"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
     }
   ],
   "count": 841
