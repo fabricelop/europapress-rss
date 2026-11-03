@@ -3,33 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793746489773-manual",
-  "previous_run_id": "tr-1793745926226-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-04T00:06:00+01:00",
-  "updated_at": "2026-11-04T00:13:39+01:00",
+  "run_id": "tr-1793747657358-manual",
+  "previous_run_id": "tr-1793746489773-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T00:15:30+01:00",
+  "updated_at": "2026-11-04T00:15:30+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 5,
-  "trend_id": "a3e01c595b24",
-  "title": "#TierraDeNadie8",
-  "queue_complete": true,
-  "processed_ids": [
-    "05ad67b1f345",
-    "0a0ee739ddbb",
-    "7d3ab9c7fe20",
-    "a3e01c595b24",
-    "dbf00e09a84e"
+  "total": 2,
+  "trend_id": "red-review-67fb96527801cf560c29",
+  "title": "Revisar novedades: Gracias Ministro",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-67fb96527801cf560c29",
+    "red-review-374a862baa2b8625f92b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-67fb96527801cf560c29",
+    "red-review-374a862baa2b8625f92b"
+  ],
   "remaining_problematic_ids": [],
   "summary": "Pasada 4/4 completada: Le Normand r0 y Sorloth r0 quedaron explained; Rufián review_red r0 cerró stale por barrera JIT/convergencia sin duplicar; Accidente de Urda review_red r0 quedó updated como continuidad en trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T00:13:39+01:00",
@@ -51,7 +51,7 @@
     "summary": "Pasada 4/4 completada: Le Normand r0 y Sorloth r0 quedaron explained; Rufián review_red r0 cerró stale por barrera JIT/convergencia sin duplicar; Accidente de Urda review_red r0 quedó updated como continuidad en trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Investigación 5/5 completada; textos cerrados y validados <280. Ejecutando barrera JIT y persistencia conjunta. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Gracias Ministro y Simeone), por antigüedad y con revalidación JIT. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4085,6 +4085,17 @@
       "trend_id": "a3e01c595b24",
       "title": "#TierraDeNadie8",
       "message": "Preparando persistencia conjunta tras revalidación JIT de las cinco revisiones."
+    },
+    {
+      "at": "2026-11-04T00:15:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793747657358-manual",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-67fb96527801cf560c29",
+      "title": "Revisar novedades: Gracias Ministro",
+      "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Gracias Ministro y Simeone), por antigüedad y con revalidación JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
