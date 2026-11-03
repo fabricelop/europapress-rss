@@ -3,70 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793739489427-manual",
-  "previous_run_id": "tr-autoguard-1793737610",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T20:59:11.302Z",
-  "updated_at": "2026-11-03T21:02:43.563Z",
-  "finished_at": "2026-11-03T21:02:43.563Z",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-ee597c1e01b0fd4cfc7e",
-    "red-review-47f15fd9beb8f34c4726"
+  "run_id": "tr-autoguard-1793740699",
+  "previous_run_id": "tr-1793739489427-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T21:20:00Z",
+  "updated_at": "2026-11-03T21:20:00Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 5,
+  "trend_id": "3042104459b7",
+  "title": "Dimite Óscar Puente",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "3042104459b7",
+    "c8363f291102",
+    "cd7275e8b277",
+    "919fc31e93a5",
+    "8e970ba43f06"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "3042104459b7",
+    "c8363f291102",
+    "cd7275e8b277",
+    "919fc31e93a5",
+    "8e970ba43f06"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "updates": 1,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 1,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-ee597c1e01b0fd4cfc7e",
-      "revision": 0,
-      "name": "Revisar novedades: Puerta del Sol",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
-      "source_id": "4b85f530992d",
-      "reason": "Sin novedad material; texto y fecha originales conservados."
-    },
-    {
-      "id": "red-review-47f15fd9beb8f34c4726",
-      "revision": 0,
-      "name": "Revisar novedades: Jesús de Miguel",
-      "outcome": "updated",
-      "applied": true,
-      "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
-      "source_id": "ca4337605844",
-      "created_id": "trend-update-5beed5401b51fc0e13a5",
-      "reason": "Novedad material: investigación de Homicidios y judicialización del caso; la RFEF amplió a tres días la suspensión de sus competiciones."
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T20:59:11.302Z",
   "last_completed_at": "2026-11-03T21:02:43.563Z",
@@ -103,7 +73,7 @@
     "summary": "Pasada tr-1793739489427-manual cerrada 2/2: Puerta del Sol review_completed/unchanged y Jesús de Miguel review_completed/updated con nueva ficha trend-update-5beed5401b51fc0e13a5. Aplicación confirmada en 33f52ac30a14b4343d2060a3c0df4a0a25d98025. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793739489427-manual cerrada 2/2: Puerta del Sol review_completed/unchanged y Jesús de Miguel review_completed/updated con nueva ficha trend-update-5beed5401b51fc0e13a5. Aplicación confirmada en 33f52ac30a14b4343d2060a3c0df4a0a25d98025. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3717,6 +3687,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-1793739489427-manual cerrada 2/2: Puerta del Sol review_completed/unchanged y Jesús de Miguel review_completed/updated con nueva ficha trend-update-5beed5401b51fc0e13a5. Aplicación confirmada en 33f52ac30a14b4343d2060a3c0df4a0a25d98025. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T21:20:00Z",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793740699",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "3042104459b7",
+      "title": "Dimite Óscar Puente",
+      "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -6474,34 +6455,25 @@
       "message": "Pasada tr-autoguard-1793735352 cerrada 4/4: Premio Cervantes 2026 y 128 de la Constitución explicadas y aplicadas; durante la barrera final Rufián cerró stale porque existía una decisión terminal deleted r1 posterior al origen r0, y Aramburu quedó updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T21:08:00+01:00",
       "converged_with": "tr-1793735926010-manual"
+    },
+    {
+      "at": "2026-11-03T21:20:00Z",
+      "run_id": "tr-autoguard-1793740699",
+      "status": "PROCESSING",
+      "phase": "preparing",
+      "current": 0,
+      "total": 5,
+      "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-d9f754531f711481d251",
-      "revision": 0,
-      "name": "Revisar novedades: Rufián",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_outbox_convergence",
-      "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-      "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
-    },
-    {
-      "id": "red-review-423e34942e629bdd1ccc",
-      "revision": 0,
-      "name": "Revisar novedades: Aramburu",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-5b04d3e8630fd169afad",
-      "via": "maintenance_outbox_convergence",
-      "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-      "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
-    }
-  ],
-  "current_item": null,
-  "current_title": null,
+  "outcomes": [],
+  "current_item": {
+    "id": "3042104459b7",
+    "revision": 0,
+    "name": "Dimite Óscar Puente"
+  },
+  "current_title": "Dimite Óscar Puente",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -9200,7 +9172,7 @@
       "converged_with": "tr-1793735926010-manual"
     }
   ],
-  "command_id": "tr-1793735926010-manual",
+  "command_id": "tr-autoguard-1793740699",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
@@ -11602,6 +11574,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793728164 cerrada 1/1: #HuelgaGeneral11N r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador (commit 35b85259). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T21:20:00Z",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793740699",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "3042104459b7",
+      "title": "Dimite Óscar Puente",
+      "message": "Inicio tr-autoguard-1793740699: 5 investigaciones preparing/update vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
     }
   ],
   "converged_run_ids": [
