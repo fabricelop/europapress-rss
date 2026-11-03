@@ -2,62 +2,112 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-03T07:55:41.202577+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-03T15:48:10.157460+00:00",
+      "issue_count": 4,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "9adbae42ec6e",
+          "title": "Carlos Alsina, 'Yakarta', Rosalía, 'A vivir que son dos días' y Ràdio 4, Premios Ondas 2026",
+          "seconds": 691,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f3ea7584b44f",
+          "title": "Catalá pide una reunión al delegado del Gobierno para recuperar “la normalidad” en la plaza de la ac",
+          "seconds": 691,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "c1d2e177ffee",
+          "title": "El Defensor del Pueblo recomienda aumentar el parque público de vivienda y su destino preferente al ",
+          "seconds": 691,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1548088,
+          "seconds": 1576437,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "a6a0d1338d0880f7e2e526740ea5d3f0833db3013deb19b68ba007be5ad432d6",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-03T07:55:41.202577+00:00",
-      "issue_count": 5,
+      "checked_at": "2026-11-03T15:48:10.157460+00:00",
+      "issue_count": 9,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "b73c43b052f7",
           "title": "Yeremay",
-          "seconds": 39230,
+          "seconds": 67579,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "5f810de04443",
           "title": "#ElPerroAndaluzTVE",
-          "seconds": 36885,
+          "seconds": 65234,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "1e03ad2efe6a",
           "title": "Paola",
-          "seconds": 32049,
+          "seconds": 60398,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "8191aa70b3fb",
           "title": "Náyades",
-          "seconds": 27884,
+          "seconds": 56233,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "2e00a1a9eeae",
+          "title": "Owono",
+          "seconds": 2279,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "977127837131",
+          "title": "#TEM3N",
+          "seconds": 2288,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "a2b11aa45a32",
+          "title": "Silvia",
+          "seconds": 2266,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-c2473ec51973d40570af",
+          "title": "Andorra",
+          "seconds": 1247,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1548088,
+          "seconds": 1576437,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -66,16 +116,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "5674791bc2377f7e182f9a98792018df59927a36009c17359bfc7a7575b36378",
+      "open_signature": "a99afad22f9a4303e46370f695da7c8faced3ff524b2bb60335a2a9913c2359a",
       "repair_via_workflow_run": false,
-      "escalation_required": 4
+      "escalation_required": 8
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-02T18:33:45.550763+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-03T07:55:41.202577+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-03T07:55:41.202577+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-03T07:55:41.202577+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-03T15:48:10.157460+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-03T15:48:10.157460+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-03T15:48:10.157460+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-03T15:48:10.157460+00:00"
   },
-  "checked_at": "2026-11-03T07:55:41.202577+00:00"
+  "checked_at": "2026-11-03T15:48:10.157460+00:00"
 }
