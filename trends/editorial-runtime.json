@@ -6,9 +6,9 @@
   "run_id": "tr-1793732300083-manual",
   "previous_run_id": "tr-1793731920527-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T19:59:00+01:00",
-  "updated_at": "2026-11-03T19:59:00+01:00",
+  "updated_at": "2026-11-03T20:01:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -47,7 +47,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T19:52:00+01:00",
@@ -69,7 +69,7 @@
     "summary": "Pasada cerrada 1/1: Ryanair r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador 36ba25b7. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio: 2 revisiones review_red preparing vigentes en main (La Policía y QEPD), en orden de cola; validación JIT por id+revision. Sin ImageGen ni publicación.",
+  "message": "Revisando novedades de La Policía r0: los detalles posteriores (334 desalojados, dos detenidos y posible regreso a Sol) siguen perteneciendo al mismo desalojo y no cambian materialmente la explicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3342,6 +3342,17 @@
       "trend_id": "red-review-387a2f52f0109bcca575",
       "title": "Revisar novedades: La Policía",
       "message": "Inicio: 2 revisiones review_red preparing vigentes en main (La Policía y QEPD), en orden de cola; validación JIT por id+revision. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T20:01:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793732300083-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-387a2f52f0109bcca575",
+      "title": "Revisar novedades: La Policía",
+      "message": "Revisando novedades de La Policía r0: los detalles posteriores (334 desalojados, dos detenidos y posible regreso a Sol) siguen perteneciendo al mismo desalojo y no cambian materialmente la explicación."
     }
   ],
   "history": [
