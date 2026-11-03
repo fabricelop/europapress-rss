@@ -1,6 +1,80 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T19:56:53+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-03T18:58:09.428973+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-387a2f52f0109bcca575",
+      "revision": 0,
+      "name": "Revisar novedades: La Policía",
+      "rank": 18,
+      "status": "preparing",
+      "requested_at": "2026-11-03T18:58:09.428973+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "6109385892c0",
+        "revision": 0,
+        "name": "La Policía",
+        "rank": 10,
+        "explanation": "TT#10 La Policía es tendencia por el desalojo de madrugada de la acampada 26S en la Puerta del Sol: la Delegación habla de «último recurso» y el movimiento denuncia golpes y gas pimienta.\n#PuertaDelSol #Acampada26S",
+        "explanation_sha256": "0118155adfd584d2bd0ec18725559d1ca1f8152d330d445392086d716d7ec5b3",
+        "explained_at": "2026-11-03T08:05:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261103/acampada-sol-madrid-desalojo-policia-nacional/17296910.shtml"
+          },
+          {
+            "url": "https://www.europapress.es/madrid/noticia-delegacion-gobierno-justifica-desalojo-acampada-sol-ultimo-recurso-perdida-reivindicativa-20261103061901.html"
+          },
+          {
+            "url": "https://www.europapress.es/sociedad/noticia-acampada-sol-denuncia-desalojo-violento-integrantes-parte-policia-nacional-20261103054454.html"
+          }
+        ],
+        "fingerprint": "bb52cf258d518f080f129ee0559f571adca96205647f5980cacc102eac4e3bb8"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-fd68c1cbd8dc96f91827",
+      "revision": 0,
+      "name": "Revisar novedades: QEPD",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-11-03T18:58:09.428973+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "1a63e1bd818c",
+        "revision": 0,
+        "name": "QEPD",
+        "rank": 12,
+        "explanation": "TT#12 QEPD es tendencia por los mensajes de pésame tras la muerte de Jesús de Miguel, comunicada hoy por el CD Tenerife.\n#CDTenerife #JesúsDeMiguel",
+        "explanation_sha256": "0e51fa645a0421f0d8a53ac7b282140d04167299157c5c77d84239a4f78ca687",
+        "explained_at": "2026-11-03T11:16:30+01:00",
+        "verification_sources": [
+          {
+            "source": "CD Tenerife · 03/11/2026",
+            "url": "https://www.clubdeportivotenerife.es/noticias/comunicado-oficial-fallecimiento-de-jesus-de-miguel"
+          },
+          {
+            "source": "AS · 03/11/2026",
+            "url": "https://as.com/futbol/muere-jesus-de-miguel-f202611-n/"
+          }
+        ],
+        "fingerprint": "168a558ee9a72261eef0cd2db313af4c36b8eeff25454a3ea4a1b5bca108546f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    }
+  ]
 }
