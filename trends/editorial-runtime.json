@@ -3,71 +3,58 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793747657358-manual",
-  "previous_run_id": "tr-1793746489773-manual",
-  "status": "DONE_WITH_INCIDENTS",
+  "run_id": "tr-1793747839940-manual",
+  "previous_run_id": "tr-1793747657358-manual",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-04T00:15:30+01:00",
-  "updated_at": "2026-11-04T00:19:27.736267+01:00",
-  "finished_at": "2026-11-04T00:19:27.736267+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": "red-review-374a862baa2b8625f92b",
-  "title": "Revisar novedades: Simeone",
+  "started_at": "2026-11-04T00:18:00+01:00",
+  "updated_at": "2026-11-04T00:21:04+01:00",
+  "finished_at": "2026-11-04T00:21:04+01:00",
+  "current": 1,
+  "total": 1,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-67fb96527801cf560c29",
     "red-review-374a862baa2b8625f92b"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada 2/2 cerrada por convergencia: Gracias Ministro quedó updated en continuidad y Simeone updated como episodio distinto. Simeone requirió corregir el prefijo exigido por el validador. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "red-review-374a862baa2b8625f92b",
-      "revision": 0,
-      "kind": "validation_format",
-      "resolved": true,
-      "message": "El primer outbox de Simeone usó «es tendencia tras…» con distinct_episode=true; se corrigió el mismo outbox a «es tendencia por…» y el aplicador lo aceptó."
-    }
-  ],
+  "summary": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-67fb96527801cf560c29",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-8230af1954601fc10686"
-    },
-    {
       "id": "red-review-374a862baa2b8625f92b",
       "revision": 0,
+      "name": "Simeone",
       "outcome": "updated",
-      "created_id": "trend-update-35c47da02d21c05a1e59"
+      "applied": true,
+      "distinct_episode": true,
+      "via": "concurrent_maintenance_outbox_applied"
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T00:13:39+01:00",
-  "last_completed_at": "2026-11-04T00:19:27.736267+01:00",
+  "last_started_at": "2026-11-04T00:18:00+01:00",
+  "last_completed_at": "2026-11-04T00:21:04+01:00",
   "last_run": {
-    "run_id": "tr-1793747657358-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-04T00:15:30+01:00",
-    "finished_at": "2026-11-04T00:19:27.736267+01:00",
-    "current": 2,
-    "total": 2,
+    "run_id": "tr-1793747839940-manual",
+    "status": "DONE",
+    "started_at": "2026-11-04T00:18:00+01:00",
+    "finished_at": "2026-11-04T00:21:04+01:00",
+    "current": 1,
+    "total": 1,
     "closed": [
-      "red-review-67fb96527801cf560c29",
       "red-review-374a862baa2b8625f92b"
     ],
     "pending": [],
-    "summary": "Pasada 2/2 cerrada por convergencia: Gracias Ministro quedó updated en continuidad y Simeone updated como episodio distinto. Simeone requirió corregir el prefijo exigido por el validador. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "summary": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada 2/2 cerrada por convergencia: Gracias Ministro quedó updated en continuidad y Simeone updated como episodio distinto. Simeone requirió corregir el prefijo exigido por el validador. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4161,6 +4148,15 @@
       "current": 7,
       "total": 7,
       "message": "Pasada solicitada cerrada 7/7: 5 explicaciones ordinarias + 2 revisiones de novedades absorbidas en convergencia. Simeone requirió una corrección de formato del mismo outbox. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T00:21:04+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793747839940-manual",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "message": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -12120,6 +12116,7 @@
     "tr-1793734298171-manual",
     "tr-autoguard-1793735352",
     "tr-1793744866688-manual",
-    "tr-1793746342613-manual"
+    "tr-1793746342613-manual",
+    "tr-1793747839940-manual"
   ]
 }
