@@ -5,126 +5,211 @@
   "canonical": true,
   "run_id": "tr-1793688203629-manual",
   "previous_run_id": "tr-autoguard-1793688073",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T07:43:23+01:00",
-  "updated_at": "2026-11-03T07:48:40+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 4,
-  "trend_id": "208e7c62062d",
-  "title": "Vamos Demi",
+  "updated_at": "2026-11-03T07:52:17+01:00",
+  "finished_at": "2026-11-03T07:52:17+01:00",
+  "current": 6,
+  "total": 6,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "208e7c62062d",
     "12a5405887d7",
     "c03b4a139272",
-    "97a95c81482a"
+    "97a95c81482a",
+    "red-review-e4d9f7a412008c25a9b5",
+    "red-review-6312dcd669aa8ffe3f74"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 4,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 4,
+    "updates": 2,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-0b91adbac16406d31de8",
+      "id": "208e7c62062d",
       "revision": 0,
-      "name": "Revisar novedades: Aramburu",
-      "outcome": "updated",
+      "name": "Vamos Demi",
+      "outcome": "explained",
       "applied": true,
-      "created_id": "trend-update-f54c1ca75e9efff745ab",
-      "via": "maintenance_outbox_jit",
-      "apply_commit": "a8ec171cd4cc9ec98964bd5e1cd32d5b8f4ac82d",
-      "reason": "Novedad material posterior a la explicación original: el CTA confirmó un ligero desfase de sincronización entre la señal del Connected Ball y el vídeo usado por el VAR; al resincronizar, la señal encaja con el toque de Aramburu al balón."
+      "via": "editorial_outbox_applied",
+      "apply_commit": "92bbc77",
+      "reason": "Ranking verificado; tras búsquedas independientes no se pudo confirmar un detonante concreto y se redactó con incertidumbre explícita."
     },
     {
-      "id": "red-review-ae92bccec617c3faf7b0",
+      "id": "12a5405887d7",
       "revision": 0,
-      "name": "Revisar novedades: Halloween",
-      "outcome": "unchanged",
+      "name": "San Martín de Porres",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox_jit",
-      "apply_commit": "a8ec171cd4cc9ec98964bd5e1cd32d5b8f4ac82d",
-      "reason": "No se verifica una novedad sustancial posterior que cambie la explicación vigente: la cobertura localizada sigue referida a la celebración de Halloween del 31 de octubre, sus fiestas, disfraces y dispositivos asociados. Se conserva el texto y la fecha originales."
+      "via": "editorial_outbox_applied",
+      "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
+      "reason": "Festividad del 3 de noviembre verificada."
+    },
+    {
+      "id": "c03b4a139272",
+      "revision": 0,
+      "name": "La Policía Nacional",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
+      "reason": "Desalojo de la acampada de Sol verificado con versiones atribuidas y sin remate por sensibilidad."
+    },
+    {
+      "id": "97a95c81482a",
+      "revision": 0,
+      "name": "Jesús de Miguel",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
+      "reason": "Reelaboración desde cero con el último parte: empeoramiento neurológico tras el Tenerife-Andorra; sin remate por sensibilidad."
+    },
+    {
+      "id": "red-review-e4d9f7a412008c25a9b5",
+      "revision": 0,
+      "name": "Revisar novedades: Hamilton",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-2541323f2e761e280e00",
+      "via": "this_run_maintenance_outbox",
+      "apply_commit": "8f1a3862840b02b6a21b1223598b2fb10b32a680",
+      "reason": "Resultado final y corrección factual: Hamilton segundo; la sanción de cinco segundos fue para Leclerc."
+    },
+    {
+      "id": "red-review-6312dcd669aa8ffe3f74",
+      "revision": 0,
+      "name": "Revisar novedades: Adif",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-f6412243dc52385afed0",
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "8f1a3862840b02b6a21b1223598b2fb10b32a680",
+      "reason": "La investigación amplió el foco para comprobar si el protocolo erróneo tras fallos del LZB se usó en incidencias anteriores."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T07:48:40+01:00",
-  "last_completed_at": "2026-11-03T07:48:40+01:00",
+  "last_completed_at": "2026-11-03T07:52:17+01:00",
   "last_run": {
-    "run_id": "tr-1793678744665-manual",
-    "command_id": "tr-1793678744665-manual",
+    "run_id": "tr-1793688203629-manual",
+    "command_id": "tr-1793688203629-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T05:05:44.665+01:00",
-    "finished_at": "2026-11-03T05:11:21+01:00",
+    "started_at": "2026-11-03T07:43:23+01:00",
+    "finished_at": "2026-11-03T07:52:17+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "updates": 1,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 4,
+      "updates": 2,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 1,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
     "outcomes": [
       {
-        "id": "red-review-0b91adbac16406d31de8",
+        "id": "208e7c62062d",
         "revision": 0,
-        "name": "Revisar novedades: Aramburu",
-        "outcome": "updated",
+        "name": "Vamos Demi",
+        "outcome": "explained",
         "applied": true,
-        "created_id": "trend-update-f54c1ca75e9efff745ab",
-        "via": "maintenance_outbox_jit",
-        "apply_commit": "a8ec171cd4cc9ec98964bd5e1cd32d5b8f4ac82d",
-        "reason": "Novedad material posterior a la explicación original: el CTA confirmó un ligero desfase de sincronización entre la señal del Connected Ball y el vídeo usado por el VAR; al resincronizar, la señal encaja con el toque de Aramburu al balón."
+        "via": "editorial_outbox_applied",
+        "apply_commit": "92bbc77",
+        "reason": "Ranking verificado; tras búsquedas independientes no se pudo confirmar un detonante concreto y se redactó con incertidumbre explícita."
       },
       {
-        "id": "red-review-ae92bccec617c3faf7b0",
+        "id": "12a5405887d7",
         "revision": 0,
-        "name": "Revisar novedades: Halloween",
-        "outcome": "unchanged",
+        "name": "San Martín de Porres",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox_jit",
-        "apply_commit": "a8ec171cd4cc9ec98964bd5e1cd32d5b8f4ac82d",
-        "reason": "No se verifica una novedad sustancial posterior que cambie la explicación vigente: la cobertura localizada sigue referida a la celebración de Halloween del 31 de octubre, sus fiestas, disfraces y dispositivos asociados. Se conserva el texto y la fecha originales."
+        "via": "editorial_outbox_applied",
+        "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
+        "reason": "Festividad del 3 de noviembre verificada."
+      },
+      {
+        "id": "c03b4a139272",
+        "revision": 0,
+        "name": "La Policía Nacional",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
+        "reason": "Desalojo de la acampada de Sol verificado con versiones atribuidas y sin remate por sensibilidad."
+      },
+      {
+        "id": "97a95c81482a",
+        "revision": 0,
+        "name": "Jesús de Miguel",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
+        "reason": "Reelaboración desde cero con el último parte: empeoramiento neurológico tras el Tenerife-Andorra; sin remate por sensibilidad."
+      },
+      {
+        "id": "red-review-e4d9f7a412008c25a9b5",
+        "revision": 0,
+        "name": "Revisar novedades: Hamilton",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-2541323f2e761e280e00",
+        "via": "this_run_maintenance_outbox",
+        "apply_commit": "8f1a3862840b02b6a21b1223598b2fb10b32a680",
+        "reason": "Resultado final y corrección factual: Hamilton segundo; la sanción de cinco segundos fue para Leclerc."
+      },
+      {
+        "id": "red-review-6312dcd669aa8ffe3f74",
+        "revision": 0,
+        "name": "Revisar novedades: Adif",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-f6412243dc52385afed0",
+        "via": "concurrent_convergence_jit",
+        "apply_commit": "8f1a3862840b02b6a21b1223598b2fb10b32a680",
+        "reason": "La investigación amplió el foco para comprobar si el protocolo erróneo tras fallos del LZB se usó en incidencias anteriores."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793678744665-manual cerrada 2/2: Aramburu updated por el desfase de sincronización confirmado por el CTA en la acción del penalti; Halloween unchanged y conserva texto/fecha. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio manual: 4 trabajos preparing vigentes en main (Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel), por antigüedad y con validación JIT. La ejecución manual posterior absorbe la cola; sin ImageGen ni publicación.",
+  "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1280,6 +1365,15 @@
       "trend_id": "208e7c62062d",
       "title": "Vamos Demi",
       "message": "Inicio manual: 4 trabajos preparing vigentes en main (Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel), por antigüedad y con validación JIT. La ejecución manual posterior absorbe la cola; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T07:52:17+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793688203629-manual",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
     }
   ],
   "history": [
@@ -5790,6 +5884,15 @@
       "trend_id": "208e7c62062d",
       "title": "Vamos Demi",
       "message": "Inicio: 3 investigaciones preparing vigentes en main (Vamos Demi, San Martín de Porres y La Policía Nacional), por antigüedad y con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T07:52:17+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793688203629-manual",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
     }
   ]
 }
