@@ -1048,14 +1048,49 @@ final class EditorialStore: ObservableObject {
         for operation in operationHistory where operation.isOutstanding {
             let age = Date().timeIntervalSince(operation.createdAt)
             guard age >= EditorialPendingPolicy.archivalAge else { continue }
-            // A receipt for this exact request ID takes precedence. Even a
-            // previously unknown status or mismatch must not be hidden.
-            let hasReceipt = operation.requestID.map { id in
-                receipts.contains { Self.str($0, "request_id") == id }
-            } ?? false
-            guard !hasReceipt else { continue }
+            // For current builds require the exact request UUID. Legacy
+            // records lacked a UUID: look for the same project/item/revision/
+            // action after the local timestamp, but do not attribute success
+            // to that original request without an exact receipt.
+            let identity = operationIdentity(operation)
+            let hasReceipt = receipts.contains { row in
+                if let requestID = operation.requestID, !requestID.isEmpty {
+                    return Self.str(row, "request_id") == requestID
+                }
+                guard let identity else { return false }
+                return Self.str(row, "project") == identity.project &&
+                    Self.str(row, "event_id") == identity.eventID &&
+                    Self.int(row, "revision") == identity.revision &&
+                    Self.str(row, "decision") == operation.kind &&
+                    (Self.when(row, ["at"]) ?? .distantPast) >=
+                        operation.createdAt.addingTimeInterval(-180)
+            }
+            if hasReceipt {
+                if operation.requestID == nil, let identity,
+                   let later = receipts.first(where: { row in
+                       Self.str(row, "project") == identity.project &&
+                       Self.str(row, "event_id") == identity.eventID &&
+                       Self.int(row, "revision") == identity.revision &&
+                       Self.str(row, "decision") == operation.kind &&
+                       ["applied", "already_applied"].contains(
+                           Self.str(row, "status").lowercased()) &&
+                       (Self.when(row, ["at"]) ?? .distantPast) >=
+                           operation.createdAt.addingTimeInterval(-180)
+                   }) {
+                    recordOperation(
+                        id: operation.id, title: operation.title, kind: operation.kind,
+                        status: "Retirada", requestID: Self.str(later, "request_id"),
+                        project: identity.project, eventID: identity.eventID,
+                        revision: identity.revision,
+                        detail: "Existe una acción posterior equivalente confirmada. La identidad de la solicitud antigua no permite atribuirle ejecución.")
+                    activeEditorialActions.removeValue(forKey: operation.id)
+                }
+                // A known exact UUID with mismatched receipt fields needs
+                // manual review, never automatic expiry or re-dispatch.
+                continue
+            }
 
-            guard let identity = operationIdentity(operation) else {
+            guard let identity else {
                 // Legacy rows without even an editorial identity cannot be
                 // matched to a source; retain them in transparent audit.
                 guard age >= EditorialPendingPolicy.unidentifiedAge,
