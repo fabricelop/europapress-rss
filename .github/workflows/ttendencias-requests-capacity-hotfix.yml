@@ -29,7 +29,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: ttendencias-lossless-requests-formatting
+  group: ${{ github.event_name == 'pull_request' && format('ttendencias-requests-ci-{0}', github.event.pull_request.number) || 'ttendencias-lossless-requests-formatting' }}
   cancel-in-progress: false
 jobs:
   validate:
