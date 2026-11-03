@@ -569,6 +569,12 @@ final class EditorialStore: ObservableObject {
                 docs["pilot/ttactualidad-publication-events.json"] : nil,
             receipts: downloaded["pilot/ttactualidad-action-receipts.json"] != nil ?
                 docs["pilot/ttactualidad-action-receipts.json"] : nil)
+        // Reconcile decisive GitHub receipts even when one of the other 13
+        // large documents failed to download. No new acceptance is inferred.
+        if downloaded["pilot/ttactualidad-action-receipts.json"] != nil,
+           let exactReceipts = docs["pilot/ttactualidad-action-receipts.json"] {
+            reconcileDefinitiveReceipts(exactReceipts)
+        }
         // Never turn a temporary network error into false zeros in the Live Activity.
         guard docs["ttittulares/prepared.json"] != nil,
               docs["ttittulares/decisions.json"] != nil,
@@ -858,6 +864,43 @@ final class EditorialStore: ObservableObject {
         let id = String(raw[raw.index(after: prefix)..<revisionMark.lowerBound])
         guard !id.isEmpty else { return nil }
         return (project, id, revision)
+    }
+
+    // A complete radar/listas snapshot is not necessary to resolve an exact
+    // already-written GitHub action receipt. This prevents stale local
+    // "Órdenes por confirmar" after partial GitHub downloads.
+    private func reconcileDefinitiveReceipts(_ document: [String: Any]) {
+        let receipts = Self.rows(document, "items")
+        for operation in operationHistory where operation.isOutstanding {
+            guard let identity = operationIdentity(operation),
+                  let requestID = operation.requestID, !requestID.isEmpty,
+                  !["Nueva noticia", "De tendencia a noticia"].contains(operation.kind)
+            else { continue }
+            var stage: String?
+            for receipt in receipts.reversed() {
+                if let verified = EditorialReceiptPolicy.resolution(
+                    project: identity.project, eventID: identity.eventID,
+                    revision: identity.revision, decision: operation.kind,
+                    requestID: requestID, receipt: receipt) {
+                    stage = verified
+                    break
+                }
+            }
+            guard let stage else { continue }
+            recordOperation(id: operation.id, title: operation.title,
+                            kind: operation.kind, status: stage, requestID: requestID,
+                            project: identity.project, eventID: identity.eventID,
+                            revision: identity.revision,
+                            detail: stage == "Rechazada" ?
+                                "GitHub confirma que esta orden fue rechazada." :
+                                "Comprobante exacto confirmado en GitHub.")
+            if stage == "Rechazada" || stage == "Confirmada" {
+                activeEditorialActions.removeValue(forKey: operation.id)
+            } else if var action = activeEditorialActions[operation.id] {
+                action.phase = .confirmed
+                activeEditorialActions[operation.id] = action
+            }
+        }
     }
 
     private func reconcileOperationHistory(receipts: [String: Any],
