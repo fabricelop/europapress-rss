@@ -6,12 +6,12 @@
   "run_id": "tr-1793694895596-manual",
   "previous_run_id": "tr-1793694655913-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T09:35:40+01:00",
-  "updated_at": "2026-11-03T09:35:40+01:00",
+  "updated_at": "2026-11-03T09:38:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
+  "current": 1,
+  "total": 2,
   "trend_id": "e5dcf278abcf",
   "title": "Mantilla",
   "queue_complete": false,
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "red-review-bd3b564c5b7eb04ccd20",
@@ -122,7 +122,7 @@
     "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793694895596-manual: #Buenosdías r0 ya está siendo absorbida por la ejecución concurrente anterior; queda Mantilla r0 vigente en main. Revalidación JIT antes de investigar y persistir; ImageGen=0.",
+  "message": "Persistiendo Mantilla r0 mediante editorial-outbox; ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1526,6 +1526,61 @@
       "trend_id": "e5dcf278abcf",
       "title": "Mantilla",
       "message": "Inicio tr-1793694895596-manual: #Buenosdías r0 ya está siendo absorbida por la ejecución concurrente anterior; queda Mantilla r0 vigente en main. Revalidación JIT antes de investigar y persistir; ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T09:35:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 2,
+      "trend_id": "22a5b74e73c8",
+      "title": "#Buenosdías",
+      "message": "#Buenosdías r0 verificado en commit a9816385: request y ficha Listas coinciden y la revisión salió de la cola."
+    },
+    {
+      "at": "2026-11-03T09:36:30+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 2,
+      "trend_id": "e5dcf278abcf",
+      "title": "Mantilla",
+      "message": "Investigando Mantilla r0: Racing y Europa Press confirman rotura del LCA derecho ante el Real Madrid y próxima operación."
+    },
+    {
+      "at": "2026-11-03T09:37:20+01:00",
+      "phase": "drafting",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 2,
+      "trend_id": "e5dcf278abcf",
+      "title": "Mantilla",
+      "message": "Texto factual preparado; se omite remate por tratarse de una lesión grave."
+    },
+    {
+      "at": "2026-11-03T09:37:30+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 2,
+      "trend_id": "e5dcf278abcf",
+      "title": "Mantilla",
+      "message": "Remate omitido por sensibilidad; closer_text vacío conforme al contrato."
+    },
+    {
+      "at": "2026-11-03T09:38:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 2,
+      "trend_id": "e5dcf278abcf",
+      "title": "Mantilla",
+      "message": "Persistiendo Mantilla r0 mediante editorial-outbox; ImageGen=0."
     }
   ],
   "history": [
