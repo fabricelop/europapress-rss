@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793689327846-manual",
-  "previous_run_id": "tr-1793688569006-manual",
-  "status": "running",
-  "phase": "investigating",
-  "started_at": "2026-11-03T08:02:07.846+01:00",
-  "updated_at": "2026-11-03T08:12:00+01:00",
+  "run_id": "tr-1793689605241-manual",
+  "previous_run_id": "tr-1793689327846-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T08:07:00+01:00",
+  "updated_at": "2026-11-03T08:07:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 4,
+  "current": 0,
+  "total": 2,
   "trend_id": "red-review-f0796a0cf9b6cf9a49a9",
   "title": "Revisar novedades: Diomande",
   "queue_complete": false,
-  "processed_ids": [
-    "7fff6a1ec2a6"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "red-review-f0796a0cf9b6cf9a49a9",
     "red-review-19e62b87b798ca9f89df"
@@ -29,7 +27,7 @@
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -43,7 +41,7 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -186,7 +184,7 @@
     "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
   },
   "source": "chat",
-  "message": "Revisando novedades JIT: Revisar novedades: Diomande r0. Sin ImageGen ni publicación.",
+  "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), por antigüedad y con validación JIT antes de investigar/persistir. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1435,6 +1433,17 @@
       "trend_id": "red-review-f0796a0cf9b6cf9a49a9",
       "title": "Revisar novedades: Diomande",
       "message": "Revisando novedades JIT: Revisar novedades: Diomande r0. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T08:07:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793689605241-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-f0796a0cf9b6cf9a49a9",
+      "title": "Revisar novedades: Diomande",
+      "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), por antigüedad y con validación JIT antes de investigar/persistir. Sin ImageGen ni publicación."
     }
   ],
   "history": [
