@@ -3,31 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793744548832-manual",
-  "previous_run_id": "tr-1793743726792-manual",
+  "run_id": "tr-1793744747504-manual",
+  "previous_run_id": "tr-1793744548832-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-03T23:23:00+01:00",
-  "updated_at": "2026-11-03T23:23:00+01:00",
+  "started_at": "2026-11-03T23:26:00+01:00",
+  "updated_at": "2026-11-03T23:26:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
+  "total": 2,
   "trend_id": "red-review-b1e5a814997a025e46f2",
   "title": "Revisar novedades: Mazón",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
     "red-review-b1e5a814997a025e46f2",
-    "red-review-8d63523a1fb9a2a698e2",
     "41baa9afe047"
   ],
   "remaining_active_ids": [
     "red-review-b1e5a814997a025e46f2",
-    "red-review-8d63523a1fb9a2a698e2",
     "41baa9afe047"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Inicio: 3 trabajos preparing/update vigentes en main; 2 revisiones de novedades y 1 reelaboración directa. Validación JIT por id+revision; ImageGen=0; publicaciones=0.",
+  "summary": "Inicio: 2 trabajos preparing/update vigentes en main; Mazón review_red r0 y Óscar Puente r0. Orden por antigüedad, validación JIT; ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -92,7 +90,7 @@
     "summary": "8/8 resueltos por barrera JIT: 6 revisiones explained y sincronizadas en requests/Listas; Lookman r0 y Patxi r0 quedaron terminales deleted antes de persistir. Cola final 0; preparando/update/rewrite_pending final 0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio: 3 trabajos preparing/update vigentes en main; 2 revisiones de novedades y 1 reelaboración directa. Validación JIT por id+revision; ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 2 trabajos preparing/update vigentes en main; Mazón review_red r0 y Óscar Puente r0. Orden por antigüedad, validación JIT; ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3804,6 +3802,17 @@
       "trend_id": "red-review-b1e5a814997a025e46f2",
       "title": "Revisar novedades: Mazón",
       "message": "Inicio: 3 trabajos preparing/update vigentes en main; 2 revisiones de novedades y 1 reelaboración directa. Validación JIT por id+revision; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T23:26:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793744747504-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-b1e5a814997a025e46f2",
+      "title": "Revisar novedades: Mazón",
+      "message": "Inicio: 2 trabajos preparing/update vigentes en main; Mazón review_red r0 y Óscar Puente r0. Orden por antigüedad, validación JIT; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
