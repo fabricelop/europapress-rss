@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 
 from reconcile_prepared_ready import reconcile_prepared_ready
 from anticipation import sync as sync_anticipation, metrics as anticipation_metrics
+from requests_json import dumps_for_path
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
@@ -20,7 +21,7 @@ def load(name, default):
         return default
 
 def save(name, obj):
-    (ROOT / name).write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (ROOT / name).write_text(dumps_for_path(name, obj), encoding="utf-8")
 
 def norm(value):
     text = unicodedata.normalize("NFD", str(value or ""))

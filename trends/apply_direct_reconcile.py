@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from requests_json import dumps_for_path
 
 ROOT = Path(__file__).resolve().parent.parent
 TRENDS = ROOT / "trends"
@@ -21,7 +22,7 @@ def load(path, default):
 
 
 def save(path, obj):
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(dumps_for_path(path, obj), encoding="utf-8")
 
 
 def request_for(requests, item_id, revision):

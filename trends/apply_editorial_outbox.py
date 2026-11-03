@@ -8,6 +8,7 @@ import unicodedata
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from requests_json import dumps_for_path
 
 ROOT = Path(__file__).resolve().parent.parent
 TRENDS = ROOT / "trends"
@@ -23,7 +24,7 @@ def load(path: Path, default):
         return default
 
 def save(path: Path, obj):
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(dumps_for_path(path, obj), encoding="utf-8")
 
 def norm(value):
     text = unicodedata.normalize("NFD", str(value or ""))
