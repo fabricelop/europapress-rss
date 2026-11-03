@@ -5,166 +5,105 @@
   "canonical": true,
   "run_id": "tr-1793739489427-manual",
   "previous_run_id": "tr-autoguard-1793737610",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T20:59:11.302Z",
-  "updated_at": "2026-11-03T21:00:30.045Z",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-03T21:02:43.563Z",
+  "finished_at": "2026-11-03T21:02:43.563Z",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-47f15fd9beb8f34c4726",
-  "title": "Revisar novedades: Jesús de Miguel",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-ee597c1e01b0fd4cfc7e",
     "red-review-47f15fd9beb8f34c4726"
   ],
-  "remaining_active_ids": [
-    "red-review-ee597c1e01b0fd4cfc7e",
-    "red-review-47f15fd9beb8f34c4726"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "652f65e6db28",
+      "id": "red-review-ee597c1e01b0fd4cfc7e",
       "revision": 0,
-      "name": "Martorell",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "f0644ac471e0",
-      "revision": 0,
-      "name": "Ester Muñoz",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "234685b89a93",
-      "revision": 0,
-      "name": "TeleAyuso",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "3d2bfcd082db",
-      "revision": 0,
-      "name": "#LaPromesa",
-      "outcome": "terminal_deleted",
+      "name": "Revisar novedades: Puerta del Sol",
+      "outcome": "unchanged",
       "applied": true,
-      "reason": "Decisión terminal deleted r1 posterior; r0 retirada de la cola y protegida contra resurrección."
+      "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
+      "source_id": "4b85f530992d",
+      "reason": "Sin novedad material; texto y fecha originales conservados."
     },
     {
-      "id": "e573493d55f2",
+      "id": "red-review-47f15fd9beb8f34c4726",
       "revision": 0,
-      "name": "#ChampionsLeague",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "62ccad1f247f",
-      "revision": 0,
-      "name": "Audiencia Nacional",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "bbee254182fe",
-      "revision": 0,
-      "name": "Mitya",
-      "outcome": "explained",
-      "applied": true
+      "name": "Revisar novedades: Jesús de Miguel",
+      "outcome": "updated",
+      "applied": true,
+      "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
+      "source_id": "ca4337605844",
+      "created_id": "trend-update-5beed5401b51fc0e13a5",
+      "reason": "Novedad material: investigación de Homicidios y judicialización del caso; la RFEF amplió a tres días la suspensión de sus competiciones."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T21:37:51+01:00",
-  "last_completed_at": "2026-11-03T21:44:54.000+01:00",
+  "last_started_at": "2026-11-03T20:59:11.302Z",
+  "last_completed_at": "2026-11-03T21:02:43.563Z",
   "last_run": {
-    "run_id": "tr-autoguard-1793737610",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-03T21:27:00+01:00",
-    "finished_at": "2026-11-03T21:44:54.000+01:00",
-    "current": 7,
-    "total": 7,
+    "run_id": "tr-1793739489427-manual",
+    "status": "DONE",
+    "started_at": "2026-11-03T20:59:11.302Z",
+    "finished_at": "2026-11-03T21:02:43.563Z",
+    "current": 2,
+    "total": 2,
     "closed": [
       {
-        "id": "652f65e6db28",
+        "id": "red-review-ee597c1e01b0fd4cfc7e",
         "revision": 0,
-        "name": "Martorell",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "f0644ac471e0",
-        "revision": 0,
-        "name": "Ester Muñoz",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "234685b89a93",
-        "revision": 0,
-        "name": "TeleAyuso",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "3d2bfcd082db",
-        "revision": 0,
-        "name": "#LaPromesa",
-        "outcome": "terminal_deleted",
+        "name": "Revisar novedades: Puerta del Sol",
+        "outcome": "unchanged",
         "applied": true,
-        "reason": "Decisión terminal deleted r1 posterior; r0 retirada de la cola y protegida contra resurrección."
+        "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
+        "source_id": "4b85f530992d",
+        "reason": "Sin novedad material; texto y fecha originales conservados."
       },
       {
-        "id": "e573493d55f2",
+        "id": "red-review-47f15fd9beb8f34c4726",
         "revision": 0,
-        "name": "#ChampionsLeague",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "62ccad1f247f",
-        "revision": 0,
-        "name": "Audiencia Nacional",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "bbee254182fe",
-        "revision": 0,
-        "name": "Mitya",
-        "outcome": "explained",
-        "applied": true
+        "name": "Revisar novedades: Jesús de Miguel",
+        "outcome": "updated",
+        "applied": true,
+        "apply_commit": "33f52ac30a14b4343d2060a3c0df4a0a25d98025",
+        "source_id": "ca4337605844",
+        "created_id": "trend-update-5beed5401b51fc0e13a5",
+        "reason": "Novedad material: investigación de Homicidios y judicialización del caso; la RFEF amplió a tres días la suspensión de sus competiciones."
       }
     ],
-    "summary": "Pasada tr-autoguard-1793737610 cerrada 7/7: 6 explicaciones sincronizadas en requests y Listas (Martorell, Ester Muñoz, TeleAyuso, #ChampionsLeague, Audiencia Nacional y Mitya); #LaPromesa r0 no se resucitó por existir deleted r1 y se corrigió la protección terminal para evitar reinserciones. Barrera: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "summary": "Pasada tr-1793739489427-manual cerrada 2/2: Puerta del Sol review_completed/unchanged y Jesús de Miguel review_completed/updated con nueva ficha trend-update-5beed5401b51fc0e13a5. Aplicación confirmada en 33f52ac30a14b4343d2060a3c0df4a0a25d98025. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Jesús de Miguel r0 revalidada JIT. Novedad material del mismo episodio: Homicidios investiga el fallecimiento y el caso está judicializado; la RFEF amplió a tres días la suspensión de sus competiciones. Persistiendo updated, sin remate por sensibilidad.",
+  "message": "Pasada tr-1793739489427-manual cerrada 2/2: Puerta del Sol review_completed/unchanged y Jesús de Miguel review_completed/updated con nueva ficha trend-update-5beed5401b51fc0e13a5. Aplicación confirmada en 33f52ac30a14b4343d2060a3c0df4a0a25d98025. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3756,6 +3695,28 @@
       "trend_id": "red-review-47f15fd9beb8f34c4726",
       "title": "Revisar novedades: Jesús de Miguel",
       "message": "Jesús de Miguel r0 revalidada JIT. Novedad material del mismo episodio: Homicidios investiga el fallecimiento y el caso está judicializado; la RFEF amplió a tres días la suspensión de sus competiciones. Persistiendo updated, sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-03T21:02:43.563Z",
+      "phase": "verifying",
+      "run_id": "tr-1793739489427-manual",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT verificada: editorial-queue=0; rewrite_pending/reexplain=0. Puerta del Sol unchanged y Jesús de Miguel updated aplicados en 33f52ac30a14b4343d2060a3c0df4a0a25d98025."
+    },
+    {
+      "at": "2026-11-03T21:02:43.563Z",
+      "phase": "closing",
+      "run_id": "tr-1793739489427-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-1793739489427-manual cerrada 2/2: Puerta del Sol review_completed/unchanged y Jesús de Miguel review_completed/updated con nueva ficha trend-update-5beed5401b51fc0e13a5. Aplicación confirmada en 33f52ac30a14b4343d2060a3c0df4a0a25d98025. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
