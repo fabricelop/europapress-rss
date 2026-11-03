@@ -260,6 +260,26 @@ final class EditorialStore: ObservableObject {
     var outstandingOperations: [EditorialOperation] {
         operationHistory.filter(\.isOutstanding)
     }
+    var pendingOperationsDiagnostic: String {
+        let formatter = ISO8601DateFormatter()
+        let records = outstandingOperations.map { operation in
+            let identity = operationIdentity(operation)
+            return [
+                "fecha=" + formatter.string(from: operation.createdAt),
+                "proyecto=" + (identity?.project ?? operation.project ?? "?"),
+                "id=" + (identity?.eventID ?? operation.eventID ?? operation.id),
+                "revision=" + (identity.map { String($0.revision) } ?? "?"),
+                "accion=" + operation.kind, "estado=" + operation.status,
+                "request_id=" + (operation.requestID ?? "sin-identificador")
+            ].joined(separator: " | ")
+        }
+        return ([
+            "TTActualidad diagnóstico de órdenes (sin credenciales)",
+            "Pendientes: \(pendingOperationsCount)",
+            reconciliationSummary.isEmpty ?
+                "Sin conciliación iniciada en esta sesión" : reconciliationSummary
+        ] + records).joined(separator: "\n")
+    }
     var recentOperations: [EditorialOperation] {
         Array(operationHistory.filter { !$0.isOutstanding }.prefix(5))
     }
