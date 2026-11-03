@@ -3,23 +3,25 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793707561725-manual",
-  "previous_run_id": "tr-1793707164713-manual",
-  "status": "success",
+  "run_id": "tr-1793707968204-manual",
+  "previous_run_id": "tr-1793707561725-manual",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-03T13:07:00+01:00",
-  "updated_at": "2026-11-03T13:13:53+01:00",
+  "started_at": "2026-11-03T13:14:00+01:00",
+  "updated_at": "2026-11-03T13:14:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 6,
-  "trend_id": "a802ef44d342",
-  "title": "#Mañaneros3N",
-  "queue_complete": true,
-  "processed_ids": [
+  "total": 1,
+  "trend_id": "d13ad0099067",
+  "title": "Heliodoro",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
     "d13ad0099067"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "d13ad0099067"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "incident_count": 0,
@@ -28,7 +30,7 @@
   "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T13:13:52+01:00",
+  "last_started_at": "2026-11-03T13:14:00+01:00",
   "last_completed_at": "2026-11-03T13:13:53+01:00",
   "last_run": {
     "run_id": "tr-1793705511806-manual",
@@ -75,7 +77,7 @@
     "converged_with": "tr-autoguard-1793704864"
   },
   "source": "chat",
-  "message": "Inicio JIT: 5 investigaciones ordinarias y 1 revisión review_red vigentes en main. Primero investigaciones nuevas por orden de cola; después #FelizMartes. Sin ImageGen ni publicación.",
+  "message": "Inicio JIT: Heliodoro d13ad0099067 r0 es el único preparing/update vigente observado en main. Investigación desde cero del contexto actual, marcador y fecha; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1957,6 +1959,17 @@
       "trend_id": "a802ef44d342",
       "title": "#Mañaneros3N",
       "message": "Inicio JIT: 5 investigaciones ordinarias y 1 revisión review_red vigentes en main. Primero investigaciones nuevas por orden de cola; después #FelizMartes. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T13:14:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793707968204-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "d13ad0099067",
+      "title": "Heliodoro",
+      "message": "Inicio JIT: Heliodoro d13ad0099067 r0 es el único preparing/update vigente observado en main. Investigación desde cero del contexto actual, marcador y fecha; sin ImageGen ni publicación."
     }
   ],
   "history": [
