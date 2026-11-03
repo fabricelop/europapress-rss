@@ -1874,6 +1874,15 @@
       "trend_id": "red-review-f1fadc7c92bc5acac655",
       "title": "Revisar novedades: La RFEF",
       "message": "Revisando novedades: La RFEF r0. Detectado episodio distinto y posterior: la RFEF ha suspendido los partidos de Copa del Rey y Copa de la Reina del 3 de noviembre tras el fallecimiento de Jesús de Miguel."
+    },
+    {
+      "at": "2026-11-03T11:48:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793702191137-manual",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada tr-1793702191137-manual cerrada por convergencia 6/6: Andorra, Tinerfeña, Silvia Intxaurrondo y Que Dios explicadas; #AccidenteFerroviario cerrada stale sin duplicar; La RFEF actualizada como episodio distinto por la pasada concurrente más nueva. Barrera final main: editorial-queue=0, preparing/update=0 y sin rewrite_pending localizado. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3977,6 +3986,96 @@
       "incidents": [],
       "message": "Pasada tr-1793697150072-manual cerrada 3/3 por convergencia JIT: #GMMTVNEXT y Muchísima ya quedaron explained y Racing review_completed/unchanged en la ejecución concurrente; no se duplicó ninguna escritura. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T10:17:00+01:00"
+    },
+    {
+      "run_id": "tr-1793702191137-manual",
+      "command_id": "tr-1793702191137-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T11:36:31+01:00",
+      "finished_at": "2026-11-03T11:48:30+01:00",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 4,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "234205959012",
+          "revision": 0,
+          "name": "Andorra",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18a9ad8635918a77d6d73bc7dd98a55f033efc98"
+        },
+        {
+          "id": "f9afae6ceb1f",
+          "revision": 0,
+          "name": "Tinerfeña",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "026a3977ac74",
+          "revision": 0,
+          "name": "Silvia Intxaurrondo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "2517c2998d33",
+          "revision": 0,
+          "name": "Que Dios",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "red-review-ca984f801cd012b43bd9",
+          "revision": 0,
+          "name": "Revisar novedades: #AccidenteFerroviario",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "863465750d3ca2ca1fadb7b4bcee7f6461faa774",
+          "reason": "El snapshot quedó superado por estado posterior; no se duplicó una actualización."
+        },
+        {
+          "id": "red-review-f1fadc7c92bc5acac655",
+          "revision": 0,
+          "name": "Revisar novedades: La RFEF",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "b52ac84444688a2a5808bc6f0b924db6d59450d7",
+          "converged_with": "tr-1793702646001-manual",
+          "reason": "Episodio distinto del 03/11: suspensión de Copa del Rey y Copa de la Reina tras el fallecimiento de Jesús de Miguel."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793702191137-manual cerrada por convergencia 6/6: Andorra, Tinerfeña, Silvia Intxaurrondo y Que Dios explicadas; #AccidenteFerroviario cerrada stale sin duplicar; La RFEF actualizada como episodio distinto por la pasada concurrente más nueva. Barrera final main: editorial-queue=0, preparing/update=0 y sin rewrite_pending localizado. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T11:48:30+01:00",
+      "converged_with": "tr-1793702646001-manual"
     }
   ],
   "partial": false,
@@ -6182,6 +6281,96 @@
       "message": "Pasada tr-1793698723967-manual cerrada 3/3: Descanse explicada; Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793699033179-manual conserva la propiedad canónica del RUNTRACE.",
       "at": "2026-11-03T10:50:00+01:00",
       "converged_with": "tr-1793699033179-manual"
+    },
+    {
+      "run_id": "tr-1793702191137-manual",
+      "command_id": "tr-1793702191137-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T11:36:31+01:00",
+      "finished_at": "2026-11-03T11:48:30+01:00",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 4,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "234205959012",
+          "revision": 0,
+          "name": "Andorra",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18a9ad8635918a77d6d73bc7dd98a55f033efc98"
+        },
+        {
+          "id": "f9afae6ceb1f",
+          "revision": 0,
+          "name": "Tinerfeña",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "026a3977ac74",
+          "revision": 0,
+          "name": "Silvia Intxaurrondo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "2517c2998d33",
+          "revision": 0,
+          "name": "Que Dios",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "red-review-ca984f801cd012b43bd9",
+          "revision": 0,
+          "name": "Revisar novedades: #AccidenteFerroviario",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "863465750d3ca2ca1fadb7b4bcee7f6461faa774",
+          "reason": "El snapshot quedó superado por estado posterior; no se duplicó una actualización."
+        },
+        {
+          "id": "red-review-f1fadc7c92bc5acac655",
+          "revision": 0,
+          "name": "Revisar novedades: La RFEF",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "b52ac84444688a2a5808bc6f0b924db6d59450d7",
+          "converged_with": "tr-1793702646001-manual",
+          "reason": "Episodio distinto del 03/11: suspensión de Copa del Rey y Copa de la Reina tras el fallecimiento de Jesús de Miguel."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793702191137-manual cerrada por convergencia 6/6: Andorra, Tinerfeña, Silvia Intxaurrondo y Que Dios explicadas; #AccidenteFerroviario cerrada stale sin duplicar; La RFEF actualizada como episodio distinto por la pasada concurrente más nueva. Barrera final main: editorial-queue=0, preparing/update=0 y sin rewrite_pending localizado. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T11:48:30+01:00",
+      "converged_with": "tr-1793702646001-manual"
     }
   ],
   "command_id": "tr-1793702191137-manual",
@@ -7506,6 +7695,96 @@
       "message": "Pasada tr-1793698723967-manual cerrada 3/3: Descanse explicada; Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793699033179-manual conserva la propiedad canónica del RUNTRACE.",
       "at": "2026-11-03T10:50:00+01:00",
       "converged_with": "tr-1793699033179-manual"
+    },
+    {
+      "run_id": "tr-1793702191137-manual",
+      "command_id": "tr-1793702191137-manual",
+      "canonical": false,
+      "status": "DONE",
+      "started_at": "2026-11-03T11:36:31+01:00",
+      "finished_at": "2026-11-03T11:48:30+01:00",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 4,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "outcomes": [
+        {
+          "id": "234205959012",
+          "revision": 0,
+          "name": "Andorra",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "18a9ad8635918a77d6d73bc7dd98a55f033efc98"
+        },
+        {
+          "id": "f9afae6ceb1f",
+          "revision": 0,
+          "name": "Tinerfeña",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "026a3977ac74",
+          "revision": 0,
+          "name": "Silvia Intxaurrondo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "2517c2998d33",
+          "revision": 0,
+          "name": "Que Dios",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "d1af16b22042ef33cdc5413a922c63df368e0f4e"
+        },
+        {
+          "id": "red-review-ca984f801cd012b43bd9",
+          "revision": 0,
+          "name": "Revisar novedades: #AccidenteFerroviario",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_applied",
+          "apply_commit": "863465750d3ca2ca1fadb7b4bcee7f6461faa774",
+          "reason": "El snapshot quedó superado por estado posterior; no se duplicó una actualización."
+        },
+        {
+          "id": "red-review-f1fadc7c92bc5acac655",
+          "revision": 0,
+          "name": "Revisar novedades: La RFEF",
+          "outcome": "updated",
+          "applied": true,
+          "via": "concurrent_convergence_jit",
+          "apply_commit": "b52ac84444688a2a5808bc6f0b924db6d59450d7",
+          "converged_with": "tr-1793702646001-manual",
+          "reason": "Episodio distinto del 03/11: suspensión de Copa del Rey y Copa de la Reina tras el fallecimiento de Jesús de Miguel."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1793702191137-manual cerrada por convergencia 6/6: Andorra, Tinerfeña, Silvia Intxaurrondo y Que Dios explicadas; #AccidenteFerroviario cerrada stale sin duplicar; La RFEF actualizada como episodio distinto por la pasada concurrente más nueva. Barrera final main: editorial-queue=0, preparing/update=0 y sin rewrite_pending localizado. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T11:48:30+01:00",
+      "converged_with": "tr-1793702646001-manual"
     }
   ],
   "activity_log": [
@@ -7960,6 +8239,15 @@
       "trend_id": "234205959012",
       "title": "Andorra",
       "message": "Inicio JIT: Andorra r0 sigue preparing en main. Investigación desde cero del contexto actual, fecha y marcador; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T11:48:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793702191137-manual",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada tr-1793702191137-manual cerrada por convergencia 6/6: Andorra, Tinerfeña, Silvia Intxaurrondo y Que Dios explicadas; #AccidenteFerroviario cerrada stale sin duplicar; La RFEF actualizada como episodio distinto por la pasada concurrente más nueva. Barrera final main: editorial-queue=0, preparing/update=0 y sin rewrite_pending localizado. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
@@ -7969,6 +8257,7 @@
     "tr-autoguard-1793696493",
     "tr-1793696945461-manual",
     "tr-1793698723967-manual",
-    "tr-1793699033179-manual"
+    "tr-1793699033179-manual",
+    "tr-1793702191137-manual"
   ]
 }
