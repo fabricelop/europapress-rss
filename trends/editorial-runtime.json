@@ -3,45 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793733684",
-  "previous_run_id": "tr-1793732300083-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T20:21:24+01:00",
-  "updated_at": "2026-11-03T20:30:00+01:00",
-  "finished_at": "2026-11-03T20:30:00+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "run_id": "tr-1793734298171-manual",
+  "previous_run_id": "tr-autoguard-1793733684",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T20:32:00+01:00",
+  "updated_at": "2026-11-03T20:32:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-6b46dc14e6d405480d99",
+  "title": "Revisar novedades: Andorra",
+  "queue_complete": false,
   "processed_ids": [
     "2d7d1097f7f8",
     "f0f53e2c6918",
     "593d203e740f"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-6b46dc14e6d405480d99",
+    "red-review-9a71892bb9956d201185"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
-    "updates": 0,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "terminal_decisions": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -108,7 +93,7 @@
     "summary": "3/3 explicadas y aplicadas; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793733684 cerrada 3/3: Cristina Fernández Cubas, Pepa Millán y CD Tenerife r0 explicadas y sincronizadas en ambos registros. Barrera final: cola 0 y escaneo completo sin preparing/update, rewrite_pending ni reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Revisando novedades: 0/2. Primera revisión JIT: Andorra.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -6017,35 +6002,7 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "2d7d1097f7f8",
-      "revision": 0,
-      "name": "Cristina Fernández Cubas",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "reason": "Premio Cervantes 2026 confirmado por fuentes actuales."
-    },
-    {
-      "id": "f0f53e2c6918",
-      "revision": 0,
-      "name": "Pepa Millán",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "reason": "Intervención en el Congreso sobre Urda y petición de dimisión de Óscar Puente verificada en fuentes actuales."
-    },
-    {
-      "id": "593d203e740f",
-      "revision": 0,
-      "name": "CD Tenerife",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "reason": "Fallecimiento de Jesús de Miguel y suspensión de competiciones por la RFEF verificados; cierre sensible sin remate."
-    }
-  ],
+  "outcomes": [],
   "current_item": null,
   "current_title": null,
   "completed_runs": [
@@ -8563,7 +8520,7 @@
       "at": "2026-11-03T17:32:10+01:00"
     }
   ],
-  "command_id": "tr-autoguard-1793733684",
+  "command_id": "tr-1793734298171-manual",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
