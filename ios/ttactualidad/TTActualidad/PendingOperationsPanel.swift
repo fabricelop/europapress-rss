@@ -20,7 +20,7 @@ struct PendingOperationsPanel: View {
                 HStack(alignment: .top, spacing: 8) {
                     Image(systemName: "info.circle")
                         .foregroundStyle(TTTheme.muted)
-                    Text("Aquí se cuentan solo órdenes pendientes de confirmar en GitHub. Los trabajos ya aceptados se consultan en En elaboración; el historial no aumenta este contador.")
+                    Text("Aquí figuran únicamente las órdenes sin comprobante. Conciliar consulta recibos y colas de GitHub sin reenviar acciones; las aceptadas pasan al historial y los trabajos activos siguen en En elaboración.")
                         .font(.system(size: 11))
                         .foregroundStyle(TTTheme.muted)
                         .fixedSize(horizontal: false, vertical: true)
@@ -50,9 +50,9 @@ struct PendingOperationsPanel: View {
 
                 HStack(spacing: 8) {
                     Button {
-                        Task { await store.refresh(manual: true) }
+                        Task { await store.reconcilePendingOperations() }
                     } label: {
-                        Label("Comprobar GitHub ahora", systemImage: "arrow.clockwise")
+                        Label("Conciliar órdenes con GitHub", systemImage: "arrow.clockwise")
                             .font(.system(size: 12, weight: .semibold))
                     }
                     .tint(TTTheme.teal)
