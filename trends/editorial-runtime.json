@@ -6,14 +6,14 @@
   "run_id": "tr-autoguard-1793733684",
   "previous_run_id": "tr-1793732300083-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T20:21:24+01:00",
-  "updated_at": "2026-11-03T20:21:24+01:00",
+  "updated_at": "2026-11-03T20:22:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "2d7d1097f7f8",
+  "title": "Cristina Fernández Cubas",
   "queue_complete": false,
   "processed_ids": [
     "red-review-387a2f52f0109bcca575",
@@ -76,7 +76,7 @@
     "summary": "Pasada cerrada 2/2: La Policía y QEPD quedaron review_completed/unchanged; se conservaron texto y explained_at originales y se registraron las comprobaciones red_review. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada editorial real iniciada: 3 preparing/update observados en main; se procesarán por requested_at con validación JIT de id+revision. ImageGen desactivado.",
+  "message": "Investigando Cristina Fernández Cubas r0 tras validación JIT en main.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -5986,7 +5986,12 @@
   ],
   "partial": false,
   "outcomes": [],
-  "current_item": null,
+  "current_item": {
+    "id": "2d7d1097f7f8",
+    "revision": 0,
+    "name": "Cristina Fernández Cubas",
+    "phase": "investigating"
+  },
   "current_title": null,
   "completed_runs": [
     {
