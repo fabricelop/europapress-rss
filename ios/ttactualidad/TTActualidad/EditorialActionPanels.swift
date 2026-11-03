@@ -180,8 +180,10 @@ struct EditorialActions: View {
             }
         }
         .sheet(isPresented: $showRelations) {
-            EditorialRelationsView(github: github, scope: EditorialRelationsScope(
-                project: project, id: editorialID, revision: revision, title: title))
+            EditorialRelationsView(github: github,
+                                   scope: EditorialRelationsScope(
+                project: project, id: editorialID, revision: revision, title: title),
+                                   top30Names: store.snapshot.top30.map(\.name))
                 .presentationDetents([.large])
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :

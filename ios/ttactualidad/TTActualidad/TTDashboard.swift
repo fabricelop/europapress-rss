@@ -202,7 +202,9 @@ struct TTDashboard: View {
             ImageApprovalInbox(github: github).presentationDetents([.large])
         }
         .sheet(isPresented: $showRelations) {
-            EditorialRelationsView(github: github).presentationDetents([.large])
+            EditorialRelationsView(github: github,
+                                   top30Names: store.snapshot.top30.map(\.name))
+                .presentationDetents([.large])
         }
         .sheet(item: $publicationSheet) { selection in
             PublishedHistorySheet(project: selection.project)
@@ -260,7 +262,7 @@ struct TTDashboard: View {
     }
 
     private var topBar: some View {
-        HStack(spacing: 11) {
+        HStack(spacing: 7) {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(TTTheme.teal.opacity(0.16))
@@ -269,21 +271,25 @@ struct TTDashboard: View {
                     .font(.system(size: 23, weight: .semibold))
                     .foregroundStyle(TTTheme.teal)
             }
-            .frame(width: 44, height: 44)
-            VStack(alignment: .leading, spacing: 3) {
+            .frame(width: 36, height: 36)
+            VStack(alignment: .leading, spacing: 2) {
                 Text("TTActualidad")
-                    .font(.system(size: 25, weight: .heavy, design: .rounded))
-                    .tracking(-1.0)
+                    .font(.system(size: 19, weight: .heavy, design: .rounded))
+                    .tracking(-0.6)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.72)
+                    .layoutPriority(1)
                 Text("CONTROL EDITORIAL")
-                    .font(.system(size: 10, weight: .bold, design: .rounded))
-                    .tracking(2.2).foregroundStyle(TTTheme.teal)
+                    .font(.system(size: 9, weight: .bold, design: .rounded))
+                    .tracking(1.4).foregroundStyle(TTTheme.teal)
+                    .lineLimit(1)
             }
             Spacer(minLength: 0)
             Button { showImageInbox = true } label: {
                 Image(systemName: "photo.on.rectangle.angled")
                     .foregroundStyle(TTTheme.teal)
                     .font(.system(size: 20))
-                    .frame(width: 42, height: 42)
+                    .frame(width: 44, height: 44)
                     .background(TTTheme.panel, in: Circle())
             }
             .accessibilityLabel("Imágenes pendientes")
@@ -291,7 +297,7 @@ struct TTDashboard: View {
                 Image(systemName: github.authenticated ? "checkmark.shield.fill" : "person.crop.circle.badge.questionmark")
                     .foregroundStyle(github.authenticated ? TTTheme.teal : TTTheme.muted)
                     .font(.system(size: 20))
-                    .frame(width: 42, height: 42)
+                    .frame(width: 44, height: 44)
                     .background(TTTheme.panel, in: Circle())
             }
             .accessibilityLabel("Conexión GitHub")
@@ -304,14 +310,14 @@ struct TTDashboard: View {
                             .font(.system(size: 19, weight: .bold))
                     }
                 }
-                .frame(width: 42, height: 42)
+                .frame(width: 44, height: 44)
                 .background(TTTheme.panel, in: Circle())
             }
             .tint(TTTheme.teal)
             .disabled(store.isLoading)
             .accessibilityLabel("Actualizar")
         }
-        .padding(.horizontal, 15)
+        .padding(.horizontal, 10)
         .padding(.top, 7)
         .padding(.bottom, 12)
     }

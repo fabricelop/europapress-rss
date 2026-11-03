@@ -10,6 +10,10 @@ struct EditorialRelationEndpoint: Codable, Identifiable, Equatable {
     let text: String
     let path: String?
 
+    var stableIdentity: String {
+        [id, String(revision), episodeFingerprint].joined(separator: "|")
+    }
+
     var identity: EditorialRelationIdentity {
         EditorialRelationIdentity(id: id, revision: revision,
                                   episodeFingerprint: episodeFingerprint)
@@ -50,6 +54,37 @@ struct EditorialRelationReceipt: Decodable {
 }
 
 enum EditorialRelationsPolicy {
+    // Defensive display reconciliation: a partial sync may repeat a pair.
+    // Prefer explicit manual decisions to automatic proposals; if conflicting
+    // states still arrive, a block wins rather than silently re-linking.
+    // Server receipts remain authoritative; this never writes decisions.
+    static func canonical(_ items: [EditorialRelation]) -> [EditorialRelation] {
+        var keys: [String] = []
+        var byKey: [String: EditorialRelation] = [:]
+        for item in items {
+            let key = item.news.stableIdentity + "↔" + item.trend.stableIdentity
+            if let previous = byKey[key] {
+                if precedence(item) > precedence(previous) { byKey[key] = item }
+            } else {
+                keys.append(key)
+                byKey[key] = item
+            }
+        }
+        return keys.compactMap { byKey[$0] }
+    }
+
+    private static func precedence(_ item: EditorialRelation) -> Int {
+        let manual = item.origin == "manual" ? 100 : 0
+        let state: Int
+        switch item.state {
+        case "blocked": state = 30
+        case "linked": state = 20
+        case "suggested": state = 10
+        default: state = 0
+        }
+        return manual + state
+    }
+
     static func confirms(_ receipt: EditorialRelationReceipt, action: String) -> Bool {
         guard !receipt.relationId.isEmpty else { return false }
         return action == "link" ? receipt.state == "linked" :

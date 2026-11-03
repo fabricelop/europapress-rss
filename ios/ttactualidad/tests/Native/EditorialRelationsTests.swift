@@ -1,6 +1,20 @@
 import XCTest
 
 final class EditorialRelationsTests: XCTestCase {
+    func testStableEpisodeIdentitySeparatesRevisionsAndDuplicates() {
+        let first = EditorialRelationEndpoint(id: "same-news", revision: 1,
+            episodeFingerprint: "episode-A", title: "Same title", text: "", path: nil)
+        let duplicate = EditorialRelationEndpoint(id: "same-news", revision: 1,
+            episodeFingerprint: "episode-A", title: "Changed title", text: "", path: nil)
+        let differentRevision = EditorialRelationEndpoint(id: "same-news", revision: 2,
+            episodeFingerprint: "episode-A", title: "Same title", text: "", path: nil)
+        let differentEpisode = EditorialRelationEndpoint(id: "same-news", revision: 1,
+            episodeFingerprint: "episode-B", title: "Same title", text: "", path: nil)
+        XCTAssertEqual(first.stableIdentity, duplicate.stableIdentity)
+        XCTAssertNotEqual(first.stableIdentity, differentRevision.stableIdentity)
+        XCTAssertNotEqual(first.stableIdentity, differentEpisode.stableIdentity)
+    }
+
     func testStrictEndpointIdentityDoesNotUseRankOrTitle() throws {
         let endpoint = EditorialRelationEndpoint(id: "trend-one", revision: 3,
             episodeFingerprint: "episode-current", title: "Andorra", text: "One episode", path: nil)
@@ -15,6 +29,39 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(expected["episodeFingerprint"] as? String, "episode-current")
         XCTAssertEqual(object["commandId"] as? String, "stable-command")
         XCTAssertNil(object["rank"])
+    }
+
+    func testCanonicalRelationDoesNotSuggestAlreadyLinkedPairAgain() throws {
+        let payload = #"""
+        {"items":[
+          {"id":"suggestion","news":{"id":"n1","revision":2,"episodeFingerprint":"N","title":"Noticia","text":"Hechos"},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tema","text":"Explicación"},"state":"suggested","origin":"automatic","reason":"Similar"},
+          {"id":"link","news":{"id":"n1","revision":2,"episodeFingerprint":"N","title":"Noticia","text":"Hechos"},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tema","text":"Explicación"},"state":"linked","origin":"manual","reason":"Aprobada"},
+          {"id":"other-episode","news":{"id":"n1","revision":2,"episodeFingerprint":"N2","title":"Noticia","text":"Otros hechos"},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tema","text":"Explicación"},"state":"suggested","origin":"automatic","reason":"Otro caso"}
+        ],"news":[],"trends":[]}
+        """#
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+                                               from: Data(payload.utf8))
+        let canonical = EditorialRelationsPolicy.canonical(snapshot.items)
+        XCTAssertEqual(canonical.count, 2)
+        XCTAssertEqual(canonical[0].state, "linked")
+        XCTAssertEqual(canonical[0].origin, "manual")
+        XCTAssertEqual(canonical[1].state, "suggested")
+        XCTAssertEqual(canonical[1].news.episodeFingerprint, "N2")
+    }
+
+    func testManualBlockPreventsDuplicateAutomaticRelink() throws {
+        let payload = #"""
+        {"items":[
+          {"id":"auto","news":{"id":"n1","revision":1,"episodeFingerprint":"N","title":"Noticia","text":""},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tendencia","text":""},"state":"linked","origin":"automatic","reason":""},
+          {"id":"veto","news":{"id":"n1","revision":1,"episodeFingerprint":"N","title":"Noticia","text":""},"trend":{"id":"t1","revision":0,"episodeFingerprint":"T","title":"Tendencia","text":""},"state":"blocked","origin":"manual","reason":""}
+        ],"news":[],"trends":[]}
+        """#
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+                                               from: Data(payload.utf8))
+        let canonical = EditorialRelationsPolicy.canonical(snapshot.items)
+        XCTAssertEqual(canonical.count, 1)
+        XCTAssertEqual(canonical[0].state, "blocked")
+        XCTAssertEqual(canonical[0].id, "veto")
     }
 
     func testOnlyConfirmedDecisionCountsAsSaved() {

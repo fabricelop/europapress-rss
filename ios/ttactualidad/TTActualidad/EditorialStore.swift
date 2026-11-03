@@ -246,6 +246,7 @@ final class EditorialStore: ObservableObject {
     @Published private(set) var unreviewedTrends = Set<String>()
     @Published private(set) var radarNewNames = Set<String>()
     @Published private(set) var operationHistory: [EditorialOperation] = []
+    @Published private(set) var reconciliationSummary = ""
     private var reviewedNews = Set<String>()
     private var reviewedTrends = Set<String>()
     var allNews: [NewsItem] {
@@ -258,6 +259,26 @@ final class EditorialStore: ObservableObject {
     }
     var outstandingOperations: [EditorialOperation] {
         operationHistory.filter(\.isOutstanding)
+    }
+    var pendingOperationsDiagnostic: String {
+        let formatter = ISO8601DateFormatter()
+        let records = outstandingOperations.map { operation in
+            let identity = operationIdentity(operation)
+            return [
+                "fecha=" + formatter.string(from: operation.createdAt),
+                "proyecto=" + (identity?.project ?? operation.project ?? "?"),
+                "id=" + (identity?.eventID ?? operation.eventID ?? operation.id),
+                "revision=" + (identity.map { String($0.revision) } ?? "?"),
+                "accion=" + operation.kind, "estado=" + operation.status,
+                "request_id=" + (operation.requestID ?? "sin-identificador")
+            ].joined(separator: " | ")
+        }
+        return ([
+            "TTActualidad diagnóstico de órdenes (sin credenciales)",
+            "Pendientes: \(pendingOperationsCount)",
+            reconciliationSummary.isEmpty ?
+                "Sin conciliación iniciada en esta sesión" : reconciliationSummary
+        ] + records).joined(separator: "\n")
     }
     var recentOperations: [EditorialOperation] {
         Array(operationHistory.filter { !$0.isOutstanding }.prefix(5))
@@ -539,6 +560,85 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    // Reconcile the local pending history against authoritative, lightweight
+    // GitHub ledgers. This NEVER re-sends a dispatch or marks missing receipts
+    // as success. The large trends/requests.json is deliberately excluded:
+    // a huge/failed download must not block old-order audit.
+    func reconcilePendingOperations() async {
+        guard !isLoading else {
+            reconciliationSummary = "La APP ya está sincronizando. Repite la conciliación al terminar."
+            return
+        }
+        isLoading = true
+        isManuallyRefreshing = true
+        defer {
+            isLoading = false
+            isManuallyRefreshing = false
+            updateHomeQuickActions()
+        }
+        let receiptPath = "pilot/ttactualidad-action-receipts.json"
+        let newsReady = "ttittulares/prepared.json"
+        let newsQueue = "ttittulares/editorial-queue.json"
+        let newsDecisions = "ttittulares/decisions.json"
+        let trendsQueue = "trends/editorial-queue.json"
+        let trendsDecisions = "trends/mobile-decisions.json"
+        let needed = [receiptPath, newsReady, newsQueue, newsDecisions,
+                      trendsQueue, trendsDecisions]
+        let before = operationHistory.filter(\.isOutstanding)
+        let wasPending = Set(before.map(\.id))
+        let loaded = await EditorialDocumentLoader.load(paths: needed)
+        let docs = loaded.docs
+        let fresh = loaded.downloaded
+
+        if fresh[receiptPath] != nil, let receipts = docs[receiptPath] {
+            reconcileDefinitiveReceipts(receipts)
+        }
+        if fresh[newsDecisions] != nil, let decisions = docs[newsDecisions] {
+            reconcileTerminalDecisions(decisions, project: "ttittulares")
+        }
+        if fresh[trendsDecisions] != nil, let decisions = docs[trendsDecisions] {
+            reconcileTerminalDecisions(decisions, project: "ttendencias")
+        }
+        if fresh[newsReady] != nil, fresh[newsQueue] != nil,
+           fresh[newsDecisions] != nil, fresh[receiptPath] != nil,
+           let ready = docs[newsReady], let queue = docs[newsQueue],
+           let decisions = docs[newsDecisions], let receipts = docs[receiptPath] {
+            retireAbandonedNewsOperations(ready: ready, queue: queue,
+                                          receipts: receipts, decisions: decisions)
+        }
+
+        // Terminal historical receipts rotate after 2,000 entries. If a
+        // request is too old to be verified and the CURRENT queue proves no
+        // work is active, file it as unverified history, not GitHub success.
+        archiveUnverifiablePendingOperations(docs: docs, fresh: fresh)
+
+        accumulateConfirmedTerminals(docs, fresh)
+        canonicalSnapshot = applyConfirmedTerminals(canonicalSnapshot)
+        applyOptimisticOverlay()
+
+        let resolved = operationHistory.filter {
+            wasPending.contains($0.id) && !$0.isOutstanding
+        }
+        let accepted = resolved.filter {
+            ["Confirmada", "En Listas", "En elaboración"].contains($0.status)
+        }.count
+        let closed = resolved.filter { $0.status == "Retirada" }.count
+        let rejected = resolved.filter { $0.status == "Rechazada" }.count
+        let unverified = resolved.filter {
+            ["Caducada", "No verificable"].contains($0.status)
+        }.count
+        let missing = needed.filter { fresh[$0] == nil }
+        let counts = "\(resolved.count) de \(before.count) retiradas del contador"
+        reconciliationSummary = counts +
+            " (\(accepted) aceptadas, \(closed) cerradas, \(rejected) rechazadas, " +
+            "\(unverified) antiguas sin verificar). Quedan \(pendingOperationsCount)." +
+            (missing.isEmpty ? "" :
+                " Fuentes de GitHub no disponibles: " + missing.joined(separator: ", "))
+        message = missing.isEmpty ?
+            "Órdenes conciliadas con fuentes actuales de GitHub" :
+            "Conciliación parcial: faltan fuentes; conserva los avisos inciertos"
+    }
+
     func refresh(manual: Bool = false) async {
         guard !isLoading else { return }
         isLoading = true
@@ -569,6 +669,40 @@ final class EditorialStore: ObservableObject {
                 docs["pilot/ttactualidad-publication-events.json"] : nil,
             receipts: downloaded["pilot/ttactualidad-action-receipts.json"] != nil ?
                 docs["pilot/ttactualidad-action-receipts.json"] : nil)
+        // Reconcile decisive GitHub receipts even when one of the other 13
+        // large documents failed to download. No new acceptance is inferred.
+        if downloaded["pilot/ttactualidad-action-receipts.json"] != nil,
+           let exactReceipts = docs["pilot/ttactualidad-action-receipts.json"] {
+            reconcileDefinitiveReceipts(exactReceipts)
+        }
+        if downloaded["ttittulares/decisions.json"] != nil,
+           let decisions = docs["ttittulares/decisions.json"] {
+            reconcileTerminalDecisions(decisions, project: "ttittulares")
+        }
+        if downloaded["trends/mobile-decisions.json"] != nil,
+           let decisions = docs["trends/mobile-decisions.json"] {
+            reconcileTerminalDecisions(decisions, project: "ttendencias")
+        }
+        // Independent closeout: do not let an unrelated news/trends/image
+        // download block expiry when the exact three/four ledgers are fresh.
+        if downloaded["ttittulares/prepared.json"] != nil &&
+           downloaded["ttittulares/editorial-queue.json"] != nil &&
+           downloaded["pilot/ttactualidad-action-receipts.json"] != nil &&
+           downloaded["ttittulares/decisions.json"] != nil {
+            retireAbandonedNewsOperations(
+                ready: docs["ttittulares/prepared.json"] ?? [:],
+                queue: docs["ttittulares/editorial-queue.json"] ?? [:],
+                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
+                decisions: docs["ttittulares/decisions.json"] ?? [:])
+        }
+        if downloaded["trends/requests.json"] != nil &&
+           downloaded["trends/editorial-queue.json"] != nil &&
+           downloaded["pilot/ttactualidad-action-receipts.json"] != nil {
+            retireAbandonedTrendOperations(
+                requests: docs["trends/requests.json"] ?? [:],
+                queue: docs["trends/editorial-queue.json"] ?? [:],
+                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:])
+        }
         // Never turn a temporary network error into false zeros in the Live Activity.
         guard docs["ttittulares/prepared.json"] != nil,
               docs["ttittulares/decisions.json"] != nil,
@@ -858,6 +992,183 @@ final class EditorialStore: ObservableObject {
         let id = String(raw[raw.index(after: prefix)..<revisionMark.lowerBound])
         guard !id.isEmpty else { return nil }
         return (project, id, revision)
+    }
+
+    // Older request receipts can rotate out of the 2,000-item rolling
+    // register. A definitive later decision for the SAME item/revision
+    // closes a stale local pending indicator; it does NOT prove that the
+    // original request succeeded. Do not use unrelated or older closures.
+    private func reconcileTerminalDecisions(_ document: [String: Any],
+                                            project: String) {
+        guard ["ttittulares", "ttendencias"].contains(project) else { return }
+        let records = Self.rows(document, "items")
+        for operation in operationHistory where operation.isOutstanding {
+            guard let identity = operationIdentity(operation),
+                  identity.project == project else { continue }
+            let identityKey = project == "ttittulares" ? "event_id" : "id"
+            let closed = records.contains { row in
+                Self.str(row, identityKey) == identity.eventID &&
+                Self.int(row, "revision") >= identity.revision &&
+                ["deleted", "dismissed", "published"].contains(
+                    Self.str(row, "status").lowercased()) &&
+                (Self.when(row, ["updated_at", "deleted_at", "published_at",
+                                 "dismissed_at"]) ?? .distantPast) >=
+                    operation.createdAt.addingTimeInterval(-180)
+            }
+            guard closed else { continue }
+            recordOperation(id: operation.id, title: operation.title,
+                            kind: operation.kind, status: "Retirada",
+                            requestID: operation.requestID, project: identity.project,
+                            eventID: identity.eventID, revision: identity.revision,
+                            detail: "Esta ficha ya tiene cierre posterior confirmado en GitHub; no se atribuye éxito a la solicitud original.")
+            activeEditorialActions.removeValue(forKey: operation.id)
+        }
+    }
+
+    // Historical orders may outlive the 2,000-entry receipt window. After
+    // SIX hours with current authoritative queues and decisions available,
+    // archive only requests with NO receipt and NO matching active job. This
+    // changes local presentation, not the backend, and preserves audit details.
+    private func archiveUnverifiablePendingOperations(
+        docs: [String: [String: Any]], fresh: [String: Data]) {
+        let receiptPath = "pilot/ttactualidad-action-receipts.json"
+        let newsQueuePath = "ttittulares/editorial-queue.json"
+        let newsDecisionsPath = "ttittulares/decisions.json"
+        let trendQueuePath = "trends/editorial-queue.json"
+        let trendDecisionsPath = "trends/mobile-decisions.json"
+        guard fresh[receiptPath] != nil else { return }
+        let receipts = Self.rows(docs[receiptPath] ?? [:], "items")
+        let newsQueueFresh = fresh[newsQueuePath] != nil &&
+            fresh[newsDecisionsPath] != nil
+        let trendQueueFresh = fresh[trendQueuePath] != nil &&
+            fresh[trendDecisionsPath] != nil
+        let newsRows = Self.rows(docs[newsQueuePath] ?? [:], "items")
+        let trendRows = Self.rows(docs[trendQueuePath] ?? [:], "items")
+
+        for operation in operationHistory where operation.isOutstanding {
+            let age = Date().timeIntervalSince(operation.createdAt)
+            guard age >= EditorialPendingPolicy.archivalAge else { continue }
+            // For current builds require the exact request UUID. Legacy
+            // records lacked a UUID: look for the same project/item/revision/
+            // action after the local timestamp, but do not attribute success
+            // to that original request without an exact receipt.
+            let identity = operationIdentity(operation)
+            let hasReceipt = receipts.contains { row in
+                if let requestID = operation.requestID, !requestID.isEmpty {
+                    return Self.str(row, "request_id") == requestID
+                }
+                guard let identity else { return false }
+                return Self.str(row, "project") == identity.project &&
+                    Self.str(row, "event_id") == identity.eventID &&
+                    Self.int(row, "revision") == identity.revision &&
+                    Self.str(row, "decision") == operation.kind &&
+                    (Self.when(row, ["at"]) ?? .distantPast) >=
+                        operation.createdAt.addingTimeInterval(-180)
+            }
+            if hasReceipt {
+                if operation.requestID?.isEmpty != false, let identity,
+                   let later = receipts.first(where: { row in
+                       Self.str(row, "project") == identity.project &&
+                       Self.str(row, "event_id") == identity.eventID &&
+                       Self.int(row, "revision") == identity.revision &&
+                       Self.str(row, "decision") == operation.kind &&
+                       ["applied", "already_applied"].contains(
+                           Self.str(row, "status").lowercased()) &&
+                       (Self.when(row, ["at"]) ?? .distantPast) >=
+                           operation.createdAt.addingTimeInterval(-180)
+                   }) {
+                    recordOperation(
+                        id: operation.id, title: operation.title, kind: operation.kind,
+                        status: "Retirada", requestID: Self.str(later, "request_id"),
+                        project: identity.project, eventID: identity.eventID,
+                        revision: identity.revision,
+                        detail: "Existe una acción posterior equivalente confirmada. La identidad de la solicitud antigua no permite atribuirle ejecución.")
+                    activeEditorialActions.removeValue(forKey: operation.id)
+                }
+                // A known exact UUID with mismatched receipt fields needs
+                // manual review, never automatic expiry or re-dispatch.
+                continue
+            }
+
+            guard let identity else {
+                // Legacy rows without even an editorial identity cannot be
+                // matched to a source; retain them in transparent audit.
+                guard age >= EditorialPendingPolicy.unidentifiedAge,
+                      newsQueueFresh, trendQueueFresh else { continue }
+                recordOperation(
+                    id: operation.id, title: operation.title, kind: operation.kind,
+                    status: "No verificable",
+                    detail: "Registro antiguo sin ID editorial recuperable. No se ha confirmado ejecución ni enviado otra orden; se conserva en historial.")
+                activeEditorialActions.removeValue(forKey: operation.id)
+                continue
+            }
+
+            let canInspect = identity.project == "ttittulares" ?
+                newsQueueFresh : trendQueueFresh
+            guard canInspect else { continue }
+            let active: Bool
+            if identity.project == "ttittulares" {
+                active = newsRows.contains { row in
+                    Self.str(row, "event_id") == identity.eventID &&
+                    ["PROCESSING", "UPDATE_PROCESSING", "REWRITE_PENDING"].contains(
+                        Self.str(row, "status").uppercased())
+                }
+            } else {
+                active = trendRows.contains { row in
+                    Self.str(row, "id") == identity.eventID &&
+                    ["preparing", "update", "rewrite_pending"].contains(
+                        Self.str(row, "status").lowercased())
+                }
+            }
+            guard EditorialPendingPolicy.canArchive(
+                age: age, receiptsFresh: true, queueFresh: canInspect,
+                decisionsFresh: canInspect, hasReceipt: hasReceipt,
+                activeInQueue: active) else { continue }
+            recordOperation(id: operation.id, title: operation.title,
+                            kind: operation.kind, status: "Caducada",
+                            requestID: operation.requestID,
+                            project: identity.project, eventID: identity.eventID,
+                            revision: identity.revision,
+                            detail: "Sin comprobante en el registro disponible ni trabajo activo en cola tras 6 horas. Archivada SIN confirmar ejecución; puede requerir revisión manual.")
+            activeEditorialActions.removeValue(forKey: operation.id)
+        }
+    }
+
+    // A complete radar/listas snapshot is not necessary to resolve an exact
+    // already-written GitHub action receipt. This prevents stale local
+    // "Órdenes por confirmar" after partial GitHub downloads.
+    private func reconcileDefinitiveReceipts(_ document: [String: Any]) {
+        let receipts = Self.rows(document, "items")
+        for operation in operationHistory where operation.isOutstanding {
+            guard let identity = operationIdentity(operation),
+                  let requestID = operation.requestID, !requestID.isEmpty,
+                  !["Nueva noticia", "De tendencia a noticia"].contains(operation.kind)
+            else { continue }
+            var stage: String?
+            for receipt in receipts.reversed() {
+                if let verified = EditorialReceiptPolicy.resolution(
+                    project: identity.project, eventID: identity.eventID,
+                    revision: identity.revision, decision: operation.kind,
+                    requestID: requestID, receipt: receipt) {
+                    stage = verified
+                    break
+                }
+            }
+            guard let stage else { continue }
+            recordOperation(id: operation.id, title: operation.title,
+                            kind: operation.kind, status: stage, requestID: requestID,
+                            project: identity.project, eventID: identity.eventID,
+                            revision: identity.revision,
+                            detail: stage == "Rechazada" ?
+                                "GitHub confirma que esta orden fue rechazada." :
+                                "Comprobante exacto confirmado en GitHub.")
+            if stage == "Rechazada" || stage == "Confirmada" {
+                activeEditorialActions.removeValue(forKey: operation.id)
+            } else if var action = activeEditorialActions[operation.id] {
+                action.phase = .confirmed
+                activeEditorialActions[operation.id] = action
+            }
+        }
     }
 
     private func reconcileOperationHistory(receipts: [String: Any],
