@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793722297",
   "previous_run_id": "tr-1793719469374-manual",
   "status": "PROCESSING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T17:12:00+01:00",
-  "updated_at": "2026-11-03T17:12:00+01:00",
+  "updated_at": "2026-11-03T17:18:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 5,
@@ -46,6 +46,46 @@
       "trend_id": "e47f706121da",
       "title": "Mark Twain",
       "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Investigando Mark Twain r0: Detonante actual verificado en dos fuentes: Óscar Puente citó a Mark Twain al explicar cambios de protocolos tras el accidente de Urda. Sin remate por sensibilidad del contexto."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Sin remate por sensibilidad o incertidumbre causal."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Persistiendo outbox editorial para e47f706121da r0; sin ImageGen."
     }
   ],
   "final_outcomes": [
@@ -126,7 +166,7 @@
     "converged_with": "tr-1793719374883-manual"
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación.",
+  "message": "Mark Twain r0: investigación cerrada; redactando y persistiendo resultado textual con validación JIT.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2772,6 +2812,46 @@
       "trend_id": "e47f706121da",
       "title": "Mark Twain",
       "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Investigando Mark Twain r0: Detonante actual verificado en dos fuentes: Óscar Puente citó a Mark Twain al explicar cambios de protocolos tras el accidente de Urda. Sin remate por sensibilidad del contexto."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Sin remate por sensibilidad o incertidumbre causal."
+    },
+    {
+      "at": "2026-11-03T17:18:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 0,
+      "total": 5,
+      "trend_id": "e47f706121da",
+      "title": "Mark Twain",
+      "message": "Persistiendo outbox editorial para e47f706121da r0; sin ImageGen."
     }
   ],
   "history": [
