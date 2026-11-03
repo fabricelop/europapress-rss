@@ -25,3 +25,7 @@ jobs:
           if($source -match 'Stop-Process|taskkill|Remove-Item|Set-Content|Start-Process|Enable-ScheduledTask|Disable-ScheduledTask'){
             throw 'The Site parity probe must stay read-only'
           }
+      - name: Verify strict UTF-8 JSON decoding on Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          & 'windows/Diagnosticar-Sincronizacion-TTendencias.ps1' -SelfTest
