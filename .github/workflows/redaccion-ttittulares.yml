@@ -11,6 +11,7 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   editorial:
@@ -49,3 +50,16 @@ jobs:
           done
           echo "No se pudo guardar la solicitud tras 6 intentos." >&2
           exit 1
+
+      - name: Solicitar editor dedicado tras persistir main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A request is not editorial execution. Launch the existing consumer
+          # only against committed authoritative work, including old backlog.
+          git fetch origin main
+          git reset --hard origin/main
+          python3 ttittulares/request_pc_editorial.py --selftest
+          python3 ttittulares/request_pc_editorial.py --trigger
