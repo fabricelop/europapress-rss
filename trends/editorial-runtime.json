@@ -3,35 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793742814208-manual",
-  "previous_run_id": "tr-autoguard-1793740699",
+  "run_id": "tr-1793742976079-manual",
+  "previous_run_id": "tr-1793742814208-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-03T22:54:00+01:00",
-  "updated_at": "2026-11-03T22:58:00+01:00",
-  "finished_at": "2026-11-03T22:58:00+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-03T21:57:00Z",
+  "updated_at": "2026-11-03T21:59:48.302Z",
+  "finished_at": "2026-11-03T21:59:48.302Z",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-5331dae929b3cc0542af",
-    "red-review-917aedac54ae90ef21d0"
+    "red-review-5331dae929b3cc0542af"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "updates": 1,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -43,63 +42,38 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "3042104459b7",
+      "id": "red-review-5331dae929b3cc0542af",
       "revision": 0,
-      "name": "Dimite Óscar Puente",
-      "outcome": "prepared_pending_authoritative_apply",
-      "applied": false
-    },
-    {
-      "id": "c8363f291102",
-      "revision": 0,
-      "name": "Bayern",
-      "outcome": "prepared_pending_authoritative_apply",
-      "applied": false
-    },
-    {
-      "id": "cd7275e8b277",
-      "revision": 0,
-      "name": "El PSG",
-      "outcome": "prepared_pending_authoritative_apply",
-      "applied": false
-    },
-    {
-      "id": "919fc31e93a5",
-      "revision": 0,
-      "name": "Metropolitano",
-      "outcome": "prepared_pending_authoritative_apply",
-      "applied": false
-    },
-    {
-      "id": "8e970ba43f06",
-      "revision": 0,
-      "name": "#XbiteSweepstakes",
-      "outcome": "prepared_pending_authoritative_apply",
-      "applied": false
+      "name": "Revisar novedades: Villarreal-Espanyol y debut de Sergio García",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-2454ffeac830bf71aa0b",
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "95caee627a2e52f25dda0f0c16a0295eece8c4cb",
+      "reason": "Episodio distinto ya aplicado por la pasada concurrente: Villarreal-PSG en la jornada 4 de Champions, separado del Villarreal-Espanyol del 30 de octubre."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T22:52:27+01:00",
-  "last_completed_at": "2026-11-03T22:52:27+01:00",
+  "last_started_at": "2026-11-03T21:57:00Z",
+  "last_completed_at": "2026-11-03T21:59:48.302Z",
   "last_run": {
-    "run_id": "tr-1793742814208-manual",
+    "run_id": "tr-1793742976079-manual",
     "status": "DONE",
-    "started_at": "2026-11-03T22:54:00+01:00",
-    "finished_at": "2026-11-03T22:58:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-03T21:57:00Z",
+    "finished_at": "2026-11-03T21:59:48.302Z",
+    "current": 1,
+    "total": 1,
     "closed": [
-      "red-review-5331dae929b3cc0542af",
-      "red-review-917aedac54ae90ef21d0"
+      "red-review-5331dae929b3cc0542af"
     ],
     "pending": [],
-    "summary": "2/2 cerradas; 1 updated, 1 unchanged; cola final 0; sin reexplicaciones; ImageGen=0; publicaciones=0."
+    "summary": "1/1 cerrada por convergencia JIT: Villarreal updated ya aplicado; cola final 0; sin reexplicaciones; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793742814208-manual cerrada 2/2: Villarreal actualizado como episodio distinto por Villarreal-PSG; Pedraz unchanged por convergencia concurrente. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain ni status preparing/update. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793742976079-manual cerrada 1/1 por convergencia JIT: la revisión de Villarreal ya quedó review_completed/updated con la nueva ficha trend-update-2454ffeac830bf71aa0b. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain ni status preparing/update. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3753,6 +3727,33 @@
       "current": 0,
       "total": 4,
       "message": "4/4 revisiones investigadas y redactadas; outboxes ready persistidos y aplicador editorial forzado. Verificando aplicación autoritativa; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T21:59:48.302Z",
+      "phase": "closing",
+      "run_id": "tr-1793742976079-manual",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada tr-1793742976079-manual cerrada 1/1 por convergencia JIT: la revisión de Villarreal ya quedó review_completed/updated con la nueva ficha trend-update-2454ffeac830bf71aa0b. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain ni status preparing/update. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
