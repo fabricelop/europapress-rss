@@ -5,37 +5,28 @@
   "canonical": true,
   "run_id": "tr-1793718615811-manual",
   "previous_run_id": "tr-1793717537752-manual",
-  "status": "failure",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-03T15:10:30Z",
-  "updated_at": "2026-11-03T16:18:13+01:00",
+  "updated_at": "2026-11-03T16:20:28+01:00",
   "finished_at": null,
   "current": 0,
   "total": 9,
   "trend_id": "ee213c47d89f",
   "title": "Rudiger",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
-    "2e00a1a9eeae",
-    "a2b11aa45a32",
-    "977127837131",
-    "b7ba366af35c",
-    "88bcedcd27c5",
-    "ee213c47d89f",
+  "queue_complete": true,
+  "processed_ids": [
     "01241df80e26",
-    "5a1b6910025a"
-  ],
-  "remaining_active_ids": [
     "2e00a1a9eeae",
-    "a2b11aa45a32",
-    "977127837131",
-    "b7ba366af35c",
+    "5a1b6910025a",
     "88bcedcd27c5",
-    "ee213c47d89f",
-    "01241df80e26",
-    "5a1b6910025a"
+    "977127837131",
+    "a2b11aa45a32",
+    "b7ba366af35c",
+    "ee213c47d89f"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -57,7 +48,7 @@
   },
   "incident_count": 0,
   "incidents": [],
-  "error": "01241df80e26-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas; 5a1b6910025a-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas; 88bcedcd27c5-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas; 977127837131-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas; b7ba366af35c-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas; ee213c47d89f-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas",
+  "error": null,
   "activity": "persisting",
   "final_outcomes": [
     {
@@ -72,8 +63,8 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T16:18:12+01:00",
-  "last_completed_at": "2026-11-03T14:58:20.200Z",
+  "last_started_at": "2026-11-03T16:20:28+01:00",
+  "last_completed_at": "2026-11-03T16:20:28+01:00",
   "last_run": {
     "run_id": "tr-1793717537752-manual",
     "command_id": "tr-1793717537752-manual",
