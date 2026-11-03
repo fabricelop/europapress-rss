@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793697150072-manual",
-  "previous_run_id": "tr-1793696945461-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T10:16:00+01:00",
-  "updated_at": "2026-11-03T10:17:00+01:00",
+  "run_id": "tr-1793698723967-manual",
+  "previous_run_id": "tr-1793697150072-manual",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-03T10:40:00+01:00",
+  "updated_at": "2026-11-03T10:40:00+01:00",
   "finished_at": "2026-11-03T10:17:00+01:00",
-  "current": 3,
-  "total": 3,
+  "current": 0,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -3876,7 +3876,12 @@
       "reason": "La lesión de Mantilla ya estaba materializada; la planificación del recambio para enero no constituye un episodio distinto."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "34f0363eea88",
+    "revision": 0,
+    "name": "Descanse",
+    "status": "preparing"
+  },
   "current_title": null,
   "completed_runs": [
     {
@@ -7616,6 +7621,17 @@
       "current": 3,
       "total": 3,
       "message": "Pasada tr-1793697150072-manual cerrada 3/3 por convergencia JIT: #GMMTVNEXT y Muchísima ya quedaron explained y Racing review_completed/unchanged en la ejecución concurrente; no se duplicó ninguna escritura. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T10:40:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793698723967-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "34f0363eea88",
+      "title": "Descanse",
+      "message": "Revisión JIT válida para Descanse r0. Investigación desde cero del contexto actual, fecha y marcador; ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
