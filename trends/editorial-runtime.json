@@ -5,38 +5,35 @@
   "canonical": true,
   "run_id": "tr-1793708434762-manual",
   "previous_run_id": "tr-1793707968204-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T13:21:00+01:00",
-  "updated_at": "2026-11-03T13:24:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-03T13:27:00+01:00",
+  "finished_at": "2026-11-03T13:27:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-af2730f0fd6d6ae8eb89",
-  "title": "Revisar novedades: Jesús de Miguel",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-8a017ee88147198bf503"
-  ],
-  "remaining_ids": [
+    "red-review-8a017ee88147198bf503",
     "red-review-af2730f0fd6d6ae8eb89"
   ],
-  "remaining_active_ids": [
-    "red-review-af2730f0fd6d6ae8eb89"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -46,55 +43,82 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "red-review-8a017ee88147198bf503",
+      "revision": 0,
+      "name": "Revisar novedades: Puerta del Sol",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "f4cf6d90459b987ea5a4f95ebdede661560d6608"
+    },
+    {
+      "id": "red-review-af2730f0fd6d6ae8eb89",
+      "revision": 0,
+      "name": "Revisar novedades: Jesús de Miguel",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "26cd8b6bc86ffadd35cecc8628fd4d76fdce6a9c"
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T13:21:00+01:00",
-  "last_completed_at": "2026-11-03T13:18:00+01:00",
+  "last_completed_at": "2026-11-03T13:27:00+01:00",
   "last_run": {
-    "run_id": "tr-1793707968204-manual",
-    "command_id": "tr-1793707968204-manual",
+    "run_id": "tr-1793708434762-manual",
+    "command_id": "tr-1793708434762-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T13:14:00+01:00",
-    "finished_at": "2026-11-03T13:18:00+01:00",
+    "started_at": "2026-11-03T13:21:00+01:00",
+    "finished_at": "2026-11-03T13:27:00+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 1,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 0,
+      "unchanged_reviews": 2,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "d13ad0099067",
+        "id": "red-review-8a017ee88147198bf503",
         "revision": 0,
-        "name": "Heliodoro",
-        "outcome": "explained",
+        "name": "Revisar novedades: Puerta del Sol",
+        "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "converged_with": "tr-1793707561725-manual"
+        "via": "maintenance_outbox",
+        "apply_commit": "f4cf6d90459b987ea5a4f95ebdede661560d6608"
+      },
+      {
+        "id": "red-review-af2730f0fd6d6ae8eb89",
+        "revision": 0,
+        "name": "Revisar novedades: Jesús de Miguel",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "apply_commit": "26cd8b6bc86ffadd35cecc8628fd4d76fdce6a9c"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793707968204-manual cerrada 1/1 por convergencia JIT: Heliodoro r0 quedó explicado y persistido. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T13:18:00+01:00",
-    "converged_with": "tr-1793707561725-manual"
+    "message": "Pasada tr-1793708434762-manual cerrada 2/2: Puerta del Sol y Jesús de Miguel review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T13:27:00+01:00"
   },
   "source": "chat",
-  "message": "Puerta del Sol aplicada unchanged. Jesús de Miguel revalidado JIT: el fallecimiento sigue siendo el motivo sustancial; la suspensión de partidos y las condolencias son consecuencias del mismo hecho. Resultado unchanged persistido; verificando aplicación.",
+  "message": "Pasada tr-1793708434762-manual cerrada 2/2: Puerta del Sol y Jesús de Miguel review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2074,6 +2098,24 @@
       "trend_id": "red-review-af2730f0fd6d6ae8eb89",
       "title": "Revisar novedades: Jesús de Miguel",
       "message": "Puerta del Sol aplicada unchanged. Jesús de Miguel revalidado JIT: el fallecimiento sigue siendo el motivo sustancial; la suspensión de partidos y las condolencias son consecuencias del mismo hecho. Resultado unchanged persistido; verificando aplicación."
+    },
+    {
+      "at": "2026-11-03T13:27:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793708434762-manual",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 2,
+      "message": "Barrera final JIT verificada en main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Puerta del Sol y Jesús de Miguel constan review_completed/unchanged; texto y fecha originales conservados."
+    },
+    {
+      "at": "2026-11-03T13:27:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793708434762-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793708434762-manual cerrada 2/2: Puerta del Sol y Jesús de Miguel review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
