@@ -1,0 +1,69 @@
+name: TTendencias one-time lossless requests capacity repair
+on:
+  pull_request:
+    paths:
+      - 'trends/compact_requests_losslessly.py'
+      - '.github/workflows/ttendencias-requests-capacity-hotfix.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trends/compact_requests_losslessly.py'
+      - '.github/workflows/ttendencias-requests-capacity-hotfix.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ttendencias-lossless-requests-formatting
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify semantic safety, UTF-16 byte budget and no writes
+        run: |
+          python3 trends/compact_requests_losslessly.py --selftest
+          python3 trends/compact_requests_losslessly.py --check
+          git diff --exit-code -- trends/requests.json
+  compact:
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          persist-credentials: true
+      - name: Compact current main only, without dropping any editorial entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 trends/compact_requests_losslessly.py --apply
+            git add trends/requests.json
+            if git diff --cached --quiet; then
+              echo "TT_REQUESTS_ALREADY_COMPACT_IN_MAIN"
+              exit 0
+            fi
+            git commit -m 'TTendencias: lossless whitespace-only requests capacity hotfix'
+            git fetch origin main
+            if [ "$(git rev-parse HEAD^)" != "$(git rev-parse origin/main)" ]; then
+              echo "Concurrent editorial change. Re-read and recalculate $attempt/5."
+              continue
+            fi
+            if git push origin HEAD:main; then
+              echo "TT_REQUESTS_LOSSLESS_COMPACT_PERSISTED"
+              exit 0
+            fi
+            echo "Push raced another writer. Retry $attempt/5."
+            sleep "$attempt"
+          done
+          echo 'ERROR: could not safely compact after five current-main attempts' >&2
+          exit 1
