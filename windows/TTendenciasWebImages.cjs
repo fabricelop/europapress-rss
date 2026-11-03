@@ -104,6 +104,10 @@ async function selectExistingBrowser(){
 // The user turn carrying this exact command is the only permitted image scope.
 // Rejects a later user turn, avatars, previews and unfinished generations.
 function userTurns(){
+ // Explicit user bubbles own the message text. Broad legacy class selectors
+ // also match controls INSIDE a bubble; never let those erase the real turn.
+ const bubbles=[...document.querySelectorAll('[data-user-message-bubble="true"]')];
+ if(bubbles.length)return bubbles.filter(el=>!bubbles.some(other=>other!==el&&other.contains(el)));
  const nodes=[...document.querySelectorAll('[data-user-message-bubble="true"],[data-message-author-role="user"],[data-testid*="user-message" i],[class*="user-message" i],article[data-turn="user"]')];
  // Multiple selectors can describe nested wrappers of the same user turn.
  return nodes.filter(el=>!nodes.some(other=>other!==el&&typeof el.contains==='function'&&el.contains(other)));
