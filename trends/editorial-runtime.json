@@ -3,41 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793700663",
-  "previous_run_id": "tr-1793699283928-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T11:11:00+01:00",
-  "updated_at": "2026-11-03T11:20:00+01:00",
-  "finished_at": "2026-11-03T11:20:00+01:00",
-  "current": 6,
-  "total": 6,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "01ac1d20b1fb",
-    "1a63e1bd818c",
-    "93fd9a90a9c2",
-    "ead261969f29",
-    "ac8fba260938",
-    "3f67b198a6c5"
+  "run_id": "tr-1793702191137-manual",
+  "previous_run_id": "tr-autoguard-1793700663",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-03T11:36:31+01:00",
+  "updated_at": "2026-11-03T11:37:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "234205959012",
+  "title": "Andorra",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "234205959012"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "234205959012"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 6,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -47,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "01ac1d20b1fb",
@@ -194,7 +191,7 @@
     "at": "2026-11-03T11:20:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793700663 cerrada 6/6: Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain persistidos como explained. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Investigando Andorra r0 con validación JIT; sin ImageGen.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1840,6 +1837,17 @@
       "current": 6,
       "total": 6,
       "message": "Pasada tr-autoguard-1793700663 cerrada 6/6: Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain persistidos como explained. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T11:37:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793702191137-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "234205959012",
+      "title": "Andorra",
+      "message": "Inicio JIT: Andorra r0 sigue preparing en main. Investigación desde cero del contexto actual, fecha y marcador; ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -3996,13 +4004,8 @@
       "reason": "La lesión de Mantilla ya estaba materializada; la planificación del recambio para enero no constituye un episodio distinto."
     }
   ],
-  "current_item": {
-    "id": "34f0363eea88",
-    "revision": 0,
-    "name": "Descanse",
-    "status": "preparing"
-  },
-  "current_title": null,
+  "current_item": "234205959012",
+  "current_title": "Andorra",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -6155,7 +6158,7 @@
       "converged_with": "tr-1793699033179-manual"
     }
   ],
-  "command_id": "tr-1793697150072-manual",
+  "command_id": "tr-1793702191137-manual",
   "requested_at": "2026-11-03T09:12:30+01:00",
   "runs": [
     {
@@ -7920,6 +7923,17 @@
       "current": 1,
       "total": 1,
       "message": "Pasada tr-1793699283928-manual cerrada 1/1 por convergencia JIT: Aramburu review_completed/unchanged; la explicación vigente ya incorpora la corrección del CTA sobre Connected Ball/VAR. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente detectada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T11:37:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793702191137-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "234205959012",
+      "title": "Andorra",
+      "message": "Inicio JIT: Andorra r0 sigue preparing en main. Investigación desde cero del contexto actual, fecha y marcador; ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
