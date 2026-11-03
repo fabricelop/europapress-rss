@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""User-requested Listas grouping. Text is written by the editorial runner.
+"""Trend maintenance with retired grouping commands and preserved historical decoders.
 
 The request snapshots real eligible cards; the result revalidates every member.
 Existing explanations/dates/revisions stay untouched. Covered is metadata,
@@ -125,7 +125,7 @@ def receipt(state, payload, status, at, **extra):
     state[RECEIPTS]['items'] = rows[-2500:]
 
 
-def request(state, payload, now):
+def _legacy_request(state, payload, now):
     """Return a new state; malformed/rejected commands never partially mutate."""
     state = copy.deepcopy(state)
     if (payload.get('project') != 'ttendencias' or not UUID.fullmatch(str(payload.get('request_id') or ''))
@@ -266,6 +266,30 @@ def request(state, payload, now):
     return state, True
 
 
+
+def request(state, payload, now):
+    """Retired grouping commands fail closed; independent bulk removal remains."""
+    if payload.get('decision') == 'remove_all_trends':
+        return _legacy_request(state, payload, now)
+    if (payload.get('project') != 'ttendencias'
+            or not UUID.fullmatch(str(payload.get('request_id') or ''))
+            or payload.get('decision') not in {'group_listas', 'remove_covered'}):
+        raise ValueError('Orden de agrupación no válida')
+    result = copy.deepcopy(state)
+    if any(x.get('request_id') == payload['request_id'].lower()
+           for x in result[RECEIPTS]['items']):
+        return result, False
+    receipt(result, payload, 'rejected', now.isoformat(),
+            error='La agrupación de tendencias está retirada; cada tendencia conserva su ficha independiente',
+            code='TREND_GROUPING_RETIRED')
+    return result, True
+
+
+def apply_result(state, command, now):
+    """Late grouping output must never create or cover cards after retirement."""
+    raise ValueError('TREND_GROUPING_RETIRED: los resultados de agrupación ya no se aplican')
+
+
 def weighted_length(value):
     # X's configured single-weight Unicode ranges, URLs occupy 23 characters.
     value = re.sub(r'https?://\S+', 'x'*23, value)
@@ -273,7 +297,7 @@ def weighted_length(value):
                0x2010 <= ord(c) <= 0x201f or 0x2032 <= ord(c) <= 0x2037 else 2 for c in value)
 
 
-def apply_result(state, command, now):
+def _legacy_apply_result(state, command, now):
     state = copy.deepcopy(state)
     job_id = str(command.get('job_id') or '')
     job = next((x for x in state[REQUESTS]['requests'] if x.get('id') == job_id
@@ -399,6 +423,30 @@ def apply_result(state, command, now):
     return state, True
 
 
+
+def retire_pending_grouping(state, now):
+    """Close only obsolete grouping work; keep every snapshot and original card."""
+    result = copy.deepcopy(state)
+    at = now.isoformat()
+    retired = set()
+    for job in result[REQUESTS]['requests']:
+        if job.get('listas_grouping_request') and job.get('status') in {'preparing', 'update'}:
+            retired.add((str(job.get('id') or ''), revision(job)))
+            job.update(status='grouping_retired', grouping_state='retired',
+                       grouping_retired_at=at,
+                       grouping_retirement_reason='TREND_GROUPING_RETIRED')
+    previous = result[QUEUE]['items']
+    # Only exact grouping jobs, never another revision/ordinary request with the same ID.
+    result[QUEUE]['items'] = [x for x in previous if not (
+        x.get('listas_grouping_request') and x.get('status') in {'preparing', 'update'}
+        and (str(x.get('id') or ''), revision(x)) in retired)]
+    if retired:
+        result[REQUESTS]['updated_at'] = at
+    if len(previous) != len(result[QUEUE]['items']):
+        result[QUEUE].update(count=len(result[QUEUE]['items']), updated_at=at)
+    return result, bool(retired)
+
+
 def grouping_api():
     from types import SimpleNamespace
     return SimpleNamespace(**{name: globals()[name] for name in (
@@ -421,6 +469,7 @@ def main():
     state = load_state()
     before = copy.deepcopy(state)
     now = datetime.now(timezone.utc)
+    state, _ = retire_pending_grouping(state, now)
     payload = json.loads(os.environ.get('TT_LISTAS_GROUP_JSON') or '{}')
     if payload:
         try:
@@ -429,22 +478,7 @@ def main():
             if not UUID.fullmatch(str(payload.get('request_id') or '')):
                 raise
             receipt(state, payload, 'rejected', now.isoformat(), error=str(error))
-    for path in sorted((ROOT/'trends/listas-grouping-outbox').glob('*.json')):
-        command = json.loads(path.read_text(encoding='utf-8'))
-        job = next((x for x in state[REQUESTS]['requests'] if x.get('id') == command.get('job_id')), {})
-        if job.get('status') not in {'preparing', 'update'}:
-            continue
-        command_digest = digest(json.dumps(command, sort_keys=True, ensure_ascii=False))
-        if job.get('grouping_error_digest') == command_digest:
-            continue
-        try:
-            state, _ = apply_result(state, command, now)
-        except ValueError as error:
-            # Persist the failure under the exact input. Other actions still
-            # receive their ACK; the editor may correct this SAME outbox.
-            job['grouping_state'] = 'needs_correction'
-            job['grouping_error'] = str(error)
-            job['grouping_error_digest'] = command_digest
+    # Historical grouping outboxes remain intact; no late result is applied.
     for path in sorted((ROOT/'trends/maintenance-outbox').glob('*.json')):
         command = json.loads(path.read_text(encoding='utf-8'))
         job = next((x for x in state[REQUESTS]['requests'] if x.get('id') == command.get('job_id')), {})
@@ -481,3 +515,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

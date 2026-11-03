@@ -1,4 +1,4 @@
-name: TTActualidad - agrupar tendencias de Listas
+name: TTActualidad - mantenimiento de tendencias
 on:
   repository_dispatch:
     types: [ttactualidad_group_listas_v1]
@@ -15,6 +15,7 @@ on:
       - 'pilot/test_trend_maintenance.py'
       - 'pilot/listas_grouping.py'
       - 'pilot/test_listas_grouping.py'
+      - 'pilot/test_grouping_retirement.py'
       - '.github/workflows/ttactualidad-group-listas.yml'
   schedule:
     - cron: '*/5 * * * *'
@@ -38,10 +39,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Probar agrupación y protección de originales
+      - name: Probar retirada de agrupación y conservación editorial
         run: |
           python3 -m unittest discover -s pilot -p 'test_listas_grouping.py' -v
           python3 -m unittest discover -s pilot -p 'test_trend_maintenance.py' -v
+          python3 -m unittest discover -s pilot -p 'test_grouping_retirement.py' -v
       - name: Persistir solicitud o resultado editorial
         env:
           TT_LISTAS_GROUP_JSON: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload) || '{}' }}
@@ -57,7 +59,7 @@ jobs:
             python3 pilot/listas_grouping.py
             git add -- trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json trends/mobile-decisions.json trends/telegram-image-deliveries.json pilot/ttactualidad-action-receipts.json
             if git diff --cached --quiet; then exit 0; fi
-            git commit -m 'TTActualidad: agrupar Listas sin reescribir originales'
+            git commit -m 'TTActualidad: mantener revisiones de tendencias sin agrupar'
             if git push origin HEAD:main; then
               gh workflow run repair-ttendencias-explicadas.yml --repo "$GITHUB_REPOSITORY" --ref main
               exit 0
@@ -74,8 +76,9 @@ jobs:
           if python3 - <<'PY'
           import json, sys
           jobs=json.load(open('trends/editorial-queue.json')).get('items',[])
-          sys.exit(0 if any(x.get('status') in {'preparing','update'} and (x.get('listas_grouping_request') or x.get('red_review_request')) for x in jobs) else 1)
+          sys.exit(0 if any(x.get('status') in {'preparing','update'} and x.get('red_review_request') for x in jobs) else 1)
           PY
           then
             python3 trends/request_pc_editorial.py --trigger
           fi
+

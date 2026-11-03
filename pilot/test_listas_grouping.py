@@ -8,7 +8,9 @@ spec=importlib.util.spec_from_file_location('listas_grouping',Path(__file__).wit
 m=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)
 
-class ListasGroupingTests(unittest.TestCase):
+# Historical decoder/selection regression coverage remains executable, but these
+# helpers are deliberately unreachable from the production grouping entrypoints.
+class LegacyListasGroupingTests(unittest.TestCase):
     def setUp(self):
         self.now=datetime(2026,10,30,7,tzinfo=timezone.utc)
         self.state={p:{'items':[]} for p in [m.MANUAL,m.QUEUE,m.DECISIONS,m.DELIVERIES,m.RECEIPTS]}
@@ -23,7 +25,7 @@ class ListasGroupingTests(unittest.TestCase):
                       'items':[{'id':x,'revision':1} for x in ['a123','b123','c123']]}
 
     def requested(self):
-        return m.request(self.state,self.payload,self.now)[0]
+        return m._legacy_request(self.state,self.payload,self.now)[0]
 
     def result(self):
         return {'job_id':'listas-grouping-'+self.payload['request_id'],'groups':[{
@@ -40,14 +42,14 @@ class ListasGroupingTests(unittest.TestCase):
 
     def test_same_request_and_second_tap_are_idempotent(self):
         state=self.requested()
-        self.assertEqual(m.request(state,self.payload,self.now),(state,False))
+        self.assertEqual(m._legacy_request(state,self.payload,self.now),(state,False))
         again={**self.payload,'request_id':'22345678-1234-4234-8234-123456789abc'}
-        state,_=m.request(state,again,self.now)
+        state,_=m._legacy_request(state,again,self.now)
         self.assertEqual(len(state[m.QUEUE]['items']),1)
         self.assertEqual(state[m.RECEIPTS]['items'][-1]['status'],'rejected')
 
     def test_joint_card_preserves_every_original_explanation_date_and_revision(self):
-        state,_=m.apply_result(self.requested(),self.result(),self.now)
+        state,_=m._legacy_apply_result(self.requested(),self.result(),self.now)
         parent=state[m.MANUAL]['items'][-1]
         self.assertEqual(parent['listas_group_role'],'joint')
         for path,field in [(m.MANUAL,'items'),(m.REQUESTS,'requests')]:
@@ -62,8 +64,8 @@ class ListasGroupingTests(unittest.TestCase):
         self.assertEqual(state[m.RECEIPTS]['items'],self.requested()[m.RECEIPTS]['items'])
 
     def test_repeated_outbox_does_not_duplicate_joint_card(self):
-        state,_=m.apply_result(self.requested(),self.result(),self.now)
-        self.assertEqual(m.apply_result(state,self.result(),self.now),(state,False))
+        state,_=m._legacy_apply_result(self.requested(),self.result(),self.now)
+        self.assertEqual(m._legacy_apply_result(state,self.result(),self.now),(state,False))
 
     def test_deleted_or_revised_or_changed_member_skips_entire_group(self):
         for change in ('deleted','revision','text'):
@@ -72,7 +74,7 @@ class ListasGroupingTests(unittest.TestCase):
             if change=='deleted':row['status']='deleted'
             elif change=='revision':row['revision']=2
             else:row['explanation']='Nueva explicación'
-            result,_=m.apply_result(state,self.result(),self.now)
+            result,_=m._legacy_apply_result(state,self.result(),self.now)
             self.assertEqual(len(result[m.MANUAL]['items']),3)
             self.assertFalse(any(x.get('covered_by_id') for x in result[m.MANUAL]['items']))
             self.assertEqual(result[m.REQUESTS]['requests'][-1]['grouping_skipped_stale'],[['a123','b123']])
@@ -83,22 +85,22 @@ class ListasGroupingTests(unittest.TestCase):
                         [{'id':'a123','revision':1},{'id':'a123','revision':1}]]:
             state=self.requested();before=copy.deepcopy(state);command=self.result()
             command['groups'][0]['members']=members
-            with self.assertRaises(ValueError):m.apply_result(state,command,self.now)
+            with self.assertRaises(ValueError):m._legacy_apply_result(state,command,self.now)
             self.assertEqual(state,before)
 
     def test_no_similar_topics_finishes_without_creating_or_covering_cards(self):
         command=self.result();command['groups']=[]
-        state,_=m.apply_result(self.requested(),command,self.now)
+        state,_=m._legacy_apply_result(self.requested(),command,self.now)
         for old, new in zip(self.state[m.MANUAL]['items'], state[m.MANUAL]['items']):
             self.assertEqual({k:new[k] for k in old}, old)
         self.assertEqual(state[m.REQUESTS]['requests'][-1]['status'],'grouping_completed')
 
     def test_cleanup_only_selected_covered_cards_without_publication_or_parent_deletion(self):
-        state,_=m.apply_result(self.requested(),self.result(),self.now)
+        state,_=m._legacy_apply_result(self.requested(),self.result(),self.now)
         parent=state[m.MANUAL]['items'][-1]
         command={**self.payload,'decision':'remove_covered','request_id':'32345678-1234-4234-8234-123456789abc',
                  'items':[{'id':'a123','revision':1},{'id':parent['id'],'revision':0},{'id':'c123','revision':1}]}
-        cleaned,_=m.request(state,command,self.now)
+        cleaned,_=m._legacy_request(state,command,self.now)
         by_id={x['id']:x for x in cleaned[m.MANUAL]['items']}
         self.assertEqual(by_id['a123']['status'],'deleted')
         self.assertEqual(by_id['a123']['explanation'],self.state[m.MANUAL]['items'][0]['explanation'])
@@ -118,14 +120,14 @@ class ListasGroupingTests(unittest.TestCase):
     def test_joint_summary_requires_sources_valid_members_and_short_tweet(self):
         for field,value in [('verification_sources',[]),('explanation','TT#2 '+'界'*200),('closer_text','🌶️ no está al final')]:
             command=self.result();command['groups'][0][field]=value
-            with self.assertRaises(ValueError):m.apply_result(self.requested(),command,self.now)
+            with self.assertRaises(ValueError):m._legacy_apply_result(self.requested(),command,self.now)
 
     def test_original_can_be_closed_with_either_explicit_outcome_without_changing_joint(self):
         import tempfile, json
         from unittest.mock import patch
         spec=importlib.util.spec_from_file_location('grouping_actions',Path(__file__).with_name('apply-ttactualidad-action.py'))
         actions=importlib.util.module_from_spec(spec);spec.loader.exec_module(actions)
-        state,_=m.apply_result(self.requested(),self.result(),self.now)
+        state,_=m._legacy_apply_result(self.requested(),self.result(),self.now)
         parent=copy.deepcopy(state[m.MANUAL]['items'][-1])
         for decision in ('published','deleted'):
             with self.subTest(decision=decision), tempfile.TemporaryDirectory() as directory:
@@ -149,7 +151,7 @@ class ListasGroupingTests(unittest.TestCase):
                 if publications:self.assertEqual(publications[0]['event_id'],'a123')
 
     def test_new_revision_does_not_inherit_prior_coverage(self):
-        state,_=m.apply_result(self.requested(),self.result(),self.now)
+        state,_=m._legacy_apply_result(self.requested(),self.result(),self.now)
         for path,field in [(m.MANUAL,'items'),(m.REQUESTS,'requests')]:
             row=next(x for x in state[path][field] if x['id']=='a123')
             row.update(revision=2,explanation='Noticia nueva y comprobada')
@@ -157,7 +159,7 @@ class ListasGroupingTests(unittest.TestCase):
         self.assertIn('a123',current)
         command={**self.payload,'decision':'remove_covered','request_id':'42345678-1234-4234-8234-123456789abc',
                  'items':[{'id':'a123','revision':2}]}
-        cleaned,_=m.request(state,command,self.now)
+        cleaned,_=m._legacy_request(state,command,self.now)
         self.assertEqual(next(x for x in cleaned[m.MANUAL]['items'] if x['id']=='a123')['status'],'explained')
         self.assertEqual(cleaned[m.RECEIPTS]['items'][-1]['status'],'rejected')
 
@@ -169,7 +171,7 @@ class ListasGroupingTests(unittest.TestCase):
         self.assertNotIn('a123',m.eligible(self.state,self.now))
 
     def test_remove_all_trends_in_one_nonpublished_decision_independent_of_color(self):
-        state,_=m.apply_result(self.requested(),self.result(),self.now)
+        state,_=m._legacy_apply_result(self.requested(),self.result(),self.now)
         # a: green, b: yellow, c: red; a/b: purple covered originals;
         # the fourth card is the joint summary. All must be eligible.
         for path,field in ((m.MANUAL,'items'),(m.REQUESTS,'requests')):
@@ -185,7 +187,7 @@ class ListasGroupingTests(unittest.TestCase):
                  'request_id':'52345678-1234-4234-8234-123456789abc',
                  'items':[{'id':row['id'],'revision':row['revision']}
                           for row in state[m.MANUAL]['items']]}
-        result,_=m.request(state,command,self.now)
+        result,_=m._legacy_request(state,command,self.now)
         self.assertEqual(result[m.RECEIPTS]['items'][-1]['status'],'applied')
         self.assertEqual(result[m.RECEIPTS]['items'][-1]['removed_count'],4)
         self.assertEqual(result[m.DELIVERIES]['items'][0]['status'],'deleted')
@@ -200,7 +202,7 @@ class ListasGroupingTests(unittest.TestCase):
                 self.assertEqual(row.get('listas_group_members'),old.get('listas_group_members'))
         self.assertIn(joint,result[m.RECEIPTS]['items'][-1]['removed_ids'])
         self.assertEqual({x['status'] for x in result[m.DECISIONS]['items']},{'deleted'})
-        self.assertEqual(m.request(result,command,self.now),(result,False))
+        self.assertEqual(m._legacy_request(result,command,self.now),(result,False))
 
     def test_remove_all_rejects_stale_duplicate_or_invalid_selection_atomically(self):
         for edit in ('stale', 'duplicate', 'unknown', 'empty'):
@@ -213,7 +215,7 @@ class ListasGroupingTests(unittest.TestCase):
                 if edit=='unknown': items[2]['id']='unknown'
                 if edit=='empty': items=[]
                 cmd['items']=items
-                result,_=m.request(self.state,cmd,self.now)
+                result,_=m._legacy_request(self.state,cmd,self.now)
                 self.assertEqual(result[m.RECEIPTS]['items'][-1]['status'],'rejected')
                 for path in (m.MANUAL,m.REQUESTS,m.DECISIONS,m.DELIVERIES):
                     self.assertEqual(result[path],self.state[path])
@@ -222,9 +224,10 @@ class ListasGroupingTests(unittest.TestCase):
         cmd={'project':'ttendencias','decision':'remove_all_trends',
              'request_id':'72345678-1234-4234-8234-123456789abc',
              'items':[{'id':'a123','revision':1},{'id':'b123','revision':1}]}
-        result,_=m.request(self.state,cmd,self.now)
+        result,_=m._legacy_request(self.state,cmd,self.now)
         status={x['id']:x['status'] for x in result[m.MANUAL]['items']}
         self.assertEqual(status,{'a123':'deleted','b123':'deleted','c123':'explained'})
         self.assertEqual(result[m.RECEIPTS]['items'][-1]['removed_ids'],['a123','b123'])
 
 if __name__=='__main__':unittest.main()
+
