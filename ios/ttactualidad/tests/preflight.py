@@ -115,7 +115,7 @@ assert "TTActualidad.operations.v1" in store and "requestID: String? = nil" in s
 assert "reconcileOperationHistory(" in store
 assert 'pilot/ttactualidad-action-receipts.json' in store
 assert '"Sin confirmar"' in store and '"Esperando GitHub"' in store
-assert "Comprobar GitHub ahora" in pending_panel
+assert "Conciliar órdenes con GitHub" in pending_panel
 assert "Órdenes por confirmar" in pending_panel
 assert "requestID: requestID" in actions and "requestID: requestID" in auth
 
