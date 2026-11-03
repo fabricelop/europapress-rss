@@ -5,21 +5,31 @@
   "canonical": true,
   "run_id": "tr-1793743346303-manual",
   "previous_run_id": "tr-1793742814208-manual",
-  "status": "PROCESSING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-03T22:02:26.303Z",
-  "updated_at": "2026-11-03T22:04:00.000Z",
+  "updated_at": "2026-11-03T23:11:04+01:00",
   "finished_at": "2026-11-03T21:59:48.302Z",
   "current": 0,
   "total": 2,
   "trend_id": "e573493d55f2",
   "title": "#ChampionsLeague",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "red-review-5331dae929b3cc0542af"
+    "919fc31e93a5",
+    "e573493d55f2",
+    "trend-update-2454ffeac830bf71aa0b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "15763ea0d688",
+    "381b284f49ec",
+    "af1c68478673"
+  ],
+  "remaining_active_ids": [
+    "15763ea0d688",
+    "381b284f49ec",
+    "af1c68478673"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
@@ -57,7 +67,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T21:57:00Z",
+  "last_started_at": "2026-11-03T23:11:04+01:00",
   "last_completed_at": "2026-11-03T21:59:48.302Z",
   "last_run": {
     "run_id": "tr-1793742976079-manual",
