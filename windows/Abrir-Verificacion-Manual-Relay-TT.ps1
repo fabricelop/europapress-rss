@@ -33,7 +33,7 @@ try {
   $owned=@(Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" | Where-Object {[string]$_.CommandLine -match '--remote-debugging-port=9234(?:\s|$)' -and ([string]$_.CommandLine).Contains($ttRelayProfile)})
   if(-not $owned.Count){throw 'No se puede confirmar el perfil del navegador 9234. No se cierra.'}
   if(@($owned | Where-Object {[string]$_.CommandLine -match '--headless'}).Count){
-   # Graceful close of this verified relay browser only, never taskkill/9223.
+   # Graceful close of this verified relay browser only, no forced termination; generator untouched.
    $close=@'
 (async()=>{const r=await fetch('http://127.0.0.1:9234/json/version');const v=await r.json();const u=new URL(v.webSocketDebuggerUrl);if(u.hostname!=='127.0.0.1'&&u.hostname!=='localhost')throw Error('NOT_LOCAL');if(u.port!=='9234')throw Error('WRONG_PORT');const w=new WebSocket(u);await new Promise((ok,bad)=>{const t=setTimeout(()=>bad(Error('TIMEOUT')),5000);w.addEventListener('open',()=>{clearTimeout(t);ok()},{once:true});w.addEventListener('error',()=>bad(Error('CONNECT')),{once:true})});w.send(JSON.stringify({id:1,method:'Browser.close',params:{}}));await new Promise(ok=>{const t=setTimeout(ok,1500);w.addEventListener('close',()=>{clearTimeout(t);ok()},{once:true})});w.close()})().catch(()=>{console.error('No se pudo cerrar el relay de forma ordenada');process.exitCode=1});
 '@
