@@ -156,7 +156,7 @@ def pending(project):
     closed={}
     for row in decisions.get("items",[]):
         if str(row.get("status") or "").lower() in TERMINAL:
-            closed[ident(row)]=max(closed.get(ident(row),-1),int(row.get("revision") or (1 if news else 0)))
+            closed[ident(row)]=max(closed.get(ident(row),-1),int(row["revision"]) if row.get("revision") is not None else 2147483647)
     ready={}
     for row in prepared.get("items",[]):
         text=(row.get("tweet") or {}).get("text") if news else row.get("explanation")
