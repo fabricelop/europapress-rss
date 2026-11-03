@@ -1094,7 +1094,7 @@ private struct TrendTile: View {
     }
 
     private var movementLabel: String {
-        if store.radarNewNames.contains(item.name) { return "NUEVA" }
+        if store.radarNewNames.contains(item.name), let entered = item.enteredAt, Date().timeIntervalSince(entered) >= 0, Date().timeIntervalSince(entered) < 3600 { return "NUEVA" }
         // The radar aggregator's own "new" status can mean uncorroborated
         // ranking history, not first occurrence. Do not mislabel it as new.
         if item.movement == "new" { return "—" }
@@ -1104,7 +1104,7 @@ private struct TrendTile: View {
     }
 
     private var movementColor: Color {
-        if store.radarNewNames.contains(item.name) { return TTTheme.blue }
+        if movementLabel == "NUEVA" { return TTTheme.blue }
         if item.rankDelta > 0 { return TTTheme.teal }
         if item.rankDelta < 0 { return Color(red: 1, green: 0.65, blue: 0.45) }
         return TTTheme.muted
