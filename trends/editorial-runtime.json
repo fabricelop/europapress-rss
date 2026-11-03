@@ -6,9 +6,9 @@
   "run_id": "tr-1793719374883-manual",
   "previous_run_id": "tr-1793718615811-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T15:23:00Z",
-  "updated_at": "2026-11-03T15:23:00Z",
+  "updated_at": "2026-11-03T15:24:00Z",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -47,7 +47,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T16:20:28+01:00",
@@ -183,7 +183,7 @@
     "at": "2026-11-03T15:22:09.264Z"
   },
   "source": "chat",
-  "message": "Inicio tr-1793719374883-manual: 2 trabajo(s) vigente(s) en main; validación JIT por id+revision. Sin ImageGen ni publicación.",
+  "message": "#AccidenteFerroviario r0 revalidada JIT. Revisando novedades sustanciales posteriores al choque de Urda; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2675,6 +2675,17 @@
       "trend_id": "red-review-f1246dd1ae1527fa7694",
       "title": "Revisar novedades: #AccidenteFerroviario",
       "message": "Inicio tr-1793719374883-manual: 2 trabajo(s) vigente(s) en main; validación JIT por id+revision. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T15:24:00Z",
+      "phase": "investigating",
+      "run_id": "tr-1793719374883-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-f1246dd1ae1527fa7694",
+      "title": "Revisar novedades: #AccidenteFerroviario",
+      "message": "#AccidenteFerroviario r0 revalidada JIT. Revisando novedades sustanciales posteriores al choque de Urda; sin ImageGen ni publicación."
     }
   ],
   "history": [
