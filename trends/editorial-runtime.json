@@ -3,47 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793667439212-manual",
-  "previous_run_id": "tr-autoguard-1793667063",
-  "status": "DONE",
-  "phase": "completed",
-  "started_at": "2026-11-03T01:57:00+01:00",
-  "updated_at": "2026-11-03T02:07:00+01:00",
-  "finished_at": "2026-11-03T02:07:00+01:00",
-  "current": 2,
+  "run_id": "tr-1793670680873-manual",
+  "previous_run_id": "tr-1793667439212-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T02:52:30+01:00",
+  "updated_at": "2026-11-03T02:52:30+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-24c8491c506e48bcb3a4",
-    "red-review-8d7651be4c6ad841c018"
+  "trend_id": "red-review-0dc1615f01f6b739bcd4",
+  "title": "Revisar novedades: Diomande",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-0dc1615f01f6b739bcd4",
+    "red-review-359b77490f7f8f1da133"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-0dc1615f01f6b739bcd4",
+    "red-review-359b77490f7f8f1da133"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
-    "queue_remaining": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "completed",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-24c8491c506e48bcb3a4",
@@ -120,7 +123,7 @@
     "message": "Pasada cerrada 2/2. Ambos review_red fueron investigados sin novedad material y el aplicador JIT los cerró como stale: adama salió del Top 30 vigente y Paola tenía una decisión terminal posterior. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Entraron dos review_red en la barrera final; reabriendo la pasada y revisando adama primero.",
+  "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), procesadas por antigüedad con revalidación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1167,6 +1170,17 @@
       "trend_id": "7b880b959d71",
       "title": "IRINI",
       "message": "Inicio: 6 trabajos preparing vigentes en main (IRINI, Náyades, Andrea, Mallorca, Sergio Herrera y Kiko), procesados por antigüedad con validación JIT por id+revision. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T02:52:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793670680873-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-0dc1615f01f6b739bcd4",
+      "title": "Revisar novedades: Diomande",
+      "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), procesadas por antigüedad con revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -5389,6 +5403,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada 2/2; barrera final main limpia (cola 0, activos 0, reexplicaciones 0). ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T02:52:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793670680873-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-0dc1615f01f6b739bcd4",
+      "title": "Revisar novedades: Diomande",
+      "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), procesadas por antigüedad con revalidación JIT; sin ImageGen ni publicación."
     }
   ]
 }
