@@ -15,7 +15,7 @@ async function probe({later=false,extra=false,old=false,generating=false}={}){
  const user={innerText:'TTENDENCIAS_IMAGE_JOB_V4 cmd-123 tt-123',compareDocumentPosition:img=>img.old?2:4};
  const image={complete:true,naturalWidth:1536,naturalHeight:1024,currentSrc:'https://asset.example/image.png',alt:'',old};
  let downloads=0;
- const document={querySelectorAll:s=>s.includes('user')?[user,...(later?[{innerText:'another command'}]:[])]:[image,...(extra?[{...image}]:[])],querySelector:()=>generating?{}:null};
+ const document={querySelectorAll:s=>s==='[data-user-message-bubble="true"]'?[]:s.includes('user')?[user,...(later?[{innerText:'another command'}]:[])]:[image,...(extra?[{...image}]:[])],querySelector:()=>generating?{}:null};
  const context={document,Node:{DOCUMENT_POSITION_FOLLOWING:4},Uint8Array,btoa:s=>Buffer.from(s,'binary').toString('base64'),fetch:async()=>{downloads++;return {ok:true,blob:async()=>({type:'image/png',size:15000,arrayBuffer:async()=>new Uint8Array(15000).buffer})};}};
  const result=await vm.runInNewContext(rasterProbe('cmd-123'),context);
  return {result,downloads};
@@ -27,7 +27,7 @@ test('Reads original raster only after exact last command; ambiguous, older and 
 test('URL discovery requires this command in the last user turn, not merely the pinned tab URL',()=>{
  const url='https://chatgpt.com/c/abc-123';
  for(const [texts,expected] of [[[],null],[['old command'],null],[['cmd-123','later command'],null],[['old','TTENDENCIAS_IMAGE_JOB_V4 cmd-123 trend-123'],url]]){
-  const document={querySelectorAll:()=>texts.map(innerText=>({innerText}))};
+  const document={querySelectorAll:s=>s==='[data-user-message-bubble="true"]'?[]:texts.map(innerText=>({innerText}))};
   assert.equal(vm.runInNewContext(conversationProbe('cmd-123'),{document,location:{href:url}}),expected);
  }
 });
@@ -36,7 +36,7 @@ test('delivery recognizes semantic user wrappers and tool-rendered images withou
  const leaf={textContent:'TTENDENCIAS_IMAGE_JOB_V4 cmd-123 tt-123',compareDocumentPosition:()=>4,contains:()=>false};
  const wrapper={contains:el=>el===leaf};
  const image={complete:true,naturalWidth:1536,naturalHeight:864,src:'https://asset.example/original.png',alt:''};
- const document={querySelectorAll:selector=>selector==='img'?[image]:selector.includes('user-message')?[wrapper,leaf]:[],querySelector:()=>null};
+ const document={querySelectorAll:selector=>selector==='img'?[image]:selector==='[data-user-message-bubble="true"]'?[]:selector.includes('user-message')?[wrapper,leaf]:[],querySelector:()=>null};
  const context={document,location:{href:url},Node:{DOCUMENT_POSITION_FOLLOWING:4},Uint8Array,btoa:s=>Buffer.from(s,'binary').toString('base64'),
  fetch:async()=>({ok:true,blob:async()=>({type:'image/png',size:15000,arrayBuffer:async()=>new Uint8Array(15000).buffer})})};
  assert.equal(vm.runInNewContext(conversationProbe('cmd-123'),context),url);

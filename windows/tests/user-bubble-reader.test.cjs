@@ -18,4 +18,19 @@ for(const [file,prefix] of [['TTendenciasWebImages.cjs','TTENDENCIAS'],['TTiTTul
  test(file+' rejects wrong command without fetching',async()=>{const r=await run({wrong:true});assert.equal(r.value.ready,false);assert.equal(r.fetched,0)});
  test(file+' rejects ambiguous originals',async()=>{const r=await run({ambiguous:true});assert.equal(r.value.reason,'ambiguous_or_missing_raster');assert.equal(r.fetched,0)});
  test(file+' never captures later user image',async()=>{const r=await run({later:true});if(prefix==='TTENDENCIAS'){assert.equal(r.value.reason,'later_user_turn');assert.equal(r.fetched,0)}else{assert.equal(r.value.ready,true);assert.equal(r.fetched,1)}});
+ test(file+' preserves two actual bubbles despite four nested controls',()=>{
+  const controls=Array.from({length:4},(_,i)=>({tagName:i%2?'DIV':'BUTTON',innerText:'',contains:()=>false}));
+  const bubbles=[0,1].map((i)=>({innerText:prefix+'_IMAGE_JOB_V4 '+(i?'job-exact':'older-job')+' record',contains:x=>controls.slice(i*2,i*2+2).includes(x)}));
+  const all=[bubbles[0],...controls.slice(0,2),bubbles[1],...controls.slice(2)];
+  const document={querySelectorAll:s=>s==='[data-user-message-bubble="true"]'?bubbles:all};
+  const code=section.slice(0,section.indexOf('function rasterProbe('));
+  // Reproduce the old bug from the real diagnostic: four children, no commands.
+  assert.deepEqual(all.filter(el=>!all.some(other=>other!==el&&el.contains(other))),controls);
+  const users=vm.runInNewContext(code+';userTurns()',{document});
+  assert.equal(users.length,2);assert.equal(users[1],bubbles[1]);
+  const begin=source.indexOf('function conversationProbe('),end=source.indexOf('\nfunction ',begin+1);
+  const expression=vm.runInNewContext(code+'\n'+source.slice(begin,end)+';conversationProbe("job-exact",true)');
+  const result=vm.runInNewContext(expression,{document,location:{href:'https://chatgpt.com/c/exact'}});
+  assert.equal(result.url,'https://chatgpt.com/c/exact');assert.equal(result.reason,'matched');
+ });
 }
