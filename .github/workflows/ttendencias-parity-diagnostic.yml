@@ -1,0 +1,27 @@
+name: Read-only TTendencias Site parity diagnostic syntax
+on:
+  push:
+    paths:
+      - windows/Diagnosticar-Sincronizacion-TTendencias.ps1
+      - .github/workflows/ttendencias-parity-diagnostic.yml
+  pull_request:
+    paths:
+      - windows/Diagnosticar-Sincronizacion-TTendencias.ps1
+      - .github/workflows/ttendencias-parity-diagnostic.yml
+permissions:
+  contents: read
+jobs:
+  powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: powershell
+        run: |
+          $path = 'windows/Diagnosticar-Sincronizacion-TTendencias.ps1'
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count){throw ($errors | Out-String)}
+          $source=Get-Content $path -Raw
+          if($source -match 'Stop-Process|taskkill|Remove-Item|Set-Content|Start-Process|Enable-ScheduledTask|Disable-ScheduledTask'){
+            throw 'The Site parity probe must stay read-only'
+          }
