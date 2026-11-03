@@ -148,8 +148,12 @@ struct EditorialRelationsView: View {
         }
     }
 
+    private var canonicalRelations: [EditorialRelation] {
+        EditorialRelationsPolicy.canonical(model.snapshot?.items ?? [])
+    }
+
     private var relations: [EditorialRelation] {
-        (model.snapshot?.items ?? []).filter { item in
+        canonicalRelations.filter { item in
             guard item.state == filter else { return false }
             guard let scope else { return true }
             let endpoint = scope.project == "ttittulares" ? item.news : item.trend
@@ -295,7 +299,7 @@ struct EditorialRelationsView: View {
 
     private func relationState(_ news: EditorialRelationEndpoint,
                                _ trend: EditorialRelationEndpoint) -> String? {
-        model.snapshot?.items.first {
+        canonicalRelations.first {
             same($0.news, news) && same($0.trend, trend)
         }?.state
     }
@@ -304,7 +308,7 @@ struct EditorialRelationsView: View {
         -> [EditorialRelationEndpoint] {
         var seen = Set<String>()
         let snapshot = model.snapshot
-        let endpoints = (snapshot?.trends ?? []) + (snapshot?.items ?? []).map(\.trend)
+        let endpoints = (snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
         return endpoints.filter { trend in
             selectedPairs.contains(pairKey(news, trend)) &&
                 relationState(news, trend) != "linked" &&
@@ -383,7 +387,8 @@ struct EditorialRelationsView: View {
     @ViewBuilder
     private func top30Row(news: EditorialRelationEndpoint,
                           rank: Int, name: String) -> some View {
-        let endpoint = model.snapshot?.trends.first {
+        let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
+        let endpoint = endpoints.first {
             TrendImportance.key($0.title) == TrendImportance.key(name)
         }
         HStack(spacing: 8) {
