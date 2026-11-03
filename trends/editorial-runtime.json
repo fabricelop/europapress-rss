@@ -3,29 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793702191137-manual",
-  "previous_run_id": "tr-autoguard-1793700663",
-  "status": "success",
-  "phase": "investigating",
-  "started_at": "2026-11-03T11:36:31+01:00",
-  "updated_at": "2026-11-03T11:43:19+01:00",
+  "run_id": "tr-1793702646001-manual",
+  "previous_run_id": "tr-1793702191137-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T11:44:06+01:00",
+  "updated_at": "2026-11-03T11:46:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
-  "trend_id": "234205959012",
-  "title": "Andorra",
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "red-review-ca984f801cd012b43bd9",
+  "title": "Revisar novedades: #AccidenteFerroviario",
+  "queue_complete": false,
   "processed_ids": [
     "026a3977ac74",
     "2517c2998d33",
     "f9afae6ceb1f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-ca984f801cd012b43bd9",
+    "red-review-f1fadc7c92bc5acac655"
+  ],
+  "remaining_active_ids": [
+    "red-review-ca984f801cd012b43bd9",
+    "red-review-f1fadc7c92bc5acac655"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -34,7 +40,7 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -44,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "01ac1d20b1fb",
@@ -191,7 +197,7 @@
     "at": "2026-11-03T11:20:00+01:00"
   },
   "source": "chat",
-  "message": "Investigando Andorra r0 con validación JIT; sin ImageGen.",
+  "message": "Inicio tr-1793702646001-manual: 2 revisiones review_red preparing vigentes en main (#AccidenteFerroviario y La RFEF). Revalidación JIT por id+revision; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1848,6 +1854,17 @@
       "trend_id": "234205959012",
       "title": "Andorra",
       "message": "Inicio JIT: Andorra r0 sigue preparing en main. Investigación desde cero del contexto actual, fecha y marcador; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T11:46:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793702646001-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-ca984f801cd012b43bd9",
+      "title": "Revisar novedades: #AccidenteFerroviario",
+      "message": "Inicio tr-1793702646001-manual: 2 revisiones review_red preparing vigentes en main (#AccidenteFerroviario y La RFEF). Revalidación JIT por id+revision; sin ImageGen ni publicación."
     }
   ],
   "history": [
