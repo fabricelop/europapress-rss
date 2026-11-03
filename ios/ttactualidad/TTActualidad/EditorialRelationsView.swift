@@ -72,7 +72,9 @@ private final class EditorialRelationsModel: ObservableObject {
             notice = action == "link" ? "Relación vinculada en ambos sentidos." :
                 "Relación bloqueada para este episodio. El automatismo no volverá a añadirla."
         } catch {
-            if case RelationsError.http(409) = error { await load(using: github) }
+            if let failure = error as? RelationsError, case .http(409) = failure {
+                await load(using: github)
+            }
             notice = "No se ha confirmado la decisión: \(error.localizedDescription)"
         }
     }
