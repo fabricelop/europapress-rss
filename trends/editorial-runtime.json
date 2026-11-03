@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793713672",
   "previous_run_id": "tr-autoguard-1793711487",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "remate_selection",
   "started_at": "2026-11-03T14:48:00+01:00",
-  "updated_at": "2026-11-03T14:48:00+01:00",
+  "updated_at": "2026-11-03T14:49:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "remate_selection",
   "final_outcomes": [
     {
       "id": "8a7d05b3a180",
@@ -173,7 +173,7 @@
     "at": "2026-11-03T14:27:30+01:00"
   },
   "source": "chat",
-  "message": "Inicio: Murcia r0 es el único trabajo preparing vigente en main. Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación.",
+  "message": "Murcia r0 investigada y redactada; remate neutral seleccionado. Pendiente persistencia JIT en ambos registros.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2240,6 +2240,39 @@
       "trend_id": "734702c95d97",
       "title": "Murcia",
       "message": "Inicio: Murcia r0 es el único trabajo preparing vigente en main. Revalidación JIT antes de investigar y persistir; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T14:49:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793713672",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "734702c95d97",
+      "title": "Murcia",
+      "message": "Investigando Murcia r0: dos fuentes actuales independientes confirman que la Asamblea Regional declaró a Pedro Sánchez persona non grata; causalidad editorial suficientemente acreditada."
+    },
+    {
+      "at": "2026-11-03T14:49:20+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793713672",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "734702c95d97",
+      "title": "Murcia",
+      "message": "Borrador factual preparado con TT#15 y hashtags específicos; sin afirmaciones añadidas ni publicación."
+    },
+    {
+      "at": "2026-11-03T14:49:30+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793713672",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "734702c95d97",
+      "title": "Murcia",
+      "message": "Seleccionado remate neutral sobre la declaración simbólica del pleno; texto completo validado por debajo de 280 caracteres."
     }
   ],
   "history": [
