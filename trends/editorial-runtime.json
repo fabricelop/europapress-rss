@@ -3,23 +3,26 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793667063",
-  "previous_run_id": "tr-autoguard-1793665313",
+  "run_id": "tr-1793667439212-manual",
+  "previous_run_id": "tr-autoguard-1793667063",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-03T01:51:00+01:00",
-  "updated_at": "2026-11-03T01:58:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-03T01:57:00+01:00",
+  "updated_at": "2026-11-03T02:00:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 4,
-  "trend_id": "red-review-24c8491c506e48bcb3a4",
-  "title": "Revisar novedades: adama",
+  "current": 0,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [
     "bbcfff2e3fc1"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-24c8491c506e48bcb3a4",
+    "red-review-8d7651be4c6ad841c018"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -4480,7 +4483,7 @@
       "message": "Pasada tr-autoguard-1793667063 cerrada 2/2: Nacho y Gonzalo Miró R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Gonzalo Miró se cerró sin remate por sensibilidad al contexto de la tragedia ferroviaria. Relectura final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-autoguard-1793667063",
+  "command_id": "tr-1793667439212-manual",
   "requested_at": "2026-11-02T22:58:00+01:00",
   "runs": [
     {
@@ -5283,6 +5286,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-autoguard-1793667063 cerrada 2/2: Nacho y Gonzalo Miró R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Gonzalo Miró se cerró sin remate por sensibilidad al contexto de la tragedia ferroviaria. Relectura final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0."
+    }
+  ],
+  "activity_log": [
+    {
+      "at": "2026-11-03T02:00:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada manual iniciada; 2 review_red activas. Revalidación JIT antes de cada resultado; ImageGen desactivado."
     }
   ]
 }
