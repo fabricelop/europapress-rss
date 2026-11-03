@@ -3,24 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793693801397-manual",
-  "previous_run_id": "tr-autoguard-1793693463",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T09:16:41.397+01:00",
-  "updated_at": "2026-11-03T09:21:00+01:00",
-  "finished_at": "2026-11-03T09:21:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "run_id": "tr-1793694655913-manual",
+  "previous_run_id": "tr-1793693801397-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T09:32:00+01:00",
+  "updated_at": "2026-11-03T09:32:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "22a5b74e73c8",
+  "title": "#Buenosdías",
+  "queue_complete": false,
   "processed_ids": [
     "red-review-bd3b564c5b7eb04ccd20",
     "red-review-a8889f3e3c2b543de4b4"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "22a5b74e73c8"
+  ],
+  "remaining_active_ids": [
+    "22a5b74e73c8"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -43,7 +47,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-bd3b564c5b7eb04ccd20",
@@ -121,7 +125,7 @@
     "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio manual: #Buenosdías r0 sigue preparing en main; investigación desde cero con validación JIT. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1459,6 +1463,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T09:32:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "22a5b74e73c8",
+      "title": "#Buenosdías",
+      "message": "Inicio manual: #Buenosdías r0 sigue preparing en main; investigación desde cero con validación JIT. Sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -5174,7 +5189,7 @@
       "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793693801397-manual",
+  "command_id": "tr-1793694655913-manual",
   "requested_at": "2026-11-03T09:12:30+01:00",
   "runs": [
     {
