@@ -49229,12 +49229,14 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "033a07896805",
@@ -49278,14 +49280,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261103061901_1200_v2.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/madrid/noticia-delegacion-gobierno-justifica-desalojo-acampada-sol-ultimo-recurso-perdida-reivindicativa-20261103061901.html",
+        "alt": "Imagen de archivo relacionada con Delegación del Gobierno",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261103061901_1200_v2.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/madrid/noticia-delegacion-gobierno-justifica-desalojo-acampada-sol-ultimo-recurso-perdida-reivindicativa-20261103061901.html",
+        "alt": "Imagen de archivo relacionada con Delegación del Gobierno",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-03T10:07:30+01:00",
+  "updated_at": "2026-11-03T09:08:31.231563Z",
   "count": 812
 }
