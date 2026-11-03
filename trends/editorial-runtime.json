@@ -3,46 +3,56 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793702778700-manual",
-  "previous_run_id": "tr-1793702646001-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T11:46:18.700+01:00",
-  "updated_at": "2026-11-03T11:48:30+01:00",
-  "finished_at": "2026-11-03T11:48:30+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-f1fadc7c92bc5acac655"
+  "run_id": "tr-autoguard-1793704864",
+  "previous_run_id": "tr-1793702778700-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T12:21:04+01:00",
+  "updated_at": "2026-11-03T12:21:04+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 5,
+  "trend_id": "7e5d3c78960a",
+  "title": "Sanción",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "7e5d3c78960a",
+    "6f359041a211",
+    "e88efc6a01b5",
+    "af8c7f6c5d13",
+    "c97382fe915f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "7e5d3c78960a",
+    "6f359041a211",
+    "e88efc6a01b5",
+    "af8c7f6c5d13",
+    "c97382fe915f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 5,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-f1fadc7c92bc5acac655",
@@ -106,7 +116,7 @@
     "converged_with": "tr-1793702646001-manual"
   },
   "source": "chat",
-  "message": "Pasada tr-1793702778700-manual cerrada 1/1 por convergencia JIT: La RFEF review_completed/updated como episodio distinto del 3 de noviembre, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793704864: 5 investigaciones preparing/update vigentes en main (Sanción, #LaFuerzaDeLaGentePSOE, Azov, Kiev, Piqué), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1823,6 +1833,17 @@
       "current": 1,
       "total": 1,
       "message": "Pasada tr-1793702778700-manual cerrada 1/1 por convergencia JIT: La RFEF review_completed/updated como episodio distinto del 3 de noviembre, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T12:21:04+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793704864",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "7e5d3c78960a",
+      "title": "Sanción",
+      "message": "Inicio tr-autoguard-1793704864: 5 investigaciones preparing/update vigentes en main (Sanción, #LaFuerzaDeLaGentePSOE, Azov, Kiev, Piqué), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -8307,6 +8328,17 @@
       "current": 1,
       "total": 1,
       "message": "Pasada tr-1793702778700-manual cerrada 1/1 por convergencia JIT: La RFEF review_completed/updated como episodio distinto del 3 de noviembre, con nueva ficha trend-update-5c8cd4849eee905da8cd. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T12:21:04+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793704864",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "7e5d3c78960a",
+      "title": "Sanción",
+      "message": "Inicio tr-autoguard-1793704864: 5 investigaciones preparing/update vigentes en main (Sanción, #LaFuerzaDeLaGentePSOE, Azov, Kiev, Piqué), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "converged_run_ids": [
