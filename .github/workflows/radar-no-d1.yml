@@ -20,6 +20,7 @@ on:
 permissions:
   contents: write
   actions: write
+  pull-requests: read
 
 concurrency:
   group: ttittulares-radar-watchdog
@@ -111,15 +112,11 @@ jobs:
 
             if git push origin HEAD:main; then
               echo "Radar actualizado correctamente."
-              # GITHUB_TOKEN commits do not trigger push workflows. Explicitly
-              # dispatch Telegram so new PROCESSING cards arrive promptly.
-              if gh workflow run send-ttittulares-ready-telegram.yml --repo "$GITHUB_REPOSITORY" --ref main; then
-                echo "TTITTULARES_EARLY_TELEGRAM_DISPATCHED"
-              else
-                # Cron remains as backstop; never mark a good radar run failed
-                # solely because GitHub delayed dispatching its downstream job.
-                echo "Aviso: Telegram dispatch falló; cron */10 reintentará." >&2
-              fi
+              # GITHUB_TOKEN commits do not trigger push workflows. Request
+              # the existing text editor after authoritative state is durable.
+              # Never dispatch the retired Telegram editorial delivery.
+              python3 ttittulares/request_pc_editorial.py --selftest
+              python3 ttittulares/request_pc_editorial.py --trigger
               exit 0
             fi
 
