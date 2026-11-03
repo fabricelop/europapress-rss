@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from pilot import trend_maintenance as maintenance
 from trends import anticipation
+from trends.requests_json import dumps_for_path
 MANUAL = 'trends/telegram-manual-explained.json'
 REQUESTS = 'trends/requests.json'
 QUEUE = 'trends/editorial-queue.json'
@@ -473,7 +474,7 @@ def main():
     changed = []
     for path, doc in state.items():
         if doc != before[path]:
-            (ROOT/path).write_text(json.dumps(doc, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+            (ROOT/path).write_text(dumps_for_path(path, doc), encoding='utf-8')
             changed.append(path)
     print('TT_LISTAS_GROUPING', json.dumps({'changed': changed, 'request_id': payload.get('request_id')}, ensure_ascii=False))
 
