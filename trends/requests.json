@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T01:31:13+01:00",
+  "updated_at": "2026-11-03T01:41:02+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -208527,6 +208527,48 @@
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending"
+    },
+    {
+      "id": "9bcbdfa04fb5",
+      "name": "Sergio",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-11-03T01:41:02+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "125852734413",
+      "requested_together": [
+        "Sergio"
+      ],
+      "captured_with": [
+        "Sergio",
+        "Nacho"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "179ac7f4ce3a",
+      "name": "Nacho",
+      "rank": 16,
+      "status": "preparing",
+      "requested_at": "2026-11-03T01:41:02+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "125852734413",
+      "requested_together": [
+        "Nacho"
+      ],
+      "captured_with": [
+        "Sergio",
+        "Nacho"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 841
