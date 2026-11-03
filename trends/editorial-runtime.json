@@ -8,8 +8,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-03T20:59:00+01:00",
-  "updated_at": "2026-11-03T21:08:00+01:00",
-  "finished_at": "2026-11-03T21:08:00+01:00",
+  "updated_at": "2026-11-03T21:06:30+01:00",
+  "finished_at": "2026-11-03T21:06:30+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -33,13 +33,12 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 1,
-    "terminal_decisions": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
@@ -54,7 +53,7 @@
       "applied": true,
       "via": "maintenance_outbox_convergence",
       "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-      "reason": "El resultado investigado quedó obsoleto en la validación fresca del aplicador; se cerró sin crear una ficha duplicada."
+      "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
     },
     {
       "id": "red-review-423e34942e629bdd1ccc",
@@ -63,19 +62,19 @@
       "outcome": "updated",
       "applied": true,
       "created_id": "trend-update-5b04d3e8630fd169afad",
-      "via": "maintenance_outbox_applied",
+      "via": "maintenance_outbox_convergence",
       "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-      "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y el toque de Aramburu; se creó una actualización en continuidad."
+      "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T20:56:57+01:00",
-  "last_completed_at": "2026-11-03T21:08:00+01:00",
+  "last_completed_at": "2026-11-03T21:06:30+01:00",
   "last_run": {
     "run_id": "tr-1793735926010-manual",
     "status": "DONE",
     "started_at": "2026-11-03T20:59:00+01:00",
-    "finished_at": "2026-11-03T21:08:00+01:00",
+    "finished_at": "2026-11-03T21:06:30+01:00",
     "current": 2,
     "total": 2,
     "closed": [
@@ -87,7 +86,7 @@
         "applied": true,
         "via": "maintenance_outbox_convergence",
         "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-        "reason": "El resultado investigado quedó obsoleto en la validación fresca del aplicador; se cerró sin crear una ficha duplicada."
+        "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
       },
       {
         "id": "red-review-423e34942e629bdd1ccc",
@@ -96,15 +95,15 @@
         "outcome": "updated",
         "applied": true,
         "created_id": "trend-update-5b04d3e8630fd169afad",
-        "via": "maintenance_outbox_applied",
+        "via": "maintenance_outbox_convergence",
         "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-        "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y el toque de Aramburu; se creó una actualización en continuidad."
+        "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
       }
     ],
     "summary": "2/2 cerradas: Rufián stale por decisión terminal JIT y Aramburu updated; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793735926010-manual cerrada 2/2: Rufián review_completed/stale sin duplicar ficha y Aramburu review_completed/updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0; ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 2/2: Rufián r0 quedó stale por barrera terminal JIT y no se resucitó; Aramburu r0 quedó updated con trend-update-5b04d3e8630fd169afad sincronizado en requests y Listas. Barrera: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -6265,34 +6264,12 @@
       "converged_with": "tr-1793734298171-manual"
     },
     {
-      "at": "2026-11-03T20:49:10+01:00",
-      "phase": "preparing",
-      "run_id": "tr-autoguard-1793735352",
-      "status": "RUNNING",
-      "current": 0,
-      "total": 2,
-      "trend_id": "eba4d1b3df0b",
-      "title": "Premio Cervantes 2026",
-      "message": "Inicio tr-autoguard-1793735352: 2 investigaciones preparing/update vigentes en main (Premio Cervantes 2026 r0 y 128 de la Constitución r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-03T20:53:30+01:00",
-      "phase": "persisting",
-      "run_id": "tr-autoguard-1793735352",
-      "status": "RUNNING",
-      "current": 0,
-      "total": 2,
-      "trend_id": "eba4d1b3df0b",
-      "title": "Premio Cervantes 2026",
-      "message": "Premio Cervantes 2026 r0 revalidada JIT. Detonante verificado con Europa Press y RTVE: Cristina Fernández Cubas, ganadora del Cervantes 2026. Outbox textual creado; aplicador en curso. ImageGen=0."
-    },
-    {
       "run_id": "tr-1793735926010-manual",
       "command_id": "tr-1793735926010-manual",
       "canonical": true,
       "status": "DONE",
       "started_at": "2026-11-03T20:59:00+01:00",
-      "finished_at": "2026-11-03T21:08:00+01:00",
+      "finished_at": "2026-11-03T21:06:30+01:00",
       "summary": {
         "attempted": 2,
         "observed": 2,
@@ -6304,13 +6281,12 @@
         "covered_by_existing": 0,
         "unchanged_reviews": 0,
         "stale_reviews": 1,
-        "terminal_decisions": 0,
         "queue_remaining": 0,
         "rewrite_pending_remaining": 0,
         "imagegen_calls": 0,
         "publications": 0,
         "incidents": 0,
-        "concurrent_convergence": 0
+        "concurrent_convergence": 1
       },
       "outcomes": [
         {
@@ -6321,7 +6297,7 @@
           "applied": true,
           "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "El resultado investigado quedó obsoleto en la validación fresca del aplicador; se cerró sin crear una ficha duplicada."
+          "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
         },
         {
           "id": "red-review-423e34942e629bdd1ccc",
@@ -6330,15 +6306,15 @@
           "outcome": "updated",
           "applied": true,
           "created_id": "trend-update-5b04d3e8630fd169afad",
-          "via": "maintenance_outbox_applied",
+          "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y el toque de Aramburu; se creó una actualización en continuidad."
+          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
         }
       ],
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada tr-1793735926010-manual cerrada 2/2: Rufián review_completed/stale sin duplicar ficha y Aramburu review_completed/updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0; ImageGen=0; publicaciones=0.",
-      "at": "2026-11-03T21:08:00+01:00"
+      "message": "Pasada cerrada 2/2: Rufián r0 quedó stale por barrera terminal JIT y no se resucitó; Aramburu r0 quedó updated con trend-update-5b04d3e8630fd169afad sincronizado en requests y Listas. Barrera: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T21:06:30+01:00"
     },
     {
       "run_id": "tr-autoguard-1793735352",
@@ -6395,7 +6371,7 @@
           "applied": true,
           "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "El resultado investigado quedó obsoleto en la validación fresca del aplicador; se cerró sin crear una ficha duplicada."
+          "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
         },
         {
           "id": "red-review-423e34942e629bdd1ccc",
@@ -6404,14 +6380,14 @@
           "outcome": "updated",
           "applied": true,
           "created_id": "trend-update-5b04d3e8630fd169afad",
-          "via": "maintenance_outbox_applied",
+          "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y el toque de Aramburu; se creó una actualización en continuidad."
+          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
         }
       ],
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada tr-autoguard-1793735352 cerrada 4/4: Premio Cervantes 2026 y 128 de la Constitución explicadas y aplicadas; durante la barrera final, Rufián cerró stale por una decisión terminal posterior (deleted r1 sobre el origen r0) y Aramburu quedó updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "message": "Pasada tr-autoguard-1793735352 cerrada 4/4: Premio Cervantes 2026 y 128 de la Constitución explicadas y aplicadas; durante la barrera final Rufián cerró stale porque existía una decisión terminal deleted r1 posterior al origen r0, y Aramburu quedó updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T21:08:00+01:00",
       "converged_with": "tr-1793735926010-manual"
     }
@@ -6426,7 +6402,7 @@
       "applied": true,
       "via": "maintenance_outbox_convergence",
       "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-      "reason": "El resultado investigado quedó obsoleto en la validación fresca del aplicador; se cerró sin crear una ficha duplicada."
+      "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
     },
     {
       "id": "red-review-423e34942e629bdd1ccc",
@@ -6435,9 +6411,9 @@
       "outcome": "updated",
       "applied": true,
       "created_id": "trend-update-5b04d3e8630fd169afad",
-      "via": "maintenance_outbox_applied",
+      "via": "maintenance_outbox_convergence",
       "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-      "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y el toque de Aramburu; se creó una actualización en continuidad."
+      "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
     }
   ],
   "current_item": null,
@@ -9017,7 +8993,7 @@
       "canonical": true,
       "status": "DONE",
       "started_at": "2026-11-03T20:59:00+01:00",
-      "finished_at": "2026-11-03T21:08:00+01:00",
+      "finished_at": "2026-11-03T21:06:30+01:00",
       "summary": {
         "attempted": 2,
         "observed": 2,
@@ -9029,13 +9005,12 @@
         "covered_by_existing": 0,
         "unchanged_reviews": 0,
         "stale_reviews": 1,
-        "terminal_decisions": 0,
         "queue_remaining": 0,
         "rewrite_pending_remaining": 0,
         "imagegen_calls": 0,
         "publications": 0,
         "incidents": 0,
-        "concurrent_convergence": 0
+        "concurrent_convergence": 1
       },
       "outcomes": [
         {
@@ -9046,7 +9021,7 @@
           "applied": true,
           "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "El resultado investigado quedó obsoleto en la validación fresca del aplicador; se cerró sin crear una ficha duplicada."
+          "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
         },
         {
           "id": "red-review-423e34942e629bdd1ccc",
@@ -9055,15 +9030,15 @@
           "outcome": "updated",
           "applied": true,
           "created_id": "trend-update-5b04d3e8630fd169afad",
-          "via": "maintenance_outbox_applied",
+          "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y el toque de Aramburu; se creó una actualización en continuidad."
+          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
         }
       ],
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada tr-1793735926010-manual cerrada 2/2: Rufián review_completed/stale sin duplicar ficha y Aramburu review_completed/updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0; ImageGen=0; publicaciones=0.",
-      "at": "2026-11-03T21:08:00+01:00"
+      "message": "Pasada cerrada 2/2: Rufián r0 quedó stale por barrera terminal JIT y no se resucitó; Aramburu r0 quedó updated con trend-update-5b04d3e8630fd169afad sincronizado en requests y Listas. Barrera: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-03T21:06:30+01:00"
     },
     {
       "run_id": "tr-autoguard-1793735352",
@@ -9120,7 +9095,7 @@
           "applied": true,
           "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "El resultado investigado quedó obsoleto en la validación fresca del aplicador; se cerró sin crear una ficha duplicada."
+          "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
         },
         {
           "id": "red-review-423e34942e629bdd1ccc",
@@ -9129,14 +9104,14 @@
           "outcome": "updated",
           "applied": true,
           "created_id": "trend-update-5b04d3e8630fd169afad",
-          "via": "maintenance_outbox_applied",
+          "via": "maintenance_outbox_convergence",
           "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
-          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y el toque de Aramburu; se creó una actualización en continuidad."
+          "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
         }
       ],
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada tr-autoguard-1793735352 cerrada 4/4: Premio Cervantes 2026 y 128 de la Constitución explicadas y aplicadas; durante la barrera final, Rufián cerró stale por una decisión terminal posterior (deleted r1 sobre el origen r0) y Aramburu quedó updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "message": "Pasada tr-autoguard-1793735352 cerrada 4/4: Premio Cervantes 2026 y 128 de la Constitución explicadas y aplicadas; durante la barrera final Rufián cerró stale porque existía una decisión terminal deleted r1 posterior al origen r0, y Aramburu quedó updated con trend-update-5b04d3e8630fd169afad. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T21:08:00+01:00",
       "converged_with": "tr-1793735926010-manual"
     }
