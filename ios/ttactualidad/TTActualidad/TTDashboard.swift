@@ -1050,9 +1050,13 @@ private struct TrendTile: View {
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
     @State private var expanded = false
+    @State private var savingImportance = false
+    @State private var importanceError = ""
+    private var important: Bool { store.isImportantTrend(item.name) }
     // Saturated hues are exclusive to the rank plate. The rest of the card
     // retains its original dark surface to prioritize text legibility.
     private var rankColor: Color {
+        if important { return .red }
         switch item.ageBand() {
         case 1: return Color(red: 0.06, green: 0.80, blue: 0.52) // green
         case 2: return Color(red: 1.00, green: 0.77, blue: 0.14) // yellow
@@ -1062,12 +1066,13 @@ private struct TrendTile: View {
     }
 
     private var rankTextColor: Color {
-        item.ageBand() == 2 ? TTTheme.base : .white
+        !important && item.ageBand() == 2 ? TTTheme.base : .white
     }
 
     // The vivid left rank keeps its saturation; the card itself is a dark,
     // desaturated tint of the same hue (as in the original compact design).
     private var softCardColor: Color {
+        if important { return Color(red: 0.40, green: 0.075, blue: 0.11) }
         switch item.ageBand() {
         case 1: return Color(red: 0.105, green: 0.235, blue: 0.285) // subtle green
         case 2: return Color(red: 0.240, green: 0.222, blue: 0.235) // subtle yellow
@@ -1140,6 +1145,32 @@ private struct TrendTile: View {
                 }
                 TrendSiteOrArchiveImage(aiURL: item.siteImageURL,
                                         archiveURL: item.imageURL)
+                if showRank && store.snapshot.top30.contains(where: { TrendImportance.key($0.name) == TrendImportance.key(item.name) }) {
+                    Button {
+                        guard github.authenticated else { settings = true; return }
+                        let selected = !important
+                        savingImportance = true
+                        importanceError = ""
+                        Task {
+                            if await github.setTrendImportance(name: item.name, important: selected) {
+                                store.confirmTrendImportance(name: item.name, important: selected)
+                            } else { importanceError = github.notice }
+                            savingImportance = false
+                        }
+                    } label: {
+                        HStack(spacing: 6) {
+                            if savingImportance { ProgressView().tint(.white) }
+                            Image(systemName: important ? "exclamationmark.circle.fill" : "exclamationmark.circle")
+                            Text(important ? "Quitar Importante" : "Importante")
+                        }
+                    }
+                    .buttonStyle(.borderedProminent).tint(.red)
+                    .disabled(savingImportance)
+                    .accessibilityHint("Marca o desmarca esta tendencia en la APP y en la web")
+                    if !importanceError.isEmpty {
+                        Text(importanceError).font(.caption).foregroundStyle(.orange)
+                    }
+                }
                 EditorialActions(trend: item, github: github, showSettings: $settings)
             }
             .padding(.top, 12)
@@ -1167,6 +1198,12 @@ private struct TrendTile: View {
                         .font(.system(size: 13, weight: .semibold, design: .rounded))
                         .foregroundStyle(.white)
                         .lineLimit(1).minimumScaleFactor(0.76)
+                    if important {
+                        Text("Importante")
+                            .font(.system(size: 10, weight: .bold)).foregroundStyle(.white)
+                            .padding(.horizontal, 5).padding(.vertical, 2)
+                            .background(.red, in: RoundedRectangle(cornerRadius: 4))
+                    }
                     if item.isCovered || item.isJointGroup {
                         Text("Agrupada")
                             .font(.system(size: 9, weight: .medium))
@@ -1218,7 +1255,7 @@ private struct TrendTile: View {
             in: RoundedRectangle(cornerRadius: 10)
         )
         .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(TTTheme.cardBorder, lineWidth: 1.8))
+                    .stroke(important ? Color.red : TTTheme.cardBorder, lineWidth: 1.8))
         .onChange(of: expanded) { _, value in
             if value { store.markTrendReviewed(item.name) }
         }
