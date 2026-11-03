@@ -5,28 +5,22 @@
   "canonical": true,
   "run_id": "tr-1793735926010-manual",
   "previous_run_id": "tr-autoguard-1793735352",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T20:59:00+01:00",
-  "updated_at": "2026-11-03T21:03:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-03T21:06:30+01:00",
+  "finished_at": "2026-11-03T21:06:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-423e34942e629bdd1ccc",
-  "title": "Revisar novedades: Aramburu",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "8bd2126f457f",
-    "eba4d1b3df0b"
-  ],
-  "remaining_ids": [
     "red-review-d9f754531f711481d251",
     "red-review-423e34942e629bdd1ccc"
   ],
-  "remaining_active_ids": [
-    "red-review-d9f754531f711481d251",
-    "red-review-423e34942e629bdd1ccc"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -37,79 +31,79 @@
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
-    "stale_reviews": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-6b46dc14e6d405480d99",
+      "id": "red-review-d9f754531f711481d251",
       "revision": 0,
-      "name": "Revisar novedades: Andorra",
-      "outcome": "updated",
+      "name": "Revisar novedades: Rufián",
+      "outcome": "stale",
       "applied": true,
-      "created_id": "trend-update-755bb08544bac83f4bc3",
       "via": "maintenance_outbox_convergence",
-      "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
-      "reason": "Fallecimiento de Jesús de Miguel e investigación policial/judicial posterior."
+      "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
+      "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
     },
     {
-      "id": "red-review-9a71892bb9956d201185",
+      "id": "red-review-423e34942e629bdd1ccc",
       "revision": 0,
-      "name": "Revisar novedades: Mark Twain",
-      "outcome": "unchanged",
+      "name": "Revisar novedades: Aramburu",
+      "outcome": "updated",
       "applied": true,
+      "created_id": "trend-update-5b04d3e8630fd169afad",
       "via": "maintenance_outbox_convergence",
-      "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
-      "reason": "Sin novedad material; se mantiene la cita de Óscar Puente y la explicación original."
+      "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
+      "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T20:56:57+01:00",
-  "last_completed_at": "2026-11-03T20:56:57+01:00",
+  "last_completed_at": "2026-11-03T21:06:30+01:00",
   "last_run": {
-    "run_id": "tr-1793734393929-manual",
+    "run_id": "tr-1793735926010-manual",
     "status": "DONE",
-    "started_at": "2026-11-03T20:34:30+01:00",
-    "finished_at": "2026-11-03T20:38:00+01:00",
+    "started_at": "2026-11-03T20:59:00+01:00",
+    "finished_at": "2026-11-03T21:06:30+01:00",
     "current": 2,
     "total": 2,
     "closed": [
       {
-        "id": "red-review-6b46dc14e6d405480d99",
+        "id": "red-review-d9f754531f711481d251",
         "revision": 0,
-        "name": "Revisar novedades: Andorra",
-        "outcome": "updated",
+        "name": "Revisar novedades: Rufián",
+        "outcome": "stale",
         "applied": true,
-        "created_id": "trend-update-755bb08544bac83f4bc3",
         "via": "maintenance_outbox_convergence",
-        "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
-        "reason": "Fallecimiento de Jesús de Miguel e investigación policial/judicial posterior."
+        "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
+        "reason": "La barrera JIT respetó una decisión terminal posterior del origen 2d65748bd484: telegram-image-deliveries registra status deleted en revisión 1, superior a la revisión 0 investigada; no se creó una ficha nueva."
       },
       {
-        "id": "red-review-9a71892bb9956d201185",
+        "id": "red-review-423e34942e629bdd1ccc",
         "revision": 0,
-        "name": "Revisar novedades: Mark Twain",
-        "outcome": "unchanged",
+        "name": "Revisar novedades: Aramburu",
+        "outcome": "updated",
         "applied": true,
+        "created_id": "trend-update-5b04d3e8630fd169afad",
         "via": "maintenance_outbox_convergence",
-        "apply_commit": "1b7f6bb024375878cb0942506f950bd52c335426",
-        "reason": "Sin novedad material; se mantiene la cita de Óscar Puente y la explicación original."
+        "apply_commit": "7b14aa2d1b216256a78db904ba5fca1cc2b3cda9",
+        "reason": "Novedad material dentro del mismo episodio: la RFEF/CTA confirmó el desfase del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto."
       }
     ],
-    "summary": "2/2 cerradas: Andorra updated y Mark Twain unchanged; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    "summary": "2/2 cerradas: Rufián stale por decisión terminal JIT y Aramburu updated; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Rufián r0 persistido. Aramburu r0 revalidado JIT: la RFEF confirma un desfase de sincronización del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto. Resultado updated en continuidad; ImageGen=0.",
+  "message": "Pasada cerrada 2/2: Rufián r0 quedó stale por barrera terminal JIT y no se resucitó; Aramburu r0 quedó updated con trend-update-5b04d3e8630fd169afad sincronizado en requests y Listas. Barrera: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3562,6 +3556,42 @@
       "trend_id": "red-review-423e34942e629bdd1ccc",
       "title": "Revisar novedades: Aramburu",
       "message": "Rufián r0 persistido. Aramburu r0 revalidado JIT: la RFEF confirma un desfase de sincronización del Connected Ball y que Aramburu tocó el balón, por lo que el penalti pudo ser incorrecto. Resultado updated en continuidad; ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T21:06:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793735926010-manual",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 2,
+      "message": "Verificación final: Aramburu coincide en requests y Listas; Rufián cerrada stale por terminal deleted r1 sobre origen r0; editorial-queue=0 y sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-03T21:06:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793735926010-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 1,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada cerrada 2/2: Rufián r0 quedó stale por barrera terminal JIT y no se resucitó; Aramburu r0 quedó updated con trend-update-5b04d3e8630fd169afad sincronizado en requests y Listas. Barrera: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
