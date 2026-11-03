@@ -58,6 +58,7 @@ class RequestsJsonTests(unittest.TestCase):
             "editorial_api.py": "dumps_for_path(path, data)",
             "apply_direct_reconcile.py": "dumps_for_path(path, obj)",
             "merge_runtime_state.py": 'dumps_for_path(root / "requests.json", merged_requests)',
+            "../pilot/listas_grouping.py": "dumps_for_path(path, doc)",
         }
         for filename, expected in writers.items():
             with self.subTest(filename=filename):
