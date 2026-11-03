@@ -6,9 +6,9 @@
   "run_id": "tr-1793731920527-manual",
   "previous_run_id": "tr-1793730858263-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T19:52:00+01:00",
-  "updated_at": "2026-11-03T19:52:00+01:00",
+  "updated_at": "2026-11-03T19:56:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -52,7 +52,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "ba0ba5469a34",
@@ -134,7 +134,7 @@
     "summary": "Pasada cerrada 2/2: Mark Twain r0 y Pedraz r0 investigadas sin novedad material; al aplicar, ambas ya habían salido del Top30 fresco y el guard JIT las cerró review_completed/stale sin modificar texto ni fecha. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación activa=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793731920527-manual: Ryanair r0 es el único preparing/update vigente; reelaboración desde cero con validación JIT. ImageGen=0; publicaciones=0.",
+  "message": "Ryanair r0 revalidada JIT. Detonante actual verificado: cinco de siete vuelos europeos afectados hoy por falsas amenazas de bomba eran de Ryanair; el Mánchester–Murcia aterrizó con normalidad y la Guardia Civil descartó explosivos. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3363,6 +3363,17 @@
       "trend_id": "b6aad258364d",
       "title": "Ryanair",
       "message": "Inicio: Ryanair r0 es el único preparing/update vigente; reelaboración desde cero con validación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T19:56:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793731920527-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "b6aad258364d",
+      "title": "Ryanair",
+      "message": "Ryanair r0 revalidada JIT. Detonante actual verificado: cinco de siete vuelos europeos afectados hoy por falsas amenazas de bomba eran de Ryanair; el Mánchester–Murcia aterrizó con normalidad y la Guardia Civil descartó explosivos. ImageGen=0."
     }
   ],
   "history": [
