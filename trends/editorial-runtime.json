@@ -6,9 +6,9 @@
   "run_id": "tr-1793724088501-manual",
   "previous_run_id": "tr-1793723144849-manual",
   "status": "PROCESSING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T17:41:00+01:00",
-  "updated_at": "2026-11-03T17:41:00+01:00",
+  "updated_at": "2026-11-03T17:44:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -291,6 +291,28 @@
       "trend_id": "red-review-1656c218ad5e41f69bd3",
       "title": "Revisar novedades: Andorra",
       "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Andorra y Neuer). Revalidación JIT por id+revision, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T17:44:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793724088501-manual",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-1656c218ad5e41f69bd3",
+      "title": "Revisar novedades: Andorra",
+      "message": "Revisando novedades de Andorra r0: fallecimiento de Jesús de Miguel y apertura de investigación policial/judicial verificadas; novedad material del mismo episodio. Sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-03T17:44:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793724088501-manual",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-1656c218ad5e41f69bd3",
+      "title": "Revisar novedades: Andorra",
+      "message": "Persistiendo maintenance-outbox de Andorra r0 como updated; sin ImageGen ni publicación."
     }
   ],
   "final_outcomes": [
@@ -378,7 +400,7 @@
     "at": "2026-11-03T17:32:10+01:00"
   },
   "source": "chat",
-  "message": "Pasada en curso: 2 revisiones preparing observadas en main; validación JIT antes de investigar y persistir.",
+  "message": "Andorra r0: novedad material verificada; persistiendo resultado updated.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
