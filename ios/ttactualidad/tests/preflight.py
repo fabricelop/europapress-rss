@@ -693,4 +693,9 @@ assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
 assert 'CURRENT_PROJECT_VERSION: "67"' in project
 assert 'CFBundleVersion: "67"' in project
+assert 'pendingOperationsDiagnostic' in store
+assert 'request_id=' in store
+assert 'sin-identificador' in store
+assert 'UIPasteboard.general.string = store.pendingOperationsDiagnostic' in pending_panel
+assert 'Copiar diagnóstico' in pending_panel
 print("NATIVE_BUILD67_STALE_ORDERS_AUDITED_NO_DISPATCH_OK")
