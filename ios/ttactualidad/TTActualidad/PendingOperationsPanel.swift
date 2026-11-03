@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// One-tap expandable audit of local editorial requests and their GitHub
 /// receipts. Never labels optimistic changes as persisted.
@@ -80,6 +81,14 @@ struct PendingOperationsPanel: View {
                     }
                     .tint(TTTheme.teal)
                     .disabled(store.isLoading)
+
+                    Button {
+                        UIPasteboard.general.string = store.pendingOperationsDiagnostic
+                    } label: {
+                        Label("Copiar diagnóstico", systemImage: "doc.on.doc")
+                            .font(.system(size: 11))
+                    }
+                    .tint(TTTheme.muted)
 
                     Spacer(minLength: 3)
                     if store.isLoading { ProgressView().tint(TTTheme.teal) }
