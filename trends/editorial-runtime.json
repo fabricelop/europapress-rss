@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793717537752-manual",
   "previous_run_id": "tr-1793717127884-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "RUNNING",
+  "phase": "verifying",
   "started_at": "2026-11-03T14:52:17.752Z",
-  "updated_at": "2026-11-03T15:57:21+01:00",
+  "updated_at": "2026-11-03T14:58:12.913Z",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 1,
-  "trend_id": "2e00a1a9eeae",
-  "title": "Owono",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "2e00a1a9eeae"
@@ -25,8 +25,19 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
-  "final_outcomes": [],
+  "activity": "verifying",
+  "final_outcomes": [
+    {
+      "id": "2e00a1a9eeae",
+      "revision": 2,
+      "name": "Owono",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox",
+      "apply_commit": "b27c3c666703099d5e8ac8d9f5e088f11a7e4a36",
+      "reason": "Pista de disculpa pública en Twitter/X no verificada; AS informa de que la cuenta de X llevaba unos dos años inactiva y las fuentes sitúan la intención de disculparse primero en privado."
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T15:57:21+01:00",
   "last_completed_at": "2026-11-03T15:57:21+01:00",
@@ -89,7 +100,7 @@
     ]
   },
   "source": "chat",
-  "message": "Owono r2 revalidada JIT. La pista de una disculpa pública en X no queda acreditada: AS informa de que su cuenta en X lleva unos dos años inactiva; fuentes coinciden en que quería disculparse primero en privado. Redacción sensible, sin remate.",
+  "message": "Barrera final JIT: editorial-queue=0. Owono r2 figura explained en el commit de aplicación y sincronizado en requests/Listas; rewrite_pending=false y reexplain=false en la revisión aplicada. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2438,6 +2449,15 @@
       "trend_id": "2e00a1a9eeae",
       "title": "Owono",
       "message": "Owono r2 revalidada JIT. La pista de una disculpa pública en X no queda acreditada: AS informa de que su cuenta en X lleva unos dos años inactiva; fuentes coinciden en que quería disculparse primero en privado. Redacción sensible, sin remate."
+    },
+    {
+      "at": "2026-11-03T14:58:12.913Z",
+      "phase": "verifying",
+      "run_id": "tr-1793717537752-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 1,
+      "message": "Barrera final JIT: editorial-queue=0. Owono r2 figura explained en el commit de aplicación y sincronizado en requests/Listas; rewrite_pending=false y reexplain=false en la revisión aplicada. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -4755,10 +4775,21 @@
       "at": "2026-11-03T14:27:30+01:00"
     }
   ],
-  "partial": true,
-  "outcomes": [],
-  "current_item": "2e00a1a9eeae",
-  "current_title": "Owono",
+  "partial": false,
+  "outcomes": [
+    {
+      "id": "2e00a1a9eeae",
+      "revision": 2,
+      "name": "Owono",
+      "outcome": "explained",
+      "applied": true,
+      "via": "this_run_outbox",
+      "apply_commit": "b27c3c666703099d5e8ac8d9f5e088f11a7e4a36",
+      "reason": "Pista de disculpa pública en Twitter/X no verificada; AS informa de que la cuenta de X llevaba unos dos años inactiva y las fuentes sitúan la intención de disculparse primero en privado."
+    }
+  ],
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -9182,6 +9213,15 @@
       "trend_id": "2e00a1a9eeae",
       "title": "Owono",
       "message": "Owono r2 revalidada JIT. La pista de una disculpa pública en X no queda acreditada: AS informa de que su cuenta en X lleva unos dos años inactiva; fuentes coinciden en que quería disculparse primero en privado. Redacción sensible, sin remate."
+    },
+    {
+      "at": "2026-11-03T14:58:12.913Z",
+      "phase": "verifying",
+      "run_id": "tr-1793717537752-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 1,
+      "message": "Barrera final JIT: editorial-queue=0. Owono r2 figura explained en el commit de aplicación y sincronizado en requests/Listas; rewrite_pending=false y reexplain=false en la revisión aplicada. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
