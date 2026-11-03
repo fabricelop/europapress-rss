@@ -40,3 +40,10 @@ Al pulsar: tres filas **título corto + enlace estable** y opción «Ver todas»
 
 ## Pendientes y limitaciones
 La conexión disponible aquí permite editar GitHub y la Biblioteca, pero no ejecutar cambios en el proyecto privado del ChatGPT Site ni inspeccionar el iPhone real. Por eso **no** declarar corregidos en producción el problema de sincronización de relaciones, el menú lento ni la portada web hasta desplegar el Site y medirlo. No se ha tocado ningún original IA, dato editorial, orden remota ni decisión de aprobación.
+
+## Ajuste solicitado por el editor · una sola noticia, varias casillas (03/11/2026)
+- En la APP, **no repetir una noticia por cada propuesta**: una fila/cabecera por noticia y episodio, seguida de **todas** las tendencias sugeridas con casillas independientes.
+- Debajo, un desplegable «Añadir otras tendencias · Top 30» muestra las 30 tendencias actuales (puesto real). Permite marcar las que tienen identidad de episodio emitida por el Site; no inventa identidad para tendencias no incluidas en el snapshot privado.
+- Un único botón «Guardar vínculos seleccionados (N)» procesa la selección por noticia; revalida cada pareja ante el servidor y conserva commandId ante timeout o cierre de APP; la pantalla indica confirmadas e inciertas por separado.
+- La búsqueda manual por parejas se sustituye por «Elegir otra noticia», que muestra esa noticia una sola vez con el mismo Top 30. Las relaciones existentes no desaparecen y los vínculos bloqueados requieren acción explícita distinta.
+- Implementación candidata en PR302 / build65. **Sin instalación en iPhone ni pruebas físicas del Site** hasta ver CI.
