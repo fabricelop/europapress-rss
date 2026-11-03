@@ -1,6 +1,20 @@
 import XCTest
 
 final class EditorialRelationsTests: XCTestCase {
+    func testStableEpisodeIdentitySeparatesRevisionsAndDuplicates() {
+        let first = EditorialRelationEndpoint(id: "same-news", revision: 1,
+            episodeFingerprint: "episode-A", title: "Same title", text: "", path: nil)
+        let duplicate = EditorialRelationEndpoint(id: "same-news", revision: 1,
+            episodeFingerprint: "episode-A", title: "Changed title", text: "", path: nil)
+        let differentRevision = EditorialRelationEndpoint(id: "same-news", revision: 2,
+            episodeFingerprint: "episode-A", title: "Same title", text: "", path: nil)
+        let differentEpisode = EditorialRelationEndpoint(id: "same-news", revision: 1,
+            episodeFingerprint: "episode-B", title: "Same title", text: "", path: nil)
+        XCTAssertEqual(first.stableIdentity, duplicate.stableIdentity)
+        XCTAssertNotEqual(first.stableIdentity, differentRevision.stableIdentity)
+        XCTAssertNotEqual(first.stableIdentity, differentEpisode.stableIdentity)
+    }
+
     func testStrictEndpointIdentityDoesNotUseRankOrTitle() throws {
         let endpoint = EditorialRelationEndpoint(id: "trend-one", revision: 3,
             episodeFingerprint: "episode-current", title: "Andorra", text: "One episode", path: nil)
