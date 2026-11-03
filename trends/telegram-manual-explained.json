@@ -49229,14 +49229,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/4KU7TEBM2NHD3LLLUMXJBJ723A.jpg?auth=05b9445a4e5c5f27d0df24153f1e6c62204f5e0055ccd53554d6440b1f1489a5&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/madrid/2026-11-03/la-policia-desaloja-la-acampada-de-sol-sin-disturbios-despues-de-que-las-comisiones-organizadoras-anunciaran-su-retirada.html",
+        "alt": "Imagen de archivo relacionada con Dirección General de Seguridad",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/4KU7TEBM2NHD3LLLUMXJBJ723A.jpg?auth=05b9445a4e5c5f27d0df24153f1e6c62204f5e0055ccd53554d6440b1f1489a5&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/madrid/2026-11-03/la-policia-desaloja-la-acampada-de-sol-sin-disturbios-despues-de-que-las-comisiones-organizadoras-anunciaran-su-retirada.html",
+        "alt": "Imagen de archivo relacionada con Dirección General de Seguridad",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "033a07896805",
@@ -49305,6 +49320,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-03T09:08:31.231563Z",
+  "updated_at": "2026-11-03T09:11:54.648662Z",
   "count": 812
 }
