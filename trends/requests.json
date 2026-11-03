@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T15:22:49.066040+00:00",
+  "updated_at": "2026-11-03T15:27:22.963366+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -203664,18 +203664,15 @@
       "telegram_package_status": "published",
       "published_at": "2026-11-02T18:35:30.265440+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-03T12:05:55.813660+00:00",
+      "red_review_checked_at": "2026-11-03T15:27:22.963366+00:00",
       "red_review_outcome": "updated",
-      "red_review_reason": "Hay una novedad material posterior a la explicación original: Jesús de Miguel falleció el 3 de noviembre tras permanecer hospitalizado por el choque sufrido en el Tenerife-Andorra; el FC Andorra y Gerard Piqué han expresado sus condolencias.",
+      "red_review_reason": "Novedad material: Jesús de Miguel falleció el 3 de noviembre tras el choque sufrido en el Tenerife-Andorra; la explicación anterior solo recogía la suspensión y su traslado al hospital.",
       "red_review_sources": [
         {
-          "url": "https://www.clubdeportivotenerife.es/noticias/comunicado-oficial-fallecimiento-de-jesus-de-miguel"
+          "url": "https://cadenaser.com/nacional/2026/11/03/muere-el-jugador-del-tenerife-jesus-de-miguel-tras-el-fuerte-golpe-sufrido-durante-el-partido-contra-el-andorra-cadena-ser/"
         },
         {
-          "url": "https://www.europapress.es/deportes/futbol-00162/noticia-andorra-corazon-roto-devastado-muerte-jesus-miguel-20261103102935.html"
-        },
-        {
-          "url": "https://www.reuters.com/sports/soccer/tenerife-striker-jesus-de-miguel-dies-after-collision-match-2026-11-03/"
+          "url": "https://efe.com/deportes/2026-11-03/jesus-de-miguel-estado/"
         }
       ]
     },
@@ -213806,7 +213803,7 @@
       "revision": 0,
       "name": "Revisar novedades: #AccidenteFerroviario",
       "rank": 24,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T15:22:49.066040+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -213830,14 +213827,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-03T15:27:22.963366+00:00",
+      "review_reason": "Novedad material: la investigación del siniestro examina la aplicación de un protocolo LZB que no correspondía y si pudo utilizarse en otros fallos; el balance confirmado es de 69 fallecidos."
     },
     {
       "id": "red-review-80ac53a8b916e1789b96",
       "revision": 0,
       "name": "Revisar novedades: Andorra",
       "rank": 3,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T15:22:49.066040+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -213864,7 +213864,44 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-c2473ec51973d40570af",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-03T15:27:22.963366+00:00",
+      "review_reason": "Novedad material: Jesús de Miguel falleció el 3 de noviembre tras el choque sufrido en el Tenerife-Andorra; la explicación anterior solo recogía la suspensión y su traslado al hospital."
+    },
+    {
+      "id": "trend-update-c2473ec51973d40570af",
+      "revision": 0,
+      "name": "Andorra",
+      "rank": 3,
+      "status": "explained",
+      "requested_at": "2026-11-03T15:27:22.963366+00:00",
+      "explained_at": "2026-11-03T15:27:22.963366+00:00",
+      "updated_at": "2026-11-03T15:27:22.963366+00:00",
+      "explanation": "TT#3 Andorra sigue siendo tendencia por la muerte de Jesús de Miguel, fallecido el 3 de noviembre tras el fuerte choque con Jesús Owono en el Tenerife-Andorra, que había quedado suspendido.\n#CDTenerife #FCAndorra",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://cadenaser.com/nacional/2026/11/03/muere-el-jugador-del-tenerife-jesus-de-miguel-tras-el-fuerte-golpe-sufrido-durante-el-partido-contra-el-andorra-cadena-ser/"
+        },
+        {
+          "url": "https://efe.com/deportes/2026-11-03/jesus-de-miguel-estado/"
+        }
+      ],
+      "originated_from_prior_id": "3e340be4de18",
+      "trend_names": [
+        "Andorra"
+      ],
+      "red_review_job_id": "red-review-80ac53a8b916e1789b96",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "El CD Tenerife comunicó el fallecimiento de Jesús de Miguel a las 8:00 del 3 de noviembre, después de que su estado neurológico empeorara durante la madrugada.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 968
