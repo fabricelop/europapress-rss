@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793724088501-manual",
-  "previous_run_id": "tr-1793723144849-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T17:41:00+01:00",
-  "updated_at": "2026-11-03T17:50:00+01:00",
-  "finished_at": "2026-11-03T17:50:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
+  "run_id": "tr-autoguard-1793725731",
+  "previous_run_id": "tr-1793724088501-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T18:10:32+01:00",
+  "updated_at": "2026-11-03T18:10:32+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 8,
+  "trend_id": "6fffc2182bc6",
+  "title": "Skyrim",
   "queue_complete": true,
   "processed_ids": [
     "red-review-1656c218ad5e41f69bd3",
@@ -44,329 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": [
-    {
-      "at": "2026-11-03T17:12:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-autoguard-1793722297",
-      "status": "PROCESSING",
-      "current": 0,
-      "total": 5,
-      "trend_id": "e47f706121da",
-      "title": "Mark Twain",
-      "message": "Inicio tr-autoguard-1793722297: 5 investigaciones preparing vigentes en main. Revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-03T17:18:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 0,
-      "total": 5,
-      "trend_id": "e47f706121da",
-      "title": "Mark Twain",
-      "message": "Investigando Mark Twain r0: Detonante actual verificado en dos fuentes: Óscar Puente citó a Mark Twain al explicar cambios de protocolos tras el accidente de Urda. Sin remate por sensibilidad del contexto."
-    },
-    {
-      "at": "2026-11-03T17:18:00+01:00",
-      "phase": "drafting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 0,
-      "total": 5,
-      "trend_id": "e47f706121da",
-      "title": "Mark Twain",
-      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-11-03T17:18:00+01:00",
-      "phase": "remate_selection",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 0,
-      "total": 5,
-      "trend_id": "e47f706121da",
-      "title": "Mark Twain",
-      "message": "Sin remate por sensibilidad o incertidumbre causal."
-    },
-    {
-      "at": "2026-11-03T17:18:00+01:00",
-      "phase": "persisting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 0,
-      "total": 5,
-      "trend_id": "e47f706121da",
-      "title": "Mark Twain",
-      "message": "Persistiendo outbox editorial para e47f706121da r0; sin ImageGen."
-    },
-    {
-      "at": "2026-11-03T17:19:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 1,
-      "total": 5,
-      "trend_id": "44365581404a",
-      "title": "Pedraz",
-      "message": "Investigando Pedraz r0: Detonante verificado: Pedraz prorroga seis meses el caso Leire Díez por diligencias pendientes."
-    },
-    {
-      "at": "2026-11-03T17:19:00+01:00",
-      "phase": "drafting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 1,
-      "total": 5,
-      "trend_id": "44365581404a",
-      "title": "Pedraz",
-      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-11-03T17:19:00+01:00",
-      "phase": "remate_selection",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 1,
-      "total": 5,
-      "trend_id": "44365581404a",
-      "title": "Pedraz",
-      "message": "Remate seleccionado: 🌶️ El calendario judicial acaba de ganar otros seis meses."
-    },
-    {
-      "at": "2026-11-03T17:19:00+01:00",
-      "phase": "persisting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 1,
-      "total": 5,
-      "trend_id": "44365581404a",
-      "title": "Pedraz",
-      "message": "Persistiendo outbox editorial para 44365581404a r0; sin ImageGen."
-    },
-    {
-      "at": "2026-11-03T17:20:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 2,
-      "total": 5,
-      "trend_id": "3553f8c0304e",
-      "title": "Région",
-      "message": "Investigando Région r0: Aparición actual verificada en trends/recent.json (captura 2026-11-03T17:11:27+01:00). Dos rondas de búsquedas actuales no acreditaron un detonante concreto; se cierra con causa no confirmada y sin remate."
-    },
-    {
-      "at": "2026-11-03T17:20:00+01:00",
-      "phase": "drafting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 2,
-      "total": 5,
-      "trend_id": "3553f8c0304e",
-      "title": "Région",
-      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-11-03T17:20:00+01:00",
-      "phase": "remate_selection",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 2,
-      "total": 5,
-      "trend_id": "3553f8c0304e",
-      "title": "Région",
-      "message": "Sin remate por sensibilidad o incertidumbre causal."
-    },
-    {
-      "at": "2026-11-03T17:20:00+01:00",
-      "phase": "persisting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 2,
-      "total": 5,
-      "trend_id": "3553f8c0304e",
-      "title": "Région",
-      "message": "Persistiendo outbox editorial para 3553f8c0304e r0; sin ImageGen."
-    },
-    {
-      "at": "2026-11-03T17:21:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 3,
-      "total": 5,
-      "trend_id": "4aa3329968cd",
-      "title": "Huelga General",
-      "message": "Investigando Huelga General r0: Detonante actual: huelga general estatal del 11N por vivienda y poder adquisitivo, con debate político reactivado hoy."
-    },
-    {
-      "at": "2026-11-03T17:21:00+01:00",
-      "phase": "drafting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 3,
-      "total": 5,
-      "trend_id": "4aa3329968cd",
-      "title": "Huelga General",
-      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-11-03T17:21:00+01:00",
-      "phase": "remate_selection",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 3,
-      "total": 5,
-      "trend_id": "4aa3329968cd",
-      "title": "Huelga General",
-      "message": "Remate seleccionado: 🌶️ El calendario laboral ya tiene el 11N subrayado."
-    },
-    {
-      "at": "2026-11-03T17:21:00+01:00",
-      "phase": "persisting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 3,
-      "total": 5,
-      "trend_id": "4aa3329968cd",
-      "title": "Huelga General",
-      "message": "Persistiendo outbox editorial para 4aa3329968cd r0; sin ImageGen."
-    },
-    {
-      "at": "2026-11-03T17:22:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 4,
-      "total": 5,
-      "trend_id": "6b1ca96d0ae5",
-      "title": "Carcel",
-      "message": "Investigando Carcel r0: Contexto actual verificado: debate sobre posibles consecuencias penales tras la muerte de Jesús de Miguel; se evita afirmar culpabilidad y se señala que no hay conclusión penal. Sin remate por sensibilidad."
-    },
-    {
-      "at": "2026-11-03T17:22:00+01:00",
-      "phase": "drafting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 4,
-      "total": 5,
-      "trend_id": "6b1ca96d0ae5",
-      "title": "Carcel",
-      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-11-03T17:22:00+01:00",
-      "phase": "remate_selection",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 4,
-      "total": 5,
-      "trend_id": "6b1ca96d0ae5",
-      "title": "Carcel",
-      "message": "Sin remate por sensibilidad o incertidumbre causal."
-    },
-    {
-      "at": "2026-11-03T17:22:00+01:00",
-      "phase": "persisting",
-      "run_id": "tr-autoguard-1793722297",
-      "current": 4,
-      "total": 5,
-      "trend_id": "6b1ca96d0ae5",
-      "title": "Carcel",
-      "message": "Persistiendo outbox editorial para 6b1ca96d0ae5 r0; sin ImageGen."
-    },
-    {
-      "at": "2026-11-03T17:23:00+01:00",
-      "phase": "verifying",
-      "run_id": "tr-autoguard-1793722297",
-      "status": "PROCESSING",
-      "current": 5,
-      "total": 5,
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final JIT: commit de aplicación verificado; requests y telegram-manual-explained contienen las cinco revisiones r0; editorial-queue=0 y no hay rewrite_pending/reexplain."
-    },
-    {
-      "at": "2026-11-03T17:23:00+01:00",
-      "phase": "closing",
-      "run_id": "tr-autoguard-1793722297",
-      "status": "DONE",
-      "current": 5,
-      "total": 5,
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada tr-autoguard-1793722297 cerrada 5/5: Mark Twain, Pedraz, Région, Huelga General y Carcel r0 quedaron explicadas y sincronizadas en requests y Listas. Région se cerró con causa no confirmada tras contraste; las otras cuatro con contexto actual verificado. Aplicación confirmada en commit 78254fb728b246cd61e342dc01b0adeab6057df7. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-03T17:41:00+01:00",
-      "phase": "preparing",
-      "run_id": "tr-1793724088501-manual",
-      "status": "PROCESSING",
-      "current": 0,
-      "total": 2,
-      "trend_id": "red-review-1656c218ad5e41f69bd3",
-      "title": "Revisar novedades: Andorra",
-      "message": "Inicio: 2 revisiones review_red preparing vigentes en main (Andorra y Neuer). Revalidación JIT por id+revision, sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-03T17:44:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-1793724088501-manual",
-      "status": "PROCESSING",
-      "current": 0,
-      "total": 2,
-      "trend_id": "red-review-1656c218ad5e41f69bd3",
-      "title": "Revisar novedades: Andorra",
-      "message": "Revisando novedades de Andorra r0: fallecimiento de Jesús de Miguel y apertura de investigación policial/judicial verificadas; novedad material del mismo episodio. Sin remate por sensibilidad."
-    },
-    {
-      "at": "2026-11-03T17:44:00+01:00",
-      "phase": "persisting",
-      "run_id": "tr-1793724088501-manual",
-      "status": "PROCESSING",
-      "current": 0,
-      "total": 2,
-      "trend_id": "red-review-1656c218ad5e41f69bd3",
-      "title": "Revisar novedades: Andorra",
-      "message": "Persistiendo maintenance-outbox de Andorra r0 como updated; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-03T17:46:00+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793724088501-manual",
-      "status": "PROCESSING",
-      "current": 1,
-      "total": 2,
-      "trend_id": "red-review-1656c218ad5e41f69bd3",
-      "title": "Revisar novedades: Andorra",
-      "message": "Andorra r0 tiene maintenance-outbox updated persistido; aplicación aún pendiente de verificación en la cola autoritativa."
-    },
-    {
-      "at": "2026-11-03T17:46:00+01:00",
-      "phase": "investigating",
-      "run_id": "tr-1793724088501-manual",
-      "status": "PROCESSING",
-      "current": 1,
-      "total": 2,
-      "trend_id": "red-review-bd7b5a8365815d9fe3b8",
-      "title": "Revisar novedades: Neuer",
-      "message": "Revisando novedades de Neuer r0: fuentes oficiales y actuales mantienen la misma situación — viajó, volvió a entrenar y la decisión Neuer/Urbig sigue pendiente. Sin novedad material."
-    },
-    {
-      "at": "2026-11-03T17:46:00+01:00",
-      "phase": "persisting",
-      "run_id": "tr-1793724088501-manual",
-      "status": "PROCESSING",
-      "current": 1,
-      "total": 2,
-      "trend_id": "red-review-bd7b5a8365815d9fe3b8",
-      "title": "Revisar novedades: Neuer",
-      "message": "Persistiendo maintenance-outbox de Neuer r0 como unchanged; conservar texto y fecha."
-    },
-    {
-      "at": "2026-11-03T17:50:00+01:00",
-      "phase": "verifying",
-      "run_id": "tr-1793724088501-manual",
-      "status": "PROCESSING",
-      "current": 2,
-      "total": 2,
-      "trend_id": null,
-      "title": null,
-      "message": "Barrera final JIT: commit cf909845 aplicó Andorra updated y Neuer unchanged; editorial-queue=0 y no hay rewrite_pending/reexplain."
-    },
-    {
-      "at": "2026-11-03T17:50:00+01:00",
-      "phase": "closing",
-      "run_id": "tr-1793724088501-manual",
-      "status": "DONE",
-      "current": 2,
-      "total": 2,
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada cerrada 2/2: Andorra actualizada con nueva ficha trend-update-807d728266b204251abc; Neuer unchanged con texto/fecha conservados. ImageGen=0; publicaciones=0."
-    }
-  ],
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-1656c218ad5e41f69bd3",
@@ -452,7 +130,7 @@
     "at": "2026-11-03T17:50:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada cerrada 2/2: Andorra updated y Neuer unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793725731: 8 investigaciones preparing vigentes en main; orden por antigüedad y validación JIT por id+revision. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3423,6 +3101,17 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada cerrada 2/2: Andorra updated y Neuer unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T18:10:32+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793725731",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 8,
+      "trend_id": "6fffc2182bc6",
+      "title": "Skyrim",
+      "message": "Inicio tr-autoguard-1793725731: 8 investigaciones preparing vigentes en main; orden por antigüedad y validación JIT por id+revision. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
