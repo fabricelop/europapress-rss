@@ -23,3 +23,4 @@ jobs:
           for run_id in 41729074508 41731119745 41731507196; do
             gh run cancel "$run_id" --repo "$GITHUB_REPOSITORY" || true
           done
+
