@@ -3,73 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793745926226-manual",
+  "run_id": "tr-1793746489773-manual",
   "previous_run_id": "tr-1793745926226-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-03T23:53:00+01:00",
-  "updated_at": "2026-11-03T23:55:36+01:00",
-  "finished_at": "2026-11-03T23:55:36+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "f21e3899c88b",
-    "c93d8047df91",
-    "red-review-f4a3a4525c7a5aaeb4af",
-    "red-review-57cb9cfcbb7a836792b2"
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T00:06:00+01:00",
+  "updated_at": "2026-11-04T00:06:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 5,
+  "trend_id": "a3e01c595b24",
+  "title": "#TierraDeNadie8",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "a3e01c595b24",
+    "0a0ee739ddbb",
+    "dbf00e09a84e",
+    "05ad67b1f345",
+    "7d3ab9c7fe20"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "a3e01c595b24",
+    "0a0ee739ddbb",
+    "dbf00e09a84e",
+    "05ad67b1f345",
+    "7d3ab9c7fe20"
+  ],
   "remaining_problematic_ids": [],
   "summary": "Pasada 4/4 completada: Le Normand r0 y Sorloth r0 quedaron explained; Rufián review_red r0 cerró stale por barrera JIT/convergencia sin duplicar; Accidente de Urda review_red r0 quedó updated como continuidad en trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "phase": "persisting",
-      "trend_id": "red-review-f4a3a4525c7a5aaeb4af",
-      "reason": "Un intento de escritura del mantenimiento coincidió con otra actualización de main y GitHub devolvió 409. Se releyó el estado fresco, se respetó el outbox concurrente de Rufián y la revisión convergió sin duplicado ni pérdida."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "f21e3899c88b",
-      "revision": 0,
-      "name": "Le Normand",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T23:45:26+01:00"
-    },
-    {
-      "id": "c93d8047df91",
-      "revision": 0,
-      "name": "Sorloth",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T23:45:26+01:00"
-    },
-    {
-      "id": "red-review-f4a3a4525c7a5aaeb4af",
-      "revision": 0,
-      "name": "Revisar novedades: Rufián",
-      "outcome": "stale",
-      "applied": true,
-      "completed_at": "2026-11-03T22:54:43.077734+00:00"
-    },
-    {
-      "id": "red-review-57cb9cfcbb7a836792b2",
-      "revision": 0,
-      "name": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-069eecb4334d34f60b92",
-      "completed_at": "2026-11-03T22:55:27.155414+00:00"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T23:53:00+01:00",
   "last_completed_at": "2026-11-03T23:55:36+01:00",
@@ -90,7 +57,7 @@
     "summary": "Pasada 4/4 completada: Le Normand r0 y Sorloth r0 quedaron explained; Rufián review_red r0 cerró stale por barrera JIT/convergencia sin duplicar; Accidente de Urda review_red r0 quedó updated como continuidad en trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada 4/4 completada: Le Normand r0 y Sorloth r0 quedaron explained; Rufián review_red r0 cerró stale por barrera JIT/convergencia sin duplicar; Accidente de Urda review_red r0 quedó updated como continuidad en trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio de pasada manual: 5 preparing/update vigentes en main (#TierraDeNadie8, #FirstDates3N, Injusto, Trillo y Fabian Ruiz), por antigüedad y con validación JIT antes de cada investigación y persistencia. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4025,6 +3992,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada solicitada tr-1793746342613-manual convergió con la ejecución canónica tr-1793745926226-manual: Rufián review_red r0 cerró stale por barrera JIT y Urda review_red r0 quedó updated como trend-update-069eecb4334d34f60b92. Barrera final main: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T00:06:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793746489773-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 5,
+      "trend_id": "a3e01c595b24",
+      "title": "#TierraDeNadie8",
+      "message": "Inicio de pasada manual: 5 preparing/update vigentes en main (#TierraDeNadie8, #FirstDates3N, Injusto, Trillo y Fabian Ruiz), por antigüedad y con validación JIT antes de cada investigación y persistencia. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -6814,30 +6792,9 @@
     }
   ],
   "partial": false,
-  "outcomes": [
-    {
-      "id": "red-review-5331dae929b3cc0542af",
-      "revision": 0,
-      "name": "Revisar novedades: Villarreal-Espanyol y debut de Sergio García",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-2454ffeac830bf71aa0b",
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "95caee627a2e52f25dda0f0c16a0295eece8c4cb",
-      "reason": "Episodio distinto verificado: Villarreal-PSG en la jornada 4 de Champions, separado del Villarreal-Espanyol del 30 de octubre."
-    },
-    {
-      "id": "red-review-917aedac54ae90ef21d0",
-      "revision": 0,
-      "name": "Revisar novedades: Pedraz",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "Sin novedad material posterior: se mantiene la prórroga de la instrucción hasta el 10 de junio de 2027 y las diligencias pendientes."
-    }
-  ],
-  "current_item": null,
-  "current_title": null,
+  "outcomes": [],
+  "current_item": "a3e01c595b24",
+  "current_title": "#TierraDeNadie8",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -9550,8 +9507,8 @@
       "summary": "Pasada 2/2 completada: Cristina Fernández Cubas review_red r0 unchanged; Pepa Millán review_red r0 updated como continuidad en trend-update-14b8db0da15fd78b3b85. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793745388331-manual",
-  "requested_at": "2026-11-03T17:12:00+01:00",
+  "command_id": "tr-1793746489773-manual",
+  "requested_at": "2026-11-04T00:06:00+01:00",
   "runs": [
     {
       "run_id": "tr-autoguard-1793650268",
