@@ -12,7 +12,7 @@ Todas las pendientes del Top 30 (puestos 1–30) se investigan automáticamente.
 
 1. Leer `trends/editorial-config.json`, `recent.json`, `requests.json`, `editorial-queue.json`, `telegram-manual-explained.json`, `mobile-decisions.json` y los últimos resultados de mantenimiento. La cola compacta vigente es autoritativa, incluso cuando está vacía. No resucitar trabajo desde resúmenes antiguos.
 2. Correlacionar siempre proyecto, ID, revisión y fecha. Reconciliar textos ya persistidos con la revisión exacta; nunca por nombre solamente. Atender `rewrite_pending:true` si sigue vigente y no tiene una revisión posterior ni decisión terminal.
-3. Procesar primero todas las nuevas investigaciones y reelaboraciones manuales `preparing/update`, de antiguas a recientes. Después, solo agrupaciones solicitadas manualmente por el editor `task:group_listas`; después borradores Radar `task:anticipate`; después revisiones de novedades `task:review_red`. Las problemáticas ordinarias se reintentan al final si siguen en el Top 30. Releer la cola antes de cerrar: un trabajo nuevo puede haber llegado durante la pasada.
+3. Procesar primero todas las nuevas investigaciones y reelaboraciones manuales `preparing/update`, de antiguas a recientes. Después borradores Radar `task:anticipate`; después revisiones de novedades `task:review_red`. Las problemáticas ordinarias se reintentan al final si siguen en el Top 30. Releer la cola antes de cerrar: un trabajo nuevo puede haber llegado durante la pasada.
 4. Justo antes de investigar, persistir o aplicar resultados, releer main y comprobar ID+revisión. Si el editor ha quitado, publicado, reelaborado o sustituido una revisión, respetar su estado. No borrar ni reabrir terminales; no sustituir textos más nuevos con snapshots de inicio. Una solicitud especial se completa mediante SU outbox, nunca convirtiéndola en una tendencia ficticia explicada.
 5. El workflow `ttactualidad-group-listas.yml` mantiene las solicitudes especiales y se revisa cada cinco minutos, con posible retraso de Actions. Usa el mismo `trends/request_pc_editorial.py --trigger` y el mismo consumidor Windows. El trigger no demuestra ejecución: confirmar RUNNING real y resultado aplicado.
 
@@ -67,41 +67,19 @@ Elegir un solo remate breve, concreto, original y ligado a hechos documentados, 
 
 Para cada tendencia redactar y guardar su propia explicación. La comparación semántica posterior crea las conjuntas sin reescribir originales. No usar el antiguo mecanismo que copia una explicación canónica a todas las requests o marca `grouped` y oculta miembros.
 
-Persistir atómicamente en main tanto una explicación de causa confirmada como una explicación prudente de causa no confirmada con ficha `status:explained` en `telegram-manual-explained.json` y su request, con ID, revisión, explanation, closer_text y explained_at idénticos. Conservar fuentes verificadas y `editorial_grouping_state:"pending"`. El mismo contrato se aplica a una nueva revisión manual. Retirar solo el mismo ID/revisión de la cola después de releer ambos registros. Un texto en requests sin ficha no está terminado. Si falla una escritura, releer SHA y reparar la misma revisión sin redactar otra ni resucitar estados cerrados.
+Persistir atómicamente en main tanto una explicación de causa confirmada como una explicación prudente de causa no confirmada con ficha `status:explained` en `telegram-manual-explained.json` y su request, con ID, revisión, explanation, closer_text y explained_at idénticos. Conservar fuentes verificadas y los metadatos históricos; ninguna explicación individual espera una agrupación. El mismo contrato se aplica a una nueva revisión manual. Retirar solo el mismo ID/revisión de la cola después de releer ambos registros. Un texto en requests sin ficha no está terminado. Si falla una escritura, releer SHA y reparar la misma revisión sin redactar otra ni resucitar estados cerrados.
 
 La ruta de transporte existente por comentarios `TTENDENCIAS_CHAT_OUTBOX_V1` en PR #7 y los reconciliadores siguen disponibles. En el modo heredado de `trends/editorial-outbox/<id>-r<revision>.json`, guardar texto/metadatos (`status:ready`, `prepared_item`) y comprobar que el aplicador `ttendencias-editorial-apply.yml` lo ha convertido en la ficha real. No incluir IA inline ni asumir que crear el outbox cierra el trabajo.
 
 El botón manual «Enviar a TTiTTulares» sí existe: crea una investigación independiente con origen ID/revisión y conserva la tendencia. Esta pasada NO envía automáticamente tendencias a noticias; tampoco prohíbe la acción explícita del usuario.
 
-## Agrupaciones y pistas del editor (prioridad vigente)
+## Pistas del editor y retirada de agrupación (03/11/2026)
 
-La vista Listas debe mostrar solo la ficha conjunta cuando un grupo está activo: los miembros originales con listas_group_role:covered se conservan íntegros en datos pero se OCULTAN de Listas, sin marcarlos deleted/dismissed/published ni contarlos como publicaciones. «Desagrupar» debe desactivar la conjunta y restaurar la visibilidad de sus miembros originales, validando estado/revisión y respetando decisiones terminales posteriores. No se deben recrear originales ni perder fuentes, imágenes o fechas. El cambio de visibilidad exige implementación y comprobación en cada cliente nativo, no basta modificar este contrato.
+Una pista nueva del usuario sobre una tendencia ya explicada (incluso causa desconocida) abre investigación/reelaboración de ESA ficha existente con su ID y revisión, en vez de descartarla por explained. Comprobar la pista independientemente; si acredita una explicación mejor, actualizar ambos registros mediante el circuito vigente, sin resucitar terminales ni pisar revisiones posteriores.
 
-Una pista nueva del usuario sobre una tendencia ya explicada (incluso causa desconocida) abre investigación/reelaboración de ESA ficha existente con su ID y revisión, en vez de descartarla por explained. Comprobar la pista independientemente; si acredita una explicación mejor, actualizar ambos registros mediante el circuito vigente, sin resucitar terminales ni pisar revisiones posteriores. No proponer ni ejecutar agrupaciones por iniciativa propia al revisar pistas: solo el botón «Agrupar» y la selección explícita del editor autorizan agrupar. No agrupar por alias o nombre solamente.
+La agrupación de Tendencias está retirada por decisión del editor, tanto manual como automática. No solicitar, ejecutar ni producir resultados `listas_grouping_request:true` / `task:group_listas`; no crear fichas conjuntas, no cubrir originales por una coincidencia temática y no escribir nuevos outboxes de agrupación. Los jobs especiales antiguos se cierran por el mantenedor como `grouping_retired`, conservando snapshots e historial; no tratarlos como investigaciones ordinarias ni aplicar sus resultados tardíos. Los comandos de clientes antiguos reciben `TREND_GROUPING_RETIRED`.
 
-## Agrupación exclusivamente manual
-
-No crear ni ejecutar agrupaciones automáticas. Los jobs `listas_grouping_request:true`, `task:group_listas` solo son válidos cuando proceden de la acción manual «Agrupar» y llevan un snapshot exacto en `grouping_candidates` con EXCLUSIVAMENTE las tarjetas que el editor seleccionó. No ampliar esa selección, ni activar comparaciones automáticas de Listas o publicaciones anteriores. Las explicaciones individuales pueden generar sus imágenes sin esperar una agrupación.
-
-Buscar coincidencias inequívocas de un mismo acontecimiento actual. La mera coincidencia de persona, palabra, programa o tema no basta. Ante duda, dejar separadas. Crear una nueva explicación publicable por grupo de al menos dos miembros, con una sola cabecera, dos o tres hashtags y un único remate cuando proceda. Si es una actualización continuada, usar «sigue siendo tendencia por…» o «siguen siendo tendencia por…». No cambiar texto, remate, fecha, revisión ni imágenes de las originales. No publicar en X.
-
-Guardar SOLO el resultado en `trends/listas-grouping-outbox/<job_id>.json`:
-
-```json
-{"job_id":"ID_DEL_JOB","groups":[{"name":"Acontecimiento común","explanation":"TT#2 ...\n#Etiqueta1 #Etiqueta2","closer_text":"","reason":"Hecho común contrastado","verification_sources":[{"url":"https://FUENTE_REAL_VERIFICADA"}],"members":[{"id":"ID1","revision":0},{"id":"ID2","revision":1}]}],"covered_by_existing":[]}
-```
-
-Los ejemplos de URL son marcadores, nunca fuentes para copiar. Los miembros deben pertenecer al snapshot, ser disjuntos y mantener revisión y hash de texto. Si no hay coincidencias dentro de la selección explícita, escribir `groups:[]`; las imágenes individuales no dependen de ese resultado.
-
-La cobertura por una publicación existente solo podrá reflejarse si está incluida en una operación manual solicitada por el editor y el backend la valida:
-
-```json
-{"job_id":"ID_DEL_JOB","groups":[],"covered_by_existing":[{"member":{"id":"ID_NUEVO","revision":0},"published_id":"ID_DEL_PUBLISHED_CONTEXT","no_material_changes":true,"reason":"Mismo acontecimiento ya cubierto, sin novedades sustanciales verificadas"}]}
-```
-
-No usar esa cobertura si hay novedades sustanciales ni si falta una publicación vigente del snapshot. No modificar la publicación histórica. El aplicador verifica JIT y crea fichas `listas_group_role:joint`; marca originales `covered` / «Agrupada en…», conservando sus textos. Los grupos obsoletos se omiten enteros en `grouping_skipped_stale`. Ante `grouping_error`, corregir el MISMO outbox; no crear jobs duplicados. Releer que el job terminó `grouping_completed` y que las fichas previstas están guardadas.
-
-Las imágenes individuales no se bloquean esperando una agrupación automática; las originales cubiertas por una agrupación MANUAL no piden una imagen adicional. Las imágenes ya lanzadas previamente no se cancelan desde este editor. Ni esta espera visual ni una agrupación fallida bloquean el texto ya disponible en Listas; registrar la causa y corregir el job.
+Cada tendencia conserva su ficha independiente. Las relaciones visuales noticia↔tendencia no agrupan textos ni publicaciones y no autorizan modificar originales. Conservar íntegros los grupos/coberturas históricos, fuentes, imágenes, fechas, revisiones y terminales; no borrar o restaurar originales por deducción. Las imágenes individuales no requieren clearance de agrupación; las fichas históricas cubiertas y los borradores anticipados mantienen sus barreras. No cancelar imágenes ya lanzadas ni aprobarlas desde esta pasada.
 
 ## Preparación anticipada del Radar
 
@@ -117,7 +95,7 @@ Investigar el detonante con fuentes actuales y redactar el cuerpo del tuit habit
 
 Si no se verifica, guardar `outcome:"unverified"`, motivo preciso y la misma identidad. No forzar una explicación ni pedir estrellas. El aplicador guarda `anticipation_prepared` o `anticipation_unverified` en requests y retira solo el job cerrado de la cola. Ante `anticipation_error`, corregir el mismo resultado; un job expirado/sustituido no se revive.
 
-El borrador caduca una hora después de solicitarse. Cuando el término entra en el Top30, el selector normal registra la petición real; si es automática y existe borrador fresco, añade `anticipation_draft` y `anticipation_origin_id` a esa petición, sin crear otra ni modificar una petición manual/terminal. **Revalidar fecha, detonante y fuentes**, usar el puesto real y el estilo habitual antes de cerrar texto. Una preparación pendiente al entrar se sustituye por el trabajo Top30, evitando dos investigaciones paralelas. Después del cierre normal siguen agrupación e imágenes habituales.
+El borrador caduca una hora después de solicitarse. Cuando el término entra en el Top30, el selector normal registra la petición real; si es automática y existe borrador fresco, añade `anticipation_draft` y `anticipation_origin_id` a esa petición, sin crear otra ni modificar una petición manual/terminal. **Revalidar fecha, detonante y fuentes**, usar el puesto real y el estilo habitual antes de cerrar texto. Una preparación pendiente al entrar se sustituye por el trabajo Top30, evitando dos investigaciones paralelas. Después del cierre normal sigue el ciclo habitual de imágenes, sin agrupación.
 
 `trends/anticipation-metrics.json` distingue adelanto de detección y adelanto del borrador ya verificado respecto a la primera entrada observada en Top30. No presentar un borrador caducado como preparación útil ni confundir estas métricas con la hora oficial del ranking o una publicación. El límite de gasto externo es0€; no activar API X, proveedores de pago ni planes nuevos.
 
@@ -143,8 +121,9 @@ Guardar SOLO `trends/maintenance-outbox/<job_id>.json` con uno de estos resultad
 
 En continuidad usar «sigue siendo tendencia por…» o «siguen siendo tendencia por…». Si se comprueba un episodio genuinamente distinto (p. ej., otro partido días después), marcar `distinct_episode:true`, explicar la diferencia en `reason/new_facts`, y usar el comienzo ordinario «es tendencia por…». No deducir un episodio nuevo solo de que hayan pasado 48h.
 
-El aplicador conserva texto y fecha con `unchanged/unverified`, guardando `red_review_checked_at`, resultado y motivo aparte. Con `updated`, crea una ficha con ID nuevo en Listas y la somete a agrupación antes de su imagen. Una ficha anterior no publicada puede quedar marcada cubierta; una publicada conserva su estado e historial terminal. No incrementar contadores ni dar por publicada una actualización. Ante `review_error`, corregir el mismo resultado. Releer el job `review_completed` y los datos persistidos; no procesar como ready ordinario ni borrar el origen.
+El aplicador conserva texto y fecha con `unchanged/unverified`, guardando `red_review_checked_at`, resultado y motivo aparte. Con `updated`, crea una ficha con ID nuevo en Listas y mantiene su ciclo de imágenes independiente de agrupaciones. Una ficha anterior no publicada puede quedar marcada cubierta; una publicada conserva su estado e historial terminal. No incrementar contadores ni dar por publicada una actualización. Ante `review_error`, corregir el mismo resultado. Releer el job `review_completed` y los datos persistidos; no procesar como ready ordinario ni borrar el origen.
 
 ## Cierre de la pasada
 
 Releer la cola y los resultados aplicados. Verificar que cada revisión ordinaria cerrada coincide entre request y ficha, y que cada mantenimiento tratado tiene su resultado aplicado. Distinguir los pendientes de verificación de los pendientes de transporte. Registrar incidencias precisas con ID/revisión y primer eslabón ausente; no afirmar que una solicitud, un ACK o un workflow verde equivale a texto terminado, imagen entregada o publicación en X.
+
