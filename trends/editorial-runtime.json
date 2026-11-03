@@ -6,9 +6,9 @@
   "run_id": "tr-1793715998214-manual",
   "previous_run_id": "tr-autoguard-1793715065",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T15:27:00+01:00",
-  "updated_at": "2026-11-03T15:27:00+01:00",
+  "updated_at": "2026-11-03T15:30:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "3a9e052d70ef",
@@ -103,7 +103,7 @@
     "at": "2026-11-03T15:18:00+01:00"
   },
   "source": "chat",
-  "message": "Inicio tr-1793715998214-manual: Owono r0 es la única reelaboración preparing vigente en main; investigación desde cero con validación JIT. ImageGen=0; publicaciones=0.",
+  "message": "Owono r0 revalidada JIT. Texto nuevo preparado con fecha 2-3 de noviembre, marcador 2-2 y apertura de investigación policial; sin remate por sensibilidad. Persistiendo por outbox; ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2307,6 +2307,17 @@
       "trend_id": "2e00a1a9eeae",
       "title": "Owono",
       "message": "Inicio tr-1793715998214-manual: Owono r0 es la única reelaboración preparing vigente en main; investigación desde cero con validación JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T15:30:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793715998214-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "2e00a1a9eeae",
+      "title": "Owono",
+      "message": "Owono r0 revalidada JIT. Texto nuevo preparado con fecha 2-3 de noviembre, marcador 2-2 y apertura de investigación policial; sin remate por sensibilidad. Persistiendo por outbox; ImageGen=0."
     }
   ],
   "history": [
