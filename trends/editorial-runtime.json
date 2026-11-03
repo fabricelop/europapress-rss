@@ -5,36 +5,34 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793713672",
   "previous_run_id": "tr-autoguard-1793711487",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T14:48:00+01:00",
-  "updated_at": "2026-11-03T14:50:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T14:55:30+01:00",
+  "finished_at": "2026-11-03T14:55:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "734702c95d97",
-  "title": "Murcia",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "734702c95d97"
   ],
-  "remaining_active_ids": [
-    "734702c95d97"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -44,69 +42,34 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "8a7d05b3a180",
+      "id": "734702c95d97",
       "revision": 0,
-      "name": "de la Constitución",
+      "name": "Murcia",
       "outcome": "explained",
       "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "Detonante concreto no confirmado; explicación prudente."
-    },
-    {
-      "id": "e4a5391b8b6d",
-      "revision": 0,
-      "name": "Porky",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "Contexto actual verificado; causalidad en España no confirmada."
-    },
-    {
-      "id": "b5ca00019dcd",
-      "revision": 0,
-      "name": "Cumbre Iberoamericana",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
-    },
-    {
-      "id": "b33d12f2e43e",
-      "revision": 0,
-      "name": "Schumacher",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:23:30+01:00",
-      "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
-    },
-    {
-      "id": "b6bdde0356db",
-      "revision": 0,
-      "name": "Alejandra",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T14:14:30+01:00",
-      "reason": "Dos contextos actuales plausibles; identidad detonante no confirmada."
+      "explained_at": "2026-11-03T14:50:00+01:00",
+      "apply_commit": "c11e4beda711fd904fab9b246dbb84a4d7806647",
+      "reason": "La Asamblea Regional declaró hoy a Pedro Sánchez persona non grata; hecho verificado por RTVE y EFE."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T13:21:00+01:00",
-  "last_completed_at": "2026-11-03T14:27:30+01:00",
+  "last_started_at": "2026-11-03T14:48:00+01:00",
+  "last_completed_at": "2026-11-03T14:55:30+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793711487",
-    "command_id": "tr-autoguard-1793711487",
+    "run_id": "tr-autoguard-1793713672",
+    "command_id": "tr-autoguard-1793713672",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T14:12:00+01:00",
-    "finished_at": "2026-11-03T14:27:30+01:00",
+    "started_at": "2026-11-03T14:48:00+01:00",
+    "finished_at": "2026-11-03T14:55:30+01:00",
     "summary": {
-      "attempted": 5,
-      "observed": 5,
-      "closed": 5,
-      "explained": 5,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 1,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
@@ -122,58 +85,23 @@
     },
     "outcomes": [
       {
-        "id": "8a7d05b3a180",
+        "id": "734702c95d97",
         "revision": 0,
-        "name": "de la Constitución",
+        "name": "Murcia",
         "outcome": "explained",
         "applied": true,
-        "explained_at": "2026-11-03T14:14:30+01:00",
-        "reason": "Detonante concreto no confirmado; explicación prudente."
-      },
-      {
-        "id": "e4a5391b8b6d",
-        "revision": 0,
-        "name": "Porky",
-        "outcome": "explained",
-        "applied": true,
-        "explained_at": "2026-11-03T14:14:30+01:00",
-        "reason": "Contexto actual verificado; causalidad en España no confirmada."
-      },
-      {
-        "id": "b5ca00019dcd",
-        "revision": 0,
-        "name": "Cumbre Iberoamericana",
-        "outcome": "explained",
-        "applied": true,
-        "explained_at": "2026-11-03T14:14:30+01:00",
-        "reason": "XXX Cumbre en Madrid y actividad preparatoria verificadas."
-      },
-      {
-        "id": "b33d12f2e43e",
-        "revision": 0,
-        "name": "Schumacher",
-        "outcome": "explained",
-        "applied": true,
-        "explained_at": "2026-11-03T14:23:30+01:00",
-        "reason": "Término ambiguo; se conservó el rango capturado TT#30 y se explicitó que el detonante no pudo confirmarse."
-      },
-      {
-        "id": "b6bdde0356db",
-        "revision": 0,
-        "name": "Alejandra",
-        "outcome": "explained",
-        "applied": true,
-        "explained_at": "2026-11-03T14:14:30+01:00",
-        "reason": "Dos contextos actuales plausibles; identidad detonante no confirmada."
+        "explained_at": "2026-11-03T14:50:00+01:00",
+        "apply_commit": "c11e4beda711fd904fab9b246dbb84a4d7806647",
+        "reason": "La Asamblea Regional declaró hoy a Pedro Sánchez persona non grata; hecho verificado por RTVE y EFE."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1793711487 cerrada 5/5: de la Constitución, Porky, Cumbre Iberoamericana, Schumacher y Alejandra explicadas y verificadas en ambos registros. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T14:27:30+01:00"
+    "message": "Pasada tr-autoguard-1793713672 cerrada 1/1: Murcia r0 explicada y verificada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T14:55:30+01:00"
   },
   "source": "chat",
-  "message": "Murcia r0 enviada al outbox editorial para aplicación atómica en requests y Listas; verificando persistencia en main.",
+  "message": "Pasada tr-autoguard-1793713672 cerrada 1/1: Murcia r0 explicada y verificada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2284,6 +2212,24 @@
       "trend_id": "734702c95d97",
       "title": "Murcia",
       "message": "Murcia r0 enviada al outbox editorial para aplicación atómica en requests y Listas; verificando persistencia en main."
+    },
+    {
+      "at": "2026-11-03T14:55:10+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793713672",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 1,
+      "message": "Verificación JIT: commit c11e4beda711fd904fab9b246dbb84a4d7806647 contiene Murcia r0 con el mismo texto y explained_at en requests y Listas; editorial-queue=0; sin rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-03T14:55:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793713672",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "message": "Pasada tr-autoguard-1793713672 cerrada 1/1: Murcia r0 explicada y verificada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
