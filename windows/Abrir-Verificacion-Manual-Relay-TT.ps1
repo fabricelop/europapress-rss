@@ -1,6 +1,9 @@
 #requires -Version 5.1
 # Manual operation: opens the existing relay profile visibly for its owner.
 # No messages, images, cookies, credentials or catalogs are read or changed.
+param(
+ [ValidateRange(60,1800)][int]$ReceiverWaitSeconds = 600
+)
 $ErrorActionPreference='Stop'
 $ttRelayProfile=Join-Path $env:LOCALAPPDATA 'TTImageRelay\ChromeProfile'
 if(-not(Test-Path -LiteralPath $ttRelayProfile)){throw 'No existe el perfil del relay. Sin cambios.'}
@@ -19,14 +22,49 @@ else {
 try {
  foreach($name in $restore){Disable-ScheduledTask -TaskName $name | Out-Null}
  $lock='C:\TTiTTulares\image-approval-receipts\receiver.lock'
- for($i=0;$i -lt 60;$i++){
-  $busy=$false
-  if(Test-Path -LiteralPath $lock){try{$owner=Get-Content -LiteralPath $lock -Raw | ConvertFrom-Json;$busy=[bool](Get-Process -Id ([int]$owner.pid) -ErrorAction SilentlyContinue)}catch{}}
-  if(-not $busy){break}
-  if($i -eq 59){throw 'El receptor sigue trabajando. No se detiene. Vuelve a ejecutar mas tarde.'}
-  if($i -eq 0){Write-Host 'Esperando a que termine la lectura actual del receptor...'}
+ # Disable future starts first, then let an already-running receiver finish.
+ # An arbitrary live PID is not proof that it is still our Node receiver.
+ function Get-ReceiverOwner {
+  if(-not(Test-Path -LiteralPath $lock)){return $null}
+  try {
+   $owner=Get-Content -LiteralPath $lock -Raw | ConvertFrom-Json
+   $ownerPid=[int]$owner.pid
+   $lockAt=[double]$owner.at
+   if($ownerPid -le 0 -or $lockAt -le 0){throw 'INVALID_LOCK'}
+  } catch {throw 'receiver.lock no tiene una identidad valida; se conserva y no se cierra Chrome.'}
+  $process=Get-CimInstance Win32_Process -Filter "ProcessId=$ownerPid" -ErrorAction Stop
+  if(-not $process){return $null}
+  $command=[string]$process.CommandLine
+  if([string]$process.Name -notmatch '^node(?:\.exe)?$' -or
+     $command -notmatch 'TTImageApprovalReceiver\.cjs'){
+   throw "receiver.lock apunta al PID $ownerPid, pero no es el receptor Node esperado. Se conserva el bloqueo; revisar sin finalizar procesos."
+  }
+  try {$startMs=([DateTimeOffset]::new([datetime]$process.CreationDate)).ToUnixTimeMilliseconds()}
+  catch {throw 'No se puede validar el inicio del receptor; no se toca Chrome.'}
+  if($lockAt -lt ($startMs-10000) -or $lockAt -gt ($startMs+120000)){
+   throw "receiver.lock apunta al PID $ownerPid con una fecha incoherente. Posible PID reutilizado; no se toca Chrome."
+  }
+  return @{Pid=$ownerPid;Started=[datetime]$process.CreationDate}
+ }
+ $freeChecks=0
+ for($i=0;$i -lt $ReceiverWaitSeconds;$i++){
+  $reader=Get-ReceiverOwner
+  if($null -eq $reader){
+   $freeChecks++
+   if($freeChecks -ge 2){break}
+  } else {
+   $freeChecks=0
+   if($i -eq 0 -or $i % 30 -eq 0){
+    Write-Host ("Receptor Node PID {0} activo (inicio {1:HH:mm:ss}). Esperando sin detenerlo... {2}/{3} s" -f $reader.Pid,$reader.Started,$i,$ReceiverWaitSeconds)
+   }
+  }
+  if($i -eq ($ReceiverWaitSeconds-1)){
+   throw "El receptor sigue activo o el bloqueo no se estabiliza tras $ReceiverWaitSeconds s. No se interrumpe. Revisar receiver-cycle.json y receiver-status.json."
+  }
   Start-Sleep -Seconds 1
  }
+ # Final identity check immediately before any browser handoff.
+ if($null -ne (Get-ReceiverOwner)){throw 'Se ha iniciado otra lectura; no se cierra Chrome.'}
  $version=$null
  try{$version=Invoke-RestMethod 'http://127.0.0.1:9234/json/version' -TimeoutSec 3}catch{}
  if($version){
@@ -49,6 +87,12 @@ try {
  Write-Host 'Se reactivan las tareas que estaban activadas. Puedes minimizar esa ventana de Chrome.'
  Write-Host 'Actualizar la bandeja tras el siguiente ciclo. No se ha generado ni aprobado ninguna imagen.'
 } finally {
- foreach($name in $restore){Enable-ScheduledTask -TaskName $name | Out-Null}
- Remove-Item -LiteralPath $stateFile -ErrorAction SilentlyContinue
+ # Keep the recovery state file if ANY task could not be restored.
+ $restoreFailed=$false
+ foreach($name in $restore){
+  try {Enable-ScheduledTask -TaskName $name -ErrorAction Stop | Out-Null}
+  catch {$restoreFailed=$true;Write-Warning ("No se pudo restaurar la tarea: "+$name)}
+ }
+ if(-not $restoreFailed){Remove-Item -LiteralPath $stateFile -ErrorAction SilentlyContinue}
+ else {Write-Warning ("Estado de recuperacion conservado en "+$stateFile)}
 }
