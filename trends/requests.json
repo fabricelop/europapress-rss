@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T02:01:21+01:00",
+  "updated_at": "2026-11-03T01:05:42.584598+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -208674,7 +208674,7 @@
       "revision": 0,
       "name": "Revisar novedades: adama",
       "rank": 17,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T00:57:13.935757+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -208698,14 +208698,17 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-03T01:05:42.584598+00:00",
+      "review_reason": "Se mantiene el mismo motivo sin novedades sustanciales: el Deportivo-Osasuna terminó 2-1 y las crónicas siguen situando a Adama Traoré como revulsivo en la acción del gol decisivo de Nsongo Bil."
     },
     {
       "id": "red-review-8d7651be4c6ad841c018",
       "revision": 0,
       "name": "Revisar novedades: Paola",
       "rank": 2,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T00:57:13.935757+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -208735,7 +208738,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-03T01:05:42.584598+00:00",
+      "review_reason": "Se mantiene el mismo motivo sin novedades sustanciales: la entrega 16 conserva como eje la primera hoguera mixta, con Paola, Gema, Kico y Nacho reaccionando a nuevas imágenes y cruzando reproches."
     }
   ],
   "count": 841
