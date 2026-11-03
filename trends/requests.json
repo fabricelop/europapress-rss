@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T09:09:00.085664+00:00",
+  "updated_at": "2026-11-03T10:11:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -210318,6 +210318,72 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "0445de67536b",
+      "name": "Terrible",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-03T10:11:00+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "1266cfa31ec9",
+      "requested_together": [
+        "Terrible"
+      ],
+      "captured_with": [
+        "Terrible",
+        "#GMMTVNEXT",
+        "Muchísima"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "e0f6e33a38dc",
+      "name": "#GMMTVNEXT",
+      "rank": 11,
+      "status": "preparing",
+      "requested_at": "2026-11-03T10:11:00+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "1266cfa31ec9",
+      "requested_together": [
+        "#GMMTVNEXT"
+      ],
+      "captured_with": [
+        "Terrible",
+        "#GMMTVNEXT",
+        "Muchísima"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "83bc11acedc0",
+      "name": "Muchísima",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-03T10:11:00+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "1266cfa31ec9",
+      "requested_together": [
+        "Muchísima"
+      ],
+      "captured_with": [
+        "Terrible",
+        "#GMMTVNEXT",
+        "Muchísima"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 841
