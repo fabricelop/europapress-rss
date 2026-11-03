@@ -17,6 +17,7 @@ _movement_spec = importlib.util.spec_from_file_location("tt_rank_movement", ROOT
 _movement_module = importlib.util.module_from_spec(_movement_spec)
 _movement_spec.loader.exec_module(_movement_module)
 rank_items = _movement_module.rank_items
+movement_history = _movement_module.movement_history
 RECENT = ROOT / "recent.json"
 REQUESTS = ROOT / "requests.json"
 TTITTULARES_STATUS = ROOT.parent / "ttittulares" / "status.json"
@@ -1106,7 +1107,8 @@ def main():
         "reliability": reliability,
         "top10": top10,
         "top30": top30,
-        "rank_movement_version": 2,
+        "rank_movement_version": 3,
+        "rank_movement_history": movement_history(previous_doc, movement_items, now, key=term_key),
         "items": [
             {**row, "entered_top10_at": entered_top10_at(row["name"])}
             for row in movement_items
@@ -1128,4 +1130,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
