@@ -5,39 +5,36 @@
   "canonical": true,
   "run_id": "tr-1793732300083-manual",
   "previous_run_id": "tr-1793731920527-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T19:59:00+01:00",
-  "updated_at": "2026-11-03T20:03:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T20:04:00+01:00",
+  "finished_at": "2026-11-03T20:04:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-fd68c1cbd8dc96f91827",
-  "title": "Revisar novedades: QEPD",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-387a2f52f0109bcca575",
     "red-review-fd68c1cbd8dc96f91827"
   ],
-  "remaining_active_ids": [
-    "red-review-387a2f52f0109bcca575",
-    "red-review-fd68c1cbd8dc96f91827"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "terminal_decisions": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -47,29 +44,53 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "red-review-387a2f52f0109bcca575",
+      "revision": 0,
+      "name": "La Policía",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "completed_at": "2026-11-03T19:03:06.363571+00:00"
+    },
+    {
+      "id": "red-review-fd68c1cbd8dc96f91827",
+      "revision": 0,
+      "name": "QEPD",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "completed_at": "2026-11-03T19:03:06.363571+00:00"
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T19:52:00+01:00",
-  "last_completed_at": "2026-11-03T19:58:00+01:00",
+  "last_started_at": "2026-11-03T19:59:00+01:00",
+  "last_completed_at": "2026-11-03T20:04:00+01:00",
   "last_run": {
-    "run_id": "tr-1793731920527-manual",
+    "run_id": "tr-1793732300083-manual",
     "status": "DONE",
-    "started_at": "2026-11-03T19:52:00+01:00",
-    "finished_at": "2026-11-03T19:58:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-11-03T19:59:00+01:00",
+    "finished_at": "2026-11-03T20:04:00+01:00",
+    "current": 2,
+    "total": 2,
     "closed": [
       {
-        "id": "b6aad258364d",
+        "id": "red-review-387a2f52f0109bcca575",
         "revision": 0,
-        "outcome": "explained"
+        "outcome": "unchanged"
+      },
+      {
+        "id": "red-review-fd68c1cbd8dc96f91827",
+        "revision": 0,
+        "outcome": "unchanged"
       }
     ],
-    "summary": "Pasada cerrada 1/1: Ryanair r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador 36ba25b7. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    "summary": "Pasada cerrada 2/2: La Policía y QEPD quedaron review_completed/unchanged; se conservaron texto y explained_at originales y se registraron las comprobaciones red_review. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Revisando novedades de QEPD r0: los nuevos mensajes de pésame y la ampliación de la suspensión de competiciones de la RFEF son consecuencias del mismo fallecimiento y no cambian materialmente la explicación del término.",
+  "message": "Pasada cerrada 2/2: La Policía y QEPD quedaron review_completed/unchanged; se conservaron texto y explained_at originales y se registraron las comprobaciones red_review. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3364,6 +3385,43 @@
       "trend_id": "red-review-fd68c1cbd8dc96f91827",
       "title": "Revisar novedades: QEPD",
       "message": "Revisando novedades de QEPD r0: los nuevos mensajes de pésame y la ampliación de la suspensión de competiciones de la RFEF son consecuencias del mismo fallecimiento y no cambian materialmente la explicación del término."
+    },
+    {
+      "at": "2026-11-03T20:04:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793732300083-manual",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 2,
+      "message": "Barrera final JIT verificada en main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Ambos jobs figuran review_completed/unchanged y sus fuentes quedaron registradas."
+    },
+    {
+      "at": "2026-11-03T20:04:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793732300083-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "terminal_decisions": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada cerrada 2/2: La Policía y QEPD quedaron review_completed/unchanged; se conservaron texto y explained_at originales y se registraron las comprobaciones red_review. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
