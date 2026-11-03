@@ -3,40 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793704864",
-  "previous_run_id": "tr-1793702778700-manual",
+  "run_id": "tr-1793705511806-manual",
+  "previous_run_id": "tr-autoguard-1793704864",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-03T12:21:04+01:00",
-  "updated_at": "2026-11-03T12:36:00+01:00",
-  "finished_at": "2026-11-03T12:36:00+01:00",
-  "current": 7,
-  "total": 7,
+  "started_at": "2026-11-03T12:33:20+01:00",
+  "updated_at": "2026-11-03T12:35:37.745+01:00",
+  "finished_at": "2026-11-03T12:35:37.745+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "7e5d3c78960a",
-    "6f359041a211",
-    "e88efc6a01b5",
-    "af8c7f6c5d13",
-    "c97382fe915f",
-    "red-review-320fd4417a0981289e1f",
     "red-review-c588ccdc71a7eefc0351"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 5,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -51,83 +45,37 @@
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "7e5d3c78960a",
-      "revision": 0,
-      "name": "Sanción",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "07320a39c9cf60089b2b9165d2afa0bef4643b9f"
-    },
-    {
-      "id": "6f359041a211",
-      "revision": 0,
-      "name": "#LaFuerzaDeLaGentePSOE",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "09597546f518df6c93388cf5c249f3dc5e81bf66"
-    },
-    {
-      "id": "e88efc6a01b5",
-      "revision": 0,
-      "name": "Azov",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "694da6bef964376d1269f8f1d93d29d48968fee9"
-    },
-    {
-      "id": "af8c7f6c5d13",
-      "revision": 0,
-      "name": "Kiev",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "cdc29839ea79bc6d69260bfdb5773f6731b1f7ee"
-    },
-    {
-      "id": "c97382fe915f",
-      "revision": 0,
-      "name": "Piqué",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "fa8fe1bb439bde61d7b96ed26b70cba691ff9743"
-    },
-    {
-      "id": "red-review-320fd4417a0981289e1f",
-      "revision": 0,
-      "name": "Revisar novedades: #ADIPEC",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "42be7b772434011082d846d5494f566357ee5b4b"
-    },
-    {
       "id": "red-review-c588ccdc71a7eefc0351",
       "revision": 0,
       "name": "Revisar novedades: #TEM2N",
       "outcome": "unchanged",
       "applied": true,
-      "apply_commit": "25e773a94e69b8b5d51ef3281b78df2381cbffdb",
-      "via": "concurrent_convergence_jit"
+      "via": "concurrent_convergence_jit",
+      "converged_with": "tr-autoguard-1793704864",
+      "source_id": "fed9af79780a",
+      "reason": "Sin cambio material respecto a la explicación del 2 de noviembre; el resultado review_completed/unchanged ya estaba aplicado en main y la emisión del 3-N aún no había comenzado durante la revisión."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T12:29:24+01:00",
-  "last_completed_at": "2026-11-03T12:36:00+01:00",
+  "last_started_at": "2026-11-03T12:33:20+01:00",
+  "last_completed_at": "2026-11-03T12:35:37.745+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793704864",
-    "command_id": "tr-autoguard-1793704864",
+    "run_id": "tr-1793705511806-manual",
+    "command_id": "tr-1793705511806-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T12:21:04+01:00",
-    "finished_at": "2026-11-03T12:36:00+01:00",
+    "started_at": "2026-11-03T12:33:20+01:00",
+    "finished_at": "2026-11-03T12:35:37.745+01:00",
     "summary": {
-      "attempted": 7,
-      "observed": 7,
-      "closed": 7,
-      "explained": 5,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 2,
+      "unchanged_reviews": 1,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -138,70 +86,25 @@
     },
     "outcomes": [
       {
-        "id": "7e5d3c78960a",
-        "revision": 0,
-        "name": "Sanción",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "07320a39c9cf60089b2b9165d2afa0bef4643b9f"
-      },
-      {
-        "id": "6f359041a211",
-        "revision": 0,
-        "name": "#LaFuerzaDeLaGentePSOE",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "09597546f518df6c93388cf5c249f3dc5e81bf66"
-      },
-      {
-        "id": "e88efc6a01b5",
-        "revision": 0,
-        "name": "Azov",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "694da6bef964376d1269f8f1d93d29d48968fee9"
-      },
-      {
-        "id": "af8c7f6c5d13",
-        "revision": 0,
-        "name": "Kiev",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "cdc29839ea79bc6d69260bfdb5773f6731b1f7ee"
-      },
-      {
-        "id": "c97382fe915f",
-        "revision": 0,
-        "name": "Piqué",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "fa8fe1bb439bde61d7b96ed26b70cba691ff9743"
-      },
-      {
-        "id": "red-review-320fd4417a0981289e1f",
-        "revision": 0,
-        "name": "Revisar novedades: #ADIPEC",
-        "outcome": "unchanged",
-        "applied": true,
-        "apply_commit": "42be7b772434011082d846d5494f566357ee5b4b"
-      },
-      {
         "id": "red-review-c588ccdc71a7eefc0351",
         "revision": 0,
         "name": "Revisar novedades: #TEM2N",
         "outcome": "unchanged",
         "applied": true,
-        "apply_commit": "25e773a94e69b8b5d51ef3281b78df2381cbffdb",
-        "via": "concurrent_convergence_jit"
+        "via": "concurrent_convergence_jit",
+        "converged_with": "tr-autoguard-1793704864",
+        "source_id": "fed9af79780a",
+        "reason": "Sin cambio material respecto a la explicación del 2 de noviembre; el resultado review_completed/unchanged ya estaba aplicado en main y la emisión del 3-N aún no había comenzado durante la revisión."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1793704864 cerrada 7/7: 5 explicaciones ordinarias (Sanción, #LaFuerzaDeLaGentePSOE, Azov, Kiev y Piqué) y 2 revisiones unchanged (#ADIPEC y #TEM2N). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T12:36:00+01:00"
+    "message": "Pasada tr-1793705511806-manual cerrada 1/1 por convergencia JIT: #TEM2N review_completed/unchanged; texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T12:35:37.745+01:00",
+    "converged_with": "tr-autoguard-1793704864"
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793704864 cerrada 7/7: 5 explicaciones ordinarias (Sanción, #LaFuerzaDeLaGentePSOE, Azov, Kiev y Piqué) y 2 revisiones unchanged (#ADIPEC y #TEM2N). Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793705511806-manual cerrada 1/1 por convergencia JIT: #TEM2N review_completed/unchanged; texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1956,6 +1859,35 @@
         "incidents": 0,
         "concurrent_convergence": 1
       }
+    },
+    {
+      "at": "2026-11-03T12:33:20+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793705511806-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "red-review-c588ccdc71a7eefc0351",
+      "title": "Revisar novedades: #TEM2N",
+      "message": "Inicio manual JIT: la misma revisión estaba siendo persistida por tr-autoguard-1793704864; se revalida main antes de cualquier escritura. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T12:35:37.745+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793705511806-manual",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 1,
+      "message": "Convergencia confirmada: #TEM2N consta review_completed/unchanged en requests; editorial-queue=0 y no hay rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-03T12:35:37.745+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793705511806-manual",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "message": "Pasada tr-1793705511806-manual cerrada 1/1 por convergencia JIT: #TEM2N review_completed/unchanged; texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -8547,6 +8479,7 @@
     "tr-1793696945461-manual",
     "tr-1793698723967-manual",
     "tr-1793699033179-manual",
-    "tr-1793702191137-manual"
+    "tr-1793702191137-manual",
+    "tr-autoguard-1793704864"
   ]
 }
