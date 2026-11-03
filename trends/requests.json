@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T10:44:49.718667+00:00",
+  "updated_at": "2026-11-03T10:46:11.302117+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -211292,7 +211292,7 @@
       "revision": 0,
       "name": "Revisar novedades: #AccidenteFerroviario",
       "rank": 29,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T10:44:00.615926+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -211316,7 +211316,10 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "stale",
+      "completed_at": "2026-11-03T10:46:11.302117+00:00",
+      "review_reason": "Hay novedades materiales posteriores a la explicación del 28/10: se elevó y cerró la identificación de las víctimas mortales en 69, el Gobierno aprobó un paquete de ayudas y Óscar Puente comparece hoy en el Congreso sobre la investigación."
     },
     {
       "id": "red-review-f1fadc7c92bc5acac655",
@@ -211346,7 +211349,8 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_error": "Actualización sin novedades, formato de continuidad/episodio o longitud válidos"
     }
   ],
   "count": 933
