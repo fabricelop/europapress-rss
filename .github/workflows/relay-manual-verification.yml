@@ -1,0 +1,20 @@
+name: Validate manual relay handoff
+on:
+  push:
+    paths: ['windows/Abrir-Verificacion-Manual-Relay-TT.ps1', '.github/workflows/relay-manual-verification.yml']
+  pull_request:
+    paths: ['windows/Abrir-Verificacion-Manual-Relay-TT.ps1', '.github/workflows/relay-manual-verification.yml']
+permissions:
+  contents: read
+jobs:
+  parse:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: powershell
+        run: |
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'windows/Abrir-Verificacion-Manual-Relay-TT.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count){throw ($errors | Out-String)}
+          $source=Get-Content 'windows/Abrir-Verificacion-Manual-Relay-TT.ps1' -Raw
+          if($source -match 'Stop-Process|taskkill|Remove-Item.+ChromeProfile|--disable-blink-features|--user-agent'){throw 'Forbidden broad process/profile/fingerprint change'}
