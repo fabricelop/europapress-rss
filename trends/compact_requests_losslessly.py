@@ -45,6 +45,7 @@ def minify(source: str) -> tuple[str, int]:
 
 def selftest() -> None:
     sample = '{"project":"TTendencias","requests":[{"id":"uno","name":"La Palma","explanation":"éxito 🌶️","revision":0},{"id":"dos","name":"Otro","notes":"A\\nB"}],"count":2}'
+    sample = json.dumps(parse(sample), ensure_ascii=False, indent=2)
     compact, count = minify(sample)
     assert count == 2 and parse(compact) == parse(sample)
     assert units(compact) <= units(sample)
