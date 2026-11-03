@@ -1,9 +1,9 @@
 name: Private image intake both projects
 on:
   push:
-    paths: ['windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', '.github/workflows/private-image-intake.yml']
+    paths: ['windows/TTendenciasWebImages.cjs', 'windows/TTiTTularesWebImages.cjs', 'windows/tests/user-bubble-reader.test.cjs', 'windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', '.github/workflows/private-image-intake.yml']
   pull_request:
-    paths: ['windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', '.github/workflows/private-image-intake.yml']
+    paths: ['windows/TTendenciasWebImages.cjs', 'windows/TTiTTularesWebImages.cjs', 'windows/tests/user-bubble-reader.test.cjs', 'windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', '.github/workflows/private-image-intake.yml']
 permissions:
   contents: read
 jobs:
@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test windows/tests/test_private_image_intake.cjs
+      - run: node --test windows/tests/test_private_image_intake.cjs windows/tests/user-bubble-reader.test.cjs
       - run: |
           $tokens=$null; $errors=$null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'windows/Actualizar-Recogida-Privada-TT.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
