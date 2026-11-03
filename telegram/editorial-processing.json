@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-03T20:35:42.915498Z",
+  "updated_at": "2026-11-03T20:36:10.876855Z",
   "count": 2,
   "items": [
     {
@@ -26328,7 +26328,7 @@
       "event_id": "manual-2ca19488-71be-47e3-8388-4e76b1b0c43c",
       "title": "Dimite Oscar puente",
       "url": "",
-      "status": "PROCESSING",
+      "status": "PROBLEMATIC",
       "revision": 1,
       "selected_at": "2026-11-03T20:26:14.387232Z",
       "requested_at": "2026-11-03T20:26:14.387232Z",
@@ -26344,7 +26344,10 @@
       "rewrite_request": "",
       "with_image": true,
       "image_mode": "ai_plus_fallback",
-      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY."
+      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY.",
+      "problematic_at": "2026-11-03T20:36:10.876855Z",
+      "problem_reason": "simultaneous_manual_duplicate_of_ready:ed38a372c34e",
+      "problematic_attempts": 1
     }
   ]
 }
