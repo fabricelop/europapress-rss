@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "checked_at": "2026-11-03T16:45:24.717186+00:00",
-=======
-  "checked_at": "2026-11-03T16:53:41.831196+00:00",
->>>>>>> Stashed changes
+  "checked_at": "2026-11-03T20:51:22.020548+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -47,11 +43,7 @@
       "ok": false,
       "count": 10,
       "non_stale_sources": 2,
-<<<<<<< Updated upstream
-      "captured_age_minutes": 10.4,
-=======
-      "captured_age_minutes": 18.7,
->>>>>>> Stashed changes
+      "captured_age_minutes": 9.0,
       "noise_count": 0,
       "repair_started": true
     },
@@ -65,11 +57,7 @@
       "status": "queued",
       "conclusion": null,
       "age_minutes": 0.0,
-<<<<<<< Updated upstream
-      "run_id": 41677420349,
-=======
-      "run_id": 41678801250,
->>>>>>> Stashed changes
+      "run_id": 41716391424,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,7 +69,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 336,
+      "invalid_count": 350,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -90,21 +78,27 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 2,
-      "overdue_count": 0,
-      "oldest_age_minutes": 12.4,
+      "ok": false,
+      "pending_count": 1,
+      "overdue_count": 1,
+      "oldest_age_minutes": 35.1,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "3d2bfcd082db",
+          "name": "#LaPromesa",
+          "status": "preparing",
+          "age_minutes": 35.1
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-1656c218ad5e41f69bd3",
-        "red-review-bd7b5a8365815d9fe3b8"
+        "3d2bfcd082db"
       ],
       "contradictory_success": false
     },
@@ -118,9 +112,10 @@
     "relanzado refresco Top 10"
   ],
   "blocking": [
-    "cola con 336 estado(s) inválido(s)"
+    "cola con 350 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 35.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 336 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 350 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 35.1 min"
 }
