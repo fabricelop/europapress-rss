@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793742037",
   "previous_run_id": "tr-autoguard-1793740699",
   "status": "PROCESSING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T22:41:00+01:00",
-  "updated_at": "2026-11-03T22:41:00+01:00",
+  "updated_at": "2026-11-03T22:46:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
@@ -50,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "3042104459b7",
@@ -139,7 +139,7 @@
     "summary": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793742037: 4 investigaciones preparing vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación.",
+  "message": "4/4 revisiones investigadas y redactadas; outboxes ready persistidos y aplicador editorial forzado. Verificando aplicación autoritativa; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3784,6 +3784,15 @@
       "trend_id": "cb7b89c8aacc",
       "title": "Brian Fariñas",
       "message": "Inicio tr-autoguard-1793742037: 4 investigaciones preparing vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T22:46:30+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793742037",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 4,
+      "message": "4/4 revisiones investigadas y redactadas; outboxes ready persistidos y aplicador editorial forzado. Verificando aplicación autoritativa; sin ImageGen ni publicación."
     }
   ],
   "history": [
