@@ -51705,13 +51705,28 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
-      "image_status": "none",
-      "image_choice": "none",
-      "image_pending": false
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/JCRUPSLSUNH37MFAUVLKRHPOT4.jpg?auth=29150338405ddd3e330101b1dc842f8c9280167c7fa75e8b4decd0ea35f06e52&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/economia/2026-11-02/la-isla-de-la-palma-sufre-un-apagon-general-que-deja-a-la-isla-sin-suministro-electrico.html",
+        "alt": "Imagen de archivo relacionada con La Palma",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/JCRUPSLSUNH37MFAUVLKRHPOT4.jpg?auth=29150338405ddd3e330101b1dc842f8c9280167c7fa75e8b4decd0ea35f06e52&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/economia/2026-11-02/la-isla-de-la-palma-sufre-un-apagon-general-que-deja-a-la-isla-sin-suministro-electrico.html",
+        "alt": "Imagen de archivo relacionada con La Palma",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-03T14:52:13.042681+00:00",
+  "updated_at": "2026-11-03T14:54:05.395255Z",
   "count": 849
 }
