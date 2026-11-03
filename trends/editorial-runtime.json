@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793665638734-manual",
+  "run_id": "tr-autoguard-1793667063",
   "previous_run_id": "tr-autoguard-1793665313",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T01:27:00+01:00",
-  "updated_at": "2026-11-03T01:33:03+01:00",
-  "finished_at": "2026-11-03T01:33:03+01:00",
-  "current": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T01:51:00+01:00",
+  "updated_at": "2026-11-03T01:51:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "trend_id": "179ac7f4ce3a",
+  "title": "Nacho",
+  "queue_complete": false,
   "processed_ids": [
     "red-review-656a94ab649a01f2e45d",
     "red-review-1b17769431b2683c7bcd"
@@ -123,7 +123,7 @@
     "message": "Pasada tr-1793665638734-manual cerrada 2/2 por convergencia JIT: Leo Román updated con el 2-1 final y #ElPerroAndaluzTVE unchanged. Barrera final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793665638734-manual cerrada 2/2 por convergencia JIT: Leo Román updated con el 2-1 final y #ElPerroAndaluzTVE unchanged. Barrera final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0.",
+  "message": "Iniciando pasada editorial real: 2 trabajos preparing/update en cola; validando estado autoritativo antes de investigar Nacho.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4376,7 +4376,7 @@
       "message": "Pasada tr-autoguard-1793659867 cerrada 4/4: #LaIslaDeLasTentaciones16 y Mario Soriano explicados; revisión de Racing actualizada por la lesión de Álvaro Mantilla; revisión de Toledo descartada como stale tras revalidación JIT. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793665638734-manual",
+  "command_id": "tr-autoguard-1793667063",
   "requested_at": "2026-11-02T22:58:00+01:00",
   "runs": [
     {
