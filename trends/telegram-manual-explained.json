@@ -53402,14 +53402,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261102094124_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/economia/laboral-00346/noticia-huelga-general-11n-supera-4300-adhesiones-comites-empresa-secciones-sindicales-20261102094124.html",
+        "alt": "Imagen de archivo relacionada con #HuelgaGeneral11N",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261102094124_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/economia/laboral-00346/noticia-huelga-general-11n-supera-4300-adhesiones-comites-empresa-secciones-sindicales-20261102094124.html",
+        "alt": "Imagen de archivo relacionada con #HuelgaGeneral11N",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-03T18:52:00+01:00",
+  "updated_at": "2026-11-03T18:03:55.770597Z",
   "count": 876
 }
