@@ -8,12 +8,12 @@
   "status": "PROCESSING",
   "phase": "persisting",
   "started_at": "2026-11-03T17:12:00+01:00",
-  "updated_at": "2026-11-03T17:21:00+01:00",
+  "updated_at": "2026-11-03T17:22:00+01:00",
   "finished_at": null,
-  "current": 3,
+  "current": 4,
   "total": 5,
-  "trend_id": "4aa3329968cd",
-  "title": "Huelga General",
+  "trend_id": "6b1ca96d0ae5",
+  "title": "Carcel",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -206,6 +206,46 @@
       "trend_id": "4aa3329968cd",
       "title": "Huelga General",
       "message": "Persistiendo outbox editorial para 4aa3329968cd r0; sin ImageGen."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Investigando Carcel r0: Contexto actual verificado: debate sobre posibles consecuencias penales tras la muerte de Jesús de Miguel; se evita afirmar culpabilidad y se señala que no hay conclusión penal. Sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Sin remate por sensibilidad o incertidumbre causal."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Persistiendo outbox editorial para 6b1ca96d0ae5 r0; sin ImageGen."
     }
   ],
   "final_outcomes": [
@@ -286,7 +326,7 @@
     "converged_with": "tr-1793719374883-manual"
   },
   "source": "chat",
-  "message": "Huelga General r0: investigación cerrada; redactando y persistiendo resultado textual con validación JIT.",
+  "message": "Carcel r0: investigación cerrada; redactando y persistiendo resultado textual con validación JIT.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3092,6 +3132,46 @@
       "trend_id": "4aa3329968cd",
       "title": "Huelga General",
       "message": "Persistiendo outbox editorial para 4aa3329968cd r0; sin ImageGen."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Investigando Carcel r0: Contexto actual verificado: debate sobre posibles consecuencias penales tras la muerte de Jesús de Miguel; se evita afirmar culpabilidad y se señala que no hay conclusión penal. Sin remate por sensibilidad."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Sin remate por sensibilidad o incertidumbre causal."
+    },
+    {
+      "at": "2026-11-03T17:22:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 4,
+      "total": 5,
+      "trend_id": "6b1ca96d0ae5",
+      "title": "Carcel",
+      "message": "Persistiendo outbox editorial para 6b1ca96d0ae5 r0; sin ImageGen."
     }
   ],
   "history": [
@@ -5526,8 +5606,8 @@
       "reason": "Novedad material aplicada: fallecimiento de Jesús de Miguel tras el choque del Tenerife-Andorra; continuidad sin remate por sensibilidad."
     }
   ],
-  "current_item": "4aa3329968cd",
-  "current_title": "Huelga General",
+  "current_item": "6b1ca96d0ae5",
+  "current_title": "Carcel",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
