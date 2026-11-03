@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T00:27:13.604669+00:00",
+  "updated_at": "2026-11-03T00:29:27.964494+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -206738,7 +206738,18 @@
       "image_pending": true,
       "telegram_package_status": "published",
       "published_at": "2026-11-02T21:44:46.258743+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-03T00:29:27.964494+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Hay una novedad material posterior a la explicación original: el partido terminó 2-1 para el Deportivo. Las crónicas posteriores mantienen que el 0-1 nació del error de Leo Román y añaden la remontada con goles de Mario Soriano y Nsongo Bil.",
+      "red_review_sources": [
+        {
+          "url": "https://as.com/futbol/primera/hidalgo-fue-un-subidon-grande-pero-era-una-victoria-mas-que-merecida-f202611-n/"
+        },
+        {
+          "url": "https://www.elespanol.com/quincemil/deporte/deportivo/20261102/deportivo-osasuna-depor-culmina-remontada-fe/1003744443622_0.amp.html"
+        }
+      ]
     },
     {
       "id": "5f810de04443",
@@ -206798,7 +206809,18 @@
       "image_status": "pending",
       "image_choice": "none",
       "image_pending": true,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "red_review_checked_at": "2026-11-03T00:29:27.964494+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "No hay una novedad material que cambie la explicación: las fuentes siguen describiendo la misma emisión extraordinaria del lunes 2 de noviembre, programada tras la suspensión del jueves anterior, con el mismo enfoque e invitados anunciados.",
+      "red_review_sources": [
+        {
+          "url": "https://www.rtve.es/rtve/20261102/perro-andaluz-suma-cita-especial-este-lunes-1-noche-directo-llena-significados/17296169.shtml"
+        },
+        {
+          "url": "https://www.formulatv.com/noticias/perro-andaluz-la-1-especial-tragedia-ferroviaria-138663/"
+        }
+      ]
     },
     {
       "id": "570491eda2ef",
@@ -208403,7 +208425,7 @@
       "revision": 0,
       "name": "Revisar novedades: Leo Román",
       "rank": 5,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T00:27:13.604669+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -208430,14 +208452,18 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_created_id": "trend-update-374c205e66f7af2e9e03",
+      "review_outcome": "updated",
+      "completed_at": "2026-11-03T00:29:27.964494+00:00",
+      "review_reason": "Hay una novedad material posterior a la explicación original: el partido terminó 2-1 para el Deportivo. Las crónicas posteriores mantienen que el 0-1 nació del error de Leo Román y añaden la remontada con goles de Mario Soriano y Nsongo Bil."
     },
     {
       "id": "red-review-1b17769431b2683c7bcd",
       "revision": 0,
       "name": "Revisar novedades: #ElPerroAndaluzTVE",
       "rank": 8,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-03T00:27:13.604669+00:00",
       "task": "review_red",
       "red_review_request": true,
@@ -208464,7 +208490,43 @@
       "with_image": false,
       "disable_ai_image": true,
       "auto_queued": false,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.",
+      "review_outcome": "unchanged",
+      "completed_at": "2026-11-03T00:29:27.964494+00:00",
+      "review_reason": "No hay una novedad material que cambie la explicación: las fuentes siguen describiendo la misma emisión extraordinaria del lunes 2 de noviembre, programada tras la suspensión del jueves anterior, con el mismo enfoque e invitados anunciados."
+    },
+    {
+      "id": "trend-update-374c205e66f7af2e9e03",
+      "revision": 0,
+      "name": "Leo Román",
+      "rank": 5,
+      "status": "explained",
+      "requested_at": "2026-11-03T00:29:27.964494+00:00",
+      "explained_at": "2026-11-03T00:29:27.964494+00:00",
+      "updated_at": "2026-11-03T00:29:27.964494+00:00",
+      "explanation": "TT#5 Leo Román sigue siendo tendencia por su error en el 0-1 de Osasuna; el Deportivo terminó remontando 2-1 con goles de Mario Soriano y Nsongo Bil.\n#DéporOsasuna #RCDeportivo\n🌶️ La remontada le cambió el desenlace al error.",
+      "closer_text": "🌶️ La remontada le cambió el desenlace al error.",
+      "verification_sources": [
+        {
+          "url": "https://as.com/futbol/primera/hidalgo-fue-un-subidon-grande-pero-era-una-victoria-mas-que-merecida-f202611-n/"
+        },
+        {
+          "url": "https://www.elespanol.com/quincemil/deporte/deportivo/20261102/deportivo-osasuna-depor-culmina-remontada-fe/1003744443622_0.amp.html"
+        }
+      ],
+      "originated_from_prior_id": "734c9156bd10",
+      "trend_names": [
+        "Leo Román"
+      ],
+      "red_review_job_id": "red-review-656a94ab649a01f2e45d",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "El Deportivo remontó el 0-1 y ganó 2-1 a Osasuna; Mario Soriano empató y Nsongo Bil marcó el gol decisivo, después del error de Leo Román que había originado el tanto visitante.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
   "count": 841
