@@ -3,24 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793689605241-manual",
-  "previous_run_id": "tr-1793689327846-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T08:07:00+01:00",
-  "updated_at": "2026-11-03T08:10:00+01:00",
-  "finished_at": "2026-11-03T08:10:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-f0796a0cf9b6cf9a49a9",
-    "red-review-19e62b87b798ca9f89df"
+  "run_id": "tr-autoguard-1793693463",
+  "previous_run_id": "tr-1793689605241-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T09:12:30+01:00",
+  "updated_at": "2026-11-03T09:12:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 4,
+  "trend_id": "4b85f530992d",
+  "title": "Puerta del Sol",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "4b85f530992d",
+    "223974f8f55f",
+    "515388bfd4fc",
+    "938baf64b989"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "4b85f530992d",
+    "223974f8f55f",
+    "515388bfd4fc",
+    "938baf64b989"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -117,7 +124,7 @@
     "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 4 investigaciones preparing vigentes en main (Puerta del Sol, Qeshm, #LaHora3N y Lc 14), por antigüedad y con revalidación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1404,6 +1411,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T09:12:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793693463",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 4,
+      "trend_id": "4b85f530992d",
+      "title": "Puerta del Sol",
+      "message": "Inicio: 4 investigaciones preparing vigentes en main (Puerta del Sol, Qeshm, #LaHora3N y Lc 14), por antigüedad y con revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -4872,8 +4890,8 @@
       "message": "Pasada tr-1793678744665-manual cerrada 2/2: Aramburu updated por el desfase de sincronización confirmado por el CTA en la acción del penalti; Halloween unchanged y conserva texto/fecha. Barrera final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793689327846-manual",
-  "requested_at": "2026-11-03T08:02:07.846+01:00",
+  "command_id": "tr-autoguard-1793693463",
+  "requested_at": "2026-11-03T09:12:30+01:00",
   "runs": [
     {
       "run_id": "tr-autoguard-1793650268",
@@ -5952,6 +5970,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793689605241-manual cerrada 2/2: Diomande y Racing review_completed/unchanged; se conservan sus textos y fechas. Barrera final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T09:12:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793693463",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 4,
+      "trend_id": "4b85f530992d",
+      "title": "Puerta del Sol",
+      "message": "Inicio: 4 investigaciones preparing vigentes en main (Puerta del Sol, Qeshm, #LaHora3N y Lc 14), por antigüedad y con revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "converged_run_ids": [
