@@ -1,0 +1,25 @@
+name: TTendencias - cancelar aplicadores obsoletos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cancel-stale-ttendencias-apply.yml'
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancelar runs obsoletos
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for run_id in 41729074508 41731119745 41731507196; do
+            gh run cancel "$run_id" --repo "$GITHUB_REPOSITORY" || true
+          done
