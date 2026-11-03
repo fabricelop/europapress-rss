@@ -5,11 +5,11 @@
   "canonical": true,
   "run_id": "tr-1793688203629-manual",
   "previous_run_id": "tr-autoguard-1793688073",
-  "status": "DONE",
+  "status": "success",
   "phase": "closing",
   "started_at": "2026-11-03T07:43:23+01:00",
-  "updated_at": "2026-11-03T07:52:17+01:00",
-  "finished_at": "2026-11-03T07:52:17+01:00",
+  "updated_at": "2026-11-03T07:52:58.826+01:00",
+  "finished_at": "2026-11-03T07:52:58.826+01:00",
   "current": 6,
   "total": 6,
   "trend_id": null,
@@ -42,74 +42,50 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "done",
   "final_outcomes": [
     {
       "id": "208e7c62062d",
       "revision": 0,
       "name": "Vamos Demi",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "92bbc77",
-      "reason": "Ranking verificado; tras búsquedas independientes no se pudo confirmar un detonante concreto y se redactó con incertidumbre explícita."
+      "outcome": "explained"
     },
     {
       "id": "12a5405887d7",
       "revision": 0,
       "name": "San Martín de Porres",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
-      "reason": "Festividad del 3 de noviembre verificada."
+      "outcome": "explained"
     },
     {
       "id": "c03b4a139272",
       "revision": 0,
       "name": "La Policía Nacional",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
-      "reason": "Desalojo de la acampada de Sol verificado con versiones atribuidas y sin remate por sensibilidad."
+      "outcome": "explained"
     },
     {
       "id": "97a95c81482a",
       "revision": 0,
       "name": "Jesús de Miguel",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "959de3b0b0e59238dbc4c39c25a9b5536d857551",
-      "reason": "Reelaboración desde cero con el último parte: empeoramiento neurológico tras el Tenerife-Andorra; sin remate por sensibilidad."
+      "outcome": "explained"
     },
     {
       "id": "red-review-e4d9f7a412008c25a9b5",
       "revision": 0,
-      "name": "Revisar novedades: Hamilton",
+      "name": "Hamilton",
       "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-2541323f2e761e280e00",
-      "via": "this_run_maintenance_outbox",
-      "apply_commit": "8f1a3862840b02b6a21b1223598b2fb10b32a680",
-      "reason": "Resultado final y corrección factual: Hamilton segundo; la sanción de cinco segundos fue para Leclerc."
+      "created_id": "trend-update-2541323f2e761e280e00"
     },
     {
       "id": "red-review-6312dcd669aa8ffe3f74",
       "revision": 0,
-      "name": "Revisar novedades: Adif",
+      "name": "Adif",
       "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-f6412243dc52385afed0",
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "8f1a3862840b02b6a21b1223598b2fb10b32a680",
-      "reason": "La investigación amplió el foco para comprobar si el protocolo erróneo tras fallos del LZB se usó en incidencias anteriores."
+      "created_id": "trend-update-f6412243dc52385afed0"
     }
   ],
   "api_failover_enabled": false,
@@ -209,7 +185,7 @@
     "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0.",
+  "message": "Pasada editorial completada 6/6. La ejecución manual tr-1793688203629-manual absorbió la cola de tr-autoguard-1793688073: 4 explicaciones cerradas y 2 revisiones rojas actualizadas. Barrera final en main: cola 0, requests activos 0 y reexplicaciones pendientes 0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1374,6 +1350,15 @@
       "current": 6,
       "total": 6,
       "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T07:52:58.826+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793688203629-manual",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada editorial completada 6/6. La ejecución manual tr-1793688203629-manual absorbió la cola de tr-autoguard-1793688073: 4 explicaciones cerradas y 2 revisiones rojas actualizadas. Barrera final en main: cola 0, requests activos 0 y reexplicaciones pendientes 0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -5893,6 +5878,18 @@
       "current": 6,
       "total": 6,
       "message": "Pasada tr-1793688203629-manual cerrada 6/6. Explicadas: Vamos Demi, San Martín de Porres, La Policía Nacional y Jesús de Miguel. Revisiones absorbidas en barrera final: Hamilton updated con resultado final/corrección de la sanción; Adif updated por ampliación de la investigación del protocolo LZB. Relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0 llamadas desde esta pasada; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T07:52:58.826+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793688203629-manual",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada editorial completada 6/6. La ejecución manual tr-1793688203629-manual absorbió la cola de tr-autoguard-1793688073: 4 explicaciones cerradas y 2 revisiones rojas actualizadas. Barrera final en main: cola 0, requests activos 0 y reexplicaciones pendientes 0. ImageGen=0; publicaciones=0."
     }
+  ],
+  "converged_run_ids": [
+    "tr-autoguard-1793688073"
   ]
 }
