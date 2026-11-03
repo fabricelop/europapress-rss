@@ -5,18 +5,17 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793700663",
   "previous_run_id": "tr-1793699283928-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T11:11:00+01:00",
-  "updated_at": "2026-11-03T11:16:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T11:20:00+01:00",
+  "finished_at": "2026-11-03T11:20:00+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "01ac1d20b1fb",
-  "title": "Tetê",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "01ac1d20b1fb",
     "1a63e1bd818c",
     "93fd9a90a9c2",
@@ -24,27 +23,21 @@
     "ac8fba260938",
     "3f67b198a6c5"
   ],
-  "remaining_active_ids": [
-    "01ac1d20b1fb",
-    "1a63e1bd818c",
-    "93fd9a90a9c2",
-    "ead261969f29",
-    "ac8fba260938",
-    "3f67b198a6c5"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 6,
     "observed": 6,
-    "closed": 0,
-    "explained": 0,
+    "closed": 6,
+    "explained": 6,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 6,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -54,64 +47,154 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-d1c3c48cd3987e0d29a9",
+      "id": "01ac1d20b1fb",
       "revision": 0,
-      "name": "Revisar novedades: Aramburu",
-      "outcome": "unchanged",
+      "name": "Tetê",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "La explicación vigente ya incorpora la confirmación del CTA sobre el desfase entre el Connected Ball y el vídeo VAR y la resincronización que muestra que Aramburu tocó el balón; las reacciones posteriores no añaden un cambio material."
+      "rank": 11,
+      "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
+    },
+    {
+      "id": "1a63e1bd818c",
+      "revision": 0,
+      "name": "QEPD",
+      "outcome": "explained",
+      "applied": true,
+      "rank": 12,
+      "reason": "Mensajes de pésame tras el fallecimiento de Jesús de Miguel; tratamiento sensible sin remate."
+    },
+    {
+      "id": "93fd9a90a9c2",
+      "revision": 0,
+      "name": "Homicidio",
+      "outcome": "explained",
+      "applied": true,
+      "rank": 6,
+      "reason": "Debate jurídico actual verificado; se deja explícito que no consta imputación."
+    },
+    {
+      "id": "ead261969f29",
+      "revision": 0,
+      "name": "Involuntaria",
+      "outcome": "explained",
+      "applied": true,
+      "rank": 10,
+      "reason": "Coberturas actuales plantean homicidio imprudente/involuntario como hipótesis jurídica; no consta imputación."
+    },
+    {
+      "id": "ac8fba260938",
+      "revision": 0,
+      "name": "Neuer",
+      "outcome": "explained",
+      "applied": true,
+      "rank": 13,
+      "reason": "Regreso al entrenamiento y viaje a Madrid verificados antes del Atlético-Bayern; titularidad aún pendiente."
+    },
+    {
+      "id": "3f67b198a6c5",
+      "revision": 0,
+      "name": "Higuain",
+      "outcome": "explained",
+      "applied": true,
+      "rank": 14,
+      "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T10:48:03+01:00",
-  "last_completed_at": "2026-11-03T10:48:53+01:00",
+  "last_started_at": "2026-11-03T11:11:00+01:00",
+  "last_completed_at": "2026-11-03T11:20:00+01:00",
   "last_run": {
-    "run_id": "tr-1793699283928-manual",
-    "command_id": "tr-1793699283928-manual",
+    "run_id": "tr-autoguard-1793700663",
+    "command_id": "tr-autoguard-1793700663",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T10:48:03+01:00",
-    "finished_at": "2026-11-03T10:48:53+01:00",
+    "started_at": "2026-11-03T11:11:00+01:00",
+    "finished_at": "2026-11-03T11:20:00+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 6,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 1,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
     "outcomes": [
       {
-        "id": "red-review-d1c3c48cd3987e0d29a9",
+        "id": "01ac1d20b1fb",
         "revision": 0,
-        "name": "Revisar novedades: Aramburu",
-        "outcome": "unchanged",
+        "name": "Tetê",
+        "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "reason": "La explicación vigente ya incorpora la confirmación del CTA sobre el desfase entre el Connected Ball y el vídeo VAR y la resincronización que muestra que Aramburu tocó el balón; las reacciones posteriores no añaden un cambio material."
+        "rank": 11,
+        "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
+      },
+      {
+        "id": "1a63e1bd818c",
+        "revision": 0,
+        "name": "QEPD",
+        "outcome": "explained",
+        "applied": true,
+        "rank": 12,
+        "reason": "Mensajes de pésame tras el fallecimiento de Jesús de Miguel; tratamiento sensible sin remate."
+      },
+      {
+        "id": "93fd9a90a9c2",
+        "revision": 0,
+        "name": "Homicidio",
+        "outcome": "explained",
+        "applied": true,
+        "rank": 6,
+        "reason": "Debate jurídico actual verificado; se deja explícito que no consta imputación."
+      },
+      {
+        "id": "ead261969f29",
+        "revision": 0,
+        "name": "Involuntaria",
+        "outcome": "explained",
+        "applied": true,
+        "rank": 10,
+        "reason": "Coberturas actuales plantean homicidio imprudente/involuntario como hipótesis jurídica; no consta imputación."
+      },
+      {
+        "id": "ac8fba260938",
+        "revision": 0,
+        "name": "Neuer",
+        "outcome": "explained",
+        "applied": true,
+        "rank": 13,
+        "reason": "Regreso al entrenamiento y viaje a Madrid verificados antes del Atlético-Bayern; titularidad aún pendiente."
+      },
+      {
+        "id": "3f67b198a6c5",
+        "revision": 0,
+        "name": "Higuain",
+        "outcome": "explained",
+        "applied": true,
+        "rank": 14,
+        "reason": "Causa concreta no confirmada tras búsquedas independientes; explicación prudente basada en ranking vigente."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793699283928-manual cerrada 1/1 por convergencia JIT: Aramburu review_completed/unchanged; la explicación vigente ya incorpora la corrección del CTA sobre Connected Ball/VAR. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente detectada. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T10:48:53+01:00"
+    "message": "Pasada tr-autoguard-1793700663 cerrada 6/6: Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain persistidos como explained. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T11:20:00+01:00"
   },
   "source": "chat",
-  "message": "Investigación completada para los 6 snapshots JIT; persistiendo lote exacto en Listas/requests mediante TTENDENCIAS_CHAT_OUTBOX_V1. ImageGen=0.",
+  "message": "Pasada tr-autoguard-1793700663 cerrada 6/6: Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain persistidos como explained. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1739,6 +1822,24 @@
       "current": 0,
       "total": 6,
       "message": "Investigación completada para los 6 snapshots JIT; persistiendo lote exacto en Listas/requests mediante TTENDENCIAS_CHAT_OUTBOX_V1. ImageGen=0."
+    },
+    {
+      "at": "2026-11-03T11:20:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793700663",
+      "status": "RUNNING",
+      "current": 6,
+      "total": 6,
+      "message": "Barrera final JIT verificada: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; seis fichas aplicadas en requests y Listas."
+    },
+    {
+      "at": "2026-11-03T11:20:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793700663",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada tr-autoguard-1793700663 cerrada 6/6: Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain persistidos como explained. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
