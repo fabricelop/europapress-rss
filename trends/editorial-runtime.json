@@ -2763,27 +2763,27 @@
     {
       "run_id": "tr-autoguard-1793667063",
       "command_id": "tr-autoguard-1793667063",
-      "canonical": true,
-      "status": "DONE",
+      "canonical": false,
+      "status": "DONE_WITH_INCIDENTS",
       "started_at": "2026-11-03T01:51:00+01:00",
-      "finished_at": "2026-11-03T01:57:00+01:00",
+      "finished_at": "2026-11-03T02:06:30+01:00",
       "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
         "explained": 2,
         "updates": 0,
         "grouping_requests": 0,
         "groups_created": 0,
         "covered_by_existing": 0,
         "unchanged_reviews": 0,
-        "stale_reviews": 0,
+        "stale_reviews": 2,
         "queue_remaining": 0,
         "rewrite_pending_remaining": 0,
         "imagegen_calls": 0,
         "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
+        "incidents": 1,
+        "concurrent_convergence": 2
       },
       "outcomes": [
         {
@@ -2806,12 +2806,38 @@
           "apply_commit": "73a389ea226a1127ef0bf9f493e4739c52824865",
           "explained_at": "2026-11-03T01:56:00+01:00",
           "reason": "Participación verificada en el especial de El perro andaluz; remate omitido por sensibilidad al contexto de la tragedia ferroviaria."
+        },
+        {
+          "id": "red-review-24c8491c506e48bcb3a4",
+          "revision": 0,
+          "name": "Revisar novedades: adama",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "7fef6cb224fb209abaac362cb526d7c4ffb86fcc",
+          "reason": "La revisión quedó obsoleta en la validación JIT; adama ya no figuraba en el Top 30 fresco, por lo que se conservó íntegra la ficha original."
+        },
+        {
+          "id": "red-review-8d7651be4c6ad841c018",
+          "revision": 0,
+          "name": "Revisar novedades: Paola",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "7fef6cb224fb209abaac362cb526d7c4ffb86fcc",
+          "reason": "La protección JIT marcó la revisión como obsoleta frente al estado autoritativo vigente; no se modificó el texto ni la fecha de la ficha original."
         }
       ],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-autoguard-1793667063 cerrada 2/2: Nacho y Gonzalo Miró R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Gonzalo Miró se cerró sin remate por sensibilidad al contexto de la tragedia ferroviaria. Relectura final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0.",
-      "at": "2026-11-03T01:57:00+01:00"
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "maintenance_apply_transport_delay",
+          "message": "El aplicador de mantenimiento quedó varios minutos en actions/checkout. Un intento de fallback atómico abortó por h2 antes de mover main; el workflow contractual se reanudó y cerró ambas revisiones en el commit 7fef6cb224fb209abaac362cb526d7c4ffb86fcc.",
+          "recovered": true
+        }
+      ],
+      "message": "Pasada tr-autoguard-1793667063 cerrada 4/4: Nacho y Gonzalo Miró R0 explicados; las revisiones tardías de adama y Paola se cerraron stale por la barrera JIT, sin reescribir originales. Barrera final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793667439212-manual conserva la propiedad canónica del RUNTRACE.",
+      "at": "2026-11-03T02:06:30+01:00"
     }
   ],
   "partial": false,
@@ -4428,27 +4454,27 @@
     {
       "run_id": "tr-autoguard-1793667063",
       "command_id": "tr-autoguard-1793667063",
-      "canonical": true,
-      "status": "DONE",
+      "canonical": false,
+      "status": "DONE_WITH_INCIDENTS",
       "started_at": "2026-11-03T01:51:00+01:00",
-      "finished_at": "2026-11-03T01:57:00+01:00",
+      "finished_at": "2026-11-03T02:06:30+01:00",
       "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
         "explained": 2,
         "updates": 0,
         "grouping_requests": 0,
         "groups_created": 0,
         "covered_by_existing": 0,
         "unchanged_reviews": 0,
-        "stale_reviews": 0,
+        "stale_reviews": 2,
         "queue_remaining": 0,
         "rewrite_pending_remaining": 0,
         "imagegen_calls": 0,
         "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
+        "incidents": 1,
+        "concurrent_convergence": 2
       },
       "outcomes": [
         {
@@ -4471,11 +4497,37 @@
           "apply_commit": "73a389ea226a1127ef0bf9f493e4739c52824865",
           "explained_at": "2026-11-03T01:56:00+01:00",
           "reason": "Participación verificada en el especial de El perro andaluz; remate omitido por sensibilidad al contexto de la tragedia ferroviaria."
+        },
+        {
+          "id": "red-review-24c8491c506e48bcb3a4",
+          "revision": 0,
+          "name": "Revisar novedades: adama",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "7fef6cb224fb209abaac362cb526d7c4ffb86fcc",
+          "reason": "La revisión quedó obsoleta en la validación JIT; adama ya no figuraba en el Top 30 fresco, por lo que se conservó íntegra la ficha original."
+        },
+        {
+          "id": "red-review-8d7651be4c6ad841c018",
+          "revision": 0,
+          "name": "Revisar novedades: Paola",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "7fef6cb224fb209abaac362cb526d7c4ffb86fcc",
+          "reason": "La protección JIT marcó la revisión como obsoleta frente al estado autoritativo vigente; no se modificó el texto ni la fecha de la ficha original."
         }
       ],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-autoguard-1793667063 cerrada 2/2: Nacho y Gonzalo Miró R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Gonzalo Miró se cerró sin remate por sensibilidad al contexto de la tragedia ferroviaria. Relectura final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0."
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "maintenance_apply_transport_delay",
+          "message": "El aplicador de mantenimiento quedó varios minutos en actions/checkout. Un intento de fallback atómico abortó por h2 antes de mover main; el workflow contractual se reanudó y cerró ambas revisiones en el commit 7fef6cb224fb209abaac362cb526d7c4ffb86fcc.",
+          "recovered": true
+        }
+      ],
+      "message": "Pasada tr-autoguard-1793667063 cerrada 4/4: Nacho y Gonzalo Miró R0 explicados; las revisiones tardías de adama y Paola se cerraron stale por la barrera JIT, sin reescribir originales. Barrera final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793667439212-manual conserva la propiedad canónica del RUNTRACE."
     }
   ],
   "command_id": "tr-1793667439212-manual",
@@ -5233,27 +5285,27 @@
     {
       "run_id": "tr-autoguard-1793667063",
       "command_id": "tr-autoguard-1793667063",
-      "canonical": true,
-      "status": "DONE",
+      "canonical": false,
+      "status": "DONE_WITH_INCIDENTS",
       "started_at": "2026-11-03T01:51:00+01:00",
-      "finished_at": "2026-11-03T01:57:00+01:00",
+      "finished_at": "2026-11-03T02:06:30+01:00",
       "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
         "explained": 2,
         "updates": 0,
         "grouping_requests": 0,
         "groups_created": 0,
         "covered_by_existing": 0,
         "unchanged_reviews": 0,
-        "stale_reviews": 0,
+        "stale_reviews": 2,
         "queue_remaining": 0,
         "rewrite_pending_remaining": 0,
         "imagegen_calls": 0,
         "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
+        "incidents": 1,
+        "concurrent_convergence": 2
       },
       "outcomes": [
         {
@@ -5276,11 +5328,37 @@
           "apply_commit": "73a389ea226a1127ef0bf9f493e4739c52824865",
           "explained_at": "2026-11-03T01:56:00+01:00",
           "reason": "Participación verificada en el especial de El perro andaluz; remate omitido por sensibilidad al contexto de la tragedia ferroviaria."
+        },
+        {
+          "id": "red-review-24c8491c506e48bcb3a4",
+          "revision": 0,
+          "name": "Revisar novedades: adama",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "7fef6cb224fb209abaac362cb526d7c4ffb86fcc",
+          "reason": "La revisión quedó obsoleta en la validación JIT; adama ya no figuraba en el Top 30 fresco, por lo que se conservó íntegra la ficha original."
+        },
+        {
+          "id": "red-review-8d7651be4c6ad841c018",
+          "revision": 0,
+          "name": "Revisar novedades: Paola",
+          "outcome": "stale",
+          "applied": true,
+          "via": "maintenance_outbox_jit",
+          "apply_commit": "7fef6cb224fb209abaac362cb526d7c4ffb86fcc",
+          "reason": "La protección JIT marcó la revisión como obsoleta frente al estado autoritativo vigente; no se modificó el texto ni la fecha de la ficha original."
         }
       ],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-autoguard-1793667063 cerrada 2/2: Nacho y Gonzalo Miró R0 explicados y sincronizados entre requests.json y telegram-manual-explained.json. Gonzalo Miró se cerró sin remate por sensibilidad al contexto de la tragedia ferroviaria. Relectura final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0."
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "maintenance_apply_transport_delay",
+          "message": "El aplicador de mantenimiento quedó varios minutos en actions/checkout. Un intento de fallback atómico abortó por h2 antes de mover main; el workflow contractual se reanudó y cerró ambas revisiones en el commit 7fef6cb224fb209abaac362cb526d7c4ffb86fcc.",
+          "recovered": true
+        }
+      ],
+      "message": "Pasada tr-autoguard-1793667063 cerrada 4/4: Nacho y Gonzalo Miró R0 explicados; las revisiones tardías de adama y Paola se cerraron stale por la barrera JIT, sin reescribir originales. Barrera final de main: editorial-queue=0, preparing/update=0 y reexplicaciones pendientes=0. ImageGen=0; publicaciones=0. La ejecución sucesora tr-1793667439212-manual conserva la propiedad canónica del RUNTRACE."
     }
   ],
   "activity_log": [
