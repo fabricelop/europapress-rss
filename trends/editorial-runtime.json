@@ -5,22 +5,28 @@
   "canonical": true,
   "run_id": "tr-1793702191137-manual",
   "previous_run_id": "tr-autoguard-1793700663",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "investigating",
   "started_at": "2026-11-03T11:36:31+01:00",
-  "updated_at": "2026-11-03T11:37:00+01:00",
+  "updated_at": "2026-11-03T11:41:23+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "234205959012",
   "title": "Andorra",
   "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "234205959012"
   ],
+  "remaining_ids": [
+    "f9afae6ceb1f",
+    "026a3977ac74",
+    "2517c2998d33"
+  ],
   "remaining_active_ids": [
-    "234205959012"
+    "f9afae6ceb1f",
+    "026a3977ac74",
+    "2517c2998d33"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -102,7 +108,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T11:11:00+01:00",
+  "last_started_at": "2026-11-03T11:41:23+01:00",
   "last_completed_at": "2026-11-03T11:20:00+01:00",
   "last_run": {
     "run_id": "tr-autoguard-1793700663",
