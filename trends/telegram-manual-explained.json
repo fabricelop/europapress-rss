@@ -55946,12 +55946,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://imagenes2.mundodeportivo.com/files/og_thumbnail/files/fp/uploads/2026/11/03/6aea2b1531abc.r_d.636-389-9002.jpeg",
+        "source": "www.mundodeportivo.com",
+        "source_url": "https://www.mundodeportivo.com/futbol/atletico-madrid/20261103/1004246856/atletico-once-medirse-bayern-sorpresa-ataque.html",
+        "alt": "Imagen de archivo relacionada con Sorloth",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes2.mundodeportivo.com/files/og_thumbnail/files/fp/uploads/2026/11/03/6aea2b1531abc.r_d.636-389-9002.jpeg",
+        "source": "www.mundodeportivo.com",
+        "source_url": "https://www.mundodeportivo.com/futbol/atletico-madrid/20261103/1004246856/atletico-once-medirse-bayern-sorpresa-ataque.html",
+        "alt": "Imagen de archivo relacionada con Sorloth",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "f21e3899c88b",
@@ -56000,6 +56017,6 @@
       "telegram_package_status": "pending"
     }
   ],
-  "updated_at": "2026-11-03T23:45:26+01:00",
+  "updated_at": "2026-11-03T22:54:19.613373Z",
   "count": 919
 }
