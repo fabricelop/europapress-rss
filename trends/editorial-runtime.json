@@ -3,52 +3,87 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793750189999-manual",
+  "run_id": "tr-autoguard-1793749880",
   "previous_run_id": "tr-autoguard-1793749880",
-  "status": "PROCESSING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-04T00:56:30+01:00",
-  "updated_at": "2026-11-04T00:56:30+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-a3623bbc2bfa6cf0a263",
-  "title": "Revisar novedades: #codigo10",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "updated_at": "2026-11-04T00:59:37+01:00",
+  "finished_at": "2026-11-04T00:59:37+01:00",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "59330137c24c",
     "red-review-a3623bbc2bfa6cf0a263",
     "red-review-f55346c003bf63b4b31b"
   ],
-  "remaining_active_ids": [
-    "red-review-a3623bbc2bfa6cf0a263",
-    "red-review-f55346c003bf63b4b31b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Inicio tr-1793750189999-manual: 2 revisiones review_red preparing vigentes en main (#codigo10 y Martorell). Revalidación JIT por id+revision antes de investigar/persistir; sin ImageGen ni publicación.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada cerrada 3/3: #LaNoche24h r0 explained; #codigo10 review updated como episodio distinto del 3-N con nueva ficha trend-update-41db1e2085092c5e2510; Martorell review unchanged por convergencia JIT. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Una incidencia de transporte al escribir requests.json directamente quedó recuperada mediante el outbox oficial.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-04T00:55:30+01:00",
+      "type": "direct_requests_write_transport_failed",
+      "trend_id": "59330137c24c",
+      "revision": 0,
+      "resolved": true,
+      "message": "La escritura directa del requests.json grande falló por transporte h2; se recuperó por el editorial-outbox oficial y se verificó la sincronización exacta en requests y Listas."
+    }
+  ],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "59330137c24c",
+      "revision": 0,
+      "name": "#LaNoche24h",
+      "outcome": "explained",
+      "applied": true,
+      "explained_at": "2026-11-04T00:55:30+01:00"
+    },
+    {
+      "id": "red-review-a3623bbc2bfa6cf0a263",
+      "revision": 0,
+      "name": "Revisar novedades: #codigo10",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-41db1e2085092c5e2510",
+      "distinct_episode": true
+    },
+    {
+      "id": "red-review-f55346c003bf63b4b31b",
+      "revision": 0,
+      "name": "Revisar novedades: Martorell",
+      "outcome": "unchanged",
+      "applied": true,
+      "concurrent_convergence": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T00:56:30+01:00",
-  "last_completed_at": "2026-11-04T00:55:57+01:00",
+  "last_completed_at": "2026-11-04T00:59:37+01:00",
   "last_run": {
-    "run_id": "tr-1793747839940-manual",
-    "status": "DONE",
-    "started_at": "2026-11-04T00:18:00+01:00",
-    "finished_at": "2026-11-04T00:21:04+01:00",
-    "current": 1,
-    "total": 1,
+    "run_id": "tr-autoguard-1793749880",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-04T00:51:20+01:00",
+    "finished_at": "2026-11-04T00:59:37+01:00",
+    "current": 3,
+    "total": 3,
     "closed": [
-      "red-review-374a862baa2b8625f92b"
+      "59330137c24c",
+      "red-review-a3623bbc2bfa6cf0a263",
+      "red-review-f55346c003bf63b4b31b"
     ],
     "pending": [],
-    "summary": "Pasada 1/1 cerrada por convergencia JIT: Simeone review_red r0 quedó updated como episodio distinto por la derrota 0-2 del Atlético ante el Bayern y el análisis posterior de Simeone. Al iniciar esta orden seguía preparing; el resultado ya materializado por la ejecución concurrente fue contrastado y después apareció aplicado en main. Barrera final observada: editorial-queue=0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0."
+    "summary": "1 explicación ordinaria, 1 revisión actualizada y 1 revisión sin cambios. Cola final y reexplicaciones a cero; ImageGen=0; publicaciones=0. Incidencia de transporte recuperada."
   },
   "source": "chat",
-  "message": "Revisando novedades: #codigo10 r0 primero; después Martorell r0. ImageGen=0; publicaciones=0.",
+  "message": "Barrera final verificada: 3/3 cerrados; editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4184,6 +4219,54 @@
       "trend_id": "red-review-a3623bbc2bfa6cf0a263",
       "title": "Revisar novedades: #codigo10",
       "message": "Revisando novedades: #codigo10 r0 primero; después Martorell r0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T00:58:23+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793749880",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 3,
+      "trend_id": "red-review-a3623bbc2bfa6cf0a263",
+      "title": "Revisar novedades: #codigo10",
+      "message": "#codigo10 r0 revalidada JIT y guardada como updated/distinct_episode por nueva emisión del 3-N; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T23:58:41.138644+00:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793749880",
+      "status": "RUNNING",
+      "current": 3,
+      "total": 3,
+      "trend_id": null,
+      "title": null,
+      "message": "#codigo10 aplicada como updated con trend-update-41db1e2085092c5e2510. Martorell quedó review_completed/unchanged por el mantenedor concurrente; no se reabrió una revisión ya inactiva."
+    },
+    {
+      "at": "2026-11-04T00:59:37+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793749880",
+      "status": "DONE_WITH_INCIDENTS",
+      "current": 3,
+      "total": 3,
+      "trend_id": null,
+      "title": null,
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "updates": 1,
+        "unchanged_reviews": 1,
+        "stale_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 1
+      },
+      "message": "Pasada 3/3 cerrada tras releer main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -12144,6 +12227,7 @@
     "tr-autoguard-1793735352",
     "tr-1793744866688-manual",
     "tr-1793746342613-manual",
-    "tr-1793747839940-manual"
+    "tr-1793747839940-manual",
+    "tr-autoguard-1793749880"
   ]
 }
