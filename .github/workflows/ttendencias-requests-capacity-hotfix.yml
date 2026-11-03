@@ -37,6 +37,20 @@ jobs:
     timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            trends/requests.json
+            trends/compact_requests_losslessly.py
+            trends/requests_json.py
+            trends/test_requests_json.py
+            trends/auto_queue_new.py
+            trends/apply_editorial_outbox.py
+            trends/editorial_api.py
+            trends/apply_direct_reconcile.py
+            trends/merge_runtime_state.py
+            pilot/listas_grouping.py
       - name: Verify semantic safety, UTF-16 byte budget and no writes
         run: |
           python3 -m unittest trends.test_requests_json
