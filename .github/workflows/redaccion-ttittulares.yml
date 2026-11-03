@@ -19,6 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/trends/generated-images/
+            !/ttittulares/generated-images/
           fetch-depth: 0
       - name: Guardar solicitud sobre main actual sin conflictos de rebase
         shell: bash
