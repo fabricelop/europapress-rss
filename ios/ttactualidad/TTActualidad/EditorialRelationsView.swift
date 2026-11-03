@@ -292,16 +292,11 @@ struct EditorialRelationsView: View {
         news.stableIdentity + "↔" + trend.stableIdentity
     }
 
-    private func checked(_ news: EditorialRelationEndpoint,
-                         _ trend: EditorialRelationEndpoint) -> Binding<Bool> {
+    private func toggleSelection(_ news: EditorialRelationEndpoint,
+                                 _ trend: EditorialRelationEndpoint) {
         let key = pairKey(news, trend)
-        return Binding(
-            get: { selectedPairs.contains(key) },
-            set: { selected in
-                if selected { selectedPairs.insert(key) }
-                else { selectedPairs.remove(key) }
-            }
-        )
+        if selectedPairs.contains(key) { selectedPairs.remove(key) }
+        else { selectedPairs.insert(key) }
     }
 
     private func expansion(_ news: EditorialRelationEndpoint) -> Binding<Bool> {
@@ -325,7 +320,9 @@ struct EditorialRelationsView: View {
     private func selectedTrends(for news: EditorialRelationEndpoint)
         -> [EditorialRelationEndpoint] {
         var seen = Set<String>()
-        return (model.snapshot?.trends ?? []).filter { trend in
+        let snapshot = model.snapshot
+        let endpoints = (snapshot?.trends ?? []) + (snapshot?.items ?? []).map(\.trend)
+        return endpoints.filter { trend in
             selectedPairs.contains(pairKey(news, trend)) &&
                 relationState(news, trend) != "linked" &&
                 relationState(news, trend) != "blocked" &&
@@ -339,16 +336,27 @@ struct EditorialRelationsView: View {
                 .font(.headline).fixedSize(horizontal: false, vertical: true)
             ForEach(rows(for: news)) { item in
                 if filter == "suggested" {
-                    Toggle(isOn: checked(news, item.trend)) {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(item.trend.title).font(.subheadline.weight(.medium))
-                            if !item.reason.isEmpty {
-                                Text(item.reason).font(.caption).foregroundStyle(.secondary)
-                                    .lineLimit(2)
+                    Button {
+                        toggleSelection(news, item.trend)
+                    } label: {
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(systemName: selectedPairs.contains(pairKey(news, item.trend))
+                                  ? "checkmark.square.fill" : "square")
+                                .font(.system(size: 22))
+                                .foregroundStyle(TTTheme.teal)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(item.trend.title).font(.subheadline.weight(.medium))
+                                if !item.reason.isEmpty {
+                                    Text(item.reason).font(.caption).foregroundStyle(.secondary)
+                                        .lineLimit(2)
+                                }
                             }
                         }
                     }
-                    .toggleStyle(.checkbox)
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Seleccionar tendencia " + item.trend.title)
+                    .accessibilityValue(selectedPairs.contains(pairKey(news, item.trend))
+                                        ? "Seleccionada" : "No seleccionada")
                     .disabled(model.saving)
                 } else {
                     VStack(alignment: .leading, spacing: 6) {
@@ -410,8 +418,22 @@ struct EditorialRelationsView: View {
                     Text(name + " · bloqueada").font(.subheadline)
                         .foregroundStyle(.secondary)
                 } else {
-                    Toggle(name, isOn: checked(news, trend))
-                        .toggleStyle(.checkbox).disabled(model.saving)
+                    Button {
+                        toggleSelection(news, trend)
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: selectedPairs.contains(pairKey(news, trend))
+                                  ? "checkmark.square.fill" : "square")
+                                .font(.system(size: 21))
+                                .foregroundStyle(TTTheme.teal)
+                            Text(name).font(.subheadline)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Seleccionar tendencia " + name)
+                    .accessibilityValue(selectedPairs.contains(pairKey(news, trend))
+                                        ? "Seleccionada" : "No seleccionada")
+                    .disabled(model.saving)
                 }
             } else {
                 Text(name + " · pendiente de identidad editorial")
