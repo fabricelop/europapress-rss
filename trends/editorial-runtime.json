@@ -5,10 +5,10 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793696493",
   "previous_run_id": "tr-1793695104407-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "investigating",
   "started_at": "2026-11-03T10:02:00+01:00",
-  "updated_at": "2026-11-03T10:12:30+01:00",
+  "updated_at": "2026-11-03T10:14:28+01:00",
   "finished_at": null,
   "current": 2,
   "total": 7,
@@ -16,14 +16,16 @@
   "title": "Terrible",
   "queue_complete": false,
   "processed_ids": [
-    "033a07896805"
+    "0445de67536b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [
-    "0445de67536b",
+  "remaining_ids": [
     "e0f6e33a38dc",
     "83bc11acedc0",
-    "red-review-296d82743b1a96e08346",
+    "red-review-fbd7aee9c1be9f3e8544"
+  ],
+  "remaining_active_ids": [
+    "e0f6e33a38dc",
+    "83bc11acedc0",
     "red-review-fbd7aee9c1be9f3e8544"
   ],
   "remaining_problematic_ids": [],
@@ -66,7 +68,7 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-03T10:08:19+01:00",
+  "last_started_at": "2026-11-03T10:14:28+01:00",
   "last_completed_at": "2026-11-03T10:08:20+01:00",
   "last_run": {
     "run_id": "tr-1793695104407-manual",
