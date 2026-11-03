@@ -3,23 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793743346303-manual",
-  "previous_run_id": "tr-1793742814208-manual",
-  "status": "waiting",
-  "phase": "preparing",
-  "started_at": "2026-11-03T22:02:26.303Z",
-  "updated_at": "2026-11-03T23:11:04+01:00",
-  "finished_at": "2026-11-03T21:59:48.302Z",
+  "run_id": "tr-1793743726792-manual",
+  "previous_run_id": "tr-1793743346303-manual",
+  "status": "PROCESSING",
+  "phase": "investigating",
+  "started_at": "2026-11-03T23:12:13+01:00",
+  "updated_at": "2026-11-03T23:12:13+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 2,
-  "trend_id": "e573493d55f2",
-  "title": "#ChampionsLeague",
+  "total": 3,
+  "trend_id": "15763ea0d688",
+  "title": "Laimer",
   "queue_complete": false,
-  "processed_ids": [
-    "919fc31e93a5",
-    "e573493d55f2",
-    "trend-update-2454ffeac830bf71aa0b"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "15763ea0d688",
     "381b284f49ec",
@@ -31,24 +27,7 @@
     "af1c68478673"
   ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
-    "updates": 1,
-    "grouping_requests": 0,
-    "groups_created": 0,
-    "covered_by_existing": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
-  },
+  "summary": "",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -83,7 +62,7 @@
     "summary": "1/1 cerrada por convergencia JIT: Villarreal updated ya aplicado; cola final 0; sin reexplicaciones; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio de pasada manual: 2 preparing/update vigentes en main (#ChampionsLeague r1 y Metropolitano r1), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
+  "message": "Pasada manual real iniciada: 3 preparing/update vigentes en main; orden antiguo→nuevo y validación JIT por (id,revision). ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3764,6 +3743,16 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada tr-1793742976079-manual cerrada 1/1 por convergencia JIT: la revisión de Villarreal ya quedó review_completed/updated con la nueva ficha trend-update-2454ffeac830bf71aa0b. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain ni status preparing/update. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1793743726792-manual",
+      "at": "2026-11-03T23:12:13+01:00",
+      "phase": "investigating",
+      "current": 0,
+      "total": 3,
+      "trend_id": "15763ea0d688",
+      "title": "Laimer",
+      "message": "Pasada manual real iniciada: 3 preparing/update vigentes en main; orden antiguo→nuevo y validación JIT por (id,revision). ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -6575,8 +6564,8 @@
       "reason": "Sin novedad material posterior: se mantiene la prórroga de la instrucción hasta el 10 de junio de 2027 y las diligencias pendientes."
     }
   ],
-  "current_item": null,
-  "current_title": null,
+  "current_item": "15763ea0d688",
+  "current_title": "Laimer",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -9275,7 +9264,7 @@
       "converged_with": "tr-1793735926010-manual"
     }
   ],
-  "command_id": "tr-1793743346303-manual",
+  "command_id": "tr-1793743726792-manual",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
