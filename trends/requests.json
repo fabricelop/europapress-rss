@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-03T14:50:00+01:00",
+  "updated_at": "2026-11-03T15:01:37+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -212875,6 +212875,72 @@
       "image_choice": null,
       "image_status": "none",
       "image_pending": false
+    },
+    {
+      "id": "b1d3c8a5ac33",
+      "name": "Telemadrid",
+      "rank": 13,
+      "status": "preparing",
+      "requested_at": "2026-11-03T15:01:37+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "f5061a12a94f",
+      "requested_together": [
+        "Telemadrid"
+      ],
+      "captured_with": [
+        "Telemadrid",
+        "Cantabria",
+        "Cruz Roja"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "3a9e052d70ef",
+      "name": "Cantabria",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-03T15:01:37+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "f5061a12a94f",
+      "requested_together": [
+        "Cantabria"
+      ],
+      "captured_with": [
+        "Telemadrid",
+        "Cantabria",
+        "Cruz Roja"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
+    },
+    {
+      "id": "8c318a4327b6",
+      "name": "Cruz Roja",
+      "rank": 24,
+      "status": "preparing",
+      "requested_at": "2026-11-03T15:01:37+01:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "f5061a12a94f",
+      "requested_together": [
+        "Cruz Roja"
+      ],
+      "captured_with": [
+        "Telemadrid",
+        "Cantabria",
+        "Cruz Roja"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top30"
     }
   ],
   "count": 964
