@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793707164713-manual",
-  "previous_run_id": "tr-1793705511806-manual",
+  "run_id": "tr-1793707561725-manual",
+  "previous_run_id": "tr-1793707164713-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-03T13:00:00+01:00",
-  "updated_at": "2026-11-03T13:05:30+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-03T13:07:00+01:00",
+  "updated_at": "2026-11-03T13:07:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 6,
@@ -37,7 +37,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T12:33:20+01:00",
@@ -87,7 +87,7 @@
     "converged_with": "tr-autoguard-1793704864"
   },
   "source": "chat",
-  "message": "Cola ampliada a 6 trabajos activos. Investigando #Mañaneros3N con validación JIT.",
+  "message": "Inicio JIT: 5 investigaciones ordinarias y 1 revisión review_red vigentes en main. Primero investigaciones nuevas por orden de cola; después #FelizMartes. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1958,6 +1958,17 @@
       "trend_id": "a802ef44d342",
       "title": "#Mañaneros3N",
       "message": "Cola ampliada a 6 trabajos activos. Investigando #Mañaneros3N con validación JIT."
+    },
+    {
+      "at": "2026-11-03T13:07:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793707561725-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 6,
+      "trend_id": "a802ef44d342",
+      "title": "#Mañaneros3N",
+      "message": "Inicio JIT: 5 investigaciones ordinarias y 1 revisión review_red vigentes en main. Primero investigaciones nuevas por orden de cola; después #FelizMartes. Sin ImageGen ni publicación."
     }
   ],
   "history": [
