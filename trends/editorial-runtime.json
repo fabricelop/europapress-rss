@@ -3,29 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793731920527-manual",
-  "previous_run_id": "tr-1793730858263-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T19:52:00+01:00",
-  "updated_at": "2026-11-03T19:58:00+01:00",
-  "finished_at": "2026-11-03T19:58:00+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "b6aad258364d"
+  "run_id": "tr-1793732300083-manual",
+  "previous_run_id": "tr-1793731920527-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T19:59:00+01:00",
+  "updated_at": "2026-11-03T19:59:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-387a2f52f0109bcca575",
+  "title": "Revisar novedades: La Policía",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "red-review-387a2f52f0109bcca575",
+    "red-review-fd68c1cbd8dc96f91827"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-387a2f52f0109bcca575",
+    "red-review-fd68c1cbd8dc96f91827"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
@@ -33,7 +37,7 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "terminal_decisions": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -43,18 +47,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "b6aad258364d",
-      "revision": 0,
-      "name": "Ryanair",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "36ba25b7db16fe7e4ee02be01a543836f495d5c2"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T19:52:00+01:00",
   "last_completed_at": "2026-11-03T19:58:00+01:00",
@@ -75,7 +69,7 @@
     "summary": "Pasada cerrada 1/1: Ryanair r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador 36ba25b7. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada cerrada 1/1: Ryanair r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador 36ba25b7. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: 2 revisiones review_red preparing vigentes en main (La Policía y QEPD), en orden de cola; validación JIT por id+revision. Sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3337,6 +3331,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada cerrada 1/1: Ryanair r0 quedó explicada y sincronizada en requests/Listas mediante el aplicador 36ba25b7. Barrera final main: editorial-queue=0 y sin rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T19:59:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793732300083-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-387a2f52f0109bcca575",
+      "title": "Revisar novedades: La Policía",
+      "message": "Inicio: 2 revisiones review_red preparing vigentes en main (La Policía y QEPD), en orden de cola; validación JIT por id+revision. Sin ImageGen ni publicación."
     }
   ],
   "history": [
