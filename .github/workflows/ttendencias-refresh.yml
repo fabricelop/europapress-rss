@@ -12,6 +12,8 @@ on:
       - "trends/anticipation.py"
       - "trends/test_anticipation.py"
       - "trends/update_trends.py"
+      - "trends/rank_movement.py"
+      - "tests/test_site_top30_movement.py"
       - ".github/scripts/test_ttendencias_top30_queue.py"
       - ".github/scripts/test_ttendencias_anchor_freshness.py"
       - ".github/scripts/test_ttendencias_radar_source_diversity.py"
@@ -58,6 +60,9 @@ jobs:
 
       - name: Verificar preparación anticipada limitada y captura paralela
         run: python3 -m unittest discover -s trends -p 'test_anticipation.py' -v
+
+      - name: Verificar movimientos persistentes del Top 30
+        run: python3 -m unittest discover -s tests -p 'test_site_top30_movement.py' -v
 
       - name: Actualizar Top 30 y cola web
         run: |
@@ -167,3 +172,4 @@ jobs:
 
           echo "No se pudo persistir health-status tras 4 intentos" >&2
           exit 1
+

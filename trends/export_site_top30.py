@@ -278,6 +278,8 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
             "last_reviewed_at": text(chosen, "red_review_checked_at"),
             "image": (recorded_image(chosen, images) or continuity_image(chosen, images)) if exp else None,
             "movement": text(movement.get(rank, {}), "movement"),
+            **{field: movement.get(rank, {}).get(field) for field in (
+                "movement_version", "previous_rank", "rank_delta", "last_changed_at", "entered_top30_at")},
         }
         output.append(selected)
     return {
@@ -313,3 +315,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -11,6 +11,12 @@ import requests
 from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parent
+# Support direct execution and the existing importlib-based regression tests.
+import importlib.util
+_movement_spec = importlib.util.spec_from_file_location("tt_rank_movement", ROOT / "rank_movement.py")
+_movement_module = importlib.util.module_from_spec(_movement_spec)
+_movement_spec.loader.exec_module(_movement_module)
+rank_items = _movement_module.rank_items
 RECENT = ROOT / "recent.json"
 REQUESTS = ROOT / "requests.json"
 TTITTULARES_STATUS = ROOT.parent / "ttittulares" / "status.json"
@@ -1074,17 +1080,7 @@ def main():
             return candidates[0]["requested_at"]
         return previous_doc.get("captured_at") or now.isoformat(timespec="seconds")
 
-    def top10_movement(name, current_rank):
-        previous_rank = previous_rank_by_key.get(term_key(name))
-        if previous_rank is None:
-            return "new", None, None
-        if current_rank < previous_rank:
-            movement = "up"
-        elif current_rank > previous_rank:
-            movement = "down"
-        else:
-            movement = "flat"
-        return movement, previous_rank, previous_rank - current_rank
+    movement_items = rank_items(top30, previous_doc, now, key=term_key)
 
     valid = [n for n, d in source_data.items() if d.get("ok")]
     non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
@@ -1110,16 +1106,10 @@ def main():
         "reliability": reliability,
         "top10": top10,
         "top30": top30,
+        "rank_movement_version": 2,
         "items": [
-            {
-                "rank": i + 1,
-                "name": name,
-                "entered_top10_at": entered_top10_at(name),
-                "movement": top10_movement(name, i + 1)[0],
-                "previous_rank": top10_movement(name, i + 1)[1],
-                "rank_delta": top10_movement(name, i + 1)[2],
-            }
-            for i, name in enumerate(top30)
+            {**row, "entered_top10_at": entered_top10_at(row["name"])}
+            for row in movement_items
         ],
         "unchanged_from_previous": unchanged,
         "new_entries": new_entries,
@@ -1138,3 +1128,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

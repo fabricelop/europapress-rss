@@ -10,6 +10,8 @@ on:
       - 'trends/requests.json'
       - 'trends/site-ai-images.json'
       - 'trends/export_site_top30.py'
+      - 'trends/rank_movement.py'
+      - 'tests/test_site_top30_movement.py'
       - 'tests/test_site_top30_workflow_wiring.py'
       - '.github/workflows/ttendencias-refresh.yml'
       - '.github/workflows/ttendencias-editorial-apply.yml'
@@ -20,6 +22,8 @@ on:
   pull_request:
     paths:
       - 'trends/export_site_top30.py'
+      - 'trends/rank_movement.py'
+      - 'tests/test_site_top30_movement.py'
       - 'tests/test_site_top30_workflow_wiring.py'
       - '.github/workflows/ttendencias-refresh.yml'
       - '.github/workflows/ttendencias-editorial-apply.yml'
@@ -105,3 +109,4 @@ jobs:
           done
           echo 'Failed to publish Top30 feed after four retries' >&2
           exit 1
+
