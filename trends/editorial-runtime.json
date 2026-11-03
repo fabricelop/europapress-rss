@@ -8,12 +8,12 @@
   "status": "PROCESSING",
   "phase": "persisting",
   "started_at": "2026-11-03T17:12:00+01:00",
-  "updated_at": "2026-11-03T17:19:00+01:00",
+  "updated_at": "2026-11-03T17:20:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 5,
-  "trend_id": "44365581404a",
-  "title": "Pedraz",
+  "trend_id": "3553f8c0304e",
+  "title": "Région",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -126,6 +126,46 @@
       "trend_id": "44365581404a",
       "title": "Pedraz",
       "message": "Persistiendo outbox editorial para 44365581404a r0; sin ImageGen."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Investigando Région r0: Aparición actual verificada en trends/recent.json (captura 2026-11-03T17:11:27+01:00). Dos rondas de búsquedas actuales no acreditaron un detonante concreto; se cierra con causa no confirmada y sin remate."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Sin remate por sensibilidad o incertidumbre causal."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Persistiendo outbox editorial para 3553f8c0304e r0; sin ImageGen."
     }
   ],
   "final_outcomes": [
@@ -206,7 +246,7 @@
     "converged_with": "tr-1793719374883-manual"
   },
   "source": "chat",
-  "message": "Pedraz r0: investigación cerrada; redactando y persistiendo resultado textual con validación JIT.",
+  "message": "Région r0: investigación cerrada; redactando y persistiendo resultado textual con validación JIT.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2932,6 +2972,46 @@
       "trend_id": "44365581404a",
       "title": "Pedraz",
       "message": "Persistiendo outbox editorial para 44365581404a r0; sin ImageGen."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Investigando Région r0: Aparición actual verificada en trends/recent.json (captura 2026-11-03T17:11:27+01:00). Dos rondas de búsquedas actuales no acreditaron un detonante concreto; se cierra con causa no confirmada y sin remate."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "drafting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Texto factual redactado y validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Sin remate por sensibilidad o incertidumbre causal."
+    },
+    {
+      "at": "2026-11-03T17:20:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793722297",
+      "current": 2,
+      "total": 5,
+      "trend_id": "3553f8c0304e",
+      "title": "Région",
+      "message": "Persistiendo outbox editorial para 3553f8c0304e r0; sin ImageGen."
     }
   ],
   "history": [
@@ -5366,8 +5446,8 @@
       "reason": "Novedad material aplicada: fallecimiento de Jesús de Miguel tras el choque del Tenerife-Andorra; continuidad sin remate por sensibilidad."
     }
   ],
-  "current_item": "44365581404a",
-  "current_title": "Pedraz",
+  "current_item": "3553f8c0304e",
+  "current_title": "Région",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
