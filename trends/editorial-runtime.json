@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793700663",
   "previous_run_id": "tr-1793699283928-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T11:11:00+01:00",
-  "updated_at": "2026-11-03T11:11:00+01:00",
+  "updated_at": "2026-11-03T11:16:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 6,
@@ -54,7 +54,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "red-review-d1c3c48cd3987e0d29a9",
@@ -111,7 +111,7 @@
     "at": "2026-11-03T10:48:53+01:00"
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793700663: 6 investigaciones ordinarias preparing vigentes en main; orden JIT Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain. ImageGen=0; publicaciones=0.",
+  "message": "Investigación completada para los 6 snapshots JIT; persistiendo lote exacto en Listas/requests mediante TTENDENCIAS_CHAT_OUTBOX_V1. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1730,6 +1730,15 @@
       "trend_id": "01ac1d20b1fb",
       "title": "Tetê",
       "message": "Inicio tr-autoguard-1793700663: 6 investigaciones ordinarias preparing vigentes en main; orden JIT Tetê, QEPD, Homicidio, Involuntaria, Neuer y Higuain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T11:16:30+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793700663",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 6,
+      "message": "Investigación completada para los 6 snapshots JIT; persistiendo lote exacto en Listas/requests mediante TTENDENCIAS_CHAT_OUTBOX_V1. ImageGen=0."
     }
   ],
   "history": [
