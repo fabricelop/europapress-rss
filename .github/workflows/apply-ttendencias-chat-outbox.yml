@@ -9,7 +9,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: ttendencias-chat-outbox-unblocked-20261103-2335
+  group: ttendencias-chat-outbox-unblocked-20261103-2337
   cancel-in-progress: false
 
 jobs:
@@ -19,7 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/trends/generated-images/
+            !/ttittulares/generated-images/
+          ref: main
 
       - name: Aplicar y guardar lote sobre main fresco
         env:
