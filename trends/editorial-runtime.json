@@ -6,9 +6,9 @@
   "run_id": "tr-1793670680873-manual",
   "previous_run_id": "tr-1793667439212-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-03T02:52:30+01:00",
-  "updated_at": "2026-11-03T02:52:30+01:00",
+  "updated_at": "2026-11-03T02:55:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -46,7 +46,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "red-review-24c8491c506e48bcb3a4",
@@ -123,7 +123,7 @@
     "message": "Pasada cerrada 2/2. Ambos review_red fueron investigados sin novedad material y el aplicador JIT los cerró como stale: adama salió del Top 30 vigente y Paola tenía una decisión terminal posterior. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), procesadas por antigüedad con revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Revisando novedades de Diomande: cobertura posterior sigue centrada en el mismo 0-3 al Racing y su gol; comprobando si existe cambio material.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1181,6 +1181,17 @@
       "trend_id": "red-review-0dc1615f01f6b739bcd4",
       "title": "Revisar novedades: Diomande",
       "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), procesadas por antigüedad con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T02:55:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793670680873-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-0dc1615f01f6b739bcd4",
+      "title": "Revisar novedades: Diomande",
+      "message": "Revisando novedades de Diomande: cobertura posterior sigue centrada en el mismo 0-3 al Racing y su gol; comprobando si existe cambio material."
     }
   ],
   "history": [
@@ -5414,6 +5425,17 @@
       "trend_id": "red-review-0dc1615f01f6b739bcd4",
       "title": "Revisar novedades: Diomande",
       "message": "Inicio: 2 review_red vigentes en main (Diomande y Racing), procesadas por antigüedad con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T02:55:00+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793670680873-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-0dc1615f01f6b739bcd4",
+      "title": "Revisar novedades: Diomande",
+      "message": "Revisando novedades de Diomande: cobertura posterior sigue centrada en el mismo 0-3 al Racing y su gol; comprobando si existe cambio material."
     }
   ]
 }
