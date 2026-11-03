@@ -5,69 +5,132 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793725731",
   "previous_run_id": "tr-1793724088501-manual",
-  "status": "PROCESSING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T18:10:32+01:00",
-  "updated_at": "2026-11-03T18:10:32+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T18:23:01+01:00",
+  "finished_at": "2026-11-03T18:23:01+01:00",
+  "current": 8,
   "total": 8,
-  "trend_id": "6fffc2182bc6",
-  "title": "Skyrim",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-1656c218ad5e41f69bd3",
-    "red-review-bd7b5a8365815d9fe3b8"
+    "6fffc2182bc6",
+    "75ed7ba01dcb",
+    "6b1527a11052",
+    "1055c1f7c2d8",
+    "e3556c5fad4c",
+    "9ecae1686395",
+    "6106415081f7",
+    "febcfc700f77"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "updates": 1,
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
+    "explained": 8,
+    "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "terminal_decisions": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 1,
+    "concurrent_convergence": 1
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-03T18:23:01+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "reason": "El aplicador ordinario quedó retenido varios minutos en actions/checkout sobre un repositorio de ~2,1 GB. Se aplicó el mismo estado verificado mediante un workflow temporal sin checkout; después el aplicador ordinario convergió sin diferencias."
+    }
+  ],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-1656c218ad5e41f69bd3",
+      "id": "6fffc2182bc6",
       "revision": 0,
-      "name": "Revisar novedades: Andorra",
-      "outcome": "updated",
+      "name": "Skyrim",
+      "outcome": "explained",
       "applied": true,
-      "created_id": "trend-update-807d728266b204251abc",
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "cf909845d301604fbac30e2f56606e50be5dcfd2",
-      "source_id": "3e340be4de18",
-      "reason": "Fallecimiento de Jesús de Miguel y apertura de investigación policial/judicial: novedad material del mismo episodio."
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
     },
     {
-      "id": "red-review-bd7b5a8365815d9fe3b8",
+      "id": "75ed7ba01dcb",
       "revision": 0,
-      "name": "Revisar novedades: Neuer",
-      "outcome": "unchanged",
+      "name": "Bethesda",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "cf909845d301604fbac30e2f56606e50be5dcfd2",
-      "source_id": "ac8fba260938",
-      "reason": "Sigue vigente la misma duda Neuer/Urbig; sin novedad material."
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "6b1527a11052",
+      "revision": 0,
+      "name": "The Elder Scrolls",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "1055c1f7c2d8",
+      "revision": 0,
+      "name": "212 GB",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "e3556c5fad4c",
+      "revision": 0,
+      "name": "Juanma Moreno",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "9ecae1686395",
+      "revision": 0,
+      "name": "Amancio Ortega",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "6106415081f7",
+      "revision": 0,
+      "name": "Policía Nacional",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "febcfc700f77",
+      "revision": 0,
+      "name": "Inditex",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
     }
   ],
   "api_failover_enabled": false,
@@ -130,7 +193,7 @@
     "at": "2026-11-03T17:50:00+01:00"
   },
   "source": "chat",
-  "message": "Inicio tr-autoguard-1793725731: 8 investigaciones preparing vigentes en main; orden por antigüedad y validación JIT por id+revision. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1793725731 cerrada 8/8: Skyrim, Bethesda, The Elder Scrolls, 212 GB, Juanma Moreno, Amancio Ortega, Policía Nacional e Inditex r0 explicadas y sincronizadas en requests/Listas. Barrera final verificada: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3112,6 +3175,28 @@
       "trend_id": "6fffc2182bc6",
       "title": "Skyrim",
       "message": "Inicio tr-autoguard-1793725731: 8 investigaciones preparing vigentes en main; orden por antigüedad y validación JIT por id+revision. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T18:23:01+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793725731",
+      "status": "PROCESSING",
+      "current": 8,
+      "total": 8,
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final: las 8 revisiones r0 están explained e idénticas en requests y Listas; editorial-queue=0; rewrite_pending/reexplain=0."
+    },
+    {
+      "at": "2026-11-03T18:23:01+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793725731",
+      "status": "DONE",
+      "current": 8,
+      "total": 8,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793725731 cerrada 8/8: Skyrim, Bethesda, The Elder Scrolls, 212 GB, Juanma Moreno, Amancio Ortega, Policía Nacional e Inditex r0 explicadas y sincronizadas en requests/Listas. Barrera final verificada: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -5578,32 +5663,90 @@
       "incidents": [],
       "message": "Pasada tr-1793723144849-manual cerrada 2/2: #GMMTVNEXT sin novedad material (unchanged, texto/fecha conservados) y Homicidio actualizado por la apertura de investigación policial y diligencias judiciales, con nueva ficha trend-update-12b590032108f1ff8dbd. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación activa en la cola autoritativa. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T17:32:10+01:00"
+    },
+    {
+      "at": "2026-11-03T18:23:01+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793725731",
+      "status": "DONE",
+      "current": 8,
+      "total": 8,
+      "message": "Pasada tr-autoguard-1793725731 cerrada 8/8: Skyrim, Bethesda, The Elder Scrolls, 212 GB, Juanma Moreno, Amancio Ortega, Policía Nacional e Inditex r0 explicadas y sincronizadas en requests/Listas. Barrera final verificada: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
   "outcomes": [
     {
-      "id": "red-review-f1d1417d433ed88d5205",
+      "id": "6fffc2182bc6",
       "revision": 0,
-      "name": "Revisar novedades: #GMMTVNEXT",
-      "outcome": "unchanged",
+      "name": "Skyrim",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
-      "source_id": "e0f6e33a38dc",
-      "reason": "Los anuncios de proyectos forman parte de la misma presentación GMMTVNEXT ya explicada; texto y fecha conservados."
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
     },
     {
-      "id": "red-review-c5fda321e7a6dd39a345",
+      "id": "75ed7ba01dcb",
       "revision": 0,
-      "name": "Revisar novedades: Homicidio",
-      "outcome": "updated",
+      "name": "Bethesda",
+      "outcome": "explained",
       "applied": true,
-      "created_id": "trend-update-12b590032108f1ff8dbd",
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "08e5e2bd99e5a0b366e046f80b4c08cc1f433403",
-      "source_id": "93fd9a90a9c2",
-      "reason": "Novedad material: investigación formal del Grupo de Homicidios y diligencias judiciales; continuidad del mismo episodio, sin remate por sensibilidad."
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "6b1527a11052",
+      "revision": 0,
+      "name": "The Elder Scrolls",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "1055c1f7c2d8",
+      "revision": 0,
+      "name": "212 GB",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "e3556c5fad4c",
+      "revision": 0,
+      "name": "Juanma Moreno",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "9ecae1686395",
+      "revision": 0,
+      "name": "Amancio Ortega",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "6106415081f7",
+      "revision": 0,
+      "name": "Policía Nacional",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
+    },
+    {
+      "id": "febcfc700f77",
+      "revision": 0,
+      "name": "Inditex",
+      "outcome": "explained",
+      "applied": true,
+      "via": "verified_outbox_fast_apply",
+      "apply_commit": "2a12f215fd5f86747e4d7de35b87f0ef2958ab84"
     }
   ],
   "current_item": null,
@@ -8123,7 +8266,7 @@
       "at": "2026-11-03T17:32:10+01:00"
     }
   ],
-  "command_id": "tr-1793723144849-manual",
+  "command_id": "tr-autoguard-1793725731",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
@@ -10452,6 +10595,7 @@
     "tr-1793705408571-manual",
     "tr-1793707561725-manual",
     "tr-1793716769930-manual",
-    "tr-1793719469374-manual"
+    "tr-1793719469374-manual",
+    "tr-autoguard-1793725731"
   ]
 }
