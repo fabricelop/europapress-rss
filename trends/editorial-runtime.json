@@ -5,145 +5,120 @@
   "canonical": true,
   "run_id": "tr-1793699033179-manual",
   "previous_run_id": "tr-1793698723967-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-03T10:44:00+01:00",
-  "updated_at": "2026-11-03T10:44:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-03T10:49:39+01:00",
+  "finished_at": "2026-11-03T10:49:39+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-f2e2d59a1d1b083d750c",
-  "title": "Revisar novedades: Halloween",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-f2e2d59a1d1b083d750c",
     "red-review-d1c3c48cd3987e0d29a9"
   ],
-  "remaining_active_ids": [
-    "red-review-f2e2d59a1d1b083d750c",
-    "red-review-d1c3c48cd3987e0d29a9"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "e0f6e33a38dc",
+      "id": "red-review-f2e2d59a1d1b083d750c",
       "revision": 0,
-      "name": "#GMMTVNEXT",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "explained_at": "2026-11-03T10:13:00+01:00",
-      "reason": "Evento GMMTVNEXT: GENERATION HAPPY de hoy en Bangkok verificado."
-    },
-    {
-      "id": "83bc11acedc0",
-      "revision": 0,
-      "name": "Muchísima",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "explained_at": "2026-11-03T10:13:30+01:00",
-      "reason": "Detonante exacto no confirmado; se cerró con redacción prudente y sin remate por sensibilidad."
-    },
-    {
-      "id": "red-review-fbd7aee9c1be9f3e8544",
-      "revision": 0,
-      "name": "Revisar novedades: Racing",
+      "name": "Revisar novedades: Halloween",
       "outcome": "unchanged",
       "applied": true,
       "via": "concurrent_convergence_jit",
-      "reason": "La lesión de Mantilla ya estaba materializada; sin desarrollo material posterior que justifique otra actualización."
+      "reason": "La explicación vigente ya incorpora el balance posterior de Halloween y las convocatorias de Blocus; no se verifica un desarrollo material posterior que cambie el motivo actual de la tendencia."
+    },
+    {
+      "id": "red-review-d1c3c48cd3987e0d29a9",
+      "revision": 0,
+      "name": "Revisar novedades: Aramburu",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "reason": "La explicación vigente ya incorpora la confirmación del CTA sobre el desfase entre el Connected Ball y el vídeo VAR y la resincronización que muestra que Aramburu tocó el balón; las reacciones posteriores no añaden un cambio material."
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T10:43:05+01:00",
-  "last_completed_at": "2026-11-03T10:43:05+01:00",
+  "last_completed_at": "2026-11-03T10:49:39+01:00",
   "last_run": {
-    "run_id": "tr-1793697150072-manual",
-    "command_id": "tr-1793697150072-manual",
+    "run_id": "tr-1793699033179-manual",
+    "command_id": "tr-1793699033179-manual",
     "canonical": true,
     "status": "DONE",
-    "started_at": "2026-11-03T10:16:00+01:00",
-    "finished_at": "2026-11-03T10:17:00+01:00",
+    "started_at": "2026-11-03T10:44:00+01:00",
+    "finished_at": "2026-11-03T10:49:39+01:00",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 2,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "updates": 0,
       "grouping_requests": 0,
       "groups_created": 0,
       "covered_by_existing": 0,
-      "unchanged_reviews": 1,
+      "unchanged_reviews": 2,
       "stale_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 3
+      "concurrent_convergence": 2
     },
     "outcomes": [
       {
-        "id": "e0f6e33a38dc",
+        "id": "red-review-f2e2d59a1d1b083d750c",
         "revision": 0,
-        "name": "#GMMTVNEXT",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "explained_at": "2026-11-03T10:13:00+01:00",
-        "reason": "Evento GMMTVNEXT: GENERATION HAPPY de hoy en Bangkok verificado."
-      },
-      {
-        "id": "83bc11acedc0",
-        "revision": 0,
-        "name": "Muchísima",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "explained_at": "2026-11-03T10:13:30+01:00",
-        "reason": "Detonante exacto no confirmado; se cerró con redacción prudente y sin remate por sensibilidad."
-      },
-      {
-        "id": "red-review-fbd7aee9c1be9f3e8544",
-        "revision": 0,
-        "name": "Revisar novedades: Racing",
+        "name": "Revisar novedades: Halloween",
         "outcome": "unchanged",
         "applied": true,
         "via": "concurrent_convergence_jit",
-        "reason": "La lesión de Mantilla ya estaba materializada; sin desarrollo material posterior que justifique otra actualización."
+        "reason": "La explicación vigente ya incorpora el balance posterior de Halloween y las convocatorias de Blocus; no se verifica un desarrollo material posterior que cambie el motivo actual de la tendencia."
+      },
+      {
+        "id": "red-review-d1c3c48cd3987e0d29a9",
+        "revision": 0,
+        "name": "Revisar novedades: Aramburu",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence_jit",
+        "reason": "La explicación vigente ya incorpora la confirmación del CTA sobre el desfase entre el Connected Ball y el vídeo VAR y la resincronización que muestra que Aramburu tocó el balón; las reacciones posteriores no añaden un cambio material."
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1793697150072-manual cerrada 3/3 por convergencia JIT: #GMMTVNEXT y Muchísima ya quedaron explained y Racing review_completed/unchanged en la ejecución concurrente; no se duplicó ninguna escritura. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
-    "at": "2026-11-03T10:17:00+01:00"
+    "message": "Pasada tr-1793699033179-manual cerrada 2/2 por ejecución y convergencia JIT: Halloween y Aramburu review_completed/unchanged; textos y fechas se conservan. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+    "at": "2026-11-03T10:49:39+01:00"
   },
   "source": "chat",
-  "message": "Inicio tr-1793699033179-manual: 2 revisiones review_red preparing vigentes en main (Halloween y Aramburu), por orden de cola y con revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Pasada tr-1793699033179-manual cerrada 2/2 por ejecución y convergencia JIT: Halloween y Aramburu review_completed/unchanged; textos y fechas se conservan. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1733,6 +1708,15 @@
       "trend_id": "red-review-f2e2d59a1d1b083d750c",
       "title": "Revisar novedades: Halloween",
       "message": "Inicio tr-1793699033179-manual: 2 revisiones review_red preparing vigentes en main (Halloween y Aramburu), por orden de cola y con revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T10:49:39+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793699033179-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793699033179-manual cerrada 2/2 por ejecución y convergencia JIT: Halloween y Aramburu review_completed/unchanged; textos y fechas se conservan. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
