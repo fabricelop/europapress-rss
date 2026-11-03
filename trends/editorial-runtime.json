@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793734393929-manual",
+  "run_id": "tr-autoguard-1793735352",
   "previous_run_id": "tr-1793734298171-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T20:34:30+01:00",
-  "updated_at": "2026-11-03T20:38:00+01:00",
-  "finished_at": "2026-11-03T20:38:00+01:00",
-  "current": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T20:49:10+01:00",
+  "updated_at": "2026-11-03T20:49:10+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "trend_id": "eba4d1b3df0b",
+  "title": "Premio Cervantes 2026",
+  "queue_complete": false,
   "processed_ids": [
     "2d7d1097f7f8",
     "f0f53e2c6918",
@@ -23,7 +23,10 @@
     "red-review-9a71892bb9956d201185"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "eba4d1b3df0b",
+    "8bd2126f457f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -106,7 +109,7 @@
     "summary": "2/2 cerradas: Andorra updated y Mark Twain unchanged; cola=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793734393929-manual cerrada 2/2 por ejecución y convergencia JIT: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3; Mark Twain review_completed/unchanged con texto y fecha originales conservados. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793735352: 2 investigaciones preparing/update vigentes en main (Premio Cervantes 2026 r0 y 128 de la Constitución r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -6155,6 +6158,17 @@
       "message": "Pasada tr-1793734298171-manual cerrada por convergencia con tr-1793734393929-manual: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3 y Mark Twain review_completed/unchanged, conservando su texto y fecha. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T20:36:00+01:00",
       "converged_with": "tr-1793734298171-manual"
+    },
+    {
+      "at": "2026-11-03T20:49:10+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793735352",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "eba4d1b3df0b",
+      "title": "Premio Cervantes 2026",
+      "message": "Inicio tr-autoguard-1793735352: 2 investigaciones preparing/update vigentes en main (Premio Cervantes 2026 r0 y 128 de la Constitución r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
@@ -8753,7 +8767,7 @@
       "converged_with": "tr-1793734298171-manual"
     }
   ],
-  "command_id": "tr-1793734298171-manual",
+  "command_id": "tr-autoguard-1793735352",
   "requested_at": "2026-11-03T17:12:00+01:00",
   "runs": [
     {
