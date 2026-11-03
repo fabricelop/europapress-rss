@@ -12,7 +12,7 @@ $ErrorActionPreference='Stop'
 # Always decode the original response bytes as strict UTF-8 instead.
 function ConvertFrom-UTF8JsonBytes([byte[]]$bytes) {
  if($null -eq $bytes -or $bytes.Length -eq 0){throw 'RESPUESTA_JSON_VACIA'}
- $utf8=New-Object System.Text.UTF8Encoding($false,$true)
+ $utf8=[System.Text.UTF8Encoding]::new($false,$true)
  return ($utf8.GetString($bytes) | ConvertFrom-Json)
 }
 function Read-Json([string]$uri) {
