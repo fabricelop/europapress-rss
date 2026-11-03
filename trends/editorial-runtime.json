@@ -6,9 +6,9 @@
   "run_id": "tr-1793694655913-manual",
   "previous_run_id": "tr-1793693801397-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-03T09:32:00+01:00",
-  "updated_at": "2026-11-03T09:32:00+01:00",
+  "updated_at": "2026-11-03T09:34:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -47,7 +47,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [
     {
       "id": "red-review-bd3b564c5b7eb04ccd20",
@@ -125,7 +125,7 @@
     "message": "Pasada tr-1793693801397-manual cerrada 2/2 por convergencia JIT: Halloween y Aramburu review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio manual: #Buenosdías r0 sigue preparing en main; investigación desde cero con validación JIT. Sin ImageGen ni publicación.",
+  "message": "Persistiendo #Buenosdías r0 mediante editorial-outbox; texto 257 caracteres, ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -1474,6 +1474,50 @@
       "trend_id": "22a5b74e73c8",
       "title": "#Buenosdías",
       "message": "Inicio manual: #Buenosdías r0 sigue preparing en main; investigación desde cero con validación JIT. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-03T09:33:10+01:00",
+      "phase": "investigating",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "22a5b74e73c8",
+      "title": "#Buenosdías",
+      "message": "Investigando #Buenosdías r0: dos fuentes independientes confirman presencia actual/recurrente; no se identifica un acontecimiento concreto que explique el impulso."
+    },
+    {
+      "at": "2026-11-03T09:33:40+01:00",
+      "phase": "drafting",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "22a5b74e73c8",
+      "title": "#Buenosdías",
+      "message": "Redacción prudente preparada: ranking y carácter recurrente confirmados; causa concreta no confirmada."
+    },
+    {
+      "at": "2026-11-03T09:33:50+01:00",
+      "phase": "remate_selection",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "22a5b74e73c8",
+      "title": "#Buenosdías",
+      "message": "Remate único seleccionado sobre la recurrencia matutina, sin atribuir una causa no verificada."
+    },
+    {
+      "at": "2026-11-03T09:34:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-1793694655913-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "22a5b74e73c8",
+      "title": "#Buenosdías",
+      "message": "Persistiendo #Buenosdías r0 mediante editorial-outbox; texto 257 caracteres, ImageGen=0."
     }
   ],
   "history": [
