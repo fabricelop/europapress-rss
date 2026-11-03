@@ -3,39 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793740699",
-  "previous_run_id": "tr-1793739489427-manual",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-03T21:20:00Z",
-  "updated_at": "2026-11-03T22:38:13+01:00",
-  "finished_at": "2026-11-03T21:31:00Z",
+  "run_id": "tr-autoguard-1793742037",
+  "previous_run_id": "tr-autoguard-1793740699",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T22:41:00+01:00",
+  "updated_at": "2026-11-03T22:41:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 5,
-  "trend_id": null,
-  "title": null,
+  "total": 4,
+  "trend_id": "cb7b89c8aacc",
+  "title": "Brian Fariñas",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
     "cb7b89c8aacc",
     "54657dd0b9eb",
     "c7fb37b243f7",
-    "21e85bc57a98",
-    "7e325f21b5b5",
-    "f72c141ffa78"
+    "21e85bc57a98"
   ],
   "remaining_active_ids": [
     "cb7b89c8aacc",
     "54657dd0b9eb",
     "c7fb37b243f7",
-    "21e85bc57a98",
-    "7e325f21b5b5",
-    "f72c141ffa78"
+    "21e85bc57a98"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
+    "attempted": 0,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "updates": 0,
@@ -44,23 +40,17 @@
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 5,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "authoritative_requests_persist_failed",
-      "message": "Las 5 explicaciones quedaron redactadas, verificadas y persistidas en Listas/prepared, pero requests.json (~12 MB) no pudo actualizarse por límite de transporte h2 del conector. El workflow de editorial-outbox y el reconciliador TTENDENCIAS_CHAT_OUTBOX_V1 no consumieron el lote durante esta ejecución; editorial-queue sigue con las 5 revisiones r0 en preparing.",
-      "transport_comment_id": 6615818636
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "3042104459b7",
@@ -149,7 +139,7 @@
     "summary": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793742037: 4 investigaciones preparing vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -3783,6 +3773,17 @@
       "current": 0,
       "total": 5,
       "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T22:41:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793742037",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 4,
+      "trend_id": "cb7b89c8aacc",
+      "title": "Brian Fariñas",
+      "message": "Inicio tr-autoguard-1793742037: 4 investigaciones preparing vigentes en main; revalidación JIT por id+revision, de antiguas a recientes; sin ImageGen ni publicación."
     }
   ],
   "history": [
