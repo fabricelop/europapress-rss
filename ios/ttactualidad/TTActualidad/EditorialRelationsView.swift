@@ -133,7 +133,6 @@ struct EditorialRelationsView: View {
     @State private var selectedPairs = Set<String>()
     @State private var expandedTop30 = Set<String>()
     @State private var showManualLinking = false
-    @State private var search = ""
     @State private var selectedNews: EditorialRelationEndpoint?
     @State private var picker: EndpointPickerRoute?
 
@@ -232,19 +231,11 @@ struct EditorialRelationsView: View {
                 EditorialEndpointPicker(
                     title: route.project == "ttittulares" ? "Seleccionar noticia" : "Seleccionar tendencia",
                     endpoints: route.project == "ttittulares" ? model.snapshot?.news ?? [] : model.snapshot?.trends ?? []) { endpoint in
-                        if route.project == "ttittulares" { selectedNews = endpoint }
-                        else { selectedTrend = endpoint }
+                        selectedNews = endpoint
                         picker = nil
                     }
             }
         }.preferredColorScheme(.dark)
-    }
-
-    private var candidates: [EditorialRelationEndpoint] {
-        guard let scope, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return [] }
-        let all = scope.project == "ttittulares" ? model.snapshot?.trends ?? [] : model.snapshot?.news ?? []
-        return all.filter { $0.title.localizedCaseInsensitiveContains(search) ||
-            $0.text.localizedCaseInsensitiveContains(search) }
     }
 
     private func same(_ left: EditorialRelationEndpoint,
