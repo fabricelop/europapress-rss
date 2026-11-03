@@ -3,37 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793715998214-manual",
-  "previous_run_id": "tr-autoguard-1793715065",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-03T15:27:00+01:00",
-  "updated_at": "2026-11-03T15:33:00+01:00",
-  "finished_at": "2026-11-03T15:33:00+01:00",
-  "current": 1,
+  "run_id": "tr-1793716769930-manual",
+  "previous_run_id": "tr-1793715998214-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-03T15:40:00+01:00",
+  "updated_at": "2026-11-03T15:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
+  "trend_id": "2e00a1a9eeae",
+  "title": "Owono",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
     "2e00a1a9eeae"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "2e00a1a9eeae"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "grouping_requests": 0,
     "groups_created": 0,
     "covered_by_existing": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "queue_remaining": 1,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
@@ -42,19 +44,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "2e00a1a9eeae",
-      "revision": 0,
-      "name": "Owono",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-03T15:30:00+01:00",
-      "apply_commit": "3876b8c9ff9c209a69387a5001d29b587531bc06",
-      "reason": "Fallecimiento de Jesús de Miguel el 3-N tras el choque con Jesús Owono en el Tenerife-Andorra del 2-N, suspendido 2-2; investigación policial abierta."
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-03T15:27:00+01:00",
   "last_completed_at": "2026-11-03T15:33:00+01:00",
@@ -101,7 +92,7 @@
     "at": "2026-11-03T15:33:00+01:00"
   },
   "source": "chat",
-  "message": "Pasada tr-1793715998214-manual cerrada 1/1: Owono r0 reelaborada desde cero y sincronizada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio: Owono r1 preparing vigente en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -2334,6 +2325,17 @@
       "current": 1,
       "total": 1,
       "message": "Pasada tr-1793715998214-manual cerrada 1/1: Owono r0 reelaborada desde cero y sincronizada en requests y Listas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-03T15:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793716769930-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "2e00a1a9eeae",
+      "title": "Owono",
+      "message": "Inicio: Owono r1 preparing vigente en main; revalidación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
