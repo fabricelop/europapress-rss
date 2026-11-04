@@ -105,7 +105,13 @@ private final class ApprovalInboxModel: ObservableObject {
                 action: action, expectedIdentity: item.identity))
             let (data, status) = try await github.privateImageInboxRequest(
                 path: "/v1/images/\(item.id)/decision", method: "POST", jsonBody: body)
-            guard status == 200 else { throw InboxError.http(status) }
+            if status != 200 {
+                // The same HTTP 503 can mean different things. Surface only a
+                // documented server code, not raw JSON or private response text.
+                let payload = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+                let code = payload?["error"] as? String ?? payload?["code"] as? String
+                throw InboxError.decisionHTTP(status, code)
+            }
             let response = try JSONDecoder().decode(DecisionResponse.self, from: data)
             if action == "approve" && response.state == "approved_awaiting_publication" {
                 notice = "Aprobación guardada. Publicación pendiente; pulsa Aprobar para reintentar sin generar otra imagen."
@@ -131,11 +137,32 @@ private final class ApprovalInboxModel: ObservableObject {
     }
 
     private enum InboxError: LocalizedError {
-        case http(Int), unexpectedResponse
+        case http(Int), decisionHTTP(Int, String?), unexpectedResponse
         var errorDescription: String? {
             switch self {
-            case .http(401): return "Vincula tu cuenta GitHub de editor."
-            case .http(409): return "La ficha, revisión o imagen ha cambiado. Actualiza la bandeja."
+            case .http(401), .decisionHTTP(401, _):
+                return "Vincula tu cuenta GitHub de editor."
+            case .decisionHTTP(409, "EDITORIAL_CHANGED_OR_NOT_READY"):
+                return "La ficha ya no coincide con el episodio READY o salió de Listas (409). Original conservado."
+            case .http(409), .decisionHTTP(409, _):
+                return "La ficha, revisión o imagen ha cambiado (409). Actualiza la bandeja; original conservado."
+            case .decisionHTTP(503, "EDITORIAL_SOURCE_UNAVAILABLE"):
+                return "503: el servicio no pudo verificar la fuente editorial. No demuestra que la ficha haya salido de Listas; original conservado."
+            case .decisionHTTP(503, "SOURCE_VERIFICATION_NOT_CONFIGURED"):
+                return "503: verificación editorial sin configurar en el servicio privado. Original conservado."
+            case .decisionHTTP(503, "STORAGE_NOT_CONFIGURED"):
+                return "503: el almacenamiento privado no está configurado. Original conservado."
+            case .decisionHTTP(503, "ORIGINAL_NOT_FOUND"):
+                return "503: el publicador no encuentra el original. Se conserva la ficha para revisión."
+            case .decisionHTTP(503, "TEMPORARILY_UNAVAILABLE"):
+                return "503: fallo interno temporal del servicio privado. Conserva el original y no generes otro."
+            case .decisionHTTP(let status, let code):
+                // Only show short diagnostic error symbols, never raw server data.
+                if let code, code.range(of: "^[A-Z][A-Z0-9_]{2,60}$",
+                                        options: .regularExpression) != nil {
+                    return "El servidor devolvió \(status) (\(code)). La decisión no está confirmada."
+                }
+                return "El servidor devolvió \(status). La decisión no está confirmada."
             case .http(let status): return "El servidor devolvió \(status)."
             case .unexpectedResponse: return "La confirmación del servidor no es válida."
             }
