@@ -222,7 +222,17 @@ struct ManualEditorialImageSheet: View {
                 commandID: commandID(png))
             let serverError = ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?["error"] as? String
             guard code == 200 || code == 201 else {
-                notice = "No subida (HTTP \(code), \(serverError ?? "sin detalle")). Comprueba que la ficha siga en Listas."
+                if code == 404 {
+                    // A missing /v1/images/manual endpoint is a deployment gap,
+                    // not proof of a stale Listas card. Keep the chosen PNG.
+                    notice = "El servidor de imágenes todavía no admite subidas manuales (404). La imagen permanece seleccionada. No es un problema demostrado de esta ficha."
+                } else if code == 409 {
+                    notice = "La identidad o revisión de la ficha ya no coincide (409: " + (serverError ?? "conflicto") + "). La imagen permanece seleccionada."
+                } else if code == 503 {
+                    notice = "El servidor de imágenes no está disponible (503: " + (serverError ?? "sin detalle") + "). No se ha confirmado ninguna subida."
+                } else {
+                    notice = "No se confirmó la subida (HTTP \(code): " + (serverError ?? "sin detalle") + "). Imagen conservada."
+                }
                 return
             }
             let receipt = try JSONDecoder().decode(UploadResult.self, from: data)
