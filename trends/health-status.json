@@ -1,25 +1,5 @@
 {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "checked_at": "2026-11-04T11:31:28.478706+00:00",
-=======
-  "checked_at": "2026-11-04T11:34:49.882138+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T11:38:00.107615+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T11:40:44.480385+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T11:44:32.084044+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T11:47:35.369529+00:00",
->>>>>>> Stashed changes
+  "checked_at": "2026-11-04T15:46:53.315816+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -60,38 +40,12 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      "non_stale_sources": 3,
-      "captured_age_minutes": 20.2,
-=======
       "non_stale_sources": 2,
-      "captured_age_minutes": 3.5,
->>>>>>> Stashed changes
-=======
-      "non_stale_sources": 2,
-      "captured_age_minutes": 6.7,
->>>>>>> Stashed changes
-=======
-      "non_stale_sources": 2,
-      "captured_age_minutes": 9.4,
->>>>>>> Stashed changes
-=======
-      "non_stale_sources": 2,
-      "captured_age_minutes": 13.2,
->>>>>>> Stashed changes
+      "captured_age_minutes": 5.9,
       "noise_count": 0,
       "repair_started": true
-=======
-      "non_stale_sources": 3,
-      "captured_age_minutes": 6.6,
-      "noise_count": 0
->>>>>>> Stashed changes
     },
     "listener": {
       "ok": true,
@@ -100,31 +54,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": null,
-<<<<<<< Updated upstream
       "age_minutes": 0.0,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      "run_id": 41821571849,
-=======
-      "run_id": 41822053151,
->>>>>>> Stashed changes
-=======
-      "run_id": 41822494857,
->>>>>>> Stashed changes
-=======
-      "run_id": 41822865768,
->>>>>>> Stashed changes
-=======
-      "run_id": 41823380967,
->>>>>>> Stashed changes
-=======
-      "age_minutes": 2.8,
-      "run_id": 41823380967,
->>>>>>> Stashed changes
+      "run_id": 41861288360,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -136,7 +69,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 386,
+      "invalid_count": 392,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -145,19 +78,35 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 2,
+      "overdue_count": 2,
+      "oldest_age_minutes": 31.6,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "red-review-a4bde182eb3c449d3224",
+          "name": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
+          "status": "preparing",
+          "age_minutes": 31.6
+        },
+        {
+          "id": "red-review-9962ec3ec9ae8aeb6188",
+          "name": "Revisar novedades: MAGA",
+          "status": "preparing",
+          "age_minutes": 31.6
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "red-review-a4bde182eb3c449d3224",
+        "red-review-9962ec3ec9ae8aeb6188"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -166,11 +115,14 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [],
+  "repairs_started": [
+    "relanzado refresco Top 10"
+  ],
   "blocking": [
-    "cola con 386 estado(s) inválido(s)"
+    "cola con 392 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.6 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 386 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.6 min"
 }
