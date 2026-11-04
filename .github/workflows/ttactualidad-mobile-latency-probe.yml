@@ -1,0 +1,37 @@
+name: TTActualidad · diagnóstico latencia móvil (sin credenciales)
+on:
+  push:
+    branches: [diag/ttactualidad-mobile-latency-image-503-20261104]
+    paths:
+      - '.github/workflows/ttactualidad-mobile-latency-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Measure only public/anonymous web responses
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '### Anonymous network timings (GitHub runner, NOT mobile authenticated session)' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No cookies, tokens, uploads or approvals used.' >> "$GITHUB_STEP_SUMMARY"
+          for pair in \
+            'site-root|https://ttactualidad.rainyraven22.chatgpt.site/' \
+            'site-inbox-read|https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images' \
+            'site-manual-intake|https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images/manual' \
+            'github-requests-10mb|https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/requests.json' \
+            'github-editorial-listas|https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/telegram-manual-explained.json' \
+            'github-site-top30|https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/site-top30-current.json'; do
+            label="${pair%%|*}"; url="${pair#*|}"
+            echo "=== $label ==="
+            for n in 1 2 3; do
+              curl -sS -L -o /dev/null --retry 0 --max-time 18 \
+                -A 'TTActualidad-ReadOnly-Latency-Diagnostic/1.0' \
+                -w 'HTTP=%{http_code} DNS=%{time_namelookup}s TTFB=%{time_starttransfer}s TOTAL=%{time_total}s BYTES=%{size_download} REDIRECTS=%{num_redirects}\n' \
+                "$url" || echo 'PROBE_NETWORK_FAILURE'
+            done
+          done
+          echo '**Warning:** anonymous 401/404 timings do not establish authenticated mobile loading time.' >> "$GITHUB_STEP_SUMMARY"
