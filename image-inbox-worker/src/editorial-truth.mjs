@@ -4,7 +4,7 @@
 const encoder = new TextEncoder();
 const PAGES = Object.freeze({
   ttittulares: 'ttittulares/prepared.json',
-  ttendencias: 'trends/prepared.json',
+  ttendencias: 'trends/telegram-manual-explained.json',
 });
 
 export class EditorialUnavailable extends Error {
@@ -26,38 +26,78 @@ export async function episodeFingerprint(snapshot) {
   return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// Use exactly the repositories read by the iPhone's Listas view. Trending
+// identities live in telegram-manual-explained, NOT trends/prepared.json.
+const DECISIONS = Object.freeze({
+  ttittulares: 'ttittulares/decisions.json',
+  ttendencias: 'trends/mobile-decisions.json',
+});
+const TERMINAL = new Set(['published', 'dismissed', 'deleted', 'discarded', 'removed']);
+
 export function readyTextFromMain(data, identity) {
   if (!data || !Array.isArray(data.items)) throw new EditorialUnavailable();
-  const matches = data.items.filter(row => (
-    (identity.project === 'ttittulares' ? row.event_id : row.id) === identity.editorialId &&
-    row.revision === identity.revision
-  ));
-  if (matches.length !== 1) return null; // not READY or ambiguous = stale
-  const row = matches[0];
-  const text = identity.project === 'ttittulares' ? row.tweet?.text : row.explanation;
+  const matches = data.items.filter(row =>
+    (identity.project === 'ttittulares' ? row.event_id : row.id) === identity.editorialId);
+  if (!matches.length) return null;
+  // Multiple rows can refer to the same editorial ID as the news develops.
+  // Only the most recent identity is permitted, never an older revision.
+  const latest = matches.sort((a, b) =>
+    Number(b.revision ?? 0) - Number(a.revision ?? 0) ||
+    String(b.explained_at || b.prepared_at || b.updated_at || '').localeCompare(
+      String(a.explained_at || a.prepared_at || a.updated_at || '')))[0];
+  if (Number(latest.revision ?? 0) !== identity.revision ||
+      latest.rewrite_pending === true) return null;
+  if (identity.project === 'ttendencias' &&
+      String(latest.status || '').toLowerCase() !== 'explained') return null;
+  const text = identity.project === 'ttittulares'
+    ? latest.tweet?.text : latest.explanation;
   return typeof text === 'string' && text.trim() ? text : null;
 }
 
-// Three-valued verdict: 'current' / 'stale' / exception (network unavailable).
-// Use a fresh main read at approval and AGAIN before any public write.
-export async function verifyEditorialNow(identity, editorialText, fetchFn = fetch, githubToken = null) {
-  const path = PAGES[identity.project];
-  if (!path || !githubToken || typeof githubToken !== 'string') throw new EditorialUnavailable();
+function isClosed(decisions, identity) {
+  if (!decisions || !Array.isArray(decisions.items)) throw new EditorialUnavailable();
+  const key = identity.project === 'ttittulares' ? 'event_id' : 'id';
+  return decisions.items.some(row =>
+    row[key] === identity.editorialId &&
+    TERMINAL.has(String(row.status || '').toLowerCase()) &&
+    // An explicit newer revision is closed as well; older revisions must not
+    // accidentally close an independently reworked newer episode.
+    (!Number.isSafeInteger(row.revision) || row.revision >= identity.revision));
+}
+
+async function freshMain(path, fetchFn, token) {
   let response;
   try {
     response = await fetchFn(`https://api.github.com/repos/fabricelop/europapress-rss/contents/${path}?ref=main`, {
-      headers: { 'Authorization': 'Bearer ' + githubToken,
-        'Accept': 'application/vnd.github.raw+json', 'Cache-Control': 'no-cache',
+      headers: { Authorization: 'Bearer ' + token,
+        Accept: 'application/vnd.github.raw+json', 'Cache-Control': 'no-cache',
         'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'TTActualidad-Approval-Gate' },
       cache: 'no-store', redirect: 'error',
     });
   } catch { throw new EditorialUnavailable(); }
   if (!response || !response.ok) throw new EditorialUnavailable();
-  let body;
   try {
     const text = await response.text();
-    if (text.length > 3_000_000) throw new Error('too large');
-    body = JSON.parse(text);
+    // The active trends ledger is already several MB. Treat the documented
+    // range as valid while bounding memory and rejecting truncated/non-JSON.
+    if (!text || text.length > 12_000_000) throw new Error('source too large');
+    const body = JSON.parse(text);
+    if (!body || !Array.isArray(body.items)) throw new Error('malformed source');
+    return body;
   } catch { throw new EditorialUnavailable(); }
+}
+
+// Three-valued verdict: 'current' / 'stale' / exception (network unavailable).
+// Use a fresh main read at approval and AGAIN before any public write.
+export async function verifyEditorialNow(identity, editorialText, fetchFn = fetch, githubToken = null) {
+  const path = PAGES[identity.project], decisionPath = DECISIONS[identity.project];
+  if (!path || !decisionPath || !githubToken || typeof githubToken !== 'string') {
+    throw new EditorialUnavailable();
+  }
+  const [body, decisions] = await Promise.all([
+    freshMain(path, fetchFn, githubToken),
+    freshMain(decisionPath, fetchFn, githubToken),
+  ]);
+  if (isClosed(decisions, identity)) return 'stale';
   return readyTextFromMain(body, identity) === editorialText ? 'current' : 'stale';
 }
