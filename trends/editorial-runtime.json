@@ -8,12 +8,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-04T04:21:30+01:00",
-  "updated_at": "2026-11-04T04:28:30+01:00",
+  "updated_at": "2026-11-04T04:29:15+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 3,
-  "trend_id": "red-review-7501a4f8eb00317019cd",
-  "title": "Revisar novedades: Chiqui",
+  "trend_id": "red-review-d3d50b6af3700ee32640",
+  "title": "Revisar novedades: Andorra",
   "queue_complete": false,
   "processed_ids": [
     "4b95ce627201"
@@ -61,7 +61,7 @@
     "summary": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Chiqui review r0 revalidada JIT. Novedad material verificada: Tierra de Nadie 8 dejó a Chiqui nominada junto a Yola tras la salvación de Asraf. Resultado updated entregado al maintenance-outbox; ImageGen=0.",
+  "message": "Andorra review r0 revalidada JIT. Novedad material verificada en continuidad: fallecimiento de Jesús de Miguel y reacción del FC Andorra; actualización sensible sin remate entregada al maintenance-outbox. ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4597,6 +4597,28 @@
       "trend_id": "red-review-7501a4f8eb00317019cd",
       "title": "Revisar novedades: Chiqui",
       "message": "Chiqui review r0 revalidada JIT. Novedad material verificada: Tierra de Nadie 8 dejó a Chiqui nominada junto a Yola tras la salvación de Asraf. Resultado updated entregado al maintenance-outbox; ImageGen=0."
+    },
+    {
+      "at": "2026-11-04T04:29:15+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793762482",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 3,
+      "trend_id": "red-review-d3d50b6af3700ee32640",
+      "title": "Revisar novedades: Andorra",
+      "message": "Andorra r0 revalidada JIT; fallecimiento y reacción institucional contrastados con Cadena SER y Europa Press."
+    },
+    {
+      "at": "2026-11-04T04:29:15+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793762482",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 3,
+      "trend_id": "red-review-d3d50b6af3700ee32640",
+      "title": "Revisar novedades: Andorra",
+      "message": "Andorra review r0 revalidada JIT. Novedad material verificada en continuidad: fallecimiento de Jesús de Miguel y reacción del FC Andorra; actualización sensible sin remate entregada al maintenance-outbox. ImageGen=0."
     }
   ],
   "history": [
