@@ -249,3 +249,23 @@ test('manual image upload: editor-only, one candidate, ready for existing approv
   assert.equal(decided.status,200);
   assert.equal((await decided.json()).state,'approved_awaiting_publication');
 });
+
+test('manual intake refuses unauthenticated and outdated episodes', async () => {
+  const {env,store} = context();
+  const hashBytes = await crypto.subtle.digest('SHA-256',png);
+  const rasterSHA256 = Array.from(new Uint8Array(hashBytes),b=>b.toString(16).padStart(2,'0')).join('');
+  const upload = (who, changed) => {
+    const form = new FormData();
+    form.set('image',new Blob([png],{type:'image/png'}),'chosen.png');
+    form.set('metadata',JSON.stringify({project:'ttendencias',
+      editorialId:'my-trend',revision:0,commandId:'manual-123456',
+      title:'Test',editorialText:'Texto factual + remate',rasterSHA256,...changed}));
+    return req('/v1/images/manual','POST',form,who);
+  };
+  assert.equal((await handleRequest(upload(null,{}),env,editor)).status,401);
+  assert.equal((await handleRequest(upload('someone-else',{}),env,editor)).status,401);
+  assert.equal((await handleRequest(upload('valid-oauth',{revision:2}),env,editor)).status,409);
+  assert.equal((await handleRequest(upload('valid-oauth',{rasterSHA256:'0'.repeat(64)}),env,editor)).status,409);
+  assert.equal(store.size,0);
+  assert.equal((await receive(env)).data.items.length,0);
+});
