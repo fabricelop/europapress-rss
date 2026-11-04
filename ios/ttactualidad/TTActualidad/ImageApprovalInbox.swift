@@ -101,6 +101,16 @@ private final class ApprovalInboxModel: ObservableObject {
         actionID = item.id
         defer { actionID = nil }
         do {
+            // A card can leave Listas while its original PNG remains in the
+            // pending inbox. If GitHub proves it was removed after this PNG
+            // arrived, do not send a futile approval that may be shown as 503.
+            if action == "approve",
+               let reason = try? await github.withdrawnImageReason(
+                    project: item.identity.project, editorialID: item.identity.editorialId,
+                    revision: item.identity.revision, imageCreatedAt: item.createdAt) {
+                notice = reason
+                return
+            }
             let body = try JSONEncoder().encode(ApprovalDecision(
                 action: action, expectedIdentity: item.identity))
             let (data, status) = try await github.privateImageInboxRequest(
