@@ -5,67 +5,188 @@
   "canonical": true,
   "run_id": "tr-1793822868188-manual",
   "previous_run_id": "tr-1793822645439-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T21:18:00+01:00",
-  "updated_at": "2026-11-04T21:26:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T21:27:00+01:00",
+  "finished_at": "2026-11-04T21:27:00+01:00",
+  "current": 8,
   "total": 8,
-  "trend_id": "29923a1b53ce",
-  "title": "Dumfries",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "686f91460d60",
+    "98a7c39fa82a",
+    "3a77ac385fa9",
+    "ffa18b96a3cc",
+    "2fae92b8a8e1",
+    "ef0ecd94ff0a",
+    "3b0acc2331b9",
     "29923a1b53ce"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
+    "686f91460d60",
+    "98a7c39fa82a",
+    "3a77ac385fa9",
+    "ffa18b96a3cc",
+    "2fae92b8a8e1",
+    "ef0ecd94ff0a",
+    "3b0acc2331b9",
     "29923a1b53ce"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
+    "explained": 8,
+    "updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 8,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 8,
     "cause_unconfirmed": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo Dumfries r0; revisión JIT válida; sin ImageGen.",
-  "final_outcomes": [],
+  "activity": "Cierre verificado 8/8: cola 0; sin preparing/update ni rewrite_pending; requests y explained sincronizados; ImageGen=0.",
+  "final_outcomes": [
+    {
+      "id": "686f91460d60",
+      "revision": 1,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "98a7c39fa82a",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "3a77ac385fa9",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "ffa18b96a3cc",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "2fae92b8a8e1",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "ef0ecd94ff0a",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "3b0acc2331b9",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "29923a1b53ce",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793822198088-manual",
+    "run_id": "tr-1793822868188-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T20:56:38+01:00",
-    "updated_at": "2026-11-04T20:56:54+01:00",
-    "finished_at": "2026-11-04T20:56:54+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-04T21:18:00+01:00",
+    "updated_at": "2026-11-04T21:27:00+01:00",
+    "finished_at": "2026-11-04T21:27:00+01:00",
+    "current": 8,
+    "total": 8,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "686f91460d60",
+      "98a7c39fa82a",
+      "3a77ac385fa9",
+      "ffa18b96a3cc",
+      "2fae92b8a8e1",
+      "ef0ecd94ff0a",
+      "3b0acc2331b9",
+      "29923a1b53ce"
+    ],
     "remaining_active_ids": [],
-    "final_outcomes": [],
+    "final_outcomes": [
+      {
+        "id": "686f91460d60",
+        "revision": 1,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "98a7c39fa82a",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "3a77ac385fa9",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "ffa18b96a3cc",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "2fae92b8a8e1",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "ef0ecd94ff0a",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "3b0acc2331b9",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "29923a1b53ce",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      }
+    ],
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incident_count": 0,
     "incidents": [],
-    "concurrent_convergence": 0
+    "concurrent_convergence": 8
   },
   "last_started_at": "2026-11-04T21:18:00+01:00",
-  "last_completed_at": "2026-11-04T20:56:54+01:00"
+  "last_completed_at": "2026-11-04T21:27:00+01:00"
 }
