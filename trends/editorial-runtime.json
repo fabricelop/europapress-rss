@@ -5,76 +5,127 @@
   "canonical": true,
   "run_id": "tr-1793775423346-manual",
   "previous_run_id": "tr-autoguard-1793775064",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "completed",
   "started_at": "2026-11-04T06:59:30.493Z",
-  "updated_at": "2026-11-04T08:03:02+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-3f3b500b747421ce2841",
-  "title": "Revisar novedades: Chiqui",
+  "updated_at": "2026-11-04T07:15:32.625Z",
+  "finished_at": "2026-11-04T07:15:32.625Z",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-3f3b500b747421ce2841",
+    "red-review-a033fd697c62d425d154",
     "0dd022f9becc"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual iniciada sobre 2 revisiones review_red vigentes; investigando Chiqui.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada manual cerrada 3/3: Chiqui y Gracias Ministro actualizados; EEUU explicado al entrar durante la ejecución. Cola final 0 y sin reexplicaciones pendientes. La brecha de persistencia de Chiqui fue reparada.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "code": "review_apply_gap_repaired",
+      "id": "red-review-3f3b500b747421ce2841",
+      "revision": 0,
+      "detail": "El maintenance-outbox de Chiqui era válido, pero el primer aplicador retiró el job sin crear trend-update-d8b0b437dd21171dc217. Se reparó la persistencia en requests.json y telegram-manual-explained.json y se eliminaron los workflows temporales de reparación."
+    }
+  ],
   "error": null,
-  "activity": "investigating",
-  "final_outcomes": [],
+  "activity": "completed",
+  "final_outcomes": [
+    {
+      "id": "red-review-3f3b500b747421ce2841",
+      "revision": 0,
+      "name": "Revisar novedades: Chiqui",
+      "outcome": "updated",
+      "applied": true,
+      "via": "maintenance_outbox_repaired",
+      "result_id": "trend-update-d8b0b437dd21171dc217",
+      "reason": "Nueva ronda material de Supervivientes All Stars; la aplicación inicial retiró el job sin materializar la nueva ficha y fue reconciliada de forma idempotente."
+    },
+    {
+      "id": "red-review-a033fd697c62d425d154",
+      "revision": 0,
+      "name": "Revisar novedades: Gracias Ministro",
+      "outcome": "updated",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "result_id": "trend-update-78a70eaaf1fa5437d5cf",
+      "reason": "La dimisión de Óscar Puente y su renuncia a las listas del 29-N generaron nuevos mensajes de agradecimiento."
+    },
+    {
+      "id": "0dd022f9becc",
+      "revision": 0,
+      "name": "EEUU",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "reason": "Entrada nueva del Top 30 explicada por el vuelco de las midterms y el control demócrata de Senado y Cámara."
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1793775064",
-    "status": "DONE",
-    "started_at": "2026-11-04T07:52:00+01:00",
-    "updated_at": "2026-11-04T07:58:00+01:00",
-    "finished_at": "2026-11-04T07:58:00+01:00",
+    "run_id": "tr-1793775423346-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-04T06:59:30.493Z",
+    "updated_at": "2026-11-04T07:15:32.625Z",
+    "finished_at": "2026-11-04T07:15:32.625Z",
     "current": 3,
     "total": 3,
     "queue_complete": true,
     "processed_ids": [
-      "8584ecbb1ea7",
-      "722b29f28253",
-      "60c10181fad7"
+      "red-review-3f3b500b747421ce2841",
+      "red-review-a033fd697c62d425d154",
+      "0dd022f9becc"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "8584ecbb1ea7",
+        "id": "red-review-3f3b500b747421ce2841",
         "revision": 0,
-        "name": "Mississippi",
-        "outcome": "explained",
+        "name": "Revisar novedades: Chiqui",
+        "outcome": "updated",
         "applied": true,
-        "via": "editorial_outbox",
-        "reason": "Carrera al Senado de EEUU en empate virtual; Colom figuraba 28 votos por delante con el 97% escrutado."
+        "via": "maintenance_outbox_repaired",
+        "result_id": "trend-update-d8b0b437dd21171dc217",
+        "reason": "Nueva ronda material de Supervivientes All Stars; la aplicación inicial retiró el job sin materializar la nueva ficha y fue reconciliada de forma idempotente."
       },
       {
-        "id": "722b29f28253",
+        "id": "red-review-a033fd697c62d425d154",
         "revision": 0,
-        "name": "Iowa",
-        "outcome": "explained",
+        "name": "Revisar novedades: Gracias Ministro",
+        "outcome": "updated",
         "applied": true,
-        "via": "editorial_outbox",
-        "reason": "Josh Turek ganó el escaño al Senado y Rob Sand la gobernación."
+        "via": "maintenance_outbox",
+        "result_id": "trend-update-78a70eaaf1fa5437d5cf",
+        "reason": "La dimisión de Óscar Puente y su renuncia a las listas del 29-N generaron nuevos mensajes de agradecimiento."
       },
       {
-        "id": "60c10181fad7",
+        "id": "0dd022f9becc",
         "revision": 0,
-        "name": "Gina Hinojosa",
+        "name": "EEUU",
         "outcome": "explained",
         "applied": true,
         "via": "editorial_outbox",
-        "reason": "Derrotó a Greg Abbott y será la primera gobernadora latina de Texas."
+        "reason": "Entrada nueva del Top 30 explicada por el vuelco de las midterms y el control demócrata de Senado y Cámara."
       }
     ],
     "imagegen_calls": 0,
-    "publications": 0
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incident_count": 1,
+    "incidents": [
+      {
+        "code": "review_apply_gap_repaired",
+        "id": "red-review-3f3b500b747421ce2841",
+        "revision": 0,
+        "detail": "El maintenance-outbox de Chiqui era válido, pero el primer aplicador retiró el job sin crear trend-update-d8b0b437dd21171dc217. Se reparó la persistencia en requests.json y telegram-manual-explained.json y se eliminaron los workflows temporales de reparación."
+      }
+    ]
   },
-  "last_started_at": "2026-11-04T08:03:02+01:00",
-  "last_completed_at": "2026-11-04T08:03:02+01:00"
+  "last_started_at": "2026-11-04T06:59:30.493Z",
+  "last_completed_at": "2026-11-04T07:15:32.625Z"
 }
