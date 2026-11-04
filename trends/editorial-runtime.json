@@ -5,36 +5,33 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793791275",
   "previous_run_id": "tr-autoguard-1793789480",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T12:22:00+01:00",
-  "updated_at": "2026-11-04T12:27:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-04T12:28:00+01:00",
+  "finished_at": "2026-11-04T12:28:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "55182e295925",
-  "title": "#paro",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "93382a9f3702"
+    "93382a9f3702",
+    "55182e295925"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "55182e295925"
-  ],
-  "remaining_active_ids": [
-    "55182e295925"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
-    "closed": 1,
-    "explained": 1,
+    "closed": 2,
+    "explained": 2,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -46,7 +43,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo 2/2 · #paro. Detonante acreditado: datos de paro registrado de octubre publicados hoy. Sin ImageGen.",
+  "activity": "Pasada textual cerrada 2/2: #Mañaneros4N r0 explicado con causa concreta no confirmada y #paro r0 explicado por los datos de desempleo de octubre. Cola final 0; sin reexplicaciones detectadas; sin ImageGen, image-outbox ni publicaciones.",
   "final_outcomes": [
     {
       "id": "93382a9f3702",
@@ -54,79 +51,54 @@
       "name": "#Mañaneros4N",
       "outcome": "explained_cause_unconfirmed",
       "applied": true
+    },
+    {
+      "id": "55182e295925",
+      "revision": 0,
+      "name": "#paro",
+      "outcome": "explained",
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1793789480",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-04T11:58:30+01:00",
-    "updated_at": "2026-11-04T12:07:00+01:00",
-    "finished_at": "2026-11-04T12:07:00+01:00",
-    "current": 5,
-    "total": 5,
+    "run_id": "tr-autoguard-1793791275",
+    "status": "DONE",
+    "started_at": "2026-11-04T12:22:00+01:00",
+    "updated_at": "2026-11-04T12:28:00+01:00",
+    "finished_at": "2026-11-04T12:28:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "8201536739ef",
-      "e50cfc4cf460",
-      "31bb72a668f9",
-      "red-review-1ffb87ac2705eb896f12",
-      "red-review-4f0cf42706fd610a89d5"
+      "93382a9f3702",
+      "55182e295925"
     ],
     "converged_ids": [],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "8201536739ef",
+        "id": "93382a9f3702",
         "revision": 0,
-        "name": "#JuegaZeldaYa",
+        "name": "#Mañaneros4N",
         "outcome": "explained_cause_unconfirmed",
         "applied": true
       },
       {
-        "id": "e50cfc4cf460",
+        "id": "55182e295925",
         "revision": 0,
-        "name": "Verás",
+        "name": "#paro",
         "outcome": "explained",
         "applied": true
-      },
-      {
-        "id": "31bb72a668f9",
-        "revision": 0,
-        "name": "JJ Gabriel",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "red-review-1ffb87ac2705eb896f12",
-        "revision": 0,
-        "name": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
-        "outcome": "unchanged",
-        "applied": true,
-        "reason": "Ficha fuente histórica agrupada; el contrato vigente conserva su texto y fecha y evita crear una nueva ficha conjunta."
-      },
-      {
-        "id": "red-review-4f0cf42706fd610a89d5",
-        "revision": 0,
-        "name": "Revisar novedades: Mazón",
-        "outcome": "updated",
-        "applied": true,
-        "created_id": "trend-update-c8a3e672eb32862fd364"
       }
     ],
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "fallback_persistence_transport",
-        "resolved": true,
-        "message": "Un intento manual de respaldo para persistir JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; el mismo outbox fue reactivado y el aplicador lo persistió correctamente."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-04T11:56:50+01:00",
-  "last_completed_at": "2026-11-04T12:07:00+01:00"
+  "last_started_at": "2026-11-04T12:22:00+01:00",
+  "last_completed_at": "2026-11-04T12:28:00+01:00"
 }
