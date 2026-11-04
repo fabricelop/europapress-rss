@@ -1,4 +1,5 @@
 import Foundation
+import CryptoKit
 import Combine
 import Security
 import UIKit
@@ -406,6 +407,62 @@ final class GitHubEditor: ObservableObject {
         let (bytes, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else {
             throw GitHubError.message("No hay respuesta HTTP verificable.")
+        }
+        return (bytes, http.statusCode)
+    }
+
+    // Manual upload is never a public image publication. It adds a verified PNG
+    // to the existing private approval inbox, which remains the only publisher.
+    func uploadEditorialImage(
+        project: String, editorialID: String, revision: Int, title: String,
+        editorialText: String, png: Data, commandID: String
+    ) async throws -> (Data, Int) {
+        guard let base = imageInboxBaseURL,
+              ["ttittulares", "ttendencias"].contains(project),
+              !editorialID.isEmpty, revision >= 0,
+              png.count >= 24, png.count <= 8_000_000
+        else { throw GitHubError.message("Servicio privado o identidad editorial no válida.") }
+        let digest = SHA256.hash(data: png)
+            .map { String(format: "%02x", $0) }.joined()
+        let metadata: [String: Any] = [
+            "project": project, "editorialId": editorialID, "revision": revision,
+            "title": title, "editorialText": editorialText,
+            "commandId": commandID, "rasterSHA256": digest,
+        ]
+        let payload = try JSONSerialization.data(withJSONObject: metadata)
+        guard let url = URL(string: base.absoluteString + "/v1/images/manual"),
+              url.scheme == "https",
+              url.host == "ttactualidad.rainyraven22.chatgpt.site" else {
+            throw GitHubError.message("Destino privado no permitido.")
+        }
+        let boundary = "TTActualidadManual-" + UUID().uuidString
+        var body = Data()
+        func append(_ text: String) { body.append(Data(text.utf8)) }
+        append("--\(boundary)\r\n")
+        append("Content-Disposition: form-data; name=\"metadata\"\r\n")
+        append("Content-Type: application/json\r\n\r\n")
+        body.append(payload)
+        append("\r\n--\(boundary)\r\n")
+        append("Content-Disposition: form-data; name=\"image\"; filename=\"original.png\"\r\n")
+        append("Content-Type: image/png\r\n\r\n")
+        body.append(png)
+        append("\r\n--\(boundary)--\r\n")
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 45)
+        request.httpMethod = "POST"
+        request.httpBody = body
+        request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
+        request.setValue("no-store", forHTTPHeaderField: "Cache-Control")
+        request.setValue("multipart/form-data; boundary=" + boundary, forHTTPHeaderField: "Content-Type")
+        request.setValue("TTActualidad/iOS-manual-image", forHTTPHeaderField: "User-Agent")
+        let session = URLSession(configuration: .ephemeral,
+                                 delegate: EditorialRelationsNoRedirect(), delegateQueue: nil)
+        defer { session.finishTasksAndInvalidate() }
+        let (bytes, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse,
+              http.url?.scheme == "https", http.url?.host == url.host,
+              http.url?.path == url.path else {
+            throw GitHubError.message("Respuesta privada no verificable.")
         }
         return (bytes, http.statusCode)
     }
