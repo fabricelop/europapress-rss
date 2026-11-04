@@ -5,50 +5,161 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793778663",
   "previous_run_id": "tr-1793775423346-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T08:51:00+01:00",
-  "updated_at": "2026-11-04T08:57:00+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-04T09:00:00+01:00",
+  "finished_at": "2026-11-04T09:00:00+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "red-review-1781b21fb8d10f7b09e2",
-  "title": "Revisar novedades: Andorra",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "cf9b8586b6d4",
     "20d1a5eb0b1a",
     "a6d7b6ed262e",
-    "002f38cb74fe"
-  ],
-  "remaining_ids": [
+    "002f38cb74fe",
     "red-review-1781b21fb8d10f7b09e2",
     "red-review-cd984e7425086f0d7f79"
   ],
-  "remaining_active_ids": [
-    "red-review-1781b21fb8d10f7b09e2",
-    "red-review-cd984e7425086f0d7f79"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial en curso: 4/6 aplicados. Revisando novedades materiales de Andorra y Óscar Puente.",
+  "summary": "Pasada tr-autoguard-1793778663 cerrada 6/6: 4 tendencias explicadas y 2 revisiones de mantenimiento actualizadas. Cola final 0, sin reexplicaciones pendientes. ImageGen 0; image-outbox 0; publicaciones 0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
-  "final_outcomes": [],
+  "activity": "completed",
+  "final_outcomes": [
+    {
+      "id": "cf9b8586b6d4",
+      "revision": 0,
+      "name": "Aplicatelo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "20d1a5eb0b1a",
+      "revision": 0,
+      "name": "Estados Unidos",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "a6d7b6ed262e",
+      "revision": 0,
+      "name": "MAGA",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "002f38cb74fe",
+      "revision": 0,
+      "name": "San Carlos Borromeo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "red-review-1781b21fb8d10f7b09e2",
+      "revision": 0,
+      "name": "Revisar novedades: Andorra",
+      "outcome": "updated",
+      "applied": true,
+      "via": "maintenance_outbox_concurrent",
+      "result_id": "trend-update-c2bf7a66be469b9a5cf5"
+    },
+    {
+      "id": "red-review-cd984e7425086f0d7f79",
+      "revision": 0,
+      "name": "Revisar novedades: Óscar Puente",
+      "outcome": "updated",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "result_id": "trend-update-652b1fd9b62e902119ea"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793775423346-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "finished_at": "2026-11-04T07:15:32.625Z",
-    "current": 3,
-    "total": 3,
+    "run_id": "tr-autoguard-1793778663",
+    "status": "DONE",
+    "started_at": "2026-11-04T08:51:00+01:00",
+    "updated_at": "2026-11-04T09:00:00+01:00",
+    "finished_at": "2026-11-04T09:00:00+01:00",
+    "current": 6,
+    "total": 6,
     "queue_complete": true,
+    "processed_ids": [
+      "cf9b8586b6d4",
+      "20d1a5eb0b1a",
+      "a6d7b6ed262e",
+      "002f38cb74fe",
+      "red-review-1781b21fb8d10f7b09e2",
+      "red-review-cd984e7425086f0d7f79"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "cf9b8586b6d4",
+        "revision": 0,
+        "name": "Aplicatelo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "20d1a5eb0b1a",
+        "revision": 0,
+        "name": "Estados Unidos",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "a6d7b6ed262e",
+        "revision": 0,
+        "name": "MAGA",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "002f38cb74fe",
+        "revision": 0,
+        "name": "San Carlos Borromeo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "red-review-1781b21fb8d10f7b09e2",
+        "revision": 0,
+        "name": "Revisar novedades: Andorra",
+        "outcome": "updated",
+        "applied": true,
+        "via": "maintenance_outbox_concurrent",
+        "result_id": "trend-update-c2bf7a66be469b9a5cf5"
+      },
+      {
+        "id": "red-review-cd984e7425086f0d7f79",
+        "revision": 0,
+        "name": "Revisar novedades: Óscar Puente",
+        "outcome": "updated",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "result_id": "trend-update-652b1fd9b62e902119ea"
+      }
+    ],
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incident_count": 1
+    "incident_count": 0,
+    "incidents": []
   },
   "last_started_at": "2026-11-04T08:54:48+01:00",
-  "last_completed_at": "2026-11-04T08:54:48+01:00"
+  "last_completed_at": "2026-11-04T09:00:00+01:00"
 }
