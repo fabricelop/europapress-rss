@@ -44,6 +44,8 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .top30-chevron{font-size:13px;text-align:right;color:var(--sub);transition:transform .15s ease}
 .top30-detail[open] .top30-chevron{transform:rotate(180deg)}
 .top30-expanded{padding:0 11px 11px;border-top:1px solid #435171}
+/* Keep media hidden in compact rows, but visible inside expanded details. */
+.card.trend-top .top30-expanded .pic{display:block;width:100%;height:auto;max-height:65vh;object-fit:contain}
 .top30-expanded .fact{margin-top:11px}
 @media(max-width:390px){.top30-detail summary{grid-template-columns:38px minmax(0,1fr) minmax(63px,auto) 12px;gap:5px;padding:7px 8px}.top30-tag{font-size:9px;max-width:100px}}
 /* Top 30 is now the complete editorial view; no separate "Próximas" cards. */
@@ -219,11 +221,17 @@ function verifiedTrendSiteAI(x){
  if(!record||!/^[a-f0-9]{64}$/i.test(String(record.sha256||'')))return '';
  try{
   const u=new URL(record.image_url),file=u.pathname.split('/').pop()||'';
-  return u.protocol==='https:'&&u.hostname==='ttactualidad-tendencias.rainyraven22.chatgpt.site'&&
-   !u.search&&!u.hash&&!u.username&&!u.password&&!u.port&&
-   u.pathname.startsWith('/images/ttendencias/'+id+'-r'+rev+'-')&&
+  const safe=u.protocol==='https:'&&!u.search&&!u.hash&&!u.username&&!u.password&&!u.port&&
    file.toLowerCase().includes(String(record.sha256).slice(0,12).toLowerCase())&&
-   file.toLowerCase().endsWith('.png')?u.href:'';
+   file.toLowerCase().endsWith('.png');
+  if(!safe)return '';
+  const site=u.hostname==='ttactualidad-tendencias.rainyraven22.chatgpt.site'&&
+   u.pathname.startsWith('/images/ttendencias/'+id+'-r'+rev+'-');
+  // Exact original manually selected and hash-addressed by the editor.
+  const manual=u.hostname==='raw.githubusercontent.com'&&
+   u.pathname==='/fabricelop/europapress-rss/main/trends/generated-images/'+
+    id+'-r'+rev+'-manual-'+String(record.sha256).slice(0,12).toLowerCase()+'.png';
+  return site||manual?u.href:'';
  }catch{return ''}
 }
 
@@ -1196,6 +1204,11 @@ function updateTop30AgeColors(){
 function compactTop30Card(out,x){
  const body=out.querySelector('.card-body');
  const content=document.createElement('div');content.className='top30-expanded';
+ // rowCard() creates artwork outside card-body. Move it into the details
+ // before replacing the outer card, or the image is silently discarded.
+ for(const media of [...out.children]){
+  if(media!==body&&media.matches('.news-photo-set,img.pic'))content.append(media);
+ }
  for(const child of [...body.children])if(!child.matches('.meta,h2'))content.append(child);
  if(!String(x.explanation||'').trim()){
   const note=document.createElement('p');note.className='fact';
