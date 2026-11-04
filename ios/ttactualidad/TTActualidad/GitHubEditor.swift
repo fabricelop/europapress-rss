@@ -584,10 +584,24 @@ final class GitHubEditor: ObservableObject {
         let (already, imageCode) = try await api(path)
         if imageCode == 200 {
             let info = try JSONSerialization.jsonObject(with: already) as? [String: Any] ?? [:]
-            let encoded = (info["content"] as? String ?? "").replacingOccurrences(of: "\n", with: "")
-            guard let old = Data(base64Encoded: encoded, options: .ignoreUnknownCharacters),
+            // GitHub Contents omits inline bytes for files >1 MB. The immutable
+            // Git Blob endpoint remains usable up to the GitHub file limit.
+            guard let blobSHA = info["sha"] as? String,
+                  blobSHA.range(of: "^[0-9a-f]{40}$", options: .regularExpression) != nil
+            else { throw GitHubError.message("El PNG existente no tiene SHA Git verificable.") }
+            let blobURL = URL(string:
+                "https://api.github.com/repos/fabricelop/europapress-rss/git/blobs/" + blobSHA)!
+            var probe = URLRequest(url: blobURL, timeoutInterval: 25)
+            probe.setValue("Bearer " + auth, forHTTPHeaderField: "Authorization")
+            probe.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            let (blob, response) = try await URLSession.shared.data(for: probe)
+            guard (response as? HTTPURLResponse)?.statusCode == 200,
+                  let meta = try JSONSerialization.jsonObject(with: blob) as? [String: Any],
+                  let encoded = meta["content"] as? String,
+                  let old = Data(base64Encoded:
+                    encoded.replacingOccurrences(of: "\n", with: ""), options: .ignoreUnknownCharacters),
                   SHA256.hash(data: old).map({ String(format: "%02x", $0) }).joined() == hex
-            else { throw GitHubError.message("El PNG existente tiene otra huella.") }
+            else { throw GitHubError.message("El PNG existente no coincide con los bytes solicitados.") }
         } else if imageCode == 404 {
             let (_, code) = try await api(path, method: "PUT", body: [
                 "message": "TTActualidad imagen manual " + editorialID + " r" + String(revision),
