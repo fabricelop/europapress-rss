@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-04T10:53:24.362Z",
+  "updated_at": "2026-11-04T10:58:15.722368Z",
   "items": [
     {
       "event_id": "9442d0ff04c6",
@@ -454,7 +454,7 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
+      "archive_image_status": "none",
       "fallback_image_status": "none",
       "sensitive_editorial": false,
       "editorial_verified_at": "2026-11-04T10:51:05.024Z",
@@ -462,7 +462,9 @@
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-04T10:58:15.722368Z",
+      "fallback_image_search_attempted_at": "2026-11-04T10:58:15.722368Z"
     },
     {
       "event_id": "ada19dde63e9",
@@ -503,15 +505,33 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "sensitive_editorial": false,
       "editorial_verified_at": "2026-11-04T10:53:24.362Z",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-04T10:58:15.722368Z",
+      "fallback_image_search_attempted_at": "2026-11-04T10:58:15.722368Z",
+      "archive_image": {
+        "url": "https://www.lavanguardia.com/files/og_thumbnail/files/fp/uploads/2026/11/03/6ae97286a23bd.r_d.2637-1758-2275.jpeg",
+        "source": "www.lavanguardia.com",
+        "source_url": "https://www.lavanguardia.com/politica/20261104/11675787/abascal-subiria-tren-ve-irresponsable-feijoo-diga-sistema-merece-confianza.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Abascal no se subiría a un tren y ve “irresponsable” que Feijóo diga que el sistema merece “confianza”"
+      },
+      "fallback_image": {
+        "url": "https://www.lavanguardia.com/files/og_thumbnail/files/fp/uploads/2026/11/03/6ae97286a23bd.r_d.2637-1758-2275.jpeg",
+        "source": "www.lavanguardia.com",
+        "source_url": "https://www.lavanguardia.com/politica/20261104/11675787/abascal-subiria-tren-ve-irresponsable-feijoo-diga-sistema-merece-confianza.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Abascal no se subiría a un tren y ve “irresponsable” que Feijóo diga que el sistema merece “confianza”"
+      }
     }
   ],
   "count": 9,
