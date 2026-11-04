@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793831198851-manual",
   "previous_run_id": "tr-1793826849874-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T23:26:38.851+01:00",
-  "updated_at": "2026-11-04T23:35:00+01:00",
-  "finished_at": null,
-  "current": 12,
+  "updated_at": "2026-11-04T23:36:45.389514+01:00",
+  "finished_at": "2026-11-04T23:36:45.389514+01:00",
+  "current": 14,
   "total": 14,
-  "trend_id": "red-review-0eb142c7b22c8ef718e8",
-  "title": "Revisar novedades: Óscar Puente",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "5ab9dcfe817e",
     "b1b63c043492",
@@ -27,27 +27,23 @@
     "6fc1b878bf91",
     "78c973bfa2ad",
     "e2778471ffa7",
-    "d05d7faf3901"
+    "d05d7faf3901",
+    "red-review-0eb142c7b22c8ef718e8",
+    "red-review-2500649a854347d68c13"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-0eb142c7b22c8ef718e8",
-    "red-review-2500649a854347d68c13"
-  ],
-  "remaining_active_ids": [
-    "red-review-0eb142c7b22c8ef718e8",
-    "red-review-2500649a854347d68c13"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 12,
+    "attempted": 14,
     "observed": 14,
-    "closed": 12,
+    "closed": 14,
     "explained": 12,
-    "updates": 0,
+    "updates": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -59,7 +55,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "12/14. Barrera final detectó dos revisiones nuevas; revisando novedades de Óscar Puente. Sin ImageGen.",
+  "activity": "Pasada cerrada 14/14: 12 explicaciones y 2 revisiones de continuidad. Cola autoritativa 0, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones.",
   "final_outcomes": [
     {
       "id": "5ab9dcfe817e",
@@ -158,6 +154,24 @@
       "outcome": "explained",
       "applied": true,
       "via": "editorial_outbox"
+    },
+    {
+      "id": "red-review-0eb142c7b22c8ef718e8",
+      "revision": 0,
+      "name": "Revisar novedades: Óscar Puente",
+      "outcome": "continuity",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "4c7de84bfc7c"
+    },
+    {
+      "id": "red-review-2500649a854347d68c13",
+      "revision": 0,
+      "name": "Revisar novedades: Jesús de Miguel",
+      "outcome": "continuity",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "ca4337605844"
     }
   ],
   "api_failover_enabled": false,
@@ -165,10 +179,10 @@
     "run_id": "tr-1793831198851-manual",
     "status": "DONE",
     "started_at": "2026-11-04T23:26:38.851+01:00",
-    "updated_at": "2026-11-04T23:33:30+01:00",
-    "finished_at": "2026-11-04T23:33:30+01:00",
-    "current": 12,
-    "total": 12,
+    "updated_at": "2026-11-04T23:36:45.389514+01:00",
+    "finished_at": "2026-11-04T23:36:45.389514+01:00",
+    "current": 14,
+    "total": 14,
     "queue_complete": true,
     "processed_ids": [
       "5ab9dcfe817e",
@@ -182,7 +196,9 @@
       "6fc1b878bf91",
       "78c973bfa2ad",
       "e2778471ffa7",
-      "d05d7faf3901"
+      "d05d7faf3901",
+      "red-review-0eb142c7b22c8ef718e8",
+      "red-review-2500649a854347d68c13"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
@@ -283,6 +299,24 @@
         "outcome": "explained",
         "applied": true,
         "via": "editorial_outbox"
+      },
+      {
+        "id": "red-review-0eb142c7b22c8ef718e8",
+        "revision": 0,
+        "name": "Revisar novedades: Óscar Puente",
+        "outcome": "continuity",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "4c7de84bfc7c"
+      },
+      {
+        "id": "red-review-2500649a854347d68c13",
+        "revision": 0,
+        "name": "Revisar novedades: Jesús de Miguel",
+        "outcome": "continuity",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "ca4337605844"
       }
     ],
     "imagegen_calls": 0,
@@ -293,5 +327,5 @@
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-04T23:26:38.851+01:00",
-  "last_completed_at": "2026-11-04T23:33:30+01:00"
+  "last_completed_at": "2026-11-04T23:36:45.389514+01:00"
 }
