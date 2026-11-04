@@ -8,6 +8,7 @@ import UIKit
 // publisher: the approved inbox and both public readbacks remain authoritative.
 struct ManualEditorialImageSheet: View {
     @ObservedObject var github: GitHubEditor
+    @EnvironmentObject private var store: EditorialStore
     let project: String
     let editorialID: String
     let revision: Int
@@ -226,10 +227,14 @@ struct ManualEditorialImageSheet: View {
             project: project, editorialID: editorialID, revision: revision,
             editorialText: editorialText, png: png)
         githubImageURL = url
+        let sha = SHA256.hash(data: png).map { String(format: "%02x", $0) }.joined()
+        store.showVerifiedManualImage(
+            project: project, editorialID: editorialID, revision: revision,
+            editorialText: editorialText, url: url, sha256: sha)
         await SiteAIImageCatalog.invalidateCache()
         await NewsAIImageCatalog.invalidateCache()
         notice = "Imagen guardada y asociada a esta ficha histórica en GitHub. " +
-            "La app actualizará su catálogo. La web todavía no ha confirmado la imagen."
+            "Se ha actualizado la ficha visible en esta sesión. La web todavía no ha confirmado la imagen."
     }
 
     private func submit() async {

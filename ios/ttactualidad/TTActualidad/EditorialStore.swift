@@ -520,6 +520,70 @@ final class EditorialStore: ObservableObject {
     }
     private var draftNews = [String: NewsItem]()
 
+    // A successful GitHub manifest readback is already a verified association.
+    // Update the visible snapshot immediately rather than waiting for a full
+    // multi-file refresh (which downloads very large editorial ledgers).
+    // This does NOT claim that the separate Sites website has published it.
+    static func withVerifiedManualImage(
+        _ original: EditorialSnapshot,
+        project: String, editorialID: String, revision: Int,
+        editorialText: String, url: URL, sha256: String
+    ) -> EditorialSnapshot {
+        let folder = project == "ttendencias" ? "trends" : "ttittulares"
+        let expectedPath = "/fabricelop/europapress-rss/main/" + folder +
+            "/generated-images/" + editorialID + "-r" + String(revision) + "-manual-"
+        guard ["ttendencias", "ttittulares"].contains(project),
+              url.scheme == "https", url.host == "raw.githubusercontent.com",
+              url.path.hasPrefix(expectedPath), url.path.hasSuffix(".png"),
+              url.query == nil, url.fragment == nil, url.port == nil,
+              sha256.count == 64, sha256.allSatisfy(\.isHexDigit),
+              url.lastPathComponent.contains(String(sha256.prefix(12)))
+        else { return original }
+        var changed = original
+        if project == "ttendencias" {
+            func apply(_ list: inout [TrendItem]) {
+                for idx in list.indices {
+                    guard list[idx].siteImageEditorialID == editorialID,
+                          list[idx].siteImageRevision == revision,
+                          list[idx].explanation == editorialText else { continue }
+                    list[idx].siteImageURL = url
+                    list[idx].siteImageSHA256 = sha256
+                }
+            }
+            apply(&changed.top30)
+            apply(&changed.trendListas)
+            apply(&changed.trendsElaboracion)
+        } else if project == "ttittulares" {
+            func apply(_ list: inout [NewsItem]) {
+                for idx in list.indices {
+                    guard list[idx].id == editorialID,
+                          list[idx].revision == revision,
+                          list[idx].editorial == editorialText else { continue }
+                    list[idx].siteImageURL = url
+                    list[idx].siteImageSHA256 = sha256
+                }
+            }
+            apply(&changed.news)
+            apply(&changed.newsElaboracion)
+            apply(&changed.newsRevision)
+            apply(&changed.newsCreciendo)
+            apply(&changed.newsTremending)
+        }
+        return changed
+    }
+
+    func showVerifiedManualImage(
+        project: String, editorialID: String, revision: Int,
+        editorialText: String, url: URL, sha256: String
+    ) {
+        canonicalSnapshot = Self.withVerifiedManualImage(
+            canonicalSnapshot, project: project, editorialID: editorialID,
+            revision: revision, editorialText: editorialText, url: url, sha256: sha256)
+        snapshot = Self.withVerifiedManualImage(
+            snapshot, project: project, editorialID: editorialID,
+            revision: revision, editorialText: editorialText, url: url, sha256: sha256)
+    }
+
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
     private let paths = [
         "pilot/ttactualidad-publication-events.json",
