@@ -3,67 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793749880",
+  "run_id": "tr-autoguard-1793752870",
   "previous_run_id": "tr-autoguard-1793749880",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-04T00:56:30+01:00",
-  "updated_at": "2026-11-04T01:00:15+01:00",
-  "finished_at": "2026-11-04T00:59:37+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "59330137c24c",
-    "red-review-a3623bbc2bfa6cf0a263",
-    "red-review-f55346c003bf63b4b31b"
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T01:42:20+01:00",
+  "updated_at": "2026-11-04T01:42:20+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 4,
+  "trend_id": "4bd51e39ca2a",
+  "title": "Champions League",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "4bd51e39ca2a",
+    "f1ad001b8a5f",
+    "2c429670b3b0",
+    "4e9acefb18e1"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "4bd51e39ca2a",
+    "f1ad001b8a5f",
+    "2c429670b3b0",
+    "4e9acefb18e1"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada cerrada 3/3: #LaNoche24h r0 explained; #codigo10 review updated como episodio distinto del 3-N con nueva ficha trend-update-41db1e2085092c5e2510; Martorell review unchanged por convergencia JIT. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. Una incidencia de transporte al escribir requests.json directamente quedó recuperada mediante el outbox oficial.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-04T00:55:30+01:00",
-      "type": "direct_requests_write_transport_failed",
-      "trend_id": "59330137c24c",
-      "revision": 0,
-      "resolved": true,
-      "message": "La escritura directa del requests.json grande falló por transporte h2; se recuperó por el editorial-outbox oficial y se verificó la sincronización exacta en requests y Listas."
-    }
-  ],
+  "summary": null,
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "59330137c24c",
-      "revision": 0,
-      "name": "#LaNoche24h",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-04T00:55:30+01:00"
-    },
-    {
-      "id": "red-review-a3623bbc2bfa6cf0a263",
-      "revision": 0,
-      "name": "Revisar novedades: #codigo10",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-41db1e2085092c5e2510",
-      "distinct_episode": true
-    },
-    {
-      "id": "red-review-f55346c003bf63b4b31b",
-      "revision": 0,
-      "name": "Revisar novedades: Martorell",
-      "outcome": "unchanged",
-      "applied": true,
-      "concurrent_convergence": true
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T00:56:30+01:00",
   "last_completed_at": "2026-11-04T00:59:37+01:00",
@@ -83,7 +54,7 @@
     "summary": "1 explicación ordinaria, 1 revisión actualizada y 1 revisión sin cambios. Cola final y reexplicaciones a cero; ImageGen=0; publicaciones=0. Incidencia de transporte recuperada."
   },
   "source": "chat",
-  "message": "Barrera final verificada: 3/3 cerrados; editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793752870: 4 investigaciones preparing/update vigentes en main; orden de antigüedad y validación JIT por id+revision. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4277,6 +4248,17 @@
       "total": 2,
       "converged_with": "tr-autoguard-1793749880",
       "message": "Pasada manual tr-1793750189999-manual cerrada 2/2 por convergencia JIT con la ejecución autoguard activa: #codigo10 review_completed/updated con nueva ficha trend-update-41db1e2085092c5e2510 y Martorell review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T01:42:20+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793752870",
+      "status": "PROCESSING",
+      "current": 0,
+      "total": 4,
+      "trend_id": "4bd51e39ca2a",
+      "title": "Champions League",
+      "message": "Inicio tr-autoguard-1793752870: 4 investigaciones preparing/update vigentes en main; orden de antigüedad y validación JIT por id+revision. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
