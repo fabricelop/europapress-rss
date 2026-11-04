@@ -5,27 +5,27 @@
   "canonical": true,
   "run_id": "tr-1793773302265-manual",
   "previous_run_id": "tr-1793773174643-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T07:22:00+01:00",
-  "updated_at": "2026-11-04T07:25:25+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-04T07:26:00+01:00",
+  "finished_at": "2026-11-04T07:26:00+01:00",
   "current": 1,
   "total": 1,
-  "trend_id": "red-review-b1371b0af49362c69744",
-  "title": "Revisar novedades: Mazón",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "red-review-b1371b0af49362c69744"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "1/1 observado y cerrado por convergencia JIT: Mazón actualizado y aplicado en main; verificando barrera final. ImageGen=0; publicaciones=0.",
+  "summary": "1/1 cerrado por convergencia JIT: Mazón actualizado y aplicado. Barrera final en main: editorial-queue=0 y sin trabajo activo observado. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "verifying",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "red-review-b1371b0af49362c69744",
@@ -40,33 +40,22 @@
     }
   ],
   "last_started_at": "2026-11-04T07:22:00+01:00",
-  "last_completed_at": "2026-11-04T07:23:30+01:00",
+  "last_completed_at": "2026-11-04T07:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793773174643-manual",
+    "run_id": "tr-1793773302265-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T07:20:00+01:00",
-    "updated_at": "2026-11-04T07:23:30+01:00",
-    "finished_at": "2026-11-04T07:23:30+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-04T07:22:00+01:00",
+    "updated_at": "2026-11-04T07:26:00+01:00",
+    "finished_at": "2026-11-04T07:26:00+01:00",
+    "current": 1,
+    "total": 1,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-394db58b9e2505d09a24",
       "red-review-b1371b0af49362c69744"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
-      {
-        "id": "red-review-394db58b9e2505d09a24",
-        "revision": 0,
-        "name": "Revisar novedades: Óscar Puente",
-        "outcome": "updated",
-        "applied": true,
-        "created_id": "trend-update-632ee65434ba0ce38dcd",
-        "apply_commit": "364f06e5c1711ea3287133232bc838f6f3cd9f1d",
-        "reason": "Novedad material de continuidad: dimisión como ministro de Transportes y renuncia a las listas del PSOE para el 29-N."
-      },
       {
         "id": "red-review-b1371b0af49362c69744",
         "revision": 0,
@@ -75,6 +64,7 @@
         "applied": true,
         "created_id": "trend-update-d0c09aee200ef9d712b1",
         "apply_commit": "ae93185ce677f5d82e36ccc742ac20eab088d58d",
+        "via": "concurrent_convergence_jit",
         "reason": "Novedad material de continuidad: primer aniversario de su dimisión, mantiene el escaño y hay nuevas peticiones para que deje el acta."
       }
     ],
