@@ -2,69 +2,112 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-04T07:54:59.635419+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-04T15:55:29.500968+00:00",
+      "issue_count": 3,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "c2a34344893d",
+          "title": "Zapatero insiste en preguntar a Arabia Saudí por el origen de sus joyas y reitera que nunca se plant",
+          "seconds": 1315,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "66d3b0392a27",
+          "title": "La jueza amplía a nueve las investigadas por los presuntos malos tratos en la guardería de Pozuelo d",
+          "seconds": 666,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1634447,
+          "seconds": 1663277,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "5250082054033809cb31f8ea4323e04820e1dad37f2ed0c7f207977853c56a06",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-11-04T07:54:59.635419+00:00",
-      "issue_count": 6,
+      "checked_at": "2026-11-04T15:55:29.500968+00:00",
+      "issue_count": 10,
       "issues": [
         {
+          "kind": "editorial_overdue",
+          "id": "red-review-a4bde182eb3c449d3224",
+          "title": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
+          "seconds": 2410,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "red-review-9962ec3ec9ae8aeb6188",
+          "title": "Revisar novedades: MAGA",
+          "seconds": 2410,
+          "workflow": null
+        },
+        {
           "kind": "missing_delivery",
-          "id": "9048f20dfc30",
-          "title": "#Midterms2026",
-          "seconds": 5984,
+          "id": "c8e77382f053",
+          "title": "Rodri",
+          "seconds": 7597,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "trend-update-632ee65434ba0ce38dcd",
+          "id": "7618648b2ae1",
+          "title": "Telemadrid",
+          "seconds": 7552,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-09c2566ff62153444592",
           "title": "Óscar Puente",
-          "seconds": 5604,
+          "seconds": 6754,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "trend-update-d0c09aee200ef9d712b1",
+          "id": "trend-update-a2e848d140562bc91220",
+          "title": "Jesús de Miguel",
+          "seconds": 6754,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-aeb90b8fe0828e4f5342",
           "title": "Mazón",
-          "seconds": 5535,
+          "seconds": 6436,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "trend-update-78a70eaaf1fa5437d5cf",
-          "title": "Gracias Ministro",
-          "seconds": 3310,
+          "id": "bcfe497de1af",
+          "title": "#TheLidlTote",
+          "seconds": 3863,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "trend-update-d8b0b437dd21171dc217",
-          "title": "Chiqui",
-          "seconds": 3310,
+          "id": "65023109ad81",
+          "title": "#TEM4N",
+          "seconds": 2627,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1634446,
+          "seconds": 1663276,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -73,16 +116,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "df90a604d04197f40f1daf3bcac5e0cc1f7f425880ffca94bc5e8b5e425481ac",
+      "open_signature": "ab5a24c32835dffe35b469f620d0f864b93c4ee91ee4936bde056e60b3800f49",
       "repair_via_workflow_run": false,
-      "escalation_required": 5
+      "escalation_required": 9
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-04T01:28:47.864228+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-04T07:54:59.635419+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-04T07:54:59.635419+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-04T07:54:59.635419+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-04T15:55:29.500968+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-04T15:55:29.500968+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-04T15:55:29.500968+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-04T15:55:29.500968+00:00"
   },
-  "checked_at": "2026-11-04T07:54:59.635419+00:00"
+  "checked_at": "2026-11-04T15:55:29.500968+00:00"
 }
