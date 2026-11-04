@@ -3,23 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793759477",
-  "previous_run_id": "tr-1793757592011-manual",
+  "run_id": "tr-1793759979125-manual",
+  "previous_run_id": "tr-autoguard-1793759477",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-04T03:32:00+01:00",
-  "updated_at": "2026-11-04T03:42:00+01:00",
+  "started_at": "2026-11-04T03:40:00+01:00",
+  "updated_at": "2026-11-04T03:40:00+01:00",
   "finished_at": null,
-  "current": 3,
-  "total": 5,
+  "current": 0,
+  "total": 2,
   "trend_id": "red-review-635c44cbcb2983794557",
   "title": "Revisar novedades: Chiqui",
   "queue_complete": false,
-  "processed_ids": [
-    "8e9e26c2ef86",
-    "6ee4aa423d88",
-    "5f0d0b18df81"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "red-review-635c44cbcb2983794557",
     "red-review-2cab33b04eb24ae416c7"
@@ -29,37 +25,12 @@
     "red-review-2cab33b04eb24ae416c7"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "summary": "Pasada manual iniciada sobre 2 review_red vigentes: Chiqui y Renfe. Revalidación JIT por id+revision; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "preparing",
-  "final_outcomes": [
-    {
-      "id": "8e9e26c2ef86",
-      "revision": 0,
-      "name": "Florida",
-      "outcome": "explained",
-      "applied": true,
-      "reason": "Causa única no confirmada: coincidían el recuento de las midterms en Florida y la conversación por el accidente aéreo de Palm Beach; se redactó con incertidumbre explícita y sin remate por sensibilidad."
-    },
-    {
-      "id": "6ee4aa423d88",
-      "revision": 0,
-      "name": "Rocio Carrasco",
-      "outcome": "explained",
-      "applied": true,
-      "reason": "Detonante actual verificado en Supervivientes All Stars: defensa de Rocío Carrasco por Jorge Javier Vázquez tras las palabras de Rosario Mohedano."
-    },
-    {
-      "id": "5f0d0b18df81",
-      "revision": 0,
-      "name": "#Midterms2026",
-      "outcome": "explained",
-      "applied": true,
-      "reason": "Recuento en curso de las elecciones de medio mandato de EEUU con el control del Congreso en juego."
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T03:39:01+01:00",
   "last_completed_at": "2026-11-04T03:41:00+01:00",
@@ -79,7 +50,7 @@
     "summary": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0.",
+  "message": "Inicio manual: 2 revisiones review_red vigentes en main; Chiqui primero y Renfe después. Validación JIT antes de tratar y persistir cada resultado. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4505,6 +4476,17 @@
       "trend_id": "red-review-635c44cbcb2983794557",
       "title": "Revisar novedades: Chiqui",
       "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:40:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793759979125-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-635c44cbcb2983794557",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Inicio manual: 2 revisiones review_red vigentes en main; Chiqui primero y Renfe después. Validación JIT antes de tratar y persistir cada resultado. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
