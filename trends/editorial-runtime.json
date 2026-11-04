@@ -6,9 +6,9 @@
   "run_id": "tr-autoguard-1793762482",
   "previous_run_id": "tr-1793760139482-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-04T04:21:30+01:00",
-  "updated_at": "2026-11-04T04:27:15+01:00",
+  "updated_at": "2026-11-04T04:28:30+01:00",
   "finished_at": null,
   "current": 1,
   "total": 3,
@@ -61,7 +61,7 @@
     "summary": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Reapertura JIT de tr-autoguard-1793762482: tras cerrar Texas entraron 2 review_red nuevos (Chiqui y Andorra). Se amplía la pasada a 3 trabajos observados y se procesan por orden de cola; sin ImageGen ni publicación.",
+  "message": "Chiqui review r0 revalidada JIT. Novedad material verificada: Tierra de Nadie 8 dejó a Chiqui nominada junto a Yola tras la salvación de Asraf. Resultado updated entregado al maintenance-outbox; ImageGen=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4575,6 +4575,28 @@
       "trend_id": "red-review-7501a4f8eb00317019cd",
       "title": "Revisar novedades: Chiqui",
       "message": "Reapertura JIT de tr-autoguard-1793762482: tras cerrar Texas entraron 2 review_red nuevos (Chiqui y Andorra). Se amplía la pasada a 3 trabajos observados y se procesan por orden de cola; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-04T04:28:30+01:00",
+      "phase": "investigating",
+      "run_id": "tr-autoguard-1793762482",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 3,
+      "trend_id": "red-review-7501a4f8eb00317019cd",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Chiqui r0 revalidada JIT; contraste actualizado con Mediaset y Vertele."
+    },
+    {
+      "at": "2026-11-04T04:28:30+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793762482",
+      "status": "RUNNING",
+      "current": 1,
+      "total": 3,
+      "trend_id": "red-review-7501a4f8eb00317019cd",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Chiqui review r0 revalidada JIT. Novedad material verificada: Tierra de Nadie 8 dejó a Chiqui nominada junto a Yola tras la salvación de Asraf. Resultado updated entregado al maintenance-outbox; ImageGen=0."
     }
   ],
   "history": [
