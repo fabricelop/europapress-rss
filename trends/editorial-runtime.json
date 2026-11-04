@@ -5,29 +5,35 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793759477",
   "previous_run_id": "tr-1793757592011-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-11-04T03:32:00+01:00",
-  "updated_at": "2026-11-04T03:41:00+01:00",
-  "finished_at": "2026-11-04T03:41:00+01:00",
+  "updated_at": "2026-11-04T03:42:00+01:00",
+  "finished_at": null,
   "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 5,
+  "trend_id": "red-review-635c44cbcb2983794557",
+  "title": "Revisar novedades: Chiqui",
+  "queue_complete": false,
   "processed_ids": [
     "8e9e26c2ef86",
     "6ee4aa423d88",
     "5f0d0b18df81"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-635c44cbcb2983794557",
+    "red-review-2cab33b04eb24ae416c7"
+  ],
+  "remaining_active_ids": [
+    "red-review-635c44cbcb2983794557",
+    "red-review-2cab33b04eb24ae416c7"
+  ],
   "remaining_problematic_ids": [],
   "summary": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "8e9e26c2ef86",
@@ -73,7 +79,7 @@
     "summary": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4488,6 +4494,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:42:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 3,
+      "total": 5,
+      "trend_id": "red-review-635c44cbcb2983794557",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -7340,6 +7357,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:42:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 3,
+      "total": 5,
+      "trend_id": "red-review-635c44cbcb2983794557",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
@@ -7357,8 +7385,8 @@
       "created_id": "trend-update-35c47da02d21c05a1e59"
     }
   ],
-  "current_item": null,
-  "current_title": null,
+  "current_item": "red-review-635c44cbcb2983794557",
+  "current_title": "Revisar novedades: Chiqui",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -12616,6 +12644,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:42:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 3,
+      "total": 5,
+      "trend_id": "red-review-635c44cbcb2983794557",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
