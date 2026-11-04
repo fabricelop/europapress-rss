@@ -5,29 +5,52 @@
   "canonical": true,
   "run_id": "tr-1793772919498-manual",
   "previous_run_id": "tr-1793772147660-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-04T06:16:11.180Z",
-  "updated_at": "2026-11-04T07:18:50+01:00",
+  "updated_at": "2026-11-04T06:19:44.924Z",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "9048f20dfc30",
-  "title": "#Midterms2026",
-  "queue_complete": true,
+  "current": 2,
+  "total": 4,
+  "trend_id": "red-review-394db58b9e2505d09a24",
+  "title": "Revisar novedades: Óscar Puente",
+  "queue_complete": false,
   "processed_ids": [
     "7d064d39a555",
     "9048f20dfc30"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-394db58b9e2505d09a24",
+    "red-review-b1371b0af49362c69744"
+  ],
+  "remaining_active_ids": [
+    "red-review-394db58b9e2505d09a24",
+    "red-review-b1371b0af49362c69744"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Los dos resultados textuales están en editorial-outbox; verificando que el aplicador los materializa en requests/Listas y retira sus revisiones exactas de la cola.",
+  "summary": "2/4 cerrados. Entraron durante la barrera final dos review_red (Óscar Puente y Mazón); se continúa la misma pasada.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "investigating",
+  "final_outcomes": [
+    {
+      "id": "7d064d39a555",
+      "revision": 0,
+      "name": "Democratas",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0cec56c2a4257e14b0161c4bc7f3e5663bab2b8f"
+    },
+    {
+      "id": "9048f20dfc30",
+      "revision": 0,
+      "name": "#Midterms2026",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0cec56c2a4257e14b0161c4bc7f3e5663bab2b8f"
+    }
+  ],
   "last_started_at": "2026-11-04T07:18:50+01:00",
   "last_completed_at": "2026-11-04T07:18:50+01:00",
   "api_failover_enabled": false
