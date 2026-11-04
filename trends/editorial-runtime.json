@@ -3,71 +3,71 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793762482",
-  "previous_run_id": "tr-1793760139482-manual",
-  "status": "DONE_WITH_INCIDENTS",
+  "run_id": "tr-1793762800964-manual",
+  "previous_run_id": "tr-autoguard-1793762482",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-04T04:21:30+01:00",
-  "updated_at": "2026-11-04T04:31:00+01:00",
-  "finished_at": "2026-11-04T04:31:00+01:00",
-  "current": 3,
-  "total": 3,
+  "started_at": "2026-11-04T04:27:00+01:00",
+  "updated_at": "2026-11-04T04:32:00+01:00",
+  "finished_at": "2026-11-04T04:32:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "4b95ce627201"
+    "red-review-7501a4f8eb00317019cd",
+    "red-review-d3d50b6af3700ee32640"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual cerrada 1/1 por convergencia JIT: Renfe r0 quedó review_completed sin reescritura porque había salido del Top 30 fresco; cola final 0 y sin rewrite_pending/reexplain.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-04T04:25:00+01:00",
-      "run_id": "tr-autoguard-1793762482",
-      "type": "persist_transport_retry",
-      "phase": "persisting",
-      "trend_id": "4b95ce627201",
-      "title": "Texas",
-      "reason": "Primer intento de persistencia atómica falló por transporte h2; recuperación completada mediante editorial-outbox y el aplicador."
-    }
-  ],
+  "summary": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "red-review-2cab33b04eb24ae416c7",
+      "id": "red-review-7501a4f8eb00317019cd",
       "revision": 0,
-      "name": "Revisar novedades: Renfe",
-      "outcome": "unverified",
+      "name": "Revisar novedades: Chiqui",
+      "outcome": "stale",
       "applied": true,
       "via": "concurrent_convergence_jit",
-      "apply_commit": "6bcfa9ddcdd937c96cc2cc1fd5f4fc27e4698730",
-      "reason": "Renfe ya no figuraba en el Top 30 fresco de recent.json (03:41); se conserva texto y fecha originales."
+      "reason": "Guard JIT: existe una entrega terminal más nueva para Chiqui (r2 dismissed); no se aplicó la actualización propuesta."
+    },
+    {
+      "id": "red-review-d3d50b6af3700ee32640",
+      "revision": 0,
+      "name": "Revisar novedades: Andorra",
+      "outcome": "updated",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "da533585ec1af29bcb631aa276535c6474208086",
+      "created_id": "trend-update-6cd46b650a184b0b3593",
+      "reason": "Novedad material aplicada en continuidad: fallecimiento de Jesús de Miguel y reacción/solicitud de aplazamiento del FC Andorra."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T04:26:09+01:00",
-  "last_completed_at": "2026-11-04T04:26:09+01:00",
+  "last_started_at": "2026-11-04T04:27:00+01:00",
+  "last_completed_at": "2026-11-04T04:32:00+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793762482",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-04T04:21:30+01:00",
-    "finished_at": "2026-11-04T04:31:00+01:00",
-    "current": 3,
-    "total": 3,
+    "run_id": "tr-1793762800964-manual",
+    "status": "DONE",
+    "started_at": "2026-11-04T04:27:00+01:00",
+    "finished_at": "2026-11-04T04:32:00+01:00",
+    "current": 2,
+    "total": 2,
     "closed": [
-      "4b95ce627201",
       "red-review-7501a4f8eb00317019cd",
       "red-review-d3d50b6af3700ee32640"
     ],
     "pending": [],
-    "summary": "Pasada tr-autoguard-1793762482 cerrada 3/3: Texas r0 explicado; revisión Chiqui r0 cerrada stale por guard JIT al existir una entrega terminal más nueva (r2 dismissed); revisión Andorra r0 actualizada en continuidad con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; publicaciones=0. Incidencia recuperada: el primer intento de persistencia atómica de Texas falló por transporte h2 y se completó por editorial-outbox."
+    "summary": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793762482 cerrada 3/3: Texas r0 explicado; revisión Chiqui r0 cerrada stale por guard JIT al existir una entrega terminal más nueva (r2 dismissed); revisión Andorra r0 actualizada en continuidad con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; publicaciones=0. Incidencia recuperada: el primer intento de persistencia atómica de Texas falló por transporte h2 y se completó por editorial-outbox.",
+  "message": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4658,6 +4658,28 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793762482 cerrada 3/3: Texas r0 explicado; revisión Chiqui r0 cerrada stale por guard JIT al existir una entrega terminal más nueva (r2 dismissed); revisión Andorra r0 actualizada en continuidad con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; publicaciones=0. Incidencia recuperada: el primer intento de persistencia atómica de Texas falló por transporte h2 y se completó por editorial-outbox."
+    },
+    {
+      "at": "2026-11-04T04:27:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793762800964-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "red-review-7501a4f8eb00317019cd",
+      "title": "Revisar novedades: Chiqui",
+      "message": "Pasada manual iniciada con 2 review_red vigentes en main. Validación JIT por id+revision; sin ImageGen ni publicación. Una pasada autoguard concurrente estaba procesando los mismos trabajos."
+    },
+    {
+      "at": "2026-11-04T04:32:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793762800964-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
