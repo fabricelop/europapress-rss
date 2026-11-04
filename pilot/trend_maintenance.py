@@ -193,6 +193,7 @@ def apply_review(state, command, now, grouping):
     sources = command.get('verification_sources') or []
     if not reason or outcome != 'unverified' and (not sources or not all(isinstance(x, dict) and str(x.get('url') or '').startswith('https://') for x in sources)):
         raise ValueError('La revisión requiere motivo y fuentes verificadas; unverified requiere motivo del bloqueo')
+    effective_outcome = outcome
     if not stale:
         stamp_rows(state, source, red_review_checked_at=at, red_review_outcome=outcome,
                    red_review_reason=reason, red_review_sources=sources)
@@ -205,26 +206,38 @@ def apply_review(state, command, now, grouping):
                     or not text.startswith('TT#') or grouping.weighted_length(text) >= 280
                     or text == snap['explanation'] or closer and (not closer.startswith('🌶️ ') or not text.endswith(closer) or text.count(closer) != 1)):
                 raise ValueError('Actualización sin novedades, formato de continuidad/episodio o longitud válidos')
-            # New publication identity: never revive a published or dismissed source.
-            ident = 'trend-update-'+grouping.digest(job['id'])[:20]
-            row = dict(id=ident, revision=0, name=source.get('name'), rank=job['rank'], status='explained',
-                       requested_at=at, explained_at=at, updated_at=at, explanation=text, closer_text=closer,
-                       verification_sources=sources, originated_from_prior_id=source['id'],
-                       trend_names=source.get('trend_names') or [source.get('name')],
-                       red_review_job_id=job['id'], continuity_update=not separate, distinct_episode=separate,
-                       new_facts=command['new_facts'], with_image=True, disable_ai_image=False,
-                       editorial_grouping_state='pending', image_strategy='ai_plus_fallback', ai_image_status='pending')
-            for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
-                state[path][field].append(copy.deepcopy(row))
-            # An unpublished older card is visibly covered, with its text intact.
-            published = any(x.get('status') == 'published' and grouping.revision(x) == grouping.revision(source)
-                            for x in [source, request]+closures)
-            if not published and source['id'] in grouping.eligible(state, now):
-                stamp_rows(state, source, listas_group_role='covered', covered_by_id=ident,
-                           covered_by_name=row['name'], covered_by_revision=0,
-                           covered_source_revision=grouping.revision(source), covered_at=at)
-            job['review_created_id'] = ident
-    job.update(status='review_completed', review_outcome='stale' if stale else outcome,
+            # An ordinary factual development belongs to the SAME editorial episode.
+            # Never create another Listas card or image merely because research updated
+            # its wording. Preserve the published explanation/image fingerprint.
+            material = (separate and command.get('material_change') is True
+                        and bool(str(command.get('significance_reason') or '').strip()))
+            if not material:
+                effective_outcome = 'continuity'
+                stamp_rows(state, source, red_review_outcome='continuity',
+                           red_review_new_facts=str(command.get('new_facts') or '').strip(),
+                           red_review_continuity_explanation=text,
+                           red_review_significance_reason=str(command.get('significance_reason') or '').strip())
+            else:
+                # New publication identity: never revive a published or dismissed source.
+                ident = 'trend-update-'+grouping.digest(job['id'])[:20]
+                row = dict(id=ident, revision=0, name=source.get('name'), rank=job['rank'], status='explained',
+                           requested_at=at, explained_at=at, updated_at=at, explanation=text, closer_text=closer,
+                           verification_sources=sources, originated_from_prior_id=source['id'],
+                           trend_names=source.get('trend_names') or [source.get('name')],
+                           red_review_job_id=job['id'], continuity_update=not separate, distinct_episode=separate,
+                           new_facts=command['new_facts'], with_image=True, disable_ai_image=False,
+                           editorial_grouping_state='pending', image_strategy='ai_plus_fallback', ai_image_status='pending')
+                for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
+                    state[path][field].append(copy.deepcopy(row))
+                # An unpublished older card is visibly covered, with its text intact.
+                published = any(x.get('status') == 'published' and grouping.revision(x) == grouping.revision(source)
+                                for x in [source, request]+closures)
+                if not published and source['id'] in grouping.eligible(state, now):
+                    stamp_rows(state, source, listas_group_role='covered', covered_by_id=ident,
+                               covered_by_name=row['name'], covered_by_revision=0,
+                               covered_source_revision=grouping.revision(source), covered_at=at)
+                job['review_created_id'] = ident
+    job.update(status='review_completed', review_outcome='stale' if stale else effective_outcome,
                completed_at=at, review_reason=reason)
     state[QUEUE]['items'] = [x for x in state[QUEUE]['items'] if x.get('id') != job['id']]
     state[QUEUE].update(count=len(state[QUEUE]['items']), updated_at=at)
