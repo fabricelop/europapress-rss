@@ -28,10 +28,45 @@ jobs:
             label="${pair%%|*}"; url="${pair#*|}"
             echo "=== $label ==="
             for n in 1 2 3; do
-              curl -sS -L -o /dev/null --retry 0 --max-time 18 \
+              if [ "$label" = "github-requests-10mb" ] && [ "$n" -gt 1 ]; then continue; fi
+              curl -sS -L -o /dev/null --retry 0 --max-time 12 \
                 -A 'TTActualidad-ReadOnly-Latency-Diagnostic/1.0' \
                 -w 'HTTP=%{http_code} DNS=%{time_namelookup}s TTFB=%{time_starttransfer}s TOTAL=%{time_total}s BYTES=%{size_download} REDIRECTS=%{num_redirects}\n' \
                 "$url" || echo 'PROBE_NETWORK_FAILURE'
             done
           done
           echo '**Warning:** anonymous 401/404 timings do not establish authenticated mobile loading time.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Inspect anonymous HTML dependency list without reading private data
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sS -L --max-time 20 \
+            -o /tmp/ttactualidad-anonymous-root.html \
+            https://ttactualidad.rainyraven22.chatgpt.site/
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('/tmp/ttactualidad-anonymous-root.html').read_text(errors='replace')
+          print('PUBLIC_ROOT_HTML_BYTES=',len(html.encode()))
+          for term in ('trends/requests.json','telegram-manual-explained.json',
+            'site-top30-current.json','/api/image-inbox',
+            'mobile-decisions.json','ttittulares/prepared.json',
+            'raw.githubusercontent.com','api.github.com','<script','type="module"'):
+              print('PUBLIC_HTML_TOKEN',term,'count=',html.count(term))
+          print('PUBLIC_SCRIPT_URLS=',re.findall(r'<script[^>]*src=["\']([^"\']+)',html)[:15])
+          print('PUBLIC_STYLESHEET_URLS=',re.findall(r'<link[^>]*href=["\']([^"\']+)',html)[:15])
+          for term in ('requests.json','telegram-manual-explained.json','image-inbox'):
+              matches=list(re.finditer(re.escape(term),html,re.I))
+              for match in matches[:3]:
+                  context=html[max(match.start()-75,0):match.end()+100].replace('\n',' ')
+                  # Context comes only from public HTML and must not include auth values.
+                  context=re.sub(r'(token|secret|key)\s*[:=]\s*[^\s,}]+',r'\1=[REDACTED]',context,flags=re.I)
+                  print('PUBLIC_HTML_REFERENCE',term,context[:200])
+          PY
+      - name: Retain only anonymous homepage HTML for local performance inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: ttactualidad-public-anonymous-html
+          path: /tmp/ttactualidad-anonymous-root.html
+          retention-days: 1
