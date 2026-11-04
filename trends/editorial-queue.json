@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-04T15:04:15+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-04T14:04:43.637819+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-f24ce299d00b86ed72ae",
+      "revision": 0,
+      "name": "Revisar novedades: Mazón",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-11-04T14:04:43.637819+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "6977961651a2",
+        "revision": 0,
+        "name": "Mazón",
+        "rank": 7,
+        "explanation": "TT#7 Mazón es tendencia por el segundo aniversario de la DANA del 29-O y la manifestación convocada mañana en València; las víctimas siguen reclamando responsabilidades al expresident.\n#CarlosMazón #DANA #Valencia",
+        "explanation_sha256": "b0a9202248115431e8672b25fe61dc697cd21fd587919a6a080d168e4f6efcd4",
+        "explained_at": "2026-10-30T14:17:00+01:00",
+        "verification_sources": [
+          "https://elpais.com/espana/comunidad-valenciana/2026-10-29/que-fue-de-carlos-mazon-el-expresidente-se-limita-a-votar-mientras-las-victimas-de-la-dana-no-olvidan-y-piden-su-acta-de-diputado.html",
+          "https://www.europapress.es/comunitat-valenciana/noticia-manifestacion-segundo-aniversario-dana-31-octubre-lema-mazon-preso-20261002125728.html"
+        ],
+        "fingerprint": "97312f3daa2687319c94befb090eedad11d4420fab3a83edb5ccdabe59190976"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-25fdb32ad92f17928286",
+      "revision": 0,
+      "name": "Revisar novedades: Martorell",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-04T14:04:43.637819+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "amarilla",
+      "review_priority": 1,
+      "review_source": {
+        "id": "652f65e6db28",
+        "revision": 0,
+        "name": "Martorell",
+        "rank": 4,
+        "explanation": "TT#4 Martorell es tendencia por el choque en un tramo de Rodalies: tres vagones de cereal se soltaron y golpearon un tren de Renfe Mercancías. El maquinista fue hospitalizado y se encuentra bien.\n#Martorell #Rodalies",
+        "explanation_sha256": "bc1ab6317b951a9faf64e7ade62354ed4d2229b90ca6922abb0c3e1e5712946d",
+        "explained_at": "2026-11-03T21:29:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/03/un-maquinista-de-mercancias-termina-en-el-hospital-despues-de-que-unos-vagones-hayan-chocado-contra-su-tren-cadena-ser/"
+          },
+          {
+            "url": "https://www.lasexta.com/noticias/sociedad/hospitalizado-maquinista-chocar-tres-vagones-tren-martorell-barcelona_202611036aea3ba8025012321572bed4.html"
+          }
+        ],
+        "fingerprint": "6c1aed8a6639f01e2e03834a878d458b65da5b04e4c6c0839e718590e0114c3d"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques."
+    }
+  ]
 }
