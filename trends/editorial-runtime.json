@@ -5,114 +5,132 @@
   "canonical": true,
   "run_id": "tr-1793824841260-manual",
   "previous_run_id": "tr-1793824800000-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T21:41:00+01:00",
-  "updated_at": "2026-11-04T21:45:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T21:46:00+01:00",
+  "finished_at": "2026-11-04T21:46:00+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "cd58e4b34464",
-  "title": "Rudiger",
-  "queue_complete": true,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": false,
   "processed_ids": [
+    "cd58e4b34464",
     "4bea3ac923fc",
-    "cd58e4b34464"
+    "red-review-1fcaec879264e3f452b2",
+    "red-review-9232d8c2711a79792a08"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "red-review-1fcaec879264e3f452b2",
+    "red-review-9232d8c2711a79792a08"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 2,
     "updates": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 4,
+    "stale_reviews": 2,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 2,
     "cause_unconfirmed": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando Rudiger: revisión JIT de ID/revisión y contraste del partido AEK-Real Madrid.",
-  "final_outcomes": [],
+  "activity": "Cierre verificado: cola autoritativa 0; dos explicaciones aplicadas y dos revisiones cerradas por convergencia/stale.",
+  "final_outcomes": [
+    {
+      "id": "cd58e4b34464",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "4bea3ac923fc",
+      "revision": 0,
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "red-review-1fcaec879264e3f452b2",
+      "revision": 0,
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "ee213c47d89f",
+      "converged": true
+    },
+    {
+      "id": "red-review-9232d8c2711a79792a08",
+      "revision": 0,
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "20935c787fe3",
+      "converged": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793822868188-manual",
+    "run_id": "tr-1793824841260-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T21:18:00+01:00",
-    "updated_at": "2026-11-04T21:27:00+01:00",
-    "finished_at": "2026-11-04T21:27:00+01:00",
-    "current": 8,
-    "total": 8,
-    "queue_complete": true,
+    "started_at": "2026-11-04T21:41:00+01:00",
+    "updated_at": "2026-11-04T21:46:00+01:00",
+    "finished_at": "2026-11-04T21:46:00+01:00",
+    "current": 4,
+    "total": 4,
+    "queue_complete": false,
     "processed_ids": [
-      "686f91460d60",
-      "98a7c39fa82a",
-      "3a77ac385fa9",
-      "ffa18b96a3cc",
-      "2fae92b8a8e1",
-      "ef0ecd94ff0a",
-      "3b0acc2331b9",
-      "29923a1b53ce"
+      "cd58e4b34464",
+      "4bea3ac923fc",
+      "red-review-1fcaec879264e3f452b2",
+      "red-review-9232d8c2711a79792a08"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "686f91460d60",
-        "revision": 1,
+        "id": "cd58e4b34464",
+        "revision": 0,
         "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "4bea3ac923fc",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "red-review-1fcaec879264e3f452b2",
+        "revision": 0,
+        "outcome": "stale",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "ee213c47d89f",
         "converged": true
       },
       {
-        "id": "98a7c39fa82a",
+        "id": "red-review-9232d8c2711a79792a08",
         "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "3a77ac385fa9",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "ffa18b96a3cc",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "2fae92b8a8e1",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "ef0ecd94ff0a",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "3b0acc2331b9",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "29923a1b53ce",
-        "revision": 0,
-        "outcome": "explained",
+        "outcome": "stale",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "20935c787fe3",
         "converged": true
       }
     ],
@@ -121,8 +139,8 @@
     "publications": 0,
     "incident_count": 0,
     "incidents": [],
-    "concurrent_convergence": 8
+    "concurrent_convergence": 2
   },
   "last_started_at": "2026-11-04T21:44:59+01:00",
-  "last_completed_at": "2026-11-04T21:45:00+01:00"
+  "last_completed_at": "2026-11-04T21:46:00+01:00"
 }
