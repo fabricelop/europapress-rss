@@ -3,21 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793835060134-manual",
+  "run_id": "tr-1793835406983-manual",
   "previous_run_id": "tr-1793835060134-manual",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-05T00:37:30+01:00",
-  "updated_at": "2026-11-05T00:39:00+01:00",
-  "finished_at": "2026-11-05T00:39:00+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-05T00:37:00+01:00",
+  "updated_at": "2026-11-05T00:39:30+01:00",
+  "finished_at": "2026-11-05T00:39:30+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-ad910f417c57a48967d0",
-    "red-review-a272cab093a363d3bf63"
+    "red-review-ad910f417c57a48967d0"
   ],
   "converged_ids": [
     "red-review-ad910f417c57a48967d0"
@@ -26,11 +25,11 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
-    "updates": 2,
+    "updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -38,56 +37,38 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 1
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-05T00:37:47+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-ad910f417c57a48967d0",
-      "title": "Revisar novedades: Carlos Cuerpo",
-      "reason": "El primer resultado de continuidad usó «sigue siendo tendencia tras…», formato que el aplicador no acepta para review_red; la misma revisión se corrigió a «sigue siendo tendencia porque…» y quedó aplicada sin crear ficha nueva."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada tr-1793835060134-manual cerrada 2/2. Carlos Cuerpo y #JuegaZeldaYa: revisiones de continuidad aplicadas; ninguna crea nueva ficha ni imagen. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "activity": "Cierre JIT: Carlos Cuerpo aplicado como continuidad del mismo episodio; cola main vacía y sin reelaboraciones pendientes detectadas. Sin ImageGen.",
   "final_outcomes": [
     {
       "id": "red-review-ad910f417c57a48967d0",
       "revision": 0,
       "name": "Revisar novedades: Carlos Cuerpo",
-      "outcome": "continuity",
+      "outcome": "updated",
       "applied": true,
+      "via": "concurrent_convergence",
       "distinct_episode": false,
       "material_change": false,
       "applied_commit": "fd6e271c272528b831f19944444680c56e35a744"
-    },
-    {
-      "id": "red-review-a272cab093a363d3bf63",
-      "revision": 0,
-      "name": "Revisar novedades: #JuegaZeldaYa",
-      "outcome": "continuity",
-      "applied": true,
-      "distinct_episode": false,
-      "material_change": false,
-      "applied_commit": "9b52f53b1337d1b735940b38b18aa95182b4d230"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793835060134-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-05T00:31:00+01:00",
-    "updated_at": "2026-11-05T00:39:00+01:00",
-    "finished_at": "2026-11-05T00:39:00+01:00",
-    "current": 2,
-    "total": 2,
+    "run_id": "tr-1793835406983-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T00:37:00+01:00",
+    "updated_at": "2026-11-05T00:39:30+01:00",
+    "finished_at": "2026-11-05T00:39:30+01:00",
+    "current": 1,
+    "total": 1,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-ad910f417c57a48967d0",
-      "red-review-a272cab093a363d3bf63"
+      "red-review-ad910f417c57a48967d0"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
@@ -95,28 +76,19 @@
         "id": "red-review-ad910f417c57a48967d0",
         "revision": 0,
         "name": "Revisar novedades: Carlos Cuerpo",
-        "outcome": "continuity",
+        "outcome": "updated",
         "applied": true,
+        "via": "concurrent_convergence",
         "distinct_episode": false,
         "material_change": false,
         "applied_commit": "fd6e271c272528b831f19944444680c56e35a744"
-      },
-      {
-        "id": "red-review-a272cab093a363d3bf63",
-        "revision": 0,
-        "name": "Revisar novedades: #JuegaZeldaYa",
-        "outcome": "continuity",
-        "applied": true,
-        "distinct_episode": false,
-        "material_change": false,
-        "applied_commit": "9b52f53b1337d1b735940b38b18aa95182b4d230"
       }
     ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
-    "updates": 2,
+    "updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -124,9 +96,9 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T00:31:00+01:00",
-  "last_completed_at": "2026-11-05T00:39:00+01:00"
+  "last_started_at": "2026-11-05T00:37:00+01:00",
+  "last_completed_at": "2026-11-05T00:39:30+01:00"
 }
