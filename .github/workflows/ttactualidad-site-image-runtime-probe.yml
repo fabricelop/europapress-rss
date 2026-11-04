@@ -54,3 +54,38 @@ jobs:
                   r'\1\2[REDACTED]',excerpt)
                 print('PUBLIC_IMAGE_CONTEXT',repr(term),repr(excerpt[:245]))
           PY
+
+      - name: Inspect exact public tendencias page and its application chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re, subprocess, urllib.request
+          from urllib.parse import urljoin
+          root='https://ttactualidad.rainyraven22.chatgpt.site'
+          for path in ['/tendencias','/']:
+            try:
+              with urllib.request.urlopen(root+path,timeout=20) as resp:
+                html=resp.read(2_000_000).decode('utf8','replace')
+              links=list(dict.fromkeys(re.findall(r'/_next/static/[^"\'<>\\s]+?\\.js',html)))
+              print('PUBLIC_PAGE',path,'HTML_BYTES',len(html),'CHUNKS',len(links))
+              print('PUBLIC_PAGE_IMG_TAGS',len(re.findall(r'<img\\b',html,re.I)))
+              print('PUBLIC_PAGE_MANUAL_URL',html.count('e470cdee843b-r0-manual-'))
+              for script in links[:40]:
+                try:
+                  url=urljoin(root,script)
+                  with urllib.request.urlopen(url,timeout=15) as resp:
+                    code=resp.read(2_000_000).decode('utf8','replace')
+                  matches={term:code.lower().count(term.lower()) for term in [
+                    'top30','catalog_recorded','image_url','remotePatterns',
+                    'raw.githubusercontent.com','next/image','_next/image','imagen','tendencias']}
+                  if any(matches.values()):
+                    print('PUBLIC_APP_CHUNK',script,'BYTES',len(code),'TOKENS',matches)
+                    for term in ['catalog_recorded','raw.githubusercontent.com','image_url','_next/image','top30']:
+                      pos=code.lower().find(term.lower())
+                      if pos>=0:print('PUBLIC_APP_CONTEXT',script,term,repr(code[max(0,pos-90):pos+160]))
+                except Exception as e:
+                  print('PUBLIC_CHUNK_PROBE_FAILED',script,type(e).__name__)
+            except Exception as e:
+              print('PUBLIC_PAGE_PROBE_FAILED',path,type(e).__name__)
+          PY
