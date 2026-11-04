@@ -118,7 +118,7 @@ class MaintenanceTests(unittest.TestCase):
         self.state[g.REQUESTS]['requests'][0]['status'] = 'published'
         self.state[g.DECISIONS]['items'] = [dict(id='a', revision=1, status='published', updated_at=self.now.isoformat())]
         command = self.result('updated')
-        command.update(explanation='TT#30 Adif sigue siendo tendencia por otro cierre confirmado.\n#Adif #Trenes',
+        command.update(explanation='TT#30 Adif es tendencia por otro cierre confirmado.\n#Adif #Trenes',
                        new_facts='Otro cierre confirmado hoy', closer_text='',
                        distinct_episode=True, material_change=True,
                        significance_reason='Nuevo cierre oficial con consecuencias propias')
