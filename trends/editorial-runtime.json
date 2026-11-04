@@ -3,84 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793834479",
-  "previous_run_id": "tr-1793833069036-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-05T00:22:00+01:00",
-  "updated_at": "2026-11-05T00:29:00+01:00",
-  "finished_at": "2026-11-05T00:29:00+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "0275a07b4992",
-    "c005670d5b90",
-    "bbfce4dd3b76"
-  ],
+  "run_id": "tr-1793835060134-manual",
+  "previous_run_id": "tr-autoguard-1793834479",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T00:31:00+01:00",
+  "updated_at": "2026-11-05T00:31:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "red-review-ad910f417c57a48967d0",
+  "title": "Revisar novedades: Carlos Cuerpo",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-ad910f417c57a48967d0",
+    "red-review-a272cab093a363d3bf63"
+  ],
+  "remaining_active_ids": [
+    "red-review-ad910f417c57a48967d0",
+    "red-review-a272cab093a363d3bf63"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-05T00:24:00+01:00",
-      "phase": "persisting",
-      "trend_id": "0275a07b4992",
-      "title": "Ceballos",
-      "reason": "Una escritura directa de los ficheros grandes falló con error de transporte h2 después de persistir solo la ficha explicada; se releyó main y se reparó la misma revisión mediante el aplicador oficial de editorial-outbox, sin duplicados."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada tr-autoguard-1793834479 cerrada 3/3: Ceballos, Cesc y Panathinaikos explicados y sincronizados. Barrera final main: editorial-queue=0; requests sin preparing/update, rewrite_pending ni reexplain; problematics=0. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte h2 en la primera persistencia, reparada por el aplicador oficial sin pérdida ni duplicado.",
-  "final_outcomes": [
-    {
-      "id": "0275a07b4992",
-      "revision": 0,
-      "name": "Ceballos",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-05T00:24:30+01:00"
-    },
-    {
-      "id": "c005670d5b90",
-      "revision": 0,
-      "name": "Cesc",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-05T00:26:00+01:00"
-    },
-    {
-      "id": "bbfce4dd3b76",
-      "revision": 0,
-      "name": "Panathinaikos",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-05T00:27:30+01:00"
-    }
-  ],
+  "activity": "Revisando novedades · Carlos Cuerpo (0/2). Revalidación JIT pendiente antes de investigar. ImageGen=0; publicaciones=0.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793834479",
@@ -141,6 +107,6 @@
     "incidents": 1,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T00:30:17+01:00",
+  "last_started_at": "2026-11-05T00:31:00+01:00",
   "last_completed_at": "2026-11-05T00:29:00+01:00"
 }
