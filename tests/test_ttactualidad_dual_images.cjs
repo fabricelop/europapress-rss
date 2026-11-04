@@ -77,6 +77,63 @@ for (const path of paths) {
     explanation: "Grouped fact", explained_at: "2026-11-01T14:00:00Z"
   }), "https://ttactualidad-tendencias.rainyraven22.chatgpt.site/images/ttendencias/trendABC-r0-" + sha.slice(0,12) + ".png",
     path + ": grouped trends keep normal verified AI");
+  // Regression: manual editor-selected PNGs live on GitHub, not the Site's
+  // own images host, and must be tied to an exact ID, revision and SHA.
+  const trendCard = {_kind: "tr", _status: "EXPLICADA", _id: "trendABC",
+    revision: 0, explanation: "Grouped fact", explained_at: "2026-11-01T14:00:00Z"};
+  const manualURL = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/trendABC-r0-manual-" + sha.slice(0, 12) + ".png";
+  state.data.trendSiteAi.images[0].image_url = manualURL;
+  assert.equal(verifiedTrendSiteAI(trendCard), manualURL,
+    path + ": manual original must render in expanded trend card");
+  assert.equal(verifiedTrendSiteAI({...trendCard, _id: "otherTrend"}), "",
+    path + ": must not mix different editorial IDs");
+  assert.equal(verifiedTrendSiteAI({...trendCard, revision: 1}), "",
+    path + ": must not mix different revisions");
+  assert.equal(verifiedTrendSiteAI({...trendCard, explanation: "Changed episode"}), "",
+    path + ": text mismatch must not show old art");
+  state.data.trendSiteAi.images[0].image_url = manualURL.replace("-manual-", "-untrusted-");
+  assert.equal(verifiedTrendSiteAI(trendCard), "",
+    path + ": reject arbitrary GitHub PNG even with matching hash");
+  state.data.trendSiteAi.images[0].image_url = manualURL.replace(
+    "raw.githubusercontent.com", "example.com");
+  assert.equal(verifiedTrendSiteAI(trendCard), "",
+    path + ": reject other hosts");
+  state.data.trendSiteAi.images[0].image_url = manualURL;
+
+  // The full row is built with artwork OUTSIDE card-body. The Top 30
+  // converter must reparent it BEFORE replaceChildren(), otherwise the
+  // image disappears on expansion even when its URL is correct.
+  const compactStart = js.indexOf("function compactTop30Card(out,x){");
+  const compactEnd = js.indexOf("// X counts the trailing Site URL", compactStart);
+  assert(compactStart > 0 && compactEnd > compactStart, path + ": compact function");
+  function elem(tag) {
+    return {tag, children: [], dataset: {}, classList: {add() {}},
+      append(...nodes) {this.children.push(...nodes)},
+      prepend(...nodes) {this.children.unshift(...nodes)},
+      replaceChildren(...nodes) {this.children = nodes},
+      querySelector() {return null},
+      addEventListener() {},
+      matches() {return false}};
+  }
+  const imageNode = elem("div");imageNode.className = "news-photo-set";
+  imageNode.matches = selector => selector.includes(".news-photo-set");
+  const body = elem("div");body.className = "card-body";
+  const fact = elem("p");fact.matches = () => false;
+  body.children = [fact];
+  const card = elem("article");card.children = [imageNode, body];
+  card.querySelector = selector => selector === ".card-body" ? body : null;
+  const compact = new Function("document", "expandedTop30",
+    "top30AgeBand", "stamp", "esc",
+    js.slice(compactStart, compactEnd) + ";return compactTop30Card;")(
+      {createElement: elem}, new Set(), () => "", x => x, x => x);
+  const output = compact(card, {name: "Valverde", rank: 2,
+    explanation: "Verified factual explanation", explained_at: ""});
+  assert.equal(output.children[0].tag, "details",
+    path + ": compact presentation is a details element");
+  assert(output.children[0].children[1].children.includes(imageNode),
+    path + ": expanded details preserve artwork from outside card-body");
+  assert(html.includes(".card.trend-top .top30-expanded .pic{display:block"),
+    path + ": expanded photo visible despite collapsed-card CSS");
   assert(html.includes("['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x._status)"),
     path + ": grouped trends retain normal image actions");
   assert(html.includes("const archive=archivedPhoto(x);"), path + ": archive rendered");
