@@ -485,39 +485,34 @@ final class GitHubEditor: ObservableObject {
         let originalURL = URL(string: "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path)!
         let sourcePath = project == "ttendencias" ?
             "trends/telegram-manual-explained.json" : "ttittulares/prepared.json"
-        let decisionPath = project == "ttendencias" ?
-            "trends/mobile-decisions.json" : "ttittulares/decisions.json"
+        // This is a historical image association, independent of Listas.
+        // The editor must explicitly choose the image and an exact existing
+        // ID/revision/text/date, but published/removed cards remain eligible.
         let manifestPath = folder + "/site-ai-images.json"
         let auth = try await authorizedToken()
         func currentRow() async throws -> [String: Any] {
             let data = try await readMainJSON(sourcePath)
             let matches = (data["items"] as? [[String: Any]] ?? []).filter {
-                ($0[project == "ttendencias" ? "id" : "event_id"] as? String) == editorialID
+                ($0[project == "ttendencias" ? "id" : "event_id"] as? String) == editorialID &&
+                    ($0["revision"] as? Int ?? 0) == revision
             }.sorted {
                 let revA = $0["revision"] as? Int ?? 0, revB = $1["revision"] as? Int ?? 0
                 if revA != revB { return revA > revB }
                 let timeField = project == "ttendencias" ? "explained_at" : "prepared_at"
                 return ($0[timeField] as? String ?? "") > ($1[timeField] as? String ?? "")
             }
-            guard let row = matches.first,
-                  (row["revision"] as? Int ?? 0) == revision,
-                  row["rewrite_pending"] as? Bool != true
-            else { throw GitHubError.message("Ficha obsoleta. Actualiza Listas antes de publicar.") }
+            guard let row = matches.first else {
+                throw GitHubError.message("No consta ninguna ficha histórica con ese ID y revisión exactos. No se asociará por nombre.")
+            }
             let canonical: String
             if project == "ttendencias" {
                 canonical = row["explanation"] as? String ?? ""
-                let leader = row["group_leader_id"] as? String ?? ""
-                let timestamp = row["explained_at"] as? String ?? ""
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-                let parsed = formatter.date(from: timestamp)
-                formatter.formatOptions = [.withInternetDateTime]
-                guard let at = parsed ?? formatter.date(from: timestamp),
-                      Date().timeIntervalSince(at) <= 48 * 3600,
-                      at.timeIntervalSinceNow <= 3600,
-                      (row["status"] as? String ?? "").lowercased() == "explained",
-                      leader.isEmpty || leader == editorialID
-                else { throw GitHubError.message("Tendencia fuera de Listas vigentes.") }
+                // Deliberately no freshness, group-leader, decision or Listas
+                // state guard. A past explained/published/deleted editorial card
+                // can still receive an image without being returned to Listas.
+                guard !(row["explained_at"] as? String ?? "").isEmpty else {
+                    throw GitHubError.message("La ficha histórica no conserva su fecha editorial.")
+                }
             } else {
                 let tweet = row["tweet"] as? [String: Any] ?? [:]
                 canonical = (tweet["text"] as? String).flatMap { $0.isEmpty ? nil : $0 } ??
@@ -527,29 +522,8 @@ final class GitHubEditor: ObservableObject {
             guard canonical == editorialText else {
                 throw GitHubError.message("El texto editorial cambió; actualiza la ficha.")
             }
-            let decisions = try await readMainJSON(decisionPath)
-            let closed = Set(["published", "dismissed", "deleted", "discarded", "removed"])
-            let sourceTime = (row["explained_at"] as? String).flatMap { ISO8601DateFormatter().date(from: $0) }
-            for decision in decisions["items"] as? [[String: Any]] ?? [] {
-                let event = decision[project == "ttendencias" ? "id" : "event_id"] as? String
-                guard event == editorialID,
-                      closed.contains((decision["status"] as? String ?? "").lowercased())
-                else { continue }
-                if project == "ttittulares" { throw GitHubError.message("Noticia ya retirada.") }
-                let eventRevision = decision["revision"] as? Int ?? 0
-                if eventRevision < revision { continue }
-                if eventRevision > revision { throw GitHubError.message("Tendencia sustituida.") }
-                let fields = ["deleted_at", "dismissed_at", "published_at", "removed_at",
-                              "updated_at", "delivered_at", "decided_at"]
-                let closure = fields.compactMap { key -> Date? in
-                    guard let raw = decision[key] as? String else { return nil }
-                    return ISO8601DateFormatter().date(from: raw)
-                }.first
-                if let closure, let sourceTime, closure < sourceTime.addingTimeInterval(-60) {
-                    continue
-                }
-                throw GitHubError.message("Tendencia retirada de Listas.")
-            }
+            // Decisions affect visibility/publication, NOT whether the editor
+            // may store an image with this historical editorial identity.
             return row
         }
         func api(_ filePath: String, method: String = "GET",
@@ -611,8 +585,8 @@ final class GitHubEditor: ObservableObject {
                 throw GitHubError.message("GitHub rechazó el PNG: HTTP " + String(code))
             }
         } else { throw GitHubError.message("GitHub no pudo consultar la imagen.") }
-        // The image is immutable; revalidation prevents associating a now stale
-        // episode even when an earlier upload succeeded.
+        // Recheck the same historical ID/revision/text after upload. An ordinary
+        // removal from Listas does not make this image assignment invalid.
         _ = try await currentRow()
         let stampField = project == "ttendencias" ? "explained_at" : "prepared_at"
         guard let at = row[stampField] as? String, !at.isEmpty else {
@@ -641,6 +615,15 @@ final class GitHubEditor: ObservableObject {
                    : manifest["project"] as? String == "ttittulares"),
                   var images = manifest["images"] as? [[String: Any]] else {
                 throw GitHubError.message("Manifiesto del Site incompatible.")
+            }
+            if images.contains(where: {
+                ($0["target_id"] as? String) == editorialID &&
+                ($0["revision"] as? Int ?? -1) == revision &&
+                ($0["sha256"] as? String) == hex &&
+                ($0["image_url"] as? String) == originalURL.absoluteString
+            }) {
+                committed = true // Idempotent retry: do not rewrite the catalog.
+                break
             }
             images.removeAll { ($0["target_id"] as? String) == editorialID &&
                 ($0["revision"] as? Int ?? -1) == revision }
