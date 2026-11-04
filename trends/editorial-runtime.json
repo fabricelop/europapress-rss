@@ -5,17 +5,18 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793759477",
   "previous_run_id": "tr-1793757592011-manual",
-  "status": "waiting",
-  "phase": "investigating",
+  "status": "RUNNING",
+  "phase": "persisting",
   "started_at": "2026-11-04T03:32:00+01:00",
-  "updated_at": "2026-11-04T03:37:44+01:00",
+  "updated_at": "2026-11-04T03:40:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 3,
   "trend_id": "5f0d0b18df81",
   "title": "#Midterms2026",
   "queue_complete": false,
   "processed_ids": [
+    "8e9e26c2ef86",
     "6ee4aa423d88"
   ],
   "remaining_ids": [
@@ -29,7 +30,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "persisting",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T03:37:44+01:00",
@@ -46,7 +47,7 @@
     "summary": "Pasada tr-1793757592011-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Rufián ya había quedado review_completed/updated en la pasada inmediatamente anterior y no se duplicó. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "#Midterms2026 r0 revalidada JIT. Detonante verificado: recuento de las elecciones de medio mandato de EEUU con el control del Congreso en juego. Remate político neutral sobre el despliegue horario del recuento; ImageGen=0.",
+  "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4439,6 +4440,17 @@
       "trend_id": "5f0d0b18df81",
       "title": "#Midterms2026",
       "message": "#Midterms2026 r0 revalidada JIT. Detonante verificado: recuento de las elecciones de medio mandato de EEUU con el control del Congreso en juego. Remate político neutral sobre el despliegue horario del recuento; ImageGen=0."
+    },
+    {
+      "at": "2026-11-04T03:40:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 3,
+      "trend_id": "5f0d0b18df81",
+      "title": "#Midterms2026",
+      "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -7269,6 +7281,17 @@
       "trend_id": "5f0d0b18df81",
       "title": "#Midterms2026",
       "message": "#Midterms2026 r0 revalidada JIT. Detonante verificado: recuento de las elecciones de medio mandato de EEUU con el control del Congreso en juego. Remate político neutral sobre el despliegue horario del recuento; ImageGen=0."
+    },
+    {
+      "at": "2026-11-04T03:40:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 3,
+      "trend_id": "5f0d0b18df81",
+      "title": "#Midterms2026",
+      "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
@@ -12466,6 +12489,17 @@
       "trend_id": "5f0d0b18df81",
       "title": "#Midterms2026",
       "message": "#Midterms2026 r0 revalidada JIT. Detonante verificado: recuento de las elecciones de medio mandato de EEUU con el control del Congreso en juego. Remate político neutral sobre el despliegue horario del recuento; ImageGen=0."
+    },
+    {
+      "at": "2026-11-04T03:40:00+01:00",
+      "phase": "persisting",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 3,
+      "trend_id": "5f0d0b18df81",
+      "title": "#Midterms2026",
+      "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
