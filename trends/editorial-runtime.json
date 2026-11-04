@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793759979125-manual",
+  "run_id": "tr-autoguard-1793759477",
   "previous_run_id": "tr-autoguard-1793759477",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-11-04T03:40:00+01:00",
-  "updated_at": "2026-11-04T03:40:00+01:00",
+  "updated_at": "2026-11-04T03:43:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-635c44cbcb2983794557",
-  "title": "Revisar novedades: Chiqui",
+  "current": 4,
+  "total": 6,
+  "trend_id": "red-review-2cab33b04eb24ae416c7",
+  "title": "Revisar novedades: Renfe",
   "queue_complete": false,
   "processed_ids": [],
   "remaining_ids": [
@@ -29,7 +29,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "verifying",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T03:39:01+01:00",
@@ -50,7 +50,7 @@
     "summary": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio manual: 2 revisiones review_red vigentes en main; Chiqui primero y Renfe después. Validación JIT antes de tratar y persistir cada resultado. ImageGen=0; publicaciones=0.",
+  "message": "Renfe review r0 revalidada JIT: el job sigue activo, pero Renfe ya no figura en el Top30 fresco capturado a las 03:41. Por contrato no se revisa por debajo de Top30; se emite resultado unverified/obsoleto sin reescribir ni renovar explained_at.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4487,6 +4487,17 @@
       "trend_id": "red-review-635c44cbcb2983794557",
       "title": "Revisar novedades: Chiqui",
       "message": "Inicio manual: 2 revisiones review_red vigentes en main; Chiqui primero y Renfe después. Validación JIT antes de tratar y persistir cada resultado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:43:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 4,
+      "total": 6,
+      "trend_id": "red-review-2cab33b04eb24ae416c7",
+      "title": "Revisar novedades: Renfe",
+      "message": "Renfe review r0 revalidada JIT: el job sigue activo, pero Renfe ya no figura en el Top30 fresco capturado a las 03:41. Por contrato no se revisa por debajo de Top30; se emite resultado unverified/obsoleto sin reescribir ni renovar explained_at."
     }
   ],
   "history": [
@@ -7350,6 +7361,17 @@
       "trend_id": "red-review-635c44cbcb2983794557",
       "title": "Revisar novedades: Chiqui",
       "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:43:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 4,
+      "total": 6,
+      "trend_id": "red-review-2cab33b04eb24ae416c7",
+      "title": "Revisar novedades: Renfe",
+      "message": "Renfe review r0 revalidada JIT: el job sigue activo, pero Renfe ya no figura en el Top30 fresco capturado a las 03:41. Por contrato no se revisa por debajo de Top30; se emite resultado unverified/obsoleto sin reescribir ni renovar explained_at."
     }
   ],
   "partial": false,
@@ -7367,8 +7389,8 @@
       "created_id": "trend-update-35c47da02d21c05a1e59"
     }
   ],
-  "current_item": "red-review-635c44cbcb2983794557",
-  "current_title": "Revisar novedades: Chiqui",
+  "current_item": "red-review-2cab33b04eb24ae416c7",
+  "current_title": "Revisar novedades: Renfe",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -12637,6 +12659,17 @@
       "trend_id": "red-review-635c44cbcb2983794557",
       "title": "Revisar novedades: Chiqui",
       "message": "Reapertura JIT: tras el cierre provisional entraron 2 review_red nuevos (Chiqui y Renfe). Se amplía la pasada a 5 trabajos observados y se procesan por orden de cola. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:43:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 4,
+      "total": 6,
+      "trend_id": "red-review-2cab33b04eb24ae416c7",
+      "title": "Revisar novedades: Renfe",
+      "message": "Renfe review r0 revalidada JIT: el job sigue activo, pero Renfe ya no figura en el Top30 fresco capturado a las 03:41. Por contrato no se revisa por debajo de Top30; se emite resultado unverified/obsoleto sin reescribir ni renovar explained_at."
     }
   ],
   "converged_run_ids": [
