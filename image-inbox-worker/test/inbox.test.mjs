@@ -1,20 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {handleRequest} from '../src/index.mjs';
-import {episodeFingerprint} from '../src/editorial-truth.mjs';
+import {episodeFingerprint, verifyEditorialNow} from '../src/editorial-truth.mjs';
 
-const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0, closed: false };
+const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0, closed: false, closedAt: '', explainedAt: '2026-11-04T12:00:00Z' };
 const editor = async (url, options) => {
   if (url.startsWith('https://api.github.com/repos/fabricelop/europapress-rss/contents/')) {
     if (main.offline) throw Error('offline');
     if (url.includes('/mobile-decisions.json') || url.includes('/ttittulares/decisions.json')) {
       return new Response(JSON.stringify({items: main.closed ? [
-        { id: 'my-trend', revision: main.revision, status: 'deleted' },
+        { id: 'my-trend', revision: main.revision, status: 'deleted', updated_at: main.closedAt },
       ] : []}), {status:200});
     }
     return new Response(JSON.stringify({ items: main.removed ? [] : [{
       id: 'my-trend', revision: main.revision, status:'explained',
-      explained_at:'2026-11-04T12:00:00Z', explanation: main.text,
+      explained_at:main.explainedAt, explanation: main.text,
     }] }), { status: 200 });
   }
   return new Response(JSON.stringify({ id: 7257052 }), {
@@ -306,4 +306,19 @@ test('terminal Listas decision blocks approval without losing the image', async(
    assert.equal(r.status,409);
    assert.equal((await receive(env)).data.items.length,1);
  } finally {main.closed=false;}
+});
+
+
+test('a terminal decision for a previous episode must not block a newer Listas episode', async()=>{
+ main.closed = true;
+ main.closedAt = '2026-11-01T08:00:00Z';
+ main.explainedAt = '2026-11-04T12:00:00Z';
+ try {
+   assert.equal(await verifyEditorialNow({
+     project:'ttendencias',editorialId:'my-trend',revision:0,
+   }, 'Texto factual + remate', editor, 'valid-oauth'), 'current');
+ } finally {
+   main.closed=false;
+   main.closedAt='';
+ }
 });
