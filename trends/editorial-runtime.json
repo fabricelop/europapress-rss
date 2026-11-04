@@ -3,95 +3,51 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793789480",
+  "run_id": "tr-autoguard-1793791275",
   "previous_run_id": "tr-autoguard-1793789480",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-04T11:58:30+01:00",
-  "updated_at": "2026-11-04T12:07:00+01:00",
-  "finished_at": "2026-11-04T12:07:00+01:00",
-  "current": 5,
-  "total": 5,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "8201536739ef",
-    "e50cfc4cf460",
-    "31bb72a668f9",
-    "red-review-1ffb87ac2705eb896f12",
-    "red-review-4f0cf42706fd610a89d5"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T12:22:00+01:00",
+  "updated_at": "2026-11-04T12:22:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "93382a9f3702",
+  "title": "#Mañaneros4N",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "93382a9f3702",
+    "55182e295925"
+  ],
+  "remaining_active_ids": [
+    "93382a9f3702",
+    "55182e295925"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 3,
-    "updates": 1,
-    "unchanged_reviews": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
+    "updates": 0,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0,
-    "cause_unconfirmed": 1
+    "cause_unconfirmed": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "fallback_persistence_transport",
-      "resolved": true,
-      "message": "Un intento manual de respaldo para persistir JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; el mismo outbox fue reactivado y el aplicador lo persistió correctamente."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada textual cerrada 5/5: tres explicaciones iniciales, revisión de Urda conservada sin cambios por ser agrupación histórica y actualización de Mazón aplicada como trend-update-c8a3e672eb32862fd364. Sin ImageGen, image-outbox ni publicaciones.",
-  "final_outcomes": [
-    {
-      "id": "8201536739ef",
-      "revision": 0,
-      "name": "#JuegaZeldaYa",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "e50cfc4cf460",
-      "revision": 0,
-      "name": "Verás",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "31bb72a668f9",
-      "revision": 0,
-      "name": "JJ Gabriel",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "red-review-1ffb87ac2705eb896f12",
-      "revision": 0,
-      "name": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
-      "outcome": "unchanged",
-      "applied": true,
-      "reason": "Ficha fuente histórica agrupada; el contrato vigente conserva su texto y fecha y evita crear una nueva ficha conjunta."
-    },
-    {
-      "id": "red-review-4f0cf42706fd610a89d5",
-      "revision": 0,
-      "name": "Revisar novedades: Mazón",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-c8a3e672eb32862fd364"
-    }
-  ],
+  "activity": "Preparando 1/2 · #Mañaneros4N. Validación JIT de ID/revisión antes de investigar. Pasada exclusivamente textual, sin ImageGen.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793789480",
