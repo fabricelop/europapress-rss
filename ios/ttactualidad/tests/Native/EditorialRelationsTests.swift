@@ -64,6 +64,37 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(canonical[0].id, "veto")
     }
 
+    func testOnlyListasNewsAppearInPrimaryRelationInbox() {
+        let inListas = EditorialRelationEndpoint(
+            id: "ready", revision: 1, episodeFingerprint: "A",
+            title: "Noticia reciente", text: "", path: nil)
+        let former = EditorialRelationEndpoint(
+            id: "former", revision: 2, episodeFingerprint: "B",
+            title: "Noticia retirada", text: "", path: nil)
+        let keys: Set<String> = ["ready:r1"]
+        XCTAssertTrue(EditorialRelationsPolicy.isVisibleNews(
+            inListas, activeListas: keys, explicit: nil))
+        XCTAssertFalse(EditorialRelationsPolicy.isVisibleNews(
+            former, activeListas: keys, explicit: nil))
+        XCTAssertTrue(EditorialRelationsPolicy.isVisibleNews(
+            former, activeListas: keys, explicit: former))
+        XCTAssertFalse(EditorialRelationsPolicy.isVisibleNews(
+            EditorialRelationEndpoint(
+                id: "ready", revision: 0, episodeFingerprint: "older",
+                title: "Vieja revisión", text: "", path: nil),
+            activeListas: keys, explicit: nil))
+    }
+
+    func testOptionalListingDateAndIdentityStayIndependent() throws {
+        let withoutDate = try JSONDecoder().decode(EditorialRelationEndpoint.self,
+            from: Data(#"{"id":"n","revision":1,"episodeFingerprint":"E","title":"N","text":""}"#.utf8))
+        XCTAssertNil(withoutDate.listedAt)
+        let withDate = try JSONDecoder().decode(EditorialRelationEndpoint.self,
+            from: Data(#"{"id":"n","revision":1,"episodeFingerprint":"E","title":"N","text":"","listedAt":"2026-11-04T10:00:00Z"}"#.utf8))
+        XCTAssertEqual(withDate.listedAt, "2026-11-04T10:00:00Z")
+        XCTAssertEqual(withDate.stableIdentity, withoutDate.stableIdentity)
+    }
+
     func testOnlyConfirmedDecisionCountsAsSaved() {
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "linked", relationId: "r"), action: "link"))
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "blocked", relationId: "r"), action: "unlink"))

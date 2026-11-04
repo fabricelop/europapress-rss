@@ -141,6 +141,7 @@ struct EditorialRelationsView: View {
     @ObservedObject var github: GitHubEditor
     var scope: EditorialRelationsScope? = nil
     var top30Names: [String] = []
+    var listasNews: [NewsItem] = []
     @Environment(\.dismiss) private var dismiss
     @StateObject private var model = EditorialRelationsModel()
     @State private var filter = "suggested"
@@ -166,12 +167,47 @@ struct EditorialRelationsView: View {
         EditorialRelationsPolicy.canonical(model.snapshot?.items ?? [])
     }
 
+    private var activeListasKeys: Set<String> {
+        Set(listasNews.map { EditorialRelationsPolicy.newsKey(id: $0.id, revision: $0.revision) })
+    }
+
     private var relations: [EditorialRelation] {
         canonicalRelations.filter { item in
             guard item.state == filter else { return false }
-            guard let scope else { return true }
-            let endpoint = scope.project == "ttittulares" ? item.news : item.trend
-            return EditorialRelationsPolicy.matches(endpoint, id: scope.id, revision: scope.revision)
+            if let scope {
+                let endpoint = scope.project == "ttittulares" ? item.news : item.trend
+                return EditorialRelationsPolicy.matches(endpoint, id: scope.id, revision: scope.revision)
+            }
+            // Historical or removed news never reappears automatically.
+            return EditorialRelationsPolicy.isVisibleNews(
+                item.news, activeListas: activeListasKeys, explicit: selectedNews)
+        }
+    }
+
+    private var recentNewsChoices: [EditorialRelationEndpoint] {
+        var byID: [String: EditorialRelationEndpoint] = [:]
+        var sourceOrder: [String] = []
+        for candidate in model.snapshot?.news ?? [] {
+            if let old = byID[candidate.id] {
+                if candidate.revision > old.revision ||
+                    (candidate.revision == old.revision &&
+                     (candidate.listedAt ?? "") > (old.listedAt ?? "")) {
+                    byID[candidate.id] = candidate
+                }
+            } else {
+                sourceOrder.append(candidate.id)
+                byID[candidate.id] = candidate
+            }
+        }
+        let positions = Dictionary(uniqueKeysWithValues:
+            sourceOrder.enumerated().map { ($0.element, $0.offset) })
+        return sourceOrder.compactMap { byID[$0] }.sorted { a, b in
+            let aDate = a.listedAt ??
+                listasNews.first(where: { $0.id == a.id })?.preparedAtISO ?? ""
+            let bDate = b.listedAt ??
+                listasNews.first(where: { $0.id == b.id })?.preparedAtISO ?? ""
+            if aDate != bDate { return aDate > bDate }
+            return (positions[a.id] ?? Int.max) < (positions[b.id] ?? Int.max)
         }
     }
 
@@ -216,7 +252,7 @@ struct EditorialRelationsView: View {
                         if filter == "suggested" {
                             Section {
                                 DisclosureGroup("Elegir otra noticia", isExpanded: $showManualLinking) {
-                                    Text("Si no encuentras una noticia entre las propuestas, selecciónala aquí. Aparecerá una sola vez con el Top 30 para marcar todas sus tendencias.")
+                                    Text("Elige una noticia histórica de Listas para recuperar o añadir sus relaciones sin devolverla a Listas. Las fechas más recientes se muestran primero cuando el servidor las facilita.")
                                         .font(.footnote).foregroundStyle(.secondary)
                                     Button {
                                         picker = EndpointPickerRoute(project: "ttittulares")
@@ -248,7 +284,7 @@ struct EditorialRelationsView: View {
             .sheet(item: $picker) { route in
                 EditorialEndpointPicker(
                     title: route.project == "ttittulares" ? "Seleccionar noticia" : "Seleccionar tendencia",
-                    endpoints: route.project == "ttittulares" ? model.snapshot?.news ?? [] : model.snapshot?.trends ?? []) { endpoint in
+                    endpoints: route.project == "ttittulares" ? recentNewsChoices : model.snapshot?.trends ?? []) { endpoint in
                         selectedNews = endpoint
                         picker = nil
                     }
@@ -268,14 +304,16 @@ struct EditorialRelationsView: View {
         var seen = Set<String>()
         var group = relations.compactMap { item -> EditorialRelationEndpoint? in
             let news = item.news
-            return seen.insert(news.stableIdentity).inserted ? news : nil
+            // A server may send several revisions/duplicates for one news ID.
+            let identity = EditorialRelationsPolicy.newsKey(id: news.id, revision: news.revision)
+            return seen.insert(identity).inserted ? news : nil
         }
         // An editor may choose a news item which has no proposals yet. The
         // complete Top 30 is still available in that news's disclosure.
         let explicit: EditorialRelationEndpoint? =
             selectedNews ?? (scope?.project == "ttittulares" ? scopedEndpoint : nil)
-        if let explicit, seen.insert(explicit.stableIdentity).inserted,
-           filter == "suggested" {
+        if let explicit,
+           seen.insert(EditorialRelationsPolicy.newsKey(id: explicit.id, revision: explicit.revision)).inserted {
             group.insert(explicit, at: 0)
         }
         return group
@@ -479,6 +517,10 @@ private struct EditorialEndpointPicker: View {
                 Button { select(endpoint) } label: {
                     VStack(alignment: .leading, spacing: 5) {
                         Text(endpoint.title).font(.headline)
+                        if let listedAt = endpoint.listedAt, !listedAt.isEmpty {
+                            Text("Última entrada en Listas: " + listedAt)
+                                .font(.caption2).foregroundStyle(.secondary)
+                        }
                         Text(endpoint.text).font(.caption).foregroundStyle(.secondary).lineLimit(3)
                     }
                 }.buttonStyle(.plain)
