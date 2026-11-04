@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {handleRequest} from '../src/index.mjs';
-import {episodeFingerprint, verifyEditorialNow} from '../src/editorial-truth.mjs';
+import {episodeFingerprint, verifyEditorialNow, readyTextFromMain} from '../src/editorial-truth.mjs';
 
-const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0, closed: false, closedAt: '', explainedAt: '2026-11-04T12:00:00Z' };
+const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0, closed: false, closedAt: '', explainedAt: new Date().toISOString() };
 const editor = async (url, options) => {
   if (url.startsWith('https://api.github.com/repos/fabricelop/europapress-rss/contents/')) {
     if (main.offline) throw Error('offline');
@@ -319,7 +319,7 @@ test('terminal Listas decision blocks approval without losing the image', async(
 test('a terminal decision for a previous episode must not block a newer Listas episode', async()=>{
  main.closed = true;
  main.closedAt = '2026-11-01T08:00:00Z';
- main.explainedAt = '2026-11-04T12:00:00Z';
+ main.explainedAt = new Date().toISOString();
  try {
    assert.equal(await verifyEditorialNow({
      project:'ttendencias',editorialId:'my-trend',revision:0,
@@ -351,4 +351,17 @@ test('iPhone can upload a news image using the actual fallback text of a READY c
  assert.equal(approved.status,200);
  assert.equal((await approved.json()).state,'approved_awaiting_publication');
  assert.equal(env.DB.rows.get(body.id).published_sites_at,undefined);
+});
+
+
+test('older-than-48h Listas trend and grouped child are not active image targets', async()=>{
+ const identity={project:'ttendencias',editorialId:'my-trend',revision:0};
+ const date=new Date().toISOString();
+ const make=(extra={})=>({items:[{id:'my-trend',revision:0,status:'explained',
+  explained_at:date,explanation:'Texto factual + remate',...extra}]});
+ assert.equal(readyTextFromMain(make(),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({explained_at:new Date(Date.now()-49*3600_000).toISOString()}),identity),null);
+ assert.equal(readyTextFromMain(make({explained_at:new Date(Date.now()+2*3600_000).toISOString()}),identity),null);
+ assert.equal(readyTextFromMain(make({group_leader_id:'another-trend'}),identity),null);
+ assert.equal(readyTextFromMain(make({telegram_package_status:'deleted'}),identity),null);
 });
