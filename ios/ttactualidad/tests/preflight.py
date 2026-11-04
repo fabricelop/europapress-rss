@@ -714,5 +714,5 @@ assert 'await github.uploadEditorialImage(' in manual_sheet
 assert 'privateImageInboxRequest(' in manual_sheet
 assert 'publication.appVerified == true && publication.sitesVerified == true' in manual_sheet
 assert '"v1/images/manual"' in auth or '"/v1/images/manual"' in auth
-assert 'if receipt.state == "approved_awaiting_publication"' in manual_sheet
+assert '["pending", "existing", "approved_awaiting_publication"].contains(receipt.state)' in manual_sheet
 print("NATIVE_BUILD69_MANUAL_IMAGE_UPLOAD_PREFLIGHT_OK")
