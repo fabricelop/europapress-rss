@@ -3,30 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793762800964-manual",
+  "run_id": "tr-autoguard-1793764266",
   "previous_run_id": "tr-1793762800964-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T04:37:00+01:00",
-  "updated_at": "2026-11-04T04:38:00+01:00",
-  "finished_at": "2026-11-04T04:38:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T04:51:30+01:00",
+  "updated_at": "2026-11-04T04:51:30+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "d88c60290666",
+  "title": "Carolina del Sur",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "d88c60290666",
+    "4691492179d2"
+  ],
+  "remaining_active_ids": [
+    "d88c60290666",
+    "4691492179d2"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0.",
+  "summary": "Inicio de pasada: 2 investigaciones preparing vigentes en main (Carolina del Sur r0 y Georgia r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T04:37:00+01:00",
+  "last_started_at": "2026-11-04T04:51:30+01:00",
   "last_completed_at": "2026-11-04T04:38:00+01:00",
   "last_run": {
     "run_id": "tr-1793762800964-manual",
@@ -40,7 +46,7 @@
     "summary": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0.",
+  "message": "Inicio de pasada: 2 investigaciones preparing vigentes en main (Carolina del Sur r0 y Georgia r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4674,6 +4680,17 @@
       "run_id": "tr-1793762800964-manual",
       "status": "DONE",
       "message": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T04:51:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793764266",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 2,
+      "trend_id": "d88c60290666",
+      "title": "Carolina del Sur",
+      "message": "Inicio de pasada: 2 investigaciones preparing vigentes en main (Carolina del Sur r0 y Georgia r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
