@@ -3,46 +3,73 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793772012261-manual",
+  "run_id": "tr-autoguard-1793771456",
   "previous_run_id": "tr-autoguard-1793771456",
-  "status": "DONE",
+  "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
   "started_at": "2026-11-04T07:00:12+01:00",
-  "updated_at": "2026-11-04T07:03:31+01:00",
-  "finished_at": "2026-11-04T07:03:31+01:00",
-  "current": 2,
-  "total": 2,
+  "updated_at": "2026-11-04T07:03:00+01:00",
+  "finished_at": "2026-11-04T07:03:00+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "36205fe85f09",
+    "79f6d0732a24",
     "red-review-d5deda707961df25a03d",
     "red-review-bf9a28edb2ac00ffecbb"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-1793772012261-manual cerrada 2/2: Homicidio r0 y Neuer r0 tuvieron novedades materiales verificadas y quedaron aplicados mediante maintenance-outbox. Homicidio se actualizó sin remate por sensibilidad; Neuer se actualizó tras confirmarse su titularidad y portería a cero ante el Atlético. Barrera final observada: editorial-queue=0 y búsquedas de rewrite_pending/reexplain/status update sin coincidencias. ImageGen=0; image-outbox=0; publicaciones=0.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada tr-autoguard-1793771456 cerrada 4/4. Democrats r0 y Kansas r0 se explicaron y quedaron sincronizados. La barrera de las 07:00 añadió dos review_red: Homicidio y Neuer; ambos convergieron concurrentemente después de la validación y quedaron como updated, con sus nuevas tarjetas verificadas. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "36205fe85f09",
+      "revision": 0,
+      "type": "direct_persist_transport_retry",
+      "message": "La escritura directa de los registros grandes falló por error h2; la relectura confirmó ausencia de cambios parciales y el resultado se aplicó después mediante el outbox oficial."
+    }
+  ],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
+      "id": "36205fe85f09",
+      "revision": 0,
+      "name": "Democrats",
+      "outcome": "explained",
+      "applied": true,
+      "explained_at": "2026-11-04T06:56:00+01:00"
+    },
+    {
+      "id": "79f6d0732a24",
+      "revision": 0,
+      "name": "Kansas",
+      "outcome": "explained",
+      "applied": true,
+      "explained_at": "2026-11-04T06:59:00+01:00"
+    },
+    {
       "id": "red-review-d5deda707961df25a03d",
       "revision": 0,
       "name": "Revisar novedades: Homicidio",
-      "outcome": "updated",
+      "outcome": "updated_concurrent",
       "applied": true,
-      "source_id": "93fd9a90a9c2"
+      "created_id": "trend-update-df3897d683185a85a0bf",
+      "completed_at": "2026-11-04T06:02:18.118375+00:00"
     },
     {
       "id": "red-review-bf9a28edb2ac00ffecbb",
       "revision": 0,
       "name": "Revisar novedades: Neuer",
-      "outcome": "updated",
+      "outcome": "updated_concurrent",
       "applied": true,
-      "source_id": "ac8fba260938"
+      "created_id": "trend-update-9538d0264c37e932e4b7",
+      "completed_at": "2026-11-04T06:02:47.610291+00:00"
     }
   ],
   "last_started_at": "2026-11-04T07:00:12+01:00",
