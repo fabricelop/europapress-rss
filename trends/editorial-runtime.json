@@ -5,66 +5,42 @@
   "canonical": true,
   "run_id": "tr-1793762800964-manual",
   "previous_run_id": "tr-1793762800964-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T04:37:00+01:00",
-  "updated_at": "2026-11-04T04:37:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-04T04:38:00+01:00",
+  "finished_at": "2026-11-04T04:38:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Reejecución manual iniciada: cola compacta 0 en main; revalidando preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0.",
+  "summary": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [
-    {
-      "id": "red-review-7501a4f8eb00317019cd",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
-      "outcome": "stale",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "reason": "Guard JIT: existe una entrega terminal más nueva para Chiqui (r2 dismissed); no se aplicó la actualización propuesta."
-    },
-    {
-      "id": "red-review-d3d50b6af3700ee32640",
-      "revision": 0,
-      "name": "Revisar novedades: Andorra",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "da533585ec1af29bcb631aa276535c6474208086",
-      "created_id": "trend-update-6cd46b650a184b0b3593",
-      "reason": "Novedad material aplicada en continuidad: fallecimiento de Jesús de Miguel y reacción/solicitud de aplazamiento del FC Andorra."
-    }
-  ],
+  "activity": "closing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T04:27:00+01:00",
-  "last_completed_at": "2026-11-04T04:32:00+01:00",
+  "last_started_at": "2026-11-04T04:37:00+01:00",
+  "last_completed_at": "2026-11-04T04:38:00+01:00",
   "last_run": {
     "run_id": "tr-1793762800964-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T04:27:00+01:00",
-    "finished_at": "2026-11-04T04:32:00+01:00",
-    "current": 2,
-    "total": 2,
-    "closed": [
-      "red-review-7501a4f8eb00317019cd",
-      "red-review-d3d50b6af3700ee32640"
-    ],
+    "started_at": "2026-11-04T04:37:00+01:00",
+    "finished_at": "2026-11-04T04:38:00+01:00",
+    "current": 0,
+    "total": 0,
+    "closed": [],
     "pending": [],
-    "summary": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "summary": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Reejecución manual iniciada: cola compacta 0 en main; revalidando preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4684,6 +4660,20 @@
       "run_id": "tr-1793762800964-manual",
       "status": "RUNNING",
       "message": "Reejecución manual iniciada: cola compacta 0 en main; revalidando preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T04:38:00+01:00",
+      "phase": "verifying",
+      "run_id": "tr-1793762800964-manual",
+      "status": "RUNNING",
+      "message": "Barrera final main: editorial-queue=0; no preparing/update; búsquedas de rewrite_pending/reexplain sin resultados."
+    },
+    {
+      "at": "2026-11-04T04:38:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793762800964-manual",
+      "status": "DONE",
+      "message": "Pasada tr-1793762800964-manual reejecutada y cerrada 0/0 tras barrera final real: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. No había trabajo editorial vigente que procesar. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
