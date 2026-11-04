@@ -5,159 +5,100 @@
   "canonical": true,
   "run_id": "tr-1793832842690-manual",
   "previous_run_id": "tr-1793831645450-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T23:54:00+01:00",
-  "updated_at": "2026-11-04T23:56:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T22:59:02Z",
+  "finished_at": "2026-11-04T22:59:02Z",
+  "current": 1,
   "total": 1,
-  "trend_id": "red-review-d0c5fed8f6da6b9e4c74",
-  "title": "Revisar novedades: Mazón",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-d0c5fed8f6da6b9e4c74"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-d0c5fed8f6da6b9e4c74"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
+    "updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo revisión de novedades: continuidad del episodio, con hechos posteriores verificados; sin crear nueva ficha.",
-  "final_outcomes": [],
+  "activity": "Pasada cerrada 1/1: revisión de Mazón aplicada como episodio distinto y nueva ficha trend-update-b0c01b00ed5111b801fe. Barrera final main: editorial-queue=0; sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox creado por esta pasada=0; publicaciones=0.",
+  "final_outcomes": [
+    {
+      "id": "red-review-d0c5fed8f6da6b9e4c74",
+      "revision": 0,
+      "name": "Revisar novedades: Mazón",
+      "outcome": "updated",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "created_id": "trend-update-b0c01b00ed5111b801fe",
+      "distinct_episode": true,
+      "converged": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793831645450-manual",
+    "run_id": "tr-1793832842690-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T22:46:33.566Z",
-    "updated_at": "2026-11-04T22:52:55.327Z",
-    "finished_at": "2026-11-04T22:52:55.327Z",
-    "current": 10,
-    "total": 10,
+    "started_at": "2026-11-04T23:54:00+01:00",
+    "updated_at": "2026-11-04T22:59:02Z",
+    "finished_at": "2026-11-04T22:59:02Z",
+    "current": 1,
+    "total": 1,
     "queue_complete": true,
     "processed_ids": [
-      "50405f310f9f",
-      "57f0c287cf42",
-      "3ff255e46d90",
-      "b2f42653f44a",
-      "0b5dfb950ba5",
-      "5d1e26ca2308",
-      "78a1a1dae4e5",
-      "22e68cdf28d2",
-      "952876b01063",
-      "79e580713071"
+      "red-review-d0c5fed8f6da6b9e4c74"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "50405f310f9f",
+        "id": "red-review-d0c5fed8f6da6b9e4c74",
         "revision": 0,
-        "name": "#LaIslaDeLasTentaciones17",
-        "outcome": "explained",
+        "name": "Revisar novedades: Mazón",
+        "outcome": "updated",
         "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "57f0c287cf42",
-        "revision": 0,
-        "name": "mckenna",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "3ff255e46d90",
-        "revision": 0,
-        "name": "#LaRevuelta",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "b2f42653f44a",
-        "revision": 0,
-        "name": "#RevillaEH",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "0b5dfb950ba5",
-        "revision": 0,
-        "name": "Antony",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "5d1e26ca2308",
-        "revision": 0,
-        "name": "Respetuoso",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "cause_unconfirmed": true
-      },
-      {
-        "id": "78a1a1dae4e5",
-        "revision": 0,
-        "name": "Joseph",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "22e68cdf28d2",
-        "revision": 0,
-        "name": "El Como",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "952876b01063",
-        "revision": 0,
-        "name": "Ruibal",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "79e580713071",
-        "revision": 0,
-        "name": "Valles",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
+        "via": "maintenance_outbox",
+        "created_id": "trend-update-b0c01b00ed5111b801fe",
+        "distinct_episode": true,
+        "converged": true
       }
     ],
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
+    "updates": 1,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incident_count": 0,
-    "incidents": [],
-    "concurrent_convergence": 0
+    "incidents": 0,
+    "concurrent_convergence": 1
   },
   "last_started_at": "2026-11-04T23:52:11+01:00",
-  "last_completed_at": "2026-11-04T22:52:55.327Z"
+  "last_completed_at": "2026-11-04T22:59:02Z"
 }
