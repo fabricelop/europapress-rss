@@ -226,3 +226,26 @@ test('approved original handoff fails closed after new editorial content or lost
  delete env.GITHUB_SOURCE_READ_TOKEN;
  assert.equal((await handleRequest(download(),env,editor)).status,503);
 });
+test('manual image upload: editor-only, one candidate, ready for existing approval', async () => {
+  const {env} = context();
+  const sha = await crypto.subtle.digest('SHA-256', png);
+  const rasterSHA256 = Array.from(new Uint8Array(sha), b=>b.toString(16).padStart(2,'0')).join('');
+  const form = new FormData();
+  form.set('image', new Blob([png], {type:'image/png'}), 'selected.png');
+  form.set('metadata', JSON.stringify({
+    project:'ttendencias', editorialId:'my-trend', revision:0,
+    commandId:'manual-123456', rasterSHA256,
+    editorialText:'Texto factual + remate', title:'Test',
+  }));
+  const upload = req('/v1/images/manual','POST',form);
+  const response = await handleRequest(upload,env,editor);
+  assert.equal(response.status,201);
+  const saved = await response.json();
+  assert.equal(saved.state,'pending');
+  assert.equal((await receive(env)).data.items.length,1);
+  const ready = (await receive(env)).data.items[0];
+  assert.equal(ready.id,saved.id);
+  const decided = await handleRequest(decision(ready.id,ready.identity,'approve'),env,editor);
+  assert.equal(decided.status,200);
+  assert.equal((await decided.json()).state,'approved_awaiting_publication');
+});
