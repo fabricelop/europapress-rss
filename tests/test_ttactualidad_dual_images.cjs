@@ -77,6 +77,21 @@ for (const path of paths) {
     explanation: "Grouped fact", explained_at: "2026-11-01T14:00:00Z"
   }), "https://ttactualidad-tendencias.rainyraven22.chatgpt.site/images/ttendencias/trendABC-r0-" + sha.slice(0,12) + ".png",
     path + ": grouped trends keep normal verified AI");
+  // User-selected originals from the editor's GitHub Contents fallback
+  // are checked by the same exact ID/revision/text/date + SHA controls.
+  const manualTrendURL = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/trendABC-r0-manual-" + sha.slice(0,12) + ".png";
+  state.data.trendSiteAi.images[0].image_url = manualTrendURL;
+  const trendCard = {_kind:"tr",_status:"EXPLICADA",_id:"trendABC",revision:0,
+    explanation:"Grouped fact",explained_at:"2026-11-01T14:00:00Z"};
+  assert.equal(verifiedTrendSiteAI(trendCard),manualTrendURL,
+    path + ": editor-selected trend image");
+  assert.equal(verifiedTrendSiteAI({...trendCard,_id:"anotherID"}),"",
+    path + ": manual trend image cannot cross IDs");
+  state.data.trendSiteAi.images[0].image_url = manualTrendURL.replace("-manual-", "-other-");
+  assert.equal(verifiedTrendSiteAI(trendCard),"",
+    path + ": arbitrary GitHub generated image is not approved manually");
+  state.data.trendSiteAi.images[0].image_url = manualTrendURL;
+
   assert(html.includes("['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x._status)"),
     path + ": grouped trends retain normal image actions");
   assert(html.includes("const archive=archivedPhoto(x);"), path + ": archive rendered");
