@@ -438,15 +438,15 @@ final class GitHubEditor: ObservableObject {
         let boundary = "TTActualidadManual-" + UUID().uuidString
         var body = Data()
         func append(_ text: String) { body.append(Data(text.utf8)) }
-        append("--\\(boundary)\\r\\n")
-        append("Content-Disposition: form-data; name=\\"metadata\\"\\r\\n")
-        append("Content-Type: application/json\\r\\n\\r\\n")
+        append("--\(boundary)\r\n")
+        append("Content-Disposition: form-data; name=\"metadata\"\r\n")
+        append("Content-Type: application/json\r\n\r\n")
         body.append(payload)
-        append("\\r\\n--\\(boundary)\\r\\n")
-        append("Content-Disposition: form-data; name=\\"image\\"; filename=\\"original.png\\"\\r\\n")
-        append("Content-Type: image/png\\r\\n\\r\\n")
+        append("\r\n--\(boundary)\r\n")
+        append("Content-Disposition: form-data; name=\"image\"; filename=\"original.png\"\r\n")
+        append("Content-Type: image/png\r\n\r\n")
         body.append(png)
-        append("\\r\\n--\\(boundary)--\\r\\n")
+        append("\r\n--\(boundary)--\r\n")
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
                                  timeoutInterval: 45)
         request.httpMethod = "POST"
