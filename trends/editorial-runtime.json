@@ -5,17 +5,19 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793789480",
   "previous_run_id": "tr-autoguard-1793787076",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-04T11:52:00+01:00",
-  "updated_at": "2026-11-04T11:56:50+01:00",
-  "finished_at": null,
-  "current": 2,
+  "updated_at": "2026-11-04T12:02:00+01:00",
+  "finished_at": "2026-11-04T12:02:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "31bb72a668f9",
-  "title": "JJ Gabriel",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "8201536739ef",
+    "e50cfc4cf460",
     "31bb72a668f9"
   ],
   "converged_ids": [],
@@ -23,175 +25,91 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 3,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0,
-    "cause_unconfirmed": 0
+    "cause_unconfirmed": 1
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "fallback_persistence_transport",
+      "resolved": true,
+      "message": "El intento de persistencia atómica manual de respaldo para JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; se reactivó el outbox de la misma revisión y el aplicador lo persistió correctamente."
+    }
+  ],
   "error": null,
-  "activity": "Persistiendo JJ Gabriel r0; fichaje del Real Madrid muy avanzado y jugador ya entrenando en Madrid. Sin ImageGen.",
+  "activity": "Pasada textual cerrada 3/3. #JuegaZeldaYa, Verás y JJ Gabriel persisten en requests y Listas con revisión 0; #JuegaZeldaYa quedó con causa no confirmada. Sin ImageGen, image-outbox ni publicaciones.",
   "final_outcomes": [
     {
-      "id": "fd26964fda3b",
+      "id": "8201536739ef",
       "revision": 0,
-      "name": "Abdul El-Sayed",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "98d7f113aa13",
-      "revision": 0,
-      "name": "America",
+      "name": "#JuegaZeldaYa",
       "outcome": "explained_cause_unconfirmed",
       "applied": true
     },
     {
-      "id": "84861ef6bead",
+      "id": "e50cfc4cf460",
       "revision": 0,
-      "name": "Partido Demócrata",
+      "name": "Verás",
       "outcome": "explained",
       "applied": true
     },
     {
-      "id": "26325a546fbb",
+      "id": "31bb72a668f9",
       "revision": 0,
-      "name": "Michigan",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "9e94d699e569",
-      "revision": 0,
-      "name": "Biden",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "df078ac3b182",
-      "revision": 0,
-      "name": "Casa Blanca",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "d4b56a72286c",
-      "revision": 0,
-      "name": "Republicanos",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "438a7d5904cf",
-      "revision": 0,
-      "name": "Ohio",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "51cfa8442187",
-      "revision": 0,
-      "name": "#OscarPuente",
+      "name": "JJ Gabriel",
       "outcome": "explained",
       "applied": true
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1793787076",
-    "status": "DONE",
-    "started_at": "2026-11-04T11:12:00+01:00",
-    "updated_at": "2026-11-04T11:17:55.501+01:00",
-    "finished_at": "2026-11-04T11:17:55.501+01:00",
-    "current": 9,
-    "total": 9,
+    "run_id": "tr-autoguard-1793789480",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-04T11:52:00+01:00",
+    "updated_at": "2026-11-04T12:02:00+01:00",
+    "finished_at": "2026-11-04T12:02:00+01:00",
+    "current": 3,
+    "total": 3,
     "queue_complete": true,
     "processed_ids": [
-      "fd26964fda3b",
-      "98d7f113aa13",
-      "84861ef6bead",
-      "26325a546fbb",
-      "9e94d699e569",
-      "df078ac3b182",
-      "d4b56a72286c",
-      "438a7d5904cf",
-      "51cfa8442187"
+      "8201536739ef",
+      "e50cfc4cf460",
+      "31bb72a668f9"
     ],
     "converged_ids": [],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "fd26964fda3b",
+        "id": "8201536739ef",
         "revision": 0,
-        "name": "Abdul El-Sayed",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "98d7f113aa13",
-        "revision": 0,
-        "name": "America",
+        "name": "#JuegaZeldaYa",
         "outcome": "explained_cause_unconfirmed",
         "applied": true
       },
       {
-        "id": "84861ef6bead",
+        "id": "e50cfc4cf460",
         "revision": 0,
-        "name": "Partido Demócrata",
+        "name": "Verás",
         "outcome": "explained",
         "applied": true
       },
       {
-        "id": "26325a546fbb",
+        "id": "31bb72a668f9",
         "revision": 0,
-        "name": "Michigan",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "9e94d699e569",
-        "revision": 0,
-        "name": "Biden",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true
-      },
-      {
-        "id": "df078ac3b182",
-        "revision": 0,
-        "name": "Casa Blanca",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "d4b56a72286c",
-        "revision": 0,
-        "name": "Republicanos",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "438a7d5904cf",
-        "revision": 0,
-        "name": "Ohio",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "51cfa8442187",
-        "revision": 0,
-        "name": "#OscarPuente",
+        "name": "JJ Gabriel",
         "outcome": "explained",
         "applied": true
       }
@@ -199,10 +117,16 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incident_count": 0,
-    "incidents": [],
+    "incident_count": 1,
+    "incidents": [
+      {
+        "type": "fallback_persistence_transport",
+        "resolved": true,
+        "message": "El intento de persistencia atómica manual de respaldo para JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; se reactivó el outbox de la misma revisión y el aplicador lo persistió correctamente."
+      }
+    ],
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-04T11:56:50+01:00",
-  "last_completed_at": "2026-11-04T11:56:50+01:00"
+  "last_completed_at": "2026-11-04T12:02:00+01:00"
 }
