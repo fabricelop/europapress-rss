@@ -183,7 +183,8 @@ struct EditorialActions: View {
             EditorialRelationsView(github: github,
                                    scope: EditorialRelationsScope(
                 project: project, id: editorialID, revision: revision, title: title),
-                                   top30Names: store.snapshot.top30.map(\.name))
+                                   top30Names: store.snapshot.top30.map(\.name),
+                                   listasNews: store.snapshot.news)
                 .presentationDetents([.large])
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
