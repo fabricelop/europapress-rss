@@ -5,29 +5,35 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793775064",
   "previous_run_id": "tr-1793773302265-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-04T07:52:00+01:00",
-  "updated_at": "2026-11-04T07:58:00+01:00",
-  "finished_at": "2026-11-04T07:58:00+01:00",
+  "updated_at": "2026-11-04T07:59:00+01:00",
+  "finished_at": null,
   "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 5,
+  "trend_id": "red-review-3f3b500b747421ce2841",
+  "title": "Revisar novedades: Chiqui",
+  "queue_complete": false,
   "processed_ids": [
     "8584ecbb1ea7",
     "722b29f28253",
     "60c10181fad7"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-3f3b500b747421ce2841",
+    "red-review-a033fd697c62d425d154"
+  ],
+  "remaining_active_ids": [
+    "red-review-3f3b500b747421ce2841",
+    "red-review-a033fd697c62d425d154"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793775064 cerrada 3/3: Mississippi, Iowa y Gina Hinojosa explicados y sincronizados en ambos registros. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "summary": "Pasada ampliada por trabajo nuevo detectado en la barrera final: 3/5 cerrados. Revisando novedades de Chiqui y después Gracias Ministro.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "8584ecbb1ea7",
