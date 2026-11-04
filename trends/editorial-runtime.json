@@ -8,7 +8,7 @@
   "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
   "started_at": "2026-11-04T00:56:30+01:00",
-  "updated_at": "2026-11-04T00:59:37+01:00",
+  "updated_at": "2026-11-04T01:00:15+01:00",
   "finished_at": "2026-11-04T00:59:37+01:00",
   "current": 3,
   "total": 3,
@@ -4267,6 +4267,16 @@
         "concurrent_convergence": 1
       },
       "message": "Pasada 3/3 cerrada tras releer main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T01:00:15+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793750189999-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "converged_with": "tr-autoguard-1793749880",
+      "message": "Pasada manual tr-1793750189999-manual cerrada 2/2 por convergencia JIT con la ejecución autoguard activa: #codigo10 review_completed/updated con nueva ficha trend-update-41db1e2085092c5e2510 y Martorell review_completed/unchanged. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -12228,6 +12238,7 @@
     "tr-1793744866688-manual",
     "tr-1793746342613-manual",
     "tr-1793747839940-manual",
-    "tr-autoguard-1793749880"
+    "tr-autoguard-1793749880",
+    "tr-1793750189999-manual"
   ]
 }
