@@ -3,76 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793771456",
+  "run_id": "tr-1793772147660-manual",
   "previous_run_id": "tr-autoguard-1793771456",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-04T07:00:12+01:00",
-  "updated_at": "2026-11-04T07:03:00+01:00",
-  "finished_at": "2026-11-04T07:03:00+01:00",
-  "current": 4,
-  "total": 4,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T07:02:27.660+01:00",
+  "updated_at": "2026-11-04T06:04:23.513Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "36205fe85f09",
-    "79f6d0732a24",
-    "red-review-d5deda707961df25a03d",
-    "red-review-bf9a28edb2ac00ffecbb"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793771456 cerrada 4/4. Democrats r0 y Kansas r0 se explicaron y quedaron sincronizados. La barrera de las 07:00 añadió dos review_red: Homicidio y Neuer; ambos convergieron concurrentemente después de la validación y quedaron como updated, con sus nuevas tarjetas verificadas. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "36205fe85f09",
-      "revision": 0,
-      "type": "direct_persist_transport_retry",
-      "message": "La escritura directa de los registros grandes falló por error h2; la relectura confirmó ausencia de cambios parciales y el resultado se aplicó después mediante el outbox oficial."
-    }
-  ],
+  "summary": "Pasada tr-1793772147660-manual iniciada sobre main: cola autoritativa observada en 0; verificando barrera final, reexplicaciones y convergencia con la pasada inmediatamente anterior. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "36205fe85f09",
-      "revision": 0,
-      "name": "Democrats",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-04T06:56:00+01:00"
-    },
-    {
-      "id": "79f6d0732a24",
-      "revision": 0,
-      "name": "Kansas",
-      "outcome": "explained",
-      "applied": true,
-      "explained_at": "2026-11-04T06:59:00+01:00"
-    },
-    {
-      "id": "red-review-d5deda707961df25a03d",
-      "revision": 0,
-      "name": "Revisar novedades: Homicidio",
-      "outcome": "updated_concurrent",
-      "applied": true,
-      "created_id": "trend-update-df3897d683185a85a0bf",
-      "completed_at": "2026-11-04T06:02:18.118375+00:00"
-    },
-    {
-      "id": "red-review-bf9a28edb2ac00ffecbb",
-      "revision": 0,
-      "name": "Revisar novedades: Neuer",
-      "outcome": "updated_concurrent",
-      "applied": true,
-      "created_id": "trend-update-9538d0264c37e932e4b7",
-      "completed_at": "2026-11-04T06:02:47.610291+00:00"
-    }
-  ],
-  "last_started_at": "2026-11-04T07:00:12+01:00",
+  "activity": "preparing",
+  "final_outcomes": [],
+  "last_started_at": "2026-11-04T07:02:27.660+01:00",
   "last_completed_at": "2026-11-04T07:03:31+01:00",
   "api_failover_enabled": false
 }
