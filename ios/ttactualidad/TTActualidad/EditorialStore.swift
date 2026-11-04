@@ -529,8 +529,13 @@ final class EditorialStore: ObservableObject {
         project: String, editorialID: String, revision: Int,
         editorialText: String, url: URL, sha256: String
     ) -> EditorialSnapshot {
-        guard url.scheme == "https", url.host == "raw.githubusercontent.com",
-              url.path.contains("/fabricelop/europapress-rss/main/"),
+        let folder = project == "ttendencias" ? "trends" : "ttittulares"
+        let expectedPath = "/fabricelop/europapress-rss/main/" + folder +
+            "/generated-images/" + editorialID + "-r" + String(revision) + "-manual-"
+        guard ["ttendencias", "ttittulares"].contains(project),
+              url.scheme == "https", url.host == "raw.githubusercontent.com",
+              url.path.hasPrefix(expectedPath), url.path.hasSuffix(".png"),
+              url.query == nil, url.fragment == nil, url.port == nil,
               sha256.count == 64, sha256.allSatisfy(\.isHexDigit),
               url.lastPathComponent.contains(String(sha256.prefix(12)))
         else { return original }
