@@ -5,11 +5,11 @@
   "canonical": true,
   "run_id": "tr-1793826849874-manual",
   "previous_run_id": "tr-1793826700511-manual",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-04T22:14:09.874+01:00",
-  "updated_at": "2026-11-04T22:19:30.486018+01:00",
-  "finished_at": "2026-11-04T22:19:30.486018+01:00",
+  "updated_at": "2026-11-04T21:20:31.354Z",
+  "finished_at": "2026-11-04T21:20:31.354Z",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -38,21 +38,14 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 1,
     "cause_unconfirmed": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "red-review-d43cd2d868381779815a",
-      "revision": 0,
-      "type": "maintenance_validation_retry",
-      "message": "El primer borrador de continuidad no pasó la validación de formato; el mismo job se corrigió y quedó aplicado como continuity en main."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 2/2: Luis Pedro Marco de la Peña unchanged; Rudiger continuity. Cola y reexplicaciones pendientes: 0. Sin ImageGen.",
+  "activity": "Pasada cerrada 2/2. Luis Pedro Marco de la Peña: unchanged; Rudiger: continuity del mismo episodio. Cola y reexplicaciones pendientes: 0. Sin ImageGen.",
   "final_outcomes": [
     {
       "id": "red-review-21034c7a12c6f8846859",
@@ -60,7 +53,7 @@
       "name": "Revisar novedades: Luis Pedro Marco de la Peña",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence_jit",
+      "via": "maintenance_outbox",
       "source_id": "168b155c5487"
     },
     {
@@ -78,10 +71,10 @@
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793826849874-manual",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "started_at": "2026-11-04T22:14:09.874+01:00",
-    "updated_at": "2026-11-04T22:19:30.486018+01:00",
-    "finished_at": "2026-11-04T22:19:30.486018+01:00",
+    "updated_at": "2026-11-04T21:20:31.354Z",
+    "finished_at": "2026-11-04T21:20:31.354Z",
     "current": 2,
     "total": 2,
     "queue_complete": true,
@@ -97,7 +90,7 @@
         "name": "Revisar novedades: Luis Pedro Marco de la Peña",
         "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence_jit",
+        "via": "maintenance_outbox",
         "source_id": "168b155c5487"
       },
       {
@@ -115,17 +108,10 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incident_count": 1,
-    "incidents": [
-      {
-        "id": "red-review-d43cd2d868381779815a",
-        "revision": 0,
-        "type": "maintenance_validation_retry",
-        "message": "El primer borrador de continuidad no pasó la validación de formato; el mismo job se corrigió y quedó aplicado como continuity en main."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "concurrent_convergence": 1
   },
   "last_started_at": "2026-11-04T22:14:09.874+01:00",
-  "last_completed_at": "2026-11-04T22:19:30.486018+01:00"
+  "last_completed_at": "2026-11-04T21:20:31.354Z"
 }
