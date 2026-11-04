@@ -3,19 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793785727668-manual",
-  "previous_run_id": "tr-autoguard-1793784063",
-  "status": "DONE_WITH_INCIDENTS",
+  "run_id": "tr-1793786035098-manual",
+  "previous_run_id": "tr-1793785727668-manual",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-04T10:49:00+01:00",
-  "updated_at": "2026-11-04T10:56:07+01:00",
-  "finished_at": "2026-11-04T10:56:07+01:00",
+  "started_at": "2026-11-04T10:54:00+01:00",
+  "updated_at": "2026-11-04T09:57:51.328Z",
+  "finished_at": "2026-11-04T09:57:51.328Z",
   "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-bd837aa8a0061ab65157",
     "red-review-db7a385afa75851c9d38"
   ],
@@ -23,11 +24,11 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
+    "closed": 0,
     "explained": 0,
-    "updates": 2,
+    "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -35,52 +36,49 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 0
+    "incidents": 0,
+    "concurrent_convergence": 2
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "maintenance_apply_validation",
-      "resolved": true,
-      "message": "Primer intento rechazó ambos textos por la sintaxis «sigue siendo tendencia tras»; se corrigieron sobre las mismas revisiones a «sigue siendo tendencia porque» y el aplicador confirmó ambas actualizaciones."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Cierre verificado: 2/2 revisiones aplicadas; cola y reelaboraciones pendientes a cero",
+  "activity": "Convergencia verificada: la pasada inmediatamente anterior aplicó las dos revisiones antes del cierre de esta ejecución; cola autoritativa vacía y sin reelaboraciones pendientes.",
   "final_outcomes": [
     {
       "id": "red-review-bd837aa8a0061ab65157",
       "revision": 0,
       "name": "Revisar novedades: Jesús de Miguel",
-      "outcome": "updated",
+      "outcome": "concurrent_convergence",
       "applied": true,
       "via": "maintenance_outbox",
       "created_id": "trend-update-63b096e300070d9b8fbc",
+      "converged_from_run": "tr-1793785727668-manual",
       "reason": "Novedad material: investigación policial y judicial de oficio sobre las circunstancias de la muerte."
     },
     {
       "id": "red-review-db7a385afa75851c9d38",
       "revision": 0,
       "name": "Revisar novedades: #GMMTVNEXT",
-      "outcome": "updated",
+      "outcome": "concurrent_convergence",
       "applied": true,
       "via": "maintenance_outbox",
       "created_id": "trend-update-caa47926886ee3790b05",
+      "converged_from_run": "tr-1793785727668-manual",
       "reason": "Novedad material: el evento concluyó y dejó una nueva tanda de series y proyectos anunciados."
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793785727668-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-04T10:49:00+01:00",
-    "updated_at": "2026-11-04T10:56:07+01:00",
-    "finished_at": "2026-11-04T10:56:07+01:00",
+    "run_id": "tr-1793786035098-manual",
+    "status": "DONE",
+    "started_at": "2026-11-04T10:54:00+01:00",
+    "updated_at": "2026-11-04T09:57:51.328Z",
+    "finished_at": "2026-11-04T09:57:51.328Z",
     "current": 2,
     "total": 2,
     "queue_complete": true,
-    "processed_ids": [
+    "processed_ids": [],
+    "converged_ids": [
       "red-review-bd837aa8a0061ab65157",
       "red-review-db7a385afa75851c9d38"
     ],
@@ -90,36 +88,32 @@
         "id": "red-review-bd837aa8a0061ab65157",
         "revision": 0,
         "name": "Revisar novedades: Jesús de Miguel",
-        "outcome": "updated",
+        "outcome": "concurrent_convergence",
         "applied": true,
         "via": "maintenance_outbox",
         "created_id": "trend-update-63b096e300070d9b8fbc",
+        "converged_from_run": "tr-1793785727668-manual",
         "reason": "Novedad material: investigación policial y judicial de oficio sobre las circunstancias de la muerte."
       },
       {
         "id": "red-review-db7a385afa75851c9d38",
         "revision": 0,
         "name": "Revisar novedades: #GMMTVNEXT",
-        "outcome": "updated",
+        "outcome": "concurrent_convergence",
         "applied": true,
         "via": "maintenance_outbox",
         "created_id": "trend-update-caa47926886ee3790b05",
+        "converged_from_run": "tr-1793785727668-manual",
         "reason": "Novedad material: el evento concluyó y dejó una nueva tanda de series y proyectos anunciados."
       }
     ],
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "maintenance_apply_validation",
-        "resolved": true,
-        "message": "Sintaxis de continuidad corregida y reaplicada con éxito."
-      }
-    ],
-    "concurrent_convergence": 0
+    "incident_count": 0,
+    "incidents": [],
+    "concurrent_convergence": 2
   },
-  "last_started_at": "2026-11-04T10:49:00+01:00",
-  "last_completed_at": "2026-11-04T10:56:07+01:00"
+  "last_started_at": "2026-11-04T10:54:00+01:00",
+  "last_completed_at": "2026-11-04T09:57:51.328Z"
 }
