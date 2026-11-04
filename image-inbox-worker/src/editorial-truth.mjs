@@ -26,69 +26,29 @@ export async function episodeFingerprint(snapshot) {
   return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Use exactly the repositories read by the iPhone's Listas view. Trending
-// identities live in telegram-manual-explained, NOT trends/prepared.json.
-const DECISIONS = Object.freeze({
-  ttittulares: 'ttittulares/decisions.json',
-  ttendencias: 'trends/mobile-decisions.json',
-});
-const TERMINAL = new Set(['published', 'dismissed', 'deleted', 'discarded', 'removed']);
-
+// Historical editorial truth, not just current Listas. An original selected
+// by the editor can be attached AFTER a card is published/removed; this never
+// requeues the card or changes its publication status.
 export function readyTextFromMain(data, identity) {
   if (!data || !Array.isArray(data.items)) throw new EditorialUnavailable();
-  const matches = data.items.filter(row =>
-    (identity.project === 'ttittulares' ? row.event_id : row.id) === identity.editorialId);
-  if (!matches.length) return null;
-  // Multiple rows can refer to the same editorial ID as the news develops.
-  // Only the most recent identity is permitted, never an older revision.
-  const latest = matches.sort((a, b) =>
-    Number(b.revision ?? 0) - Number(a.revision ?? 0) ||
+  const key = identity.project === 'ttittulares' ? 'event_id' : 'id';
+  // The exact older revision is still valid after a newer rewrite exists.
+  const sameRevision = data.items.filter(row =>
+    row[key] === identity.editorialId &&
+    Number(row.revision ?? 0) === identity.revision);
+  if (!sameRevision.length) return null;
+  const latest = sameRevision.sort((a, b) =>
     String(b.explained_at || b.prepared_at || b.updated_at || '').localeCompare(
       String(a.explained_at || a.prepared_at || a.updated_at || '')))[0];
-  if (Number(latest.revision ?? 0) !== identity.revision ||
-      latest.rewrite_pending === true) return null;
-  if (identity.project === 'ttendencias') {
-    // Match the native Listas contract; a historical row or grouped child
-    // cannot receive a fresh manually approved picture.
-    if (String(latest.status || '').toLowerCase() !== 'explained') return null;
-    const explainedAt = Date.parse(latest.explained_at || '');
-    if (!Number.isFinite(explainedAt) ||
-        Date.now() - explainedAt > 48 * 3600_000 ||
-        explainedAt - Date.now() > 3600_000 ||
-        (latest.group_leader_id && latest.group_leader_id !== identity.editorialId) ||
-        TERMINAL.has(String(latest.telegram_package_status || '').toLowerCase())) {
-      return null;
-    }
-  }
-  // The native news card shows tweet.text when supplied, otherwise the
-  // prepared explanation/factual summary. Validate that same visible text.
+  // An actual dated editorial entry is required. Rank/title similarity or
+  // another name is never sufficient to attach a manual original.
+  const issuedAt = identity.project === 'ttendencias'
+    ? latest.explained_at : latest.prepared_at;
+  if (typeof issuedAt !== 'string' || !issuedAt.trim()) return null;
   const text = identity.project === 'ttittulares'
     ? (latest.tweet?.text || latest.explanation || latest.factual_summary)
     : latest.explanation;
   return typeof text === 'string' && text.trim() ? text : null;
-}
-
-function isClosed(decisions, identity, editorial) {
-  if (!decisions || !Array.isArray(decisions.items)) throw new EditorialUnavailable();
-  const key = identity.project === 'ttittulares' ? 'event_id' : 'id';
-  // Match iOS' guard: a closure for an older revision, or a closure preceding
-  // a new explained_at, cannot suppress a fresh independently reworked card.
-  const candidates = editorial.items.filter(row =>
-    (identity.project === 'ttittulares' ? row.event_id : row.id) === identity.editorialId &&
-    Number(row.revision ?? 0) === identity.revision);
-  const sourceTime = identity.project === 'ttendencias'
-    ? Math.max(...candidates.map(x => Date.parse(x.explained_at || '') || 0))
-    : 0;
-  return decisions.items.some(row => {
-    if (row[key] !== identity.editorialId ||
-        !TERMINAL.has(String(row.status || '').toLowerCase())) return false;
-    if (identity.project === 'ttittulares') return true;
-    const closedRevision = Number.isSafeInteger(row.revision) ? row.revision : 0;
-    if (closedRevision !== identity.revision) return closedRevision > identity.revision;
-    const closedAt = Date.parse(row.deleted_at || row.dismissed_at ||
-      row.published_at || row.removed_at || row.updated_at || row.delivered_at || row.decided_at || '');
-    return !(Number.isFinite(closedAt) && sourceTime > 0 && closedAt < sourceTime - 60_000);
-  });
 }
 
 async function freshMain(path, fetchFn, token) {
@@ -113,17 +73,14 @@ async function freshMain(path, fetchFn, token) {
   } catch { throw new EditorialUnavailable(); }
 }
 
-// Three-valued verdict: 'current' / 'stale' / exception (network unavailable).
-// Use a fresh main read at approval and AGAIN before any public write.
+// Both upload and approval compare the original ID/revision/text against
+// current GitHub history. A removal from Listas is not an image prohibition.
 export async function verifyEditorialNow(identity, editorialText, fetchFn = fetch, githubToken = null) {
-  const path = PAGES[identity.project], decisionPath = DECISIONS[identity.project];
-  if (!path || !decisionPath || !githubToken || typeof githubToken !== 'string') {
+  const path = PAGES[identity.project];
+  if (!path || !githubToken || typeof githubToken !== 'string') {
     throw new EditorialUnavailable();
   }
-  const [body, decisions] = await Promise.all([
-    freshMain(path, fetchFn, githubToken),
-    freshMain(decisionPath, fetchFn, githubToken),
-  ]);
-  if (isClosed(decisions, identity, body)) return 'stale';
-  return readyTextFromMain(body, identity) === editorialText ? 'current' : 'stale';
+  const historical = await freshMain(path, fetchFn, githubToken);
+  return readyTextFromMain(historical, identity) === editorialText
+    ? 'current' : 'stale';
 }
