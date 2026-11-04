@@ -467,6 +467,193 @@ final class GitHubEditor: ObservableObject {
         return (bytes, http.statusCode)
     }
 
+    // GitHub Contents fallback: used only if Sites has no manual upload endpoint.
+    // The chosen image becomes a public, content-addressed original, but never
+    // claims to be published on ChatGPT Sites until separate readback succeeds.
+    func associateManualImageInGitHub(project: String, editorialID: String,
+                                     revision: Int, editorialText: String,
+                                     png: Data) async throws -> URL {
+        guard ["ttendencias", "ttittulares"].contains(project),
+              editorialID.range(of: "^[A-Za-z0-9_-]{3,160}$", options: .regularExpression) != nil,
+              revision >= (project == "ttittulares" ? 1 : 0),
+              !editorialText.isEmpty, png.count > 24, png.count <= 8_000_000
+        else { throw GitHubError.message("Ficha o imagen incorrecta.") }
+        let hex = SHA256.hash(data: png).map { String(format: "%02x", $0) }.joined()
+        let folder = project == "ttendencias" ? "trends" : "ttittulares"
+        let path = folder + "/generated-images/" + editorialID + "-r" + String(revision) +
+            "-manual-" + String(hex.prefix(12)) + ".png"
+        let originalURL = URL(string: "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path)!
+        let sourcePath = project == "ttendencias" ?
+            "trends/telegram-manual-explained.json" : "ttittulares/prepared.json"
+        let decisionPath = project == "ttendencias" ?
+            "trends/mobile-decisions.json" : "ttittulares/decisions.json"
+        let manifestPath = folder + "/site-ai-images.json"
+        let auth = try await authorizedToken()
+        func currentRow() async throws -> [String: Any] {
+            let data = try await readMainJSON(sourcePath)
+            let matches = (data["items"] as? [[String: Any]] ?? []).filter {
+                ($0[project == "ttendencias" ? "id" : "event_id"] as? String) == editorialID
+            }.sorted {
+                let revA = $0["revision"] as? Int ?? 0, revB = $1["revision"] as? Int ?? 0
+                if revA != revB { return revA > revB }
+                let timeField = project == "ttendencias" ? "explained_at" : "prepared_at"
+                return ($0[timeField] as? String ?? "") > ($1[timeField] as? String ?? "")
+            }
+            guard let row = matches.first,
+                  (row["revision"] as? Int ?? 0) == revision,
+                  row["rewrite_pending"] as? Bool != true
+            else { throw GitHubError.message("Ficha obsoleta. Actualiza Listas antes de publicar.") }
+            let canonical: String
+            if project == "ttendencias" {
+                canonical = row["explanation"] as? String ?? ""
+                let leader = row["group_leader_id"] as? String ?? ""
+                let timestamp = row["explained_at"] as? String ?? ""
+                let formatter = ISO8601DateFormatter()
+                formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                let parsed = formatter.date(from: timestamp)
+                formatter.formatOptions = [.withInternetDateTime]
+                guard let at = parsed ?? formatter.date(from: timestamp),
+                      Date().timeIntervalSince(at) <= 48 * 3600,
+                      at.timeIntervalSinceNow <= 3600,
+                      (row["status"] as? String ?? "").lowercased() == "explained",
+                      leader.isEmpty || leader == editorialID
+                else { throw GitHubError.message("Tendencia fuera de Listas vigentes.") }
+            } else {
+                let tweet = row["tweet"] as? [String: Any] ?? [:]
+                canonical = (tweet["text"] as? String).flatMap { $0.isEmpty ? nil : $0 } ??
+                    (row["explanation"] as? String).flatMap { $0.isEmpty ? nil : $0 } ??
+                    row["factual_summary"] as? String ?? ""
+            }
+            guard canonical == editorialText else {
+                throw GitHubError.message("El texto editorial cambió; actualiza la ficha.")
+            }
+            let decisions = try await readMainJSON(decisionPath)
+            let closed = Set(["published", "dismissed", "deleted", "discarded", "removed"])
+            let sourceTime = (row["explained_at"] as? String).flatMap { ISO8601DateFormatter().date(from: $0) }
+            for decision in decisions["items"] as? [[String: Any]] ?? [] {
+                let event = decision[project == "ttendencias" ? "id" : "event_id"] as? String
+                guard event == editorialID,
+                      closed.contains((decision["status"] as? String ?? "").lowercased())
+                else { continue }
+                if project == "ttittulares" { throw GitHubError.message("Noticia ya retirada.") }
+                let eventRevision = decision["revision"] as? Int ?? 0
+                if eventRevision < revision { continue }
+                if eventRevision > revision { throw GitHubError.message("Tendencia sustituida.") }
+                let fields = ["deleted_at", "dismissed_at", "published_at", "removed_at",
+                              "updated_at", "delivered_at", "decided_at"]
+                let closure = fields.compactMap { key -> Date? in
+                    guard let raw = decision[key] as? String else { return nil }
+                    return ISO8601DateFormatter().date(from: raw)
+                }.first
+                if let closure, let sourceTime, closure < sourceTime.addingTimeInterval(-60) {
+                    continue
+                }
+                throw GitHubError.message("Tendencia retirada de Listas.")
+            }
+            return row
+        }
+        func api(_ filePath: String, method: String = "GET",
+                 body: [String: Any]? = nil) async throws -> (Data, Int) {
+            var target = URLComponents(string:
+                "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + filePath)!
+            if method == "GET" { target.queryItems = [.init(name: "ref", value: "main")] }
+            let url = target.url!
+            var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
+                                     timeoutInterval: 60)
+            request.httpMethod = method
+            request.setValue("Bearer " + auth, forHTTPHeaderField: "Authorization")
+            request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            request.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+            request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+            if let body {
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            }
+            let session = URLSession(configuration: .ephemeral,
+                delegate: EditorialRelationsNoRedirect(), delegateQueue: nil)
+            defer { session.finishTasksAndInvalidate() }
+            let (bytes, response) = try await session.data(for: request)
+            guard let http = response as? HTTPURLResponse,
+                  http.url?.scheme == "https", http.url?.host == "api.github.com",
+                  http.url?.path == url.path else {
+                throw GitHubError.message("GitHub rechazó o redirigió la operación.")
+            }
+            return (bytes, http.statusCode)
+        }
+        let row = try await currentRow()
+        let (already, imageCode) = try await api(path)
+        if imageCode == 200 {
+            let info = try JSONSerialization.jsonObject(with: already) as? [String: Any] ?? [:]
+            let encoded = (info["content"] as? String ?? "").replacingOccurrences(of: "\n", with: "")
+            guard let old = Data(base64Encoded: encoded, options: .ignoreUnknownCharacters),
+                  SHA256.hash(data: old).map({ String(format: "%02x", $0) }).joined() == hex
+            else { throw GitHubError.message("El PNG existente tiene otra huella.") }
+        } else if imageCode == 404 {
+            let (_, code) = try await api(path, method: "PUT", body: [
+                "message": "TTActualidad imagen manual " + editorialID + " r" + String(revision),
+                "content": png.base64EncodedString(), "branch": "main",
+            ])
+            guard code == 201 else {
+                throw GitHubError.message("GitHub rechazó el PNG: HTTP " + String(code))
+            }
+        } else { throw GitHubError.message("GitHub no pudo consultar la imagen.") }
+        // The image is immutable; revalidation prevents associating a now stale
+        // episode even when an earlier upload succeeded.
+        _ = try await currentRow()
+        let stampField = project == "ttendencias" ? "explained_at" : "prepared_at"
+        guard let at = row[stampField] as? String, !at.isEmpty else {
+            throw GitHubError.message("La fecha editorial es necesaria.")
+        }
+        let record: [String: Any] = project == "ttendencias" ? [
+            "target_id": editorialID, "revision": revision, "explained_at": at,
+            "explanation": editorialText, "image_url": originalURL.absoluteString, "sha256": hex,
+        ] : [
+            "target_id": editorialID, "revision": revision, "prepared_at": at,
+            "editorial_text": editorialText, "image_url": originalURL.absoluteString, "sha256": hex,
+        ]
+        var committed = false
+        for _ in 0..<4 {
+            let (response, code) = try await api(manifestPath)
+            guard code == 200,
+                  let wrapper = try JSONSerialization.jsonObject(with: response) as? [String: Any],
+                  let previousSha = wrapper["sha"] as? String,
+                  let encoded = wrapper["content"] as? String,
+                  let content = Data(base64Encoded: encoded.replacingOccurrences(of: "\n", with: ""),
+                                     options: .ignoreUnknownCharacters),
+                  var manifest = try JSONSerialization.jsonObject(with: content) as? [String: Any],
+                  (manifest["schema_version"] as? Int) == 1,
+                  (project == "ttendencias"
+                   ? manifest["project_id"] as? String == "appgprj_6ae4dcf7d7488191a574e5b649e67370"
+                   : manifest["project"] as? String == "ttittulares"),
+                  var images = manifest["images"] as? [[String: Any]] else {
+                throw GitHubError.message("Manifiesto del Site incompatible.")
+            }
+            images.removeAll { ($0["target_id"] as? String) == editorialID &&
+                ($0["revision"] as? Int ?? -1) == revision }
+            images.insert(record, at: 0)
+            manifest["images"] = images
+            let updated = try JSONSerialization.data(withJSONObject: manifest, options: [.sortedKeys])
+            let (_, writeCode) = try await api(manifestPath, method: "PUT", body: [
+                "message": "TTActualidad asociar imagen manual " + editorialID,
+                "content": updated.base64EncodedString(), "sha": previousSha,
+                "branch": "main",
+            ])
+            if writeCode == 200 { committed = true; break }
+            if writeCode != 409 {
+                throw GitHubError.message("No se guardó asociación: HTTP " + String(writeCode))
+            }
+        }
+        guard committed else { throw GitHubError.message("Conflicto de edición del catálogo. Reintenta.") }
+        let check = try await readMainJSON(manifestPath)
+        guard (check["images"] as? [[String: Any]] ?? []).contains(where: {
+            ($0["target_id"] as? String) == editorialID &&
+            ($0["revision"] as? Int) == revision &&
+            ($0["sha256"] as? String) == hex &&
+            ($0["image_url"] as? String) == originalURL.absoluteString
+        }) else { throw GitHubError.message("La asociación sigue pendiente de lectura.") }
+        return originalURL
+    }
+
     // HTTP 204 is only a transport acknowledgement. Verify the committed state.
     private func readMainJSON(_ path: String) async throws -> [String: Any] {
         var url = URLComponents(string: "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + path)!
