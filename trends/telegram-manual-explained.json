@@ -17129,15 +17129,18 @@
       "telegram_package_status": "published",
       "published_at": "2026-10-30T13:01:17.681692+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-04T11:01:17.415117+00:00",
-      "red_review_outcome": "unchanged",
-      "red_review_reason": "La ficha fuente es una agrupación histórica anterior a la retirada de agrupaciones. Hay novedades materiales verificadas desde el 30 de octubre —ayudas directas, un plan extraordinario de seguridad, previsión de reparación de la línea y la posterior dimisión de Óscar Puente—, pero el contrato vigente prohíbe crear una nueva ficha conjunta a partir de grupos históricos. Se conserva por tanto el texto y la fecha de esta ficha publicada; las novedades deben tratarse en tendencias individuales.",
+      "red_review_checked_at": "2026-11-04T16:08:47.162657+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Novedades sustanciales desde la explicación del 30 de octubre: dimisión de Óscar Puente, identificación de las 69 víctimas y fin del rastreo de restos.",
       "red_review_sources": [
         {
-          "url": "https://www.lamoncloa.gob.es/consejodeministros/resumenes/Paginas/2026/031126-rueda-prensa-ministros.aspx"
+          "url": "https://efe.com/espana/2026-11-03/puente-dimite-ministro-transporte/"
         },
         {
-          "url": "https://www.rtve.es/noticias/20261104/accidente-tren-actualidad-politica-directo-ultima-hora/17298676.shtml"
+          "url": "https://www.europapress.es/castilla-lamancha/noticia-concluye-busqueda-restos-biologicos-urda-ultima-batida-guias-caninos-20261103142053.html"
+        },
+        {
+          "url": "https://www.cmmedia.es/noticias/castilla-la-mancha/toledo/semana-tragedia-urda.html"
         }
       ]
     },
@@ -58686,7 +58689,21 @@
         "generated": false
       },
       "published_at": "2026-11-04T13:46:02.750027+00:00",
-      "decision_source": "ttactualidad_direct"
+      "decision_source": "ttactualidad_direct",
+      "red_review_checked_at": "2026-11-04T16:08:47.162657+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "El escrutinio permite concretar el alcance del revés descrito de forma general en la ficha previa.",
+      "red_review_sources": [
+        {
+          "url": "https://apnews.com/article/b1d26390b7ed7968435089be6d3bf612"
+        },
+        {
+          "url": "https://www.foxnews.com/elections/2026/midterm-results/senate"
+        },
+        {
+          "url": "https://news.ballotpedia.org/2026/11/04/democrats-win-u-s-house-and-senate-majorities/"
+        }
+      ]
     },
     {
       "id": "cf9b8586b6d4",
@@ -61309,8 +61326,84 @@
           "revision": 0
         }
       ]
+    },
+    {
+      "id": "trend-update-76fe65e8ac97bc8f1771",
+      "revision": 0,
+      "name": "MAGA",
+      "rank": 22,
+      "status": "explained",
+      "requested_at": "2026-11-04T16:08:47.162657+00:00",
+      "explained_at": "2026-11-04T16:08:47.162657+00:00",
+      "updated_at": "2026-11-04T16:08:47.162657+00:00",
+      "explanation": "TT#22 MAGA sigue siendo tendencia por el resultado de las midterms: los demócratas arrebataron siete escaños del Senado y aseguraron el control de ambas cámaras.\n#Midterms2026 #DonaldTrump\n🌶️ El sello electoral perdió siete asientos.",
+      "closer_text": "🌶️ El sello electoral perdió siete asientos.",
+      "verification_sources": [
+        {
+          "url": "https://apnews.com/article/b1d26390b7ed7968435089be6d3bf612"
+        },
+        {
+          "url": "https://www.foxnews.com/elections/2026/midterm-results/senate"
+        },
+        {
+          "url": "https://news.ballotpedia.org/2026/11/04/democrats-win-u-s-house-and-senate-majorities/"
+        }
+      ],
+      "originated_from_prior_id": "a6d7b6ed262e",
+      "trend_names": [
+        "MAGA"
+      ],
+      "red_review_job_id": "red-review-9962ec3ec9ae8aeb6188",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Los demócratas aseguraron el control de Cámara y Senado y ganaron siete escaños senatoriales.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
+    },
+    {
+      "id": "trend-update-2ebb77525fefbf8b7397",
+      "revision": 0,
+      "name": "Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
+      "rank": 27,
+      "status": "explained",
+      "requested_at": "2026-11-04T16:08:47.162657+00:00",
+      "explained_at": "2026-11-04T16:08:47.162657+00:00",
+      "updated_at": "2026-11-04T16:08:47.162657+00:00",
+      "explanation": "TT#27 Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía sigue siendo tendencia por la dimisión de Óscar Puente, la identificación de las 69 víctimas y el fin de la búsqueda de restos.\n#Urda #ÓscarPuente",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://efe.com/espana/2026-11-03/puente-dimite-ministro-transporte/"
+        },
+        {
+          "url": "https://www.europapress.es/castilla-lamancha/noticia-concluye-busqueda-restos-biologicos-urda-ultima-batida-guias-caninos-20261103142053.html"
+        },
+        {
+          "url": "https://www.cmmedia.es/noticias/castilla-la-mancha/toledo/semana-tragedia-urda.html"
+        }
+      ],
+      "originated_from_prior_id": "listas-joint-d700cc8fe741c186",
+      "trend_names": [
+        "Calvario",
+        "#Mañaneros30O",
+        "Transportes",
+        "Madrid-Sevilla",
+        "Alta Velocidad"
+      ],
+      "red_review_job_id": "red-review-a4bde182eb3c449d3224",
+      "continuity_update": true,
+      "distinct_episode": false,
+      "new_facts": "Óscar Puente dimitió como ministro; las 69 víctimas han sido identificadas; la Guardia Civil concluyó la búsqueda de restos biológicos.",
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
-  "updated_at": "2026-11-04T17:03:00+01:00",
+  "updated_at": "2026-11-04T16:08:47.162657+00:00",
   "count": 1009
 }
