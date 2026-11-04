@@ -171,7 +171,7 @@ assert '"No publicado · Quitar de Listas"' in actions
 assert 'if let trend, trend.isCovered {' not in actions
 assert 'quickButton("Quitar de Listas"' in actions
 assert 'quickButton("Elaborar desde 0"' in actions
-assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
+assert 'quickButton("Añadir imagen", "photo.on.rectangle.angled")' in actions
 assert 'quickLink("Proyecto TT", "folder"' in actions
 assert 'quickButton("Volver a evaluar"' not in actions
 # 0.4.45: one explicit non-publication batch for every trend in Listas.
@@ -362,7 +362,7 @@ print("TT_ACTUALIDAD_IOS_0421_COMPACT_ISLAND_PREFLIGHT_OK")
 assert 'GAG_VISUAL_NATIVE_V2' in actions
 for token in ('SOLO IMAGEN', 'SIN NINGÚN TEXTO', 'franja inferior', 'SIN BANDA INFERIOR', 'Más gag, menos barroquismo', 'PROHIBIDO dibujar guindillas'):
     assert token in actions, token
-assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
+assert 'quickButton("Añadir imagen", "photo.on.rectangle.angled")' in actions
 print("TT_ACTUALIDAD_IOS_GAG_NATIVE_V2_OK")
 # Two new actions are available for trends only. The preexisting GAG button
 # must remain untouched; the Site route is an explicit copy and paste job.
@@ -392,7 +392,7 @@ assert 'no la sustituyas: omite attach' in actions
 assert 'status verified, ruta pública real y SHA-256' in actions
 assert 'Conserva tu PNG.' in actions
 assert 'No se puede crear un prompt seguro.' not in actions
-assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
+assert 'quickButton("Añadir imagen", "photo.on.rectangle.angled")' in actions
 print("TT_ACTUALIDAD_IOS_SITE_IMAGE_CHAT_BUTTONS_OK")
 # v0.4.33: one original PNG appears in Site and in the matching trend card.
 # Archive-photo gallery stays archive-only; no new paid API or PC pipeline.
@@ -492,7 +492,7 @@ assert 'CURRENT_PROJECT_VERSION: "67"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.47 build 53: one identical image-action panel for news and trends.
-assert actions.count('quickButton("Crear y Asociar IA", "sparkles")') == 1
+assert actions.count('quickButton("Añadir imagen", "photo.on.rectangle.angled")') == 1
 assert actions.count('quickButton("Crear Foto IA", "photo.badge.plus")') == 1
 assert actions.count('quickLink("Proyecto TT", "folder"') == 1
 assert 'copyTrendSiteImagePrompt()' in actions and 'copyNewsImageAssociationPrompt()' in actions
@@ -558,7 +558,7 @@ assert 'when(item, ["prepared_at", "selected_at"])' in store
 assert 'if left.revision != right.revision' in store
 assert 'TTActualidad.chatgpt.projectTT.url' in actions
 assert 'quickButton("Crear Foto IA", "photo.badge.plus")' in actions
-assert 'quickButton("Crear y Asociar IA", "sparkles")' in actions
+assert 'quickButton("Añadir imagen", "photo.on.rectangle.angled")' in actions
 assert 'quickButton("Publicar en X", "square.and.arrow.up")' in actions
 # Preserve original stacked dual-image UI, verified images and Live Activity.
 assert 'private static func buildNews' in store
@@ -569,7 +569,7 @@ print("NATIVE_BUILD56_LINKS_NEWS_ORDER_JPEG_NO_REGRESSION_OK")
 # Build57: same primary actions, exact-source copies, separate prompts and X text parity.
 for label in ("GPT Images", "Proyecto TT", "Copiar F Archivo", "Copiar Foto IA",
               "Publicar en X", "Copiar Texto", "Quitar de Listas", "Elaborar desde 0",
-              "Aportar Pistas", "Crear Foto IA", "Crear y Asociar IA"):
+              "Aportar Pistas", "Crear Foto IA", "Añadir imagen"):
     assert actions.count('quickButton("'+label+'"') + actions.count('quickLink("'+label+'"') == 1, label
 assert 'copy(xText)' in actions and 'value: xText' in actions
 assert 'await copyPhoto(ai: false)' in actions and 'await copyPhoto(ai: true)' in actions
@@ -699,3 +699,20 @@ assert 'sin-identificador' in store
 assert 'UIPasteboard.general.string = store.pendingOperationsDiagnostic' in pending_panel
 assert 'Copiar diagnóstico' in pending_panel
 print("NATIVE_BUILD67_STALE_ORDERS_AUDITED_NO_DISPATCH_OK")
+
+# Build69: the old Copy+ChatGPT association button is retired in favor of
+# editor-authenticated image upload with explicit web+app publication receipts.
+manual_sheet = (root / 'TTActualidad/ManualEditorialImageSheet.swift').read_text(encoding='utf8')
+assert 'quickButton("Crear y Asociar IA"' not in actions
+assert 'quickButton("Añadir imagen"' in actions
+assert 'ManualEditorialImageSheet(github: github' in actions
+assert 'PhotosPicker(selection:' in manual_sheet
+assert 'UIPasteboard.general.image' in manual_sheet
+assert '.fileImporter(' in manual_sheet
+assert 'Label("Subir y aprobar"' in manual_sheet
+assert 'await github.uploadEditorialImage(' in manual_sheet
+assert 'privateImageInboxRequest(' in manual_sheet
+assert 'publication.appVerified == true && publication.sitesVerified == true' in manual_sheet
+assert '"v1/images/manual"' in auth or '"/v1/images/manual"' in auth
+assert 'if receipt.state == "approved_awaiting_publication"' in manual_sheet
+print("NATIVE_BUILD69_MANUAL_IMAGE_UPLOAD_PREFLIGHT_OK")
