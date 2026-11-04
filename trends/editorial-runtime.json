@@ -3,191 +3,59 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793759477",
+  "run_id": "tr-1793760139482-manual",
   "previous_run_id": "tr-autoguard-1793759477",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-04T03:40:00+01:00",
-  "updated_at": "2026-11-04T03:46:00+01:00",
-  "finished_at": "2026-11-04T03:46:00+01:00",
-  "current": 6,
-  "total": 6,
+  "started_at": "2026-11-04T03:43:00+01:00",
+  "updated_at": "2026-11-04T03:45:00+01:00",
+  "finished_at": "2026-11-04T03:45:00+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "8e9e26c2ef86",
-    "6ee4aa423d88",
-    "5f0d0b18df81",
-    "red-review-635c44cbcb2983794557",
-    "red-review-2cab33b04eb24ae416c7",
-    "991eeda5b78d"
+    "red-review-2cab33b04eb24ae416c7"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793759477 cerrada 6/6: 4 explicaciones ordinarias sincronizadas (Florida, Rocio Carrasco, #Midterms2026 y Carolina del Norte) y 2 revisiones de novedades cerradas stale (Chiqui y Renfe). Barrera final main: editorial-queue=0 y preparing/update/rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0; convergencias concurrentes=2.",
+  "summary": "Pasada manual cerrada 1/1 por convergencia JIT: Renfe r0 quedó review_completed sin reescritura porque había salido del Top 30 fresco; cola final 0 y sin rewrite_pending/reexplain.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "8e9e26c2ef86",
-      "revision": 0,
-      "name": "Florida",
-      "type": "ordinary",
-      "outcome": "explained",
-      "applied": true,
-      "concurrent": false
-    },
-    {
-      "id": "6ee4aa423d88",
-      "revision": 0,
-      "name": "Rocio Carrasco",
-      "type": "ordinary",
-      "outcome": "explained",
-      "applied": true,
-      "concurrent": false
-    },
-    {
-      "id": "5f0d0b18df81",
-      "revision": 0,
-      "name": "#Midterms2026",
-      "type": "ordinary",
-      "outcome": "explained",
-      "applied": true,
-      "concurrent": false
-    },
-    {
-      "id": "red-review-635c44cbcb2983794557",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
-      "type": "review_red",
-      "outcome": "stale",
-      "applied": true,
-      "concurrent": true,
-      "reason": "La revisión fue resuelta concurrentemente y quedó stale; no se creó una ficha nueva."
-    },
-    {
       "id": "red-review-2cab33b04eb24ae416c7",
       "revision": 0,
       "name": "Revisar novedades: Renfe",
-      "type": "review_red",
-      "outcome": "stale",
+      "outcome": "unverified",
       "applied": true,
-      "concurrent": false,
-      "reason": "Salió del Top30 fresco antes del tratamiento; no se reescribió ni renovó explained_at."
-    },
-    {
-      "id": "991eeda5b78d",
-      "revision": 0,
-      "name": "Carolina del Norte",
-      "type": "ordinary",
-      "outcome": "explained",
-      "applied": true,
-      "concurrent": true
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "6bcfa9ddcdd937c96cc2cc1fd5f4fc27e4698730",
+      "reason": "Renfe ya no figuraba en el Top 30 fresco de recent.json (03:41); se conserva texto y fecha originales."
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T03:39:01+01:00",
-  "last_completed_at": "2026-11-04T03:46:00+01:00",
+  "last_started_at": "2026-11-04T03:43:00+01:00",
+  "last_completed_at": "2026-11-04T03:45:00+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793759477",
-    "command_id": "tr-autoguard-1793759477",
-    "canonical": true,
+    "run_id": "tr-1793760139482-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T03:40:00+01:00",
-    "finished_at": "2026-11-04T03:46:00+01:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-11-04T03:43:00+01:00",
+    "finished_at": "2026-11-04T03:45:00+01:00",
+    "current": 1,
+    "total": 1,
     "closed": [
-      "8e9e26c2ef86",
-      "6ee4aa423d88",
-      "5f0d0b18df81",
-      "red-review-635c44cbcb2983794557",
-      "red-review-2cab33b04eb24ae416c7",
-      "991eeda5b78d"
+      "red-review-2cab33b04eb24ae416c7"
     ],
     "pending": [],
-    "summary": {
-      "attempted": 6,
-      "observed": 6,
-      "closed": 6,
-      "explained": 4,
-      "updates": 0,
-      "review_stale": 2,
-      "unchanged_reviews": 0,
-      "unverified_reviews": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 2
-    },
-    "outcomes": [
-      {
-        "id": "8e9e26c2ef86",
-        "revision": 0,
-        "name": "Florida",
-        "type": "ordinary",
-        "outcome": "explained",
-        "applied": true,
-        "concurrent": false
-      },
-      {
-        "id": "6ee4aa423d88",
-        "revision": 0,
-        "name": "Rocio Carrasco",
-        "type": "ordinary",
-        "outcome": "explained",
-        "applied": true,
-        "concurrent": false
-      },
-      {
-        "id": "5f0d0b18df81",
-        "revision": 0,
-        "name": "#Midterms2026",
-        "type": "ordinary",
-        "outcome": "explained",
-        "applied": true,
-        "concurrent": false
-      },
-      {
-        "id": "red-review-635c44cbcb2983794557",
-        "revision": 0,
-        "name": "Revisar novedades: Chiqui",
-        "type": "review_red",
-        "outcome": "stale",
-        "applied": true,
-        "concurrent": true,
-        "reason": "La revisión fue resuelta concurrentemente y quedó stale; no se creó una ficha nueva."
-      },
-      {
-        "id": "red-review-2cab33b04eb24ae416c7",
-        "revision": 0,
-        "name": "Revisar novedades: Renfe",
-        "type": "review_red",
-        "outcome": "stale",
-        "applied": true,
-        "concurrent": false,
-        "reason": "Salió del Top30 fresco antes del tratamiento; no se reescribió ni renovó explained_at."
-      },
-      {
-        "id": "991eeda5b78d",
-        "revision": 0,
-        "name": "Carolina del Norte",
-        "type": "ordinary",
-        "outcome": "explained",
-        "applied": true,
-        "concurrent": true
-      }
-    ],
-    "message": "Pasada tr-autoguard-1793759477 cerrada 6/6: 4 explicaciones ordinarias sincronizadas (Florida, Rocio Carrasco, #Midterms2026 y Carolina del Norte) y 2 revisiones de novedades cerradas stale (Chiqui y Renfe). Barrera final main: editorial-queue=0 y preparing/update/rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0; convergencias concurrentes=2."
+    "summary": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793759477 cerrada 6/6: 4 explicaciones ordinarias sincronizadas (Florida, Rocio Carrasco, #Midterms2026 y Carolina del Norte) y 2 revisiones de novedades cerradas stale (Chiqui y Renfe). Barrera final main: editorial-queue=0 y preparing/update/rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0; convergencias concurrentes=2.",
+  "message": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4646,6 +4514,28 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793759477 cerrada 6/6: 4 explicaciones ordinarias sincronizadas (Florida, Rocio Carrasco, #Midterms2026 y Carolina del Norte) y 2 revisiones de novedades cerradas stale (Chiqui y Renfe). Barrera final main: editorial-queue=0 y preparing/update/rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0; convergencias concurrentes=2."
+    },
+    {
+      "at": "2026-11-04T03:43:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793760139482-manual",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "red-review-2cab33b04eb24ae416c7",
+      "title": "Revisar novedades: Renfe",
+      "message": "Inicio manual sobre 1 revisión vigente observada en main; revalidación JIT y convergencia con la pasada autoguard activa. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-04T03:45:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793760139482-manual",
+      "status": "DONE",
+      "current": 1,
+      "total": 1,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
