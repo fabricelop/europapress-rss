@@ -215,9 +215,16 @@ def recorded_image(row, image_map):
     url = text(candidate, "image_url")
     digest = text(candidate, "sha256")
     u = urlparse(url)
-    if not (u.scheme == "https" and u.netloc == SITE_HOST and
-            u.path.startswith("/images/ttendencias/") and u.path.endswith(".png")
-            and not (u.query or u.fragment or u.params)
+    # Keep immutable ChatGPT Sites originals, but also accept the editor's
+    # explicitly chosen, content-addressed GitHub original after its exact
+    # ID/revision/text/date manifest record has been verified.
+    site = (u.netloc == SITE_HOST and
+            u.path.startswith(f"/images/ttendencias/{ident[0]}-r{ident[1]}-"))
+    manual = (u.netloc == "raw.githubusercontent.com" and
+              u.path.startswith("/fabricelop/europapress-rss/main/trends/generated-images/"
+                                f"{ident[0]}-r{ident[1]}-manual-"))
+    if not (u.scheme == "https" and (site or manual) and u.path.endswith(".png")
+            and not (u.query or u.fragment or u.params or u.username or u.password)
             and re.fullmatch(r"[0-9a-f]{64}", digest)
             and digest[:12] in u.path.rsplit("/", 1)[-1]):
         return None
