@@ -92,7 +92,7 @@ struct ManualEditorialImageSheet: View {
                     .disabled(working)
                     if !notice.isEmpty {
                         Text(notice).font(.footnote)
-                            .foregroundStyle(published ? .green : .secondary)
+                            .foregroundStyle(published ? Color.green : Color.secondary)
                             .accessibilityAddTraits(.updatesFrequently)
                     }
                     if working { ProgressView("Validando y publicando imagen…") }
@@ -166,8 +166,12 @@ struct ManualEditorialImageSheet: View {
     private func select(_ input: Data) {
         guard !working else { return }
         published = false
+        imagePNG = nil
+        preview = nil
         guard !input.isEmpty, input.count <= 40_000_000, let image = UIImage(data: input),
-              image.size.width > 0, image.size.height > 0 else {
+              image.size.width > 0, image.size.height > 0,
+              image.size.width <= 10_000, image.size.height <= 10_000,
+              image.size.width * image.size.height <= 60_000_000 else {
             notice = "La imagen no es compatible o supera los 40 MB."
             return
         }
@@ -236,11 +240,9 @@ struct ManualEditorialImageSheet: View {
                 notice = "El servidor ya registró la publicación de esta imagen. Comprueba web y app."
                 return
             }
-            if receipt.state == "approved_awaiting_publication" {
-                notice = "La imagen ya estaba aprobada; falta verificar su publicación. No se duplicará."
-                return
-            }
-            guard ["pending", "existing"].contains(receipt.state) else {
+            // Retry the same /decision for a previously approved candidate:
+            // the Site may finish pending publication on that idempotent call.
+            guard ["pending", "existing", "approved_awaiting_publication"].contains(receipt.state) else {
                 notice = "Estado de imagen " + receipt.state + ". No se ha realizado una nueva aprobación."
                 return
             }
