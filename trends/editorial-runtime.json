@@ -3,39 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793779108647-manual",
-  "previous_run_id": "tr-autoguard-1793778663",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T08:58:28+01:00",
-  "updated_at": "2026-11-04T09:00:30+01:00",
-  "finished_at": "2026-11-04T09:00:30+01:00",
+  "run_id": "tr-autoguard-1793780462",
+  "previous_run_id": "tr-1793779108647-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T09:22:00+01:00",
+  "updated_at": "2026-11-04T09:22:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "0dd859827de9",
+  "title": "#LaHora4N",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "0dd859827de9"
+  ],
+  "remaining_active_ids": [
+    "0dd859827de9"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual cerrada 0/0 por convergencia JIT: la única revisión observada al inicio (Óscar Puente) fue aplicada por la ejecución concurrente antes de investigarla/persistirla aquí. Cola final 0 y sin reexplicaciones pendientes. ImageGen 0; image-outbox 0; publicaciones 0.",
+  "summary": "Preparando 1/1: #LaHora4N r0; revalidación JIT e investigación actual en curso. ImageGen desactivado para esta pasada.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "completed",
-  "final_outcomes": [
-    {
-      "id": "red-review-cd984e7425086f0d7f79",
-      "revision": 0,
-      "name": "Revisar novedades: Óscar Puente",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "result_id": "trend-update-652b1fd9b62e902119ea",
-      "converged_with": "tr-autoguard-1793778663"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793779108647-manual",
@@ -67,6 +60,6 @@
     "incidents": [],
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-04T08:58:28+01:00",
+  "last_started_at": "2026-11-04T09:22:00+01:00",
   "last_completed_at": "2026-11-04T09:00:30+01:00"
 }
