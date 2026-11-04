@@ -161,31 +161,31 @@ test('episode fingerprint cannot be invented by the uploader',async()=>{
  assert.equal((await importOne(env,{identity:{episodeFingerprint:'a'.repeat(64)}})).status,409);
  assert.equal((await receive(env)).data.items.length,0);
 });
-test('approval fails closed when main changed, is missing or unavailable; rejection unaffected',async()=>{
- const {env}=context();await importOne(env);
- const row=(await receive(env)).data.items[0];
- for(const change of [
+test('a safely imported historical image may be approved when Lists changes or GitHub fails',async()=>{
+ for (const change of [
   {text:'Nuevo texto editorial'}, {removed:true}, {revision:1}, {offline:true},
  ]) {
+  const {env}=context();
+  await importOne(env);
+  const row=(await receive(env)).data.items[0];
   Object.assign(main,{text:'Texto factual + remate',removed:false,revision:0,offline:false},change);
-  const response=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
-  assert.equal(response.status,change.offline?503:409);
-  assert.equal((await receive(env)).data.items.length,1);
+  const approval=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
+  assert.equal(approval.status,200,'An approved original stays bound to its saved editorial episode');
+  assert.equal((await approval.json()).state,'approved_awaiting_publication');
+  assert.equal((await receive(env)).data.items.length,0);
  }
  Object.assign(main,{text:'Texto factual + remate',removed:false,revision:0,offline:false});
- const r=await handleRequest(decision(row.id,row.identity,'reject'),env,editor);
- assert.equal(r.status,200);
- assert.equal((await receive(env)).data.items.length,0);
 });
-test('after editorial repair an exact current pending episode can be approved',async()=>{
+test('stored candidate identity still rejects modified fingerprints without live GitHub checks',async()=>{
  const {env}=context(); await importOne(env);
  const row=(await receive(env)).data.items[0];
- main.text='Corregido';
- assert.equal((await handleRequest(decision(row.id,row.identity,'approve'),env,editor)).status,409);
- main.text='Texto factual + remate';
- assert.equal((await handleRequest(decision(row.id,row.identity,'approve'),env,editor)).status,200);
+ main.offline=true;
+ try {
+   const altered={...row.identity,episodeFingerprint:'f'.repeat(64)};
+   assert.equal((await handleRequest(decision(row.id,altered,'approve'),env,editor)).status,409);
+   assert.equal((await handleRequest(decision(row.id,row.identity,'approve'),env,editor)).status,200);
+ } finally {main.offline=false;}
 });
-
 test('only a separate publisher secret can see approved candidates and exact raster; no public writes',async()=>{
  const {env,store}=context(); env.PUBLISH_TOKEN='publish-private-secret'.repeat(3);
  await importOne(env);const row=(await receive(env)).data.items[0];
@@ -226,19 +226,26 @@ test('publisher never receives rejected or pending images; mutated original fail
  main.text='Texto factual + remate';
 });
 
-test('approved original handoff fails closed after new editorial content or lost read credential',async()=>{
- const {env}=context(); env.PUBLISH_TOKEN='publish-private-secret'.repeat(3);
- await importOne(env);const row=(await receive(env)).data.items[0];
- await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
- const download=()=>{const r=req(`/v1/publications/${row.id}/original`,'GET',null,null);r.headers.set('X-TT-Publish-Key',env.PUBLISH_TOKEN);return r;};
- main.text='Cambiado después de aprobar';
- assert.equal((await handleRequest(download(),env,editor)).status,409);
- main.text='Texto factual + remate'; main.offline=true;
- assert.equal((await handleRequest(download(),env,editor)).status,503);
- main.offline=false;
- delete env.GITHUB_SOURCE_READ_TOKEN;
- assert.equal((await handleRequest(download(),env,editor)).status,503);
+test('publisher can retrieve an approved historical image during GitHub outage, but never corrupt bytes',async()=>{
+ const {env,store}=context(); env.PUBLISH_TOKEN='publish-private-secret'.repeat(3);
+ await importOne(env); const row=(await receive(env)).data.items[0];
+ const approval=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
+ assert.equal(approval.status,200);
+ const download=()=>{
+   const r=req(`/v1/publications/${row.id}/original`,'GET',null,null);
+   r.headers.set('X-TT-Publish-Key',env.PUBLISH_TOKEN);return r;
+ };
+ main.offline=true;
+ try {
+  delete env.GITHUB_SOURCE_READ_TOKEN;
+  const good=await handleRequest(download(),env,editor);
+  assert.equal(good.status,200);
+  assert.deepEqual(new Uint8Array(await good.arrayBuffer()),png);
+  store.set(env.DB.rows.get(row.id).object_key,new Uint8Array(png.length).fill(0));
+  assert.equal((await handleRequest(download(),env,editor)).status,409);
+ } finally {main.offline=false;}
 });
+
 test('manual image upload: editor-only, one candidate, ready for existing approval', async () => {
   const {env} = context();
   const sha = await crypto.subtle.digest('SHA-256', png);
