@@ -47,8 +47,19 @@ export function readyTextFromMain(data, identity) {
       String(a.explained_at || a.prepared_at || a.updated_at || '')))[0];
   if (Number(latest.revision ?? 0) !== identity.revision ||
       latest.rewrite_pending === true) return null;
-  if (identity.project === 'ttendencias' &&
-      String(latest.status || '').toLowerCase() !== 'explained') return null;
+  if (identity.project === 'ttendencias') {
+    // Match the native Listas contract; a historical row or grouped child
+    // cannot receive a fresh manually approved picture.
+    if (String(latest.status || '').toLowerCase() !== 'explained') return null;
+    const explainedAt = Date.parse(latest.explained_at || '');
+    if (!Number.isFinite(explainedAt) ||
+        Date.now() - explainedAt > 48 * 3600_000 ||
+        explainedAt - Date.now() > 3600_000 ||
+        (latest.group_leader_id && latest.group_leader_id !== identity.editorialId) ||
+        TERMINAL.has(String(latest.telegram_package_status || '').toLowerCase())) {
+      return null;
+    }
+  }
   // The native news card shows tweet.text when supplied, otherwise the
   // prepared explanation/factual summary. Validate that same visible text.
   const text = identity.project === 'ttittulares'
