@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-04T07:39:21.706699+00:00",
+  "checked_at": "2026-11-04T11:31:28.478706+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,11 +40,12 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
       "non_stale_sources": 3,
-      "captured_age_minutes": 8.0,
-      "noise_count": 0
+      "captured_age_minutes": 20.2,
+      "noise_count": 0,
+      "repair_started": true
     },
     "listener": {
       "ok": true,
@@ -53,10 +54,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": null,
-      "age_minutes": 3.3,
-      "run_id": 41793392811,
+      "age_minutes": 0.0,
+      "run_id": 41821571849,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -68,7 +69,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 380,
+      "invalid_count": 386,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -98,11 +99,13 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [],
+  "repairs_started": [
+    "relanzado refresco Top 10"
+  ],
   "blocking": [
-    "cola con 380 estado(s) inválido(s)"
+    "cola con 386 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 380 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 386 estado(s) inválido(s)"
 }
