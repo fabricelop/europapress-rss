@@ -3,115 +3,53 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793824841260-manual",
-  "previous_run_id": "tr-1793824800000-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T21:41:00+01:00",
-  "updated_at": "2026-11-04T21:49:00+01:00",
-  "finished_at": "2026-11-04T21:49:00+01:00",
-  "current": 6,
-  "total": 6,
+  "run_id": "tr-1793825173951-manual",
+  "previous_run_id": "tr-1793824841260-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T22:08:00+01:00",
+  "updated_at": "2026-11-04T22:08:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "cd58e4b34464",
-    "4bea3ac923fc",
-    "red-review-1fcaec879264e3f452b2",
-    "red-review-9232d8c2711a79792a08",
-    "red-review-e4be2b46b46a60fe16be",
-    "red-review-063761c8537034eed94d"
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "5d040edc850e",
+    "d4840b061b22",
+    "f2cba00d2636"
   ],
-  "converged_ids": [
-    "red-review-1fcaec879264e3f452b2",
-    "red-review-9232d8c2711a79792a08"
+  "remaining_active_ids": [
+    "5d040edc850e",
+    "d4840b061b22",
+    "f2cba00d2636"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 6,
-    "closed": 6,
-    "explained": 3,
-    "updates": 2,
+    "attempted": 0,
+    "observed": 3,
+    "closed": 0,
+    "explained": 0,
+    "updates": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 2,
-    "queue_remaining": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
+    "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre verificado 6/6: cola 0, sin rewrite_pending/reexplain; sin ImageGen ni publicaciones.",
-  "final_outcomes": [
-    {
-      "id": "cd58e4b34464",
-      "revision": 0,
-      "name": "Rudiger",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "4bea3ac923fc",
-      "revision": 0,
-      "name": "Real Madrid",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "red-review-1fcaec879264e3f452b2",
-      "revision": 0,
-      "name": "Revisar novedades: Rudiger",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "ee213c47d89f",
-      "converged": true
-    },
-    {
-      "id": "red-review-9232d8c2711a79792a08",
-      "revision": 0,
-      "name": "Revisar novedades: Ciudad Real",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "20935c787fe3",
-      "converged": true
-    },
-    {
-      "id": "red-review-e4be2b46b46a60fe16be",
-      "revision": 0,
-      "name": "Revisar novedades: Diomande",
-      "outcome": "updated",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "7184eb72d1ea",
-      "created_id": "trend-update-843a7b206b27d12bac5f",
-      "distinct_episode": true,
-      "material_change": true
-    },
-    {
-      "id": "red-review-063761c8537034eed94d",
-      "revision": 0,
-      "name": "Revisar novedades: Andorra",
-      "outcome": "continuity",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "3e340be4de18",
-      "distinct_episode": false,
-      "material_change": false
-    }
-  ],
+  "activity": "Preparando 0/3: Brahim, Cucu y Signal Iduna Park; revalidación JIT antes de cada investigación.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793824841260-manual",
@@ -199,6 +137,6 @@
     "incidents": [],
     "concurrent_convergence": 2
   },
-  "last_started_at": "2026-11-04T21:44:59+01:00",
+  "last_started_at": "2026-11-04T22:08:00+01:00",
   "last_completed_at": "2026-11-04T21:49:00+01:00"
 }
