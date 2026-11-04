@@ -5,25 +5,21 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793771456",
   "previous_run_id": "tr-autoguard-1793767864",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-04T06:51:00+01:00",
-  "updated_at": "2026-11-04T06:58:00+01:00",
+  "updated_at": "2026-11-04T06:59:39+01:00",
   "finished_at": null,
   "current": 1,
   "total": 2,
   "trend_id": "79f6d0732a24",
   "title": "Kansas",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "36205fe85f09"
-  ],
-  "remaining_ids": [
     "79f6d0732a24"
   ],
-  "remaining_active_ids": [
-    "79f6d0732a24"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": "Pasada tr-autoguard-1793771456 1/2: Democrats r0 aplicado y verificado en ambos registros. Revalidando Kansas r0 antes de persistir. Un intento directo previo de escritura grande falló por transporte sin cambios parciales; se recuperó mediante el outbox oficial.",
   "incident_count": 1,
@@ -46,7 +42,7 @@
       "applied": true
     }
   ],
-  "last_started_at": "2026-11-04T06:57:27+01:00",
-  "last_completed_at": null,
+  "last_started_at": "2026-11-04T06:59:39+01:00",
+  "last_completed_at": "2026-11-04T06:59:39+01:00",
   "api_failover_enabled": false
 }
