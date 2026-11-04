@@ -6,19 +6,19 @@
   "run_id": "tr-1793820300000-manual",
   "previous_run_id": "tr-1793795405057-manual",
   "status": "success",
-  "phase": "investigating",
+  "phase": "closing",
   "started_at": "2026-11-04T20:25:00+01:00",
   "updated_at": "2026-11-04T20:28:23+01:00",
-  "finished_at": null,
-  "current": 0,
+  "finished_at": "2026-11-04T20:28:23+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "168b155c5487",
-  "title": "Luis Pedro Marco de la Peña",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "168b155c5487",
-    "828131747bd3",
-    "c4fe697a24cc"
+    "c4fe697a24cc",
+    "828131747bd3"
   ],
   "converged_ids": [],
   "remaining_ids": [],
@@ -27,12 +27,12 @@
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 3,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -44,48 +44,73 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando 1/3: Luis Pedro Marco de la Peña",
+  "activity": "Pasada cerrada 3/3: tres tendencias explicadas y cola autoritativa vacía.",
   "final_outcomes": [
     {
-      "id": "red-review-b8d627c5d80e055344e1",
+      "id": "168b155c5487",
       "revision": 0,
-      "name": "Revisar novedades: Neuer",
-      "outcome": "updated",
+      "name": "Luis Pedro Marco de la Peña",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "source_id": "ac8fba260938",
-      "created_id": "trend-update-b7cba19214dc10fa1c5b",
-      "converged_with": "tr-1793795168410-manual"
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "c4fe697a24cc",
+      "revision": 0,
+      "name": "#AEKRealMadrid",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "828131747bd3",
+      "revision": 0,
+      "name": "Parlamento Europeo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793795405057-manual",
+    "run_id": "tr-1793820300000-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T13:30:00+01:00",
-    "updated_at": "2026-11-04T13:32:30+01:00",
-    "finished_at": "2026-11-04T13:32:30+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-11-04T20:25:00+01:00",
+    "updated_at": "2026-11-04T20:28:23+01:00",
+    "finished_at": "2026-11-04T20:28:23+01:00",
+    "current": 3,
+    "total": 3,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-b8d627c5d80e055344e1"
-    ],
-    "converged_ids": [
-      "red-review-b8d627c5d80e055344e1"
+      "168b155c5487",
+      "c4fe697a24cc",
+      "828131747bd3"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-b8d627c5d80e055344e1",
+        "id": "168b155c5487",
         "revision": 0,
-        "name": "Revisar novedades: Neuer",
-        "outcome": "updated",
+        "name": "Luis Pedro Marco de la Peña",
+        "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "source_id": "ac8fba260938",
-        "created_id": "trend-update-b7cba19214dc10fa1c5b",
-        "converged_with": "tr-1793795168410-manual"
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "c4fe697a24cc",
+        "revision": 0,
+        "name": "#AEKRealMadrid",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "828131747bd3",
+        "revision": 0,
+        "name": "Parlamento Europeo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
       }
     ],
     "imagegen_calls": 0,
@@ -93,7 +118,7 @@
     "publications": 0,
     "incident_count": 0,
     "incidents": [],
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-04T20:28:23+01:00",
   "last_completed_at": "2026-11-04T20:28:23+01:00"
