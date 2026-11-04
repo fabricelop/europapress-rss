@@ -70,3 +70,24 @@ jobs:
           name: ttactualidad-public-anonymous-html
           path: /tmp/ttactualidad-anonymous-root.html
           retention-days: 1
+
+      - name: Measure public JavaScript and CSS download sizes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html=Path('/tmp/ttactualidad-anonymous-root.html').read_text(errors='replace')
+          assets=re.findall(r'<(?:script[^>]*src|link[^>]*href)=["\\']([^"\\']+)',html)
+          assets=[x for x in assets if x.startswith('/_next/static/')]
+          Path('/tmp/tt-assets.txt').write_text('\n'.join(dict.fromkeys(assets[:12]))+'\n')
+          PY
+          while read -r asset; do
+            [ -n "$asset" ] || continue
+            echo "ASSET=$asset"
+            curl -sS -L --compressed --max-time 18 \
+              -o /dev/null \
+              -w 'ASSET_HTTP=%{http_code} TTFB=%{time_starttransfer}s TOTAL=%{time_total}s TRANSFER_BYTES=%{size_download}\n' \
+              "https://ttactualidad.rainyraven22.chatgpt.site$asset" || echo ASSET_PROBE_FAILED
+          done < /tmp/tt-assets.txt
