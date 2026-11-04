@@ -28,6 +28,7 @@ struct EditorialActions: View {
     @State private var outcome = ""
     @State private var showHints = false
     @State private var showRelations = false
+    @State private var showManualImage = false
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
@@ -90,11 +91,12 @@ struct EditorialActions: View {
                     outcome = "Prompt visual copiado. Abre GPT Images, pégalo y envíalo."
                 }
                     .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                quickButton("Crear y Asociar IA", "sparkles") {
-                    copy(gagPrompt)
-                    outcome = "Orden copiada. Abre Proyecto TT, pégala y envíala."
+                quickButton("Añadir imagen", "photo.on.rectangle.angled") {
+                    if github.authenticated { showManualImage = true } else { showSettings = true }
                 }
-                    .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(editorialID.isEmpty ||
+                              fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                              !(news?.status == "LISTA" || trend?.inListas == true))
             }
             // Keep recovery/search available without duplicating the primary panel.
             Menu("Más opciones") {
@@ -178,6 +180,14 @@ struct EditorialActions: View {
                     .environmentObject(store)
                     .presentationDetents([.medium, .large])
             }
+        }
+        .sheet(isPresented: $showManualImage, onDismiss: {
+            Task { await store.refreshIfStale(minInterval: 0) }
+        }) {
+            ManualEditorialImageSheet(github: github, project: project,
+                                     editorialID: editorialID, revision: revision,
+                                     title: title, editorialText: fullText)
+                .presentationDetents([.large])
         }
         .sheet(isPresented: $showRelations) {
             EditorialRelationsView(github: github,
