@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793831198851-manual",
   "previous_run_id": "tr-1793826849874-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-04T23:26:38.851+01:00",
-  "updated_at": "2026-11-04T23:33:30+01:00",
-  "finished_at": "2026-11-04T23:33:30+01:00",
+  "updated_at": "2026-11-04T23:35:00+01:00",
+  "finished_at": null,
   "current": 12,
-  "total": 12,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 14,
+  "trend_id": "red-review-0eb142c7b22c8ef718e8",
+  "title": "Revisar novedades: Óscar Puente",
+  "queue_complete": false,
   "processed_ids": [
     "5ab9dcfe817e",
     "b1b63c043492",
@@ -30,18 +30,24 @@
     "d05d7faf3901"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-0eb142c7b22c8ef718e8",
+    "red-review-2500649a854347d68c13"
+  ],
+  "remaining_active_ids": [
+    "red-review-0eb142c7b22c8ef718e8",
+    "red-review-2500649a854347d68c13"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 12,
-    "observed": 12,
+    "observed": 14,
     "closed": 12,
     "explained": 12,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -53,7 +59,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 12/12. Todos los preparing/update aplicados; cola autoritativa y reexplicaciones pendientes: 0. Jarabe y #DesterrarLaMonarquía cerrados con causa no confirmada. Sin ImageGen, image-outbox ni publicaciones.",
+  "activity": "12/14. Barrera final detectó dos revisiones nuevas; revisando novedades de Óscar Puente. Sin ImageGen.",
   "final_outcomes": [
     {
       "id": "5ab9dcfe817e",
