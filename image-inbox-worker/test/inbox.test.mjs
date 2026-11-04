@@ -3,12 +3,18 @@ import assert from 'node:assert/strict';
 import {handleRequest} from '../src/index.mjs';
 import {episodeFingerprint} from '../src/editorial-truth.mjs';
 
-const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0 };
+const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0, closed: false };
 const editor = async (url, options) => {
   if (url.startsWith('https://api.github.com/repos/fabricelop/europapress-rss/contents/')) {
     if (main.offline) throw Error('offline');
+    if (url.includes('/mobile-decisions.json') || url.includes('/ttittulares/decisions.json')) {
+      return new Response(JSON.stringify({items: main.closed ? [
+        { id: 'my-trend', revision: main.revision, status: 'deleted' },
+      ] : []}), {status:200});
+    }
     return new Response(JSON.stringify({ items: main.removed ? [] : [{
-      id: 'my-trend', revision: main.revision, explanation: main.text,
+      id: 'my-trend', revision: main.revision, status:'explained',
+      explained_at:'2026-11-04T12:00:00Z', explanation: main.text,
     }] }), { status: 200 });
   }
   return new Response(JSON.stringify({ id: 7257052 }), {
@@ -268,4 +274,36 @@ test('manual intake refuses unauthenticated and outdated episodes', async () => 
   assert.equal((await handleRequest(upload('valid-oauth',{rasterSHA256:'0'.repeat(64)}),env,editor)).status,409);
   assert.equal(store.size,0);
   assert.equal((await receive(env)).data.items.length,0);
+});
+
+
+test('manual upload uses the same authoritative Listas data as the app', async()=>{
+ const {env}=context();
+ // A tokenized trend row lives in telegram-manual-explained.json, not in prepared.json.
+ // The authorization mock deliberately returns 404 for the obsolete path.
+ const strict = async (url,opts) => {
+   if (url.includes('/trends/prepared.json')) return new Response('',{status:404});
+   return editor(url,opts);
+ };
+ const digest = await crypto.subtle.digest('SHA-256',png);
+ const sha = Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('');
+ const form=new FormData();
+ form.set('image',new Blob([png],{type:'image/png'}),'image.png');
+ form.set('metadata',JSON.stringify({project:'ttendencias',editorialId:'my-trend',
+  revision:0,commandId:'manual-source-test',title:'Tendencia',
+  rasterSHA256:sha,editorialText:'Texto factual + remate'}));
+ const response=await handleRequest(req('/v1/images/manual','POST',form),env,strict);
+ assert.equal(response.status,201);
+});
+
+test('terminal Listas decision blocks approval without losing the image', async()=>{
+ const {env}=context();
+ await importOne(env);
+ const row=(await receive(env)).data.items[0];
+ main.closed=true;
+ try {
+   const r=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
+   assert.equal(r.status,409);
+   assert.equal((await receive(env)).data.items.length,1);
+ } finally {main.closed=false;}
 });
