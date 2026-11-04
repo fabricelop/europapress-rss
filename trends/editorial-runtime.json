@@ -4,29 +4,26 @@
   "version": 1,
   "canonical": true,
   "run_id": "tr-1793762800964-manual",
-  "previous_run_id": "tr-autoguard-1793762482",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T04:27:00+01:00",
-  "updated_at": "2026-11-04T04:32:00+01:00",
-  "finished_at": "2026-11-04T04:32:00+01:00",
-  "current": 2,
-  "total": 2,
+  "previous_run_id": "tr-1793762800964-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T04:37:00+01:00",
+  "updated_at": "2026-11-04T04:37:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-7501a4f8eb00317019cd",
-    "red-review-d3d50b6af3700ee32640"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "summary": "Reejecución manual iniciada: cola compacta 0 en main; revalidando preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [
     {
       "id": "red-review-7501a4f8eb00317019cd",
@@ -67,7 +64,7 @@
     "summary": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Reejecución manual iniciada: cola compacta 0 en main; revalidando preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4680,6 +4677,13 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-1793762800964-manual cerrada 2/2 por convergencia JIT: Chiqui review r0 cerrada stale al existir una entrega terminal más nueva (r2 dismissed); Andorra review r0 quedó review_completed/updated con nueva ficha trend-update-6cd46b650a184b0b3593. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T04:37:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-1793762800964-manual",
+      "status": "RUNNING",
+      "message": "Reejecución manual iniciada: cola compacta 0 en main; revalidando preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -10296,7 +10300,7 @@
       "summary": "Pasada 2/2 completada: Cristina Fernández Cubas review_red r0 unchanged; Pepa Millán review_red r0 updated como continuidad en trend-update-14b8db0da15fd78b3b85. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-autoguard-1793762482",
+  "command_id": "tr-1793762800964-manual",
   "requested_at": "2026-11-04T03:32:00+01:00",
   "runs": [
     {
