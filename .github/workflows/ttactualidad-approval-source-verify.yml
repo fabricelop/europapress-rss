@@ -42,4 +42,14 @@ jobs:
                       print('  READY_WITH_PREPARED_AT',sum(bool(x.get('prepared_at')) for x in ready))
                       print('  READY_WITH_FACTUAL_SUMMARY',sum(bool(x.get('factual_summary')) for x in ready))
                       print('  READY_WITH_EXPLANATION',sum(bool(x.get('explanation')) for x in ready))
+          history=json.loads(Path('telegram/editorial-processing.json').read_text())
+          ready=[x for x in history['items'] if str(x.get('status')).upper()=='READY']
+          print('READY_ITEM_COUNT',len(ready))
+          if ready:
+              print('READY_FIRST_KEYS',sorted(ready[0].keys()))
+              print('READY_TWEET_KEYS',sorted((ready[0].get('tweet') or {}).keys()))
+              print('READY_WITH_TWEET_TEXT',sum(bool(str((x.get('tweet') or {}).get('text') or '')) for x in ready))
+              print('READY_WITH_PREPARED_AT',sum(bool(x.get('prepared_at')) for x in ready))
+              print('READY_WITH_FACTUAL_SUMMARY',sum(bool(x.get('factual_summary')) for x in ready))
+              print('READY_WITH_EXPLANATION',sum(bool(x.get('explanation')) for x in ready))
           PY
