@@ -5,101 +5,63 @@
   "canonical": true,
   "run_id": "tr-1793757410178-manual",
   "previous_run_id": "tr-autoguard-1793757061",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T01:59:35.547Z",
-  "updated_at": "2026-11-04T01:59:35.547Z",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T02:00:40.447Z",
+  "finished_at": "2026-11-04T02:00:40.447Z",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-8e47ece31413e6f0f568",
-  "title": "Revisar novedades: Chiqui",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-8e47ece31413e6f0f568",
     "red-review-dfa4de0e02e2ee7c7610"
   ],
-  "remaining_active_ids": [
-    "red-review-8e47ece31413e6f0f568",
-    "red-review-dfa4de0e02e2ee7c7610"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": "Pasada tr-1793757410178-manual cerrada 2/2: Chiqui review_completed/updated como episodio distinto por convergencia JIT con una ejecución concurrente; Rufián review_completed/updated como episodio distinto por su intervención del 3-N en la comparecencia de Óscar Puente tras Urda. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente en la cola autoritativa. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "4bd51e39ca2a",
+      "id": "red-review-8e47ece31413e6f0f568",
       "revision": 0,
-      "name": "Champions League",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "f1ad001b8a5f",
-      "revision": 0,
-      "name": "Chayo",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "2c429670b3b0",
-      "revision": 0,
-      "name": "Rocío Jurado",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "4e9acefb18e1",
-      "revision": 0,
-      "name": "#ElChiringuitoEnEnergy",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "red-review-db76cdd73d5b0532fef0",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
-      "outcome": "stale",
-      "applied": true,
-      "concurrent_convergence": true
-    },
-    {
-      "id": "red-review-507aad4b9237eeadd73e",
-      "revision": 0,
-      "name": "Revisar novedades: Ester Muñoz",
       "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-70dc08bb967d9fca11cc",
-      "distinct_episode": false
+      "distinct_episode": true,
+      "convergence": "concurrent"
+    },
+    {
+      "id": "red-review-dfa4de0e02e2ee7c7610",
+      "revision": 0,
+      "outcome": "updated",
+      "distinct_episode": true,
+      "convergence": "direct"
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T01:59:35.547Z",
-  "last_completed_at": "2026-11-04T02:56:14+01:00",
+  "last_completed_at": "2026-11-04T02:00:40.447Z",
   "last_run": {
-    "run_id": "tr-autoguard-1793752870",
+    "run_id": "tr-1793757410178-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T01:42:20+01:00",
-    "finished_at": "2026-11-04T01:50:30+01:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-11-04T01:59:35.547Z",
+    "finished_at": "2026-11-04T02:00:40.447Z",
+    "current": 2,
+    "total": 2,
     "closed": [
-      "4bd51e39ca2a",
-      "f1ad001b8a5f",
-      "2c429670b3b0",
-      "4e9acefb18e1",
-      "red-review-db76cdd73d5b0532fef0",
-      "red-review-507aad4b9237eeadd73e"
+      "red-review-8e47ece31413e6f0f568",
+      "red-review-dfa4de0e02e2ee7c7610"
     ],
     "pending": [],
-    "summary": "Pasada tr-autoguard-1793752870 cerrada 6/6: Champions League, Chayo, Rocío Jurado y #ElChiringuitoEnEnergy quedaron explained; Ester Muñoz review_completed/updated en continuidad con nueva ficha trend-update-70dc08bb967d9fca11cc; Chiqui cerró stale por la barrera JIT, sin duplicar escritura. Barrera final main: editorial-queue=0, preparing/update=0 y reexplain/rewrite_pending=0 en la cola autoritativa. ImageGen=0; publicaciones=0."
+    "summary": "Pasada tr-1793757410178-manual cerrada 2/2: Chiqui review_completed/updated como episodio distinto por convergencia JIT con una ejecución concurrente; Rufián review_completed/updated como episodio distinto por su intervención del 3-N en la comparecencia de Óscar Puente tras Urda. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente en la cola autoritativa. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Inicio tr-1793757410178-manual: 2 revisiones review_red preparing vigentes en main (Chiqui y Rufián), en orden de cola y con validación JIT. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1793757410178-manual cerrada 2/2: Chiqui review_completed/updated como episodio distinto por convergencia JIT con una ejecución concurrente; Rufián review_completed/updated como episodio distinto por su intervención del 3-N en la comparecencia de Óscar Puente tras Urda. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente en la cola autoritativa. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4403,6 +4365,24 @@
       "trend_id": "red-review-8e47ece31413e6f0f568",
       "title": "Revisar novedades: Chiqui",
       "message": "Inicio tr-1793757410178-manual: 2 revisiones review_red preparing vigentes en main (Chiqui y Rufián), en orden de cola y con validación JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T02:00:40.447Z",
+      "phase": "verifying",
+      "run_id": "tr-1793757410178-manual",
+      "status": "RUNNING",
+      "current": 2,
+      "total": 2,
+      "message": "Barrera final JIT verificada: workflow de mantenimiento completado con success; editorial-queue=0 y las dos revisiones quedaron aplicadas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T02:00:40.447Z",
+      "phase": "closing",
+      "run_id": "tr-1793757410178-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793757410178-manual cerrada 2/2: Chiqui review_completed/updated como episodio distinto por convergencia JIT con una ejecución concurrente; Rufián review_completed/updated como episodio distinto por su intervención del 3-N en la comparecencia de Óscar Puente tras Urda. Barrera final main: editorial-queue=0, preparing/update=0 y sin reexplicación pendiente en la cola autoritativa. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -12365,6 +12345,7 @@
     "tr-1793746342613-manual",
     "tr-1793747839940-manual",
     "tr-autoguard-1793749880",
-    "tr-1793750189999-manual"
+    "tr-1793750189999-manual",
+    "tr-1793757410178-manual"
   ]
 }
