@@ -3,23 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793775064",
-  "previous_run_id": "tr-1793773302265-manual",
+  "run_id": "tr-1793775423346-manual",
+  "previous_run_id": "tr-autoguard-1793775064",
   "status": "RUNNING",
   "phase": "investigating",
-  "started_at": "2026-11-04T07:52:00+01:00",
-  "updated_at": "2026-11-04T07:59:00+01:00",
+  "started_at": "2026-11-04T06:59:30.493Z",
+  "updated_at": "2026-11-04T06:59:30.493Z",
   "finished_at": null,
-  "current": 3,
-  "total": 5,
+  "current": 0,
+  "total": 2,
   "trend_id": "red-review-3f3b500b747421ce2841",
   "title": "Revisar novedades: Chiqui",
   "queue_complete": false,
-  "processed_ids": [
-    "8584ecbb1ea7",
-    "722b29f28253",
-    "60c10181fad7"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "red-review-3f3b500b747421ce2841",
     "red-review-a033fd697c62d425d154"
@@ -29,42 +25,12 @@
     "red-review-a033fd697c62d425d154"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada ampliada por trabajo nuevo detectado en la barrera final: 3/5 cerrados. Revisando novedades de Chiqui y después Gracias Ministro.",
+  "summary": "Pasada manual iniciada sobre 2 revisiones review_red vigentes; investigando Chiqui.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "investigating",
-  "final_outcomes": [
-    {
-      "id": "8584ecbb1ea7",
-      "revision": 0,
-      "name": "Mississippi",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "reason": "Carrera al Senado de EEUU en empate virtual; Colom figuraba 28 votos por delante con el 97% escrutado."
-    },
-    {
-      "id": "722b29f28253",
-      "revision": 0,
-      "name": "Iowa",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "reason": "Josh Turek ganó el escaño al Senado y Rob Sand la gobernación."
-    },
-    {
-      "id": "60c10181fad7",
-      "revision": 0,
-      "name": "Gina Hinojosa",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "reason": "Derrotó a Greg Abbott y será la primera gobernadora latina de Texas."
-    }
-  ],
-  "last_started_at": "2026-11-04T07:56:29+01:00",
-  "last_completed_at": "2026-11-04T07:58:00+01:00",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793775064",
