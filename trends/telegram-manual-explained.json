@@ -57508,7 +57508,13 @@
           "name": "Trump",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "0e1e503c35a4",
@@ -57546,7 +57552,28 @@
           "name": "James Talarico",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://s.hdnux.com/photos/01/67/54/37/31377349/3/rawImage.jpg",
+        "source": "www.chron.com",
+        "source_url": "https://www.chron.com/politics/article/talarico-paxton-texas-senate-race-22487803.php",
+        "alt": "Imagen de archivo relacionada con James Talarico",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://s.hdnux.com/photos/01/67/54/37/31377349/3/rawImage.jpg",
+        "source": "www.chron.com",
+        "source_url": "https://www.chron.com/politics/article/talarico-paxton-texas-senate-race-22487803.php",
+        "alt": "Imagen de archivo relacionada con James Talarico",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "2da45ee99835",
@@ -57584,9 +57611,30 @@
           "name": "Cámara de Representantes",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://apnews.com/projects/elections-2026/social/us-house.jpg",
+        "source": "apnews.com",
+        "source_url": "https://apnews.com/projects/elections-2026/us-house-results/",
+        "alt": "Imagen de archivo relacionada con Cámara de Representantes",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://apnews.com/projects/elections-2026/social/us-house.jpg",
+        "source": "apnews.com",
+        "source_url": "https://apnews.com/projects/elections-2026/us-house-results/",
+        "alt": "Imagen de archivo relacionada con Cámara de Representantes",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-04T06:00:00+01:00",
+  "updated_at": "2026-11-04T04:57:06.887342Z",
   "count": 946
 }
