@@ -3,63 +3,55 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793791275",
-  "previous_run_id": "tr-autoguard-1793789480",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T12:22:00+01:00",
-  "updated_at": "2026-11-04T12:28:00+01:00",
-  "finished_at": "2026-11-04T12:28:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "93382a9f3702",
-    "55182e295925"
-  ],
+  "run_id": "tr-autoguard-1793794876",
+  "previous_run_id": "tr-autoguard-1793791275",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-04T13:21:30+01:00",
+  "updated_at": "2026-11-04T13:21:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 4,
+  "trend_id": "bb6df5f22db8",
+  "title": "Rafa Nadal",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "bb6df5f22db8",
+    "4fc36f40132c",
+    "366d9d74e6e8",
+    "e6b3a2d9c484"
+  ],
+  "remaining_active_ids": [
+    "bb6df5f22db8",
+    "4fc36f40132c",
+    "366d9d74e6e8",
+    "e6b3a2d9c484"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 4,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0,
-    "cause_unconfirmed": 1
+    "cause_unconfirmed": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada textual cerrada 2/2: #Mañaneros4N r0 explicado con causa concreta no confirmada y #paro r0 explicado por los datos de desempleo de octubre. Cola final 0; sin reexplicaciones detectadas; sin ImageGen, image-outbox ni publicaciones.",
-  "final_outcomes": [
-    {
-      "id": "93382a9f3702",
-      "revision": 0,
-      "name": "#Mañaneros4N",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "55182e295925",
-      "revision": 0,
-      "name": "#paro",
-      "outcome": "explained",
-      "applied": true
-    }
-  ],
+  "activity": "Investigando Rafa Nadal r0; cola inicial 4. Pasada textual sin ImageGen.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793791275",
@@ -99,6 +91,6 @@
     "incidents": [],
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-04T12:22:00+01:00",
+  "last_started_at": "2026-11-04T13:21:30+01:00",
   "last_completed_at": "2026-11-04T12:28:00+01:00"
 }
