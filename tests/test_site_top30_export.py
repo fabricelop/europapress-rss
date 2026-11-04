@@ -163,10 +163,10 @@ class PublicTop30ParityTests(unittest.TestCase):
 
     def test_editor_manually_associated_trend_original_is_exported_by_exact_identity(self):
         catalog = {"images": [{
-            "target_id": "halloween-new", "revision": 0,
+            "target_id": HALLOWEEN_NEW["id"], "revision": 0,
             "explained_at": HALLOWEEN_NEW["explained_at"],
             "explanation": HALLOWEEN_NEW["explanation"],
-            "image_url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/halloween-new-r0-manual-" + "a"*12 + ".png",
+            "image_url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/" + HALLOWEEN_NEW["id"] + "-r0-manual-" + "a"*12 + ".png",
             "sha256": "a"*64,
         }]}
         output = make(manual=[HALLOWEEN_NEW], catalog=catalog)
@@ -174,7 +174,7 @@ class PublicTop30ParityTests(unittest.TestCase):
         if not matched:
             matched = [row for row in output["items"] if row.get("image")]
         self.assertTrue(matched)
-        self.assertTrue(any(row.get("image", {}).get("url", "").endswith(".png") and
+        self.assertTrue(any((row.get("image") or {}).get("url", "").endswith(".png") and
                             "-manual-" in row.get("image", {}).get("url", "")
                             for row in matched))
         catalog["images"][0]["image_url"] = catalog["images"][0]["image_url"].replace("-manual-", "-untrusted-")
