@@ -5,83 +5,90 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793767864",
   "previous_run_id": "tr-autoguard-1793764266",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T05:51:00+01:00",
-  "updated_at": "2026-11-04T06:00:00+01:00",
-  "finished_at": null,
-  "current": 2,
+  "updated_at": "2026-11-04T06:01:00+01:00",
+  "finished_at": "2026-11-04T06:01:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "2da45ee99835",
-  "title": "Cámara de Representantes",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "56249f725ea0",
-    "0e1e503c35a4"
-  ],
-  "remaining_ids": [
+    "0e1e503c35a4",
     "2da45ee99835"
   ],
-  "remaining_active_ids": [
-    "2da45ee99835"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Inicio tr-autoguard-1793767864: 3 investigaciones preparing vigentes en main (Trump r0, James Talarico r0 y Cámara de Representantes r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
+  "summary": "Pasada tr-autoguard-1793767864 cerrada 3/3: Trump r0, James Talarico r0 y Cámara de Representantes r0 quedaron explicadas y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "d88c60290666",
+      "id": "56249f725ea0",
       "revision": 0,
-      "outcome": "explained"
+      "name": "Trump",
+      "outcome": "explained",
+      "applied": true
     },
     {
-      "id": "4691492179d2",
+      "id": "0e1e503c35a4",
       "revision": 0,
-      "outcome": "explained"
+      "name": "James Talarico",
+      "outcome": "explained",
+      "applied": true
     },
     {
-      "id": "red-review-f69501e8c096f3b626ba",
+      "id": "2da45ee99835",
       "revision": 0,
-      "outcome": "unchanged"
-    },
-    {
-      "id": "red-review-151f9e2db29363043570",
-      "revision": 0,
-      "outcome": "unchanged"
+      "name": "Cámara de Representantes",
+      "outcome": "explained",
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T04:57:30+01:00",
-  "last_completed_at": "2026-11-04T05:00:00+01:00",
+  "last_completed_at": "2026-11-04T06:01:00+01:00",
   "last_run": {
-    "run_id": "tr-1793764632169-manual",
+    "run_id": "tr-autoguard-1793767864",
     "status": "DONE",
-    "started_at": "2026-11-04T04:57:30+01:00",
-    "finished_at": "2026-11-04T05:00:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-04T05:51:00+01:00",
+    "finished_at": "2026-11-04T06:01:00+01:00",
+    "current": 3,
+    "total": 3,
     "closed": [
       {
-        "id": "red-review-f69501e8c096f3b626ba",
+        "id": "56249f725ea0",
         "revision": 0,
-        "outcome": "unchanged",
-        "via": "concurrent_convergence_jit"
+        "name": "Trump",
+        "outcome": "explained",
+        "applied": true
       },
       {
-        "id": "red-review-151f9e2db29363043570",
+        "id": "0e1e503c35a4",
         "revision": 0,
-        "outcome": "unchanged",
-        "via": "concurrent_convergence_jit"
+        "name": "James Talarico",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "2da45ee99835",
+        "revision": 0,
+        "name": "Cámara de Representantes",
+        "outcome": "explained",
+        "applied": true
       }
     ],
     "pending": [],
-    "summary": "Pasada manual cerrada 2/2 por convergencia JIT con tr-autoguard-1793764266: #FelizMartes y #GMMTVNEXT quedaron review_completed/unchanged, con texto y fecha originales conservados. Barrera observada: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para la ejecución concurrente que terminó después."
+    "summary": "Pasada tr-autoguard-1793767864 cerrada 3/3: Trump r0, James Talarico r0 y Cámara de Representantes r0 quedaron explicadas y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Cámara de Representantes r0 revalidada JIT. Reuters proyecta que los demócratas recuperan la mayoría de la Cámara; el hecho cambia el control de la cámara baja tras las midterms. Persistiendo texto con remate neutral; ImageGen=0.",
+  "message": "Pasada tr-autoguard-1793767864 cerrada 3/3: Trump r0, James Talarico r0 y Cámara de Representantes r0 quedaron explicadas y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4839,6 +4846,17 @@
       "trend_id": "2da45ee99835",
       "title": "Cámara de Representantes",
       "message": "Cámara de Representantes r0 revalidada JIT. Reuters proyecta que los demócratas recuperan la mayoría de la Cámara; el hecho cambia el control de la cámara baja tras las midterms. Persistiendo texto con remate neutral; ImageGen=0."
+    },
+    {
+      "at": "2026-11-04T06:01:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793767864",
+      "status": "DONE",
+      "current": 3,
+      "total": 3,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793767864 cerrada 3/3: Trump r0, James Talarico r0 y Cámara de Representantes r0 quedaron explicadas y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -7790,25 +7808,45 @@
       "trend_id": "2da45ee99835",
       "title": "Cámara de Representantes",
       "message": "Cámara de Representantes r0 revalidada JIT. Reuters proyecta que los demócratas recuperan la mayoría de la Cámara; el hecho cambia el control de la cámara baja tras las midterms. Persistiendo texto con remate neutral; ImageGen=0."
-    }
-  ],
-  "partial": true,
-  "outcomes": [
-    {
-      "id": "red-review-67fb96527801cf560c29",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-8230af1954601fc10686"
     },
     {
-      "id": "red-review-374a862baa2b8625f92b",
-      "revision": 0,
-      "outcome": "updated",
-      "created_id": "trend-update-35c47da02d21c05a1e59"
+      "at": "2026-11-04T06:01:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793767864",
+      "status": "DONE",
+      "current": 3,
+      "total": 3,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793767864 cerrada 3/3: Trump r0, James Talarico r0 y Cámara de Representantes r0 quedaron explicadas y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": "2da45ee99835",
-  "current_title": "Cámara de Representantes",
+  "partial": false,
+  "outcomes": [
+    {
+      "id": "56249f725ea0",
+      "revision": 0,
+      "name": "Trump",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "0e1e503c35a4",
+      "revision": 0,
+      "name": "James Talarico",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "2da45ee99835",
+      "revision": 0,
+      "name": "Cámara de Representantes",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -10519,7 +10557,8 @@
       ],
       "pending": [],
       "summary": "Pasada 2/2 completada: Cristina Fernández Cubas review_red r0 unchanged; Pepa Millán review_red r0 updated como continuidad en trend-update-14b8db0da15fd78b3b85. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
-    }
+    },
+    "tr-autoguard-1793767864"
   ],
   "command_id": "tr-autoguard-1793767864",
   "requested_at": "2026-11-04T03:32:00+01:00",
