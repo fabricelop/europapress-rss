@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793832970272-manual",
-  "previous_run_id": "tr-1793832842690-manual",
+  "run_id": "tr-1793833069036-manual",
+  "previous_run_id": "tr-1793832970272-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-04T23:56:00+01:00",
-  "updated_at": "2026-11-04T22:59:02Z",
-  "finished_at": "2026-11-04T22:59:02Z",
-  "current": 1,
-  "total": 1,
+  "started_at": "2026-11-04T23:58:00+01:00",
+  "updated_at": "2026-11-04T22:59:50Z",
+  "finished_at": "2026-11-04T22:59:50Z",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-d0c5fed8f6da6b9e4c74"
-  ],
+  "processed_ids": [],
   "converged_ids": [
     "red-review-d0c5fed8f6da6b9e4c74"
   ],
@@ -25,11 +23,11 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "observed": 1,
-    "closed": 1,
-    "explained": 1,
-    "updates": 1,
+    "closed": 0,
+    "explained": 0,
+    "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -43,54 +41,52 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada tr-1793832970272-manual cerrada 1/1 por convergencia JIT: revisión de Mazón aplicada como episodio distinto y nueva ficha trend-update-b0c01b00ed5111b801fe. Barrera final main: editorial-queue=0; sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox creado por esta pasada=0; publicaciones=0.",
+  "activity": "Pasada tr-1793833069036-manual cerrada 0/0 tras revalidación JIT. La revisión de Mazón observada al inicio ya había sido aplicada por una pasada concurrente, creando trend-update-b0c01b00ed5111b801fe. Barrera final main: editorial-queue=0; sin preparing/update ni reexplicaciones pendientes. ImageGen=0; publicaciones=0.",
   "final_outcomes": [
     {
       "id": "red-review-d0c5fed8f6da6b9e4c74",
       "revision": 0,
       "name": "Revisar novedades: Mazón",
-      "outcome": "updated",
+      "outcome": "converged_before_processing",
       "applied": true,
       "via": "concurrent_convergence_jit",
       "apply_commit": "df3dc45952ea401af759a003a05ee60d56ab9e28",
       "created_id": "trend-update-b0c01b00ed5111b801fe",
       "distinct_episode": true,
-      "converged": true
+      "processed_by": "tr-1793832842690-manual"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793832970272-manual",
+    "run_id": "tr-1793833069036-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T23:56:00+01:00",
-    "updated_at": "2026-11-04T22:59:02Z",
-    "finished_at": "2026-11-04T22:59:02Z",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-11-04T23:58:00+01:00",
+    "updated_at": "2026-11-04T22:59:50Z",
+    "finished_at": "2026-11-04T22:59:50Z",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "red-review-d0c5fed8f6da6b9e4c74"
-    ],
+    "processed_ids": [],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
         "id": "red-review-d0c5fed8f6da6b9e4c74",
         "revision": 0,
         "name": "Revisar novedades: Mazón",
-        "outcome": "updated",
+        "outcome": "converged_before_processing",
         "applied": true,
         "via": "concurrent_convergence_jit",
         "apply_commit": "df3dc45952ea401af759a003a05ee60d56ab9e28",
         "created_id": "trend-update-b0c01b00ed5111b801fe",
         "distinct_episode": true,
-        "converged": true
+        "processed_by": "tr-1793832842690-manual"
       }
     ],
-    "attempted": 1,
+    "attempted": 0,
     "observed": 1,
-    "closed": 1,
-    "explained": 1,
-    "updates": 1,
+    "closed": 0,
+    "explained": 0,
+    "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -101,6 +97,6 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-04T23:56:00+01:00",
-  "last_completed_at": "2026-11-04T22:59:02Z"
+  "last_started_at": "2026-11-04T23:58:00+01:00",
+  "last_completed_at": "2026-11-04T22:59:50Z"
 }
