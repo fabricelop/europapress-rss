@@ -61,12 +61,19 @@ enum SiteAIImageCatalog {
                   entry.sha256.allSatisfy({ $0.isHexDigit }),
                   let url = URL(string: entry.image_url),
                   url.scheme?.lowercased() == "https",
-                  url.host?.lowercased() == siteHost,
-                  url.path.hasPrefix("/images/ttendencias/" + entry.target_id
-                      + "-r" + String(entry.revision) + "-"),
+                  url.query == nil, url.fragment == nil,
+                  url.user == nil, url.password == nil, url.port == nil,
                   url.path.hasSuffix(".png"),
                   url.lastPathComponent.contains(String(entry.sha256.prefix(12))),
-                  url.query == nil, url.fragment == nil else { continue }
+                  ((url.host?.lowercased() == siteHost &&
+                    url.path.hasPrefix("/images/ttendencias/" + entry.target_id
+                        + "-r" + String(entry.revision) + "-")) ||
+                   // User-selected, hash-addressed original written directly by
+                   // the authenticated editor when Sites lacks upload support.
+                   (url.host?.lowercased() == "raw.githubusercontent.com" &&
+                    url.path.hasPrefix("/fabricelop/europapress-rss/main/trends/generated-images/"
+                        + entry.target_id + "-r" + String(entry.revision) + "-manual-")))
+            else { continue }
             let identity = key(id: entry.target_id, revision: entry.revision)
             // First matching record wins; never switch assets by ranking/name.
             if result[identity] == nil { result[identity] = entry }
