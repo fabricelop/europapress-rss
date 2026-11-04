@@ -203,7 +203,8 @@ struct TTDashboard: View {
         }
         .sheet(isPresented: $showRelations) {
             EditorialRelationsView(github: github,
-                                   top30Names: store.snapshot.top30.map(\.name))
+                                   top30Names: store.snapshot.top30.map(\.name),
+                                   listasNews: store.snapshot.news)
                 .presentationDetents([.large])
         }
         .sheet(item: $publicationSheet) { selection in
