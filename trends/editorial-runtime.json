@@ -5,64 +5,212 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793787076",
   "previous_run_id": "tr-1793786035098-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T11:12:00+01:00",
-  "updated_at": "2026-11-04T11:12:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T11:17:55.501+01:00",
+  "finished_at": "2026-11-04T11:17:55.501+01:00",
+  "current": 9,
   "total": 9,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "fd26964fda3b",
+    "98d7f113aa13",
+    "84861ef6bead",
+    "26325a546fbb",
+    "9e94d699e569",
+    "df078ac3b182",
+    "d4b56a72286c",
+    "438a7d5904cf",
+    "51cfa8442187"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "fd26964fda3b",
-    "98d7f113aa13",
-    "84861ef6bead",
-    "26325a546fbb",
-    "9e94d699e569",
-    "df078ac3b182",
-    "d4b56a72286c",
-    "438a7d5904cf",
-    "51cfa8442187"
-  ],
-  "remaining_active_ids": [
-    "fd26964fda3b",
-    "98d7f113aa13",
-    "84861ef6bead",
-    "26325a546fbb",
-    "9e94d699e569",
-    "df078ac3b182",
-    "d4b56a72286c",
-    "438a7d5904cf",
-    "51cfa8442187"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 9,
     "observed": 9,
-    "closed": 0,
-    "explained": 0,
+    "closed": 9,
+    "explained": 9,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 9,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 0,
+    "cause_unconfirmed": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando pasada editorial: 9 explicaciones ordinarias activas; sin ImageGen.",
-  "final_outcomes": [],
+  "activity": "Pasada textual cerrada 9/9; persistencia verificada en commit d53b30e7843c36ad2ddd005f726173a6c3a4c668. America y Biden cerradas con causa no confirmada; resto con causa acreditada. Sin llamadas a ImageGen ni publicaciones.",
+  "final_outcomes": [
+    {
+      "id": "fd26964fda3b",
+      "revision": 0,
+      "name": "Abdul El-Sayed",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "98d7f113aa13",
+      "revision": 0,
+      "name": "America",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "84861ef6bead",
+      "revision": 0,
+      "name": "Partido Demócrata",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "26325a546fbb",
+      "revision": 0,
+      "name": "Michigan",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "9e94d699e569",
+      "revision": 0,
+      "name": "Biden",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "df078ac3b182",
+      "revision": 0,
+      "name": "Casa Blanca",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d4b56a72286c",
+      "revision": 0,
+      "name": "Republicanos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "438a7d5904cf",
+      "revision": 0,
+      "name": "Ohio",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "51cfa8442187",
+      "revision": 0,
+      "name": "#OscarPuente",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
   "api_failover_enabled": false,
-  "last_run": null,
+  "last_run": {
+    "run_id": "tr-autoguard-1793787076",
+    "status": "DONE",
+    "started_at": "2026-11-04T11:12:00+01:00",
+    "updated_at": "2026-11-04T11:17:55.501+01:00",
+    "finished_at": "2026-11-04T11:17:55.501+01:00",
+    "current": 9,
+    "total": 9,
+    "queue_complete": true,
+    "processed_ids": [
+      "fd26964fda3b",
+      "98d7f113aa13",
+      "84861ef6bead",
+      "26325a546fbb",
+      "9e94d699e569",
+      "df078ac3b182",
+      "d4b56a72286c",
+      "438a7d5904cf",
+      "51cfa8442187"
+    ],
+    "converged_ids": [],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "fd26964fda3b",
+        "revision": 0,
+        "name": "Abdul El-Sayed",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "98d7f113aa13",
+        "revision": 0,
+        "name": "America",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true
+      },
+      {
+        "id": "84861ef6bead",
+        "revision": 0,
+        "name": "Partido Demócrata",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "26325a546fbb",
+        "revision": 0,
+        "name": "Michigan",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "9e94d699e569",
+        "revision": 0,
+        "name": "Biden",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true
+      },
+      {
+        "id": "df078ac3b182",
+        "revision": 0,
+        "name": "Casa Blanca",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "d4b56a72286c",
+        "revision": 0,
+        "name": "Republicanos",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "438a7d5904cf",
+        "revision": 0,
+        "name": "Ohio",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "51cfa8442187",
+        "revision": 0,
+        "name": "#OscarPuente",
+        "outcome": "explained",
+        "applied": true
+      }
+    ],
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incident_count": 0,
+    "incidents": [],
+    "concurrent_convergence": 0
+  },
   "last_started_at": "2026-11-04T11:12:00+01:00",
-  "last_completed_at": null
+  "last_completed_at": "2026-11-04T11:17:55.501+01:00"
 }
