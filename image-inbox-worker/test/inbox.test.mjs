@@ -9,7 +9,7 @@ const editor = async (url, options) => {
     if (main.offline) throw Error('offline');
     if (url.includes('/ttittulares/prepared.json')) {
       return new Response(JSON.stringify({items:[{
-        event_id:'news-demo',revision:0,status:'ready',
+        event_id:'news-demo',revision:0,status:'ready',prepared_at:'2026-11-01T12:00:00Z',
         factual_summary:'Texto factual de noticia sin tweet.text',
         tweet:{text:''},
       }]}),{status:200});
@@ -303,18 +303,19 @@ test('manual upload uses the same authoritative Listas data as the app', async()
  assert.equal(response.status,201);
 });
 
-test('terminal Listas decision blocks approval without losing the image', async()=>{
+test('a historical image can be approved after its editorial card left Listas', async()=>{
  const {env}=context();
  await importOne(env);
  const row=(await receive(env)).data.items[0];
  main.closed=true;
+ main.closedAt=new Date().toISOString();
  try {
    const r=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
-   assert.equal(r.status,409);
-   assert.equal((await receive(env)).data.items.length,1);
- } finally {main.closed=false;}
+   assert.equal(r.status,200);
+   assert.equal((await r.json()).state,'approved_awaiting_publication');
+   assert.equal((await receive(env)).data.items.length,0);
+ } finally {main.closed=false;main.closedAt='';}
 });
-
 
 test('a terminal decision for a previous episode must not block a newer Listas episode', async()=>{
  main.closed = true;
@@ -354,14 +355,19 @@ test('iPhone can upload a news image using the actual fallback text of a READY c
 });
 
 
-test('older-than-48h Listas trend and grouped child are not active image targets', async()=>{
+test('out-of-Listas history remains an exact eligible image target', async()=>{
  const identity={project:'ttendencias',editorialId:'my-trend',revision:0};
  const date=new Date().toISOString();
  const make=(extra={})=>({items:[{id:'my-trend',revision:0,status:'explained',
   explained_at:date,explanation:'Texto factual + remate',...extra}]});
  assert.equal(readyTextFromMain(make(),identity),'Texto factual + remate');
- assert.equal(readyTextFromMain(make({explained_at:new Date(Date.now()-49*3600_000).toISOString()}),identity),null);
- assert.equal(readyTextFromMain(make({explained_at:new Date(Date.now()+2*3600_000).toISOString()}),identity),null);
- assert.equal(readyTextFromMain(make({group_leader_id:'another-trend'}),identity),null);
- assert.equal(readyTextFromMain(make({telegram_package_status:'deleted'}),identity),null);
+ assert.equal(readyTextFromMain(make({explained_at:new Date(Date.now()-49*3600_000).toISOString()}),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({status:'published',group_leader_id:'another-trend'}),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({status:'deleted',telegram_package_status:'deleted'}),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({explained_at:''}),identity),null);
+ assert.equal(readyTextFromMain({items:[{...make().items[0],id:'different'}]},identity),null);
+ assert.equal(readyTextFromMain({items:[{...make().items[0],revision:1}]},identity),null);
+ assert.equal(readyTextFromMain({items:[make().items[0],
+   {...make().items[0],revision:1,explanation:'New revision'}]},identity),'Texto factual + remate');
 });
+
