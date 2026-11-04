@@ -54,15 +54,27 @@ export function readyTextFromMain(data, identity) {
   return typeof text === 'string' && text.trim() ? text : null;
 }
 
-function isClosed(decisions, identity) {
+function isClosed(decisions, identity, editorial) {
   if (!decisions || !Array.isArray(decisions.items)) throw new EditorialUnavailable();
   const key = identity.project === 'ttittulares' ? 'event_id' : 'id';
-  return decisions.items.some(row =>
-    row[key] === identity.editorialId &&
-    TERMINAL.has(String(row.status || '').toLowerCase()) &&
-    // An explicit newer revision is closed as well; older revisions must not
-    // accidentally close an independently reworked newer episode.
-    (!Number.isSafeInteger(row.revision) || row.revision >= identity.revision));
+  // Match iOS' guard: a closure for an older revision, or a closure preceding
+  // a new explained_at, cannot suppress a fresh independently reworked card.
+  const candidates = editorial.items.filter(row =>
+    (identity.project === 'ttittulares' ? row.event_id : row.id) === identity.editorialId &&
+    Number(row.revision ?? 0) === identity.revision);
+  const sourceTime = identity.project === 'ttendencias'
+    ? Math.max(...candidates.map(x => Date.parse(x.explained_at || '') || 0))
+    : 0;
+  return decisions.items.some(row => {
+    if (row[key] !== identity.editorialId ||
+        !TERMINAL.has(String(row.status || '').toLowerCase())) return false;
+    if (identity.project === 'ttittulares') return true;
+    const closedRevision = Number.isSafeInteger(row.revision) ? row.revision : 0;
+    if (closedRevision !== identity.revision) return closedRevision > identity.revision;
+    const closedAt = Date.parse(row.deleted_at || row.dismissed_at ||
+      row.published_at || row.removed_at || row.updated_at || row.delivered_at || row.decided_at || '');
+    return !(Number.isFinite(closedAt) && sourceTime > 0 && closedAt < sourceTime - 60_000);
+  });
 }
 
 async function freshMain(path, fetchFn, token) {
@@ -98,6 +110,6 @@ export async function verifyEditorialNow(identity, editorialText, fetchFn = fetc
     freshMain(path, fetchFn, githubToken),
     freshMain(decisionPath, fetchFn, githubToken),
   ]);
-  if (isClosed(decisions, identity)) return 'stale';
+  if (isClosed(decisions, identity, body)) return 'stale';
   return readyTextFromMain(body, identity) === editorialText ? 'current' : 'stale';
 }
