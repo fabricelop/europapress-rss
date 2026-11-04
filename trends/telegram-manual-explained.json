@@ -51793,14 +51793,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://www.elpespunte.es/media/elpespunte/images/2026/11/03/2026110307204420715.jpg",
+        "source": "www.elpespunte.es",
+        "source_url": "https://www.elpespunte.es/entretenimiento/santoral-hoy-3-noviembre-2026-que-santo-celebra-hoy/20261103072101159923.html",
+        "alt": "Imagen de archivo relacionada con Silvia",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.elpespunte.es/media/elpespunte/images/2026/11/03/2026110307204420715.jpg",
+        "source": "www.elpespunte.es",
+        "source_url": "https://www.elpespunte.es/entretenimiento/santoral-hoy-3-noviembre-2026-que-santo-celebra-hoy/20261103072101159923.html",
+        "alt": "Imagen de archivo relacionada con Silvia",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "trend-update-da9dec68f79f3b121421",
@@ -59652,6 +59667,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-11-04T10:17:28.254223Z",
+  "updated_at": "2026-11-04T10:22:05.132886Z",
   "count": 981
 }
