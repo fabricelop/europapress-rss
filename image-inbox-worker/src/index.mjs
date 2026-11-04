@@ -220,14 +220,14 @@ async function publicationOriginal(env, id, githubFetch) {
       episode_fingerprint, command_id, editorial_text FROM image_candidates
     WHERE id=? AND status='approved_awaiting_publication'`).bind(id).first();
   if (!row) return error(404, 'NOT_APPROVED');
-  // Revalidate at hand-off: an approval for a later-changed READY entry
-  // must never yield bytes to a publisher. Publisher re-checks again before
-  // the actual remote Sites/APP commit.
-  if (!env.GITHUB_SOURCE_READ_TOKEN) return error(503, 'SOURCE_VERIFICATION_NOT_CONFIGURED');
-  if (await verifyEditorialNow(rowIdentity(row), row.editorial_text,
-    githubFetch, env.GITHUB_SOURCE_READ_TOKEN) !== 'current') {
-    return error(409, 'EDITORIAL_CHANGED_OR_NOT_READY');
-  }
+  // The editor explicitly approved the immutable episode identity.
+  // Removing a card from Listas does NOT revoke its right to an image.
+  // Never contact an external READY/Lists source at publication time:
+  // those files are transient/large and a failed fetch caused intermittent
+  // 503 errors while permanently blocking archived editorial episodes.
+  const stored = rowIdentity(row);
+  if ((await episodeFingerprint({ ...stored, editorialText: row.editorial_text })) !==
+      stored.episodeFingerprint) return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
   const obj = await env.ORIGINALS.get(row.object_key);
   if (!obj) return error(503, 'ORIGINAL_NOT_FOUND');
   const bytes = await obj.arrayBuffer();
@@ -243,8 +243,9 @@ async function decide(request, env, id, actor, githubFetch) {
   if (!input || !['approve', 'reject'].includes(input.action)) return error(400, 'INVALID_ACTION');
   const expected = identity(input.expectedIdentity);
   if ((await candidateID(expected)) !== id) return error(409, 'STALE_CANDIDATE');
-  // Approval must re-check main; rejection only clears the private inbox.
-  // A stale/removed READY row can never receive a new approval.
+  // Approval is tied to the immutable, exact candidate delivered to
+  // this private inbox. Current Listas presence is irrelevant: editorial
+  // items can be withdrawn/published while their images remain valid.
   if (input.action === 'approve') {
     const current = await env.DB.prepare(`SELECT editorial_text, status FROM image_candidates
       WHERE id=? AND status='pending'`).bind(id).first();
@@ -258,8 +259,10 @@ async function decide(request, env, id, actor, githubFetch) {
     if ((await episodeFingerprint({ ...expected, editorialText: current.editorial_text })) !== expected.episodeFingerprint) {
       return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
     }
-    const verdict = await verifyEditorialNow(expected, current.editorial_text, githubFetch, token(request));
-    if (verdict !== 'current') return error(409, 'EDITORIAL_CHANGED_OR_NOT_READY');
+    // Authenticated editor + candidateID + fingerprint + conditional DB
+    // update protect against mismatched IDs/revisions and double decisions.
+    // Ingest of manual originals already validates GitHub identity once.
+    // The trusted PC import is authenticated by its separate secret.
   }
   const status = input.action === 'approve' ? 'approved_awaiting_publication' : 'rejected';
   const result = await env.DB.prepare(`UPDATE image_candidates SET status=?, decided_at=?,
