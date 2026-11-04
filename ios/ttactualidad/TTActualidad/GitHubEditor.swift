@@ -486,6 +486,51 @@ final class GitHubEditor: ObservableObject {
         return object
     }
 
+    // Editorial decisions can arrive after a PNG was added to the private
+    // inbox. Do not ask the image service to approve a card we can prove was
+    // already removed. This is a safety preflight, NOT a replacement for the
+    // service's authoritative identity and publisher checks.
+    func withdrawnImageReason(project: String, editorialID: String, revision: Int,
+                              imageCreatedAt: String) async throws -> String? {
+        guard ["ttendencias", "ttittulares"].contains(project), revision >= 0,
+              !editorialID.isEmpty else { return nil }
+        let file = project == "ttendencias"
+            ? "trends/mobile-decisions.json" : "ttittulares/decisions.json"
+        let ledger = try await readMainJSON(file)
+        guard let rows = ledger["items"] as? [[String: Any]] else { return nil }
+        func moment(_ raw: String) -> Date? {
+            let parser = ISO8601DateFormatter()
+            parser.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let parsed = parser.date(from: raw) { return parsed }
+            parser.formatOptions = [.withInternetDateTime]
+            return parser.date(from: raw)
+        }
+        guard let originalDate = moment(imageCreatedAt) else { return nil }
+        let identityKey = project == "ttendencias" ? "id" : "event_id"
+        let terminal: Set<String> = ["deleted", "dismissed", "removed", "discarded", "published"]
+        for record in rows {
+            guard record[identityKey] as? String == editorialID,
+                  terminal.contains((record["status"] as? String ?? "").lowercased())
+            else { continue }
+            let closedRevision = record["revision"] as? Int ?? 0
+            // A later rewrite with a newer revision cannot be invalidated by
+            // an older terminal record.
+            guard closedRevision >= revision else { continue }
+            let timeKeys = ["deleted_at", "dismissed_at", "published_at",
+                            "removed_at", "decided_at", "updated_at"]
+            let closureDate = timeKeys.compactMap { key -> Date? in
+                guard let value = record[key] as? String else { return nil }
+                return moment(value)
+            }.first
+            // Terminal decision is only conclusive when it was made after
+            // this PNG entered the inbox. Otherwise a new episode may be valid.
+            if let closureDate, closureDate >= originalDate.addingTimeInterval(-60) {
+                return "Esta ficha fue retirada o publicada después de recibir su imagen. No se ha enviado otra aprobación (el original permanece en la bandeja)."
+            }
+        }
+        return nil
+    }
+
     private func actionReceipt(_ requestID: String) async throws -> String? {
         let doc = try await readMainJSON("pilot/ttactualidad-action-receipts.json")
         let receipt = (doc["items"] as? [[String: Any]])?.first {
