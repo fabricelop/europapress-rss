@@ -3,28 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793764266",
+  "run_id": "tr-autoguard-1793767864",
   "previous_run_id": "tr-autoguard-1793764266",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T04:57:30+01:00",
-  "updated_at": "2026-11-04T04:59:00+01:00",
-  "finished_at": "2026-11-04T04:59:00+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "d88c60290666",
-    "4691492179d2",
-    "red-review-f69501e8c096f3b626ba",
-    "red-review-151f9e2db29363043570"
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T05:51:00+01:00",
+  "updated_at": "2026-11-04T05:51:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
+  "trend_id": "56249f725ea0",
+  "title": "Trump",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "56249f725ea0",
+    "0e1e503c35a4",
+    "2da45ee99835"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "56249f725ea0",
+    "0e1e503c35a4",
+    "2da45ee99835"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793764266 cerrada 4/4: Carolina del Sur r0 y Georgia r0 explicadas y sincronizadas en requests/Listas; #FelizMartes y #GMMTVNEXT revisadas sin novedad material (unchanged), conservando texto y fecha originales. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "summary": "Inicio tr-autoguard-1793767864: 3 investigaciones preparing vigentes en main (Trump r0, James Talarico r0 y Cámara de Representantes r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -79,7 +82,7 @@
     "summary": "Pasada manual cerrada 2/2 por convergencia JIT con tr-autoguard-1793764266: #FelizMartes y #GMMTVNEXT quedaron review_completed/unchanged, con texto y fecha originales conservados. Barrera observada: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para la ejecución concurrente que terminó después."
   },
   "source": "chat",
-  "message": "Pasada tr-autoguard-1793764266 cerrada 4/4: Carolina del Sur r0 y Georgia r0 explicadas y sincronizadas en requests/Listas; #FelizMartes y #GMMTVNEXT revisadas sin novedad material (unchanged), conservando texto y fecha originales. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793767864: 3 investigaciones preparing vigentes en main (Trump r0, James Talarico r0 y Cámara de Representantes r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4771,6 +4774,17 @@
       "current": 2,
       "total": 2,
       "message": "Pasada tr-1793764632169-manual cerrada 2/2 por convergencia JIT: #FelizMartes y #GMMTVNEXT quedaron unchanged y aplicadas; cola y reexplicaciones en 0. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para tr-autoguard-1793764266."
+    },
+    {
+      "at": "2026-11-04T05:51:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793767864",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 3,
+      "trend_id": "56249f725ea0",
+      "title": "Trump",
+      "message": "Inicio tr-autoguard-1793767864: 3 investigaciones preparing vigentes en main (Trump r0, James Talarico r0 y Cámara de Representantes r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -7656,9 +7670,20 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1793759477 cerrada 6/6: 4 explicaciones ordinarias sincronizadas (Florida, Rocio Carrasco, #Midterms2026 y Carolina del Norte) y 2 revisiones de novedades cerradas stale (Chiqui y Renfe). Barrera final main: editorial-queue=0 y preparing/update/rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0; convergencias concurrentes=2."
+    },
+    {
+      "at": "2026-11-04T05:51:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793767864",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 3,
+      "trend_id": "56249f725ea0",
+      "title": "Trump",
+      "message": "Inicio tr-autoguard-1793767864: 3 investigaciones preparing vigentes en main (Trump r0, James Talarico r0 y Cámara de Representantes r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
-  "partial": false,
+  "partial": true,
   "outcomes": [
     {
       "id": "red-review-67fb96527801cf560c29",
@@ -7673,8 +7698,8 @@
       "created_id": "trend-update-35c47da02d21c05a1e59"
     }
   ],
-  "current_item": null,
-  "current_title": null,
+  "current_item": "56249f725ea0",
+  "current_title": "Trump",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -10387,7 +10412,7 @@
       "summary": "Pasada 2/2 completada: Cristina Fernández Cubas review_red r0 unchanged; Pepa Millán review_red r0 updated como continuidad en trend-update-14b8db0da15fd78b3b85. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793762800964-manual",
+  "command_id": "tr-autoguard-1793767864",
   "requested_at": "2026-11-04T03:32:00+01:00",
   "runs": [
     {
