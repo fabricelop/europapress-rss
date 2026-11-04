@@ -3,23 +3,25 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793760139482-manual",
-  "previous_run_id": "tr-autoguard-1793759477",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T03:43:00+01:00",
-  "updated_at": "2026-11-04T03:45:00+01:00",
-  "finished_at": "2026-11-04T03:45:00+01:00",
-  "current": 1,
+  "run_id": "tr-autoguard-1793762482",
+  "previous_run_id": "tr-1793760139482-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T04:21:30+01:00",
+  "updated_at": "2026-11-04T04:21:30+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "trend_id": "4b95ce627201",
+  "title": "Texas",
+  "queue_complete": false,
   "processed_ids": [
     "red-review-2cab33b04eb24ae416c7"
   ],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "4b95ce627201"
+  ],
   "remaining_problematic_ids": [],
   "summary": "Pasada manual cerrada 1/1 por convergencia JIT: Renfe r0 quedó review_completed sin reescritura porque había salido del Top 30 fresco; cola final 0 y sin rewrite_pending/reexplain.",
   "incident_count": 0,
@@ -55,7 +57,7 @@
     "summary": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793762482: 1 investigación preparing/update vigente en main (Texas r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4536,6 +4538,17 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-1793760139482-manual cerrada 1/1 por convergencia JIT: Renfe review r0 consumida como unverified/obsoleta al estar fuera del Top 30 fresco. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T04:21:30+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793762482",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 1,
+      "trend_id": "4b95ce627201",
+      "title": "Texas",
+      "message": "Inicio tr-autoguard-1793762482: 1 investigación preparing/update vigente en main (Texas r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -10152,7 +10165,7 @@
       "summary": "Pasada 2/2 completada: Cristina Fernández Cubas review_red r0 unchanged; Pepa Millán review_red r0 updated como continuidad en trend-update-14b8db0da15fd78b3b85. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-autoguard-1793759477",
+  "command_id": "tr-autoguard-1793762482",
   "requested_at": "2026-11-04T03:32:00+01:00",
   "runs": [
     {
