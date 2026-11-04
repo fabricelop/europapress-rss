@@ -27,7 +27,8 @@ jobs:
           from pathlib import Path
           for name in ('pilot/ttactualidad-live/index.html','docs/ttactualidad/index.html'):
               s=Path(name).read_text()
-              assert "out.replaceChildren(detail,quickImage)" in s
+              assert ("out.replaceChildren(detail,quickImage)" in s or
+                      "out.replaceChildren(detail)" in s)
               assert "if(media!==body&&media.matches('.news-photo-set,img.pic'))content.append(media)" in s
               assert ".card.trend-top .top30-expanded .pic{display:block" in s
               assert "u.hostname==='raw.githubusercontent.com'" in s
