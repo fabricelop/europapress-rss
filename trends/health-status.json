@@ -1,29 +1,5 @@
 {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-  "checked_at": "2026-11-04T15:46:53.315816+00:00",
-=======
-  "checked_at": "2026-11-04T15:51:23.631783+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T15:54:40.694504+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T15:58:24.688233+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T16:00:23.253905+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T16:03:17.036709+00:00",
->>>>>>> Stashed changes
-=======
-  "checked_at": "2026-11-04T16:06:36.113701+00:00",
->>>>>>> Stashed changes
+  "checked_at": "2026-11-04T21:34:25.233609+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -64,38 +40,12 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
-<<<<<<< Updated upstream
-      "non_stale_sources": 2,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      "captured_age_minutes": 5.9,
-=======
-      "captured_age_minutes": 10.4,
->>>>>>> Stashed changes
-=======
-      "captured_age_minutes": 3.7,
->>>>>>> Stashed changes
-=======
-      "captured_age_minutes": 7.4,
->>>>>>> Stashed changes
-=======
-      "captured_age_minutes": 9.4,
->>>>>>> Stashed changes
-=======
-      "captured_age_minutes": 12.3,
->>>>>>> Stashed changes
+      "non_stale_sources": 4,
+      "captured_age_minutes": 33.1,
       "noise_count": 0,
       "repair_started": true
-=======
-      "non_stale_sources": 3,
-      "captured_age_minutes": 5.3,
-      "noise_count": 0
->>>>>>> Stashed changes
     },
     "listener": {
       "ok": true,
@@ -106,33 +56,8 @@
       "ok": true,
       "status": "queued",
       "conclusion": null,
-<<<<<<< Updated upstream
       "age_minutes": 0.0,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      "run_id": 41861288360,
-=======
-      "run_id": 41862039277,
->>>>>>> Stashed changes
-=======
-      "run_id": 41862512713,
->>>>>>> Stashed changes
-=======
-      "run_id": 41863026189,
->>>>>>> Stashed changes
-=======
-      "run_id": 41863299087,
->>>>>>> Stashed changes
-=======
-      "run_id": 41863714467,
->>>>>>> Stashed changes
-=======
-      "age_minutes": 3.3,
-      "run_id": 41863714467,
->>>>>>> Stashed changes
+      "run_id": 41917344887,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -144,7 +69,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 392,
+      "invalid_count": 404,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -153,108 +78,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 3,
-      "overdue_count": 2,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-      "oldest_age_minutes": 31.6,
-=======
-      "oldest_age_minutes": 36.1,
->>>>>>> Stashed changes
-=======
-      "oldest_age_minutes": 39.4,
->>>>>>> Stashed changes
-=======
-      "oldest_age_minutes": 43.1,
->>>>>>> Stashed changes
-=======
-      "oldest_age_minutes": 45.1,
->>>>>>> Stashed changes
-=======
-      "oldest_age_minutes": 48.0,
->>>>>>> Stashed changes
-=======
-      "oldest_age_minutes": 51.3,
->>>>>>> Stashed changes
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-a4bde182eb3c449d3224",
-          "name": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
-          "status": "preparing",
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-          "age_minutes": 31.6
-=======
-          "age_minutes": 36.1
->>>>>>> Stashed changes
-=======
-          "age_minutes": 39.4
->>>>>>> Stashed changes
-=======
-          "age_minutes": 43.1
->>>>>>> Stashed changes
-=======
-          "age_minutes": 45.1
->>>>>>> Stashed changes
-=======
-          "age_minutes": 48.0
->>>>>>> Stashed changes
-=======
-          "age_minutes": 51.3
->>>>>>> Stashed changes
-        },
-        {
-          "id": "red-review-9962ec3ec9ae8aeb6188",
-          "name": "Revisar novedades: MAGA",
-          "status": "preparing",
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-          "age_minutes": 31.6
-=======
-          "age_minutes": 36.1
->>>>>>> Stashed changes
-=======
-          "age_minutes": 39.4
->>>>>>> Stashed changes
-=======
-          "age_minutes": 43.1
->>>>>>> Stashed changes
-=======
-          "age_minutes": 45.1
->>>>>>> Stashed changes
-=======
-          "age_minutes": 48.0
->>>>>>> Stashed changes
-=======
-          "age_minutes": 51.3
->>>>>>> Stashed changes
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "red-review-a4bde182eb3c449d3224",
-        "red-review-9962ec3ec9ae8aeb6188",
-        "a96fa4b91d13"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -263,60 +99,13 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [],
+  "repairs_started": [
+    "relanzado refresco Top 10"
+  ],
   "blocking": [
-    "cola con 392 estado(s) inválido(s)",
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.6 min"
+    "cola con 404 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.6 min"
-=======
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 36.1 min"
-  ],
-  "warnings": [],
-  "alert_sent": false,
-  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 36.1 min"
->>>>>>> Stashed changes
-=======
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 39.4 min"
-  ],
-  "warnings": [],
-  "alert_sent": false,
-  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 39.4 min"
->>>>>>> Stashed changes
-=======
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 43.1 min"
-  ],
-  "warnings": [],
-  "alert_sent": false,
-  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 43.1 min"
->>>>>>> Stashed changes
-=======
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 45.1 min"
-  ],
-  "warnings": [],
-  "alert_sent": false,
-  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 45.1 min"
->>>>>>> Stashed changes
-=======
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 48.0 min"
-  ],
-  "warnings": [],
-  "alert_sent": false,
-  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 48.0 min"
->>>>>>> Stashed changes
-=======
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 51.3 min"
-  ],
-  "warnings": [],
-  "alert_sent": false,
-  "last_alert_signature": "cola con 392 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 51.3 min"
->>>>>>> Stashed changes
+  "last_alert_signature": "cola con 404 estado(s) inválido(s)"
 }
