@@ -161,6 +161,27 @@ class PublicTop30ParityTests(unittest.TestCase):
                    recent={"top30": ["Halloween"]}, now=now)["items"][0]
         self.assertIsNone(out["image"])
 
+    def test_editor_manually_associated_trend_original_is_exported_by_exact_identity(self):
+        catalog = {"images": [{
+            "target_id": "halloween-new", "revision": 0,
+            "explained_at": HALLOWEEN_NEW["explained_at"],
+            "explanation": HALLOWEEN_NEW["explanation"],
+            "image_url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/halloween-new-r0-manual-" + "a"*12 + ".png",
+            "sha256": "a"*64,
+        }]}
+        output = make(manual=[HALLOWEEN_NEW], catalog=catalog)
+        matched = [row for row in output["items"] if row.get("name") == HALLOWEEN_NEW.get("name")]
+        if not matched:
+            matched = [row for row in output["items"] if row.get("image")]
+        self.assertTrue(matched)
+        self.assertTrue(any(row.get("image", {}).get("url", "").endswith(".png") and
+                            "-manual-" in row.get("image", {}).get("url", "")
+                            for row in matched))
+        catalog["images"][0]["image_url"] = catalog["images"][0]["image_url"].replace("-manual-", "-untrusted-")
+        untrusted = make(manual=[HALLOWEEN_NEW], catalog=catalog)
+        self.assertFalse(any("-untrusted-" in (row.get("image") or {}).get("url","")
+                             for row in untrusted["items"]))
+
     def test_timezone_and_search_numeration(self):
         self.assertEqual(norm("  Óscar   Puente "), "oscar puente")
         items = make()["items"]
