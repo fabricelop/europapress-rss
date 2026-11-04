@@ -6,31 +6,42 @@
   "run_id": "tr-autoguard-1793784063",
   "previous_run_id": "tr-autoguard-1793782269",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "preparing",
   "started_at": "2026-11-04T10:21:30+01:00",
-  "updated_at": "2026-11-04T10:24:00+01:00",
+  "updated_at": "2026-11-04T10:26:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "17d9bef5928f",
-  "title": "Carlos Cuerpo",
+  "trend_id": "416aeeacafc3",
+  "title": "Congreso",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "17d9bef5928f"
+  ],
   "remaining_ids": [
-    "17d9bef5928f",
     "416aeeacafc3"
   ],
   "remaining_active_ids": [
-    "17d9bef5928f",
     "416aeeacafc3"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Persistiendo Carlos Cuerpo r0 tras investigación verificada: relevo provisional en Transportes tras la dimisión de Óscar Puente.",
+  "summary": "Carlos Cuerpo r0 aplicado y verificado en requests + telegram-manual-explained. Preparando Congreso r0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "preparing",
+  "final_outcomes": [
+    {
+      "id": "17d9bef5928f",
+      "revision": 0,
+      "name": "Carlos Cuerpo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "TTENDENCIAS_CHAT_OUTBOX_V1",
+      "closer_text": "🌶️ Economía le acaba de poner un transbordo ministerial.",
+      "reason": "Sánchez encarga provisionalmente Transportes a Carlos Cuerpo tras la dimisión de Óscar Puente."
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793782269",
