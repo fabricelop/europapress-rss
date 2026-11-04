@@ -5,44 +5,75 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793759477",
   "previous_run_id": "tr-1793757592011-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T03:32:00+01:00",
-  "updated_at": "2026-11-04T03:39:01+01:00",
-  "finished_at": null,
-  "current": 2,
+  "updated_at": "2026-11-04T03:41:00+01:00",
+  "finished_at": "2026-11-04T03:41:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "5f0d0b18df81",
-  "title": "#Midterms2026",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "8e9e26c2ef86",
+    "6ee4aa423d88",
     "5f0d0b18df81"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "8e9e26c2ef86",
+      "revision": 0,
+      "name": "Florida",
+      "outcome": "explained",
+      "applied": true,
+      "reason": "Causa única no confirmada: coincidían el recuento de las midterms en Florida y la conversación por el accidente aéreo de Palm Beach; se redactó con incertidumbre explícita y sin remate por sensibilidad."
+    },
+    {
+      "id": "6ee4aa423d88",
+      "revision": 0,
+      "name": "Rocio Carrasco",
+      "outcome": "explained",
+      "applied": true,
+      "reason": "Detonante actual verificado en Supervivientes All Stars: defensa de Rocío Carrasco por Jorge Javier Vázquez tras las palabras de Rosario Mohedano."
+    },
+    {
+      "id": "5f0d0b18df81",
+      "revision": 0,
+      "name": "#Midterms2026",
+      "outcome": "explained",
+      "applied": true,
+      "reason": "Recuento en curso de las elecciones de medio mandato de EEUU con el control del Congreso en juego."
+    }
+  ],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T03:39:01+01:00",
-  "last_completed_at": "2026-11-04T03:39:01+01:00",
+  "last_completed_at": "2026-11-04T03:41:00+01:00",
   "last_run": {
-    "run_id": "tr-1793757592011-manual",
+    "run_id": "tr-autoguard-1793759477",
     "status": "DONE",
-    "started_at": "2026-11-04T02:01:00.000Z",
-    "finished_at": "2026-11-04T02:02:30.000Z",
-    "current": 0,
-    "total": 0,
-    "closed": [],
+    "started_at": "2026-11-04T03:32:00+01:00",
+    "finished_at": "2026-11-04T03:41:00+01:00",
+    "current": 3,
+    "total": 3,
+    "closed": [
+      "8e9e26c2ef86",
+      "6ee4aa423d88",
+      "5f0d0b18df81"
+    ],
     "pending": [],
-    "summary": "Pasada tr-1793757592011-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Rufián ya había quedado review_completed/updated en la pasada inmediatamente anterior y no se duplicó. ImageGen=0; publicaciones=0."
+    "summary": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4446,6 +4477,17 @@
       "trend_id": "5f0d0b18df81",
       "title": "#Midterms2026",
       "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:41:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "DONE",
+      "current": 3,
+      "total": 3,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
@@ -7287,6 +7329,17 @@
       "trend_id": "5f0d0b18df81",
       "title": "#Midterms2026",
       "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:41:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "DONE",
+      "current": 3,
+      "total": 3,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "partial": false,
@@ -7304,8 +7357,8 @@
       "created_id": "trend-update-35c47da02d21c05a1e59"
     }
   ],
-  "current_item": "5f0d0b18df81",
-  "current_title": "#Midterms2026",
+  "current_item": null,
+  "current_title": null,
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -11639,6 +11692,63 @@
       "message": "Pasada tr-1793734298171-manual cerrada por convergencia con tr-1793734393929-manual: Andorra review_completed/updated con nueva ficha trend-update-755bb08544bac83f4bc3 y Mark Twain review_completed/unchanged, conservando su texto y fecha. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
       "at": "2026-11-03T20:36:00+01:00",
       "converged_with": "tr-1793734298171-manual"
+    },
+    {
+      "run_id": "tr-autoguard-1793759477",
+      "command_id": "tr-autoguard-1793759477",
+      "canonical": true,
+      "status": "DONE",
+      "started_at": "2026-11-04T03:32:00+01:00",
+      "finished_at": "2026-11-04T03:41:00+01:00",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 3,
+        "updates": 0,
+        "grouping_requests": 0,
+        "groups_created": 0,
+        "covered_by_existing": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "terminal_decisions": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "8e9e26c2ef86",
+          "revision": 0,
+          "name": "Florida",
+          "outcome": "explained",
+          "applied": true,
+          "reason": "Causa única no confirmada: coincidían el recuento de las midterms en Florida y la conversación por el accidente aéreo de Palm Beach; se redactó con incertidumbre explícita y sin remate por sensibilidad."
+        },
+        {
+          "id": "6ee4aa423d88",
+          "revision": 0,
+          "name": "Rocio Carrasco",
+          "outcome": "explained",
+          "applied": true,
+          "reason": "Detonante actual verificado en Supervivientes All Stars: defensa de Rocío Carrasco por Jorge Javier Vázquez tras las palabras de Rosario Mohedano."
+        },
+        {
+          "id": "5f0d0b18df81",
+          "revision": 0,
+          "name": "#Midterms2026",
+          "outcome": "explained",
+          "applied": true,
+          "reason": "Recuento en curso de las elecciones de medio mandato de EEUU con el control del Congreso en juego."
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+      "at": "2026-11-04T03:41:00+01:00"
     }
   ],
   "activity_log": [
@@ -12495,6 +12605,17 @@
       "trend_id": "5f0d0b18df81",
       "title": "#Midterms2026",
       "message": "2/3 cierres autoritativos verificados (Florida y Rocio Carrasco). #Midterms2026 r0 está entregada al aplicador y su workflow se encuentra en curso; aún no se contabiliza como cerrada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:41:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "DONE",
+      "current": 3,
+      "total": 3,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793759477 cerrada 3/3: Florida, Rocio Carrasco y #Midterms2026 r0 quedaron explained y sincronizadas en requests.json y telegram-manual-explained.json. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "converged_run_ids": [
@@ -12519,6 +12640,7 @@
     "tr-1793747839940-manual",
     "tr-autoguard-1793749880",
     "tr-1793750189999-manual",
-    "tr-1793757410178-manual"
+    "tr-1793757410178-manual",
+    "tr-autoguard-1793759477"
   ]
 }
