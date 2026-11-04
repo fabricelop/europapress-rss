@@ -9,6 +9,20 @@ struct EditorialRelationEndpoint: Codable, Identifiable, Equatable {
     let title: String
     let text: String
     let path: String?
+    // Optional server-issued moment when this news last entered Listas.
+    // Without it the APP preserves source order; it never invents a date.
+    let listedAt: String?
+
+    init(id: String, revision: Int, episodeFingerprint: String,
+         title: String, text: String, path: String?, listedAt: String? = nil) {
+        self.id = id
+        self.revision = revision
+        self.episodeFingerprint = episodeFingerprint
+        self.title = title
+        self.text = text
+        self.path = path
+        self.listedAt = listedAt
+    }
 
     var stableIdentity: String {
         [id, String(revision), episodeFingerprint].joined(separator: "|")
@@ -54,6 +68,19 @@ struct EditorialRelationReceipt: Decodable {
 }
 
 enum EditorialRelationsPolicy {
+    static func newsKey(id: String, revision: Int) -> String {
+        id + ":r" + String(revision)
+    }
+
+    // The normal Relations screen only lists actual READY/Listas news.
+    // Explicit selection can still inspect/edit a historical news episode.
+    static func isVisibleNews(_ news: EditorialRelationEndpoint,
+                              activeListas: Set<String>,
+                              explicit: EditorialRelationEndpoint?) -> Bool {
+        activeListas.contains(newsKey(id: news.id, revision: news.revision)) ||
+            (explicit?.stableIdentity == news.stableIdentity)
+    }
+
     // Defensive display reconciliation: a partial sync may repeat a pair.
     // Prefer explicit manual decisions to automatic proposals; if conflicting
     // states still arrive, a block wins rather than silently re-linking.
