@@ -5,51 +5,102 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793752870",
   "previous_run_id": "tr-autoguard-1793749880",
-  "status": "PROCESSING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T01:42:20+01:00",
-  "updated_at": "2026-11-04T01:53:00+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-04T01:50:30+01:00",
+  "finished_at": "2026-11-04T01:50:30+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "red-review-507aad4b9237eeadd73e",
-  "title": "Revisar novedades: Ester Muñoz",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "2c429670b3b0",
     "4bd51e39ca2a",
+    "f1ad001b8a5f",
+    "2c429670b3b0",
     "4e9acefb18e1",
-    "f1ad001b8a5f"
+    "red-review-db76cdd73d5b0532fef0",
+    "red-review-507aad4b9237eeadd73e"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": "Pasada tr-autoguard-1793752870 cerrada 6/6: Champions League, Chayo, Rocío Jurado y #ElChiringuitoEnEnergy quedaron explained; Ester Muñoz review_completed/updated en continuidad con nueva ficha trend-update-70dc08bb967d9fca11cc; Chiqui cerró stale por la barrera JIT, sin duplicar escritura. Barrera final main: editorial-queue=0, preparing/update=0 y reexplain/rewrite_pending=0 en la cola autoritativa. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "4bd51e39ca2a",
+      "revision": 0,
+      "name": "Champions League",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "f1ad001b8a5f",
+      "revision": 0,
+      "name": "Chayo",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "2c429670b3b0",
+      "revision": 0,
+      "name": "Rocío Jurado",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4e9acefb18e1",
+      "revision": 0,
+      "name": "#ElChiringuitoEnEnergy",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "red-review-db76cdd73d5b0532fef0",
+      "revision": 0,
+      "name": "Revisar novedades: Chiqui",
+      "outcome": "stale",
+      "applied": true,
+      "concurrent_convergence": true
+    },
+    {
+      "id": "red-review-507aad4b9237eeadd73e",
+      "revision": 0,
+      "name": "Revisar novedades: Ester Muñoz",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-70dc08bb967d9fca11cc",
+      "distinct_episode": false
+    }
+  ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T01:45:57+01:00",
-  "last_completed_at": "2026-11-04T01:45:57+01:00",
+  "last_started_at": "2026-11-04T01:42:20+01:00",
+  "last_completed_at": "2026-11-04T01:50:30+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793749880",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-04T00:51:20+01:00",
-    "finished_at": "2026-11-04T00:59:37+01:00",
-    "current": 3,
-    "total": 3,
+    "run_id": "tr-autoguard-1793752870",
+    "status": "DONE",
+    "started_at": "2026-11-04T01:42:20+01:00",
+    "finished_at": "2026-11-04T01:50:30+01:00",
+    "current": 6,
+    "total": 6,
     "closed": [
-      "59330137c24c",
-      "red-review-a3623bbc2bfa6cf0a263",
-      "red-review-f55346c003bf63b4b31b"
+      "4bd51e39ca2a",
+      "f1ad001b8a5f",
+      "2c429670b3b0",
+      "4e9acefb18e1",
+      "red-review-db76cdd73d5b0532fef0",
+      "red-review-507aad4b9237eeadd73e"
     ],
     "pending": [],
-    "summary": "1 explicación ordinaria, 1 revisión actualizada y 1 revisión sin cambios. Cola final y reexplicaciones a cero; ImageGen=0; publicaciones=0. Incidencia de transporte recuperada."
+    "summary": "Pasada tr-autoguard-1793752870 cerrada 6/6: Champions League, Chayo, Rocío Jurado y #ElChiringuitoEnEnergy quedaron explained; Ester Muñoz review_completed/updated en continuidad con nueva ficha trend-update-70dc08bb967d9fca11cc; Chiqui cerró stale por la barrera JIT, sin duplicar escritura. Barrera final main: editorial-queue=0, preparing/update=0 y reexplain/rewrite_pending=0 en la cola autoritativa. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Ester Muñoz review r0 revalidada JIT. Novedad material en continuidad: Óscar Puente anunció su dimisión al final de la misma comparecencia después de que Muñoz reclamara su salida. Persistiendo updated; ImageGen=0.",
+  "message": "Pasada tr-autoguard-1793752870 cerrada 6/6: Champions League, Chayo, Rocío Jurado y #ElChiringuitoEnEnergy quedaron explained; Ester Muñoz review_completed/updated en continuidad con nueva ficha trend-update-70dc08bb967d9fca11cc; Chiqui cerró stale por la barrera JIT, sin duplicar escritura. Barrera final main: editorial-queue=0, preparing/update=0 y reexplain/rewrite_pending=0 en la cola autoritativa. ImageGen=0; publicaciones=0.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4320,6 +4371,28 @@
       "trend_id": "red-review-507aad4b9237eeadd73e",
       "title": "Revisar novedades: Ester Muñoz",
       "message": "Ester Muñoz review r0 revalidada JIT. Novedad material en continuidad: Óscar Puente anunció su dimisión al final de la misma comparecencia después de que Muñoz reclamara su salida. Persistiendo updated; ImageGen=0."
+    },
+    {
+      "at": "2026-11-04T01:50:30+01:00",
+      "phase": "verifying",
+      "run_id": "tr-autoguard-1793752870",
+      "status": "PROCESSING",
+      "current": 6,
+      "total": 6,
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final JIT verificada en main: editorial-queue=0; 4 explicaciones ordinarias aplicadas; Ester Muñoz updated; Chiqui stale; sin preparing/update ni reexplicación activa. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T01:50:30+01:00",
+      "phase": "closing",
+      "run_id": "tr-autoguard-1793752870",
+      "status": "DONE",
+      "current": 6,
+      "total": 6,
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-autoguard-1793752870 cerrada 6/6: Champions League, Chayo, Rocío Jurado y #ElChiringuitoEnEnergy quedaron explained; Ester Muñoz review_completed/updated en continuidad con nueva ficha trend-update-70dc08bb967d9fca11cc; Chiqui cerró stale por la barrera JIT, sin duplicar escritura. Barrera final main: editorial-queue=0, preparing/update=0 y reexplain/rewrite_pending=0 en la cola autoritativa. ImageGen=0; publicaciones=0."
     }
   ],
   "history": [
