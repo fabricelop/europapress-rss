@@ -49,8 +49,11 @@ export function readyTextFromMain(data, identity) {
       latest.rewrite_pending === true) return null;
   if (identity.project === 'ttendencias' &&
       String(latest.status || '').toLowerCase() !== 'explained') return null;
+  // The native news card shows tweet.text when supplied, otherwise the
+  // prepared explanation/factual summary. Validate that same visible text.
   const text = identity.project === 'ttittulares'
-    ? latest.tweet?.text : latest.explanation;
+    ? (latest.tweet?.text || latest.explanation || latest.factual_summary)
+    : latest.explanation;
   return typeof text === 'string' && text.trim() ? text : null;
 }
 
