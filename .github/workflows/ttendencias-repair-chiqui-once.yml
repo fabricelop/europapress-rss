@@ -1,0 +1,116 @@
+name: TTendencias repair Chiqui review once
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttendencias-repair-chiqui-once.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-repair-chiqui-once
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Persistir revisión perdida de Chiqui y retirar este workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-editorial"
+          git config user.email "actions@users.noreply.github.com"
+
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          requests_path=Path("trends/requests.json")
+          explained_path=Path("trends/telegram-manual-explained.json")
+
+          req=json.loads(requests_path.read_text(encoding="utf-8"))
+          exp=json.loads(explained_path.read_text(encoding="utf-8"))
+          requests=req.setdefault("requests",[])
+          items=exp.setdefault("items",[])
+
+          job_id="red-review-3f3b500b747421ce2841"
+          update_id="trend-update-d8b0b437dd21171dc217"
+          source_id="7375308f71a9"
+          stamp="2026-11-04T06:59:49.049290+00:00"
+          explanation="TT#9 Chiqui es tendencia por una nueva ronda de Supervivientes All Stars: Asraf Beno ha sido salvado y ella se juega con Yola Berrocal la expulsión del jueves 5 de noviembre.\n#SupervivientesAllStars #Chiqui\n🌶️ La repesca ha vuelto a dejarla frente al televoto."
+          closer="🌶️ La repesca ha vuelto a dejarla frente al televoto."
+          reason="La explicación del 23 de octubre correspondía a otra gala. Hay un episodio nuevo y material: en las nominaciones del 1 de noviembre Chiqui quedó nominada con Asraf Beno y Yola Berrocal; el 3 de noviembre Asraf fue salvado y Chiqui quedó con Yola jugándose la expulsión del jueves 5."
+          new_facts="Tras la expulsión de Ivana Icardi se abrió una nueva ronda de nominaciones con Asraf, Yola y Chiqui. En la salvación posterior, Asraf obtuvo el mayor apoyo y Chiqui y Yola quedaron expuestas al televoto hasta la gala del jueves 5 de noviembre."
+          sources=[
+            {"url":"https://www.formulatv.com/noticias/ivana-icardi-expulsada-supervivientes-all-stars-138661/"},
+            {"url":"https://eltelevisero.huffingtonpost.es/2026/11/encuesta-quien-quieres-que-sea-la-salvada-de-la-expulsion-de-supervivientes-all-stars-chiqui-o-yola/"}
+          ]
+
+          card={
+            "id":update_id,
+            "revision":0,
+            "name":"Chiqui",
+            "rank":9,
+            "status":"explained",
+            "requested_at":stamp,
+            "explained_at":stamp,
+            "updated_at":stamp,
+            "explanation":explanation,
+            "closer_text":closer,
+            "verification_sources":sources,
+            "originated_from_prior_id":source_id,
+            "trend_names":["Chiqui"],
+            "red_review_job_id":job_id,
+            "continuity_update":False,
+            "distinct_episode":True,
+            "new_facts":new_facts,
+            "with_image":True,
+            "editorial_grouping_state":"pending",
+            "image_strategy":"ai_plus_fallback",
+            "ai_image_status":"pending"
+          }
+
+          if not any(str(x.get("id") or "")==update_id or str(x.get("red_review_job_id") or "")==job_id for x in requests):
+              requests.append(dict(card))
+          if not any(str(x.get("id") or "")==update_id or str(x.get("red_review_job_id") or "")==job_id for x in items):
+              items.append(dict(card))
+
+          source=next((x for x in items if str(x.get("id") or "")==source_id and int(x.get("revision") or 0)==0),None)
+          if source is not None:
+              source["red_review_checked_at"]=stamp
+              source["red_review_outcome"]="updated"
+              source["red_review_reason"]=reason
+              source["red_review_sources"]=sources
+
+          req["updated_at"]=stamp
+          req["count"]=len(requests)
+          exp["updated_at"]=stamp
+          exp["count"]=len(items)
+          requests_path.write_text(json.dumps(req,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          explained_path.write_text(json.dumps(exp,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("TTENDENCIAS_CHIQUI_REPAIR_READY",update_id)
+          PY
+
+            rm -f .github/workflows/ttendencias-repair-chiqui-once.yml
+            git add trends/requests.json trends/telegram-manual-explained.json .github/workflows/ttendencias-repair-chiqui-once.yml
+            if git diff --cached --quiet; then
+              exit 0
+            fi
+            git commit -m "TTendencias: reparar persistencia Chiqui review_red"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep "$attempt"
+          done
+          exit 1
