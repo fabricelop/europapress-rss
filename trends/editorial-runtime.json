@@ -5,52 +5,61 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793780462",
   "previous_run_id": "tr-1793779108647-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T09:22:00+01:00",
-  "updated_at": "2026-11-04T09:25:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T09:27:00+01:00",
+  "finished_at": "2026-11-04T09:27:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "0dd859827de9",
-  "title": "#LaHora4N",
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "0dd859827de9"
   ],
-  "remaining_active_ids": [
-    "0dd859827de9"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Investigación y redacción cerradas para #LaHora4N r0. Emisión de La Hora de La 1 confirmada; no se atribuye el impulso a un momento concreto. Persistiendo texto; closer_text vacío por incertidumbre causal. ImageGen 0.",
+  "summary": "Pasada tr-autoguard-1793780462 cerrada 1/1. #LaHora4N r0 explicado con causa concreta del pico no atribuida: emisión de La Hora de La 1 confirmada, sin poder verificar qué momento impulsó la etiqueta. Persistencia verificada en requests y telegram-manual-explained; cola final 0; rewrite_pending/reexplain 0. ImageGen 0; image-outbox 0; publicaciones 0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "completed",
+  "final_outcomes": [
+    {
+      "id": "0dd859827de9",
+      "revision": 0,
+      "name": "#LaHora4N",
+      "outcome": "explained",
+      "applied": true,
+      "via": "TTENDENCIAS_CHAT_OUTBOX_V1",
+      "closer_text": "",
+      "reason": "Emisión de La Hora de La 1 confirmada; no se pudo verificar qué momento concreto impulsó la etiqueta."
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793779108647-manual",
+    "run_id": "tr-autoguard-1793780462",
     "status": "DONE",
-    "started_at": "2026-11-04T08:58:28+01:00",
-    "updated_at": "2026-11-04T09:00:30+01:00",
-    "finished_at": "2026-11-04T09:00:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-04T09:22:00+01:00",
+    "updated_at": "2026-11-04T09:27:00+01:00",
+    "finished_at": "2026-11-04T09:27:00+01:00",
+    "current": 1,
+    "total": 1,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "0dd859827de9"
+    ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-cd984e7425086f0d7f79",
+        "id": "0dd859827de9",
         "revision": 0,
-        "name": "Revisar novedades: Óscar Puente",
-        "outcome": "updated",
+        "name": "#LaHora4N",
+        "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "result_id": "trend-update-652b1fd9b62e902119ea",
-        "converged_with": "tr-autoguard-1793778663"
+        "via": "TTENDENCIAS_CHAT_OUTBOX_V1"
       }
     ],
     "imagegen_calls": 0,
@@ -58,8 +67,8 @@
     "publications": 0,
     "incident_count": 0,
     "incidents": [],
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-04T09:22:00+01:00",
-  "last_completed_at": "2026-11-04T09:00:30+01:00"
+  "last_completed_at": "2026-11-04T09:27:00+01:00"
 }
