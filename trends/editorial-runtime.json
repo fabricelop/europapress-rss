@@ -5,44 +5,40 @@
   "canonical": true,
   "run_id": "tr-1793824841260-manual",
   "previous_run_id": "tr-1793824800000-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T21:41:00+01:00",
-  "updated_at": "2026-11-04T21:47:00+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-04T21:49:00+01:00",
+  "finished_at": "2026-11-04T21:49:00+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "red-review-e4be2b46b46a60fe16be",
-  "title": "Revisando novedades: Diomande",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "cd58e4b34464",
     "4bea3ac923fc",
     "red-review-1fcaec879264e3f452b2",
-    "red-review-9232d8c2711a79792a08"
+    "red-review-9232d8c2711a79792a08",
+    "red-review-e4be2b46b46a60fe16be",
+    "red-review-063761c8537034eed94d"
   ],
   "converged_ids": [
     "red-review-1fcaec879264e3f452b2",
     "red-review-9232d8c2711a79792a08"
   ],
-  "remaining_ids": [
-    "red-review-e4be2b46b46a60fe16be",
-    "red-review-063761c8537034eed94d"
-  ],
-  "remaining_active_ids": [
-    "red-review-e4be2b46b46a60fe16be",
-    "red-review-063761c8537034eed94d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 4,
     "observed": 6,
-    "closed": 4,
-    "explained": 2,
-    "updates": 0,
+    "closed": 6,
+    "explained": 3,
+    "updates": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 2,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,11 +50,12 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades de Diomande: nuevo partido de Champions ante el AEK.",
+  "activity": "Cierre verificado 6/6: cola 0, sin rewrite_pending/reexplain; sin ImageGen ni publicaciones.",
   "final_outcomes": [
     {
       "id": "cd58e4b34464",
       "revision": 0,
+      "name": "Rudiger",
       "outcome": "explained",
       "applied": true,
       "via": "editorial_outbox"
@@ -66,6 +63,7 @@
     {
       "id": "4bea3ac923fc",
       "revision": 0,
+      "name": "Real Madrid",
       "outcome": "explained",
       "applied": true,
       "via": "editorial_outbox"
@@ -73,6 +71,7 @@
     {
       "id": "red-review-1fcaec879264e3f452b2",
       "revision": 0,
+      "name": "Revisar novedades: Rudiger",
       "outcome": "stale",
       "applied": true,
       "via": "maintenance_outbox",
@@ -82,11 +81,35 @@
     {
       "id": "red-review-9232d8c2711a79792a08",
       "revision": 0,
+      "name": "Revisar novedades: Ciudad Real",
       "outcome": "stale",
       "applied": true,
       "via": "maintenance_outbox",
       "source_id": "20935c787fe3",
       "converged": true
+    },
+    {
+      "id": "red-review-e4be2b46b46a60fe16be",
+      "revision": 0,
+      "name": "Revisar novedades: Diomande",
+      "outcome": "updated",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "7184eb72d1ea",
+      "created_id": "trend-update-843a7b206b27d12bac5f",
+      "distinct_episode": true,
+      "material_change": true
+    },
+    {
+      "id": "red-review-063761c8537034eed94d",
+      "revision": 0,
+      "name": "Revisar novedades: Andorra",
+      "outcome": "continuity",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "3e340be4de18",
+      "distinct_episode": false,
+      "material_change": false
     }
   ],
   "api_failover_enabled": false,
@@ -94,22 +117,25 @@
     "run_id": "tr-1793824841260-manual",
     "status": "DONE",
     "started_at": "2026-11-04T21:41:00+01:00",
-    "updated_at": "2026-11-04T21:46:00+01:00",
-    "finished_at": "2026-11-04T21:46:00+01:00",
-    "current": 4,
-    "total": 4,
-    "queue_complete": false,
+    "updated_at": "2026-11-04T21:49:00+01:00",
+    "finished_at": "2026-11-04T21:49:00+01:00",
+    "current": 6,
+    "total": 6,
+    "queue_complete": true,
     "processed_ids": [
       "cd58e4b34464",
       "4bea3ac923fc",
       "red-review-1fcaec879264e3f452b2",
-      "red-review-9232d8c2711a79792a08"
+      "red-review-9232d8c2711a79792a08",
+      "red-review-e4be2b46b46a60fe16be",
+      "red-review-063761c8537034eed94d"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
         "id": "cd58e4b34464",
         "revision": 0,
+        "name": "Rudiger",
         "outcome": "explained",
         "applied": true,
         "via": "editorial_outbox"
@@ -117,6 +143,7 @@
       {
         "id": "4bea3ac923fc",
         "revision": 0,
+        "name": "Real Madrid",
         "outcome": "explained",
         "applied": true,
         "via": "editorial_outbox"
@@ -124,6 +151,7 @@
       {
         "id": "red-review-1fcaec879264e3f452b2",
         "revision": 0,
+        "name": "Revisar novedades: Rudiger",
         "outcome": "stale",
         "applied": true,
         "via": "maintenance_outbox",
@@ -133,11 +161,35 @@
       {
         "id": "red-review-9232d8c2711a79792a08",
         "revision": 0,
+        "name": "Revisar novedades: Ciudad Real",
         "outcome": "stale",
         "applied": true,
         "via": "maintenance_outbox",
         "source_id": "20935c787fe3",
         "converged": true
+      },
+      {
+        "id": "red-review-e4be2b46b46a60fe16be",
+        "revision": 0,
+        "name": "Revisar novedades: Diomande",
+        "outcome": "updated",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "7184eb72d1ea",
+        "created_id": "trend-update-843a7b206b27d12bac5f",
+        "distinct_episode": true,
+        "material_change": true
+      },
+      {
+        "id": "red-review-063761c8537034eed94d",
+        "revision": 0,
+        "name": "Revisar novedades: Andorra",
+        "outcome": "continuity",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "3e340be4de18",
+        "distinct_episode": false,
+        "material_change": false
       }
     ],
     "imagegen_calls": 0,
@@ -148,5 +200,5 @@
     "concurrent_convergence": 2
   },
   "last_started_at": "2026-11-04T21:44:59+01:00",
-  "last_completed_at": "2026-11-04T21:46:00+01:00"
+  "last_completed_at": "2026-11-04T21:49:00+01:00"
 }
