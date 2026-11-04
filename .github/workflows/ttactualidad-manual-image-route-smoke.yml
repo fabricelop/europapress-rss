@@ -1,0 +1,44 @@
+name: TTActualidad manual image route smoke (read-only, no credentials)
+on:
+  push:
+    branches: [feature/ttactualidad-manual-image-ingest-20261104]
+    paths:
+      - '.github/workflows/ttactualidad-manual-image-route-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  route-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Compare current inbox and new manual endpoint without authentication
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT='https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images'
+          # Invalid unauthenticated request; NEVER provide image bytes, bearer token,
+          # editorial identity or deployment credentials in a smoke probe.
+          status_list=$(curl -sS --max-time 15 -o /dev/null -w '%{http_code}' "$ROOT" || echo 000)
+          status_manual=$(curl -sS --max-time 15 -o /dev/null -w '%{http_code}' \
+            -X POST -H 'Content-Type: application/json' -d '{}' "$ROOT/manual" || echo 000)
+          echo "INBOX_LIST_GET_HTTP=$status_list"
+          echo "MANUAL_INGEST_POST_HTTP=$status_manual"
+          {
+            echo '### Production manual-upload API status'
+            echo "Read-only inbox GET without auth: HTTP $status_list"
+            echo "Manual POST without auth (empty JSON): HTTP $status_manual"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$status_manual" = 404 ]; then
+            echo 'MANUAL_UPLOAD_NOT_DEPLOYED: the iOS Build69 path is absent from production.'
+            exit 1
+          fi
+          if [ "$status_manual" = 000 ]; then
+            echo 'MANUAL_UPLOAD_UNREACHABLE: no response; cannot assert availability.'
+            exit 1
+          fi
+          if [ "$status_manual" = 200 ] || [ "$status_manual" = 201 ]; then
+            echo 'SECURITY_ALERT: upload accepted without authorization!'
+            exit 1
+          fi
+          echo 'Route does not return 404, but this is NOT an authenticated upload/publication test.'
