@@ -52,23 +52,31 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T04:56:37+01:00",
-  "last_completed_at": "2026-11-04T04:59:00+01:00",
+  "last_started_at": "2026-11-04T04:57:30+01:00",
+  "last_completed_at": "2026-11-04T05:00:00+01:00",
   "last_run": {
-    "run_id": "tr-autoguard-1793764266",
+    "run_id": "tr-1793764632169-manual",
     "status": "DONE",
     "started_at": "2026-11-04T04:57:30+01:00",
-    "finished_at": "2026-11-04T04:59:00+01:00",
-    "current": 4,
-    "total": 4,
+    "finished_at": "2026-11-04T05:00:00+01:00",
+    "current": 2,
+    "total": 2,
     "closed": [
-      "d88c60290666",
-      "4691492179d2",
-      "red-review-f69501e8c096f3b626ba",
-      "red-review-151f9e2db29363043570"
+      {
+        "id": "red-review-f69501e8c096f3b626ba",
+        "revision": 0,
+        "outcome": "unchanged",
+        "via": "concurrent_convergence_jit"
+      },
+      {
+        "id": "red-review-151f9e2db29363043570",
+        "revision": 0,
+        "outcome": "unchanged",
+        "via": "concurrent_convergence_jit"
+      }
     ],
     "pending": [],
-    "summary": "Pasada tr-autoguard-1793764266 cerrada 4/4: Carolina del Sur r0 y Georgia r0 explicadas y sincronizadas en requests/Listas; #FelizMartes y #GMMTVNEXT revisadas sin novedad material (unchanged), conservando texto y fecha originales. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "summary": "Pasada manual cerrada 2/2 por convergencia JIT con tr-autoguard-1793764266: #FelizMartes y #GMMTVNEXT quedaron review_completed/unchanged, con texto y fecha originales conservados. Barrera observada: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para la ejecución concurrente que terminó después."
   },
   "source": "chat",
   "message": "Pasada tr-autoguard-1793764266 cerrada 4/4: Carolina del Sur r0 y Georgia r0 explicadas y sincronizadas en requests/Listas; #FelizMartes y #GMMTVNEXT revisadas sin novedad material (unchanged), conservando texto y fecha originales. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
@@ -4754,6 +4762,15 @@
       "current": 4,
       "total": 4,
       "message": "Pasada tr-autoguard-1793764266 cerrada 4/4: Carolina del Sur r0 y Georgia r0 explicadas y sincronizadas en requests/Listas; #FelizMartes y #GMMTVNEXT revisadas sin novedad material (unchanged), conservando texto y fecha originales. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T05:00:00+01:00",
+      "phase": "closing",
+      "run_id": "tr-1793764632169-manual",
+      "status": "DONE",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada tr-1793764632169-manual cerrada 2/2 por convergencia JIT: #FelizMartes y #GMMTVNEXT quedaron unchanged y aplicadas; cola y reexplicaciones en 0. ImageGen=0; publicaciones=0. RUNTRACE canónico preservado para tr-autoguard-1793764266."
     }
   ],
   "history": [
@@ -13010,6 +13027,7 @@
     "tr-autoguard-1793749880",
     "tr-1793750189999-manual",
     "tr-1793757410178-manual",
-    "tr-autoguard-1793759477"
+    "tr-autoguard-1793759477",
+    "tr-1793764632169-manual"
   ]
 }
