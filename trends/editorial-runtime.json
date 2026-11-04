@@ -3,54 +3,49 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793789480",
-  "previous_run_id": "tr-autoguard-1793787076",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-04T11:52:00+01:00",
-  "updated_at": "2026-11-04T12:02:00+01:00",
-  "finished_at": "2026-11-04T12:02:00+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793789874359-manual",
+  "previous_run_id": "tr-autoguard-1793789480",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T11:58:30+01:00",
+  "updated_at": "2026-11-04T11:58:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "8201536739ef",
-    "e50cfc4cf460",
-    "31bb72a668f9"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-1ffb87ac2705eb896f12",
+    "red-review-4f0cf42706fd610a89d5"
+  ],
+  "remaining_active_ids": [
+    "red-review-1ffb87ac2705eb896f12",
+    "red-review-4f0cf42706fd610a89d5"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 1
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "fallback_persistence_transport",
-      "resolved": true,
-      "message": "El intento de persistencia atómica manual de respaldo para JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; se reactivó el outbox de la misma revisión y el aplicador lo persistió correctamente."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada textual cerrada 3/3. #JuegaZeldaYa, Verás y JJ Gabriel persisten en requests y Listas con revisión 0; #JuegaZeldaYa quedó con causa no confirmada. Sin ImageGen, image-outbox ni publicaciones.",
+  "activity": "Revisando novedades: 2 comprobaciones pendientes; sin ImageGen.",
   "final_outcomes": [
     {
       "id": "8201536739ef",
