@@ -23,6 +23,7 @@ struct ManualEditorialImageSheet: View {
     @State private var working = false
     @State private var notice = ""
     @State private var published = false
+    @State private var githubImageURL: URL?
 
     private struct UploadResult: Decodable {
         let id: String
@@ -95,7 +96,11 @@ struct ManualEditorialImageSheet: View {
                             .foregroundStyle(published ? Color.green : Color.secondary)
                             .accessibilityAddTraits(.updatesFrequently)
                     }
-                    if working { ProgressView("Validando y publicando imagen…") }
+                    if let githubImageURL {
+                        Link("Abrir original guardado en GitHub", destination: githubImageURL)
+                            .font(.footnote)
+                    }
+                    if working { ProgressView("Validando y asociando imagen…") }
                     Button {
                         Task { await submit() }
                     } label: {
@@ -166,6 +171,7 @@ struct ManualEditorialImageSheet: View {
     private func select(_ input: Data) {
         guard !working else { return }
         published = false
+        githubImageURL = nil
         imagePNG = nil
         preview = nil
         guard !input.isEmpty, input.count <= 40_000_000, let image = UIImage(data: input),
@@ -211,6 +217,21 @@ struct ManualEditorialImageSheet: View {
         return "manual-" + key
     }
 
+    // "Subir y aprobar" is explicit authorization to associate the chosen
+    // original with this exact historical editorial card. GitHub is the
+    // fallback when the existing private publisher is absent/unavailable;
+    // it cannot certify publication on the separate ChatGPT Site.
+    private func associateThroughGitHub(_ png: Data) async throws {
+        let url = try await github.associateManualImageInGitHub(
+            project: project, editorialID: editorialID, revision: revision,
+            editorialText: editorialText, png: png)
+        githubImageURL = url
+        await SiteAIImageCatalog.invalidateCache()
+        await NewsAIImageCatalog.invalidateCache()
+        notice = "Imagen guardada y asociada a esta ficha histórica en GitHub. " +
+            "La app actualizará su catálogo. La web todavía no ha confirmado la imagen."
+    }
+
     private func submit() async {
         guard !working, let png = imagePNG, github.authenticated else { return }
         working = true
@@ -222,16 +243,16 @@ struct ManualEditorialImageSheet: View {
                 commandID: commandID(png))
             let serverError = ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?["error"] as? String
             guard code == 200 || code == 201 else {
-                if code == 404 {
-                    // A missing /v1/images/manual endpoint is a deployment gap,
-                    // not proof of a stale Listas card. Keep the chosen PNG.
-                    notice = "El servidor de imágenes todavía no admite subidas manuales (404). La imagen permanece seleccionada. No es un problema demostrado de esta ficha."
-                } else if code == 409 {
-                    notice = "La identidad o revisión de la ficha ya no coincide (409: " + (serverError ?? "conflicto") + "). La imagen permanece seleccionada."
-                } else if code == 503 {
-                    notice = "El servidor de imágenes no está disponible (503: " + (serverError ?? "sin detalle") + "). No se ha confirmado ninguna subida."
+                // Missing endpoint, stale Listas-only validation or temporary
+                // Sites failure should not prevent an *explicit* historical
+                // image assignment after GitHub verifies ID/revision/text.
+                if [404, 409, 503].contains(code) {
+                    notice = "Servicio privado HTTP " + String(code) +
+                        ". Usando asociación GitHub con identidad exacta…"
+                    try await associateThroughGitHub(png)
                 } else {
-                    notice = "No se confirmó la subida (HTTP \(code): " + (serverError ?? "sin detalle") + "). Imagen conservada."
+                    notice = "No se confirmó la subida (HTTP " + String(code) +
+                        ": " + (serverError ?? "sin detalle") + "). Imagen conservada."
                 }
                 return
             }
@@ -262,7 +283,18 @@ struct ManualEditorialImageSheet: View {
                 path: "/v1/images/" + receipt.id + "/decision", method: "POST", jsonBody: decision)
             let errorCode = ((try? JSONSerialization.jsonObject(with: resultData)) as? [String: Any])?["error"] as? String
             guard resultCode == 200 else {
-                notice = "Imagen recibida en la bandeja, pero aprobación pendiente (HTTP \(resultCode), \(errorCode ?? "sin detalle")). No vuelvas a generar ni subir otra imagen."
+                if [404, 409, 503].contains(resultCode) {
+                    // Keep the original private approval intact; the user's
+                    // deliberate action can additionally associate the same
+                    // raster in GitHub without inventing or regenerating art.
+                    try await associateThroughGitHub(png)
+                    notice += " El servicio privado respondió " + String(resultCode) +
+                        " (" + (errorCode ?? "sin detalle") + ")."
+                } else {
+                    notice = "Imagen recibida en la bandeja, pero aprobación pendiente (HTTP " +
+                        String(resultCode) + ", " + (errorCode ?? "sin detalle") +
+                        "). Se conserva el original."
+                }
                 return
             }
             let publication = try JSONDecoder().decode(Publication.self, from: resultData)

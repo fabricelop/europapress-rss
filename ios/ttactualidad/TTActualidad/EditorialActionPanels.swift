@@ -94,9 +94,11 @@ struct EditorialActions: View {
                 quickButton("Añadir imagen", "photo.on.rectangle.angled") {
                     if github.authenticated { showManualImage = true } else { showSettings = true }
                 }
+                    // Historical and published cards keep their exact
+                    // editorial identity. Leaving Listas is not grounds for
+                    // disabling a manually selected illustration.
                     .disabled(editorialID.isEmpty ||
-                              fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                              !(news?.status == "LISTA" || trend?.inListas == true))
+                              fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
             // Keep recovery/search available without duplicating the primary panel.
             Menu("Más opciones") {

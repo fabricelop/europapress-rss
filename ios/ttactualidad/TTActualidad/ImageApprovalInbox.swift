@@ -92,6 +92,33 @@ private final class ApprovalInboxModel: ObservableObject {
         }
     }
 
+    // The original belongs to an exact historical editorial episode even
+    // after leaving Listas. Preserve the original SHA and use the same
+    // editor-authorized GitHub association as "Añadir imagen" if the existing
+    // private publisher is temporarily unable to complete the decision.
+    private func associateVerifiedOriginalInGitHub(
+        _ item: PendingImage, using github: GitHubEditor
+    ) async throws -> URL {
+        guard item.identity.rasterSHA256.count == 64,
+              item.identity.rasterSHA256.allSatisfy(\.isHexDigit) else {
+            throw InboxError.unexpectedResponse
+        }
+        let (original, result) = try await github.privateImageInboxRequest(
+            path: "/v1/images/\(item.id)/original")
+        guard result == 200,
+              original.count > 24, original.count <= 8_000_000,
+              original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10]),
+              SHA256.hash(data: original).map({ String(format: "%02x", $0) }).joined()
+                == item.identity.rasterSHA256 else {
+            throw InboxError.unexpectedResponse
+        }
+        return try await github.associateManualImageInGitHub(
+            project: item.identity.project,
+            editorialID: item.identity.editorialId,
+            revision: item.identity.revision,
+            editorialText: item.editorialText, png: original)
+    }
+
     func decide(_ item: PendingImage, action: String, using github: GitHubEditor) async {
         guard actionID == nil, ["approve", "reject"].contains(action) else { return }
         guard previews[item.id] != nil else {
@@ -106,8 +133,21 @@ private final class ApprovalInboxModel: ObservableObject {
             let (data, status) = try await github.privateImageInboxRequest(
                 path: "/v1/images/\(item.id)/decision", method: "POST", jsonBody: body)
             if status != 200 {
-                // The same HTTP 503 can mean different things. Surface only a
-                // documented server code, not raw JSON or private response text.
+                // A transient service outage or stale Listas-only rule does
+                // not revoke the editor's explicit choice to illustrate a
+                // historical card. Use its exact original bytes, never the
+                // preview or an unrelated image. Do not claim Sites success.
+                if action == "approve", [404, 409, 503].contains(status) {
+                    let url = try await associateVerifiedOriginalInGitHub(item, using: github)
+                    await SiteAIImageCatalog.invalidateCache()
+                    await NewsAIImageCatalog.invalidateCache()
+                    notice = "Imagen original asociada a la ficha " +
+                        item.identity.editorialId + " en GitHub. " +
+                        "La web aún no ha confirmado la imagen (servicio privado HTTP " +
+                        String(status) + "). La fotografía se conserva."
+                    _ = url
+                    return
+                }
                 let payload = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
                 let code = payload?["error"] as? String ?? payload?["code"] as? String
                 throw InboxError.decisionHTTP(status, code)
