@@ -7,6 +7,13 @@ const main = { text: 'Texto factual + remate', offline: false, removed: false, r
 const editor = async (url, options) => {
   if (url.startsWith('https://api.github.com/repos/fabricelop/europapress-rss/contents/')) {
     if (main.offline) throw Error('offline');
+    if (url.includes('/ttittulares/prepared.json')) {
+      return new Response(JSON.stringify({items:[{
+        event_id:'news-demo',revision:0,status:'ready',
+        factual_summary:'Texto factual de noticia sin tweet.text',
+        tweet:{text:''},
+      }]}),{status:200});
+    }
     if (url.includes('/mobile-decisions.json') || url.includes('/ttittulares/decisions.json')) {
       return new Response(JSON.stringify({items: main.closed ? [
         { id: 'my-trend', revision: main.revision, status: 'deleted', updated_at: main.closedAt },
@@ -321,4 +328,27 @@ test('a terminal decision for a previous episode must not block a newer Listas e
    main.closed=false;
    main.closedAt='';
  }
+});
+
+test('iPhone can upload a news image using the actual fallback text of a READY card', async()=>{
+ const {env}=context();
+ const sha = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',png)),
+  b=>b.toString(16).padStart(2,'0')).join('');
+ const form = new FormData();
+ form.set('image',new Blob([png],{type:'image/png'}),'news.png');
+ form.set('metadata',JSON.stringify({
+   project:'ttittulares',editorialId:'news-demo',revision:0,
+   commandId:'manual-news-1',rasterSHA256:sha,title:'Noticia de prueba',
+   editorialText:'Texto factual de noticia sin tweet.text',
+ }));
+ const upload=await handleRequest(req('/v1/images/manual','POST',form),env,editor);
+ assert.equal(upload.status,201);
+ const body=await upload.json();
+ assert.equal(body.state,'pending');
+ const pending=(await receive(env)).data.items;
+ assert.equal(pending.length,1);
+ const approved=await handleRequest(decision(body.id,pending[0].identity,'approve'),env,editor);
+ assert.equal(approved.status,200);
+ assert.equal((await approved.json()).state,'approved_awaiting_publication');
+ assert.equal(env.DB.rows.get(body.id).published_sites_at,undefined);
 });
