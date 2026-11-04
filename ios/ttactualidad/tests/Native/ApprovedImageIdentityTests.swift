@@ -16,6 +16,26 @@ final class ApprovedImageIdentityTests: XCTestCase {
         XCTAssertNil(SiteAIImageCatalog.resolved(id: "trend-abc", revision: 2,
             explanation: text + ".", explainedAt: image.explained_at, catalog: catalog))
     }
+    @MainActor
+    func testNoApprovalPostAfterFritzWasDeletedWhileImageWasPending() {
+        let records: [[String: Any]] = [[
+            "id": "4d9e4930d09c", "revision": 0, "status": "deleted",
+            "updated_at": "2026-11-04T20:04:12.549166+00:00"
+        ]]
+        XCTAssertTrue(GitHubEditor.imageApprovalBlockedByClosure(
+            project: "ttendencias", editorialID: "4d9e4930d09c", revision: 0,
+            imageCreatedAt: "2026-11-04T19:58:00Z", records: records))
+        XCTAssertFalse(GitHubEditor.imageApprovalBlockedByClosure(
+            project: "ttendencias", editorialID: "another-trend", revision: 0,
+            imageCreatedAt: "2026-11-04T19:58:00Z", records: records))
+        XCTAssertFalse(GitHubEditor.imageApprovalBlockedByClosure(
+            project: "ttendencias", editorialID: "4d9e4930d09c", revision: 1,
+            imageCreatedAt: "2026-11-04T19:58:00Z", records: records))
+        XCTAssertFalse(GitHubEditor.imageApprovalBlockedByClosure(
+            project: "ttendencias", editorialID: "4d9e4930d09c", revision: 0,
+            imageCreatedAt: "2026-11-04T20:20:00Z", records: records))
+    }
+
     func testApprovedNewsRequiresLiteralTextDateAndRevision() {
         var image = NewsAIImageCatalog.Entry(target_id: "news-abc", revision: 1,
             prepared_at: "2026-11-02T12:00:00Z", editorial_text: "Texto exacto",
