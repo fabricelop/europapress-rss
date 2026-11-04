@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793795168410-manual",
-  "previous_run_id": "tr-autoguard-1793794876",
+  "run_id": "tr-1793795405057-manual",
+  "previous_run_id": "tr-1793795168410-manual",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-04T13:28:00+01:00",
-  "updated_at": "2026-11-04T13:30:32+01:00",
+  "phase": "investigating",
+  "started_at": "2026-11-04T13:30:00+01:00",
+  "updated_at": "2026-11-04T13:31:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 2,
+  "current": 0,
+  "total": 1,
   "trend_id": "red-review-b8d627c5d80e055344e1",
   "title": "Revisar novedades: Neuer",
   "queue_complete": false,
-  "processed_ids": [
-    "red-review-14dab1ef473f6def11bd"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "red-review-b8d627c5d80e055344e1"
@@ -27,11 +25,11 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 2,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 1,
@@ -46,19 +44,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo actualización verificada de Neuer r0; fue titular en el 0-2 del Bayern y dejó la portería a cero.",
-  "final_outcomes": [
-    {
-      "id": "red-review-14dab1ef473f6def11bd",
-      "revision": 0,
-      "name": "Revisar novedades: Homicidio",
-      "outcome": "updated",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "93fd9a90a9c2",
-      "created_id": "trend-update-0878cf1db41222190de9"
-    }
-  ],
+  "activity": "Revalidando Neuer r0 y el resultado de mantenimiento existente contra main antes de aplicar.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793791275",
@@ -98,6 +85,6 @@
     "incidents": [],
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-04T13:25:31+01:00",
+  "last_started_at": "2026-11-04T13:30:00+01:00",
   "last_completed_at": "2026-11-04T13:25:32+01:00"
 }
