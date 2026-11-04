@@ -88,8 +88,13 @@ class MaintenanceTests(unittest.TestCase):
         command.update(explanation='TT#30 Adif sigue siendo tendencia por el anuncio de su rueda de prensa.\n#Adif #Trenes',
                        new_facts='Anuncio verificado durante una nueva rueda de prensa')
         state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
-        self.assertEqual(state[g.REQUESTS]['requests'][-2]['review_color'], 'verde')
-        self.assertTrue(state[g.MANUAL]['items'][-1]['continuity_update'])
+        self.assertEqual(state[g.REQUESTS]['requests'][-1]['review_color'], 'verde')
+        self.assertEqual(state[g.REQUESTS]['requests'][-1]['review_outcome'], 'continuity')
+        self.assertEqual(len(state[g.MANUAL]['items']), 1)
+        self.assertEqual(state[g.MANUAL]['items'][0]['id'], 'a')
+        self.assertEqual(state[g.MANUAL]['items'][0]['explanation'], self.row['explanation'])
+        self.assertEqual(state[g.MANUAL]['items'][0]['red_review_outcome'], 'continuity')
+        self.assertFalse(state[g.MANUAL]['items'][0].get('ai_image_status') == 'pending')
 
     def test_manual_rework_precedes_automatic_reviews_of_every_color(self):
         self.colors()
@@ -114,7 +119,9 @@ class MaintenanceTests(unittest.TestCase):
         self.state[g.DECISIONS]['items'] = [dict(id='a', revision=1, status='published', updated_at=self.now.isoformat())]
         command = self.result('updated')
         command.update(explanation='TT#30 Adif sigue siendo tendencia por otro cierre confirmado.\n#Adif #Trenes',
-                       new_facts='Otro cierre confirmado hoy', closer_text='')
+                       new_facts='Otro cierre confirmado hoy', closer_text='',
+                       distinct_episode=True, material_change=True,
+                       significance_reason='Nuevo cierre oficial con consecuencias propias')
         state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
         self.assertEqual(state[g.REQUESTS]['requests'][0]['status'], 'published')
         self.assertEqual(state[g.DECISIONS], self.state[g.DECISIONS])
@@ -158,8 +165,30 @@ class MaintenanceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             m.apply_review(self.state, command, self.now, g.grouping_api())
         command['distinct_episode'] = True
+        continuity, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertEqual(len(continuity[g.MANUAL]['items']), 1)
+        self.assertEqual(continuity[g.REQUESTS]['requests'][-1]['review_outcome'], 'continuity')
+        command['material_change'] = True
+        command['significance_reason'] = 'Acontecimiento nuevo y sustancial comprobado'
         final, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertEqual(len(final[g.MANUAL]['items']), 2)
         self.assertTrue(final[g.MANUAL]['items'][-1]['distinct_episode'])
+
+    def test_same_episode_never_reenters_listas_or_regenerates_image(self):
+        source = self.state[g.MANUAL]['items'][0]
+        source.update(ai_image_status='ready', site_image_url='https://example.org/original.png')
+        command = self.result('updated')
+        command.update(explanation='TT#30 Adif sigue siendo tendencia por nuevas declaraciones.\\n#Adif',
+                       new_facts='Declaraciones recientes verificadas',
+                       material_change=True,
+                       significance_reason='Interés informativo sin episodio independiente')
+        final, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertEqual(len(final[g.MANUAL]['items']), 1)
+        self.assertEqual(final[g.MANUAL]['items'][0]['ai_image_status'], 'ready')
+        self.assertEqual(final[g.MANUAL]['items'][0]['site_image_url'], 'https://example.org/original.png')
+        self.assertEqual(final[g.MANUAL]['items'][0]['explained_at'], self.row['explained_at'])
+        self.assertEqual(len([row for row in final[g.REQUESTS]['requests']
+                              if row.get('with_image') is True]), 0)
 
     def test_new_work_does_not_trigger_automatic_grouping(self):
         fresh = {**self.row, 'id': 'b', 'name': 'Atocha',
