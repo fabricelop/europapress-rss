@@ -3,138 +3,48 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793831645450-manual",
-  "previous_run_id": "tr-1793831198851-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T22:46:33.566Z",
-  "updated_at": "2026-11-04T22:52:55.327Z",
-  "finished_at": "2026-11-04T22:52:55.327Z",
-  "current": 10,
-  "total": 10,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "50405f310f9f",
-    "57f0c287cf42",
-    "3ff255e46d90",
-    "b2f42653f44a",
-    "0b5dfb950ba5",
-    "5d1e26ca2308",
-    "78a1a1dae4e5",
-    "22e68cdf28d2",
-    "952876b01063",
-    "79e580713071"
-  ],
+  "run_id": "tr-1793832842690-manual",
+  "previous_run_id": "tr-1793831645450-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T23:54:00+01:00",
+  "updated_at": "2026-11-04T23:54:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "red-review-d0c5fed8f6da6b9e4c74",
+  "title": "Revisar novedades: Mazón",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-d0c5fed8f6da6b9e4c74"
+  ],
+  "remaining_active_ids": [
+    "red-review-d0c5fed8f6da6b9e4c74"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 10,
-    "observed": 10,
-    "closed": 10,
-    "explained": 10,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 10/10: 10 explicaciones aplicadas. Cola autoritativa 0; sin preparing/update ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones.",
-  "final_outcomes": [
-    {
-      "id": "50405f310f9f",
-      "revision": 0,
-      "name": "#LaIslaDeLasTentaciones17",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "57f0c287cf42",
-      "revision": 0,
-      "name": "mckenna",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "3ff255e46d90",
-      "revision": 0,
-      "name": "#LaRevuelta",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "b2f42653f44a",
-      "revision": 0,
-      "name": "#RevillaEH",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "0b5dfb950ba5",
-      "revision": 0,
-      "name": "Antony",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "5d1e26ca2308",
-      "revision": 0,
-      "name": "Respetuoso",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "cause_unconfirmed": true
-    },
-    {
-      "id": "78a1a1dae4e5",
-      "revision": 0,
-      "name": "Joseph",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "22e68cdf28d2",
-      "revision": 0,
-      "name": "El Como",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "952876b01063",
-      "revision": 0,
-      "name": "Ruibal",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "79e580713071",
-      "revision": 0,
-      "name": "Valles",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    }
-  ],
+  "activity": "Revisando novedades: Mazón (0/1). Validando revisión y buscando cambios materiales verificables.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793831645450-manual",
