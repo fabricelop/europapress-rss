@@ -5,24 +5,30 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793771456",
   "previous_run_id": "tr-autoguard-1793767864",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-04T06:51:00+01:00",
-  "updated_at": "2026-11-04T07:00:00+01:00",
-  "finished_at": "2026-11-04T07:00:00+01:00",
+  "updated_at": "2026-11-04T07:01:00+01:00",
+  "finished_at": null,
   "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 4,
+  "trend_id": "red-review-d5deda707961df25a03d",
+  "title": "Revisar novedades: Homicidio",
+  "queue_complete": false,
   "processed_ids": [
     "36205fe85f09",
     "79f6d0732a24"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-d5deda707961df25a03d",
+    "red-review-bf9a28edb2ac00ffecbb"
+  ],
+  "remaining_active_ids": [
+    "red-review-d5deda707961df25a03d",
+    "red-review-bf9a28edb2ac00ffecbb"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793771456 cerrada 2/2: Democrats r0 y Kansas r0 quedaron explicadas y sincronizadas en requests.json y telegram-manual-explained.json. Barrera observada: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Incidencia recuperada: un intento directo sobre registros grandes falló por transporte h2 sin escritura parcial; ambos resultados se aplicaron por el outbox oficial. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "summary": "Pasada tr-autoguard-1793771456 ampliada a 4 trabajos tras la barrera de las 07:00: Democrats y Kansas cerrados; investigando revisión de Homicidio y después Neuer.",
   "incident_count": 1,
   "incidents": [
     {
@@ -33,7 +39,7 @@
     }
   ],
   "error": null,
-  "activity": "closing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "36205fe85f09",
