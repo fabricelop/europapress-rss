@@ -3,20 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793826700511-manual",
-  "previous_run_id": "tr-1793825173951-manual",
+  "run_id": "tr-1793826849874-manual",
+  "previous_run_id": "tr-1793826700511-manual",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-04T21:15:45.026237+00:00",
-  "updated_at": "2026-11-04T21:15:45.026237+00:00",
+  "phase": "verifying",
+  "started_at": "2026-11-04T22:14:09.874+01:00",
+  "updated_at": "2026-11-04T22:14:09.874+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
+  "current": 1,
+  "total": 2,
+  "trend_id": "red-review-d43cd2d868381779815a",
+  "title": "Revisar novedades: Rudiger",
   "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
+  "processed_ids": [
+    "red-review-21034c7a12c6f8846859"
+  ],
+  "converged_ids": [
+    "red-review-21034c7a12c6f8846859"
+  ],
   "remaining_ids": [
     "red-review-d43cd2d868381779815a"
   ],
@@ -25,12 +29,12 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
+    "attempted": 1,
+    "observed": 2,
+    "closed": 1,
     "explained": 0,
     "updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
@@ -38,14 +42,24 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 1,
     "cause_unconfirmed": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando pasada editorial: 1 revisiones de novedades pendientes; sin ImageGen.",
-  "final_outcomes": [],
+  "activity": "1/2 convergido: Luis Pedro Marco de la Peña quedó unchanged. Verificando aplicación JIT de Rudiger; sin ImageGen.",
+  "final_outcomes": [
+    {
+      "id": "red-review-21034c7a12c6f8846859",
+      "revision": 0,
+      "name": "Revisar novedades: Luis Pedro Marco de la Peña",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "source_id": "168b155c5487"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793824841260-manual",
@@ -133,6 +147,6 @@
     "incidents": [],
     "concurrent_convergence": 2
   },
-  "last_started_at": "2026-11-04T22:13:30+01:00",
+  "last_started_at": "2026-11-04T22:14:09.874+01:00",
   "last_completed_at": "2026-11-04T22:13:31+01:00"
 }
