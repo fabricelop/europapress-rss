@@ -189,6 +189,7 @@ struct EditorialActions: View {
             ManualEditorialImageSheet(github: github, project: project,
                                      editorialID: editorialID, revision: revision,
                                      title: title, editorialText: fullText)
+                .environmentObject(store)
                 .presentationDetents([.large])
         }
         .sheet(isPresented: $showRelations) {
