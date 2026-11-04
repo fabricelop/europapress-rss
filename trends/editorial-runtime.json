@@ -3,11 +3,11 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793832842690-manual",
-  "previous_run_id": "tr-1793831645450-manual",
+  "run_id": "tr-1793832970272-manual",
+  "previous_run_id": "tr-1793832842690-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-04T23:54:00+01:00",
+  "started_at": "2026-11-04T23:56:00+01:00",
   "updated_at": "2026-11-04T22:59:02Z",
   "finished_at": "2026-11-04T22:59:02Z",
   "current": 1,
@@ -43,7 +43,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 1/1: revisión de Mazón aplicada como episodio distinto y nueva ficha trend-update-b0c01b00ed5111b801fe. Barrera final main: editorial-queue=0; sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox creado por esta pasada=0; publicaciones=0.",
+  "activity": "Pasada tr-1793832970272-manual cerrada 1/1 por convergencia JIT: revisión de Mazón aplicada como episodio distinto y nueva ficha trend-update-b0c01b00ed5111b801fe. Barrera final main: editorial-queue=0; sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox creado por esta pasada=0; publicaciones=0.",
   "final_outcomes": [
     {
       "id": "red-review-d0c5fed8f6da6b9e4c74",
@@ -51,7 +51,8 @@
       "name": "Revisar novedades: Mazón",
       "outcome": "updated",
       "applied": true,
-      "via": "maintenance_outbox",
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "df3dc45952ea401af759a003a05ee60d56ab9e28",
       "created_id": "trend-update-b0c01b00ed5111b801fe",
       "distinct_episode": true,
       "converged": true
@@ -59,9 +60,9 @@
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793832842690-manual",
+    "run_id": "tr-1793832970272-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T23:54:00+01:00",
+    "started_at": "2026-11-04T23:56:00+01:00",
     "updated_at": "2026-11-04T22:59:02Z",
     "finished_at": "2026-11-04T22:59:02Z",
     "current": 1,
@@ -78,7 +79,8 @@
         "name": "Revisar novedades: Mazón",
         "outcome": "updated",
         "applied": true,
-        "via": "maintenance_outbox",
+        "via": "concurrent_convergence_jit",
+        "apply_commit": "df3dc45952ea401af759a003a05ee60d56ab9e28",
         "created_id": "trend-update-b0c01b00ed5111b801fe",
         "distinct_episode": true,
         "converged": true
@@ -99,6 +101,6 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-04T23:52:11+01:00",
+  "last_started_at": "2026-11-04T23:56:00+01:00",
   "last_completed_at": "2026-11-04T22:59:02Z"
 }
