@@ -716,3 +716,30 @@ assert 'publication.appVerified == true && publication.sitesVerified == true' in
 assert '"v1/images/manual"' in auth or '"/v1/images/manual"' in auth
 assert '["pending", "existing", "approved_awaiting_publication"].contains(receipt.state)' in manual_sheet
 print("NATIVE_BUILD69_MANUAL_IMAGE_UPLOAD_PREFLIGHT_OK")
+
+# Historical image association: Listas is a workflow queue, not a lifetime
+# image embargo. Both manual selection and explicit approval-failure recovery
+# must validate original bytes against a stable ID and revision.
+manual_button = actions[actions.index('quickButton("Añadir imagen"'):
+                       actions.index('// Keep recovery/search available')]
+assert 'trend?.inListas' not in manual_button
+assert 'news?.status == "LISTA"' not in manual_button
+github_association = auth[auth.index('func associateManualImageInGitHub'):
+                          auth.index('// HTTP 204 is only a transport')]
+assert 'trends/telegram-manual-explained.json' in github_association
+assert 'site-ai-images.json' in github_association
+assert 'generated-images/' in github_association
+assert '48 * 3600' not in github_association
+assert 'trends/mobile-decisions.json' not in github_association
+assert 'originalURL.absoluteString' in github_association
+assert 'No consta ninguna ficha histórica' in github_association
+assert 'associateThroughGitHub(png)' in manual_sheet
+assert '[404, 409, 503].contains(code)' in manual_sheet
+assert '[404, 409, 503].contains(resultCode)' in manual_sheet
+inbox = (root / 'TTActualidad/ImageApprovalInbox.swift').read_text()
+assert 'associateVerifiedOriginalInGitHub' in inbox
+assert 'original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10])' in inbox
+assert 'item.identity.rasterSHA256' in inbox
+assert '[404, 409, 503].contains(status)' in inbox
+assert 'imagen ya no está en Listas' not in inbox.lower()
+print("NATIVE_HISTORIC_MANUAL_IMAGE_AND_APPROVAL_RECOVERY_OK")
