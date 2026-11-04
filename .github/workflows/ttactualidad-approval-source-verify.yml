@@ -1,0 +1,35 @@
+name: TTActualidad approval source consistency (read-only)
+on:
+  push:
+    branches: [diag/ttactualidad-upload-secret-readiness-20261104]
+    paths: ['.github/workflows/ttactualidad-approval-source-verify.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Report schema/lengths only (no editorial texts or secrets)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,collections
+          files=['ttittulares/prepared.json','ttittulares/status.json',
+                 'telegram/editorial-processing.json','trends/telegram-manual-explained.json']
+          for p in files:
+              b=Path(p).read_bytes(); d=json.loads(b); print('SOURCE',p,'BYTES',len(b),'KEYS',list(d)[:25])
+              for k,v in d.items():
+                  if isinstance(v,list):
+                      print('  LIST',k,len(v),'FIRST_KEYS',list(v[0])[:20] if v and isinstance(v[0],dict) else None)
+                  elif isinstance(v,dict):
+                      print('  MAP',k,len(v),'FIRST_KEYS',list(v)[:8])
+              if p.startswith('telegram/'):
+                  for k,v in d.items():
+                      if isinstance(v,list) and v and isinstance(v[0],dict):
+                          count=collections.Counter(str(x.get('status','')) for x in v)
+                          print('  STATUS_COUNTS',k,dict(count))
+          PY
