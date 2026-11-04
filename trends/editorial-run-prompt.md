@@ -112,16 +112,16 @@ Guardar SOLO `trends/maintenance-outbox/<job_id>.json` con uno de estos resultad
 ```
 
 ```json
-{"job_id":"ID_REVISION","outcome":"updated","reason":"Qué cambia respecto a la explicación anterior","new_facts":"Hechos nuevos verificados","distinct_episode":false,"explanation":"TT#3 Nombre sigue siendo tendencia por ...\n#Etiqueta1 #Etiqueta2","closer_text":"","verification_sources":[{"url":"https://FUENTE_REAL_VERIFICADA"}]}
+{"job_id":"ID_REVISION","outcome":"updated","reason":"Qué cambia respecto a la explicación anterior","new_facts":"Hechos nuevos verificados","distinct_episode":false,"material_change":false,"significance_reason":"","explanation":"TT#3 Nombre sigue siendo tendencia por ...\n#Etiqueta1 #Etiqueta2","closer_text":"","verification_sources":[{"url":"https://FUENTE_REAL_VERIFICADA"}]}
 ```
 
 ```json
 {"job_id":"ID_REVISION","outcome":"unverified","reason":"Motivo concreto por el que no se ha podido verificar","verification_sources":[]}
 ```
 
-En continuidad usar «sigue siendo tendencia por…» o «siguen siendo tendencia por…». Si se comprueba un episodio genuinamente distinto (p. ej., otro partido días después), marcar `distinct_episode:true`, explicar la diferencia en `reason/new_facts`, y usar el comienzo ordinario «es tendencia por…». No deducir un episodio nuevo solo de que hayan pasado 48h.
+En continuidad usar «sigue siendo tendencia por…» o «siguen siendo tendencia por…». Si se comprueba un episodio genuinamente distinto (p. ej., otro partido días después), marcar `distinct_episode:true`, explicar la diferencia en `reason/new_facts`, y usar el comienzo ordinario «es tendencia por…». No deducir un episodio nuevo solo de que hayan pasado 48h. Solo asignar `material_change:true` ante un hecho independiente con efecto sustancial y justificación precisa en `significance_reason`; nunca por una variación menor ni por cambio de ID.
 
-El aplicador conserva texto y fecha con `unchanged/unverified`, guardando `red_review_checked_at`, resultado y motivo aparte. Con `updated`, crea una ficha con ID nuevo en Listas y mantiene su ciclo de imágenes independiente de agrupaciones. Una ficha anterior no publicada puede quedar marcada cubierta; una publicada conserva su estado e historial terminal. No incrementar contadores ni dar por publicada una actualización. Ante `review_error`, corregir el mismo resultado. Releer el job `review_completed` y los datos persistidos; no procesar como ready ordinario ni borrar el origen.
+El aplicador conserva texto y fecha con `unchanged/unverified`, guardando `red_review_checked_at`, resultado y motivo aparte. Con `updated` de continuidad (mismo episodio), registra las novedades para seguimiento pero NO crea ficha en Listas, NO cambia explicación/fecha de la original y NO genera imagen. ÚNICAMENTE un acontecimiento genuinamente nuevo y significativo puede entrar de nuevo en Listas: `distinct_episode:true`, `material_change:true`, `significance_reason` concreto y fuentes verificadas; entonces el aplicador crea una ficha nueva con su propio ciclo de imágenes. Si falta alguno de esos tres campos, tratar como continuidad y no generar otra imagen. Un cambio de redacción, orden del Top30, repetición del mismo hecho, nombre o ID no constituye un nuevo episodio. Una ficha anterior no publicada puede quedar marcada cubierta; una publicada conserva su estado e historial terminal. No incrementar contadores ni dar por publicada una actualización. Ante `review_error`, corregir el mismo resultado. Releer el job `review_completed` y los datos persistidos; no procesar como ready ordinario ni borrar el origen.
 
 ## Cierre de la pasada
 
