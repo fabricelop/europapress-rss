@@ -23,6 +23,7 @@ struct ManualEditorialImageSheet: View {
     @State private var working = false
     @State private var notice = ""
     @State private var published = false
+    @State private var githubImageURL: URL?
 
     private struct UploadResult: Decodable {
         let id: String
@@ -95,7 +96,11 @@ struct ManualEditorialImageSheet: View {
                             .foregroundStyle(published ? Color.green : Color.secondary)
                             .accessibilityAddTraits(.updatesFrequently)
                     }
-                    if working { ProgressView("Validando y publicando imagen…") }
+                    if let githubImageURL {
+                        Link("Abrir original guardado en GitHub", destination: githubImageURL)
+                            .font(.footnote)
+                    }
+                    if working { ProgressView("Validando y asociando imagen…") }
                     Button {
                         Task { await submit() }
                     } label: {
@@ -166,6 +171,7 @@ struct ManualEditorialImageSheet: View {
     private func select(_ input: Data) {
         guard !working else { return }
         published = false
+        githubImageURL = nil
         imagePNG = nil
         preview = nil
         guard !input.isEmpty, input.count <= 40_000_000, let image = UIImage(data: input),
@@ -223,9 +229,18 @@ struct ManualEditorialImageSheet: View {
             let serverError = ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?["error"] as? String
             guard code == 200 || code == 201 else {
                 if code == 404 {
-                    // A missing /v1/images/manual endpoint is a deployment gap,
-                    // not proof of a stale Listas card. Keep the chosen PNG.
-                    notice = "El servidor de imágenes todavía no admite subidas manuales (404). La imagen permanece seleccionada. No es un problema demostrado de esta ficha."
+                    // The Sites upload route is missing. The editor's existing
+                    // Contents permission can persist the ORIGINAL image and
+                    // exact assignment without a second server or secret.
+                    // Never claim Sites publication from a GitHub receipt.
+                    notice = "Servidor de imágenes sin subida manual; intentando el circuito GitHub…"
+                    let url = try await github.associateManualImageInGitHub(
+                        project: project, editorialID: editorialID, revision: revision,
+                        editorialText: editorialText, png: png)
+                    githubImageURL = url
+                    await SiteAIImageCatalog.invalidateCache()
+                    await NewsAIImageCatalog.invalidateCache()
+                    notice = "Imagen original guardada y asociada en GitHub. Actualiza la app para verla. Su aparición en la web aún no está confirmada."
                 } else if code == 409 {
                     notice = "La identidad o revisión de la ficha ya no coincide (409: " + (serverError ?? "conflicto") + "). La imagen permanece seleccionada."
                 } else if code == 503 {
