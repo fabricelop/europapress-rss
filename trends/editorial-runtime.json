@@ -5,23 +5,21 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793762482",
   "previous_run_id": "tr-1793760139482-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-04T04:21:30+01:00",
-  "updated_at": "2026-11-04T04:26:00+01:00",
+  "updated_at": "2026-11-04T04:26:09+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "4b95ce627201",
   "title": "Texas",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-2cab33b04eb24ae416c7"
-  ],
-  "remaining_ids": [],
-  "remaining_active_ids": [
     "4b95ce627201"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": "Pasada manual cerrada 1/1 por convergencia JIT: Renfe r0 quedó review_completed sin reescritura porque había salido del Top 30 fresco; cola final 0 y sin rewrite_pending/reexplain.",
   "incident_count": 0,
@@ -41,8 +39,8 @@
     }
   ],
   "api_failover_enabled": false,
-  "last_started_at": "2026-11-04T03:43:00+01:00",
-  "last_completed_at": "2026-11-04T03:45:00+01:00",
+  "last_started_at": "2026-11-04T04:26:09+01:00",
+  "last_completed_at": "2026-11-04T04:26:09+01:00",
   "last_run": {
     "run_id": "tr-1793760139482-manual",
     "status": "DONE",
