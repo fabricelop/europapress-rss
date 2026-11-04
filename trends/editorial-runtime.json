@@ -5,106 +5,278 @@
   "canonical": true,
   "run_id": "tr-1793831198851-manual",
   "previous_run_id": "tr-1793826849874-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T23:26:38.851+01:00",
   "updated_at": "2026-11-04T23:33:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "finished_at": "2026-11-04T23:33:30+01:00",
+  "current": 12,
   "total": 12,
-  "trend_id": "5ab9dcfe817e",
-  "title": "Jarabe",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "5ab9dcfe817e",
+    "b1b63c043492",
+    "c1cb2896ffe2",
+    "dd91a0df9119",
+    "4317a99a9cea",
+    "fcf2255228b8",
     "09b82b1c8ab2",
+    "d4a2fa3f6989",
     "6fc1b878bf91",
     "78c973bfa2ad",
-    "d05d7faf3901",
-    "d4a2fa3f6989",
-    "e2778471ffa7"
+    "e2778471ffa7",
+    "d05d7faf3901"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 12,
     "observed": 12,
-    "closed": 0,
-    "explained": 0,
+    "closed": 12,
+    "explained": 12,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 12,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0,
-    "cause_unconfirmed": 0
+    "cause_unconfirmed": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo lote editorial 0/12; validación JIT individual previa a cada resultado. Sin ImageGen.",
+  "activity": "Pasada cerrada 12/12. Todos los preparing/update aplicados; cola autoritativa y reexplicaciones pendientes: 0. Jarabe y #DesterrarLaMonarquía cerrados con causa no confirmada. Sin ImageGen, image-outbox ni publicaciones.",
   "final_outcomes": [
     {
-      "id": "red-review-21034c7a12c6f8846859",
+      "id": "5ab9dcfe817e",
       "revision": 0,
-      "name": "Revisar novedades: Luis Pedro Marco de la Peña",
-      "outcome": "unchanged",
+      "name": "Jarabe",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "168b155c5487"
+      "via": "editorial_outbox",
+      "cause_unconfirmed": true
     },
     {
-      "id": "red-review-d43cd2d868381779815a",
+      "id": "b1b63c043492",
       "revision": 0,
-      "name": "Revisar novedades: Rudiger",
-      "outcome": "continuity",
+      "name": "#FirstDates4N",
+      "outcome": "explained",
       "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "ee213c47d89f",
-      "distinct_episode": false,
-      "material_change": false
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "c1cb2896ffe2",
+      "revision": 0,
+      "name": "Valentín",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "dd91a0df9119",
+      "revision": 0,
+      "name": "Abalde",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "4317a99a9cea",
+      "revision": 0,
+      "name": "Lens",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "fcf2255228b8",
+      "revision": 0,
+      "name": "#DesterrarLaMonarquía",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "cause_unconfirmed": true
+    },
+    {
+      "id": "09b82b1c8ab2",
+      "revision": 0,
+      "name": "El AEK",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "d4a2fa3f6989",
+      "revision": 1,
+      "name": "Champions",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "6fc1b878bf91",
+      "revision": 0,
+      "name": "Bernardo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "78c973bfa2ad",
+      "revision": 0,
+      "name": "Dortmund",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "e2778471ffa7",
+      "revision": 0,
+      "name": "Nico Paz",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "d05d7faf3901",
+      "revision": 0,
+      "name": "Betis",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793826849874-manual",
+    "run_id": "tr-1793831198851-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T22:14:09.874+01:00",
-    "updated_at": "2026-11-04T21:20:31.354Z",
-    "finished_at": "2026-11-04T21:20:31.354Z",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-04T23:26:38.851+01:00",
+    "updated_at": "2026-11-04T23:33:30+01:00",
+    "finished_at": "2026-11-04T23:33:30+01:00",
+    "current": 12,
+    "total": 12,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-21034c7a12c6f8846859",
-      "red-review-d43cd2d868381779815a"
+      "5ab9dcfe817e",
+      "b1b63c043492",
+      "c1cb2896ffe2",
+      "dd91a0df9119",
+      "4317a99a9cea",
+      "fcf2255228b8",
+      "09b82b1c8ab2",
+      "d4a2fa3f6989",
+      "6fc1b878bf91",
+      "78c973bfa2ad",
+      "e2778471ffa7",
+      "d05d7faf3901"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-21034c7a12c6f8846859",
+        "id": "5ab9dcfe817e",
         "revision": 0,
-        "name": "Revisar novedades: Luis Pedro Marco de la Peña",
-        "outcome": "unchanged",
+        "name": "Jarabe",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox",
-        "source_id": "168b155c5487"
+        "via": "editorial_outbox",
+        "cause_unconfirmed": true
       },
       {
-        "id": "red-review-d43cd2d868381779815a",
+        "id": "b1b63c043492",
         "revision": 0,
-        "name": "Revisar novedades: Rudiger",
-        "outcome": "continuity",
+        "name": "#FirstDates4N",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox",
-        "source_id": "ee213c47d89f",
-        "distinct_episode": false,
-        "material_change": false
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "c1cb2896ffe2",
+        "revision": 0,
+        "name": "Valentín",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "dd91a0df9119",
+        "revision": 0,
+        "name": "Abalde",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "4317a99a9cea",
+        "revision": 0,
+        "name": "Lens",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "fcf2255228b8",
+        "revision": 0,
+        "name": "#DesterrarLaMonarquía",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "cause_unconfirmed": true
+      },
+      {
+        "id": "09b82b1c8ab2",
+        "revision": 0,
+        "name": "El AEK",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "d4a2fa3f6989",
+        "revision": 1,
+        "name": "Champions",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "6fc1b878bf91",
+        "revision": 0,
+        "name": "Bernardo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "78c973bfa2ad",
+        "revision": 0,
+        "name": "Dortmund",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "e2778471ffa7",
+        "revision": 0,
+        "name": "Nico Paz",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
+      },
+      {
+        "id": "d05d7faf3901",
+        "revision": 0,
+        "name": "Betis",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox"
       }
     ],
     "imagegen_calls": 0,
@@ -112,8 +284,8 @@
     "publications": 0,
     "incident_count": 0,
     "incidents": [],
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-04T23:33:29+01:00",
+  "last_started_at": "2026-11-04T23:26:38.851+01:00",
   "last_completed_at": "2026-11-04T23:33:30+01:00"
 }
