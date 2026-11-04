@@ -37,7 +37,7 @@ jobs:
           s=Path('/tmp/tt-next-bundle.js').read_text(errors='replace')
           print('PUBLIC_BUNDLE_BYTES',len(s))
           html=Path('/tmp/tt-site.html').read_text(errors='replace')
-          links=list(dict.fromkeys(re.findall(r'/_next/static/chunks/[A-Za-z0-9_.-]+\\.js',html)))
+          links=list(dict.fromkeys(re.findall(r'/_next/static/chunks/[A-Za-z0-9_.-]+\.js',html)))
           print('PUBLIC_NEXT_JS_CHUNK_COUNT',len(links))
           for p in links[:55]:print('PUBLIC_NEXT_JS_CHUNK',p)
           for term in ('raw.githubusercontent.com','catalog_recorded','image_url',
