@@ -5,33 +5,90 @@
   "canonical": true,
   "run_id": "tr-1793773174643-manual",
   "previous_run_id": "tr-1793772919498-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T07:20:00+01:00",
-  "updated_at": "2026-11-04T07:20:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-04T07:23:30+01:00",
+  "finished_at": "2026-11-04T07:23:30+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-394db58b9e2505d09a24",
     "red-review-b1371b0af49362c69744"
   ],
-  "remaining_active_ids": [
-    "red-review-394db58b9e2505d09a24",
-    "red-review-b1371b0af49362c69744"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "0/2. Revisando novedades: Óscar Puente y Mazón. ImageGen desactivado en esta pasada.",
+  "summary": "2/2 cerrados: Óscar Puente y Mazón actualizados por continuidad. Barrera final en main: editorial-queue=0; sin preparing/update ni reexplicación pendiente. ImageGen=0; publicaciones=0.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "red-review-394db58b9e2505d09a24",
+      "revision": 0,
+      "name": "Revisar novedades: Óscar Puente",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-632ee65434ba0ce38dcd",
+      "apply_commit": "364f06e5c1711ea3287133232bc838f6f3cd9f1d",
+      "reason": "Novedad material de continuidad: dimisión como ministro de Transportes y renuncia a las listas del PSOE para el 29-N."
+    },
+    {
+      "id": "red-review-b1371b0af49362c69744",
+      "revision": 0,
+      "name": "Revisar novedades: Mazón",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-d0c09aee200ef9d712b1",
+      "apply_commit": "ae93185ce677f5d82e36ccc742ac20eab088d58d",
+      "reason": "Novedad material de continuidad: primer aniversario de su dimisión, mantiene el escaño y hay nuevas peticiones para que deje el acta."
+    }
+  ],
   "last_started_at": "2026-11-04T07:20:00+01:00",
-  "last_completed_at": "2026-11-04T07:18:50+01:00",
-  "api_failover_enabled": false
+  "last_completed_at": "2026-11-04T07:23:30+01:00",
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793773174643-manual",
+    "status": "DONE",
+    "started_at": "2026-11-04T07:20:00+01:00",
+    "updated_at": "2026-11-04T07:23:30+01:00",
+    "finished_at": "2026-11-04T07:23:30+01:00",
+    "current": 2,
+    "total": 2,
+    "queue_complete": true,
+    "processed_ids": [
+      "red-review-394db58b9e2505d09a24",
+      "red-review-b1371b0af49362c69744"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "red-review-394db58b9e2505d09a24",
+        "revision": 0,
+        "name": "Revisar novedades: Óscar Puente",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-632ee65434ba0ce38dcd",
+        "apply_commit": "364f06e5c1711ea3287133232bc838f6f3cd9f1d",
+        "reason": "Novedad material de continuidad: dimisión como ministro de Transportes y renuncia a las listas del PSOE para el 29-N."
+      },
+      {
+        "id": "red-review-b1371b0af49362c69744",
+        "revision": 0,
+        "name": "Revisar novedades: Mazón",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-d0c09aee200ef9d712b1",
+        "apply_commit": "ae93185ce677f5d82e36ccc742ac20eab088d58d",
+        "reason": "Novedad material de continuidad: primer aniversario de su dimisión, mantiene el escaño y hay nuevas peticiones para que deje el acta."
+      }
+    ],
+    "imagegen_calls": 0,
+    "publications": 0
+  }
 }
