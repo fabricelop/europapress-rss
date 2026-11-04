@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793771456",
   "previous_run_id": "tr-autoguard-1793767864",
-  "status": "waiting",
+  "status": "RUNNING",
   "phase": "preparing",
   "started_at": "2026-11-04T06:51:00+01:00",
-  "updated_at": "2026-11-04T06:57:28+01:00",
+  "updated_at": "2026-11-04T06:58:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "36205fe85f09",
-  "title": "Democrats",
+  "trend_id": "79f6d0732a24",
+  "title": "Kansas",
   "queue_complete": false,
   "processed_ids": [
     "36205fe85f09"
@@ -25,12 +25,27 @@
     "79f6d0732a24"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793771456 iniciada 0/2. Revalidando Democrats r0 antes de investigar; Kansas r0 queda detrás por el mismo requested_at y orden de cola. ImageGen desactivado en esta pasada.",
-  "incident_count": 0,
-  "incidents": [],
+  "summary": "Pasada tr-autoguard-1793771456 1/2: Democrats r0 aplicado y verificado en ambos registros. Revalidando Kansas r0 antes de persistir. Un intento directo previo de escritura grande falló por transporte sin cambios parciales; se recuperó mediante el outbox oficial.",
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "36205fe85f09",
+      "revision": 0,
+      "type": "direct_persist_transport_retry",
+      "message": "La escritura directa de los registros grandes falló por error h2; la relectura confirmó ausencia de cambios parciales y el resultado se aplicó después mediante el outbox oficial."
+    }
+  ],
   "error": null,
   "activity": "preparing",
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "36205fe85f09",
+      "revision": 0,
+      "name": "Democrats",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
   "last_started_at": "2026-11-04T06:57:27+01:00",
   "last_completed_at": null,
   "api_failover_enabled": false
