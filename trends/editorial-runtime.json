@@ -3,27 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793757592011-manual",
-  "previous_run_id": "tr-1793757410178-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-04T02:01:00.000Z",
-  "updated_at": "2026-11-04T02:02:30.000Z",
-  "finished_at": "2026-11-04T02:02:30.000Z",
+  "run_id": "tr-autoguard-1793759477",
+  "previous_run_id": "tr-1793757592011-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T03:32:00+01:00",
+  "updated_at": "2026-11-04T03:32:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "8e9e26c2ef86",
+  "title": "Florida",
+  "queue_complete": false,
   "processed_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "8e9e26c2ef86",
+    "6ee4aa423d88",
+    "5f0d0b18df81"
+  ],
+  "remaining_active_ids": [
+    "8e9e26c2ef86",
+    "6ee4aa423d88",
+    "5f0d0b18df81"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-1793757592011-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Rufián ya había quedado review_completed/updated en la pasada inmediatamente anterior y no se duplicó. ImageGen=0; publicaciones=0.",
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_started_at": "2026-11-04T02:01:00.000Z",
@@ -40,7 +48,7 @@
     "summary": "Pasada tr-1793757592011-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Rufián ya había quedado review_completed/updated en la pasada inmediatamente anterior y no se duplicó. ImageGen=0; publicaciones=0."
   },
   "source": "chat",
-  "message": "Pasada tr-1793757592011-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Rufián ya había quedado review_completed/updated en la pasada inmediatamente anterior y no se duplicó. ImageGen=0; publicaciones=0.",
+  "message": "Inicio tr-autoguard-1793759477: 3 investigaciones preparing vigentes en main (Florida r0, Rocio Carrasco r0 y #Midterms2026 r0), por antigüedad y con validación JIT; sin ImageGen ni publicación.",
   "events": [
     {
       "at": "2026-11-01T16:35:20.382Z",
@@ -4389,6 +4397,17 @@
       "current": 0,
       "total": 0,
       "message": "Pasada tr-1793757592011-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Rufián ya había quedado review_completed/updated en la pasada inmediatamente anterior y no se duplicó. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:32:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 3,
+      "trend_id": "8e9e26c2ef86",
+      "title": "Florida",
+      "message": "Inicio tr-autoguard-1793759477: 3 investigaciones preparing vigentes en main (Florida r0, Rocio Carrasco r0 y #Midterms2026 r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "history": [
@@ -7175,6 +7194,17 @@
       "trend_id": "e573493d55f2",
       "title": "#ChampionsLeague",
       "message": "Inicio de pasada manual: 2 preparing/update vigentes en main (#ChampionsLeague r1 y Metropolitano r1), por antigüedad y con validación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-04T03:32:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 3,
+      "trend_id": "8e9e26c2ef86",
+      "title": "Florida",
+      "message": "Inicio tr-autoguard-1793759477: 3 investigaciones preparing vigentes en main (Florida r0, Rocio Carrasco r0 y #Midterms2026 r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "partial": false,
@@ -7192,8 +7222,8 @@
       "created_id": "trend-update-35c47da02d21c05a1e59"
     }
   ],
-  "current_item": "a3e01c595b24",
-  "current_title": "#TierraDeNadie8",
+  "current_item": "8e9e26c2ef86",
+  "current_title": "Florida",
   "completed_runs": [
     {
       "run_id": "tr-1793549768380-manual",
@@ -9906,8 +9936,8 @@
       "summary": "Pasada 2/2 completada: Cristina Fernández Cubas review_red r0 unchanged; Pepa Millán review_red r0 updated como continuidad en trend-update-14b8db0da15fd78b3b85. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "command_id": "tr-1793746489773-manual",
-  "requested_at": "2026-11-04T00:06:00+01:00",
+  "command_id": "tr-autoguard-1793759477",
+  "requested_at": "2026-11-04T03:32:00+01:00",
   "runs": [
     {
       "run_id": "tr-autoguard-1793650268",
@@ -12328,6 +12358,17 @@
       "current": 0,
       "total": 5,
       "message": "Pasada tr-autoguard-1793740699 NO cerrada: 5/5 revisiones investigadas y redactadas, pero 0/5 cerradas autoritativamente porque requests.json continúa en preparing y editorial-queue mantiene las cinco revisiones. Listas/prepared contienen los textos; transporte de reconciliación pendiente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-04T03:32:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-autoguard-1793759477",
+      "status": "RUNNING",
+      "current": 0,
+      "total": 3,
+      "trend_id": "8e9e26c2ef86",
+      "title": "Florida",
+      "message": "Inicio tr-autoguard-1793759477: 3 investigaciones preparing vigentes en main (Florida r0, Rocio Carrasco r0 y #Midterms2026 r0), por antigüedad y con validación JIT; sin ImageGen ni publicación."
     }
   ],
   "converged_run_ids": [
