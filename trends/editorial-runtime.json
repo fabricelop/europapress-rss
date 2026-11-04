@@ -3,49 +3,56 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793789874359-manual",
+  "run_id": "tr-autoguard-1793789480",
   "previous_run_id": "tr-autoguard-1793789480",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-04T11:58:30+01:00",
-  "updated_at": "2026-11-04T12:03:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-1ffb87ac2705eb896f12",
-  "title": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
-  "queue_complete": false,
-  "processed_ids": [],
+  "updated_at": "2026-11-04T12:07:00+01:00",
+  "finished_at": "2026-11-04T12:07:00+01:00",
+  "current": 5,
+  "total": 5,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "8201536739ef",
+    "e50cfc4cf460",
+    "31bb72a668f9",
+    "red-review-1ffb87ac2705eb896f12",
+    "red-review-4f0cf42706fd610a89d5"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-1ffb87ac2705eb896f12",
-    "red-review-4f0cf42706fd610a89d5"
-  ],
-  "remaining_active_ids": [
-    "red-review-1ffb87ac2705eb896f12",
-    "red-review-4f0cf42706fd610a89d5"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
-    "updates": 0,
-    "unchanged_reviews": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
+    "updates": 1,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 1,
+    "concurrent_convergence": 0,
+    "cause_unconfirmed": 1
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "fallback_persistence_transport",
+      "resolved": true,
+      "message": "Un intento manual de respaldo para persistir JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; el mismo outbox fue reactivado y el aplicador lo persistió correctamente."
+    }
+  ],
   "error": null,
-  "activity": "Persistiendo revisión de novedades de Urda; ficha histórica agrupada, sin crear nueva agrupación.",
+  "activity": "Pasada textual cerrada 5/5: tres explicaciones iniciales, revisión de Urda conservada sin cambios por ser agrupación histórica y actualización de Mazón aplicada como trend-update-c8a3e672eb32862fd364. Sin ImageGen, image-outbox ni publicaciones.",
   "final_outcomes": [
     {
       "id": "8201536739ef",
@@ -67,22 +74,40 @@
       "name": "JJ Gabriel",
       "outcome": "explained",
       "applied": true
+    },
+    {
+      "id": "red-review-1ffb87ac2705eb896f12",
+      "revision": 0,
+      "name": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
+      "outcome": "unchanged",
+      "applied": true,
+      "reason": "Ficha fuente histórica agrupada; el contrato vigente conserva su texto y fecha y evita crear una nueva ficha conjunta."
+    },
+    {
+      "id": "red-review-4f0cf42706fd610a89d5",
+      "revision": 0,
+      "name": "Revisar novedades: Mazón",
+      "outcome": "updated",
+      "applied": true,
+      "created_id": "trend-update-c8a3e672eb32862fd364"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793789480",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-04T11:52:00+01:00",
-    "updated_at": "2026-11-04T12:02:00+01:00",
-    "finished_at": "2026-11-04T12:02:00+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-11-04T11:58:30+01:00",
+    "updated_at": "2026-11-04T12:07:00+01:00",
+    "finished_at": "2026-11-04T12:07:00+01:00",
+    "current": 5,
+    "total": 5,
     "queue_complete": true,
     "processed_ids": [
       "8201536739ef",
       "e50cfc4cf460",
-      "31bb72a668f9"
+      "31bb72a668f9",
+      "red-review-1ffb87ac2705eb896f12",
+      "red-review-4f0cf42706fd610a89d5"
     ],
     "converged_ids": [],
     "remaining_active_ids": [],
@@ -107,6 +132,22 @@
         "name": "JJ Gabriel",
         "outcome": "explained",
         "applied": true
+      },
+      {
+        "id": "red-review-1ffb87ac2705eb896f12",
+        "revision": 0,
+        "name": "Revisar novedades: Accidente de Urda · consecuencias, comparecencia y corte Madrid-Andalucía",
+        "outcome": "unchanged",
+        "applied": true,
+        "reason": "Ficha fuente histórica agrupada; el contrato vigente conserva su texto y fecha y evita crear una nueva ficha conjunta."
+      },
+      {
+        "id": "red-review-4f0cf42706fd610a89d5",
+        "revision": 0,
+        "name": "Revisar novedades: Mazón",
+        "outcome": "updated",
+        "applied": true,
+        "created_id": "trend-update-c8a3e672eb32862fd364"
       }
     ],
     "imagegen_calls": 0,
@@ -117,11 +158,11 @@
       {
         "type": "fallback_persistence_transport",
         "resolved": true,
-        "message": "El intento de persistencia atómica manual de respaldo para JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; se reactivó el outbox de la misma revisión y el aplicador lo persistió correctamente."
+        "message": "Un intento manual de respaldo para persistir JJ Gabriel falló por un error HTTP/2 antes de confirmar commit; el mismo outbox fue reactivado y el aplicador lo persistió correctamente."
       }
     ],
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-04T11:56:50+01:00",
-  "last_completed_at": "2026-11-04T12:02:00+01:00"
+  "last_completed_at": "2026-11-04T12:07:00+01:00"
 }
