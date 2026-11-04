@@ -5,23 +5,24 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793771456",
   "previous_run_id": "tr-autoguard-1793767864",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-04T06:51:00+01:00",
-  "updated_at": "2026-11-04T06:59:39+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-04T07:00:00+01:00",
+  "finished_at": "2026-11-04T07:00:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "79f6d0732a24",
-  "title": "Kansas",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "36205fe85f09",
     "79f6d0732a24"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada tr-autoguard-1793771456 1/2: Democrats r0 aplicado y verificado en ambos registros. Revalidando Kansas r0 antes de persistir. Un intento directo previo de escritura grande falló por transporte sin cambios parciales; se recuperó mediante el outbox oficial.",
+  "summary": "Pasada tr-autoguard-1793771456 cerrada 2/2: Democrats r0 y Kansas r0 quedaron explicadas y sincronizadas en requests.json y telegram-manual-explained.json. Barrera observada: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Incidencia recuperada: un intento directo sobre registros grandes falló por transporte h2 sin escritura parcial; ambos resultados se aplicaron por el outbox oficial. ImageGen=0; image-outbox=0; publicaciones=0.",
   "incident_count": 1,
   "incidents": [
     {
@@ -32,14 +33,23 @@
     }
   ],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "36205fe85f09",
       "revision": 0,
       "name": "Democrats",
       "outcome": "explained",
-      "applied": true
+      "applied": true,
+      "explained_at": "2026-11-04T06:56:00+01:00"
+    },
+    {
+      "id": "79f6d0732a24",
+      "revision": 0,
+      "name": "Kansas",
+      "outcome": "explained",
+      "applied": true,
+      "explained_at": "2026-11-04T06:59:00+01:00"
     }
   ],
   "last_started_at": "2026-11-04T06:59:39+01:00",
