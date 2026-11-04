@@ -5,30 +5,23 @@
   "canonical": true,
   "run_id": "tr-1793824841260-manual",
   "previous_run_id": "tr-1793824800000-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-04T21:41:00+01:00",
-  "updated_at": "2026-11-04T21:44:00+01:00",
+  "updated_at": "2026-11-04T21:45:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": "cd58e4b34464",
   "title": "Rudiger",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "4bea3ac923fc",
+    "cd58e4b34464"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "cd58e4b34464",
-    "4bea3ac923fc",
-    "red-review-1fcaec879264e3f452b2",
-    "red-review-9232d8c2711a79792a08"
-  ],
-  "remaining_active_ids": [
-    "cd58e4b34464",
-    "4bea3ac923fc",
-    "red-review-1fcaec879264e3f452b2",
-    "red-review-9232d8c2711a79792a08"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -130,6 +123,6 @@
     "incidents": [],
     "concurrent_convergence": 8
   },
-  "last_started_at": "2026-11-04T21:40:00+01:00",
-  "last_completed_at": "2026-11-04T21:27:00+01:00"
+  "last_started_at": "2026-11-04T21:44:59+01:00",
+  "last_completed_at": "2026-11-04T21:45:00+01:00"
 }
