@@ -56779,14 +56779,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://img.asmedia.epimg.net/resizer/v2/UUA33LSH5BG2BH7HGNBLKF4RHU.jpeg?auth=b222de344de0072fee312d93bc3e612aaf3ec6a17f4c199eac9d1cd70b67b1be&width=1472&height=828&focal=728%2C731",
+        "source": "as.com",
+        "source_url": "https://as.com/futbol/champions/clasificacion-de-fase-liga-de-la-champions-league-2026202-jornada-4-f202611-n/?outputType=amp",
+        "alt": "Imagen de archivo relacionada con Champions League",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.asmedia.epimg.net/resizer/v2/UUA33LSH5BG2BH7HGNBLKF4RHU.jpeg?auth=b222de344de0072fee312d93bc3e612aaf3ec6a17f4c199eac9d1cd70b67b1be&width=1472&height=828&focal=728%2C731",
+        "source": "as.com",
+        "source_url": "https://as.com/futbol/champions/clasificacion-de-fase-liga-de-la-champions-league-2026202-jornada-4-f202611-n/?outputType=amp",
+        "alt": "Imagen de archivo relacionada con Champions League",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "4e9acefb18e1",
@@ -56971,6 +56986,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-11-04T00:49:21.443812Z",
+  "updated_at": "2026-11-04T00:55:17.109998Z",
   "count": 933
 }
