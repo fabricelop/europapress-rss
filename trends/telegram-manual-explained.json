@@ -57760,10 +57760,30 @@
       "distinct_episode": false,
       "new_facts": "La apertura formal de la investigación policial/judicial posterior al texto original sustituye el mero debate hipotético por una actuación oficial; no implica imputación ni confirma responsabilidad penal.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.elfinanciero.com.mx/resizer/v2/RHH6BKGMCVFUPN5DXZAJJAFUJI.jpeg?smart=true&auth=0f92eedb8fde359ee3960fb6ff1a9b8614ef967298d7ee9f7bb88f68fe708faa&width=1200&height=630",
+        "source": "www.elfinanciero.com.mx",
+        "source_url": "https://www.elfinanciero.com.mx/deportes/2026/11/03/policia-investiga-muerte-jesus-de-miguel-tras-incidente-con-jesus-owono/",
+        "alt": "Imagen de archivo relacionada con Homicidio",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://www.elfinanciero.com.mx/resizer/v2/RHH6BKGMCVFUPN5DXZAJJAFUJI.jpeg?smart=true&auth=0f92eedb8fde359ee3960fb6ff1a9b8614ef967298d7ee9f7bb88f68fe708faa&width=1200&height=630",
+        "source": "www.elfinanciero.com.mx",
+        "source_url": "https://www.elfinanciero.com.mx/deportes/2026/11/03/policia-investiga-muerte-jesus-de-miguel-tras-incidente-con-jesus-owono/",
+        "alt": "Imagen de archivo relacionada con Homicidio",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "trend-update-9538d0264c37e932e4b7",
@@ -57793,12 +57813,17 @@
       "distinct_episode": false,
       "new_facts": "Neuer regresó al once del Bayern en el Metropolitano; el club confirma que disputó su 164.º partido de Champions y alcanzó su 63.ª portería a cero en la competición.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-04T06:02:47.610291+00:00",
+  "updated_at": "2026-11-04T06:03:27.110245Z",
   "count": 948
 }
