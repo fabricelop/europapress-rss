@@ -3,129 +3,51 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793775423346-manual",
-  "previous_run_id": "tr-autoguard-1793775064",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "completed",
-  "started_at": "2026-11-04T06:59:30.493Z",
-  "updated_at": "2026-11-04T07:15:32.625Z",
-  "finished_at": "2026-11-04T07:15:32.625Z",
-  "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-3f3b500b747421ce2841",
-    "red-review-a033fd697c62d425d154",
-    "0dd022f9becc"
+  "run_id": "tr-autoguard-1793778663",
+  "previous_run_id": "tr-1793775423346-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-04T08:51:00+01:00",
+  "updated_at": "2026-11-04T08:51:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 4,
+  "trend_id": "cf9b8586b6d4",
+  "title": "Aplicatelo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "remaining_ids": [
+    "cf9b8586b6d4",
+    "20d1a5eb0b1a",
+    "a6d7b6ed262e",
+    "002f38cb74fe"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "cf9b8586b6d4",
+    "20d1a5eb0b1a",
+    "a6d7b6ed262e",
+    "002f38cb74fe"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual cerrada 3/3: Chiqui y Gracias Ministro actualizados; EEUU explicado al entrar durante la ejecución. Cola final 0 y sin reexplicaciones pendientes. La brecha de persistencia de Chiqui fue reparada.",
-  "incident_count": 1,
-  "incidents": [
-    {
-      "code": "review_apply_gap_repaired",
-      "id": "red-review-3f3b500b747421ce2841",
-      "revision": 0,
-      "detail": "El maintenance-outbox de Chiqui era válido, pero el primer aplicador retiró el job sin crear trend-update-d8b0b437dd21171dc217. Se reparó la persistencia en requests.json y telegram-manual-explained.json y se eliminaron los workflows temporales de reparación."
-    }
-  ],
+  "summary": "Pasada editorial en curso: 0/4. Revalidando e investigando Aplicatelo.",
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "completed",
-  "final_outcomes": [
-    {
-      "id": "red-review-3f3b500b747421ce2841",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
-      "outcome": "updated",
-      "applied": true,
-      "via": "maintenance_outbox_repaired",
-      "result_id": "trend-update-d8b0b437dd21171dc217",
-      "reason": "Nueva ronda material de Supervivientes All Stars; la aplicación inicial retiró el job sin materializar la nueva ficha y fue reconciliada de forma idempotente."
-    },
-    {
-      "id": "red-review-a033fd697c62d425d154",
-      "revision": 0,
-      "name": "Revisar novedades: Gracias Ministro",
-      "outcome": "updated",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "result_id": "trend-update-78a70eaaf1fa5437d5cf",
-      "reason": "La dimisión de Óscar Puente y su renuncia a las listas del 29-N generaron nuevos mensajes de agradecimiento."
-    },
-    {
-      "id": "0dd022f9becc",
-      "revision": 0,
-      "name": "EEUU",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "reason": "Entrada nueva del Top 30 explicada por el vuelco de las midterms y el control demócrata de Senado y Cámara."
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793775423346-manual",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-04T06:59:30.493Z",
-    "updated_at": "2026-11-04T07:15:32.625Z",
     "finished_at": "2026-11-04T07:15:32.625Z",
     "current": 3,
     "total": 3,
     "queue_complete": true,
-    "processed_ids": [
-      "red-review-3f3b500b747421ce2841",
-      "red-review-a033fd697c62d425d154",
-      "0dd022f9becc"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-3f3b500b747421ce2841",
-        "revision": 0,
-        "name": "Revisar novedades: Chiqui",
-        "outcome": "updated",
-        "applied": true,
-        "via": "maintenance_outbox_repaired",
-        "result_id": "trend-update-d8b0b437dd21171dc217",
-        "reason": "Nueva ronda material de Supervivientes All Stars; la aplicación inicial retiró el job sin materializar la nueva ficha y fue reconciliada de forma idempotente."
-      },
-      {
-        "id": "red-review-a033fd697c62d425d154",
-        "revision": 0,
-        "name": "Revisar novedades: Gracias Ministro",
-        "outcome": "updated",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "result_id": "trend-update-78a70eaaf1fa5437d5cf",
-        "reason": "La dimisión de Óscar Puente y su renuncia a las listas del 29-N generaron nuevos mensajes de agradecimiento."
-      },
-      {
-        "id": "0dd022f9becc",
-        "revision": 0,
-        "name": "EEUU",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "reason": "Entrada nueva del Top 30 explicada por el vuelco de las midterms y el control demócrata de Senado y Cámara."
-      }
-    ],
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incident_count": 1,
-    "incidents": [
-      {
-        "code": "review_apply_gap_repaired",
-        "id": "red-review-3f3b500b747421ce2841",
-        "revision": 0,
-        "detail": "El maintenance-outbox de Chiqui era válido, pero el primer aplicador retiró el job sin crear trend-update-d8b0b437dd21171dc217. Se reparó la persistencia en requests.json y telegram-manual-explained.json y se eliminaron los workflows temporales de reparación."
-      }
-    ]
+    "incident_count": 1
   },
-  "last_started_at": "2026-11-04T06:59:30.493Z",
+  "last_started_at": "2026-11-04T08:51:00+01:00",
   "last_completed_at": "2026-11-04T07:15:32.625Z"
 }
