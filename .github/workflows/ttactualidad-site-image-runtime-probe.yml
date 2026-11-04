@@ -1,0 +1,52 @@
+name: TTActualidad Site image runtime inspection (read-only)
+on:
+  push:
+    branches: [diag/ttactualidad-sites-image-runtime-20261104]
+    paths:
+      - '.github/workflows/ttactualidad-site-image-runtime-probe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect public Next.js image rendering bundle (no auth, no writes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=https://ttactualidad.rainyraven22.chatgpt.site
+          curl -sS -L --max-time 20 -o /tmp/tt-site.html "$root/"
+          asset=$(python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('/tmp/tt-site.html').read_text(errors='replace')
+          found=re.findall(r'<script[^>]*src="([^"]+index-[^"]+\.js)"',html)
+          print(found[-1] if found else '')
+          PY
+          )
+          if [ -z "$asset" ]; then
+            echo 'NO_PUBLIC_NEXT_INDEX_SCRIPT'; exit 0
+          fi
+          echo 'PUBLIC_BUNDLE_PATH='"$asset"
+          curl -sS -L --max-time 50 -o /tmp/tt-next-bundle.js "$root$asset"
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('/tmp/tt-next-bundle.js').read_text(errors='replace')
+          print('PUBLIC_BUNDLE_BYTES',len(s))
+          for term in ('raw.githubusercontent.com','catalog_recorded','image_url',
+             'site-top30-current','sha256','next/image','/_next/image',
+             'images/ttendencias','explained_at','Imagen IA','onError',
+             'onLoad','img src','loading=','valverde','Bellingham',
+             'Imagen asociada','img-src'):
+              hits=list(re.finditer(re.escape(term),s,re.I))
+              print('PUBLIC_IMAGE_TOKEN',repr(term),'count=',len(hits))
+              for m in hits[:2]:
+                excerpt=s[max(m.start()-100,0):m.end()+125].replace('\n',' ')
+                # No session/cookies/secrets in public JS. Still redact credentials.
+                excerpt=re.sub(r'(?i)(authorization|bearer|token|secret)([:=])[^\s,;}]{4,}',
+                  r'\1\2[REDACTED]',excerpt)
+                print('PUBLIC_IMAGE_CONTEXT',repr(term),repr(excerpt[:245]))
+          PY
