@@ -51796,14 +51796,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://www.elpespunte.es/media/elpespunte/images/2026/11/03/2026110307204420715.jpg",
+        "source": "www.elpespunte.es",
+        "source_url": "https://www.elpespunte.es/entretenimiento/santoral-hoy-3-noviembre-2026-que-santo-celebra-hoy/20261103072101159923.html",
+        "alt": "Imagen de archivo relacionada con Silvia",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.elpespunte.es/media/elpespunte/images/2026/11/03/2026110307204420715.jpg",
+        "source": "www.elpespunte.es",
+        "source_url": "https://www.elpespunte.es/entretenimiento/santoral-hoy-3-noviembre-2026-que-santo-celebra-hoy/20261103072101159923.html",
+        "alt": "Imagen de archivo relacionada con Silvia",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "trend-update-da9dec68f79f3b121421",
@@ -58739,12 +58754,32 @@
       "distinct_episode": false,
       "new_facts": "Jesús de Miguel, delantero del CD Tenerife, falleció el 3 de noviembre tras el fuerte choque sufrido con el portero del FC Andorra durante el partido suspendido del 2 de noviembre. La Policía Nacional abrió una investigación sobre su muerte bajo supervisión judicial.",
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/muere-delantero-jesus-miguel-tenerife-andorra/01793700868619.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/deportes/20261103/muere-delantero-jesus-miguel-tenerife-andorra/17297081.shtml",
+        "alt": "Imagen de archivo relacionada con Andorra",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/muere-delantero-jesus-miguel-tenerife-andorra/01793700868619.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/deportes/20261103/muere-delantero-jesus-miguel-tenerife-andorra/17297081.shtml",
+        "alt": "Imagen de archivo relacionada con Andorra",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-04T07:58:21.436831+00:00",
+  "updated_at": "2026-11-04T07:58:54.779852Z",
   "count": 964
 }
