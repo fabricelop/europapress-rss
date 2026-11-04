@@ -5,38 +5,35 @@
   "canonical": true,
   "run_id": "tr-1793826849874-manual",
   "previous_run_id": "tr-1793826700511-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-04T22:14:09.874+01:00",
-  "updated_at": "2026-11-04T22:14:09.874+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-04T21:20:31.354Z",
+  "finished_at": "2026-11-04T21:20:31.354Z",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-d43cd2d868381779815a",
-  "title": "Revisar novedades: Rudiger",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-21034c7a12c6f8846859"
+    "red-review-21034c7a12c6f8846859",
+    "red-review-d43cd2d868381779815a"
   ],
   "converged_ids": [
     "red-review-21034c7a12c6f8846859"
   ],
-  "remaining_ids": [
-    "red-review-d43cd2d868381779815a"
-  ],
-  "remaining_active_ids": [
-    "red-review-d43cd2d868381779815a"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,7 +45,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "1/2 convergido: Luis Pedro Marco de la Peña quedó unchanged. Verificando aplicación JIT de Rudiger; sin ImageGen.",
+  "activity": "Pasada cerrada: 2/2 revisiones de mantenimiento aplicadas; cola autoritativa 0, sin preparing/update ni rewrite_pending. Sin ImageGen ni publicaciones.",
   "final_outcomes": [
     {
       "id": "red-review-21034c7a12c6f8846859",
@@ -56,86 +53,54 @@
       "name": "Revisar novedades: Luis Pedro Marco de la Peña",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence_jit",
+      "via": "maintenance_outbox",
       "source_id": "168b155c5487"
+    },
+    {
+      "id": "red-review-d43cd2d868381779815a",
+      "revision": 0,
+      "name": "Revisar novedades: Rudiger",
+      "outcome": "continuity",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "ee213c47d89f",
+      "distinct_episode": false,
+      "material_change": false
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793824841260-manual",
+    "run_id": "tr-1793826849874-manual",
     "status": "DONE",
-    "started_at": "2026-11-04T21:41:00+01:00",
-    "updated_at": "2026-11-04T21:49:00+01:00",
-    "finished_at": "2026-11-04T21:49:00+01:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-11-04T22:14:09.874+01:00",
+    "updated_at": "2026-11-04T21:20:31.354Z",
+    "finished_at": "2026-11-04T21:20:31.354Z",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "cd58e4b34464",
-      "4bea3ac923fc",
-      "red-review-1fcaec879264e3f452b2",
-      "red-review-9232d8c2711a79792a08",
-      "red-review-e4be2b46b46a60fe16be",
-      "red-review-063761c8537034eed94d"
+      "red-review-21034c7a12c6f8846859",
+      "red-review-d43cd2d868381779815a"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "cd58e4b34464",
+        "id": "red-review-21034c7a12c6f8846859",
         "revision": 0,
-        "name": "Rudiger",
-        "outcome": "explained",
+        "name": "Revisar novedades: Luis Pedro Marco de la Peña",
+        "outcome": "unchanged",
         "applied": true,
-        "via": "editorial_outbox"
+        "via": "maintenance_outbox",
+        "source_id": "168b155c5487"
       },
       {
-        "id": "4bea3ac923fc",
-        "revision": 0,
-        "name": "Real Madrid",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "red-review-1fcaec879264e3f452b2",
+        "id": "red-review-d43cd2d868381779815a",
         "revision": 0,
         "name": "Revisar novedades: Rudiger",
-        "outcome": "stale",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "source_id": "ee213c47d89f",
-        "converged": true
-      },
-      {
-        "id": "red-review-9232d8c2711a79792a08",
-        "revision": 0,
-        "name": "Revisar novedades: Ciudad Real",
-        "outcome": "stale",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "source_id": "20935c787fe3",
-        "converged": true
-      },
-      {
-        "id": "red-review-e4be2b46b46a60fe16be",
-        "revision": 0,
-        "name": "Revisar novedades: Diomande",
-        "outcome": "updated",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "source_id": "7184eb72d1ea",
-        "created_id": "trend-update-843a7b206b27d12bac5f",
-        "distinct_episode": true,
-        "material_change": true
-      },
-      {
-        "id": "red-review-063761c8537034eed94d",
-        "revision": 0,
-        "name": "Revisar novedades: Andorra",
         "outcome": "continuity",
         "applied": true,
         "via": "maintenance_outbox",
-        "source_id": "3e340be4de18",
+        "source_id": "ee213c47d89f",
         "distinct_episode": false,
         "material_change": false
       }
@@ -145,8 +110,8 @@
     "publications": 0,
     "incident_count": 0,
     "incidents": [],
-    "concurrent_convergence": 2
+    "concurrent_convergence": 1
   },
   "last_started_at": "2026-11-04T22:14:09.874+01:00",
-  "last_completed_at": "2026-11-04T22:13:31+01:00"
+  "last_completed_at": "2026-11-04T21:20:31.354Z"
 }
