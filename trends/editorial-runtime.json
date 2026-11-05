@@ -5,39 +5,39 @@
   "canonical": true,
   "run_id": "tr-1793922900000-manual",
   "previous_run_id": "tr-autoguard-1793922065",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T00:55:00+01:00",
-  "updated_at": "2026-11-06T00:57:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-06T00:58:00+01:00",
+  "finished_at": "2026-11-06T00:58:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-7d26128e97c1ccf3f333",
-  "title": "Revisar novedades: Chiqui",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-c98be1cbb0c57faad033"
-  ],
-  "converged_ids": [],
-  "remaining_ids": [
+    "red-review-c98be1cbb0c57faad033",
     "red-review-7d26128e97c1ccf3f333"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
+    "red-review-c98be1cbb0c57faad033",
     "red-review-7d26128e97c1ccf3f333"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 1,
-    "stale_reviews": 0,
-    "queue_remaining": 1,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,93 +48,84 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo revisión 2/2: nuevo episodio material para Chiqui en la gala del 5 de noviembre.",
-  "final_outcomes": [],
+  "activity": "Pasada manual cerrada: 2/2 revisiones tratadas; una sin novedades y una descartada como stale por revisión posterior ya existente. Barrera final vacía.",
+  "final_outcomes": [
+    {
+      "id": "red-review-c98be1cbb0c57faad033",
+      "revision": 0,
+      "name": "#LaIslaDeLasTentaciones17",
+      "outcome": "unchanged",
+      "applied": true
+    },
+    {
+      "id": "red-review-7d26128e97c1ccf3f333",
+      "revision": 0,
+      "name": "Chiqui",
+      "outcome": "stale",
+      "applied": true,
+      "reason": "Existe una revisión posterior del origen; no se sobrescribe estado más nuevo."
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1793922065",
+    "run_id": "tr-1793922900000-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T00:41:00+01:00",
-    "updated_at": "2026-11-06T00:46:00+01:00",
-    "finished_at": "2026-11-06T00:46:00+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-11-06T00:55:00+01:00",
+    "updated_at": "2026-11-06T00:58:00+01:00",
+    "finished_at": "2026-11-06T00:58:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "ac112af93a81",
-      "14a695e4efec",
-      "02d4070d6709",
-      "1a90f218427d"
+      "red-review-c98be1cbb0c57faad033",
+      "red-review-7d26128e97c1ccf3f333"
     ],
     "converged_ids": [
-      "ac112af93a81",
-      "14a695e4efec",
-      "02d4070d6709",
-      "1a90f218427d"
+      "red-review-c98be1cbb0c57faad033",
+      "red-review-7d26128e97c1ccf3f333"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "ac112af93a81",
+        "id": "red-review-c98be1cbb0c57faad033",
         "revision": 0,
-        "name": "#ZeldaOcarinaofTimeRemake",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "9cf1cc0115c215a02c62ff5a01961a2fdc199d34"
+        "name": "#LaIslaDeLasTentaciones17",
+        "outcome": "unchanged",
+        "applied": true
       },
       {
-        "id": "14a695e4efec",
+        "id": "red-review-7d26128e97c1ccf3f333",
         "revision": 0,
-        "name": "La Real",
-        "outcome": "explained",
+        "name": "Chiqui",
+        "outcome": "stale",
         "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "e52a8a77333e89a8e3108058c1307ff60abfe4dc"
-      },
-      {
-        "id": "02d4070d6709",
-        "revision": 0,
-        "name": "Juanjo",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "c9af02737c14de379d9fc5f7bac8aefbaf32c6b2"
-      },
-      {
-        "id": "1a90f218427d",
-        "revision": 0,
-        "name": "Indhira",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "971e272466016608b06add2ee742df0a3c56157c"
+        "reason": "Existe una revisión posterior del origen; no se sobrescribe estado más nuevo."
       }
     ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "unchanged_reviews": 1,
+    "stale_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-autoguard-1793922065 cerrada 4/4 por convergencia JIT con tr-20261106T0040+0100-manual. #ZeldaOcarinaofTimeRemake, La Real, Juanjo e Indhira quedaron persistidas en requests+telegram-manual-explained. Barrera final main: editorial-queue=0 y rewrite_pending/reexplicación=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793922900000-manual cerrada 2/2. #LaIslaDeLasTentaciones17: unchanged. Chiqui: stale por revisión posterior ya existente. Barrera final main: editorial-queue=0; rewrite_pending=0; preparing/update=0. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T00:55:00+01:00",
-  "last_completed_at": "2026-11-06T00:46:00+01:00",
+  "last_completed_at": "2026-11-06T00:58:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -213,7 +204,8 @@
     "tr-20261106T0010+0100-manual",
     "tr-20261106T0025+0100-manual",
     "tr-20261106T0040+0100-manual",
-    "tr-autoguard-1793922065"
+    "tr-autoguard-1793922065",
+    "tr-1793922900000-manual"
   ],
   "command_id": "tr-1793922900000-manual",
   "canonical_successor_run_id": null,
