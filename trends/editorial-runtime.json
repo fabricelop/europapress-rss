@@ -3,41 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793910547154-manual",
+  "run_id": "tr-20261105T2125+0100-manual",
   "previous_run_id": "tr-20261105T2125+0100-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T21:30:00+01:00",
-  "updated_at": "2026-11-05T21:33:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-116b3ad301ef813c18d5",
-  "title": "Revisar novedades: Paraguay",
-  "queue_complete": false,
-  "processed_ids": [],
+  "updated_at": "2026-11-05T21:34:30+01:00",
+  "finished_at": "2026-11-05T21:34:30+01:00",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "0a5aebd8f57c",
+    "red-review-116b3ad301ef813c18d5",
+    "red-review-846995ee632c5fc941bd"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-116b3ad301ef813c18d5",
-    "red-review-846995ee632c5fc941bd"
-  ],
-  "remaining_active_ids": [
-    "red-review-116b3ad301ef813c18d5",
-    "red-review-846995ee632c5fc941bd"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,20 +46,50 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades: Paraguay",
-  "final_outcomes": [],
+  "activity": "Pasada completada: Hace 50 explicada; Paraguay y Koldo revisados sin novedades materiales; cola vacía",
+  "final_outcomes": [
+    {
+      "id": "0a5aebd8f57c",
+      "revision": 0,
+      "name": "Hace 50",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "3ff5e3b8aacf85633c17d71907ba819d9f384827"
+    },
+    {
+      "id": "red-review-116b3ad301ef813c18d5",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "f82a3aece8b7c7a023bf9de58b40f35314575888"
+    },
+    {
+      "id": "red-review-846995ee632c5fc941bd",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "85d88168f441bbf891a938fe2179262085051506"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261105T2125+0100-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T21:25:00+01:00",
-    "updated_at": "2026-11-05T21:29:00+01:00",
-    "finished_at": "2026-11-05T21:29:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-11-05T21:30:00+01:00",
+    "updated_at": "2026-11-05T21:34:30+01:00",
+    "finished_at": "2026-11-05T21:34:30+01:00",
+    "current": 3,
+    "total": 3,
     "queue_complete": true,
     "processed_ids": [
-      "0a5aebd8f57c"
+      "0a5aebd8f57c",
+      "red-review-116b3ad301ef813c18d5",
+      "red-review-846995ee632c5fc941bd"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
@@ -73,17 +101,35 @@
         "applied": true,
         "via": "editorial_outbox",
         "apply_commit": "3ff5e3b8aacf85633c17d71907ba819d9f384827"
+      },
+      {
+        "id": "red-review-116b3ad301ef813c18d5",
+        "revision": 0,
+        "name": "Revisar novedades: Paraguay",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "apply_commit": "f82a3aece8b7c7a023bf9de58b40f35314575888"
+      },
+      {
+        "id": "red-review-846995ee632c5fc941bd",
+        "revision": 0,
+        "name": "Revisar novedades: Koldo",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "apply_commit": "85d88168f441bbf891a938fe2179262085051506"
       }
     ],
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -94,7 +140,7 @@
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-05T21:28:26+01:00",
-  "last_completed_at": "2026-11-05T21:29:00+01:00",
+  "last_completed_at": "2026-11-05T21:34:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -154,7 +200,7 @@
     "tr-20261105T2110+0100-manual",
     "tr-20261105T2125+0100-manual"
   ],
-  "command_id": "tr-1793910547154-manual",
+  "command_id": "tr-20261105T2125+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
