@@ -103,6 +103,74 @@ async function ingest(request, env) {
   // Repeated ingest is idempotent, never reopens rejected/approved images.
   return json({ id, state: inserted.meta?.changes ? 'pending' : 'existing' }, inserted.meta?.changes ? 201 : 200);
 }
+
+async function ingestManual(request, env, githubFetch) {
+  // Browser/iPhone editor uploads use the same *private* original inbox as PC
+  // imports, authenticated by the existing GitHub OAuth editor session.
+  // No PC ingest key or publication key is ever sent to a mobile device.
+  const declared = Number(request.headers.get('Content-Length') || '0');
+  if (declared > 12_000_000) return error(413, 'IMAGE_TOO_LARGE');
+  const form = await request.formData();
+  const raw = form.get('image');
+  const textMetadata = form.get('metadata');
+  if (!raw || typeof raw.arrayBuffer !== 'function' || typeof textMetadata !== 'string') {
+    return error(400, 'MISSING_IMAGE_OR_METADATA');
+  }
+  const meta = JSON.parse(textMetadata);
+  const project = meta?.project;
+  const editorialId = meta?.editorialId;
+  const revision = meta?.revision;
+  const commandId = meta?.commandId;
+  const title = assertText(meta?.title, 300);
+  const editorialText = assertText(meta?.editorialText, 4000);
+  const expectedHash = meta?.rasterSHA256;
+  if (!['ttittulares', 'ttendencias'].includes(project) ||
+      !IDENTIFIER.test(editorialId || '') ||
+      !Number.isSafeInteger(revision) || revision < 0 ||
+      typeof commandId !== 'string' || commandId.length < 3 || commandId.length > 200 ||
+      !SHA.test(expectedHash || '')) return error(400, 'INVALID_IDENTITY');
+  const original = await raw.arrayBuffer();
+  const bytes = new Uint8Array(original);
+  if (bytes.length < 24 || bytes.length > 8_000_000) return error(413, 'IMAGE_TOO_LARGE');
+  if (![137,80,78,71,13,10,26,10].every((v, i) => bytes[i] === v) ||
+      ![73,72,68,82].every((v, i) => bytes[i+12] === v)) {
+    return error(415, 'ORIGINAL_PNG_REQUIRED');
+  }
+  const view = new DataView(original);
+  const width = view.getUint32(16);
+  const height = view.getUint32(20);
+  if (!width || !height || width > 8192 || height > 8192 ||
+      width * height > 40_000_000) return error(415, 'INVALID_IMAGE_DIMENSIONS');
+  const actualSHA = await hash(original);
+  if (actualSHA !== expectedHash) return error(409, 'RASTER_SHA_MISMATCH');
+  // The editorial text, not a user-selected rank/title, is authoritative.
+  // Verify BEFORE writing an original, and again through /decision.
+  const episode = await episodeFingerprint({ project, editorialId, revision, editorialText });
+  const candidate = identity({ project, editorialId, revision, episodeFingerprint: episode,
+    commandId, rasterSHA256: actualSHA });
+  const verdict = await verifyEditorialNow(candidate, editorialText, githubFetch, token(request));
+  if (verdict !== 'current') return error(409, 'EDITORIAL_CHANGED_OR_NOT_READY');
+  const id = await candidateID(candidate);
+  const existing = await env.DB.prepare(`SELECT status FROM image_candidates WHERE id=?`)
+    .bind(id).first();
+  if (existing) return json({ id, state: existing.status, identity: candidate, existing: true });
+  const key = `private/${id}/${actualSHA}.png`;
+  await env.ORIGINALS.put(key, original, { httpMetadata: { contentType: 'image/png' } });
+  const inserted = await env.DB.prepare(`INSERT OR IGNORE INTO image_candidates (
+    id, project, editorial_id, revision, episode_fingerprint, command_id,
+    raster_sha256, object_key, title, editorial_text, status, created_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)`).bind(
+    id, project, editorialId, revision, episode, commandId,
+    actualSHA, key, title, editorialText, new Date().toISOString()
+  ).run();
+  if (!inserted.meta?.changes) {
+    const current = await env.DB.prepare(`SELECT status FROM image_candidates WHERE id=?`)
+      .bind(id).first();
+    return json({ id, state: current?.status || 'existing', identity: candidate, existing: true });
+  }
+  return json({ id, state: 'pending', identity: candidate }, 201);
+}
+
 function rowIdentity(row) {
   return {
     project: row.project, editorialId: row.editorial_id, revision: row.revision,
@@ -152,14 +220,14 @@ async function publicationOriginal(env, id, githubFetch) {
       episode_fingerprint, command_id, editorial_text FROM image_candidates
     WHERE id=? AND status='approved_awaiting_publication'`).bind(id).first();
   if (!row) return error(404, 'NOT_APPROVED');
-  // Revalidate at hand-off: an approval for a later-changed READY entry
-  // must never yield bytes to a publisher. Publisher re-checks again before
-  // the actual remote Sites/APP commit.
-  if (!env.GITHUB_SOURCE_READ_TOKEN) return error(503, 'SOURCE_VERIFICATION_NOT_CONFIGURED');
-  if (await verifyEditorialNow(rowIdentity(row), row.editorial_text,
-    githubFetch, env.GITHUB_SOURCE_READ_TOKEN) !== 'current') {
-    return error(409, 'EDITORIAL_CHANGED_OR_NOT_READY');
-  }
+  // The editor explicitly approved the immutable episode identity.
+  // Removing a card from Listas does NOT revoke its right to an image.
+  // Never contact an external READY/Lists source at publication time:
+  // those files are transient/large and a failed fetch caused intermittent
+  // 503 errors while permanently blocking archived editorial episodes.
+  const stored = rowIdentity(row);
+  if ((await episodeFingerprint({ ...stored, editorialText: row.editorial_text })) !==
+      stored.episodeFingerprint) return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
   const obj = await env.ORIGINALS.get(row.object_key);
   if (!obj) return error(503, 'ORIGINAL_NOT_FOUND');
   const bytes = await obj.arrayBuffer();
@@ -175,8 +243,9 @@ async function decide(request, env, id, actor, githubFetch) {
   if (!input || !['approve', 'reject'].includes(input.action)) return error(400, 'INVALID_ACTION');
   const expected = identity(input.expectedIdentity);
   if ((await candidateID(expected)) !== id) return error(409, 'STALE_CANDIDATE');
-  // Approval must re-check main; rejection only clears the private inbox.
-  // A stale/removed READY row can never receive a new approval.
+  // Approval is tied to the immutable, exact candidate delivered to
+  // this private inbox. Current Listas presence is irrelevant: editorial
+  // items can be withdrawn/published while their images remain valid.
   if (input.action === 'approve') {
     const current = await env.DB.prepare(`SELECT editorial_text, status FROM image_candidates
       WHERE id=? AND status='pending'`).bind(id).first();
@@ -190,8 +259,10 @@ async function decide(request, env, id, actor, githubFetch) {
     if ((await episodeFingerprint({ ...expected, editorialText: current.editorial_text })) !== expected.episodeFingerprint) {
       return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
     }
-    const verdict = await verifyEditorialNow(expected, current.editorial_text, githubFetch, token(request));
-    if (verdict !== 'current') return error(409, 'EDITORIAL_CHANGED_OR_NOT_READY');
+    // Authenticated editor + candidateID + fingerprint + conditional DB
+    // update protect against mismatched IDs/revisions and double decisions.
+    // Ingest of manual originals already validates GitHub identity once.
+    // The trusted PC import is authenticated by its separate secret.
   }
   const status = input.action === 'approve' ? 'approved_awaiting_publication' : 'rejected';
   const result = await env.DB.prepare(`UPDATE image_candidates SET status=?, decided_at=?,
@@ -227,6 +298,9 @@ export async function handleRequest(request, env, githubFetch = fetch) {
     if (url.pathname === PREFIX + '/ingest' && request.method === 'POST') return await ingest(request, env);
     const who = await editor(request, env, githubFetch);
     if (!who) return error(401, 'UNAUTHORIZED_EDITOR');
+    if (url.pathname === PREFIX + '/manual' && request.method === 'POST') {
+      return await ingestManual(request, env, githubFetch);
+    }
     if (url.pathname === PREFIX && request.method === 'GET') return await list(env);
     const match = new RegExp(`^${PREFIX}/([a-f0-9]{64})(?:/(original|decision))?$`).exec(url.pathname);
     if (!match) return error(404, 'NOT_FOUND');

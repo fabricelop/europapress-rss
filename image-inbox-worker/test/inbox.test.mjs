@@ -1,14 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {handleRequest} from '../src/index.mjs';
-import {episodeFingerprint} from '../src/editorial-truth.mjs';
+import {episodeFingerprint, verifyEditorialNow, readyTextFromMain} from '../src/editorial-truth.mjs';
 
-const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0 };
+const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0, closed: false, closedAt: '', explainedAt: new Date().toISOString() };
 const editor = async (url, options) => {
   if (url.startsWith('https://api.github.com/repos/fabricelop/europapress-rss/contents/')) {
     if (main.offline) throw Error('offline');
+    if (url.includes('/ttittulares/prepared.json')) {
+      return new Response(JSON.stringify({items:[{
+        event_id:'news-demo',revision:0,status:'ready',prepared_at:'2026-11-01T12:00:00Z',
+        factual_summary:'Texto factual de noticia sin tweet.text',
+        tweet:{text:''},
+      }]}),{status:200});
+    }
+    if (url.includes('/mobile-decisions.json') || url.includes('/ttittulares/decisions.json')) {
+      return new Response(JSON.stringify({items: main.closed ? [
+        { id: 'my-trend', revision: main.revision, status: 'deleted', updated_at: main.closedAt },
+      ] : []}), {status:200});
+    }
     return new Response(JSON.stringify({ items: main.removed ? [] : [{
-      id: 'my-trend', revision: main.revision, explanation: main.text,
+      id: 'my-trend', revision: main.revision, status:'explained',
+      explained_at:main.explainedAt, explanation: main.text,
     }] }), { status: 200 });
   }
   return new Response(JSON.stringify({ id: 7257052 }), {
@@ -148,31 +161,31 @@ test('episode fingerprint cannot be invented by the uploader',async()=>{
  assert.equal((await importOne(env,{identity:{episodeFingerprint:'a'.repeat(64)}})).status,409);
  assert.equal((await receive(env)).data.items.length,0);
 });
-test('approval fails closed when main changed, is missing or unavailable; rejection unaffected',async()=>{
- const {env}=context();await importOne(env);
- const row=(await receive(env)).data.items[0];
- for(const change of [
+test('a safely imported historical image may be approved when Lists changes or GitHub fails',async()=>{
+ for (const change of [
   {text:'Nuevo texto editorial'}, {removed:true}, {revision:1}, {offline:true},
  ]) {
+  const {env}=context();
+  await importOne(env);
+  const row=(await receive(env)).data.items[0];
   Object.assign(main,{text:'Texto factual + remate',removed:false,revision:0,offline:false},change);
-  const response=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
-  assert.equal(response.status,change.offline?503:409);
-  assert.equal((await receive(env)).data.items.length,1);
+  const approval=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
+  assert.equal(approval.status,200,'An approved original stays bound to its saved editorial episode');
+  assert.equal((await approval.json()).state,'approved_awaiting_publication');
+  assert.equal((await receive(env)).data.items.length,0);
  }
  Object.assign(main,{text:'Texto factual + remate',removed:false,revision:0,offline:false});
- const r=await handleRequest(decision(row.id,row.identity,'reject'),env,editor);
- assert.equal(r.status,200);
- assert.equal((await receive(env)).data.items.length,0);
 });
-test('after editorial repair an exact current pending episode can be approved',async()=>{
+test('stored candidate identity still rejects modified fingerprints without live GitHub checks',async()=>{
  const {env}=context(); await importOne(env);
  const row=(await receive(env)).data.items[0];
- main.text='Corregido';
- assert.equal((await handleRequest(decision(row.id,row.identity,'approve'),env,editor)).status,409);
- main.text='Texto factual + remate';
- assert.equal((await handleRequest(decision(row.id,row.identity,'approve'),env,editor)).status,200);
+ main.offline=true;
+ try {
+   const altered={...row.identity,episodeFingerprint:'f'.repeat(64)};
+   assert.equal((await handleRequest(decision(row.id,altered,'approve'),env,editor)).status,409);
+   assert.equal((await handleRequest(decision(row.id,row.identity,'approve'),env,editor)).status,200);
+ } finally {main.offline=false;}
 });
-
 test('only a separate publisher secret can see approved candidates and exact raster; no public writes',async()=>{
  const {env,store}=context(); env.PUBLISH_TOKEN='publish-private-secret'.repeat(3);
  await importOne(env);const row=(await receive(env)).data.items[0];
@@ -213,16 +226,155 @@ test('publisher never receives rejected or pending images; mutated original fail
  main.text='Texto factual + remate';
 });
 
-test('approved original handoff fails closed after new editorial content or lost read credential',async()=>{
- const {env}=context(); env.PUBLISH_TOKEN='publish-private-secret'.repeat(3);
- await importOne(env);const row=(await receive(env)).data.items[0];
- await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
- const download=()=>{const r=req(`/v1/publications/${row.id}/original`,'GET',null,null);r.headers.set('X-TT-Publish-Key',env.PUBLISH_TOKEN);return r;};
- main.text='Cambiado después de aprobar';
- assert.equal((await handleRequest(download(),env,editor)).status,409);
- main.text='Texto factual + remate'; main.offline=true;
- assert.equal((await handleRequest(download(),env,editor)).status,503);
- main.offline=false;
- delete env.GITHUB_SOURCE_READ_TOKEN;
- assert.equal((await handleRequest(download(),env,editor)).status,503);
+test('publisher can retrieve an approved historical image during GitHub outage, but never corrupt bytes',async()=>{
+ const {env,store}=context(); env.PUBLISH_TOKEN='publish-private-secret'.repeat(3);
+ await importOne(env); const row=(await receive(env)).data.items[0];
+ const approval=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
+ assert.equal(approval.status,200);
+ const download=()=>{
+   const r=req(`/v1/publications/${row.id}/original`,'GET',null,null);
+   r.headers.set('X-TT-Publish-Key',env.PUBLISH_TOKEN);return r;
+ };
+ main.offline=true;
+ try {
+  delete env.GITHUB_SOURCE_READ_TOKEN;
+  const good=await handleRequest(download(),env,editor);
+  assert.equal(good.status,200);
+  assert.deepEqual(new Uint8Array(await good.arrayBuffer()),png);
+  store.set(env.DB.rows.get(row.id).object_key,new Uint8Array(png.length).fill(0));
+  assert.equal((await handleRequest(download(),env,editor)).status,409);
+ } finally {main.offline=false;}
 });
+
+test('manual image upload: editor-only, one candidate, ready for existing approval', async () => {
+  const {env} = context();
+  const sha = await crypto.subtle.digest('SHA-256', png);
+  const rasterSHA256 = Array.from(new Uint8Array(sha), b=>b.toString(16).padStart(2,'0')).join('');
+  const form = new FormData();
+  form.set('image', new Blob([png], {type:'image/png'}), 'selected.png');
+  form.set('metadata', JSON.stringify({
+    project:'ttendencias', editorialId:'my-trend', revision:0,
+    commandId:'manual-123456', rasterSHA256,
+    editorialText:'Texto factual + remate', title:'Test',
+  }));
+  const upload = req('/v1/images/manual','POST',form);
+  const response = await handleRequest(upload,env,editor);
+  assert.equal(response.status,201);
+  const saved = await response.json();
+  assert.equal(saved.state,'pending');
+  assert.equal((await receive(env)).data.items.length,1);
+  const ready = (await receive(env)).data.items[0];
+  assert.equal(ready.id,saved.id);
+  const decided = await handleRequest(decision(ready.id,ready.identity,'approve'),env,editor);
+  assert.equal(decided.status,200);
+  assert.equal((await decided.json()).state,'approved_awaiting_publication');
+});
+
+test('manual intake refuses unauthenticated and outdated episodes', async () => {
+  const {env,store} = context();
+  const hashBytes = await crypto.subtle.digest('SHA-256',png);
+  const rasterSHA256 = Array.from(new Uint8Array(hashBytes),b=>b.toString(16).padStart(2,'0')).join('');
+  const upload = (who, changed) => {
+    const form = new FormData();
+    form.set('image',new Blob([png],{type:'image/png'}),'chosen.png');
+    form.set('metadata',JSON.stringify({project:'ttendencias',
+      editorialId:'my-trend',revision:0,commandId:'manual-123456',
+      title:'Test',editorialText:'Texto factual + remate',rasterSHA256,...changed}));
+    return req('/v1/images/manual','POST',form,who);
+  };
+  assert.equal((await handleRequest(upload(null,{}),env,editor)).status,401);
+  assert.equal((await handleRequest(upload('someone-else',{}),env,editor)).status,401);
+  assert.equal((await handleRequest(upload('valid-oauth',{revision:2}),env,editor)).status,409);
+  assert.equal((await handleRequest(upload('valid-oauth',{rasterSHA256:'0'.repeat(64)}),env,editor)).status,409);
+  assert.equal(store.size,0);
+  assert.equal((await receive(env)).data.items.length,0);
+});
+
+
+test('manual upload uses the same authoritative Listas data as the app', async()=>{
+ const {env}=context();
+ // A tokenized trend row lives in telegram-manual-explained.json, not in prepared.json.
+ // The authorization mock deliberately returns 404 for the obsolete path.
+ const strict = async (url,opts) => {
+   if (url.includes('/trends/prepared.json')) return new Response('',{status:404});
+   return editor(url,opts);
+ };
+ const digest = await crypto.subtle.digest('SHA-256',png);
+ const sha = Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('');
+ const form=new FormData();
+ form.set('image',new Blob([png],{type:'image/png'}),'image.png');
+ form.set('metadata',JSON.stringify({project:'ttendencias',editorialId:'my-trend',
+  revision:0,commandId:'manual-source-test',title:'Tendencia',
+  rasterSHA256:sha,editorialText:'Texto factual + remate'}));
+ const response=await handleRequest(req('/v1/images/manual','POST',form),env,strict);
+ assert.equal(response.status,201);
+});
+
+test('a historical image can be approved after its editorial card left Listas', async()=>{
+ const {env}=context();
+ await importOne(env);
+ const row=(await receive(env)).data.items[0];
+ main.closed=true;
+ main.closedAt=new Date().toISOString();
+ try {
+   const r=await handleRequest(decision(row.id,row.identity,'approve'),env,editor);
+   assert.equal(r.status,200);
+   assert.equal((await r.json()).state,'approved_awaiting_publication');
+   assert.equal((await receive(env)).data.items.length,0);
+ } finally {main.closed=false;main.closedAt='';}
+});
+
+test('a terminal decision for a previous episode must not block a newer Listas episode', async()=>{
+ main.closed = true;
+ main.closedAt = '2026-11-01T08:00:00Z';
+ main.explainedAt = new Date().toISOString();
+ try {
+   assert.equal(await verifyEditorialNow({
+     project:'ttendencias',editorialId:'my-trend',revision:0,
+   }, 'Texto factual + remate', editor, 'valid-oauth'), 'current');
+ } finally {
+   main.closed=false;
+   main.closedAt='';
+ }
+});
+
+test('iPhone can upload a news image using the actual fallback text of a READY card', async()=>{
+ const {env}=context();
+ const sha = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',png)),
+  b=>b.toString(16).padStart(2,'0')).join('');
+ const form = new FormData();
+ form.set('image',new Blob([png],{type:'image/png'}),'news.png');
+ form.set('metadata',JSON.stringify({
+   project:'ttittulares',editorialId:'news-demo',revision:0,
+   commandId:'manual-news-1',rasterSHA256:sha,title:'Noticia de prueba',
+   editorialText:'Texto factual de noticia sin tweet.text',
+ }));
+ const upload=await handleRequest(req('/v1/images/manual','POST',form),env,editor);
+ assert.equal(upload.status,201);
+ const body=await upload.json();
+ assert.equal(body.state,'pending');
+ const pending=(await receive(env)).data.items;
+ assert.equal(pending.length,1);
+ const approved=await handleRequest(decision(body.id,pending[0].identity,'approve'),env,editor);
+ assert.equal(approved.status,200);
+ assert.equal((await approved.json()).state,'approved_awaiting_publication');
+ assert.equal(env.DB.rows.get(body.id).published_sites_at,undefined);
+});
+
+
+test('out-of-Listas history remains an exact eligible image target', async()=>{
+ const identity={project:'ttendencias',editorialId:'my-trend',revision:0};
+ const date=new Date().toISOString();
+ const make=(extra={})=>({items:[{id:'my-trend',revision:0,status:'explained',
+  explained_at:date,explanation:'Texto factual + remate',...extra}]});
+ assert.equal(readyTextFromMain(make(),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({explained_at:new Date(Date.now()-49*3600_000).toISOString()}),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({status:'published',group_leader_id:'another-trend'}),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({status:'deleted',telegram_package_status:'deleted'}),identity),'Texto factual + remate');
+ assert.equal(readyTextFromMain(make({explained_at:''}),identity),null);
+ assert.equal(readyTextFromMain({items:[{...make().items[0],id:'different'}]},identity),null);
+ assert.equal(readyTextFromMain({items:[{...make().items[0],revision:1}]},identity),null);
+ assert.equal(readyTextFromMain({items:[make().items[0],
+   {...make().items[0],revision:1,explanation:'New revision'}]},identity),'Texto factual + remate');
+});
+

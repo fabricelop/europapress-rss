@@ -1,0 +1,61 @@
+name: TTActualidad manual image route smoke (read-only, no credentials)
+on:
+  push:
+    branches: [feature/ttactualidad-manual-image-ingest-20261104]
+    paths:
+      - '.github/workflows/ttactualidad-manual-image-route-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  route-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Compare current inbox and new manual endpoint without authentication
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT='https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images'
+          # Invalid unauthenticated request; NEVER provide image bytes, bearer token,
+          # editorial identity or deployment credentials in a smoke probe.
+          status_list=$(curl -sS --max-time 15 -o /dev/null -w '%{http_code}' "$ROOT" || echo 000)
+          status_manual=$(curl -sS --max-time 15 -o /dev/null -w '%{http_code}' \
+            -X POST -H 'Content-Type: application/json' -d '{}' "$ROOT/manual" || echo 000)
+          unknown=$(curl -sS --max-time 15 -o /dev/null -w '%{http_code}' \
+            -X POST -H 'Content-Type: application/json' -d '{}' "$ROOT/route-that-does-not-exist-987654321" || echo 000)
+          options_manual=$(curl -sS --max-time 15 -o /dev/null -w '%{http_code}' \
+            -X OPTIONS "$ROOT/manual" || echo 000)
+          options_unknown=$(curl -sS --max-time 15 -o /dev/null -w '%{http_code}' \
+            -X OPTIONS "$ROOT/route-that-does-not-exist-987654321" || echo 000)
+          echo "INBOX_LIST_GET_HTTP=$status_list"
+          echo "MANUAL_INGEST_POST_HTTP=$status_manual"
+          echo "MISSING_ROUTE_POST_HTTP=$unknown"
+          echo "MANUAL_OPTIONS_HTTP=$options_manual"
+          echo "MISSING_ROUTE_OPTIONS_HTTP=$options_unknown"
+          {
+            echo '### Production manual-upload API status'
+            echo "Read-only inbox GET without auth: HTTP $status_list"
+            echo "Manual POST without auth (empty JSON): HTTP $status_manual"
+            echo "Nonexistent POST without auth: HTTP $unknown"
+            echo "Manual OPTIONS: HTTP $options_manual / nonexistent OPTIONS: HTTP $options_unknown"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$status_manual" = 404 ]; then
+            echo 'MANUAL_UPLOAD_NOT_DEPLOYED: the iOS Build69 path is absent from production.'
+            exit 1
+          fi
+          if [ "$status_manual" = 000 ]; then
+            echo 'MANUAL_UPLOAD_UNREACHABLE: no response; cannot assert availability.'
+            exit 1
+          fi
+          if [ "$status_manual" = 200 ] || [ "$status_manual" = 201 ]; then
+            echo 'SECURITY_ALERT: upload accepted without authorization!'
+            exit 1
+          fi
+          if [ "$status_manual" = "$unknown" ] && [ "$options_manual" = "$options_unknown" ]; then
+            echo "ROUTE_INCONCLUSIVE: authentication/gateway responds identically to nonexistent endpoint."
+            echo "ROUTE_INCONCLUSIVE: a 401 is not proof the manual endpoint exists." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ROUTES_DIFFER: manual endpoint may be implemented; editor-authenticated test still required."
+          fi
+          echo 'No image bytes, GitHub OAuth or private publication was sent.'
