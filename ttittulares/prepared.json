@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-05T12:15:13.145Z",
+  "updated_at": "2026-11-05T12:16:32.207326Z",
   "items": [
     {
       "event_id": "e3a454297094",
@@ -47,7 +47,7 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
+      "archive_image_status": "none",
       "fallback_image_status": "none",
       "image_choice": "none",
       "sensitive_editorial": true,
@@ -55,7 +55,9 @@
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-05T12:16:32.207326Z",
+      "fallback_image_search_attempted_at": "2026-11-05T12:16:32.207326Z"
     },
     {
       "event_id": "5aeb0ebaf114",
@@ -102,15 +104,33 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "sensitive_editorial": false,
       "editorial_verified_at": "2026-11-05T12:15:13.145Z",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-05T12:16:32.207326Z",
+      "fallback_image_search_attempted_at": "2026-11-05T12:16:32.207326Z",
+      "archive_image": {
+        "url": "https://s01.europapress.net/imagenes/estaticos/OpenGraph_EP_1024x512.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/galicia/noticia-segunda-cesion-competencial-galicia-2008-xunta-autorizara-permisos-trabajo-extranjeros-marzo-20261105121635.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Segunda cesión competencial a Galicia desde 2008: la Xunta autorizará permisos de trabajo a extranjeros desde marzo"
+      },
+      "fallback_image": {
+        "url": "https://s01.europapress.net/imagenes/estaticos/OpenGraph_EP_1024x512.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/galicia/noticia-segunda-cesion-competencial-galicia-2008-xunta-autorizara-permisos-trabajo-extranjeros-marzo-20261105121635.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Segunda cesión competencial a Galicia desde 2008: la Xunta autorizará permisos de trabajo a extranjeros desde marzo"
+      }
     }
   ],
   "count": 2,
