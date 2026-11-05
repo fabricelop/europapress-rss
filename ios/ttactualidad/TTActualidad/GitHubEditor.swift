@@ -651,25 +651,38 @@ final class GitHubEditor: ObservableObject {
         return originalURL
     }
 
-    // Supplement optional Sites relation timestamps from GitHub's actual
-    // news history, including entries already removed from Listas. This only
-    // provides dates by exact (event_id, revision), never opaque fingerprints
-    // or a new relationship decision. The private relations API stays the
-    // authoritative source of linkable editorial endpoints.
-    func editorialRelationNewsDates() async -> [String: Date] {
-        guard let document = try? await readMainJSON("ttittulares/prepared.json"),
-              let items = document["items"] as? [[String: Any]] else { return [:] }
-        var dates: [String: Date] = [:]
+    // GitHub keeps the dated READY history after items leave Listas.
+    // These are display candidates ONLY: empty episodeFingerprint means no
+    // Sites-issued relationship identity. Never submit an approval/relationship
+    // command from this fallback without an exact server endpoint.
+    func editorialRelationRecentNews() async throws -> [EditorialRelationEndpoint] {
+        let document = try await readMainJSON("ttittulares/prepared.json")
+        guard let items = document["items"] as? [[String: Any]] else {
+            throw GitHubError.message("El historial editorial de noticias está incompleto.")
+        }
+        let cutoff = Date().addingTimeInterval(-48 * 3600)
+        let latest = Date().addingTimeInterval(300)
+        var results: [EditorialRelationEndpoint] = []
+        var seen = Set<String>()
         for row in items {
             guard let id = row["event_id"] as? String, !id.isEmpty,
                   let revision = row["revision"] as? Int, revision >= 0,
-                  let issuedAt = EditorialRelationsPolicy.parsedDate(
-                      row["prepared_at"] as? String) else { continue }
+                  let iso = row["prepared_at"] as? String,
+                  let date = EditorialRelationsPolicy.parsedDate(iso),
+                  date >= cutoff, date <= latest else { continue }
             let key = EditorialRelationsPolicy.newsKey(id: id, revision: revision)
-            if let previous = dates[key], previous >= issuedAt { continue }
-            dates[key] = issuedAt
+            guard seen.insert(key).inserted else { continue }
+            let title = (row["title"] as? String ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !title.isEmpty else { continue }
+            let tweet = row["tweet"] as? [String: Any] ?? [:]
+            let text = (tweet["text"] as? String).flatMap { $0.isEmpty ? nil : $0 } ??
+                (row["explanation"] as? String) ??
+                (row["factual_summary"] as? String) ?? ""
+            results.append(EditorialRelationEndpoint(
+                id: id, revision: revision, episodeFingerprint: "",
+                title: title, text: text, path: nil, listedAt: iso))
         }
-        return dates
+        return results
     }
 
     // HTTP 204 is only a transport acknowledgement. Verify the committed state.
