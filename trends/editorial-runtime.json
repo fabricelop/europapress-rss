@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261105T2155+0100-manual",
-  "previous_run_id": "tr-20261105T2140+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T21:55:00+01:00",
-  "updated_at": "2026-11-05T21:56:00+01:00",
-  "finished_at": "2026-11-05T21:56:00+01:00",
+  "run_id": "tr-20261105T2210+0100-manual",
+  "previous_run_id": "tr-20261105T2155+0100-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T22:10:00+01:00",
+  "updated_at": "2026-11-05T22:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -42,7 +42,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada completada 0/0: cola autoritativa releída en main y sin preparing/update, reexplicaciones ni trabajos activos; ImageGen 0; publicaciones 0",
+  "activity": "Preparando pasada editorial: cola inicial 0; verificando main y posibles reexplicaciones vigentes",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -75,7 +75,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T21:55:00+01:00",
+  "last_started_at": "2026-11-05T22:10:00+01:00",
   "last_completed_at": "2026-11-05T21:56:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -140,7 +140,7 @@
     "tr-20261105T2140+0100-manual",
     "tr-20261105T2155+0100-manual"
   ],
-  "command_id": "tr-20261105T2155+0100-manual",
+  "command_id": "tr-20261105T2210+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
