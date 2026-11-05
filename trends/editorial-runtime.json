@@ -3,37 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793897278232-manual",
-  "previous_run_id": "tr-1793897089314-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T17:48:00+01:00",
-  "updated_at": "2026-11-05T16:52:00.000Z",
-  "finished_at": "2026-11-05T16:52:00.000Z",
-  "current": 1,
-  "total": 1,
+  "run_id": "tr-20261105T1755+0100-manual",
+  "previous_run_id": "tr-1793897278232-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T17:55:00+01:00",
+  "updated_at": "2026-11-05T16:55:00.000Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-6d03af1e5af44606ce82"
-  ],
-  "converged_ids": [
-    "red-review-6d03af1e5af44606ce82"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -41,23 +37,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 1/1 · Amnistía Internacional sin novedades sustanciales; resultado aplicado por convergencia JIT; cola revalidada vacía",
-  "final_outcomes": [
-    {
-      "id": "red-review-6d03af1e5af44606ce82",
-      "revision": 0,
-      "name": "Revisar novedades: Amnistía Internacional",
-      "outcome": "unchanged",
-      "applied": true,
-      "source_id": "3ffa846e080e",
-      "via": "concurrent_convergence_jit"
-    }
-  ],
+  "activity": "Preparando pasada editorial y revalidando cola",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793897278232-manual",
@@ -101,7 +87,7 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T17:48:00+01:00",
+  "last_started_at": "2026-11-05T17:55:00+01:00",
   "last_completed_at": "2026-11-05T16:52:00.000Z",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -143,7 +129,7 @@
     "tr-1793897089314-manual",
     "tr-1793897278232-manual"
   ],
-  "command_id": "tr-1793897278232-manual",
+  "command_id": "tr-20261105T1755+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
