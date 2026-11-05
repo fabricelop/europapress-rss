@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T12:11:02+01:00",
-  "count": 1,
+  "updated_at": "2026-11-05T11:17:29.925733+00:00",
+  "count": 3,
   "items": [
     {
       "id": "radar-prepare-8569609622c3e1584042",
@@ -95,6 +95,70 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "red-review-53ec15e577bdd110c6a5",
+      "revision": 0,
+      "name": "Revisar novedades: Milei",
+      "rank": 29,
+      "status": "preparing",
+      "requested_at": "2026-11-05T11:17:29.925733+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "42180803f78d",
+        "revision": 1,
+        "name": "Milei",
+        "rank": 5,
+        "explanation": "TT#5 Milei es tendencia porque fue sobreseído junto a Karina Milei en la causa $LIBRA: el juez concluyó que no se acreditaron los delitos investigados.\n#JavierMilei #KarinaMilei #LIBRA\n🌶️ El juzgado cerró la causa; el gráfico no aprendió a rebobinar.",
+        "explanation_sha256": "ce834fb9ea218ab4aa4618596b491434358e65b2982bfe8cb75db6b3650a468b",
+        "explained_at": "2026-10-24T05:49:30+02:00",
+        "verification_sources": [
+          "https://efe.com/economia/2026-10-23/javier-milei-hermana-karina-sobreseidos-caso-criptomoneda-libra/",
+          "https://elpais.com/argentina/2026-10-24/la-justicia-argentina-sobresee-a-milei-y-su-hermana-en-la-causa-por-la-presunta-estafa-con-una-criptomoneda.html"
+        ],
+        "fingerprint": "ca45136d9ac927c126784ee5a97fa70534b57910b417615bd2dda52fd1071edf"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-a418485359df8f0d276f",
+      "revision": 0,
+      "name": "Revisar novedades: #JuegaZeldaYa",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-11-05T11:17:29.925733+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "8201536739ef",
+        "revision": 0,
+        "name": "#JuegaZeldaYa",
+        "rank": 3,
+        "explanation": "TT#3 #JuegaZeldaYa aparece entre las tendencias en vísperas del lanzamiento de The Legend of Zelda: Ocarina of Time para Switch 2, previsto para mañana. No se ha podido confirmar qué ha impulsado la etiqueta.\n#Zelda #NintendoSwitch2",
+        "explanation_sha256": "8c96a21cc4c2551e1ccf8426193f42da88b05f4cc48b69b1b86acb9c1da2850f",
+        "explained_at": "2026-11-04T11:56:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.nintendo.com/es-es/Noticias/2026/Noviembre/Proximos-juegos-Noviembre-de-2026-3229019.html"
+          },
+          {
+            "url": "https://www.lavanguardia.com/neo/videojuegos/20261102/11671094/the-legend-of-zelda-ocarina-of-time-remake-nintendo-juega.amp.html"
+          }
+        ],
+        "fingerprint": "556c9ef7ec8ec337180682f183689ad232fa72e8cada7f99bb3e086539394b44"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
