@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T12:56:38+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-05T11:57:08.227127+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-2886b1d0a5bf2a0360bc",
+      "revision": 0,
+      "name": "Revisar novedades: Cumbre Iberoamericana",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-11-05T11:57:08.227127+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "b5ca00019dcd",
+        "revision": 0,
+        "name": "Cumbre Iberoamericana",
+        "rank": 26,
+        "explanation": "TT#26 Cumbre Iberoamericana es tendencia porque la XXX Cumbre arranca mañana en Madrid; hoy llegan delegaciones y se celebra una reunión ministerial sobre transformación digital e IA.\n#CumbreIberoamericana #Madrid\n🌶️ La diplomacia ya está haciendo check-in.",
+        "explanation_sha256": "ab8a25812b52b335ad6481a0d605414d4486e324b2881c88b4e16adeb0a013f6",
+        "explained_at": "2026-11-03T14:14:30+01:00",
+        "verification_sources": [
+          {
+            "source": "Cumbre Iberoamericana 2026 · 01/11/2026",
+            "url": "https://www.30cumbreiberoamericana.gob.es/es/actualidad/noticias/los-paises-iberoamericanos-celebraran-el-3-de-noviembre-en-madrid-la-primera"
+          },
+          {
+            "source": "Casa Real · agenda 04–05/11/2026",
+            "url": "https://www.casareal.es/ES/Actividades/Paginas/actividades_actividades_detalle.aspx?data=17134"
+          },
+          {
+            "source": "Notimérica · 03/11/2026",
+            "url": "https://www.notimerica.com/politica/noticia-brasil-sanchez-afronta-cumbre-iberoamericana-junto-milei-ausencia-sheinbaum-lula-delcy-rodriguez-20261103110311.html"
+          }
+        ],
+        "fingerprint": "d7a7e42665df441f939bde87f7485dadcb49f166a031179ff20b3d56b5cef491"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-7f532a107057b06cc173",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizJueves",
+      "rank": 11,
+      "status": "preparing",
+      "requested_at": "2026-11-05T11:57:08.227127+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ff7da32ed7b2",
+        "revision": 3,
+        "name": "#FelizJueves",
+        "rank": 9,
+        "explanation": "TT#9 #FelizJueves es tendencia porque usuarios de X vuelven a compartir saludos, imágenes y mensajes de buenos días al comenzar el jueves; es una etiqueta recurrente que reaparece cada semana.\n#BuenosDías #Jueves\n🌶️ El algoritmo también sabe qué día es.",
+        "explanation_sha256": "38953e0dab12d59742d5eceba57e657ae997fbf6d05cfa9a613f814658690315",
+        "explained_at": "2026-10-29T07:43:00+01:00",
+        "verification_sources": [
+          "trends/recent.json",
+          "https://twitter-trends.snaplytics.io/spain/2026-10-15/",
+          "https://www.prensax.com/noticia/tendencia-buenjueves-2026-10-01"
+        ],
+        "fingerprint": "1c857cacfb7f9ad077ea518131e1ea6c6580fb003d506c39a455893153dca6e1"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
