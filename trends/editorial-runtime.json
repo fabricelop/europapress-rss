@@ -3,27 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793886671",
+  "run_id": "tr-1793888608013-manual",
   "previous_run_id": "tr-autoguard-1793886671",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-05T15:12:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T15:24:00+01:00",
   "updated_at": "2026-11-05T15:24:30+01:00",
-  "finished_at": "2026-11-05T15:24:30+01:00",
-  "current": 4,
-  "total": 4,
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "2bd1d3d69584",
-    "baa657b1d6a7",
-    "red-review-ccea039ef5113db7bb40",
-    "red-review-7a56d99d4a45b15e4d6f"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [
-    "2bd1d3d69584",
-    "baa657b1d6a7",
     "red-review-ccea039ef5113db7bb40",
     "red-review-7a56d99d4a45b15e4d6f"
   ],
@@ -31,128 +24,66 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 0
+    "incidents": 0,
+    "concurrent_convergence": 2
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "code": "direct_persist_transport_error",
-      "id": "2bd1d3d69584",
-      "revision": 0,
-      "detail": "La escritura directa de los JSON editoriales grandes falló por h2 protocol error sin mutar main; se verificó el estado y se recuperó mediante el editorial-outbox oficial, aplicado correctamente."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Cierre 4/4 · cola vacía verificada",
-  "final_outcomes": [
-    {
-      "id": "2bd1d3d69584",
-      "revision": 0,
-      "name": "Sánchez",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "baa657b1d6a7",
-      "revision": 0,
-      "name": "Arriba España",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "red-review-ccea039ef5113db7bb40",
-      "revision": 0,
-      "name": "Revisar novedades: Mazón",
-      "source_id": "6977961651a2",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_apply"
-    },
-    {
-      "id": "red-review-7a56d99d4a45b15e4d6f",
-      "revision": 0,
-      "name": "Revisar novedades: Óscar Puente",
-      "source_id": "4c7de84bfc7c",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_apply"
-    }
-  ],
+  "activity": "Releyendo main y verificando cola, reexplicaciones y resultados aplicados",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793886671",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "started_at": "2026-11-05T15:12:00+01:00",
-    "updated_at": "2026-11-05T15:24:30+01:00",
-    "finished_at": "2026-11-05T15:24:30+01:00",
-    "current": 4,
-    "total": 4,
+    "updated_at": "2026-11-05T14:23:49.449492+00:00",
+    "finished_at": "2026-11-05T14:23:49.449492+00:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "2bd1d3d69584",
-      "baa657b1d6a7",
       "red-review-ccea039ef5113db7bb40",
       "red-review-7a56d99d4a45b15e4d6f"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "2bd1d3d69584",
-        "revision": 0,
-        "name": "Sánchez",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "baa657b1d6a7",
-        "revision": 0,
-        "name": "Arriba España",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
         "id": "red-review-ccea039ef5113db7bb40",
         "revision": 0,
         "name": "Revisar novedades: Mazón",
-        "source_id": "6977961651a2",
         "outcome": "unchanged",
         "applied": true,
-        "via": "maintenance_apply"
+        "via": "maintenance_outbox_applied"
       },
       {
         "id": "red-review-7a56d99d4a45b15e4d6f",
         "revision": 0,
         "name": "Revisar novedades: Óscar Puente",
-        "source_id": "4c7de84bfc7c",
         "outcome": "unchanged",
         "applied": true,
-        "via": "maintenance_apply"
+        "via": "maintenance_outbox_applied"
       }
     ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -164,10 +95,10 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T15:12:00+01:00",
+  "last_started_at": "2026-11-05T15:24:00+01:00",
   "last_completed_at": "2026-11-05T15:24:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -194,7 +125,7 @@
     "tr-1793885396516-manual",
     "tr-autoguard-1793886671"
   ],
-  "command_id": "tr-autoguard-1793886671",
+  "command_id": "tr-1793888608013-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
