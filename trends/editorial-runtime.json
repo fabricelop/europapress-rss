@@ -3,72 +3,57 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793879836549-manual",
-  "previous_run_id": "tr-autoguard-1793879467",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T12:57:40+01:00",
-  "updated_at": "2026-11-05T13:01:30+01:00",
-  "finished_at": "2026-11-05T13:01:30+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-2886b1d0a5bf2a0360bc",
-    "red-review-7f532a107057b06cc173"
+  "run_id": "tr-1793880015887-manual",
+  "previous_run_id": "tr-1793879836549-manual",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-05T13:02:00+01:00",
+  "updated_at": "2026-11-05T13:02:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 4,
+  "trend_id": "9bdffb8b2753",
+  "title": "Ábalos",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "9bdffb8b2753",
+    "c7b5261ee130",
+    "ad3e59fa44d2",
+    "8d0133e8023a"
   ],
-  "converged_ids": [
-    "red-review-7f532a107057b06cc173"
+  "remaining_active_ids": [
+    "9bdffb8b2753",
+    "c7b5261ee130",
+    "ad3e59fa44d2",
+    "8d0133e8023a"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 4,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre verificado: Cumbre Iberoamericana actualizada en continuidad; #FelizJueves sin novedades sustanciales. Cola y rewrite_pending a cero; sin ImageGen ni publicaciones.",
-  "final_outcomes": [
-    {
-      "id": "red-review-2886b1d0a5bf2a0360bc",
-      "revision": 0,
-      "name": "Revisar novedades: Cumbre Iberoamericana",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "b5ca00019dcd"
-    },
-    {
-      "id": "red-review-7f532a107057b06cc173",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizJueves",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "ff7da32ed7b2",
-      "concurrent_convergence": true
-    }
-  ],
+  "activity": "Investigando Ábalos tras revalidación JIT; operación de la UCO y registro de su domicilio en la nueva pieza del caso Koldo.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793879836549-manual",
@@ -144,7 +129,7 @@
     "tr-1793877457295-manual",
     "tr-1793879836549-manual"
   ],
-  "command_id": "tr-1793879836549-manual",
+  "command_id": "tr-1793880015887-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
