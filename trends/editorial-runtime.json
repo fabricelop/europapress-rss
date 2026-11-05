@@ -3,26 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793886671",
-  "previous_run_id": "tr-1793885396516-manual",
+  "run_id": "tr-1793888411347-manual",
+  "previous_run_id": "tr-autoguard-1793886671",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-05T15:12:00+01:00",
-  "updated_at": "2026-11-05T15:20:00+01:00",
+  "started_at": "2026-11-05T15:20:30+01:00",
+  "updated_at": "2026-11-05T15:20:30+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 4,
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "2bd1d3d69584",
-    "baa657b1d6a7"
-  ],
-  "converged_ids": [
-    "2bd1d3d69584",
-    "baa657b1d6a7"
-  ],
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [
     "red-review-ccea039ef5113db7bb40",
     "red-review-7a56d99d4a45b15e4d6f"
@@ -33,17 +27,17 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,25 +48,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Reabierta 2/4 · llegaron dos revisiones de novedades",
-  "final_outcomes": [
-    {
-      "id": "2bd1d3d69584",
-      "revision": 0,
-      "name": "Sánchez",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "baa657b1d6a7",
-      "revision": 0,
-      "name": "Arriba España",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    }
-  ],
+  "activity": "Preparando 0/2 · revisiones de novedades",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793886671",
@@ -151,7 +128,7 @@
     "tr-1793885396516-manual",
     "tr-autoguard-1793886671"
   ],
-  "command_id": "tr-autoguard-1793886671",
+  "command_id": "tr-1793888411347-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
