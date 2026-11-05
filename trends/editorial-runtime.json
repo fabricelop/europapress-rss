@@ -6,29 +6,27 @@
   "run_id": "tr-1793838558947-manual",
   "previous_run_id": "tr-1793838373801-manual",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "verifying",
   "started_at": "2026-11-05T00:40:00.000Z",
-  "updated_at": "2026-11-05T00:44:00.000Z",
+  "updated_at": "2026-11-05T00:45:00.000Z",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 1,
   "trend_id": "c9ee3ec3e003",
   "title": "Nunn",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "c9ee3ec3e003"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "c9ee3ec3e003"
-  ],
-  "remaining_active_ids": [
-    "c9ee3ec3e003"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -43,8 +41,18 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo Nunn r0 mediante TTENDENCIAS_CHAT_OUTBOX_V1 sobre main fresco.",
-  "final_outcomes": [],
+  "activity": "Verificando barrera final en main: cola, rewrite_pending y consistencia requests/explained.",
+  "final_outcomes": [
+    {
+      "id": "c9ee3ec3e003",
+      "revision": 0,
+      "name": "Nunn",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "50fdc631fac03dbecee4cafdee7eb42a259bebb5",
+      "via": "chat_outbox"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793838373801-manual",
