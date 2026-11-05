@@ -2,55 +2,119 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-04T21:42:34.173532+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-05T01:50:09.618696+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "76cc0b88ce16",
+          "title": "Carlos Alcaraz: \"Lo de Rafa Nadal directivo del Real Madrid me parece una locura, me alegra por él\"",
+          "seconds": 3975,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1684101,
+          "seconds": 1698957,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "25bcefac23f1e167480631d889273fd65a5059fc2e029a897e50ffade10609b0",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-11-04T21:42:34.173532+00:00",
-      "issue_count": 4,
+      "checked_at": "2026-11-05T01:50:09.618696+00:00",
+      "issue_count": 12,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "5ab9dcfe817e",
-          "title": "Jarabe",
-          "seconds": 678,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
         {
           "kind": "missing_delivery",
           "id": "e7ff915e50a9",
           "title": "Güler",
-          "seconds": 1858,
+          "seconds": 16714,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "d4a2fa3f6989",
           "title": "Champions",
-          "seconds": 1804,
+          "seconds": 13587,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "78c973bfa2ad",
+          "title": "Dortmund",
+          "seconds": 13498,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "d05d7faf3901",
+          "title": "Betis",
+          "seconds": 12203,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "50405f310f9f",
+          "title": "#LaIslaDeLasTentaciones17",
+          "seconds": 11347,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "57f0c287cf42",
+          "title": "mckenna",
+          "seconds": 11347,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "b2f42653f44a",
+          "title": "#RevillaEH",
+          "seconds": 11347,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-87d7ddfa94dd293539c5",
+          "title": "Parrot",
+          "seconds": 10573,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-b0c01b00ed5111b801fe",
+          "title": "Mazón",
+          "seconds": 10268,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-3c47fc6375ed614df5e6",
+          "title": "#ElChiringuitoenCuatro",
+          "seconds": 4858,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-e219c5411d1218858ea9",
+          "title": "Óscar Puente",
+          "seconds": 4783,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1684101,
+          "seconds": 1698956,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -59,16 +123,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "cc7b00389c592aeefb4215b99834a51bfe48ecd434df6a2d2cb709373894e619",
+      "open_signature": "b8cff81ecb6a523e2c207134183cb127f51b1dc6765afc3d970006835c4b7d79",
       "repair_via_workflow_run": false,
-      "escalation_required": 2
+      "escalation_required": 11
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-04T15:55:29.500968+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-04T21:42:34.173532+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-04T21:42:34.173532+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-04T21:42:34.173532+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T01:50:09.618696+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-05T01:50:09.618696+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-05T01:50:09.618696+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-05T01:50:09.618696+00:00"
   },
-  "checked_at": "2026-11-04T21:42:34.173532+00:00"
+  "checked_at": "2026-11-05T01:50:09.618696+00:00"
 }

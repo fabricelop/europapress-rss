@@ -1,13 +1,15 @@
 {
   "version": 1,
-  "checked_at": "2026-11-04T23:47:54.596162+00:00",
+  "checked_at": "2026-11-05T01:50:07.303693+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-04T23:47:54.596162+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-05T01:50:07.303693+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "76cc0b88ce16"
+      ],
+      "oldest_at": "2026-11-05T00:43:54.120734Z",
       "latest_run": {
         "id": "tt-ios-1793832210927-98b9fd7a",
         "status": "DONE",
@@ -16,29 +18,40 @@
         "finished_at": null,
         "source": "github_pr_trace"
       },
-      "control_command": "tt-ios-1793832210927-98b9fd7a",
-      "last_command_at": "2026-11-04T22:43:30Z",
-      "status": "no_work",
+      "control_command": "tt-urgent-1793843404113",
+      "last_command_at": "2026-11-05T01:50:04.113Z",
+      "status": "dispatch_pending_ack",
       "should_dispatch": false,
+      "item_execution": [
+        {
+          "id": "76cc0b88ce16",
+          "entered_at": "2026-11-05T00:43:54.120734Z",
+          "should_start_by": "2026-11-05T00:48:54.120734+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "6118a9f887189e0b",
+      "expected_start_by": "2026-11-05T00:48:54.120734+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-04T10:46:11.156801+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-04T23:47:54.596162+00:00",
+      "checked_at": "2026-11-05T01:50:07.303693+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tr-1793835187383-manual",
-        "status": "DONE_WITH_INCIDENTS",
-        "started_at": "2026-11-05T00:33:00+01:00",
-        "updated_at": "2026-11-04T23:40:30+00:00",
-        "finished_at": "2026-11-05T00:40:30+01:00",
+        "id": "tr-1793842224819-manual",
+        "status": "DONE",
+        "started_at": "2026-11-05T01:31:30.000Z",
+        "updated_at": "2026-11-05T01:35:00+00:00",
+        "finished_at": "2026-11-05T01:35:00.000Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1793835406983-manual",
-      "last_command_at": "2026-11-04T23:36:46.983Z",
+      "control_command": "tr-1793842224819-manual",
+      "last_command_at": "2026-11-05T01:30:24.819Z",
       "status": "no_work",
       "should_dispatch": false,
       "attempts": 0,
