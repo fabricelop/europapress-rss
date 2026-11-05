@@ -651,6 +651,25 @@ final class GitHubEditor: ObservableObject {
         return originalURL
     }
 
+    // HTTP 204 is only a transport acknowledgement. Verify the committed state.
+    private func readMainJSON(_ path: String) async throws -> [String: Any] {
+        var url = URLComponents(string: "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + path)!
+        url.queryItems = [URLQueryItem(name: "ref", value: "main")]
+        var request = URLRequest(url: url.url!, cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 20)
+        request.setValue("application/vnd.github.raw+json", forHTTPHeaderField: "Accept")
+        request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
+        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw GitHubError.message("No se pudo leer la confirmación de GitHub.")
+        }
+        guard let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else {
+            throw GitHubError.message("Confirmación de GitHub malformada.")
+        }
+        return object
+    }
+
     // Rebuild the *display* news inbox from retained editorial history, not
     // the transient Listas or the often-empty prepared.json. Opaque relation
     // identities can ONLY come from Sites /v1/snapshot. This method NEVER
@@ -745,25 +764,6 @@ final class GitHubEditor: ObservableObject {
                 title: $0.title, text: $0.text, path: nil,
                 listedAt: ISO8601DateFormatter().string(from: $0.issuedAt))
         }
-    }
-
-    // HTTP 204 is only a transport acknowledgement. Verify the committed state.
-    private func readMainJSON(_ path: String) async throws -> [String: Any] {
-        var url = URLComponents(string: "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + path)!
-        url.queryItems = [URLQueryItem(name: "ref", value: "main")]
-        var request = URLRequest(url: url.url!, cachePolicy: .reloadIgnoringLocalCacheData,
-                                 timeoutInterval: 20)
-        request.setValue("application/vnd.github.raw+json", forHTTPHeaderField: "Accept")
-        request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
-        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
-            throw GitHubError.message("No se pudo leer la confirmación de GitHub.")
-        }
-        guard let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else {
-            throw GitHubError.message("Confirmación de GitHub malformada.")
-        }
-        return object
     }
 
     private func actionReceipt(_ requestID: String) async throws -> String? {
