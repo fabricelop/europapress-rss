@@ -1,31 +1,8 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-05T21:44:11.976230Z",
-  "count": 2,
+  "updated_at": "2026-11-05T21:45:27.182666Z",
+  "count": 1,
   "items": [
-    {
-      "event_id": "0332963eb4e4",
-      "title": "El gobernador de California conmuta todas las penas de muerte del estado por cadena perpetua",
-      "url": "https://www.abc.es/internacional/gobernador-california-conmuta-penas-muerte-estado-cadena-20261105203959-nt.html",
-      "selected_at": "2026-11-05T20:54:35.223099Z",
-      "problematic_at": "2026-11-05T21:18:16.348639Z",
-      "problem_reason": "transport_write_blocked",
-      "problematic_attempts": 1,
-      "user_validated": true,
-      "user_validated_at": "2026-11-05T21:42:44.249500+00:00",
-      "revision": 1,
-      "source_count": 4,
-      "sources": [
-        "ABC",
-        "Europa Press",
-        "EFE",
-        "La Vanguardia"
-      ],
-      "status": "PROCESSING",
-      "selection_mode": "MANUAL_REOPEN_OUTCOME",
-      "force_user_elaborate": true,
-      "requested_at": "2026-11-05T21:42:44.249500+00:00"
-    },
     {
       "event_id": "manual-5a8ea62c-3bc4-477f-8eb6-61d3e387d2e3",
       "title": "Cachondeo con el esperpéntico mitin de Figaredo en la calle: \"Parece un predicador del metro\"",
@@ -36,12 +13,15 @@
       "selection_mode": "TTACTUALIDAD_MANUAL",
       "status": "PROCESSING",
       "revision": 1,
+      "rewrite_scope": null,
+      "reinvestigate": false,
+      "preserved_editorial": null,
       "rewrite_request": "",
+      "parent_event_id": null,
+      "update_context": null,
       "with_image": true,
       "image_mode": "ai_plus_fallback",
-      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY.",
-      "manual_investigation_requested": true,
-      "allow_zero_initial_sources": true
+      "image_instruction": "TT_STYLE_A_V1: una sola caricatura satírica editorial, gag visual fuerte y exagerado acorde con el hecho; si el tema es sensible usa fallback_only. Ninguna imagen puede bloquear READY."
     }
   ]
 }
