@@ -632,10 +632,15 @@ assert 'ForEach(newsGroups, id: \\.stableIdentity)' in relations
 assert 'Label("Guardar: ' in relations
 assert 'DisclosureGroup(isExpanded: expansion(news))' in relations
 assert 'Array(top30Names.prefix(30).enumerated())' in relations
-assert 'model.saveSelection(news: news, links: links' in relations
-assert 'suggestionsToDismiss(for: news)' in relations
+assert 'model.saveSelection(' in relations
+assert 'unlinks: changes.unlinks' in relations
 assert 'action: "dismiss"' in relations
-assert 'Al guardar, las propuestas sin marcar se descartarán' in relations
+assert 'Solo se guardan los cambios que hagas' in relations
+assert 'private var lookbackHours = 12' in relations
+assert 'Text("24 horas").tag(24)' in relations
+assert 'Ocultar de esta lista' in relations and 'Restaurar' in relations
+assert 'recentNews(' in relation_models and 'actionForSwitch(' in relation_models
+assert 'suggestionsToDismiss(for: news)' not in relations
 assert 'EditorialRelationsPolicy.canonical(' in relations
 assert 'static func canonical(_ items: [EditorialRelation])' in relation_models
 assert 'UserDefaults.standard.set(commands, forKey: commandStorageKey)' in relations
