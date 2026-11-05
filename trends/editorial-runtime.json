@@ -3,44 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261106T0010+0100-manual",
+  "run_id": "tr-20261106T0025+0100-manual",
   "previous_run_id": "tr-20261106T0010+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T00:10:00+01:00",
-  "updated_at": "2026-11-06T00:18:30+01:00",
-  "finished_at": "2026-11-06T00:18:30+01:00",
-  "current": 8,
-  "total": 8,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T00:25:00+01:00",
+  "updated_at": "2026-11-06T00:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "fddf605b306b",
-    "9224d7710011",
-    "82295a14a55a",
-    "dc41d05d0c7b",
-    "d7496b5223d9",
-    "red-review-225123b61fba0e156ab5",
-    "red-review-d7a36e0a32bc2297e1a5"
-  ],
-  "converged_ids": [
-    "dddd935d6ed9",
-    "red-review-225123b61fba0e156ab5",
-    "red-review-d7a36e0a32bc2297e1a5"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 8,
-    "closed": 7,
-    "explained": 5,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -49,85 +37,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada: 5 explicaciones ordinarias aplicadas, Javierito retirado por refresco autoritativo antes del JIT y 2 revisiones de novedades aplicadas por convergencia. Cola 0; sin ImageGen ni publicaciones.",
-  "final_outcomes": [
-    {
-      "id": "fddf605b306b",
-      "revision": 0,
-      "name": "POBRE DE MI",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "73df95d9b42a97d17b19ad813145557b36b73f29"
-    },
-    {
-      "id": "9224d7710011",
-      "revision": 0,
-      "name": "Arturo Requejo",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "73df95d9b42a97d17b19ad813145557b36b73f29"
-    },
-    {
-      "id": "82295a14a55a",
-      "revision": 0,
-      "name": "Almodóvar",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "73df95d9b42a97d17b19ad813145557b36b73f29"
-    },
-    {
-      "id": "dc41d05d0c7b",
-      "revision": 0,
-      "name": "Milán",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "73df95d9b42a97d17b19ad813145557b36b73f29"
-    },
-    {
-      "id": "d7496b5223d9",
-      "revision": 0,
-      "name": "Hapoel",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "762f98ede6b9f6ff0630b38c0cf3c0e0e324fbac"
-    },
-    {
-      "id": "dddd935d6ed9",
-      "revision": 0,
-      "name": "Javierito",
-      "outcome": "withdrawn_before_jit",
-      "applied": false,
-      "via": "authoritative_radar_refresh",
-      "refresh_commit": "a46f90acfc35a291e691690272aec4bc6c941c1e"
-    },
-    {
-      "id": "red-review-225123b61fba0e156ab5",
-      "revision": 0,
-      "name": "Revisar novedades: #LaRevuelta",
-      "outcome": "updated",
-      "distinct_episode": true,
-      "applied": true,
-      "created_id": "trend-update-56381a455a7e51e2e6df",
-      "via": "concurrent_convergence",
-      "apply_commit": "b42bdd9a76d76867e600b36ee314c513e844cb9f"
-    },
-    {
-      "id": "red-review-d7a36e0a32bc2297e1a5",
-      "revision": 0,
-      "name": "Revisar novedades: #ElPerroAndaluzTVE",
-      "outcome": "updated",
-      "distinct_episode": true,
-      "applied": true,
-      "created_id": "trend-update-e70cb1174fd7da8fca80",
-      "via": "concurrent_convergence",
-      "apply_commit": "b42bdd9a76d76867e600b36ee314c513e844cb9f"
-    }
-  ],
+  "activity": "Iniciando pasada manual; leyendo cola autoritativa y comprobando reelaboraciones pendientes.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793920275",
@@ -225,7 +141,7 @@
     "title": null,
     "message": "Pasada 7/7 completada. Cinco tendencias explicadas y dos revisiones actualizadas como episodios distintos. Barrera final main: editorial-queue=0; rewrite_pending/reexplain=0; ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T00:11:15+01:00",
+  "last_started_at": "2026-11-06T00:25:00+01:00",
   "last_completed_at": "2026-11-06T00:18:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -304,7 +220,7 @@
     "tr-1793920495747-manual",
     "tr-20261106T0010+0100-manual"
   ],
-  "command_id": "tr-20261106T0010+0100-manual",
+  "command_id": "tr-20261106T0025+0100-manual",
   "canonical_successor_run_id": "tr-1793920495747-manual",
-  "source": "autoguard"
+  "source": "chat"
 }
