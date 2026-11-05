@@ -644,7 +644,10 @@ assert 'top30Trends: store.snapshot.top30' in dashboard
 assert 'top30Trends: store.snapshot.top30' in actions
 assert '$0.id == row.editorialID' in relations
 assert '$0.revision == row.revision' in relations
-assert '$0.text == row.explanation' in relations
+assert 'matchingTop30Endpoint(' in relations
+assert 'static func matchingTop30Endpoint(' in relation_models
+assert '$0.text == renderedText' in relation_models
+assert 'return matches.count == 1 ? matches[0] : nil' in relation_models
 assert 'editorialRelationRecentNews()' in relations
 assert 'historicalNews: [EditorialRelationEndpoint]' in relations
 assert 'canonicalRelations.map(\\.news) + model.historicalNews' in relations
