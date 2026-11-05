@@ -1,36 +1,33 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-05T11:04:15.756399Z",
+  "updated_at": "2026-11-05T11:04:47.149385Z",
   "radar_at": "2026-11-05T11:01:37.549936Z",
-  "processing_count": 2,
+  "processing_count": 1,
   "processing_items": [
     {
       "event_id": "manual-9d95a0b4-7b31-413c-bab6-4dba2e7d763e",
       "title": "Avisos de bomba en varios aviones",
       "url": "",
+      "status": "PROCESSING",
+      "revision": 1,
       "selected_at": "2026-11-05T10:56:37.603437Z",
+      "requested_at": "2026-11-05T10:56:37.603437Z",
       "selection_mode": "TTACTUALIDAD_MANUAL",
-      "rewrite_version": null,
+      "manual_submission": true,
+      "manual_investigation_requested": true,
+      "force_user_elaborate": true,
+      "allow_zero_initial_sources": true,
       "source_count": 0,
-      "sources": []
-    },
-    {
-      "event_id": "1624333e23b1",
-      "title": "El Supremo amnistía a la exconsejera Clara Ponsatí y archiva la acusación de desobediencia",
-      "url": "https://www.europapress.es/nacional/noticia-supremo-amnistia-exconsejera-clara-ponsati-archiva-acusacion-desobediencia-20261105111415.html",
-      "selected_at": "2026-11-05T10:54:41.844823Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
-      "source_count": 4,
-      "sources": [
-        "El Mundo",
-        "Europa Press",
-        "La Vanguardia",
-        "Servimedia"
-      ]
+      "verified_source_count": 0,
+      "sources": [],
+      "user_instructions": "",
+      "rewrite_request": "",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_instruction": "TT_STYLE_A_V1: imagen editorial adecuada al hecho confirmado; imagen opcional, nunca bloquea READY."
     }
   ],
-  "ready_count": 1,
+  "ready_count": 2,
   "problematic_count": 1,
   "problematic_items": [
     {
@@ -46,10 +43,10 @@
       "revision": 1,
       "source_count": 5,
       "sources": [
-        "20minutos",
+        "Europa Press",
         "EL PAÍS",
         "El Mundo",
-        "Europa Press",
+        "20minutos",
         "elDiario.es"
       ]
     }
