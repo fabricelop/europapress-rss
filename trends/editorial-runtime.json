@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793899109945-manual",
-  "previous_run_id": "tr-1793898959673-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T18:18:00+01:00",
-  "updated_at": "2026-11-05T18:21:12+01:00",
-  "finished_at": "2026-11-05T18:21:12+01:00",
+  "run_id": "tr-20261105T1840+0100-manual",
+  "previous_run_id": "tr-1793899109945-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T18:40:00+01:00",
+  "updated_at": "2026-11-05T18:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -37,12 +37,12 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 0/0 · la ejecución inmediatamente anterior aplicó las revisiones pendientes; relectura final de main con cola vacía y sin reexplicaciones pendientes",
+  "activity": "Releyendo main y verificando cola autoritativa y reexplicaciones pendientes",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -75,7 +75,7 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T18:18:00+01:00",
+  "last_started_at": "2026-11-05T18:40:00+01:00",
   "last_completed_at": "2026-11-05T18:21:12+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -121,7 +121,7 @@
     "tr-1793898959673-manual",
     "tr-1793899109945-manual"
   ],
-  "command_id": "tr-1793899109945-manual",
+  "command_id": "tr-20261105T1840+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
