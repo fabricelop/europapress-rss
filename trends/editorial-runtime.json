@@ -3,25 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793872267",
-  "previous_run_id": "tr-1793870884210-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-05T10:51:10+01:00",
-  "updated_at": "2026-11-05T10:55:30+01:00",
+  "run_id": "tr-1793872569013-manual",
+  "previous_run_id": "tr-autoguard-1793872267",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T10:57:00+01:00",
+  "updated_at": "2026-11-05T10:57:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "adfc2eddd0c1",
-  "title": "Dcoop y Acesur",
-  "queue_complete": true,
-  "processed_ids": [
-    "881c3609cf26",
-    "adfc2eddd0c1"
-  ],
+  "trend_id": "red-review-a2f3e45e3534084d3e4f",
+  "title": "Revisar novedades: Mazón",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-a2f3e45e3534084d3e4f",
+    "red-review-d62020c60506036a6998"
+  ],
+  "remaining_active_ids": [
+    "red-review-a2f3e45e3534084d3e4f",
+    "red-review-d62020c60506036a6998"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -45,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo y verificando 2/2: Dcoop y Acesur.",
+  "activity": "Revisando novedades 0/2: Mazón.",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -105,8 +108,8 @@
     "incidents": 1,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T10:55:30+01:00",
-  "last_completed_at": "2026-11-05T10:55:30+01:00",
+  "last_started_at": "2026-11-05T10:57:00+01:00",
+  "last_completed_at": "2026-11-05T10:34:41+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -118,5 +121,5 @@
     "tr-1793870884210-manual",
     "tr-1793871156152-manual"
   ],
-  "command_id": "tr-autoguard-1793872267"
+  "command_id": "tr-1793872569013-manual"
 }
