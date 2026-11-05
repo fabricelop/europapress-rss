@@ -3,35 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793842224819-manual",
-  "previous_run_id": "tr-1793838558947-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T01:31:30.000Z",
-  "updated_at": "2026-11-05T01:35:00.000Z",
-  "finished_at": "2026-11-05T01:35:00.000Z",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-ebea5fc14de68fedbb2b",
-    "red-review-3717342ca2a94c3cc43e"
-  ],
+  "run_id": "tr-autoguard-1793848261",
+  "previous_run_id": "tr-1793842224819-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T03:11:00.000Z",
+  "updated_at": "2026-11-05T03:11:00.000Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "667003b2f251",
+  "title": "mckenna grace",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "667003b2f251"
+  ],
+  "remaining_active_ids": [
+    "667003b2f251"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "updates": 0,
-    "unchanged_reviews": 2,
-    "stale_reviews": 2,
-    "queue_remaining": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -42,27 +43,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 2/2 · Valentín y Lens revisados sin novedades sustanciales; texto y fecha originales conservados. Barrera final main: cola 0; preparing/update 0; rewrite_pending 0.",
-  "final_outcomes": [
-    {
-      "id": "red-review-ebea5fc14de68fedbb2b",
-      "revision": 0,
-      "name": "Revisar novedades: Valentín",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
-      "via": "maintenance_outbox"
-    },
-    {
-      "id": "red-review-3717342ca2a94c3cc43e",
-      "revision": 0,
-      "name": "Revisar novedades: Lens",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
-      "via": "maintenance_outbox"
-    }
-  ],
+  "activity": "Preparando 1/1 · mckenna grace r0 · revalidación JIT pendiente antes de investigar.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793842224819-manual",
@@ -113,7 +95,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T01:31:30.000Z",
+  "last_started_at": "2026-11-05T03:11:00.000Z",
   "last_completed_at": "2026-11-05T01:35:00.000Z",
   "draft_preview": null
 }
