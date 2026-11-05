@@ -8,35 +8,34 @@
   "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-05T09:45:00+01:00",
-  "updated_at": "2026-11-05T09:50:00+01:00",
+  "updated_at": "2026-11-05T09:52:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 3,
-  "trend_id": "red-review-f933e56b931fc1ff0127",
-  "title": "Revisar novedades: Kiko",
+  "trend_id": "red-review-3aa75cc87d01cc877706",
+  "title": "Revisar novedades: Parrot",
   "queue_complete": false,
   "processed_ids": [
-    "f4bf62d1904b"
+    "f4bf62d1904b",
+    "red-review-f933e56b931fc1ff0127"
   ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-f933e56b931fc1ff0127",
     "red-review-3aa75cc87d01cc877706"
   ],
   "remaining_active_ids": [
-    "red-review-f933e56b931fc1ff0127",
     "red-review-3aa75cc87d01cc877706"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 3,
-    "closed": 1,
+    "closed": 2,
     "explained": 1,
-    "updates": 0,
+    "updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,7 +46,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades 2/3: Kiko. #LaMesa ya quedó explained; validación JIT de red-review-f933e56b931fc1ff0127 r0. ImageGen=0.",
+  "activity": "Revisando novedades 3/3: Parrot. Kiko quedó continuity; validación JIT de red-review-3aa75cc87d01cc877706 r0. ImageGen=0.",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
