@@ -206,7 +206,7 @@ class MaintenanceTests(unittest.TestCase):
         command = dict(job_id=job['id'], outcome='updated',
                        reason='Seguimiento de la misma dimisión sin hechos nuevos',
                        verification_sources=[{'url': 'https://example.org/source'}],
-                       explanation='TT#16 Óscar Puente es tendencia por su dimisión como ministro de Transportes.',
+                       explanation='TT#16 Óscar Puente es tendencia por su dimisión como ministro de Transportes, asunto que continúa en medios.',
                        new_facts='Óscar Puente dimite como ministro de Transportes',
                        distinct_episode=True, material_change=True,
                        significance_reason='La dimisión sigue en la agenda pero no es otro episodio',
