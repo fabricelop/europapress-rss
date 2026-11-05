@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-20261106T0025+0100-manual",
   "previous_run_id": "tr-20261106T0010+0100-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T00:25:00+01:00",
-  "updated_at": "2026-11-06T00:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T00:27:00+01:00",
+  "finished_at": "2026-11-06T00:27:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -42,91 +42,30 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Iniciando pasada manual; leyendo cola autoritativa y comprobando reelaboraciones pendientes.",
+  "activity": "Pasada cerrada 0/0 tras releer main: editorial-queue=0 y sin rewrite_pending/reexplicaciones detectadas. Sin ImageGen ni publicaciones.",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1793920275",
+    "run_id": "tr-20261106T0025+0100-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T00:11:15+01:00",
-    "updated_at": "2026-11-06T00:16:06+01:00",
-    "finished_at": "2026-11-06T00:16:06+01:00",
-    "current": 7,
-    "total": 7,
+    "started_at": "2026-11-06T00:25:00+01:00",
+    "updated_at": "2026-11-06T00:27:00+01:00",
+    "finished_at": "2026-11-06T00:27:00+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "d7496b5223d9",
-      "red-review-225123b61fba0e156ab5",
-      "red-review-d7a36e0a32bc2297e1a5"
-    ],
-    "converged_ids": [
-      "fddf605b306b",
-      "9224d7710011",
-      "82295a14a55a",
-      "dc41d05d0c7b"
-    ],
+    "processed_ids": [],
+    "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "fddf605b306b",
-        "name": "POBRE DE MI",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "9224d7710011",
-        "name": "Arturo Requejo",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "82295a14a55a",
-        "name": "Almodóvar",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "d7496b5223d9",
-        "name": "Hapoel",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": false
-      },
-      {
-        "id": "dc41d05d0c7b",
-        "name": "Milán",
-        "revision": 0,
-        "outcome": "explained",
-        "converged": true
-      },
-      {
-        "id": "red-review-225123b61fba0e156ab5",
-        "name": "#LaRevuelta",
-        "revision": 0,
-        "outcome": "updated",
-        "distinct_episode": true,
-        "converged": false
-      },
-      {
-        "id": "red-review-d7a36e0a32bc2297e1a5",
-        "name": "#ElPerroAndaluzTVE",
-        "revision": 0,
-        "outcome": "updated",
-        "distinct_episode": true,
-        "converged": false
-      }
-    ],
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 5,
+    "final_outcomes": [],
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -135,14 +74,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada 7/7 completada. Cinco tendencias explicadas y dos revisiones actualizadas como episodios distintos. Barrera final main: editorial-queue=0; rewrite_pending/reexplain=0; ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada 0/0 completada. Barrera final main: editorial-queue=0; sin rewrite_pending/reexplicaciones detectadas; ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T00:25:00+01:00",
-  "last_completed_at": "2026-11-06T00:18:30+01:00",
+  "last_completed_at": "2026-11-06T00:27:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -218,9 +157,10 @@
     "tr-1793918400000-manual",
     "tr-20261105T2355+0100-manual",
     "tr-1793920495747-manual",
-    "tr-20261106T0010+0100-manual"
+    "tr-20261106T0010+0100-manual",
+    "tr-20261106T0025+0100-manual"
   ],
   "command_id": "tr-20261106T0025+0100-manual",
-  "canonical_successor_run_id": "tr-1793920495747-manual",
+  "canonical_successor_run_id": null,
   "source": "chat"
 }
