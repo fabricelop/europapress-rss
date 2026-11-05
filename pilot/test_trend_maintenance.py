@@ -92,7 +92,15 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(state[g.REQUESTS]['requests'][-1]['review_outcome'], 'continuity')
         self.assertEqual(len(state[g.MANUAL]['items']), 1)
         self.assertEqual(state[g.MANUAL]['items'][0]['id'], 'a')
-        self.assertEqual(state[g.MANUAL]['items'][0]['explanation'], self.row['explanation'])
+        self.assertEqual(
+            state[g.MANUAL]['items'][0]['explanation'],
+            'TT#30 Adif sigue siendo tendencia por el anuncio de su rueda de prensa.\n#Adif #Trenes')
+        self.assertEqual(state[g.MANUAL]['items'][0]['red_review_previous_explanation'],
+                         self.row['explanation'])
+        self.assertEqual(state[g.MANUAL]['items'][0]['explained_at'], self.row['explained_at'])
+        self.assertEqual(state[g.MANUAL]['items'][0]['revision'], self.row['revision'])
+        self.assertEqual(state[g.REQUESTS]['requests'][0]['explanation'],
+                         state[g.MANUAL]['items'][0]['explanation'])
         self.assertEqual(state[g.MANUAL]['items'][0]['red_review_outcome'], 'continuity')
         self.assertFalse(state[g.MANUAL]['items'][0].get('ai_image_status') == 'pending')
 
@@ -190,6 +198,10 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(len(final[g.MANUAL]['items']), 1)
         self.assertEqual(final[g.MANUAL]['items'][0]['ai_image_status'], 'ready')
         self.assertEqual(final[g.MANUAL]['items'][0]['site_image_url'], 'https://example.org/original.png')
+        self.assertEqual(final[g.MANUAL]['items'][0]['explanation'],
+                         'TT#30 Adif sigue siendo tendencia por nuevas declaraciones.\\n#Adif')
+        self.assertEqual(final[g.REQUESTS]['requests'][0]['explanation'],
+                         final[g.MANUAL]['items'][0]['explanation'])
         self.assertEqual(final[g.MANUAL]['items'][0]['explained_at'], self.row['explained_at'])
         self.assertEqual(len([row for row in final[g.REQUESTS]['requests']
                               if row.get('with_image') is True]), 0)
@@ -218,6 +230,12 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(result[g.MANUAL]['items'][0]['ai_image_status'], 'ready')
         self.assertEqual(result[g.MANUAL]['items'][0]['site_image_url'],
                          'https://example.org/original.png')
+        self.assertEqual(result[g.MANUAL]['items'][0]['explanation'],
+                         command['explanation'])
+        self.assertEqual(result[g.MANUAL]['items'][0]['explained_at'],
+                         self.row['explained_at'])
+        self.assertEqual(result[g.MANUAL]['items'][0]['id'], self.row['id'])
+        self.assertEqual(result[g.REQUESTS]['requests'][0]['status'], 'explained')
 
     def test_distinct_episode_needs_date_and_cannot_reuse_event_key(self):
         command = self.result('updated')
@@ -234,6 +252,31 @@ class MaintenanceTests(unittest.TestCase):
         self.assertTrue(new_state[g.MANUAL]['items'][-1]['material_change_verified'])
         self.assertFalse(m.verified_distinct_material_event(
             command, self.row, new_state, self.now, g.grouping_api()))
+
+    def test_revised_explanation_is_used_on_next_scheduled_review(self):
+        command = self.result('updated')
+        command.update(
+            explanation='TT#30 Adif sigue siendo tendencia por un nuevo parte informativo.\\n#Adif',
+            new_facts='Parte informativo publicado con detalles adicionales',
+            closer_text='')
+        first, changed = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertTrue(changed)
+        updated = first[g.MANUAL]['items'][0]
+        self.assertEqual(updated['explanation'], command['explanation'])
+        self.assertEqual(updated['explained_at'], self.row['explained_at'])
+        self.assertEqual(updated['revision'], 1)
+        self.assertEqual(updated['id'], 'a')
+        # The hourly check picks up the updated factual explanation, not the
+        # obsolete text; no new publishing or image task was created.
+        next_time = self.now + timedelta(hours=2)
+        first[m.RECENT]['updated_at'] = next_time.isoformat()
+        m.schedule_reviews(first, next_time, g.grouping_api())
+        reviews = [r for r in first[g.REQUESTS]['requests']
+                   if r.get('red_review_request') and r['status'] == 'preparing']
+        self.assertEqual(len(reviews), 1)
+        self.assertEqual(reviews[0]['review_source']['explanation'], command['explanation'])
+        self.assertEqual(len(first[g.MANUAL]['items']), 1)
+        self.assertFalse(any(r.get('with_image') for r in reviews))
 
     def test_new_work_does_not_trigger_automatic_grouping(self):
         fresh = {**self.row, 'id': 'b', 'name': 'Atocha',
