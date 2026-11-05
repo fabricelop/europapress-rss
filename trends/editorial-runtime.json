@@ -3,32 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793914290",
-  "previous_run_id": "tr-20261105T2210+0100-manual",
-  "status": "success",
+  "run_id": "tr-1793914621791-manual",
+  "previous_run_id": "tr-autoguard-1793914290",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-05T22:32:00+01:00",
-  "updated_at": "2026-11-05T22:36:25+01:00",
+  "started_at": "2026-11-05T22:38:00+01:00",
+  "updated_at": "2026-11-05T22:38:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 5,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "b9ae62ede2da",
-    "d2c385cd4faf",
-    "dd44f496fada",
-    "f062213d6e59",
-    "fdc709891ba3"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-1390b77afa935f09b955",
+    "red-review-3ae111a54f07538146a7"
+  ],
+  "remaining_active_ids": [
+    "red-review-1390b77afa935f09b955",
+    "red-review-3ae111a54f07538146a7"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 5,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -37,7 +37,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 5,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando pasada editorial real: 5 trabajos ordinarios preparing en main; validación JIT antes de cada investigación y persistencia; ImageGen desactivado en esta pasada",
+  "activity": "Revisando novedades: 2 trabajos review_red preparing en main; validación JIT por ID+revision; sin ImageGen ni publicaciones",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -81,7 +81,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T22:36:25+01:00",
+  "last_started_at": "2026-11-05T22:38:00+01:00",
   "last_completed_at": "2026-11-05T22:36:25+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -147,7 +147,7 @@
     "tr-20261105T2155+0100-manual",
     "tr-20261105T2210+0100-manual"
   ],
-  "command_id": "tr-autoguard-1793914290",
+  "command_id": "tr-1793914621791-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
