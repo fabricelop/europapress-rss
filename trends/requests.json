@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T09:02:28.632746+00:00",
+  "updated_at": "2026-11-05T09:02:37.741788+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -228966,32 +228966,36 @@
       "id": "fcf2255228b8",
       "name": "#DesterrarLaMonarquía",
       "rank": 23,
-      "revision": 1,
-      "status": "inactive",
-      "requested_at": "2026-11-05T07:45:39.788480+00:00",
-      "updated_at": "2026-11-05T07:45:39.788480+00:00",
+      "created_at": "2026-11-05T09:02:37.741788+00:00",
+      "revision": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-05T09:02:37.741788+00:00",
+      "updated_at": "2026-11-05T09:02:37.741788+00:00",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
-      "auto_queued": false,
-      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "none",
-      "image_pending": true,
-      "fallback_image_status": "pending",
       "ai_image_status": "pending",
+      "fallback_image_status": "pending",
       "requested_together": [
         "#DesterrarLaMonarquía"
       ],
-      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nCada miércoles hay una hastag contra la monarquía.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
       "user_pistas": [
         {
           "at": "2026-11-05T07:45:39.788480+00:00",
           "source_revision": 0,
           "text": "Cada miércoles hay una hastag contra la monarquía.",
+          "verification": "unverified_editor_context"
+        },
+        {
+          "at": "2026-11-05T09:02:37.741788+00:00",
+          "source_revision": 1,
+          "text": "Hashtag semanal cada miércoles contra la monarquía",
           "verification": "unverified_editor_context"
         }
       ],
@@ -229001,15 +229005,16 @@
           "status": "explained",
           "problem_reason": "",
           "last_attempt_at": "2026-11-04T23:38:00+01:00"
+        },
+        {
+          "revision": 1,
+          "status": "inactive",
+          "problem_reason": "La presencia actual del hashtag en tendencias de España está verificada, pero no se ha podido acreditar con fuentes independientes un detonante concreto hoy ni la pista de que exista una convocatoria semanal fija cada miércoles. Se mantiene sin explicación verificada para no convertir la pista editorial en hecho.",
+          "last_attempt_at": ""
         }
       ],
-      "hints_verification_status": "unverified",
-      "problematic_at": "2026-11-05T08:51:14+01:00",
-      "problem_reason": "La presencia actual del hashtag en tendencias de España está verificada, pero no se ha podido acreditar con fuentes independientes un detonante concreto hoy ni la pista de que exista una convocatoria semanal fija cada miércoles. Se mantiene sin explicación verificada para no convertir la pista editorial en hecho.",
-      "problematic_attempts": 1,
-      "editorial_engine": "chatgpt-automation-outbox",
-      "inactive_at": "2026-11-05T09:01:27+01:00",
-      "inactive_reason": "left-top30-radar"
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nHashtag semanal cada miércoles contra la monarquía\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "hints_verification_status": "unverified"
     },
     {
       "id": "09b82b1c8ab2",
