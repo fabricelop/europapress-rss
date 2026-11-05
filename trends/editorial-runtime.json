@@ -6,37 +6,35 @@
   "run_id": "tr-1793848538441-manual",
   "previous_run_id": "tr-autoguard-1793848261",
   "status": "RUNNING",
-  "phase": "drafting",
+  "phase": "persisting",
   "started_at": "2026-11-05T03:16:00.000Z",
-  "updated_at": "2026-11-05T03:18:00.000Z",
+  "updated_at": "2026-11-05T03:19:00.000Z",
   "finished_at": null,
   "current": 1,
-  "total": 3,
-  "trend_id": "red-review-5fe80751bbb0dc14f679",
-  "title": "Revisar novedades: Jesús de Miguel",
+  "total": 2,
+  "trend_id": "red-review-f015df7d1c322733d28c",
+  "title": "Revisar novedades: Irán",
   "queue_complete": false,
   "processed_ids": [
-    "667003b2f251"
+    "red-review-5fe80751bbb0dc14f679"
   ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-5fe80751bbb0dc14f679",
     "red-review-f015df7d1c322733d28c"
   ],
   "remaining_active_ids": [
-    "red-review-5fe80751bbb0dc14f679",
     "red-review-f015df7d1c322733d28c"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 3,
+    "attempted": 2,
+    "observed": 2,
     "closed": 1,
-    "explained": 1,
-    "updates": 0,
+    "explained": 0,
+    "updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,8 +45,19 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Redactando 2/3 · revisión Jesús de Miguel r0 · novedades de continuidad verificadas; sin remate por tratarse de un fallecimiento.",
-  "final_outcomes": [],
+  "activity": "Persistiendo 1/2 · Revisar novedades: Irán r0 · resultado unchanged guardado en maintenance-outbox; esperando aplicación autoritativa.",
+  "final_outcomes": [
+    {
+      "id": "red-review-5fe80751bbb0dc14f679",
+      "revision": 0,
+      "name": "Revisar novedades: Jesús de Miguel",
+      "outcome": "updated",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "84884b4ab51e2900a22673913001b43c885650c1",
+      "source_id": "ca4337605844"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793842224819-manual",
