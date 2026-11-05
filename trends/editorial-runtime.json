@@ -3,19 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793885242584-manual",
+  "run_id": "tr-1793884873025-manual",
   "previous_run_id": "tr-1793884873025-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-05T13:27:22.584Z",
-  "updated_at": "2026-11-05T13:27:22.584Z",
+  "updated_at": "2026-11-05T13:29:07.500Z",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
+  "current": 1,
+  "total": 3,
   "trend_id": "red-review-d25d0fcd067a28be390d",
   "title": "Revisar novedades: Dortmund",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "9790ad89e475"
+  ],
   "converged_ids": [],
   "remaining_ids": [
     "red-review-d25d0fcd067a28be390d",
@@ -30,7 +32,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando 0/2 · Revisar novedades: Dortmund · revisión 0",
+  "activity": "Revisando novedades 2/3 · Dortmund",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -108,7 +110,7 @@
     "tr-1793880015887-manual",
     "tr-1793882171824-manual"
   ],
-  "command_id": "tr-1793885242584-manual",
+  "command_id": "tr-1793884873025-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
