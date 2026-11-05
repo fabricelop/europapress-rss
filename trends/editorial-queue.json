@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T22:36:25+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-05T21:36:53.246962+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-1390b77afa935f09b955",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-05T21:36:53.246962+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7fb4d179ec62",
+        "revision": 0,
+        "name": "Paraguay",
+        "rank": 22,
+        "explanation": "TT#2 Paraguay sigue siendo tendencia por la crisis de Ueno Bank: Santiago Peña dimitió y, minutos después, la Cámara de Diputados aprobó por 78-0 su juicio político.\n#SantiagoPeña #UenoBank\n🌶️ La crisis bancaria ya llegó al relevo presidencial y al Congreso.",
+        "explanation_sha256": "c2afc54335b1b6420a6d597d6189027589fa05f9114789a2ad2ac80217146d05",
+        "explained_at": "2026-11-04T15:10:18.408Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
+          },
+          {
+            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
+          }
+        ],
+        "fingerprint": "713743ec85a37e6f395a4d01105183c722aa90d1396bd7bc2d6a3defc743c03a"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-3ae111a54f07538146a7",
+      "revision": 0,
+      "name": "Revisar novedades: #LaSeptima",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-11-05T21:36:53.246962+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "70b0fa51b15e",
+        "revision": 0,
+        "name": "#LaSeptima",
+        "rank": 20,
+        "explanation": "TT#20 #LaSeptima es tendencia porque la nueva cadena nacional en abierto ha iniciado hoy sus emisiones en TDT a las 12:00.\n#TDT #Televisión\n🌶️ La parrilla acaba de ganar un séptimo asiento.",
+        "explanation_sha256": "1a29837eabf1d216eb23f3f93d858e821684f1be4a67526c8caf566044ba3cfb",
+        "explained_at": "2026-11-05T12:52:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.galiciapress.es/articulo/ultima-hora/2026-11-05/6079628-ciudadanos-tendran-resintonizar-jueves-canales-tdt-llegada-uhd-septima"
+          },
+          {
+            "url": "https://www.eldiario.es/vertele/noticias/la-septima-llega-objetivo-realista-audiencias-respuesta-pp-invitacion-tv-plural-no-entiende-mesa_1_13636509.html"
+          }
+        ],
+        "fingerprint": "1c6c08628ea95c580635471ba1938b92faaca8fd6ecaf3e3682e7b825a444707"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
