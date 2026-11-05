@@ -3,40 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793872267",
+  "run_id": "tr-1793874536722-manual",
   "previous_run_id": "tr-autoguard-1793872267",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T10:51:10+01:00",
-  "updated_at": "2026-11-05T10:59:00+01:00",
-  "finished_at": "2026-11-05T10:59:00+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "881c3609cf26",
-    "adfc2eddd0c1",
-    "red-review-a2f3e45e3534084d3e4f",
-    "red-review-d62020c60506036a6998"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T11:29:00+01:00",
+  "updated_at": "2026-11-05T11:29:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "208c4969cff9",
+  "title": "La UCO",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "208c4969cff9"
+  ],
+  "remaining_active_ids": [
+    "208c4969cff9"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,7 +46,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 4/4: Personas Cuidadoras y Dcoop y Acesur explicadas; Mazón y Óscar Puente actualizados en continuidad sobre sus fichas existentes. Barrera final main: cola 0 y sin reexplicaciones pendientes. ImageGen=0.",
+  "activity": "Preparando 1/1 · La UCO · validando ID/revisión antes de investigar",
   "final_outcomes": [
     {
       "id": "881c3609cf26",
@@ -182,6 +181,6 @@
     "tr-1793872569013-manual",
     "tr-autoguard-1793872267"
   ],
-  "command_id": "tr-autoguard-1793872267",
-  "canonical_successor_run_id": "tr-1793872569013-manual"
+  "command_id": "tr-1793874536722-manual",
+  "canonical_successor_run_id": null
 }
