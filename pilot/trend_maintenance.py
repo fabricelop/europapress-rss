@@ -68,12 +68,23 @@ def image_allowed(row):
 
 
 def stamp_rows(state, row, **fields):
-    for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
-        for target in state[path][field]:
-            if (target.get('id') == row.get('id')
-                    and int(target.get('revision') or 0) == int(row.get('revision') or 0)
-                    and target.get('explanation') == row.get('explanation')):
-                target.update(fields)
+    # Snapshot the original identity and collect ALL matching records before
+    # changing any of them. The row object may itself be the MANUAL target:
+    # mutating it first would make the REQUESTS explanation mismatch and leave
+    # the two authoritative records inconsistent.
+    original_id = row.get('id')
+    original_rev = int(row.get('revision') or 0)
+    original_text = row.get('explanation')
+    matches = [
+        target
+        for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests'))
+        for target in state[path][field]
+        if (target.get('id') == original_id
+            and int(target.get('revision') or 0) == original_rev
+            and target.get('explanation') == original_text)
+    ]
+    for target in matches:
+        target.update(fields)
 
 
 def clear(state, row, at):
