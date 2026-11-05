@@ -6,54 +6,65 @@
   "run_id": "tr-autoguard-1793902276",
   "previous_run_id": "tr-20261105T1855+0100-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-05T19:11:30+01:00",
-  "updated_at": "2026-11-05T19:11:30+01:00",
+  "updated_at": "2026-11-05T19:13:20+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 4,
-  "trend_id": "1412dbe4c2c0",
-  "title": "NASDAQ",
+  "trend_id": "1c80ebb23489",
+  "title": "Ueno Bank",
   "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
+  "processed_ids": [
+    "1412dbe4c2c0"
+  ],
+  "converged_ids": [
+    "1412dbe4c2c0"
+  ],
   "remaining_ids": [
-    "1412dbe4c2c0",
     "1c80ebb23489",
     "8dd5e45d5aa4",
     "4284a4565997"
   ],
   "remaining_active_ids": [
-    "1412dbe4c2c0",
     "1c80ebb23489",
     "8dd5e45d5aa4",
     "4284a4565997"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando 1/4 · NASDAQ · validación JIT de id/revisión antes de investigar",
-  "final_outcomes": [],
+  "activity": "Investigando 2/4 · Ueno Bank · causa actual contrastada y revisión JIT activa",
+  "final_outcomes": [
+    {
+      "id": "1412dbe4c2c0",
+      "revision": 0,
+      "name": "NASDAQ",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261105T1855+0100-manual",
