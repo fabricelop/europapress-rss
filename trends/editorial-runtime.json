@@ -3,52 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793882171824-manual",
-  "previous_run_id": "tr-autoguard-1793881887",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T12:38:00.377Z",
-  "updated_at": "2026-11-05T12:40:30.983Z",
-  "finished_at": "2026-11-05T12:40:30.983Z",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-71870f4bdba1ef6d5b8f",
-    "red-review-e345105640694434e6d3"
+  "run_id": "tr-1793884873025-manual",
+  "previous_run_id": "tr-1793882171824-manual",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-05T13:22:00.000Z",
+  "updated_at": "2026-11-05T13:22:00.000Z",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "9790ad89e475",
+  "title": "Cumbre Iberoamericana",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "9790ad89e475"
   ],
-  "converged_ids": [
-    "red-review-71870f4bdba1ef6d5b8f",
-    "red-review-e345105640694434e6d3"
+  "remaining_active_ids": [
+    "9790ad89e475"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
-    "distinct_updates": 0,
-    "unchanged_reviews": 1,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 2/2 · Paraguay actualizado por continuidad; Santa Ángela sin novedades. Barrera final limpia.",
+  "activity": "Investigando 1/1 · Cumbre Iberoamericana · revisión 0",
   "final_outcomes": [
     {
       "id": "red-review-71870f4bdba1ef6d5b8f",
@@ -145,7 +125,7 @@
     "tr-1793880015887-manual",
     "tr-1793882171824-manual"
   ],
-  "command_id": "tr-1793882171824-manual",
+  "command_id": "tr-1793884873025-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
