@@ -121,7 +121,9 @@ class MaintenanceTests(unittest.TestCase):
         command.update(explanation='TT#30 Adif es tendencia por otro cierre confirmado.\n#Adif #Trenes',
                        new_facts='Otro cierre confirmado hoy', closer_text='',
                        distinct_episode=True, material_change=True,
-                       significance_reason='Nuevo cierre oficial con consecuencias propias')
+                       significance_reason='Nuevo cierre oficial con consecuencias propias',
+                       material_event_key='adif-independent-official-closure-2026-10-30',
+                       material_event_at=(self.now-timedelta(minutes=5)).isoformat())
         state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
         self.assertEqual(state[g.REQUESTS]['requests'][0]['status'], 'published')
         self.assertEqual(state[g.DECISIONS], self.state[g.DECISIONS])
@@ -170,6 +172,8 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(continuity[g.REQUESTS]['requests'][-1]['review_outcome'], 'continuity')
         command['material_change'] = True
         command['significance_reason'] = 'Acontecimiento nuevo y sustancial comprobado'
+        command['material_event_key'] = 'adif-independent-new-event-2026-10-30'
+        command['material_event_at'] = (self.now-timedelta(minutes=5)).isoformat()
         final, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
         self.assertEqual(len(final[g.MANUAL]['items']), 2)
         self.assertTrue(final[g.MANUAL]['items'][-1]['distinct_episode'])
@@ -189,6 +193,47 @@ class MaintenanceTests(unittest.TestCase):
         self.assertEqual(final[g.MANUAL]['items'][0]['explained_at'], self.row['explained_at'])
         self.assertEqual(len([row for row in final[g.REQUESTS]['requests']
                               if row.get('with_image') is True]), 0)
+
+    def test_oscar_puente_resignation_review_cannot_create_duplicate_image(self):
+        row = self.state[g.MANUAL]['items'][0]
+        row.update(name='Óscar Puente',
+                   explanation='TT#16 Óscar Puente es tendencia por su dimisión como ministro de Transportes.',
+                   ai_image_status='ready',
+                   site_image_url='https://example.org/original.png')
+        self.state[g.REQUESTS]['requests'][0].update(row)
+        self.state[m.RECENT]['items'] = [{'name': 'Óscar Puente', 'rank': 16}]
+        job = self.schedule()[0]
+        command = dict(job_id=job['id'], outcome='updated',
+                       reason='Seguimiento de la misma dimisión sin hechos nuevos',
+                       verification_sources=[{'url': 'https://example.org/source'}],
+                       explanation='TT#16 Óscar Puente es tendencia por su dimisión como ministro de Transportes.',
+                       new_facts='Óscar Puente dimite como ministro de Transportes',
+                       distinct_episode=True, material_change=True,
+                       significance_reason='La dimisión sigue en la agenda pero no es otro episodio',
+                       material_event_key='oscar-puente-resignation-2026',
+                       material_event_at=(self.now-timedelta(hours=26)).isoformat())
+        result, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertEqual(len(result[g.MANUAL]['items']), 1)
+        self.assertEqual(result[g.REQUESTS]['requests'][-1]['review_outcome'], 'continuity')
+        self.assertEqual(result[g.MANUAL]['items'][0]['ai_image_status'], 'ready')
+        self.assertEqual(result[g.MANUAL]['items'][0]['site_image_url'],
+                         'https://example.org/original.png')
+
+    def test_distinct_episode_needs_date_and_cannot_reuse_event_key(self):
+        command = self.result('updated')
+        command.update(explanation='TT#30 Adif es tendencia por otro corte internacional.',
+                       new_facts='Nuevo corte internacional verificado en otra línea',
+                       distinct_episode=True, material_change=True,
+                       significance_reason='Se trata de otro suceso con consecuencias propias')
+        first, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertEqual(len(first[g.MANUAL]['items']), 1)
+        command['material_event_key'] = 'adif-international-second-cut-2026-10-30'
+        command['material_event_at'] = (self.now-timedelta(minutes=5)).isoformat()
+        new_state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertEqual(len(new_state[g.MANUAL]['items']), 2)
+        self.assertTrue(new_state[g.MANUAL]['items'][-1]['material_change_verified'])
+        self.assertFalse(m.verified_distinct_material_event(
+            command, self.row, new_state, self.now, g.grouping_api()))
 
     def test_new_work_does_not_trigger_automatic_grouping(self):
         fresh = {**self.row, 'id': 'b', 'name': 'Atocha',
