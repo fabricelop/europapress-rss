@@ -3,21 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261105T2125+0100-manual",
-  "previous_run_id": "tr-20261105T2110+0100-manual",
+  "run_id": "tr-1793910547154-manual",
+  "previous_run_id": "tr-20261105T2125+0100-manual",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-05T21:25:00+01:00",
-  "updated_at": "2026-11-05T21:30:30+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-05T21:30:00+01:00",
+  "updated_at": "2026-11-05T21:33:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 3,
+  "current": 0,
+  "total": 2,
   "trend_id": "red-review-116b3ad301ef813c18d5",
   "title": "Revisar novedades: Paraguay",
   "queue_complete": false,
-  "processed_ids": [
-    "0a5aebd8f57c"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "red-review-116b3ad301ef813c18d5",
@@ -29,10 +27,10 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -51,17 +49,7 @@
   "incidents": [],
   "error": null,
   "activity": "Revisando novedades: Paraguay",
-  "final_outcomes": [
-    {
-      "id": "0a5aebd8f57c",
-      "revision": 0,
-      "name": "Hace 50",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "3ff5e3b8aacf85633c17d71907ba819d9f384827"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261105T2125+0100-manual",
@@ -166,7 +154,7 @@
     "tr-20261105T2110+0100-manual",
     "tr-20261105T2125+0100-manual"
   ],
-  "command_id": "tr-20261105T2125+0100-manual",
+  "command_id": "tr-1793910547154-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
