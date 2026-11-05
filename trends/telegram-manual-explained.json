@@ -66526,12 +66526,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261105083021_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/economia/noticia-dcoop-acesur-ganan-puja-deoleo-operacion-valorada-520-millones-euros-20261105083021.html",
+        "alt": "Imagen de archivo relacionada con Deoleo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261105083021_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/economia/noticia-dcoop-acesur-ganan-puja-deoleo-operacion-valorada-520-millones-euros-20261105083021.html",
+        "alt": "Imagen de archivo relacionada con Deoleo",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "be2aca41b871",
@@ -66572,14 +66589,16 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-11-05T10:14:00+01:00",
+  "updated_at": "2026-11-05T09:18:04.595852Z",
   "count": 1100
 }
