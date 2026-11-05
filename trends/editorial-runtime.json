@@ -5,83 +5,36 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793902276",
   "previous_run_id": "tr-20261105T1855+0100-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T19:11:30+01:00",
-  "updated_at": "2026-11-05T19:13:20+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-05T19:16:30+01:00",
+  "finished_at": "2026-11-05T19:16:30+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "1c80ebb23489",
-  "title": "Ueno Bank",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "1412dbe4c2c0"
+    "1412dbe4c2c0",
+    "1c80ebb23489",
+    "8dd5e45d5aa4",
+    "4284a4565997"
   ],
   "converged_ids": [
-    "1412dbe4c2c0"
-  ],
-  "remaining_ids": [
+    "1412dbe4c2c0",
     "1c80ebb23489",
     "8dd5e45d5aa4",
     "4284a4565997"
   ],
-  "remaining_active_ids": [
-    "1c80ebb23489",
-    "8dd5e45d5aa4",
-    "4284a4565997"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 4,
     "observed": 4,
-    "closed": 1,
-    "explained": 1,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 3,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Investigando 2/4 · Ueno Bank · causa actual contrastada y revisión JIT activa",
-  "final_outcomes": [
-    {
-      "id": "1412dbe4c2c0",
-      "revision": 0,
-      "name": "NASDAQ",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-20261105T1855+0100-manual",
-    "status": "DONE",
-    "started_at": "2026-11-05T18:55:00+01:00",
-    "updated_at": "2026-11-05T18:55:30+01:00",
-    "finished_at": "2026-11-05T18:55:30+01:00",
-    "current": 0,
-    "total": 0,
-    "queue_complete": true,
-    "processed_ids": [],
-    "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -94,10 +47,125 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 4
   },
-  "last_started_at": "2026-11-05T18:55:00+01:00",
-  "last_completed_at": "2026-11-05T18:55:30+01:00",
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "Cierre 4/4 · main releído: cola 0, preparing/update 0 y rewrite_pending/reexplain 0; cuatro revisiones verificadas en ambos registros",
+  "final_outcomes": [
+    {
+      "id": "1412dbe4c2c0",
+      "revision": 0,
+      "name": "NASDAQ",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "explained_at": "2026-11-05T19:13:00+01:00"
+    },
+    {
+      "id": "1c80ebb23489",
+      "revision": 0,
+      "name": "Ueno Bank",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "explained_at": "2026-11-05T19:16:00+01:00"
+    },
+    {
+      "id": "8dd5e45d5aa4",
+      "revision": 0,
+      "name": "Gonzo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "explained_at": "2026-11-05T19:16:00+01:00"
+    },
+    {
+      "id": "4284a4565997",
+      "revision": 0,
+      "name": "El Gran Wyoming",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "explained_at": "2026-11-05T19:16:00+01:00"
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-autoguard-1793902276",
+    "status": "DONE",
+    "started_at": "2026-11-05T19:11:30+01:00",
+    "updated_at": "2026-11-05T19:16:30+01:00",
+    "finished_at": "2026-11-05T19:16:30+01:00",
+    "current": 4,
+    "total": 4,
+    "queue_complete": true,
+    "processed_ids": [
+      "1412dbe4c2c0",
+      "1c80ebb23489",
+      "8dd5e45d5aa4",
+      "4284a4565997"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "1412dbe4c2c0",
+        "revision": 0,
+        "name": "NASDAQ",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "explained_at": "2026-11-05T19:13:00+01:00"
+      },
+      {
+        "id": "1c80ebb23489",
+        "revision": 0,
+        "name": "Ueno Bank",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "explained_at": "2026-11-05T19:16:00+01:00"
+      },
+      {
+        "id": "8dd5e45d5aa4",
+        "revision": 0,
+        "name": "Gonzo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "explained_at": "2026-11-05T19:16:00+01:00"
+      },
+      {
+        "id": "4284a4565997",
+        "revision": 0,
+        "name": "El Gran Wyoming",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "explained_at": "2026-11-05T19:16:00+01:00"
+      }
+    ],
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 4
+  },
+  "last_started_at": "2026-11-05T19:11:30+01:00",
+  "last_completed_at": "2026-11-05T19:16:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -142,7 +210,8 @@
     "tr-1793898959673-manual",
     "tr-1793899109945-manual",
     "tr-20261105T1840+0100-manual",
-    "tr-20261105T1855+0100-manual"
+    "tr-20261105T1855+0100-manual",
+    "tr-autoguard-1793902276"
   ],
   "command_id": "tr-autoguard-1793902276",
   "canonical_successor_run_id": null,
