@@ -5,27 +5,28 @@
   "canonical": true,
   "run_id": "tr-1793869818948-manual",
   "previous_run_id": "tr-1793869318517-manual",
-  "status": "failure",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-05T10:11:58+01:00",
-  "updated_at": "2026-11-05T10:16:23+01:00",
+  "updated_at": "2026-11-05T10:17:11+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "a5a85c6f8d01",
+    "be2aca41b871"
+  ],
   "converged_ids": [],
   "remaining_ids": [
     "924d519049b1",
-    "be2aca41b871",
-    "a5a85c6f8d01"
+    "a5c6b58c954b"
   ],
   "remaining_active_ids": [
     "924d519049b1",
-    "be2aca41b871",
-    "a5a85c6f8d01"
+    "a5c6b58c954b"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -49,7 +50,7 @@
   },
   "incident_count": 0,
   "incidents": [],
-  "error": "a5a85c6f8d01-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas; be2aca41b871-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas",
+  "error": null,
   "activity": "Preparando 4 trabajos activos por antigüedad: revisiones #FelizJueves e Irán; después #LaHora5N y Deoleo. Sin ImageGen.",
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -136,7 +137,7 @@
     "incidents": 1,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T10:16:23+01:00",
+  "last_started_at": "2026-11-05T10:17:11+01:00",
   "last_completed_at": "2026-11-05T10:11:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
