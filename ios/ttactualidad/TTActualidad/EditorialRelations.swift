@@ -129,6 +129,25 @@ enum EditorialRelationsPolicy {
 
     // Only explicit switches write decisions. Suggested (unaccepted) pairs are
     // not automatically dismissed when an editor saves another Top30 link.
+    // A Sites-issued episode fingerprint already guards the exact editorial
+    // identity at write time. Rank text may vary in presentation independently
+    // (TT# prefix, whitespace). Prefer exact text when available; for one
+    // unambiguous ID+revision candidate, allow it and let Sites verify the
+    // fingerprint. Never choose arbitrarily between distinct episodes.
+    static func matchingTop30Endpoint(
+        id: String, revision: Int, renderedText: String,
+        candidates: [EditorialRelationEndpoint]
+    ) -> EditorialRelationEndpoint? {
+        guard !id.isEmpty else { return nil }
+        let matches = candidates.filter {
+            $0.id == id && $0.revision == revision && !$0.episodeFingerprint.isEmpty
+        }
+        if let exact = matches.first(where: { $0.text == renderedText }) {
+            return exact
+        }
+        return matches.count == 1 ? matches[0] : nil
+    }
+
     static func actionForSwitch(current: String?, selected: Bool) -> String? {
         let linked = current == "linked"
         if linked == selected { return nil }
