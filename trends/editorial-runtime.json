@@ -5,26 +5,32 @@
   "canonical": true,
   "run_id": "tr-20261105T2125+0100-manual",
   "previous_run_id": "tr-20261105T2110+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-05T21:25:00+01:00",
-  "updated_at": "2026-11-05T21:29:00+01:00",
-  "finished_at": "2026-11-05T21:29:00+01:00",
+  "updated_at": "2026-11-05T21:30:30+01:00",
+  "finished_at": null,
   "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "red-review-116b3ad301ef813c18d5",
+  "title": "Revisar novedades: Paraguay",
+  "queue_complete": false,
   "processed_ids": [
     "0a5aebd8f57c"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-116b3ad301ef813c18d5",
+    "red-review-846995ee632c5fc941bd"
+  ],
+  "remaining_active_ids": [
+    "red-review-116b3ad301ef813c18d5",
+    "red-review-846995ee632c5fc941bd"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
+    "attempted": 3,
+    "observed": 3,
     "closed": 1,
     "explained": 1,
     "problematic": 0,
@@ -33,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -44,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada completada: Hace 50 explicada y aplicada; cola editorial vacía",
+  "activity": "Revisando novedades: Paraguay",
   "final_outcomes": [
     {
       "id": "0a5aebd8f57c",
