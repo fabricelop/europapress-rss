@@ -11,7 +11,7 @@ struct EditorialRelationsScope {
 @MainActor
 private final class EditorialRelationsModel: ObservableObject {
     @Published private(set) var snapshot: EditorialRelationsSnapshot?
-    @Published private(set) var historicalNewsDates: [String: Date] = [:]
+    @Published private(set) var historicalNews: [EditorialRelationEndpoint] = []
     @Published private(set) var loading = false
     @Published private(set) var saving = false
     @Published var notice = ""
@@ -26,16 +26,24 @@ private final class EditorialRelationsModel: ObservableObject {
         guard !loading else { return }
         loading = true
         defer { loading = false }
+        // Fetch the private identities and the retained GitHub news history
+        // independently: a missing/partial Sites snapshot must NOT make the
+        // dated news inbox empty. Real links still require private receipts.
+        async let datedHistory = github.editorialRelationRecentNews()
+        var issues: [String] = []
         do {
             let (data, status) = try await github.privateEditorialRelationsRequest(path: "/v1/snapshot")
             guard status == 200 else { throw RelationsError.http(status) }
             snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self, from: data)
-            // Never build fake relationship endpoints from GitHub. Only the
-            // private snapshot supplies opaque identity; GitHub supplies dates.
-            historicalNewsDates = await github.editorialRelationNewsDates()
         } catch {
-            notice = "No se pudieron actualizar las relaciones: \(error.localizedDescription)"
+            issues.append("No se pudieron cargar las identidades de relaciones: \(error.localizedDescription)")
         }
+        do {
+            historicalNews = try await datedHistory
+        } catch {
+            issues.append("No se pudieron recuperar las noticias históricas: \(error.localizedDescription)")
+        }
+        if !issues.isEmpty { notice = issues.joined(separator: ". ") }
     }
 
     private func postDecision(news: EditorialRelationEndpoint,
@@ -197,15 +205,36 @@ struct EditorialRelationsView: View {
     }
 
     private var allNewsChoices: [EditorialRelationEndpoint] {
-        let candidates = (model.snapshot?.news ?? []) + canonicalRelations.map(\.news)
-        var byIdentity: [String: EditorialRelationEndpoint] = [:]
-        for candidate in candidates {
-            let old = byIdentity[candidate.stableIdentity]
-            if old == nil || (candidate.listedAt ?? "") > (old?.listedAt ?? "") {
-                byIdentity[candidate.stableIdentity] = candidate
+        // The server returns linkable episodes; GitHub returns extra recent
+        // display-only episodes (fingerprint empty). Combine by exact ID and
+        // revision, preferring any server-issued fingerprint for decisions.
+        let candidates = (model.snapshot?.news ?? []) +
+            canonicalRelations.map(\.news) + model.historicalNews
+        var byKey: [String: EditorialRelationEndpoint] = [:]
+        for row in candidates {
+            let key = EditorialRelationsPolicy.newsKey(id: row.id, revision: row.revision)
+            if let old = byKey[key] {
+                let preferred = old.episodeFingerprint.isEmpty &&
+                    !row.episodeFingerprint.isEmpty ? row : old
+                let oldDate = EditorialRelationsPolicy.parsedDate(old.listedAt)
+                let newDate = EditorialRelationsPolicy.parsedDate(row.listedAt)
+                let date: String?
+                if let oldDate, let newDate {
+                    date = oldDate >= newDate ? old.listedAt : row.listedAt
+                } else {
+                    date = row.listedAt ?? old.listedAt
+                }
+                byKey[key] = EditorialRelationEndpoint(
+                    id: preferred.id, revision: preferred.revision,
+                    episodeFingerprint: preferred.episodeFingerprint,
+                    title: preferred.title.isEmpty ? row.title : preferred.title,
+                    text: preferred.text.isEmpty ? row.text : preferred.text,
+                    path: preferred.path, listedAt: date)
+            } else {
+                byKey[key] = row
             }
         }
-        return byIdentity.values.sorted { a, b in
+        return byKey.values.sorted { a, b in
             if (a.listedAt ?? "") != (b.listedAt ?? "") {
                 return (a.listedAt ?? "") > (b.listedAt ?? "")
             }
@@ -214,10 +243,14 @@ struct EditorialRelationsView: View {
         }
     }
 
-    // The private relationship endpoint is the source of editorial identities.
-    // Local current-Listas dates are only a fallback for older server snapshots.
     private var fallbackDates: [String: Date] {
-        var dates = model.historicalNewsDates
+        var dates: [String: Date] = [:]
+        for item in model.historicalNews {
+            let key = EditorialRelationsPolicy.newsKey(id: item.id, revision: item.revision)
+            if let date = EditorialRelationsPolicy.parsedDate(item.listedAt) {
+                dates[key] = date
+            }
+        }
         for item in listasNews {
             let key = EditorialRelationsPolicy.newsKey(id: item.id, revision: item.revision)
             if dates[key] == nil,
@@ -235,17 +268,21 @@ struct EditorialRelationsView: View {
     }
 
     private var hiddenNewsChoices: [EditorialRelationEndpoint] {
-        allNewsChoices.filter { hiddenNews.contains($0.stableIdentity) }
+        allNewsChoices.filter {
+            hiddenNews.contains($0.stableIdentity) ||
+            hiddenNews.contains(EditorialRelationsPolicy.newsKey(id: $0.id, revision: $0.revision))
+        }
     }
 
     private func hide(_ news: EditorialRelationEndpoint) {
-        hiddenNews.insert(news.stableIdentity)
+        hiddenNews.insert(EditorialRelationsPolicy.newsKey(id: news.id, revision: news.revision))
         UserDefaults.standard.set(Array(hiddenNews).sorted(), forKey: hiddenStorageKey)
         expandedTop30.remove(news.stableIdentity)
     }
 
     private func restore(_ news: EditorialRelationEndpoint) {
         hiddenNews.remove(news.stableIdentity)
+        hiddenNews.remove(EditorialRelationsPolicy.newsKey(id: news.id, revision: news.revision))
         UserDefaults.standard.set(Array(hiddenNews).sorted(), forKey: hiddenStorageKey)
     }
 
@@ -380,6 +417,8 @@ struct EditorialRelationsView: View {
             var result = recentNewsChoices
             if let explicit = selectedNews,
                !hiddenNews.contains(explicit.stableIdentity),
+               !hiddenNews.contains(EditorialRelationsPolicy.newsKey(
+                   id: explicit.id, revision: explicit.revision)),
                !result.contains(where: { $0.stableIdentity == explicit.stableIdentity }) {
                 result.insert(explicit, at: 0)
             }
@@ -455,6 +494,9 @@ struct EditorialRelationsView: View {
 
     private func changedTrends(for news: EditorialRelationEndpoint)
         -> (links: [EditorialRelationEndpoint], unlinks: [EditorialRelationEndpoint]) {
+        // A display-only historical row does not have the Sites-issued
+        // fingerprint required to authorize or verify a decision.
+        guard !news.episodeFingerprint.isEmpty else { return ([], []) }
         let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
         var seen = Set<String>()
         var links: [EditorialRelationEndpoint] = []
@@ -476,6 +518,10 @@ struct EditorialRelationsView: View {
             DisclosureGroup(isExpanded: expansion(news)) {
                 Text("Marca las tendencias que quieras asociar. Desmarca las ya vinculadas. Solo se guardan los cambios que hagas.")
                     .font(.footnote).foregroundStyle(.secondary)
+                if news.episodeFingerprint.isEmpty {
+                    Text("Noticia recuperada del historial. Pendiente de identidad del servidor de relaciones: puedes marcar tendencias, pero guardarlas requiere que el servidor reconozca esta noticia.")
+                        .font(.caption).foregroundStyle(.orange)
+                }
                 if top30Names.isEmpty {
                     Text("Actualiza el Top 30 para elegir tendencias.")
                         .font(.footnote).foregroundStyle(.secondary)
@@ -588,7 +634,7 @@ struct EditorialRelationsView: View {
         HStack(spacing: 8) {
             Text(String(rank) + ".").font(.caption).foregroundStyle(.secondary)
                 .frame(width: 24, alignment: .trailing)
-            if let trend = endpoint {
+            if let trend = endpoint, !news.episodeFingerprint.isEmpty {
                 let state = relationState(news, trend)
                 let linked = state == "linked"
                 let checked = pendingSwitches[pairKey(news, trend)] ?? linked
