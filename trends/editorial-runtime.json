@@ -3,34 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793897089314-manual",
-  "previous_run_id": "tr-20261105T1740+0100-manual",
+  "run_id": "tr-1793897278232-manual",
+  "previous_run_id": "tr-1793897089314-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-05T17:45:00+01:00",
-  "updated_at": "2026-11-05T16:51:02.369Z",
-  "finished_at": "2026-11-05T16:51:02.369Z",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-05T17:48:00+01:00",
+  "updated_at": "2026-11-05T16:52:00.000Z",
+  "finished_at": "2026-11-05T16:52:00.000Z",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-36e4888b329d27c7d8a4",
     "red-review-6d03af1e5af44606ce82"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "red-review-6d03af1e5af44606ce82"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
@@ -40,70 +41,55 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 2/2 · Paraguay actualizado por continuidad; Amnistía Internacional sin novedades; cola revalidada vacía",
+  "activity": "Cierre 1/1 · Amnistía Internacional sin novedades sustanciales; resultado aplicado por convergencia JIT; cola revalidada vacía",
   "final_outcomes": [
-    {
-      "id": "red-review-36e4888b329d27c7d8a4",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
-      "outcome": "continuity_update",
-      "applied": true,
-      "source_id": "7fb4d179ec62"
-    },
     {
       "id": "red-review-6d03af1e5af44606ce82",
       "revision": 0,
       "name": "Revisar novedades: Amnistía Internacional",
       "outcome": "unchanged",
       "applied": true,
-      "source_id": "3ffa846e080e"
+      "source_id": "3ffa846e080e",
+      "via": "concurrent_convergence_jit"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793897089314-manual",
+    "run_id": "tr-1793897278232-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T17:45:00+01:00",
-    "updated_at": "2026-11-05T16:51:02.369Z",
-    "finished_at": "2026-11-05T16:51:02.369Z",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-05T17:48:00+01:00",
+    "updated_at": "2026-11-05T16:52:00.000Z",
+    "finished_at": "2026-11-05T16:52:00.000Z",
+    "current": 1,
+    "total": 1,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-36e4888b329d27c7d8a4",
       "red-review-6d03af1e5af44606ce82"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
-      {
-        "id": "red-review-36e4888b329d27c7d8a4",
-        "revision": 0,
-        "name": "Revisar novedades: Paraguay",
-        "outcome": "continuity_update",
-        "applied": true,
-        "source_id": "7fb4d179ec62"
-      },
       {
         "id": "red-review-6d03af1e5af44606ce82",
         "revision": 0,
         "name": "Revisar novedades: Amnistía Internacional",
         "outcome": "unchanged",
         "applied": true,
-        "source_id": "3ffa846e080e"
+        "source_id": "3ffa846e080e",
+        "via": "concurrent_convergence_jit"
       }
     ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
@@ -113,10 +99,10 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T17:45:00+01:00",
-  "last_completed_at": "2026-11-05T16:51:02.369Z",
+  "last_started_at": "2026-11-05T17:48:00+01:00",
+  "last_completed_at": "2026-11-05T16:52:00.000Z",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -154,9 +140,10 @@
     "tr-1793895398919-manual",
     "tr-20261105T1725+0100-manual",
     "tr-20261105T1740+0100-manual",
-    "tr-1793897089314-manual"
+    "tr-1793897089314-manual",
+    "tr-1793897278232-manual"
   ],
-  "command_id": "tr-1793897089314-manual",
+  "command_id": "tr-1793897278232-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
