@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T07:45:29.270120+00:00",
+  "updated_at": "2026-11-05T07:45:39.788480+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -228939,59 +228939,44 @@
       "id": "fcf2255228b8",
       "name": "#DesterrarLaMonarquía",
       "rank": 23,
-      "status": "explained",
-      "requested_at": "2026-11-04T23:01:25+01:00",
-      "revision": 0,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-05T07:45:39.788480+00:00",
+      "updated_at": "2026-11-05T07:45:39.788480+00:00",
       "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
-      "alternatives_target": 0,
-      "batch_id": "03d072bce9f3",
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "image_choice": "none",
+      "image_pending": true,
+      "fallback_image_status": "pending",
+      "ai_image_status": "pending",
       "requested_together": [
         "#DesterrarLaMonarquía"
       ],
-      "captured_with": [
-        "Gaitán",
-        "#DesterrarLaMonarquía",
-        "El AEK"
-      ],
-      "auto_queued": true,
-      "auto_queue_scope": "top30",
-      "updated_at": "2026-11-04T23:38:00+01:00",
-      "explained_at": "2026-11-04T23:38:00+01:00",
-      "last_attempt_at": "2026-11-04T23:38:00+01:00",
-      "explanation": "TT#23 #DesterrarLaMonarquía apareció entre las tendencias en España esta noche. No se ha podido confirmar qué ha impulsado la etiqueta.",
-      "closer_text": "",
-      "rank_at_explanation": 23,
-      "category": "Actualidad",
-      "source": "editorial_outbox_applied",
-      "editorial_engine": "chatgpt-automation-outbox",
-      "verification_sources": [
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nCada miércoles hay una hastag contra la monarquía.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
         {
-          "url": "https://twtdata.com/id/twitter-trends/spain/"
+          "at": "2026-11-05T07:45:39.788480+00:00",
+          "source_revision": 0,
+          "text": "Cada miércoles hay una hastag contra la monarquía.",
+          "verification": "unverified_editor_context"
         }
       ],
-      "news_note": "Causa concreta no confirmada tras búsquedas independientes; ranking actual verificado.",
-      "group_id": "grp-fcf2255228b8",
-      "explanation_group_id": "grp-fcf2255228b8",
-      "group_title": "#DesterrarLaMonarquía",
-      "group_leader_id": "fcf2255228b8",
-      "trend_names": [
-        "#DesterrarLaMonarquía"
-      ],
-      "grouped_member_revisions": [
+      "investigation_history": [
         {
-          "id": "fcf2255228b8",
-          "revision": 0
+          "revision": 0,
+          "status": "explained",
+          "problem_reason": "",
+          "last_attempt_at": "2026-11-04T23:38:00+01:00"
         }
       ],
-      "editorial_grouping_state": "pending",
-      "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "hints_verification_status": "unverified"
     },
     {
       "id": "09b82b1c8ab2",
