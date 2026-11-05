@@ -5,50 +5,47 @@
   "canonical": true,
   "run_id": "tr-1793898959673-manual",
   "previous_run_id": "tr-20261105T1810+0100-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T18:16:00+01:00",
-  "updated_at": "2026-11-05T18:17:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-05T18:19:00+01:00",
+  "finished_at": "2026-11-05T18:19:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-cdb6e2fc798d9f40bd3e",
-  "title": "Revisar novedades: Personas Cuidadoras",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-cdb6e2fc798d9f40bd3e"
+    "red-review-cdb6e2fc798d9f40bd3e",
+    "red-review-1937f58c8854607e5a6f"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-1937f58c8854607e5a6f"
-  ],
-  "remaining_active_ids": [
-    "red-review-1937f58c8854607e5a6f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Personas Cuidadoras · sin novedades; resultado de mantenimiento persistido y pendiente de aplicación",
+  "activity": "Cierre 2/2 · Personas Cuidadoras sin novedades; La UCO actualizada en continuidad; cola autoritativa vacía",
   "final_outcomes": [
     {
       "id": "red-review-cdb6e2fc798d9f40bd3e",
@@ -56,33 +53,78 @@
       "name": "Revisar novedades: Personas Cuidadoras",
       "source_id": "881c3609cf26",
       "outcome": "unchanged",
-      "applied": false,
-      "via": "maintenance_outbox"
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "3a1fe891aee051d403bd69e1560880202c63fe59"
+    },
+    {
+      "id": "red-review-1937f58c8854607e5a6f",
+      "revision": 0,
+      "name": "Revisar novedades: La UCO",
+      "source_id": "208c4969cff9",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "f7ffdc7b461f20abc71da7bb36cecf49db89e571"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261105T1810+0100-manual",
-    "status": "success",
-    "started_at": "2026-11-05T18:10:00+01:00",
-    "updated_at": "2026-11-05T18:15:09+01:00",
-    "finished_at": null,
-    "current": 0,
-    "total": 6,
+    "run_id": "tr-1793898959673-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T18:16:00+01:00",
+    "updated_at": "2026-11-05T18:19:00+01:00",
+    "finished_at": "2026-11-05T18:19:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "12a616206ed6",
-      "3491ae7033d2",
-      "7da4c4f2664f",
-      "a885c4cee0c6",
-      "b88b9640cc80",
-      "c4f3771c12ae"
+      "red-review-cdb6e2fc798d9f40bd3e",
+      "red-review-1937f58c8854607e5a6f"
     ],
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "red-review-cdb6e2fc798d9f40bd3e",
+        "revision": 0,
+        "name": "Revisar novedades: Personas Cuidadoras",
+        "source_id": "881c3609cf26",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "apply_commit": "3a1fe891aee051d403bd69e1560880202c63fe59"
+      },
+      {
+        "id": "red-review-1937f58c8854607e5a6f",
+        "revision": 0,
+        "name": "Revisar novedades: La UCO",
+        "source_id": "208c4969cff9",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "apply_commit": "f7ffdc7b461f20abc71da7bb36cecf49db89e571"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 1,
+    "continuity_updates": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T18:15:09+01:00",
-  "last_completed_at": "2026-11-05T18:15:09+01:00",
+  "last_started_at": "2026-11-05T18:16:00+01:00",
+  "last_completed_at": "2026-11-05T18:19:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -122,7 +164,9 @@
     "tr-20261105T1740+0100-manual",
     "tr-1793897089314-manual",
     "tr-1793897278232-manual",
-    "tr-20261105T1755+0100-manual"
+    "tr-20261105T1755+0100-manual",
+    "tr-20261105T1810+0100-manual",
+    "tr-1793898959673-manual"
   ],
   "command_id": "tr-1793898959673-manual",
   "canonical_successor_run_id": null,
