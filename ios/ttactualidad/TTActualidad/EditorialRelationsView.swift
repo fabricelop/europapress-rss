@@ -11,6 +11,7 @@ struct EditorialRelationsScope {
 @MainActor
 private final class EditorialRelationsModel: ObservableObject {
     @Published private(set) var snapshot: EditorialRelationsSnapshot?
+    @Published private(set) var historicalNewsDates: [String: Date] = [:]
     @Published private(set) var loading = false
     @Published private(set) var saving = false
     @Published var notice = ""
@@ -29,6 +30,9 @@ private final class EditorialRelationsModel: ObservableObject {
             let (data, status) = try await github.privateEditorialRelationsRequest(path: "/v1/snapshot")
             guard status == 200 else { throw RelationsError.http(status) }
             snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self, from: data)
+            // Never build fake relationship endpoints from GitHub. Only the
+            // private snapshot supplies opaque identity; GitHub supplies dates.
+            historicalNewsDates = await github.editorialRelationNewsDates()
         } catch {
             notice = "No se pudieron actualizar las relaciones: \(error.localizedDescription)"
         }
@@ -209,10 +213,11 @@ struct EditorialRelationsView: View {
     // The private relationship endpoint is the source of editorial identities.
     // Local current-Listas dates are only a fallback for older server snapshots.
     private var fallbackDates: [String: Date] {
-        var dates: [String: Date] = [:]
+        var dates = model.historicalNewsDates
         for item in listasNews {
             let key = EditorialRelationsPolicy.newsKey(id: item.id, revision: item.revision)
-            if let date = EditorialRelationsPolicy.parsedDate(item.preparedAtISO) ?? item.publishedAt {
+            if dates[key] == nil,
+               let date = EditorialRelationsPolicy.parsedDate(item.preparedAtISO) ?? item.publishedAt {
                 dates[key] = date
             }
         }
