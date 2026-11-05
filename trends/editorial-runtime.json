@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793838558947-manual",
   "previous_run_id": "tr-1793838373801-manual",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T00:40:00.000Z",
-  "updated_at": "2026-11-05T00:45:00.000Z",
-  "finished_at": null,
+  "updated_at": "2026-11-05T00:46:00.000Z",
+  "finished_at": "2026-11-05T00:46:00.000Z",
   "current": 1,
   "total": 1,
-  "trend_id": "c9ee3ec3e003",
-  "title": "Nunn",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "c9ee3ec3e003"
   ],
@@ -41,7 +41,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Verificando barrera final en main: cola, rewrite_pending y consistencia requests/explained.",
+  "activity": "Pasada cerrada 1/1 · Nunn explicado y aplicado. Barrera final main: cola 0; preparing/update 0; rewrite_pending 0.",
   "final_outcomes": [
     {
       "id": "c9ee3ec3e003",
@@ -55,46 +55,34 @@
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793838373801-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-05T00:27:23.764Z",
-    "updated_at": "2026-11-05T00:31:09.175Z",
-    "finished_at": "2026-11-05T00:31:09.175Z",
-    "current": 2,
-    "total": 2,
+    "run_id": "tr-1793838558947-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T00:40:00.000Z",
+    "updated_at": "2026-11-05T00:46:00.000Z",
+    "finished_at": "2026-11-05T00:46:00.000Z",
+    "current": 1,
+    "total": 1,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-f6f0bba21b98f213f5f3",
-      "red-review-817afcd80af4a7ab709c"
+      "c9ee3ec3e003"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-f6f0bba21b98f213f5f3",
+        "id": "c9ee3ec3e003",
         "revision": 0,
-        "name": "Revisar novedades: #ElChiringuitoenCuatro",
-        "outcome": "updated",
+        "name": "Nunn",
+        "outcome": "explained",
         "applied": true,
-        "created_id": "trend-update-3c47fc6375ed614df5e6",
-        "apply_commit": "9754a62ac080c7491e864ddf493a944d196c2b42",
-        "via": "maintenance_outbox"
-      },
-      {
-        "id": "red-review-817afcd80af4a7ab709c",
-        "revision": 0,
-        "name": "Revisar novedades: Óscar Puente",
-        "outcome": "updated",
-        "applied": true,
-        "created_id": "trend-update-e219c5411d1218858ea9",
-        "apply_commit": "7086c1d24652c8d8295305c264a659fc0e381e91",
-        "via": "maintenance_outbox"
+        "apply_commit": "50fdc631fac03dbecee4cafdee7eb42a259bebb5",
+        "via": "chat_outbox"
       }
     ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "updates": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
+    "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -102,10 +90,10 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-05T00:40:00.000Z",
-  "last_completed_at": "2026-11-05T00:31:09.175Z",
+  "last_completed_at": "2026-11-05T00:46:00.000Z",
   "draft_preview": "TT#30 Nunn es tendencia por sus 33 puntos en el 115-112 del Panathinaikos al Real Madrid tras prórroga; anotó 23 en el último cuarto, récord de Euroliga.\n#KendrickNunn #EuroLeague\n🌶️ El último cuarto acabó llevando su firma."
 }
