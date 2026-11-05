@@ -5,36 +5,33 @@
   "canonical": true,
   "run_id": "tr-1793842224819-manual",
   "previous_run_id": "tr-1793838558947-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T01:31:30.000Z",
-  "updated_at": "2026-11-05T01:31:30.000Z",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-05T01:35:00.000Z",
+  "finished_at": "2026-11-05T01:35:00.000Z",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-ebea5fc14de68fedbb2b",
-  "title": "Revisar novedades: Valentín",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-ebea5fc14de68fedbb2b",
+    "red-review-3717342ca2a94c3cc43e"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-ebea5fc14de68fedbb2b",
-    "red-review-3717342ca2a94c3cc43e"
-  ],
-  "remaining_active_ids": [
-    "red-review-ebea5fc14de68fedbb2b",
-    "red-review-3717342ca2a94c3cc43e"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "unchanged_reviews": 2,
+    "stale_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -45,40 +42,69 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades 0/2 · Valentín r0",
-  "final_outcomes": [],
+  "activity": "Pasada cerrada 2/2 · Valentín y Lens revisados sin novedades sustanciales; texto y fecha originales conservados. Barrera final main: cola 0; preparing/update 0; rewrite_pending 0.",
+  "final_outcomes": [
+    {
+      "id": "red-review-ebea5fc14de68fedbb2b",
+      "revision": 0,
+      "name": "Revisar novedades: Valentín",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
+      "via": "maintenance_outbox"
+    },
+    {
+      "id": "red-review-3717342ca2a94c3cc43e",
+      "revision": 0,
+      "name": "Revisar novedades: Lens",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
+      "via": "maintenance_outbox"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793838558947-manual",
+    "run_id": "tr-1793842224819-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T00:40:00.000Z",
-    "updated_at": "2026-11-05T00:46:00.000Z",
-    "finished_at": "2026-11-05T00:46:00.000Z",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-11-05T01:31:30.000Z",
+    "updated_at": "2026-11-05T01:35:00.000Z",
+    "finished_at": "2026-11-05T01:35:00.000Z",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "c9ee3ec3e003"
+      "red-review-ebea5fc14de68fedbb2b",
+      "red-review-3717342ca2a94c3cc43e"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "c9ee3ec3e003",
+        "id": "red-review-ebea5fc14de68fedbb2b",
         "revision": 0,
-        "name": "Nunn",
-        "outcome": "explained",
+        "name": "Revisar novedades: Valentín",
+        "outcome": "unchanged",
         "applied": true,
-        "apply_commit": "50fdc631fac03dbecee4cafdee7eb42a259bebb5",
-        "via": "chat_outbox"
+        "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
+        "via": "maintenance_outbox"
+      },
+      {
+        "id": "red-review-3717342ca2a94c3cc43e",
+        "revision": 0,
+        "name": "Revisar novedades: Lens",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
+        "via": "maintenance_outbox"
       }
     ],
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "unchanged_reviews": 2,
+    "stale_reviews": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -88,6 +114,6 @@
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-05T01:31:30.000Z",
-  "last_completed_at": "2026-11-05T00:46:00.000Z",
+  "last_completed_at": "2026-11-05T01:35:00.000Z",
   "draft_preview": null
 }
