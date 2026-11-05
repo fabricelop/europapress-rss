@@ -32,6 +32,36 @@ def fingerprint(row):
     return hashlib.sha256(json.dumps(content, ensure_ascii=False).encode()).hexdigest()
 
 
+def verified_distinct_material_event(command, source, state, now, grouping):
+    """Fail closed on reworded reviews and repeated events of the same story.
+
+    A radar rank, another review, or a paraphrase is NEVER sufficient evidence
+    for creating a new Listas card with an image. Genuine new episodes need
+    an explicit stable event key and a dated verified occurrence that postdates
+    the original explanation. Missing evidence -> continuity metadata only.
+    """
+    if command.get('distinct_episode') is not True or command.get('material_change') is not True:
+        return False
+    event_key = key(command.get('material_event_key'))
+    event_at = grouping.moment(command.get('material_event_at'))
+    source_at = grouping.moment(source.get('explained_at'))
+    reason = str(command.get('significance_reason') or '').strip()
+    if (len(event_key) < 12 or len(reason) < 24 or not event_at
+            or not source_at or event_at <= source_at
+            or event_at > now + timedelta(minutes=5)):
+        return False
+    facts = set(re.findall(r'\b\w{4,}\b', key(command.get('new_facts'))))
+    old = set(re.findall(r'\b\w{4,}\b', key(source.get('explanation'))))
+    if not facts or len(facts & old) / len(facts) >= 0.75:
+        return False
+    for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
+        for row in state.get(path, {}).get(field, []):
+            if (key(row.get('material_event_key')) == event_key
+                    and key(row.get('name')) == key(source.get('name'))):
+                return False
+    return True
+
+
 def image_allowed(row):
     """Independent explanations need no grouping clearance; historical coverage remains."""
     return not (row.get('anticipation_request') or row.get('listas_group_role') == 'covered')
@@ -209,8 +239,7 @@ def apply_review(state, command, now, grouping):
             # An ordinary factual development belongs to the SAME editorial episode.
             # Never create another Listas card or image merely because research updated
             # its wording. Preserve the published explanation/image fingerprint.
-            material = (separate and command.get('material_change') is True
-                        and len(str(command.get('significance_reason') or '').strip()) >= 24)
+            material = verified_distinct_material_event(command, source, state, now, grouping)
             if not material:
                 effective_outcome = 'continuity'
                 stamp_rows(state, source, red_review_outcome='continuity',
@@ -225,7 +254,11 @@ def apply_review(state, command, now, grouping):
                            verification_sources=sources, originated_from_prior_id=source['id'],
                            trend_names=source.get('trend_names') or [source.get('name')],
                            red_review_job_id=job['id'], continuity_update=not separate, distinct_episode=separate,
-                           new_facts=command['new_facts'], with_image=True, disable_ai_image=False,
+                           new_facts=command['new_facts'],
+                           material_event_key=str(command['material_event_key']).strip(),
+                           material_event_at=str(command['material_event_at']).strip(),
+                           material_change_verified=True,
+                           with_image=True, disable_ai_image=False,
                            editorial_grouping_state='pending', image_strategy='ai_plus_fallback', ai_image_status='pending')
                 for path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
                     state[path][field].append(copy.deepcopy(row))

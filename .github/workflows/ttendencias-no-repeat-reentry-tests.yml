@@ -1,0 +1,35 @@
+name: TTendencias - no repeat episodes or images
+
+on:
+  push:
+    branches:
+      - fix/ttendencias-no-repeat-review-reentry-20261105
+    paths:
+      - 'trends/auto_queue_new.py'
+      - 'trends/trend_episode_policy.py'
+      - 'trends/editorial-run-prompt.md'
+      - 'pilot/trend_maintenance.py'
+      - 'pilot/test_trend_maintenance.py'
+      - 'tests/test_trend_episode_policy.py'
+      - '.github/workflows/ttendencias-no-repeat-reentry-tests.yml'
+  pull_request:
+    paths:
+      - 'trends/auto_queue_new.py'
+      - 'trends/trend_episode_policy.py'
+      - 'pilot/trend_maintenance.py'
+      - 'pilot/test_trend_maintenance.py'
+      - 'tests/test_trend_episode_policy.py'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax
+        run: python -m py_compile trends/auto_queue_new.py trends/trend_episode_policy.py pilot/trend_maintenance.py
+      - name: Returning Top30 episode policy
+        run: python -m unittest discover -s tests -p test_trend_episode_policy.py -v
+      - name: Existing editorial maintenance regression and Oscar Puente test
+        run: python -m unittest pilot.test_trend_maintenance -v
