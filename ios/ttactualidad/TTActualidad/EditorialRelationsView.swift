@@ -143,6 +143,7 @@ struct EditorialRelationsView: View {
     @ObservedObject var github: GitHubEditor
     var scope: EditorialRelationsScope? = nil
     var top30Names: [String] = []
+    var top30Trends: [TrendItem] = []
     var listasNews: [NewsItem] = []
     @Environment(\.dismiss) private var dismiss
     @StateObject private var model = EditorialRelationsModel()
@@ -375,6 +376,7 @@ struct EditorialRelationsView: View {
         if filter == "suggested" && scope == nil {
             var result = recentNewsChoices
             if let explicit = selectedNews,
+               !hiddenNews.contains(explicit.stableIdentity),
                !result.contains(where: { $0.stableIdentity == explicit.stableIdentity }) {
                 result.insert(explicit, at: 0)
             }
@@ -466,8 +468,10 @@ struct EditorialRelationsView: View {
                 }
                 // Suggestions outside today's Top30 are kept inspectable.
                 let otherSuggestions = rows(for: news).filter { item in
-                    !top30Names.contains {
-                        TrendImportance.key($0) == TrendImportance.key(item.trend.title)
+                    !top30Trends.contains {
+                        $0.editorialID == item.trend.id &&
+                        $0.revision == item.trend.revision &&
+                        $0.explanation == item.trend.text
                     }
                 }
                 if !otherSuggestions.isEmpty {
@@ -538,8 +542,16 @@ struct EditorialRelationsView: View {
     private func top30Row(news: EditorialRelationEndpoint,
                           rank: Int, name: String) -> some View {
         let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
+        // Never link a stale trend with the same display name. The actual
+        // current Top30 row must carry the same exact editorial episode.
+        let row = top30Trends.indices.contains(rank - 1) ? top30Trends[rank - 1] : nil
         let endpoint = endpoints.first {
-            TrendImportance.key($0.title) == TrendImportance.key(name)
+            guard let row else { return false }
+            return row.name == name &&
+                $0.id == row.editorialID &&
+                $0.revision == row.revision &&
+                $0.text == row.explanation &&
+                !$0.episodeFingerprint.isEmpty
         }
         HStack(spacing: 8) {
             Text(String(rank) + ".").font(.caption).foregroundStyle(.secondary)
