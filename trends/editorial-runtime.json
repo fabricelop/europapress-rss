@@ -3,80 +3,53 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793870884210-manual",
+  "run_id": "tr-autoguard-1793872267",
   "previous_run_id": "tr-1793870884210-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-05T10:32:36+01:00",
-  "updated_at": "2026-11-05T10:34:41+01:00",
-  "finished_at": "2026-11-05T10:34:41+01:00",
-  "current": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T10:51:10+01:00",
+  "updated_at": "2026-11-05T10:51:10+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-ffb02ede6039487d52ce",
-    "red-review-e44ad9404b2ae2e75a27"
-  ],
+  "trend_id": "881c3609cf26",
+  "title": "Personas Cuidadoras",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "881c3609cf26",
+    "adfc2eddd0c1"
+  ],
+  "remaining_active_ids": [
+    "881c3609cf26",
+    "adfc2eddd0c1"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
-    "explained": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 1,
-    "distinct_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "trend_id": "red-review-ffb02ede6039487d52ce",
-      "title": "Revisar novedades: Carlos Cuerpo",
-      "reason": "El primer resultado de continuidad usó «sigue siendo tendencia tras» y no superó el validador que exige «sigue siendo tendencia por/porque». Se corrigió el mismo outbox y quedó aplicado sin duplicar ficha ni imagen."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 2/2: Carlos Cuerpo actualizado en continuidad sobre la misma ficha; Dortmund tratado como episodio nuevo por el 2-1 al Betis. Barrera final main: cola 0, sin reexplicaciones pendientes. ImageGen=0.",
-  "final_outcomes": [
-    {
-      "id": "red-review-ffb02ede6039487d52ce",
-      "revision": 0,
-      "name": "Revisar novedades: Carlos Cuerpo",
-      "outcome": "updated",
-      "applied": true,
-      "continuity_update": true,
-      "distinct_episode": false,
-      "source_id": "17d9bef5928f",
-      "apply_commit": "b2e7aa09f29ac343e2bbac54f2af42cf4678f026"
-    },
-    {
-      "id": "red-review-e44ad9404b2ae2e75a27",
-      "revision": 0,
-      "name": "Revisar novedades: Dortmund",
-      "outcome": "updated",
-      "applied": true,
-      "continuity_update": false,
-      "distinct_episode": true,
-      "created_id": "trend-update-07523f2390cb2b809187",
-      "source_id": "2ad64c143f3e",
-      "apply_commit": "09eeb4fb116ec60b1b6acd3111dc7749b95a87f9"
-    }
-  ],
+  "activity": "Preparando 1/2: validación JIT e investigación de Personas Cuidadoras.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793870884210-manual",
@@ -148,5 +121,5 @@
     "tr-1793870884210-manual",
     "tr-1793871156152-manual"
   ],
-  "command_id": "tr-1793870884210-manual"
+  "command_id": "tr-autoguard-1793872267"
 }
