@@ -150,6 +150,9 @@ struct EditorialRelationsView: View {
     @State private var filter = "suggested"
     // Switches are local drafts until exact server receipts arrive.
     @State private var pendingSwitches: [String: Bool] = [:]
+    // A visible Top30 row remains tappable even before Sites provides an
+    // endpoint fingerprint. Store intent locally; NEVER fabricate a receipt.
+    @State private var unresolvedTop30Selections = Set<String>()
     @State private var expandedTop30 = Set<String>()
     @State private var lookbackHours = 12
     @State private var showHiddenNews = false
@@ -436,6 +439,20 @@ struct EditorialRelationsView: View {
         }?.state
     }
 
+    private func unresolvedKey(_ news: EditorialRelationEndpoint,
+                               rank: Int, name: String) -> String {
+        let row = top30Trends.indices.contains(rank - 1) ? top30Trends[rank - 1] : nil
+        return news.stableIdentity + "↔pending:" + (row?.editorialID ?? name) +
+            ":r" + String(row?.revision ?? -1) + ":rank" + String(rank)
+    }
+
+    private func unresolvedCount(for news: EditorialRelationEndpoint) -> Int {
+        (1...min(30, top30Names.count)).filter { rank in
+            unresolvedTop30Selections.contains(unresolvedKey(
+                news, rank: rank, name: top30Names[rank - 1]))
+        }.count
+    }
+
     private func changedTrends(for news: EditorialRelationEndpoint)
         -> (links: [EditorialRelationEndpoint], unlinks: [EditorialRelationEndpoint]) {
         let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
@@ -486,23 +503,38 @@ struct EditorialRelationsView: View {
                     }
                 }
                 let changes = changedTrends(for: news)
+                let unresolved = unresolvedCount(for: news)
+                if unresolved > 0 {
+                    Text("\(unresolved) selecciones pendientes de identidad: la APP permite marcarlas, pero no puede guardarlas como relación hasta que el servidor confirme el episodio exacto. No se enviarán asociaciones por nombre.")
+                        .font(.caption).foregroundStyle(.orange)
+                }
                 Button {
                     Task {
-                        let saved = await model.saveSelection(
-                            news: news, links: changes.links,
-                            unlinks: changes.unlinks, using: github)
-                        if saved {
-                            for trend in changes.links + changes.unlinks {
-                                pendingSwitches.removeValue(forKey: pairKey(news, trend))
+                        if !changes.links.isEmpty || !changes.unlinks.isEmpty {
+                            let saved = await model.saveSelection(
+                                news: news, links: changes.links,
+                                unlinks: changes.unlinks, using: github)
+                            if saved {
+                                for trend in changes.links + changes.unlinks {
+                                    pendingSwitches.removeValue(forKey: pairKey(news, trend))
+                                }
                             }
+                        }
+                        if unresolved > 0 {
+                            // Reload the authority to see whether new trend
+                            // fingerprints are available, but leave selections
+                            // staged rather than falsely claiming publication.
+                            await model.load(using: github)
+                            model.notice = "Las tendencias sin identidad editorial siguen marcadas localmente. El servidor de relaciones debe devolver los 30 episodios para guardarlas con seguridad."
                         }
                     }
                 } label: {
-                    Label("Guardar: \(changes.links.count) asociar · \(changes.unlinks.count) desasociar",
+                    Label("Guardar: \(changes.links.count) asociar · \(changes.unlinks.count) desasociar · \(unresolved) pendientes",
                           systemImage: "checkmark.circle.fill")
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(model.saving || (changes.links.isEmpty && changes.unlinks.isEmpty))
+                .disabled(model.saving || (changes.links.isEmpty &&
+                                          changes.unlinks.isEmpty && unresolved == 0))
             } label: {
                 VStack(alignment: .leading, spacing: 5) {
                     Text(news.title).font(.headline)
@@ -587,8 +619,28 @@ struct EditorialRelationsView: View {
                 .accessibilityValue(checked ? "Asociada" : "No asociada")
                 .disabled(model.saving)
             } else {
-                Text(name + " · sin identidad editorial confirmada")
-                    .font(.subheadline).foregroundStyle(.secondary)
+                let staged = unresolvedTop30Selections.contains(
+                    unresolvedKey(news, rank: rank, name: name))
+                Button {
+                    let key = unresolvedKey(news, rank: rank, name: name)
+                    if staged { unresolvedTop30Selections.remove(key) }
+                    else { unresolvedTop30Selections.insert(key) }
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: staged ? "checkmark.square.fill" : "square")
+                            .font(.system(size: 21))
+                            .foregroundStyle(staged ? TTTheme.teal : .secondary)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(name).font(.subheadline)
+                            Text("Identidad pendiente · selección local")
+                                .font(.caption2).foregroundStyle(.orange)
+                        }
+                    }
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel((staged ? "Desmarcar " : "Marcar ") + name)
+                .accessibilityValue(staged ? "Pendiente de confirmar" : "No seleccionada")
+                .disabled(model.saving)
             }
         }
         .padding(.vertical, 2)
