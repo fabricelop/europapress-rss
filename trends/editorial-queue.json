@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T11:33:24+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-05T10:33:33.525272+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-c485ee032ce7f2b26072",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo García",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-05T10:33:33.525272+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "d7ef75f3aa45",
+        "revision": 0,
+        "name": "Koldo García",
+        "rank": 2,
+        "explanation": "TT#2 Koldo García es tendencia porque dos facturas atribuyen a Dos Mil Palabras, editora de OkDiario, 242.000 € por su defensa.\n#KoldoGarcía #OkDiario #AudienciaNacional\n🌶️ El misterio de la defensa acabó con IVA incluido.",
+        "explanation_sha256": "f4b6754c35b3788b60e15ab45ffe6bac6406b9b6a3c7b33845fc28d07e949f80",
+        "explained_at": "2026-10-29T14:16:00+01:00",
+        "verification_sources": [
+          "https://elpais.com/espana/2026-10-29/la-editora-de-okdiario-pago-242000-euros-para-costear-honorarios-y-gastos-de-la-defensa-de-koldo-garcia.html",
+          "https://cadenaser.com/nacional/2026/10/29/la-empresa-deditora-de-okdiario-pago-200000-euros-para-sufragar-la-defensa-de-koldo-garcia-cadena-ser/"
+        ],
+        "fingerprint": "037fa4c58e3ff511202e13154855db1825430dd6ab11dc9ee8d694b353daf5d9"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-21575c6a18da195cda2a",
+      "revision": 0,
+      "name": "Revisar novedades: Jesús de Miguel",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-11-05T10:33:33.525272+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ca4337605844",
+        "revision": 0,
+        "name": "Jesús de Miguel",
+        "rank": 2,
+        "explanation": "TT#2 Jesús de Miguel es tendencia porque el CD Tenerife ha comunicado su fallecimiento este 3 de noviembre, tras el grave choque sufrido en el partido ante el Andorra.\n#CDTenerife #JesúsDeMiguel",
+        "explanation_sha256": "d92fd5ebaf8bef73eae880c0edc081674ebfc45e0cdf798c4766072a95c2ef7c",
+        "explained_at": "2026-11-03T09:41:30+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.20minutos.es/deportes/futbol/muere-jesus-miguel-futbolista-tenerife-tras-sufrir-una-parada-cardiaca-despues-un-fuerte-choque-con-portero-rival_7056393_0.html"
+          },
+          {
+            "url": "https://www.lavozdeasturias.es/noticia/actualidad/2026/11/03/muere-futbolista-tenerife-jesus-miguel-tras-chocar-contra-portero-andorra-jesus-owono/00031793684987470618167.htm"
+          }
+        ],
+        "fingerprint": "f111b2252399a027190db8e42a1aa372eedf1777e81eb866e53de1eede51e701"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
