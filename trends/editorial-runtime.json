@@ -3,69 +3,105 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793884873025-manual",
+  "run_id": "tr-1793885242584-manual",
   "previous_run_id": "tr-1793884873025-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T13:27:22.584Z",
-  "updated_at": "2026-11-05T13:30:27.746Z",
-  "finished_at": null,
+  "updated_at": "2026-11-05T13:31:20.000Z",
+  "finished_at": "2026-11-05T13:31:20.000Z",
   "current": 2,
-  "total": 3,
-  "trend_id": "red-review-a765b4ba03e912aed511",
-  "title": "Revisar novedades: Carlos Cuerpo",
-  "queue_complete": false,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "9790ad89e475",
-    "red-review-d25d0fcd067a28be390d"
-  ],
-  "converged_ids": [],
-  "remaining_ids": [
+    "red-review-d25d0fcd067a28be390d",
     "red-review-a765b4ba03e912aed511"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
+    "red-review-d25d0fcd067a28be390d",
     "red-review-a765b4ba03e912aed511"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 1,
+    "continuity_updates": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Sin novedades 3/3 · Carlos Cuerpo",
-  "final_outcomes": [],
+  "activity": "Cierre 2/2 · cola vacía verificada",
+  "final_outcomes": [
+    {
+      "id": "red-review-d25d0fcd067a28be390d",
+      "revision": 0,
+      "name": "Revisar novedades: Dortmund",
+      "outcome": "distinct_update",
+      "applied": true,
+      "via": "concurrent_maintenance_apply",
+      "source_id": "2ad64c143f3e"
+    },
+    {
+      "id": "red-review-a765b4ba03e912aed511",
+      "revision": 0,
+      "name": "Revisar novedades: Carlos Cuerpo",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_maintenance_apply",
+      "source_id": "17d9bef5928f"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793882171824-manual",
+    "run_id": "tr-1793885242584-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T12:38:00.377Z",
-    "updated_at": "2026-11-05T12:40:30.983Z",
-    "finished_at": "2026-11-05T12:40:30.983Z",
+    "started_at": "2026-11-05T13:27:22.584Z",
+    "updated_at": "2026-11-05T13:31:20.000Z",
+    "finished_at": "2026-11-05T13:31:20.000Z",
     "current": 2,
     "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-71870f4bdba1ef6d5b8f",
-      "red-review-e345105640694434e6d3"
+      "red-review-d25d0fcd067a28be390d",
+      "red-review-a765b4ba03e912aed511"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-71870f4bdba1ef6d5b8f",
+        "id": "red-review-d25d0fcd067a28be390d",
         "revision": 0,
-        "name": "Revisar novedades: Paraguay",
-        "outcome": "continuity_update",
+        "name": "Revisar novedades: Dortmund",
+        "outcome": "distinct_update",
         "applied": true,
         "via": "concurrent_maintenance_apply",
-        "source_id": "7fb4d179ec62"
+        "source_id": "2ad64c143f3e"
       },
       {
-        "id": "red-review-e345105640694434e6d3",
+        "id": "red-review-a765b4ba03e912aed511",
         "revision": 0,
-        "name": "Revisar novedades: Santa Ángela de la Cruz",
+        "name": "Revisar novedades: Carlos Cuerpo",
         "outcome": "unchanged",
         "applied": true,
         "via": "concurrent_maintenance_apply",
-        "source_id": "6aa7b6f6f841"
+        "source_id": "17d9bef5928f"
       }
     ],
     "attempted": 2,
@@ -74,8 +110,8 @@
     "explained": 0,
     "problematic": 0,
     "updates": 1,
-    "continuity_updates": 1,
-    "distinct_updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 1,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -87,7 +123,7 @@
     "concurrent_convergence": 2
   },
   "last_started_at": "2026-11-05T13:27:22.584Z",
-  "last_completed_at": "2026-11-05T14:26:50+01:00",
+  "last_completed_at": "2026-11-05T13:31:20.000Z",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -107,9 +143,11 @@
     "tr-1793877457295-manual",
     "tr-1793879836549-manual",
     "tr-1793880015887-manual",
-    "tr-1793882171824-manual"
+    "tr-1793882171824-manual",
+    "tr-1793884873025-manual",
+    "tr-1793885242584-manual"
   ],
-  "command_id": "tr-1793884873025-manual",
+  "command_id": "tr-1793885242584-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
