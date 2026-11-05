@@ -6,14 +6,14 @@
   "run_id": "tr-1793914621791-manual",
   "previous_run_id": "tr-autoguard-1793914290",
   "status": "RUNNING",
-  "phase": "verifying",
+  "phase": "investigating",
   "started_at": "2026-11-05T22:38:00+01:00",
-  "updated_at": "2026-11-05T22:48:00+01:00",
+  "updated_at": "2026-11-05T22:50:00+01:00",
   "finished_at": null,
   "current": 3,
-  "total": 3,
-  "trend_id": "d2c385cd4faf",
-  "title": "Balaídos",
+  "total": 4,
+  "trend_id": "c3681b22997b",
+  "title": "Leire",
   "queue_complete": false,
   "processed_ids": [
     "red-review-1390b77afa935f09b955",
@@ -24,12 +24,16 @@
     "red-review-1390b77afa935f09b955",
     "red-review-3ae111a54f07538146a7"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "c3681b22997b"
+  ],
+  "remaining_active_ids": [
+    "c3681b22997b"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
-    "observed": 3,
+    "observed": 4,
     "closed": 3,
     "explained": 1,
     "problematic": 0,
@@ -38,7 +42,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -49,7 +53,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Verificando barrera final en main tras aplicar Balaídos r1; sin ImageGen ni publicaciones",
+  "activity": "Investigando Leire r0 desde cero con contexto actual; sin ImageGen ni publicaciones",
   "final_outcomes": [
     {
       "id": "red-review-1390b77afa935f09b955",
