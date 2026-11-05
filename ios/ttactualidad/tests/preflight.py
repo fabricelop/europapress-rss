@@ -642,8 +642,8 @@ assert 'Ocultar de esta lista' in relations and 'Restaurar' in relations
 assert 'recentNews(' in relation_models and 'actionForSwitch(' in relation_models
 assert 'top30Trends: store.snapshot.top30' in dashboard
 assert 'top30Trends: store.snapshot.top30' in actions
-assert '$0.id == row.editorialID' in relations
-assert '$0.revision == row.revision' in relations
+assert 'id: row.editorialID' in relations
+assert 'revision: row.revision' in relations
 assert 'matchingTop30Endpoint(' in relations
 assert 'static func matchingTop30Endpoint(' in relation_models
 assert '$0.text == renderedText' in relation_models
