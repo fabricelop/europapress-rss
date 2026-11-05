@@ -3,92 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261106T0010+0100-manual",
-  "previous_run_id": "tr-20261105T2355+0100-manual",
-  "status": "success",
-  "phase": "preparing",
-  "started_at": "2026-11-06T00:10:00+01:00",
-  "updated_at": "2026-11-06T00:15:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 6,
+  "run_id": "tr-autoguard-1793920275",
+  "previous_run_id": "tr-20261106T0010+0100-manual",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-06T00:11:15+01:00",
+  "updated_at": "2026-11-06T00:16:06+01:00",
+  "finished_at": "2026-11-06T00:16:06+01:00",
+  "current": 7,
+  "total": 7,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "d7496b5223d9"
+    "d7496b5223d9",
+    "red-review-225123b61fba0e156ab5",
+    "red-review-d7a36e0a32bc2297e1a5"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "fddf605b306b",
+    "9224d7710011",
+    "82295a14a55a",
+    "dc41d05d0c7b"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 6,
-    "closed": 0,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 6,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Iniciando pasada 0/6; preparando investigación de POBRE DE MI.",
-  "final_outcomes": [],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793920495747-manual",
-    "status": "DONE",
-    "started_at": "2026-11-06T00:15:00+01:00",
-    "updated_at": "2026-11-06T00:18:00+01:00",
-    "finished_at": "2026-11-06T00:18:00+01:00",
-    "current": 2,
-    "total": 2,
-    "queue_complete": true,
-    "processed_ids": [
-      "red-review-225123b61fba0e156ab5",
-      "red-review-d7a36e0a32bc2297e1a5"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-225123b61fba0e156ab5",
-        "revision": 0,
-        "name": "Revisar novedades: #LaRevuelta",
-        "outcome": "updated",
-        "distinct_episode": true,
-        "applied": true,
-        "created_id": "trend-update-56381a455a7e51e2e6df",
-        "via": "concurrent_convergence",
-        "apply_commit": "b42bdd9a76d76867e600b36ee314c513e844cb9f"
-      },
-      {
-        "id": "red-review-d7a36e0a32bc2297e1a5",
-        "revision": 0,
-        "name": "Revisar novedades: #ElPerroAndaluzTVE",
-        "outcome": "updated",
-        "distinct_episode": true,
-        "applied": true,
-        "created_id": "trend-update-e70cb1174fd7da8fca80",
-        "via": "concurrent_convergence",
-        "apply_commit": "b42bdd9a76d76867e600b36ee314c513e844cb9f"
-      }
-    ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 5,
     "problematic": 0,
     "updates": 2,
     "continuity_updates": 0,
@@ -101,14 +46,164 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
+    "concurrent_convergence": 4
+  },
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "Pasada completada 7/7: 5 explicaciones y 2 revisiones de episodio distinto; cola final 0.",
+  "final_outcomes": [
+    {
+      "id": "fddf605b306b",
+      "name": "POBRE DE MI",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "9224d7710011",
+      "name": "Arturo Requejo",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "82295a14a55a",
+      "name": "Almodóvar",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "d7496b5223d9",
+      "name": "Hapoel",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": false
+    },
+    {
+      "id": "dc41d05d0c7b",
+      "name": "Milán",
+      "revision": 0,
+      "outcome": "explained",
+      "converged": true
+    },
+    {
+      "id": "red-review-225123b61fba0e156ab5",
+      "name": "#LaRevuelta",
+      "revision": 0,
+      "outcome": "updated",
+      "distinct_episode": true,
+      "converged": false
+    },
+    {
+      "id": "red-review-d7a36e0a32bc2297e1a5",
+      "name": "#ElPerroAndaluzTVE",
+      "revision": 0,
+      "outcome": "updated",
+      "distinct_episode": true,
+      "converged": false
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-autoguard-1793920275",
+    "status": "DONE",
+    "started_at": "2026-11-06T00:11:15+01:00",
+    "updated_at": "2026-11-06T00:16:06+01:00",
+    "finished_at": "2026-11-06T00:16:06+01:00",
+    "current": 7,
+    "total": 7,
+    "queue_complete": true,
+    "processed_ids": [
+      "d7496b5223d9",
+      "red-review-225123b61fba0e156ab5",
+      "red-review-d7a36e0a32bc2297e1a5"
+    ],
+    "converged_ids": [
+      "fddf605b306b",
+      "9224d7710011",
+      "82295a14a55a",
+      "dc41d05d0c7b"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "fddf605b306b",
+        "name": "POBRE DE MI",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "9224d7710011",
+        "name": "Arturo Requejo",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "82295a14a55a",
+        "name": "Almodóvar",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "d7496b5223d9",
+        "name": "Hapoel",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": false
+      },
+      {
+        "id": "dc41d05d0c7b",
+        "name": "Milán",
+        "revision": 0,
+        "outcome": "explained",
+        "converged": true
+      },
+      {
+        "id": "red-review-225123b61fba0e156ab5",
+        "name": "#LaRevuelta",
+        "revision": 0,
+        "outcome": "updated",
+        "distinct_episode": true,
+        "converged": false
+      },
+      {
+        "id": "red-review-d7a36e0a32bc2297e1a5",
+        "name": "#ElPerroAndaluzTVE",
+        "revision": 0,
+        "outcome": "updated",
+        "distinct_episode": true,
+        "converged": false
+      }
+    ],
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 5,
+    "problematic": 0,
+    "updates": 2,
+    "continuity_updates": 0,
+    "distinct_updates": 2,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 4,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada 2/2 cerrada por convergencia JIT: #LaRevuelta y #ElPerroAndaluzTVE quedaron aplicadas como episodios distintos. Barrera final main: cola 0 y rewrite_pending 0. Sin ImageGen ni publicaciones."
+    "message": "Pasada 7/7 completada. Cinco tendencias explicadas y dos revisiones actualizadas como episodios distintos. Barrera final main: editorial-queue=0; rewrite_pending/reexplain=0; ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T00:14:20+01:00",
-  "last_completed_at": "2026-11-06T00:14:20+01:00",
+  "last_started_at": "2026-11-06T00:11:15+01:00",
+  "last_completed_at": "2026-11-06T00:16:06+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -183,9 +278,10 @@
     "tr-1793917721549-manual",
     "tr-1793918400000-manual",
     "tr-20261105T2355+0100-manual",
-    "tr-1793920495747-manual"
+    "tr-1793920495747-manual",
+    "tr-20261106T0010+0100-manual"
   ],
-  "command_id": "tr-20261106T0010+0100-manual",
+  "command_id": "tr-autoguard-1793920275",
   "canonical_successor_run_id": null,
-  "source": "chat"
+  "source": "autoguard"
 }
