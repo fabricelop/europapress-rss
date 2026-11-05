@@ -59617,11 +59617,26 @@
         }
       ],
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/Estados-Unidos-elecciones-1.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/mundo/estados-unidos-resultado-victoria-elecciones-democratas-republicanos-congreso/",
+        "alt": "Imagen de archivo relacionada con America",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/Estados-Unidos-elecciones-1.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/mundo/estados-unidos-resultado-victoria-elecciones-democratas-republicanos-congreso/",
+        "alt": "Imagen de archivo relacionada con America",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "438a7d5904cf",
@@ -65687,6 +65702,6 @@
       ]
     }
   ],
-  "updated_at": "2026-11-05T06:53:30.272297+00:00",
+  "updated_at": "2026-11-05T06:54:47.690948Z",
   "count": 1086
 }
