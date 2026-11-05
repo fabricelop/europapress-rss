@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T20:16:38+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-05T19:17:08.437638+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-9e1cc158b8e63c0b059d",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-05T19:17:08.437638+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7fb4d179ec62",
+        "revision": 0,
+        "name": "Paraguay",
+        "rank": 22,
+        "explanation": "TT#23 Paraguay sigue siendo tendencia por la crisis de Ueno Bank, ahora con la dimisión de Santiago Peña tras perder apoyos y ante un juicio político inminente.\n#SantiagoPeña #UenoBank\n🌶️ La crisis bancaria ya no solo llegó al Congreso: también alcanzó la Presidencia.",
+        "explanation_sha256": "9918d5f7fcfa636049582c3e444d4a3d3eb1387530056e1f7ce7e5b069efd936",
+        "explained_at": "2026-11-04T15:10:18.408Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
+          },
+          {
+            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
+          }
+        ],
+        "fingerprint": "77904ea78891ce7793ec0ee0a92d8331209c4c6c527bb8f91d7ef1592fc173eb"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-f23251113eab0940c574",
+      "revision": 0,
+      "name": "Revisar novedades: Aldama",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-05T19:17:08.437638+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "1024497a60b7",
+        "revision": 0,
+        "name": "Aldama",
+        "rank": 16,
+        "explanation": "TT#16 Aldama es tendencia porque el Supremo ha dado 15 días a Ábalos, Koldo García y Víctor de Aldama para pagar 647.000 € en multas, decomisos e indemnizaciones del caso mascarillas.\n#CasoKoldo #TribunalSupremo",
+        "explanation_sha256": "cf85b11d0ca7036c763a8a3b50b9b2e160d748b7c22c72a19a298ce5415b01fb",
+        "explained_at": "2026-11-05T11:42:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/nacional/noticia-supremo-requiere-abalos-koldo-aldama-pagar-647000-euros-condena-caso-mascarillas-20261104153041.html"
+          },
+          {
+            "url": "https://www.eldiario.es/politica/ultima-hora-dimision-oscar-puente-actualidad-politica_6_13636217_1126298.html"
+          }
+        ],
+        "fingerprint": "d7e693c741c490848c12cad2933066bf299ae1302c11303142d02da58370363b"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
