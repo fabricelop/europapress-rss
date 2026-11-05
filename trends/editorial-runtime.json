@@ -3,49 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793875027567-manual",
-  "previous_run_id": "tr-1793874826601-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T11:37:30+01:00",
-  "updated_at": "2026-11-05T11:46:20+01:00",
-  "finished_at": "2026-11-05T11:46:20+01:00",
-  "current": 6,
-  "total": 6,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-21575c6a18da195cda2a",
-    "692e6a03b026",
-    "1024497a60b7",
-    "e4bbe4093803",
-    "e1360403525d",
-    "25f6ff001bfb"
+  "run_id": "tr-1793875587772-manual",
+  "previous_run_id": "tr-1793875027567-manual",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-05T11:46:40+01:00",
+  "updated_at": "2026-11-05T11:46:40+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "49691c684a3e",
+  "title": "Koldo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "49691c684a3e"
   ],
-  "converged_ids": [
-    "red-review-21575c6a18da195cda2a",
-    "692e6a03b026",
-    "1024497a60b7",
-    "e4bbe4093803",
-    "e1360403525d",
-    "25f6ff001bfb"
+  "remaining_active_ids": [
+    "49691c684a3e"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 5,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -56,64 +46,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada completada: 5 explicaciones nuevas y 1 actualización de continuidad; cola autoritativa vacía.",
-  "final_outcomes": [
-    {
-      "id": "red-review-21575c6a18da195cda2a",
-      "revision": 0,
-      "name": "Jesús de Miguel",
-      "source_id": "ca4337605844",
-      "outcome": "continuity_updated",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "b0b8c364b25e0e509b9b70cd9a6e25aff64d2044"
-    },
-    {
-      "id": "692e6a03b026",
-      "revision": 0,
-      "name": "Adif Alta Velocidad",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "c8f374a15850770616e858dc6a06d1604b18c0e1"
-    },
-    {
-      "id": "1024497a60b7",
-      "revision": 0,
-      "name": "Aldama",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "c8f374a15850770616e858dc6a06d1604b18c0e1"
-    },
-    {
-      "id": "e4bbe4093803",
-      "revision": 0,
-      "name": "Lee Know",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "c8f374a15850770616e858dc6a06d1604b18c0e1"
-    },
-    {
-      "id": "e1360403525d",
-      "revision": 0,
-      "name": "Día Internacional",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "3438c52287ed330e98ad6a03cde0fa71b1fc9eb2"
-    },
-    {
-      "id": "25f6ff001bfb",
-      "revision": 0,
-      "name": "Cristian Corvillo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "3438c52287ed330e98ad6a03cde0fa71b1fc9eb2"
-    }
-  ],
+  "activity": "Investigando Koldo (49691c684a3e r0) desde cero; verificación actual en curso.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793875027567-manual",
@@ -208,7 +142,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T11:45:21+01:00",
+  "last_started_at": "2026-11-05T11:46:40+01:00",
   "last_completed_at": "2026-11-05T11:46:20+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -225,6 +159,6 @@
     "tr-1793874536722-manual",
     "tr-1793875027567-manual"
   ],
-  "command_id": "tr-1793875027567-manual",
+  "command_id": "tr-1793875587772-manual",
   "canonical_successor_run_id": null
 }
