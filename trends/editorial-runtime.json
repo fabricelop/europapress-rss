@@ -3,31 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261105T1640+0100-manual",
-  "previous_run_id": "tr-20261105T1625+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T16:40:00+01:00",
-  "updated_at": "2026-11-05T16:44:00+01:00",
-  "finished_at": "2026-11-05T16:44:00+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-20261105T1655+0100-manual",
+  "previous_run_id": "tr-20261105T1640+0100-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T16:55:00+01:00",
+  "updated_at": "2026-11-05T16:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "0c23ed806a61",
-    "fbffe6468908"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -45,27 +42,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 2/2 · #TEM5N y Ritz explicadas · cola editorial vacía",
-  "final_outcomes": [
-    {
-      "id": "0c23ed806a61",
-      "revision": 0,
-      "name": "#TEM5N",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox",
-      "apply_commit": "e2dcef6"
-    },
-    {
-      "id": "fbffe6468908",
-      "revision": 0,
-      "name": "Ritz",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox",
-      "apply_commit": "e2dcef6"
-    }
-  ],
+  "activity": "Iniciando pasada 0/0 · verificando cola y reelaboraciones pendientes",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261105T1640+0100-manual",
@@ -119,7 +97,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T16:40:00+01:00",
+  "last_started_at": "2026-11-05T16:55:00+01:00",
   "last_completed_at": "2026-11-05T16:44:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -154,7 +132,7 @@
     "tr-20261105T1625+0100-manual",
     "tr-20261105T1640+0100-manual"
   ],
-  "command_id": "tr-20261105T1640+0100-manual",
+  "command_id": "tr-20261105T1655+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
