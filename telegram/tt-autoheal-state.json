@@ -2,21 +2,28 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-05T01:50:09.618696+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-11-05T08:36:04.711455+00:00",
+      "issue_count": 3,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "76cc0b88ce16",
-          "title": "Carlos Alcaraz: \"Lo de Rafa Nadal directivo del Real Madrid me parece una locura, me alegra por él\"",
-          "seconds": 3975,
+          "id": "8caeb9591b61",
+          "title": "La dueña de Carbonell seguirá en España: Dcoop y Acesur se hacen con Deoleo por 520 millones",
+          "seconds": 1858,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "600dabf45db0",
+          "title": "Suspenden 24 días de empleo y sueldo a un agente de la Guardia Urbana de Barcelona por negarse a hab",
+          "seconds": 1346,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1698957,
+          "seconds": 1723312,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -25,96 +32,54 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "25bcefac23f1e167480631d889273fd65a5059fc2e029a897e50ffade10609b0",
+      "open_signature": "535fe8fdcc244c988b6a356be5ddb3f0f718481ae28972bee27b11f87d121bc0",
       "repair_via_workflow_run": false,
-      "escalation_required": 1
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-11-05T01:50:09.618696+00:00",
-      "issue_count": 12,
+      "checked_at": "2026-11-05T08:36:04.711455+00:00",
+      "issue_count": 6,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "e7ff915e50a9",
-          "title": "Güler",
-          "seconds": 16714,
+          "id": "731faea4f085",
+          "title": "Verano Joven",
+          "seconds": 3285,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "d4a2fa3f6989",
-          "title": "Champions",
-          "seconds": 13587,
+          "id": "16f9d1ceb0ea",
+          "title": "#FelizJueves",
+          "seconds": 2934,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "78c973bfa2ad",
+          "id": "trend-update-f2a376eaa5e39cf49488",
           "title": "Dortmund",
-          "seconds": 13498,
+          "seconds": 2530,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "d05d7faf3901",
-          "title": "Betis",
-          "seconds": 12203,
+          "id": "c79c5dd13cbe",
+          "title": "Koldo García",
+          "seconds": 1169,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "50405f310f9f",
-          "title": "#LaIslaDeLasTentaciones17",
-          "seconds": 11347,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "57f0c287cf42",
-          "title": "mckenna",
-          "seconds": 11347,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "b2f42653f44a",
-          "title": "#RevillaEH",
-          "seconds": 11347,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "trend-update-87d7ddfa94dd293539c5",
-          "title": "Parrot",
-          "seconds": 10573,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "trend-update-b0c01b00ed5111b801fe",
-          "title": "Mazón",
-          "seconds": 10268,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "trend-update-3c47fc6375ed614df5e6",
-          "title": "#ElChiringuitoenCuatro",
-          "seconds": 4858,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "trend-update-e219c5411d1218858ea9",
+          "id": "trend-update-6528f48d079cea642971",
           "title": "Óscar Puente",
-          "seconds": 4783,
+          "seconds": 763,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1698956,
+          "seconds": 1723311,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -123,16 +88,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b8cff81ecb6a523e2c207134183cb127f51b1dc6765afc3d970006835c4b7d79",
+      "open_signature": "b42e58181a82c081b2c6dbf1b7895ce44f8b545b26925d7a5abfb8c88b0222c0",
       "repair_via_workflow_run": false,
-      "escalation_required": 11
+      "escalation_required": 3
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T01:50:09.618696+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-05T01:50:09.618696+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-05T01:50:09.618696+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-05T01:50:09.618696+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T08:36:04.711455+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-05T08:36:04.711455+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-05T08:36:04.711455+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-05T08:36:04.711455+00:00"
   },
-  "checked_at": "2026-11-05T01:50:09.618696+00:00"
+  "checked_at": "2026-11-05T08:36:04.711455+00:00"
 }
