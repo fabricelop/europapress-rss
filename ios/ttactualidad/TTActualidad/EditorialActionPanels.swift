@@ -197,6 +197,7 @@ struct EditorialActions: View {
                                    scope: EditorialRelationsScope(
                 project: project, id: editorialID, revision: revision, title: title),
                                    top30Names: store.snapshot.top30.map(\.name),
+                                   top30Trends: store.snapshot.top30,
                                    listasNews: store.snapshot.news)
                 .presentationDetents([.large])
         }

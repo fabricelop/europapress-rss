@@ -670,6 +670,102 @@ final class GitHubEditor: ObservableObject {
         return object
     }
 
+    // Rebuild the *display* news inbox from retained editorial history, not
+    // the transient Listas or the often-empty prepared.json. Opaque relation
+    // identities can ONLY come from Sites /v1/snapshot. This method NEVER
+    // manufactures an episodeFingerprint or a publication confirmation.
+    func editorialRelationRecentNews() async throws -> [EditorialRelationEndpoint] {
+        async let preparedRead = readMainJSON("ttittulares/prepared.json")
+        async let processedRead = readMainJSON("telegram/editorial-processing.json")
+        async let publishedRead = readMainJSON("pilot/ttactualidad-publication-events.json")
+        async let radarRead = readMainJSON("ttittulares/status.json")
+
+        let prepared = try? await preparedRead
+        let processed = try? await processedRead
+        let published = try? await publishedRead
+        let radar = try? await radarRead
+        guard prepared != nil || processed != nil || published != nil else {
+            throw GitHubError.message("No está accesible el historial reciente de noticias.")
+        }
+
+        let cutoff = Date().addingTimeInterval(-48 * 3600)
+        let latest = Date().addingTimeInterval(300)
+        let radarEvents = radar?["events"] as? [String: [String: Any]] ?? [:]
+        struct Candidate {
+            var id: String
+            var revision: Int
+            var title: String
+            var text: String
+            var issuedAt: Date
+        }
+        var entries: [String: Candidate] = [:]
+        func add(_ id: String, _ revision: Int, _ title: String,
+                 _ text: String, _ dateValue: String?) {
+            guard !id.isEmpty, revision >= 0,
+                  let date = EditorialRelationsPolicy.parsedDate(dateValue),
+                  date >= cutoff, date <= latest,
+                  !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+            let key = EditorialRelationsPolicy.newsKey(id: id, revision: revision)
+            let candidate = Candidate(id: id, revision: revision, title: title,
+                                      text: text, issuedAt: date)
+            if let previous = entries[key] {
+                entries[key] = Candidate(
+                    id: id, revision: revision,
+                    title: title.count > previous.title.count ? title : previous.title,
+                    text: text.count > previous.text.count ? text : previous.text,
+                    issuedAt: max(date, previous.issuedAt))
+            } else { entries[key] = candidate }
+        }
+
+        // READY is retained after removal from Listas; PROCESSING is not a
+        // final news episode and must not leak into editorial relationship UI.
+        for row in processed?["items"] as? [[String: Any]] ?? [] {
+            guard row["status"] as? String == "READY",
+                  let id = row["event_id"] as? String,
+                  let revision = row["revision"] as? Int,
+                  let title = row["title"] as? String else { continue }
+            let date = row["delivered_at"] as? String ??
+                row["rewrite_completed_at"] as? String ?? row["selected_at"] as? String
+            add(id, revision, title, "", date)
+        }
+
+        // Publication events are durable even when both prepared and Listas
+        // are empty. Only join title by the SAME event ID AND revision.
+        for row in published?["items"] as? [[String: Any]] ?? [] {
+            guard row["project"] as? String == "ttittulares",
+                  let id = row["event_id"] as? String,
+                  let revision = row["revision"] as? Int,
+                  let radarRow = radarEvents[id],
+                  radarRow["revision"] as? Int == revision,
+                  let title = radarRow["title"] as? String else { continue }
+            add(id, revision, title, "", row["at"] as? String)
+        }
+
+        // Prepared is still useful while populated, but it is NOT a
+        // requirement for the inbox to contain recent articles.
+        for row in prepared?["items"] as? [[String: Any]] ?? [] {
+            guard let id = row["event_id"] as? String,
+                  let revision = row["revision"] as? Int,
+                  let title = row["title"] as? String else { continue }
+            let tweet = row["tweet"] as? [String: Any] ?? [:]
+            let text = (tweet["text"] as? String).flatMap { $0.isEmpty ? nil : $0 } ??
+                (row["explanation"] as? String) ??
+                (row["factual_summary"] as? String) ?? ""
+            add(id, revision, title, text, row["prepared_at"] as? String)
+        }
+
+        return entries.values.sorted {
+            if $0.issuedAt != $1.issuedAt { return $0.issuedAt > $1.issuedAt }
+            if $0.revision != $1.revision { return $0.revision > $1.revision }
+            return $0.id < $1.id
+        }.map {
+            EditorialRelationEndpoint(
+                id: $0.id, revision: $0.revision, episodeFingerprint: "",
+                title: $0.title, text: $0.text, path: nil,
+                listedAt: ISO8601DateFormatter().string(from: $0.issuedAt))
+        }
+    }
+
     private func actionReceipt(_ requestID: String) async throws -> String? {
         let doc = try await readMainJSON("pilot/ttactualidad-action-receipts.json")
         let receipt = (doc["items"] as? [[String: Any]])?.first {
