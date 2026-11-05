@@ -3,64 +3,57 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793865343541-manual",
-  "previous_run_id": "tr-1793865240975-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T08:57:47+01:00",
-  "updated_at": "2026-11-05T08:59:10+01:00",
-  "finished_at": "2026-11-05T08:59:10+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-0fd1670f5e74b102bfd9"
+  "run_id": "tr-1793866600511-manual",
+  "previous_run_id": "tr-1793865343541-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T09:16:40+01:00",
+  "updated_at": "2026-11-05T09:16:40+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "66edd1e2eee9",
+  "title": "El Asador Etxebarri",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "66edd1e2eee9",
+    "c79c5dd13cbe"
   ],
-  "converged_ids": [
-    "red-review-0fd1670f5e74b102bfd9"
+  "remaining_active_ids": [
+    "66edd1e2eee9",
+    "c79c5dd13cbe"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 1,
-    "closed": 1,
+    "observed": 2,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
+    "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 1/1 · Mazón r0 convergió ya aplicado como continuidad. Barrera final main 0. ImageGen=0.",
-  "final_outcomes": [
-    {
-      "id": "red-review-0fd1670f5e74b102bfd9",
-      "revision": 0,
-      "name": "Revisar novedades: Mazón",
-      "outcome": "continuity",
-      "applied": true,
-      "via": "maintenance_outbox_convergence"
-    }
-  ],
+  "activity": "Preparando 1/2 · El Asador Etxebarri r0 · validación JIT previa a investigación.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793865240975-manual",
+    "run_id": "tr-1793865343541-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T07:56:04.478Z",
-    "updated_at": "2026-11-05T08:57:02+01:00",
-    "finished_at": "2026-11-05T08:57:02+01:00",
+    "started_at": "2026-11-05T08:57:47+01:00",
+    "updated_at": "2026-11-05T08:59:10+01:00",
+    "finished_at": "2026-11-05T08:59:10+01:00",
     "current": 1,
     "total": 1,
     "queue_complete": true,
@@ -78,7 +71,7 @@
         "via": "maintenance_outbox_convergence"
       }
     ],
-    "attempted": 1,
+    "attempted": 0,
     "observed": 1,
     "closed": 1,
     "explained": 0,
@@ -93,7 +86,7 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T08:57:47+01:00",
+  "last_started_at": "2026-11-05T09:16:40+01:00",
   "last_completed_at": "2026-11-05T08:59:10+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
