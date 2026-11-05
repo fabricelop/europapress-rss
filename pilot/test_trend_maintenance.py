@@ -97,7 +97,8 @@ class MaintenanceTests(unittest.TestCase):
             'TT#30 Adif sigue siendo tendencia por el anuncio de su rueda de prensa.\n#Adif #Trenes')
         self.assertEqual(state[g.MANUAL]['items'][0]['red_review_previous_explanation'],
                          self.row['explanation'])
-        self.assertEqual(state[g.MANUAL]['items'][0]['explained_at'], self.row['explained_at'])
+        self.assertEqual(state[g.MANUAL]['items'][0]['explained_at'],
+                         (self.now-timedelta(hours=1)).isoformat())
         self.assertEqual(state[g.MANUAL]['items'][0]['revision'], self.row['revision'])
         self.assertEqual(state[g.REQUESTS]['requests'][0]['explanation'],
                          state[g.MANUAL]['items'][0]['explanation'])
