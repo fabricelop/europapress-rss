@@ -254,6 +254,35 @@ class MaintenanceTests(unittest.TestCase):
         self.assertFalse(m.verified_distinct_material_event(
             command, self.row, new_state, self.now, g.grouping_api()))
 
+    def test_published_continuity_changes_display_text_without_republishing(self):
+        original = self.state[g.MANUAL]['items'][0]
+        original.update(status='published', image={"url": "https://example.org/ai.png"},
+                        ai_image_status='ready', image_choice='ai')
+        self.state[g.REQUESTS]['requests'][0].update(original)
+        self.state[g.DECISIONS]['items'] = [
+            dict(id='a', revision=1, status='published',
+                 updated_at=self.now.isoformat())]
+        delivery_before = copy.deepcopy(self.state[g.DELIVERIES])
+        command = self.result('updated')
+        command.update(
+            explanation='TT#30 Adif sigue siendo tendencia por un informe complementario.\\n#Adif',
+            new_facts='Informe oficial complementario verificado')
+        result, applied = m.apply_review(self.state, command, self.now, g.grouping_api())
+        self.assertTrue(applied)
+        self.assertEqual(len(result[g.MANUAL]['items']), 1)
+        for path, field in ((g.MANUAL, 'items'), (g.REQUESTS, 'requests')):
+            row = result[path][field][0]
+            self.assertEqual(row['status'], 'published')
+            self.assertEqual(row['explanation'], command['explanation'])
+            self.assertEqual(row['explained_at'], self.row['explained_at'])
+            self.assertEqual(row['revision'], 1)
+            self.assertEqual(row['image']['url'], 'https://example.org/ai.png')
+            self.assertEqual(row['ai_image_status'], 'ready')
+        self.assertEqual(result[g.DELIVERIES], delivery_before)
+        self.assertEqual(result[g.DECISIONS], self.state[g.DECISIONS])
+        self.assertEqual(result[g.REQUESTS]['requests'][-1]['review_outcome'], 'continuity')
+        self.assertFalse(result[g.REQUESTS]['requests'][-1]['with_image'])
+
     def test_revised_explanation_is_used_on_next_scheduled_review(self):
         command = self.result('updated')
         command.update(
