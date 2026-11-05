@@ -3,23 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793906239018-manual",
-  "previous_run_id": "tr-20261105T2010+0100-manual",
+  "run_id": "tr-autoguard-1793905868",
+  "previous_run_id": "tr-1793906239018-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-05T20:18:00+01:00",
-  "updated_at": "2026-11-05T20:20:00+01:00",
-  "finished_at": "2026-11-05T20:20:00+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-05T20:11:08+01:00",
+  "updated_at": "2026-11-05T20:20:49+01:00",
+  "finished_at": "2026-11-05T20:20:49+01:00",
+  "current": 6,
+  "total": 6,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "da2f20879ae6",
+    "7f65953a348e",
+    "401dc12e1c5b",
+    "0565ca4fe021",
     "red-review-9e1cc158b8e63c0b059d",
     "red-review-f23251113eab0940c574"
   ],
   "converged_ids": [
+    "da2f20879ae6",
+    "7f65953a348e",
+    "401dc12e1c5b",
+    "0565ca4fe021",
     "red-review-9e1cc158b8e63c0b059d",
     "red-review-f23251113eab0940c574"
   ],
@@ -27,10 +35,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 4,
     "problematic": 0,
     "updates": 2,
     "continuity_updates": 2,
@@ -43,75 +51,113 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 6
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada completada: 2 revisiones de continuidad aplicadas; cola activa vacía",
+  "activity": "Pasada completada 6/6 por convergencia: 4 explicaciones y 2 revisiones de continuidad; cola final 0; sin ImageGen.",
   "final_outcomes": [
     {
-      "job_id": "red-review-9e1cc158b8e63c0b059d",
-      "source_id": "7fb4d179ec62",
+      "id": "da2f20879ae6",
+      "name": "Violencia",
       "revision": 0,
-      "name": "Paraguay",
-      "outcome": "updated",
-      "mode": "continuity",
-      "applied": true,
-      "converged": true
+      "outcome": "explained",
+      "note": "causa concreta no confirmada; redacción prudente sin remate"
     },
     {
-      "job_id": "red-review-f23251113eab0940c574",
-      "source_id": "1024497a60b7",
+      "id": "7f65953a348e",
+      "name": "Anoeta",
       "revision": 0,
-      "name": "Aldama",
-      "outcome": "updated",
-      "mode": "continuity",
-      "applied": true,
-      "converged": true
+      "outcome": "explained"
+    },
+    {
+      "id": "401dc12e1c5b",
+      "name": "Rochos",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "0565ca4fe021",
+      "name": "Europa League",
+      "revision": 0,
+      "outcome": "explained"
+    },
+    {
+      "id": "red-review-9e1cc158b8e63c0b059d",
+      "name": "Revisar novedades: Paraguay",
+      "revision": 0,
+      "outcome": "continuity"
+    },
+    {
+      "id": "red-review-f23251113eab0940c574",
+      "name": "Revisar novedades: Aldama",
+      "revision": 0,
+      "outcome": "continuity"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793906239018-manual",
+    "run_id": "tr-autoguard-1793905868",
     "status": "DONE",
-    "started_at": "2026-11-05T20:18:00+01:00",
-    "updated_at": "2026-11-05T20:20:00+01:00",
-    "finished_at": "2026-11-05T20:20:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-05T20:11:08+01:00",
+    "updated_at": "2026-11-05T20:20:49+01:00",
+    "finished_at": "2026-11-05T20:20:49+01:00",
+    "current": 6,
+    "total": 6,
     "queue_complete": true,
     "processed_ids": [
+      "da2f20879ae6",
+      "7f65953a348e",
+      "401dc12e1c5b",
+      "0565ca4fe021",
       "red-review-9e1cc158b8e63c0b059d",
       "red-review-f23251113eab0940c574"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "job_id": "red-review-9e1cc158b8e63c0b059d",
-        "source_id": "7fb4d179ec62",
+        "id": "da2f20879ae6",
+        "name": "Violencia",
         "revision": 0,
-        "name": "Paraguay",
-        "outcome": "updated",
-        "mode": "continuity",
-        "applied": true,
-        "converged": true
+        "outcome": "explained",
+        "note": "causa concreta no confirmada; redacción prudente sin remate"
       },
       {
-        "job_id": "red-review-f23251113eab0940c574",
-        "source_id": "1024497a60b7",
+        "id": "7f65953a348e",
+        "name": "Anoeta",
         "revision": 0,
-        "name": "Aldama",
-        "outcome": "updated",
-        "mode": "continuity",
-        "applied": true,
-        "converged": true
+        "outcome": "explained"
+      },
+      {
+        "id": "401dc12e1c5b",
+        "name": "Rochos",
+        "revision": 0,
+        "outcome": "explained"
+      },
+      {
+        "id": "0565ca4fe021",
+        "name": "Europa League",
+        "revision": 0,
+        "outcome": "explained"
+      },
+      {
+        "id": "red-review-9e1cc158b8e63c0b059d",
+        "name": "Revisar novedades: Paraguay",
+        "revision": 0,
+        "outcome": "continuity"
+      },
+      {
+        "id": "red-review-f23251113eab0940c574",
+        "name": "Revisar novedades: Aldama",
+        "revision": 0,
+        "outcome": "continuity"
       }
     ],
-    "attempted": 0,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 4,
     "problematic": 0,
     "updates": 2,
     "continuity_updates": 2,
@@ -124,10 +170,10 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 6
   },
-  "last_started_at": "2026-11-05T20:16:37+01:00",
-  "last_completed_at": "2026-11-05T20:20:00+01:00",
+  "last_started_at": "2026-11-05T20:11:08+01:00",
+  "last_completed_at": "2026-11-05T20:20:49+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -179,9 +225,10 @@
     "tr-1793904692516-manual",
     "tr-1793904878713-manual",
     "tr-20261105T2010+0100-manual",
-    "tr-1793906239018-manual"
+    "tr-1793906239018-manual",
+    "tr-autoguard-1793905868"
   ],
-  "command_id": "tr-1793906239018-manual",
+  "command_id": "tr-autoguard-1793905868",
   "canonical_successor_run_id": null,
-  "source": "chat"
+  "source": "autoguard"
 }
