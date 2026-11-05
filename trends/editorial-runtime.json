@@ -5,36 +5,33 @@
   "canonical": true,
   "run_id": "tr-1793848538441-manual",
   "previous_run_id": "tr-autoguard-1793848261",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T03:16:00.000Z",
-  "updated_at": "2026-11-05T03:19:00.000Z",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-05T03:20:00.000Z",
+  "finished_at": "2026-11-05T03:20:00.000Z",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-f015df7d1c322733d28c",
-  "title": "Revisar novedades: Irán",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-5fe80751bbb0dc14f679"
+    "red-review-5fe80751bbb0dc14f679",
+    "red-review-f015df7d1c322733d28c"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-f015df7d1c322733d28c"
-  ],
-  "remaining_active_ids": [
-    "red-review-f015df7d1c322733d28c"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "updates": 1,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -45,7 +42,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo 1/2 · Revisar novedades: Irán r0 · resultado unchanged guardado en maintenance-outbox; esperando aplicación autoritativa.",
+  "activity": "Cerrado 2/2 · Jesús de Miguel actualizado como continuidad; Irán sin cambio material. Cola main=0; ImageGen=0; publicaciones=0.",
   "final_outcomes": [
     {
       "id": "red-review-5fe80751bbb0dc14f679",
@@ -55,51 +52,67 @@
       "applied": true,
       "via": "maintenance_outbox",
       "apply_commit": "84884b4ab51e2900a22673913001b43c885650c1",
-      "source_id": "ca4337605844"
+      "source_id": "ca4337605844",
+      "distinct_episode": false,
+      "material_change": false
+    },
+    {
+      "id": "red-review-f015df7d1c322733d28c",
+      "revision": 0,
+      "name": "Revisar novedades: Irán",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "2cb480a394d96d05014507fb278d1f9691dbbf57",
+      "source_id": "5f2904640329"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793842224819-manual",
+    "run_id": "tr-1793848538441-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T01:31:30.000Z",
-    "updated_at": "2026-11-05T01:35:00.000Z",
-    "finished_at": "2026-11-05T01:35:00.000Z",
+    "started_at": "2026-11-05T03:16:00.000Z",
+    "updated_at": "2026-11-05T03:20:00.000Z",
+    "finished_at": "2026-11-05T03:20:00.000Z",
     "current": 2,
     "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-ebea5fc14de68fedbb2b",
-      "red-review-3717342ca2a94c3cc43e"
+      "red-review-5fe80751bbb0dc14f679",
+      "red-review-f015df7d1c322733d28c"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-ebea5fc14de68fedbb2b",
+        "id": "red-review-5fe80751bbb0dc14f679",
         "revision": 0,
-        "name": "Revisar novedades: Valentín",
-        "outcome": "unchanged",
+        "name": "Revisar novedades: Jesús de Miguel",
+        "outcome": "updated",
         "applied": true,
-        "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
-        "via": "maintenance_outbox"
+        "via": "maintenance_outbox",
+        "apply_commit": "84884b4ab51e2900a22673913001b43c885650c1",
+        "source_id": "ca4337605844",
+        "distinct_episode": false,
+        "material_change": false
       },
       {
-        "id": "red-review-3717342ca2a94c3cc43e",
+        "id": "red-review-f015df7d1c322733d28c",
         "revision": 0,
-        "name": "Revisar novedades: Lens",
+        "name": "Revisar novedades: Irán",
         "outcome": "unchanged",
         "applied": true,
-        "apply_commit": "c939b31bbc553a5012172c2096cf3e2921e0d3b8",
-        "via": "maintenance_outbox"
+        "via": "maintenance_outbox",
+        "apply_commit": "2cb480a394d96d05014507fb278d1f9691dbbf57",
+        "source_id": "5f2904640329"
       }
     ],
     "attempted": 2,
     "observed": 2,
     "closed": 2,
     "explained": 0,
-    "updates": 0,
-    "unchanged_reviews": 2,
-    "stale_reviews": 2,
+    "updates": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -109,6 +122,6 @@
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-05T03:16:00.000Z",
-  "last_completed_at": "2026-11-05T04:15:05+01:00",
+  "last_completed_at": "2026-11-05T03:20:00.000Z",
   "draft_preview": null
 }
