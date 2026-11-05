@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-05T04:04:12.516891Z",
+  "updated_at": "2026-11-05T04:05:12.506412Z",
   "items": [
     {
       "event_id": "91dde09a6f33",
@@ -411,7 +411,9 @@
       "sensitive_editorial": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-05T04:05:12.506412Z",
+      "fallback_image_search_attempted_at": "2026-11-05T04:05:12.506412Z"
     },
     {
       "event_id": "12b49b9bf987",
@@ -457,15 +459,33 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
       "image_app_available": false,
       "image_delivery": "none",
-      "prepared_at": "2026-11-05T04:04:12.516891Z"
+      "prepared_at": "2026-11-05T04:04:12.516891Z",
+      "archive_image_search_attempted_at": "2026-11-05T04:05:12.506412Z",
+      "fallback_image_search_attempted_at": "2026-11-05T04:05:12.506412Z",
+      "archive_image": {
+        "url": "https://album.mediaset.es/eimg/2026/11/04/la-carpeta-roja-en-la-que-oscar-puente-guardaba-su-dimision-anunciada-ante-la-diputacion-permanente_da39-2.jpg",
+        "source": "www.telecinco.es",
+        "source_url": "https://www.telecinco.es/noticias/espana/20261104/oscar-puente-carpeta-roja-anuncia-dimision-diputacion-permanente-congreso_18_020612123.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La carpeta roja en la que Óscar Puente guardaba su dimisión anunciada ante la Diputación Permanente del Congreso - Telecinco"
+      },
+      "fallback_image": {
+        "url": "https://album.mediaset.es/eimg/2026/11/04/la-carpeta-roja-en-la-que-oscar-puente-guardaba-su-dimision-anunciada-ante-la-diputacion-permanente_da39-2.jpg",
+        "source": "www.telecinco.es",
+        "source_url": "https://www.telecinco.es/noticias/espana/20261104/oscar-puente-carpeta-roja-anuncia-dimision-diputacion-permanente-congreso_18_020612123.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La carpeta roja en la que Óscar Puente guardaba su dimisión anunciada ante la Diputación Permanente del Congreso - Telecinco"
+      }
     }
   ],
   "count": 8,
