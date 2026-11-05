@@ -629,7 +629,7 @@ struct EditorialRelationsView: View {
                     HStack(spacing: 8) {
                         Image(systemName: staged ? "checkmark.square.fill" : "square")
                             .font(.system(size: 21))
-                            .foregroundStyle(staged ? TTTheme.teal : .secondary)
+                            .foregroundStyle(staged ? TTTheme.teal : Color.secondary)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(name).font(.subheadline)
                             Text("Identidad pendiente · selección local")
