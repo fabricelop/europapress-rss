@@ -5,32 +5,26 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793914290",
   "previous_run_id": "tr-20261105T2210+0100-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-05T22:32:00+01:00",
-  "updated_at": "2026-11-05T22:32:00+01:00",
+  "updated_at": "2026-11-05T22:36:25+01:00",
   "finished_at": null,
   "current": 0,
   "total": 5,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "b9ae62ede2da",
+    "d2c385cd4faf",
+    "dd44f496fada",
+    "f062213d6e59",
+    "fdc709891ba3"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "dd44f496fada",
-    "f062213d6e59",
-    "d2c385cd4faf",
-    "fdc709891ba3",
-    "b9ae62ede2da"
-  ],
-  "remaining_active_ids": [
-    "dd44f496fada",
-    "f062213d6e59",
-    "d2c385cd4faf",
-    "fdc709891ba3",
-    "b9ae62ede2da"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -87,8 +81,8 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T22:32:00+01:00",
-  "last_completed_at": "2026-11-05T22:11:00+01:00",
+  "last_started_at": "2026-11-05T22:36:25+01:00",
+  "last_completed_at": "2026-11-05T22:36:25+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
