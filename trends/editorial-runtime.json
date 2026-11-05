@@ -20,16 +20,14 @@
     "red-review-f23251113eab0940c574"
   ],
   "converged_ids": [
-    "da2f20879ae6",
-    "7f65953a348e",
-    "401dc12e1c5b",
-    "0565ca4fe021"
+    "red-review-9e1cc158b8e63c0b059d",
+    "red-review-f23251113eab0940c574"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
     "closed": 2,
     "explained": 0,
@@ -45,24 +43,32 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Paraguay y Aldama actualizados como continuidad; convergencia con 4 explicaciones previas; cola editorial verificada vacía",
+  "activity": "Pasada completada: 2 revisiones de continuidad aplicadas; cola activa vacía",
   "final_outcomes": [
     {
-      "id": "red-review-9e1cc158b8e63c0b059d",
+      "job_id": "red-review-9e1cc158b8e63c0b059d",
+      "source_id": "7fb4d179ec62",
       "revision": 0,
-      "outcome": "continuity",
-      "source_id": "7fb4d179ec62"
+      "name": "Paraguay",
+      "outcome": "updated",
+      "mode": "continuity",
+      "applied": true,
+      "converged": true
     },
     {
-      "id": "red-review-f23251113eab0940c574",
+      "job_id": "red-review-f23251113eab0940c574",
+      "source_id": "1024497a60b7",
       "revision": 0,
-      "outcome": "continuity",
-      "source_id": "1024497a60b7"
+      "name": "Aldama",
+      "outcome": "updated",
+      "mode": "continuity",
+      "applied": true,
+      "converged": true
     }
   ],
   "api_failover_enabled": false,
@@ -82,19 +88,27 @@
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-9e1cc158b8e63c0b059d",
+        "job_id": "red-review-9e1cc158b8e63c0b059d",
+        "source_id": "7fb4d179ec62",
         "revision": 0,
-        "outcome": "continuity",
-        "source_id": "7fb4d179ec62"
+        "name": "Paraguay",
+        "outcome": "updated",
+        "mode": "continuity",
+        "applied": true,
+        "converged": true
       },
       {
-        "id": "red-review-f23251113eab0940c574",
+        "job_id": "red-review-f23251113eab0940c574",
+        "source_id": "1024497a60b7",
         "revision": 0,
-        "outcome": "continuity",
-        "source_id": "1024497a60b7"
+        "name": "Aldama",
+        "outcome": "updated",
+        "mode": "continuity",
+        "applied": true,
+        "converged": true
       }
     ],
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
     "closed": 2,
     "explained": 0,
@@ -110,7 +124,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "last_started_at": "2026-11-05T20:16:37+01:00",
   "last_completed_at": "2026-11-05T20:20:00+01:00",
