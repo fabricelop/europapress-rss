@@ -3,62 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793885242584-manual",
-  "previous_run_id": "tr-1793884873025-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T13:27:22.584Z",
-  "updated_at": "2026-11-05T13:31:20.000Z",
-  "finished_at": "2026-11-05T13:31:20.000Z",
-  "current": 2,
+  "run_id": "tr-1793885396516-manual",
+  "previous_run_id": "tr-1793885242584-manual",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-05T13:29:56.516Z",
+  "updated_at": "2026-11-05T13:32:10.000Z",
+  "finished_at": null,
+  "current": 1,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "trend_id": "f08885b6bf61",
+  "title": "#NintendoSwitch2",
+  "queue_complete": false,
   "processed_ids": [
-    "red-review-d25d0fcd067a28be390d",
     "red-review-a765b4ba03e912aed511"
   ],
   "converged_ids": [
-    "red-review-d25d0fcd067a28be390d",
     "red-review-a765b4ba03e912aed511"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "f08885b6bf61"
+  ],
+  "remaining_active_ids": [
+    "f08885b6bf61"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 1,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
-  },
+  "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 2/2 · cola vacía verificada",
+  "activity": "Investigando 2/2 · #NintendoSwitch2",
   "final_outcomes": [
-    {
-      "id": "red-review-d25d0fcd067a28be390d",
-      "revision": 0,
-      "name": "Revisar novedades: Dortmund",
-      "outcome": "distinct_update",
-      "applied": true,
-      "via": "concurrent_maintenance_apply",
-      "source_id": "2ad64c143f3e"
-    },
     {
       "id": "red-review-a765b4ba03e912aed511",
       "revision": 0,
@@ -147,7 +122,7 @@
     "tr-1793884873025-manual",
     "tr-1793885242584-manual"
   ],
-  "command_id": "tr-1793885242584-manual",
+  "command_id": "tr-1793885396516-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
