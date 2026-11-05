@@ -3,50 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793884873025-manual",
-  "previous_run_id": "tr-1793882171824-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-05T13:22:00.000Z",
-  "updated_at": "2026-11-05T14:26:50+01:00",
+  "run_id": "tr-1793885242584-manual",
+  "previous_run_id": "tr-1793884873025-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T13:27:22.584Z",
+  "updated_at": "2026-11-05T13:27:22.584Z",
   "finished_at": null,
   "current": 0,
-  "total": 1,
-  "trend_id": "9790ad89e475",
-  "title": "Cumbre Iberoamericana",
-  "queue_complete": true,
-  "processed_ids": [
-    "9790ad89e475"
-  ],
+  "total": 2,
+  "trend_id": "red-review-d25d0fcd067a28be390d",
+  "title": "Revisar novedades: Dortmund",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-d25d0fcd067a28be390d",
+    "red-review-a765b4ba03e912aed511"
+  ],
+  "remaining_active_ids": [
+    "red-review-d25d0fcd067a28be390d",
+    "red-review-a765b4ba03e912aed511"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo 1/1 · Cumbre Iberoamericana · revisión 0",
-  "final_outcomes": [
-    {
-      "id": "red-review-71870f4bdba1ef6d5b8f",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "concurrent_maintenance_apply",
-      "source_id": "7fb4d179ec62"
-    },
-    {
-      "id": "red-review-e345105640694434e6d3",
-      "revision": 0,
-      "name": "Revisar novedades: Santa Ángela de la Cruz",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_maintenance_apply",
-      "source_id": "6aa7b6f6f841"
-    }
-  ],
+  "activity": "Preparando 0/2 · Revisar novedades: Dortmund · revisión 0",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793882171824-manual",
@@ -100,7 +85,7 @@
     "incidents": 0,
     "concurrent_convergence": 2
   },
-  "last_started_at": "2026-11-05T14:26:50+01:00",
+  "last_started_at": "2026-11-05T13:27:22.584Z",
   "last_completed_at": "2026-11-05T14:26:50+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -123,7 +108,7 @@
     "tr-1793880015887-manual",
     "tr-1793882171824-manual"
   ],
-  "command_id": "tr-1793884873025-manual",
+  "command_id": "tr-1793885242584-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
