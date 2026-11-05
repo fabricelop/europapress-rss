@@ -161,6 +161,28 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(EditorialRelationsPolicy.actionForSwitch(current: "linked", selected: false), "unlink")
     }
 
+    func testTop30EpisodeMatchingCanUseExactFingerprintWithoutTextEquality() {
+        let confirmed = EditorialRelationEndpoint(
+            id: "trend-123", revision: 2, episodeFingerprint: "site-signed-episode",
+            title: "Top 30 trend", text: "Texto original de tendencia",
+            path: nil)
+        let different = EditorialRelationEndpoint(
+            id: "trend-123", revision: 2, episodeFingerprint: "other-episode",
+            title: "Top 30 trend", text: "Otra revisión sin subir número",
+            path: nil)
+        XCTAssertEqual(EditorialRelationsPolicy.matchingTop30Endpoint(
+            id: "trend-123", revision: 2, renderedText: "TT#1 Texto visible diferente",
+            candidates: [confirmed])?.episodeFingerprint, "site-signed-episode")
+        XCTAssertNil(EditorialRelationsPolicy.matchingTop30Endpoint(
+            id: "trend-123", revision: 2, renderedText: "TT#1 Texto visible diferente",
+            candidates: [confirmed, different]))
+        XCTAssertEqual(EditorialRelationsPolicy.matchingTop30Endpoint(
+            id: "trend-123", revision: 2, renderedText: different.text,
+            candidates: [confirmed, different])?.episodeFingerprint, "other-episode")
+        XCTAssertNil(EditorialRelationsPolicy.matchingTop30Endpoint(
+            id: "", revision: 0, renderedText: "", candidates: [confirmed]))
+    }
+
     func testOnlyConfirmedDecisionCountsAsSaved() {
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "linked", relationId: "r"), action: "link"))
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "blocked", relationId: "r"), action: "unlink"))
