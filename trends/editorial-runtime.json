@@ -3,70 +3,53 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793915076723-manual",
-  "previous_run_id": "tr-1793914621791-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T22:41:16.068+01:00",
-  "updated_at": "2026-11-05T21:48:05.262Z",
-  "finished_at": "2026-11-05T21:48:05.262Z",
-  "current": 2,
+  "run_id": "tr-1793915481090-manual",
+  "previous_run_id": "tr-1793915076723-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T22:51:35+01:00",
+  "updated_at": "2026-11-05T22:51:35+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "c3681b22997b",
-    "a4d53d152871"
+  "trend_id": "a4d53d152871",
+  "title": "Marcos Alonso",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "a4d53d152871",
+    "d2c385cd4faf"
   ],
-  "converged_ids": [
-    "c3681b22997b",
-    "a4d53d152871"
+  "remaining_active_ids": [
+    "a4d53d152871",
+    "d2c385cd4faf"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 2/2 por convergencia JIT: Leire r0 y Marcos Alonso r0 verificados en requests + telegram-manual-explained; cola final 0; rewrite_pending 0; sin ImageGen ni publicaciones",
-  "final_outcomes": [
-    {
-      "id": "c3681b22997b",
-      "revision": 0,
-      "name": "Leire",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "a4d53d152871",
-      "revision": 0,
-      "name": "Marcos Alonso",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "activity": "Preparando Marcos Alonso r1 (1/2): validación JIT e investigación de hechos actuales",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793915076723-manual",
@@ -188,7 +171,7 @@
     "tr-1793915076723-manual",
     "tr-autoguard-1793914290"
   ],
-  "command_id": "tr-1793915076723-manual",
+  "command_id": "tr-1793915481090-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
