@@ -5,41 +5,39 @@
   "canonical": true,
   "run_id": "tr-1793915481090-manual",
   "previous_run_id": "tr-1793915076723-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T22:51:35+01:00",
-  "updated_at": "2026-11-05T22:56:30+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-05T22:57:30+01:00",
+  "finished_at": "2026-11-05T22:57:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "d2c385cd4faf",
-  "title": "Balaídos",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "a4d53d152871"
+    "a4d53d152871",
+    "d2c385cd4faf"
   ],
   "converged_ids": [
-    "a4d53d152871"
-  ],
-  "remaining_ids": [
+    "a4d53d152871",
     "d2c385cd4faf"
   ],
-  "remaining_active_ids": [
-    "d2c385cd4faf"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
-    "closed": 1,
-    "explained": 1,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,39 +48,56 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo Balaídos r2: resultado final 1-2 verificado",
-  "final_outcomes": [],
+  "activity": "Pasada cerrada 2/2: Marcos Alonso r1 y Balaídos r2 aplicados y verificados; cola final 0; rewrite_pending 0; sin ImageGen ni publicaciones",
+  "final_outcomes": [
+    {
+      "id": "a4d53d152871",
+      "revision": 1,
+      "name": "Marcos Alonso",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox"
+    },
+    {
+      "id": "d2c385cd4faf",
+      "revision": 2,
+      "name": "Balaídos",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793915076723-manual",
+    "run_id": "tr-1793915481090-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T22:41:16.068+01:00",
-    "updated_at": "2026-11-05T21:48:05.262Z",
-    "finished_at": "2026-11-05T21:48:05.262Z",
+    "started_at": "2026-11-05T22:51:35+01:00",
+    "updated_at": "2026-11-05T22:57:30+01:00",
+    "finished_at": "2026-11-05T22:57:30+01:00",
     "current": 2,
     "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "c3681b22997b",
-      "a4d53d152871"
+      "a4d53d152871",
+      "d2c385cd4faf"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "c3681b22997b",
-        "revision": 0,
-        "name": "Leire",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
         "id": "a4d53d152871",
-        "revision": 0,
+        "revision": 1,
         "name": "Marcos Alonso",
         "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence"
+        "via": "chat_outbox"
+      },
+      {
+        "id": "d2c385cd4faf",
+        "revision": 2,
+        "name": "Balaídos",
+        "outcome": "explained",
+        "applied": true,
+        "via": "chat_outbox"
       }
     ],
     "attempted": 2,
@@ -101,10 +116,10 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T22:41:16.068+01:00",
-  "last_completed_at": "2026-11-05T21:48:05.262Z",
+  "last_started_at": "2026-11-05T22:51:35+01:00",
+  "last_completed_at": "2026-11-05T22:57:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -171,7 +186,8 @@
     "tr-1793914621791-manual",
     "tr-1793914876068-manual",
     "tr-1793915076723-manual",
-    "tr-autoguard-1793914290"
+    "tr-autoguard-1793914290",
+    "tr-1793915481090-manual"
   ],
   "command_id": "tr-1793915481090-manual",
   "canonical_successor_run_id": null,
