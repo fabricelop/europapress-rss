@@ -95,6 +95,51 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(withDate.stableIdentity, withoutDate.stableIdentity)
     }
 
+    func testRecentNewsIncludesRemovedListasEpisodesAndStrict12HourWindow() {
+        let now = EditorialRelationsPolicy.parsedDate("2026-11-05T09:00:00Z")!
+        let recentRemoved = EditorialRelationEndpoint(
+            id: "removed", revision: 2, episodeFingerprint: "N1",
+            title: "Publicada y fuera de Listas", text: "Hechos", path: nil,
+            listedAt: "2026-11-05T02:00:00Z")
+        let older = EditorialRelationEndpoint(
+            id: "old", revision: 1, episodeFingerprint: "N2",
+            title: "Más de 12 horas", text: "Hechos", path: nil,
+            listedAt: "2026-11-04T17:00:00Z")
+        let withoutDate = EditorialRelationEndpoint(
+            id: "undated", revision: 1, episodeFingerprint: "N3",
+            title: "Fecha ausente", text: "Hechos", path: nil)
+        let candidates = [older, recentRemoved, recentRemoved, withoutDate]
+        XCTAssertEqual(EditorialRelationsPolicy.recentNews(candidates, hours: 12, now: now)
+            .map(\.id), ["removed"])
+        XCTAssertEqual(EditorialRelationsPolicy.recentNews(candidates, hours: 24, now: now)
+            .map(\.id), ["removed", "old"])
+        XCTAssertEqual(EditorialRelationsPolicy.recentNews(
+            candidates, hours: 12, now: now,
+            hidden: [recentRemoved.stableIdentity]).count, 0)
+        // Never invent a timestamp for a historical episode.
+        XCTAssertNil(EditorialRelationsPolicy.parsedDate(withoutDate.listedAt))
+        let fallback = [EditorialRelationsPolicy.newsKey(id: "undated", revision: 1):
+            EditorialRelationsPolicy.parsedDate("2026-11-05T08:30:00Z")!]
+        XCTAssertEqual(EditorialRelationsPolicy.recentNews(
+            candidates, hours: 12, now: now, fallbackDates: fallback)
+            .map(\.id), ["undated", "removed"])
+    }
+
+    func testTimestampParsingSupportsFractionalSecondsAndTimezones() {
+        XCTAssertNotNil(EditorialRelationsPolicy.parsedDate("2026-11-05T07:45:15.123Z"))
+        XCTAssertNotNil(EditorialRelationsPolicy.parsedDate("2026-11-05T08:45:15+01:00"))
+        XCTAssertNil(EditorialRelationsPolicy.parsedDate("yesterday"))
+    }
+
+    func testSwitchChangesOnlyChangedPairsNotAutomaticSuggestions() {
+        XCTAssertNil(EditorialRelationsPolicy.actionForSwitch(current: "suggested", selected: false))
+        XCTAssertNil(EditorialRelationsPolicy.actionForSwitch(current: "blocked", selected: false))
+        XCTAssertNil(EditorialRelationsPolicy.actionForSwitch(current: "linked", selected: true))
+        XCTAssertEqual(EditorialRelationsPolicy.actionForSwitch(current: "suggested", selected: true), "link")
+        XCTAssertEqual(EditorialRelationsPolicy.actionForSwitch(current: "blocked", selected: true), "link")
+        XCTAssertEqual(EditorialRelationsPolicy.actionForSwitch(current: "linked", selected: false), "unlink")
+    }
+
     func testOnlyConfirmedDecisionCountsAsSaved() {
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "linked", relationId: "r"), action: "link"))
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "blocked", relationId: "r"), action: "unlink"))
