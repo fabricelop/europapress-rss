@@ -5,17 +5,20 @@
   "canonical": true,
   "run_id": "tr-1793869318517-manual",
   "previous_run_id": "tr-1793868692583-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-05T10:02:30+01:00",
-  "updated_at": "2026-11-05T10:09:38+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-05T10:11:00+01:00",
+  "finished_at": "2026-11-05T10:11:00+01:00",
+  "current": 5,
   "total": 5,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "3ffa846e080e",
+    "c49aa86abf59",
+    "1e15ba910672",
     "006bcabb6375",
     "fcf2255228b8"
   ],
@@ -24,74 +27,14 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 4,
+    "problematic": 1,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 5,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Pasada editorial iniciada: 5 trabajos preparing/update detectados en main; validación JIT e investigación de antiguo a reciente. ImageGen desactivado.",
-  "final_outcomes": [
-    {
-      "id": "red-review-3aa75cc87d01cc877706",
-      "revision": 0,
-      "name": "Revisar novedades: Parrot",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "87acc049f36fa99dde3f707ed16532514c2299ef",
-      "created_id": "trend-update-f21b9279aecbc061df33",
-      "reason": "Episodio distinto y material: Dortmund-Betis de Champions del 4/11, con Parrott titular y 2-1."
-    }
-  ],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793868692583-manual",
-    "status": "DONE",
-    "started_at": "2026-11-05T09:51:32.583+01:00",
-    "updated_at": "2026-11-05T09:55:00+01:00",
-    "finished_at": "2026-11-05T09:55:00+01:00",
-    "current": 1,
-    "total": 1,
-    "queue_complete": true,
-    "processed_ids": [
-      "red-review-3aa75cc87d01cc877706"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-3aa75cc87d01cc877706",
-        "revision": 0,
-        "name": "Revisar novedades: Parrot",
-        "outcome": "updated",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "87acc049f36fa99dde3f707ed16532514c2299ef",
-        "created_id": "trend-update-f21b9279aecbc061df33",
-        "reason": "Episodio distinto y material: Dortmund-Betis de Champions del 4/11, con Parrott titular y 2-1."
-      }
-    ],
-    "attempted": 0,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
-    "updates": 1,
-    "continuity_updates": 0,
-    "distinct_updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -99,11 +42,154 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
+    "incidents": 1,
+    "concurrent_convergence": 0
+  },
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "fcf2255228b8",
+      "revision": 2,
+      "type": "unverified_trigger",
+      "message": "No se pudo verificar de forma independiente la pista de que #DesterrarLaMonarquía sea una convocatoria semanal de los miércoles; se dejó sin explicación verificada."
+    }
+  ],
+  "error": null,
+  "activity": "Pasada cerrada 5/5: 4 explicadas y 1 problemática por detonante no verificado. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "final_outcomes": [
+    {
+      "id": "3ffa846e080e",
+      "revision": 0,
+      "name": "Amnistía Internacional",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+    },
+    {
+      "id": "c49aa86abf59",
+      "revision": 0,
+      "name": "Alvia de Adamuz",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+    },
+    {
+      "id": "1e15ba910672",
+      "revision": 0,
+      "name": "Náyades",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+    },
+    {
+      "id": "006bcabb6375",
+      "revision": 0,
+      "name": "Kiko",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1"
+    },
+    {
+      "id": "fcf2255228b8",
+      "revision": 2,
+      "name": "#DesterrarLaMonarquía",
+      "outcome": "problematic",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1",
+      "reason": "Ranking y uso antimonárquico actuales verificados, pero no se acreditó el detonante concreto ni la pista de convocatoria semanal de los miércoles."
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793869318517-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-05T10:02:30+01:00",
+    "updated_at": "2026-11-05T10:11:00+01:00",
+    "finished_at": "2026-11-05T10:11:00+01:00",
+    "current": 5,
+    "total": 5,
+    "queue_complete": true,
+    "processed_ids": [
+      "3ffa846e080e",
+      "c49aa86abf59",
+      "1e15ba910672",
+      "006bcabb6375",
+      "fcf2255228b8"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "3ffa846e080e",
+        "revision": 0,
+        "name": "Amnistía Internacional",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+      },
+      {
+        "id": "c49aa86abf59",
+        "revision": 0,
+        "name": "Alvia de Adamuz",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+      },
+      {
+        "id": "1e15ba910672",
+        "revision": 0,
+        "name": "Náyades",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+      },
+      {
+        "id": "006bcabb6375",
+        "revision": 0,
+        "name": "Kiko",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1"
+      },
+      {
+        "id": "fcf2255228b8",
+        "revision": 2,
+        "name": "#DesterrarLaMonarquía",
+        "outcome": "problematic",
+        "applied": true,
+        "via": "editorial_outbox",
+        "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1",
+        "reason": "Ranking y uso antimonárquico actuales verificados, pero no se acreditó el detonante concreto ni la pista de convocatoria semanal de los miércoles."
+      }
+    ],
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 4,
+    "problematic": 1,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 1,
+    "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-05T10:09:38+01:00",
-  "last_completed_at": "2026-11-05T10:09:38+01:00",
+  "last_completed_at": "2026-11-05T10:11:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
