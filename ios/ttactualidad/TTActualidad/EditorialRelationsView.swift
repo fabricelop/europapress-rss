@@ -623,13 +623,11 @@ struct EditorialRelationsView: View {
         // Never link a stale trend with the same display name. The actual
         // current Top30 row must carry the same exact editorial episode.
         let row = top30Trends.indices.contains(rank - 1) ? top30Trends[rank - 1] : nil
-        let endpoint = endpoints.first {
-            guard let row else { return false }
-            return row.name == name &&
-                $0.id == row.editorialID &&
-                $0.revision == row.revision &&
-                $0.text == row.explanation &&
-                !$0.episodeFingerprint.isEmpty
+        let endpoint = row.flatMap { row -> EditorialRelationEndpoint? in
+            guard row.name == name else { return nil }
+            return EditorialRelationsPolicy.matchingTop30Endpoint(
+                id: row.editorialID, revision: row.revision,
+                renderedText: row.explanation, candidates: endpoints)
         }
         HStack(spacing: 8) {
             Text(String(rank) + ".").font(.caption).foregroundStyle(.secondary)
