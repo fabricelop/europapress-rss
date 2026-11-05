@@ -2,74 +2,51 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-05T16:48:26.785706+00:00",
-      "issue_count": 3,
+      "checked_at": "2026-11-05T22:23:58.118912+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "747c14e6758f",
-          "title": "Marius Borg Høiby seguirá bajo arresto domiciliario: el Tribunal de Apelación de Noruega revoca la o",
-          "seconds": 199,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "2f83aed2ef20",
-          "title": "La OMS alerta de una doble crisis de ébola y cólera en República Democrática del Congo",
-          "seconds": 199,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1752854,
+          "seconds": 1772985,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "3faa8c81cb27c2f0030bf247a4a23e708e1813a4854540babb827a28468c55b7",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-05T16:48:26.785706+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-11-05T22:23:58.118912+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "red-review-6d03af1e5af44606ce82",
-          "title": "Revisar novedades: Amnistía Internacional",
-          "seconds": 226,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1752853,
+          "seconds": 1772985,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "358aa3daf5e9ee1ff0aa45cb7f349614856efacee275e05484a2ffd9d29bf1d1",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-05T16:48:26.785706+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-05T22:23:58.118912+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-05T22:23:58.118912+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-05T16:48:26.785706+00:00"
   },
-  "checked_at": "2026-11-05T16:48:26.785706+00:00"
+  "checked_at": "2026-11-05T22:23:58.118912+00:00"
 }
