@@ -640,6 +640,13 @@ assert 'private var lookbackHours = 12' in relations
 assert 'Text("24 horas").tag(24)' in relations
 assert 'Ocultar de esta lista' in relations and 'Restaurar' in relations
 assert 'recentNews(' in relation_models and 'actionForSwitch(' in relation_models
+assert 'top30Trends: store.snapshot.top30' in dashboard
+assert 'top30Trends: store.snapshot.top30' in actions
+assert '$0.id == row.editorialID' in relations
+assert '$0.revision == row.revision' in relations
+assert '$0.text == row.explanation' in relations
+assert 'editorialRelationNewsDates()' in relations
+
 assert 'suggestionsToDismiss(for: news)' not in relations
 assert 'EditorialRelationsPolicy.canonical(' in relations
 assert 'static func canonical(_ items: [EditorialRelation])' in relation_models
