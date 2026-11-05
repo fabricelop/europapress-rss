@@ -5,29 +5,27 @@
   "canonical": true,
   "run_id": "tr-1793869318517-manual",
   "previous_run_id": "tr-1793868692583-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-05T10:02:30+01:00",
-  "updated_at": "2026-11-05T10:02:30+01:00",
+  "updated_at": "2026-11-05T10:06:16+01:00",
   "finished_at": null,
   "current": 0,
   "total": 5,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "1e15ba910672",
+    "3ffa846e080e",
+    "c49aa86abf59"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "3ffa846e080e",
-    "c49aa86abf59",
-    "1e15ba910672",
     "006bcabb6375",
     "fcf2255228b8"
   ],
   "remaining_active_ids": [
-    "3ffa846e080e",
-    "c49aa86abf59",
-    "1e15ba910672",
     "006bcabb6375",
     "fcf2255228b8"
   ],
@@ -111,7 +109,7 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T09:51:32.583+01:00",
+  "last_started_at": "2026-11-05T10:06:15+01:00",
   "last_completed_at": "2026-11-05T09:55:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
