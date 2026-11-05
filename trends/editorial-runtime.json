@@ -5,33 +5,28 @@
   "canonical": true,
   "run_id": "tr-20261106T0010+0100-manual",
   "previous_run_id": "tr-20261105T2355+0100-manual",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-06T00:10:00+01:00",
-  "updated_at": "2026-11-06T00:10:00+01:00",
+  "updated_at": "2026-11-06T00:13:38+01:00",
   "finished_at": null,
   "current": 0,
   "total": 6,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "82295a14a55a",
+    "9224d7710011",
+    "dc41d05d0c7b",
+    "fddf605b306b"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "fddf605b306b",
-    "9224d7710011",
-    "82295a14a55a",
-    "d7496b5223d9",
-    "dc41d05d0c7b",
-    "dddd935d6ed9"
+    "d7496b5223d9"
   ],
   "remaining_active_ids": [
-    "fddf605b306b",
-    "9224d7710011",
-    "82295a14a55a",
-    "d7496b5223d9",
-    "dc41d05d0c7b",
-    "dddd935d6ed9"
+    "d7496b5223d9"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -89,7 +84,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T23:55:00+01:00",
+  "last_started_at": "2026-11-06T00:13:38+01:00",
   "last_completed_at": "2026-11-05T23:55:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
