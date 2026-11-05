@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-05T21:28:26+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-05T20:28:59.003523+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-116b3ad301ef813c18d5",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-05T20:28:59.003523+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7fb4d179ec62",
+        "revision": 0,
+        "name": "Paraguay",
+        "rank": 22,
+        "explanation": "TT#2 Paraguay sigue siendo tendencia por la crisis de Ueno Bank: Santiago Peña dimitió y, minutos después, la Cámara de Diputados aprobó por 78-0 su juicio político.\n#SantiagoPeña #UenoBank\n🌶️ La crisis bancaria ya llegó al relevo presidencial y al Congreso.",
+        "explanation_sha256": "c2afc54335b1b6420a6d597d6189027589fa05f9114789a2ad2ac80217146d05",
+        "explained_at": "2026-11-04T15:10:18.408Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
+          },
+          {
+            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
+          }
+        ],
+        "fingerprint": "713743ec85a37e6f395a4d01105183c722aa90d1396bd7bc2d6a3defc743c03a"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-846995ee632c5fc941bd",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-05T20:28:59.003523+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "49691c684a3e",
+        "revision": 0,
+        "name": "Koldo",
+        "rank": 1,
+        "explanation": "TT#1 Koldo es tendencia porque afirma en un audio que un abogado del PP le ofreció pagar su defensa y 1 M€ a cambio de información contra Sánchez; el PP lo niega.\n#KoldoGarcía #PP\n🌶️ El supuesto pacto llega con audio y desmentido.",
+        "explanation_sha256": "b9faf3a2be37c8c2717ce317d82d2238ad629779d3b040181c7a11db58f27111",
+        "explained_at": "2026-11-05T11:47:10+01:00",
+        "verification_sources": [
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/05/koldo-garcia-asegura-a-la-ser-que-pacto-con-el-abogado-del-pp-un-millon-de-euros-a-cambio-de-informacion-para-derrocar-a-pedro-sanchez-cadena-ser/"
+          },
+          {
+            "url": "https://elpais.com/espana/2026-11-05/koldo-garcia-asegura-que-acordo-con-el-abogado-del-pp-un-millon-de-euros-a-cambio-de-informacion-para-hacer-caer-a-sanchez.html"
+          },
+          {
+            "url": "https://www.europapress.es/nacional/noticia-psoe-acusa-pp-intentar-comprar-testimonio-koldo-derribar-sanchez-genova-dice-falso-20261105113213.html"
+          }
+        ],
+        "fingerprint": "09a7dffb6fba88113d6c3989c0326bb2e12522586c16c40184f44927eaf3aeb5"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
