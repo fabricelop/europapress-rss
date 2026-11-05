@@ -3,69 +3,48 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793866852381-manual",
-  "previous_run_id": "tr-1793866600511-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T09:21:20+01:00",
-  "updated_at": "2026-11-05T09:24:38+01:00",
-  "finished_at": "2026-11-05T09:24:38+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-bd504e82b0f98a9bc6c1",
-    "red-review-bb8d48da7b7e88c197ea"
+  "run_id": "tr-1793868266707-manual",
+  "previous_run_id": "tr-1793866852381-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T09:45:00+01:00",
+  "updated_at": "2026-11-05T09:45:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "f4bf62d1904b",
+  "title": "#LaMesa",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "f4bf62d1904b"
   ],
-  "converged_ids": [
-    "red-review-bb8d48da7b7e88c197ea"
+  "remaining_active_ids": [
+    "f4bf62d1904b"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
-    "updates": 1,
-    "unchanged_reviews": 1,
+    "updates": 0,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 2/2: Óscar Puente actualizado como episodio distinto y Jesús de Miguel sin cambio editorial. Barrera final main: cola 0 y rewrite_pending 0. ImageGen=0; publicaciones=0.",
-  "final_outcomes": [
-    {
-      "id": "red-review-bd504e82b0f98a9bc6c1",
-      "revision": 0,
-      "name": "Revisar novedades: Óscar Puente",
-      "outcome": "updated",
-      "applied": true,
-      "created_id": "trend-update-6528f48d079cea642971",
-      "via": "maintenance_outbox",
-      "reason": "Episodio distinto y material: dimisión y renuncia electoral verificadas."
-    },
-    {
-      "id": "red-review-bb8d48da7b7e88c197ea",
-      "revision": 0,
-      "name": "Revisar novedades: Jesús de Miguel",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "reason": "Funeral, homenaje y aplazamientos son continuidad del mismo fallecimiento."
-    }
-  ],
+  "activity": "Preparando 1/1: #LaMesa (f4bf62d1904b r0). Validación JIT y nueva investigación editorial; ImageGen=0.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793866852381-manual",
@@ -117,7 +96,7 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T09:21:20+01:00",
+  "last_started_at": "2026-11-05T09:45:00+01:00",
   "last_completed_at": "2026-11-05T09:24:38+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
