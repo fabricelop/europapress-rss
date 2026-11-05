@@ -5,46 +5,55 @@
   "canonical": true,
   "run_id": "tr-1793865240975-manual",
   "previous_run_id": "tr-1793864744830-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T07:56:04.478Z",
-  "updated_at": "2026-11-05T07:56:04.478Z",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-05T08:57:02+01:00",
+  "finished_at": "2026-11-05T08:57:02+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "red-review-0fd1670f5e74b102bfd9",
-  "title": "Revisar novedades: Mazón",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-0fd1670f5e74b102bfd9"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-0fd1670f5e74b102bfd9"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
-    "updates": 0,
+    "updates": 1,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades 1/1 · Mazón r0. Validación JIT previa a investigación.",
-  "final_outcomes": [],
+  "activity": "Cierre 1/1 · Mazón r0 aplicado como continuidad. Cola final 0. ImageGen=0.",
+  "final_outcomes": [
+    {
+      "id": "red-review-0fd1670f5e74b102bfd9",
+      "revision": 0,
+      "name": "Revisar novedades: Mazón",
+      "outcome": "continuity",
+      "applied": true,
+      "via": "maintenance_outbox_convergence"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793861215857-manual",
@@ -94,6 +103,9 @@
     "concurrent_convergence": 2
   },
   "last_started_at": "2026-11-05T07:56:04.478Z",
-  "last_completed_at": "2026-11-05T08:51:15+01:00",
-  "draft_preview": null
+  "last_completed_at": "2026-11-05T08:57:02+01:00",
+  "draft_preview": null,
+  "satisfied_run_ids": [
+    "tr-1793865110501-manual"
+  ]
 }
