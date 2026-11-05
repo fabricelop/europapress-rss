@@ -1,5 +1,7 @@
 # Integración mínima del ingreso manual en TTActualidad Sites
 
+> **Decisión editorial 05/11/2026:** «Subir y aprobar» existe **solo en la APP nativa iPhone**. No añadir botón, panel ni aprobación al Site. El Site es el destino de publicación y el visor web; debe mantener el mismo sistema de imágenes aprobadas que ya funciona.
+
 **Estado: NO DESPLEGADO EN SITES.** El código del backend del Site canónico no está en este repositorio. Este contrato solo es una guía de integración, no un reemplazo de producción ni una orden para levantar otro panel o Worker.
 
 ## Ruta necesaria en la instalación que ya existe
@@ -20,23 +22,24 @@ Utilizar **los recursos PRIVADOS ya conectados a la bandeja actual** (almacenami
 
 - 401 si la sesión GitHub no identifica al editor autorizado; **validar antes de consumir o almacenar los bytes**.
 - 413/415 si el archivo excede tamaño/dimensiones o no es PNG real; verificar SHA-256 calculado sobre los bytes antes de guardar.
-- 409 ante ficha retirada, texto/revisión obsoletos o conflicto de imagen ya aprobada; no devolver un 503 genérico para estas situaciones.
-- La fuente exacta de TTendencias es `trends/telegram-manual-explained.json`, junto a `trends/mobile-decisions.json`. Seguir la regla de Listas iOS: último ID/revisión explicado, fecha de las últimas 48 h, grupo líder, cierres no posteriores a una nueva explicación.
+- 409 solo ante **ID/revisión/texto/episodio realmente inexistente u obsoleto**, conflicto de imagen aprobada o hash incorrecto. Una ficha histórica publicada, retirada de Listas o fuera del Top30 sigue siendo ilustrable por aprobación expresa del editor; no devolver 409 por su estado de Listas. Nunca reabrirla ni modificar su decisión editorial.
+- Fuente de TTendencias: `trends/telegram-manual-explained.json` como **historial de episodios por ID + revisión + texto + fecha exactos**. `trends/mobile-decisions.json` gobierna las acciones editoriales, pero no debe bloquear la ilustración de un episodio histórico ya publicado o retirado. **No** aplicar la ventana de 48 horas ni la regla del grupo líder propia de *Listas*. Se exige fecha editorial original y verificación frente a GitHub `main`, sin vincular por nombre, posición o tema similar.
 - Para TTiTTulares usar `ttittulares/prepared.json` (texto del tuit si existe, en caso contrario explicación/resumen factual) y `ttittulares/decisions.json`.
 - 503 únicamente por dependencia/lectura/almacenamiento temporalmente no disponible, con código de error corto y correlationId. No incluir tokens ni PNG en registros.
 
 ## Publicación
 
-Tras el ingreso la app usa la ruta **ya existente** `POST /api/image-inbox/v1/images/{id}/decision` con `action:"approve"` y `expectedIdentity` exacta. No cambiarla ni crear una aprobación implícita en el upload. La respuesta `published` requiere **readback verificable web y app** (`appVerified:true`, `sitesVerified:true`) del mismo SHA. Si queda pendiente, devolver `approved_awaiting_publication` y conservar original y decisión de forma idempotente.
+Una pulsación del editor en **«Subir y aprobar» de la APP** encadena dos operaciones en el **backend ya existente**: (1) ingreso privado idempotente del PNG y (2) llamada a la ruta actual `POST /api/image-inbox/v1/images/{id}/decision` con `action:"approve"` y `expectedIdentity` exacta. No cambiar esa ruta, no aprobar al recibir el upload sin el acto de la APP, no añadir controles al Site ni crear publicador paralelo. El servidor conserva el original y publica por el circuito que ya emite los recibos de APP + Site; el cliente solo muestra `published` tras **readback verificable en ambos destinos** (`appVerified:true`, `sitesVerified:true`) del mismo SHA. Si queda pendiente, devolver `approved_awaiting_publication`; tras timeout reconsultar el estado antes de reintentar. La app debe actualizar su ficha local por ID/revisión/episodio sin depender de descargar todas las listas.
 
 ## Prueba de aceptación obligatoria en el Site REAL
 
-1. Desde iPhone autenticado abrir ficha vigente, pegar un PNG, tocar **Subir y aprobar**.
+1. **Solo desde APP iPhone**, abrir ficha de tendencia o noticia (en Listas o histórica), seleccionar PNG, tocar **Subir y aprobar** una sola vez; comprobar que no se añade ningún botón equivalente al Site.
 2. Confirmar 201/200 y una única entrada privada por idempotencia.
-3. Aprobar; verificar archivo público y catálogo APP por ID+revisión+SHA; si no está en ambos, no declarar éxito.
+3. Comprobar que esa pulsación encadena la decisión de aprobación, el mismo publicador oficial y el readback público; verificar archivo original y catálogo APP por ID+revisión+texto+fecha+SHA. Si uno falta, mostrar pendiente/error y no declarar éxito.
 4. Reintentar mismo PNG y comprobar una única imagen/publicación, sin regeneración.
-5. Repetir con ficha retirada: 409 explícito; sin modificación pública.
-6. Comprobar que «Aprobar/Rechazar» existente, imágenes automáticas, X y editorial no han variado.
+5. Repetir con una ficha histórica ya retirada/publicada o fuera del Top30: **debe aceptar su imagen**, siempre que ID, revisión, texto, fecha y SHA coincidan; no volver a Listas. Comprobar por separado que una revisión/episodio verdaderamente distinto devuelve 409.
+6. Recuperar **sin resubida** los originales de Valverde (`e470cdee843b` r0, SHA `8f0947282e2fe3e8408f84b7342c8cc04f8b5a492219a3880f73004f468aff05`) y Bellingham (`3a77ac385fa9` r0, SHA `67be1cda00f8ec8dc4ec32fa0d512361a7ac9c0e45a1aac9f8aab405be568ccf`) ya conservados en GitHub. Asociarlos al mismo registro de aprobación/publicación sin inventar estado `sitesVerified`. Mostrar cada foto en el contenido **expandido** del Site Next.js, también la ficha histórica fuera del Top30; aceptar únicamente URL/raster de origen verificado, sin alterar la portada.
+7. Comprobar que la bandeja «Aprobar/Rechazar», imágenes automáticas, X, Instagram, portada, relaciones, Live Activity y decisiones editoriales no han variado.
 
 ## Evidencia de diagnóstico remoto (04/11/2026)
 
