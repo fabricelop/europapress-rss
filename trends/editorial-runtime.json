@@ -3,28 +3,25 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793914621791-manual",
+  "run_id": "tr-1793914876068-manual",
   "previous_run_id": "tr-1793914621791-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-05T21:47:12.497Z",
-  "updated_at": "2026-11-05T22:55:00+01:00",
-  "finished_at": "2026-11-05T22:55:00+01:00",
-  "current": 5,
-  "total": 5,
+  "started_at": "2026-11-05T22:41:16.068+01:00",
+  "updated_at": "2026-11-05T22:46:39+01:00",
+  "finished_at": "2026-11-05T22:46:39+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-1390b77afa935f09b955",
-    "red-review-3ae111a54f07538146a7",
     "d2c385cd4faf",
     "c3681b22997b",
     "a4d53d152871"
   ],
   "converged_ids": [
-    "red-review-1390b77afa935f09b955",
-    "red-review-3ae111a54f07538146a7",
+    "d2c385cd4faf",
     "c3681b22997b",
     "a4d53d152871"
   ],
@@ -32,15 +29,15 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 3,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -48,37 +45,21 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4
+    "concurrent_convergence": 3
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada completada: 5/5 cerrados; cola final vacía; sin ImageGen ni publicaciones",
+  "activity": "Pasada manual completada por convergencia tras verificar en main Balaídos r1, Leire r0 y Marcos Alonso r0; sin ImageGen ni publicaciones.",
   "final_outcomes": [
-    {
-      "id": "red-review-1390b77afa935f09b955",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-3ae111a54f07538146a7",
-      "revision": 0,
-      "name": "Revisar novedades: #LaSeptima",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
     {
       "id": "d2c385cd4faf",
       "revision": 1,
       "name": "Balaídos",
       "outcome": "explained",
       "applied": true,
-      "via": "chat_outbox",
-      "outbox_comment_id": 6670321065
+      "via": "concurrent_convergence",
+      "commit_sha": "7e470920e9acce7be4c9fb6db7c91114a83ceb95"
     },
     {
       "id": "c3681b22997b",
@@ -86,7 +67,8 @@
       "name": "Leire",
       "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence"
+      "via": "concurrent_convergence",
+      "commit_sha": "3b2095de01191ed885095a605b2f1ae73e8cb664"
     },
     {
       "id": "a4d53d152871",
@@ -94,22 +76,21 @@
       "name": "Marcos Alonso",
       "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence"
+      "via": "concurrent_convergence",
+      "commit_sha": "04bdbf9db05b2f4148f283090f84a0d828d2cdc4"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793914621791-manual",
+    "run_id": "tr-1793914876068-manual",
     "status": "DONE",
-    "started_at": "2026-11-05T21:47:12.497Z",
-    "updated_at": "2026-11-05T22:55:00+01:00",
-    "finished_at": "2026-11-05T22:55:00+01:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-11-05T22:41:16.068+01:00",
+    "updated_at": "2026-11-05T22:46:39+01:00",
+    "finished_at": "2026-11-05T22:46:39+01:00",
+    "current": 3,
+    "total": 3,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-1390b77afa935f09b955",
-      "red-review-3ae111a54f07538146a7",
       "d2c385cd4faf",
       "c3681b22997b",
       "a4d53d152871"
@@ -117,29 +98,13 @@
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-1390b77afa935f09b955",
-        "revision": 0,
-        "name": "Revisar novedades: Paraguay",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "red-review-3ae111a54f07538146a7",
-        "revision": 0,
-        "name": "Revisar novedades: #LaSeptima",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
         "id": "d2c385cd4faf",
         "revision": 1,
         "name": "Balaídos",
         "outcome": "explained",
         "applied": true,
-        "via": "chat_outbox",
-        "outbox_comment_id": 6670321065
+        "via": "concurrent_convergence",
+        "commit_sha": "7e470920e9acce7be4c9fb6db7c91114a83ceb95"
       },
       {
         "id": "c3681b22997b",
@@ -147,7 +112,8 @@
         "name": "Leire",
         "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence"
+        "via": "concurrent_convergence",
+        "commit_sha": "3b2095de01191ed885095a605b2f1ae73e8cb664"
       },
       {
         "id": "a4d53d152871",
@@ -155,18 +121,19 @@
         "name": "Marcos Alonso",
         "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence"
+        "via": "concurrent_convergence",
+        "commit_sha": "04bdbf9db05b2f4148f283090f84a0d828d2cdc4"
       }
     ],
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 3,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -174,10 +141,10 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4
+    "concurrent_convergence": 3
   },
-  "last_started_at": "2026-11-05T21:47:12.497Z",
-  "last_completed_at": "2026-11-05T22:55:00+01:00",
+  "last_started_at": "2026-11-05T22:41:16.068+01:00",
+  "last_completed_at": "2026-11-05T22:46:39+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -241,9 +208,10 @@
     "tr-20261105T2140+0100-manual",
     "tr-20261105T2155+0100-manual",
     "tr-20261105T2210+0100-manual",
-    "tr-1793914621791-manual"
+    "tr-1793914621791-manual",
+    "tr-1793914876068-manual"
   ],
-  "command_id": "tr-1793914621791-manual",
+  "command_id": "tr-1793914876068-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
