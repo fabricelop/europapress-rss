@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793838062",
   "previous_run_id": "tr-1793835187383-manual",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-05T01:21:00+01:00",
-  "updated_at": "2026-11-05T01:25:35+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-05T01:29:00+01:00",
+  "finished_at": "2026-11-05T01:29:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "83ed5207a411",
-  "title": "sandra",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "83ed5207a411"
@@ -23,69 +23,11 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Persistiendo 1/1 · sandra: explicación verificada y remate seleccionados",
-  "final_outcomes": [],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793835187383-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-05T00:33:00+01:00",
-    "updated_at": "2026-11-05T00:40:30+01:00",
-    "finished_at": "2026-11-05T00:40:30+01:00",
-    "current": 2,
-    "total": 2,
-    "queue_complete": true,
-    "processed_ids": [
-      "red-review-ad910f417c57a48967d0",
-      "red-review-a272cab093a363d3bf63"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-ad910f417c57a48967d0",
-        "revision": 0,
-        "name": "Revisar novedades: Carlos Cuerpo",
-        "outcome": "continuity",
-        "applied": true,
-        "distinct_episode": false,
-        "material_change": false,
-        "applied_commit": "fd6e271c272528b831f19944444680c56e35a744"
-      },
-      {
-        "id": "red-review-a272cab093a363d3bf63",
-        "revision": 0,
-        "name": "Revisar novedades: #JuegaZeldaYa",
-        "outcome": "continuity",
-        "applied": true,
-        "distinct_episode": false,
-        "material_change": false,
-        "applied_commit": "9b52f53b1337d1b735940b38b18aa95182b4d230",
-        "via": "concurrent_convergence"
-      }
-    ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "updates": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -94,8 +36,71 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 1,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T01:25:35+01:00",
-  "last_completed_at": "2026-11-05T01:25:35+01:00"
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-05T01:26:00+01:00",
+      "phase": "persisting",
+      "trend_id": "83ed5207a411",
+      "title": "sandra",
+      "reason": "La escritura directa de los registros devolvió un error de transporte HTTP/2. Se releyó main, se confirmó que no hubo escritura parcial y la misma revisión se aplicó correctamente mediante el outbox editorial verificado."
+    }
+  ],
+  "error": null,
+  "activity": "Pasada cerrada 1/1 · sandra explicada y aplicada. Barrera de cierre: cola activa 0; reexplicaciones pendientes 0.",
+  "final_outcomes": [
+    {
+      "id": "83ed5207a411",
+      "revision": 0,
+      "name": "sandra",
+      "outcome": "explained",
+      "applied": true,
+      "applied_commit": "7eacab3abe9b8136a05810d5fc4ad4cb9aed7352",
+      "via": "editorial_outbox"
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-autoguard-1793838062",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-05T01:21:00+01:00",
+    "updated_at": "2026-11-05T01:29:00+01:00",
+    "finished_at": "2026-11-05T01:29:00+01:00",
+    "current": 1,
+    "total": 1,
+    "queue_complete": true,
+    "processed_ids": [
+      "83ed5207a411"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "83ed5207a411",
+        "revision": 0,
+        "name": "sandra",
+        "outcome": "explained",
+        "applied": true,
+        "applied_commit": "7eacab3abe9b8136a05810d5fc4ad4cb9aed7352",
+        "via": "editorial_outbox"
+      }
+    ],
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
+    "updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 1,
+    "concurrent_convergence": 0
+  },
+  "last_started_at": "2026-11-05T01:21:00+01:00",
+  "last_completed_at": "2026-11-05T01:29:00+01:00"
 }
