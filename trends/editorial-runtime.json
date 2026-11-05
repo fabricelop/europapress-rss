@@ -6,42 +6,39 @@
   "run_id": "tr-1793914621791-manual",
   "previous_run_id": "tr-autoguard-1793914290",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "verifying",
   "started_at": "2026-11-05T22:38:00+01:00",
-  "updated_at": "2026-11-05T22:46:00+01:00",
+  "updated_at": "2026-11-05T22:48:00+01:00",
   "finished_at": null,
-  "current": 2,
+  "current": 3,
   "total": 3,
   "trend_id": "d2c385cd4faf",
   "title": "Balaídos",
   "queue_complete": false,
   "processed_ids": [
     "red-review-1390b77afa935f09b955",
-    "red-review-3ae111a54f07538146a7"
+    "red-review-3ae111a54f07538146a7",
+    "d2c385cd4faf"
   ],
   "converged_ids": [
     "red-review-1390b77afa935f09b955",
     "red-review-3ae111a54f07538146a7"
   ],
-  "remaining_ids": [
-    "d2c385cd4faf"
-  ],
-  "remaining_active_ids": [
-    "d2c385cd4faf"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 3,
     "observed": 3,
-    "closed": 2,
-    "explained": 0,
+    "closed": 3,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -52,7 +49,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo Balaídos r1: explicación nueva basada en marcador en directo 1-2; sin ImageGen ni publicaciones",
+  "activity": "Verificando barrera final en main tras aplicar Balaídos r1; sin ImageGen ni publicaciones",
   "final_outcomes": [
     {
       "id": "red-review-1390b77afa935f09b955",
@@ -69,6 +66,15 @@
       "outcome": "unchanged",
       "applied": true,
       "via": "concurrent_convergence"
+    },
+    {
+      "id": "d2c385cd4faf",
+      "revision": 1,
+      "name": "Balaídos",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox",
+      "outbox_comment_id": 6670321065
     }
   ],
   "api_failover_enabled": false,
