@@ -1,4 +1,4 @@
-name: TTActualidad recent relationships - independent iOS build
+name: TTActualidad - Relaciones 12-24h - IPA prueba
 on:
   push:
     branches: [feature/ttactualidad-relations-recent-inbox-20261105]
@@ -56,7 +56,7 @@ jobs:
           mkdir -p TTActualidad/Assets.xcassets/AppIcon.appiconset
           rsvg-convert --width 1024 --height 1024 --format png --output TTActualidad/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png art/AppIcon.svg
           xcodegen generate
-      - name: Compile native APP and Live Activity (no IPA, no deploy)
+      - name: Compile native APP and Live Activity
         working-directory: ios/ttactualidad
         shell: bash
         run: |
@@ -65,3 +65,30 @@ jobs:
             -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
             -derivedDataPath .build CODE_SIGNING_ALLOWED=NO build \
             2>&1 | tee /tmp/tt-relations-ios-build.log
+      - name: Package verified unsigned IPA for PlumeImpactor
+        working-directory: ios/ttactualidad
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP=".build/Build/Products/Release-iphoneos/TTActualidad.app"
+          test -d "$APP"
+          test -d "$APP/PlugIns/TTActualidadLive.appex"
+          test -s "$APP/Assets.car"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx '71'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/PlugIns/TTActualidadLive.appex/Info.plist" | grep -Fx '71'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx '0.4.59'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP/Info.plist" | grep -Fx 'com.fabricelop.ttactualidad.native'
+          /usr/libexec/PlistBuddy -c "Print :NSSupportsLiveActivities" "$APP/Info.plist" | grep -qi true
+          mkdir -p dist/Payload
+          cp -R "$APP" dist/Payload/
+          cd dist
+          zip -qr TTActualidad-0.4.59-build71-Relaciones-12h24h-PlumeImpactor-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.59-build71-Relaciones-12h24h-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.59-build71-Relaciones-12h24h-PlumeImpactor-unsigned.ipa
+      - name: Upload IPA for physical iPhone testing
+        uses: actions/upload-artifact@v4
+        with:
+          name: TTActualidad-0.4.59-build71-Relaciones-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.59-build71-Relaciones-12h24h-PlumeImpactor-unsigned.ipa
+          retention-days: 30
+          if-no-files-found: error
