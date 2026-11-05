@@ -1,28 +1,31 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-05T21:13:09.157673Z",
+  "updated_at": "2026-11-05T21:18:16.348639Z",
   "radar_at": "2026-11-05T21:11:09.585711Z",
-  "processing_count": 1,
-  "processing_items": [
+  "processing_count": 0,
+  "processing_items": [],
+  "ready_count": 0,
+  "problematic_count": 2,
+  "problematic_items": [
     {
       "event_id": "0332963eb4e4",
       "title": "El gobernador de California conmuta todas las penas de muerte del estado por cadena perpetua",
       "url": "https://www.abc.es/internacional/gobernador-california-conmuta-penas-muerte-estado-cadena-20261105203959-nt.html",
       "selected_at": "2026-11-05T20:54:35.223099Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
+      "problematic_at": "2026-11-05T21:18:16.348639Z",
+      "problem_reason": "transport_write_blocked",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
       "source_count": 4,
       "sources": [
         "ABC",
-        "EFE",
         "Europa Press",
+        "EFE",
         "La Vanguardia"
       ]
-    }
-  ],
-  "ready_count": 0,
-  "problematic_count": 1,
-  "problematic_items": [
+    },
     {
       "event_id": "fe77f872a0f4",
       "title": "Última hora de la actualidad política, en directo | Ada Colau propone un impuesto al patrimonio de los ultrarricos para recaudar 10.000 millones de euros",
@@ -36,10 +39,10 @@
       "revision": 1,
       "source_count": 5,
       "sources": [
-        "20minutos",
+        "Europa Press",
         "EL PAÍS",
         "El Mundo",
-        "Europa Press",
+        "20minutos",
         "elDiario.es"
       ]
     }
