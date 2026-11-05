@@ -67761,14 +67761,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/adif-caso-koldo.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/espana/2026-11-05/uco-sede-adif-caso-koldo/",
+        "alt": "Imagen de archivo relacionada con Ábalos",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/adif-caso-koldo.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/espana/2026-11-05/uco-sede-adif-caso-koldo/",
+        "alt": "Imagen de archivo relacionada con Ábalos",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "ad3e59fa44d2",
@@ -67903,6 +67918,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-05T12:04:53.534922Z",
+  "updated_at": "2026-11-05T12:07:48.573147Z",
   "count": 1121
 }
