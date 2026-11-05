@@ -5,84 +5,36 @@
   "canonical": true,
   "run_id": "tr-1793885396516-manual",
   "previous_run_id": "tr-1793885242584-manual",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T13:29:56.516Z",
-  "updated_at": "2026-11-05T14:33:52+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-05T14:34:30+01:00",
+  "finished_at": "2026-11-05T14:34:30+01:00",
   "current": 2,
-  "total": 3,
-  "trend_id": "f08885b6bf61",
-  "title": "#NintendoSwitch2",
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-a765b4ba03e912aed511",
     "f08885b6bf61"
   ],
   "converged_ids": [
-    "red-review-a765b4ba03e912aed511"
+    "red-review-a765b4ba03e912aed511",
+    "f08885b6bf61"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Investigando 3/3 · #NintendoSwitch2 · revisión 0",
-  "final_outcomes": [
-    {
-      "id": "red-review-a765b4ba03e912aed511",
-      "revision": 0,
-      "name": "Revisar novedades: Carlos Cuerpo",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_maintenance_apply",
-      "source_id": "17d9bef5928f"
-    }
-  ],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793885242584-manual",
-    "status": "DONE",
-    "started_at": "2026-11-05T13:27:22.584Z",
-    "updated_at": "2026-11-05T13:31:20.000Z",
-    "finished_at": "2026-11-05T13:31:20.000Z",
-    "current": 2,
-    "total": 2,
-    "queue_complete": true,
-    "processed_ids": [
-      "red-review-d25d0fcd067a28be390d",
-      "red-review-a765b4ba03e912aed511"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-d25d0fcd067a28be390d",
-        "revision": 0,
-        "name": "Revisar novedades: Dortmund",
-        "outcome": "distinct_update",
-        "applied": true,
-        "via": "concurrent_maintenance_apply",
-        "source_id": "2ad64c143f3e"
-      },
-      {
-        "id": "red-review-a765b4ba03e912aed511",
-        "revision": 0,
-        "name": "Revisar novedades: Carlos Cuerpo",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_maintenance_apply",
-        "source_id": "17d9bef5928f"
-      }
-    ],
+  "summary": {
     "attempted": 2,
     "observed": 2,
     "closed": 2,
-    "explained": 0,
+    "explained": 1,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -93,8 +45,85 @@
     "incidents": 0,
     "concurrent_convergence": 2
   },
-  "last_started_at": "2026-11-05T14:33:52+01:00",
-  "last_completed_at": "2026-11-05T14:33:52+01:00",
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "Cierre 2/2 · cola vacía verificada",
+  "final_outcomes": [
+    {
+      "id": "red-review-a765b4ba03e912aed511",
+      "revision": 0,
+      "name": "Revisar novedades: Carlos Cuerpo",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_maintenance_apply",
+      "source_id": "17d9bef5928f"
+    },
+    {
+      "id": "f08885b6bf61",
+      "revision": 0,
+      "name": "#NintendoSwitch2",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_editorial_apply",
+      "apply_commit": "d5df6fa6d706f84dafaeaecc47f3dc709b3ac975"
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793885396516-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T13:29:56.516Z",
+    "updated_at": "2026-11-05T14:34:30+01:00",
+    "finished_at": "2026-11-05T14:34:30+01:00",
+    "current": 2,
+    "total": 2,
+    "queue_complete": true,
+    "processed_ids": [
+      "red-review-a765b4ba03e912aed511",
+      "f08885b6bf61"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "red-review-a765b4ba03e912aed511",
+        "revision": 0,
+        "name": "Revisar novedades: Carlos Cuerpo",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_maintenance_apply",
+        "source_id": "17d9bef5928f"
+      },
+      {
+        "id": "f08885b6bf61",
+        "revision": 0,
+        "name": "#NintendoSwitch2",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_editorial_apply",
+        "apply_commit": "d5df6fa6d706f84dafaeaecc47f3dc709b3ac975"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 1,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2
+  },
+  "last_started_at": "2026-11-05T13:29:56.516Z",
+  "last_completed_at": "2026-11-05T14:34:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -116,7 +145,8 @@
     "tr-1793880015887-manual",
     "tr-1793882171824-manual",
     "tr-1793884873025-manual",
-    "tr-1793885242584-manual"
+    "tr-1793885242584-manual",
+    "tr-1793885396516-manual"
   ],
   "command_id": "tr-1793885396516-manual",
   "canonical_successor_run_id": null,
