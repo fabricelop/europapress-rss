@@ -3,34 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793848261",
-  "previous_run_id": "tr-1793842224819-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-05T03:11:00.000Z",
-  "updated_at": "2026-11-05T04:15:05+01:00",
+  "run_id": "tr-1793848538441-manual",
+  "previous_run_id": "tr-autoguard-1793848261",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T03:16:00.000Z",
+  "updated_at": "2026-11-05T03:16:00.000Z",
   "finished_at": null,
   "current": 0,
-  "total": 1,
-  "trend_id": "667003b2f251",
-  "title": "mckenna grace",
-  "queue_complete": true,
-  "processed_ids": [
-    "667003b2f251"
-  ],
+  "total": 2,
+  "trend_id": "red-review-5fe80751bbb0dc14f679",
+  "title": "Revisar novedades: Jesús de Miguel",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-5fe80751bbb0dc14f679",
+    "red-review-f015df7d1c322733d28c"
+  ],
+  "remaining_active_ids": [
+    "red-review-5fe80751bbb0dc14f679",
+    "red-review-f015df7d1c322733d28c"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 1,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -41,7 +45,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo 1/1 · mckenna grace r0 · texto factual y remate validados; preparando outbox editorial sin imagen.",
+  "activity": "Preparando 0/2 · Revisar novedades: Jesús de Miguel r0 · revalidación JIT antes de investigar.",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +97,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T04:15:05+01:00",
+  "last_started_at": "2026-11-05T03:16:00.000Z",
   "last_completed_at": "2026-11-05T04:15:05+01:00",
   "draft_preview": null
 }
