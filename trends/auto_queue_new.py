@@ -9,6 +9,7 @@ from zoneinfo import ZoneInfo
 from reconcile_prepared_ready import reconcile_prepared_ready
 from anticipation import sync as sync_anticipation, metrics as anticipation_metrics
 from requests_json import dumps_for_path
+from trend_episode_policy import treated_terms, editor_initiated, should_reopen_from_radar
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
@@ -588,10 +589,36 @@ if retired_problematic:
     reconciled = True
     print("Problemáticas antiguas retiradas:", retired_problematic)
 
+# A returning Top30 label is NOT an independent news episode. Decisions and
+# earlier explained requests remain authoritative even when explained.json is
+# compacted, a request fell out of Listas, or a later stale auto request became
+# inactive. No new ID/revision/image without an explicit editorial command.
+historically_treated = treated_terms(
+    requests, explained_doc.get("items") or [],
+    deliveries.get("items") or [], mobile_decisions.get("items") or [])
+suppressed_reentries = 0
+for prior in requests:
+    if (prior.get("auto_queued") is True
+            and not editor_initiated(prior)
+            and norm(prior.get("name")) in historically_treated
+            and str(prior.get("status") or "") in {"preparing", "update", "problematic", "ready"}):
+        prior["status"] = "inactive"
+        prior["inactive_reason"] = "historical_episode_already_treated"
+        prior["inactive_at"] = now_dt.isoformat(timespec="seconds")
+        prior["reexplain"] = False
+        prior["with_image"] = False
+        prior["disable_ai_image"] = True
+        suppressed_reentries += 1
+        reconciled = True
+if suppressed_reentries:
+    print("Reentradas automáticas sin novedades bloqueadas:", suppressed_reentries)
+
 to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
+    if not should_reopen_from_radar(item["name"], historically_treated, req):
+        continue
     # Existing dated explanations are conditionally reviewed by editorial maintenance.
     # Neither 24h nor 48h alone permits a duplicate publication or ID resurrection.
     status = str((req or {}).get("status") or "")
