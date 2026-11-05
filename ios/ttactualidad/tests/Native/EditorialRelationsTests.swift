@@ -125,6 +125,27 @@ final class EditorialRelationsTests: XCTestCase {
             .map(\.id), ["undated", "removed"])
     }
 
+    func testRecentInboxShowsGitHubOnlyNewsWhenSitesReturnsNoNews() {
+        let now = EditorialRelationsPolicy.parsedDate("2026-11-05T08:05:00Z")!
+        // A real READY or recently published event exists, but Sites has no
+        // matching /v1/snapshot news endpoint. Display it with a missing
+        // fingerprint; never mint a fake relationship identity.
+        let savedHistory = EditorialRelationEndpoint(
+            id: "c1e7f17edda4", revision: 1, episodeFingerprint: "",
+            title: "La Séptima arranca mañana como nuevo canal generalista de la TDT",
+            text: "", path: nil, listedAt: "2026-11-05T07:36:30Z")
+        let recent = EditorialRelationsPolicy.recentNews(
+            [savedHistory], hours: 12, now: now)
+        XCTAssertEqual(recent.count, 1)
+        XCTAssertEqual(recent.first?.id, "c1e7f17edda4")
+        XCTAssertTrue(recent.first?.episodeFingerprint.isEmpty == true)
+        XCTAssertEqual(EditorialRelationsPolicy.recentNews(
+            [savedHistory], hours: 12, now: now,
+            hidden: ["c1e7f17edda4:r1"]).count, 0)
+        XCTAssertFalse(EditorialRelationsPolicy.matches(savedHistory,
+            id: "c1e7f17edda4", revision: 1))
+    }
+
     func testTimestampParsingSupportsFractionalSecondsAndTimezones() {
         XCTAssertNotNil(EditorialRelationsPolicy.parsedDate("2026-11-05T07:45:15.123Z"))
         XCTAssertNotNil(EditorialRelationsPolicy.parsedDate("2026-11-05T08:45:15+01:00"))
