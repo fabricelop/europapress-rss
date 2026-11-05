@@ -3,45 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793905868",
-  "previous_run_id": "tr-1793906239018-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T20:11:08+01:00",
-  "updated_at": "2026-11-05T20:20:49+01:00",
-  "finished_at": "2026-11-05T20:20:49+01:00",
-  "current": 6,
-  "total": 6,
+  "run_id": "tr-1793906700000-manual",
+  "previous_run_id": "tr-autoguard-1793905868",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T20:25:00+01:00",
+  "updated_at": "2026-11-05T20:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "da2f20879ae6",
-    "7f65953a348e",
-    "401dc12e1c5b",
-    "0565ca4fe021",
-    "red-review-9e1cc158b8e63c0b059d",
-    "red-review-f23251113eab0940c574"
-  ],
-  "converged_ids": [
-    "da2f20879ae6",
-    "7f65953a348e",
-    "401dc12e1c5b",
-    "0565ca4fe021",
-    "red-review-9e1cc158b8e63c0b059d",
-    "red-review-f23251113eab0940c574"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 4,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -51,51 +37,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 6
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada completada 6/6 por convergencia: 4 explicaciones y 2 revisiones de continuidad; cola final 0; sin ImageGen.",
-  "final_outcomes": [
-    {
-      "id": "da2f20879ae6",
-      "name": "Violencia",
-      "revision": 0,
-      "outcome": "explained",
-      "note": "causa concreta no confirmada; redacción prudente sin remate"
-    },
-    {
-      "id": "7f65953a348e",
-      "name": "Anoeta",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "401dc12e1c5b",
-      "name": "Rochos",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "0565ca4fe021",
-      "name": "Europa League",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "red-review-9e1cc158b8e63c0b059d",
-      "name": "Revisar novedades: Paraguay",
-      "revision": 0,
-      "outcome": "continuity"
-    },
-    {
-      "id": "red-review-f23251113eab0940c574",
-      "name": "Revisar novedades: Aldama",
-      "revision": 0,
-      "outcome": "continuity"
-    }
-  ],
+  "activity": "Releyendo cola editorial autoritativa y reexplicaciones pendientes",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793905868",
@@ -228,7 +176,7 @@
     "tr-1793906239018-manual",
     "tr-autoguard-1793905868"
   ],
-  "command_id": "tr-autoguard-1793905868",
+  "command_id": "tr-1793906700000-manual",
   "canonical_successor_run_id": null,
-  "source": "autoguard"
+  "source": "chat"
 }
