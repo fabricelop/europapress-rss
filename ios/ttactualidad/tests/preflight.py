@@ -645,7 +645,17 @@ assert 'top30Trends: store.snapshot.top30' in actions
 assert '$0.id == row.editorialID' in relations
 assert '$0.revision == row.revision' in relations
 assert '$0.text == row.explanation' in relations
-assert 'editorialRelationNewsDates()' in relations
+assert 'editorialRelationRecentNews()' in relations
+assert 'historicalNews: [EditorialRelationEndpoint]' in relations
+assert 'canonicalRelations.map(\\.news) + model.historicalNews' in relations
+assert 'news.episodeFingerprint.isEmpty' in relations
+assert '!news.episodeFingerprint.isEmpty else { return ([], []) }' in relations
+assert '!candidate.episodeFingerprint.isEmpty' not in relation_models
+assert 'func editorialRelationRecentNews() async throws' in auth
+assert 'telegram/editorial-processing.json' in auth
+assert 'pilot/ttactualidad-publication-events.json' in auth
+assert 'ttittulares/status.json' in auth
+
 
 assert 'suggestionsToDismiss(for: news)' not in relations
 assert 'EditorialRelationsPolicy.canonical(' in relations
