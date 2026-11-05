@@ -68262,14 +68262,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/cumbre-iberoamericana-reyes-sanchez-directo-video-cronica/01793867800558.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261105/cumbre-iberoamericana-reyes-sanchez-directo-video-cronica/17300193.shtml",
+        "alt": "Imagen de archivo relacionada con Cumbre Iberoamericana",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/cumbre-iberoamericana-reyes-sanchez-directo-video-cronica/01793867800558.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261105/cumbre-iberoamericana-reyes-sanchez-directo-video-cronica/17300193.shtml",
+        "alt": "Imagen de archivo relacionada con Cumbre Iberoamericana",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-05T13:26:00.762Z",
+  "updated_at": "2026-11-05T13:28:07.316857Z",
   "count": 1126
 }
