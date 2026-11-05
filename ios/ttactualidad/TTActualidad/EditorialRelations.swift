@@ -81,6 +81,58 @@ enum EditorialRelationsPolicy {
             (explicit?.stableIdentity == news.stableIdentity)
     }
 
+    // Only episodes with an authenticated editorial timestamp belong in the
+    // 12/24h inbox. Missing timestamps remain available through manual search,
+    // never silently labelled as recent. A news item can be outside Listas.
+    static func parsedDate(_ value: String?) -> Date? {
+        guard let value, !value.isEmpty else { return nil }
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = formatter.date(from: value) { return date }
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter.date(from: value)
+    }
+
+    static func recentNews(_ candidates: [EditorialRelationEndpoint],
+                           hours: Int = 12, now: Date = Date(),
+                           fallbackDates: [String: Date] = [:],
+                           hidden: Set<String> = []) -> [EditorialRelationEndpoint] {
+        let interval = TimeInterval(max(1, min(48, hours))) * 3600
+        let cutoff = now.addingTimeInterval(-interval)
+        var rows: [(episode: EditorialRelationEndpoint, date: Date)] = []
+        var seen = Set<String>()
+        for candidate in candidates {
+            let key = newsKey(id: candidate.id, revision: candidate.revision)
+            guard !hidden.contains(candidate.stableIdentity),
+                  !candidate.episodeFingerprint.isEmpty,
+                  let date = parsedDate(candidate.listedAt) ?? fallbackDates[key],
+                  date >= cutoff, date <= now.addingTimeInterval(300),
+                  seen.insert(candidate.stableIdentity).inserted else { continue }
+            rows.append((candidate, date))
+        }
+        rows.sort { a, b in
+            if a.date != b.date { return a.date > b.date }
+            if a.episode.revision != b.episode.revision {
+                return a.episode.revision > b.episode.revision
+            }
+            return a.episode.id < b.episode.id
+        }
+        // Never show duplicate versions of the same article in the primary
+        // review queue; the manual historical picker still shows episodes.
+        var newsIDs = Set<String>()
+        return rows.compactMap { row in
+            newsIDs.insert(row.episode.id).inserted ? row.episode : nil
+        }
+    }
+
+    // Only explicit switches write decisions. Suggested (unaccepted) pairs are
+    // not automatically dismissed when an editor saves another Top30 link.
+    static func actionForSwitch(current: String?, selected: Bool) -> String? {
+        let linked = current == "linked"
+        if linked == selected { return nil }
+        return selected ? "link" : "unlink"
+    }
+
     // Defensive display reconciliation: a partial sync may repeat a pair.
     // Prefer explicit manual decisions to automatic proposals; if conflicting
     // states still arrive, a block wins rather than silently re-linking.
