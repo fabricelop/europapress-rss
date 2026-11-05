@@ -3,25 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793879467",
-  "previous_run_id": "tr-1793877567740-manual",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-05T12:52:00+01:00",
-  "updated_at": "2026-11-05T12:56:38+01:00",
+  "run_id": "tr-1793879836549-manual",
+  "previous_run_id": "tr-autoguard-1793879467",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T12:57:40+01:00",
+  "updated_at": "2026-11-05T12:57:40+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "f83b276f7891",
-  "title": "Peugeot",
-  "queue_complete": true,
-  "processed_ids": [
-    "70b0fa51b15e",
-    "f83b276f7891"
-  ],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-2886b1d0a5bf2a0360bc",
+    "red-review-7f532a107057b06cc173"
+  ],
+  "remaining_active_ids": [
+    "red-review-2886b1d0a5bf2a0360bc",
+    "red-review-7f532a107057b06cc173"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -45,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo Peugeot r0 tras validación JIT; causa redactada con atribución prudente.",
+  "activity": "Revisando novedades: Cumbre Iberoamericana; validación JIT de red-review-2886b1d0a5bf2a0360bc r0.",
   "final_outcomes": [
     {
       "id": "radar-prepare-8569609622c3e1584042",
@@ -215,7 +218,7 @@
     "tr-1793875587772-manual",
     "tr-1793877457295-manual"
   ],
-  "command_id": "tr-autoguard-1793879467",
+  "command_id": "tr-1793879836549-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
