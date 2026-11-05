@@ -66640,12 +66640,14 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "a5c6b58c954b",
@@ -66689,14 +66691,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://trends24.in/img/t24-logo-512.png",
+        "source": "trends24.in",
+        "source_url": "https://trends24.in/spain/index.html",
+        "alt": "Imagen de archivo relacionada con #Buenosdías",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://trends24.in/img/t24-logo-512.png",
+        "source": "trends24.in",
+        "source_url": "https://trends24.in/spain/index.html",
+        "alt": "Imagen de archivo relacionada con #Buenosdías",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-05T10:20:00+01:00",
+  "updated_at": "2026-11-05T09:21:01.153506Z",
   "count": 1102
 }
