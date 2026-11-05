@@ -187,7 +187,7 @@ def schedule_reviews(state, now, grouping):
                    review_color=color, review_priority=priority,
                    review_source={**grouping.snapshot(row), 'fingerprint': fingerprint(row)},
                    with_image=False, disable_ai_image=True, auto_queued=False,
-                   rewrite_instruction='Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Continuidad: sigue siendo tendencia por; episodio distinto comprobado: es tendencia por. No publiques.')
+                   rewrite_instruction='Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques.')
         add_job(state, job, now.isoformat())
         budget -= 1
 
@@ -242,7 +242,15 @@ def apply_review(state, command, now, grouping):
             material = verified_distinct_material_event(command, source, state, now, grouping)
             if not material:
                 effective_outcome = 'continuity'
-                stamp_rows(state, source, red_review_outcome='continuity',
+                # A factual refinement of the SAME episode is a TEXT EDIT,
+                # not a second editorial publication. Replace the explanation
+                # in place on both authoritative rows, retaining the exact
+                # ID, revision, explained_at, status and original image fields.
+                # Never issue a new Listas entry or change image job metadata.
+                stamp_rows(state, source,
+                           explanation=text, closer_text=closer,
+                           red_review_outcome='continuity',
+                           red_review_previous_explanation=snap['explanation'],
                            red_review_new_facts=str(command.get('new_facts') or '').strip(),
                            red_review_continuity_explanation=text,
                            red_review_significance_reason=str(command.get('significance_reason') or '').strip())
