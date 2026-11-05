@@ -3,23 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793870168288-manual",
-  "previous_run_id": "tr-1793869818948-manual",
+  "run_id": "tr-1793870041921-manual",
+  "previous_run_id": "tr-1793870168288-manual",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-05T10:18:00+01:00",
-  "updated_at": "2026-11-05T10:18:00+01:00",
+  "phase": "verifying",
+  "started_at": "2026-11-05T10:14:01.921+01:00",
+  "updated_at": "2026-11-05T10:21:00+01:00",
   "finished_at": null,
-  "current": 2,
-  "total": 4,
+  "current": 4,
+  "total": 6,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
   "processed_ids": [
+    "red-review-2653c45234d3b30f9a5c",
+    "red-review-b59086ee20c8f3d1304a",
     "be2aca41b871",
     "a5a85c6f8d01"
   ],
   "converged_ids": [
+    "red-review-2653c45234d3b30f9a5c",
+    "red-review-b59086ee20c8f3d1304a",
     "be2aca41b871",
     "a5a85c6f8d01"
   ],
@@ -33,15 +37,15 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 6,
+    "observed": 4,
+    "closed": 4,
+    "explained": 2,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
@@ -49,18 +53,34 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 4
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Convergencia JIT: #LaHora5N y Deoleo ya cerrados por ejecución concurrente. Quedan Tenerife y #Buenosdías; iniciando Tenerife. Sin ImageGen.",
+  "activity": "Verificando aplicación de Tenerife y #Buenosdías; cuatro trabajos previos ya convergieron por barrera JIT. Sin ImageGen.",
   "final_outcomes": [
+    {
+      "id": "red-review-2653c45234d3b30f9a5c",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizJueves",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "red-review-b59086ee20c8f3d1304a",
+      "revision": 0,
+      "name": "Revisar novedades: Irán",
+      "outcome": "updated_continuity",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
     {
       "id": "be2aca41b871",
       "revision": 0,
       "name": "#LaHora5N",
-      "outcome": "converged",
+      "outcome": "explained",
       "applied": true,
       "via": "concurrent_convergence_jit"
     },
@@ -68,7 +88,7 @@
       "id": "a5a85c6f8d01",
       "revision": 0,
       "name": "Deoleo",
-      "outcome": "converged",
+      "outcome": "explained",
       "applied": true,
       "via": "concurrent_convergence_jit"
     }
@@ -165,5 +185,6 @@
     "tr-1793865343541-manual",
     "tr-1793866600511-manual",
     "tr-1793868692583-manual"
-  ]
+  ],
+  "command_id": "tr-1793870041921-manual"
 }
