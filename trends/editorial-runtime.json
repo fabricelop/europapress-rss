@@ -5,7 +5,7 @@
   "canonical": true,
   "run_id": "tr-1793877567740-manual",
   "previous_run_id": "tr-1793877457295-manual",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-05T12:19:55+01:00",
   "updated_at": "2026-11-05T12:26:30+01:00",
@@ -50,21 +50,13 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 6
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-05T12:24:42+01:00",
-      "phase": "persisting",
-      "trend_id": "radar-prepare-8569609622c3e1584042",
-      "title": "Radar · minho",
-      "reason": "El primer borrador Radar fue rechazado por estructura; se corrigió el cuerpo para integrar correctamente el remate y quedó aplicado como anticipation_prepared."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada 6/6; barrera final main: cola 0, preparing/update 0 y rewrite_pending/reexplain 0.",
+  "activity": "Pasada cerrada por convergencia concurrente: cola autoritativa vacía; 3 explicaciones nuevas, 1 revisión de continuidad, 1 revisión cerrada por estado posterior y 1 borrador Radar preparado. Sin ImageGen ni publicaciones.",
   "final_outcomes": [
     {
       "id": "radar-prepare-8569609622c3e1584042",
@@ -72,14 +64,14 @@
       "name": "Radar · minho",
       "outcome": "anticipation_prepared",
       "applied": true,
-      "via": "anticipation_outbox",
+      "via": "maintenance_outbox",
       "apply_commit": "6a422c318c9650f0b49cd2654c72902009b4b229"
     },
     {
       "id": "red-review-53ec15e577bdd110c6a5",
       "revision": 0,
       "name": "Revisar novedades: Milei",
-      "outcome": "stale",
+      "outcome": "review_closed_by_newer_state",
       "applied": true,
       "via": "maintenance_outbox",
       "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
@@ -88,7 +80,7 @@
       "id": "red-review-a418485359df8f0d276f",
       "revision": 0,
       "name": "Revisar novedades: #JuegaZeldaYa",
-      "outcome": "continuity",
+      "outcome": "continuity_update",
       "applied": true,
       "via": "maintenance_outbox",
       "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
@@ -124,42 +116,37 @@
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793877567740-manual",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
+    "started_at": "2026-11-05T12:19:55+01:00",
+    "updated_at": "2026-11-05T12:26:30+01:00",
     "finished_at": "2026-11-05T12:26:30+01:00",
-    "summary": {
-      "attempted": 6,
-      "observed": 6,
-      "closed": 6,
-      "explained": 3,
-      "problematic": 0,
-      "updates": 1,
-      "continuity_updates": 1,
-      "distinct_updates": 0,
-      "unchanged_reviews": 0,
-      "stale_reviews": 1,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 1,
-      "concurrent_convergence": 6
-    },
-    "outcomes": [
+    "current": 6,
+    "total": 6,
+    "queue_complete": true,
+    "processed_ids": [
+      "radar-prepare-8569609622c3e1584042",
+      "red-review-53ec15e577bdd110c6a5",
+      "red-review-a418485359df8f0d276f",
+      "ddd703d4305c",
+      "9d1e29cea1a7",
+      "4c7de2c3da6d"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
       {
         "id": "radar-prepare-8569609622c3e1584042",
         "revision": 0,
         "name": "Radar · minho",
         "outcome": "anticipation_prepared",
         "applied": true,
-        "via": "anticipation_outbox",
+        "via": "maintenance_outbox",
         "apply_commit": "6a422c318c9650f0b49cd2654c72902009b4b229"
       },
       {
         "id": "red-review-53ec15e577bdd110c6a5",
         "revision": 0,
         "name": "Revisar novedades: Milei",
-        "outcome": "stale",
+        "outcome": "review_closed_by_newer_state",
         "applied": true,
         "via": "maintenance_outbox",
         "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
@@ -168,7 +155,7 @@
         "id": "red-review-a418485359df8f0d276f",
         "revision": 0,
         "name": "Revisar novedades: #JuegaZeldaYa",
-        "outcome": "continuity",
+        "outcome": "continuity_update",
         "applied": true,
         "via": "maintenance_outbox",
         "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
@@ -201,15 +188,23 @@
         "apply_commit": "7d063d1d09d85c1165c55825300ac74c73c20505"
       }
     ],
-    "incidents": [
-      {
-        "at": "2026-11-05T12:24:42+01:00",
-        "phase": "persisting",
-        "trend_id": "radar-prepare-8569609622c3e1584042",
-        "title": "Radar · minho",
-        "reason": "El primer borrador Radar fue rechazado por estructura; se corrigió el cuerpo para integrar correctamente el remate y quedó aplicado como anticipation_prepared."
-      }
-    ]
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 3,
+    "problematic": 0,
+    "updates": 1,
+    "continuity_updates": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 6
   },
   "last_started_at": "2026-11-05T12:24:13+01:00",
   "last_completed_at": "2026-11-05T12:26:30+01:00",
