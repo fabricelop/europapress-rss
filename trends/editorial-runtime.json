@@ -3,25 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793869318517-manual",
-  "previous_run_id": "tr-1793868692583-manual",
+  "run_id": "tr-1793869818948-manual",
+  "previous_run_id": "tr-1793869318517-manual",
   "status": "RUNNING",
-  "phase": "research",
-  "started_at": "2026-11-05T10:02:30+01:00",
-  "updated_at": "2026-11-05T10:11:20+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-05T10:11:58+01:00",
+  "updated_at": "2026-11-05T10:11:58+01:00",
   "finished_at": null,
-  "current": 5,
-  "total": 9,
+  "current": 0,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "3ffa846e080e",
-    "c49aa86abf59",
-    "1e15ba910672",
-    "006bcabb6375",
-    "fcf2255228b8"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "red-review-2653c45234d3b30f9a5c",
@@ -37,11 +31,11 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 4,
-    "problematic": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
+    "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -52,68 +46,14 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "fcf2255228b8",
-      "revision": 2,
-      "type": "unverified_trigger",
-      "message": "No se pudo verificar de forma independiente la pista de que #DesterrarLaMonarquía sea una convocatoria semanal de los miércoles; se dejó sin explicación verificada."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Barrera final detectó 4 trabajos nuevos. Pasada reabierta 5/9; continúan revisiones #FelizJueves e Irán y nuevas #LaHora5N y Deoleo, por antigüedad.",
-  "final_outcomes": [
-    {
-      "id": "3ffa846e080e",
-      "revision": 0,
-      "name": "Amnistía Internacional",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
-    },
-    {
-      "id": "c49aa86abf59",
-      "revision": 0,
-      "name": "Alvia de Adamuz",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
-    },
-    {
-      "id": "1e15ba910672",
-      "revision": 0,
-      "name": "Náyades",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
-    },
-    {
-      "id": "006bcabb6375",
-      "revision": 0,
-      "name": "Kiko",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1"
-    },
-    {
-      "id": "fcf2255228b8",
-      "revision": 2,
-      "name": "#DesterrarLaMonarquía",
-      "outcome": "problematic",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1",
-      "reason": "Ranking y uso antimonárquico actuales verificados, pero no se acreditó el detonante concreto ni la pista de convocatoria semanal de los miércoles."
-    }
-  ],
+  "activity": "Preparando 4 trabajos activos por antigüedad: revisiones #FelizJueves e Irán; después #LaHora5N y Deoleo. Sin ImageGen.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793869318517-manual",
