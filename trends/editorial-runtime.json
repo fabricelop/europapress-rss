@@ -3,29 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793888608013-manual",
-  "previous_run_id": "tr-1793888411347-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T15:24:00+01:00",
-  "updated_at": "2026-11-05T15:31:30+01:00",
-  "finished_at": "2026-11-05T15:31:30+01:00",
+  "run_id": "tr-autoguard-1793890271",
+  "previous_run_id": "tr-1793888608013-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T15:51:30+01:00",
+  "updated_at": "2026-11-05T15:51:30+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "64a7feedf8e6",
+  "title": "Zelda",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [
     "red-review-ccea039ef5113db7bb40",
     "red-review-7a56d99d4a45b15e4d6f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "64a7feedf8e6"
+  ],
+  "remaining_active_ids": [
+    "64a7feedf8e6"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -34,18 +38,18 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 0/0 · cola vacía verificada tras convergencia de la pasada solapada",
+  "activity": "Investigando Zelda · 0/1",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -100,7 +104,7 @@
     "incidents": 0,
     "concurrent_convergence": 2
   },
-  "last_started_at": "2026-11-05T15:24:00+01:00",
+  "last_started_at": "2026-11-05T15:51:30+01:00",
   "last_completed_at": "2026-11-05T15:31:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -129,7 +133,7 @@
     "tr-1793888411347-manual",
     "tr-1793888608013-manual"
   ],
-  "command_id": "tr-1793888608013-manual",
+  "command_id": "tr-autoguard-1793890271",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
