@@ -9,7 +9,12 @@ from zoneinfo import ZoneInfo
 from reconcile_prepared_ready import reconcile_prepared_ready
 from anticipation import sync as sync_anticipation, metrics as anticipation_metrics
 from requests_json import dumps_for_path
-from trend_episode_policy import treated_terms, editor_initiated, should_reopen_from_radar
+try:
+    # Direct script invocation from the trends directory.
+    from trend_episode_policy import treated_terms, editor_initiated, should_reopen_from_radar
+except ImportError:
+    # Also support the package invocation used by some CI callers.
+    from trends.trend_episode_policy import treated_terms, editor_initiated, should_reopen_from_radar
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
