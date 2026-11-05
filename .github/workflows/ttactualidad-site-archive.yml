@@ -1,0 +1,34 @@
+name: TTActualidad permanent READY archive
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: ttactualidad-site-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Accumulate committed READY snapshots
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python ttittulares/update_site_archive.py
+      - name: Commit only archive outputs
+        run: |
+          git config user.name 'ttactualidad-archive[bot]'
+          git config user.email 'ttactualidad-archive[bot]@users.noreply.github.com'
+          git add ttittulares/site-archive.json ttittulares/site-archive-cursor.json ttittulares/site-archive-errors.json
+          if git diff --staged --quiet; then exit 0; fi
+          git commit -m 'TTActualidad: accumulate READY history'
+          git pull --rebase origin main
+          git push origin HEAD:main
