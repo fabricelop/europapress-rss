@@ -1,0 +1,67 @@
+name: TTActualidad recent relationships - independent iOS build
+on:
+  push:
+    branches: [feature/ttactualidad-relations-recent-inbox-20261105]
+    paths:
+      - 'ios/ttactualidad/**'
+      - '.github/workflows/ttactualidad-relations-verify.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Xcode generator and icon renderer
+        run: brew install xcodegen librsvg
+      - name: Verify timestamp and explicit association policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/main.swift <<'SWIFT'
+          import Foundation
+          let now = EditorialRelationsPolicy.parsedDate("2026-11-05T09:00:00Z")!
+          func make(_ id: String, _ date: String?) -> EditorialRelationEndpoint {
+              EditorialRelationEndpoint(id: id, revision: 1, episodeFingerprint: "ep-" + id,
+                                        title: id, text: "factual", path: nil, listedAt: date)
+          }
+          let fresh = make("history-published", "2026-11-05T02:00:00Z")
+          let old = make("old", "2026-11-04T17:00:00Z")
+          let unknown = make("unknown", nil)
+          let news = [old, fresh, unknown, fresh]
+          assert(EditorialRelationsPolicy.recentNews(news, hours: 12, now: now).map(\.id) ==
+                 ["history-published"])
+          assert(EditorialRelationsPolicy.recentNews(news, hours: 24, now: now).map(\.id) ==
+                 ["history-published", "old"])
+          assert(EditorialRelationsPolicy.recentNews(
+              news, hours: 12, now: now, hidden: [fresh.stableIdentity]).isEmpty)
+          let fallback = [EditorialRelationsPolicy.newsKey(id: "unknown", revision: 1): now]
+          assert(EditorialRelationsPolicy.recentNews(
+              news, hours: 12, now: now, fallbackDates: fallback).map(\.id) ==
+                 ["unknown", "history-published"])
+          assert(EditorialRelationsPolicy.actionForSwitch(current: "linked", selected: false) == "unlink")
+          assert(EditorialRelationsPolicy.actionForSwitch(current: "blocked", selected: true) == "link")
+          assert(EditorialRelationsPolicy.actionForSwitch(current: "suggested", selected: false) == nil)
+          print("RECENT_RELATIONS_POLICY_OK")
+          SWIFT
+          swiftc ios/ttactualidad/TTActualidad/EditorialRelations.swift /tmp/main.swift -o /tmp/recent-relations
+          /tmp/recent-relations
+      - name: Preflight of existing iOS product
+        run: python3 ios/ttactualidad/tests/preflight.py
+      - name: Create iOS project and icon
+        working-directory: ios/ttactualidad
+        run: |
+          mkdir -p TTActualidad/Assets.xcassets/AppIcon.appiconset
+          rsvg-convert --width 1024 --height 1024 --format png --output TTActualidad/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png art/AppIcon.svg
+          xcodegen generate
+      - name: Compile native APP and Live Activity (no IPA, no deploy)
+        working-directory: ios/ttactualidad
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild -project TTActualidad.xcodeproj -scheme TTActualidad \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath .build CODE_SIGNING_ALLOWED=NO build \
+            2>&1 | tee /tmp/tt-relations-ios-build.log
