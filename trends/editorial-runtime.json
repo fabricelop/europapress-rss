@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-1793874536722-manual",
   "previous_run_id": "tr-autoguard-1793872267",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T11:29:00+01:00",
-  "updated_at": "2026-11-05T11:32:35+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-05T11:34:00+01:00",
+  "finished_at": "2026-11-05T11:34:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "208c4969cff9",
-  "title": "La UCO",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "208c4969cff9"
@@ -25,134 +25,11 @@
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Persistiendo 1/1 · La UCO · texto verificado con fuentes independientes",
-  "final_outcomes": [
-    {
-      "id": "881c3609cf26",
-      "revision": 0,
-      "name": "Personas Cuidadoras",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "8e102c12a7673cce1d1eca6d93b2c0a99387729f"
-    },
-    {
-      "id": "adfc2eddd0c1",
-      "revision": 0,
-      "name": "Dcoop y Acesur",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "8e102c12a7673cce1d1eca6d93b2c0a99387729f"
-    },
-    {
-      "id": "red-review-a2f3e45e3534084d3e4f",
-      "revision": 0,
-      "name": "Revisar novedades: Mazón",
-      "outcome": "updated",
-      "applied": true,
-      "continuity_update": true,
-      "distinct_episode": false,
-      "source_id": "6977961651a2",
-      "apply_commit": "f7ebde5f75e7ecac137cae522a108665f0b0b2da"
-    },
-    {
-      "id": "red-review-d62020c60506036a6998",
-      "revision": 0,
-      "name": "Revisar novedades: Óscar Puente",
-      "outcome": "updated",
-      "applied": true,
-      "continuity_update": true,
-      "distinct_episode": false,
-      "source_id": "4c7de84bfc7c",
-      "apply_commit": "f7ebde5f75e7ecac137cae522a108665f0b0b2da"
-    }
-  ],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-autoguard-1793872267",
-    "status": "DONE",
-    "started_at": "2026-11-05T10:51:10+01:00",
-    "updated_at": "2026-11-05T10:59:00+01:00",
-    "finished_at": "2026-11-05T10:59:00+01:00",
-    "current": 4,
-    "total": 4,
-    "queue_complete": true,
-    "processed_ids": [
-      "881c3609cf26",
-      "adfc2eddd0c1",
-      "red-review-a2f3e45e3534084d3e4f",
-      "red-review-d62020c60506036a6998"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "881c3609cf26",
-        "revision": 0,
-        "name": "Personas Cuidadoras",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "8e102c12a7673cce1d1eca6d93b2c0a99387729f"
-      },
-      {
-        "id": "adfc2eddd0c1",
-        "revision": 0,
-        "name": "Dcoop y Acesur",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "8e102c12a7673cce1d1eca6d93b2c0a99387729f"
-      },
-      {
-        "id": "red-review-a2f3e45e3534084d3e4f",
-        "revision": 0,
-        "name": "Revisar novedades: Mazón",
-        "outcome": "updated",
-        "applied": true,
-        "continuity_update": true,
-        "distinct_episode": false,
-        "source_id": "6977961651a2",
-        "apply_commit": "f7ebde5f75e7ecac137cae522a108665f0b0b2da"
-      },
-      {
-        "id": "red-review-d62020c60506036a6998",
-        "revision": 0,
-        "name": "Revisar novedades: Óscar Puente",
-        "outcome": "updated",
-        "applied": true,
-        "continuity_update": true,
-        "distinct_episode": false,
-        "source_id": "4c7de84bfc7c",
-        "apply_commit": "f7ebde5f75e7ecac137cae522a108665f0b0b2da"
-      }
-    ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
-    "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -164,8 +41,66 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T11:32:35+01:00",
-  "last_completed_at": "2026-11-05T11:32:35+01:00",
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "Pasada cerrada 1/1: La UCO explicada y aplicada en main. Barrera final: editorial-queue=0 y sin reexplicaciones pendientes. ImageGen=0.",
+  "final_outcomes": [
+    {
+      "id": "208c4969cff9",
+      "revision": 0,
+      "name": "La UCO",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "db9fab20d7ab744caa2cbb3b5f6a053b491ffc97"
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793874536722-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T11:29:00+01:00",
+    "updated_at": "2026-11-05T11:34:00+01:00",
+    "finished_at": "2026-11-05T11:34:00+01:00",
+    "current": 1,
+    "total": 1,
+    "queue_complete": true,
+    "processed_ids": [
+      "208c4969cff9"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "208c4969cff9",
+        "revision": 0,
+        "name": "La UCO",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "apply_commit": "db9fab20d7ab744caa2cbb3b5f6a053b491ffc97"
+      }
+    ],
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
+  "last_started_at": "2026-11-05T11:29:00+01:00",
+  "last_completed_at": "2026-11-05T11:34:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -177,7 +112,8 @@
     "tr-1793870884210-manual",
     "tr-1793871156152-manual",
     "tr-1793872569013-manual",
-    "tr-autoguard-1793872267"
+    "tr-autoguard-1793872267",
+    "tr-1793874536722-manual"
   ],
   "command_id": "tr-1793874536722-manual",
   "canonical_successor_run_id": null
