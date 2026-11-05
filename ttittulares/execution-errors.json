@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:16:10.192692Z",
-      "event_id": "af49af5583b9-r1",
-      "phase": "outbox",
-      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:16:10.192692Z",
       "event_id": "d5dd0d45c380-r1",
       "phase": "outbox",
       "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
@@ -1395,6 +1388,13 @@
     },
     {
       "at": "2026-11-05T20:07:20.550059Z",
+      "event_id": "e651748bd896-r1",
+      "phase": "outbox",
+      "reason": "e651748bd896-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento e651748bd896-r1: e651748bd896-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-11-05T20:08:36.055953Z",
       "event_id": "e651748bd896-r1",
       "phase": "outbox",
       "reason": "e651748bd896-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico",
