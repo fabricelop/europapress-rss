@@ -322,8 +322,6 @@ struct EditorialRelationsView: View {
                         }
                         if filter == "suggested" {
                             Section {
-                                DisclosureGroup("Elegir otra noticia"                        if filter == "suggested" {
-                            Section {
                                 DisclosureGroup("Elegir otra noticia", isExpanded: $showManualLinking) {
                                     Text("Elige una noticia histórica de Listas para recuperar o añadir sus relaciones sin devolverla a Listas. Las fechas más recientes se muestran primero cuando el servidor las facilita.")
                                         .font(.footnote).foregroundStyle(.secondary)
