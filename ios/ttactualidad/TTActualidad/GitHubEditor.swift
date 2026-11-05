@@ -651,6 +651,27 @@ final class GitHubEditor: ObservableObject {
         return originalURL
     }
 
+    // Supplement optional Sites relation timestamps from GitHub's actual
+    // news history, including entries already removed from Listas. This only
+    // provides dates by exact (event_id, revision), never opaque fingerprints
+    // or a new relationship decision. The private relations API stays the
+    // authoritative source of linkable editorial endpoints.
+    func editorialRelationNewsDates() async -> [String: Date] {
+        guard let document = try? await readMainJSON("ttittulares/prepared.json"),
+              let items = document["items"] as? [[String: Any]] else { return [:] }
+        var dates: [String: Date] = [:]
+        for row in items {
+            guard let id = row["event_id"] as? String, !id.isEmpty,
+                  let revision = row["revision"] as? Int, revision >= 0,
+                  let issuedAt = EditorialRelationsPolicy.parsedDate(
+                      row["prepared_at"] as? String) else { continue }
+            let key = EditorialRelationsPolicy.newsKey(id: id, revision: revision)
+            if let previous = dates[key], previous >= issuedAt { continue }
+            dates[key] = issuedAt
+        }
+        return dates
+    }
+
     // HTTP 204 is only a transport acknowledgement. Verify the committed state.
     private func readMainJSON(_ path: String) async throws -> [String: Any] {
         var url = URLComponents(string: "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + path)!
