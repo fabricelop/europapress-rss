@@ -5,201 +5,126 @@
   "canonical": true,
   "run_id": "tr-1793879836549-manual",
   "previous_run_id": "tr-autoguard-1793879467",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T12:57:40+01:00",
-  "updated_at": "2026-11-05T12:59:10+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-05T13:01:30+01:00",
+  "finished_at": "2026-11-05T13:01:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-2886b1d0a5bf2a0360bc",
-  "title": "Revisar novedades: Cumbre Iberoamericana",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-2886b1d0a5bf2a0360bc",
     "red-review-7f532a107057b06cc173"
   ],
-  "remaining_active_ids": [
-    "red-review-2886b1d0a5bf2a0360bc",
+  "converged_ids": [
     "red-review-7f532a107057b06cc173"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Persistiendo revisión de continuidad de Cumbre Iberoamericana tras validación JIT; mismo episodio, sin nueva ficha ni imagen.",
-  "final_outcomes": [
-    {
-      "id": "radar-prepare-8569609622c3e1584042",
-      "revision": 0,
-      "name": "Radar · minho",
-      "outcome": "anticipation_prepared",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "6a422c318c9650f0b49cd2654c72902009b4b229"
-    },
-    {
-      "id": "red-review-53ec15e577bdd110c6a5",
-      "revision": 0,
-      "name": "Revisar novedades: Milei",
-      "outcome": "review_closed_by_newer_state",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
-    },
-    {
-      "id": "red-review-a418485359df8f0d276f",
-      "revision": 0,
-      "name": "Revisar novedades: #JuegaZeldaYa",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
-    },
-    {
-      "id": "ddd703d4305c",
-      "revision": 0,
-      "name": "Milei",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "f9d8b82c100ab453d38fbe203f41f7ae8acb7da7"
-    },
-    {
-      "id": "9d1e29cea1a7",
-      "revision": 0,
-      "name": "Cristiano Ronaldo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "7d063d1d09d85c1165c55825300ac74c73c20505"
-    },
-    {
-      "id": "4c7de2c3da6d",
-      "revision": 0,
-      "name": "Portugal",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "7d063d1d09d85c1165c55825300ac74c73c20505"
-    }
-  ],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793877567740-manual",
-    "status": "DONE",
-    "started_at": "2026-11-05T12:19:55+01:00",
-    "updated_at": "2026-11-05T12:26:30+01:00",
-    "finished_at": "2026-11-05T12:26:30+01:00",
-    "current": 6,
-    "total": 6,
-    "queue_complete": true,
-    "processed_ids": [
-      "radar-prepare-8569609622c3e1584042",
-      "red-review-53ec15e577bdd110c6a5",
-      "red-review-a418485359df8f0d276f",
-      "ddd703d4305c",
-      "9d1e29cea1a7",
-      "4c7de2c3da6d"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "radar-prepare-8569609622c3e1584042",
-        "revision": 0,
-        "name": "Radar · minho",
-        "outcome": "anticipation_prepared",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "apply_commit": "6a422c318c9650f0b49cd2654c72902009b4b229"
-      },
-      {
-        "id": "red-review-53ec15e577bdd110c6a5",
-        "revision": 0,
-        "name": "Revisar novedades: Milei",
-        "outcome": "review_closed_by_newer_state",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
-      },
-      {
-        "id": "red-review-a418485359df8f0d276f",
-        "revision": 0,
-        "name": "Revisar novedades: #JuegaZeldaYa",
-        "outcome": "continuity_update",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "apply_commit": "945cb281f903f78f2e5da757fdf4d8942973c9cd"
-      },
-      {
-        "id": "ddd703d4305c",
-        "revision": 0,
-        "name": "Milei",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "f9d8b82c100ab453d38fbe203f41f7ae8acb7da7"
-      },
-      {
-        "id": "9d1e29cea1a7",
-        "revision": 0,
-        "name": "Cristiano Ronaldo",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "7d063d1d09d85c1165c55825300ac74c73c20505"
-      },
-      {
-        "id": "4c7de2c3da6d",
-        "revision": 0,
-        "name": "Portugal",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "7d063d1d09d85c1165c55825300ac74c73c20505"
-      }
-    ],
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 3,
     "problematic": 0,
     "updates": 1,
     "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 6
+    "concurrent_convergence": 1
+  },
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "Cierre verificado: Cumbre Iberoamericana actualizada en continuidad; #FelizJueves sin novedades sustanciales. Cola y rewrite_pending a cero; sin ImageGen ni publicaciones.",
+  "final_outcomes": [
+    {
+      "id": "red-review-2886b1d0a5bf2a0360bc",
+      "revision": 0,
+      "name": "Revisar novedades: Cumbre Iberoamericana",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "b5ca00019dcd"
+    },
+    {
+      "id": "red-review-7f532a107057b06cc173",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizJueves",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "ff7da32ed7b2",
+      "concurrent_convergence": true
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793879836549-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T12:57:40+01:00",
+    "updated_at": "2026-11-05T13:01:30+01:00",
+    "finished_at": "2026-11-05T13:01:30+01:00",
+    "current": 2,
+    "total": 2,
+    "queue_complete": true,
+    "processed_ids": [
+      "red-review-2886b1d0a5bf2a0360bc",
+      "red-review-7f532a107057b06cc173"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "red-review-2886b1d0a5bf2a0360bc",
+        "revision": 0,
+        "name": "Revisar novedades: Cumbre Iberoamericana",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "b5ca00019dcd"
+      },
+      {
+        "id": "red-review-7f532a107057b06cc173",
+        "revision": 0,
+        "name": "Revisar novedades: #FelizJueves",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "ff7da32ed7b2",
+        "concurrent_convergence": true
+      }
+    ],
+    "attempted": 1,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 1,
+    "continuity_updates": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
   },
   "last_started_at": "2026-11-05T12:56:38+01:00",
-  "last_completed_at": "2026-11-05T12:56:38+01:00",
+  "last_completed_at": "2026-11-05T13:01:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -216,7 +141,8 @@
     "tr-1793875027567-manual",
     "tr-1793874826601-manual",
     "tr-1793875587772-manual",
-    "tr-1793877457295-manual"
+    "tr-1793877457295-manual",
+    "tr-1793879836549-manual"
   ],
   "command_id": "tr-1793879836549-manual",
   "canonical_successor_run_id": null,
