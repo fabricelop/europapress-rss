@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793886671",
   "previous_run_id": "tr-1793885396516-manual",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-11-05T15:12:00+01:00",
-  "updated_at": "2026-11-05T15:19:40+01:00",
-  "finished_at": "2026-11-05T15:19:40+01:00",
+  "updated_at": "2026-11-05T15:20:00+01:00",
+  "finished_at": null,
   "current": 2,
-  "total": 2,
+  "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "2bd1d3d69584",
     "baa657b1d6a7"
@@ -23,8 +23,14 @@
     "2bd1d3d69584",
     "baa657b1d6a7"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-ccea039ef5113db7bb40",
+    "red-review-7a56d99d4a45b15e4d6f"
+  ],
+  "remaining_active_ids": [
+    "red-review-ccea039ef5113db7bb40",
+    "red-review-7a56d99d4a45b15e4d6f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -48,7 +54,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 2/2 · cola vacía verificada",
+  "activity": "Reabierta 2/4 · llegaron dos revisiones de novedades",
   "final_outcomes": [
     {
       "id": "2bd1d3d69584",
