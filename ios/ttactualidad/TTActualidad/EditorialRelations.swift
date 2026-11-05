@@ -103,8 +103,10 @@ enum EditorialRelationsPolicy {
         var seen = Set<String>()
         for candidate in candidates {
             let key = newsKey(id: candidate.id, revision: candidate.revision)
+            // GitHub-only rows have NO fingerprint and are view-only until the
+            // relationship backend provides their original episode identity.
             guard !hidden.contains(candidate.stableIdentity),
-                  !candidate.episodeFingerprint.isEmpty,
+                  !hidden.contains(key),
                   let date = parsedDate(candidate.listedAt) ?? fallbackDates[key],
                   date >= cutoff, date <= now.addingTimeInterval(300),
                   seen.insert(candidate.stableIdentity).inserted else { continue }
