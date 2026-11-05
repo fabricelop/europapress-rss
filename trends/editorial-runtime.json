@@ -3,22 +3,26 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793848698360-manual",
-  "previous_run_id": "tr-1793848538441-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-05T03:18:18.360Z",
-  "updated_at": "2026-11-05T03:21:00.000Z",
-  "finished_at": "2026-11-05T03:21:00.000Z",
+  "run_id": "tr-autoguard-1793854264",
+  "previous_run_id": "tr-1793848698360-manual",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-05T05:51:00+01:00",
+  "updated_at": "2026-11-05T05:51:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "2fff8afbc84e",
+  "title": "#AEWDynamite",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "2fff8afbc84e"
+  ],
+  "remaining_active_ids": [
+    "2fff8afbc84e"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -39,7 +43,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cerrado 0/0 · cola main=0; sin preparing/update ni rewrite_pending/reexplicación pendiente. ImageGen=0; publicaciones=0.",
+  "activity": "Preparando 1/1 · #AEWDynamite · validando revisión 0 antes de investigar.",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -69,7 +73,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T03:18:18.360Z",
+  "last_started_at": "2026-11-05T05:51:00+01:00",
   "last_completed_at": "2026-11-05T03:21:00.000Z",
   "draft_preview": null
 }
