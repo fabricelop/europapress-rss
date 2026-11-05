@@ -3,23 +3,26 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793869818948-manual",
-  "previous_run_id": "tr-1793869318517-manual",
-  "status": "waiting",
+  "run_id": "tr-1793870168288-manual",
+  "previous_run_id": "tr-1793869818948-manual",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-05T10:11:58+01:00",
-  "updated_at": "2026-11-05T10:17:11+01:00",
+  "started_at": "2026-11-05T10:18:00+01:00",
+  "updated_at": "2026-11-05T10:18:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 2,
   "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
   "processed_ids": [
-    "a5a85c6f8d01",
-    "be2aca41b871"
+    "be2aca41b871",
+    "a5a85c6f8d01"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "be2aca41b871",
+    "a5a85c6f8d01"
+  ],
   "remaining_ids": [
     "924d519049b1",
     "a5c6b58c954b"
@@ -31,8 +34,8 @@
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
@@ -40,19 +43,36 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando 4 trabajos activos por antigüedad: revisiones #FelizJueves e Irán; después #LaHora5N y Deoleo. Sin ImageGen.",
-  "final_outcomes": [],
+  "activity": "Convergencia JIT: #LaHora5N y Deoleo ya cerrados por ejecución concurrente. Quedan Tenerife y #Buenosdías; iniciando Tenerife. Sin ImageGen.",
+  "final_outcomes": [
+    {
+      "id": "be2aca41b871",
+      "revision": 0,
+      "name": "#LaHora5N",
+      "outcome": "converged",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "a5a85c6f8d01",
+      "revision": 0,
+      "name": "Deoleo",
+      "outcome": "converged",
+      "applied": true,
+      "via": "concurrent_convergence_jit"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793869318517-manual",
@@ -137,7 +157,7 @@
     "incidents": 1,
     "concurrent_convergence": 0
   },
-  "last_started_at": "2026-11-05T10:17:11+01:00",
+  "last_started_at": "2026-11-05T10:18:00+01:00",
   "last_completed_at": "2026-11-05T10:11:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
