@@ -3,43 +3,45 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793870041921-manual",
-  "previous_run_id": "tr-1793870168288-manual",
-  "status": "success",
-  "phase": "verifying",
-  "started_at": "2026-11-05T10:14:01.921+01:00",
-  "updated_at": "2026-11-05T10:18:39+01:00",
-  "finished_at": null,
+  "run_id": "tr-1793870168288-manual",
+  "previous_run_id": "tr-1793870041921-manual",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-05T10:18:00+01:00",
+  "updated_at": "2026-11-05T10:22:00+01:00",
+  "finished_at": "2026-11-05T10:22:00+01:00",
   "current": 4,
-  "total": 6,
+  "total": 4,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "be2aca41b871",
+    "a5a85c6f8d01",
     "924d519049b1",
     "a5c6b58c954b"
   ],
   "converged_ids": [
-    "red-review-2653c45234d3b30f9a5c",
-    "red-review-b59086ee20c8f3d1304a",
     "be2aca41b871",
-    "a5a85c6f8d01"
+    "a5a85c6f8d01",
+    "924d519049b1",
+    "a5c6b58c954b"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
+    "attempted": 4,
     "observed": 4,
     "closed": 4,
-    "explained": 2,
+    "explained": 4,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,24 +52,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Verificando aplicación de Tenerife y #Buenosdías; cuatro trabajos previos ya convergieron por barrera JIT. Sin ImageGen.",
+  "activity": "Pasada cerrada 4/4 por convergencia JIT: #LaHora5N, Deoleo, Tenerife y #Buenosdías están explicados. Barrera final: cola 0; sin ImageGen.",
   "final_outcomes": [
-    {
-      "id": "red-review-2653c45234d3b30f9a5c",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizJueves",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
-    {
-      "id": "red-review-b59086ee20c8f3d1304a",
-      "revision": 0,
-      "name": "Revisar novedades: Irán",
-      "outcome": "updated_continuity",
-      "applied": true,
-      "via": "concurrent_convergence_jit"
-    },
     {
       "id": "be2aca41b871",
       "revision": 0,
@@ -83,79 +69,84 @@
       "outcome": "explained",
       "applied": true,
       "via": "concurrent_convergence_jit"
+    },
+    {
+      "id": "924d519049b1",
+      "revision": 0,
+      "name": "Tenerife",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "f5e105c4540ffb10fcb140c549e43a5c8b570d49"
+    },
+    {
+      "id": "a5c6b58c954b",
+      "revision": 0,
+      "name": "#Buenosdías",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "f5e105c4540ffb10fcb140c549e43a5c8b570d49"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793869318517-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-05T10:02:30+01:00",
-    "updated_at": "2026-11-05T10:11:00+01:00",
-    "finished_at": "2026-11-05T10:11:00+01:00",
-    "current": 5,
-    "total": 5,
+    "run_id": "tr-1793870168288-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T10:18:00+01:00",
+    "updated_at": "2026-11-05T10:22:00+01:00",
+    "finished_at": "2026-11-05T10:22:00+01:00",
+    "current": 4,
+    "total": 4,
     "queue_complete": true,
     "processed_ids": [
-      "3ffa846e080e",
-      "c49aa86abf59",
-      "1e15ba910672",
-      "006bcabb6375",
-      "fcf2255228b8"
+      "be2aca41b871",
+      "a5a85c6f8d01",
+      "924d519049b1",
+      "a5c6b58c954b"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "3ffa846e080e",
+        "id": "be2aca41b871",
         "revision": 0,
-        "name": "Amnistía Internacional",
+        "name": "#LaHora5N",
         "outcome": "explained",
         "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+        "via": "concurrent_convergence_jit"
       },
       {
-        "id": "c49aa86abf59",
+        "id": "a5a85c6f8d01",
         "revision": 0,
-        "name": "Alvia de Adamuz",
+        "name": "Deoleo",
         "outcome": "explained",
         "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+        "via": "concurrent_convergence_jit"
       },
       {
-        "id": "1e15ba910672",
+        "id": "924d519049b1",
         "revision": 0,
-        "name": "Náyades",
+        "name": "Tenerife",
         "outcome": "explained",
         "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "2a20dca49ec04e8b8f1fe454c61ef8030c86c0f8"
+        "via": "concurrent_convergence_jit",
+        "apply_commit": "f5e105c4540ffb10fcb140c549e43a5c8b570d49"
       },
       {
-        "id": "006bcabb6375",
+        "id": "a5c6b58c954b",
         "revision": 0,
-        "name": "Kiko",
+        "name": "#Buenosdías",
         "outcome": "explained",
         "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1"
-      },
-      {
-        "id": "fcf2255228b8",
-        "revision": 2,
-        "name": "#DesterrarLaMonarquía",
-        "outcome": "problematic",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "ca8ba87d7fdec6147277ff87e6ec2fdab90f05c1",
-        "reason": "Ranking y uso antimonárquico actuales verificados, pero no se acreditó el detonante concreto ni la pista de convocatoria semanal de los miércoles."
+        "via": "concurrent_convergence_jit",
+        "apply_commit": "f5e105c4540ffb10fcb140c549e43a5c8b570d49"
       }
     ],
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
     "explained": 4,
-    "problematic": 1,
+    "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -166,11 +157,11 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 0
+    "incidents": 0,
+    "concurrent_convergence": 4
   },
   "last_started_at": "2026-11-05T10:18:38+01:00",
-  "last_completed_at": "2026-11-05T10:18:39+01:00",
+  "last_completed_at": "2026-11-05T10:22:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -178,5 +169,5 @@
     "tr-1793866600511-manual",
     "tr-1793868692583-manual"
   ],
-  "command_id": "tr-1793870041921-manual"
+  "command_id": "tr-1793870168288-manual"
 }
