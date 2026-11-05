@@ -5,26 +5,23 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793879467",
   "previous_run_id": "tr-1793877567740-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-05T12:52:00+01:00",
-  "updated_at": "2026-11-05T12:52:00+01:00",
+  "updated_at": "2026-11-05T12:56:38+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
   "trend_id": "f83b276f7891",
   "title": "Peugeot",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "70b0fa51b15e",
+    "f83b276f7891"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "70b0fa51b15e",
-    "f83b276f7891"
-  ],
-  "remaining_active_ids": [
-    "70b0fa51b15e",
-    "f83b276f7891"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -198,8 +195,8 @@
     "incidents": 0,
     "concurrent_convergence": 6
   },
-  "last_started_at": "2026-11-05T12:24:13+01:00",
-  "last_completed_at": "2026-11-05T12:26:30+01:00",
+  "last_started_at": "2026-11-05T12:56:38+01:00",
+  "last_completed_at": "2026-11-05T12:56:38+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
