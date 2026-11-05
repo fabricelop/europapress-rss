@@ -5,60 +5,87 @@
   "canonical": true,
   "run_id": "tr-1793915076723-manual",
   "previous_run_id": "tr-1793914621791-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-05T21:47:12.497Z",
-  "updated_at": "2026-11-05T21:47:12.497Z",
-  "finished_at": null,
-  "current": 2,
-  "total": 2,
-  "trend_id": "a4d53d152871",
-  "title": "Marcos Alonso",
-  "queue_complete": false,
+  "updated_at": "2026-11-05T22:47:00+01:00",
+  "finished_at": "2026-11-05T22:47:00+01:00",
+  "current": 5,
+  "total": 5,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "c3681b22997b"
+    "red-review-1390b77afa935f09b955",
+    "red-review-3ae111a54f07538146a7",
+    "d2c385cd4faf",
+    "c3681b22997b",
+    "a4d53d152871"
   ],
   "converged_ids": [
     "c3681b22997b"
   ],
-  "remaining_ids": [
-    "a4d53d152871"
-  ],
-  "remaining_active_ids": [
-    "a4d53d152871"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 2,
-    "closed": 1,
-    "explained": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 3
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Validación JIT e investigación de Marcos Alonso r0; Leire r0 convergió en la ejecución anterior; sin ImageGen ni publicaciones",
+  "activity": "Pasada completada 5/5: Paraguay y #LaSeptima sin novedad material; Balaídos r1, Leire r0 y Marcos Alonso r0 explicados; cola final 0; sin ImageGen ni publicaciones",
   "final_outcomes": [
+    {
+      "id": "red-review-1390b77afa935f09b955",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "unchanged",
+      "applied": true
+    },
+    {
+      "id": "red-review-3ae111a54f07538146a7",
+      "revision": 0,
+      "name": "Revisar novedades: #LaSeptima",
+      "outcome": "unchanged",
+      "applied": true
+    },
+    {
+      "id": "d2c385cd4faf",
+      "revision": 1,
+      "name": "Balaídos",
+      "outcome": "explained",
+      "applied": true
+    },
     {
       "id": "c3681b22997b",
       "revision": 0,
       "name": "Leire",
       "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
+      "applied": true
+    },
+    {
+      "id": "a4d53d152871",
+      "revision": 0,
+      "name": "Marcos Alonso",
+      "outcome": "explained",
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
@@ -93,7 +120,7 @@
     "concurrent_convergence": 0
   },
   "last_started_at": "2026-11-05T21:47:12.497Z",
-  "last_completed_at": "2026-11-05T22:46:39+01:00",
+  "last_completed_at": "2026-11-05T22:47:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -156,7 +183,8 @@
     "tr-1793910779939-manual",
     "tr-20261105T2140+0100-manual",
     "tr-20261105T2155+0100-manual",
-    "tr-20261105T2210+0100-manual"
+    "tr-20261105T2210+0100-manual",
+    "tr-1793914621791-manual"
   ],
   "command_id": "tr-1793915076723-manual",
   "canonical_successor_run_id": null,
