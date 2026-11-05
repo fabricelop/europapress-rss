@@ -3,113 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793870884210-manual",
-  "previous_run_id": "tr-1793870168288-manual",
-  "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-05T10:28:04+01:00",
-  "updated_at": "2026-11-05T10:32:30+01:00",
-  "finished_at": null,
+  "run_id": "tr-1793871156152-manual",
+  "previous_run_id": "tr-1793870884210-manual",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-05T10:32:36+01:00",
+  "updated_at": "2026-11-05T10:35:30+01:00",
+  "finished_at": "2026-11-05T10:35:30+01:00",
   "current": 1,
-  "total": 2,
-  "trend_id": "red-review-e44ad9404b2ae2e75a27",
-  "title": "Revisar novedades: Dortmund",
-  "queue_complete": false,
+  "total": 1,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "red-review-ffb02ede6039487d52ce"
   ],
-  "converged_ids": [],
-  "remaining_ids": [
-    "red-review-e44ad9404b2ae2e75a27"
+  "converged_ids": [
+    "red-review-ffb02ede6039487d52ce"
   ],
-  "remaining_active_ids": [
-    "red-review-e44ad9404b2ae2e75a27"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
-    "observed": 2,
+    "observed": 1,
     "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 1,
     "continuity_updates": 1,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Persistiendo episodio nuevo verificado: Dortmund (1/2).",
-  "final_outcomes": [],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793870168288-manual",
-    "status": "DONE",
-    "started_at": "2026-11-05T10:18:00+01:00",
-    "updated_at": "2026-11-05T10:22:00+01:00",
-    "finished_at": "2026-11-05T10:22:00+01:00",
-    "current": 4,
-    "total": 4,
-    "queue_complete": true,
-    "processed_ids": [
-      "be2aca41b871",
-      "a5a85c6f8d01",
-      "924d519049b1",
-      "a5c6b58c954b"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "be2aca41b871",
-        "revision": 0,
-        "name": "#LaHora5N",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit"
-      },
-      {
-        "id": "a5a85c6f8d01",
-        "revision": 0,
-        "name": "Deoleo",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit"
-      },
-      {
-        "id": "924d519049b1",
-        "revision": 0,
-        "name": "Tenerife",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "f5e105c4540ffb10fcb140c549e43a5c8b570d49"
-      },
-      {
-        "id": "a5c6b58c954b",
-        "revision": 0,
-        "name": "#Buenosdías",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "apply_commit": "f5e105c4540ffb10fcb140c549e43a5c8b570d49"
-      }
-    ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -119,10 +41,76 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4
+    "concurrent_convergence": 1
   },
-  "last_started_at": "2026-11-05T10:18:38+01:00",
-  "last_completed_at": "2026-11-05T10:22:00+01:00",
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "Cierre verificado: Carlos Cuerpo actualizado en continuidad; cola final 0.",
+  "final_outcomes": [
+    {
+      "id": "red-review-ffb02ede6039487d52ce",
+      "revision": 0,
+      "name": "Revisar novedades: Carlos Cuerpo",
+      "source_id": "17d9bef5928f",
+      "outcome": "updated",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "apply_commit": "b2e7aa09f29ac343e2bbac54f2af42cf4678f026",
+      "continuity": true,
+      "distinct_episode": false,
+      "material_change": false
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793871156152-manual",
+    "status": "DONE",
+    "started_at": "2026-11-05T10:32:36+01:00",
+    "updated_at": "2026-11-05T10:35:30+01:00",
+    "finished_at": "2026-11-05T10:35:30+01:00",
+    "current": 1,
+    "total": 1,
+    "queue_complete": true,
+    "processed_ids": [
+      "red-review-ffb02ede6039487d52ce"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "red-review-ffb02ede6039487d52ce",
+        "revision": 0,
+        "name": "Revisar novedades: Carlos Cuerpo",
+        "source_id": "17d9bef5928f",
+        "outcome": "updated",
+        "applied": true,
+        "via": "concurrent_convergence_jit",
+        "apply_commit": "b2e7aa09f29ac343e2bbac54f2af42cf4678f026",
+        "continuity": true,
+        "distinct_episode": false,
+        "material_change": false
+      }
+    ],
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 1,
+    "continuity_updates": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
+  },
+  "last_started_at": "2026-11-05T10:32:36+01:00",
+  "last_completed_at": "2026-11-05T10:35:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -130,7 +118,9 @@
     "tr-1793866600511-manual",
     "tr-1793868692583-manual",
     "tr-1793870041921-manual",
-    "tr-1793869818948-manual"
+    "tr-1793869818948-manual",
+    "tr-1793870884210-manual",
+    "tr-1793871156152-manual"
   ],
-  "command_id": "tr-1793870884210-manual"
+  "command_id": "tr-1793871156152-manual"
 }
