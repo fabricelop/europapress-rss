@@ -3,38 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793922065",
-  "previous_run_id": "tr-20261106T0040+0100-manual",
-  "status": "DONE",
+  "run_id": "tr-1793922900000-manual",
+  "previous_run_id": "tr-autoguard-1793922065",
+  "status": "RUNNING",
   "phase": "closing",
-  "started_at": "2026-11-06T00:41:00+01:00",
-  "updated_at": "2026-11-06T00:46:00+01:00",
-  "finished_at": "2026-11-06T00:46:00+01:00",
-  "current": 4,
-  "total": 4,
+  "started_at": "2026-11-06T00:55:00+01:00",
+  "updated_at": "2026-11-06T00:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "ac112af93a81",
-    "14a695e4efec",
-    "02d4070d6709",
-    "1a90f218427d"
-  ],
-  "converged_ids": [
-    "ac112af93a81",
-    "14a695e4efec",
-    "02d4070d6709",
-    "1a90f218427d"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -47,50 +37,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada autoguard cerrada por convergencia JIT: 4/4 explicadas; cola y reexplicaciones pendientes a 0.",
-  "final_outcomes": [
-    {
-      "id": "ac112af93a81",
-      "revision": 0,
-      "name": "#ZeldaOcarinaofTimeRemake",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "9cf1cc0115c215a02c62ff5a01961a2fdc199d34"
-    },
-    {
-      "id": "14a695e4efec",
-      "revision": 0,
-      "name": "La Real",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "e52a8a77333e89a8e3108058c1307ff60abfe4dc"
-    },
-    {
-      "id": "02d4070d6709",
-      "revision": 0,
-      "name": "Juanjo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "c9af02737c14de379d9fc5f7bac8aefbaf32c6b2"
-    },
-    {
-      "id": "1a90f218427d",
-      "revision": 0,
-      "name": "Indhira",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "via": "concurrent_convergence_jit",
-      "apply_commit": "971e272466016608b06add2ee742df0a3c56157c"
-    }
-  ],
+  "activity": "Pasada manual iniciada; verificando barrera final de cola y reexplicaciones.",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793922065",
@@ -174,7 +127,7 @@
     "title": null,
     "message": "Pasada tr-autoguard-1793922065 cerrada 4/4 por convergencia JIT con tr-20261106T0040+0100-manual. #ZeldaOcarinaofTimeRemake, La Real, Juanjo e Indhira quedaron persistidas en requests+telegram-manual-explained. Barrera final main: editorial-queue=0 y rewrite_pending/reexplicación=0. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T00:40:00+01:00",
+  "last_started_at": "2026-11-06T00:55:00+01:00",
   "last_completed_at": "2026-11-06T00:46:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -256,7 +209,7 @@
     "tr-20261106T0040+0100-manual",
     "tr-autoguard-1793922065"
   ],
-  "command_id": "tr-autoguard-1793922065",
+  "command_id": "tr-1793922900000-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
