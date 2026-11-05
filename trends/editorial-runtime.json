@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-1793869318517-manual",
   "previous_run_id": "tr-1793868692583-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "research",
   "started_at": "2026-11-05T10:02:30+01:00",
-  "updated_at": "2026-11-05T10:11:00+01:00",
-  "finished_at": "2026-11-05T10:11:00+01:00",
+  "updated_at": "2026-11-05T10:11:20+01:00",
+  "finished_at": null,
   "current": 5,
-  "total": 5,
+  "total": 9,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "3ffa846e080e",
     "c49aa86abf59",
@@ -23,8 +23,18 @@
     "fcf2255228b8"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-2653c45234d3b30f9a5c",
+    "red-review-b59086ee20c8f3d1304a",
+    "be2aca41b871",
+    "a5a85c6f8d01"
+  ],
+  "remaining_active_ids": [
+    "red-review-2653c45234d3b30f9a5c",
+    "red-review-b59086ee20c8f3d1304a",
+    "be2aca41b871",
+    "a5a85c6f8d01"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 5,
@@ -37,7 +47,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -55,7 +65,7 @@
     }
   ],
   "error": null,
-  "activity": "Pasada cerrada 5/5: 4 explicadas y 1 problemática por detonante no verificado. Barrera final: editorial-queue=0, preparing/update=0, rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "activity": "Barrera final detectó 4 trabajos nuevos. Pasada reabierta 5/9; continúan revisiones #FelizJueves e Irán y nuevas #LaHora5N y Deoleo, por antigüedad.",
   "final_outcomes": [
     {
       "id": "3ffa846e080e",
