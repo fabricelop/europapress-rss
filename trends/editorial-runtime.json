@@ -7,43 +7,29 @@
   "previous_run_id": "tr-1794008625066-manual",
   "command_id": "tr-1794008625066-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-07T00:46:00+01:00",
-  "updated_at": "2026-11-07T00:58:00+01:00",
+  "updated_at": "2026-11-07T00:49:57+01:00",
   "finished_at": null,
   "current": 9,
   "total": 11,
   "trend_id": "5b461284ec93",
   "title": "Alavés",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "4ee281bc339c",
+    "50b8047cb3f4",
+    "5b461284ec93",
+    "83fe8a78c514",
+    "a9d16526a859"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "de982193d4bd",
-    "16ac22023f2b",
-    "8c0d4ecd5327",
-    "50d1a6619b2a",
-    "50b8047cb3f4",
-    "4ee281bc339c",
-    "83fe8a78c514",
-    "a9d16526a859",
-    "5b461284ec93",
-    "97e735d07b7a",
-    "35fdbc5ccc10"
+    "97e735d07b7a"
   ],
   "remaining_active_ids": [
-    "de982193d4bd",
-    "16ac22023f2b",
-    "8c0d4ecd5327",
-    "50d1a6619b2a",
-    "50b8047cb3f4",
-    "4ee281bc339c",
-    "83fe8a78c514",
-    "a9d16526a859",
-    "5b461284ec93",
-    "97e735d07b7a",
-    "35fdbc5ccc10"
+    "97e735d07b7a"
   ],
   "remaining_problematic_ids": [],
   "summary": "Pasada editorial real en curso: 11 trabajos preparing/update detectados en main; ImageGen desactivado en esta pasada.",
@@ -92,7 +78,7 @@
     "title": null,
     "message": "Pasada editorial tr-manual-20261107-0040-chat cerrada 0/0. Barrera final main: editorial-queue=0 y no quedan preparing/update ni rewrite_pending detectados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T00:48:06+01:00",
+  "last_started_at": "2026-11-07T00:49:57+01:00",
   "last_completed_at": "2026-11-07T00:25:55+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
