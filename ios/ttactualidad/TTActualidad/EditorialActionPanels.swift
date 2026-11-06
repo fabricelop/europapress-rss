@@ -22,6 +22,7 @@ struct EditorialActions: View {
     var trend: TrendItem? = nil
     @ObservedObject var github: GitHubEditor
     @EnvironmentObject private var store: EditorialStore
+    @EnvironmentObject private var buffer: BufferPublishTracker
     @Binding var showSettings: Bool
     @State private var confirm = false
     @State private var intent = "deleted"
@@ -68,6 +69,25 @@ struct EditorialActions: View {
                 quickButton("Copiar Texto", "doc.on.doc") { copy(xText) }
                     .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
+            quickButton("Publicar directo · Buffer", "paperplane.fill") {
+                guard github.authenticated else { showSettings = true; return }
+                Task {
+                    await buffer.publish(github: github, project: project,
+                                         id: editorialID, revision: revision)
+                    outcome = buffer.notice
+                }
+            }
+            .disabled(!(news?.status == "LISTA" || trend?.inListas == true) ||
+                      fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                      aiPhotoURL == nil ||
+                      buffer.blocked(project: project, id: editorialID, revision: revision))
+            Text(aiPhotoURL == nil
+                 ? "Para publicar directamente necesitas una foto IA verificada."
+                 : "Un toque · @" + (news == nil ? "ttendenciasesp" : "ttittulares") +
+                   " · texto y foto IA (sin abrir X)")
+                .font(.system(size: 10))
+                .foregroundStyle(TTTheme.muted)
+                .frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: 7) {
                 quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                     .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
@@ -200,6 +220,9 @@ struct EditorialActions: View {
                                    top30Trends: store.snapshot.top30,
                                    listasNews: store.snapshot.news)
                 .presentationDetents([.large])
+        }
+        .onChange(of: buffer.change) { _, _ in
+            outcome = buffer.notice
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?
