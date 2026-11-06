@@ -30,6 +30,47 @@ async function send(meta,bytes,secret,fetcher=fetch){
  if(receipt.state==='rejected')throw Error('PRIVATE_RECEIPT_REJECTED');
  return {...receipt,rasterSHA256:meta.rasterSHA256};
 }
+// Durable PC-only cache: a 503 or closed tab must not erase the generated
+// original. This is neither an approval nor a public image catalog.
+function originalPaths(base,task){
+ if(!/^[A-Za-z0-9_.-]{3,160}$/.test(String(task.command_id||'')))throw Error('CACHED_ORIGINAL_CONFLICT');
+ const dir=path.join(base,'image-approval-receipts','original-cache');
+ return {dir,png:path.join(dir,task.command_id+'.png'),meta:path.join(dir,task.command_id+'.json')};
+}
+function cachedOriginal(base,task,meta){
+ const files=originalPaths(base,task);
+ if(!fs.existsSync(files.meta))return null;
+ try{
+  const record=JSON.parse(fs.readFileSync(files.meta,'utf8')),bytes=fs.readFileSync(files.png);
+  if(record.commandId!==task.command_id||record.editorialId!==meta.editorialId||
+     record.revision!==meta.revision||record.episodeFingerprint!==meta.episodeFingerprint||
+     !/^[a-f0-9]{64}$/.test(record.rasterSHA256)||sha(bytes)!==record.rasterSHA256||
+     bytes.length>8388608||bytes.length<24||
+     bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')
+     throw Error('CACHED_ORIGINAL_CONFLICT');
+  return bytes;
+ }catch{throw Error('CACHED_ORIGINAL_CONFLICT')}
+}
+function persistOriginal(base,task,meta,bytes){
+ const existing=cachedOriginal(base,task,meta);
+ if(existing){if(sha(existing)!==sha(bytes))throw Error('CACHED_ORIGINAL_CONFLICT');return;}
+ if(bytes.length>8388608||bytes.length<24||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')
+  throw Error('ORIGINAL_PNG_REQUIRED');
+ const files=originalPaths(base,task);fs.mkdirSync(files.dir,{recursive:true,mode:0o700});
+ const nonce=crypto.randomBytes(8).toString('hex'),rasterTmp=files.png+'.'+nonce+'.tmp',metaTmp=files.meta+'.'+nonce+'.tmp';
+ try{
+  fs.writeFileSync(rasterTmp,bytes,{mode:0o600,flag:'wx'});fs.renameSync(rasterTmp,files.png);
+  fs.writeFileSync(metaTmp,JSON.stringify({commandId:task.command_id,
+    editorialId:meta.editorialId,revision:meta.revision,
+    episodeFingerprint:meta.episodeFingerprint,rasterSHA256:sha(bytes),
+    storedAt:new Date().toISOString()}),{mode:0o600,flag:'wx'});
+  fs.renameSync(metaTmp,files.meta);
+ }finally{for(const file of [rasterTmp,metaTmp])try{fs.unlinkSync(file)}catch{}}
+}
+function discardOriginal(base,task){
+ const files=originalPaths(base,task);
+ for(const file of [files.meta,files.png])try{fs.unlinkSync(file)}catch{}
+}
 function selectTarget(pages,task,chatURL){
  const expected=chatURL(task.conversation_url);
  return pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&chatURL(p.url)&&(expected?chatURL(p.url)===expected:p.id===task.browser_target_id));
@@ -120,6 +161,8 @@ async function once(base=__dirname){
    let cdp,browser,ownedTarget;
    try{
     const job=await editorialJob(source,task),meta=metadata(task,job);
+    let bytes=cachedOriginal(base,task,meta);
+    if(!bytes){
     if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
     if(!source.chatURL(task.conversation_url)){const found=await source.discoverConversation(task.command_id,task.browser_target_id,true);if(found?.url)task.conversation_url=found.url;}
     let target;
@@ -143,14 +186,17 @@ async function once(base=__dirname){
     for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id,true));if(raster?.ready||['later_user_turn','capture_requires_sign_in','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
     if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','png_conversion_failed','png_exceeds_private_limit','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
     if(!String(raster.dataUrl).startsWith('data:image/png;base64,')){report(task,'ORIGINAL_FORMAT_NOT_PNG');continue;}
-    const bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
+    bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
     const fresh=metadata(task,await editorialJob(source,task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
+    persistOriginal(base,task,meta,bytes);
+    }
     const receipt=await send(meta,bytes,unprotect(task.secret_dpapi));
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({project:meta.project,revision:meta.revision,commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
+    discardOriginal(base,task);
     report(task,'RECEIVED_'+receipt.state);
    }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
-module.exports={metadata,episode,send,editorialJob,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks};
+module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks};
 if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
