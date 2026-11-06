@@ -8,19 +8,25 @@
   "command_id": "tr-1793983200000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-06T17:40:00+01:00",
-  "updated_at": "2026-11-06T17:40:00+01:00",
+  "updated_at": "2026-11-06T17:42:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "70d8c4a3a63c",
+  "title": "Pugilato",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "70d8c4a3a63c",
+    "7fe26f7c12dd"
+  ],
+  "remaining_active_ids": [
+    "70d8c4a3a63c",
+    "7fe26f7c12dd"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -44,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -135,5 +141,5 @@
     "tr-1793981400000-manual",
     "tr-1793982300000-manual"
   ],
-  "message": "Iniciando pasada editorial manual; comprobando cola autoritativa y reelaboraciones vigentes."
+  "message": "Persistiendo Pugilato r0 tras validación JIT y contraste de fuentes actuales."
 }
