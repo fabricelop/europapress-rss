@@ -7,96 +7,37 @@
   "previous_run_id": "tr-manual-20261106-2210-chat",
   "command_id": "tr-1793999746630-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T22:16:00+01:00",
-  "updated_at": "2026-11-06T22:18:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-06T22:19:25+01:00",
+  "finished_at": "2026-11-06T22:19:25+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-7393b8418531ab91bd8e",
-  "title": "Revisar novedades: Javier Ruiz",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-7393b8418531ab91bd8e",
     "red-review-c64e67e7b400666a0452"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-7393b8418531ab91bd8e",
     "red-review-c64e67e7b400666a0452"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Sin novedades",
-  "final_outcomes": [],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-manual-20261106-2210-chat",
-    "status": "DONE",
-    "started_at": "2026-11-06T22:10:00+01:00",
-    "updated_at": "2026-11-06T22:15:25+01:00",
-    "finished_at": "2026-11-06T22:15:25+01:00",
-    "current": 2,
-    "total": 2,
-    "queue_complete": true,
-    "processed_ids": [
-      "7c9e08459659",
-      "1d446fcf702d"
-    ],
-    "converged_ids": [],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "7c9e08459659",
-        "revision": 0,
-        "name": "Vargas",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "be31a47b5a47199f7a680509a38756d32d65879d"
-      },
-      {
-        "id": "1d446fcf702d",
-        "revision": 0,
-        "name": "#sevillaalaves",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox",
-        "apply_commit": "5be46a5e4273c33962d4b546df5c01402b659368"
-      }
-    ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -104,14 +45,95 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 2
+  },
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "red-review-7393b8418531ab91bd8e",
+      "revision": 0,
+      "name": "Revisar novedades: Javier Ruiz",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_convergence",
+      "apply_commit": "9845fabc167287be96f1c177b8c2cef452ed4fff"
+    },
+    {
+      "id": "red-review-c64e67e7b400666a0452",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_convergence",
+      "apply_commit": "9598ca1e40515866b53272b8fe3a161861e2aa94"
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793999746630-manual",
+    "status": "DONE",
+    "started_at": "2026-11-06T22:16:00+01:00",
+    "updated_at": "2026-11-06T22:19:25+01:00",
+    "finished_at": "2026-11-06T22:19:25+01:00",
+    "current": 2,
+    "total": 2,
+    "queue_complete": true,
+    "processed_ids": [
+      "red-review-7393b8418531ab91bd8e",
+      "red-review-c64e67e7b400666a0452"
+    ],
+    "converged_ids": [
+      "red-review-7393b8418531ab91bd8e",
+      "red-review-c64e67e7b400666a0452"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "red-review-7393b8418531ab91bd8e",
+        "revision": 0,
+        "name": "Revisar novedades: Javier Ruiz",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_convergence",
+        "apply_commit": "9845fabc167287be96f1c177b8c2cef452ed4fff"
+      },
+      {
+        "id": "red-review-c64e67e7b400666a0452",
+        "revision": 0,
+        "name": "Revisar novedades: La Séptima",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_convergence",
+        "apply_commit": "9598ca1e40515866b53272b8fe3a161861e2aa94"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 2,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-manual-20261106-2210-chat cerrada 2/2: Vargas y #sevillaalaves explicados y persistidos en requests + telegram-manual-explained. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial tr-1793999746630-manual cerrada 2/2 por convergencia JIT: Javier Ruiz y La Séptima review_completed/unchanged, sin novedad material. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T22:16:00+01:00",
-  "last_completed_at": "2026-11-06T22:15:25+01:00",
+  "last_completed_at": "2026-11-06T22:19:25+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -154,7 +176,8 @@
     "tr-1793997162549-manual",
     "tr-1793997311693-manual",
     "tr-manual-20261106-2140-chat",
-    "tr-manual-20261106-2210-chat"
+    "tr-manual-20261106-2210-chat",
+    "tr-1793999746630-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -199,7 +222,8 @@
     "tr-1793997162549-manual",
     "tr-1793997311693-manual",
     "tr-manual-20261106-2140-chat",
-    "tr-manual-20261106-2210-chat"
+    "tr-manual-20261106-2210-chat",
+    "tr-1793999746630-manual"
   ],
-  "message": "Javier Ruiz: sin novedades sustanciales; persistiendo revisión unchanged."
+  "message": "Pasada editorial tr-1793999746630-manual cerrada 2/2 por convergencia JIT: Javier Ruiz y La Séptima review_completed/unchanged, sin novedad material. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; image-outbox=0; publicaciones=0."
 }
