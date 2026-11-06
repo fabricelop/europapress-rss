@@ -1,4 +1,5 @@
 #requires -Version 5.1
+param([ValidateRange(10,3600)][int]$MaxWaitSeconds=900)
 # Incremental, hash-pinned repair of the original-image receiver for the iPhone APP.
 # Do not replace generator bridges, secrets, Site, or other scheduled tasks.
 $ErrorActionPreference='Stop'
@@ -29,10 +30,34 @@ $allowed=@{
   '1788962e76fce00891f74027afba349f82d195e94ac8c2e06929cfdf2fa1bd37',
   $files['TTImageApprovalReceiver.cjs'])
 }
-function Assert-Idle {
- $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
-  Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js|TTImageApprovalReceiver\.cjs'})
- if($busy.Count){throw 'Generador o receptor en ejecucion. No se interrumpe. Repite al quedar libre.'}
+# Generators must finish first: do not interrupt their CDP sessions.
+# The receiver is a one-shot Node process: its already-loaded modules continue
+# in memory while an atomic on-disk replacement prepares the NEXT cycle.
+function Get-BusyGenerators {
+ @(Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
+  Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js'})
+}
+function Assert-GeneratorsIdle {
+ if(@(Get-BusyGenerators).Count){
+  throw 'Ha empezado otra generacion durante la sustitucion. Ningun proceso se interrumpe.'
+ }
+}
+function Wait-ForGeneratorsIdle([int]$limitSeconds) {
+ $deadline=(Get-Date).AddSeconds($limitSeconds)
+ $lastNotice=[datetime]::MinValue
+ while($true){
+  $busy=@(Get-BusyGenerators)
+  if(-not $busy.Count){return}
+  if((Get-Date) -ge $deadline){
+   $ids=($busy|ForEach-Object {$_.ProcessId}) -join ','
+   throw ('Generadores activos (PID '+$ids+'). Sin cambios ni procesos detenidos. Vuelve a ejecutar el instalador mas tarde.')
+  }
+  if(((Get-Date)-$lastNotice).TotalSeconds -ge 30){
+   Write-Host 'Preparacion completa. Se espera a que termine la generacion actual; no se cierra ni detiene nada.'
+   $lastNotice=Get-Date
+  }
+  Start-Sleep -Seconds 5
+ }
 }
 if(-not(Test-Path -LiteralPath $base -PathType Container)){throw 'No existe C:\TTiTTulares; sin cambios.'}
 foreach($name in @('TTendenciasImageBridge.js','TTiTTularesImageBridge.js')){
@@ -55,11 +80,13 @@ foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
   throw ('El bridge no tiene la pausa de aprobacion: '+$name)
  }
 }
-Assert-Idle
+# Download and verify before waiting; no running processes have been changed.
 $temp=Join-Path $env:TEMP ('TT-PrivateInboxPatch-'+[guid]::NewGuid().ToString('N'))
 $backup=Join-Path $base ('private-inbox-backup-'+(Get-Date -Format yyyyMMdd-HHmmss))
 New-Item -ItemType Directory -Path $temp -Force | Out-Null
 $written=@()
+$stagedPaths=@()
+$installed=$false
 try{
  foreach($name in $files.Keys){
   $destination=Join-Path $temp $name
@@ -73,20 +100,57 @@ try{
    throw ('La version nueva no conserva la pausa editorial: '+$name)
   }
  }
- Assert-Idle
+ # Receiver may continue serving pending images from its in-memory modules.
+ # Only an actual generator needs a quiet window. No scheduled task is disabled.
+ Wait-ForGeneratorsIdle $MaxWaitSeconds
+ Assert-GeneratorsIdle
+ # Stage every replacement on the SAME volume as the live scripts so that
+ # File.Replace is atomic: an active receiver sees complete old/new source,
+ # never an interrupted Copy-Item or partially written JavaScript file.
  New-Item -ItemType Directory -Path $backup | Out-Null
- foreach($name in $files.Keys){Copy-Item -LiteralPath (Join-Path $base $name) -Destination (Join-Path $backup $name)}
- foreach($name in $files.Keys){
-  Copy-Item -LiteralPath (Join-Path $temp $name) -Destination (Join-Path $base $name) -Force
-  $written+=$name
+ foreach($name in $files.Keys) {
+  $stage=Join-Path $base ('.'+$name+'.stage-'+[guid]::NewGuid().ToString('N'))
+  Copy-Item -LiteralPath (Join-Path $temp $name) -Destination $stage -Force
+  $stagedPaths+= $stage
+  if((Get-FileHash -LiteralPath $stage -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]) {
+   throw ('Archivo preparado invalido: '+$name)
+  }
+ }
+ foreach($name in $files.Keys) {
+  Assert-GeneratorsIdle
+  $live=Join-Path $base $name
+  $stage=@($stagedPaths | Where-Object { [IO.Path]::GetFileName($_) -like ('.'+$name+'.stage-*') })[0]
+  if(-not $stage){ throw ('Falta archivo temporal: '+$name) }
+  $old=(Get-FileHash -LiteralPath $live -Algorithm SHA256).Hash.ToLowerInvariant()
+  if($allowed[$name] -notcontains $old){throw ('Version local ha cambiado: '+$name)}
+  [IO.File]::Replace($stage,$live,(Join-Path $backup $name),$true)
+  $written+= $name
+  if((Get-FileHash -LiteralPath $live -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]){
+   throw ('No coincide el SHA tras reemplazar: '+$name)
+  }
  }
  Write-Host 'Receptor privado de imagenes actualizado y hashes verificados. NO se ha cambiado la APP ni el Site.' -ForegroundColor Green
  Write-Host 'JPEG/WebP se convertiran a PNG solo para el buzón; reintentos recuperan originales sin generar otros.'
  Write-Host 'La tarea programada se conserva. La confirmacion de recepcion requiere ver un recibo PRIVATE_INBOX RECEIVED_pending.'
  Write-Host ('Copia de seguridad: '+$backup)
+ $installed=$true
 }catch{
- foreach($name in $written){Copy-Item -LiteralPath (Join-Path $backup $name) -Destination (Join-Path $base $name) -Force}
+ foreach($name in $written){
+  $live=Join-Path $base $name
+  $old=Join-Path $backup $name
+  if(Test-Path -LiteralPath $old){
+   # Atomic rollback, also safe if the one-shot receiver is still running.
+   $restore=Join-Path $base ('.'+$name+'.restore-'+[guid]::NewGuid().ToString('N'))
+   try {
+    Copy-Item -LiteralPath $old -Destination $restore -Force
+    [IO.File]::Replace($restore,$live,$null,$true)
+   }finally{Remove-Item -LiteralPath $restore -Force -ErrorAction SilentlyContinue}
+  }
+ }
  throw
 }finally{
+ foreach($stage in $stagedPaths){
+  Remove-Item -LiteralPath $stage -Force -ErrorAction SilentlyContinue
+ }
  Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
 }
