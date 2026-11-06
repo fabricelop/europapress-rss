@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793951281387-manual",
-  "previous_run_id": "tr-20261106T0840+0100-manual",
+  "run_id": "tr-1793951409248-manual",
+  "previous_run_id": "tr-1793951281387-manual",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-06T08:48:01+01:00",
-  "updated_at": "2026-11-06T08:48:01+01:00",
+  "started_at": "2026-11-06T08:51:40+01:00",
+  "updated_at": "2026-11-06T08:51:40+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 2,
+  "total": 4,
   "trend_id": "f67d14c2d060",
   "title": "Trump",
   "queue_complete": false,
@@ -19,11 +19,15 @@
   "converged_ids": [],
   "remaining_ids": [
     "f67d14c2d060",
-    "9c0ccda7fac2"
+    "9c0ccda7fac2",
+    "69446521a2f3",
+    "945474fb95a9"
   ],
   "remaining_active_ids": [
     "f67d14c2d060",
-    "9c0ccda7fac2"
+    "9c0ccda7fac2",
+    "69446521a2f3",
+    "945474fb95a9"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -37,8 +41,8 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
-    "rewrite_pending_remaining": 2,
+    "queue_remaining": 4,
+    "rewrite_pending_remaining": 4,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
@@ -90,7 +94,7 @@
   "last_completed_at": "2026-11-06T08:42:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [],
-  "command_id": "tr-1793951281387-manual",
+  "command_id": "tr-1793951409248-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
