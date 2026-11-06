@@ -34,7 +34,10 @@ struct TTDashboard: View {
                     .padding(.horizontal, 15)
                     .padding(.top, 18)
                 }
-                .refreshable { await store.refresh() }
+                .refreshable {
+                    await store.refresh()
+                    await github.refreshBufferPublications()
+                }
             }
         }
         .preferredColorScheme(.dark)
@@ -53,10 +56,6 @@ struct TTDashboard: View {
         }
         .onChange(of: github.receiptChange) { _, _ in
             Task { await store.refresh() }
-        }
-        .onChange(of: github.bufferChange) { _, _ in
-            // Only confirmed Buffer 'sent' records affect these counters.
-            // The existing manual X publication count remains independent.
         }
         .task { await github.refreshBufferPublications() }
         .onChange(of: store.snapshot.updatedAt) { _, _ in
@@ -200,8 +199,8 @@ struct TTDashboard: View {
                     .font(.system(size: 9)).foregroundStyle(TTTheme.muted)
                     .lineLimit(1).minimumScaleFactor(0.7)
             }
-            Text("Total: \\(github.bufferSentCount(account: account))" +
-                 " · Pend.: \\(github.bufferPendingCount(account: account))")
+            Text("Total: \(github.bufferSentCount(account: account))" +
+                 " · Pend.: \(github.bufferPendingCount(account: account))")
                 .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
                 .lineLimit(1).minimumScaleFactor(0.7)
         }
