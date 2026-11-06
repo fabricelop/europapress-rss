@@ -43,9 +43,9 @@ La sección **Fotos archivo** reúne únicamente las fotografías de archivo act
 
 
 
-## TTActualidad iPhone 0.4.62 build74 — publicación directa Buffer Free (propuesta aislada)
+## TTActualidad iPhone 0.4.64 build76 — publicación directa Buffer Free (propuesta aislada)
 
-**Base técnica:** app moderna 0.4.61 build73 de la rama `feature/ttactualidad-relations-recent-inbox-20261105` (PR #314). **No usar la versión antigua del README/IPA 0.2.0 para esta función.** Esta implementación se mantiene como PR dependiente sin reemplazar las funciones de relaciones, imágenes, edición, histórico, pendientes ni Live Activities.
+**Base técnica:** app moderna de PR #314 (Relaciones) más **PR #325** (Top 30 / noticias nuevas / máximo 20 imágenes pendientes). La PR de Buffer #322 está basada directamente en la rama de #325 y utiliza 0.4.64 build76. **No usar la versión antigua del README/IPA 0.2.0 para esta función.** Esta implementación se mantiene como PR dependiente sin reemplazar las funciones de relaciones, imágenes, edición, histórico, pendientes ni Live Activities.
 
 **Dos acciones completamente independientes:**
 - «Publicar en X»: **sin cambios**; abre el compositor X con el texto preparado, conserva la foto manual y las decisiones posteriores.
@@ -57,7 +57,7 @@ La sección **Fotos archivo** reúne únicamente las fotografías de archivo act
 
 **Medidas de seguridad:** comprobación de `project,event_id,revision` y texto editorial desde `main`; prioridad 1: IA con identidad y SHA-256 validados; prioridad 2: foto de archivo asignada a esa ficha y URL HTTPS pública (respetando los vetos explícitos de derechos); prioridad 3: solo texto. Nunca imágenes asociadas a otra noticia o tendencia ni URLs enviadas desde el móvil; coincidencia exacta de cuenta X en los canales de Buffer; reserva persistente contra doble clic y timeout. Un resultado `unknown` bloquea reenvío hasta verificación humana. Si la imagen IA falla, se intenta foto de archivo; si no hay, se envía solo texto. El botón X tradicional permanece operativo. No se introduce ningún token en el iPhone ni se toca el Worker de Telegram/Instagram.
 
-**Validación:** `.github/workflows/ttactualidad-buffer-tests.yml` incluye pruebas simuladas de los tres modos de imagen, la cuota global y antidualidad sin publicar nada; `.github/workflows/ttactualidad-buffer-ios-verify.yml` compila la app y genera la IPA sin firma `TTActualidad-0.4.62-build74-Buffer-IPA` para PlumeImpactor. No declarar operativa la publicación real hasta que las cuentas estén conectadas y se compruebe una publicación efectivamente `sent` con su texto y con la imagen correcta, cuando exista.
+**Validación:** `.github/workflows/ttactualidad-buffer-tests.yml` incluye pruebas simuladas de los tres modos de imagen, la cuota global y antidualidad sin publicar nada; `.github/workflows/ttactualidad-buffer-ios-verify.yml` compila la app y genera la IPA sin firma `TTActualidad-0.4.64-build76-Buffer-IPA` para PlumeImpactor. No declarar operativa la publicación real hasta que las cuentas estén conectadas y se compruebe una publicación efectivamente `sent` con su texto y con la imagen correcta, cuando exista.
 
 **Restricciones:** Buffer Free tiene límites por cuenta; usarlo no implica publicaciones ilimitadas. En X se deben respetar las restricciones de contenidos repetitivos y de tendencias; aquí existe siempre selección/orden humana individual. No enviar masivamente sin revisar.
 
@@ -70,3 +70,14 @@ La sección **Fotos archivo** reúne únicamente las fotografías de archivo act
 **Medias diarias dinámicas:** panel global con solicitudes utilizadas y disponibles en 30 días móviles, media actual `utilizadas / 30` peticiones por día y ritmo sostenible `límite / 30` por día (2.000 → aproximadamente 66,7/día cuando haya dos canales). Los paneles de @ttittulares y @ttendenciasesp conservan **publicaciones individuales confirmadas** y añaden conteo 30 días y `publicaciones 30d / 30` como media diaria. Es una media retrospectiva para orientar el ritmo, **no** una fecha de reinicio a fin de mes: no se reinicia el día 1. La cuota real también puede usarse desde otro cliente/MCP, por lo que los recibos de nuestras publicaciones solos no son un medidor global fiable.
 
 **No confundir** 2.000 solicitudes de API con 2.000 publicaciones de X: cada post directo puede consumir varias solicitudes (consultar canales, crear y comprobar el post). Las tres ventanas se aplican conjuntamente. El contador de cuota solo es exacto en el momento de la última respuesta observada.
+
+
+### Integración de inbox y botón exclusivo de iPhone (6 nov 2026)
+
+La PR #322 ya contiene el historial de la PR #325 y GitHub confirma que se pueden fusionar sin conflictos. El orden es PR #314 → PR #325 → PR #322; la web **no se modifica**. El filtro iPhone de imágenes pendientes conserva el Top 30 actual por ID+revisión, la fecha editorial de corte de noticias y máximo 20 solicitudes visibles. La versión conjunta es **0.4.64 / build76**; conservar la Live Activity, los tests nativos de identidad y la funcionalidad previa.
+
+La publicación directa utiliza el **mismo enlace final y presupuesto de texto X** que el botón tradicional. Primero intenta imagen IA asociada, después foto de archivo de la **misma identidad y revisión** (también si la galería iPhone la reconoce por un archivo bajo `ttittulares/archive-images/` o `trends/archive-images/` aunque el feed no tenga URL), y en ausencia de ambas envía texto solo. Las imágenes de archivo con un veto explícito de derechos se rechazan. No se abre X ni se solicita otra confirmación si el usuario ya pulsó el botón.
+
+El número total de publicaciones confirmadas por Buffer se separa de la **cuota API única y dinámica**. La cuota se mide mediante las cabeceras de Buffer, eligiendo el límite de 30 días por el tamaño de ventana `w=2592000` y emparejando el nombre de la política con su estado, sin depender de que la etiqueta contenga literalmente `30days`. La app muestra también media diaria de solicitudes y medias por cuenta de publicaciones en ventana móvil de 30 días.
+
+**Pendiente para activación:** conectar los canales X a la cuenta Buffer ya existente, guardar `BUFFER_API_KEY` en GitHub Actions Secrets sin compartirla por chat, integrar PRs en orden, probar una publicación real con usuario y revisar contadores y URL. Toda la fase de pruebas previa usa mocks; no se toca el sitio web.
