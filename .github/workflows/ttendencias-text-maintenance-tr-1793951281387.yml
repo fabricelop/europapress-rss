@@ -1,0 +1,109 @@
+name: TTendencias text maintenance tr-1793951281387
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttendencias-text-maintenance-tr-1793951281387.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttendencias-text-maintenance-tr-1793951281387
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply only pending textual maintenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-editorial"
+          git config user.email "actions@users.noreply.github.com"
+
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from datetime import datetime, timezone
+          from pilot import listas_grouping as g
+          from pilot import trend_maintenance as m
+          from requests_json import dumps_for_path
+
+          ROOT = Path(".")
+          state = g.load_state()
+          now = datetime.now(timezone.utc)
+
+          # JIT: aplica Peugeot solo si el job exacto r0 sigue activo.
+          job_id = "red-review-d310f5afdd5c4e8c0d56"
+          command_path = ROOT / "trends/maintenance-outbox" / f"{job_id}.json"
+          job = next((x for x in state[m.REQUESTS]["requests"]
+                      if x.get("id") == job_id and int(x.get("revision") or 0) == 0), None)
+          if job and job.get("status") in {"preparing", "update"}:
+              command = json.loads(command_path.read_text(encoding="utf-8"))
+              state, _ = m.apply_review(state, command, now, g.grouping_api())
+
+          # Corrección factual conservadora de Paraguay: mismo ID/revisión,
+          # sin nueva tarjeta, sin publicación y sin tocar ningún campo de imagen.
+          paraguay_id = "69446521a2f3"
+          old_text = (
+              "TT#3 Paraguay es tendencia por la crisis tras el colapso de Ueno Bank: "
+              "Santiago Peña ofreció dimitir, el Congreso rechazó su salida y el Senado abrió un juicio político.\n"
+              "#Paraguay #SantiagoPeña\n"
+              "🌶️ El banco cerró ventanillas y la crisis abrió sesión en el Senado."
+          )
+          new_text = (
+              "TT#3 Paraguay es tendencia por la crisis de Ueno Bank: Santiago Peña presentó su renuncia, "
+              "pero no se tramitó por falta de cuórum y el Senado abrió un juicio político.\n"
+              "#Paraguay #SantiagoPeña\n"
+              "🌶️ La renuncia quedó pendiente; el juicio político siguió."
+          )
+          new_closer = "🌶️ La renuncia quedó pendiente; el juicio político siguió."
+          sources = [
+              {"url": "https://efe.com/mundo/2026-11-06/senado-paraguay-juicio-politico-presidente-santiago-pena/"},
+              {"url": "https://www.europapress.es/internacional/noticia-presidente-paraguay-mantiene-cargo-senado-retoma-viernes-juicio-politico-20261106000343.html"},
+          ]
+          nowz = now.isoformat()
+          for p, field in ((m.REQUESTS, "requests"), (m.MANUAL, "items")):
+              for row in state[p][field]:
+                  if (row.get("id") == paraguay_id
+                      and int(row.get("revision") or 0) == 0
+                      and row.get("explanation") == old_text):
+                      row["explanation"] = new_text
+                      row["closer_text"] = new_closer
+                      row["verification_sources"] = sources
+                      row["news_note"] = (
+                          "Peña presentó su renuncia tras la crisis de Ueno Bank; una sesión del Congreso "
+                          "sin cuórum no pudo tramitarla y el Senado abrió el juicio político."
+                      )
+                      row["updated_at"] = nowz
+              state[p]["updated_at"] = nowz
+
+          # No schedule(), no image outbox, no publicación.
+          for p in (m.REQUESTS, m.MANUAL, m.QUEUE):
+              (ROOT / p).write_text(dumps_for_path(p, state[p]), encoding="utf-8")
+          PY
+
+            git add -- trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json
+            if git diff --cached --quiet; then
+              echo "No textual changes required."
+              exit 0
+            fi
+            git commit -m "TTendencias: cerrar mantenimiento textual tr-1793951281387 [skip actions]"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep "$attempt"
+          done
+          exit 1
