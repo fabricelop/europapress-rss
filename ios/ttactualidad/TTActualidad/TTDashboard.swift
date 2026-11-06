@@ -54,11 +54,19 @@ struct TTDashboard: View {
         .onChange(of: github.receiptChange) { _, _ in
             Task { await store.refresh() }
         }
+        .onChange(of: github.bufferChange) { _, _ in
+            // Only confirmed Buffer 'sent' records affect these counters.
+            // The existing manual X publication count remains independent.
+        }
+        .task { await github.refreshBufferPublications() }
         .onChange(of: store.snapshot.updatedAt) { _, _ in
             github.reconcileOptimisticClosures(news: store.snapshot.news, trends: store.snapshot.trendListas)
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-            Task { await github.resumeReceiptChecks() }
+            Task {
+                await github.resumeReceiptChecks()
+                await github.refreshBufferPublications()
+            }
         }
     }
 
@@ -164,12 +172,43 @@ struct TTDashboard: View {
     }
 
     private var counters: some View {
-        HStack(spacing: 9) {
-            metric(label: "NOTICIAS EN LISTAS", number: visibleReadyNews.count,
-                   icon: "newspaper.fill", tint: TTTheme.teal)
-            metric(label: "TENDENCIAS EN LISTAS", number: visibleReadyTrends.count,
-                   icon: "chart.bar.fill", tint: TTTheme.blue)
+        VStack(spacing: 9) {
+            HStack(spacing: 9) {
+                metric(label: "NOTICIAS EN LISTAS", number: visibleReadyNews.count,
+                       icon: "newspaper.fill", tint: TTTheme.teal)
+                metric(label: "TENDENCIAS EN LISTAS", number: visibleReadyTrends.count,
+                       icon: "chart.bar.fill", tint: TTTheme.blue)
+            }
+            HStack(spacing: 9) {
+                bufferMetric(account: "ttittulares", tint: TTTheme.teal)
+                bufferMetric(account: "ttendenciasesp", tint: TTTheme.blue)
+            }
         }
+    }
+
+    private func bufferMetric(account: String, tint: Color) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("AUTO X · @" + account)
+                .font(.system(size: 9, weight: .heavy, design: .rounded))
+                .foregroundStyle(TTTheme.muted)
+                .lineLimit(1).minimumScaleFactor(0.7)
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(String(github.bufferSentCount(account: account, last24Hours: true)))
+                    .font(.system(size: 29, weight: .heavy, design: .rounded))
+                    .monospacedDigit().foregroundStyle(tint)
+                Text("últimas 24 h")
+                    .font(.system(size: 9)).foregroundStyle(TTTheme.muted)
+                    .lineLimit(1).minimumScaleFactor(0.7)
+            }
+            Text("Total: \\(github.bufferSentCount(account: account))" +
+                 " · Pend.: \\(github.bufferPendingCount(account: account))")
+                .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                .lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 17))
+        .overlay(RoundedRectangle(cornerRadius: 17).stroke(tint.opacity(0.24)))
     }
     private func metric(label: String, number: Int, icon: String, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 6) {
