@@ -10,8 +10,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-06T16:53:00+01:00",
-  "updated_at": "2026-11-06T17:02:30+01:00",
-  "finished_at": "2026-11-06T17:02:30+01:00",
+  "updated_at": "2026-11-06T17:05:00+01:00",
+  "finished_at": "2026-11-06T17:05:00+01:00",
   "current": 5,
   "total": 5,
   "trend_id": null,
@@ -57,35 +57,40 @@
       "revision": 0,
       "name": "#TEM6N",
       "outcome": "explained",
-      "applied": true
+      "applied": true,
+      "via": "editorial_outbox_applied"
     },
     {
       "id": "d6b652b7d172",
       "revision": 0,
       "name": "#RTXON",
       "outcome": "explained",
-      "applied": true
+      "applied": true,
+      "via": "editorial_outbox_applied"
     },
     {
       "id": "299ed3e6042c",
       "revision": 0,
       "name": "Abascal",
       "outcome": "explained",
-      "applied": true
+      "applied": true,
+      "via": "editorial_outbox_applied"
     },
     {
       "id": "red-review-a8ca31e21fd45559b24a",
       "revision": 0,
       "name": "Revisar novedades: Ritz",
       "outcome": "unchanged",
-      "applied": true
+      "applied": true,
+      "via": "maintenance_outbox_applied"
     },
     {
       "id": "red-review-6b3abf1a33b75588cb6f",
       "revision": 0,
       "name": "Revisar novedades: La Séptima",
       "outcome": "unchanged",
-      "applied": true
+      "applied": true,
+      "via": "maintenance_outbox_applied"
     }
   ],
   "api_failover_enabled": false,
@@ -93,8 +98,8 @@
     "run_id": "tr-1793980384315-manual",
     "status": "DONE",
     "started_at": "2026-11-06T16:53:00+01:00",
-    "updated_at": "2026-11-06T17:02:30+01:00",
-    "finished_at": "2026-11-06T17:02:30+01:00",
+    "updated_at": "2026-11-06T17:05:00+01:00",
+    "finished_at": "2026-11-06T17:05:00+01:00",
     "current": 5,
     "total": 5,
     "queue_complete": true,
@@ -113,35 +118,40 @@
         "revision": 0,
         "name": "#TEM6N",
         "outcome": "explained",
-        "applied": true
+        "applied": true,
+        "via": "editorial_outbox_applied"
       },
       {
         "id": "d6b652b7d172",
         "revision": 0,
         "name": "#RTXON",
         "outcome": "explained",
-        "applied": true
+        "applied": true,
+        "via": "editorial_outbox_applied"
       },
       {
         "id": "299ed3e6042c",
         "revision": 0,
         "name": "Abascal",
         "outcome": "explained",
-        "applied": true
+        "applied": true,
+        "via": "editorial_outbox_applied"
       },
       {
         "id": "red-review-a8ca31e21fd45559b24a",
         "revision": 0,
         "name": "Revisar novedades: Ritz",
         "outcome": "unchanged",
-        "applied": true
+        "applied": true,
+        "via": "maintenance_outbox_applied"
       },
       {
         "id": "red-review-6b3abf1a33b75588cb6f",
         "revision": 0,
         "name": "Revisar novedades: La Séptima",
         "outcome": "unchanged",
-        "applied": true
+        "applied": true,
+        "via": "maintenance_outbox_applied"
       }
     ],
     "attempted": 5,
@@ -164,10 +174,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial cerrada 5/5: #TEM6N, #RTXON y Abascal explicados y aplicados; revisiones Ritz y La Séptima cerradas unchanged. Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain localizado. ImageGen=0; image-outbox creado=0; publicaciones=0."
+    "message": "Pasada editorial cerrada 5/5: #TEM6N, #RTXON y Abascal explicados y aplicados; Ritz y La Séptima revisados sin novedades sustanciales. Barrera final en main: editorial-queue=0 y sin preparing/update/reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T16:53:00+01:00",
-  "last_completed_at": "2026-11-06T17:02:30+01:00",
+  "last_completed_at": "2026-11-06T17:05:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -213,5 +223,5 @@
     "tr-1793978700000-manual",
     "tr-1793980384315-manual"
   ],
-  "message": "Pasada editorial cerrada 5/5: #TEM6N, #RTXON y Abascal explicados y aplicados; revisiones Ritz y La Séptima cerradas unchanged. Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain localizado. ImageGen=0; image-outbox creado=0; publicaciones=0."
+  "message": "Pasada editorial cerrada 5/5: #TEM6N, #RTXON y Abascal explicados y aplicados; Ritz y La Séptima revisados sin novedades sustanciales. Barrera final en main: editorial-queue=0 y sin preparing/update/reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
 }
