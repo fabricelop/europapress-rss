@@ -81,6 +81,7 @@ private struct PublicationSheetRoute: Identifiable {
 struct TTDashboard: View {
     @EnvironmentObject private var store: EditorialStore
     @StateObject private var github = GitHubEditor()
+    @StateObject private var buffer = BufferPublishTracker()
     @ObservedObject private var quickActions = HomeQuickActionRouter.shared
     @State private var quickOverview: TTQuickAction?
     @State private var quickNavigationID = UUID()
@@ -117,6 +118,7 @@ struct TTDashboard: View {
                                 .font(.title2.bold()).foregroundStyle(.white)
                         } else { heading }
                         counters
+                        bufferCounters
                         if quickOverview == nil && store.section == .news && !showCombinedListas { sourceCounters }
                         connectedLabel
                         if quickOverview == .pending {
@@ -153,6 +155,11 @@ struct TTDashboard: View {
             }
         }
         .preferredColorScheme(.dark)
+        .environmentObject(buffer)
+        .task { await buffer.refresh() }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            Task { await buffer.refresh() }
+        }
         .onReceive(quickActions.$request) { request in
             guard let request else { return }
             openQuickAction(request.action)
@@ -303,7 +310,10 @@ struct TTDashboard: View {
                     .background(TTTheme.panel, in: Circle())
             }
             .accessibilityLabel("Conexión GitHub")
-            Button { Task { await store.refresh(manual: true) } } label: {
+            Button { Task {
+                await store.refresh(manual: true)
+                await buffer.refresh()
+            } } label: {
                 Group {
                     if store.isManuallyRefreshing {
                         ProgressView().tint(TTTheme.teal)
@@ -471,6 +481,44 @@ struct TTDashboard: View {
             .accessibilityLabel("Abrir tendencias en Listas")
         }
     }
+
+    // Independent, confirmed-only totals. They do not replace the existing
+    // registered/manual publication chips or their historical detail sheets.
+    private var bufferCounters: some View {
+        HStack(spacing: 9) {
+            bufferMetric(account: "ttittulares", tint: TTTheme.teal)
+            bufferMetric(account: "ttendenciasesp", tint: TTTheme.blue)
+        }
+    }
+
+    private func bufferMetric(account: String, tint: Color) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("DIRECTAS X · @" + account)
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(TTTheme.muted)
+                .lineLimit(1).minimumScaleFactor(0.7)
+            HStack(alignment: .firstTextBaseline, spacing: 5) {
+                Text(buffer.loaded ? String(buffer.sentLast24Hours(account: account)) : "—")
+                    .font(.system(size: 29, weight: .heavy, design: .rounded))
+                    .monospacedDigit().foregroundStyle(tint)
+                Text("24 h")
+                    .font(.system(size: 9)).foregroundStyle(TTTheme.muted)
+            }
+            Text(buffer.loaded
+                 ? "Total: \(buffer.totalSent(account: account)) · Pend.: \(buffer.pending(account: account))"
+                 : "Sin datos verificables")
+                .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                .lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 17))
+        .overlay(RoundedRectangle(cornerRadius: 17).stroke(tint.opacity(0.25)))
+        .accessibilityLabel("Publicaciones directas @" + account + ": " +
+            (buffer.loaded ? String(buffer.totalSent(account: account)) + " confirmadas" :
+             "sin confirmar"))
+    }
+
     private func metric(label: String, number: Int, icon: String, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Label(label, systemImage: icon)
