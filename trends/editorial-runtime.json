@@ -85,7 +85,8 @@
     "trend_id": null,
     "title": null,
     "satisfied_run_ids": [
-      "tr-1793952600000-manual"
+      "tr-1793952600000-manual",
+      "tr-1793952081715-manual"
     ],
     "absorbed_outcomes": [
       {
@@ -109,7 +110,7 @@
         "apply_commit": "6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957"
       }
     ],
-    "message": "Pasada sucesora cerrada 0/0 tras convergencia: la orden tr-1793952600000-manual ya había aplicado 2 revisiones unchanged (Óscar Puente y #FelizJueves) en 6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada sucesora cerrada 0/0 tras convergencia: la orden tr-1793952600000-manual ya había aplicado 2 revisiones unchanged (Óscar Puente y #FelizJueves) en 6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0. También satisface tr-1793952081715-manual."
   },
   "last_started_at": "2026-11-06T09:14:30+01:00",
   "last_completed_at": "2026-11-06T09:17:00+01:00",
@@ -117,7 +118,8 @@
   "satisfied_run_ids": [
     "tr-1793951409248-manual",
     "tr-1793951281387-manual",
-    "tr-1793952600000-manual"
+    "tr-1793952600000-manual",
+    "tr-1793952081715-manual"
   ],
   "command_id": "tr-1793952832579-manual",
   "canonical_successor_run_id": null,
@@ -137,7 +139,12 @@
       "run_id": "tr-1793952600000-manual",
       "satisfied_by": "tr-1793952832579-manual",
       "reason": "two maintenance reviews were applied immediately before successor JIT; successor verified the empty final barrier"
+    },
+    {
+      "run_id": "tr-1793952081715-manual",
+      "satisfied_by": "tr-1793952832579-manual",
+      "reason": "later canonical passes processed the pending maintenance reviews and successor verified the final empty barrier"
     }
   ],
-  "message": "Pasada sucesora cerrada 0/0 tras convergencia: la orden tr-1793952600000-manual ya había aplicado 2 revisiones unchanged (Óscar Puente y #FelizJueves) en 6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Pasada sucesora cerrada 0/0 tras convergencia: la orden tr-1793952600000-manual ya había aplicado 2 revisiones unchanged (Óscar Puente y #FelizJueves) en 6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0. También satisface tr-1793952081715-manual."
 }
