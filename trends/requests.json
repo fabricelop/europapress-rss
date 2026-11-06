@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-06T11:05:00+01:00",
+  "updated_at": "2026-11-06T11:07:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -240543,7 +240543,7 @@
       "name": "Carlos Cuerpo",
       "rank": 14,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-11-06T10:01:50.167463+00:00",
       "requested_at": "2026-11-06T10:01:50.167463+00:00",
       "updated_at": "2026-11-06T10:01:50.167463+00:00",
@@ -240554,13 +240554,44 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Carlos Cuerpo"
       ],
       "originated_from_prior_id": "17d9bef5928f",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Carlos Cuerpo, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Carlos Cuerpo, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-11-06T11:07:00+01:00",
+      "last_attempt_at": "2026-11-06T11:07:00+01:00",
+      "explanation": "TT#14 Carlos Cuerpo es tendencia por su estreno en Transportes: tras una primera reunión sin avances con los maquinistas, hoy vuelve a negociar para intentar evitar las huelgas del 10 y 12 de noviembre.\n#Transportes #SEMAF\n🌶️ El nuevo despacho vino con calendario de paros.",
+      "closer_text": "🌶️ El nuevo despacho vino con calendario de paros.",
+      "rank_at_explanation": 14,
+      "category": "Política nacional",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://www.rtve.es/noticias/20261105/maquinistas-huelga-10-noviembre-reunen-carlos-cuerpo/17301848.shtml",
+        "https://elpais.com/espana/2026-11-05/cuerpo-llama-a-los-sindicatos-para-intentar-aplacar-las-huelgas-en-el-ferrocarril-por-la-tragedia-de-urda.html",
+        "https://www.lamoncloa.gob.es/gobierno/agenda/paginas/agenda.aspx?d=20261106"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Reelaboración desde cero de la nueva revisión. No se reutiliza la explicación publicada el 4 de noviembre. El contexto vigente es la negociación ferroviaria tras el estreno de Cuerpo al frente de Transportes; no existe marcador deportivo relevante. La imagen queda fuera de esta pasada editorial y permanece en su circuito independiente.",
+      "group_id": "grp-eebf7f5ccd62",
+      "explanation_group_id": "grp-eebf7f5ccd62",
+      "group_title": "Carlos Cuerpo",
+      "group_leader_id": "eebf7f5ccd62",
+      "trend_names": [
+        "Carlos Cuerpo"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "eebf7f5ccd62",
+          "name": "Carlos Cuerpo",
+          "revision": 0
+        }
+      ],
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     }
   ],
   "count": 1483
