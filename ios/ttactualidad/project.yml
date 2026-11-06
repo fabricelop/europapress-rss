@@ -83,14 +83,28 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.fabricelop.ttactualidad.quick-action-tests
         GENERATE_INFOPLIST_FILE: YES
+  TTEditorialAppIntegrationTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: tests/Integration
+    dependencies:
+      - target: TTActualidad
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.fabricelop.ttactualidad.integration-tests
+        GENERATE_INFOPLIST_FILE: YES
 schemes:
   TTQuickActions:
     build:
       targets:
+        TTActualidad: all
         TTQuickActionTests: all
+        TTEditorialAppIntegrationTests: all
     test:
       targets:
         - TTQuickActionTests
+        - TTEditorialAppIntegrationTests
   TTActualidad:
     build:
       targets:
