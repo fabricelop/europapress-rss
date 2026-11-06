@@ -99,6 +99,40 @@ class DirectBufferPublisherTests(unittest.TestCase):
         text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual((image_url, kind), (archive, "archive"))
 
+    def test_repo_archive_photo_is_selected_with_exact_event_identity(self):
+        self._write("ttittulares/site-ai-images.json", {"images": []})
+        root = self.root / "ttittulares/archive-images"
+        root.mkdir(parents=True)
+        (root / "news123456-r1-archived.jpg").write_bytes(b"archive")
+        (root / "unrelated-r1-archived.jpg").write_bytes(b"wrong")
+        (root / "news123456-r2-future.jpg").write_bytes(b"future")
+        _, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual(kind, "archive")
+        self.assertEqual(image_url,
+                         "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
+                         "ttittulares/archive-images/news123456-r1-archived.jpg")
+
+    def test_archive_previous_revision_is_preserved_for_same_news(self):
+        self._write("ttittulares/site-ai-images.json", {"images": []})
+        root = self.root / "ttittulares/archive-images"
+        root.mkdir(parents=True)
+        (root / "news123456-r0-archived.jpg").write_bytes(b"archive")
+        _, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual(kind, "archive")
+        self.assertIn("news123456-r0-archived.jpg", image_url)
+
+    def test_archive_rights_denial_falls_back_to_text(self):
+        self._write("ttittulares/site-ai-images.json", {"images": []})
+        root = self.root / "ttittulares/archive-images"
+        root.mkdir(parents=True)
+        (root / "news123456-r1-archived.jpg").write_bytes(b"archive")
+        self._write("ttittulares/prepared.json", {"items": [
+            {"event_id": "news123456", "revision": 1,
+             "tweet": {"text": "Texto editorial verificado"},
+             "archive_image": {"rights_status": "denied"}}]})
+        _, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual((image_url, kind), (None, "text"))
+
     def test_text_only_when_no_images(self):
         self._write("ttittulares/site-ai-images.json", {"images": []})
         text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
