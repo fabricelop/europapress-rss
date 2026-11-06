@@ -3,65 +3,53 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1793956276",
-  "previous_run_id": "tr-1793954384977-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-06T10:12:30+01:00",
-  "updated_at": "2026-11-06T10:18:30+01:00",
-  "finished_at": "2026-11-06T10:18:30+01:00",
-  "current": 1,
-  "total": 1,
+  "run_id": "tr-1793956657674-manual",
+  "previous_run_id": "tr-autoguard-1793956276",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T10:19:00+01:00",
+  "updated_at": "2026-11-06T10:19:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "f10b9b94b734"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-177e57e4fedcaed0d94e",
+    "red-review-63f6e4c2d29a3378b1f3"
+  ],
+  "remaining_active_ids": [
+    "red-review-177e57e4fedcaed0d94e",
+    "red-review-63f6e4c2d29a3378b1f3"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-06T10:16:00+01:00",
-      "phase": "persisting",
-      "trend_id": "f10b9b94b734",
-      "title": "Lc 16",
-      "reason": "La escritura atómica directa de los JSON grandes falló por un error de transporte h2; se releyó main y se aplicó la misma revisión mediante el reconciliador JIT del repositorio, verificado después en requests + telegram-manual-explained."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "f10b9b94b734",
-      "revision": 0,
-      "name": "Lc 16",
-      "outcome": "explained",
-      "applied": true
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1793956276",
@@ -117,7 +105,7 @@
     "tr-1793952600000-manual",
     "tr-1793952081715-manual"
   ],
-  "command_id": "tr-autoguard-1793956276",
+  "command_id": "tr-1793956657674-manual",
   "canonical_successor_run_id": null,
   "source": "chat",
   "satisfied_run_chain": [
@@ -142,5 +130,5 @@
       "reason": "later canonical passes processed the pending maintenance reviews and successor verified the final empty barrier"
     }
   ],
-  "message": "Pasada editorial tr-autoguard-1793956276 cerrada 1/1: Lc 16 r0 persistido y verificado en requests + telegram-manual-explained. Barrera final: editorial-queue=0 y no queda preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia h2 resuelta mediante reconciliador JIT."
+  "message": "Pasada editorial en curso: preparando 2 revisiones de novedades. ImageGen desactivado para esta ejecución."
 }
