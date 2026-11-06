@@ -6,38 +6,38 @@
   "run_id": "tr-1793960225252-manual",
   "previous_run_id": "tr-1793959315869-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-06T11:17:00+01:00",
-  "updated_at": "2026-11-06T11:17:00+01:00",
+  "updated_at": "2026-11-06T11:21:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "b1b015824783",
-  "title": "Madrid-Barcelona",
+  "trend_id": "74ced1b85461",
+  "title": "#Buenosdías",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "b1b015824783"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "b1b015824783",
     "74ced1b85461"
   ],
   "remaining_active_ids": [
-    "b1b015824783",
     "74ced1b85461"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,8 +48,17 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "investigating",
+  "final_outcomes": [
+    {
+      "id": "b1b015824783",
+      "revision": 0,
+      "name": "Madrid-Barcelona",
+      "outcome": "explained",
+      "applied": true,
+      "via": "TTENDENCIAS_CHAT_OUTBOX_V1"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793959315869-manual",
@@ -121,5 +130,5 @@
   "canonical_successor_run_id": null,
   "source": "chat",
   "satisfied_run_chain": [],
-  "message": "Pasada editorial en curso 0/2. Revalidando Madrid-Barcelona r0 antes de investigar; después #Buenosdías r0. Sin ImageGen."
+  "message": "Pasada editorial en curso 1/2. Madrid-Barcelona r0 aplicado; investigando #Buenosdías r0. Sin ImageGen."
 }
