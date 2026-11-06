@@ -1,7 +1,7 @@
 name: TTActualidad - Relaciones 12-24h - IPA prueba
 on:
   push:
-    branches: [feature/ttactualidad-relations-recent-inbox-20261105]
+    branches: [feature/ttactualidad-relations-recent-inbox-20261105, fix/ttactualidad-reject-stuck-pending-images-20261106]
     paths:
       - 'ios/ttactualidad/**'
       - '.github/workflows/ttactualidad-relations-verify.yml'
