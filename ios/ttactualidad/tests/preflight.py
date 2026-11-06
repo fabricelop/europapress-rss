@@ -636,9 +636,11 @@ assert 'model.saveSelection(' in relations
 assert 'unlinks: changes.unlinks' in relations
 assert 'action: "dismiss"' in relations
 assert 'Solo se guardan los cambios que hagas' in relations
-assert 'private var lookbackHours = 12' in relations
-assert 'Text("24 horas").tag(24)' in relations
-assert 'Ocultar de esta lista' in relations and 'Restaurar' in relations
+assert 'private var lookbackHours = 12' not in relations
+assert 'Section("Ventana de noticias")' not in relations
+assert 'Tendencias del Top 30' in relations
+assert 'trendCard(rank: index + 1' in relations
+assert 'Ocultar esta noticia' in relations and 'Restaurar' in relations
 assert 'recentNews(' in relation_models and 'actionForSwitch(' in relation_models
 assert 'top30Trends: store.snapshot.top30' in dashboard
 assert 'top30Trends: store.snapshot.top30' in actions
