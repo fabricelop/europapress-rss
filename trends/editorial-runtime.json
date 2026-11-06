@@ -5,16 +5,16 @@
   "canonical": true,
   "run_id": "tr-20261106T0455+0100-manual",
   "previous_run_id": "tr-20261106T0440+0100-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T04:55:00+01:00",
-  "updated_at": "2026-11-06T04:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T04:55:50+01:00",
+  "finished_at": "2026-11-06T04:55:50+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -47,16 +47,26 @@
       "at": "2026-11-06T04:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada sobre main. Verificando cola vigente, reexplicaciones y mantenimiento. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-06T04:55:42+01:00",
+      "phase": "verifying",
+      "message": "Barrera final releída en main: editorial-queue=0, sin preparing/update y sin rewrite_pending por comprobación puntual; recent.json fresco a las 04:50:54. Últimos mantenimientos ya aplicados, sin nuevos jobs en cola."
+    },
+    {
+      "at": "2026-11-06T04:55:50+01:00",
+      "phase": "closing",
+      "message": "Cierre 0/0 válido. Sin ImageGen, sin image-outbox y sin publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261106T0440+0100-manual",
+    "run_id": "tr-20261106T0455+0100-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T04:40:00+01:00",
-    "updated_at": "2026-11-06T04:41:00+01:00",
-    "finished_at": "2026-11-06T04:41:00+01:00",
+    "started_at": "2026-11-06T04:55:00+01:00",
+    "updated_at": "2026-11-06T04:55:50+01:00",
+    "finished_at": "2026-11-06T04:55:50+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -87,7 +97,7 @@
     "message": "Cierre 0/0 tras relectura final de main: cola=0 y sin preparing/update/rewrite_pending. Sin ImageGen ni publicaciones."
   },
   "last_started_at": "2026-11-06T04:55:00+01:00",
-  "last_completed_at": "2026-11-06T04:41:00+01:00",
+  "last_completed_at": "2026-11-06T04:55:50+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793898959673-manual",
@@ -148,7 +158,8 @@
     "tr-1793933700000-manual",
     "tr-1793934690000-manual",
     "tr-20261106T0425+0100-manual",
-    "tr-20261106T0440+0100-manual"
+    "tr-20261106T0440+0100-manual",
+    "tr-20261106T0455+0100-manual"
   ],
   "command_id": "tr-20261106T0455+0100-manual",
   "canonical_successor_run_id": null,
