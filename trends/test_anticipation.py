@@ -168,7 +168,7 @@ class AnticipationTests(unittest.TestCase):
         self.signal('Candidata')
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            for name in ['auto_queue_new.py', 'anticipation.py', 'reconcile_prepared_ready.py']:
+            for name in ['auto_queue_new.py', 'anticipation.py', 'reconcile_prepared_ready.py', 'requests_json.py', 'trend_episode_policy.py']:
                 shutil.copy2(Path(__file__).with_name(name), root/name)
             def write(name, value): (root/name).write_text(json.dumps(value))
             def read(name): return json.loads((root/name).read_text())
