@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261106-2110-chat",
   "command_id": "tr-manual-20261106-2125-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T21:25:00+01:00",
-  "updated_at": "2026-11-06T21:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T21:25:30+01:00",
+  "finished_at": "2026-11-06T21:25:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,15 +44,15 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261106-2110-chat",
+    "run_id": "tr-manual-20261106-2125-chat",
     "status": "DONE",
-    "started_at": "2026-11-06T21:10:00+01:00",
-    "updated_at": "2026-11-06T21:11:00+01:00",
-    "finished_at": "2026-11-06T21:11:00+01:00",
+    "started_at": "2026-11-06T21:25:00+01:00",
+    "updated_at": "2026-11-06T21:25:30+01:00",
+    "finished_at": "2026-11-06T21:25:30+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -80,10 +80,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-manual-20261106-2110-chat cerrada 0/0 tras doble lectura de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. No había tareas anticipate ni review_red pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial tr-manual-20261106-2125-chat cerrada 0/0 tras doble lectura de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. No había tareas anticipate ni review_red pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T21:25:00+01:00",
-  "last_completed_at": "2026-11-06T21:11:00+01:00",
+  "last_completed_at": "2026-11-06T21:25:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -165,5 +165,5 @@
     "tr-manual-20261106-2110-chat",
     "tr-manual-20261106-2125-chat"
   ],
-  "message": "Pasada editorial tr-manual-20261106-2125-chat iniciada. Leyendo cola autoritativa y verificando preparing/update, rewrite_pending/reexplicación, anticipate y review_red."
+  "message": "Pasada editorial tr-manual-20261106-2125-chat cerrada 0/0 tras doble lectura de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. No había tareas anticipate ni review_red pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
 }
