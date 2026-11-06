@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-0010-chat",
   "command_id": "tr-manual-20261107-0025-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T00:25:00+01:00",
-  "updated_at": "2026-11-07T00:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T00:25:55+01:00",
+  "finished_at": "2026-11-07T00:25:55+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,18 +44,18 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Leyendo cola editorial",
+  "activity": "Pasada editorial completada",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-manual-20261107-0025-chat",
-    "status": "RUNNING",
+    "status": "DONE",
     "started_at": "2026-11-07T00:25:00+01:00",
-    "updated_at": "2026-11-07T00:25:00+01:00",
-    "finished_at": null,
+    "updated_at": "2026-11-07T00:25:55+01:00",
+    "finished_at": "2026-11-07T00:25:55+01:00",
     "current": 0,
     "total": 0,
-    "queue_complete": false,
+    "queue_complete": true,
     "processed_ids": [],
     "converged_ids": [],
     "remaining_active_ids": [],
@@ -77,13 +77,13 @@
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0,
-    "phase": "preparing",
+    "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Leyendo cola autoritativa de main."
+    "message": "Pasada editorial tr-manual-20261107-0025-chat cerrada 0/0. Barrera final main: editorial-queue=0 y no quedan preparing/update, reexplain ni rewrite_pending. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T00:25:00+01:00",
-  "last_completed_at": "2026-11-06T23:58:30+01:00",
+  "last_completed_at": "2026-11-07T00:25:55+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -135,7 +135,8 @@
     "tr-1794002386005-manual",
     "tr-1794004004071-manual",
     "tr-manual-20261106-2340-chat",
-    "tr-autoguard-1794005467"
+    "tr-autoguard-1794005467",
+    "tr-manual-20261107-0025-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -189,7 +190,8 @@
     "tr-1794002386005-manual",
     "tr-1794004004071-manual",
     "tr-manual-20261106-2340-chat",
-    "tr-autoguard-1794005467"
+    "tr-autoguard-1794005467",
+    "tr-manual-20261107-0025-chat"
   ],
-  "message": "Pasada editorial iniciada; leyendo cola autoritativa de main y comprobando reexplicaciones pendientes."
+  "message": "Pasada editorial tr-manual-20261107-0025-chat cerrada 0/0. Barrera final main: editorial-queue=0 y no quedan preparing/update, reexplain ni rewrite_pending. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
