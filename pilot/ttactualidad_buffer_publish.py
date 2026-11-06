@@ -53,7 +53,7 @@ def save(data, reason):
     LEDGER.parent.mkdir(parents=True, exist_ok=True)
     LEDGER.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     run("git", "add", "--", str(LEDGER.relative_to(ROOT)))
-    if not subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode:
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode != 0:
         run("git", "commit", "-m", "TTActualidad Buffer: " + reason)
         # Workflow concurrency serializes Buffer writers; other app jobs may
         # concurrently touch main, but not this ledger. Rebase without force.
