@@ -15,14 +15,27 @@ struct TTBufferPublication: Decodable {
     let error: String?
 }
 
+// The Buffer API returns one pooled quota for all unlocked channels.
+// 30 days is a rolling window, not a calendar month.
+struct TTBufferAPIQuota: Decodable {
+    let limit: Int
+    let remaining: Int
+    let used: Int
+    let window_seconds: Int
+    let resets_in_seconds: Int
+    let observed_at: String
+}
+
 private struct TTBufferLedger: Decodable {
     let items: [TTBufferPublication]
+    let api_quota: TTBufferAPIQuota?
 }
 
 @MainActor
 final class BufferPublishTracker: ObservableObject {
     @Published private(set) var posts: [TTBufferPublication] = []
     @Published private(set) var loaded = false
+    @Published private(set) var apiQuota: TTBufferAPIQuota?
     @Published private(set) var notice = ""
     @Published private(set) var change = 0
     @Published private(set) var sending = Set<String>()
@@ -89,6 +102,7 @@ final class BufferPublishTracker: ObservableObject {
             guard (response as? HTTPURLResponse)?.statusCode == 200 else { return }
             let ledger = try JSONDecoder().decode(TTBufferLedger.self, from: data)
             posts = ledger.items
+            apiQuota = ledger.api_quota
             loaded = true
         } catch {
             // An outdated or unreachable readback is not proof of publication.
