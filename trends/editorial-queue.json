@@ -1,6 +1,81 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-06T21:31:20+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-06T20:32:35.714053+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-f5add425e41003b10d44",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-06T20:32:35.714053+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "49691c684a3e",
+        "revision": 0,
+        "name": "Koldo",
+        "rank": 1,
+        "explanation": "TT#1 Koldo es tendencia porque afirma en un audio que un abogado del PP le ofreció pagar su defensa y 1 M€ a cambio de información contra Sánchez; el PP lo niega.\n#KoldoGarcía #PP\n🌶️ El supuesto pacto llega con audio y desmentido.",
+        "explanation_sha256": "b9faf3a2be37c8c2717ce317d82d2238ad629779d3b040181c7a11db58f27111",
+        "explained_at": "2026-11-05T11:47:10+01:00",
+        "verification_sources": [
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/05/koldo-garcia-asegura-a-la-ser-que-pacto-con-el-abogado-del-pp-un-millon-de-euros-a-cambio-de-informacion-para-derrocar-a-pedro-sanchez-cadena-ser/"
+          },
+          {
+            "url": "https://elpais.com/espana/2026-11-05/koldo-garcia-asegura-que-acordo-con-el-abogado-del-pp-un-millon-de-euros-a-cambio-de-informacion-para-hacer-caer-a-sanchez.html"
+          },
+          {
+            "url": "https://www.europapress.es/nacional/noticia-psoe-acusa-pp-intentar-comprar-testimonio-koldo-derribar-sanchez-genova-dice-falso-20261105113213.html"
+          }
+        ],
+        "fingerprint": "09a7dffb6fba88113d6c3989c0326bb2e12522586c16c40184f44927eaf3aeb5"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-e5890c063c50294a51fe",
+      "revision": 0,
+      "name": "Revisar novedades: Peugeot",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-11-06T20:32:35.714053+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "f83b276f7891",
+        "revision": 0,
+        "name": "Peugeot",
+        "rank": 28,
+        "explanation": "TT#29 Peugeot sigue siendo tendencia por el caso Koldo: Cristian Corvillo, relacionado con el «Peugeot» de las primarias de 2017, quedó en libertad junto a los otros cinco detenidos.\n#CristianCorvillo #CasoKoldo\n🌶️ La detención duró horas; la investigación sigue.",
+        "explanation_sha256": "c60921d4183c5573bf24675fa9b0c8453e9c33b39f13da70c59c67feb1da47cd",
+        "explained_at": "2026-11-05T12:52:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.elespanol.com/espana/tribunales/20261105/audiencia-nacional-ordena-uco-registrar-casa-abalos-valencia-nueva-operacion-caso-koldo/1003744446921_0.html"
+          },
+          {
+            "url": "https://www.eldebate.com/espana/20261105/investigadores-detienen-ex-chofer-pedro-sanchez-presunto-papel-amanos-obra-publica-adif_477508.html"
+          },
+          {
+            "url": "https://elcierredigital.com/sucesos/uco-despliega-nueva-operacion-secreta-caso-koldo-se-persona-en-casa-abalos-valencia"
+          }
+        ],
+        "fingerprint": "b3097dcdec17482533b92d66bc46266640f549de56fa95a077afe263c108dcfd"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
