@@ -5,18 +5,21 @@
   "canonical": true,
   "run_id": "tr-1793952832579-manual",
   "previous_run_id": "tr-1793952600000-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T09:14:30+01:00",
-  "updated_at": "2026-11-06T09:14:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T09:17:00+01:00",
+  "finished_at": "2026-11-06T09:17:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [],
+  "converged_ids": [
+    "red-review-abaace6e23f2a315a000",
+    "red-review-b0c6f616d670e0451bca"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -37,60 +40,37 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793951919630-manual",
+    "run_id": "tr-1793952832579-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T08:58:39.630+01:00",
-    "updated_at": "2026-11-06T09:05:05+01:00",
-    "finished_at": "2026-11-06T09:05:05+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-06T09:14:30+01:00",
+    "updated_at": "2026-11-06T09:17:00+01:00",
+    "finished_at": "2026-11-06T09:17:00+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "red-review-d310f5afdd5c4e8c0d56",
-      "d01eee852c37"
-    ],
+    "processed_ids": [],
     "converged_ids": [
-      "red-review-d310f5afdd5c4e8c0d56",
-      "d01eee852c37"
+      "red-review-abaace6e23f2a315a000",
+      "red-review-b0c6f616d670e0451bca"
     ],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-d310f5afdd5c4e8c0d56",
-        "revision": 0,
-        "name": "Revisar novedades: Peugeot",
-        "source_id": "f83b276f7891",
-        "outcome": "continuity",
-        "applied": true,
-        "via": "concurrent_maintenance_outbox_applied",
-        "apply_commit": "5bfad1327787dc6ca90aabb8316ca8171f5dd639"
-      },
-      {
-        "id": "d01eee852c37",
-        "revision": 0,
-        "name": "#LaHora6N",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_editorial_outbox_applied",
-        "apply_commit": "829fc90cfab9b748c8279567476acb334cf7be0e"
-      }
-    ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 1,
+    "final_outcomes": [],
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -104,14 +84,40 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-1793951919630-manual cerrada 2/2 por ejecución y convergencia JIT: Peugeot actualizado por continuidad en la misma ficha; #LaHora6N explicado y aplicado. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "satisfied_run_ids": [
+      "tr-1793952600000-manual"
+    ],
+    "absorbed_outcomes": [
+      {
+        "id": "red-review-abaace6e23f2a315a000",
+        "revision": 0,
+        "name": "Revisar novedades: Óscar Puente",
+        "source_id": "4c7de84bfc7c",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "predecessor_maintenance_outbox_applied",
+        "apply_commit": "6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957"
+      },
+      {
+        "id": "red-review-b0c6f616d670e0451bca",
+        "revision": 0,
+        "name": "Revisar novedades: #FelizJueves",
+        "source_id": "ff7da32ed7b2",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "predecessor_maintenance_outbox_applied",
+        "apply_commit": "6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957"
+      }
+    ],
+    "message": "Pasada sucesora cerrada 0/0 tras convergencia: la orden tr-1793952600000-manual ya había aplicado 2 revisiones unchanged (Óscar Puente y #FelizJueves) en 6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T08:58:39.630+01:00",
-  "last_completed_at": "2026-11-06T09:05:05+01:00",
+  "last_started_at": "2026-11-06T09:14:30+01:00",
+  "last_completed_at": "2026-11-06T09:17:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793951409248-manual",
-    "tr-1793951281387-manual"
+    "tr-1793951281387-manual",
+    "tr-1793952600000-manual"
   ],
   "command_id": "tr-1793952832579-manual",
   "canonical_successor_run_id": null,
@@ -126,7 +132,12 @@
       "run_id": "tr-1793951409248-manual",
       "satisfied_by": "tr-1793951919630-manual",
       "reason": "later canonical pass absorbed remaining maintenance and new work"
+    },
+    {
+      "run_id": "tr-1793952600000-manual",
+      "satisfied_by": "tr-1793952832579-manual",
+      "reason": "two maintenance reviews were applied immediately before successor JIT; successor verified the empty final barrier"
     }
   ],
-  "message": "Cola JIT: 0 revisiones activas. Ejecutando tr-1793952832579-manual en orden antiguo→reciente sin ImageGen."
+  "message": "Pasada sucesora cerrada 0/0 tras convergencia: la orden tr-1793952600000-manual ya había aplicado 2 revisiones unchanged (Óscar Puente y #FelizJueves) en 6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0."
 }
