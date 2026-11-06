@@ -5,87 +5,107 @@
   "canonical": true,
   "run_id": "tr-1793924003806-manual",
   "previous_run_id": "tr-20261106T0110+0100-manual",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T01:13:00+01:00",
-  "updated_at": "2026-11-06T01:17:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-06T01:19:00+01:00",
+  "finished_at": "2026-11-06T01:19:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-bb07a54ba7c2cd6c2236",
-  "title": "Paraguay",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-f77390e731854a057a2b",
     "red-review-bb07a54ba7c2cd6c2236"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-f77390e731854a057a2b",
     "red-review-bb07a54ba7c2cd6c2236"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 3,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
+    "stale_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades de Paraguay r0; ID+revisión validados JIT en main. Verificada evolución del juicio político tras la renuncia no aceptada.",
-  "final_outcomes": [],
+  "activity": "Cierre por convergencia JIT: Chiqui stale por ficha posterior; Paraguay actualizado en continuidad. Cola final 0. ImageGen=0; publicaciones=0.",
+  "final_outcomes": [
+    {
+      "id": "red-review-f77390e731854a057a2b",
+      "revision": 0,
+      "name": "Chiqui",
+      "outcome": "stale",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "reason": "La revisión partía de la ficha del 23 de octubre; ya existe una explicación posterior (trend-update-d8b0b437dd21171dc217), por lo que no se sobrescribe estado más nuevo."
+    },
+    {
+      "id": "red-review-bb07a54ba7c2cd6c2236",
+      "revision": 0,
+      "name": "Paraguay",
+      "outcome": "continuity",
+      "applied": true,
+      "via": "concurrent_convergence_jit",
+      "reason": "La misma ficha se actualizó con la apertura de tres causas de Fiscalía sobre Ueno Bank y la inclusión de Santiago Peña entre los investigados, conservando ID, revisión y explained_at."
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793922992099-manual",
+    "run_id": "tr-1793924003806-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T00:56:32.099+01:00",
-    "updated_at": "2026-11-06T01:00:14+01:00",
-    "finished_at": "2026-11-06T01:00:14+01:00",
+    "started_at": "2026-11-06T01:13:00+01:00",
+    "updated_at": "2026-11-06T01:19:00+01:00",
+    "finished_at": "2026-11-06T01:19:00+01:00",
     "current": 2,
     "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-c98be1cbb0c57faad033",
-      "red-review-7d26128e97c1ccf3f333"
+      "red-review-f77390e731854a057a2b",
+      "red-review-bb07a54ba7c2cd6c2236"
     ],
     "converged_ids": [
-      "red-review-c98be1cbb0c57faad033",
-      "red-review-7d26128e97c1ccf3f333"
+      "red-review-f77390e731854a057a2b",
+      "red-review-bb07a54ba7c2cd6c2236"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-c98be1cbb0c57faad033",
-        "revision": 0,
-        "name": "#LaIslaDeLasTentaciones17",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence_jit"
-      },
-      {
-        "id": "red-review-7d26128e97c1ccf3f333",
+        "id": "red-review-f77390e731854a057a2b",
         "revision": 0,
         "name": "Chiqui",
         "outcome": "stale",
         "applied": true,
         "via": "concurrent_convergence_jit",
-        "reason": "Existe una revisión posterior del origen; no se sobrescribe estado más nuevo."
+        "reason": "La revisión partía de la ficha del 23 de octubre; ya existe una explicación posterior (trend-update-d8b0b437dd21171dc217), por lo que no se sobrescribe estado más nuevo."
+      },
+      {
+        "id": "red-review-bb07a54ba7c2cd6c2236",
+        "revision": 0,
+        "name": "Paraguay",
+        "outcome": "continuity",
+        "applied": true,
+        "via": "concurrent_convergence_jit",
+        "reason": "La misma ficha se actualizó con la apertura de tres causas de Fiscalía sobre Ueno Bank y la inclusión de Santiago Peña entre los investigados, conservando ID, revisión y explained_at."
       }
     ],
     "attempted": 2,
@@ -93,10 +113,10 @@
     "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -108,10 +128,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-1793922992099-manual cerrada 2/2 por convergencia JIT con tr-1793922900000-manual. #LaIslaDeLasTentaciones17: unchanged. Chiqui: stale por revisión posterior ya existente. Barrera final main: editorial-queue=0; rewrite_pending=0; preparing/update=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793924003806-manual cerrada 2/2 por convergencia JIT: Chiqui stale por explicación posterior; Paraguay continuity aplicada. La pasada precedente tr-20261106T0110+0100-manual ya había aplicado Conference League. Barrera final main: editorial-queue=0. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T01:12:50+01:00",
-  "last_completed_at": "2026-11-06T01:12:50+01:00",
+  "last_completed_at": "2026-11-06T01:19:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -192,7 +212,9 @@
     "tr-20261106T0040+0100-manual",
     "tr-autoguard-1793922065",
     "tr-1793922900000-manual",
-    "tr-1793922992099-manual"
+    "tr-1793922992099-manual",
+    "tr-20261106T0110+0100-manual",
+    "tr-1793924003806-manual"
   ],
   "command_id": "tr-1793924003806-manual",
   "canonical_successor_run_id": null,
