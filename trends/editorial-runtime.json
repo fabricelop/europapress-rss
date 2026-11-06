@@ -136,9 +136,22 @@
   "last_completed_at": "2026-11-06T09:05:05+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
-    "tr-1793951409248-manual"
+    "tr-1793951409248-manual",
+    "tr-1793951281387-manual"
   ],
   "command_id": "tr-1793951919630-manual",
   "canonical_successor_run_id": null,
-  "source": "chat"
+  "source": "chat",
+  "satisfied_run_chain": [
+    {
+      "run_id": "tr-1793951281387-manual",
+      "satisfied_by": "tr-1793951409248-manual",
+      "reason": "same pending editorial work converged under JIT validation"
+    },
+    {
+      "run_id": "tr-1793951409248-manual",
+      "satisfied_by": "tr-1793951919630-manual",
+      "reason": "later canonical pass absorbed remaining maintenance and new work"
+    }
+  ]
 }
