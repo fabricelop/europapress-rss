@@ -121,8 +121,11 @@ private final class ApprovalInboxModel: ObservableObject {
 
     func decide(_ item: PendingImage, action: String, using github: GitHubEditor) async {
         guard actionID == nil, ["approve", "reject"].contains(action) else { return }
-        guard previews[item.id] != nil else {
-            notice = "Necesitamos comprobar primero el PNG original antes de tomar una decisión."
+        // Approval requires the verified PNG. Rejection only needs the exact
+        // server-issued candidate identity: it must remain possible when the
+        // original preview is missing or malformed, so no image gets stuck.
+        if action == "approve" && previews[item.id] == nil {
+            notice = "Necesitamos comprobar primero el PNG original antes de aprobar."
             return
         }
         actionID = item.id
@@ -266,13 +269,16 @@ struct ImageApprovalInbox: View {
                                     }
                                     .buttonStyle(.borderedProminent)
                                     .tint(.green)
+                                    .disabled(model.actionID != nil || model.previews[item.id] == nil)
                                     Button("Rechazar") {
                                         Task { await model.decide(item, action: "reject", using: github) }
                                     }
                                     .buttonStyle(.bordered)
                                     .tint(.red)
+                                    // Only this pending image is rejected. No
+                                    // original download, no other trend change.
+                                    .disabled(model.actionID != nil)
                                 }
-                                .disabled(model.actionID != nil || model.previews[item.id] == nil)
                             }
                             .padding(.vertical, 7)
                             .task(id: item.id) { await model.loadOriginal(item, using: github) }
