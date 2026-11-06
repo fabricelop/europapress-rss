@@ -47,13 +47,13 @@ def observe_rate_limits(headers):
     policies = ",".join(all_values("RateLimit-Policy"))
     limits = ",".join(all_values("RateLimit"))
     selected_quota = None
-    for match in re.finditer(r'"([^"]+)"\s*;\s*q=(\d+)\s*;\s*w=(\d+)', policies):
+    for match in re.finditer(r'"([^"]+)"\s*;\s*q\s*=\s*(\d+)\s*;\s*w\s*=\s*(\d+)', policies):
         if int(match.group(3)) == 2592000:
             selected_quota = int(match.group(2))
             break
     if selected_quota is None:
         return
-    for match in re.finditer(r'"([^"]+)"\s*;\s*r=(\d+)\s*;\s*t=(\d+)', limits):
+    for match in re.finditer(r'"([^"]+)"\s*;\s*r\s*=\s*(\d+)\s*;\s*t\s*=\s*(\d+)', limits):
         if "30day" in match.group(1).lower():
             remaining = min(selected_quota, int(match.group(2)))
             LAST_API_QUOTA = {
