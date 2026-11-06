@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794008625066-manual",
   "command_id": "tr-1794009075249-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T23:55:31.552Z",
-  "updated_at": "2026-11-06T23:55:31.552Z",
-  "finished_at": null,
-  "current": 0,
-  "total": 0,
+  "updated_at": "2026-11-06T23:56:41.953Z",
+  "finished_at": "2026-11-06T23:56:41.953Z",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
-  "title": "Revisando novedades",
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "35fdbc5ccc10",
@@ -158,129 +158,52 @@
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794008625066-manual",
+    "run_id": "tr-1794009075249-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T00:44:00+01:00",
-    "updated_at": "2026-11-07T01:01:00+01:00",
-    "finished_at": "2026-11-07T01:01:00+01:00",
-    "current": 11,
-    "total": 11,
+    "started_at": "2026-11-06T23:55:31.552Z",
+    "updated_at": "2026-11-06T23:56:41.953Z",
+    "finished_at": "2026-11-06T23:56:41.953Z",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "35fdbc5ccc10",
-      "de982193d4bd",
-      "16ac22023f2b",
-      "8c0d4ecd5327",
-      "50d1a6619b2a",
-      "50b8047cb3f4",
-      "4ee281bc339c",
-      "83fe8a78c514",
-      "a9d16526a859",
-      "5b461284ec93",
-      "97e735d07b7a"
+      "red-review-8778c4777b28e7153bec",
+      "red-review-2f8aeaab11f279ca5b35"
     ],
     "converged_ids": [
-      "35fdbc5ccc10",
-      "de982193d4bd",
-      "16ac22023f2b",
-      "8c0d4ecd5327",
-      "50d1a6619b2a",
-      "50b8047cb3f4",
-      "4ee281bc339c",
-      "83fe8a78c514",
-      "a9d16526a859",
-      "5b461284ec93",
-      "97e735d07b7a"
+      "red-review-8778c4777b28e7153bec",
+      "red-review-2f8aeaab11f279ca5b35"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "35fdbc5ccc10",
+        "id": "red-review-8778c4777b28e7153bec",
         "revision": 0,
-        "name": "Miguel Sierra",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true
+        "name": "Revisar novedades: La UCO",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_convergence",
+        "apply_commit": "0f10546c565accbc1688e92d9cf316b719d1fe2a"
       },
       {
-        "id": "de982193d4bd",
+        "id": "red-review-2f8aeaab11f279ca5b35",
         "revision": 0,
-        "name": "#DeViernes",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "16ac22023f2b",
-        "revision": 0,
-        "name": "La Séptima",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "8c0d4ecd5327",
-        "revision": 0,
-        "name": "Fritz",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "50d1a6619b2a",
-        "revision": 0,
-        "name": "Broncano",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "50b8047cb3f4",
-        "revision": 0,
-        "name": "Rafa Jódar",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4ee281bc339c",
-        "revision": 0,
-        "name": "Fofana",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "83fe8a78c514",
-        "revision": 0,
-        "name": "Alcaraz",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "a9d16526a859",
-        "revision": 0,
-        "name": "La Revuelta",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "5b461284ec93",
-        "revision": 0,
-        "name": "Alavés",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "97e735d07b7a",
-        "revision": 0,
-        "name": "Guridi",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true
+        "name": "Revisar novedades: Koldo",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_convergence",
+        "apply_commit": "0f10546c565accbc1688e92d9cf316b719d1fe2a"
       }
     ],
-    "attempted": 11,
-    "observed": 11,
-    "closed": 11,
-    "explained": 11,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -288,14 +211,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 10,
+    "concurrent_convergence": 2,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-1794008625066-manual cerrada 11/11. Barrera final main: editorial-queue=0 y no quedan preparing/update, rewrite_pending ni reexplain. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada editorial tr-1794009075249-manual cerrada 2/2 por convergencia JIT: La UCO sin novedad material; Koldo actualizado por continuidad. Barrera final main: editorial-queue=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T00:50:40+01:00",
-  "last_completed_at": "2026-11-07T01:01:00+01:00",
+  "last_completed_at": "2026-11-06T23:56:41.953Z",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -348,7 +271,8 @@
     "tr-1794004004071-manual",
     "tr-manual-20261106-2340-chat",
     "tr-autoguard-1794005467",
-    "tr-manual-20261107-0025-chat"
+    "tr-manual-20261107-0025-chat",
+    "tr-1794009075249-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -403,7 +327,8 @@
     "tr-1794004004071-manual",
     "tr-manual-20261106-2340-chat",
     "tr-autoguard-1794005467",
-    "tr-manual-20261107-0025-chat"
+    "tr-manual-20261107-0025-chat",
+    "tr-1794009075249-manual"
   ],
-  "message": "Pasada tr-1794009075249-manual en curso. Revalidación JIT: ."
+  "message": "Pasada editorial tr-1794009075249-manual cerrada 2/2 por convergencia JIT: La UCO sin novedad material; Koldo actualizado por continuidad. Barrera final main: editorial-queue=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
