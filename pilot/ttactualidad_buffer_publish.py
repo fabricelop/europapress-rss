@@ -26,6 +26,52 @@ LEDGER = ROOT / "pilot/ttactualidad-buffer-posts.json"
 CLOSED = {"published", "deleted", "dismissed", "removed", "delete_pending"}
 PROJECT_ACCOUNT = {"ttittulares": "ttittulares", "ttendencias": "ttendenciasesp"}
 API = "https://api.buffer.com"
+# One shared Buffer API-key/MCP budget for every channel in the organization.
+# Not per-photo and not independently allocated to @ttittulares / @ttendenciasesp.
+LAST_API_QUOTA = None
+
+
+def observe_rate_limits(headers):
+    """Read the actual rolling 30-day aggregate limit, never assume 1,000 per account."""
+    global LAST_API_QUOTA
+    if headers is None:
+        return
+    def all_values(name):
+        if hasattr(headers, "get_all"):
+            values = headers.get_all(name)
+            if values is not None:
+                return values
+        value = headers.get(name) if hasattr(headers, "get") else None
+        return [value] if value else []
+    # A proxy might combine the three structured fields with commas.
+    policies = ",".join(all_values("RateLimit-Policy"))
+    limits = ",".join(all_values("RateLimit"))
+    selected_quota = None
+    for match in re.finditer(r'"([^"]+)"\s*;\s*q=(\d+)\s*;\s*w=(\d+)', policies):
+        if int(match.group(3)) == 2592000:
+            selected_quota = int(match.group(2))
+            break
+    if selected_quota is None:
+        return
+    for match in re.finditer(r'"([^"]+)"\s*;\s*r=(\d+)\s*;\s*t=(\d+)', limits):
+        if "30day" in match.group(1).lower():
+            remaining = min(selected_quota, int(match.group(2)))
+            LAST_API_QUOTA = {
+                "limit": selected_quota, "remaining": remaining,
+                "used": max(0, selected_quota - remaining),
+                "window_seconds": 2592000,
+                "resets_in_seconds": int(match.group(3)),
+                "observed_at": utc_now(),
+            }
+            return
+
+
+def attach_latest_quota(data):
+    """Store one global usage snapshot alongside per-account post receipts."""
+    if LAST_API_QUOTA is not None:
+        data["api_quota"] = dict(LAST_API_QUOTA)
+
+
 
 
 def utc_now():
@@ -78,8 +124,10 @@ def graphql(key, query, variables=None):
     })
     try:
         with urlopen(request, timeout=30) as response:
+            observe_rate_limits(response.headers)
             obj = json.load(response)
     except HTTPError as exc:
+        observe_rate_limits(exc.headers)
         raise RuntimeError("Buffer respondió HTTP " + str(exc.code)) from exc
     except (URLError, TimeoutError) as exc:
         raise RuntimeError("No se pudo confirmar respuesta de Buffer") from exc
@@ -268,8 +316,9 @@ def reconcile(data, key):
                 changed = True
         except (ValueError, RuntimeError, HTTPError, URLError) as exc:
             print("Comprobación Buffer pendiente para " + post_id + ": " + str(exc))
-    if changed:
-        save(data, "confirmar estados de X")
+    attach_latest_quota(data)
+    if changed or LAST_API_QUOTA is not None:
+        save(data, "confirmar estados de X y cuota API global")
     # Close canonical Listas only after Buffer confirmed the destination post.
     for item in data["items"]:
         if item.get("state") != "sent" or item.get("closure_dispatched"):
@@ -330,6 +379,7 @@ def publish(data, payload, key):
     except Exception as exc:
         set_state(row, "failed", error=str(exc)[:230])
         data["items"].append(row)
+        attach_latest_quota(data)
         save(data, "registrar precontrol sin publicar")
         print("No publicado: " + row["error"])
         return
@@ -339,6 +389,7 @@ def publish(data, payload, key):
     row["media_type"] = media_type
     set_state(row, "reserved")
     data["items"].append(row)
+    attach_latest_quota(data)
     save(data, "reservar publicación sin duplicados")
     mutation = """mutation($input: CreatePostInput!) {
       createPost(input: $input) {
@@ -369,7 +420,8 @@ def publish(data, payload, key):
         # Network errors and malformed responses may happen AFTER publication.
         # Do not allow a second click to create a duplicate post.
         set_state(row, "unknown", error=("Confirmación de Buffer incierta: " + str(exc))[:230])
-    save(data, "registrar resultado Buffer")
+    attach_latest_quota(data)
+    save(data, "registrar resultado Buffer y cuota global")
     print("Buffer: estado " + row["state"])
 
 
