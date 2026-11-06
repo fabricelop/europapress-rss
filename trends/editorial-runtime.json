@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261106T0440+0100-manual",
-  "previous_run_id": "tr-20261106T0425+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T04:40:00+01:00",
-  "updated_at": "2026-11-06T04:41:00+01:00",
-  "finished_at": "2026-11-06T04:41:00+01:00",
+  "run_id": "tr-20261106T0455+0100-manual",
+  "previous_run_id": "tr-20261106T0440+0100-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T04:55:00+01:00",
+  "updated_at": "2026-11-06T04:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,19 +44,9 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-06T04:40:00+01:00",
+      "at": "2026-11-06T04:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada sobre main. Verificando cola vigente, reexplicaciones y mantenimiento. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-06T04:40:56+01:00",
-      "phase": "verifying",
-      "message": "Barrera final releída en main: editorial-queue=0, sin preparing/update y sin rewrite_pending. recent.json fresco a las 04:40:52."
-    },
-    {
-      "at": "2026-11-06T04:41:00+01:00",
-      "phase": "closing",
-      "message": "Cierre 0/0 válido. Sin ImageGen, sin image-outbox y sin publicaciones."
     }
   ],
   "final_outcomes": [],
@@ -96,7 +86,7 @@
     "title": null,
     "message": "Cierre 0/0 tras relectura final de main: cola=0 y sin preparing/update/rewrite_pending. Sin ImageGen ni publicaciones."
   },
-  "last_started_at": "2026-11-06T04:40:00+01:00",
+  "last_started_at": "2026-11-06T04:55:00+01:00",
   "last_completed_at": "2026-11-06T04:41:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -160,7 +150,7 @@
     "tr-20261106T0425+0100-manual",
     "tr-20261106T0440+0100-manual"
   ],
-  "command_id": "tr-20261106T0440+0100-manual",
+  "command_id": "tr-20261106T0455+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
