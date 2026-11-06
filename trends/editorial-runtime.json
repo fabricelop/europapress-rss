@@ -7,24 +7,22 @@
   "previous_run_id": "tr-1793968595124-manual",
   "command_id": "tr-1793968800000-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-06T13:41:00+01:00",
-  "updated_at": "2026-11-06T13:43:00+01:00",
+  "updated_at": "2026-11-06T13:43:06+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "e2609f0a371a",
   "title": "Marruecos",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "e2609f0a371a"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "e2609f0a371a"
-  ],
-  "remaining_active_ids": [
-    "e2609f0a371a"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
@@ -99,8 +97,8 @@
     "title": null,
     "message": "Pasada editorial completada 0/0 tras relectura final de main: no queda ningún preparing/update ni rewrite_pending. Peugeot ya había convergido concurrentemente como revisión unchanged y su outbox fue aplicado antes de esta pasada. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T13:33:30+01:00",
-  "last_completed_at": "2026-11-06T13:37:00+01:00",
+  "last_started_at": "2026-11-06T13:43:06+01:00",
+  "last_completed_at": "2026-11-06T13:43:06+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
