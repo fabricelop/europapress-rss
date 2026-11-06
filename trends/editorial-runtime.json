@@ -3,13 +3,13 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793922900000-manual",
-  "previous_run_id": "tr-autoguard-1793922065",
+  "run_id": "tr-1793922992099-manual",
+  "previous_run_id": "tr-1793922900000-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-06T00:55:00+01:00",
-  "updated_at": "2026-11-06T00:58:00+01:00",
-  "finished_at": "2026-11-06T00:58:00+01:00",
+  "started_at": "2026-11-06T00:56:32.099+01:00",
+  "updated_at": "2026-11-06T01:00:14+01:00",
+  "finished_at": "2026-11-06T01:00:14+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -43,19 +43,20 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada manual cerrada: 2/2 revisiones tratadas; una sin novedades y una descartada como stale por revisión posterior ya existente. Barrera final vacía.",
+  "activity": "Pasada tr-1793922992099-manual cerrada por convergencia JIT con tr-1793922900000-manual: 2/2 revisiones tratadas; una sin novedades y una stale por revisión posterior ya existente. Barrera final vacía.",
   "final_outcomes": [
     {
       "id": "red-review-c98be1cbb0c57faad033",
       "revision": 0,
       "name": "#LaIslaDeLasTentaciones17",
       "outcome": "unchanged",
-      "applied": true
+      "applied": true,
+      "via": "concurrent_convergence_jit"
     },
     {
       "id": "red-review-7d26128e97c1ccf3f333",
@@ -63,16 +64,17 @@
       "name": "Chiqui",
       "outcome": "stale",
       "applied": true,
+      "via": "concurrent_convergence_jit",
       "reason": "Existe una revisión posterior del origen; no se sobrescribe estado más nuevo."
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793922900000-manual",
+    "run_id": "tr-1793922992099-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T00:55:00+01:00",
-    "updated_at": "2026-11-06T00:58:00+01:00",
-    "finished_at": "2026-11-06T00:58:00+01:00",
+    "started_at": "2026-11-06T00:56:32.099+01:00",
+    "updated_at": "2026-11-06T01:00:14+01:00",
+    "finished_at": "2026-11-06T01:00:14+01:00",
     "current": 2,
     "total": 2,
     "queue_complete": true,
@@ -91,7 +93,8 @@
         "revision": 0,
         "name": "#LaIslaDeLasTentaciones17",
         "outcome": "unchanged",
-        "applied": true
+        "applied": true,
+        "via": "concurrent_convergence_jit"
       },
       {
         "id": "red-review-7d26128e97c1ccf3f333",
@@ -99,6 +102,7 @@
         "name": "Chiqui",
         "outcome": "stale",
         "applied": true,
+        "via": "concurrent_convergence_jit",
         "reason": "Existe una revisión posterior del origen; no se sobrescribe estado más nuevo."
       }
     ],
@@ -118,14 +122,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 2,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-1793922900000-manual cerrada 2/2. #LaIslaDeLasTentaciones17: unchanged. Chiqui: stale por revisión posterior ya existente. Barrera final main: editorial-queue=0; rewrite_pending=0; preparing/update=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793922992099-manual cerrada 2/2 por convergencia JIT con tr-1793922900000-manual. #LaIslaDeLasTentaciones17: unchanged. Chiqui: stale por revisión posterior ya existente. Barrera final main: editorial-queue=0; rewrite_pending=0; preparing/update=0. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T00:55:00+01:00",
-  "last_completed_at": "2026-11-06T00:58:00+01:00",
+  "last_started_at": "2026-11-06T00:56:32.099+01:00",
+  "last_completed_at": "2026-11-06T01:00:14+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793865110501-manual",
@@ -205,9 +209,10 @@
     "tr-20261106T0025+0100-manual",
     "tr-20261106T0040+0100-manual",
     "tr-autoguard-1793922065",
-    "tr-1793922900000-manual"
+    "tr-1793922900000-manual",
+    "tr-1793922992099-manual"
   ],
-  "command_id": "tr-1793922900000-manual",
+  "command_id": "tr-1793922992099-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
