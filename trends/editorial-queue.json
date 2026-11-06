@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-06T10:16:58+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-06T09:17:30.816198+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-177e57e4fedcaed0d94e",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-06T09:17:30.816198+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "17dad4a4dcfa",
+        "revision": 0,
+        "name": "La Séptima",
+        "rank": 29,
+        "explanation": "TT#29 La Séptima es tendencia porque la nueva cadena de TDT comienza sus emisiones mañana a las 12:00, con un sondeo electoral diario y una entrevista a Carlos Cuerpo.\n#LaSéptima #TDT\n🌶️ La parrilla debuta mirando primero a las urnas.",
+        "explanation_sha256": "5bd5330d973f38820d161eb7fbddef2ca3ab07262ee2eeb3951e8e95c1831bd0",
+        "explained_at": "2026-11-04T19:02:15.011Z",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/sociedad/noticia-septima-arranca-emisiones-manana-sondeo-electoral-diario-entrevista-carlos-cuerpo-20261104141109.html"
+          },
+          {
+            "url": "https://efe.com/cultura/2026-11-04/la-septima-canal-television-estreno/"
+          }
+        ],
+        "fingerprint": "6c8b0840aa493160b59647509cc36a59c0cd1ddb69b8161ebf3e1d4fdadddfe4"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-63f6e4c2d29a3378b1f3",
+      "revision": 0,
+      "name": "Revisar novedades: Jesús de Miguel",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-06T09:17:30.816198+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ca4337605844",
+        "revision": 0,
+        "name": "Jesús de Miguel",
+        "rank": 2,
+        "explanation": "TT#24 Jesús de Miguel sigue siendo tendencia por los homenajes tras su fallecimiento: el fútbol español le recordará esta jornada en los estadios y se ha aplazado el Granada-Tenerife.\n#CDTenerife #JesúsDeMiguel",
+        "explanation_sha256": "5a7bae8027a08219d1f85c08dbe2553161601457191953692ee50b7528872f24",
+        "explained_at": "2026-11-03T09:41:30+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.20minutos.es/deportes/futbol/muere-jesus-miguel-futbolista-tenerife-tras-sufrir-una-parada-cardiaca-despues-un-fuerte-choque-con-portero-rival_7056393_0.html"
+          },
+          {
+            "url": "https://www.lavozdeasturias.es/noticia/actualidad/2026/11/03/muere-futbolista-tenerife-jesus-miguel-tras-chocar-contra-portero-andorra-jesus-owono/00031793684987470618167.htm"
+          }
+        ],
+        "fingerprint": "a2480781259ba6cd7e6b8c6271fcd200ac86b0093c93ad5f98e9f22bd435a05e"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
