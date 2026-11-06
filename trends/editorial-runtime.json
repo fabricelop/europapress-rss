@@ -5,7 +5,7 @@
   "canonical": true,
   "run_id": "tr-1793928920531-manual",
   "previous_run_id": "tr-20261106T0210+0100-manual",
-  "status": "success",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-06T02:36:00+01:00",
   "updated_at": "2026-11-06T02:42:00+01:00",
@@ -21,7 +21,7 @@
     "radar-prepare-9f8ace96938caa641167"
   ],
   "converged_ids": [
-    "radar-prepare-9f8ace96938caa641167"
+    "32b661b351e7"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -35,8 +35,8 @@
     "updates": 1,
     "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -48,35 +48,25 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 3/3: Inda stale sin cambio; Paraguay actualizada por continuidad; Radar · karmele preparado. Barrera final main: cola 0, preparing/update 0, reexplicación pendiente 0. ImageGen=0; publicaciones=0.",
+  "activity": "Pasada cerrada tras releer main: cola editorial 0. Inda sin cambios; Paraguay actualizado en continuidad; Radar Karmele preparado. Sony quedó cerrado por la pasada predecesora convergente.",
   "final_outcomes": [
     {
       "id": "red-review-280be120653726e432d7",
-      "revision": 0,
-      "name": "Revisar novedades: Inda",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "reason": "Sin novedad sustancial posterior; el aplicador cerró el snapshot como stale sin alterar la ficha vigente."
+      "name": "Inda",
+      "outcome": "unchanged",
+      "detail": "Revisión sin novedad sustancial; se conserva texto y fecha."
     },
     {
       "id": "red-review-d146eeeeeec1351459e5",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
+      "name": "Paraguay",
       "outcome": "continuity_update",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "source_id": "7fb4d179ec62",
-      "reason": "El juicio político avanzó en Diputados y Senado; actualización del mismo episodio, conservando ID/revisión/explained_at."
+      "detail": "Actualizada la explicación del mismo episodio por el avance del juicio político; sin nueva ficha ni imagen."
     },
     {
       "id": "radar-prepare-9f8ace96938caa641167",
-      "revision": 0,
-      "name": "Radar · karmele",
-      "outcome": "prepared",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "reason": "Detonante verificado: Karmele Marchante confirmó su participación en GH VIP 9; guardado solo como borrador anticipado."
+      "name": "karmele",
+      "outcome": "anticipation_prepared",
+      "detail": "Borrador factual Radar verificado; no publicado ni enviado a Listas."
     }
   ],
   "api_failover_enabled": false,
@@ -95,37 +85,27 @@
       "radar-prepare-9f8ace96938caa641167"
     ],
     "converged_ids": [
-      "radar-prepare-9f8ace96938caa641167"
+      "32b661b351e7"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
         "id": "red-review-280be120653726e432d7",
-        "revision": 0,
-        "name": "Revisar novedades: Inda",
-        "outcome": "stale",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "reason": "Sin novedad sustancial posterior; el aplicador cerró el snapshot como stale sin alterar la ficha vigente."
+        "name": "Inda",
+        "outcome": "unchanged",
+        "detail": "Revisión sin novedad sustancial; se conserva texto y fecha."
       },
       {
         "id": "red-review-d146eeeeeec1351459e5",
-        "revision": 0,
-        "name": "Revisar novedades: Paraguay",
+        "name": "Paraguay",
         "outcome": "continuity_update",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "source_id": "7fb4d179ec62",
-        "reason": "El juicio político avanzó en Diputados y Senado; actualización del mismo episodio, conservando ID/revisión/explained_at."
+        "detail": "Actualizada la explicación del mismo episodio por el avance del juicio político; sin nueva ficha ni imagen."
       },
       {
         "id": "radar-prepare-9f8ace96938caa641167",
-        "revision": 0,
-        "name": "Radar · karmele",
-        "outcome": "prepared",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "reason": "Detonante verificado: Karmele Marchante confirmó su participación en GH VIP 9; guardado solo como borrador anticipado."
+        "name": "karmele",
+        "outcome": "anticipation_prepared",
+        "detail": "Borrador factual Radar verificado; no publicado ni enviado a Listas."
       }
     ],
     "attempted": 3,
@@ -136,8 +116,8 @@
     "updates": 1,
     "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -148,7 +128,7 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada 3/3 cerrada tras releer main: Inda review_completed/stale sin cambio; Paraguay review_completed/continuity con actualización aplicada; Radar · karmele anticipation_prepared. editorial-queue=0; preparing/update=0; reexplicación pendiente=0; ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada con cola 0. Inda sin cambios; Paraguay actualizado en continuidad; Radar Karmele preparado. Sony convergió desde la pasada predecesora."
   },
   "last_started_at": "2026-11-06T02:36:00+01:00",
   "last_completed_at": "2026-11-06T02:42:00+01:00",
@@ -240,7 +220,8 @@
     "tr-20261106T0155+0100-manual",
     "tr-1793926736235-manual",
     "tr-20261106T0210+0100-manual",
-    "tr-1793928920531-manual"
+    "tr-1793928920531-manual",
+    "tr-20261106T0225+0100-manual"
   ],
   "command_id": "tr-1793928920531-manual",
   "canonical_successor_run_id": null,
