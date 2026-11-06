@@ -162,6 +162,17 @@ class DirectBufferPublisherTests(unittest.TestCase):
         self.assertEqual(data["api_quota"]["window_seconds"], 2592000)
         self.assertNotIn("account", data["api_quota"])
 
+    def test_buffer_quota_policy_name_is_not_hardcoded(self):
+        headers = Message()
+        headers.add_header("RateLimit-Policy",
+                           '"shared-api-bucket"; q=2000; w=2592000; pk=:private:')
+        headers.add_header("RateLimit",
+                           '"shared-api-bucket"; r=1876; t=1600')
+        publisher.LAST_API_QUOTA = None
+        publisher.observe_rate_limits(headers)
+        self.assertEqual(publisher.LAST_API_QUOTA["remaining"], 1876)
+        self.assertEqual(publisher.LAST_API_QUOTA["used"], 124)
+
     def test_text_only_creates_empty_assets_array(self):
         self._write("ttittulares/site-ai-images.json", {"images": []})
         calls = []
