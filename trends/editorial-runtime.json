@@ -7,39 +7,36 @@
   "previous_run_id": "tr-autoguard-1793987465",
   "command_id": "tr-1793988079709-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T19:01:19.709+01:00",
-  "updated_at": "2026-11-06T19:02:25+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-06T19:04:29.641108+01:00",
+  "finished_at": "2026-11-06T19:04:29.641108+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-a762481c69759f3666f8",
-  "title": "Meghan Markle",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-b0432ea052764a6acd6a",
+    "red-review-a762481c69759f3666f8"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-b0432ea052764a6acd6a",
-    "red-review-a762481c69759f3666f8"
-  ],
-  "remaining_active_ids": [
-    "red-review-b0432ea052764a6acd6a",
-    "red-review-a762481c69759f3666f8"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 30,
-    "observed": 30,
-    "closed": 28,
-    "explained": 28,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,510 +47,72 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Verificando Meghan Markle",
+  "activity": "closing",
   "final_outcomes": [
     {
-      "id": "06ad64f0f5be",
+      "id": "red-review-b0432ea052764a6acd6a",
       "revision": 0,
-      "name": "Jay Rockefeller",
-      "outcome": "explained",
+      "name": "#RTXON",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "editorial_outbox_applied"
+      "via": "maintenance_outbox_applied",
+      "source_id": "d6b652b7d172"
     },
     {
-      "id": "144e3c13baac",
+      "id": "red-review-a762481c69759f3666f8",
       "revision": 0,
-      "name": "TreVeyon",
-      "outcome": "explained",
+      "name": "Meghan Markle",
+      "outcome": "unchanged",
       "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "184a23535ad8",
-      "revision": 0,
-      "name": "Tillis",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "1f346f1bde1d",
-      "revision": 0,
-      "name": "Stranger Things",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "2ba98a6691a8",
-      "revision": 0,
-      "name": "#FridayVibes",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "445058baaa99",
-      "revision": 0,
-      "name": "Good Friday",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "4b734c7b69e8",
-      "revision": 0,
-      "name": "Doja Cat",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "50a2e42a5ddd",
-      "revision": 0,
-      "name": "Go For Orbit",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "523278713a71",
-      "revision": 0,
-      "name": "Geoff",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "54d4d280b4c2",
-      "revision": 0,
-      "name": "Usher",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "55db55c23795",
-      "revision": 0,
-      "name": "Keylor Navas",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "579b0bec9023",
-      "revision": 0,
-      "name": "Diwali",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "5ca48aa30045",
-      "revision": 0,
-      "name": "#LastFourWatched",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "61e3bfcde22c",
-      "revision": 0,
-      "name": "Doc Rivers",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "646f0bd95799",
-      "revision": 0,
-      "name": "Cybertruck",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "69b8ec18bd8d",
-      "revision": 0,
-      "name": "Hatchet",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "71c9f8aa655b",
-      "revision": 0,
-      "name": "#하늘의_색처럼_명호를_축하해",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "7cbefaceaa06",
-      "revision": 0,
-      "name": "Ketch",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "7d6a8c1f1d40",
-      "revision": 0,
-      "name": "Bandcamp Friday",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "85fab6fb2009",
-      "revision": 0,
-      "name": "Team Mexico",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "8f025aee4262",
-      "revision": 0,
-      "name": "Chewy",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "d15b24340fe7",
-      "revision": 0,
-      "name": "Shabbat Shalom",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "dafb1d705c0e",
-      "revision": 0,
-      "name": "Lil Baby",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "e03f09a61665",
-      "revision": 0,
-      "name": "Model Y",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "e2d564127ceb",
-      "revision": 0,
-      "name": "#FursuitFriday",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "ee641ef86b92",
-      "revision": 0,
-      "name": "Happy Friyay",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "f1b616634c7c",
-      "revision": 0,
-      "name": "August and September",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "f82b04c1f56c",
-      "revision": 0,
-      "name": "RED Friday",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
+      "via": "maintenance_outbox_applied",
+      "source_id": "7fe26f7c12dd"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1793987465",
+    "run_id": "tr-1793988079709-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T18:52:00+01:00",
-    "updated_at": "2026-11-06T19:00:43+01:00",
-    "finished_at": "2026-11-06T19:00:43+01:00",
-    "current": 28,
-    "total": 28,
+    "started_at": "2026-11-06T19:01:19.709+01:00",
+    "updated_at": "2026-11-06T19:04:29.641108+01:00",
+    "finished_at": "2026-11-06T19:04:29.641108+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "06ad64f0f5be",
-      "144e3c13baac",
-      "184a23535ad8",
-      "1f346f1bde1d",
-      "2ba98a6691a8",
-      "445058baaa99",
-      "4b734c7b69e8",
-      "50a2e42a5ddd",
-      "523278713a71",
-      "54d4d280b4c2",
-      "55db55c23795",
-      "579b0bec9023",
-      "5ca48aa30045",
-      "61e3bfcde22c",
-      "646f0bd95799",
-      "69b8ec18bd8d",
-      "71c9f8aa655b",
-      "7cbefaceaa06",
-      "7d6a8c1f1d40",
-      "85fab6fb2009",
-      "8f025aee4262",
-      "d15b24340fe7",
-      "dafb1d705c0e",
-      "e03f09a61665",
-      "e2d564127ceb",
-      "ee641ef86b92",
-      "f1b616634c7c",
-      "f82b04c1f56c"
+      "red-review-b0432ea052764a6acd6a",
+      "red-review-a762481c69759f3666f8"
     ],
     "converged_ids": [],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "06ad64f0f5be",
+        "id": "red-review-b0432ea052764a6acd6a",
         "revision": 0,
-        "name": "Jay Rockefeller",
-        "outcome": "explained",
+        "name": "#RTXON",
+        "outcome": "unchanged",
         "applied": true,
-        "via": "editorial_outbox_applied"
+        "via": "maintenance_outbox_applied",
+        "source_id": "d6b652b7d172"
       },
       {
-        "id": "144e3c13baac",
+        "id": "red-review-a762481c69759f3666f8",
         "revision": 0,
-        "name": "TreVeyon",
-        "outcome": "explained",
+        "name": "Meghan Markle",
+        "outcome": "unchanged",
         "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "184a23535ad8",
-        "revision": 0,
-        "name": "Tillis",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "1f346f1bde1d",
-        "revision": 0,
-        "name": "Stranger Things",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "2ba98a6691a8",
-        "revision": 0,
-        "name": "#FridayVibes",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "445058baaa99",
-        "revision": 0,
-        "name": "Good Friday",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "4b734c7b69e8",
-        "revision": 0,
-        "name": "Doja Cat",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "50a2e42a5ddd",
-        "revision": 0,
-        "name": "Go For Orbit",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "523278713a71",
-        "revision": 0,
-        "name": "Geoff",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "54d4d280b4c2",
-        "revision": 0,
-        "name": "Usher",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "55db55c23795",
-        "revision": 0,
-        "name": "Keylor Navas",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "579b0bec9023",
-        "revision": 0,
-        "name": "Diwali",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "5ca48aa30045",
-        "revision": 0,
-        "name": "#LastFourWatched",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "61e3bfcde22c",
-        "revision": 0,
-        "name": "Doc Rivers",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "646f0bd95799",
-        "revision": 0,
-        "name": "Cybertruck",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "69b8ec18bd8d",
-        "revision": 0,
-        "name": "Hatchet",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "71c9f8aa655b",
-        "revision": 0,
-        "name": "#하늘의_색처럼_명호를_축하해",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "7cbefaceaa06",
-        "revision": 0,
-        "name": "Ketch",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "7d6a8c1f1d40",
-        "revision": 0,
-        "name": "Bandcamp Friday",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "85fab6fb2009",
-        "revision": 0,
-        "name": "Team Mexico",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "8f025aee4262",
-        "revision": 0,
-        "name": "Chewy",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "d15b24340fe7",
-        "revision": 0,
-        "name": "Shabbat Shalom",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "dafb1d705c0e",
-        "revision": 0,
-        "name": "Lil Baby",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "e03f09a61665",
-        "revision": 0,
-        "name": "Model Y",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "e2d564127ceb",
-        "revision": 0,
-        "name": "#FursuitFriday",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "ee641ef86b92",
-        "revision": 0,
-        "name": "Happy Friyay",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "f1b616634c7c",
-        "revision": 0,
-        "name": "August and September",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "f82b04c1f56c",
-        "revision": 0,
-        "name": "RED Friday",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
+        "via": "maintenance_outbox_applied",
+        "source_id": "7fe26f7c12dd"
       }
     ],
-    "attempted": 28,
-    "observed": 28,
-    "closed": 28,
-    "explained": 28,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -565,10 +124,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-autoguard-1793987465 cerrada 28/28. Las 28 revisiones 0 quedaron aplicadas como explained; barrera final observada: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial tr-1793988079709-manual cerrada 2/2. #RTXON y Meghan Markle: revisiones unchanged aplicadas. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T19:01:34+01:00",
-  "last_completed_at": "2026-11-06T19:00:43+01:00",
+  "last_started_at": "2026-11-06T19:01:19.709+01:00",
+  "last_completed_at": "2026-11-06T19:04:29.641108+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -595,7 +154,8 @@
     "tr-1793982300000-manual",
     "tr-1793983200000-manual",
     "tr-1793985000000-manual",
-    "tr-1793985900000-manual"
+    "tr-1793985900000-manual",
+    "tr-1793988079709-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -624,7 +184,8 @@
     "tr-1793982300000-manual",
     "tr-1793983200000-manual",
     "tr-1793985000000-manual",
-    "tr-1793985900000-manual"
+    "tr-1793985900000-manual",
+    "tr-1793988079709-manual"
   ],
-  "message": "Revisión Meghan Markle investigada: mismo episodio; resultado unchanged enviado al aplicador."
+  "message": "Pasada editorial tr-1793988079709-manual cerrada 2/2. #RTXON y Meghan Markle: revisiones unchanged aplicadas. Barrera final: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
 }
