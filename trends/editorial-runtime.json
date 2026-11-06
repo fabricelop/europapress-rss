@@ -48,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre por convergencia JIT: Chiqui stale por ficha posterior; Paraguay actualizado en continuidad. Cola final 0. ImageGen=0; publicaciones=0.",
+  "activity": "Pasada cerrada 2/2 por convergencia JIT. Chiqui: stale/superseded sin sobrescritura. Paraguay: actualización de continuidad aplicada en la misma ficha. Barrera final main: editorial-queue=0, preparing/update=0, rewrite_pending=0. ImageGen=0; image-outbox=0; publicaciones=0.",
   "final_outcomes": [
     {
       "id": "red-review-f77390e731854a057a2b",
@@ -57,7 +57,8 @@
       "outcome": "stale",
       "applied": true,
       "via": "concurrent_convergence_jit",
-      "reason": "La revisión partía de la ficha del 23 de octubre; ya existe una explicación posterior (trend-update-d8b0b437dd21171dc217), por lo que no se sobrescribe estado más nuevo."
+      "reason": "La fuente de la revisión del 23 de octubre quedó superseded por una explicación posterior; no se sobrescribió el estado más nuevo.",
+      "apply_commit": "184158982093c55aa71d68b227bd33edafbd2ec6"
     },
     {
       "id": "red-review-bb07a54ba7c2cd6c2236",
@@ -66,7 +67,7 @@
       "outcome": "continuity",
       "applied": true,
       "via": "concurrent_convergence_jit",
-      "reason": "La misma ficha se actualizó con la apertura de tres causas de Fiscalía sobre Ueno Bank y la inclusión de Santiago Peña entre los investigados, conservando ID, revisión y explained_at."
+      "apply_commit": "0778de45038ec75a77ff5910677331e391098d3c"
     }
   ],
   "api_failover_enabled": false,
@@ -96,7 +97,8 @@
         "outcome": "stale",
         "applied": true,
         "via": "concurrent_convergence_jit",
-        "reason": "La revisión partía de la ficha del 23 de octubre; ya existe una explicación posterior (trend-update-d8b0b437dd21171dc217), por lo que no se sobrescribe estado más nuevo."
+        "reason": "La fuente de la revisión del 23 de octubre quedó superseded por una explicación posterior; no se sobrescribió el estado más nuevo.",
+        "apply_commit": "184158982093c55aa71d68b227bd33edafbd2ec6"
       },
       {
         "id": "red-review-bb07a54ba7c2cd6c2236",
@@ -105,7 +107,7 @@
         "outcome": "continuity",
         "applied": true,
         "via": "concurrent_convergence_jit",
-        "reason": "La misma ficha se actualizó con la apertura de tres causas de Fiscalía sobre Ueno Bank y la inclusión de Santiago Peña entre los investigados, conservando ID, revisión y explained_at."
+        "apply_commit": "0778de45038ec75a77ff5910677331e391098d3c"
       }
     ],
     "attempted": 2,
@@ -128,9 +130,9 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-1793924003806-manual cerrada 2/2 por convergencia JIT: Chiqui stale por explicación posterior; Paraguay continuity aplicada. La pasada precedente tr-20261106T0110+0100-manual ya había aplicado Conference League. Barrera final main: editorial-queue=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1793924003806-manual cerrada 2/2. Chiqui cerrada stale por revisión posterior; Paraguay actualizado como continuidad en la misma ficha. Barrera final main: editorial-queue=0; rewrite_pending=0; preparing/update=0. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T01:12:50+01:00",
+  "last_started_at": "2026-11-06T01:13:00+01:00",
   "last_completed_at": "2026-11-06T01:19:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
