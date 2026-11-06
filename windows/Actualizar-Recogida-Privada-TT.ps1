@@ -1,53 +1,92 @@
 #requires -Version 5.1
+# Incremental, hash-pinned repair of the original-image receiver for the iPhone APP.
+# Do not replace generator bridges, secrets, Site, or other scheduled tasks.
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='01da823be0536f9545a6482882f089106c668fd4'
+$pin='f41089238f038e05c409233f744fe82883f911cd'
 $files=@{
- 'TTendenciasImageBridge.js'='bce8c33c58fcf300cd2e8f2f48febf792a155ed930455afaa3809b8e34079ce6'
- 'TTiTTularesImageBridge.js'='9cdcb6fce51bd7d89af4a1d0415fbaf5ff62c430838680a10c31d45be4b6670e'
- 'TTImageApprovalReceiver.cjs'='12ab6cf5bf2c54dc0d821d47e05ec39b25340d492734d9385497de72fc600076'
+ 'TTendenciasWebImages.cjs'='42915727333308a66d9da29b55803318b18719dd71e94266fd4fc105d226d977'
+ 'TTiTTularesWebImages.cjs'='69da2d489681ce5a3dad0c51ddabf0fedf4db9723185be37566dfce01d4a0de2'
+ 'TTImageApprovalReceiver.cjs'='e131566b2f0b3ca7f359abe6ee32d66e12cfee4799c1ccc9a83b40f3a5b3ac49'
+}
+# Only documented pre-repair releases or the target version may be replaced.
+# A local custom version stops installation rather than silently deleting it.
+$allowed=@{
+ 'TTendenciasWebImages.cjs'=@(
+  '595425bcb143776ae378a7d7a5e37bdabe0aa496631da39a9214adadb3580774',
+  '8b920e1b2034f1ee18c544ed15f16ca4d58d4c2c6b8422406af15ac66f9c6d01',
+  $files['TTendenciasWebImages.cjs'])
+ 'TTiTTularesWebImages.cjs'=@(
+  '8ef3c4c1da5e4dfa0556c1f83e2db8e3f862a1ff028a168199dd562553e0467c',
+  '8e7142b10da30f16db84dcd335cc92392a32a4736cd70480ffd99cb981a66e7b',
+  $files['TTiTTularesWebImages.cjs'])
+ 'TTImageApprovalReceiver.cjs'=@(
+  '1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58',
+  'af14c45846e3d41298522146326f25e9f1ff43061649df3688568f3793cb2083',
+  'fdcfe30087edae8ac68db35e201e2058d22cf0371e07adfe3a7697730145df38',
+  '03b178e4a6b83a95faa6efcc525ac3673768fbd022f7280d2995ef72560940a4',
+  '12ab6cf5bf2c54dc0d821d47e05ec39b25340d492734d9385497de72fc600076',
+  '1788962e76fce00891f74027afba349f82d195e94ac8c2e06929cfdf2fa1bd37',
+  $files['TTImageApprovalReceiver.cjs'])
 }
 function Assert-Idle {
- $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js'})
- if($busy.Count){throw 'Hay generacion activa. No se interrumpe. Repite al terminar.'}
+ $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
+  Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js|TTImageApprovalReceiver\.cjs'})
+ if($busy.Count){throw 'Generador o receptor en ejecucion. No se interrumpe. Repite al quedar libre.'}
 }
-Assert-Idle
-$allowed=@{
- 'TTendenciasImageBridge.js'=@('416069b713104821be1a76c53f3cf332f647ff83331aa293c993ef21f84a3283','bce8c33c58fcf300cd2e8f2f48febf792a155ed930455afaa3809b8e34079ce6')
- 'TTiTTularesImageBridge.js'=@('f5c2c3918184e10b4f9854191bed53bb4abf6fde76d69c1266067fdd27540851','9cdcb6fce51bd7d89af4a1d0415fbaf5ff62c430838680a10c31d45be4b6670e')
- 'TTImageApprovalReceiver.cjs'=@('1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58','af14c45846e3d41298522146326f25e9f1ff43061649df3688568f3793cb2083','fdcfe30087edae8ac68db35e201e2058d22cf0371e07adfe3a7697730145df38','12ab6cf5bf2c54dc0d821d47e05ec39b25340d492734d9385497de72fc600076','03b178e4a6b83a95faa6efcc525ac3673768fbd022f7280d2995ef72560940a4')
-}
-foreach($name in $files.Keys){
- $local=Join-Path $base $name
- if(-not(Test-Path -LiteralPath $local)){throw ('Falta '+$name+'. Sin cambios.')}
- if($allowed[$name] -notcontains (Get-FileHash -LiteralPath $local -Algorithm SHA256).Hash.ToLowerInvariant()){throw ('Version local no reconocida: '+$name+'. Se conserva, sin modificar.')}
-}
-foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
- if(-not([IO.File]::ReadAllText((Join-Path $base $name)).Contains("return {status:'waiting',reason:'manual_approval_required'}"))){throw ('Falta pausa de asociacion en '+$name)}
+if(-not(Test-Path -LiteralPath $base -PathType Container)){throw 'No existe C:\TTiTTulares; sin cambios.'}
+foreach($name in @('TTendenciasImageBridge.js','TTiTTularesImageBridge.js')){
+ if(-not(Test-Path -LiteralPath (Join-Path $base $name))){throw ('Falta el bridge existente: '+$name)}
 }
 $task=Get-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP' -ErrorAction Stop
-if([IO.Path]::GetFileName($task.Actions.Execute) -ne 'wscript.exe'){throw 'La tarea debe usar el lanzador oculto. Sin cambios.'}
+if(-not @($task.Actions | Where-Object {[IO.Path]::GetFileName($_.Execute) -eq 'wscript.exe'}).Count){
+ throw 'La tarea de imagenes pendientes debe conservar su lanzador oculto; sin cambios.'
+}
 $node=(Get-Command node.exe -ErrorAction Stop).Source
-$temp=Join-Path $env:TEMP ('TT-PrivateBoth-'+[guid]::NewGuid().ToString('N'))
-$backup=Join-Path $base ('private-intake-backup-'+(Get-Date -Format yyyyMMdd-HHmmss))
-New-Item -ItemType Directory -Path $temp | Out-Null
+foreach($name in $files.Keys){
+ $local=Join-Path $base $name
+ if(-not(Test-Path -LiteralPath $local)){throw ('Falta '+$name+'; sin cambios.')}
+ $current=(Get-FileHash -LiteralPath $local -Algorithm SHA256).Hash.ToLowerInvariant()
+ if($allowed[$name] -notcontains $current){throw ('Version local no reconocida: '+$name+' ('+$current+'). No se sobrescribe.')}
+}
+foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
+ $text=[IO.File]::ReadAllText((Join-Path $base $name))
+ if(-not $text.Contains("return {status:'waiting',reason:'manual_approval_required'}")){
+  throw ('El bridge no tiene la pausa de aprobacion: '+$name)
+ }
+}
+Assert-Idle
+$temp=Join-Path $env:TEMP ('TT-PrivateInboxPatch-'+[guid]::NewGuid().ToString('N'))
+$backup=Join-Path $base ('private-inbox-backup-'+(Get-Date -Format yyyyMMdd-HHmmss))
+New-Item -ItemType Directory -Path $temp -Force | Out-Null
 $written=@()
 try{
  foreach($name in $files.Keys){
-  $out=Join-Path $temp $name
-  Invoke-WebRequest -UseBasicParsing -Uri ('https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$pin+'/windows/'+$name) -OutFile $out -TimeoutSec 40
-  if((Get-FileHash -LiteralPath $out -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]){throw ('SHA incorrecto: '+$name)}
-  & $node --check $out
-  if($LASTEXITCODE -ne 0){throw ('Sintaxis incorrecta: '+$name)}
+  $destination=Join-Path $temp $name
+  Invoke-WebRequest -UseBasicParsing -Uri ('https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$pin+'/windows/'+$name) -OutFile $destination -TimeoutSec 60
+  if((Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]){throw ('SHA invalido: '+$name)}
+  & $node --check $destination
+  if($LASTEXITCODE -ne 0){throw ('Sintaxis JS invalida: '+$name)}
+ }
+ foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
+  if(-not([IO.File]::ReadAllText((Join-Path $temp $name)).Contains("return {status:'waiting',reason:'manual_approval_required'}"))){
+   throw ('La version nueva no conserva la pausa editorial: '+$name)
+  }
  }
  Assert-Idle
  New-Item -ItemType Directory -Path $backup | Out-Null
  foreach($name in $files.Keys){Copy-Item -LiteralPath (Join-Path $base $name) -Destination (Join-Path $backup $name)}
- foreach($name in $files.Keys){Copy-Item -LiteralPath (Join-Path $temp $name) -Destination (Join-Path $base $name) -Force;$written+=$name}
- Write-Host 'Recogida privada actualizada para Tendencias y Titulares. Tarea oculta conservada.' -ForegroundColor Green
- Write-Host 'Los proximos encargos esperan recepcion privada antes de reutilizar su conversacion. Solo Aprobar en APP publica.'
- Write-Host ('Backup: '+$backup)
+ foreach($name in $files.Keys){
+  Copy-Item -LiteralPath (Join-Path $temp $name) -Destination (Join-Path $base $name) -Force
+  $written+=$name
+ }
+ Write-Host 'Receptor privado de imagenes actualizado y hashes verificados. NO se ha cambiado la APP ni el Site.' -ForegroundColor Green
+ Write-Host 'JPEG/WebP se convertiran a PNG solo para el buzón; reintentos recuperan originales sin generar otros.'
+ Write-Host 'La tarea programada se conserva. La confirmacion de recepcion requiere ver un recibo PRIVATE_INBOX RECEIVED_pending.'
+ Write-Host ('Copia de seguridad: '+$backup)
 }catch{
  foreach($name in $written){Copy-Item -LiteralPath (Join-Path $backup $name) -Destination (Join-Path $base $name) -Force}
  throw
-}finally{Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue}
+}finally{
+ Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
+}
