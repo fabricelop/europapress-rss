@@ -7,26 +7,32 @@
   "previous_run_id": "tr-manual-20261106-2025-chat",
   "command_id": "tr-manual-20261106-2041-chat",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-06T20:41:30+01:00",
-  "updated_at": "2026-11-06T20:49:00+01:00",
-  "finished_at": "2026-11-06T20:49:00+01:00",
+  "updated_at": "2026-11-06T20:50:00+01:00",
+  "finished_at": null,
   "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "red-review-9dcfed7aca9d930df4bd",
+  "title": "Revisar novedades: La UCO",
+  "queue_complete": false,
   "processed_ids": [
     "5daedeacda96"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-9dcfed7aca9d930df4bd",
+    "red-review-14923e1cfb76bea001b4"
+  ],
+  "remaining_active_ids": [
+    "red-review-9dcfed7aca9d930df4bd",
+    "red-review-14923e1cfb76bea001b4"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
-    "observed": 1,
+    "observed": 3,
     "closed": 1,
     "explained": 1,
     "problematic": 0,
@@ -35,7 +41,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -53,7 +59,7 @@
     }
   ],
   "error": null,
-  "activity": "closing",
+  "activity": "investigating",
   "final_outcomes": [
     {
       "id": "5daedeacda96",
@@ -190,5 +196,5 @@
     "tr-manual-20261106-2025-chat",
     "tr-manual-20261106-2041-chat"
   ],
-  "message": "Pasada editorial tr-manual-20261106-2041-chat cerrada 1/1: Alberto Pugilato r0 explicado y aplicado. Barrera final main: editorial-queue=0 y sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte directo recuperada mediante editorial-outbox."
+  "message": "Revisando novedades: La UCO y Aldama. Alberto Pugilato ya quedó aplicado; ImageGen=0."
 }
