@@ -485,10 +485,45 @@ struct TTDashboard: View {
     // Independent, confirmed-only totals. They do not replace the existing
     // registered/manual publication chips or their historical detail sheets.
     private var bufferCounters: some View {
-        HStack(spacing: 9) {
-            bufferMetric(account: "ttittulares", tint: TTTheme.teal)
-            bufferMetric(account: "ttendenciasesp", tint: TTTheme.blue)
+        VStack(spacing: 9) {
+            HStack(spacing: 9) {
+                bufferMetric(account: "ttittulares", tint: TTTheme.teal)
+                bufferMetric(account: "ttendenciasesp", tint: TTTheme.blue)
+            }
+            bufferAPIQuota
         }
+    }
+
+    private var bufferAPIQuota: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            Label("CUOTA BUFFER API GLOBAL · 30 DÍAS MÓVILES",
+                  systemImage: "chart.pie")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundStyle(TTTheme.muted)
+            if let quota = buffer.apiQuota, quota.window_seconds == 2592000,
+               quota.limit > 0 {
+                let daily = Double(quota.used) / 30.0
+                let sustainable = Double(quota.limit) / 30.0
+                Text("\(quota.used) / \(quota.limit) solicitudes · \(quota.remaining) disponibles")
+                    .font(.system(size: 14, weight: .bold))
+                    .monospacedDigit()
+                ProgressView(value: Double(quota.used), total: Double(quota.limit))
+                    .tint(TTTheme.blue)
+                Text("Media de consumo: \(daily.formatted(.number.precision(.fractionLength(1))))/día" +
+                     " · ritmo sostenible: \(sustainable.formatted(.number.precision(.fractionLength(1))))/día")
+                    .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                Text("Una sola cuota para ambas cuentas. También consumen las consultas de la API." +
+                     " Ventana móvil; no se reinicia el día 1.")
+                    .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+            } else {
+                Text("Cuota aún no verificada. Se mostrará cuando Buffer devuelva sus límites reales.")
+                    .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
+        .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 17))
+        .overlay(RoundedRectangle(cornerRadius: 17).stroke(TTTheme.blue.opacity(0.23)))
     }
 
     private func bufferMetric(account: String, tint: Color) -> some View {
@@ -509,6 +544,13 @@ struct TTDashboard: View {
                  : "Sin datos verificables")
                 .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
                 .lineLimit(1).minimumScaleFactor(0.7)
+            if buffer.loaded {
+                Text("30 d: \(buffer.sentLast30Days(account: account)) · Media: " +
+                     (Double(buffer.sentLast30Days(account: account)) / 30.0)
+                       .formatted(.number.precision(.fractionLength(1))) + "/día")
+                    .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    .lineLimit(1).minimumScaleFactor(0.7)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
