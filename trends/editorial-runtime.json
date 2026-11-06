@@ -5,24 +5,22 @@
   "canonical": true,
   "run_id": "tr-20261106T0340+0100-manual",
   "previous_run_id": "tr-20261106T0325+0100-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-06T03:40:00+01:00",
-  "updated_at": "2026-11-06T03:42:00+01:00",
+  "updated_at": "2026-11-06T03:42:58+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "3b9d8298f1b5",
   "title": "eddie",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "3b9d8298f1b5"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "3b9d8298f1b5"
-  ],
-  "remaining_active_ids": [
-    "3b9d8298f1b5"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -95,8 +93,8 @@
     "title": null,
     "message": "Pasada 0/0 cerrada tras relectura final de main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes detectadas. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T03:25:00+01:00",
-  "last_completed_at": "2026-11-06T03:25:30+01:00",
+  "last_started_at": "2026-11-06T03:42:57+01:00",
+  "last_completed_at": "2026-11-06T03:42:58+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793898959673-manual",
