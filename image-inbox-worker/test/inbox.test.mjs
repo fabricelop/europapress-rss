@@ -260,8 +260,9 @@ test('only latest pending per episode, no resurrection after rejecting newer, ne
    raster_sha256:'b'.repeat(64),command_id:'old-'+i,
  });
  for(let i=0;i<25;i++){
-   env.DB.rows.set('n'+i,{
-     id:'n'+i,project:'ttittulares',editorial_id:'new-'+i,revision:0,
+   const id=i.toString(16).padStart(64,'0');
+   env.DB.rows.set(id,{
+     id,project:'ttittulares',editorial_id:'new-'+i,revision:0,
      editorial_at:recent,status:'pending',
      created_at:new Date(Date.now()+i).toISOString(),title:'new',editorial_text:'new',
      episode_fingerprint:'a'.repeat(64),raster_sha256:'b'.repeat(64),command_id:'new-'+i
@@ -276,8 +277,9 @@ test('only latest pending per episode, no resurrection after rejecting newer, ne
  assert.equal((await next.json()).items.length,5);
  // Once the current/newest image was decided, do not show a previous
  // request for the very same episode.
- const dup={...env.DB.rows.get('n24'),id:'n25',created_at:new Date(Date.now()+999).toISOString(),status:'rejected'};
- env.DB.rows.set('n25',dup);
+ const dup={...env.DB.rows.get((24).toString(16).padStart(64,'0')),
+  id:'f'.repeat(64),created_at:new Date(Date.now()+999).toISOString(),status:'rejected'};
+ env.DB.rows.set(dup.id,dup);
  const after=await receive(env);
  assert(!after.data.items.some(x=>x.identity.editorialId==='new-24'));
 });
