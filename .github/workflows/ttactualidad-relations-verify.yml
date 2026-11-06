@@ -1,7 +1,7 @@
 name: TTActualidad - Relaciones 12-24h - IPA prueba
 on:
   push:
-    branches: [feature/ttactualidad-relations-recent-inbox-20261105, feature/ttactualidad-buffer-on-ios-v0461-20261106]
+    branches: [feature/ttactualidad-relations-recent-inbox-20261105, fix/ttactualidad-ios-inbox-scope-20261106, feature/ttactualidad-buffer-on-ios-v0461-20261106]
     paths:
       - 'ios/ttactualidad/**'
       - '.github/workflows/ttactualidad-relations-verify.yml'
