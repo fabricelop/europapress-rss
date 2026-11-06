@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {handleRequest} from '../src/index.mjs';
 import {episodeFingerprint} from '../src/editorial-truth.mjs';
+import {createHash} from 'node:crypto';
+const hash256=x=>createHash('sha256').update(x).digest('hex');
 
 const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0 };
 const currentTop30 = {ids:new Set(['my-trend']), offline:false};
@@ -295,4 +297,35 @@ test('more than 20 requested is rejected and none of the 500 historical news is 
  const {env}=context();
  const out=await handleRequest(req('/v1/images?limit=100'),env,editor);
  assert.equal(out.status,400);
+});
+
+test('deployed PC flat private ingest remains compatible with date-bound SHA and 20-cap',async()=>{
+  const {env}=context();
+  const at='2026-11-06T08:44:00Z',editorialText=main.text;
+  const flat={project:'ttendencias',editorialId:'my-trend',revision:0,
+    commandId:'tr-img-pc-real-123',editorialText,editorialAt:at,title:'my-trend'};
+  flat.episodeFingerprint=hash256(JSON.stringify({
+    project:flat.project,editorialId:flat.editorialId,revision:flat.revision,
+    editorialText:flat.editorialText,editorialAt:flat.editorialAt
+  }));
+  const form=new FormData();
+  form.set('metadata',JSON.stringify(flat));
+  form.set('image',new Blob([png],{type:'image/png'}),'original.png');
+  const request=req('/v1/images/ingest','POST',form,null);
+  request.headers.set('X-TT-Ingest-Key',env.INGEST_TOKEN);
+  const receipt=await handleRequest(request,env,editor);
+  assert.equal(receipt.status,201,await receipt.clone().text());
+  const listed=await receive(env);
+  assert.equal(listed.data.items.length,1);
+  assert.equal(listed.data.items[0].identity.episodeFingerprint,flat.episodeFingerprint);
+  assert.equal(listed.data.pageLimit,20);
+  const badForm=new FormData();
+  badForm.set('image',new Blob([png],{type:'image/png'}),'original.png');
+  badForm.set('metadata',JSON.stringify({...flat,commandId:'tr-img-modified',
+      editorialAt:'2026-11-06T08:46:00Z'}));
+  const bad=req('/v1/images/ingest','POST',badForm,null);
+  bad.headers.set('X-TT-Ingest-Key',env.INGEST_TOKEN);
+  const tampered=await handleRequest(bad,env,editor);
+  assert.equal(tampered.status,409);
+  assert.equal((await tampered.json()).error,'EPISODE_FINGERPRINT_MISMATCH');
 });
