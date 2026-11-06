@@ -3,40 +3,43 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793965200000-manual",
-  "previous_run_id": "tr-1793964300000-manual",
-  "command_id": "tr-1793965200000-manual",
+  "run_id": "tr-1793966100000-manual",
+  "previous_run_id": "tr-1793965200000-manual",
+  "command_id": "tr-1793966100000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T12:40:00+01:00",
-  "updated_at": "2026-11-06T12:45:00+01:00",
-  "finished_at": "2026-11-06T12:45:00+01:00",
-  "current": 2,
+  "status": "PROCESSING",
+  "phase": "investigating",
+  "started_at": "2026-11-06T12:55:00+01:00",
+  "updated_at": "2026-11-06T12:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "ad20f796c9d7",
-    "7cea33981ec7"
-  ],
+  "trend_id": "f75ef046f3c1",
+  "title": "#Mañaneros6N",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "f75ef046f3c1",
+    "842a99abb01a"
+  ],
+  "remaining_active_ids": [
+    "f75ef046f3c1",
+    "842a99abb01a"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,21 +50,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "ad20f796c9d7",
-      "revision": 0,
-      "name": "Pablo Barrios",
-      "outcome": "explained"
-    },
-    {
-      "id": "7cea33981ec7",
-      "revision": 0,
-      "name": "Barrenetxea",
-      "outcome": "explained"
-    }
-  ],
+  "activity": "investigating",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793965200000-manual",
@@ -120,5 +110,5 @@
   "satisfied_run_ids": [],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [],
-  "message": "Pasada editorial completada 2/2: Pablo Barrios y Barrenetxea explicados y verificados en requests/Listas. Cola final 0 y sin reexplicaciones pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Investigando 1/2: #Mañaneros6N. Cola autoritativa revalidada en main."
 }
