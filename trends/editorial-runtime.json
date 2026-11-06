@@ -3,28 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261106-2340-chat",
-  "previous_run_id": "tr-1794004004071-manual",
-  "command_id": "tr-manual-20261106-2340-chat",
+  "run_id": "tr-autoguard-1794005467",
+  "previous_run_id": "tr-manual-20261106-2340-chat",
+  "command_id": "tr-autoguard-1794005467",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T23:40:00+01:00",
-  "updated_at": "2026-11-06T23:41:00+01:00",
-  "finished_at": "2026-11-06T23:41:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T23:51:20+01:00",
+  "updated_at": "2026-11-06T23:51:20+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "687a2d073d15",
+    "545240447bab",
+    "2505f6dab719",
+    "c995c14d3078"
+  ],
+  "remaining_active_ids": [
+    "687a2d073d15",
+    "545240447bab",
+    "2505f6dab719",
+    "c995c14d3078"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +43,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -44,7 +54,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada",
+  "activity": "Preparando pasada editorial",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -82,7 +92,7 @@
     "title": null,
     "message": "Pasada editorial tr-manual-20261106-2340-chat cerrada 0/0. Barrera final main: editorial-queue=0 y no quedan preparing/update, rewrite_pending ni reexplicaciones. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T23:40:00+01:00",
+  "last_started_at": "2026-11-06T23:51:20+01:00",
   "last_completed_at": "2026-11-06T23:41:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -189,5 +199,5 @@
     "tr-1794004004071-manual",
     "tr-manual-20261106-2340-chat"
   ],
-  "message": "Pasada editorial tr-manual-20261106-2340-chat cerrada 0/0. Barrera final main: editorial-queue=0 y no quedan preparing/update, rewrite_pending ni reexplicaciones. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Pasada editorial tr-autoguard-1794005467 iniciada con 4 items activos en main; ImageGen desactivado en esta pasada."
 }
