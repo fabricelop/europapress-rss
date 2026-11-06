@@ -115,6 +115,8 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
     shutil.copy2(requests_json_source, folder/"requests_json.py")
     shutil.copy2(episode_source, folder/"trend_episode_policy.py")
+    shutil.copy2(source.with_name("suppression.py"), folder/"suppression.py")
+    shutil.copy2(source.with_name("suppressed-terms.json"), folder/"suppressed-terms.json")
     old=(datetime.now(ZoneInfo("Europe/Madrid"))-timedelta(days=5)).isoformat(timespec="seconds")
     put(folder/"recent.json",{"selection_method":"consensus","sources_used":["social-A","social-B"],
         "items":[{"name":"Pubill","rank":17},{"name":"Fuera del Top 30","rank":31}]})
@@ -150,6 +152,8 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
     shutil.copy2(requests_json_source, folder/"requests_json.py")
     shutil.copy2(episode_source, folder/"trend_episode_policy.py")
+    shutil.copy2(source.with_name("suppression.py"), folder/"suppression.py")
+    shutil.copy2(source.with_name("suppressed-terms.json"), folder/"suppressed-terms.json")
     now=datetime.now(ZoneInfo("Europe/Madrid"))
     old=(now-timedelta(hours=49)).isoformat(timespec="seconds")
     recent=(now-timedelta(hours=47)).isoformat(timespec="seconds")
