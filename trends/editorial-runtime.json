@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1793971500000-manual",
   "command_id": "tr-1793972400000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T14:40:00+01:00",
-  "updated_at": "2026-11-06T14:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T14:41:15+01:00",
+  "finished_at": "2026-11-06T14:41:15+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,15 +44,15 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793971500000-manual",
+    "run_id": "tr-1793972400000-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T14:25:00+01:00",
-    "updated_at": "2026-11-06T14:25:59+01:00",
-    "finished_at": "2026-11-06T14:25:59+01:00",
+    "started_at": "2026-11-06T14:40:00+01:00",
+    "updated_at": "2026-11-06T14:41:15+01:00",
+    "finished_at": "2026-11-06T14:41:15+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -82,8 +82,8 @@
     "title": null,
     "message": "Pasada editorial completada 0/0: relectura final de main con editorial-queue=0; no queda ningún preparing/update ni reexplicación pendiente detectada. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T14:25:00+01:00",
-  "last_completed_at": "2026-11-06T14:25:59+01:00",
+  "last_started_at": "2026-11-06T14:40:00+01:00",
+  "last_completed_at": "2026-11-06T14:41:15+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -95,7 +95,8 @@
     "tr-1793968800000-manual",
     "tr-1793969700000-manual",
     "tr-1793970600000-manual",
-    "tr-1793971500000-manual"
+    "tr-1793971500000-manual",
+    "tr-1793972400000-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -109,7 +110,8 @@
     "tr-1793968800000-manual",
     "tr-1793969700000-manual",
     "tr-1793970600000-manual",
-    "tr-1793971500000-manual"
+    "tr-1793971500000-manual",
+    "tr-1793972400000-manual"
   ],
-  "message": "Iniciando pasada editorial real: leyendo estado autoritativo de main y verificando cola/reelaboraciones pendientes."
+  "message": "Pasada editorial completada 0/0: relectura final de main con editorial-queue=0; no queda ningún preparing/update ni reexplicación pendiente detectada. ImageGen=0; image-outbox=0; publicaciones=0."
 }
