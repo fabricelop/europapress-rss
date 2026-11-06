@@ -3,11 +3,11 @@
 # Do not replace generator bridges, secrets, Site, or other scheduled tasks.
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='f41089238f038e05c409233f744fe82883f911cd'
+$pin='db4fd6bbb886577fa5b9635193aa4fc968475475'
 $files=@{
  'TTendenciasWebImages.cjs'='42915727333308a66d9da29b55803318b18719dd71e94266fd4fc105d226d977'
  'TTiTTularesWebImages.cjs'='69da2d489681ce5a3dad0c51ddabf0fedf4db9723185be37566dfce01d4a0de2'
- 'TTImageApprovalReceiver.cjs'='e131566b2f0b3ca7f359abe6ee32d66e12cfee4799c1ccc9a83b40f3a5b3ac49'
+ 'TTImageApprovalReceiver.cjs'='247f0a6f55263990beab92d833226fc6d32acd8bfd42970a12edc7ce0062ee0f'
 }
 # Only documented pre-repair releases or the target version may be replaced.
 # A local custom version stops installation rather than silently deleting it.
