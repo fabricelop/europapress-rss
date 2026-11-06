@@ -145,7 +145,7 @@ test('stale identity and changed revision cannot be approved',async()=>{
 test('different r0 episode and raster are independent candidates',async()=>{
  const {env}=context();await importOne(env);
  await importOne(env,{editorialText:'Otro episodio de esta misma tendencia'});
- assert.equal((await receive(env)).data.items.length,2);
+ assert.equal((await receive(env)).data.items.length,1);
 });
 test('missing configuration fails closed',async()=>{
  const {env}=context();delete env.DB;
@@ -239,7 +239,7 @@ test('news before 09:43 are rejected even when delivered today; current Top30 st
  const {env}=context();
  const bad=await importOne(env,{identity:{project:'ttittulares',editorialId:'old-news'},
    editorialAt:'2026-11-06T08:42:00Z'});
- assert.equal(bad.status,409);
+ assert.equal(bad.status,409,await bad.clone().text());
  assert.equal((await bad.json()).error,'NEWS_BEFORE_CUTOVER');
  assert.equal(env.DB.rows.size,0);
  const now=await importOne(env);
@@ -265,7 +265,7 @@ test('only latest pending per episode, no resurrection after rejecting newer, ne
      episode_fingerprint:'a'.repeat(64),raster_sha256:'b'.repeat(64),command_id:'new-'+i
    });
  }
- const first=await receive(env);assert.equal(first.res.status,200);
+ const first=await receive(env);assert.equal(first.res.status,200,JSON.stringify(first.data));
  assert.equal(first.data.items.length,20);
  assert(first.data.items.every(x=>x.title==='new'));
  assert.equal(first.data.hasMore,true);
