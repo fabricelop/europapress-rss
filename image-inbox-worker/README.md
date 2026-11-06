@@ -1,5 +1,18 @@
 # TTActualidad — Inbox privado de imágenes
 
+## Alcance de Imágenes pendientes — decisión del editor de 6/11/2026, 09:43 CET
+
+Para evitar volcar ~500 imágenes históricas a la APP:
+
+- **TTendencias:** solo un candidato por identidad editorial exacta (`editorial_id + revision`) perteneciente al Top 30 **vigente**, leído desde `trends/site-top30-current.json` en GitHub `main`. Tendencias futuras se incorporan cuando estén realmente en el Top 30 y tengan ID/revisión/explicación. Una ficha sin identidad no autoriza imágenes por coincidencia de nombre/rank.
+- **TTiTTulares:** solo imágenes cuyo `editorialAt` **original** sea `2026-11-06T08:43:00.000Z` o posterior; no basta con que un PNG antiguo se entregue hoy. La migración `0002_news_editorial_time.sql` añade `editorial_at`; entradas previas sin fecha quedan fuera de la bandeja.
+- **Máximo 20** imágenes por página, de más reciente a más antigua; un único PNG pendiente por `project, editorial_id, revision`. Una decisión sobre el PNG más reciente no desbloquea otro anterior de ese mismo episodio.
+- **Histórico intacto:** no borrar registros ni originales R2, no aprobar/rechazar automáticamente, no volver a generar imágenes. Otros estados/publicador siguen igual.
+- **Fallo de Top30:** si no puede verificarse, responder `503 TOP30_SCOPE_UNAVAILABLE`; nunca mostrar el backlog por omisión. Ingestiones fuera del ámbito responden `409 NEWS_BEFORE_CUTOVER` o `409 NOT_CURRENT_TOP30`.
+
+**Crítico:** este Worker es un prototipo en una rama de GitHub, **no el backend real desplegado** en ChatGPT Sites. El Site real debe adoptar la misma consulta y filtro de ingesta, aplicar la migración antes del código y superar pruebas E2E con la APP. Fusionar la PR por sí sola no altera la bandeja que ya recibe los 321 acuses `RECEIVED_pending`.
+
+
 **SIN desplegar.** Implementación preparatoria que no modifica Sites, la APP instalada ni los consumidores Windows. Requiere cuentas, recursos y controles de acceso de Cloudflare y la conexión con build59+.
 
 - `ORIGINALS`: R2 **privado**, sin dominio público, sin `r2.dev`. Conserva los PNG originales.
