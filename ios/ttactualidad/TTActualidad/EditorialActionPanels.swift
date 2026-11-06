@@ -79,12 +79,11 @@ struct EditorialActions: View {
             }
             .disabled(!(news?.status == "LISTA" || trend?.inListas == true) ||
                       fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                      aiPhotoURL == nil ||
                       buffer.blocked(project: project, id: editorialID, revision: revision))
-            Text(aiPhotoURL == nil
-                 ? "Para publicar directamente necesitas una foto IA verificada."
-                 : "Un toque · @" + (news == nil ? "ttendenciasesp" : "ttittulares") +
-                   " · texto y foto IA (sin abrir X)")
+            Text("Un toque · @" + (news == nil ? "ttendenciasesp" : "ttittulares") +
+                 " · " + (aiPhotoURL != nil ? "foto IA" :
+                           archivePhotoURL != nil ? "foto archivo" : "solo texto") +
+                 " (sin abrir X)")
                 .font(.system(size: 10))
                 .foregroundStyle(TTTheme.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
