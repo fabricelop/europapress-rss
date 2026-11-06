@@ -1,5 +1,8 @@
 'use strict';
 const {test}=require('node:test'),assert=require('node:assert/strict');
+const crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
+console.log('PRIVATE_INBOX_RECEIVER_SHA256='+crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'../TTImageApprovalReceiver.cjs'))).digest('hex'));
+
 const {
   NEWS_CUTOFF,allowedTop30,inCurrentApprovalScope,selectCurrentTasks,
 }=require('../TTImageApprovalReceiver.cjs');
