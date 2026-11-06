@@ -301,7 +301,6 @@ def archive_url(item, project, event_id, revision):
             return ("https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
                     + chosen.relative_to(ROOT).as_posix())
     for field in ("archive_image", "fallback_image"):
-    for field in ("archive_image", "fallback_image"):
         image = item.get(field)
         if not isinstance(image, dict):
             continue
