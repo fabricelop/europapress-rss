@@ -8,12 +8,12 @@
   "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-06T08:51:40+01:00",
-  "updated_at": "2026-11-06T09:00:00+01:00",
+  "updated_at": "2026-11-06T09:01:00+01:00",
   "finished_at": null,
-  "current": 7,
+  "current": 8,
   "total": 9,
-  "trend_id": "red-review-5db44b045812550cfce4",
-  "title": "Revisar novedades: Chiqui",
+  "trend_id": "red-review-d310f5afdd5c4e8c0d56",
+  "title": "Revisar novedades: Peugeot",
   "queue_complete": false,
   "processed_ids": [
     "f67d14c2d060",
@@ -24,39 +24,39 @@
     "4e565e7064be",
     "ff942c05391c"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "red-review-5db44b045812550cfce4"
+  ],
   "remaining_ids": [
-    "red-review-5db44b045812550cfce4",
     "red-review-d310f5afdd5c4e8c0d56"
   ],
   "remaining_active_ids": [
-    "red-review-5db44b045812550cfce4",
     "red-review-d310f5afdd5c4e8c0d56"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
     "explained": 7,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 2,
-    "rewrite_pending_remaining": 2,
+    "stale_reviews": 1,
+    "queue_remaining": 1,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades: Chiqui",
+  "activity": "Revisando novedades: Peugeot; Chiqui convergió como stale antes de aplicar",
   "final_outcomes": [
     {
       "id": "f67d14c2d060",
@@ -113,6 +113,15 @@
       "outcome": "explained",
       "applied": true,
       "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "red-review-5db44b045812550cfce4",
+      "revision": 0,
+      "name": "Revisar novedades: Chiqui",
+      "source_id": "7375308f71a9",
+      "outcome": "stale",
+      "applied": true,
+      "via": "concurrent_convergence"
     }
   ],
   "api_failover_enabled": false,
