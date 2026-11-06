@@ -670,6 +670,27 @@ final class GitHubEditor: ObservableObject {
         return object
     }
 
+    // Only real current Top30 editorial IDs/revisions can enter the private
+    // images inbox. A position/rank is not an identity. A GitHub read failure
+    // does not expose stale approval cards.
+    func currentImageApprovalTrendEpisodes() async throws -> Set<String> {
+        let snapshot = try await readMainJSON("trends/site-top30-current.json")
+        guard let entries = snapshot["items"] as? [[String: Any]],
+              !entries.isEmpty, entries.count <= 30 else {
+            throw GitHubError.message("No está disponible el Top 30 actual.")
+        }
+        var result = Set<String>()
+        for entry in entries {
+            guard let id = entry["editorial_id"] as? String, !id.isEmpty,
+                  let revision = entry["revision"] as? Int, revision >= 0,
+                  let explanation = entry["explanation"] as? String,
+                  !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            else { continue }
+            result.insert(id + ":r" + String(revision))
+        }
+        return result
+    }
+
     // Rebuild the *display* news inbox from retained editorial history, not
     // the transient Listas or the often-empty prepared.json. Opaque relation
     // identities can ONLY come from Sites /v1/snapshot. This method NEVER
