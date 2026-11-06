@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "checked_at": "2026-11-05T22:23:56.036120+00:00",
+  "checked_at": "2026-11-06T00:57:05.244959+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-05T22:23:56.036120+00:00",
+      "checked_at": "2026-11-06T00:57:05.244959+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tt-manual-20261105-2315",
+        "id": "tt-manual-20261106-0030",
         "status": "DONE",
-        "started_at": "2026-11-05T22:15:00Z",
-        "updated_at": "2026-11-05T22:20:05+00:00",
-        "finished_at": "2026-11-05T22:20:05Z",
+        "started_at": "2026-11-05T23:30:00Z",
+        "updated_at": "2026-11-05T23:30:00+00:00",
+        "finished_at": "2026-11-05T23:30:00Z",
         "source": "github_pr_trace"
       },
       "control_command": "tt-urgent-1793915053795",
@@ -25,23 +25,38 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-05T22:23:56.036120+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-06T00:57:05.244959+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "f7133992c86d"
+      ],
+      "oldest_at": "2026-11-06T01:50:57+01:00",
       "latest_run": {
-        "id": "tr-1793916600000-manual",
-        "status": "DONE",
-        "started_at": "2026-11-05T23:12:00+01:00",
-        "updated_at": "2026-11-05T22:14:00+00:00",
-        "finished_at": "2026-11-05T23:14:00+01:00",
-        "source": "github_pr_trace"
+        "id": "tr-20261106T0155+0100-manual",
+        "status": "RUNNING",
+        "started_at": "2026-11-06T01:55:00+01:00",
+        "updated_at": "2026-11-06T00:55:00+00:00",
+        "finished_at": null,
+        "source": "editorial_runtime"
       },
-      "control_command": "tr-1793916300241-manual",
-      "last_command_at": "2026-11-05T22:05:00.241Z",
-      "status": "no_work",
+      "control_command": "tr-1793924212146-manual",
+      "last_command_at": "2026-11-06T00:16:52.146Z",
+      "status": "editor_running_acknowledged",
       "should_dispatch": false,
+      "item_execution": [
+        {
+          "id": "f7133992c86d",
+          "entered_at": "2026-11-06T01:50:57+01:00",
+          "should_start_by": "2026-11-06T00:55:57+00:00",
+          "global_run_after_entry": true,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "99e0c45230fbf9f9",
+      "expected_start_by": "2026-11-06T00:55:57+00:00",
       "attempts": 0,
+      "actual_start_at": "2026-11-06T00:55:00+00:00",
+      "start_delay_seconds": 243,
       "last_request_at": "2026-11-04T15:55:25.587960+00:00"
     }
   },
