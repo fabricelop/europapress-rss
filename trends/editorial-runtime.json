@@ -7,43 +7,38 @@
   "previous_run_id": "tr-manual-20261106-2340-chat",
   "command_id": "tr-autoguard-1794005467",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "remate_selection",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T23:51:20+01:00",
-  "updated_at": "2026-11-06T23:57:00+01:00",
-  "finished_at": null,
-  "current": 3,
+  "updated_at": "2026-11-06T23:58:30+01:00",
+  "finished_at": "2026-11-06T23:58:30+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "c995c14d3078",
-  "title": "Diana Morant",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "687a2d073d15",
+    "545240447bab",
+    "2505f6dab719",
+    "c995c14d3078"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "687a2d073d15",
-    "545240447bab",
-    "2505f6dab719",
-    "c995c14d3078"
-  ],
-  "remaining_active_ids": [
-    "687a2d073d15",
-    "545240447bab",
-    "2505f6dab719",
-    "c995c14d3078"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
+    "attempted": 4,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,26 +49,97 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Seleccionando remate para Diana Morant",
-  "final_outcomes": [],
+  "activity": "Pasada editorial completada",
+  "final_outcomes": [
+    {
+      "id": "687a2d073d15",
+      "revision": 0,
+      "name": "#ElPatronato",
+      "outcome": "explained",
+      "applied": true,
+      "commit": "4053c0b4ebcc4ddc429a254d28c0b4e925322e92"
+    },
+    {
+      "id": "545240447bab",
+      "revision": 0,
+      "name": "ATP Finals",
+      "outcome": "explained",
+      "applied": true,
+      "commit": "fa93d64fbbb1eee2fb39f936f97d75de186f3085"
+    },
+    {
+      "id": "2505f6dab719",
+      "revision": 0,
+      "name": "Kocho",
+      "outcome": "explained_prudent",
+      "applied": true,
+      "commit": "ef758b719bac7230a4beb82fb87b81ddea828374"
+    },
+    {
+      "id": "c995c14d3078",
+      "revision": 0,
+      "name": "Diana Morant",
+      "outcome": "explained",
+      "applied": true,
+      "commit": "9dd66cc3ac7ec86457f8cd9b0f2af60048523b51"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261106-2340-chat",
+    "run_id": "tr-autoguard-1794005467",
     "status": "DONE",
-    "started_at": "2026-11-06T23:40:00+01:00",
-    "updated_at": "2026-11-06T23:41:00+01:00",
-    "finished_at": "2026-11-06T23:41:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-06T23:51:20+01:00",
+    "updated_at": "2026-11-06T23:58:30+01:00",
+    "finished_at": "2026-11-06T23:58:30+01:00",
+    "current": 4,
+    "total": 4,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "687a2d073d15",
+      "545240447bab",
+      "2505f6dab719",
+      "c995c14d3078"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "final_outcomes": [
+      {
+        "id": "687a2d073d15",
+        "revision": 0,
+        "name": "#ElPatronato",
+        "outcome": "explained",
+        "applied": true,
+        "commit": "4053c0b4ebcc4ddc429a254d28c0b4e925322e92"
+      },
+      {
+        "id": "545240447bab",
+        "revision": 0,
+        "name": "ATP Finals",
+        "outcome": "explained",
+        "applied": true,
+        "commit": "fa93d64fbbb1eee2fb39f936f97d75de186f3085"
+      },
+      {
+        "id": "2505f6dab719",
+        "revision": 0,
+        "name": "Kocho",
+        "outcome": "explained_prudent",
+        "applied": true,
+        "commit": "ef758b719bac7230a4beb82fb87b81ddea828374"
+      },
+      {
+        "id": "c995c14d3078",
+        "revision": 0,
+        "name": "Diana Morant",
+        "outcome": "explained",
+        "applied": true,
+        "commit": "9dd66cc3ac7ec86457f8cd9b0f2af60048523b51"
+      }
+    ],
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -90,10 +156,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-manual-20261106-2340-chat cerrada 0/0. Barrera final main: editorial-queue=0 y no quedan preparing/update, rewrite_pending ni reexplicaciones. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada editorial tr-autoguard-1794005467 cerrada 4/4. Barrera final main: editorial-queue=0 y no quedan preparing/update, reexplain ni rewrite_pending. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T23:51:20+01:00",
-  "last_completed_at": "2026-11-06T23:41:00+01:00",
+  "last_completed_at": "2026-11-06T23:58:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -144,7 +210,8 @@
     "tr-manual-20261106-2255-chat",
     "tr-1794002386005-manual",
     "tr-1794004004071-manual",
-    "tr-manual-20261106-2340-chat"
+    "tr-manual-20261106-2340-chat",
+    "tr-autoguard-1794005467"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -197,7 +264,8 @@
     "tr-manual-20261106-2255-chat",
     "tr-1794002386005-manual",
     "tr-1794004004071-manual",
-    "tr-manual-20261106-2340-chat"
+    "tr-manual-20261106-2340-chat",
+    "tr-autoguard-1794005467"
   ],
-  "message": "Validado JIT c995c14d3078 r0. Mitin del PSOE en València esta noche verificado por dos fuentes actuales."
+  "message": "Pasada editorial tr-autoguard-1794005467 cerrada 4/4. Barrera final main: editorial-queue=0 y no quedan preparing/update, reexplain ni rewrite_pending. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
