@@ -10,36 +10,36 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-06T23:10:00+01:00",
-  "updated_at": "2026-11-06T23:12:30+01:00",
+  "updated_at": "2026-11-06T23:14:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "1d446fcf702d",
-  "title": "#sevillaalaves",
+  "trend_id": "4ef3f4d0432a",
+  "title": "#LaDiana6nov",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "1d446fcf702d"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "1d446fcf702d",
     "4ef3f4d0432a"
   ],
   "remaining_active_ids": [
-    "1d446fcf702d",
     "4ef3f4d0432a"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo #sevillaalaves · revisión 1",
+  "activity": "Persistiendo #LaDiana6nov · revisión 0",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -189,5 +189,5 @@
     "tr-manual-20261106-2240-chat",
     "tr-manual-20261106-2255-chat"
   ],
-  "message": "Resultado editorial enviado al aplicador para #sevillaalaves r1; verificando persistencia en main."
+  "message": "JIT validado: #LaDiana6nov r0 sigue preparing. Resultado editorial enviado al aplicador; verificando persistencia."
 }
