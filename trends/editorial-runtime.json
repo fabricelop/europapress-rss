@@ -3,19 +3,26 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793951826772-manual",
-  "previous_run_id": "tr-1793951409248-manual",
+  "run_id": "tr-1793951409248-manual",
+  "previous_run_id": "tr-1793951281387-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-06T08:57:06.772+01:00",
-  "updated_at": "2026-11-06T09:04:30+01:00",
-  "finished_at": "2026-11-06T09:04:30+01:00",
-  "current": 3,
-  "total": 3,
+  "started_at": "2026-11-06T08:51:40+01:00",
+  "updated_at": "2026-11-06T09:05:05+01:00",
+  "finished_at": "2026-11-06T09:05:05+01:00",
+  "current": 10,
+  "total": 10,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "f67d14c2d060",
+    "9c0ccda7fac2",
+    "69446521a2f3",
+    "945474fb95a9",
+    "5b6f8905431c",
+    "4e565e7064be",
+    "ff942c05391c",
     "red-review-d310f5afdd5c4e8c0d56",
     "d01eee852c37"
   ],
@@ -26,10 +33,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 10,
+    "observed": 10,
+    "closed": 10,
+    "explained": 8,
     "problematic": 0,
     "updates": 1,
     "continuity_updates": 1,
@@ -49,6 +56,62 @@
   "error": null,
   "activity": "closing",
   "final_outcomes": [
+    {
+      "id": "f67d14c2d060",
+      "revision": 0,
+      "name": "Trump",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "9c0ccda7fac2",
+      "revision": 0,
+      "name": "Texas",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "69446521a2f3",
+      "revision": 0,
+      "name": "Paraguay",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "945474fb95a9",
+      "revision": 0,
+      "name": "Jesús de Miguel",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "5b6f8905431c",
+      "revision": 0,
+      "name": "Karmele",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "4e565e7064be",
+      "revision": 0,
+      "name": "Conference",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "ff942c05391c",
+      "revision": 0,
+      "name": "Tezanos",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
     {
       "id": "red-review-5db44b045812550cfce4",
       "revision": 0,
@@ -78,15 +141,22 @@
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793951826772-manual",
+    "run_id": "tr-1793951409248-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T08:57:06.772+01:00",
-    "updated_at": "2026-11-06T09:04:30+01:00",
-    "finished_at": "2026-11-06T09:04:30+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-11-06T08:51:40+01:00",
+    "updated_at": "2026-11-06T09:05:05+01:00",
+    "finished_at": "2026-11-06T09:05:05+01:00",
+    "current": 10,
+    "total": 10,
     "queue_complete": true,
     "processed_ids": [
+      "f67d14c2d060",
+      "9c0ccda7fac2",
+      "69446521a2f3",
+      "945474fb95a9",
+      "5b6f8905431c",
+      "4e565e7064be",
+      "ff942c05391c",
       "red-review-d310f5afdd5c4e8c0d56",
       "d01eee852c37"
     ],
@@ -95,6 +165,62 @@
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
+      {
+        "id": "f67d14c2d060",
+        "revision": 0,
+        "name": "Trump",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "9c0ccda7fac2",
+        "revision": 0,
+        "name": "Texas",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "69446521a2f3",
+        "revision": 0,
+        "name": "Paraguay",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "945474fb95a9",
+        "revision": 0,
+        "name": "Jesús de Miguel",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "5b6f8905431c",
+        "revision": 0,
+        "name": "Karmele",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "4e565e7064be",
+        "revision": 0,
+        "name": "Conference",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "ff942c05391c",
+        "revision": 0,
+        "name": "Tezanos",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
       {
         "id": "red-review-5db44b045812550cfce4",
         "revision": 0,
@@ -122,10 +248,10 @@
         "via": "editorial_outbox_applied"
       }
     ],
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 10,
+    "observed": 10,
+    "closed": 10,
+    "explained": 8,
     "problematic": 0,
     "updates": 1,
     "continuity_updates": 1,
@@ -142,15 +268,13 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 3/3 por convergencia real de main: Chiqui cerró como revisión stale concurrente, Peugeot quedó actualizado como continuidad y #LaHora6N quedó explicado. Cola autoritativa releída vacía, sin reexplicaciones pendientes, sin ImageGen, sin image-outbox y sin publicaciones."
+    "message": "Pasada cerrada 10/10 tras relectura final de main: 8 explicaciones aplicadas (Trump, Texas, Paraguay, Jesús de Miguel, Karmele, Conference, Tezanos y #LaHora6N), 1 actualización de continuidad aplicada (Peugeot) y 1 revisión convergida como stale (Chiqui). Cola autoritativa 0. Sin ImageGen, sin image-outbox y sin publicaciones en la pasada editorial."
   },
-  "last_started_at": "2026-11-06T08:57:06.772+01:00",
-  "last_completed_at": "2026-11-06T09:04:30+01:00",
+  "last_started_at": "2026-11-06T08:51:40+01:00",
+  "last_completed_at": "2026-11-06T09:05:05+01:00",
   "draft_preview": null,
-  "satisfied_run_ids": [
-    "tr-1793951826772-manual"
-  ],
-  "command_id": "tr-1793951826772-manual",
+  "satisfied_run_ids": [],
+  "command_id": "tr-1793951409248-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
