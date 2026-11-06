@@ -40,3 +40,23 @@ La instalación no modifica ni sustituye TTActualidad web, MiMapaDelTiempo, FabC
 ## Galería de fotografías de archivo
 
 La sección **Fotos archivo** reúne únicamente las fotografías de archivo actualmente vinculadas a noticias y tendencias. Resuelve archivos guardados en `ttittulares/archive-images/` y `trends/archive-images/` de GitHub por identificador y revisión editorial, y utiliza referencias `archive_image` / `fallback_image` del estado vigente. Un archivo ausente se marca como no disponible; nunca se sustituye por una imagen IA. Permite ampliar, abrir el original y copiar la fotografía desde el iPhone. **No descarga ni indexa imágenes IA** de ChatGPT Images, TTImages ni de `generated-images/`. El acceso a ChatGPT Images continúa mediante su botón independiente.
+
+
+
+## TTActualidad iPhone 0.4.62 build74 — publicación directa Buffer Free (propuesta aislada)
+
+**Base técnica:** app moderna 0.4.61 build73 de la rama `feature/ttactualidad-relations-recent-inbox-20261105` (PR #314). **No usar la versión antigua del README/IPA 0.2.0 para esta función.** Esta implementación se mantiene como PR dependiente sin reemplazar las funciones de relaciones, imágenes, edición, histórico, pendientes ni Live Activities.
+
+**Dos acciones completamente independientes:**
+- «Publicar en X»: **sin cambios**; abre el compositor X con el texto preparado, conserva la foto manual y las decisiones posteriores.
+- «Publicar directo · Buffer»: un toque individual desde una ficha **en Listas**, siempre que tenga texto e imagen IA verificada; transmite una solicitud editorial autenticada a GitHub. No abre X y asigna rígidamente @ttittulares a noticias y @ttendenciasesp a tendencias. No publica por sí sola al generar o elaborar una noticia.
+- En el panel aparecen dos nuevos contadores **DIRECTAS X** independientes de los actuales «24 h publicados»: total confirmado en X por Buffer, confirmados durante 24 h móviles, y operaciones pendientes. Un HTTP 204, post reservado, en cola, fallido o de estado incierto **no aumenta** el contador.
+- Cierre de Listas a través del mismo flujo GitHub `ttactualidad_action_v1` solo **después** de confirmación real del estado `sent` del post por Buffer. Los eventos manuales existentes y su histórico no se alteran.
+
+**Credenciales y puesta en marcha (sin coste añadido):** el usuario ya tiene una cuenta Buffer, pero debe conectar dentro de Buffer las **dos cuentas X** y generar su API key. En GitHub, repositorio → Settings → Secrets and variables → Actions, debe guardar la clave como secreto `BUFFER_API_KEY`. Jamás introducirla en la app, en un chat o en un commit. Conexión de X o secreto ausentes → bloqueo seguro, sin envío. La publicación está implementada en `pilot/ttactualidad_buffer_publish.py` y `.github/workflows/ttactualidad-buffer-publish.yml` (solo ejecutables tras fusionar el código a main); lecturas y estado en `pilot/ttactualidad-buffer-posts.json`.
+
+**Medidas de seguridad:** comprobación de `project,event_id,revision` y texto editorial desde `main`; imagen GAG IA bajo `generated-images` coincidente con la ficha y SHA-256 verificado, nunca una imagen de archivo ajena ni una URL arbitraria; coincidencia exacta de cuenta X en los canales de Buffer; reserva persistente contra doble clic y timeout. Un resultado `unknown` bloquea reenvío hasta verificación humana. El fallo de una imagen deja operativo el botón X tradicional. No se introduce ningún token en el iPhone ni se toca el Worker de Telegram/Instagram.
+
+**Validación:** `.github/workflows/ttactualidad-buffer-tests.yml` contiene seis pruebas simuladas sin publicar nada; `.github/workflows/ttactualidad-buffer-ios-verify.yml` compila la app y genera la IPA sin firma `TTActualidad-0.4.62-build74-Buffer-IPA` para PlumeImpactor. No declarar operativa la publicación real hasta que las cuentas estén conectadas y se compruebe una publicación efectivamente `sent` con su foto.
+
+**Restricciones:** Buffer Free tiene límites por cuenta; usarlo no implica publicaciones ilimitadas. En X se deben respetar las restricciones de contenidos repetitivos y de tendencias; aquí existe siempre selección/orden humana individual. No enviar masivamente sin revisar.
