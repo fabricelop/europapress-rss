@@ -20,7 +20,6 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 import uuid
-import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "pilot/ttactualidad-buffer-posts.json"
@@ -209,11 +208,13 @@ def target_channel(key, account):
         if not orgid:
             continue
         query = """query { channels(input: { organizationId: %s }) {
-          id name displayName service externalLink
+          id name displayName service externalLink isDisconnected isLocked
         } }""" % json.dumps(orgid)
         channels = graphql(key, query).get("channels") or []
         for channel in channels:
             if str(channel.get("service", "")).lower() != "twitter":
+                continue
+            if channel.get("isDisconnected") or channel.get("isLocked"):
                 continue
             names = [str(channel.get(x) or "") for x in ("name", "displayName")]
             url = str(channel.get("externalLink") or "")
