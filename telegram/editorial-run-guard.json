@@ -1,57 +1,44 @@
 {
   "version": 1,
-  "checked_at": "2026-11-06T17:04:11.391867+00:00",
+  "checked_at": "2026-11-06T21:05:49.444395+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-06T17:04:11.391867+00:00",
-      "pending_count": 1,
-      "pending_ids": [
-        "d31ee34238db"
-      ],
-      "oldest_at": "2026-11-06T17:03:32.015289Z",
+      "checked_at": "2026-11-06T21:05:49.444395+00:00",
+      "pending_count": 0,
+      "pending_ids": [],
+      "oldest_at": null,
       "latest_run": {
-        "id": "tt-manual-20261106-1745-chat",
-        "status": "DONE",
-        "started_at": "2026-11-06T16:58:00Z",
-        "updated_at": "2026-11-06T17:02:16+00:00",
-        "finished_at": "2026-11-06T17:02:16Z",
+        "id": "tt-manual-20261106-2200-chat",
+        "status": "RUNNING",
+        "started_at": "2026-11-06T21:00:00Z",
+        "updated_at": "2026-11-06T21:05:35+00:00",
+        "finished_at": null,
         "source": "github_pr_trace"
       },
-      "control_command": "tt-urgent-1793984262080",
-      "last_command_at": "2026-11-06T16:57:42.080Z",
-      "status": "within_start_window",
+      "control_command": "tt-urgent-1793996429813",
+      "last_command_at": "2026-11-06T20:20:29.813Z",
+      "status": "no_work",
       "should_dispatch": false,
-      "item_execution": [
-        {
-          "id": "d31ee34238db",
-          "entered_at": "2026-11-06T17:03:32.015289Z",
-          "should_start_by": "2026-11-06T17:08:32.015289+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        }
-      ],
-      "backlog_signature": "2c553a890b8b935c",
-      "expected_start_by": "2026-11-06T17:08:32.015289+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-05T20:04:07.801680+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-06T17:04:11.391867+00:00",
+      "checked_at": "2026-11-06T21:05:49.444395+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tr-1793983200000-manual",
+        "id": "tr-manual-20261106-2140-chat",
         "status": "DONE",
-        "started_at": "2026-11-06T17:40:00+01:00",
-        "updated_at": "2026-11-06T16:44:00+00:00",
-        "finished_at": "2026-11-06T17:44:00+01:00",
+        "started_at": "2026-11-06T21:40:00+01:00",
+        "updated_at": "2026-11-06T20:45:00+00:00",
+        "finished_at": "2026-11-06T21:45:00+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1793980822681-manual",
-      "last_command_at": "2026-11-06T16:00:22.681Z",
+      "control_command": "tr-1793997311693-manual",
+      "last_command_at": "2026-11-06T20:35:11.693Z",
       "status": "no_work",
       "should_dispatch": false,
       "attempts": 0,
