@@ -7,39 +7,36 @@
   "previous_run_id": "tr-1793964300000-manual",
   "command_id": "tr-1793965200000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T12:40:00+01:00",
-  "updated_at": "2026-11-06T12:44:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-06T12:45:00+01:00",
+  "finished_at": "2026-11-06T12:45:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "ad20f796c9d7",
-  "title": "Pablo Barrios",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "ad20f796c9d7",
+    "7cea33981ec7"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "ad20f796c9d7",
-    "7cea33981ec7"
-  ],
-  "remaining_active_ids": [
-    "ad20f796c9d7",
-    "7cea33981ec7"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,26 +47,55 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "ad20f796c9d7",
+      "revision": 0,
+      "name": "Pablo Barrios",
+      "outcome": "explained"
+    },
+    {
+      "id": "7cea33981ec7",
+      "revision": 0,
+      "name": "Barrenetxea",
+      "outcome": "explained"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793964300000-manual",
+    "run_id": "tr-1793965200000-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T12:25:00+01:00",
-    "updated_at": "2026-11-06T12:26:00+01:00",
-    "finished_at": "2026-11-06T12:26:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-06T12:40:00+01:00",
+    "updated_at": "2026-11-06T12:45:00+01:00",
+    "finished_at": "2026-11-06T12:45:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "ad20f796c9d7",
+      "7cea33981ec7"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "final_outcomes": [
+      {
+        "id": "ad20f796c9d7",
+        "revision": 0,
+        "name": "Pablo Barrios",
+        "outcome": "explained"
+      },
+      {
+        "id": "7cea33981ec7",
+        "revision": 0,
+        "name": "Barrenetxea",
+        "outcome": "explained"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -86,13 +112,13 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial completada 0/0: cola final 0 y sin reexplicaciones pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial completada 2/2: Pablo Barrios y Barrenetxea explicados y verificados en requests/Listas. Cola final 0 y sin reexplicaciones pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T12:40:00+01:00",
-  "last_completed_at": "2026-11-06T12:26:00+01:00",
+  "last_completed_at": "2026-11-06T12:45:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [],
-  "message": "Persistiendo 1/2 y 2/2 mediante TTENDENCIAS_CHAT_OUTBOX_V1; esperando verificación de aplicación en requests/Listas."
+  "message": "Pasada editorial completada 2/2: Pablo Barrios y Barrenetxea explicados y verificados en requests/Listas. Cola final 0 y sin reexplicaciones pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
 }
