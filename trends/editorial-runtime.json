@@ -3,28 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261106-1925-chat",
-  "previous_run_id": "tr-manual-20261106-1910-chat",
-  "command_id": "tr-manual-20261106-1925-chat",
+  "run_id": "tr-manual-20261106-1941-chat",
+  "previous_run_id": "tr-manual-20261106-1925-chat",
+  "command_id": "tr-manual-20261106-1941-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T19:25:47+01:00",
-  "updated_at": "2026-11-06T19:26:25+01:00",
-  "finished_at": "2026-11-06T19:26:25+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T19:41:20+01:00",
+  "updated_at": "2026-11-06T19:41:20+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "132dd97bc009",
+  "title": "Sebastián Lelio",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "132dd97bc009"
+  ],
+  "remaining_active_ids": [
+    "132dd97bc009"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 1,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +37,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -44,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -82,7 +86,7 @@
     "title": null,
     "message": "Pasada editorial tr-manual-20261106-1925-chat cerrada 0/0. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T19:25:47+01:00",
+  "last_started_at": "2026-11-06T19:41:20+01:00",
   "last_completed_at": "2026-11-06T19:26:25+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -147,5 +151,5 @@
     "tr-manual-20261106-1910-chat",
     "tr-manual-20261106-1925-chat"
   ],
-  "message": "Pasada editorial tr-manual-20261106-1925-chat cerrada 0/0. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Procesando 1/1: Sebastián Lelio (132dd97bc009 r0)."
 }
