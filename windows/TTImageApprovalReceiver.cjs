@@ -123,7 +123,24 @@ function activeIdentities(project,document,decisions,now=Date.now()){
  }
  return result;
 }
-function selectCurrentTasks(tasks,progress,active){const current=x=>active.has(x.project+':'+x.target_id+':'+x.revision)?1:0;return [...tasks].sort((a,b)=>current(b)-current(a)||(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at)).slice(0,8);}
+function selectCurrentTasks(tasks,progress,active){
+ const isCurrent=x=>active.has(x.project+':'+x.target_id+':'+x.revision);
+ const oldest=(a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||
+   (Date.parse(b.created_at)||0)-(Date.parse(a.created_at)||0);
+ const current=tasks.filter(isCurrent).sort(oldest);
+ const historical=tasks.filter(x=>!isCurrent(x)).sort(oldest);
+ // Previously eight perpetually waiting current cards could starve every
+ // already-published/removed-from-Listas original forever. Reserve two slots
+ // per cycle for exact historical jobs, without compromising current priority.
+ const reserve=Math.min(2,historical.length);
+ const chosen=[...current.slice(0,8-reserve),...historical.slice(0,reserve)];
+ const names=new Set(chosen.map(x=>x.command_id));
+ for(const entry of [...current,...historical]){
+  if(chosen.length>=8)break;
+  if(!names.has(entry.command_id)){chosen.push(entry);names.add(entry.command_id);}
+ }
+ return chosen;
+}
 async function liveIdentities(sources){
  const all=new Set();
  for(const project of ['ttendencias','ttittulares']){
