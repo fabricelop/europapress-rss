@@ -98,8 +98,14 @@ async function ingest(request, env, githubFetch = fetch) {
     return error(415, 'ORIGINAL_PNG_REQUIRED');
   }
   const originalSHA = await hash(original);
-  const i = identity({ ...meta.identity, rasterSHA256: originalSHA });
-  if (meta.identity?.rasterSHA256 && meta.identity.rasterSHA256 !== originalSHA) {
+  // The deployed Windows receiver transmits FLAT metadata and signs
+  // {project,editorialId,revision,editorialText,editorialAt}. The previous
+  // prototype accepted only {identity:{...}} without the date in the
+  // fingerprint. Accept either exact protocol; never guess an episode.
+  const fromReceiver = !meta.identity;
+  const supplied = fromReceiver ? meta : meta.identity;
+  const i = identity({ ...supplied, rasterSHA256: originalSHA });
+  if (supplied?.rasterSHA256 && supplied.rasterSHA256 !== originalSHA) {
     return error(409, 'RASTER_SHA_MISMATCH');
   }
   const title = assertText(meta.title, 300);
@@ -116,7 +122,13 @@ async function ingest(request, env, githubFetch = fetch) {
   }
   // A self-declared hash is insufficient: bind the episode to the exact
   // editorial bytes and identity, including revision 0 after a new episode.
-  if ((await episodeFingerprint({ ...i, editorialText })) !== i.episodeFingerprint) {
+  const expected = fromReceiver ?
+    await hash(encoder.encode(JSON.stringify({
+      project:i.project, editorialId:i.editorialId, revision:i.revision,
+      editorialText, editorialAt:meta.editorialAt,
+    }))) :
+    await episodeFingerprint({ ...i, editorialText });
+  if (expected !== i.episodeFingerprint) {
     return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
   }
   const id = await candidateID(i);
