@@ -160,26 +160,40 @@ function listPage(url) {
   }
   return { limit, before: { createdAt, id } };
 }
-async function list(env, url) {
-  const { limit, before } = listPage(url);
-  let q = env.DB.prepare(`SELECT id, project, editorial_id, revision,
-    episode_fingerprint, command_id, raster_sha256, title, editorial_text, created_at
-    FROM image_candidates WHERE status='pending'
-    ${before ? 'AND (created_at < ? OR (created_at = ? AND id < ?))' : ''}
-    ORDER BY created_at DESC, id DESC LIMIT ?`);
-  q = before ?
-    q.bind(before.createdAt, before.createdAt, before.id, limit + 1) :
-    q.bind(limit + 1);
-  const result = await q.all();
-  const rows = result.results || [];
-  const page = rows.slice(0, limit);
+async function list(env, url, githubFetch = fetch) {
+  const {limit,before} = listPage(url);
+  const current = await top30Now(env,githubFetch);
+  const exactTrends = current.length ? "(project='ttendencias' AND (editorial_id,revision) IN (" +
+    current.map(()=>'(?,?)').join(',') + "))" : "0";
+  // Rank ALL decisions before restricting to pending. Rejecting a newer PNG
+  // must not reveal an older duplicate and demand approval again.
+  const sql = [
+    'WITH ranked AS (',
+    ' SELECT id, project, editorial_id, revision, episode_fingerprint, command_id,',
+    ' raster_sha256, title, editorial_text, editorial_at, created_at, status,',
+    ' ROW_NUMBER() OVER (PARTITION BY project, editorial_id, revision',
+    ' ORDER BY created_at DESC, id DESC) AS rn',
+    ' FROM image_candidates WHERE ' + exactTrends,
+    " OR (project='ttittulares' AND editorial_at >= ?)",
+    ') SELECT id,project,editorial_id,revision,episode_fingerprint,command_id,',
+    ' raster_sha256,title,editorial_text,editorial_at,created_at,status FROM ranked',
+    " WHERE rn=1 AND status='pending'",
+    before ? 'AND (created_at < ? OR (created_at = ? AND id < ?))' : '',
+    'ORDER BY created_at DESC,id DESC LIMIT ?',
+  ].join('\n');
+  const args = [...current.flatMap(x=>[x.editorialId,x.revision]),NEWS_CUTOVER_ISO,
+    ...(before?[before.createdAt,before.createdAt,before.id]:[]),limit+1];
+  const result = await env.DB.prepare(sql).bind(...args).all();
+  const rows = filterVisibleCandidates(result.results||[],current,limit+1,before);
   const hasMore = rows.length > limit;
-  const last = page[page.length - 1];
-  // Cursor is an opaque navigation token, not an authorization token.
-  return json({ items: page.map(row => ({
-    id: row.id, identity: rowIdentity(row), title: row.title,
-    editorialText: row.editorial_text, createdAt: row.created_at,
-  })), hasMore, nextCursor: hasMore ? last.created_at + '|' + last.id : null });
+  const page = rows.slice(0,limit);
+  const last = page[page.length-1];
+  return json({items:page.map(row=>({
+    id:row.id,identity:rowIdentity(row),title:row.title,
+    editorialText:row.editorial_text,editorialAt:row.editorial_at,
+    createdAt:row.created_at,
+  })),hasMore,nextCursor:hasMore?last.created_at+'|'+last.id:null,
+    pageLimit:VISIBLE_INBOX_LIMIT});
 }
 async function preview(env, id) {
   const row = await env.DB.prepare(`SELECT object_key FROM image_candidates
