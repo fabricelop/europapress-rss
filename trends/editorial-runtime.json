@@ -8,19 +8,25 @@
   "command_id": "tr-1793963400000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-06T12:10:00+01:00",
-  "updated_at": "2026-11-06T12:10:00+01:00",
+  "updated_at": "2026-11-06T12:14:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "10327dd9867e",
+  "title": "Marc Roca",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "10327dd9867e",
+    "5f62f700a4c4"
+  ],
+  "remaining_active_ids": [
+    "10327dd9867e",
+    "5f62f700a4c4"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -33,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -44,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -106,5 +112,5 @@
   "satisfied_run_ids": [],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [],
-  "message": "Pasada editorial iniciada. Cola inicial 0; verificando barrera final y reexplicaciones pendientes."
+  "message": "Investigando Marc Roca (0/2)."
 }
