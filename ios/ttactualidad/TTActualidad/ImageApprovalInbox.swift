@@ -103,7 +103,11 @@ private final class ApprovalInboxModel: ObservableObject {
                 await loadOriginal(image, using: github)
             }
         } catch {
-            notice = "No se pudo consultar la bandeja privada: \(error.localizedDescription)"
+            // Fail closed on Top30 identity/read errors: never leave a stale
+            // approval card on screen after a failed scope refresh.
+            images = []
+            previews = [:]
+            notice = "No se pudo verificar el Top 30 y la bandeja privada: \(error.localizedDescription)"
         }
     }
 
