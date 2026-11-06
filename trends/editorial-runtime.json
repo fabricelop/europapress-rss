@@ -5,15 +5,15 @@
   "canonical": true,
   "run_id": "tr-autoguard-1793956276",
   "previous_run_id": "tr-1793954384977-manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-06T10:12:30+01:00",
-  "updated_at": "2026-11-06T10:16:58+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-06T10:18:30+01:00",
+  "finished_at": "2026-11-06T10:18:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "f10b9b94b734",
-  "title": "Lc 16",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "f10b9b94b734"
@@ -22,66 +22,76 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "incident_count": 0,
-  "incidents": [],
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
+    "problematic": 0,
+    "updates": 1,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 1,
+    "concurrent_convergence": 0
+  },
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-06T10:16:00+01:00",
+      "phase": "persisting",
+      "trend_id": "f10b9b94b734",
+      "title": "Lc 16",
+      "reason": "La escritura atómica directa de los JSON grandes falló por un error de transporte h2; se releyó main y se aplicó la misma revisión mediante el reconciliador JIT del repositorio, verificado después en requests + telegram-manual-explained."
+    }
+  ],
   "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "f10b9b94b734",
+      "revision": 0,
+      "name": "Lc 16",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793954384977-manual",
+    "run_id": "tr-autoguard-1793956276",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-06T09:40:30+01:00",
-    "updated_at": "2026-11-06T09:48:20+01:00",
-    "finished_at": "2026-11-06T09:48:20+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-11-06T10:12:30+01:00",
+    "updated_at": "2026-11-06T10:18:30+01:00",
+    "finished_at": "2026-11-06T10:18:30+01:00",
+    "current": 1,
+    "total": 1,
     "queue_complete": true,
     "processed_ids": [
-      "2bd3765e0bbb",
-      "1fe2c8fc8928",
-      "4c72b543ab09",
-      "d571db22b2ef"
+      "f10b9b94b734"
     ],
     "converged_ids": [],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "2bd3765e0bbb",
+        "id": "f10b9b94b734",
         "revision": 0,
-        "name": "Asraf",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "1fe2c8fc8928",
-        "revision": 0,
-        "name": "Chiqui",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4c72b543ab09",
-        "revision": 0,
-        "name": "Brighton",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "d571db22b2ef",
-        "revision": 0,
-        "name": "Claudio",
+        "name": "Lc 16",
         "outcome": "explained",
         "applied": true
       }
     ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
-    "updates": 4,
+    "updates": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
@@ -96,10 +106,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-1793954384977-manual cerrada 4/4: Asraf, Chiqui, Brighton y Claudio persistidos y verificados en requests + ficha; cola y reexplicaciones activas a 0. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte resuelta mediante reconciliador JIT."
+    "message": "Pasada editorial tr-autoguard-1793956276 cerrada 1/1: Lc 16 r0 persistido y verificado en requests + telegram-manual-explained. Barrera final: editorial-queue=0 y no queda preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia h2 resuelta mediante reconciliador JIT."
   },
   "last_started_at": "2026-11-06T10:16:58+01:00",
-  "last_completed_at": "2026-11-06T10:16:58+01:00",
+  "last_completed_at": "2026-11-06T10:18:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793951409248-manual",
@@ -132,5 +142,5 @@
       "reason": "later canonical passes processed the pending maintenance reviews and successor verified the final empty barrier"
     }
   ],
-  "message": "Preparando 1/1: Lc 16 (f10b9b94b734 r0). Revalidación JIT e investigación actual en curso; ImageGen desactivado en esta pasada."
+  "message": "Pasada editorial tr-autoguard-1793956276 cerrada 1/1: Lc 16 r0 persistido y verificado en requests + telegram-manual-explained. Barrera final: editorial-queue=0 y no queda preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia h2 resuelta mediante reconciliador JIT."
 }
