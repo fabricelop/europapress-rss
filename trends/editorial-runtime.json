@@ -8,23 +8,29 @@
   "command_id": "tr-manual-20261106-2140-chat",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-06T21:40:00+01:00",
-  "updated_at": "2026-11-06T21:40:00+01:00",
+  "updated_at": "2026-11-06T21:43:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "007aba61a434",
+  "title": "Stephen Miller",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "007aba61a434",
+    "0eeea4d3a966"
+  ],
+  "remaining_active_ids": [
+    "007aba61a434",
+    "0eeea4d3a966"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -44,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -184,5 +190,5 @@
     "tr-1793997162549-manual",
     "tr-1793997311693-manual"
   ],
-  "message": "Iniciando pasada editorial; releyendo main y verificando cola activa, revisiones y mantenimiento antes del cierre."
+  "message": "Persistiendo Stephen Miller r0 tras investigación y revalidación JIT."
 }
