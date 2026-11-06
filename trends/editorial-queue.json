@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-06T16:59:45+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-06T16:00:16.333114+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-a8ca31e21fd45559b24a",
+      "revision": 0,
+      "name": "Revisar novedades: Ritz",
+      "rank": 18,
+      "status": "preparing",
+      "requested_at": "2026-11-06T16:00:16.333114+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "fbffe6468908",
+        "revision": 0,
+        "name": "Ritz",
+        "rank": 20,
+        "explanation": "TT#20 Ritz es tendencia por el juego con el Hotel Ritz, donde Ada Colau presentó hoy su propuesta “Tax the Rich” para gravar grandes patrimonios.\n#AdaColau #FrenteAmplio\n🌶️ El “Tax the Rich” ha elegido el Ritz para su presentación.",
+        "explanation_sha256": "c370d80845d732345b88b90f6a054546584a6c05b405ae696ea3fe360423b54a",
+        "explained_at": "2026-11-05T16:43:00+01:00",
+        "verification_sources": [
+          "https://www.nuevaeconomiaforum.org/noticias/colau-propone-un-impuesto-las-grandes-fortunas-y-revisar-desgravaciones-grandes-empresas",
+          "https://www.eldiario.es/politica/colau-propone-impuesto-tax-the-rich-gravar-patrimonios-millon-euros_1_13639759.html"
+        ],
+        "fingerprint": "a365fbe2362c2b26f8a303bae6cea1c538afb8f706459c761d297c17bf6566d5"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-6b3abf1a33b75588cb6f",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-11-06T16:00:16.333114+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "17dad4a4dcfa",
+        "revision": 0,
+        "name": "La Séptima",
+        "rank": 29,
+        "explanation": "TT#7 La Séptima sigue siendo tendencia por su estreno en la TDT: debutó con un 2,8% de cuota y casi 5 millones de espectadores únicos; la entrevista a Carlos Cuerpo fue lo más visto del canal.\n#LaSéptima #TDT\n🌶️ El estreno superó hasta la previsión de la casa.",
+        "explanation_sha256": "03bb3ec7e7aa335de1807e22a6460dc20c1d6f2464d7b4687f73dfc618ea436c",
+        "explained_at": "2026-11-04T19:02:15.011Z",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/sociedad/noticia-septima-arranca-emisiones-manana-sondeo-electoral-diario-entrevista-carlos-cuerpo-20261104141109.html"
+          },
+          {
+            "url": "https://efe.com/cultura/2026-11-04/la-septima-canal-television-estreno/"
+          }
+        ],
+        "fingerprint": "bd93de9342bf804bc8e3818e81fff0bd206b217e4b33bfc0df1870d6de65ffdb"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
