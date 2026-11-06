@@ -7,40 +7,39 @@
   "previous_run_id": "tr-1793978700000-manual",
   "command_id": "tr-1793980384315-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T16:53:00+01:00",
-  "updated_at": "2026-11-06T17:04:30+01:00",
-  "finished_at": null,
-  "current": 3,
+  "updated_at": "2026-11-06T17:02:30+01:00",
+  "finished_at": "2026-11-06T17:02:30+01:00",
+  "current": 5,
   "total": 5,
-  "trend_id": "red-review-6b3abf1a33b75588cb6f",
-  "title": "Revisar novedades: La Séptima",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "1484984db99a",
     "d6b652b7d172",
-    "299ed3e6042c"
-  ],
-  "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [
+    "299ed3e6042c",
     "red-review-a8ca31e21fd45559b24a",
     "red-review-6b3abf1a33b75588cb6f"
   ],
+  "converged_ids": [],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
+    "attempted": 5,
     "observed": 5,
-    "closed": 3,
+    "closed": 5,
     "explained": 3,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,31 +50,109 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Sin novedades",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "1484984db99a",
+      "revision": 0,
+      "name": "#TEM6N",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d6b652b7d172",
+      "revision": 0,
+      "name": "#RTXON",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "299ed3e6042c",
+      "revision": 0,
+      "name": "Abascal",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "red-review-a8ca31e21fd45559b24a",
+      "revision": 0,
+      "name": "Revisar novedades: Ritz",
+      "outcome": "unchanged",
+      "applied": true
+    },
+    {
+      "id": "red-review-6b3abf1a33b75588cb6f",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "outcome": "unchanged",
+      "applied": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793978700000-manual",
+    "run_id": "tr-1793980384315-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T16:25:00+01:00",
-    "updated_at": "2026-11-06T16:26:30+01:00",
-    "finished_at": "2026-11-06T16:26:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-06T16:53:00+01:00",
+    "updated_at": "2026-11-06T17:02:30+01:00",
+    "finished_at": "2026-11-06T17:02:30+01:00",
+    "current": 5,
+    "total": 5,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "1484984db99a",
+      "d6b652b7d172",
+      "299ed3e6042c",
+      "red-review-a8ca31e21fd45559b24a",
+      "red-review-6b3abf1a33b75588cb6f"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "final_outcomes": [
+      {
+        "id": "1484984db99a",
+        "revision": 0,
+        "name": "#TEM6N",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "d6b652b7d172",
+        "revision": 0,
+        "name": "#RTXON",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "299ed3e6042c",
+        "revision": 0,
+        "name": "Abascal",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "red-review-a8ca31e21fd45559b24a",
+        "revision": 0,
+        "name": "Revisar novedades: Ritz",
+        "outcome": "unchanged",
+        "applied": true
+      },
+      {
+        "id": "red-review-6b3abf1a33b75588cb6f",
+        "revision": 0,
+        "name": "Revisar novedades: La Séptima",
+        "outcome": "unchanged",
+        "applied": true
+      }
+    ],
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -87,10 +164,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial cerrada 0/0 tras barrera final en main: editorial-queue=0 y trends/requests.json conserva el mismo blob verificado sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox creado=0; publicaciones=0."
+    "message": "Pasada editorial cerrada 5/5: #TEM6N, #RTXON y Abascal explicados y aplicados; revisiones Ritz y La Séptima cerradas unchanged. Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain localizado. ImageGen=0; image-outbox creado=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T16:59:44+01:00",
-  "last_completed_at": "2026-11-06T16:59:45+01:00",
+  "last_started_at": "2026-11-06T16:53:00+01:00",
+  "last_completed_at": "2026-11-06T17:02:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -110,7 +187,8 @@
     "tr-1793976000000-manual",
     "tr-1793976900000-manual",
     "tr-1793977800000-manual",
-    "tr-1793978700000-manual"
+    "tr-1793978700000-manual",
+    "tr-1793980384315-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -132,7 +210,8 @@
     "tr-1793976000000-manual",
     "tr-1793976900000-manual",
     "tr-1793977800000-manual",
-    "tr-1793978700000-manual"
+    "tr-1793978700000-manual",
+    "tr-1793980384315-manual"
   ],
-  "message": "La Séptima: sin novedades sustanciales posteriores; persistiendo revisión unchanged."
+  "message": "Pasada editorial cerrada 5/5: #TEM6N, #RTXON y Abascal explicados y aplicados; revisiones Ritz y La Séptima cerradas unchanged. Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain localizado. ImageGen=0; image-outbox creado=0; publicaciones=0."
 }
