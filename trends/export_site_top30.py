@@ -18,6 +18,12 @@ from difflib import SequenceMatcher
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
+import importlib.util
+_supp_path = Path(__file__).resolve().parent / "suppression.py"
+_supp_spec = importlib.util.spec_from_file_location("tt_suppression_site", _supp_path)
+_supp_mod = importlib.util.module_from_spec(_supp_spec)
+_supp_spec.loader.exec_module(_supp_mod)
+is_suppressed = _supp_mod.is_suppressed
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "trends" / "site-top30-current.json"
@@ -260,7 +266,7 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
     output = []
     for rank in range(1, 31):
         name = by_rank.get(rank)
-        if not name:
+        if not name or is_suppressed(name):
             continue
         key = norm(name)
         candidate = by_name.get(key, {})
@@ -271,8 +277,8 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
         exp = text(chosen, "explanation")
         status = statuses.get(key, "EXPLICADA" if exp else "PENDIENTE")
         selected = {
-            "card_id": f"rank-{rank}",  # visible row identity; never editorial identity
-            "rank": rank, "name": name,
+            "card_id": f"rank-{len(output)+1}",  # view rank, never editorial identity
+            "rank": len(output)+1, "name": name,
             "status": status,
             "explanation": exp,
             "explained_at": text(chosen, "explained_at"),

@@ -9,6 +9,10 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from requests_json import dumps_for_path
+try:
+    from suppression import active_request, purge_pending
+except ImportError:
+    from trends.suppression import active_request, purge_pending
 
 ROOT = Path(__file__).resolve().parent.parent
 TRENDS = ROOT / "trends"
@@ -302,6 +306,8 @@ def sync_queue(requests_doc):
     top30_names = {norm(x.get("name")) for x in (recent.get("items") or recent.get("top10") or []) if 1 <= int(x.get("rank") or 0) <= 30 and x.get("name")}
     items = []
     for req in requests_doc.get("requests", []) or []:
+        if active_request(req):
+            continue
         status = str(req.get("status") or "")
         if status not in ACTIVE:
             continue
@@ -370,6 +376,7 @@ def main():
     runtime_path = TRENDS / "editorial-runtime.json"
 
     requests_doc = load(requests_path, {"requests": []})
+    purge_pending(requests_doc.get("requests", []))
     prepared_doc = load(prepared_path, {"project": "TTendencias", "items": []})
     manual_doc = load(manual_path, {"project": "TTendencias", "items": []})
     runtime = load(runtime_path, {"project": "TTendencias"})
@@ -413,6 +420,9 @@ def main():
                 path.unlink()
                 continue
 
+            if active_request(req):
+                print(f"Ignorado {path.name}: tendencia suprimida por el editor")
+                continue
             if str(req.get("status") or "") not in APPLYABLE:
                 print(f"Ignorado {path.name}: estado actual {req.get('status')}")
                 path.unlink()
