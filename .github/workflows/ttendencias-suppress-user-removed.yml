@@ -1,0 +1,66 @@
+name: TTendencias - retire editor-suppressed pending trend
+
+on:
+  pull_request:
+    paths:
+      - 'trends/suppression.py'
+      - 'trends/suppressed-terms.json'
+      - 'trends/suppress_pending_term.py'
+      - 'trends/test_suppression.py'
+      - 'trends/auto_queue_new.py'
+      - 'trends/update_trends.py'
+      - 'trends/export_site_top30.py'
+  push:
+    branches: [main]
+    paths:
+      - 'trends/suppressed-terms.json'
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Suppression regressions
+        run: python -m unittest discover -s trends -p test_suppression.py -v
+      - name: Compile impacted editorial scripts
+        run: python -m py_compile trends/suppression.py trends/suppress_pending_term.py trends/auto_queue_new.py trends/update_trends.py trends/export_site_top30.py trends/apply_editorial_outbox.py
+  apply:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: regression
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ttendencias-user-suppression-main
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Retire exact term from live editorial sources without overwriting concurrent edits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python trends/suppress_pending_term.py --apply
+            git add -- trends/requests.json trends/editorial-queue.json trends/recent.json trends/site-top30-current.json
+            if git diff --cached --quiet; then
+              echo 'SUPPRESSED_TERM_ALREADY_ABSENT_FROM_VISIBLE_SOURCES'
+              exit 0
+            fi
+            git commit -m 'chore(TTendencias): retire suppressed hashtag from live pending and Top30'
+            if git push origin HEAD:main; then
+              echo 'SUPPRESSED_TERM_REMOVED_FROM_LIVE_MAIN'
+              exit 0
+            fi
+            echo "Concurrent editorial update; retry attempt ${attempt}/5"
+            sleep 5
+          done
+          echo 'Could not safely commit suppression due to concurrent writes or protection' >&2
+          exit 1
