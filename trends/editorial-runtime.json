@@ -3,39 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793928920531-manual",
-  "previous_run_id": "tr-20261106T0210+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T02:36:00+01:00",
-  "updated_at": "2026-11-06T02:42:00+01:00",
-  "finished_at": "2026-11-06T02:42:00+01:00",
-  "current": 3,
-  "total": 3,
+  "run_id": "tr-1793929189185-manual",
+  "previous_run_id": "tr-1793928920531-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T02:42:30+01:00",
+  "updated_at": "2026-11-06T02:42:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-280be120653726e432d7",
-    "red-review-d146eeeeeec1351459e5",
-    "radar-prepare-9f8ace96938caa641167"
-  ],
-  "converged_ids": [
-    "32b661b351e7"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -43,32 +37,19 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada cerrada tras releer main: cola editorial 0. Inda sin cambios; Paraguay actualizado en continuidad; Radar Karmele preparado. Sony quedó cerrado por la pasada predecesora convergente.",
-  "final_outcomes": [
+  "activity": [
     {
-      "id": "red-review-280be120653726e432d7",
-      "name": "Inda",
-      "outcome": "unchanged",
-      "detail": "Revisión sin novedad sustancial; se conserva texto y fecha."
-    },
-    {
-      "id": "red-review-d146eeeeeec1351459e5",
-      "name": "Paraguay",
-      "outcome": "continuity_update",
-      "detail": "Actualizada la explicación del mismo episodio por el avance del juicio político; sin nueva ficha ni imagen."
-    },
-    {
-      "id": "radar-prepare-9f8ace96938caa641167",
-      "name": "karmele",
-      "outcome": "anticipation_prepared",
-      "detail": "Borrador factual Radar verificado; no publicado ni enviado a Listas."
+      "at": "2026-11-06T02:42:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada sobre main; cola observada 0 tras convergencia de la ejecución anterior. Verificando barrera final de cola y reexplicaciones."
     }
   ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793928920531-manual",
@@ -130,7 +111,7 @@
     "title": null,
     "message": "Pasada cerrada con cola 0. Inda sin cambios; Paraguay actualizado en continuidad; Radar Karmele preparado. Sony convergió desde la pasada predecesora."
   },
-  "last_started_at": "2026-11-06T02:36:00+01:00",
+  "last_started_at": "2026-11-06T02:42:30+01:00",
   "last_completed_at": "2026-11-06T02:42:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -223,7 +204,7 @@
     "tr-1793928920531-manual",
     "tr-20261106T0225+0100-manual"
   ],
-  "command_id": "tr-1793928920531-manual",
+  "command_id": "tr-1793929189185-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
