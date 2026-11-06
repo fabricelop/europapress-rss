@@ -8,9 +8,9 @@
   "command_id": "tr-1793997162549-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "verifying",
   "started_at": "2026-11-06T21:33:00+01:00",
-  "updated_at": "2026-11-06T21:36:00+01:00",
+  "updated_at": "2026-11-06T21:37:00+01:00",
   "finished_at": null,
   "current": 1,
   "total": 2,
@@ -50,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades",
+  "activity": "verifying",
   "final_outcomes": [
     {
       "id": "red-review-f5add425e41003b10d44",
@@ -180,5 +180,5 @@
     "tr-manual-20261106-2110-chat",
     "tr-manual-20261106-2125-chat"
   ],
-  "message": "Pasada editorial 1/2. Koldo cerrado unchanged; revisando novedades: Peugeot."
+  "message": "Peugeot investigado y resultado unchanged persistido en maintenance-outbox; verificando que el aplicador lo retire de la cola."
 }
