@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261106T104000+0100-manual",
-  "previous_run_id": "tr-1793956657674-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T10:40:00+01:00",
-  "updated_at": "2026-11-06T10:41:00+01:00",
-  "finished_at": "2026-11-06T10:41:00+01:00",
+  "run_id": "tr-20261106T105500+0100-manual",
+  "previous_run_id": "tr-20261106T104000+0100-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T10:55:00+01:00",
+  "updated_at": "2026-11-06T10:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -42,7 +42,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -80,7 +80,7 @@
     "title": null,
     "message": "Pasada editorial tr-20261106T104000+0100-manual cerrada 0/0: la cola vigente se releyó en main y permanecía vacía; no se observaron preparing/update ni rewrite_pending activos. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T10:40:00+01:00",
+  "last_started_at": "2026-11-06T10:55:00+01:00",
   "last_completed_at": "2026-11-06T10:41:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -89,7 +89,7 @@
     "tr-1793952600000-manual",
     "tr-1793952081715-manual"
   ],
-  "command_id": "tr-20261106T104000+0100-manual",
+  "command_id": "tr-20261106T105500+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat",
   "satisfied_run_chain": [
@@ -114,5 +114,5 @@
       "reason": "later canonical passes processed the pending maintenance reviews and successor verified the final empty barrier"
     }
   ],
-  "message": "Pasada editorial tr-20261106T104000+0100-manual cerrada 0/0: la cola vigente se releyó en main y permanecía vacía; no se observaron preparing/update ni rewrite_pending activos. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Pasada editorial iniciada; revalidando main y la cola vigente antes del cierre."
 }
