@@ -73635,14 +73635,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://dnm.nflximg.net/api/v6/s0XAg4q_jvYbSSbLvySyUsliNSg/AAAAQdzA3AkFRyDqCAZYBdACAH9UXZURg9z-eZF7CYTGSTr3NGcAstJrMHStsxTz04ZYJv_oMiJ7MBLLiPmjpgEjdi4tpIb4IKGP0vYGSc0ip8Y0uQQMaJ2ieT_2M6cFfH-3vj2-v72MeAnK1OwczsFosJ4Iilw.jpg?r=945",
+        "source": "www.netflix.com",
+        "source_url": "https://www.netflix.com/tudum/articles/other-worlds-a-stranger-things-adventure-live-action-spinoff-release-date-news",
+        "alt": "Imagen de archivo relacionada con Stranger Things",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://dnm.nflximg.net/api/v6/s0XAg4q_jvYbSSbLvySyUsliNSg/AAAAQdzA3AkFRyDqCAZYBdACAH9UXZURg9z-eZF7CYTGSTr3NGcAstJrMHStsxTz04ZYJv_oMiJ7MBLLiPmjpgEjdi4tpIb4IKGP0vYGSc0ip8Y0uQQMaJ2ieT_2M6cFfH-3vj2-v72MeAnK1OwczsFosJ4Iilw.jpg?r=945",
+        "source": "www.netflix.com",
+        "source_url": "https://www.netflix.com/tudum/articles/other-worlds-a-stranger-things-adventure-live-action-spinoff-release-date-news",
+        "alt": "Imagen de archivo relacionada con Stranger Things",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "2ba98a6691a8",
@@ -74952,6 +74967,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-06T18:05:10.990922Z",
+  "updated_at": "2026-11-06T18:12:56.197338Z",
   "count": 1245
 }
