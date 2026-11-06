@@ -57,3 +57,18 @@ test('historical originals receive retry slots while many current cards remain s
 test('current index excludes closed news and old episodes while retaining exact live revisions',()=>{
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
 });
+
+test('installer can replace a running inbox receiver atomically without stopping it or disabling tasks',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const text=fs.readFileSync(path.join(__dirname,'..','Actualizar-Recogida-Privada-TT.ps1'),'utf8');
+ assert.match(text,/function Wait-ForGeneratorsIdle/);
+ assert.match(text,/function Get-BusyGenerators/);
+ assert.match(text,/\[IO\.File\]::Replace\(\$stage,\$live,/);
+ assert.match(text,/\[IO\.File\]::Replace\(\$restore,\$live,/);
+ assert.match(text,/Get-FileHash -LiteralPath \$live/);
+ assert.match(text,/MaxWaitSeconds=900/);
+ assert.doesNotMatch(text,/Disable-ScheduledTask|Stop-Process|Stop-ScheduledTask|taskkill/i);
+ const guard=text.slice(text.indexOf('function Get-BusyGenerators'),text.indexOf('function Assert-GeneratorsIdle'));
+ assert.match(guard,/ImageBridge/);
+ assert.doesNotMatch(guard,/ImageApprovalReceiver/);
+});
