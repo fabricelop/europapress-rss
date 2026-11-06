@@ -16,6 +16,24 @@ struct EditorialReceiptPending: Codable, Identifiable {
     var id: String { requestID }
 }
 
+// Separate ledger from legacy manual publication receipts.
+// Only state == "sent" counts as published to X.
+struct BufferPublication: Decodable {
+    let request_id: String
+    let project: String
+    let event_id: String
+    let revision: Int
+    let account: String
+    let state: String
+    let sent_at: String?
+    let post_url: String?
+    let error: String?
+}
+
+struct BufferPublicationLedger: Decodable {
+    let items: [BufferPublication]
+}
+
 // Direct GitHub App user authorization. No embedded secret, personal token prompt,
 // Cloudflare Worker or broad GitHub OAuth "repo" scope.
 @MainActor
@@ -28,6 +46,10 @@ final class GitHubEditor: ObservableObject {
     @Published private(set) var activeAction: String? = nil
     @Published private(set) var pendingReceipts: [EditorialReceiptPending] = []
     @Published private(set) var receiptChange = 0
+    @Published private(set) var bufferPosts: [BufferPublication] = []
+    @Published private(set) var bufferChange = 0
+    @Published private(set) var bufferNotice = "Publicación directa disponible tras configurar Buffer en GitHub."
+    @Published private(set) var bufferDispatchingKeys = Set<String>()
     // Immediate visual closure; GitHub receipts, not HTTP 204, determine success.
     @Published private(set) var optimisticClosures = Set<String>()
 
@@ -49,7 +71,10 @@ final class GitHubEditor: ObservableObject {
             optimisticClosures = Set(entries.filter { ["published", "deleted"].contains($0.decision) }
                 .map { Self.closureKey(project: $0.project, eventID: $0.eventID, revision: $0.revision) })
         }
-        Task { await resumeReceiptChecks() }
+        Task {
+            await resumeReceiptChecks()
+            await refreshBufferPublications()
+        }
     }
 
     private func credential(_ key: String) -> String {
@@ -371,6 +396,133 @@ final class GitHubEditor: ObservableObject {
             // Network errors never imply that the editorial action succeeded.
         }
         expireUnverifiedReceipts()
+    }
+
+
+    // Independent Buffer/X path: manual one-tap approval, no secret in the IPA.
+    // The current "Publicar en X" composer and its decisions are untouched.
+    private static func bufferKey(project: String, id: String, revision: Int) -> String {
+        "\\(project):\\(id):r\\(revision)"
+    }
+
+    func isBufferAlreadySent(project: String, id: String, revision: Int) -> Bool {
+        bufferPosts.contains {
+            $0.project == project && $0.event_id == id &&
+            $0.revision == revision && $0.state == "sent"
+        }
+    }
+
+    func isBufferInFlight(project: String, id: String, revision: Int) -> Bool {
+        let key = Self.bufferKey(project: project, id: id, revision: revision)
+        return bufferDispatchingKeys.contains(key) || bufferPosts.contains {
+            $0.project == project && $0.event_id == id && $0.revision == revision &&
+            ["reserved", "pending", "unknown"].contains($0.state)
+        }
+    }
+
+    func bufferSentCount(account: String, last24Hours: Bool = false) -> Int {
+        bufferPosts.filter { post in
+            guard post.state == "sent", post.account == account else { return false }
+            guard last24Hours else { return true }
+            guard let raw = post.sent_at else { return false }
+            let basic = ISO8601DateFormatter()
+            let fractional = ISO8601DateFormatter()
+            fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            guard let date = basic.date(from: raw) ?? fractional.date(from: raw) else { return false }
+            return Date().timeIntervalSince(date) >= 0 && Date().timeIntervalSince(date) < 86400
+        }.count
+    }
+
+    func bufferPendingCount(account: String) -> Int {
+        bufferPosts.filter { $0.account == account && ["pending", "reserved", "unknown"].contains($0.state) }.count
+    }
+
+    func refreshBufferPublications() async {
+        var parts = URLComponents(string:
+            "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/pilot/ttactualidad-buffer-posts.json")!
+        parts.queryItems = [URLQueryItem(name: "check", value: UUID().uuidString)]
+        guard let url = parts.url else { return }
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else { return }
+            let state = try JSONDecoder().decode(BufferPublicationLedger.self, from: data)
+            bufferPosts = state.items
+            bufferChange += 1
+        } catch {
+            // Last authoritative snapshot remains visible. Never guess success.
+        }
+    }
+
+    func bufferPublish(project: String, eventID: String, revision: Int) async -> Bool {
+        guard authenticated else {
+            bufferNotice = "Conecta GitHub para autorizar tu publicación."
+            bufferChange += 1
+            return false
+        }
+        guard !eventID.isEmpty && revision >= 0,
+              ["ttittulares", "ttendencias"].contains(project) else {
+            bufferNotice = "Identidad editorial inválida; actualiza la app."
+            bufferChange += 1
+            return false
+        }
+        if isBufferAlreadySent(project: project, id: eventID, revision: revision) ||
+           isBufferInFlight(project: project, id: eventID, revision: revision) {
+            bufferNotice = "Esta revisión ya se publicó o sigue pendiente; no se duplicará."
+            bufferChange += 1
+            return false
+        }
+        let account = project == "ttittulares" ? "@ttittulares" : "@ttendenciasesp"
+        let requestID = UUID().uuidString.lowercased()
+        let accepted = await dispatch("ttactualidad_buffer_publish_v1", payload: [
+            "project": project, "event_id": eventID,
+            "revision": revision, "request_id": requestID
+        ], label: "Publicar directamente en " + account)
+        if accepted {
+            bufferDispatchingKeys.insert(Self.bufferKey(project: project, id: eventID, revision: revision))
+            bufferNotice = "Envío directo solicitado para " + account +
+                ". Aún no está confirmado en X."
+            bufferChange += 1
+            Task { await pollBufferPublication(requestID: requestID,
+                                                project: project, eventID: eventID,
+                                                revision: revision) }
+        } else {
+            bufferNotice = notice
+            bufferChange += 1
+        }
+        return accepted
+    }
+
+    private func pollBufferPublication(requestID: String, project: String,
+                                       eventID: String, revision: Int) async {
+        let key = Self.bufferKey(project: project, id: eventID, revision: revision)
+        defer { bufferDispatchingKeys.remove(key) }
+        for attempt in 0..<20 {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(7)) }
+            await refreshBufferPublications()
+            if let row = bufferPosts.last(where: { $0.request_id == requestID &&
+                $0.project == project && $0.event_id == eventID && $0.revision == revision }) {
+                switch row.state {
+                case "sent":
+                    bufferNotice = "X confirmó la publicación en @" + row.account + "."
+                    bufferChange += 1
+                    return
+                case "failed":
+                    bufferNotice = "No publicada en X: " + (row.error ?? "Buffer rechazó el envío")
+                    bufferChange += 1
+                    return
+                case "unknown":
+                    bufferNotice = "Resultado incierto: no repitas el envío sin comprobar X."
+                    bufferChange += 1
+                    return
+                default:
+                    break
+                }
+            }
+        }
+        bufferNotice = "Sin confirmación de X todavía; consulta los contadores al refrescar."
+        bufferChange += 1
     }
 
     func addNews(title: String, url: String, instructions: String) async -> Bool {
