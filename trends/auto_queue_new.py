@@ -10,6 +10,10 @@ from reconcile_prepared_ready import reconcile_prepared_ready
 from anticipation import sync as sync_anticipation, metrics as anticipation_metrics
 from requests_json import dumps_for_path
 try:
+    from suppression import active_request, purge_pending
+except ImportError:
+    from trends.suppression import active_request, purge_pending
+try:
     # Direct script invocation from the trends directory.
     from trend_episode_policy import treated_terms, editor_initiated, should_reopen_from_radar
 except ImportError:
@@ -61,6 +65,8 @@ def save_editorial_queue(requests_doc):
     top30_names = {norm(x.get("name")) for x in (recent_now.get("items") or [])[:30] if x.get("name")}
     active = []
     for req in requests_doc.get("requests", []) or []:
+        if active_request(req):
+            continue
         status = str(req.get("status") or "")
         if status not in {"preparing", "update", "problematic"}:
             continue
@@ -142,7 +148,9 @@ prepared_doc = load("prepared.json", {"items": []})
 
 requests = requests_doc.setdefault("requests", [])
 now_dt = datetime.now(MADRID)
-reconciled = False
+reconciled = purge_pending(requests) > 0
+if reconciled:
+    print("Solicitudes de tendencias expresamente suprimidas retiradas de la cola.")
 
 # Terminal editor decisions are authoritative for the exact (id, revision).
 # Legacy ledgers without a revision still use timestamps so an old occurrence
@@ -561,6 +569,8 @@ if not capture_is_safe(recent):
 current = []
 for item in (recent.get("items") or [])[:30]:
     name = str(item.get("name") or "").strip()
+    if active_request({"name": name}):
+        continue
     rank = int(item.get("rank") or 0)
     if name and 1 <= rank <= 30:
         current.append({"name": name, "rank": rank})
