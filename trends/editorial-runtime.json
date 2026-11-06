@@ -6,14 +6,14 @@
   "run_id": "tr-1793952600000-manual",
   "previous_run_id": "tr-1793951919630-manual",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "preparing",
   "started_at": "2026-11-06T09:10:00+01:00",
-  "updated_at": "2026-11-06T09:14:00+01:00",
+  "updated_at": "2026-11-06T09:13:45.815978+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "red-review-abaace6e23f2a315a000",
-  "title": "Revisar novedades: Óscar Puente",
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -28,7 +28,7 @@
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 2,
+    "observed": 0,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -48,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -133,5 +133,6 @@
       "satisfied_by": "tr-1793951919630-manual",
       "reason": "later canonical pass absorbed remaining maintenance and new work"
     }
-  ]
+  ],
+  "message": "Cola fresca: 2 revisiones de novedades pendientes (Óscar Puente y #FelizJueves). Se procesan en orden con validación JIT."
 }
