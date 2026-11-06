@@ -110,14 +110,46 @@ function rowIdentity(row) {
     rasterSHA256: row.raster_sha256,
   };
 }
-async function list(env) {
-  const result = await env.DB.prepare(`SELECT id, project, editorial_id, revision,
+// Stable newest-first pagination. The old ASC LIMIT 100 returned the oldest
+// pictures forever and hid every recent one when the inbox exceeded 100.
+function listPage(url) {
+  const rawLimit = url.searchParams.get('limit');
+  const limit = rawLimit === null ? 100 : Number(rawLimit);
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 100) {
+    throw new TypeError('INVALID_PAGE_LIMIT');
+  }
+  const before = url.searchParams.get('before');
+  if (!before) return { limit, before: null };
+  const separator = before.lastIndexOf('|');
+  if (separator < 1) throw new TypeError('INVALID_PAGE_CURSOR');
+  const createdAt = before.slice(0, separator), id = before.slice(separator + 1);
+  const date = new Date(createdAt);
+  if (!SHA.test(id) || !Number.isFinite(date.valueOf()) ||
+      date.toISOString() !== createdAt) {
+    throw new TypeError('INVALID_PAGE_CURSOR');
+  }
+  return { limit, before: { createdAt, id } };
+}
+async function list(env, url) {
+  const { limit, before } = listPage(url);
+  let q = env.DB.prepare(`SELECT id, project, editorial_id, revision,
     episode_fingerprint, command_id, raster_sha256, title, editorial_text, created_at
-    FROM image_candidates WHERE status='pending' ORDER BY created_at ASC LIMIT 100`).all();
-  return json({ items: (result.results || []).map(row => ({
+    FROM image_candidates WHERE status='pending'
+    ${before ? 'AND (created_at < ? OR (created_at = ? AND id < ?))' : ''}
+    ORDER BY created_at DESC, id DESC LIMIT ?`);
+  q = before ?
+    q.bind(before.createdAt, before.createdAt, before.id, limit + 1) :
+    q.bind(limit + 1);
+  const result = await q.all();
+  const rows = result.results || [];
+  const page = rows.slice(0, limit);
+  const hasMore = rows.length > limit;
+  const last = page[page.length - 1];
+  // Cursor is an opaque navigation token, not an authorization token.
+  return json({ items: page.map(row => ({
     id: row.id, identity: rowIdentity(row), title: row.title,
     editorialText: row.editorial_text, createdAt: row.created_at,
-  })) });
+  })), hasMore, nextCursor: hasMore ? last.created_at + '|' + last.id : null });
 }
 async function preview(env, id) {
   const row = await env.DB.prepare(`SELECT object_key FROM image_candidates
@@ -227,7 +259,7 @@ export async function handleRequest(request, env, githubFetch = fetch) {
     if (url.pathname === PREFIX + '/ingest' && request.method === 'POST') return await ingest(request, env);
     const who = await editor(request, env, githubFetch);
     if (!who) return error(401, 'UNAUTHORIZED_EDITOR');
-    if (url.pathname === PREFIX && request.method === 'GET') return await list(env);
+    if (url.pathname === PREFIX && request.method === 'GET') return await list(env, url);
     const match = new RegExp(`^${PREFIX}/([a-f0-9]{64})(?:/(original|decision))?$`).exec(url.pathname);
     if (!match) return error(404, 'NOT_FOUND');
     const [, id, action] = match;
