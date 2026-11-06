@@ -28,6 +28,8 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
     shutil.copy2(requests_json_source, folder / "requests_json.py")
     shutil.copy2(episode_source, folder / "trend_episode_policy.py")
+    shutil.copy2(source.with_name("suppression.py"), folder / "suppression.py")
+    shutil.copy2(source.with_name("suppressed-terms.json"), folder / "suppressed-terms.json")
     names = [f"Tendencia {i}" for i in range(1, 31)]
     put(folder / "recent.json", {
         "selection_method": "consensus", "sources_used": ["social-A", "social-B"],
