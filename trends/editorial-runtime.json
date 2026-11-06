@@ -10,28 +10,28 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-06T13:00:00+01:00",
-  "updated_at": "2026-11-06T13:03:07+01:00",
-  "finished_at": "2026-11-06T13:03:07+01:00",
-  "current": 4,
-  "total": 4,
+  "updated_at": "2026-11-06T13:03:00+01:00",
+  "finished_at": "2026-11-06T13:03:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "f75ef046f3c1",
-    "842a99abb01a",
     "red-review-d7f065dd5240b0b6b947",
     "red-review-4e84cae61db3d6734fc1"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "red-review-4e84cae61db3d6734fc1"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "attempted": 1,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -44,7 +44,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
@@ -52,78 +52,66 @@
   "activity": "closing",
   "final_outcomes": [
     {
-      "id": "f75ef046f3c1",
-      "revision": 0,
-      "name": "#Mañaneros6N",
-      "outcome": "explained"
-    },
-    {
-      "id": "842a99abb01a",
-      "revision": 0,
-      "name": "República Checa e Inglaterra",
-      "outcome": "explained"
-    },
-    {
       "id": "red-review-d7f065dd5240b0b6b947",
       "revision": 0,
       "name": "Revisar novedades: Aldama",
-      "outcome": "unchanged"
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "331e3a8e73ee506dd58509bdf818c4c6d5923531"
     },
     {
       "id": "red-review-4e84cae61db3d6734fc1",
       "revision": 0,
       "name": "Revisar novedades: Koldo",
-      "outcome": "unchanged"
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "331e3a8e73ee506dd58509bdf818c4c6d5923531"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793966100000-manual",
+    "run_id": "tr-1793966387045-manual",
     "status": "DONE",
     "started_at": "2026-11-06T13:00:00+01:00",
-    "updated_at": "2026-11-06T13:03:07+01:00",
-    "finished_at": "2026-11-06T13:03:07+01:00",
-    "current": 4,
-    "total": 4,
+    "updated_at": "2026-11-06T13:03:00+01:00",
+    "finished_at": "2026-11-06T13:03:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "f75ef046f3c1",
-      "842a99abb01a",
       "red-review-d7f065dd5240b0b6b947",
       "red-review-4e84cae61db3d6734fc1"
     ],
-    "converged_ids": [],
+    "converged_ids": [
+      "red-review-4e84cae61db3d6734fc1"
+    ],
     "remaining_active_ids": [],
     "final_outcomes": [
-      {
-        "id": "f75ef046f3c1",
-        "revision": 0,
-        "name": "#Mañaneros6N",
-        "outcome": "explained"
-      },
-      {
-        "id": "842a99abb01a",
-        "revision": 0,
-        "name": "República Checa e Inglaterra",
-        "outcome": "explained"
-      },
       {
         "id": "red-review-d7f065dd5240b0b6b947",
         "revision": 0,
         "name": "Revisar novedades: Aldama",
-        "outcome": "unchanged"
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "apply_commit": "331e3a8e73ee506dd58509bdf818c4c6d5923531"
       },
       {
         "id": "red-review-4e84cae61db3d6734fc1",
         "revision": 0,
         "name": "Revisar novedades: Koldo",
-        "outcome": "unchanged"
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "331e3a8e73ee506dd58509bdf818c4c6d5923531"
       }
     ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "attempted": 1,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -136,17 +124,22 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 1,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial completada 4/4: #Mañaneros6N y República Checa e Inglaterra explicados; Aldama y Koldo revisados sin novedades sustanciales. Cola final 0 y sin rewrite_pending activos. ImageGen=0; image-outbox=0; publicaciones realizadas por esta pasada=0."
+    "message": "Pasada editorial completada 2/2: Aldama y Koldo revisados sin novedades materiales; ambas fichas conservan texto y fecha. Cola final 0 y sin rewrite_pending. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T12:59:03+01:00",
-  "last_completed_at": "2026-11-06T13:03:07+01:00",
+  "last_started_at": "2026-11-06T13:00:00+01:00",
+  "last_completed_at": "2026-11-06T13:03:00+01:00",
   "draft_preview": null,
-  "satisfied_run_ids": [],
+  "satisfied_run_ids": [
+    "tr-1793966100000-manual"
+  ],
   "canonical_successor_run_id": null,
-  "satisfied_run_chain": [],
-  "message": "Pasada editorial completada 4/4: #Mañaneros6N y República Checa e Inglaterra explicados; Aldama y Koldo revisados sin novedades sustanciales. Cola final 0 y sin rewrite_pending activos. ImageGen=0; image-outbox=0; publicaciones realizadas por esta pasada=0."
+  "satisfied_run_chain": [
+    "tr-1793966100000-manual",
+    "tr-1793966387045-manual"
+  ],
+  "message": "Pasada editorial completada 2/2: Aldama y Koldo revisados sin novedades materiales; ambas fichas conservan texto y fecha. Cola final 0 y sin rewrite_pending. ImageGen=0; image-outbox=0; publicaciones=0."
 }
