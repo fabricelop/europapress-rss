@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1793990643855-manual",
   "command_id": "tr-manual-20261106-1955-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T19:55:00+01:00",
-  "updated_at": "2026-11-06T19:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T19:55:45+01:00",
+  "finished_at": "2026-11-06T19:55:45+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,53 +44,29 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793990643855-manual",
+    "run_id": "tr-manual-20261106-1955-chat",
     "status": "DONE",
-    "started_at": "2026-11-06T19:45:00+01:00",
-    "updated_at": "2026-11-06T19:50:00+01:00",
-    "finished_at": "2026-11-06T19:50:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-06T19:55:00+01:00",
+    "updated_at": "2026-11-06T19:55:45+01:00",
+    "finished_at": "2026-11-06T19:55:45+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "red-review-b9ee654d7915efed8dde",
-      "red-review-bba9e6a0ccf1f174a978"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-b9ee654d7915efed8dde",
-        "revision": 0,
-        "source_id": "c4f3771c12ae",
-        "name": "Santiago Peña",
-        "outcome": "continuity",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "apply_commit": "2c362ac4344ccc9ae0a6c2b0ed0070897e297164"
-      },
-      {
-        "id": "red-review-bba9e6a0ccf1f174a978",
-        "revision": 0,
-        "source_id": "7fb4d179ec62",
-        "name": "Paraguay",
-        "outcome": "continuity",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "apply_commit": "2c362ac4344ccc9ae0a6c2b0ed0070897e297164"
-      }
-    ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "final_outcomes": [],
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -104,10 +80,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-1793990643855-manual cerrada 2/2. Santiago Peña y Paraguay quedaron actualizados por continuidad en sus mismos ID/revisión, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y preparing/update=0."
+    "message": "Pasada editorial tr-manual-20261106-1955-chat cerrada 0/0. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T19:55:00+01:00",
-  "last_completed_at": "2026-11-06T19:50:00+01:00",
+  "last_completed_at": "2026-11-06T19:55:45+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -139,7 +115,8 @@
     "tr-manual-20261106-1910-chat",
     "tr-manual-20261106-1925-chat",
     "tr-manual-20261106-1941-chat",
-    "tr-1793990643855-manual"
+    "tr-1793990643855-manual",
+    "tr-manual-20261106-1955-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -173,7 +150,8 @@
     "tr-manual-20261106-1910-chat",
     "tr-manual-20261106-1925-chat",
     "tr-manual-20261106-1941-chat",
-    "tr-1793990643855-manual"
+    "tr-1793990643855-manual",
+    "tr-manual-20261106-1955-chat"
   ],
-  "message": "Pasada editorial iniciada; verificando cola autoritativa y reexplicaciones pendientes."
+  "message": "Pasada editorial tr-manual-20261106-1955-chat cerrada 0/0. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox=0; publicaciones=0."
 }
