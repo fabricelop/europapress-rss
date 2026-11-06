@@ -109,14 +109,18 @@ def observe_rate_limits(headers):
     policies = ",".join(all_values("RateLimit-Policy"))
     limits = ",".join(all_values("RateLimit"))
     selected_quota = None
+    selected_name = None
     for match in re.finditer(r'"([^"]+)"\s*;\s*q\s*=\s*(\d+)\s*;\s*w\s*=\s*(\d+)', policies):
         if int(match.group(3)) == 2592000:
+            selected_name = match.group(1)
             selected_quota = int(match.group(2))
             break
     if selected_quota is None:
         return
     for match in re.finditer(r'"([^"]+)"\s*;\s*r\s*=\s*(\d+)\s*;\s*t\s*=\s*(\d+)', limits):
-        if "30day" in match.group(1).lower():
+        # Match the exact name returned by the 30-day policy selected by
+        # window length. Buffer may rename the policy without notice.
+        if match.group(1) == selected_name:
             remaining = min(selected_quota, int(match.group(2)))
             LAST_API_QUOTA = {
                 "limit": selected_quota, "remaining": remaining,
