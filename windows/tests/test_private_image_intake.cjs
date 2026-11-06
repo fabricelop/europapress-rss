@@ -32,6 +32,28 @@ test('hundreds of obsolete never-checked jobs cannot starve an active card',()=>
  const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');const old=Array.from({length:311},(_,i)=>({project:'ttendencias',target_id:'old-'+i,revision:0,command_id:'old-'+i,created_at:'2026-11-02T10:00:00Z'}));const live={project:'ttendencias',target_id:'live',revision:0,command_id:'live-job',created_at:'2026-11-02T22:00:00Z'};
  const selected=selectCurrentTasks([...old,live],{'live-job':{checkedAt:999999}},new Set(['ttendencias:live:0']));assert.equal(selected[0],live);assert.equal(selected.length,8);assert.equal(old.length,311);
 });
+test('historical originals receive retry slots while many current cards remain stuck',()=>{
+ const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');
+ const recent=Array.from({length:32},(_,i)=>({
+  project:'ttendencias',target_id:'live-'+i,revision:0,
+  command_id:'current-'+i,created_at:'2026-11-06T00:01:00Z'
+ }));
+ const historical=Array.from({length:17},(_,i)=>({
+  project:'ttittulares',target_id:'closed-'+i,revision:1,
+  command_id:'historical-'+i,created_at:'2026-11-05T10:01:00Z'
+ }));
+ const active=new Set(recent.map(x=>'ttendencias:'+x.target_id+':0'));
+ const selection=selectCurrentTasks([...recent,...historical],{},active);
+ assert.equal(selection.length,8);
+ assert.equal(selection.filter(x=>x.command_id.startsWith('current-')).length,6);
+ assert.equal(selection.filter(x=>x.command_id.startsWith('historical-')).length,2);
+ // Cycles rotate historical jobs after updating their last checked times.
+ const progress=Object.fromEntries(selection.map(x=>[x.command_id,{checkedAt:Date.now()}]));
+ const next=selectCurrentTasks([...recent,...historical],progress,active);
+ assert.equal(next.filter(x=>x.command_id.startsWith('historical-')).length,2);
+ assert.ok(next.some(x=>x.command_id==='historical-2'));
+});
+
 test('current index excludes closed news and old episodes while retaining exact live revisions',()=>{
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
 });

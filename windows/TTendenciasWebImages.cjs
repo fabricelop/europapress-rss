@@ -112,8 +112,8 @@ function userTurns(){
  // Multiple selectors can describe nested wrappers of the same user turn.
  return nodes.filter(el=>!nodes.some(other=>other!==el&&typeof el.contains==='function'&&el.contains(other)));
 }
-function rasterProbe(command){return `(async()=>{
- const command=${JSON.stringify(command)};
+function rasterProbe(command,pngForPrivateInbox=false){return `(async()=>{
+ const command=${JSON.stringify(command)}; const pngForPrivateInbox=${pngForPrivateInbox===true};
  const users=(${userTurns.toString()})();
  const user=users.find(x=>String(x.innerText||x.textContent||'').includes(command));
  if(!user){
@@ -133,10 +133,30 @@ function rasterProbe(command){return `(async()=>{
  if(images.length!==1)return {ready:false,reason:'ambiguous_or_missing_raster'};
  const img=images[0];const response=await fetch(img.currentSrc||img.src,{credentials:'include'});
  if(!response.ok)return {ready:false,reason:'raster_fetch_failed'};
- const blob=await response.blob();
- if(!/^image\\/(png|jpeg|webp)$/.test(blob.type)||blob.size<12000||blob.size>8388608)return {ready:false,reason:'raster_size_or_type'};
+ let blob=await response.blob();
+ if((!/^image\\/(png|jpeg|webp)$/.test(blob.type)&&!(pngForPrivateInbox&&blob.type==='image/avif'))||blob.size<12000||blob.size>8388608)return {ready:false,reason:'raster_size_or_type'};
+ const sourceMime=blob.type;
+ // The Site inbox accepts PNG only. Convert pixels to PNG for THAT private
+ // destination without changing legacy ImageGen/web image consumers.
+ // This is a raster encoding conversion, never a second generation.
+ if(pngForPrivateInbox&&blob.type!=='image/png'){
+  let bitmap;
+  try{
+   bitmap=await createImageBitmap(blob);
+   const canvas=document.createElement('canvas');
+   canvas.width=bitmap.width;canvas.height=bitmap.height;
+   const ctx=canvas.getContext('2d');
+   if(!ctx)throw Error('canvas_missing');
+   ctx.drawImage(bitmap,0,0);
+   const png=await new Promise(ok=>canvas.toBlob(ok,'image/png'));
+   if(!png||png.type!=='image/png')return {ready:false,reason:'png_conversion_failed'};
+   if(png.size>8388608)return {ready:false,reason:'png_exceeds_private_limit'};
+   blob=png;
+  }catch{return {ready:false,reason:'png_conversion_failed'};}
+  finally{try{bitmap?.close()}catch{}}
+ }
  const bytes=new Uint8Array(await blob.arrayBuffer());let binary='';for(let i=0;i<bytes.length;i+=32768)binary+=String.fromCharCode(...bytes.subarray(i,i+32768));
- return {ready:true,dataUrl:'data:'+blob.type+';base64,'+btoa(binary),width:img.naturalWidth,height:img.naturalHeight};
+ return {ready:true,dataUrl:'data:'+blob.type+';base64,'+btoa(binary),width:img.naturalWidth,height:img.naturalHeight,sourceMime};
 })()`;}
 function sameContext(task,job){return String(job.command_id||'')===task.command_id&&String(job.target_id||job.trend_id||'')===task.target_id&&Number(job.revision||0)===task.revision&&crypto.createHash('sha256').update(String(job.context_snapshot?.explanation||'').trim()).digest('hex')===task.explanation_sha256;}
 async function confirmedInMain(task,job){

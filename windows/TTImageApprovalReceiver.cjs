@@ -25,24 +25,97 @@ function metadata(task,job){
 async function send(meta,bytes,secret,fetcher=fetch){
  if(bytes.length>8388608||bytes.length<24||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('ORIGINAL_PNG_REQUIRED');
  meta={...meta,rasterSHA256:sha(bytes)};const form=new FormData();form.set('metadata',JSON.stringify(meta));form.set('image',new Blob([bytes],{type:'image/png'}),'original.png');
- const r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret,'User-Agent':'TTActualidad/0.4.50'},body:form,redirect:'error',signal:AbortSignal.timeout(45000)});const receipt=await r.json();
- if(!r.ok||!['pending','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(receipt.id))throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
+ let r;
+ try{r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret,'User-Agent':'TTActualidad/0.4.50'},body:form,redirect:'error',signal:AbortSignal.timeout(45000)})}
+ catch{throw Error('PRIVATE_RECEIPT_NETWORK_UNAVAILABLE')}
+ if(!r.ok)throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
+ let receipt;try{receipt=await r.json()}catch{throw Error('PRIVATE_RECEIPT_BAD_JSON')}
+ // Retrying after a timeout can return "existing": it proves the same
+ // command/PNG is already stored but is NOT a claim that it remains pending.
+ if(!receipt||!['pending','existing','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(String(receipt.id||'')))throw Error('PRIVATE_RECEIPT_BAD_JSON');
+ if(receipt.state==='rejected')throw Error('PRIVATE_RECEIPT_REJECTED');
  return {...receipt,rasterSHA256:meta.rasterSHA256};
+}
+// Durable PC-only cache: a 503 or closed tab must not erase the generated
+// original. This is neither an approval nor a public image catalog.
+function originalPaths(base,task){
+ if(!/^[A-Za-z0-9_.-]{3,160}$/.test(String(task.command_id||'')))throw Error('CACHED_ORIGINAL_CONFLICT');
+ const dir=path.join(base,'image-approval-receipts','original-cache');
+ return {dir,png:path.join(dir,task.command_id+'.png'),meta:path.join(dir,task.command_id+'.json')};
+}
+function cachedOriginal(base,task,meta){
+ const files=originalPaths(base,task);
+ if(!fs.existsSync(files.meta))return null;
+ try{
+  const record=JSON.parse(fs.readFileSync(files.meta,'utf8')),bytes=fs.readFileSync(files.png);
+  if(record.commandId!==task.command_id||record.editorialId!==meta.editorialId||
+     record.revision!==meta.revision||record.episodeFingerprint!==meta.episodeFingerprint||
+     !/^[a-f0-9]{64}$/.test(record.rasterSHA256)||sha(bytes)!==record.rasterSHA256||
+     bytes.length>8388608||bytes.length<24||
+     bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')
+     throw Error('CACHED_ORIGINAL_CONFLICT');
+  return bytes;
+ }catch{throw Error('CACHED_ORIGINAL_CONFLICT')}
+}
+function persistOriginal(base,task,meta,bytes){
+ const existing=cachedOriginal(base,task,meta);
+ if(existing){if(sha(existing)!==sha(bytes))throw Error('CACHED_ORIGINAL_CONFLICT');return;}
+ if(bytes.length>8388608||bytes.length<24||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')
+  throw Error('ORIGINAL_PNG_REQUIRED');
+ const files=originalPaths(base,task);fs.mkdirSync(files.dir,{recursive:true,mode:0o700});
+ const nonce=crypto.randomBytes(8).toString('hex'),rasterTmp=files.png+'.'+nonce+'.tmp',metaTmp=files.meta+'.'+nonce+'.tmp';
+ try{
+  fs.writeFileSync(rasterTmp,bytes,{mode:0o600,flag:'wx'});fs.renameSync(rasterTmp,files.png);
+  fs.writeFileSync(metaTmp,JSON.stringify({commandId:task.command_id,
+    editorialId:meta.editorialId,revision:meta.revision,
+    episodeFingerprint:meta.episodeFingerprint,rasterSHA256:sha(bytes),
+    storedAt:new Date().toISOString()}),{mode:0o600,flag:'wx'});
+  fs.renameSync(metaTmp,files.meta);
+ }finally{for(const file of [rasterTmp,metaTmp])try{fs.unlinkSync(file)}catch{}}
+}
+function discardOriginal(base,task){
+ const files=originalPaths(base,task);
+ for(const file of [files.meta,files.png])try{fs.unlinkSync(file)}catch{}
 }
 function selectTarget(pages,task,chatURL){
  const expected=chatURL(task.conversation_url);
  return pages.find(p=>p.type==='page'&&p.webSocketDebuggerUrl&&chatURL(p.url)&&(expected?chatURL(p.url)===expected:p.id===task.browser_target_id));
 }
-async function editorialJob(source,task){
+// Recover the immutable preparation time after a news item leaves Listas.
+// Never substitute the timestamp of the image job, a current radar sighting
+// or an unrelated revision: the episode fingerprint must remain authentic.
+async function editorialJob(source,task,fetcher=fetch){
  const job=await source.readImageJob(task);
- if(task.project==='ttittulares'&&!job.context_snapshot?.prepared_at){
-  const r=await fetch('https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/prepared.json?t='+Date.now(),{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('EDITORIAL_SOURCE_UNAVAILABLE');
-  const doc=await r.json(),row=(doc.items||[]).find(x=>x.event_id===task.target_id&&Number(x.revision)===task.revision&&String(x.tweet?.text||'').trim()===String(job.context_snapshot?.tweet_text||'').trim());
-  if(!row||!row.prepared_at||row.rewrite_pending)throw Error('STALE_EXACT_JOB');
-  return {...job,context_snapshot:{...job.context_snapshot,prepared_at:row.prepared_at}};
+ if(task.project!=='ttittulares'||job.context_snapshot?.prepared_at)return job;
+ const snapshot=job.context_snapshot||{};
+ const root='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/';
+ const read=async(name)=>{
+  try{
+   const response=await fetcher(root+name+'?t='+Date.now(),{signal:AbortSignal.timeout(15000),cache:'no-store'});
+   if(!response.ok)return null;
+   const doc=await response.json();
+   return Array.isArray(doc.items)?doc.items:null;
+  }catch{return null}
+ };
+ const prepared=await read('ttittulares/prepared.json');
+ const candidates=(prepared||[]).filter(x=>String(x.event_id)===task.target_id&&Number(x.revision)===task.revision);
+ if(candidates.length){
+  const row=candidates.find(x=>String(x.tweet?.text||'').trim()===String(snapshot.tweet_text||'').trim()&&!x.rewrite_pending);
+  if(!row||!Number.isFinite(Date.parse(row.prepared_at)))throw Error('STALE_EXACT_JOB');
+  return {...job,context_snapshot:{...snapshot,prepared_at:row.prepared_at}};
  }
- return job;
+ // The READY processing ledger retains delivered_at (the same timestamp as
+ // prepared_at) even when prepared.json has already been cleared by delivery.
+ const history=await read('telegram/editorial-processing.json');
+ const row=(history||[]).find(x=>
+  String(x.event_id||x.id)===task.target_id&&Number(x.revision)===task.revision&&
+  x.delivery_confirmation==='prepared_web'&&!x.rewrite_pending&&
+  Number.isFinite(Date.parse(x.delivered_at))&&
+  String(x.title||x.canonical_title||'').trim()===String(snapshot.title||job.target_name||'').trim());
+ if(!row)throw Error('PREPARED_DATE_NOT_RECOVERABLE');
+ return {...job,context_snapshot:{...snapshot,prepared_at:row.delivered_at}};
 }
+
 function activeIdentities(project,document,decisions,now=Date.now()){
  if(!Array.isArray(document?.items)||!Array.isArray(decisions?.items))throw Error('CURRENT_EDITORIAL_UNAVAILABLE');
  const closed=new Set(['deleted','dismissed','published','removed','delete_pending','delete_failed']),latest=new Map();
@@ -56,7 +129,24 @@ function activeIdentities(project,document,decisions,now=Date.now()){
  }
  return result;
 }
-function selectCurrentTasks(tasks,progress,active){const current=x=>active.has(x.project+':'+x.target_id+':'+x.revision)?1:0;return [...tasks].sort((a,b)=>current(b)-current(a)||(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||Date.parse(b.created_at)-Date.parse(a.created_at)).slice(0,8);}
+function selectCurrentTasks(tasks,progress,active){
+ const isCurrent=x=>active.has(x.project+':'+x.target_id+':'+x.revision);
+ const oldest=(a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||
+   (Date.parse(b.created_at)||0)-(Date.parse(a.created_at)||0);
+ const current=tasks.filter(isCurrent).sort(oldest);
+ const historical=tasks.filter(x=>!isCurrent(x)).sort(oldest);
+ // Previously eight perpetually waiting current cards could starve every
+ // already-published/removed-from-Listas original forever. Reserve two slots
+ // per cycle for exact historical jobs, without compromising current priority.
+ const reserve=Math.min(2,historical.length);
+ const chosen=[...current.slice(0,8-reserve),...historical.slice(0,reserve)];
+ const names=new Set(chosen.map(x=>x.command_id));
+ for(const entry of [...current,...historical]){
+  if(chosen.length>=8)break;
+  if(!names.has(entry.command_id)){chosen.push(entry);names.add(entry.command_id);}
+ }
+ return chosen;
+}
 async function liveIdentities(sources){
  const all=new Set();
  for(const project of ['ttendencias','ttittulares']){
@@ -94,6 +184,8 @@ async function once(base=__dirname){
    let cdp,browser,ownedTarget;
    try{
     const job=await editorialJob(source,task),meta=metadata(task,job);
+    let bytes=cachedOriginal(base,task,meta);
+    if(!bytes){
     if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
     if(!source.chatURL(task.conversation_url)){const found=await source.discoverConversation(task.command_id,task.browser_target_id,true);if(found?.url)task.conversation_url=found.url;}
     let target;
@@ -114,17 +206,20 @@ async function once(base=__dirname){
      }catch{}
     }
     if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
-    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id));if(raster?.ready||['later_user_turn','capture_requires_sign_in','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
-    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
+    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id,true));if(raster?.ready||['later_user_turn','capture_requires_sign_in','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
+    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','png_conversion_failed','png_exceeds_private_limit','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
     if(!String(raster.dataUrl).startsWith('data:image/png;base64,')){report(task,'ORIGINAL_FORMAT_NOT_PNG');continue;}
-    const bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
+    bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
     const fresh=metadata(task,await editorialJob(source,task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
+    persistOriginal(base,task,meta,bytes);
+    }
     const receipt=await send(meta,bytes,unprotect(task.secret_dpapi));
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({project:meta.project,revision:meta.revision,commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
+    discardOriginal(base,task);
     report(task,'RECEIVED_'+receipt.state);
-   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
+   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PRIVATE_RECEIPT_BAD_JSON|PRIVATE_RECEIPT_NETWORK_UNAVAILABLE|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
-module.exports={metadata,episode,send,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks};
+module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks};
 if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
