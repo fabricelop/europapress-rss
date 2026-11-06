@@ -7,32 +7,29 @@
   "previous_run_id": "tr-1793982300000-manual",
   "command_id": "tr-1793983200000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T17:40:00+01:00",
-  "updated_at": "2026-11-06T17:43:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-06T17:44:00+01:00",
+  "finished_at": "2026-11-06T17:44:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "7fe26f7c12dd",
-  "title": "Meghan Markle",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "70d8c4a3a63c"
+    "70d8c4a3a63c",
+    "7fe26f7c12dd"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "7fe26f7c12dd"
-  ],
-  "remaining_active_ids": [
-    "7fe26f7c12dd"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -50,26 +47,55 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "70d8c4a3a63c",
+      "revision": 0,
+      "name": "Pugilato",
+      "outcome": "explained"
+    },
+    {
+      "id": "7fe26f7c12dd",
+      "revision": 0,
+      "name": "Meghan Markle",
+      "outcome": "explained"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793982300000-manual",
+    "run_id": "tr-1793983200000-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T17:25:00+01:00",
-    "updated_at": "2026-11-06T17:26:00+01:00",
-    "finished_at": "2026-11-06T17:26:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-06T17:40:00+01:00",
+    "updated_at": "2026-11-06T17:44:00+01:00",
+    "finished_at": "2026-11-06T17:44:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "70d8c4a3a63c",
+      "7fe26f7c12dd"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "final_outcomes": [
+      {
+        "id": "70d8c4a3a63c",
+        "revision": 0,
+        "name": "Pugilato",
+        "outcome": "explained"
+      },
+      {
+        "id": "7fe26f7c12dd",
+        "revision": 0,
+        "name": "Meghan Markle",
+        "outcome": "explained"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -86,10 +112,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-1793982300000-manual cerrada 0/0 tras barrera final JIT: editorial-queue=0 y sin rewrite_pending/reexplain localizados. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial tr-1793983200000-manual cerrada 2/2: Pugilato r0 y Meghan Markle r0 quedaron explicadas y aplicadas. Barrera final JIT: editorial-queue=0, rewrite_pending=0 y reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T17:25:00+01:00",
-  "last_completed_at": "2026-11-06T17:26:00+01:00",
+  "last_started_at": "2026-11-06T17:40:00+01:00",
+  "last_completed_at": "2026-11-06T17:44:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -113,7 +139,8 @@
     "tr-1793980384315-manual",
     "tr-1793980822681-manual",
     "tr-1793981400000-manual",
-    "tr-1793982300000-manual"
+    "tr-1793982300000-manual",
+    "tr-1793983200000-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -139,7 +166,8 @@
     "tr-1793980384315-manual",
     "tr-1793980822681-manual",
     "tr-1793981400000-manual",
-    "tr-1793982300000-manual"
+    "tr-1793982300000-manual",
+    "tr-1793983200000-manual"
   ],
-  "message": "Persistiendo Meghan Markle r0 tras validación JIT; asunto sensible, sin remate."
+  "message": "Pasada editorial tr-1793983200000-manual cerrada 2/2: Pugilato r0 y Meghan Markle r0 quedaron explicadas y aplicadas. Barrera final JIT: editorial-queue=0, rewrite_pending=0 y reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
 }
