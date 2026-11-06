@@ -1,4 +1,23 @@
 import { episodeFingerprint, verifyEditorialNow, EditorialUnavailable } from './editorial-truth.mjs';
+import {NEWS_CUTOVER_ISO, VISIBLE_INBOX_LIMIT, editorialTime, recentNewsEpisode,
+  currentTop30Episodes, filterVisibleCandidates} from './approval-scope.mjs';
+
+class ApprovalScopeUnavailable extends Error {}
+async function top30Now(env, fetchFn = fetch) {
+  const url = 'https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/site-top30-current.json?ref=main';
+  try {
+    const r = await fetchFn(url, {headers: {
+      Accept:'application/vnd.github.raw+json', 'Cache-Control':'no-cache',
+      'User-Agent':'TTActualidad-Private-Inbox',
+      ...(env.GITHUB_SOURCE_READ_TOKEN ? {Authorization:'Bearer '+env.GITHUB_SOURCE_READ_TOKEN} : {})
+    },cache:'no-store',redirect:'error'});
+    if (!r.ok) throw Error('TOP30_FETCH_FAILED');
+    const raw = await r.text();
+    if (raw.length > 400000) throw Error('TOP30_TOO_LARGE');
+    return currentTop30Episodes(JSON.parse(raw));
+  } catch { throw new ApprovalScopeUnavailable() }
+}
+
 // Private TTActualidad inbox. No automatic publication path and no public R2 links.
 const SHA = /^[a-f0-9]{64}$/;
 const IDENTIFIER = /^[A-Za-z0-9_-]{3,160}$/;
@@ -57,7 +76,7 @@ async function editor(request, env, githubFetch) {
   const user = await res.json();
   return String(user.id) === String(env.APP_GITHUB_USER_ID) ? String(user.id) : null;
 }
-async function ingest(request, env) {
+async function ingest(request, env, githubFetch = fetch) {
   const secret = request.headers.get('X-TT-Ingest-Key') || '';
   if (!env.INGEST_TOKEN || env.INGEST_TOKEN.length < 32 ||
       secret.length !== env.INGEST_TOKEN.length || secret !== env.INGEST_TOKEN) {
@@ -79,15 +98,37 @@ async function ingest(request, env) {
     return error(415, 'ORIGINAL_PNG_REQUIRED');
   }
   const originalSHA = await hash(original);
-  const i = identity({ ...meta.identity, rasterSHA256: originalSHA });
-  if (meta.identity?.rasterSHA256 && meta.identity.rasterSHA256 !== originalSHA) {
+  // The deployed Windows receiver transmits FLAT metadata and signs
+  // {project,editorialId,revision,editorialText,editorialAt}. The previous
+  // prototype accepted only {identity:{...}} without the date in the
+  // fingerprint. Accept either exact protocol; never guess an episode.
+  const fromReceiver = !meta.identity;
+  const supplied = fromReceiver ? meta : meta.identity;
+  const i = identity({ ...supplied, rasterSHA256: originalSHA });
+  if (supplied?.rasterSHA256 && supplied.rasterSHA256 !== originalSHA) {
     return error(409, 'RASTER_SHA_MISMATCH');
   }
   const title = assertText(meta.title, 300);
   const editorialText = assertText(meta.editorialText, 4000);
+  const originalAt = editorialTime(meta.editorialAt);
+  if (i.project === 'ttittulares' && !recentNewsEpisode(meta.editorialAt)) {
+    return error(409,'NEWS_BEFORE_CUTOVER');
+  }
+  if (i.project === 'ttendencias') {
+    const scope = await top30Now(env, githubFetch);
+    if (!scope.some(row=>row.editorialId===i.editorialId && row.revision===i.revision)) {
+      return error(409,'NOT_CURRENT_TOP30');
+    }
+  }
   // A self-declared hash is insufficient: bind the episode to the exact
   // editorial bytes and identity, including revision 0 after a new episode.
-  if ((await episodeFingerprint({ ...i, editorialText })) !== i.episodeFingerprint) {
+  const expected = fromReceiver ?
+    await hash(encoder.encode(JSON.stringify({
+      project:i.project, editorialId:i.editorialId, revision:i.revision,
+      editorialText, editorialAt:meta.editorialAt,
+    }))) :
+    await episodeFingerprint({ ...i, editorialText });
+  if (expected !== i.episodeFingerprint) {
     return error(409, 'EPISODE_FINGERPRINT_MISMATCH');
   }
   const id = await candidateID(i);
@@ -95,10 +136,11 @@ async function ingest(request, env) {
   await env.ORIGINALS.put(r2key, original, { httpMetadata: { contentType: 'image/png' } });
   const inserted = await env.DB.prepare(`INSERT OR IGNORE INTO image_candidates (
     id, project, editorial_id, revision, episode_fingerprint, command_id,
-    raster_sha256, object_key, title, editorial_text, status, created_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)`).bind(
+    raster_sha256, object_key, title, editorial_text, editorial_at, status, created_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)`).bind(
     id, i.project, i.editorialId, i.revision, i.episodeFingerprint,
-    i.commandId, originalSHA, r2key, title, editorialText, new Date().toISOString(),
+    i.commandId, originalSHA, r2key, title, editorialText,
+    originalAt===null?null:new Date(originalAt).toISOString(), new Date().toISOString(),
   ).run();
   // Repeated ingest is idempotent, never reopens rejected/approved images.
   return json({ id, state: inserted.meta?.changes ? 'pending' : 'existing' }, inserted.meta?.changes ? 201 : 200);
@@ -114,8 +156,8 @@ function rowIdentity(row) {
 // pictures forever and hid every recent one when the inbox exceeded 100.
 function listPage(url) {
   const rawLimit = url.searchParams.get('limit');
-  const limit = rawLimit === null ? 100 : Number(rawLimit);
-  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 100) {
+  const limit = rawLimit === null ? VISIBLE_INBOX_LIMIT : Number(rawLimit);
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > VISIBLE_INBOX_LIMIT) {
     throw new TypeError('INVALID_PAGE_LIMIT');
   }
   const before = url.searchParams.get('before');
@@ -130,26 +172,40 @@ function listPage(url) {
   }
   return { limit, before: { createdAt, id } };
 }
-async function list(env, url) {
-  const { limit, before } = listPage(url);
-  let q = env.DB.prepare(`SELECT id, project, editorial_id, revision,
-    episode_fingerprint, command_id, raster_sha256, title, editorial_text, created_at
-    FROM image_candidates WHERE status='pending'
-    ${before ? 'AND (created_at < ? OR (created_at = ? AND id < ?))' : ''}
-    ORDER BY created_at DESC, id DESC LIMIT ?`);
-  q = before ?
-    q.bind(before.createdAt, before.createdAt, before.id, limit + 1) :
-    q.bind(limit + 1);
-  const result = await q.all();
-  const rows = result.results || [];
-  const page = rows.slice(0, limit);
+async function list(env, url, githubFetch = fetch) {
+  const {limit,before} = listPage(url);
+  const current = await top30Now(env,githubFetch);
+  const exactTrends = current.length ? "(project='ttendencias' AND (editorial_id,revision) IN (" +
+    current.map(()=>'(?,?)').join(',') + "))" : "0";
+  // Rank ALL decisions before restricting to pending. Rejecting a newer PNG
+  // must not reveal an older duplicate and demand approval again.
+  const sql = [
+    'WITH ranked AS (',
+    ' SELECT id, project, editorial_id, revision, episode_fingerprint, command_id,',
+    ' raster_sha256, title, editorial_text, editorial_at, created_at, status,',
+    ' ROW_NUMBER() OVER (PARTITION BY project, editorial_id, revision',
+    ' ORDER BY created_at DESC, id DESC) AS rn',
+    ' FROM image_candidates WHERE ' + exactTrends,
+    " OR (project='ttittulares' AND editorial_at >= ?)",
+    ') SELECT id,project,editorial_id,revision,episode_fingerprint,command_id,',
+    ' raster_sha256,title,editorial_text,editorial_at,created_at,status FROM ranked',
+    " WHERE rn=1 AND status='pending'",
+    before ? 'AND (created_at < ? OR (created_at = ? AND id < ?))' : '',
+    'ORDER BY created_at DESC,id DESC LIMIT ?',
+  ].join('\n');
+  const args = [...current.flatMap(x=>[x.editorialId,x.revision]),NEWS_CUTOVER_ISO,
+    ...(before?[before.createdAt,before.createdAt,before.id]:[]),limit+1];
+  const result = await env.DB.prepare(sql).bind(...args).all();
+  const rows = filterVisibleCandidates(result.results||[],current,limit+1,before);
   const hasMore = rows.length > limit;
-  const last = page[page.length - 1];
-  // Cursor is an opaque navigation token, not an authorization token.
-  return json({ items: page.map(row => ({
-    id: row.id, identity: rowIdentity(row), title: row.title,
-    editorialText: row.editorial_text, createdAt: row.created_at,
-  })), hasMore, nextCursor: hasMore ? last.created_at + '|' + last.id : null });
+  const page = rows.slice(0,limit);
+  const last = page[page.length-1];
+  return json({items:page.map(row=>({
+    id:row.id,identity:rowIdentity(row),title:row.title,
+    editorialText:row.editorial_text,editorialAt:row.editorial_at,
+    createdAt:row.created_at,
+  })),hasMore,nextCursor:hasMore?last.created_at+'|'+last.id:null,
+    pageLimit:VISIBLE_INBOX_LIMIT});
 }
 async function preview(env, id) {
   const row = await env.DB.prepare(`SELECT object_key FROM image_candidates
@@ -256,10 +312,10 @@ export async function handleRequest(request, env, githubFetch = fetch) {
       if (allowed && request.method === 'GET') return await publicationOriginal(env, allowed[1], githubFetch);
       return error(404, 'NOT_FOUND');
     }
-    if (url.pathname === PREFIX + '/ingest' && request.method === 'POST') return await ingest(request, env);
+    if (url.pathname === PREFIX + '/ingest' && request.method === 'POST') return await ingest(request, env, githubFetch);
     const who = await editor(request, env, githubFetch);
     if (!who) return error(401, 'UNAUTHORIZED_EDITOR');
-    if (url.pathname === PREFIX && request.method === 'GET') return await list(env, url);
+    if (url.pathname === PREFIX && request.method === 'GET') return await list(env, url, githubFetch);
     const match = new RegExp(`^${PREFIX}/([a-f0-9]{64})(?:/(original|decision))?$`).exec(url.pathname);
     if (!match) return error(404, 'NOT_FOUND');
     const [, id, action] = match;
@@ -268,6 +324,7 @@ export async function handleRequest(request, env, githubFetch = fetch) {
     return error(405, 'METHOD_NOT_ALLOWED');
   } catch (e) {
     if (e instanceof EditorialUnavailable) return error(503, 'EDITORIAL_SOURCE_UNAVAILABLE');
+    if (e instanceof ApprovalScopeUnavailable) return error(503, 'TOP30_SCOPE_UNAVAILABLE');
     if (e instanceof SyntaxError || e instanceof TypeError) return error(400, 'INVALID_REQUEST');
     // Never leak tokens, original bytes, private object names, SQL internals.
     return error(503, 'TEMPORARILY_UNAVAILABLE');
