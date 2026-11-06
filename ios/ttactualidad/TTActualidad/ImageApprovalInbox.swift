@@ -21,6 +21,7 @@ private struct PendingImage: Decodable, Identifiable {
     let title: String
     let editorialText: String
     let createdAt: String
+    let editorialAt: String?
     let state: String?
 }
 
@@ -39,6 +40,42 @@ private struct DecisionResponse: Decodable {
     let sitesVerified: Bool?
 }
 
+// Explicit editorial cutover, not the later moment when an old PNG arrives.
+private enum ApprovalInboxScope {
+    static let maximumVisible = 20
+    static let newsCutover: Date = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return f.date(from: "2026-11-06T08:43:00.000Z")!
+    }()
+    static func parse(_ text: String?) -> Date? {
+        guard let text else { return nil }
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = f.date(from: text) { return date }
+        f.formatOptions = [.withInternetDateTime]
+        return f.date(from: text)
+    }
+    static func visible(_ items: [PendingImage],
+                        currentTop30: Set<String>) -> [PendingImage] {
+        var seen = Set<String>()
+        return items.sorted { $0.createdAt > $1.createdAt }.filter { item in
+            let id = item.identity
+            let scope: Bool
+            if id.project == "ttendencias" {
+                scope = currentTop30.contains(id.editorialId + ":r" + String(id.revision))
+            } else if id.project == "ttittulares" {
+                // Never use ingestion time to make an old news article "new".
+                scope = parse(item.editorialAt).map { $0 >= newsCutover } ?? false
+            } else {
+                scope = false
+            }
+            let key = id.project + ":" + id.editorialId + ":r" + String(id.revision)
+            return scope && seen.insert(key).inserted
+        }.prefix(maximumVisible).map { $0 }
+    }
+}
+
 @MainActor
 private final class ApprovalInboxModel: ObservableObject {
     @Published private(set) var images: [PendingImage] = []
@@ -54,16 +91,23 @@ private final class ApprovalInboxModel: ObservableObject {
         do {
             let (data, status) = try await github.privateImageInboxRequest(path: "/v1/images")
             guard status == 200 else { throw InboxError.http(status) }
-            let items = try JSONDecoder().decode(PendingImageResponse.self, from: data).items
+            let received = try JSONDecoder().decode(PendingImageResponse.self, from: data).items
+            let top30 = try await github.currentImageApprovalTrendEpisodes()
+            let items = ApprovalInboxScope.visible(received, currentTop30: top30)
             images = items
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
-            notice = items.isEmpty ? "No hay imágenes pendientes de aprobación." : ""
+            notice = items.isEmpty ?
+                "No hay imágenes actuales para aprobar. Las antiguas están ocultas, no eliminadas." : ""
             for image in items.prefix(4) where previews[image.id] == nil {
                 await loadOriginal(image, using: github)
             }
         } catch {
-            notice = "No se pudo consultar la bandeja privada: \(error.localizedDescription)"
+            // Fail closed on Top30 identity/read errors: never leave a stale
+            // approval card on screen after a failed scope refresh.
+            images = []
+            previews = [:]
+            notice = "No se pudo verificar el Top 30 y la bandeja privada: \(error.localizedDescription)"
         }
     }
 
@@ -230,6 +274,9 @@ struct ImageApprovalInbox: View {
                         description: Text("Las imágenes pendientes solo pueden verse con tu cuenta autorizada."))
                 } else {
                     List {
+                        Text("Máximo 20 imágenes · tendencias del Top 30 actual y noticias desde el 6/11 a las 09:43.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                         if !model.notice.isEmpty {
                             Section {
                                 Text(model.notice)
