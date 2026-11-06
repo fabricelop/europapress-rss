@@ -8,17 +8,18 @@
   "command_id": "tr-1793980384315-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "investigating",
   "started_at": "2026-11-06T16:53:00+01:00",
-  "updated_at": "2026-11-06T17:00:00+01:00",
+  "updated_at": "2026-11-06T17:01:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 3,
-  "trend_id": "d6b652b7d172",
-  "title": "#RTXON",
+  "trend_id": "299ed3e6042c",
+  "title": "Abascal",
   "queue_complete": false,
   "processed_ids": [
-    "1484984db99a"
+    "1484984db99a",
+    "d6b652b7d172"
   ],
   "converged_ids": [],
   "remaining_ids": [
@@ -26,22 +27,21 @@
     "d6b652b7d172"
   ],
   "remaining_active_ids": [
-    "d6b652b7d172",
     "299ed3e6042c"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 3,
-    "closed": 1,
-    "explained": 1,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -52,7 +52,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "investigating",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -135,5 +135,5 @@
     "tr-1793977800000-manual",
     "tr-1793978700000-manual"
   ],
-  "message": "Persistiendo #RTXON (d6b652b7d172 r0) tras revalidación JIT."
+  "message": "Investigando Abascal (299ed3e6042c r0) tras revalidación JIT; #RTXON tratado antes por hora real de solicitud."
 }
