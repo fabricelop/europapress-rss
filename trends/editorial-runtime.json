@@ -3,29 +3,85 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793980822681-manual",
-  "previous_run_id": "tr-1793980384315-manual",
-  "command_id": "tr-1793980822681-manual",
+  "run_id": "tr-1793981400000-manual",
+  "previous_run_id": "tr-1793980822681-manual",
+  "command_id": "tr-1793981400000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T17:01:00+01:00",
-  "updated_at": "2026-11-06T17:06:00+01:00",
-  "finished_at": "2026-11-06T17:06:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T17:10:00+01:00",
+  "updated_at": "2026-11-06T17:10:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-a8ca31e21fd45559b24a",
-    "red-review-6b3abf1a33b75588cb6f"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "preparing",
+  "final_outcomes": [],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793980822681-manual",
+    "status": "DONE",
+    "started_at": "2026-11-06T17:01:00+01:00",
+    "updated_at": "2026-11-06T17:06:00+01:00",
+    "finished_at": "2026-11-06T17:06:00+01:00",
+    "current": 2,
+    "total": 2,
+    "queue_complete": true,
+    "processed_ids": [],
+    "converged_ids": [
+      "red-review-a8ca31e21fd45559b24a",
+      "red-review-6b3abf1a33b75588cb6f"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "red-review-a8ca31e21fd45559b24a",
+        "revision": 0,
+        "name": "Revisar novedades: Ritz",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_predecessor_verified",
+        "apply_commit": "343626903e5c6feabc14fa816c09f566093c4ca3"
+      },
+      {
+        "id": "red-review-6b3abf1a33b75588cb6f",
+        "revision": 0,
+        "name": "Revisar novedades: La Séptima",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_predecessor_verified",
+        "apply_commit": "343626903e5c6feabc14fa816c09f566093c4ca3"
+      }
+    ],
     "attempted": 2,
     "observed": 2,
     "closed": 2,
@@ -42,116 +98,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-a8ca31e21fd45559b24a",
-      "revision": 0,
-      "name": "Revisar novedades: Ritz",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_predecessor_verified",
-      "apply_commit": "343626903e5c6feabc14fa816c09f566093c4ca3"
-    },
-    {
-      "id": "red-review-6b3abf1a33b75588cb6f",
-      "revision": 0,
-      "name": "Revisar novedades: La Séptima",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_predecessor_verified",
-      "apply_commit": "343626903e5c6feabc14fa816c09f566093c4ca3"
-    }
-  ],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793980384315-manual",
-    "status": "DONE",
-    "started_at": "2026-11-06T16:53:00+01:00",
-    "updated_at": "2026-11-06T17:05:00+01:00",
-    "finished_at": "2026-11-06T17:05:00+01:00",
-    "current": 5,
-    "total": 5,
-    "queue_complete": true,
-    "processed_ids": [
-      "1484984db99a",
-      "d6b652b7d172",
-      "299ed3e6042c",
-      "red-review-a8ca31e21fd45559b24a",
-      "red-review-6b3abf1a33b75588cb6f"
-    ],
-    "converged_ids": [],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "1484984db99a",
-        "revision": 0,
-        "name": "#TEM6N",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "d6b652b7d172",
-        "revision": 0,
-        "name": "#RTXON",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "299ed3e6042c",
-        "revision": 0,
-        "name": "Abascal",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "red-review-a8ca31e21fd45559b24a",
-        "revision": 0,
-        "name": "Revisar novedades: Ritz",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox_applied"
-      },
-      {
-        "id": "red-review-6b3abf1a33b75588cb6f",
-        "revision": 0,
-        "name": "Revisar novedades: La Séptima",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox_applied"
-      }
-    ],
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 3,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 2,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 2,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial cerrada 5/5: #TEM6N, #RTXON y Abascal explicados y aplicados; Ritz y La Séptima revisados sin novedades sustanciales. Barrera final en main: editorial-queue=0 y sin preparing/update/reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada tr-1793980822681-manual satisfecha por convergencia JIT con la ejecución inmediatamente anterior: Ritz y La Séptima quedaron review_completed/unchanged y aplicadas en main (commit 3436269). Barrera final: editorial-queue=0 y sin preparing/update/reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T17:01:00+01:00",
+  "last_started_at": "2026-11-06T17:10:00+01:00",
   "last_completed_at": "2026-11-06T17:06:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -200,5 +153,5 @@
     "tr-1793980384315-manual",
     "tr-1793980822681-manual"
   ],
-  "message": "Pasada tr-1793980822681-manual satisfecha por convergencia JIT con la ejecución inmediatamente anterior: Ritz y La Séptima quedaron review_completed/unchanged y aplicadas en main (commit 3436269). Barrera final: editorial-queue=0 y sin preparing/update/reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Pasada editorial iniciada: cola autoritativa releída en main; 0 preparing/update y sin rewrite_pending detectado. Revalidando barrera final."
 }
