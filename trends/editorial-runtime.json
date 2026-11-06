@@ -5,78 +5,33 @@
   "canonical": true,
   "run_id": "tr-1793954384977-manual",
   "previous_run_id": "tr-1793952832579-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-06T09:40:30+01:00",
-  "updated_at": "2026-11-06T09:40:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-06T09:48:20+01:00",
+  "finished_at": "2026-11-06T09:48:20+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "2bd3765e0bbb",
-  "title": "Asraf",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "2bd3765e0bbb",
+    "1fe2c8fc8928",
+    "4c72b543ab09",
+    "d571db22b2ef"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "2bd3765e0bbb",
-    "1fe2c8fc8928",
-    "4c72b543ab09",
-    "d571db22b2ef"
-  ],
-  "remaining_active_ids": [
-    "2bd3765e0bbb",
-    "1fe2c8fc8928",
-    "4c72b543ab09",
-    "d571db22b2ef"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 4,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 4,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 4,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "preparing",
-  "final_outcomes": [],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793952832579-manual",
-    "status": "DONE",
-    "started_at": "2026-11-06T09:14:30+01:00",
-    "updated_at": "2026-11-06T09:17:00+01:00",
-    "finished_at": "2026-11-06T09:17:00+01:00",
-    "current": 0,
-    "total": 0,
-    "queue_complete": true,
-    "processed_ids": [],
-    "converged_ids": [
-      "red-review-abaace6e23f2a315a000",
-      "red-review-b0c6f616d670e0451bca"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
@@ -86,41 +41,123 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2,
+    "incidents": 1,
+    "concurrent_convergence": 0
+  },
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-06T09:43:50+01:00",
+      "phase": "persisting",
+      "trend_id": "2bd3765e0bbb",
+      "title": "Asraf",
+      "reason": "La escritura atómica directa de los JSON grandes falló por un error de transporte h2 del conector; se releyó main y se aplicaron las mismas cuatro revisiones mediante el reconciliador JIT del repositorio, sin pérdida de datos."
+    }
+  ],
+  "error": null,
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "2bd3765e0bbb",
+      "revision": 0,
+      "name": "Asraf",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "1fe2c8fc8928",
+      "revision": 0,
+      "name": "Chiqui",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4c72b543ab09",
+      "revision": 0,
+      "name": "Brighton",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d571db22b2ef",
+      "revision": 0,
+      "name": "Claudio",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1793954384977-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-06T09:40:30+01:00",
+    "updated_at": "2026-11-06T09:48:20+01:00",
+    "finished_at": "2026-11-06T09:48:20+01:00",
+    "current": 4,
+    "total": 4,
+    "queue_complete": true,
+    "processed_ids": [
+      "2bd3765e0bbb",
+      "1fe2c8fc8928",
+      "4c72b543ab09",
+      "d571db22b2ef"
+    ],
+    "converged_ids": [],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "2bd3765e0bbb",
+        "revision": 0,
+        "name": "Asraf",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "1fe2c8fc8928",
+        "revision": 0,
+        "name": "Chiqui",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "4c72b543ab09",
+        "revision": 0,
+        "name": "Brighton",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "d571db22b2ef",
+        "revision": 0,
+        "name": "Claudio",
+        "outcome": "explained",
+        "applied": true
+      }
+    ],
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
+    "problematic": 0,
+    "updates": 4,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 1,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "satisfied_run_ids": [
-      "tr-1793952600000-manual",
-      "tr-1793952081715-manual"
-    ],
-    "absorbed_outcomes": [
-      {
-        "id": "red-review-abaace6e23f2a315a000",
-        "revision": 0,
-        "name": "Revisar novedades: Óscar Puente",
-        "source_id": "4c7de84bfc7c",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "predecessor_maintenance_outbox_applied",
-        "apply_commit": "6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957"
-      },
-      {
-        "id": "red-review-b0c6f616d670e0451bca",
-        "revision": 0,
-        "name": "Revisar novedades: #FelizJueves",
-        "source_id": "ff7da32ed7b2",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "predecessor_maintenance_outbox_applied",
-        "apply_commit": "6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957"
-      }
-    ],
-    "message": "Pasada sucesora cerrada 0/0 tras convergencia: la orden tr-1793952600000-manual ya había aplicado 2 revisiones unchanged (Óscar Puente y #FelizJueves) en 6fca1cb9ee4499d3f0d59b9e0bdfdfe82f40d957. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0. También satisface tr-1793952081715-manual."
+    "message": "Pasada editorial tr-1793954384977-manual cerrada 4/4: Asraf, Chiqui, Brighton y Claudio persistidos y verificados en requests + ficha; cola y reexplicaciones activas a 0. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte resuelta mediante reconciliador JIT."
   },
-  "last_started_at": "2026-11-06T09:14:30+01:00",
-  "last_completed_at": "2026-11-06T09:17:00+01:00",
+  "last_started_at": "2026-11-06T09:40:30+01:00",
+  "last_completed_at": "2026-11-06T09:48:20+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793951409248-manual",
@@ -153,5 +190,5 @@
       "reason": "later canonical passes processed the pending maintenance reviews and successor verified the final empty barrier"
     }
   ],
-  "message": "Pasada editorial real iniciada con 4 reelaboraciones preparing: Asraf, Chiqui, Brighton y Claudio. Sin ImageGen ni image-outbox."
+  "message": "Pasada editorial tr-1793954384977-manual cerrada 4/4: Asraf, Chiqui, Brighton y Claudio persistidos y verificados en requests + ficha; cola y reexplicaciones activas a 0. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte resuelta mediante reconciliador JIT."
 }
