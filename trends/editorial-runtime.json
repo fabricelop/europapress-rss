@@ -74,6 +74,26 @@
       "at": "2026-11-06T03:44:00+01:00",
       "phase": "closing",
       "message": "Barrera final sobre main: editorial-queue=0, preparing/update=0 y sin reexplicaciones pendientes; cierre 1/1."
+    },
+    {
+      "at": "2026-11-06T03:42:20+01:00",
+      "phase": "drafting",
+      "message": "Redactada explicación prudente para eddie r0 sin atribuir un detonante no verificado; remate omitido."
+    },
+    {
+      "at": "2026-11-06T03:42:30+01:00",
+      "phase": "persisting",
+      "message": "Resultado editorial persistido para aplicación; sin generación de imagen."
+    },
+    {
+      "at": "2026-11-06T03:42:58+01:00",
+      "phase": "verifying",
+      "message": "Aplicación confirmada: eddie r0 figura como explained en ambos registros editoriales; cola=0."
+    },
+    {
+      "at": "2026-11-06T03:44:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final verificada sobre main: cola editorial 0 y sin revisiones activas pendientes."
     }
   ],
   "final_outcomes": [
@@ -82,8 +102,7 @@
       "revision": 0,
       "name": "eddie",
       "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "explanation": "TT#30 eddie aparece entre las tendencias en España, pero no se ha podido confirmar qué ha impulsado el término."
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
@@ -107,8 +126,7 @@
         "revision": 0,
         "name": "eddie",
         "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "explanation": "TT#30 eddie aparece entre las tendencias en España, pero no se ha podido confirmar qué ha impulsado el término."
+        "applied": true
       }
     ],
     "attempted": 1,
@@ -131,7 +149,7 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada 1/1 cerrada: eddie r0 explicado con causa no confirmada tras búsquedas independientes; persistencia verificada en requests+telegram-manual-explained. Cola final 0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada 1/1 cerrada: eddie r0 explicado con causa no confirmada; persistencia verificada en ambos registros. Cola final 0."
   },
   "last_started_at": "2026-11-06T03:40:00+01:00",
   "last_completed_at": "2026-11-06T03:44:00+01:00",
