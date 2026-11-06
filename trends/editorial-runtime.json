@@ -7,39 +7,36 @@
   "previous_run_id": "tr-manual-20261106-2125-chat",
   "command_id": "tr-1793997162549-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T21:33:00+01:00",
-  "updated_at": "2026-11-06T21:37:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-06T21:38:00+01:00",
+  "finished_at": "2026-11-06T21:38:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-e5890c063c50294a51fe",
-  "title": "Revisar novedades: Peugeot",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-f5add425e41003b10d44"
+    "red-review-f5add425e41003b10d44",
+    "red-review-e5890c063c50294a51fe"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-e5890c063c50294a51fe"
-  ],
-  "remaining_active_ids": [
-    "red-review-e5890c063c50294a51fe"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,40 +47,76 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "verifying",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "red-review-f5add425e41003b10d44",
       "revision": 0,
       "name": "Revisar novedades: Koldo",
+      "source_id": "49691c684a3e",
       "outcome": "unchanged",
       "applied": true,
-      "via": "maintenance_outbox_applied"
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "33f5659e10bd2ebe399966ee65d8e435a3a63efd"
+    },
+    {
+      "id": "red-review-e5890c063c50294a51fe",
+      "revision": 0,
+      "name": "Revisar novedades: Peugeot",
+      "source_id": "f83b276f7891",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "af5fe1b10f830a2934bf5866e733d7c7ba5063e4"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261106-2125-chat",
+    "run_id": "tr-1793997162549-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T21:25:00+01:00",
-    "updated_at": "2026-11-06T21:25:30+01:00",
-    "finished_at": "2026-11-06T21:25:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-06T21:33:00+01:00",
+    "updated_at": "2026-11-06T21:38:00+01:00",
+    "finished_at": "2026-11-06T21:38:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-f5add425e41003b10d44",
+      "red-review-e5890c063c50294a51fe"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "final_outcomes": [
+      {
+        "id": "red-review-f5add425e41003b10d44",
+        "revision": 0,
+        "name": "Revisar novedades: Koldo",
+        "source_id": "49691c684a3e",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "33f5659e10bd2ebe399966ee65d8e435a3a63efd"
+      },
+      {
+        "id": "red-review-e5890c063c50294a51fe",
+        "revision": 0,
+        "name": "Revisar novedades: Peugeot",
+        "source_id": "f83b276f7891",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "af5fe1b10f830a2934bf5866e733d7c7ba5063e4"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -95,10 +128,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-manual-20261106-2125-chat cerrada 0/0 tras doble lectura de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. No había tareas anticipate ni review_red pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial tr-1793997162549-manual cerrada 2/2: Koldo y Peugeot revisados sin novedades materiales (unchanged), conservando texto y fecha originales. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T21:33:00+01:00",
-  "last_completed_at": "2026-11-06T21:25:30+01:00",
+  "last_completed_at": "2026-11-06T21:38:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -137,7 +170,8 @@
     "tr-manual-20261106-2041-chat",
     "tr-1793994303712-manual",
     "tr-manual-20261106-2110-chat",
-    "tr-manual-20261106-2125-chat"
+    "tr-manual-20261106-2125-chat",
+    "tr-1793997162549-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -178,7 +212,8 @@
     "tr-manual-20261106-2041-chat",
     "tr-1793994303712-manual",
     "tr-manual-20261106-2110-chat",
-    "tr-manual-20261106-2125-chat"
+    "tr-manual-20261106-2125-chat",
+    "tr-1793997162549-manual"
   ],
-  "message": "Peugeot investigado y resultado unchanged persistido en maintenance-outbox; verificando que el aplicador lo retire de la cola."
+  "message": "Pasada editorial tr-1793997162549-manual cerrada 2/2: Koldo y Peugeot revisados sin novedades materiales (unchanged), conservando texto y fecha originales. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox=0; publicaciones=0."
 }
