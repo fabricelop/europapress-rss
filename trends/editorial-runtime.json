@@ -3,89 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793954384977-manual",
-  "previous_run_id": "tr-1793952832579-manual",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-06T09:40:30+01:00",
-  "updated_at": "2026-11-06T09:48:20+01:00",
-  "finished_at": "2026-11-06T09:48:20+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "2bd3765e0bbb",
-    "1fe2c8fc8928",
-    "4c72b543ab09",
-    "d571db22b2ef"
-  ],
+  "run_id": "tr-autoguard-1793956276",
+  "previous_run_id": "tr-1793954384977-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T10:12:30+01:00",
+  "updated_at": "2026-11-06T10:12:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "f10b9b94b734",
+  "title": "Lc 16",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "f10b9b94b734"
+  ],
+  "remaining_active_ids": [
+    "f10b9b94b734"
+  ],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
-    "problematic": 0,
-    "updates": 4,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-06T09:43:50+01:00",
-      "phase": "persisting",
-      "trend_id": "2bd3765e0bbb",
-      "title": "Asraf",
-      "reason": "La escritura atómica directa de los JSON grandes falló por un error de transporte h2 del conector; se releyó main y se aplicaron las mismas cuatro revisiones mediante el reconciliador JIT del repositorio, sin pérdida de datos."
-    }
-  ],
+  "summary": null,
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "2bd3765e0bbb",
-      "revision": 0,
-      "name": "Asraf",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "1fe2c8fc8928",
-      "revision": 0,
-      "name": "Chiqui",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "4c72b543ab09",
-      "revision": 0,
-      "name": "Brighton",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "d571db22b2ef",
-      "revision": 0,
-      "name": "Claudio",
-      "outcome": "explained",
-      "applied": true
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793954384977-manual",
@@ -165,7 +109,7 @@
     "tr-1793952600000-manual",
     "tr-1793952081715-manual"
   ],
-  "command_id": "tr-1793954384977-manual",
+  "command_id": "tr-autoguard-1793956276",
   "canonical_successor_run_id": null,
   "source": "chat",
   "satisfied_run_chain": [
@@ -190,5 +134,5 @@
       "reason": "later canonical passes processed the pending maintenance reviews and successor verified the final empty barrier"
     }
   ],
-  "message": "Pasada editorial tr-1793954384977-manual cerrada 4/4: Asraf, Chiqui, Brighton y Claudio persistidos y verificados en requests + ficha; cola y reexplicaciones activas a 0. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte resuelta mediante reconciliador JIT."
+  "message": "Preparando 1/1: Lc 16 (f10b9b94b734 r0). Revalidación JIT e investigación actual en curso; ImageGen desactivado en esta pasada."
 }
