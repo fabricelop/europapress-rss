@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test windows/tests/test_private_image_intake.cjs windows/tests/private-image-format-and-recovery.test.cjs windows/tests/user-bubble-reader.test.cjs windows/tests/closed-conversation-recovery.test.cjs
+      - run: node --test windows/tests/test_private_image_intake.cjs windows/tests/private-image-format-and-recovery.test.cjs windows/tests/private-inbox-cutover.test.cjs windows/tests/user-bubble-reader.test.cjs windows/tests/closed-conversation-recovery.test.cjs
       - run: |
           $tokens=$null; $errors=$null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'windows/Actualizar-Recogida-Privada-TT.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
