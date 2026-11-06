@@ -18,6 +18,10 @@ _movement_module = importlib.util.module_from_spec(_movement_spec)
 _movement_spec.loader.exec_module(_movement_module)
 rank_items = _movement_module.rank_items
 movement_history = _movement_module.movement_history
+_suppression_spec = importlib.util.spec_from_file_location("tt_suppression", ROOT / "suppression.py")
+_suppression_module = importlib.util.module_from_spec(_suppression_spec)
+_suppression_spec.loader.exec_module(_suppression_module)
+is_suppressed = _suppression_module.is_suppressed
 RECENT = ROOT / "recent.json"
 REQUESTS = ROOT / "requests.json"
 TTITTULARES_STATUS = ROOT.parent / "ttittulares" / "status.json"
@@ -948,6 +952,9 @@ def main():
     top10, sources_used, chosen_name, method = choose_top10(source_data)
     if len(top10) < 10:
         raise RuntimeError("No se pudo obtener un Top 10 fiable de las fuentes disponibles")
+    # A user-suppressed trend is not an editorial candidate, even if it is
+    # still present in third-party raw rankings. Do not invent a substitute.
+    top10 = [name for name in top10 if not is_suppressed(name)]
 
     # A trusted previous Top-10 may stay unchanged after an hourly dated
     # provider crosses 90m. Keep automatic INVESTIGATION moving for up to
@@ -994,7 +1001,7 @@ def main():
             if len(top30) >= 30:
                 break
             key = term_key(name)
-            if key and key not in seen_top30:
+            if key and key not in seen_top30 and not is_suppressed(name):
                 top30.append(name)
                 seen_top30.add(key)
     # Mantener la fuente elegida como referencia para las posiciones,
@@ -1092,6 +1099,9 @@ def main():
     ttittulares_events = {str(x.get("id")): x for x in (ttittulares_events_doc.get("events") or []) if x.get("id")}
     upcoming, radar_history = build_upcoming(source_data, top30, previous_doc, ttittulares_status, ttittulares_events, now)
     upcoming = filter_dismissed_upcoming(upcoming, requests_doc)
+    upcoming = [row for row in upcoming if not is_suppressed(row.get("name"))]
+    radar_history = {key: row for key, row in radar_history.items()
+                     if not is_suppressed(row.get("name") if isinstance(row, dict) else key)}
     anticipated = anticipated_entries(top10, previous_doc, now)
 
     payload = {
@@ -1119,7 +1129,11 @@ def main():
         "radar_history": radar_history,
         "anticipated_entries": anticipated,
         "upcoming_method": "outside-top30 + confirmed-social-support + rising-or-new",
-        "sources": source_data,
+        "sources": {
+            name: {**data, "trends": [term for term in (data.get("trends") or [])
+                                      if not is_suppressed(term)]}
+            for name, data in source_data.items()
+        },
     }
     RECENT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
