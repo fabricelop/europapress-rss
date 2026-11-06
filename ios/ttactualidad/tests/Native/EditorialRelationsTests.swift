@@ -183,6 +183,62 @@ final class EditorialRelationsTests: XCTestCase {
             id: "", revision: 0, renderedText: "", candidates: [confirmed]))
     }
 
+    func testTrendSearchMatchesNewsBodyOrTitleNotSubstrings() {
+        let bodyMatch = EditorialRelationEndpoint(
+            id: "a", revision: 1, episodeFingerprint: "",
+            title: "Balance político", text: "TRUMP se reúne en la Casa Blanca",
+            path: nil, listedAt: "2026-11-06T09:00:00Z")
+        let titleMatch = EditorialRelationEndpoint(
+            id: "b", revision: 1, episodeFingerprint: "",
+            title: "Ábalos declara ante el juez", text: "",
+            path: nil, listedAt: "2026-11-06T08:00:00Z")
+        let substring = EditorialRelationEndpoint(
+            id: "c", revision: 1, episodeFingerprint: "",
+            title: "Comparación de instrumentos", text: "una trompeta",
+            path: nil, listedAt: "2026-11-06T07:00:00Z")
+        XCTAssertTrue(EditorialRelationsPolicy.newsMentionsTrend(bodyMatch, name: "Trump"))
+        XCTAssertTrue(EditorialRelationsPolicy.newsMentionsTrend(titleMatch, name: "abalos"))
+        XCTAssertFalse(EditorialRelationsPolicy.newsMentionsTrend(substring, name: "Trump"))
+        XCTAssertFalse(EditorialRelationsPolicy.newsMentionsTrend(bodyMatch, name: "   "))
+        XCTAssertFalse(EditorialRelationsPolicy.newsMentionsTrend(bodyMatch, name: "Putin"))
+    }
+
+    func testTrendSearchLimitsToFiveDistinctNewsWithinSevenDays() {
+        let now = EditorialRelationsPolicy.parsedDate("2026-11-06T12:00:00Z")!
+        func make(_ id: String, _ revision: Int, _ when: String?,
+                  _ text: String = "Trump anuncia cambios") -> EditorialRelationEndpoint {
+            EditorialRelationEndpoint(
+                id: id, revision: revision, episodeFingerprint: "",
+                title: "Noticia " + id, text: text, path: nil, listedAt: when)
+        }
+        let recent = (0..<7).map {
+            make("n" + String($0), 1,
+                 String(format: "2026-11-06T%02d:00:00Z", 11 - $0))
+        }
+        let old = make("old", 1, "2026-10-30T11:59:59Z")
+        let edge = make("edge", 1, "2026-10-30T12:00:00Z")
+        let future = make("future", 1, "2026-11-07T12:00:00Z")
+        let undated = make("undated", 1, nil)
+        let unrelated = make("unrelated", 1, "2026-11-06T11:30:00Z", "Economía y deporte")
+        let candidates = [old, edge, future, undated, unrelated] +
+            recent + [recent[0], make("n0", 2, "2026-11-06T10:30:00Z")]
+        let found = EditorialRelationsPolicy.newsForTrend(
+            candidates, name: "Trump", now: now)
+        XCTAssertEqual(found.map(\.id), ["n0", "n1", "n2", "n3", "n4"])
+        XCTAssertEqual(found.count, 5)
+        XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
+            [edge, old, undated, unrelated], name: "Trump", now: now).map(\.id),
+            ["edge"])
+        XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
+            candidates, name: "Trump", now: now, hidden: ["n0:r1"]).map(\.id),
+            ["n0", "n1", "n2", "n3", "n4"])
+        XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
+            [recent[0]], name: "Trump", now: now,
+            hidden: [recent[0].stableIdentity]).count, 0)
+        XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
+            candidates, name: "Trump", now: now, limit: 2).count, 2)
+    }
+
     func testOnlyConfirmedDecisionCountsAsSaved() {
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "linked", relationId: "r"), action: "link"))
         XCTAssertTrue(EditorialRelationsPolicy.confirms(.init(state: "blocked", relationId: "r"), action: "unlink"))

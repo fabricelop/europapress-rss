@@ -670,9 +670,8 @@ final class GitHubEditor: ObservableObject {
         return object
     }
 
-    // Only real current Top30 editorial IDs/revisions can enter the private
-    // images inbox. A position/rank is not an identity. A GitHub read failure
-    // does not expose stale approval cards.
+    // Preserve PR #325: image candidates must belong to a current, exact
+    // Top30 editorial episode. A failed read must not expose stale approvals.
     func currentImageApprovalTrendEpisodes() async throws -> Set<String> {
         let snapshot = try await readMainJSON("trends/site-top30-current.json")
         guard let entries = snapshot["items"] as? [[String: Any]],
@@ -709,7 +708,9 @@ final class GitHubEditor: ObservableObject {
             throw GitHubError.message("No está accesible el historial reciente de noticias.")
         }
 
-        let cutoff = Date().addingTimeInterval(-48 * 3600)
+        // Top30 discovery looks back seven days; the 48-hour inbox limit
+        // would silently exclude valid related stories.
+        let cutoff = Date().addingTimeInterval(-7 * 24 * 3600)
         let latest = Date().addingTimeInterval(300)
         let radarEvents = radar?["events"] as? [String: [String: Any]] ?? [:]
         struct Candidate {
@@ -747,7 +748,12 @@ final class GitHubEditor: ObservableObject {
                   let title = row["title"] as? String else { continue }
             let date = row["delivered_at"] as? String ??
                 row["rewrite_completed_at"] as? String ?? row["selected_at"] as? String
-            add(id, revision, title, "", date)
+            let tweet = row["tweet"] as? [String: Any] ?? [:]
+            let body = (tweet["text"] as? String) ??
+                (row["editorial_text"] as? String) ??
+                (row["explanation"] as? String) ??
+                (row["factual_summary"] as? String) ?? ""
+            add(id, revision, title, body, date)
         }
 
         // Publication events are durable even when both prepared and Listas
@@ -759,7 +765,10 @@ final class GitHubEditor: ObservableObject {
                   let radarRow = radarEvents[id],
                   radarRow["revision"] as? Int == revision,
                   let title = radarRow["title"] as? String else { continue }
-            add(id, revision, title, "", row["at"] as? String)
+            let body = (radarRow["editorial_text"] as? String) ??
+                (radarRow["explanation"] as? String) ??
+                (radarRow["factual_summary"] as? String) ?? ""
+            add(id, revision, title, body, row["at"] as? String)
         }
 
         // Prepared is still useful while populated, but it is NOT a

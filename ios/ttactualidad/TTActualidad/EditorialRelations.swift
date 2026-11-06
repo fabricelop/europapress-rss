@@ -127,6 +127,55 @@ enum EditorialRelationsPolicy {
         }
     }
 
+    // Display discovery is based on the actual text of each news episode, not
+    // a presumed editorial association. It never writes or invents a relation.
+    // Search accent/case-insensitively, but require word boundaries so short
+    // trend names cannot match unrelated fragments of longer words.
+    static func newsMentionsTrend(_ news: EditorialRelationEndpoint, name: String) -> Bool {
+        let locale = Locale(identifier: "es_ES")
+        func normalized(_ text: String) -> String {
+            text.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: locale)
+        }
+        let term = normalized(name.trimmingCharacters(in: .whitespacesAndNewlines))
+            .trimmingCharacters(in: CharacterSet(charactersIn: "#"))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !term.isEmpty else { return false }
+        let content = normalized(news.title + " " + news.text)
+        let pattern = "(?<![\\p{L}\\p{N}])" +
+            NSRegularExpression.escapedPattern(for: term) + "(?![\\p{L}\\p{N}])"
+        return content.range(of: pattern, options: .regularExpression) != nil
+    }
+
+    // Up to five distinct news stories per current Top30 trend, from the last
+    // seven complete days. Unknown dates and future-dated rows are not shown.
+    // The local hidden-news preference continues to apply to this inbox.
+    static func newsForTrend(_ candidates: [EditorialRelationEndpoint],
+                             name: String, now: Date = Date(),
+                             fallbackDates: [String: Date] = [:],
+                             hidden: Set<String> = [], limit: Int = 5)
+        -> [EditorialRelationEndpoint] {
+        let cutoff = now.addingTimeInterval(-7 * 24 * 3600)
+        let latest = now.addingTimeInterval(300)
+        let dated = candidates.compactMap { news -> (EditorialRelationEndpoint, Date)? in
+            let key = newsKey(id: news.id, revision: news.revision)
+            guard !hidden.contains(news.stableIdentity), !hidden.contains(key),
+                  let date = parsedDate(news.listedAt) ?? fallbackDates[key],
+                  date >= cutoff, date <= latest,
+                  newsMentionsTrend(news, name: name) else { return nil }
+            return (news, date)
+        }.sorted { left, right in
+            if left.1 != right.1 { return left.1 > right.1 }
+            if left.0.revision != right.0.revision {
+                return left.0.revision > right.0.revision
+            }
+            return left.0.id < right.0.id
+        }
+        var ids = Set<String>()
+        return Array(dated.compactMap {
+            ids.insert($0.0.id).inserted ? $0.0 : nil
+        }.prefix(max(0, min(5, limit))))
+    }
+
     // Only explicit switches write decisions. Suggested (unaccepted) pairs are
     // not automatically dismissed when an editor saves another Top30 link.
     // A Sites-issued episode fingerprint already guards the exact editorial
