@@ -72,6 +72,10 @@ test('original raster is cached by exact episode and kept after network failure'
  assert.doesNotThrow(()=>persistOriginal(base,task,meta,bytes)); // idempotent
  await assert.rejects(send(meta,bytes,'private-secret',async()=>Response.json({error:'unavailable'},{status:503})),/PRIVATE_RECEIPT_HTTP_503/);
  assert.deepEqual(cachedOriginal(base,task,meta),bytes);
+ const replay=await send(meta,bytes,'private-secret',async()=>Response.json({id:'b'.repeat(64),state:'existing'},{status:200}));
+ assert.equal(replay.state,'existing');
+ await assert.rejects(send(meta,bytes,'private-secret',async()=>({ok:true,status:200,json:async()=>{throw Error('bad html')}})),/PRIVATE_RECEIPT_BAD_JSON/);
+ assert.deepEqual(cachedOriginal(base,task,meta),bytes);
  assert.throws(()=>cachedOriginal(base,task,{...meta,editorialText:'Other',episodeFingerprint:'different'}),/CACHED_ORIGINAL_CONFLICT/);
  await assert.rejects(send(meta,bytes,'private-secret',async()=>Response.json({id:'a'.repeat(64),state:'rejected'},{status:200})),/PRIVATE_RECEIPT_REJECTED/);
  discardOriginal(base,task);
