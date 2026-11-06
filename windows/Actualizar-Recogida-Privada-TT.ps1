@@ -1,4 +1,5 @@
 #requires -Version 5.1
+param([ValidateRange(10,3600)][int]$MaxWaitSeconds=900)
 # Incremental, hash-pinned repair of the original-image receiver for the iPhone APP.
 # Do not replace generator bridges, secrets, Site, or other scheduled tasks.
 $ErrorActionPreference='Stop'
@@ -29,10 +30,35 @@ $allowed=@{
   '1788962e76fce00891f74027afba349f82d195e94ac8c2e06929cfdf2fa1bd37',
   $files['TTImageApprovalReceiver.cjs'])
 }
+function Get-BusyImageProcesses {
+ @(Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
+   Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js|TTImageApprovalReceiver\.cjs'})
+}
 function Assert-Idle {
- $busy=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
-  Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js|TTImageApprovalReceiver\.cjs'})
- if($busy.Count){throw 'Generador o receptor en ejecucion. No se interrumpe. Repite al quedar libre.'}
+ if(@(Get-BusyImageProcesses).Count){
+  throw 'Ha empezado otro encargo mientras se preparaba la instalacion. Ningun proceso se detiene.'
+ }
+}
+# Pause only the existing private-inbox scheduler, never the generators,
+# listeners, Chrome, or any other task. Running jobs are allowed to finish.
+# Restore the original enabled state in finally even if installation fails.
+function Wait-ForIdle([int]$limitSeconds) {
+ $deadline=(Get-Date).AddSeconds($limitSeconds)
+ $lastNotice=[datetime]::MinValue
+ while($true){
+  $busy=@(Get-BusyImageProcesses)
+  if(-not $busy.Count){ return }
+  if((Get-Date) -ge $deadline){
+   $n=($busy | ForEach-Object {$_.ProcessId}) -join ','
+   throw ('Todavia hay encargos activos (PID '+$n+'). No se ha interrumpido ninguno ni instalado archivos. Repite cuando terminen.')
+  }
+  if(((Get-Date)-$lastNotice).TotalSeconds -ge 30){
+   $types=($busy | ForEach-Object {if($_.CommandLine -match 'TTImageApprovalReceiver'){'receptor privado'}else{'generador'}} | Select-Object -Unique) -join ' y '
+   Write-Host ('Actualizacion protegida: '+$types+' aun activo. Continuara automaticamente al quedar libre.')
+   $lastNotice=Get-Date
+  }
+  Start-Sleep -Seconds 5
+ }
 }
 if(-not(Test-Path -LiteralPath $base -PathType Container)){throw 'No existe C:\TTiTTulares; sin cambios.'}
 foreach($name in @('TTendenciasImageBridge.js','TTiTTularesImageBridge.js')){
@@ -55,11 +81,13 @@ foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
   throw ('El bridge no tiene la pausa de aprobacion: '+$name)
  }
 }
-Assert-Idle
+# Download and verify before waiting; no running processes have been changed.
 $temp=Join-Path $env:TEMP ('TT-PrivateInboxPatch-'+[guid]::NewGuid().ToString('N'))
 $backup=Join-Path $base ('private-inbox-backup-'+(Get-Date -Format yyyyMMdd-HHmmss))
 New-Item -ItemType Directory -Path $temp -Force | Out-Null
 $written=@()
+$receiverPaused=$false
+$installed=$false
 try{
  foreach($name in $files.Keys){
   $destination=Join-Path $temp $name
@@ -73,6 +101,18 @@ try{
    throw ('La version nueva no conserva la pausa editorial: '+$name)
   }
  }
+ # Temporarily stop only future launches of the private inbox receiver.
+ # The current receiver and both generator bridges remain entirely untouched.
+ if((Get-ScheduledTask -TaskName $task.TaskName -ErrorAction Stop).State -ne 'Disabled'){
+  try {
+   Disable-ScheduledTask -TaskName $task.TaskName -ErrorAction Stop | Out-Null
+   $receiverPaused=$true
+   Write-Host 'Lanzamientos del receptor pausados temporalmente; los trabajos activos siguen.'
+  } catch {
+   Write-Warning 'Sin permiso para pausar la tarea privada. Se esperara una ventana de inactividad sin detener nada.'
+  }
+ }
+ Wait-ForIdle $MaxWaitSeconds
  Assert-Idle
  New-Item -ItemType Directory -Path $backup | Out-Null
  foreach($name in $files.Keys){Copy-Item -LiteralPath (Join-Path $base $name) -Destination (Join-Path $backup $name)}
@@ -84,9 +124,23 @@ try{
  Write-Host 'JPEG/WebP se convertiran a PNG solo para el buzón; reintentos recuperan originales sin generar otros.'
  Write-Host 'La tarea programada se conserva. La confirmacion de recepcion requiere ver un recibo PRIVATE_INBOX RECEIVED_pending.'
  Write-Host ('Copia de seguridad: '+$backup)
+ $installed=$true
 }catch{
  foreach($name in $written){Copy-Item -LiteralPath (Join-Path $backup $name) -Destination (Join-Path $base $name) -Force}
  throw
 }finally{
+ # Always restore the receiver's prior scheduled state: no forgotten pause.
+ $enableFailure=$null
+ if($receiverPaused){
+  try {Enable-ScheduledTask -TaskName $task.TaskName -ErrorAction Stop | Out-Null}
+  catch {$enableFailure=$_.Exception.Message}
+ }
  Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
+ if($enableFailure){throw ('ATENCION: no se pudo reactivar la tarea privada: '+$enableFailure)}
+ if($installed -and $receiverPaused){
+  try {
+   Start-ScheduledTask -TaskName $task.TaskName -ErrorAction Stop
+   Write-Host 'Receptor privado reactivado; se ha solicitado un ciclo de recogida.'
+  }catch{Write-Warning 'La instalacion termino, pero no se pudo lanzar un ciclo inmediato. La programacion original sigue activa.'}
+ }
 }
