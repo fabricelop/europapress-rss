@@ -7,17 +7,18 @@
   "previous_run_id": "tr-manual-20261106-2140-chat",
   "command_id": "tr-manual-20261106-2210-chat",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T22:10:00+01:00",
-  "updated_at": "2026-11-06T22:15:10+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-06T22:15:25+01:00",
+  "finished_at": "2026-11-06T22:15:25+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "1d446fcf702d",
-  "title": "#sevillaalaves",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "7c9e08459659",
     "1d446fcf702d"
   ],
   "converged_ids": [],
@@ -27,15 +28,15 @@
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
-    "explained": 1,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -46,42 +47,61 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "final_outcomes": [],
+  "activity": "closing",
+  "final_outcomes": [
+    {
+      "id": "7c9e08459659",
+      "revision": 0,
+      "name": "Vargas",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "be31a47b5a47199f7a680509a38756d32d65879d"
+    },
+    {
+      "id": "1d446fcf702d",
+      "revision": 0,
+      "name": "#sevillaalaves",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "5be46a5e4273c33962d4b546df5c01402b659368"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261106-2140-chat",
+    "run_id": "tr-manual-20261106-2210-chat",
     "status": "DONE",
-    "started_at": "2026-11-06T21:40:00+01:00",
-    "updated_at": "2026-11-06T21:45:00+01:00",
-    "finished_at": "2026-11-06T21:45:00+01:00",
+    "started_at": "2026-11-06T22:10:00+01:00",
+    "updated_at": "2026-11-06T22:15:25+01:00",
+    "finished_at": "2026-11-06T22:15:25+01:00",
     "current": 2,
     "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "007aba61a434",
-      "0eeea4d3a966"
+      "7c9e08459659",
+      "1d446fcf702d"
     ],
     "converged_ids": [],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "007aba61a434",
+        "id": "7c9e08459659",
         "revision": 0,
-        "name": "Stephen Miller",
+        "name": "Vargas",
         "outcome": "explained",
         "applied": true,
         "via": "editorial_outbox",
-        "apply_commit": "f2f478f45d81c096686386ef408c1b3206abcccf"
+        "apply_commit": "be31a47b5a47199f7a680509a38756d32d65879d"
       },
       {
-        "id": "0eeea4d3a966",
+        "id": "1d446fcf702d",
         "revision": 0,
-        "name": "Imserso",
+        "name": "#sevillaalaves",
         "outcome": "explained",
         "applied": true,
         "via": "editorial_outbox",
-        "apply_commit": "f2f478f45d81c096686386ef408c1b3206abcccf"
+        "apply_commit": "5be46a5e4273c33962d4b546df5c01402b659368"
       }
     ],
     "attempted": 2,
@@ -104,10 +124,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-manual-20261106-2140-chat cerrada 2/2: Stephen Miller e Imserso explicados y persistidos en requests + telegram-manual-explained. Barrera final previa: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial tr-manual-20261106-2210-chat cerrada 2/2: Vargas y #sevillaalaves explicados y persistidos en requests + telegram-manual-explained. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T22:15:10+01:00",
-  "last_completed_at": "2026-11-06T22:15:10+01:00",
+  "last_completed_at": "2026-11-06T22:15:25+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -149,7 +169,8 @@
     "tr-manual-20261106-2125-chat",
     "tr-1793997162549-manual",
     "tr-1793997311693-manual",
-    "tr-manual-20261106-2140-chat"
+    "tr-manual-20261106-2140-chat",
+    "tr-manual-20261106-2210-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -193,7 +214,8 @@
     "tr-manual-20261106-2125-chat",
     "tr-1793997162549-manual",
     "tr-1793997311693-manual",
-    "tr-manual-20261106-2140-chat"
+    "tr-manual-20261106-2140-chat",
+    "tr-manual-20261106-2210-chat"
   ],
-  "message": "Persistiendo 2/2: #sevillaalaves mediante editorial-outbox."
+  "message": "Pasada editorial tr-manual-20261106-2210-chat cerrada 2/2: Vargas y #sevillaalaves explicados y persistidos en requests + telegram-manual-explained. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación pendiente=0. ImageGen=0; image-outbox=0; publicaciones=0."
 }
