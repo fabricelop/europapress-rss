@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "checked_at": "2026-11-06T10:00:04.876210+00:00",
-=======
-  "checked_at": "2026-11-06T10:03:42.597695+00:00",
->>>>>>> Stashed changes
+  "checked_at": "2026-11-06T10:13:42.224483+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -44,16 +40,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
-      "non_stale_sources": 2,
-<<<<<<< Updated upstream
-      "captured_age_minutes": 8.7,
-=======
-      "captured_age_minutes": 12.4,
->>>>>>> Stashed changes
-      "noise_count": 0,
-      "repair_started": true
+      "non_stale_sources": 3,
+      "captured_age_minutes": 12.2,
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
@@ -62,14 +53,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
-<<<<<<< Updated upstream
-      "run_id": 42199241845,
-=======
-      "run_id": 42199724982,
->>>>>>> Stashed changes
+      "age_minutes": 2.9,
+      "run_id": 42200649451,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -111,9 +98,7 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [
     "cola con 478 estado(s) inválido(s)"
   ],
