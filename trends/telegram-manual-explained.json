@@ -71806,14 +71806,31 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
+        "source": "www.movistarplus.es",
+        "source_url": "https://www.movistarplus.es/programacion-tv/tve/2026-11-06",
+        "alt": "Imagen de archivo relacionada con #LaHora6N",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.movistarplus.es/recorte/r/original/OG_movistar.png",
+        "source": "www.movistarplus.es",
+        "source_url": "https://www.movistarplus.es/programacion-tv/tve/2026-11-06",
+        "alt": "Imagen de archivo relacionada con #LaHora6N",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-06T09:03:00+01:00",
+  "updated_at": "2026-11-06T08:05:39.273214Z",
   "count": 1189
 }
