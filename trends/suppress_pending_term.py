@@ -38,8 +38,8 @@ def clean_documents(root=ROOT):
     path = root / "requests.json"
     doc = json.loads(path.read_text(encoding="utf-8"))
     n = purge_pending(doc["requests"])
+    changes["requests_terminated"] = n
     if n:
-        changes["requests_terminated"] = n
         rewrite_doc(path, doc)
 
     path = root / "editorial-queue.json"
