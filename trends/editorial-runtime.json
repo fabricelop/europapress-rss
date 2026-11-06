@@ -3,35 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793968595124-manual",
+  "run_id": "tr-1793968389270-manual",
   "previous_run_id": "tr-1793967998266-manual",
-  "command_id": "tr-1793968595124-manual",
+  "command_id": "tr-1793968389270-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-06T13:36:00+01:00",
-  "updated_at": "2026-11-06T13:36:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 0,
+  "updated_at": "2026-11-06T13:37:30+01:00",
+  "finished_at": "2026-11-06T13:37:30+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-4669dc7bd4793882377a",
+    "red-review-a9e2fdfec7a883de6fd4"
+  ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -45,52 +48,70 @@
   "incidents": [],
   "error": null,
   "activity": "closing",
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-4669dc7bd4793882377a",
+      "revision": 0,
+      "name": "Revisar novedades: #LaIslaDeLasTentaciones17",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "e864e4200c9379f590a246c18f60251dbd1a0e73",
+      "source_id": "50405f310f9f"
+    },
+    {
+      "id": "red-review-a9e2fdfec7a883de6fd4",
+      "revision": 0,
+      "name": "Revisar novedades: Peugeot",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "2fbcb2925c4d08825fa084cb2ed0766f21dc2a35",
+      "source_id": "f83b276f7891"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793967998266-manual",
+    "run_id": "tr-1793968389270-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T13:33:30+01:00",
-    "updated_at": "2026-11-06T13:38:30+01:00",
-    "finished_at": "2026-11-06T13:38:30+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-11-06T13:36:00+01:00",
+    "updated_at": "2026-11-06T13:37:30+01:00",
+    "finished_at": "2026-11-06T13:37:30+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "366616be26f9",
       "red-review-4669dc7bd4793882377a",
       "red-review-a9e2fdfec7a883de6fd4"
     ],
-    "converged_ids": [
-      "red-review-a9e2fdfec7a883de6fd4"
-    ],
+    "converged_ids": [],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "366616be26f9",
-        "name": "Luis de la Fuente",
-        "revision": 0,
-        "outcome": "explained",
-        "explained_at": "2026-11-06T13:32:00+01:00"
-      },
-      {
         "id": "red-review-4669dc7bd4793882377a",
-        "name": "#LaIslaDeLasTentaciones17",
         "revision": 0,
-        "outcome": "unchanged"
+        "name": "Revisar novedades: #LaIslaDeLasTentaciones17",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "e864e4200c9379f590a246c18f60251dbd1a0e73",
+        "source_id": "50405f310f9f"
       },
       {
         "id": "red-review-a9e2fdfec7a883de6fd4",
-        "name": "Peugeot",
         "revision": 0,
+        "name": "Revisar novedades: Peugeot",
         "outcome": "unchanged",
-        "converged": true
+        "applied": true,
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "2fbcb2925c4d08825fa084cb2ed0766f21dc2a35",
+        "source_id": "f83b276f7891"
       }
     ],
     "attempted": 2,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -103,20 +124,21 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial completada 3/3: Luis de la Fuente r0 explained; revisiones #LaIslaDeLasTentaciones17 y Peugeot unchanged. Peugeot convergió antes de la persistencia JIT y se verificó review_completed. Cola final 0; rewrite_pending 0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial completada 2/2: #LaIslaDeLasTentaciones17 y Peugeot revisados sin novedad material. Cola final 0 y sin rewrite_pending/reexplain/status update. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T13:33:30+01:00",
-  "last_completed_at": "2026-11-06T13:38:30+01:00",
+  "last_completed_at": "2026-11-06T13:37:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
     "tr-1793967063000-manual",
     "tr-1793967900000-manual",
-    "tr-1793967998266-manual"
+    "tr-1793967998266-manual",
+    "tr-1793968389270-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -124,7 +146,8 @@
     "tr-1793966387045-manual",
     "tr-1793967063000-manual",
     "tr-1793967900000-manual",
-    "tr-1793967998266-manual"
+    "tr-1793967998266-manual",
+    "tr-1793968389270-manual"
   ],
-  "message": "Cierre 0/0 en verificación: cola sin preparing/update en esta lectura; pendiente relectura final de main."
+  "message": "Pasada editorial completada 2/2: #LaIslaDeLasTentaciones17 y Peugeot unchanged. Barrera final main: editorial-queue=0 y escaneo de requests sin rewrite_pending:true, reexplain:true ni status:update. ImageGen=0; image-outbox=0; publicaciones=0."
 }
