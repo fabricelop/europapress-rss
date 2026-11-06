@@ -7,39 +7,36 @@
   "previous_run_id": "tr-manual-20261106-2255-chat",
   "command_id": "tr-1794002386005-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T23:10:00+01:00",
-  "updated_at": "2026-11-06T23:14:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-06T23:15:30+01:00",
+  "finished_at": "2026-11-06T23:15:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "4ef3f4d0432a",
-  "title": "#LaDiana6nov",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "1d446fcf702d"
+    "1d446fcf702d",
+    "4ef3f4d0432a"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "4ef3f4d0432a"
-  ],
-  "remaining_active_ids": [
-    "4ef3f4d0432a"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
-    "explained": 1,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,26 +47,67 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo #LaDiana6nov · revisión 0",
-  "final_outcomes": [],
+  "activity": "Pasada editorial completada",
+  "final_outcomes": [
+    {
+      "id": "1d446fcf702d",
+      "revision": 1,
+      "name": "#sevillaalaves",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_chat_outbox",
+      "reason": "Resultado final 0-0 verificado; revisión redactada desde cero con remate nuevo."
+    },
+    {
+      "id": "4ef3f4d0432a",
+      "revision": 0,
+      "name": "#LaDiana6nov",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_chat_outbox",
+      "reason": "Emisión de La Diana del 6 de noviembre en La Séptima verificada con programación y fuentes independientes."
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261106-2255-chat",
+    "run_id": "tr-1794002386005-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T22:55:00+01:00",
-    "updated_at": "2026-11-06T22:56:00+01:00",
-    "finished_at": "2026-11-06T22:56:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-06T23:10:00+01:00",
+    "updated_at": "2026-11-06T23:15:30+01:00",
+    "finished_at": "2026-11-06T23:15:30+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "1d446fcf702d",
+      "4ef3f4d0432a"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "final_outcomes": [
+      {
+        "id": "1d446fcf702d",
+        "revision": 1,
+        "name": "#sevillaalaves",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_chat_outbox",
+        "reason": "Resultado final 0-0 verificado; revisión redactada desde cero con remate nuevo."
+      },
+      {
+        "id": "4ef3f4d0432a",
+        "revision": 0,
+        "name": "#LaDiana6nov",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_chat_outbox",
+        "reason": "Emisión de La Diana del 6 de noviembre en La Séptima verificada con programación y fuentes independientes."
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -86,10 +124,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-manual-20261106-2255-chat cerrada 0/0. Barrera final main: editorial-queue=0 y no hay preparing/update ni reexplicaciones pendientes detectadas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada editorial tr-1794002386005-manual cerrada 2/2. #sevillaalaves r1 y #LaDiana6nov r0 persisten como explained en requests y telegram-manual-explained. Barrera final main: editorial-queue=0 y no quedan preparing/update, rewrite_pending ni reexplicaciones. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T22:55:00+01:00",
-  "last_completed_at": "2026-11-06T22:56:00+01:00",
+  "last_started_at": "2026-11-06T23:10:00+01:00",
+  "last_completed_at": "2026-11-06T23:15:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -137,7 +175,8 @@
     "tr-1793999923982-manual",
     "tr-manual-20261106-2226-chat",
     "tr-manual-20261106-2240-chat",
-    "tr-manual-20261106-2255-chat"
+    "tr-manual-20261106-2255-chat",
+    "tr-1794002386005-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -187,7 +226,8 @@
     "tr-1793999923982-manual",
     "tr-manual-20261106-2226-chat",
     "tr-manual-20261106-2240-chat",
-    "tr-manual-20261106-2255-chat"
+    "tr-manual-20261106-2255-chat",
+    "tr-1794002386005-manual"
   ],
-  "message": "JIT validado: #LaDiana6nov r0 sigue preparing. Resultado editorial enviado al aplicador; verificando persistencia."
+  "message": "Pasada editorial tr-1794002386005-manual cerrada 2/2. #sevillaalaves r1 y #LaDiana6nov r0 persisten como explained en requests y telegram-manual-explained. Barrera final main: editorial-queue=0 y no quedan preparing/update, rewrite_pending ni reexplicaciones. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
