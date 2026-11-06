@@ -3,39 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793956657674-manual",
-  "previous_run_id": "tr-autoguard-1793956276",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T10:19:00+01:00",
-  "updated_at": "2026-11-06T10:24:05+01:00",
-  "finished_at": "2026-11-06T10:24:05+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-20261106T104000+0100-manual",
+  "previous_run_id": "tr-1793956657674-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T10:40:00+01:00",
+  "updated_at": "2026-11-06T10:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-177e57e4fedcaed0d94e",
-    "red-review-63f6e4c2d29a3378b1f3"
-  ],
-  "converged_ids": [
-    "red-review-177e57e4fedcaed0d94e",
-    "red-review-63f6e4c2d29a3378b1f3"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -43,34 +37,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "red-review-177e57e4fedcaed0d94e",
-      "revision": 0,
-      "name": "Revisar novedades: La Séptima",
-      "source_id": "17dad4a4dcfa",
-      "outcome": "continuity",
-      "applied": true,
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "1f10029844951c7b9805f8a7bfba5436158a2b72"
-    },
-    {
-      "id": "red-review-63f6e4c2d29a3378b1f3",
-      "revision": 0,
-      "name": "Revisar novedades: Jesús de Miguel",
-      "source_id": "ca4337605844",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox_applied",
-      "apply_commit": "1f10029844951c7b9805f8a7bfba5436158a2b72"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793956657674-manual",
@@ -134,7 +107,7 @@
     "title": null,
     "message": "Pasada editorial tr-1793956657674-manual cerrada 2/2: La Séptima aplicada como continuidad en la misma ficha y Jesús de Miguel revisado sin cambios. Aplicación verificada en commit 1f10029844951c7b9805f8a7bfba5436158a2b72 sobre requests + telegram-manual-explained; barrera final editorial-queue=0 y sin trabajo activo/reexplicación pendiente observado. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T10:16:58+01:00",
+  "last_started_at": "2026-11-06T10:40:00+01:00",
   "last_completed_at": "2026-11-06T10:24:05+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -143,7 +116,7 @@
     "tr-1793952600000-manual",
     "tr-1793952081715-manual"
   ],
-  "command_id": "tr-1793956657674-manual",
+  "command_id": "tr-20261106T104000+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat",
   "satisfied_run_chain": [
@@ -168,5 +141,5 @@
       "reason": "later canonical passes processed the pending maintenance reviews and successor verified the final empty barrier"
     }
   ],
-  "message": "Pasada editorial tr-1793956657674-manual cerrada 2/2: La Séptima aplicada como continuidad en la misma ficha y Jesús de Miguel revisado sin cambios. Aplicación verificada en commit 1f10029844951c7b9805f8a7bfba5436158a2b72 sobre requests + telegram-manual-explained; barrera final editorial-queue=0 y sin trabajo activo/reexplicación pendiente observado. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Pasada editorial iniciada; revalidando main y la cola vigente antes del cierre."
 }
