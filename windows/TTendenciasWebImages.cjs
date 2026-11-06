@@ -134,7 +134,7 @@ function rasterProbe(command,pngForPrivateInbox=false){return `(async()=>{
  const img=images[0];const response=await fetch(img.currentSrc||img.src,{credentials:'include'});
  if(!response.ok)return {ready:false,reason:'raster_fetch_failed'};
  let blob=await response.blob();
- if(!/^image\\/(png|jpeg|webp)$/.test(blob.type)||blob.size<12000||blob.size>8388608)return {ready:false,reason:'raster_size_or_type'};
+ if((!/^image\\/(png|jpeg|webp)$/.test(blob.type)&&!(pngForPrivateInbox&&blob.type==='image/avif'))||blob.size<12000||blob.size>8388608)return {ready:false,reason:'raster_size_or_type'};
  const sourceMime=blob.type;
  // The Site inbox accepts PNG only. Convert pixels to PNG for THAT private
  // destination without changing legacy ImageGen/web image consumers.
