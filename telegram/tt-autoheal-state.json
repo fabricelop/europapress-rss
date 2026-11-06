@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-05T22:23:58.118912+00:00",
+      "checked_at": "2026-11-06T02:39:37.816518+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1772985,
+          "seconds": 1788325,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,31 +22,67 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-05T22:23:58.118912+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-06T02:39:37.816518+00:00",
+      "issue_count": 6,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "5531814d1a08",
+          "title": "EL AMOR NO ESTÁ DE MODA",
+          "seconds": 14310,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "fddf605b306b",
+          "title": "POBRE DE MI",
+          "seconds": 13051,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "9224d7710011",
+          "title": "Arturo Requejo",
+          "seconds": 13051,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-56381a455a7e51e2e6df",
+          "title": "#LaRevuelta",
+          "seconds": 12212,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "trend-update-e70cb1174fd7da8fca80",
+          "title": "#ElPerroAndaluzTVE",
+          "seconds": 12212,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1772985,
+          "seconds": 1788324,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "2231c939b69c7bddf9dfde92bb0256cf3be20684a9ed89dcac93e06103b4a8c4",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 5
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-05T22:23:58.118912+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-05T22:23:58.118912+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-05T16:48:26.785706+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-11-06T02:39:37.816518+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-06T02:39:37.816518+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-06T02:39:37.816518+00:00"
   },
-  "checked_at": "2026-11-05T22:23:58.118912+00:00"
+  "checked_at": "2026-11-06T02:39:37.816518+00:00"
 }
