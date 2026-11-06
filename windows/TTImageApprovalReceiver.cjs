@@ -25,8 +25,14 @@ function metadata(task,job){
 async function send(meta,bytes,secret,fetcher=fetch){
  if(bytes.length>8388608||bytes.length<24||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('ORIGINAL_PNG_REQUIRED');
  meta={...meta,rasterSHA256:sha(bytes)};const form=new FormData();form.set('metadata',JSON.stringify(meta));form.set('image',new Blob([bytes],{type:'image/png'}),'original.png');
- const r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret,'User-Agent':'TTActualidad/0.4.50'},body:form,redirect:'error',signal:AbortSignal.timeout(45000)});const receipt=await r.json();
- if(!r.ok||!['pending','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(receipt.id))throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
+ let r;
+ try{r=await fetcher(ENDPOINT,{method:'POST',headers:{'X-TT-Ingest-Key':secret,'User-Agent':'TTActualidad/0.4.50'},body:form,redirect:'error',signal:AbortSignal.timeout(45000)})}
+ catch{throw Error('PRIVATE_RECEIPT_NETWORK_UNAVAILABLE')}
+ if(!r.ok)throw Error('PRIVATE_RECEIPT_HTTP_'+r.status);
+ let receipt;try{receipt=await r.json()}catch{throw Error('PRIVATE_RECEIPT_BAD_JSON')}
+ // Retrying after a timeout can return "existing": it proves the same
+ // command/PNG is already stored but is NOT a claim that it remains pending.
+ if(!receipt||!['pending','existing','approved_awaiting_publication','published','rejected'].includes(receipt.state)||!/^[a-f0-9]{64}$/.test(String(receipt.id||'')))throw Error('PRIVATE_RECEIPT_BAD_JSON');
  if(receipt.state==='rejected')throw Error('PRIVATE_RECEIPT_REJECTED');
  return {...receipt,rasterSHA256:meta.rasterSHA256};
 }
@@ -211,7 +217,7 @@ async function once(base=__dirname){
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({project:meta.project,revision:meta.revision,commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
     discardOriginal(base,task);
     report(task,'RECEIVED_'+receipt.state);
-   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
+   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PRIVATE_RECEIPT_BAD_JSON|PRIVATE_RECEIPT_NETWORK_UNAVAILABLE|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
