@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1793980822681-manual",
   "command_id": "tr-1793981400000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T17:10:00+01:00",
-  "updated_at": "2026-11-06T17:10:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T17:11:00+01:00",
+  "finished_at": "2026-11-06T17:11:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -105,7 +105,7 @@
     "message": "Pasada tr-1793980822681-manual satisfecha por convergencia JIT con la ejecución inmediatamente anterior: Ritz y La Séptima quedaron review_completed/unchanged y aplicadas en main (commit 3436269). Barrera final: editorial-queue=0 y sin preparing/update/reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T17:10:00+01:00",
-  "last_completed_at": "2026-11-06T17:06:00+01:00",
+  "last_completed_at": "2026-11-06T17:11:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -127,7 +127,8 @@
     "tr-1793977800000-manual",
     "tr-1793978700000-manual",
     "tr-1793980384315-manual",
-    "tr-1793980822681-manual"
+    "tr-1793980822681-manual",
+    "tr-1793981400000-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -151,7 +152,8 @@
     "tr-1793977800000-manual",
     "tr-1793978700000-manual",
     "tr-1793980384315-manual",
-    "tr-1793980822681-manual"
+    "tr-1793980822681-manual",
+    "tr-1793981400000-manual"
   ],
-  "message": "Pasada editorial iniciada: cola autoritativa releída en main; 0 preparing/update y sin rewrite_pending detectado. Revalidando barrera final."
+  "message": "Pasada editorial cerrada 0/0 tras barrera final JIT: editorial-queue=0 y sin rewrite_pending/reexplicación pendiente detectada. ImageGen=0; image-outbox=0; publicaciones=0."
 }
