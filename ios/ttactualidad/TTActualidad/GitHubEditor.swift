@@ -402,7 +402,7 @@ final class GitHubEditor: ObservableObject {
     // Independent Buffer/X path: manual one-tap approval, no secret in the IPA.
     // The current "Publicar en X" composer and its decisions are untouched.
     private static func bufferKey(project: String, id: String, revision: Int) -> String {
-        "\\(project):\\(id):r\\(revision)"
+        "\(project):\(id):r\(revision)"
     }
 
     func isBufferAlreadySent(project: String, id: String, revision: Int) -> Bool {
