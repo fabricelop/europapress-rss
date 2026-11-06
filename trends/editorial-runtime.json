@@ -7,41 +7,37 @@
   "previous_run_id": "tr-manual-20261106-2025-chat",
   "command_id": "tr-manual-20261106-2041-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-06T20:41:30+01:00",
-  "updated_at": "2026-11-06T20:50:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-06T20:51:00+01:00",
+  "finished_at": "2026-11-06T20:51:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "red-review-9dcfed7aca9d930df4bd",
-  "title": "Revisar novedades: La UCO",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "5daedeacda96"
+    "5daedeacda96",
+    "red-review-9dcfed7aca9d930df4bd",
+    "red-review-14923e1cfb76bea001b4"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-9dcfed7aca9d930df4bd",
-    "red-review-14923e1cfb76bea001b4"
-  ],
-  "remaining_active_ids": [
-    "red-review-9dcfed7aca9d930df4bd",
-    "red-review-14923e1cfb76bea001b4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 3,
     "observed": 3,
-    "closed": 1,
+    "closed": 3,
     "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -59,7 +55,7 @@
     }
   ],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "5daedeacda96",
@@ -67,8 +63,24 @@
       "name": "Alberto Pugilato",
       "outcome": "explained",
       "applied": true,
-      "via": "editorial_outbox_applied",
-      "reason": "Detención en Valladolid verificada dentro de la operación de la Policía Nacional contra Núcleo Nacional."
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "red-review-9dcfed7aca9d930df4bd",
+      "revision": 0,
+      "name": "Revisar novedades: La UCO",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "208c4969cff9"
+    },
+    {
+      "id": "red-review-14923e1cfb76bea001b4",
+      "revision": 0,
+      "name": "Revisar novedades: Aldama",
+      "outcome": "distinct_update",
+      "applied": true,
+      "source_id": "1024497a60b7",
+      "created_id": "trend-update-0a7469a128d552b026d5"
     }
   ],
   "api_failover_enabled": false,
@@ -76,13 +88,15 @@
     "run_id": "tr-manual-20261106-2041-chat",
     "status": "DONE_WITH_INCIDENTS",
     "started_at": "2026-11-06T20:41:30+01:00",
-    "updated_at": "2026-11-06T20:49:00+01:00",
-    "finished_at": "2026-11-06T20:49:00+01:00",
-    "current": 1,
-    "total": 1,
+    "updated_at": "2026-11-06T20:51:00+01:00",
+    "finished_at": "2026-11-06T20:51:00+01:00",
+    "current": 3,
+    "total": 3,
     "queue_complete": true,
     "processed_ids": [
-      "5daedeacda96"
+      "5daedeacda96",
+      "red-review-9dcfed7aca9d930df4bd",
+      "red-review-14923e1cfb76bea001b4"
     ],
     "converged_ids": [],
     "remaining_active_ids": [],
@@ -93,19 +107,35 @@
         "name": "Alberto Pugilato",
         "outcome": "explained",
         "applied": true,
-        "via": "editorial_outbox_applied",
-        "reason": "Detención en Valladolid verificada dentro de la operación de la Policía Nacional contra Núcleo Nacional."
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "red-review-9dcfed7aca9d930df4bd",
+        "revision": 0,
+        "name": "Revisar novedades: La UCO",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "208c4969cff9"
+      },
+      {
+        "id": "red-review-14923e1cfb76bea001b4",
+        "revision": 0,
+        "name": "Revisar novedades: Aldama",
+        "outcome": "distinct_update",
+        "applied": true,
+        "source_id": "1024497a60b7",
+        "created_id": "trend-update-0a7469a128d552b026d5"
       }
     ],
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -117,10 +147,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-manual-20261106-2041-chat cerrada 1/1: Alberto Pugilato r0 explicado y aplicado. Barrera final main: editorial-queue=0 y sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte directo recuperada mediante editorial-outbox."
+    "message": "Pasada editorial tr-manual-20261106-2041-chat cerrada 3/3: Alberto Pugilato explicado; La UCO sin novedades materiales; Aldama actualizado como episodio distinto y materializado en trend-update-0a7469a128d552b026d5. Barrera final main: editorial-queue=0 y sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte directo recuperada mediante editorial-outbox."
   },
   "last_started_at": "2026-11-06T20:41:30+01:00",
-  "last_completed_at": "2026-11-06T20:49:00+01:00",
+  "last_completed_at": "2026-11-06T20:51:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -196,5 +226,5 @@
     "tr-manual-20261106-2025-chat",
     "tr-manual-20261106-2041-chat"
   ],
-  "message": "Revisando novedades: La UCO y Aldama. Alberto Pugilato ya quedó aplicado; ImageGen=0."
+  "message": "Pasada editorial tr-manual-20261106-2041-chat cerrada 3/3: Alberto Pugilato explicado; La UCO sin novedades materiales; Aldama actualizado como episodio distinto y materializado en trend-update-0a7469a128d552b026d5. Barrera final main: editorial-queue=0 y sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; image-outbox=0; publicaciones=0. Incidencia de transporte directo recuperada mediante editorial-outbox."
 }
