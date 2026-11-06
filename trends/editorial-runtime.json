@@ -3,22 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793933428629-manual",
-  "previous_run_id": "tr-1793933182699-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T03:51:50+01:00",
-  "updated_at": "2026-11-06T03:52:27+01:00",
-  "finished_at": "2026-11-06T03:52:27+01:00",
+  "run_id": "tr-1793933700000-manual",
+  "previous_run_id": "tr-1793933428629-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T03:55:00+01:00",
+  "updated_at": "2026-11-06T03:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-f171a7a97696512b688d"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -39,26 +37,16 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-11-06T03:51:50+01:00",
+      "at": "2026-11-06T03:55:00+01:00",
       "phase": "preparing",
-      "message": "Pasada manual iniciada sobre main. La primera lectura vio un review_red de Chiqui, pero la revalidación JIT posterior ya lo encontró retirado por convergencia; cola vigente=0. Verificando reexplicaciones pendientes. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-06T03:52:27+01:00",
-      "phase": "verifying",
-      "message": "Barrera final releída en main: editorial-queue=0, preparing/update=0 y búsqueda de rewrite_pending sin resultados. El review_red de Chiqui observado al principio ya había convergido y sido retirado antes del procesamiento JIT."
-    },
-    {
-      "at": "2026-11-06T03:52:27+01:00",
-      "phase": "closing",
-      "message": "Cierre 0/0 válido tras relectura final de main. Sin ImageGen, sin image-outbox y sin publicaciones."
+      "message": "Pasada manual iniciada sobre main. Cola inicial vigente=0. Verificando reexplicaciones pendientes y barrera JIT. Sin ImageGen."
     }
   ],
   "final_outcomes": [],
@@ -100,7 +88,7 @@
     "title": null,
     "message": "Cierre 0/0 tras relectura final: cola main=0, preparing/update=0 y rewrite_pending/reexplicación=0. El review de Chiqui ya había convergido antes del procesamiento."
   },
-  "last_started_at": "2026-11-06T03:51:50+01:00",
+  "last_started_at": "2026-11-06T03:55:00+01:00",
   "last_completed_at": "2026-11-06T03:52:27+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -160,7 +148,7 @@
     "tr-1793933182699-manual",
     "tr-1793933428629-manual"
   ],
-  "command_id": "tr-1793933428629-manual",
+  "command_id": "tr-1793933700000-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
