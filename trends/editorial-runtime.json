@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793929189185-manual",
-  "previous_run_id": "tr-1793928920531-manual",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-06T02:42:30+01:00",
-  "updated_at": "2026-11-06T02:43:15+01:00",
-  "finished_at": "2026-11-06T02:43:15+01:00",
+  "run_id": "tr-20261106T0255+0100-manual",
+  "previous_run_id": "tr-1793929189185-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T02:55:00+01:00",
+  "updated_at": "2026-11-06T02:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,14 +44,9 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-06T02:42:30+01:00",
+      "at": "2026-11-06T02:55:00+01:00",
       "phase": "preparing",
-      "message": "Pasada manual iniciada sobre main; cola observada 0 tras convergencia de la ejecución anterior. Verificando barrera final de cola y reexplicaciones."
-    },
-    {
-      "at": "2026-11-06T02:43:15+01:00",
-      "phase": "closing",
-      "message": "Barrera final verificada dos veces sobre main: cola 0 y sin reexplicaciones pendientes."
+      "message": "Pasada manual iniciada sobre main; verificando cola editorial vigente y reexplicaciones antes de cerrar o procesar."
     }
   ],
   "final_outcomes": [],
@@ -91,7 +86,7 @@
     "title": null,
     "message": "Pasada 0/0 cerrada tras doble relectura de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. La ejecución anterior ya había cerrado Inda, Paraguay y Radar Karmele. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T02:42:30+01:00",
+  "last_started_at": "2026-11-06T02:55:00+01:00",
   "last_completed_at": "2026-11-06T02:43:15+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -146,7 +141,7 @@
     "tr-20261106T0225+0100-manual",
     "tr-1793929189185-manual"
   ],
-  "command_id": "tr-1793929189185-manual",
+  "command_id": "tr-20261106T0255+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
