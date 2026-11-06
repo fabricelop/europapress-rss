@@ -888,6 +888,12 @@ final class GitHubEditor: ObservableObject {
                 notice = "Falta identificador para verificar la escritura."
                 return .failed
             }
+            // Buffer's authoritative receipt lives in its own shared ledger,
+            // not in the existing editorial action receipt file.
+            if event == "ttactualidad_buffer_publish_v1" {
+                notice = "GitHub recibió la orden. Buffer/X todavía no confirmó publicación."
+                return .pending
+            }
             let persisted = await confirmPersistence(event: event, requestID: requestID, label: label)
             if persisted { UINotificationFeedbackGenerator().notificationOccurred(.success) }
             return persisted ? .verified : .pending
