@@ -3,38 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793959315869-manual",
-  "previous_run_id": "tr-20261106T105500+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T11:02:00+01:00",
-  "updated_at": "2026-11-06T11:10:00+01:00",
-  "finished_at": "2026-11-06T11:10:00+01:00",
-  "current": 2,
+  "run_id": "tr-1793960225252-manual",
+  "previous_run_id": "tr-1793959315869-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T11:17:00+01:00",
+  "updated_at": "2026-11-06T11:17:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "9a836303a373",
-    "eebf7f5ccd62"
-  ],
+  "trend_id": "b1b015824783",
+  "title": "Madrid-Barcelona",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "b1b015824783",
+    "74ced1b85461"
+  ],
+  "remaining_active_ids": [
+    "b1b015824783",
+    "74ced1b85461"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -45,27 +48,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "9a836303a373",
-      "revision": 0,
-      "name": "Fiscalía Europea",
-      "outcome": "explained",
-      "applied": true,
-      "via": "TTENDENCIAS_CHAT_OUTBOX_V1",
-      "apply_commit": "2ca214c2adea2be7e69a2e6e250a28839e1fe6aa"
-    },
-    {
-      "id": "eebf7f5ccd62",
-      "revision": 0,
-      "name": "Carlos Cuerpo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "TTENDENCIAS_CHAT_OUTBOX_V1",
-      "apply_commit": "1215d2a2903bc0cf482eeb16f377e06705db276e"
-    }
-  ],
+  "activity": "preparing",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793959315869-manual",
@@ -124,7 +108,7 @@
     "title": null,
     "message": "Pasada editorial tr-1793959315869-manual cerrada 2/2: Fiscalía Europea r0 y Carlos Cuerpo r0 fueron investigadas, persistidas y verificadas en requests + ficha explicada. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación/rewrite_pending=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T11:02:00+01:00",
+  "last_started_at": "2026-11-06T11:17:00+01:00",
   "last_completed_at": "2026-11-06T11:10:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -133,9 +117,9 @@
     "tr-1793952600000-manual",
     "tr-1793952081715-manual"
   ],
-  "command_id": "tr-1793959315869-manual",
+  "command_id": "tr-1793960225252-manual",
   "canonical_successor_run_id": null,
   "source": "chat",
   "satisfied_run_chain": [],
-  "message": "Pasada editorial tr-1793959315869-manual cerrada 2/2: Fiscalía Europea r0 y Carlos Cuerpo r0 fueron investigadas, persistidas y verificadas en requests + ficha explicada. Barrera final main: editorial-queue=0, preparing/update=0 y reexplicación/rewrite_pending=0. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Pasada editorial en curso 0/2. Revalidando Madrid-Barcelona r0 antes de investigar; después #Buenosdías r0. Sin ImageGen."
 }
