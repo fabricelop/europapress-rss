@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-06T01:12:50+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-06T00:13:17.839160+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-f77390e731854a057a2b",
+      "revision": 0,
+      "name": "Revisar novedades: Chiqui",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-11-06T00:13:17.839160+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7375308f71a9",
+        "revision": 0,
+        "name": "Chiqui",
+        "rank": 7,
+        "explanation": "TT#7 Chiqui es tendencia por la gala 7 de Supervivientes All Stars: sigue en concurso tras ser repescada la semana pasada y centra comentarios en la emisión.\n#SupervivientesAllStars #Chiqui\n🌶️ La repesca venía con asiento reservado en el debate.",
+        "explanation_sha256": "8ae856b1e80adfe9f158e48d71480c1c559dcf28b65995aff7177bc4d5507636",
+        "explained_at": "2026-10-23T00:51:25+02:00",
+        "verification_sources": [
+          "https://www.mediasetinfinity.es/programas-tv/supervivientes/",
+          "https://eltelevisero.huffingtonpost.es/2026/10/maria-jesus-ruiz-o-chiqui-supervivientes-all-stars-2026-anuncia-quien-es-la-expulsada-definitiva-y-la-repescada/"
+        ],
+        "fingerprint": "104fa9639cacd4911da2231160d165ac0d6608fd98237dea1871749b57df0ff3"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-bb07a54ba7c2cd6c2236",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "rank": 11,
+      "status": "preparing",
+      "requested_at": "2026-11-06T00:13:17.839160+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7fb4d179ec62",
+        "revision": 0,
+        "name": "Paraguay",
+        "rank": 22,
+        "explanation": "TT#2 Paraguay sigue siendo tendencia por la crisis de Ueno Bank: Santiago Peña dimitió y, minutos después, la Cámara de Diputados aprobó por 78-0 su juicio político.\n#SantiagoPeña #UenoBank\n🌶️ La crisis bancaria ya llegó al relevo presidencial y al Congreso.",
+        "explanation_sha256": "c2afc54335b1b6420a6d597d6189027589fa05f9114789a2ad2ac80217146d05",
+        "explained_at": "2026-11-04T15:10:18.408Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
+          },
+          {
+            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
+          }
+        ],
+        "fingerprint": "713743ec85a37e6f395a4d01105183c722aa90d1396bd7bc2d6a3defc743c03a"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
