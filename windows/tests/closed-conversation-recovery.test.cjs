@@ -4,7 +4,7 @@ const source=fs.readFileSync(path.join(__dirname,'../TTImageApprovalReceiver.cjs
 for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact closed conversation only in private relay and returns pending receipt',async()=>{
  const base=fs.mkdtempSync(path.join(os.tmpdir(),'tt-intake-test-'));
  try{
- const sha=x=>crypto.createHash('sha256').update(x).digest('hex'),news=project==='ttittulares',text='Texto exacto',at='2026-11-03T10:00:00Z';
+ const sha=x=>crypto.createHash('sha256').update(x).digest('hex'),news=project==='ttittulares',text='Texto exacto',at='2026-11-06T08:45:00Z';
  const task={project,target_id:'topic-abc',command_id:'job-abc',revision:1,status:'waiting',secret_dpapi:'encrypted',conversation_url:'https://chatgpt.com/c/exact',browser_target_id:'reused',created_at:at,explanation_sha256:sha(text),editorial_sha256:sha([text,'Hechos','Remate'].join('\n'))};
  fs.mkdirSync(path.join(base,project+'-web-images'));fs.writeFileSync(path.join(base,project+'-web-images/job.json'),JSON.stringify(task));
  for(const file of ['TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs'])fs.writeFileSync(path.join(base,file),"return {status:'waiting',reason:'manual_approval_required'}");
@@ -17,6 +17,8 @@ for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact
  const start=source.indexOf('class CDP{'),end=source.indexOf('function unprotect(');
  const code=source.slice(0,start)+'const CDP=FakeCDP;\n'+source.slice(end);
  const sandbox={module:{exports:{}},require:n=>n==='node:child_process'?{execFileSync:()=> 'private-secret'}:n.endsWith('WebImages.cjs')?reader:require(n),process:{platform:'win32',pid:process.pid,kill:process.kill.bind(process)},__dirname:base,FakeCDP,Buffer,FormData,Blob,AbortSignal,Date,console:{log(){},error(){}},setTimeout,clearTimeout,fetch:async(url,opts)=>{
+  if(url.includes('site-top30-current.json'))return Response.json({items:[{
+   editorial_id:task.target_id,revision:task.revision,explanation:text}]});
   if(url.includes('decisions.json'))return Response.json({items:[]});
   if(url==='http://127.0.0.1:9234/json/version')return Response.json({webSocketDebuggerUrl:'ws://relay'});
   if(url.includes('/json/list'))return Response.json(created?[{id:'owned',type:'page',url:task.conversation_url,webSocketDebuggerUrl:'ws://owned'}]:[]);
