@@ -27,6 +27,7 @@ class DirectBufferPublisherTests(unittest.TestCase):
                               self.root / "pilot/ttactualidad-buffer-posts.json")
         p.start()
         self.addCleanup(p.stop)
+        self.real_save = publisher.save
         self.saved = []
         m = mock.patch.object(publisher, "save",
                               side_effect=lambda data, reason: self.saved.append(reason))
@@ -49,6 +50,30 @@ class DirectBufferPublisherTests(unittest.TestCase):
     def payload(self):
         return {"project": "ttittulares", "event_id": "news123456",
                 "revision": 1, "request_id": "11111111-1111-4111-8111-111111111111"}
+
+    def test_reservation_commits_ledger_before_external_request(self):
+        # A git diff --quiet code of 1 means there ARE staged changes.
+        # Losing this commit would allow a duplicate external publication.
+        staged = mock.Mock(returncode=1)
+        with mock.patch.object(publisher, "save", self.real_save), \
+             mock.patch.object(publisher, "run") as git, \
+             mock.patch.object(publisher.subprocess, "run", return_value=staged):
+            obj = {"version": 1, "items": [{"state": "reserved"}]}
+            publisher.save(obj, "reservar")
+        self.assertTrue(publisher.LEDGER.exists())
+        calls = [call.args for call in git.call_args_list]
+        self.assertTrue(any(args[:2] == ("git", "commit") for args in calls))
+        self.assertTrue(any(args[:2] == ("git", "push") for args in calls))
+
+    def test_no_change_avoids_empty_commit(self):
+        staged = mock.Mock(returncode=0)
+        with mock.patch.object(publisher, "save", self.real_save), \
+             mock.patch.object(publisher, "run") as git, \
+             mock.patch.object(publisher.subprocess, "run", return_value=staged):
+            publisher.save({"version": 1, "items": []}, "sin cambios")
+        calls = [call.args for call in git.call_args_list]
+        self.assertFalse(any(args[:2] == ("git", "commit") for args in calls))
+        self.assertFalse(any(args[:2] == ("git", "push") for args in calls))
 
     def test_preflight_requires_exact_text_and_revision(self):
         with mock.patch.object(publisher, "check_image", return_value=URL):
