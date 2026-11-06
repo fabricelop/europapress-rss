@@ -116,6 +116,34 @@ class DirectBufferPublisherTests(unittest.TestCase):
             text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual((image_url, kind), (archive, "archive"))
 
+    def test_buffer_text_matches_manual_x_section_link(self):
+        text = "Titular contrastado y breve.\n\n#Noticias\n🌶️ Remate"
+        result = publisher.x_payload("ttittulares", text)
+        self.assertEqual(result, text +
+                         "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/noticias")
+        self.assertEqual(result.count("https://"), 1)
+
+    def test_x_text_is_truncated_without_losing_end_hashtags_and_link(self):
+        text = ("Una noticia muy larga y contrastada. " * 22) + \
+            "\n\n#Actualidad #Noticias\n🌶️ Remate"
+        result = publisher.x_payload("ttittulares", text)
+        self.assertIn("#Actualidad #Noticias", result)
+        self.assertIn("🌶️ Remate", result)
+        self.assertTrue(result.endswith("/noticias"))
+        self.assertLessEqual(publisher.x_weight(result.split(
+            "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/noticias")[0]), 255)
+
+    def test_rate_limit_headers_accept_buffer_spaces(self):
+        headers = Message()
+        headers.add_header("RateLimit-Policy",
+                           '"2000-in-30days"; q=2000; w=2592000; pk=:masked:')
+        headers.add_header("RateLimit",
+                           '"2000-in-30days"; r=1650; t=600')
+        publisher.LAST_API_QUOTA = None
+        publisher.observe_rate_limits(headers)
+        self.assertEqual(publisher.LAST_API_QUOTA["used"], 350)
+        self.assertEqual(publisher.LAST_API_QUOTA["remaining"], 1650)
+
     def test_two_channels_share_one_30_day_api_quota(self):
         headers = Message()
         headers.add_header("RateLimit-Policy", '"150-in-15min";q=150;w=900;pk=:same:')
