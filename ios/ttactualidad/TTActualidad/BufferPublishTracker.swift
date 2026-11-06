@@ -80,6 +80,15 @@ final class BufferPublishTracker: ObservableObject {
         }.count
     }
 
+    func sentLast30Days(account: String, now: Date = Date()) -> Int {
+        posts.filter { post in
+            guard post.account == account, post.state == "sent",
+                  let date = confirmedDate(post.sent_at) else { return false }
+            let elapsed = now.timeIntervalSince(date)
+            return elapsed >= 0 && elapsed < 30 * 86400
+        }.count
+    }
+
     func pending(account: String) -> Int {
         posts.filter {
             $0.account == account &&
