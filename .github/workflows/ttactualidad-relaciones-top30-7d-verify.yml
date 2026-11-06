@@ -1,0 +1,96 @@
+name: TTActualidad - Relaciones Top30 7d - IPA prueba
+on:
+  push:
+    branches: [feature/ttactualidad-relaciones-top30-noticias-7d-20261106]
+    paths:
+      - 'ios/ttactualidad/**'
+      - '.github/workflows/ttactualidad-relaciones-top30-7d-verify.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: macos-15
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Xcode generator and icon
+        run: brew install xcodegen librsvg
+      - name: Test strict Top30 text matches and seven-day five-news cap
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/main.swift <<'SWIFT'
+          import Foundation
+          func news(_ id: String, _ date: String?, _ title: String, _ body: String = "") -> EditorialRelationEndpoint {
+              EditorialRelationEndpoint(id: id, revision: 1, episodeFingerprint: "",
+                                        title: title, text: body, path: nil, listedAt: date)
+          }
+          let now = EditorialRelationsPolicy.parsedDate("2026-11-06T12:00:00Z")!
+          let set = (0..<6).map {
+              news("n" + String($0), String(format: "2026-11-06T%02d:00:00Z", 11 - $0),
+                   "News", "TRUMP en la Casa Blanca")
+          }
+          let old = news("old", "2026-10-30T11:59:59Z", "Trump")
+          let boundary = news("boundary", "2026-10-30T12:00:00Z", "trump")
+          let wrong = news("wrong", "2026-11-06T11:45:00Z", "Trompeta")
+          let missing = news("missing", nil, "Trump")
+          let fresh = EditorialRelationsPolicy.newsForTrend(
+              [old, boundary, wrong, missing] + set + [set[0]],
+              name: "Trump", now: now)
+          assert(fresh.count == 5)
+          assert(fresh.map(\.id) == ["n0", "n1", "n2", "n3", "n4"])
+          assert(EditorialRelationsPolicy.newsForTrend([boundary, old], name: "Trump",
+                                                      now: now).map(\.id) == ["boundary"])
+          assert(EditorialRelationsPolicy.newsForTrend([set[0]], name: "Trump",
+                now: now, hidden: [set[0].stableIdentity]).isEmpty)
+          assert(EditorialRelationsPolicy.newsMentionsTrend(
+                news("accent", "2026-11-06T10:00:00Z", "Ábalos comparece"), name: "abalos"))
+          assert(!EditorialRelationsPolicy.newsMentionsTrend(wrong, name: "Trump"))
+          print("TOP30_SEVEN_DAY_FIVE_NEWS_POLICY_OK")
+          SWIFT
+          swiftc ios/ttactualidad/TTActualidad/EditorialRelations.swift /tmp/main.swift -o /tmp/top30-relations
+          /tmp/top30-relations
+      - name: Preflight existing iOS product
+        run: python3 ios/ttactualidad/tests/preflight.py
+      - name: Generate Xcode project and app icon
+        working-directory: ios/ttactualidad
+        run: |
+          mkdir -p TTActualidad/Assets.xcassets/AppIcon.appiconset
+          rsvg-convert --width 1024 --height 1024 --format png --output TTActualidad/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png art/AppIcon.svg
+          xcodegen generate
+      - name: Build iPhone app and Live Activity
+        working-directory: ios/ttactualidad
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild -project TTActualidad.xcodeproj -scheme TTActualidad \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath .build CODE_SIGNING_ALLOWED=NO build \
+            2>&1 | tee /tmp/tt-top30-7d-build.log
+      - name: Package unsigned IPA build75
+        working-directory: ios/ttactualidad
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP=".build/Build/Products/Release-iphoneos/TTActualidad.app"
+          test -d "$APP"
+          test -d "$APP/PlugIns/TTActualidadLive.appex"
+          test -s "$APP/Assets.car"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx '75'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/PlugIns/TTActualidadLive.appex/Info.plist" | grep -Fx '75'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx '0.4.63'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP/Info.plist" | grep -Fx 'com.fabricelop.ttactualidad.native'
+          mkdir -p dist/Payload
+          cp -R "$APP" dist/Payload/
+          cd dist
+          zip -qr TTActualidad-0.4.63-build75-Relaciones-Top30-7d-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.63-build75-Relaciones-Top30-7d-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.63-build75-Relaciones-Top30-7d-unsigned.ipa
+      - name: Upload IPA for iPhone testing
+        uses: actions/upload-artifact@v4
+        with:
+          name: TTActualidad-0.4.63-build75-Relaciones-Top30-7d-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.63-build75-Relaciones-Top30-7d-unsigned.ipa
+          retention-days: 30
+          if-no-files-found: error
