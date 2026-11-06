@@ -269,8 +269,38 @@ def check_image(url, expected_hash, project, event_id=None, revision=None):
     return url
 
 
-def archive_url(item):
-    """Read only an image assigned to this SAME editorial object."""
+def archive_url(item, project, event_id, revision):
+    """Match the iOS archive gallery: same story ID and latest valid revision."""
+    restricted = {"denied", "forbidden", "rejected", "no_permission", "restricted"}
+    associated = [item.get(field) for field in ("archive_image", "fallback_image")]
+    # Never bypass a source's explicit rights veto by substituting a cached
+    # raster of the same article without a separate rights review.
+    if any(isinstance(image, dict) and
+           str(image.get("rights_status") or "").lower() in restricted
+           for image in associated):
+        return None
+    directory = ROOT / ("ttittulares" if project == "ttittulares" else "trends") / "archive-images"
+    if directory.is_dir():
+        options = []
+        for photo in directory.glob(event_id + "-r*"):
+            if not photo.is_file() or photo.is_symlink():
+                continue
+            match = re.fullmatch(
+                re.escape(event_id) + r"-r(\d+)-[^/]+\.(?:png|jpe?g|webp)",
+                photo.name, flags=re.IGNORECASE
+            )
+            if not match or int(match.group(1)) > revision:
+                continue
+            if not (0 < photo.stat().st_size <= 12 * 1024 * 1024):
+                continue
+            options.append((int(match.group(1)), photo))
+        if options:
+            # Prefer exact revision, otherwise closest earlier archive
+            # photo, as in ArchivePhotoCatalog on the iPhone.
+            _, chosen = max(options, key=lambda pair: (pair[0], pair[1].name))
+            return ("https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
+                    + chosen.relative_to(ROOT).as_posix())
+    for field in ("archive_image", "fallback_image"):
     for field in ("archive_image", "fallback_image"):
         image = item.get(field)
         if not isinstance(image, dict):
@@ -349,7 +379,7 @@ def editorial(project, event_id, revision):
             return text, checked, "ai"
         except (ValueError, HTTPError, URLError, OSError, TimeoutError) as exc:
             print("Imagen IA no utilizable; buscando foto de archivo: " + str(exc)[:160])
-    archived = archive_url(item)
+    archived = archive_url(item, project, event_id, revision)
     if archived:
         return text, archived, "archive"
     return text, None, "text"
