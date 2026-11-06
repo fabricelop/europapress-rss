@@ -4,7 +4,13 @@ import {handleRequest} from '../src/index.mjs';
 import {episodeFingerprint} from '../src/editorial-truth.mjs';
 
 const main = { text: 'Texto factual + remate', offline: false, removed: false, revision: 0 };
+const currentTop30 = {ids:new Set(['my-trend']), offline:false};
 const editor = async (url, options) => {
+  if (url.includes('/trends/site-top30-current.json?ref=main')) {
+    if (currentTop30.offline) throw Error('offline');
+    return Response.json({items:[...currentTop30.ids].map(editorial_id=>({
+      editorial_id,revision:0,explanation:'verified current trend'}))});
+  }
   if (url.startsWith('https://api.github.com/repos/fabricelop/europapress-rss/contents/')) {
     if (main.offline) throw Error('offline');
     return new Response(JSON.stringify({ items: main.removed ? [] : [{
@@ -28,13 +34,15 @@ class DB {
     let args=[];
     const api={
       bind(...values){args=values;return api;},
-      async all(){return {results:[...thisDB.rows.values()].filter(x=>x.status === (sql.includes("approved_awaiting_publication")?'approved_awaiting_publication':'pending'))};},
+      async all(){return {results:sql.includes('ROW_NUMBER()') ? [...thisDB.rows.values()] :
+   [...thisDB.rows.values()].filter(x=>x.status ===
+     (sql.includes("approved_awaiting_publication")?'approved_awaiting_publication':'pending'))};},
       async first(){const r=thisDB.rows.get(args[0]);if(!r)return null; if(sql.includes('SELECT object_key'))return r.status === (sql.includes("approved_awaiting_publication")?'approved_awaiting_publication':'pending')?{...r}:null;return {status:r.status,editorial_text:r.editorial_text};},
       async run(){
         if (sql.includes('INSERT OR IGNORE')) {
           if(thisDB.rows.has(args[0]))return {meta:{changes:0}};
-          const [id,project,editorial_id,revision,episode_fingerprint,command_id,raster_sha256,object_key,title,editorial_text,created_at]=args;
-          thisDB.rows.set(id,{id,project,editorial_id,revision,episode_fingerprint,command_id,raster_sha256,object_key,title,editorial_text,created_at,status:'pending'});
+          const [id,project,editorial_id,revision,episode_fingerprint,command_id,raster_sha256,object_key,title,editorial_text,editorial_at,created_at]=args;
+          thisDB.rows.set(id,{id,project,editorial_id,revision,episode_fingerprint,command_id,raster_sha256,object_key,title,editorial_text,editorial_at,created_at,status:'pending'});
           return {meta:{changes:1}};
         }
         if(sql.includes('UPDATE image_candidates')) {
@@ -69,7 +77,8 @@ async function importOne(env, changes={}) {
   const incomplete={...identity,...changes.identity};
   const computed=await episodeFingerprint({...incomplete,editorialText});
   const full={...incomplete,episodeFingerprint:changes.identity?.episodeFingerprint||computed};
-  form.set('metadata',JSON.stringify({identity:full,title:changes.title||'Tendencia',editorialText}));
+  form.set('metadata',JSON.stringify({identity:full,title:changes.title||'Tendencia',editorialText,
+    editorialAt:changes.editorialAt||new Date().toISOString()}));
   const request=req('/v1/images/ingest','POST',form,null);
   request.headers.set('X-TT-Ingest-Key',env.INGEST_TOKEN);
   return handleRequest(request,env,editor);
@@ -225,4 +234,61 @@ test('approved original handoff fails closed after new editorial content or lost
  main.offline=false;
  delete env.GITHUB_SOURCE_READ_TOKEN;
  assert.equal((await handleRequest(download(),env,editor)).status,503);
+});
+test('news before 09:43 are rejected even when delivered today; current Top30 still admitted',async()=>{
+ const {env}=context();
+ const bad=await importOne(env,{identity:{project:'ttittulares',editorialId:'old-news'},
+   editorialAt:'2026-11-06T08:42:00Z'});
+ assert.equal(bad.status,409);
+ assert.equal((await bad.json()).error,'NEWS_BEFORE_CUTOVER');
+ assert.equal(env.DB.rows.size,0);
+ const now=await importOne(env);
+ assert.equal(now.status,201);
+ currentTop30.ids.delete('my-trend');
+ const oldTrend=await importOne(context().env);
+ assert.equal(oldTrend.status,409);
+ currentTop30.ids.add('my-trend');
+});
+test('only latest pending per episode, no resurrection after rejecting newer, never show 500',async()=>{
+ const {env}=context();const recent=new Date().toISOString();
+ for(let i=0;i<250;i++)env.DB.rows.set('o'+i,{
+   id:'o'+i,project:'ttittulares',editorial_id:'old-news-'+i,revision:0,
+   editorial_at:'2026-11-05T08:00:00Z',status:'pending',
+   created_at:recent,title:'old',editorial_text:'old',episode_fingerprint:'a'.repeat(64),
+   raster_sha256:'b'.repeat(64),command_id:'old-'+i,
+ });
+ for(let i=0;i<25;i++){
+   env.DB.rows.set('n'+i,{
+     id:'n'+i,project:'ttittulares',editorial_id:'new-'+i,revision:0,
+     editorial_at:recent,status:'pending',
+     created_at:new Date(Date.now()+i).toISOString(),title:'new',editorial_text:'new',
+     episode_fingerprint:'a'.repeat(64),raster_sha256:'b'.repeat(64),command_id:'new-'+i
+   });
+ }
+ const first=await receive(env);assert.equal(first.res.status,200);
+ assert.equal(first.data.items.length,20);
+ assert(first.data.items.every(x=>x.title==='new'));
+ assert.equal(first.data.hasMore,true);
+ const url='/v1/images?limit=20&before='+encodeURIComponent(first.data.nextCursor);
+ const next=await handleRequest(req(url),env,editor);assert.equal(next.status,200);
+ assert.equal((await next.json()).items.length,5);
+ // Once the current/newest image was decided, do not show a previous
+ // request for the very same episode.
+ const dup={...env.DB.rows.get('n24'),id:'n25',created_at:new Date(Date.now()+999).toISOString(),status:'rejected'};
+ env.DB.rows.set('n25',dup);
+ const after=await receive(env);
+ assert(!after.data.items.some(x=>x.identity.editorialId==='new-24'));
+});
+test('Top30 scope fetch outage does not leak old pending catalog',async()=>{
+ const {env}=context();await importOne(env);
+ currentTop30.offline=true;
+ const reply=await handleRequest(req('/v1/images'),env,editor);
+ assert.equal(reply.status,503);
+ assert.equal((await reply.json()).error,'TOP30_SCOPE_UNAVAILABLE');
+ currentTop30.offline=false;
+});
+test('more than 20 requested is rejected and none of the 500 historical news is listed',async()=>{
+ const {env}=context();
+ const out=await handleRequest(req('/v1/images?limit=100'),env,editor);
+ assert.equal(out.status,400);
 });
