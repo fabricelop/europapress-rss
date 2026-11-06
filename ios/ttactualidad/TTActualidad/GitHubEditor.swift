@@ -670,6 +670,26 @@ final class GitHubEditor: ObservableObject {
         return object
     }
 
+    // Preserve PR #325: image candidates must belong to a current, exact
+    // Top30 editorial episode. A failed read must not expose stale approvals.
+    func currentImageApprovalTrendEpisodes() async throws -> Set<String> {
+        let snapshot = try await readMainJSON("trends/site-top30-current.json")
+        guard let entries = snapshot["items"] as? [[String: Any]],
+              !entries.isEmpty, entries.count <= 30 else {
+            throw GitHubError.message("No está disponible el Top 30 actual.")
+        }
+        var result = Set<String>()
+        for entry in entries {
+            guard let id = entry["editorial_id"] as? String, !id.isEmpty,
+                  let revision = entry["revision"] as? Int, revision >= 0,
+                  let explanation = entry["explanation"] as? String,
+                  !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            else { continue }
+            result.insert(id + ":r" + String(revision))
+        }
+        return result
+    }
+
     // Rebuild the *display* news inbox from retained editorial history, not
     // the transient Listas or the often-empty prepared.json. Opaque relation
     // identities can ONLY come from Sites /v1/snapshot. This method NEVER
