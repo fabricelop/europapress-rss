@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1793994303712-manual",
   "command_id": "tr-manual-20261106-2110-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-06T21:10:00+01:00",
-  "updated_at": "2026-11-06T21:10:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-06T21:11:00+01:00",
+  "finished_at": "2026-11-06T21:11:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "final_outcomes": [
     {
       "id": "red-review-9dcfed7aca9d930df4bd",
@@ -68,53 +68,27 @@
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1793994303712-manual",
+    "run_id": "tr-manual-20261106-2110-chat",
     "status": "DONE",
-    "started_at": "2026-11-06T20:45:03.712+01:00",
-    "updated_at": "2026-11-06T20:51:00+01:00",
-    "finished_at": "2026-11-06T20:51:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-06T21:10:00+01:00",
+    "updated_at": "2026-11-06T21:11:00+01:00",
+    "finished_at": "2026-11-06T21:11:00+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "red-review-9dcfed7aca9d930df4bd",
-      "red-review-14923e1cfb76bea001b4"
-    ],
-    "converged_ids": [
-      "red-review-9dcfed7aca9d930df4bd",
-      "red-review-14923e1cfb76bea001b4"
-    ],
+    "processed_ids": [],
+    "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-9dcfed7aca9d930df4bd",
-        "revision": 0,
-        "name": "Revisar novedades: La UCO",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "source_id": "208c4969cff9"
-      },
-      {
-        "id": "red-review-14923e1cfb76bea001b4",
-        "revision": 0,
-        "name": "Revisar novedades: Aldama",
-        "outcome": "distinct_update",
-        "applied": true,
-        "via": "concurrent_convergence_jit",
-        "source_id": "1024497a60b7",
-        "created_id": "trend-update-0a7469a128d552b026d5"
-      }
-    ],
+    "final_outcomes": [],
     "attempted": 0,
-    "observed": 2,
-    "closed": 2,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -122,14 +96,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-1793994303712-manual cerrada 2/2 por convergencia JIT con la ejecución activa anterior: La UCO unchanged; Aldama actualizado como episodio distinto y materializado en trend-update-0a7469a128d552b026d5. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada editorial tr-manual-20261106-2110-chat cerrada 0/0 tras doble lectura de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. No había tareas anticipate ni review_red pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
   },
   "last_started_at": "2026-11-06T21:10:00+01:00",
-  "last_completed_at": "2026-11-06T20:51:00+01:00",
+  "last_completed_at": "2026-11-06T21:11:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -166,7 +140,8 @@
     "tr-manual-20261106-2010-chat",
     "tr-manual-20261106-2025-chat",
     "tr-manual-20261106-2041-chat",
-    "tr-1793994303712-manual"
+    "tr-1793994303712-manual",
+    "tr-manual-20261106-2110-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -205,7 +180,8 @@
     "tr-manual-20261106-2010-chat",
     "tr-manual-20261106-2025-chat",
     "tr-manual-20261106-2041-chat",
-    "tr-1793994303712-manual"
+    "tr-1793994303712-manual",
+    "tr-manual-20261106-2110-chat"
   ],
-  "message": "Iniciando pasada editorial manual; verificando cola autoritativa y estado vigente en main."
+  "message": "Pasada editorial tr-manual-20261106-2110-chat cerrada 0/0 tras doble lectura de main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplicación=0. No había tareas anticipate ni review_red pendientes. ImageGen=0; image-outbox=0; publicaciones=0."
 }
