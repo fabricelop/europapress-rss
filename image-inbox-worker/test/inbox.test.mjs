@@ -245,8 +245,10 @@ test('news before 09:43 are rejected even when delivered today; current Top30 st
  const now=await importOne(env);
  assert.equal(now.status,201);
  currentTop30.ids.delete('my-trend');
+ currentTop30.ids.add('another-current-trend');
  const oldTrend=await importOne(context().env);
  assert.equal(oldTrend.status,409);
+ currentTop30.ids.delete('another-current-trend');
  currentTop30.ids.add('my-trend');
 });
 test('only latest pending per episode, no resurrection after rejecting newer, never show 500',async()=>{
