@@ -3,36 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793933182699-manual",
-  "previous_run_id": "tr-1793933014604-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T03:46:20+01:00",
-  "updated_at": "2026-11-06T03:49:30+01:00",
-  "finished_at": "2026-11-06T03:49:30+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-1793933428629-manual",
+  "previous_run_id": "tr-1793933182699-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T03:51:50+01:00",
+  "updated_at": "2026-11-06T03:51:50+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [
-    "red-review-f171a7a97696512b688d",
-    "red-review-3394f039d18703fe625d"
+    "red-review-f171a7a97696512b688d"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 2,
-    "closed": 2,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -40,117 +39,22 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-11-06T03:43:34.604+01:00",
+      "at": "2026-11-06T03:51:50+01:00",
       "phase": "preparing",
-      "message": "Pasada manual iniciada sobre main; cola vigente 2. Revalidación JIT de ID/revisión antes de cada revisión de novedades. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-06T03:45:00+01:00",
-      "phase": "investigating",
-      "message": "Revisando novedades de Chiqui: contraste de hechos posteriores a la explicación original y a la revisión previa, sin crear imagen ni nueva ficha salvo episodio material independiente."
-    },
-    {
-      "at": "2026-11-06T03:46:20+01:00",
-      "phase": "preparing",
-      "message": "Pasada manual sucesora iniciada sobre main; cola vigente 2. Validación JIT de ID/revisión antes de cada revisión de novedades. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-06T03:48:15+01:00",
-      "phase": "verifying",
-      "message": "Convergencia JIT: la ejecución predecesora persistió los resultados de Chiqui y #FelizJueves y el reconciliador retiró ambos jobs; cola main=0."
-    },
-    {
-      "at": "2026-11-06T03:49:30+01:00",
-      "phase": "closing",
-      "message": "Pasada cerrada 2/2 por convergencia: Chiqui updated con episodio material de gala 9; #FelizJueves unchanged. Cola=0; rewrite_pending/reexplicación=0; ImageGen=0; publicaciones=0."
+      "message": "Pasada manual iniciada sobre main. La primera lectura vio un review_red de Chiqui, pero la revalidación JIT posterior ya lo encontró retirado por convergencia; cola vigente=0. Verificando reexplicaciones pendientes. Sin ImageGen."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "red-review-f171a7a97696512b688d",
-      "revision": 0,
-      "name": "Revisar novedades: Chiqui",
-      "outcome": "updated",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "distinct_episode": true,
-      "material_change": true
-    },
-    {
-      "id": "red-review-3394f039d18703fe625d",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizJueves",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1793933182699-manual",
-    "status": "DONE",
-    "started_at": "2026-11-06T03:46:20+01:00",
-    "updated_at": "2026-11-06T03:49:30+01:00",
-    "finished_at": "2026-11-06T03:49:30+01:00",
-    "current": 2,
-    "total": 2,
-    "queue_complete": true,
-    "processed_ids": [],
-    "converged_ids": [
-      "red-review-f171a7a97696512b688d",
-      "red-review-3394f039d18703fe625d"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-f171a7a97696512b688d",
-        "revision": 0,
-        "name": "Revisar novedades: Chiqui",
-        "outcome": "updated",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "distinct_episode": true,
-        "material_change": true
-      },
-      {
-        "id": "red-review-3394f039d18703fe625d",
-        "revision": 0,
-        "name": "Revisar novedades: #FelizJueves",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence"
-      }
-    ],
-    "attempted": 0,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 1,
-    "stale_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2,
-    "phase": "closing",
-    "trend_id": null,
-    "title": null,
-    "message": "Pasada 2/2 cerrada por convergencia JIT con la ejecución predecesora; ambos resultados persistidos y cola final 0."
-  },
-  "last_started_at": "2026-11-06T03:46:20+01:00",
+  "last_run": null,
+  "last_started_at": "2026-11-06T03:51:50+01:00",
   "last_completed_at": "2026-11-06T03:49:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -209,7 +113,7 @@
     "tr-20261106T0340+0100-manual",
     "tr-1793933182699-manual"
   ],
-  "command_id": "tr-1793933182699-manual",
+  "command_id": "tr-1793933428629-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
