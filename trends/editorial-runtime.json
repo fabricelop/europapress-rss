@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261106T0525+0100-manual",
-  "previous_run_id": "tr-20261106T0455+0100-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T05:25:00+01:00",
-  "updated_at": "2026-11-06T05:26:00+01:00",
-  "finished_at": "2026-11-06T05:26:00+01:00",
+  "run_id": "tr-20261106T0555+0100-manual",
+  "previous_run_id": "tr-20261106T0525+0100-manual",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T05:55:00+01:00",
+  "updated_at": "2026-11-06T05:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,19 +44,9 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-06T05:25:00+01:00",
+      "at": "2026-11-06T05:55:00+01:00",
       "phase": "preparing",
-      "message": "Pasada manual iniciada sobre main. Verificando cola vigente, reexplicaciones y mantenimiento. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-06T05:25:50+01:00",
-      "phase": "verifying",
-      "message": "Barrera final releída en main: editorial-queue=0, sin preparing/update y sin rewrite_pending; recent.json fresco a las 05:21:10 con Top30 completo."
-    },
-    {
-      "at": "2026-11-06T05:26:00+01:00",
-      "phase": "closing",
-      "message": "Cierre 0/0 válido. Sin ImageGen, sin image-outbox y sin publicaciones."
+      "message": "Pasada manual iniciada sobre main. Verificando cola vigente, reexplicaciones, Radar y mantenimiento. Sin ImageGen."
     }
   ],
   "final_outcomes": [],
@@ -162,7 +152,7 @@
     "tr-20261106T0455+0100-manual",
     "tr-20261106T0525+0100-manual"
   ],
-  "command_id": "tr-20261106T0525+0100-manual",
+  "command_id": "tr-20261106T0555+0100-manual",
   "canonical_successor_run_id": null,
   "source": "chat"
 }
