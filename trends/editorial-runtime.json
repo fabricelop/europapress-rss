@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261106-1910-chat",
-  "previous_run_id": "tr-1793988079709-manual",
-  "command_id": "tr-manual-20261106-1910-chat",
+  "run_id": "tr-manual-20261106-1925-chat",
+  "previous_run_id": "tr-manual-20261106-1910-chat",
+  "command_id": "tr-manual-20261106-1925-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T19:10:00+01:00",
-  "updated_at": "2026-11-06T19:11:30+01:00",
-  "finished_at": "2026-11-06T19:11:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T19:25:47+01:00",
+  "updated_at": "2026-11-06T19:25:47+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,7 +44,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
@@ -82,7 +82,7 @@
     "title": null,
     "message": "Pasada editorial tr-manual-20261106-1910-chat cerrada 0/0. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T19:10:00+01:00",
+  "last_started_at": "2026-11-06T19:25:47+01:00",
   "last_completed_at": "2026-11-06T19:11:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -145,5 +145,5 @@
     "tr-1793988079709-manual",
     "tr-manual-20261106-1910-chat"
   ],
-  "message": "Pasada editorial tr-manual-20261106-1910-chat cerrada 0/0. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Pasada editorial tr-manual-20261106-1925-chat iniciada. Releyendo main y verificando cola editorial y reelaboraciones pendientes."
 }
