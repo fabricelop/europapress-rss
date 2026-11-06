@@ -3,34 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261106-2240-chat",
-  "previous_run_id": "tr-manual-20261106-2226-chat",
-  "command_id": "tr-manual-20261106-2240-chat",
+  "run_id": "tr-manual-20261106-2255-chat",
+  "previous_run_id": "tr-manual-20261106-2240-chat",
+  "command_id": "tr-manual-20261106-2255-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T22:40:00+01:00",
-  "updated_at": "2026-11-06T22:44:45+01:00",
-  "finished_at": "2026-11-06T22:44:45+01:00",
-  "current": 3,
-  "total": 3,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-06T22:55:00+01:00",
+  "updated_at": "2026-11-06T22:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "0ccd5b43747e",
-    "5699f737a587",
-    "efefd7664080"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -48,27 +44,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada",
-  "final_outcomes": [
-    {
-      "id": "0ccd5b43747e",
-      "revision": 0,
-      "name": "#firstdates6n",
-      "outcome": "explained"
-    },
-    {
-      "id": "5699f737a587",
-      "revision": 0,
-      "name": "Sivera",
-      "outcome": "explained"
-    },
-    {
-      "id": "efefd7664080",
-      "revision": 0,
-      "name": "Casa Aranda",
-      "outcome": "explained_cause_unconfirmed"
-    }
-  ],
+  "activity": "Releyendo cola autoritativa antes del cierre",
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-manual-20261106-2240-chat",
@@ -128,7 +105,7 @@
     "title": null,
     "message": "Pasada editorial tr-manual-20261106-2240-chat cerrada 3/3. #firstdates6n y Sivera explicadas con causa verificada; Casa Aranda cerrada con causa no confirmada tras búsquedas independientes. Barrera final main: editorial-queue=0 y preparing/update=0. Último mantenimiento revisado: La Séptima unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-06T22:40:00+01:00",
+  "last_started_at": "2026-11-06T22:55:00+01:00",
   "last_completed_at": "2026-11-06T22:44:45+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -227,5 +204,5 @@
     "tr-manual-20261106-2226-chat",
     "tr-manual-20261106-2240-chat"
   ],
-  "message": "Pasada editorial tr-manual-20261106-2240-chat cerrada 3/3. #firstdates6n y Sivera explicadas con causa verificada; Casa Aranda cerrada con causa no confirmada tras búsquedas independientes. Barrera final main: editorial-queue=0 y preparing/update=0. Último mantenimiento revisado: La Séptima unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Pasada editorial iniciada; barrera de estado en curso."
 }
