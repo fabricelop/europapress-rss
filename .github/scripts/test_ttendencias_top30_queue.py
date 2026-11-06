@@ -12,6 +12,8 @@ from zoneinfo import ZoneInfo
 source = Path(__file__).resolve().parents[2] / "trends" / "auto_queue_new.py"
 reconcile_source = source.with_name("reconcile_prepared_ready.py")
 anticipation_source = source.with_name("anticipation.py")
+requests_json_source = source.with_name("requests_json.py")
+episode_source = source.with_name("trend_episode_policy.py")
 
 def load(path):
     return json.loads(path.read_text(encoding="utf8"))
@@ -24,6 +26,8 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(source, folder / "auto_queue_new.py")
     shutil.copy2(anticipation_source, folder / "anticipation.py")
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
+    shutil.copy2(requests_json_source, folder / "requests_json.py")
+    shutil.copy2(episode_source, folder / "trend_episode_policy.py")
     names = [f"Tendencia {i}" for i in range(1, 31)]
     put(folder / "recent.json", {
         "selection_method": "consensus", "sources_used": ["social-A", "social-B"],
@@ -107,6 +111,8 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(source, folder/"auto_queue_new.py")
     shutil.copy2(anticipation_source, folder/"anticipation.py")
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
+    shutil.copy2(requests_json_source, folder/"requests_json.py")
+    shutil.copy2(episode_source, folder/"trend_episode_policy.py")
     old=(datetime.now(ZoneInfo("Europe/Madrid"))-timedelta(days=5)).isoformat(timespec="seconds")
     put(folder/"recent.json",{"selection_method":"consensus","sources_used":["social-A","social-B"],
         "items":[{"name":"Pubill","rank":17},{"name":"Fuera del Top 30","rank":31}]})
@@ -140,6 +146,8 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(source, folder/"auto_queue_new.py")
     shutil.copy2(anticipation_source, folder/"anticipation.py")
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
+    shutil.copy2(requests_json_source, folder/"requests_json.py")
+    shutil.copy2(episode_source, folder/"trend_episode_policy.py")
     now=datetime.now(ZoneInfo("Europe/Madrid"))
     old=(now-timedelta(hours=49)).isoformat(timespec="seconds")
     recent=(now-timedelta(hours=47)).isoformat(timespec="seconds")
@@ -174,6 +182,8 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(source, folder / "auto_queue_new.py")
     shutil.copy2(anticipation_source, folder / "anticipation.py")
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
+    shutil.copy2(requests_json_source, folder / "requests_json.py")
+    shutil.copy2(episode_source, folder / "trend_episode_policy.py")
     put(folder / "recent.json", {"selection_method":"consensus",
         "sources_used":["social-A","social-B"],
         "items":[{"name":f"Tendencia {i}","rank":i} for i in range(1,31)]})
