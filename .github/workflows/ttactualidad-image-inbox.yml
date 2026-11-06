@@ -1,5 +1,8 @@
 name: TTActualidad private image inbox checks
 on:
+  push:
+    branches:
+      - 'fix/ttactualidad-inbox-cutover-scope-20261106'
   pull_request:
     paths:
       - 'image-inbox-worker/**'
