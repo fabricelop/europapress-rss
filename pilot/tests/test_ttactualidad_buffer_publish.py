@@ -1,6 +1,7 @@
 import importlib.util
 import json
 from pathlib import Path
+from email.message import Message
 import tempfile
 import unittest
 from unittest import mock
@@ -75,18 +76,77 @@ class DirectBufferPublisherTests(unittest.TestCase):
         self.assertFalse(any(args[:2] == ("git", "commit") for args in calls))
         self.assertFalse(any(args[:2] == ("git", "push") for args in calls))
 
-    def test_preflight_requires_exact_text_and_revision(self):
+    def test_preflight_requires_exact_revision_and_ai_identity(self):
         with mock.patch.object(publisher, "check_image", return_value=URL):
-            text, img = publisher.editorial("ttittulares", "news123456", 1)
-            self.assertEqual(text, "Texto editorial verificado")
-            self.assertEqual(img, URL)
+            text, img, kind = publisher.editorial("ttittulares", "news123456", 1)
+            self.assertEqual((text, img, kind),
+                             ("Texto editorial verificado", URL, "ai"))
             with self.assertRaisesRegex(ValueError, "revisión"):
                 publisher.editorial("ttittulares", "news123456", 2)
             self._write("ttittulares/site-ai-images.json", {"images": [
                 {"target_id": "news123456", "revision": 1,
                  "editorial_text": "Un texto anterior", "image_url": URL, "sha256": HASH}]})
-            with self.assertRaisesRegex(ValueError, "imagen"):
-                publisher.editorial("ttittulares", "news123456", 1)
+            text, img, kind = publisher.editorial("ttittulares", "news123456", 1)
+            self.assertEqual((img, kind), (None, "text"))
+
+    def test_archive_image_when_no_ai(self):
+        archive = "https://images.example.com/archived-news.jpg"
+        self._write("ttittulares/site-ai-images.json", {"images": []})
+        self._write("ttittulares/prepared.json", {"items": [
+            {"event_id": "news123456", "revision": 1,
+             "tweet": {"text": "Texto editorial verificado"},
+             "archive_image": {"url": archive, "rights_status": "unverified"}}]})
+        text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual((image_url, kind), (archive, "archive"))
+
+    def test_text_only_when_no_images(self):
+        self._write("ttittulares/site-ai-images.json", {"images": []})
+        text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual(text, "Texto editorial verificado")
+        self.assertEqual((image_url, kind), (None, "text"))
+
+    def test_corrupt_ai_falls_back_to_archive_image(self):
+        archive = "https://images.example.com/original.jpg"
+        self._write("ttittulares/prepared.json", {"items": [
+            {"event_id": "news123456", "revision": 1,
+             "tweet": {"text": "Texto editorial verificado"},
+             "archive_image": {"url": archive}}]})
+        with mock.patch.object(publisher, "check_image",
+                               side_effect=ValueError("SHA incorrecto")):
+            text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual((image_url, kind), (archive, "archive"))
+
+    def test_two_channels_share_one_30_day_api_quota(self):
+        headers = Message()
+        headers.add_header("RateLimit-Policy", '"150-in-15min";q=150;w=900;pk=:same:')
+        headers.add_header("RateLimit-Policy", '"600-in-1day";q=600;w=86400;pk=:same:')
+        headers.add_header("RateLimit-Policy", '"2000-in-30days";q=2000;w=2592000;pk=:same:')
+        headers.add_header("RateLimit", '"150-in-15min";r=140;t=890')
+        headers.add_header("RateLimit", '"600-in-1day";r=550;t=85000')
+        headers.add_header("RateLimit", '"2000-in-30days";r=1732;t=2123456')
+        publisher.LAST_API_QUOTA = None
+        publisher.observe_rate_limits(headers)
+        data = {"items": []}
+        publisher.attach_latest_quota(data)
+        self.assertEqual(data["api_quota"]["limit"], 2000)
+        self.assertEqual(data["api_quota"]["remaining"], 1732)
+        self.assertEqual(data["api_quota"]["used"], 268)
+        self.assertEqual(data["api_quota"]["window_seconds"], 2592000)
+        self.assertNotIn("account", data["api_quota"])
+
+    def test_text_only_creates_empty_assets_array(self):
+        self._write("ttittulares/site-ai-images.json", {"images": []})
+        calls = []
+        def api(_key, _query, variables=None):
+            calls.append(variables)
+            return {"createPost": {"post": {
+                "id": "buf_text", "status": "buffer", "channelId": "channel_123"}}}
+        with mock.patch.object(publisher, "target_channel", return_value="channel_123"), \
+             mock.patch.object(publisher, "graphql", side_effect=api):
+            state = {"version": 1, "items": []}
+            publisher.publish(state, self.payload(), "secret")
+        self.assertEqual(calls[0]["input"]["assets"], [])
+        self.assertEqual(state["items"][0]["media_type"], "text")
 
     def test_no_key_is_failed_and_does_not_contact_buffer(self):
         data = {"version": 1, "items": []}
