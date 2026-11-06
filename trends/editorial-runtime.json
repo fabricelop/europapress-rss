@@ -3,41 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1793967998266-manual",
+  "run_id": "tr-1793968595124-manual",
   "previous_run_id": "tr-1793967998266-manual",
-  "command_id": "tr-1793967998266-manual",
+  "command_id": "tr-1793968595124-manual",
   "source": "chat",
-  "status": "DONE",
+  "status": "RUNNING",
   "phase": "closing",
-  "started_at": "2026-11-06T13:33:30+01:00",
-  "updated_at": "2026-11-06T13:38:30+01:00",
-  "finished_at": "2026-11-06T13:38:30+01:00",
-  "current": 3,
-  "total": 3,
+  "started_at": "2026-11-06T13:36:00+01:00",
+  "updated_at": "2026-11-06T13:36:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "366616be26f9",
-    "red-review-4669dc7bd4793882377a",
-    "red-review-a9e2fdfec7a883de6fd4"
-  ],
-  "converged_ids": [
-    "red-review-a9e2fdfec7a883de6fd4"
-  ],
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -45,34 +39,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
-  "final_outcomes": [
-    {
-      "id": "366616be26f9",
-      "name": "Luis de la Fuente",
-      "revision": 0,
-      "outcome": "explained",
-      "explained_at": "2026-11-06T13:32:00+01:00"
-    },
-    {
-      "id": "red-review-4669dc7bd4793882377a",
-      "name": "#LaIslaDeLasTentaciones17",
-      "revision": 0,
-      "outcome": "unchanged"
-    },
-    {
-      "id": "red-review-a9e2fdfec7a883de6fd4",
-      "name": "Peugeot",
-      "revision": 0,
-      "outcome": "unchanged",
-      "converged": true
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1793967998266-manual",
@@ -153,5 +126,5 @@
     "tr-1793967900000-manual",
     "tr-1793967998266-manual"
   ],
-  "message": "Pasada editorial completada 3/3: Luis de la Fuente r0 explained; revisiones #LaIslaDeLasTentaciones17 y Peugeot unchanged. Peugeot convergió antes de la persistencia JIT y se verificó review_completed. Cola final 0; rewrite_pending 0. ImageGen=0; image-outbox=0; publicaciones=0."
+  "message": "Cierre 0/0 en verificación: cola sin preparing/update en esta lectura; pendiente relectura final de main."
 }
