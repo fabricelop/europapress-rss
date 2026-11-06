@@ -20,11 +20,74 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 import uuid
+import unicodedata
 
 ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "pilot/ttactualidad-buffer-posts.json"
 CLOSED = {"published", "deleted", "dismissed", "removed", "delete_pending"}
 PROJECT_ACCOUNT = {"ttittulares": "ttittulares", "ttendencias": "ttendenciasesp"}
+SECTION_URL = {
+    "ttittulares": "https://ttactualidad.rainyraven22.chatgpt.site/noticias",
+    "ttendencias": "https://ttactualidad.rainyraven22.chatgpt.site/tendencias",
+}
+
+
+def x_weight(value):
+    """Conservatively emulate TTActualidadXPost's X weighting for iPhone."""
+    weight = 0
+    for character in value:
+        scalar = ord(character)
+        # Ignore X's zero-width joins/variation selectors; count supplementary
+        # emoji components as two, and do not undercount complex graphemes.
+        if scalar in (0xFE0F, 0x200D):
+            continue
+        if scalar <= 0x10FF or 0x2000 <= scalar <= 0x201F or 0x2032 <= scalar <= 0x2037:
+            weight += 1
+        else:
+            weight += 2
+    return weight
+
+
+def x_shorten(value, budget):
+    if x_weight(value) <= budget:
+        return value
+    if budget < 3:
+        return ""
+    out = []
+    consumed = 0
+    for character in value:
+        units = x_weight(character)
+        if consumed + units + 2 > budget:
+            break
+        out.append(character)
+        consumed += units
+    return "".join(out).strip() + "…"
+
+
+def x_payload(project, editorial):
+    """Same section URL and 280-weight text budget as the existing X button."""
+    site_url = SECTION_URL[project]
+    text = editorial.strip()
+    if text.endswith(site_url):
+        text = text[:-len(site_url)].strip()
+    content_budget = 280 - 23 - x_weight("\n\n")
+    if x_weight(text) > content_budget:
+        suffix_at = text.rfind("\n\n#")
+        if suffix_at < 0:
+            suffix_at = text.rfind("\n🌶️")
+        if suffix_at >= 0:
+            prefix, suffix = text[:suffix_at], text[suffix_at:]
+            if x_weight(suffix) < content_budget - 35:
+                text = x_shorten(prefix, content_budget - x_weight(suffix)) + suffix
+            else:
+                text = x_shorten(text, content_budget)
+        else:
+            text = x_shorten(text, content_budget)
+    result = text + "\n\n" + site_url
+    if x_weight(text) > content_budget:
+        raise ValueError("Texto de X aún excede el límite de caracteres")
+    return result
+
 API = "https://api.buffer.com"
 # One shared Buffer API-key/MCP budget for every channel in the organization.
 # Not per-photo and not independently allocated to @ttittulares / @ttendenciasesp.
@@ -375,6 +438,7 @@ def publish(data, payload, key):
         if not key:
             raise ValueError("Falta BUFFER_API_KEY en GitHub Actions Secrets")
         text, image_url, media_type = editorial(project, event_id, revision)
+        text = x_payload(project, text)
         channel = target_channel(key, PROJECT_ACCOUNT[project])
     except Exception as exc:
         set_state(row, "failed", error=str(exc)[:230])
