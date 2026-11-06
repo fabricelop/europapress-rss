@@ -69,6 +69,23 @@ struct EditorialActions: View {
                     }
                 }
             }
+            quickButton("Publicar directo · Buffer", "paperplane.fill") {
+                guard !fullText.isEmpty else { outcome = "Sin texto para publicar"; return }
+                guard github.authenticated else { showSettings = true; return }
+                Task {
+                    _ = await github.bufferPublish(project: project,
+                                                   eventID: editorialID, revision: revision)
+                    outcome = github.bufferNotice
+                }
+            }
+            .disabled(github.isBufferAlreadySent(project: project, id: editorialID, revision: revision) ||
+                      github.isBufferInFlight(project: project, id: editorialID, revision: revision))
+            Text(github.isBufferAlreadySent(project: project, id: editorialID, revision: revision)
+                 ? "Publicada mediante Buffer; no se repetirá."
+                 : "Un toque · @" + (news == nil ? "ttendenciasesp" : "ttittulares") +
+                   " · requiere imagen GAG IA verificada")
+                .font(.system(size: 10))
+                .foregroundStyle(TTTheme.muted)
             HStack(spacing: 7) {
                 quickButton("Copiar GAG", "sparkles") { copy(gagPrompt) }
                 quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/images")
@@ -119,6 +136,9 @@ struct EditorialActions: View {
         .onChange(of: github.receiptChange) { _, _ in
             // Replace the old accepted/unchecked label with the verified result.
             outcome = github.notice
+        }
+        .onChange(of: github.bufferChange) { _, _ in
+            outcome = github.bufferNotice
         }
     }
 
