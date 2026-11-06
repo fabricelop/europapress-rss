@@ -34,6 +34,8 @@ class SiteFeedWorkflowWiringTest(unittest.TestCase):
             (root / "trends").mkdir()
             (root / "bin").mkdir()
             shutil.copy(ROOT / "trends/export_site_top30.py", root / "trends/export_site_top30.py")
+            shutil.copy(ROOT / "trends/suppression.py", root / "trends/suppression.py")
+            shutil.copy(ROOT / "trends/suppressed-terms.json", root / "trends/suppressed-terms.json")
             snapshots = [
                 {"captured_at": "2026-11-02T13:00:00+01:00", "top30": ["Alpha"]},
                 {"captured_at": "2026-11-02T13:10:00+01:00", "top30": ["Beta"]},
