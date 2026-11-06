@@ -15,7 +15,6 @@ for(const [name,consumer,userText] of [
     compareDocumentPosition:()=>4};
   const img={alt:'AI illustration',complete:true,naturalWidth:1536,naturalHeight:1024,
     src:'https://chatgpt.com/render/original',compareDocumentPosition:()=>4};
-  const sourceBlob=new Blob([Buffer.alloc(12500)],{type:'image/webp'});
   const converted=new Blob([png()],{type:'image/png'});
   const ctx={drawImage(){ctx.drawn=true}};
   const canvas={getContext:()=>ctx,toBlob:(callback,type)=>{assert.equal(type,'image/png');callback(converted)}};
@@ -23,10 +22,11 @@ for(const [name,consumer,userText] of [
     querySelectorAll:q=>q==='img'?[img]:q==='[data-user-message-bubble="true"]'?[u]:[],
     querySelector:()=>null,createElement:q=>{assert.equal(q,'canvas');return canvas}
   };
-  let decode=async flag=>{
+  let decode=async (flag,mime='image/webp')=>{
+    const sourceBlob=new Blob([Buffer.alloc(12500)],{type:mime});
     const sandbox={document,Node:{DOCUMENT_POSITION_FOLLOWING:4},
       fetch:async()=>({ok:true,blob:async()=>sourceBlob}),
-      createImageBitmap:async blob=>{assert.equal(blob.type,'image/webp');return {width:1536,height:1024,close(){}}},
+      createImageBitmap:async blob=>{assert.equal(blob.type,mime);return {width:1536,height:1024,close(){}}},
       Uint8Array,Blob,btoa:x=>Buffer.from(x,'binary').toString('base64')};
     return vm.runInNewContext(consumer.rasterProbe('job-exact',flag),sandbox);
   };
@@ -39,6 +39,14 @@ for(const [name,consumer,userText] of [
   assert.ok(privateRaster.dataUrl.startsWith('data:image/png;base64,'));
   assert.equal(Buffer.from(privateRaster.dataUrl.split(',')[1],'base64').subarray(0,8).toString('hex'),'89504e470d0a1a0a');
   assert.equal(ctx.drawn,true);
+  const jpeg=await decode(true,'image/jpeg');
+  assert.ok(jpeg.dataUrl.startsWith('data:image/png;base64,'));
+  assert.equal(jpeg.sourceMime,'image/jpeg');
+  const avifDefault=await decode(false,'image/avif');
+  assert.equal(avifDefault.ready,false); // existing web uploader remains unchanged
+  const avifPrivate=await decode(true,'image/avif');
+  assert.ok(avifPrivate.dataUrl.startsWith('data:image/png;base64,'));
+  assert.equal(avifPrivate.sourceMime,'image/avif');
  });
 }
 
