@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-0310-chat",
-  "previous_run_id": "tr-manual-20261107-0225-chat",
-  "command_id": "tr-manual-20261107-0310-chat",
+  "run_id": "tr-1794017935186-manual",
+  "previous_run_id": "tr-manual-20261107-0310-chat",
+  "command_id": "tr-1794017935186-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T03:11:10+01:00",
-  "updated_at": "2026-11-07T03:12:00+01:00",
-  "finished_at": "2026-11-07T03:12:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T03:19:20+01:00",
+  "updated_at": "2026-11-07T03:19:20+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "red-review-94d81c6c8219676ec7a0",
+  "title": "Revisar novedades: POBRE DE MI",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-94d81c6c8219676ec7a0",
+    "red-review-74d774d6ed156dec8d74"
+  ],
+  "remaining_active_ids": [
+    "red-review-94d81c6c8219676ec7a0",
+    "red-review-74d774d6ed156dec8d74"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -45,9 +51,9 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Pasada tr-manual-20261107-0310-chat cerrada 0/0: barrera final main con editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "updated_at": "2026-11-07T03:12:00+01:00"
+    "phase": "preparing",
+    "message": "Revisando novedades: POBRE DE MI (0/2). Revalidando ID y revisión en main antes de investigar.",
+    "updated_at": "2026-11-07T03:19:20+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -86,7 +92,7 @@
     "title": null,
     "message": "Pasada tr-manual-20261107-0310-chat cerrada 0/0: barrera final main con editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T03:11:10+01:00",
+  "last_started_at": "2026-11-07T03:19:20+01:00",
   "last_completed_at": "2026-11-07T03:12:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -209,5 +215,5 @@
     "tr-manual-20261107-0155-chat",
     "tr-manual-20261107-0225-chat"
   ],
-  "message": "Pasada tr-manual-20261107-0310-chat cerrada 0/0: barrera final main con editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Revisando novedades: POBRE DE MI (0/2). Revalidando ID y revisión en main antes de investigar."
 }
