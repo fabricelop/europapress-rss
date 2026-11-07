@@ -616,8 +616,7 @@ struct EditorialRelationsView: View {
 
     private func same(_ left: EditorialRelationEndpoint,
                       _ right: EditorialRelationEndpoint) -> Bool {
-        left.id == right.id && left.revision == right.revision &&
-            left.episodeFingerprint == right.episodeFingerprint
+        left.id == right.id && left.revision == right.revision
     }
 
     // One card per actual news episode, regardless of how many trend proposals
