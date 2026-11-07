@@ -3,21 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1910-chat",
+  "run_id": "tr-1794074588672-manual",
   "previous_run_id": "tr-1794074588672-manual",
   "command_id": "tr-manual-20261107-1910-chat",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-07T19:10:00+01:00",
-  "updated_at": "2026-11-07T19:14:00+01:00",
-  "finished_at": "2026-11-07T19:14:00+01:00",
-  "current": 2,
-  "total": 2,
+  "updated_at": "2026-11-07T19:18:00+01:00",
+  "finished_at": "2026-11-07T19:18:00+01:00",
+  "current": 10,
+  "total": 10,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "778a393ca8fa",
+    "98f145d5e880",
+    "61cd12acff26",
+    "901ade4dab33",
+    "4e881da58940",
+    "1a2d3bcbe5f7",
+    "5c89ebc8b798",
+    "8725b05c0cde",
+    "red-review-de8f137543fff08b4061",
+    "red-review-19b1799dce7a34fe0b8e"
+  ],
   "converged_ids": [
     "red-review-de8f137543fff08b4061",
     "red-review-19b1799dce7a34fe0b8e"
@@ -745,18 +756,98 @@
     }
   ],
   "last_started_at": "2026-11-07T19:10:00+01:00",
-  "last_completed_at": "2026-11-07T19:14:00+01:00",
+  "last_completed_at": "2026-11-07T19:18:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1910-chat",
+    "run_id": "tr-1794074588672-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T19:10:00+01:00",
-    "finished_at": "2026-11-07T19:14:00+01:00",
-    "attempted": 2,
-    "closed": 2,
+    "started_at": "2026-11-07T19:03:00+01:00",
+    "finished_at": "2026-11-07T19:18:00+01:00",
+    "attempted": 10,
+    "observed": 10,
+    "closed": 10,
+    "explained": 8,
+    "updates": 1,
+    "distinct_updates": 1,
+    "stale_reviews": 1,
     "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
-    "publications": 0
+    "publications": 0,
+    "incidents": 0,
+    "outcomes": [
+      {
+        "id": "778a393ca8fa",
+        "revision": 0,
+        "name": "#FueraDeControl7nov",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "98f145d5e880",
+        "revision": 0,
+        "name": "#WWECrownJewel",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "61cd12acff26",
+        "revision": 0,
+        "name": "Cadiz",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "901ade4dab33",
+        "revision": 0,
+        "name": "Bagnaia",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "4e881da58940",
+        "revision": 0,
+        "name": "Pecco",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "1a2d3bcbe5f7",
+        "revision": 0,
+        "name": "Jorge Martín",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "5c89ebc8b798",
+        "revision": 0,
+        "name": "Leo Román",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "8725b05c0cde",
+        "revision": 0,
+        "name": "bezzecchi",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "red-review-de8f137543fff08b4061",
+        "revision": 0,
+        "name": "Revisar novedades: Espanyol",
+        "outcome": "stale",
+        "applied": true
+      },
+      {
+        "id": "red-review-19b1799dce7a34fe0b8e",
+        "revision": 0,
+        "name": "Revisar novedades: eder sarabia",
+        "outcome": "distinct_update",
+        "applied": true,
+        "created_id": "trend-update-5fa0e270f9fdb5a47d32"
+      }
+    ]
   },
   "current_item": null,
   "progress": [
@@ -784,6 +875,11 @@
       "at": "2026-11-07T19:14:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 2 review_red actualizados como episodios distintos; cola final 0, sin imágenes ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T19:18:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794074588672-manual cerrada 10/10. Ocho explicaciones ordinarias sincronizadas; revisión Espanyol stale sin duplicado; Eder Sarabia materializado como episodio distinto. Barrera final main: cola=0, preparing/update=0, reexplain/rewrite_pending=0. ImageGen=0; publicaciones=0."
     }
   ],
   "imagegen_calls": 0,
