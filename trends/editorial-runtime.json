@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794087372681-manual",
-  "previous_run_id": "tr-1794087259344-manual",
-  "command_id": "tr-1794087372681-manual",
+  "run_id": "tr-manual-20261107-2240-chat",
+  "previous_run_id": "tr-1794087372681-manual",
+  "command_id": "tr-manual-20261107-2240-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T22:36:00+01:00",
-  "updated_at": "2026-11-07T22:37:20+01:00",
-  "finished_at": "2026-11-07T22:37:20+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T22:40:00+01:00",
+  "updated_at": "2026-11-07T22:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -47,22 +47,12 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-07T22:36:00+01:00",
+      "at": "2026-11-07T22:40:00+01:00",
       "phase": "preparing",
-      "message": "Pasada tr-1794087372681-manual iniciada; al revalidar main, el review_red de Aldama detectado inicialmente ya había convergido en la ejecución anterior."
-    },
-    {
-      "at": "2026-11-07T22:36:35+01:00",
-      "phase": "verifying",
-      "message": "Verificado red-review-90ee5d10efc88b0eb062 r0 como unchanged y aplicado; no se duplica trabajo ni se genera imagen."
-    },
-    {
-      "at": "2026-11-07T22:37:20+01:00",
-      "phase": "closing",
-      "message": "Barrera final main: editorial-queue=0 y rewrite_pending/reexplicación=0. Cierre 0/0 válido. Sin ImageGen, image-outbox ni publicaciones."
+      "message": "Pasada tr-manual-20261107-2240-chat iniciada desde «Ejecuta TTendencias»; leyendo estado autoritativo de main."
     }
   ],
-  "last_started_at": "2026-11-07T22:36:00+01:00",
+  "last_started_at": "2026-11-07T22:40:00+01:00",
   "last_completed_at": "2026-11-07T22:37:20+01:00",
   "api_failover_enabled": false
 }
