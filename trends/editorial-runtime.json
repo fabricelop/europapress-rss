@@ -3,49 +3,47 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794052874051-manual",
-  "previous_run_id": "tr-1794052645605-manual",
-  "command_id": "tr-1794052874051-manual",
+  "run_id": "tr-manual-20261107-1310-chat",
+  "previous_run_id": "tr-1794052874051-manual",
+  "command_id": "tr-manual-20261107-1310-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T13:07:30+01:00",
-  "updated_at": "2026-11-07T13:09:30+01:00",
-  "finished_at": "2026-11-07T13:09:30+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-997e4a88b31e86eeebcd",
-    "red-review-13bb70614ff422ef1ed0"
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-07T13:14:00+01:00",
+  "updated_at": "2026-11-07T13:14:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "cca8446cab5f",
+  "title": "#IreneYGabrielEnMadrid",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "cca8446cab5f"
   ],
-  "converged_ids": [
-    "red-review-997e4a88b31e86eeebcd",
-    "red-review-13bb70614ff422ef1ed0"
+  "remaining_active_ids": [
+    "cca8446cab5f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -243,83 +241,56 @@
       "at": "2026-11-07T13:09:30+01:00",
       "phase": "closing",
       "message": "tr-1794052645605-manual queda satisfecho por convergencia con tr-1794052874051-manual: 2 reelaboraciones manuales + 2 review_red resueltos, barrera final 0. Sin ImageGen ni publicaciones."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "red-review-997e4a88b31e86eeebcd",
-      "revision": 0,
-      "name": "Revisar novedades: Javier Ruiz",
-      "outcome": "continuity_update",
-      "applied": true
     },
     {
-      "id": "red-review-13bb70614ff422ef1ed0",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
-      "outcome": "unchanged",
-      "applied": true
+      "at": "2026-11-07T13:14:00+01:00",
+      "phase": "investigating",
+      "trend_id": "cca8446cab5f",
+      "title": "#IreneYGabrielEnMadrid",
+      "message": "Pasada tr-manual-20261107-1310-chat: #IreneYGabrielEnMadrid cca8446cab5f r0 revalidado JIT en puesto 5; motivo actual contrastado con dos fuentes. Sin ImageGen ni publicaciones."
     }
   ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794052874051-manual",
-    "command_id": "tr-1794052874051-manual",
-    "status": "DONE",
-    "started_at": "2026-11-07T13:07:30+01:00",
-    "updated_at": "2026-11-07T13:09:30+01:00",
-    "finished_at": "2026-11-07T13:09:30+01:00",
-    "current": 2,
-    "total": 2,
-    "queue_complete": true,
-    "processed_ids": [
-      "red-review-997e4a88b31e86eeebcd",
-      "red-review-13bb70614ff422ef1ed0"
+    "run_id": "tr-manual-20261107-1310-chat",
+    "command_id": "tr-manual-20261107-1310-chat",
+    "status": "RUNNING",
+    "started_at": "2026-11-07T13:14:00+01:00",
+    "updated_at": "2026-11-07T13:14:00+01:00",
+    "finished_at": null,
+    "current": 0,
+    "total": 1,
+    "queue_complete": false,
+    "processed_ids": [],
+    "converged_ids": [],
+    "remaining_active_ids": [
+      "cca8446cab5f"
     ],
-    "converged_ids": [
-      "red-review-997e4a88b31e86eeebcd",
-      "red-review-13bb70614ff422ef1ed0"
-    ],
-    "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-997e4a88b31e86eeebcd",
-        "revision": 0,
-        "name": "Revisar novedades: Javier Ruiz",
-        "outcome": "continuity_update",
-        "applied": true
-      },
-      {
-        "id": "red-review-13bb70614ff422ef1ed0",
-        "revision": 0,
-        "name": "Revisar novedades: Paraguay",
-        "outcome": "unchanged",
-        "applied": true
-      }
-    ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "final_outcomes": [],
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
-    "phase": "closing",
-    "trend_id": null,
-    "title": null,
-    "message": "Pasada sucesora cerrada 2/2; tr-1794052645605-manual satisfecho por convergencia. Barrera final main 0, sin reexplicaciones activas. ImageGen=0; publicaciones=0."
+    "concurrent_convergence": 0,
+    "phase": "investigating",
+    "trend_id": "cca8446cab5f",
+    "title": "#IreneYGabrielEnMadrid",
+    "message": "Procesando #IreneYGabrielEnMadrid (cca8446cab5f r0) tras revalidación JIT."
   },
-  "last_started_at": "2026-11-07T13:07:30+01:00",
+  "last_started_at": "2026-11-07T13:14:00+01:00",
   "last_completed_at": "2026-11-07T13:09:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
