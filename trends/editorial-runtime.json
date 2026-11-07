@@ -7,39 +7,36 @@
   "previous_run_id": "tr-1794092100000-manual",
   "command_id": "tr-1794092241790-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T23:57:16+01:00",
-  "updated_at": "2026-11-07T23:59:20+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T23:59:50+01:00",
+  "finished_at": "2026-11-07T23:59:50+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-adb82b9b89604f4bffde",
-  "title": "Revisando novedades: Enric Gallego",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-9f8037b1c43b4861b51d",
+    "red-review-adb82b9b89604f4bffde"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-9f8037b1c43b4861b51d",
-    "red-review-adb82b9b89604f4bffde"
-  ],
-  "remaining_active_ids": [
-    "red-review-9f8037b1c43b4861b51d",
-    "red-review-adb82b9b89604f4bffde"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,7 +44,23 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-9f8037b1c43b4861b51d",
+      "trend_id": "be1ae41b540c",
+      "revision": 0,
+      "name": "Interlagos",
+      "outcome": "updated",
+      "mode": "continuity"
+    },
+    {
+      "id": "red-review-adb82b9b89604f4bffde",
+      "trend_id": "c5aeeec06cf1",
+      "revision": 0,
+      "name": "Enric Gallego",
+      "outcome": "unchanged"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -186,9 +199,14 @@
       "at": "2026-11-07T23:59:20+01:00",
       "phase": "persisting",
       "message": "Enric Gallego r0 validado JIT. Las fuentes posteriores describen el mismo homenaje y la misma intervención emocionada del capitán; sin novedad sustancial. Resultado unchanged, conservando texto y explained_at."
+    },
+    {
+      "at": "2026-11-07T23:59:50+01:00",
+      "phase": "closing",
+      "message": "Aplicación verificada en main: Interlagos actualizado como continuidad y Enric Gallego marcado unchanged; editorial-queue=0 y sin rewrite_pending/reexplain detectados en la barrera final. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T23:57:16+01:00",
-  "last_completed_at": "2026-11-07T23:56:30+01:00",
+  "last_completed_at": "2026-11-07T23:59:50+01:00",
   "api_failover_enabled": false
 }
