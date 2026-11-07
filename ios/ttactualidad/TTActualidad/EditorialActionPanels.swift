@@ -42,6 +42,34 @@ struct EditorialActions: View {
     private var editorialID: String { news?.id ?? trend?.editorialID ?? "" }
     private var project: String { news == nil ? "ttendencias" : "ttittulares" }
 
+    private func bufferStatus(_ receipt: TTBufferPublication) -> String {
+        switch receipt.state {
+        case "sent":
+            return receipt.closure_verified == true ?
+                "Publicado en X y retirado de Listas (ambos recibos confirmados)." :
+                "Publicado en X. Retirada de Listas pendiente de comprobación."
+        case "failed":
+            return "Buffer no publicó: " +
+                (receipt.error ?? "revisa el error en GitHub Actions.")
+        case "unknown":
+            return "Resultado incierto: comprueba X antes de repetir."
+        case "pending", "reserved":
+            return "Buffer está procesando la orden; falta confirmar X."
+        default:
+            return "Estado Buffer: " + receipt.state
+        }
+    }
+
+    private func verifiedXURL(_ raw: String?) -> URL? {
+        guard let raw, let url = URL(string: raw), url.scheme == "https",
+              ["x.com", "www.x.com", "twitter.com", "www.twitter.com"]
+                .contains(url.host?.lowercased() ?? ""),
+              url.user == nil, url.password == nil, url.port == nil,
+              url.path.range(of: "^/[^/]+/status/[0-9]{5,25}$",
+                             options: .regularExpression) != nil else { return nil }
+        return url
+    }
+
     var body: some View {
         VStack(spacing: 7) {
             // Identical primary controls for Noticias and Tendencias.
@@ -87,6 +115,26 @@ struct EditorialActions: View {
                 .font(.system(size: 10))
                 .foregroundStyle(TTTheme.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            if let receipt = buffer.latestReceipt(
+                project: project, id: editorialID, revision: revision) {
+                Text(bufferStatus(receipt))
+                    .font(.caption2).foregroundStyle(TTTheme.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if receipt.state == "sent",
+                   let link = verifiedXURL(receipt.post_url) {
+                    Button("Ver publicación confirmada en X") { openURL(link) }
+                        .font(.caption)
+                }
+            }
+            quickButton("Comprobar publicación Buffer", "arrow.clockwise") {
+                Task {
+                    await buffer.refresh()
+                    outcome = buffer.latestReceipt(
+                        project: project, id: editorialID, revision: revision)
+                        .map(bufferStatus) ??
+                        "No hay recibo de Buffer de esta ficha."
+                }
+            }
             HStack(spacing: 7) {
                 quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                     .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
