@@ -4,73 +4,36 @@
   "version": 1,
   "canonical": true,
   "run_id": "tr-manual-20261107-1010-chat",
-  "previous_run_id": "tr-autoguard-1794042658",
+  "previous_run_id": "tr-manual-20261107-0955-chat",
   "command_id": "tr-manual-20261107-1010-chat",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T10:10:00+01:00",
-  "updated_at": "2026-11-07T10:14:55+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-07T10:16:30+01:00",
+  "finished_at": "2026-11-07T10:16:30+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "db76e61cd3d4",
-  "title": "Acierto",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "011bbdc1877d",
-    "a336abbd039a"
+    "b547e584c4e7",
+    "db76e61cd3d4",
+    "a336abbd039a",
+    "011bbdc1877d"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "db76e61cd3d4"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 4,
     "observed": 4,
-    "closed": 1,
-    "explained": 1,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "queue_remaining": 3,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": {
-    "phase": "persisting",
-    "message": "Persistiendo Acierto r0 tras revalidación JIT; causa causal no confirmada, se usa cierre prudente.",
-    "updated_at": "2026-11-07T10:15:00+01:00"
-  },
-  "final_outcomes": [],
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-manual-20261107-0955-chat",
-    "status": "DONE",
-    "started_at": "2026-11-07T09:55:00+01:00",
-    "updated_at": "2026-11-07T09:59:00+01:00",
-    "finished_at": "2026-11-07T09:59:00+01:00",
-    "current": 0,
-    "total": 0,
-    "queue_complete": true,
-    "processed_ids": [],
-    "converged_ids": [],
-    "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -83,14 +46,122 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 1
+  },
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": {
+    "phase": "closing",
+    "message": "Pasada cerrada 4/4. Barrera final main: editorial-queue=0; cuatro revisiones r0 aplicadas; Acierto convergió con autoguard. Sin ImageGen ni publicaciones.",
+    "updated_at": "2026-11-07T10:16:30+01:00"
+  },
+  "final_outcomes": [
+    {
+      "id": "b547e584c4e7",
+      "revision": 0,
+      "name": "#AgropopularRetinta",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "db76e61cd3d4",
+      "revision": 0,
+      "name": "Acierto",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "via": "concurrent_autoguard"
+    },
+    {
+      "id": "a336abbd039a",
+      "revision": 0,
+      "name": "Payoya",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "011bbdc1877d",
+      "revision": 0,
+      "name": "Amaia",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-manual-20261107-1010-chat",
+    "status": "DONE",
+    "started_at": "2026-11-07T10:10:00+01:00",
+    "updated_at": "2026-11-07T10:16:30+01:00",
+    "finished_at": "2026-11-07T10:16:30+01:00",
+    "current": 4,
+    "total": 4,
+    "queue_complete": true,
+    "processed_ids": [
+      "b547e584c4e7",
+      "db76e61cd3d4",
+      "a336abbd039a",
+      "011bbdc1877d"
+    ],
+    "converged_ids": [
+      "db76e61cd3d4"
+    ],
+    "remaining_active_ids": [],
+    "final_outcomes": [
+      {
+        "id": "b547e584c4e7",
+        "revision": 0,
+        "name": "#AgropopularRetinta",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "db76e61cd3d4",
+        "revision": 0,
+        "name": "Acierto",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "via": "concurrent_autoguard"
+      },
+      {
+        "id": "a336abbd039a",
+        "revision": 0,
+        "name": "Payoya",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "011bbdc1877d",
+        "revision": 0,
+        "name": "Amaia",
+        "outcome": "explained",
+        "applied": true
+      }
+    ],
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 0/0. Workflow 42357578023 SUCCESS; Top 30 capturado 09:58:36; cola actualizada 09:58:39 a 0. Sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 4/4: #AgropopularRetinta, Acierto, Payoya y Amaia aplicadas. Acierto, causa concreta no confirmada. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T10:14:55+01:00",
-  "last_completed_at": "2026-11-07T10:14:55+01:00",
+  "last_started_at": "2026-11-07T10:10:00+01:00",
+  "last_completed_at": "2026-11-07T10:16:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -165,7 +236,8 @@
     "tr-manual-20261107-0910-chat",
     "tr-manual-20261107-0925-chat",
     "tr-manual-20261107-0940-chat",
-    "tr-manual-20261107-0955-chat"
+    "tr-manual-20261107-0955-chat",
+    "tr-manual-20261107-1010-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -242,7 +314,8 @@
     "tr-manual-20261107-0910-chat",
     "tr-manual-20261107-0925-chat",
     "tr-manual-20261107-0940-chat",
-    "tr-manual-20261107-0955-chat"
+    "tr-manual-20261107-0955-chat",
+    "tr-manual-20261107-1010-chat"
   ],
-  "message": "Pasada manual en curso: 4 entradas preparing observadas en main."
+  "message": "Pasada cerrada 4/4. Cola final 0; #AgropopularRetinta, Acierto, Payoya y Amaia aplicadas. Acierto se cerró prudentemente con causa concreta no confirmada. Sin ImageGen ni publicaciones."
 }
