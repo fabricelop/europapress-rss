@@ -65,8 +65,7 @@ final class BufferPublishTracker: ObservableObject {
         let key = Self.key(project, id, revision)
         return immediateHide.contains(key) || posts.contains {
             $0.project == project && $0.event_id == id &&
-            $0.revision == revision && $0.state == "sent" &&
-            $0.closure_verified == true
+            $0.revision == revision && $0.state == "sent"
         }
     }
 
@@ -254,7 +253,15 @@ final class BufferPublishTracker: ObservableObject {
             }
         }
         immediateHide.remove(key)
-        notice = "No hay cierre confirmado. La ficha vuelve a Listas si GitHub sigue mostrándola; consulta el estado de Buffer antes de reintentar."
+        if alreadySent(project: project, id: id, revision: revision) {
+            // X already published; never resurface this as a fresh publishable
+            // item or resend it. The GitHub Listas receipt remains independent.
+            notice = "Buffer confirmó X, pero sigue pendiente el recibo de retirada de Listas. " +
+                     "La ficha continúa oculta provisionalmente; no se volverá a publicar."
+        } else {
+            notice = "Publicación no confirmada. La ficha vuelve a Listas; " +
+                     "comprueba el estado de Buffer antes de reintentar."
+        }
         change += 1
     }
 }
