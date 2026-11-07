@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794009075249-manual",
-  "previous_run_id": "tr-1794008625066-manual",
-  "command_id": "tr-1794009075249-manual",
+  "run_id": "tr-1794010714259-manual",
+  "previous_run_id": "tr-1794009075249-manual",
+  "command_id": "tr-1794010714259-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-06T23:55:31.552Z",
-  "updated_at": "2026-11-06T23:56:41.953Z",
-  "finished_at": "2026-11-06T23:56:41.953Z",
-  "current": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T01:19:00+01:00",
+  "updated_at": "2026-11-07T01:19:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "trend_id": "red-review-81849fed0388d3d2ddaf",
+  "title": "Revisar novedades: Paraguay",
+  "queue_complete": false,
   "processed_ids": [
     "35fdbc5ccc10",
     "de982193d4bd",
@@ -43,17 +43,23 @@
     "5b461284ec93",
     "97e735d07b7a"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-81849fed0388d3d2ddaf",
+    "red-review-555e7f509affa6925638"
+  ],
+  "remaining_active_ids": [
+    "red-review-81849fed0388d3d2ddaf",
+    "red-review-555e7f509affa6925638"
+  ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial cerrada 11/11: 9 explicaciones con causa actual confirmada y 2 explicaciones prudentes con causa no confirmada (Miguel Sierra y Guridi). Barrera final main: cola=0 y sin preparing/update, rewrite_pending ni reexplain. ImageGen=0; publicaciones=0.",
+  "summary": "Pasada editorial real iniciada: 2 revisiones de novedades pendientes; comenzando por Paraguay.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Barrera final main superada: 11/11 coinciden entre requests y telegram-manual-explained; cola y reexplicaciones pendientes a cero.",
-    "updated_at": "2026-11-07T01:01:00+01:00"
+    "phase": "preparing",
+    "message": "Revalidando ID/revisión de Paraguay antes de investigar novedades.",
+    "updated_at": "2026-11-07T01:19:00+01:00"
   },
   "final_outcomes": [
     {
@@ -330,5 +336,5 @@
     "tr-manual-20261107-0025-chat",
     "tr-1794009075249-manual"
   ],
-  "message": "Pasada editorial tr-1794009075249-manual cerrada 2/2 por convergencia JIT: La UCO sin novedad material; Koldo actualizado por continuidad. Barrera final main: editorial-queue=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Revalidando ID/revisión de Paraguay antes de investigar novedades."
 }
