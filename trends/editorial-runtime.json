@@ -3,36 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794032311095-manual",
-  "previous_run_id": "tr-manual-20261107-0710-chat",
-  "command_id": "tr-1794032311095-manual",
+  "run_id": "tr-1794032624278-manual",
+  "previous_run_id": "tr-1794032311095-manual",
+  "command_id": "tr-1794032624278-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T07:19:00+01:00",
-  "updated_at": "2026-11-07T07:26:00+01:00",
-  "finished_at": "2026-11-07T07:26:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-7c7d9ca36d57029954e5",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-07T07:24:00+01:00",
+  "updated_at": "2026-11-07T07:26:30+01:00",
+  "finished_at": null,
+  "current": 1,
+  "total": 1,
+  "trend_id": "red-review-68a1ca00023f6f3ef1cb",
+  "title": "Revisar novedades: Koldo",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-68a1ca00023f6f3ef1cb"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -42,32 +41,25 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Pasada 2/2 cerrada: La UCO y Koldo actualizados por continuidad. Barrera final main: editorial-queue=0, sin preparing/update ni reexplicación en la cola compacta. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "updated_at": "2026-11-07T07:26:00+01:00"
+    "phase": "verifying",
+    "message": "Koldo r0 aplicado por convergencia: continuidad verificada en requests + telegram-manual-explained; cola 0. Releyendo barrera final.",
+    "updated_at": "2026-11-07T07:26:30+01:00"
   },
   "final_outcomes": [
-    {
-      "id": "red-review-7c7d9ca36d57029954e5",
-      "revision": 0,
-      "name": "Revisar novedades: La UCO",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "maintenance_outbox"
-    },
     {
       "id": "red-review-68a1ca00023f6f3ef1cb",
       "revision": 0,
       "name": "Revisar novedades: Koldo",
       "outcome": "continuity_update",
       "applied": true,
-      "via": "maintenance_outbox"
+      "via": "concurrent_convergence",
+      "apply_commit": "66f7221ed45773aa2614dd4868e33792f01975dc"
     }
   ],
   "api_failover_enabled": false,
@@ -269,5 +261,5 @@
     "tr-manual-20261107-0710-chat",
     "tr-1794032311095-manual"
   ],
-  "message": "Pasada tr-1794032311095-manual cerrada 2/2: La UCO y Koldo actualizados por continuidad. Barrera final main: editorial-queue=0, preparing/update/reexplicación=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Verificando cierre por convergencia de Koldo r0; ImageGen=0; publicaciones=0."
 }
