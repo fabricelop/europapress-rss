@@ -42,11 +42,11 @@
     "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 1,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -730,11 +730,6 @@
       "message": "Pasada tr-1794074322806-manual cerrada 1/1 por convergencia: Rivola actualizado como episodio distinto; cola final 0, ImageGen=0, publicaciones=0."
     },
     {
-      "at": "2026-11-07T19:10:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-manual-20261107-1910-chat iniciada; barrera fresca de main detecta 2 review_red preparing: Espanyol y eder sarabia. Se revalidan por ID/revisión. Sin ImageGen ni publicaciones."
-    },
-    {
       "at": "2026-11-07T19:11:30+01:00",
       "phase": "investigating",
       "message": "Espanyol y eder sarabia revalidados JIT. Fuentes actuales confirman un episodio posterior e independiente: Espanyol-Deportivo 0-0, primer partido de la etapa de Eder Sarabia, seguido por el técnico desde la grada por sanción."
@@ -750,9 +745,29 @@
       "message": "Barrera final main: editorial-queue=0; búsquedas de rewrite_pending, reexplain y status update sin pendientes activos. Espanyol y eder sarabia quedaron como episodios distintos aplicados. ImageGen=0; publicaciones=0."
     },
     {
+      "at": "2026-11-07T19:10:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-manual-20261107-1910-chat iniciada; barrera fresca de main detecta 2 review_red preparing: Espanyol y eder sarabia. Se revalidan por ID/revisión. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T19:11:30+01:00",
+      "phase": "investigating",
+      "message": "Espanyol y eder sarabia revalidados JIT. Fuentes actuales confirman el 0-0 Espanyol-Deportivo y el primer partido de la etapa de Sarabia, seguido por el técnico desde la grada por sanción."
+    },
+    {
+      "at": "2026-11-07T19:12:10+01:00",
+      "phase": "persisting",
+      "message": "Los maintenance-outbox convergieron con una ejecución concurrente. Al aplicar, eder sarabia creó un episodio distinto; Espanyol quedó review_completed/stale porque el origen ya había sido revisado por un job anterior. No se reabre el terminal."
+    },
+    {
+      "at": "2026-11-07T19:13:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; sin rewrite_pending, reexplain ni status update activos. Sarabia updated con nueva ficha; Espanyol stale sin nueva ficha. ImageGen=0; publicaciones=0."
+    },
+    {
       "at": "2026-11-07T19:14:00+01:00",
       "phase": "closing",
-      "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 2 review_red actualizados como episodios distintos; cola final 0, sin imágenes ni publicaciones."
+      "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 1 episodio distinto aplicado (eder sarabia) y 1 review stale (Espanyol). Cola final 0, sin imágenes ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T19:10:00+01:00",
@@ -762,10 +777,10 @@
     "run_id": "tr-1794074588672-manual",
     "status": "DONE",
     "started_at": "2026-11-07T19:03:00+01:00",
-    "finished_at": "2026-11-07T19:18:00+01:00",
-    "attempted": 10,
+    "finished_at": "2026-11-07T19:14:00+01:00",
+    "attempted": 2,
     "observed": 10,
-    "closed": 10,
+    "closed": 2,
     "explained": 8,
     "updates": 1,
     "distinct_updates": 1,
@@ -859,27 +874,22 @@
     {
       "at": "2026-11-07T19:11:30+01:00",
       "phase": "investigating",
-      "message": "Espanyol y eder sarabia revalidados JIT. Fuentes actuales confirman un episodio posterior e independiente: Espanyol-Deportivo 0-0, primer partido de la etapa de Eder Sarabia, seguido por el técnico desde la grada por sanción."
+      "message": "Espanyol y eder sarabia revalidados JIT. Fuentes actuales confirman el 0-0 Espanyol-Deportivo y el primer partido de la etapa de Sarabia, seguido por el técnico desde la grada por sanción."
     },
     {
       "at": "2026-11-07T19:12:10+01:00",
       "phase": "persisting",
-      "message": "Al persistir, ambos maintenance-outbox ya existían por una ejecución concurrente con resultados equivalentes. Se evita duplicar; commit 52962cfe… aplica los dos review_red y retira ambas revisiones de la cola."
+      "message": "Los maintenance-outbox convergieron con una ejecución concurrente. Al aplicar, eder sarabia creó un episodio distinto; Espanyol quedó review_completed/stale porque el origen ya había sido revisado por un job anterior. No se reabre el terminal."
     },
     {
       "at": "2026-11-07T19:13:30+01:00",
       "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0; búsquedas de rewrite_pending, reexplain y status update sin pendientes activos. Espanyol y eder sarabia quedaron como episodios distintos aplicados. ImageGen=0; publicaciones=0."
+      "message": "Barrera final main: editorial-queue=0; sin rewrite_pending, reexplain ni status update activos. Sarabia updated con nueva ficha; Espanyol stale sin nueva ficha. ImageGen=0; publicaciones=0."
     },
     {
       "at": "2026-11-07T19:14:00+01:00",
       "phase": "closing",
-      "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 2 review_red actualizados como episodios distintos; cola final 0, sin imágenes ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T19:18:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794074588672-manual cerrada 10/10. Ocho explicaciones ordinarias sincronizadas; revisión Espanyol stale sin duplicado; Eder Sarabia materializado como episodio distinto. Barrera final main: cola=0, preparing/update=0, reexplain/rewrite_pending=0. ImageGen=0; publicaciones=0."
+      "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 1 episodio distinto aplicado (eder sarabia) y 1 review stale (Espanyol). Cola final 0, sin imágenes ni publicaciones."
     }
   ],
   "imagegen_calls": 0,
