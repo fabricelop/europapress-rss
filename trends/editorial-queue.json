@@ -1,6 +1,67 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T23:28:16+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-07T22:28:45.905731+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-c43f1850076da4ea5465",
+      "revision": 0,
+      "name": "Revisar novedades: Cracovia",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-11-07T22:28:45.905731+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "c997998b2d5a",
+        "revision": 0,
+        "name": "Cracovia",
+        "rank": 5,
+        "explanation": "TT#5 Cracovia es tendencia por un tiroteo en la plaza mayor que ha dejado al menos cinco muertos y varias decenas de heridos; la Policía detuvo al atacante.\n#Polonia #Kraków",
+        "explanation_sha256": "4eb2e4c74968a94901116047f074a29513199f5d7eeea3ba8a812d97c6b531a7",
+        "explained_at": "2026-11-07T17:26:00+01:00",
+        "verification_sources": [
+          "https://efe.com/mundo/2026-11-07/tiroteo-cracovia-polonia/"
+        ],
+        "fingerprint": "93268a6ed025c187fe26e205f9c792c23f1375f58149a0d41d8110497d326896"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-b3bbff7c56959d09dcce",
+      "revision": 0,
+      "name": "Revisar novedades: #BrazilGP",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-11-07T22:28:45.905731+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "438f36286fc7",
+        "revision": 0,
+        "name": "#BrazilGP",
+        "rank": 14,
+        "explanation": "TT#14 #BrazilGP es tendencia por la clasificación del GP de São Paulo: la tormenta obligó a parar la sesión en Interlagos tras poco más de dos minutos, con pilotos reportando aquaplaning.\n#F1 #SaoPauloGP\n🌶️ La pelea por la pole terminó esperando a que aflojara el cielo.",
+        "explanation_sha256": "b9c1f3cf0e4be68a9dd66a8ebde06fcbdc9ca4108fb5b7dadb86f9b41fd5ceb6",
+        "explained_at": "2026-11-07T20:15:00+01:00",
+        "verification_sources": [
+          "https://www.theguardian.com/sport/live/2026/nov/07/sao-paulo-formula-one-grand-prix-qualifying-in-brazil-live",
+          "https://www.repubblica.it/en/sport/formula-one/2026/11/07/diretta/f1_brazilian_grand_prix_live_qualifying-425707232/",
+          "https://nos.nl/liveblog/2638427-kwalificatie-stilgelegd-vanwege-regen-sessie-was-nog-maar-net-begonnen"
+        ],
+        "fingerprint": "85d638cbee76fbecad3bad74569aace71e75d311e3b6b03c4caaba4e4fa6af36"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
