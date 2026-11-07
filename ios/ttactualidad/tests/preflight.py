@@ -609,7 +609,7 @@ assert 'ListasGroupingControls' not in dashboard
 assert 'Label("Agrupar"' not in dashboard
 assert 'Eliminar agrupadas' not in dashboard
 assert 'removeAllTrendsFromListas' in dashboard
-assert 'Relaciones por revisar' in dashboard
+assert 'Relaciones por revisar' not in dashboard
 assert 'quickButton("Relaciones"' in actions
 assert 'privateEditorialRelationsRequest' in auth
 assert '/api/editorial-relations' in auth
