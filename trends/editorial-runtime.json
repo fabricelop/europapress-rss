@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-0155-chat",
   "command_id": "tr-manual-20261107-0225-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T02:25:10+01:00",
-  "updated_at": "2026-11-07T02:25:10+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T02:26:10+01:00",
+  "finished_at": "2026-11-07T02:26:10+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -52,11 +52,11 @@
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-0155-chat",
+    "run_id": "tr-manual-20261107-0225-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T01:55:30+01:00",
-    "updated_at": "2026-11-07T01:56:30+01:00",
-    "finished_at": "2026-11-07T01:56:30+01:00",
+    "started_at": "2026-11-07T02:25:10+01:00",
+    "updated_at": "2026-11-07T02:26:10+01:00",
+    "finished_at": "2026-11-07T02:26:10+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -84,10 +84,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-manual-20261107-0155-chat cerrada 0/0: barrera final main con editorial-queue=0, sin preparing/update ni reexplicación pendiente detectada. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-manual-20261107-0225-chat cerrada 0/0: barrera final main con editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T02:25:10+01:00",
-  "last_completed_at": "2026-11-07T01:56:30+01:00",
+  "last_completed_at": "2026-11-07T02:26:10+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -207,5 +207,5 @@
     "tr-autoguard-1794012665",
     "tr-manual-20261107-0155-chat"
   ],
-  "message": "Pasada tr-manual-20261107-0225-chat iniciada; cola autoritativa observada en 0, ejecutando barreras finales."
+  "message": "Pasada tr-manual-20261107-0225-chat cerrada 0/0: barrera final main con editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
