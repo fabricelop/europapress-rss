@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-1041-chat",
   "command_id": "tr-manual-20261107-1055-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T10:55:00+01:00",
-  "updated_at": "2026-11-07T10:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T10:57:00+01:00",
+  "finished_at": "2026-11-07T10:57:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -49,75 +49,41 @@
       "at": "2026-11-07T10:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada solicitada; barrera fresca de main detecta 0 trabajo(s) activo(s). Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T10:57:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; no preparing/update, anticipate, review_red ni rewrite_pending localizado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T10:57:00+01:00",
+      "phase": "closing",
+      "message": "Pasada cerrada 0/0; sin trabajos editoriales activos, sin imágenes y sin publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1041-chat",
-    "command_id": "tr-1794043085297-manual",
+    "run_id": "tr-manual-20261107-1055-chat",
+    "command_id": "tr-manual-20261107-1055-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T10:41:30+01:00",
-    "updated_at": "2026-11-07T10:51:00+01:00",
-    "finished_at": "2026-11-07T10:51:00+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-11-07T10:55:00+01:00",
+    "updated_at": "2026-11-07T10:57:00+01:00",
+    "finished_at": "2026-11-07T10:57:00+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "c7b2dcedccea",
-      "868ebdb8d539",
-      "red-review-b600427448342ab117fe",
-      "red-review-e2092675a56e9a6b06db"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "c7b2dcedccea",
-        "revision": 0,
-        "name": "HOY JUGAMOS",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "apply_commit": "5f0d2273bd14ac98c18e4b831960ce02d6ed3b98"
-      },
-      {
-        "id": "868ebdb8d539",
-        "revision": 0,
-        "name": "Túnez",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "apply_commit": "5f0d2273bd14ac98c18e4b831960ce02d6ed3b98"
-      },
-      {
-        "id": "red-review-b600427448342ab117fe",
-        "revision": 0,
-        "name": "Revisar novedades: Widilo",
-        "outcome": "continuity_update",
-        "applied": true,
-        "source_id": "ff856dec111d",
-        "via": "maintenance_outbox_applied",
-        "apply_commit": "1f087b9d6dbca585703d67719f4883284687a8a4"
-      },
-      {
-        "id": "red-review-e2092675a56e9a6b06db",
-        "revision": 0,
-        "name": "Revisar novedades: Santiago Peña",
-        "outcome": "continuity_update",
-        "applied": true,
-        "source_id": "c4f3771c12ae",
-        "via": "maintenance_outbox_applied",
-        "apply_commit": "1f087b9d6dbca585703d67719f4883284687a8a4"
-      }
-    ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "final_outcomes": [],
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -131,10 +97,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 4/4: HOY JUGAMOS y Túnez explicados; Widilo y Santiago Peña actualizados como continuidad. Barrera final main: cola 0 y sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, anticipate, review_red ni rewrite_pending localizado. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T10:41:30+01:00",
-  "last_completed_at": "2026-11-07T10:51:00+01:00",
+  "last_started_at": "2026-11-07T10:55:00+01:00",
+  "last_completed_at": "2026-11-07T10:57:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -214,7 +180,8 @@
     "tr-autoguard-1794042658",
     "tr-1794043085297-manual",
     "tr-1794042927737-manual",
-    "tr-manual-20261107-1025-chat"
+    "tr-manual-20261107-1025-chat",
+    "tr-manual-20261107-1055-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -296,7 +263,8 @@
     "tr-autoguard-1794042658",
     "tr-1794043085297-manual",
     "tr-1794042927737-manual",
-    "tr-manual-20261107-1025-chat"
+    "tr-manual-20261107-1025-chat",
+    "tr-manual-20261107-1055-chat"
   ],
-  "message": "Pasada tr-manual-20261107-1055-chat iniciada; 0 trabajo(s) activo(s) en la barrera inicial."
+  "message": "Pasada canónica cerrada 0/0. Cola final 0; sin ImageGen, image-outbox ni publicaciones."
 }
