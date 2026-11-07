@@ -796,11 +796,11 @@ final class GitHubEditor: ObservableObject {
             } else { entries[key] = candidate }
         }
 
-        // READY is retained after removal from Listas; PROCESSING is not a
-        // final news episode and must not leak into editorial relationship UI.
+        // Relations is a manual lookup over known news, not a READY/Listas
+        // inbox. All statuses with a real stable ID, revision and title remain
+        // searchable; a relation is only persisted after a server receipt.
         for row in processed?["items"] as? [[String: Any]] ?? [] {
-            guard row["status"] as? String == "READY",
-                  let id = row["event_id"] as? String,
+            guard let id = row["event_id"] as? String,
                   let revision = row["revision"] as? Int,
                   let title = row["title"] as? String else { continue }
             let date = row["delivered_at"] as? String ??
