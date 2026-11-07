@@ -7,22 +7,40 @@
   "previous_run_id": "tr-1794048225232-manual",
   "command_id": "tr-manual-20261107-1155-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T11:55:30+01:00",
-  "updated_at": "2026-11-07T11:55:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T11:56:20+01:00",
+  "finished_at": "2026-11-07T11:56:20+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -111,112 +129,43 @@
       "at": "2026-11-07T11:55:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1155-chat iniciada; verificando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T11:56:20+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T11:56:20+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1155-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "bdd56dcea5a1",
-      "revision": 0,
-      "name": "Abogacía del Estado",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "283befdac9fbac69c247cfd6b15aa53a2356ebf9"
-    },
-    {
-      "id": "27fa2aaf7521",
-      "revision": 0,
-      "name": "Pattinson",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "283befdac9fbac69c247cfd6b15aa53a2356ebf9"
-    },
-    {
-      "id": "red-review-b9e656fdfb424102dfa0",
-      "revision": 0,
-      "name": "Revisar novedades: Fiscalía Europea",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "03e8e97ff793a0f47903bf126bd113241a7dcb34"
-    },
-    {
-      "id": "red-review-65be32ecd7b88ee9ef3f",
-      "revision": 0,
-      "name": "Revisar novedades: La UCO",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "c2135f31db7a5156d11c72f35da023e30de88520"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794048225232-manual",
-    "command_id": "tr-1794048225232-manual",
+    "run_id": "tr-manual-20261107-1155-chat",
+    "command_id": "tr-manual-20261107-1155-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T11:44:00+01:00",
-    "updated_at": "2026-11-07T11:45:30+01:00",
-    "finished_at": "2026-11-07T11:45:30+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-11-07T11:55:30+01:00",
+    "updated_at": "2026-11-07T11:56:20+01:00",
+    "finished_at": "2026-11-07T11:56:20+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
     "processed_ids": [],
-    "converged_ids": [
-      "bdd56dcea5a1",
-      "27fa2aaf7521",
-      "red-review-b9e656fdfb424102dfa0",
-      "red-review-65be32ecd7b88ee9ef3f"
-    ],
+    "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "bdd56dcea5a1",
-        "revision": 0,
-        "name": "Abogacía del Estado",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "283befdac9fbac69c247cfd6b15aa53a2356ebf9"
-      },
-      {
-        "id": "27fa2aaf7521",
-        "revision": 0,
-        "name": "Pattinson",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "283befdac9fbac69c247cfd6b15aa53a2356ebf9"
-      },
-      {
-        "id": "red-review-b9e656fdfb424102dfa0",
-        "revision": 0,
-        "name": "Revisar novedades: Fiscalía Europea",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "03e8e97ff793a0f47903bf126bd113241a7dcb34"
-      },
-      {
-        "id": "red-review-65be32ecd7b88ee9ef3f",
-        "revision": 0,
-        "name": "Revisar novedades: La UCO",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "c2135f31db7a5156d11c72f35da023e30de88520"
-      }
-    ],
+    "final_outcomes": [],
     "attempted": 0,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -224,14 +173,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada canónica cerrada 4/4 por convergencia con tr-manual-20261107-1140-chat: Abogacía del Estado y Pattinson explained; Fiscalía Europea y La UCO unchanged. Barrera final main: cola 0 y rewrite_pending=0. Sin ImageGen ni publicaciones."
+    "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones pendientes. Sin ImageGen ni publicaciones."
   },
   "last_started_at": "2026-11-07T11:55:30+01:00",
-  "last_completed_at": "2026-11-07T11:45:30+01:00",
+  "last_completed_at": "2026-11-07T11:56:20+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -318,7 +267,8 @@
     "tr-manual-20261107-1117-chat",
     "tr-manual-20261107-1125-chat",
     "tr-manual-20261107-1140-chat",
-    "tr-1794048225232-manual"
+    "tr-1794048225232-manual",
+    "tr-manual-20261107-1155-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -407,49 +357,14 @@
     "tr-manual-20261107-1117-chat",
     "tr-manual-20261107-1125-chat",
     "tr-manual-20261107-1140-chat",
-    "tr-1794048225232-manual"
+    "tr-1794048225232-manual",
+    "tr-manual-20261107-1155-chat"
   ],
-  "message": "Pasada canónica cerrada 4/4 por convergencia con tr-manual-20261107-1140-chat: Abogacía del Estado y Pattinson explained; Fiscalía Europea y La UCO unchanged. Barrera final main: cola 0 y rewrite_pending=0. Sin ImageGen ni publicaciones.",
-  "outcomes": [
-    {
-      "id": "bdd56dcea5a1",
-      "revision": 0,
-      "name": "Abogacía del Estado",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "283befdac9fbac69c247cfd6b15aa53a2356ebf9"
-    },
-    {
-      "id": "27fa2aaf7521",
-      "revision": 0,
-      "name": "Pattinson",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "283befdac9fbac69c247cfd6b15aa53a2356ebf9"
-    },
-    {
-      "id": "red-review-b9e656fdfb424102dfa0",
-      "revision": 0,
-      "name": "Revisar novedades: Fiscalía Europea",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "03e8e97ff793a0f47903bf126bd113241a7dcb34"
-    },
-    {
-      "id": "red-review-65be32ecd7b88ee9ef3f",
-      "revision": 0,
-      "name": "Revisar novedades: La UCO",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "c2135f31db7a5156d11c72f35da023e30de88520"
-    }
-  ],
+  "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones pendientes. Sin ImageGen ni publicaciones.",
+  "outcomes": [],
   "recent_runs": [
     "tr-manual-20261107-1140-chat",
-    "tr-1794048225232-manual"
+    "tr-1794048225232-manual",
+    "tr-manual-20261107-1155-chat"
   ]
 }
