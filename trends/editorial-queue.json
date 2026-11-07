@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T18:50:57+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-07T17:53:08.290412+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-e6509560a4cc195d4ac0",
+      "revision": 0,
+      "name": "Revisar novedades: Espanyol",
+      "rank": 27,
+      "status": "preparing",
+      "requested_at": "2026-11-07T17:53:08.290412+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "71da82a42b94",
+        "revision": 0,
+        "name": "Espanyol",
+        "rank": 2,
+        "explanation": "TT#2 Espanyol es tendencia junto a #rcde, Manolo, Las Llanas y #LaCopaMola porque el Sestao River eliminó al Espanyol de la Copa (4-3) con un gol de Jon Rojo en el 120+1'.\n#SestaoRiver #Espanyol #CopaDelRey\n🌶️ Las Llanas convirtió el 121' en puerta de salida.",
+        "explanation_sha256": "bbb95ddf4c62434977cd20f6e9828c331363ed15986c76dc14eab0890b1ab5dd",
+        "explained_at": "2026-10-27T22:50:00+01:00",
+        "verification_sources": [
+          "https://www.rtve.es/deportes/20261027/copa-del-rey-primera-ronda-resultados-eliminatorias/17286345.shtml",
+          "https://www.mundodeportivo.com/futbol/rcd-espanyol/20261027/1004243906/once-sestao-river-espanyol-copa-rey.html"
+        ],
+        "fingerprint": "9e22ee67398a7d18a26142819c254c668032a59a94e3826f3152ac394c167406"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-ce830350bbda257462ed",
+      "revision": 0,
+      "name": "Revisar novedades: Rivola",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-11-07T17:53:08.290412+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "67a2703e67ab",
+        "revision": 0,
+        "name": "Rivola",
+        "rank": 7,
+        "explanation": "TT#7 Rivola es tendencia por sus declaraciones sobre las MotoGP de 850 cc de 2027: admite que le sorprendió su velocidad y defiende que la categoría siga siendo de prototipos.\n#MotoGP #Aprilia\n🌶️ Menos cilindrada no frenó el cronómetro.",
+        "explanation_sha256": "4bab774aa9fb0ef445814be528350c544f2f1f5bc546e9c31ab8d78ab731c95f",
+        "explained_at": "2026-11-01T09:44:31+01:00",
+        "verification_sources": [
+          {
+            "url": "https://motorcyclesports.net/massimo-rivola-admits-850cc-motogp-bikes-surprised-him-with-speed/"
+          },
+          {
+            "url": "https://www.crash.net/motogp/news/1107555/1/ducati-aprilia-respond-fast-850cc-motogp-lap-times"
+          }
+        ],
+        "fingerprint": "060a25be25e27159f19cfb80473ea9043fd6d691d0e4d2aa4a62f6a29182a26b"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
