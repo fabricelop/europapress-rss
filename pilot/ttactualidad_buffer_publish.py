@@ -249,7 +249,10 @@ def check_image(url, expected_hash, project, event_id=None, revision=None):
         if event_id is not None and revision is not None:
             if not filename.startswith(event_id + "-r" + str(revision) + "-"):
                 raise ValueError("Imagen IA de una revisión diferente")
-    elif parsed.hostname == "ttactualidad-tendencias.rainyraven22.chatgpt.site":
+    elif parsed.hostname in (
+        "ttactualidad-tendencias.rainyraven22.chatgpt.site",
+        "ttactualidad.rainyraven22.chatgpt.site",
+    ):
         if not (event_id is not None and revision is not None and
                 parsed.path.startswith("/images/" + project + "/" + event_id
                                        + "-r" + str(revision) + "-") and
@@ -259,8 +262,21 @@ def check_image(url, expected_hash, project, event_id=None, revision=None):
         raise ValueError("Host de imagen IA no autorizado")
     req = Request(url, headers={"User-Agent": "TTActualidad-BufferPublisher/1"})
     with urlopen(req, timeout=30) as response:
-        if urlparse(response.geturl()).hostname != parsed.hostname:
-            raise ValueError("Redirección IA fuera del origen verificado")
+        final = urlparse(response.geturl())
+        # Site serves approved originals through its canonical image host.
+        # Espanyol r0 proved the old host redirects to the canonical host
+        # while preserving the complete PNG and its exact editorial SHA.
+        # The raw GitHub origin still may NOT redirect to another host.
+        site_hosts = {
+            "ttactualidad-tendencias.rainyraven22.chatgpt.site",
+            "ttactualidad.rainyraven22.chatgpt.site",
+        }
+        allowed_final_hosts = (site_hosts if parsed.hostname in site_hosts
+                               else {parsed.hostname})
+        if (final.scheme != "https" or final.hostname not in allowed_final_hosts
+            or final.port is not None or final.username or final.password
+            or final.fragment):
+            raise ValueError("Redirección IA fuera de los orígenes autorizados")
         data = response.read(12 * 1024 * 1024 + 1)
         if len(data) > 12 * 1024 * 1024:
             raise ValueError("Imagen IA supera 12 MB")
@@ -445,7 +461,13 @@ def editorial(project, event_id, revision):
         except (ValueError, HTTPError, URLError, OSError, TimeoutError) as exc:
             print("Imagen IA candidata no utilizable: " + str(exc)[:160])
     if matched and tested:
-        print("Ninguna imagen IA aprobada supera la verificación; buscando archivo.")
+        # An explicitly approved, exact IA is not an optional embellishment.
+        # Silently changing it into archive/text is what happened with
+        # Espanyol on 2026-11-07. Stop before Buffer; allow a later
+        # deliberate retry after the image service recovers.
+        raise ValueError(
+            "Hay imagen IA aprobada para esta ficha, pero no supera la "
+            "verificación de origen y SHA-256. Sin publicar; reintentar.")
     archived = archive_url(item, project, event_id, revision)
     if archived:
         return text, archived, "archive"
