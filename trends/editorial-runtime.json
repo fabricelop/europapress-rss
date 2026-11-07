@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794044668169-manual",
   "command_id": "tr-manual-20261107-1110-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T11:10:00+01:00",
-  "updated_at": "2026-11-07T11:11:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T11:12:00+01:00",
+  "finished_at": "2026-11-07T11:12:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -64,17 +64,27 @@
       "at": "2026-11-07T11:11:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1110-chat iniciada; barrera fresca de main detecta 0 trabajo(s) activo(s). Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T11:12:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; no preparing/update, anticipate, review_red ni rewrite_pending localizado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T11:12:00+01:00",
+      "phase": "closing",
+      "message": "Pasada cerrada 0/0; sin trabajos editoriales activos, sin imágenes y sin publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1055-chat",
-    "command_id": "tr-manual-20261107-1055-chat",
+    "run_id": "tr-manual-20261107-1110-chat",
+    "command_id": "tr-manual-20261107-1110-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T10:55:00+01:00",
-    "updated_at": "2026-11-07T10:57:00+01:00",
-    "finished_at": "2026-11-07T10:57:00+01:00",
+    "started_at": "2026-11-07T11:10:00+01:00",
+    "updated_at": "2026-11-07T11:12:00+01:00",
+    "finished_at": "2026-11-07T11:12:00+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -102,10 +112,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, anticipate, review_red ni rewrite_pending localizado. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, rewrite_pending ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones."
   },
-  "last_started_at": "2026-11-07T10:55:00+01:00",
-  "last_completed_at": "2026-11-07T10:57:00+01:00",
+  "last_started_at": "2026-11-07T11:10:00+01:00",
+  "last_completed_at": "2026-11-07T11:12:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -187,7 +197,8 @@
     "tr-1794042927737-manual",
     "tr-manual-20261107-1025-chat",
     "tr-manual-20261107-1055-chat",
-    "tr-1794044668169-manual"
+    "tr-1794044668169-manual",
+    "tr-manual-20261107-1110-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -271,9 +282,10 @@
     "tr-1794042927737-manual",
     "tr-manual-20261107-1025-chat",
     "tr-manual-20261107-1055-chat",
-    "tr-1794044668169-manual"
+    "tr-1794044668169-manual",
+    "tr-manual-20261107-1110-chat"
   ],
-  "message": "Pasada tr-manual-20261107-1110-chat en ejecución; verificando cola autoritativa y reexplicaciones pendientes.",
+  "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, rewrite_pending ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones.",
   "outcomes": [],
   "recent_runs": [
     "tr-manual-20261107-1110-chat"
