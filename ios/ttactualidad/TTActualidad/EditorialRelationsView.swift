@@ -298,7 +298,9 @@ struct EditorialRelationsView: View {
                 let endpoint = scope.project == "ttittulares" ? item.news : item.trend
                 return EditorialRelationsPolicy.matches(endpoint, id: scope.id, revision: scope.revision)
             }
-            // Historical or removed news never reappears automatically.
+            // Confirmadas/Bloqueadas keep manually saved historical news
+            // visible even after leaving Listas and today's Top30.
+            if filter == "linked" || filter == "blocked" { return true }
             return EditorialRelationsPolicy.isVisibleNews(
                 item.news, activeListas: activeListasKeys, explicit: selectedNews)
         }
@@ -395,11 +397,17 @@ struct EditorialRelationsView: View {
                 fallbackDates: dates, hidden: hiddenNews, limit: 5)
             if top30Trends.indices.contains(index) {
                 let row = top30Trends[index]
-                if row.name == name,
-                   let endpoint = EditorialRelationsPolicy.matchingTop30Endpoint(
-                       id: row.editorialID, revision: row.revision,
-                       renderedText: row.explanation, candidates: endpoints) {
-                    trends[key] = endpoint
+                if row.name == name, !row.editorialID.isEmpty,
+                   !row.editorialID.hasPrefix("manual-"), row.revision >= 0 {
+                    // Prefer a real Sites endpoint when available; otherwise
+                    // the original GitHub ID/revision is sufficient to save.
+                    trends[key] = EditorialRelationsPolicy.matchingTop30Endpoint(
+                        id: row.editorialID, revision: row.revision,
+                        renderedText: row.explanation, candidates: endpoints) ??
+                    EditorialRelationEndpoint(
+                        id: row.editorialID, revision: row.revision,
+                        episodeFingerprint: "", title: row.name,
+                        text: row.explanation, path: nil)
                 }
             }
         }
@@ -666,7 +674,7 @@ struct EditorialRelationsView: View {
              trend: EditorialRelationEndpoint, action: String)] {
         guard let trend = currentTrendEndpoint(rank: rank, name: name) else { return [] }
         return related.compactMap { news in
-            guard !news.episodeFingerprint.isEmpty,
+            guard !news.id.isEmpty, news.revision >= 0,
                   let desired = pendingSwitches[pairKey(news, trend)],
                   let action = EditorialRelationsPolicy.actionForSwitch(
                       current: relationState(news, trend), selected: desired)
@@ -680,8 +688,7 @@ struct EditorialRelationsView: View {
         guard let trend = currentTrendEndpoint(rank: rank, name: name) else {
             return related.count
         }
-        return related.filter { $0.episodeFingerprint.isEmpty ||
-            trend.episodeFingerprint.isEmpty }.count
+        return related.filter { $0.id.isEmpty || $0.revision < 0 }.count
     }
 
     private func trendCard(rank: Int, name: String) -> some View {
@@ -701,10 +708,10 @@ struct EditorialRelationsView: View {
                 }
                 if unresolved > 0 {
                     Text(String(unresolved) + " de " + String(related.count) +
-                         " noticias sin identidad de Sites: se muestran, pero no es posible guardarlas todavía.")
+                         " noticias sin ID editorial válido; actualiza los datos.")
                         .font(.caption2).foregroundStyle(.orange)
                     if changes.isEmpty {
-                        Label("Guardar no disponible: falta identidad editorial del servidor.",
+                        Label("Guardar no disponible: faltan ID o revisión de la noticia.",
                               systemImage: "lock")
                             .font(.caption2).foregroundStyle(.secondary)
                     }
@@ -744,7 +751,7 @@ struct EditorialRelationsView: View {
     private func trendNewsRow(news: EditorialRelationEndpoint,
                               rank: Int, name: String) -> some View {
         let trend = currentTrendEndpoint(rank: rank, name: name)
-        let verified = trend != nil && !news.episodeFingerprint.isEmpty
+        let verified = trend != nil && !news.id.isEmpty && news.revision >= 0
         let linkKey = trend.map { pairKey(news, $0) } ?? ""
         let linked = trend.map { relationState(news, $0) == "linked" } ?? false
         let selected = verified ? (pendingSwitches[linkKey] ?? linked) : false
@@ -769,7 +776,7 @@ struct EditorialRelationsView: View {
                 }
                 .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
             } else {
-                Label("Solo consulta · identidad de Sites pendiente",
+                Label("No disponible · falta ID editorial",
                       systemImage: "lock")
                     .font(.caption).foregroundStyle(.secondary)
             }
@@ -778,7 +785,7 @@ struct EditorialRelationsView: View {
                      "Se desasociará al pulsar Guardar")
                     .font(.caption2).foregroundStyle(.orange)
             } else if !verified {
-                Text("Sin huella editorial del servidor. No se puede asociar por nombre ni guardar esta noticia.")
+                Text("Falta un identificador editorial verificable; actualiza la ficha.")
                     .font(.caption2).foregroundStyle(.orange)
             }
             Button("Ocultar esta noticia") { hide(news) }
@@ -796,7 +803,8 @@ struct EditorialRelationsView: View {
 
     private func pairKey(_ news: EditorialRelationEndpoint,
                          _ trend: EditorialRelationEndpoint) -> String {
-        news.stableIdentity + "↔" + trend.stableIdentity
+        news.id + ":r" + String(news.revision) +
+            "↔" + trend.id + ":r" + String(trend.revision)
     }
 
     private func toggleSelection(_ news: EditorialRelationEndpoint,
@@ -824,34 +832,18 @@ struct EditorialRelationsView: View {
         indexedRelationStates[pairKey(news, trend)]
     }
 
-    private func unresolvedKey(_ news: EditorialRelationEndpoint,
-                               rank: Int, name: String) -> String {
-        let row = top30Trends.indices.contains(rank - 1) ? top30Trends[rank - 1] : nil
-        return news.stableIdentity + "↔pending:" + (row?.editorialID ?? name) +
-            ":r" + String(row?.revision ?? -1) + ":rank" + String(rank)
-    }
-
-    private func unresolvedCount(for news: EditorialRelationEndpoint) -> Int {
-        (1...min(30, top30Names.count)).filter { rank in
-            unresolvedTop30Selections.contains(unresolvedKey(
-                news, rank: rank, name: top30Names[rank - 1]))
-        }.count
-    }
-
     private func changedTrends(for news: EditorialRelationEndpoint)
         -> (links: [EditorialRelationEndpoint], unlinks: [EditorialRelationEndpoint]) {
-        // A display-only historical row does not have the Sites-issued
-        // fingerprint required to authorize or verify a decision.
-        guard !news.episodeFingerprint.isEmpty else { return ([], []) }
-        let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
-        var seen = Set<String>()
+        let trends = Array(top30Names.prefix(30).enumerated()).compactMap {
+            currentTrendEndpoint(rank: $0.offset + 1, name: $0.element)
+        }
         var links: [EditorialRelationEndpoint] = []
         var unlinks: [EditorialRelationEndpoint] = []
-        for trend in endpoints {
-            guard seen.insert(trend.stableIdentity).inserted,
-                  let desired = pendingSwitches[pairKey(news, trend)],
+        for trend in trends {
+            guard let desired = pendingSwitches[pairKey(news, trend)],
                   let action = EditorialRelationsPolicy.actionForSwitch(
-                    current: relationState(news, trend), selected: desired) else { continue }
+                    current: relationState(news, trend), selected: desired)
+            else { continue }
             if action == "link" { links.append(trend) }
             else { unlinks.append(trend) }
         }
@@ -865,8 +857,8 @@ struct EditorialRelationsView: View {
                 Text("Marca las tendencias que quieras asociar. Desmarca las ya vinculadas. Solo se guardan los cambios que hagas.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if news.episodeFingerprint.isEmpty {
-                    Text("Noticia recuperada del historial. Pendiente de identidad del servidor de relaciones: puedes marcar tendencias, pero guardarlas requiere que el servidor reconozca esta noticia.")
-                        .font(.caption).foregroundStyle(.orange)
+                    Text("Noticia del histórico: se guarda por su ID y revisión originales en GitHub.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
                 if top30Names.isEmpty {
                     Text("Actualiza el Top 30 para elegir tendencias.")
@@ -895,11 +887,7 @@ struct EditorialRelationsView: View {
                     }
                 }
                 let changes = changedTrends(for: news)
-                let unresolved = unresolvedCount(for: news)
-                if unresolved > 0 {
-                    Text("\(unresolved) selecciones pendientes de identidad: la APP permite marcarlas, pero no puede guardarlas como relación hasta que el servidor confirme el episodio exacto. No se enviarán asociaciones por nombre.")
-                        .font(.caption).foregroundStyle(.orange)
-                }
+
                 Button {
                     Task {
                         if !changes.links.isEmpty || !changes.unlinks.isEmpty {
@@ -912,21 +900,15 @@ struct EditorialRelationsView: View {
                                 }
                             }
                         }
-                        if unresolved > 0 {
-                            // Reload the authority to see whether new trend
-                            // fingerprints are available, but leave selections
-                            // staged rather than falsely claiming publication.
-                            await model.load(using: github)
-                            model.notice = "Las tendencias sin identidad editorial siguen marcadas localmente. El servidor de relaciones debe devolver los 30 episodios para guardarlas con seguridad."
-                        }
+
                     }
                 } label: {
-                    Label("Guardar: \(changes.links.count) asociar · \(changes.unlinks.count) desasociar · \(unresolved) pendientes",
+                    Label("Guardar: \(changes.links.count) asociar · \(changes.unlinks.count) desasociar",
                           systemImage: "checkmark.circle.fill")
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(model.saving || (changes.links.isEmpty &&
-                                          changes.unlinks.isEmpty && unresolved == 0))
+                                          changes.unlinks.isEmpty))
             } label: {
                 VStack(alignment: .leading, spacing: 5) {
                     Text(news.title).font(.headline)
@@ -965,20 +947,11 @@ struct EditorialRelationsView: View {
     @ViewBuilder
     private func top30Row(news: EditorialRelationEndpoint,
                           rank: Int, name: String) -> some View {
-        let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
-        // Never link a stale trend with the same display name. The actual
-        // current Top30 row must carry the same exact editorial episode.
-        let row = top30Trends.indices.contains(rank - 1) ? top30Trends[rank - 1] : nil
-        let endpoint = row.flatMap { row -> EditorialRelationEndpoint? in
-            guard row.name == name else { return nil }
-            return EditorialRelationsPolicy.matchingTop30Endpoint(
-                id: row.editorialID, revision: row.revision,
-                renderedText: row.explanation, candidates: endpoints)
-        }
+        let endpoint = currentTrendEndpoint(rank: rank, name: name)
         HStack(spacing: 8) {
             Text(String(rank) + ".").font(.caption).foregroundStyle(.secondary)
                 .frame(width: 24, alignment: .trailing)
-            if let trend = endpoint, !news.episodeFingerprint.isEmpty {
+            if let trend = endpoint, !news.id.isEmpty, news.revision >= 0 {
                 let state = relationState(news, trend)
                 let linked = state == "linked"
                 let checked = pendingSwitches[pairKey(news, trend)] ?? linked
@@ -1014,7 +987,7 @@ struct EditorialRelationsView: View {
                         .font(.system(size: 19)).foregroundStyle(.secondary)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(name).font(.subheadline)
-                        Text("Solo consulta · identidad de Sites pendiente")
+                        Text("Falta ID editorial de esta tendencia")
                             .font(.caption2).foregroundStyle(.orange)
                     }
                 }
