@@ -7,34 +7,26 @@
   "previous_run_id": "tr-1794089628496-manual",
   "command_id": "tr-1794089854856-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-07T23:18:50+01:00",
-  "updated_at": "2026-11-07T23:18:50+01:00",
+  "updated_at": "2026-11-07T23:19:43+01:00",
   "finished_at": null,
   "current": 0,
   "total": 6,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "19a794014e20",
+    "c7bb6c3446ee",
+    "d1d830a84173",
+    "e51dc7aa7a37",
+    "fe308194f4ea"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "41998067bb7c",
-    "ea15f50b5f06",
-    "512c583859a1",
-    "53f97ad38ffe",
-    "ebe99fecd454",
-    "c7bb6c3446ee"
-  ],
-  "remaining_active_ids": [
-    "41998067bb7c",
-    "ea15f50b5f06",
-    "512c583859a1",
-    "53f97ad38ffe",
-    "ebe99fecd454",
-    "c7bb6c3446ee"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": null,
   "outcomes": [],
@@ -78,7 +70,7 @@
       "message": "Pasada tr-1794089854856-manual iniciada desde chat; cola main=6 preparing/update. Procesamiento del más antiguo al más reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T23:18:50+01:00",
-  "last_completed_at": "2026-11-07T23:13:16+01:00",
+  "last_started_at": "2026-11-07T23:19:43+01:00",
+  "last_completed_at": "2026-11-07T23:19:43+01:00",
   "api_failover_enabled": false
 }
