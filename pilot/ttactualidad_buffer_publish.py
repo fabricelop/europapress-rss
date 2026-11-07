@@ -370,14 +370,24 @@ def editorial(project, event_id, revision):
             raise ValueError("Tendencia ya cerrada en Listas")
     if not text.strip() or len(text) > 600:
         raise ValueError("Texto no disponible o demasiado largo para publicación directa")
-    for image in matched[:1]:
+    # Several manually approved originals can share the same editorial
+    # identity. One stale/broken catalog entry must not hide a later valid AI
+    # image and silently force an archive fallback. Still verify every byte
+    # against its SHA-256 and exact ID/revision; never use a pending image.
+    tested = set()
+    for image in matched:
+        url = str(image.get("image_url") or "")
+        sha = str(image.get("sha256") or "").lower()
+        if (url, sha) in tested:
+            continue
+        tested.add((url, sha))
         try:
-            checked = check_image(str(image.get("image_url") or ""),
-                                  str(image.get("sha256") or ""), project,
-                                  event_id, revision)
+            checked = check_image(url, sha, project, event_id, revision)
             return text, checked, "ai"
         except (ValueError, HTTPError, URLError, OSError, TimeoutError) as exc:
-            print("Imagen IA no utilizable; buscando foto de archivo: " + str(exc)[:160])
+            print("Imagen IA candidata no utilizable: " + str(exc)[:160])
+    if matched and tested:
+        print("Ninguna imagen IA aprobada supera la verificación; buscando archivo.")
     archived = archive_url(item, project, event_id, revision)
     if archived:
         return text, archived, "archive"
