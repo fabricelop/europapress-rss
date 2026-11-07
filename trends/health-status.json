@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-07T22:01:29.054117+00:00",
+  "checked_at": "2026-11-07T22:44:43.438828+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 3,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.6,
-      "run_id": 42418174750,
+      "age_minutes": 4.0,
+      "run_id": 42421726956,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -68,7 +68,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 541,
+      "invalid_count": 545,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -78,9 +78,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 30,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -88,8 +88,39 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "ad394a9b799a",
+        "a5f4021e3de8",
+        "1356ba6ecf7e",
+        "6e375c9eb4eb",
+        "2074df132048",
+        "c5f47cf35ca0",
+        "4cb151027e1d",
+        "655264c9c8a1",
+        "9c045a87215c",
+        "eb0067679d4b",
+        "6cc19b3c488b",
+        "2af723126c42",
+        "68d9e456f962",
+        "e11231bc43f9",
+        "94ea5224ae40",
+        "c02d763943b8",
+        "677c4883821c",
+        "9cd671105a94",
+        "48c60e5c6f0b",
+        "99abd93de9c3",
+        "13cfc1140898",
+        "90b4a00c5c34",
+        "cb61c7b2757d",
+        "f589342bd32c",
+        "a8e17c1aee9e",
+        "ef3eff258739",
+        "513a0cf130e2",
+        "bad24bb138d9",
+        "25ecceec685e",
+        "dc946d41659a"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -100,9 +131,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 541 estado(s) inválido(s)"
+    "cola con 545 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 541 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 545 estado(s) inválido(s)"
 }
