@@ -3,36 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794074588672-manual",
-  "previous_run_id": "tr-1794073996404-manual",
-  "command_id": "tr-1794074322806-manual",
+  "run_id": "tr-manual-20261107-1910-chat",
+  "previous_run_id": "tr-1794074588672-manual",
+  "command_id": "tr-manual-20261107-1910-chat",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-07T19:03:00+01:00",
-  "updated_at": "2026-11-07T19:13:00+01:00",
-  "finished_at": null,
-  "current": 5,
-  "total": 8,
+  "started_at": "2026-11-07T19:10:00+01:00",
+  "updated_at": "2026-11-07T19:14:00+01:00",
+  "finished_at": "2026-11-07T19:14:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [
-    "red-review-ce830350bbda257462ed"
+    "red-review-de8f137543fff08b4061",
+    "red-review-19b1799dce7a34fe0b8e"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 2,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
@@ -41,7 +42,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -716,58 +717,73 @@
       "at": "2026-11-07T19:00:45+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794074322806-manual cerrada 1/1 por convergencia: Rivola actualizado como episodio distinto; cola final 0, ImageGen=0, publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T19:10:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-manual-20261107-1910-chat iniciada; barrera fresca de main detecta 2 review_red preparing: Espanyol y eder sarabia. Se revalidan por ID/revisión. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T19:11:30+01:00",
+      "phase": "investigating",
+      "message": "Espanyol y eder sarabia revalidados JIT. Fuentes actuales confirman un episodio posterior e independiente: Espanyol-Deportivo 0-0, primer partido de la etapa de Eder Sarabia, seguido por el técnico desde la grada por sanción."
+    },
+    {
+      "at": "2026-11-07T19:12:10+01:00",
+      "phase": "persisting",
+      "message": "Al persistir, ambos maintenance-outbox ya existían por una ejecución concurrente con resultados equivalentes. Se evita duplicar; commit 52962cfe… aplica los dos review_red y retira ambas revisiones de la cola."
+    },
+    {
+      "at": "2026-11-07T19:13:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; búsquedas de rewrite_pending, reexplain y status update sin pendientes activos. Espanyol y eder sarabia quedaron como episodios distintos aplicados. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T19:14:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 2 review_red actualizados como episodios distintos; cola final 0, sin imágenes ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T19:03:00+01:00",
-  "last_completed_at": "2026-11-07T19:00:45+01:00",
+  "last_started_at": "2026-11-07T19:10:00+01:00",
+  "last_completed_at": "2026-11-07T19:14:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794074588672-manual",
-    "status": "RUNNING",
-    "started_at": "2026-11-07T19:03:00+01:00",
-    "finished_at": null,
-    "attempted": 8,
-    "closed": 5,
-    "queue_remaining": 3,
+    "run_id": "tr-manual-20261107-1910-chat",
+    "status": "DONE",
+    "started_at": "2026-11-07T19:10:00+01:00",
+    "finished_at": "2026-11-07T19:14:00+01:00",
+    "attempted": 2,
+    "closed": 2,
+    "queue_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0
   },
-  "current_item": {
-    "id": "61cd12acff26",
-    "revision": 0,
-    "name": "Cadiz"
-  },
+  "current_item": null,
   "progress": [
     {
-      "at": "2026-11-07T18:59:00+01:00",
+      "at": "2026-11-07T19:10:00+01:00",
       "phase": "preparing",
-      "trend_id": "red-review-ce830350bbda257462ed",
-      "title": "Revisar novedades: Rivola",
-      "message": "Pasada tr-1794074322806-manual iniciada sobre main; se observó Rivola r0 activo al inicio. Sin ImageGen ni publicaciones."
+      "message": "Pasada tr-manual-20261107-1910-chat iniciada; barrera fresca de main detecta 2 review_red preparing: Espanyol y eder sarabia. Se revalidan por ID/revisión. Sin ImageGen ni publicaciones."
     },
     {
-      "at": "2026-11-07T18:59:53+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-ce830350bbda257462ed",
-      "title": "Revisar novedades: Rivola",
-      "message": "Revalidación JIT: la revisión ya había convergido por la pasada anterior. Commit 4f3b660f… retiró el job y aplicó el resultado de episodio distinto; no se reejecuta una revisión ya cerrada."
+      "at": "2026-11-07T19:11:30+01:00",
+      "phase": "investigating",
+      "message": "Espanyol y eder sarabia revalidados JIT. Fuentes actuales confirman un episodio posterior e independiente: Espanyol-Deportivo 0-0, primer partido de la etapa de Eder Sarabia, seguido por el técnico desde la grada por sanción."
     },
     {
-      "at": "2026-11-07T19:00:45+01:00",
-      "phase": "closing",
-      "message": "Barrera final main: editorial-queue=0 y sin reexplicación activa observada. Rivola queda cerrado por convergencia 1/1; ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-07T19:03:00+01:00",
-      "phase": "preparing",
-      "trend_id": "778a393ca8fa",
-      "title": "#FueraDeControl7nov",
-      "message": "Pasada tr-1794074588672-manual iniciada sobre main; barrera fresca detecta 8 trabajos preparing/update. Se procesan de antiguo a reciente con revalidación JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T19:13:00+01:00",
+      "at": "2026-11-07T19:12:10+01:00",
       "phase": "persisting",
-      "message": "5/8 revisiones ya aplicadas por el reconciliador; permanecen activas Cadiz, Pecco y Leo Román. Se mantiene barrera JIT y no se cierra hasta su persistencia en ambos registros. ImageGen=0."
+      "message": "Al persistir, ambos maintenance-outbox ya existían por una ejecución concurrente con resultados equivalentes. Se evita duplicar; commit 52962cfe… aplica los dos review_red y retira ambas revisiones de la cola."
+    },
+    {
+      "at": "2026-11-07T19:13:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; búsquedas de rewrite_pending, reexplain y status update sin pendientes activos. Espanyol y eder sarabia quedaron como episodios distintos aplicados. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T19:14:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 2 review_red actualizados como episodios distintos; cola final 0, sin imágenes ni publicaciones."
     }
   ],
   "imagegen_calls": 0,
