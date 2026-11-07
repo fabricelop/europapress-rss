@@ -129,9 +129,8 @@ function activeIdentities(project,document,decisions,now=Date.now()){
  }
  return result;
 }
-// Scope requested by editor on 2026-11-06 09:43 Europe/Paris.
-// Do not send the 500 historical news jobs to the iPhone now.
-const NEWS_CUTOFF=Date.parse('2026-11-06T08:43:00.000Z');
+// Eligibility follows current editorial identities, never a date cutover.
+// Private image ingestion never approves or publishes a raster.
 async function allowedTop30(fetcher=fetch){
  const url='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/site-top30-current.json?t='+Date.now();
  try {
@@ -143,13 +142,11 @@ async function allowedTop30(fetcher=fetch){
    .map(x=>x.editorial_id+':r'+x.revision));
  }catch{return null}
 }
-function inCurrentApprovalScope(task,top30){
- if(task.project==='ttendencias')return top30 instanceof Set &&
-   top30.has(task.target_id+':r'+task.revision);
- if(task.project==='ttittulares'){
-  const at=Date.parse(task.created_at||'');
-  return Number.isFinite(at)&&at>=NEWS_CUTOFF;
- }
+function inCurrentApprovalScope(task,top30,active){
+ const key=task.target_id+':r'+task.revision;
+ if(task.project==='ttendencias')return top30 instanceof Set && top30.has(key);
+ if(task.project==='ttittulares')return active instanceof Set &&
+   active.has('ttittulares:'+task.target_id+':'+task.revision);
  return false;
 }
 function selectCurrentTasks(tasks,progress,active){
@@ -197,12 +194,12 @@ async function once(base=__dirname){
    const dir=path.join(base,project+'-web-images');if(!fs.existsSync(dir))continue;
    for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&task.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
   }
-  const top30=await allowedTop30();
-  const eligible=tasks.filter(task=>inCurrentApprovalScope(task,top30));
+  const [top30,active]=await Promise.all([allowedTop30(),liveIdentities(sources)]);
+  const eligible=tasks.filter(task=>inCurrentApprovalScope(task,top30,active));
   const excludedBacklog=tasks.length-eligible.length;
-  const active=await liveIdentities(sources),selected=selectCurrentTasks(eligible,progress,active);
+  const selected=selectCurrentTasks(eligible,progress,active);
   fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,eligibleForApproval:eligible.length,excludedBacklog,
-    scopeCutover:'2026-11-06T08:43:00.000Z',
+    scope:'current_top30_and_ready_listas_without_date_cutoff',
     currentEditorial:active.size,selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,historicalQueued:eligible.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{queued:tasks.filter(x=>x.project===project).length,eligible:eligible.filter(x=>x.project===project).length,selected:selected.filter(x=>x.project===project).length}]))},null,2));
   tasks.splice(0,tasks.length,...selected);
   console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
@@ -212,9 +209,6 @@ async function once(base=__dirname){
    let cdp,browser,ownedTarget;
    try{
     const job=await editorialJob(source,task),meta=metadata(task,job);
-    if(task.project==='ttittulares'&&Date.parse(meta.editorialAt)<NEWS_CUTOFF){
-     report(task,'NEWS_BEFORE_APPROVAL_CUTOVER');continue;
-    }
     let bytes=cachedOriginal(base,task,meta);
     if(!bytes){
     if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
@@ -252,5 +246,5 @@ async function once(base=__dirname){
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
-module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks,inCurrentApprovalScope,allowedTop30,NEWS_CUTOFF};
+module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks,inCurrentApprovalScope,allowedTop30};
 if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
