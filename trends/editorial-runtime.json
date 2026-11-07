@@ -3,69 +3,45 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794064878",
+  "run_id": "tr-manual-20261107-1710-chat",
   "previous_run_id": "tr-autoguard-1794064878",
-  "command_id": "tr-autoguard-1794064878",
+  "command_id": "tr-manual-20261107-1710-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T16:48:00+01:00",
-  "updated_at": "2026-11-07T17:14:00+01:00",
-  "finished_at": "2026-11-07T17:14:00+01:00",
-  "current": 30,
-  "total": 30,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "a8fbcedd4ad4",
-    "1ce5bd951636",
-    "657cbc8b8e91",
-    "166bd0dd1cce",
-    "2cbe3208678c",
-    "88a5e999b5af",
-    "c8c1ad8e868a",
-    "12bb5011821b",
-    "58f9840d17b9",
-    "4d7fe22d8427",
-    "eebf693d674b",
-    "8a5e354fb9ab",
-    "fee32f393cc4",
-    "ec1a0bf67e50",
-    "6c32506a7655",
-    "9729475f5c0b",
-    "0d5adda3cdcc",
-    "5d0a141af451",
-    "5acb8ffada72",
-    "8f8fd9ecdd4a",
-    "e071dadba33f",
-    "3c198b1d3dd3",
-    "8dfdb81765da",
-    "6e99aa7e23ef",
-    "44fee81abb84",
-    "cf9ff48d9443",
-    "67a4026e4e56",
-    "18d8478d13eb",
-    "ea6b4dc27f8f"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T17:12:00+01:00",
+  "updated_at": "2026-11-07T17:12:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "ebe2ad4e2592",
+  "title": "Javi Hernández",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [
-    "8593b9db6521"
+    "0527bd84df25"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "ebe2ad4e2592",
+    "ee827d40c1b4"
+  ],
+  "remaining_active_ids": [
+    "ebe2ad4e2592",
+    "ee827d40c1b4"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 29,
-    "observed": 30,
-    "closed": 30,
-    "explained": 29,
+    "attempted": 0,
+    "observed": 3,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -613,50 +589,16 @@
       "at": "2026-11-07T17:14:00+01:00",
       "phase": "closing",
       "message": "Barrera final main verificada en count=0 tras aplicar el lote restante. 29 cierres propios + Leeds convergido. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T17:12:00+01:00",
+      "phase": "preparing",
+      "trend_id": "ebe2ad4e2592",
+      "title": "Javi Hernández",
+      "message": "Pasada manual iniciada sobre main: Lo Celso ya convergió por otro proceso; quedan Javi Hernández y Canales activos. Sin ImageGen ni publicaciones."
     }
   ],
-  "final_outcomes": [
-    {
-      "id": "80c80d664d0d",
-      "revision": 0,
-      "name": "#LCN7nov",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "46c76bc85499",
-      "revision": 0,
-      "name": "Zabiri",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "5804c9053892",
-      "revision": 0,
-      "name": "Pablo García",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "37c0ac87f1c9",
-      "revision": 0,
-      "name": "Dotor",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "0bf4872fb836",
-      "revision": 0,
-      "name": "El Hierro",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": "tr-autoguard-1794064878",
   "last_started_at": "2026-11-07T16:22:00+01:00",
@@ -879,49 +821,8 @@
     "tr-1794063319124-manual",
     "tr-1794063455844-manual"
   ],
-  "message": "Pasada tr-autoguard-1794064878 cerrada 30/30: 29 cierres editoriales propios y 1 convergencia concurrente (Leeds); cola final 0, reexplicaciones 0, ImageGen 0, publicaciones 0.",
-  "outcomes": [
-    {
-      "id": "80c80d664d0d",
-      "revision": 0,
-      "name": "#LCN7nov",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "46c76bc85499",
-      "revision": 0,
-      "name": "Zabiri",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "5804c9053892",
-      "revision": 0,
-      "name": "Pablo García",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "37c0ac87f1c9",
-      "revision": 0,
-      "name": "Dotor",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    },
-    {
-      "id": "0bf4872fb836",
-      "revision": 0,
-      "name": "El Hierro",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox"
-    }
-  ],
+  "message": "Pasada manual iniciada sobre main: Lo Celso ya convergió por otro proceso; quedan Javi Hernández y Canales activos. Sin ImageGen ni publicaciones.",
+  "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
     "tr-1794052874051-manual",
