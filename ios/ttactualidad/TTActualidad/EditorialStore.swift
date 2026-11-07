@@ -2307,7 +2307,6 @@ final class EditorialStore: ObservableObject {
             }
         }
         let readyNames = Set(ready.flatMap { row in [norm(row.name)] })
-        let readyEpisodeKeys = Set(ready.map { $0.editorialID + ":r" + String($0.revision) })
         var statuses: [String: String] = [:]
         var requestByName: [String: [String: Any]] = [:]
         for row in currentRequests {
@@ -2362,9 +2361,7 @@ final class EditorialStore: ObservableObject {
                              status: status,
                              // Cached Listas can be stale: explicit user action
                              // is validated by backend against exact identity.
-                             inListas: readyEpisodeKeys.contains(
-                                 editorialID + ":r" + String(revision)) ||
-                                 (siteID.isEmpty && readyNames.contains(key)),
+                             inListas: readyNames.contains(key) || siteExplained,
                              editorialID: editorialID, revision: revision,
                              imageURL: ArchivePhotoCatalog.resolved(
                                  project: "ttendencias", id: editorialID,
