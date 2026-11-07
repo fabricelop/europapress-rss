@@ -697,24 +697,67 @@ final class GitHubEditor: ObservableObject {
         return object
     }
 
-    // Preserve PR #325: image candidates must belong to a current, exact
-    // Top30 editorial episode. A failed read must not expose stale approvals.
+    // Approval is for CURRENT editorial entries, not a date window.
+    // All trend episodes without an assigned AI image are eligible.
     func currentImageApprovalTrendEpisodes() async throws -> Set<String> {
-        // Read public Top30 IDs through the same reliable raw endpoint used
-        // by the editorial store, not the GitHub Contents metadata envelope.
-        let snapshot = try await readPublicEditorialJSON("trends/site-top30-current.json")
-        guard let entries = snapshot["items"] as? [[String: Any]],
-              !entries.isEmpty, entries.count <= 30 else {
-            throw GitHubError.message("No está disponible el Top 30 actual.")
+        async let topRead = readPublicEditorialJSON("trends/site-top30-current.json")
+        async let imageRead = readPublicEditorialJSON("trends/site-ai-images.json")
+        let top = try await topRead
+        let catalog = try await imageRead
+        guard let entries = top["items"] as? [[String: Any]],
+              !entries.isEmpty, entries.count <= 30,
+              let assigned = catalog["images"] as? [[String: Any]] else {
+            throw GitHubError.message("Top 30 o catálogo IA no disponible.")
         }
         var result = Set<String>()
-        for entry in entries {
-            guard let id = entry["editorial_id"] as? String, !id.isEmpty,
-                  let revision = entry["revision"] as? Int, revision >= 0,
-                  let explanation = entry["explanation"] as? String,
-                  !explanation.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            else { continue }
-            result.insert(id + ":r" + String(revision))
+        for row in entries {
+            guard let id = row["editorial_id"] as? String, !id.isEmpty,
+                  let revision = row["revision"] as? Int, revision >= 0 else { continue }
+            let explanation = (row["explanation"] as? String) ?? ""
+            let currentAI = assigned.contains { image in
+                (image["target_id"] as? String) == id &&
+                (image["revision"] as? Int) == revision &&
+                (image["explanation"] as? String) == explanation &&
+                !((image["image_url"] as? String) ?? "").isEmpty
+            }
+            // Top30 image is already assigned by Sites, even if the GitHub
+            // publication catalog has not yet caught up.
+            let sitesAI = row["image"] != nil && !(row["image"] is NSNull)
+            if !currentAI && !sitesAI {
+                result.insert(id + ":r" + String(revision))
+            }
+        }
+        return result
+    }
+
+    // News eligibility is CURRENT membership in Listas, not age. A news
+    // episode can be days old and still be waiting for editorial approval.
+    func currentImageApprovalNewsEpisodes() async throws -> Set<String> {
+        async let preparedRead = readPublicEditorialJSON("ttittulares/prepared.json")
+        async let decisionsRead = readPublicEditorialJSON("ttittulares/decisions.json")
+        let prepared = try await preparedRead
+        let decisions = try await decisionsRead
+        guard let items = prepared["items"] as? [[String: Any]],
+              let changed = decisions["items"] as? [[String: Any]] else {
+            throw GitHubError.message("Listas de noticias no disponible.")
+        }
+        var closed = Set<String>()
+        for entry in changed {
+            guard let id = entry["event_id"] as? String,
+                  let revision = entry["revision"] as? Int else { continue }
+            let state = ((entry["status"] as? String) ?? "").lowercased()
+            if ["deleted", "dismissed", "published", "removed",
+                "delete_pending"].contains(state) {
+                closed.insert(id + ":r" + String(revision))
+            }
+        }
+        var result = Set<String>()
+        for news in items {
+            guard let id = news["event_id"] as? String, !id.isEmpty,
+                  let revision = news["revision"] as? Int, revision >= 0,
+                  news["rewrite_pending"] as? Bool != true else { continue }
+            let key = id + ":r" + String(revision)
+            if !closed.contains(key) { result.insert(key) }
         }
         return result
     }
