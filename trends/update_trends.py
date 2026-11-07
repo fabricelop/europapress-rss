@@ -240,26 +240,50 @@ def parse_gosocialsuite(html):
 
 
 def parse_snaplytics(html):
-    vals = parse_x_search_links(html)
-    if len(vals) >= 10:
-        return vals
-    # Fallback: la página expone filas como "#1 #SVGala2".
+    """Never parse worldwide/sidebar X links as the Spain Top 50.
+
+    Only anchors after the first heading literally labelled 'Trending now'
+    belong to the Spain snapshot; stop at the historical/trending detail
+    heading. Any structure change fails closed as invalid.
+    """
     soup = BeautifulSoup(html, "html.parser")
-    rows = []
-    for line in soup.get_text("\n", strip=True).splitlines():
-        line = clean(line)
-        m = re.match(r"^#?(\d{1,2})\s+(.+)$", line)
-        if not m:
+    heading = next((
+        h for h in soup.find_all(["h2", "h3"])
+        if clean(h.get_text(" ", strip=True)).casefold() == "trending now"
+    ), None)
+    if heading is None:
+        return []
+    scoped = []
+    for node in heading.next_elements:
+        if getattr(node, "name", None) in {"h2", "h3"}:
+            break
+        if getattr(node, "name", None) != "a":
             continue
-        rank = int(m.group(1))
-        if not 1 <= rank <= 100:
+        href = str(node.get("href") or "")
+        if "x.com" in href or "twitter.com" in href:
+            scoped.append(str(node))
+        if len(scoped) >= 60:
+            break
+    if len(scoped) < 10:
+        return []
+    # Ranked-only, no unnumbered search-link fallback; the page may include
+    # foreign recommendations with valid X URLs.
+    rows = BeautifulSoup("".join(scoped), "html.parser")
+    ranked = []
+    for link in rows.select("a[href]"):
+        label = clean(link.get_text(" ", strip=True))
+        match = re.match(r"^(\\d{1,2})(?=\\D)", label)
+        if not match:
             continue
-        name = clean_term(m.group(2))
-        name = re.split(r"\s*[·|]\s*(?:Politics|Football|Only on X|La Liga|NFL|Pop|Strategy games|Survival competition)\b", name, 1, flags=re.I)[0]
-        if name:
-            rows.append((rank, name))
-    rows.sort(key=lambda x: x[0])
-    return unique(name for _, name in rows)[:50]
+        rank = int(match.group(1))
+        query = parse_qs(urlparse(str(link.get("href") or "")).query)
+        term = clean_term(unquote((query.get("q") or [""])[0]).strip('"'))
+        if 1 <= rank <= 50 and term:
+            ranked.append((rank, term))
+    ranked.sort(key=lambda item: item[0])
+    if len(ranked) < 10 or [rank for rank, _ in ranked[:10]] != list(range(1, 11)):
+        return []
+    return unique(term for _, term in ranked)[:50]
 
 
 def page_update_hint(html):
