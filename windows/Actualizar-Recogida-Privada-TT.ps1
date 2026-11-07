@@ -64,20 +64,35 @@ function Assert-GeneratorsIdle {
  }
 }
 function Wait-ForGeneratorsIdle([int]$limitSeconds) {
+ # A single empty process query is NOT a safe installation window:
+ # the next image bridge can start between that query and File.Replace.
+ # Require a continuous 20-second idle interval; every new generation
+ # resets the timer. Never kill, suspend or disable any running task.
  $deadline=(Get-Date).AddSeconds($limitSeconds)
+ $quietSince=$null
  $lastNotice=[datetime]::MinValue
+ $quietSeconds=20
  while($true){
+  $now=Get-Date
   $busy=@(Get-BusyGenerators)
-  if(-not $busy.Count){return}
-  if((Get-Date) -ge $deadline){
-   $ids=($busy|ForEach-Object {$_.ProcessId}) -join ','
-   throw ('Generadores activos (PID '+$ids+'). Sin cambios ni procesos detenidos. Vuelve a ejecutar el instalador mas tarde.')
+  if($busy.Count){
+   $quietSince=$null
+  } else {
+   if($null -eq $quietSince){$quietSince=$now}
+   if(($now-$quietSince).TotalSeconds -ge $quietSeconds){return}
   }
-  if(((Get-Date)-$lastNotice).TotalSeconds -ge 30){
-   Write-Host 'Preparacion completa. Se espera a que termine la generacion actual; no se cierra ni detiene nada.'
-   $lastNotice=Get-Date
+  if($now -ge $deadline){
+   if($busy.Count){
+    $ids=($busy|ForEach-Object {$_.ProcessId}) -join ','
+    throw ('Generadores activos (PID '+$ids+'). Sin cambios ni procesos detenidos. Intenta cuando disminuya la cola.')
+   }
+   throw ('No ha habido '+$quietSeconds+' segundos consecutivos sin generadores. Sin cambios ni procesos detenidos.')
   }
-  Start-Sleep -Seconds 5
+  if(($now-$lastNotice).TotalSeconds -ge 30){
+   Write-Host ('Preparacion completa. Buscando '+$quietSeconds+' segundos continuos sin generacion; no se detiene nada.')
+   $lastNotice=$now
+  }
+  Start-Sleep -Seconds 2
  }
 }
 if(-not(Test-Path -LiteralPath $base -PathType Container)){throw 'No existe C:\TTiTTulares; sin cambios.'}
