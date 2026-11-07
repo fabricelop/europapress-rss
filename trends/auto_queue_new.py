@@ -494,6 +494,17 @@ def capture_is_safe(doc):
     method = str(doc.get("selection_method") or "")
     sources_used = list(doc.get("sources_used") or [])
     source_data = doc.get("sources") or {}
+    # A fetched HTML snapshot is not an observed X ranking. Production data
+    # must include a timestamped, genuinely fresh (<=45m) source before
+    # automatically creating or reopening editorial work. Empty synthetic
+    # sources remain accepted only by the legacy unit-test fixtures.
+    if source_data and not any(
+        row.get("ok") and row.get("freshness") == "fresh"
+        and row.get("age_minutes") is not None
+        and 0 <= float(row["age_minutes"]) <= 45
+        for row in source_data.values()
+    ):
+        return False
 
     if method in {"hold-last-good", "stale-fallback", "none"}:
         return False

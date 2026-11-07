@@ -174,20 +174,29 @@ if isinstance(recent, dict):
         captured_age = (datetime.now(timezone.utc) - captured.astimezone(timezone.utc)).total_seconds() / 60
     except Exception:
         pass
-    top_ok = len(top) == 10 and non_stale >= 3 and captured_age <= 20 and not noisy_top
+    source_rows = recent.get("sources") or {}
+    verified = [name for name, row in source_rows.items()
+                if row.get("ok") and row.get("freshness") == "fresh"
+                and row.get("age_minutes") is not None
+                and 0 <= float(row["age_minutes"]) <= 45]
+    transport_ok = len(top) == 10 and captured_age <= 20 and not noisy_top
+    top_ok = transport_ok and bool(verified) and bool(recent.get("live_verified"))
     modules["top10"] = {
         "ok": top_ok,
         "count": len(top),
         "non_stale_sources": non_stale,
+        "verified_fresh_sources": verified,
+        "live_verified": bool(recent.get("live_verified")),
         "captured_age_minutes": round(captured_age, 1),
         "noise_count": len(noisy_top),
     }
     if not top_ok:
-        if dispatch("ttendencias-refresh.yml"):
+        if not transport_ok and dispatch("ttendencias-refresh.yml"):
             repairs.append("relanzado refresco Top 10")
             modules["top10"]["repair_started"] = True
         else:
-            blocking.append(f"Top 10 no fiable o desactualizado: {len(top)} tendencias / {non_stale} fuentes no obsoletas / {captured_age:.1f} min")
+            blocking.append("Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos" if transport_ok else
+                            f"Top 10 no fiable o desactualizado: {len(top)} tendencias / {captured_age:.1f} min")
 
 # Procesos continuos.
 for key, wf, age in [
