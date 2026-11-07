@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T23:13:16+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-07T22:13:42.386500+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-a38fb8a6d2f4a141f9a0",
+      "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-07T22:13:42.386500+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "d438ccc039cc",
+        "revision": 0,
+        "name": "#laSextaXplica",
+        "rank": 4,
+        "explanation": "TT#4 #laSextaXplica es tendencia por la emisión de este sábado, que aborda los disturbios de Barcelona; Ignasi Guardans calificó de «inédito» el saqueo.\n#Barcelona #IgnasiGuardans #JoséYélamo",
+        "explanation_sha256": "2b9c3384e4056e1a1dc471fa2d5ac3ff02a9bfa0361c37cb07cc5a044a43a5ab",
+        "explained_at": "2026-10-24T22:48:55+02:00",
+        "verification_sources": [
+          "https://www.lasexta.com/programas/sexta-noche/guardans-violencia-calles-barcelona-saqueo-inedito-caldo-cultivo-francia-espana_202610246add0a2c1e66613d9f1c46ff.html",
+          "https://www.lasexta.com/programas/sexta-noche/"
+        ],
+        "fingerprint": "201d005c9598986dd02c5c3bb448e4fa6ecf177e05b953d6eb320c28346d9a5c"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-1edaf82430cdbd876969",
+      "revision": 0,
+      "name": "Revisar novedades: #MalasLenguasN",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-11-07T22:13:42.386500+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "9a049ef14213",
+        "revision": 0,
+        "name": "#MalasLenguasN",
+        "rank": 5,
+        "explanation": "TT#5 #MalasLenguasN es tendencia por la emisión en directo de Malas Lenguas Noche, que comenzó el sábado a las 22:00 en La 1 y sigue hasta las 02:00.\\n#RTVE #La1\\n🌶️ Cuatro horas de tertulia y el sábado acabó en domingo.",
+        "explanation_sha256": "59c0eec76bd20875a777745043cd4cb34c72bc4e6b7e862ef95eb7fd89e66d56",
+        "explained_at": "2026-11-01T00:49:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/play/guia-tve/"
+          },
+          {
+            "url": "https://www.mundodeportivo.com/guia-tv/programa/malas-lenguas-noche-la-1"
+          }
+        ],
+        "fingerprint": "a0660715ab12a7d1c000243aa612329e62e814233afb0b795f02f905eff5da70"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
