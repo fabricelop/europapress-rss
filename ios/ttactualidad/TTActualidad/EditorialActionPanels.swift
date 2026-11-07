@@ -96,6 +96,12 @@ struct EditorialActions: View {
                 }
                     .disabled(news?.status == "EN ELABORACIÓN" || trend?.status == "EN ELABORACIÓN")
             }
+            if let trend, !trend.inListas {
+                Text("La ficha del iPhone no considera esta tendencia dentro de Listas. Actualiza los datos antes de retirarla.")
+                    .font(.caption2)
+                    .foregroundStyle(TTTheme.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             quickButton("Aportar Pistas", "lightbulb") {
                 if github.authenticated { showHints = true } else { showSettings = true }
             }
