@@ -3,14 +3,14 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-0925-chat",
-  "previous_run_id": "tr-manual-20261107-0910-chat",
-  "command_id": "tr-manual-20261107-0925-chat",
+  "run_id": "tr-manual-20261107-0940-chat",
+  "previous_run_id": "tr-manual-20261107-0925-chat",
+  "command_id": "tr-manual-20261107-0940-chat",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-07T09:25:00+01:00",
-  "updated_at": "2026-11-07T09:25:00+01:00",
+  "phase": "verifying",
+  "started_at": "2026-11-07T09:40:00+01:00",
+  "updated_at": "2026-11-07T09:40:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 0,
@@ -45,18 +45,18 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "preparing",
-    "message": "Releyendo cola y barreras editoriales en main.",
-    "updated_at": "2026-11-07T09:25:00+01:00"
+    "phase": "verifying",
+    "message": "Barrera final: releyendo editorial-queue y comprobando preparing/update/rewrite_pending/reexplain en main.",
+    "updated_at": "2026-11-07T09:40:00+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-0910-chat",
+    "run_id": "tr-manual-20261107-0925-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T09:10:00+01:00",
-    "updated_at": "2026-11-07T09:11:13+01:00",
-    "finished_at": "2026-11-07T09:11:13+01:00",
+    "started_at": "2026-11-07T09:25:00+01:00",
+    "updated_at": "2026-11-07T09:40:00+01:00",
+    "finished_at": "2026-11-07T09:40:00+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -84,9 +84,9 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 0/0. Barrera final main: editorial-queue=0; sin preparing/update ni rewrite_pending detectados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Ejecución previa reconciliada al iniciar la nueva pasada: la cola de main ya estaba vacía y no había preparing/update ni rewrite_pending/reexplain detectables."
   },
-  "last_started_at": "2026-11-07T09:25:00+01:00",
+  "last_started_at": "2026-11-07T09:40:00+01:00",
   "last_completed_at": "2026-11-07T09:11:13+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -159,7 +159,8 @@
     "tr-1794032311095-manual",
     "tr-1794032624278-manual",
     "tr-manual-20261107-0755-chat",
-    "tr-manual-20261107-0910-chat"
+    "tr-manual-20261107-0910-chat",
+    "tr-manual-20261107-0925-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -233,7 +234,8 @@
     "tr-1794032311095-manual",
     "tr-1794032624278-manual",
     "tr-manual-20261107-0755-chat",
-    "tr-manual-20261107-0910-chat"
+    "tr-manual-20261107-0910-chat",
+    "tr-manual-20261107-0925-chat"
   ],
-  "message": "Pasada manual iniciada; releyendo main antes del cierre."
+  "message": "Pasada manual activa; verificando barrera final en main."
 }
