@@ -7,30 +7,36 @@
   "previous_run_id": "tr-1794089949610-manual",
   "command_id": "tr-1794090277346-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-11-07T23:25:00+01:00",
-  "updated_at": "2026-11-07T23:28:54+01:00",
-  "finished_at": "2026-11-07T23:28:54+01:00",
+  "updated_at": "2026-11-07T23:31:00+01:00",
+  "finished_at": null,
   "current": 1,
-  "total": 1,
+  "total": 3,
   "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "title": "TTendencias editorial",
+  "queue_complete": false,
   "processed_ids": [
     "ce2d7210b101"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-c43f1850076da4ea5465",
+    "red-review-b3bbff7c56959d09dcce"
+  ],
+  "remaining_active_ids": [
+    "red-review-c43f1850076da4ea5465",
+    "red-review-b3bbff7c56959d09dcce"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
-    "observed": 1,
+    "observed": 3,
     "closed": 1,
     "explained": 1,
     "problematic": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -126,6 +132,11 @@
       "at": "2026-11-07T23:28:54+01:00",
       "phase": "closing",
       "message": "Gayà r1 verificado como explained en requests.json y telegram-manual-explained.json con texto y explained_at idénticos. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T23:31:00+01:00",
+      "phase": "preparing",
+      "message": "Barrera final detectó 2 review_red nuevos (Cracovia y #BrazilGP) llegados durante el cierre. Se reabre la misma pasada y se procesan JIT, sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T23:28:16+01:00",
