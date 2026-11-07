@@ -1,0 +1,43 @@
+name: TTActualidad - verificar conexión Buffer sin publicar
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pilot/ttactualidad_buffer_publish.py'
+      - '.github/workflows/ttactualidad-buffer-publish.yml'
+      - '.github/workflows/ttactualidad-buffer-connection-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-buffer-channels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar clave y canales X solo lectura
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          import sys
+          from pilot.ttactualidad_buffer_publish import target_channel
+          key = os.getenv("BUFFER_API_KEY", "").strip()
+          if not key:
+              print("BUFFER_CONFIG_FALTA_CLAVE: guarda BUFFER_API_KEY en Secrets de este repositorio")
+              sys.exit(1)
+          for account in ("ttittulares", "ttendenciasesp"):
+              try:
+                  channel = target_channel(key, account)
+                  assert channel
+              except Exception as exc:
+                  # Do not expose account tokens, IDs or GraphQL private data.
+                  print("BUFFER_CANAL_NO_VERIFICADO: @" + account +
+                        " · " + str(exc)[:180])
+                  sys.exit(1)
+              print("BUFFER_CANAL_X_VERIFICADO: @" + account)
+          print("BUFFER_LECTURA_OK: ninguna publicación creada")
+          PY
