@@ -10,16 +10,17 @@
   "status": "PROCESSING",
   "phase": "persisting",
   "started_at": "2026-11-07T16:22:00+01:00",
-  "updated_at": "2026-11-07T16:31:00+01:00",
+  "updated_at": "2026-11-07T16:33:00+01:00",
   "finished_at": null,
-  "current": 2,
+  "current": 3,
   "total": 5,
-  "trend_id": "5804c9053892",
-  "title": "Pablo García",
+  "trend_id": "37c0ac87f1c9",
+  "title": "Dotor",
   "queue_complete": false,
   "processed_ids": [
     "80c80d664d0d",
-    "46c76bc85499"
+    "46c76bc85499",
+    "5804c9053892"
   ],
   "converged_ids": [],
   "remaining_ids": [
@@ -30,7 +31,6 @@
     "0bf4872fb836"
   ],
   "remaining_active_ids": [
-    "5804c9053892",
     "37c0ac87f1c9",
     "0bf4872fb836"
   ],
@@ -38,15 +38,15 @@
   "summary": {
     "attempted": 5,
     "observed": 5,
-    "closed": 2,
-    "explained": 2,
+    "closed": 3,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -808,7 +808,7 @@
     "tr-1794063319124-manual",
     "tr-1794063455844-manual"
   ],
-  "message": "2/5 verificados. Persistiendo 3/5: Pablo García. ImageGen=0.",
+  "message": "3/5 verificados. Persistiendo 4/5: Dotor. ImageGen=0.",
   "outcomes": [
     {
       "id": "80c80d664d0d",
@@ -822,6 +822,14 @@
       "id": "46c76bc85499",
       "revision": 0,
       "name": "Zabiri",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox"
+    },
+    {
+      "id": "5804c9053892",
+      "revision": 0,
+      "name": "Pablo García",
       "outcome": "explained",
       "applied": true,
       "via": "chat_outbox"
