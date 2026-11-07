@@ -380,6 +380,13 @@ def sane_trend_list(trends):
 
 def fetch_source(name):
     fetched_at = datetime.now(MADRID)
+    # Emergency quarantine: Snaplytics Spain endpoint returned global/Thai
+    # trends and caused actual foreign episodes in the editorial queue.
+    if name == "snaplytics":
+        return {"ok": False, "trends": [], "update_hint": None,
+                "error": "Cuarentena: contenido no perteneciente al Top 30 de España",
+                "age_minutes": None, "freshness": "invalid",
+                "fetched_at": fetched_at.isoformat(timespec="seconds")}
     try:
         parsers = {
             "trends24": parse_trends24,
@@ -505,9 +512,16 @@ def reconcile_source_freshness(source_data, previous_doc, now):
             row["corroborating_sources"] = peers
 
 
+def obviously_foreign_snapshot(names):
+    # Two or more Thai-script names in a purported Spanish top 10 are an
+    # unambiguous signal of the regional misconfiguration seen on Nov 7.
+    return sum(bool(re.search(r"[\u0E00-\u0E7F]", str(name))) for name in names[:10]) >= 2
+
+
 def previous_top10():
     try:
-        return json.loads(RECENT.read_text(encoding="utf-8")).get("top10", [])
+        prior = json.loads(RECENT.read_text(encoding="utf-8")).get("top10", [])
+        return [] if obviously_foreign_snapshot(prior) else prior
     except Exception:
         return []
 
@@ -646,6 +660,14 @@ def choose_top10(source_data):
     previous = previous_top10()
     if len(previous) >= 10:
         return previous[:10], [], "previous", "hold-last-good"
+
+    # There is no valid prior Spanish snapshot: use a provisional, undated
+    # source located explicitly in Spain rather than repeating the corrupt
+    # foreign top 10. Freshness still remains unverified; auto-queue is closed.
+    for source_name in ("getdaytrends", "superx"):
+        candidate = unknown.get(source_name)
+        if candidate and len(candidate.get("trends") or []) >= 10:
+            return candidate["trends"][:10], [source_name], source_name, "unverified-spain-anchor"
 
     # Arranque en frío: si no existe snapshot previo, usamos la fuente obsoleta
     # menos antigua solo como visualización. auto_queue_new.py impide encolarla.
