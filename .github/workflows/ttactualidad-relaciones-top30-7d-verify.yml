@@ -73,7 +73,7 @@ jobs:
             -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
             -derivedDataPath .build CODE_SIGNING_ALLOWED=NO build \
             2>&1 | tee /tmp/tt-top30-7d-build.log
-      - name: Package unsigned IPA build81
+      - name: Package unsigned IPA build82
         working-directory: ios/ttactualidad
         shell: bash
         run: |
@@ -82,20 +82,20 @@ jobs:
           test -d "$APP"
           test -d "$APP/PlugIns/TTActualidadLive.appex"
           test -s "$APP/Assets.car"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx '81'
-          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/PlugIns/TTActualidadLive.appex/Info.plist" | grep -Fx '81'
-          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx '0.4.69'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx '82'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/PlugIns/TTActualidadLive.appex/Info.plist" | grep -Fx '82'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx '0.4.70'
           /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP/Info.plist" | grep -Fx 'com.fabricelop.ttactualidad.native'
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr TTActualidad-0.4.69-build81-Relaciones-Top30-7d-unsigned.ipa Payload
-          unzip -l TTActualidad-0.4.69-build81-Relaciones-Top30-7d-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
-          shasum -a 256 TTActualidad-0.4.69-build81-Relaciones-Top30-7d-unsigned.ipa
+          zip -qr TTActualidad-0.4.70-build82-Relaciones-Top30-7d-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.70-build82-Relaciones-Top30-7d-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.70-build82-Relaciones-Top30-7d-unsigned.ipa
       - name: Upload IPA for iPhone testing
         uses: actions/upload-artifact@v4
         with:
-          name: TTActualidad-0.4.69-build81-Relaciones-Top30-7d-IPA
-          path: ios/ttactualidad/dist/TTActualidad-0.4.69-build81-Relaciones-Top30-7d-unsigned.ipa
+          name: TTActualidad-0.4.70-build82-Relaciones-Top30-7d-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.70-build82-Relaciones-Top30-7d-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
