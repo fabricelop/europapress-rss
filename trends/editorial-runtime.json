@@ -7,26 +7,23 @@
   "previous_run_id": "tr-manual-20261107-1240-chat",
   "command_id": "tr-1794052645605-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-07T12:58:30+01:00",
-  "updated_at": "2026-11-07T13:02:00+01:00",
+  "updated_at": "2026-11-07T13:00:43+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
   "trend_id": "0c687fa6e606",
   "title": "Koldo",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "0c687fa6e606",
+    "b99fe04c5ad2"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "b99fe04c5ad2",
-    "0c687fa6e606"
-  ],
-  "remaining_active_ids": [
-    "b99fe04c5ad2",
-    "0c687fa6e606"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -249,8 +246,8 @@
     "title": null,
     "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones activas detectadas. Sin ImageGen ni publicaciones."
   },
-  "last_started_at": "2026-11-07T12:40:30+01:00",
-  "last_completed_at": "2026-11-07T12:42:00+01:00",
+  "last_started_at": "2026-11-07T13:00:43+01:00",
+  "last_completed_at": "2026-11-07T13:00:43+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
