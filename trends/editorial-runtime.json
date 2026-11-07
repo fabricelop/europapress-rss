@@ -8,9 +8,9 @@
   "command_id": "tr-autoguard-1794012665",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "verifying",
   "started_at": "2026-11-07T01:51:00+01:00",
-  "updated_at": "2026-11-07T01:52:45+01:00",
+  "updated_at": "2026-11-07T01:54:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -26,14 +26,14 @@
     "23f8fdf099d9"
   ],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial en curso: 1 trabajo preparing/update observado en main.",
+  "summary": "Verificación completa: 23f8fdf099d9/r0 coincide en requests y telegram-manual-explained; editorial-queue=0; sin rewrite_pending/reexplain activo.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "persisting",
-    "message": "Persistiendo el resultado de 23f8fdf099d9/r0 mediante el outbox editorial del PR #7.",
-    "updated_at": "2026-11-07T01:52:45+01:00"
+    "phase": "verifying",
+    "message": "Verificación completa: 23f8fdf099d9/r0 coincide en requests y telegram-manual-explained; editorial-queue=0; sin rewrite_pending/reexplain activo.",
+    "updated_at": "2026-11-07T01:54:00+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -203,5 +203,5 @@
     "tr-1794010714259-manual",
     "tr-1794010915548-manual"
   ],
-  "message": "RUNNING 0/1 · Rosario Mohedano · Persistiendo el resultado de 23f8fdf099d9/r0 mediante el outbox editorial del PR #7."
+  "message": "Verificación completa: 23f8fdf099d9/r0 coincide en requests y telegram-manual-explained; editorial-queue=0; sin rewrite_pending/reexplain activo."
 }
