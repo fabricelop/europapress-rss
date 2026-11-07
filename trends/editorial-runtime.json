@@ -7,45 +7,48 @@
   "previous_run_id": "tr-1794074588672-manual",
   "command_id": "tr-manual-20261107-1925-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T19:25:30+01:00",
-  "updated_at": "2026-11-07T19:27:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "9000db3c3553",
-  "title": "bezz",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "updated_at": "2026-11-07T19:31:30+01:00",
+  "finished_at": "2026-11-07T19:31:30+01:00",
+  "current": 4,
+  "total": 4,
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
+  "processed_ids": [
     "9000db3c3553",
-    "1edd6ef875e4"
+    "1edd6ef875e4",
+    "598cf9e27b69",
+    "35c83a0a6325"
   ],
-  "remaining_active_ids": [
-    "9000db3c3553",
-    "1edd6ef875e4"
+  "converged_ids": [
+    "1edd6ef875e4",
+    "598cf9e27b69",
+    "35c83a0a6325"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 2,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3
   },
   "incident_count": 0,
   "incidents": [],
@@ -774,108 +777,79 @@
       "trend_id": "9000db3c3553",
       "title": "bezz",
       "message": "bezz 9000db3c3553 r0 revalidado JIT en puesto 4. Reuters, MotoGP, The Race y AS confirman el toque Bezzecchi-Márquez en la vuelta 4 de la sprint de Qatar, caída de Bezzecchi y fin de sus opciones al título. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T19:31:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending, reexplain, anticipate ni review_red activos. Los cuatro ID/revisión figuran explained en requests.json y telegram-manual-explained.json; commits 8b07d553… y 4f5c1488…. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T19:31:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1925-chat cerrada 4/4: bezz, Espanyol, Marc y Calero explicados y aplicados; tres por convergencia JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T19:10:00+01:00",
-  "last_completed_at": "2026-11-07T19:18:00+01:00",
+  "last_started_at": "2026-11-07T19:25:30+01:00",
+  "last_completed_at": "2026-11-07T19:31:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794074588672-manual",
+    "run_id": "tr-manual-20261107-1925-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T19:03:00+01:00",
-    "finished_at": "2026-11-07T19:14:00+01:00",
+    "started_at": "2026-11-07T19:25:30+01:00",
+    "finished_at": "2026-11-07T19:31:30+01:00",
     "attempted": 2,
-    "observed": 10,
-    "closed": 2,
-    "explained": 8,
-    "updates": 1,
-    "distinct_updates": 1,
-    "stale_reviews": 1,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
+    "updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
+    "concurrent_convergence": 3,
     "outcomes": [
       {
-        "id": "778a393ca8fa",
+        "id": "9000db3c3553",
         "revision": 0,
-        "name": "#FueraDeControl7nov",
+        "name": "bezz",
         "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "98f145d5e880",
-        "revision": 0,
-        "name": "#WWECrownJewel",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "61cd12acff26",
-        "revision": 0,
-        "name": "Cadiz",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "901ade4dab33",
-        "revision": 0,
-        "name": "Bagnaia",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4e881da58940",
-        "revision": 0,
-        "name": "Pecco",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "1a2d3bcbe5f7",
-        "revision": 0,
-        "name": "Jorge Martín",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "5c89ebc8b798",
-        "revision": 0,
-        "name": "Leo Román",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "8725b05c0cde",
-        "revision": 0,
-        "name": "bezzecchi",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "red-review-de8f137543fff08b4061",
-        "revision": 0,
-        "name": "Revisar novedades: Espanyol",
-        "outcome": "stale",
-        "applied": true
-      },
-      {
-        "id": "red-review-19b1799dce7a34fe0b8e",
-        "revision": 0,
-        "name": "Revisar novedades: eder sarabia",
-        "outcome": "distinct_update",
         "applied": true,
-        "created_id": "trend-update-5fa0e270f9fdb5a47d32"
+        "via": "editorial_chat_outbox",
+        "apply_commit": "8b07d55373eeac33cdb8b6e9a96d652223486f87"
+      },
+      {
+        "id": "1edd6ef875e4",
+        "revision": 0,
+        "name": "Espanyol",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "4f5c14884746710ead2e5b81254049717b3ecdff"
+      },
+      {
+        "id": "598cf9e27b69",
+        "revision": 0,
+        "name": "Marc",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "4f5c14884746710ead2e5b81254049717b3ecdff"
+      },
+      {
+        "id": "35c83a0a6325",
+        "revision": 0,
+        "name": "Calero",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "4f5c14884746710ead2e5b81254049717b3ecdff"
       }
     ]
   },
-  "current_item": {
-    "id": "9000db3c3553",
-    "revision": 0,
-    "name": "bezz",
-    "phase": "investigating"
-  },
+  "current_item": null,
   "progress": [
     {
       "at": "2026-11-07T19:25:30+01:00",
@@ -890,6 +864,16 @@
       "trend_id": "9000db3c3553",
       "title": "bezz",
       "message": "bezz 9000db3c3553 r0 revalidado JIT en puesto 4. Reuters, MotoGP, The Race y AS confirman el toque Bezzecchi-Márquez en la vuelta 4 de la sprint de Qatar, caída de Bezzecchi y fin de sus opciones al título. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T19:31:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending, reexplain, anticipate ni review_red activos. Los cuatro ID/revisión figuran explained en requests.json y telegram-manual-explained.json; commits 8b07d553… y 4f5c1488…. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T19:31:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1925-chat cerrada 4/4: bezz, Espanyol, Marc y Calero explicados y aplicados; tres por convergencia JIT. Sin ImageGen ni publicaciones."
     }
   ],
   "imagegen_calls": 0,
