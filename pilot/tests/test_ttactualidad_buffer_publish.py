@@ -173,7 +173,7 @@ class DirectBufferPublisherTests(unittest.TestCase):
         check.assert_called_once_with(approved, "b"*64, "ttittulares", "news123456", 1)
 
     def test_approved_espanyol_redirect_to_canonical_site_is_verified(self):
-        png = b"\\x89PNG\\r\\n\\x1a\\n" + b"test-exact-original" * 100
+        png = b"\x89PNG\r\n\x1a\n" + b"test-exact-original" * 100
         sha = hashlib.sha256(png).hexdigest()
         name = "1edd6ef875e4-r0-" + sha[:12] + ".png"
         source = ("https://ttactualidad-tendencias.rainyraven22.chatgpt.site"
@@ -205,7 +205,7 @@ class DirectBufferPublisherTests(unittest.TestCase):
                         publisher.check_image(
                             source, sha, "ttendencias", "1edd6ef875e4", 0)
         with mock.patch.object(publisher, "urlopen",
-                               return_value=Response(canonical)), \\
+                               return_value=Response(canonical)), \
              mock.patch.object(publisher.hashlib, "sha256",
                                return_value=mock.Mock(hexdigest=lambda: "0"*64)):
             with self.assertRaisesRegex(ValueError, "SHA-256"):
@@ -215,10 +215,10 @@ class DirectBufferPublisherTests(unittest.TestCase):
         approved = ("https://ttactualidad-tendencias.rainyraven22.chatgpt.site"
                     "/images/ttittulares/news123456-r1-broken.png")
         with mock.patch.object(publisher, "approved_catalog_candidates",
-                               return_value=[{"image_url": approved, "sha256": "b"*64}]), \\
+                               return_value=[{"image_url": approved, "sha256": "b"*64}]), \
              mock.patch.object(publisher, "check_image",
-                               side_effect=ValueError("Imagen temporalmente inaccesible")), \\
-             mock.patch.object(publisher, "target_channel") as channel, \\
+                               side_effect=ValueError("Imagen temporalmente inaccesible")), \
+             mock.patch.object(publisher, "target_channel") as channel, \
              mock.patch.object(publisher, "graphql") as graphql:
             ledger = {"version": 1, "items": []}
             publisher.publish(ledger, self.payload(), "dummy-key")
