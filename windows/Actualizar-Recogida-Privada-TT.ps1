@@ -93,7 +93,15 @@ foreach($name in $files.Keys){
  $local=Join-Path $base $name
  if(-not(Test-Path -LiteralPath $local)){throw ('Falta '+$name+'; sin cambios.')}
  $current=(Get-FileHash -LiteralPath $local -Algorithm SHA256).Hash.ToLowerInvariant()
- if($allowed[$name] -notcontains $current){throw ('Version local no reconocida: '+$name+' ('+$current+'). No se sobrescribe.')}
+ if($allowed[$name] -notcontains $current){
+  # The first preflight used to reject LF bytes although the target/version
+  # pins represent identical content in the CI CRLF checkout. Keep the
+  # allowlist exact: normalize ONLY line endings, then fail closed otherwise.
+  $canonical=Get-CanonicalSourceHash $local
+  if($allowed[$name] -notcontains $canonical){
+   throw ('Version local no reconocida: '+$name+' (raw='+$current+', canonical='+$canonical+'). No se sobrescribe.')
+  }
+ }
 }
 foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
  $text=[IO.File]::ReadAllText((Join-Path $base $name))
