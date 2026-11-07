@@ -3,28 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1940-chat",
-  "previous_run_id": "tr-1794075893768-manual",
-  "command_id": "tr-manual-20261107-1940-chat",
+  "run_id": "tr-manual-20261107-2010-chat",
+  "previous_run_id": "tr-manual-20261107-1940-chat",
+  "command_id": "tr-manual-20261107-2010-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T19:40:00+01:00",
-  "updated_at": "2026-11-07T19:41:00+01:00",
-  "finished_at": "2026-11-07T19:41:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T20:10:00+01:00",
+  "updated_at": "2026-11-07T20:10:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "TTendencias editorial",
-  "queue_complete": true,
+  "total": 5,
+  "trend_id": "a08abcc188cf",
+  "title": "El Sadar",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "a08abcc188cf",
+    "23252ca2849e",
+    "607c7369e0e3",
+    "be1ae41b540c",
+    "438f36286fc7"
+  ],
+  "remaining_active_ids": [
+    "a08abcc188cf",
+    "23252ca2849e",
+    "607c7369e0e3",
+    "be1ae41b540c",
+    "438f36286fc7"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 5,
+    "observed": 5,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +45,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 5,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -808,6 +820,13 @@
       "at": "2026-11-07T19:41:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-manual-20261107-1940-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T20:10:00+01:00",
+      "phase": "preparing",
+      "trend_id": "a08abcc188cf",
+      "title": "El Sadar",
+      "message": "Pasada tr-manual-20261107-2010-chat iniciada; barrera fresca de main detecta 5 trabajos preparing/update: El Sadar, Alcorcon, Sancet, Interlagos, #BrazilGP. Se procesan de antiguo a reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T19:25:30+01:00",
@@ -865,45 +884,19 @@
       }
     ]
   },
-  "current_item": null,
+  "current_item": {
+    "id": "a08abcc188cf",
+    "name": "El Sadar",
+    "revision": 0,
+    "status": "preparing"
+  },
   "progress": [
     {
-      "at": "2026-11-07T19:25:30+01:00",
+      "at": "2026-11-07T20:10:00+01:00",
       "phase": "preparing",
-      "trend_id": "9000db3c3553",
-      "title": "bezz",
-      "message": "Pasada tr-manual-20261107-1925-chat iniciada; main contiene 2 reelaboraciones preparing: bezz r0 y Espanyol r0. Se procesan de antiguo a reciente con validación JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T19:27:00+01:00",
-      "phase": "investigating",
-      "trend_id": "9000db3c3553",
-      "title": "bezz",
-      "message": "bezz 9000db3c3553 r0 revalidado JIT en puesto 4. Reuters, MotoGP, The Race y AS confirman el toque Bezzecchi-Márquez en la vuelta 4 de la sprint de Qatar, caída de Bezzecchi y fin de sus opciones al título. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T19:31:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending, reexplain, anticipate ni review_red activos. Los cuatro ID/revisión figuran explained en requests.json y telegram-manual-explained.json; commits 8b07d553… y 4f5c1488…. ImageGen=0."
-    },
-    {
-      "at": "2026-11-07T19:31:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-manual-20261107-1925-chat cerrada 4/4: bezz, Espanyol, Marc y Calero explicados y aplicados; tres por convergencia JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T19:27:00+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": "TTendencias editorial",
-      "message": "4 revisiones revalidadas y materializadas; 1 convergencia concurrente."
-    },
-    {
-      "at": "2026-11-07T19:29:00+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": "TTendencias editorial",
-      "message": "Cierre 4/4 verificado; cola y reexplicaciones activas a 0."
+      "trend_id": "a08abcc188cf",
+      "title": "El Sadar",
+      "message": "Pasada tr-manual-20261107-2010-chat iniciada; barrera fresca de main detecta 5 trabajos preparing/update: El Sadar, Alcorcon, Sancet, Interlagos, #BrazilGP. Se procesan de antiguo a reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
   "imagegen_calls": 0,
