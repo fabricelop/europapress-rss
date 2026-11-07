@@ -3,36 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794088452492-manual",
-  "previous_run_id": "tr-manual-20261107-2240-chat",
-  "command_id": "tr-1794088452492-manual",
+  "run_id": "tr-1794088629472-manual",
+  "previous_run_id": "tr-1794088452492-manual",
+  "command_id": "tr-1794088629472-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T22:54:00+01:00",
-  "updated_at": "2026-11-07T22:57:30.687324+01:00",
-  "finished_at": "2026-11-07T22:57:30.687324+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T22:58:30+01:00",
+  "updated_at": "2026-11-07T22:58:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-960f59f54b3e6dbcaa0d",
-    "red-review-7015a5e7d747714c6ecb"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -44,55 +41,18 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-960f59f54b3e6dbcaa0d",
-      "revision": 0,
-      "name": "Revisar novedades: Vargas",
-      "outcome": "continuity",
-      "applied": true,
-      "source_id": "7c9e08459659"
-    },
-    {
-      "id": "red-review-7015a5e7d747714c6ecb",
-      "revision": 0,
-      "name": "Revisar novedades: Santiago Peña",
-      "outcome": "continuity",
-      "applied": true,
-      "source_id": "c4f3771c12ae"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-11-07T22:54:00+01:00",
+      "at": "2026-11-07T22:58:30+01:00",
       "phase": "preparing",
-      "message": "Pasada tr-1794088452492-manual iniciada desde chat; cola autoritativa main=2 (Vargas y Santiago Peña). Sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T22:57:01.195956+01:00",
-      "phase": "persisting",
-      "message": "Vargas aplicado como continuidad sobre ID 7c9e08459659; mismo ID/revisión/explained_at/estado, sin nueva ficha ni imagen."
-    },
-    {
-      "at": "2026-11-07T22:57:30.687324+01:00",
-      "phase": "persisting",
-      "message": "Santiago Peña aplicado como continuidad sobre ID c4f3771c12ae; mismo ID/revisión/explained_at/estado, sin nueva ficha ni imagen."
-    },
-    {
-      "at": "2026-11-07T22:57:30.687324+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0; requests sin status preparing/update ni rewrite_pending; mobile-decisions sin rewrite_pending."
-    },
-    {
-      "at": "2026-11-07T22:57:30.687324+01:00",
-      "phase": "closing",
-      "message": "Pasada 2/2 completada. Dos revisiones de continuidad aplicadas; ImageGen=0, image-outbox=0, publicaciones=0."
+      "message": "Pasada tr-1794088629472-manual iniciada desde chat; primera lectura de main=0 y sin reexplicaciones activas. Sin ImageGen."
     }
   ],
-  "last_started_at": "2026-11-07T22:54:00+01:00",
+  "last_started_at": "2026-11-07T22:58:30+01:00",
   "last_completed_at": "2026-11-07T22:57:30.687324+01:00",
   "api_failover_enabled": false
 }
