@@ -137,6 +137,23 @@ test('current index excludes closed news and old episodes while retaining exact 
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
 });
 
+test('installer waits for uninterrupted generator quiet before replacement',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const script=fs.readFileSync(path.join(__dirname,'../Actualizar-Recogida-Privada-TT.ps1'),'utf8');
+ const start=script.indexOf('function Wait-ForGeneratorsIdle(');
+ const end=script.indexOf('if(-not(Test-Path -LiteralPath $base',start);
+ const fn=script.slice(start,end);
+ assert.ok(start>0 && end>start);
+ assert.match(fn,/\$quietSeconds=20/);
+ assert.match(fn,/\$quietSince=\$null/);
+ assert.match(fn,/if\(\$busy\.Count\)\{\s*\$quietSince=\$null/);
+ assert.match(fn,/if\(\(\$now-\$quietSince\)\.TotalSeconds -ge \$quietSeconds\)\{return\}/);
+ assert.match(fn,/Start-Sleep -Seconds 2/);
+ assert.doesNotMatch(fn,/if\(-not \$busy\.Count\)\{return\}/);
+ assert.match(script,/Wait-ForGeneratorsIdle \$MaxWaitSeconds\s+Assert-GeneratorsIdle/);
+ assert.match(script,/\[IO.File\]::Replace\(\$stage,\$live/);
+ assert.match(script,/foreach\(\$name in \$written\)/);
+});
 test('installer SHA pins accept only checked-in UTF-8 content with equivalent line endings',()=>{
  const crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
  const script=fs.readFileSync(path.join(__dirname,'..','Actualizar-Recogida-Privada-TT.ps1'),'utf8');
