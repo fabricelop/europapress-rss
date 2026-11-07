@@ -7,45 +7,45 @@
   "previous_run_id": "tr-1794052645605-manual",
   "command_id": "tr-1794052874051-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T13:07:30+01:00",
-  "updated_at": "2026-11-07T13:07:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T13:09:30+01:00",
+  "finished_at": "2026-11-07T13:09:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-997e4a88b31e86eeebcd",
-  "title": "Revisar novedades: Javier Ruiz",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-997e4a88b31e86eeebcd",
     "red-review-13bb70614ff422ef1ed0"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-997e4a88b31e86eeebcd",
     "red-review-13bb70614ff422ef1ed0"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -233,51 +233,79 @@
       "trend_id": "red-review-997e4a88b31e86eeebcd",
       "title": "Revisar novedades: Javier Ruiz",
       "message": "Pasada tr-1794052874051-manual toma la barrera vigente de 2 review_red: Javier Ruiz y Paraguay. Javier Ruiz revalidado JIT; investigación actual contrastada. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:09:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Javier Ruiz aplicado como continuidad y Paraguay como unchanged. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T13:09:30+01:00",
+      "phase": "closing",
+      "message": "tr-1794052645605-manual queda satisfecho por convergencia con tr-1794052874051-manual: 2 reelaboraciones manuales + 2 review_red resueltos, barrera final 0. Sin ImageGen ni publicaciones."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-997e4a88b31e86eeebcd",
+      "revision": 0,
+      "name": "Revisar novedades: Javier Ruiz",
+      "outcome": "continuity_update",
+      "applied": true
+    },
+    {
+      "id": "red-review-13bb70614ff422ef1ed0",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "unchanged",
+      "applied": true
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794052645605-manual",
-    "command_id": "tr-1794052645605-manual",
+    "run_id": "tr-1794052874051-manual",
+    "command_id": "tr-1794052874051-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T12:58:30+01:00",
-    "updated_at": "2026-11-07T13:04:30+01:00",
-    "finished_at": "2026-11-07T13:04:30+01:00",
+    "started_at": "2026-11-07T13:07:30+01:00",
+    "updated_at": "2026-11-07T13:09:30+01:00",
+    "finished_at": "2026-11-07T13:09:30+01:00",
     "current": 2,
     "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "b99fe04c5ad2",
-      "0c687fa6e606"
+      "red-review-997e4a88b31e86eeebcd",
+      "red-review-13bb70614ff422ef1ed0"
     ],
-    "converged_ids": [],
+    "converged_ids": [
+      "red-review-997e4a88b31e86eeebcd",
+      "red-review-13bb70614ff422ef1ed0"
+    ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "b99fe04c5ad2",
+        "id": "red-review-997e4a88b31e86eeebcd",
         "revision": 0,
-        "name": "La UCO",
-        "outcome": "explained",
+        "name": "Revisar novedades: Javier Ruiz",
+        "outcome": "continuity_update",
         "applied": true
       },
       {
-        "id": "0c687fa6e606",
+        "id": "red-review-13bb70614ff422ef1ed0",
         "revision": 0,
-        "name": "Koldo",
-        "outcome": "explained",
+        "name": "Revisar novedades: Paraguay",
+        "outcome": "unchanged",
         "applied": true
       }
     ],
     "attempted": 2,
     "observed": 2,
     "closed": 2,
-    "explained": 2,
+    "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -285,14 +313,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 2,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 2/2: La UCO y Koldo explicadas y verificadas en main; cola y reexplicaciones activas en 0. Sin ImageGen ni publicaciones."
+    "message": "Pasada sucesora cerrada 2/2; tr-1794052645605-manual satisfecho por convergencia. Barrera final main 0, sin reexplicaciones activas. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T12:58:30+01:00",
-  "last_completed_at": "2026-11-07T13:04:30+01:00",
+  "last_started_at": "2026-11-07T13:07:30+01:00",
+  "last_completed_at": "2026-11-07T13:09:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -384,7 +412,8 @@
     "tr-manual-20261107-1210-chat",
     "tr-manual-20261107-1225-chat",
     "tr-manual-20261107-1240-chat",
-    "tr-1794052645605-manual"
+    "tr-1794052645605-manual",
+    "tr-1794052874051-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -478,13 +507,29 @@
     "tr-manual-20261107-1210-chat",
     "tr-manual-20261107-1225-chat",
     "tr-manual-20261107-1240-chat",
-    "tr-1794052645605-manual"
+    "tr-1794052645605-manual",
+    "tr-1794052874051-manual"
   ],
-  "message": "Pasada tr-1794052874051-manual en ejecución: 0/2, procesando Javier Ruiz.",
-  "outcomes": [],
+  "message": "Pasada sucesora cerrada 2/2; tr-1794052645605-manual satisfecho por convergencia. Barrera final main 0, sin reexplicaciones activas. ImageGen=0; publicaciones=0.",
+  "outcomes": [
+    {
+      "id": "red-review-997e4a88b31e86eeebcd",
+      "revision": 0,
+      "name": "Revisar novedades: Javier Ruiz",
+      "outcome": "continuity_update",
+      "applied": true
+    },
+    {
+      "id": "red-review-13bb70614ff422ef1ed0",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "unchanged",
+      "applied": true
+    }
+  ],
   "recent_runs": [
-    "tr-manual-20261107-1225-chat",
     "tr-manual-20261107-1240-chat",
-    "tr-1794052645605-manual"
+    "tr-1794052645605-manual",
+    "tr-1794052874051-manual"
   ]
 }
