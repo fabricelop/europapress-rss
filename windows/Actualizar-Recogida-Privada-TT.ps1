@@ -38,6 +38,20 @@ $allowed=@{
 # Generators must finish first: do not interrupt their CDP sessions.
 # The receiver is a one-shot Node process: its already-loaded modules continue
 # in memory while an atomic on-disk replacement prepares the NEXT cycle.
+# CI checked out CRLF scripts, while raw.githubusercontent.com serves LF
+# content. Validate the SAME UTF-8 source in canonical CRLF representation.
+# This preserves SHA-256 pinning; it never accepts different JS statements.
+function Get-CanonicalSourceHash([string]$file) {
+ $decoder=[System.Text.UTF8Encoding]::new($false,$true)
+ $txt=[IO.File]::ReadAllText($file,$decoder)
+ if($txt.Replace("`r`n",'').Contains("`r")){throw ('Final de linea no soportado: '+$file)}
+ $canonical=$txt.Replace("`r`n","`n").Replace("`n","`r`n")
+ $sha=[Security.Cryptography.SHA256]::Create()
+ try {
+  $bytes=[System.Text.Encoding]::UTF8.GetBytes($canonical)
+  return [BitConverter]::ToString($sha.ComputeHash($bytes)).Replace('-','').ToLowerInvariant()
+ }finally{$sha.Dispose()}
+}
 function Get-BusyGenerators {
  @(Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
   Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js'})
@@ -96,7 +110,7 @@ try{
  foreach($name in $files.Keys){
   $destination=Join-Path $temp $name
   Invoke-WebRequest -UseBasicParsing -Uri ('https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$pin+'/windows/'+$name) -OutFile $destination -TimeoutSec 60
-  if((Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]){throw ('SHA invalido: '+$name)}
+  if((Get-CanonicalSourceHash $destination) -ne $files[$name]){throw ('SHA invalido tras normalizar CRLF: '+$name)}
   & $node --check $destination
   if($LASTEXITCODE -ne 0){throw ('Sintaxis JS invalida: '+$name)}
  }
@@ -117,7 +131,7 @@ try{
   $stage=Join-Path $base ('.'+$name+'.stage-'+[guid]::NewGuid().ToString('N'))
   Copy-Item -LiteralPath (Join-Path $temp $name) -Destination $stage -Force
   $stagedPaths+= $stage
-  if((Get-FileHash -LiteralPath $stage -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]) {
+  if((Get-CanonicalSourceHash $stage) -ne $files[$name]) {
    throw ('Archivo preparado invalido: '+$name)
   }
  }
@@ -127,14 +141,15 @@ try{
   $stage=@($stagedPaths | Where-Object { [IO.Path]::GetFileName($_) -like ('.'+$name+'.stage-*') })[0]
   if(-not $stage){ throw ('Falta archivo temporal: '+$name) }
   $old=(Get-FileHash -LiteralPath $live -Algorithm SHA256).Hash.ToLowerInvariant()
+  if($allowed[$name] -notcontains $old){$old=Get-CanonicalSourceHash $live}
   if($allowed[$name] -notcontains $old){throw ('Version local ha cambiado: '+$name)}
   [IO.File]::Replace($stage,$live,(Join-Path $backup $name),$true)
   $written+= $name
-  if((Get-FileHash -LiteralPath $live -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]){
+  if((Get-CanonicalSourceHash $live) -ne $files[$name]){
    throw ('No coincide el SHA tras reemplazar: '+$name)
   }
  }
- Write-Host 'Receptor privado de imagenes actualizado y hashes verificados. NO se ha cambiado la APP ni el Site.' -ForegroundColor Green
+ Write-Host 'Receptor privado de imagenes actualizado y hashes UTF-8/CRLF verificados. NO se ha cambiado la APP ni el Site.' -ForegroundColor Green
  Write-Host 'Sin corte de fecha, ni ocho por ciclo, ni caducidad a 72 h de originales pendientes.'
  Write-Host 'JPEG/WebP se convertiran a PNG solo para el buzón; reintentos recuperan originales sin generar otros.'
  Write-Host 'La tarea programada se conserva. La confirmacion de recepcion requiere ver un recibo PRIVATE_INBOX RECEIVED_pending.'
