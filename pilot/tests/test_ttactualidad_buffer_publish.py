@@ -283,7 +283,7 @@ class DirectBufferPublisherTests(unittest.TestCase):
             publisher.reconcile(data, "secret")
         self.assertEqual(data["items"][0]["state"], "sent")
         self.assertEqual(data["items"][0]["post_url"],
-                         "https://x.com/ttittulares/status/123")
+                         "https://x.com/ttittulares/status/123456")
 
 
     def test_x_permalink_requires_exact_destination_and_real_status_id(self):
