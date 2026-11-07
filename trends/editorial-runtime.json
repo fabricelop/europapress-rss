@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-0555-chat",
-  "previous_run_id": "tr-manual-20261107-0525-chat",
-  "command_id": "tr-manual-20261107-0555-chat",
+  "run_id": "tr-manual-20261107-0640-chat",
+  "previous_run_id": "tr-manual-20261107-0555-chat",
+  "command_id": "tr-manual-20261107-0640-chat",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-07T05:55:00+01:00",
-  "updated_at": "2026-11-07T06:02:07+01:00",
-  "finished_at": "2026-11-07T06:02:07+01:00",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-07T06:40:00+01:00",
+  "updated_at": "2026-11-07T06:40:55+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -38,23 +38,16 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-07T06:02:07+01:00",
-      "phase": "verifying",
-      "type": "healthcheck_request_queue_invalid_states",
-      "message": "El healthcheck de TTendencias marca request_queue con 508 estados inválidos; la editorial_queue está sana y vacía (0 pendientes) y no hay preparing/update/reexplicaciones activas."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Pasada tr-manual-20261107-0555-chat cerrada 0/0 tras refresh #711 SUCCESS. Barrera final main: editorial-queue=0, preparing/update/rewrite_pending/reexplain=0. Incidencia de salud: request_queue reporta 508 estados inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "updated_at": "2026-11-07T06:02:07+01:00"
+    "phase": "verifying",
+    "message": "Refresco manual de las 06:40 confirmado: recent.json 06:40:52 y editorial-queue 06:40:55. Verificando barrera final en main.",
+    "updated_at": "2026-11-07T06:40:55+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -93,7 +86,7 @@
     "title": null,
     "message": "Pasada tr-manual-20261107-0555-chat cerrada 0/0 tras refresh #711 SUCCESS. Barrera final main: editorial-queue=0, preparing/update/rewrite_pending/reexplain=0. Incidencia de salud: request_queue reporta 508 estados inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T05:55:00+01:00",
+  "last_started_at": "2026-11-07T06:40:00+01:00",
   "last_completed_at": "2026-11-07T06:02:07+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -232,5 +225,5 @@
     "tr-manual-20261107-0525-chat",
     "tr-manual-20261107-0555-chat"
   ],
-  "message": "Pasada tr-manual-20261107-0555-chat cerrada 0/0 tras refresh #711 SUCCESS. Barrera final main: editorial-queue=0, preparing/update/rewrite_pending/reexplain=0. Incidencia de salud: request_queue reporta 508 estados inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Refresco manual de las 06:40 confirmado: recent.json 06:40:52 y editorial-queue 06:40:55. Verificando barrera final en main."
 }
