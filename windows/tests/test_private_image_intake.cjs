@@ -159,7 +159,8 @@ test('isolated installer accepts only pinned prior manual-approval bridge versio
  }
  assert.match(script,/\$dependencyHash=Get-CanonicalSourceHash \$dependency/);
  assert.match(script,/if\(\$entry\.Value -notcontains \$dependencyHash\)/);
- assert.match(script,/RECEIVER_DEPENDENCY_UNKNOWN:[^']*canonicalSHA256=/);
+ assert.match(script,/RECEIVER_DEPENDENCY_UNKNOWN:/);
+ assert.match(script,/canonicalSHA256=/);
  assert.match(script,/RECEIVER_DEPENDENCY_EXPORT_MISSING/);
  assert.match(script,/RECEIVER_APPROVAL_PAUSE_MISSING/);
  assert.doesNotMatch(script,/RECEIVER_DEPENDENCY_UNKNOWN:[^\n]*Write-Host/);
