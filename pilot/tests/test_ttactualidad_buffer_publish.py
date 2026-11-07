@@ -150,6 +150,44 @@ class DirectBufferPublisherTests(unittest.TestCase):
             text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual((image_url, kind), (archive, "archive"))
 
+    def test_second_approved_ai_is_used_if_first_catalog_url_is_broken(self):
+        stale = URL
+        verified = URL.replace("test-r1.png", "news123456-r1-ai2.png")
+        self._write("ttittulares/site-ai-images.json", {"images": [
+            {"target_id": "news123456", "revision": 1,
+             "editorial_text": "Texto editorial verificado",
+             "image_url": stale, "sha256": HASH},
+            {"target_id": "news123456", "revision": 1,
+             "editorial_text": "Texto editorial verificado",
+             "image_url": verified, "sha256": "b" * 64},
+        ]})
+        def verify(url, sha, project, event_id, revision):
+            self.assertEqual((project, event_id, revision),
+                             ("ttittulares", "news123456", 1))
+            if url == stale:
+                raise ValueError("Original verificado no disponible")
+            self.assertEqual((url, sha), (verified, "b" * 64))
+            return url
+        with mock.patch.object(publisher, "check_image", side_effect=verify) as check:
+            _, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual((image_url, kind), (verified, "ai"))
+        self.assertEqual(check.call_count, 2)
+
+    def test_duplicate_approved_catalog_rows_are_checked_only_once(self):
+        self._write("ttittulares/site-ai-images.json", {"images": [
+            {"target_id": "news123456", "revision": 1,
+             "editorial_text": "Texto editorial verificado",
+             "image_url": URL, "sha256": HASH},
+            {"target_id": "news123456", "revision": 1,
+             "editorial_text": "Texto editorial verificado",
+             "image_url": URL, "sha256": HASH},
+        ]})
+        with mock.patch.object(publisher, "check_image",
+                               side_effect=ValueError("Archivo roto")) as check:
+            _, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual((image_url, kind), (None, "text"))
+        self.assertEqual(check.call_count, 1)
+
     def test_buffer_text_matches_manual_x_section_link(self):
         text = "Titular contrastado y breve.\n\n#Noticias\n🌶️ Remate"
         result = publisher.x_payload("ttittulares", text)
