@@ -65,28 +65,45 @@ def normalize_tweet(item):
         remate="🌶️ "+remate.lstrip()
     if not text or len(text)>256: raise ValueError("tweet vacío o >256")
     if "\\n" in text or "\\n" in remate: raise ValueError("saltos visibles prohibidos")
-    if not remate.startswith("🌶️ ") or len(remate)<=3:
-        raise ValueError("el remate único debe empezar por 🌶️ ")
+    if remate:
+        if not remate.startswith("🌶️ ") or len(remate)<=3:
+            raise ValueError("el remate único debe empezar por 🌶️ ")
+    else:
+        # Contrato vigente 07/11/2026: en noticias sensibles es válido cerrar
+        # solo con hechos y hashtags, sin fabricar un antirremate o una frase de relleno.
+        if "🌶️" in text:
+            raise ValueError("tweet sin remate no puede contener línea 🌶️")
+        if not str(item.get("no_remate_reason") or "").strip():
+            raise ValueError("tweet sin remate requiere no_remate_reason")
     if legacy:
         principal=str((next((v for v in variants if str(v.get("label") or "").lower()=="principal"),{}) or {}).get("text") or "").strip()
-        if text==remate and principal: text=principal+"\n\n"+remate
-        elif principal and not text.startswith(principal+"\n\n"): text=principal+"\n\n"+remate
+        if remate and text==remate and principal: text=principal+"\n\n"+remate
+        elif remate and principal and not text.startswith(principal+"\n\n"): text=principal+"\n\n"+remate
 
     # Formato vigente: bloque factual, línea en blanco, 2-3 hashtags específicos
-    # y remate en la línea inmediatamente siguiente. Se conserva el formato
-    # histórico factual + línea en blanco + remate para outboxes antiguos.
-    legacy_ending=text.endswith("\n\n"+remate)
-    hashtag_ending=False
-    if text.endswith("\n"+remate):
-        before_remate=text[:-(len(remate)+1)]
-        if "\n\n" in before_remate:
-            hashtag_line=before_remate.rsplit("\n",1)[-1].strip()
-            tags=hashtag_line.split()
-            hashtag_ending=(2 <= len(tags) <= 3 and all(
-                tag.startswith("#") and len(tag)>1 and "#" not in tag[1:] for tag in tags
-            ))
-    if not (legacy_ending or hashtag_ending):
-        raise ValueError("el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico")
+    # y, cuando existe, remate en la línea inmediatamente siguiente.
+    # Sin remate, el tuit termina en la línea de 2-3 hashtags.
+    if remate:
+        legacy_ending=text.endswith("\n\n"+remate)
+        hashtag_ending=False
+        if text.endswith("\n"+remate):
+            before_remate=text[:-(len(remate)+1)]
+            if "\n\n" in before_remate:
+                hashtag_line=before_remate.rsplit("\n",1)[-1].strip()
+                tags=hashtag_line.split()
+                hashtag_ending=(2 <= len(tags) <= 3 and all(
+                    tag.startswith("#") and len(tag)>1 and "#" not in tag[1:] for tag in tags
+                ))
+        if not (legacy_ending or hashtag_ending):
+            raise ValueError("el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico")
+    else:
+        hashtag_line=text.rsplit("\n",1)[-1].strip()
+        tags=hashtag_line.split()
+        hashtag_ending=(2 <= len(tags) <= 3 and all(
+            tag.startswith("#") and len(tag)>1 and "#" not in tag[1:] for tag in tags
+        ))
+        if not hashtag_ending or "\n\n" not in text:
+            raise ValueError("el tweet sin remate debe terminar con 2-3 hashtags específicos")
     tweet={"text":text,"remate":remate,"url":"https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")}
     return tweet
 
