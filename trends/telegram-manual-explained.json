@@ -81606,12 +81606,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "editorial_grouping_state": "pending",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261107203026_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-osasuna-athletic-resumen-goles-resultado-partido-hoy-20261107203026.html",
+        "alt": "Imagen de archivo relacionada con El Sadar",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261107203026_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-osasuna-athletic-resumen-goles-resultado-partido-hoy-20261107203026.html",
+        "alt": "Imagen de archivo relacionada con El Sadar",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "trend-update-2d3d633d0064ec9edde7",
@@ -81647,12 +81664,32 @@
       "material_event_at": "2026-11-07T14:00:00+01:00",
       "material_change_verified": true,
       "with_image": true,
-      "disable_ai_image": false,
       "editorial_grouping_state": "pending",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending"
+      "ai_image_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/GRAF2487-ESPANA-FUTBOL-LALIGA-EA-SPORTS.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/agencia-efe-comunidad-cantabria/2026-11-07/el-racing-hunde-al-malaga/",
+        "alt": "Imagen de archivo relacionada con Iker Luque",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/GRAF2487-ESPANA-FUTBOL-LALIGA-EA-SPORTS.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/agencia-efe-comunidad-cantabria/2026-11-07/el-racing-hunde-al-malaga/",
+        "alt": "Imagen de archivo relacionada con Iker Luque",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-11-07T21:36:05.517715+00:00",
+  "updated_at": "2026-11-07T21:36:28.176951Z",
   "count": 1375
 }
