@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-0955-chat",
   "command_id": "tr-manual-20261107-1010-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-07T10:10:00+01:00",
-  "updated_at": "2026-11-07T10:16:30+01:00",
-  "finished_at": "2026-11-07T10:16:30+01:00",
+  "updated_at": "2026-11-07T10:17:00+01:00",
+  "finished_at": null,
   "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 6,
+  "trend_id": "red-review-c97623deb823ab0cfdb5",
+  "title": "Revisar novedades: #FelizSábado",
+  "queue_complete": false,
   "processed_ids": [
     "b547e584c4e7",
     "db76e61cd3d4",
@@ -26,12 +26,18 @@
   "converged_ids": [
     "db76e61cd3d4"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-c97623deb823ab0cfdb5",
+    "red-review-2763e0066d30912c8f78"
+  ],
+  "remaining_active_ids": [
+    "red-review-c97623deb823ab0cfdb5",
+    "red-review-2763e0066d30912c8f78"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 4,
-    "observed": 4,
+    "observed": 6,
     "closed": 4,
     "explained": 4,
     "problematic": 0,
@@ -40,7 +46,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -52,9 +58,9 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Pasada cerrada 4/4. Barrera final main: editorial-queue=0; cuatro revisiones r0 aplicadas; Acierto convergió con autoguard. Sin ImageGen ni publicaciones.",
-    "updated_at": "2026-11-07T10:16:30+01:00"
+    "phase": "investigating",
+    "message": "Han entrado dos review_red durante el cierre. Revisando novedades de #FelizSábado (5/6).",
+    "updated_at": "2026-11-07T10:17:00+01:00"
   },
   "final_outcomes": [
     {
@@ -317,5 +323,5 @@
     "tr-manual-20261107-0955-chat",
     "tr-manual-20261107-1010-chat"
   ],
-  "message": "Pasada cerrada 4/4. Cola final 0; #AgropopularRetinta, Acierto, Payoya y Amaia aplicadas. Acierto se cerró prudentemente con causa concreta no confirmada. Sin ImageGen ni publicaciones."
+  "message": "Pasada ampliada a 6 entradas por dos review_red llegados durante la barrera final."
 }
