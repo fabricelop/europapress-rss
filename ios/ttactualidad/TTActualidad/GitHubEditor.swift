@@ -887,7 +887,8 @@ final class GitHubEditor: ObservableObject {
     }
 
     func editorialManualRelations() async throws -> [EditorialRelation] {
-        let (ledger, _) = try await readManualRelations(token: authorizedToken())
+        let token = try await authorizedToken()
+        let (ledger, _) = try await readManualRelations(token: token)
         return ledger.items.filter { ["linked", "blocked"].contains($0.state) }
             .map(\.relation)
     }
