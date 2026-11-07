@@ -27,6 +27,8 @@ private struct PendingImage: Decodable, Identifiable {
 
 private struct PendingImageResponse: Decodable {
     let items: [PendingImage]
+    let hasMore: Bool?
+    let nextCursor: String?
 }
 
 private struct ApprovalDecision: Encodable {
@@ -40,39 +42,22 @@ private struct DecisionResponse: Decodable {
     let sitesVerified: Bool?
 }
 
-// Explicit editorial cutover, not the later moment when an old PNG arrives.
+// Current editorial membership only. No age gate, total-image cap, or
+// display-time suppression of distinct pending originals from the same episode.
 private enum ApprovalInboxScope {
-    static let maximumVisible = 20
-    static let newsCutover: Date = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f.date(from: "2026-11-06T08:43:00.000Z")!
-    }()
-    static func parse(_ text: String?) -> Date? {
-        guard let text else { return nil }
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        if let date = f.date(from: text) { return date }
-        f.formatOptions = [.withInternetDateTime]
-        return f.date(from: text)
-    }
-    static func visible(_ items: [PendingImage],
-                        currentTop30: Set<String>) -> [PendingImage] {
-        var seen = Set<String>()
-        return items.sorted { $0.createdAt > $1.createdAt }.filter { item in
-            let id = item.identity
-            let scope: Bool
-            if id.project == "ttendencias" {
-                scope = currentTop30.contains(id.editorialId + ":r" + String(id.revision))
-            } else if id.project == "ttittulares" {
-                // Never use ingestion time to make an old news article "new".
-                scope = parse(item.editorialAt).map { $0 >= newsCutover } ?? false
-            } else {
-                scope = false
+    static func visible(_ received: [PendingImage],
+                        eligibleTrends: Set<String>,
+                        eligibleNews: Set<String>) -> [PendingImage] {
+        received.sorted { $0.createdAt > $1.createdAt }.filter { item in
+            let key = item.identity.editorialId + ":r" + String(item.identity.revision)
+            if item.identity.project == "ttendencias" {
+                return eligibleTrends.contains(key)
             }
-            let key = id.project + ":" + id.editorialId + ":r" + String(id.revision)
-            return scope && seen.insert(key).inserted
-        }.prefix(maximumVisible).map { $0 }
+            if item.identity.project == "ttittulares" {
+                return eligibleNews.contains(key)
+            }
+            return false
+        }
     }
 }
 
@@ -90,21 +75,45 @@ private final class ApprovalInboxModel: ObservableObject {
         loading = true
         defer { loading = false }
         do {
-            let (data, status) = try await github.privateImageInboxRequest(path: "/v1/images")
-            guard status == 200 else { throw InboxError.http(status) }
-            let received = try JSONDecoder().decode(PendingImageResponse.self, from: data).items
-            let top30 = try await github.currentImageApprovalTrendEpisodes()
-            let items = ApprovalInboxScope.visible(received, currentTop30: top30)
-            // Diagnostics describe THIS server page, not total outstanding
-            // images. No old PNG previews or identifiers are exposed.
-            pageDiagnostics = "Servidor: " + String(received.count) +
-                " candidatas en esta página · " + String(items.count) +
-                " elegibles tras el filtro."
+            // Pagination is an implementation detail, not a visible maximum.
+            // Walk every available server page and retain all eligible cards.
+            var received: [PendingImage] = []
+            var cursor: String? = nil
+            var usedCursors = Set<String>()
+            while true {
+                var path = "/v1/images"
+                if let cursor {
+                    guard usedCursors.insert(cursor).inserted else {
+                        throw InboxError.unexpectedResponse
+                    }
+                    var query = URLComponents()
+                    query.queryItems = [URLQueryItem(name: "before", value: cursor)]
+                    path += query.percentEncodedQuery.map { "?" + $0 } ?? ""
+                }
+                let (data, status) = try await github.privateImageInboxRequest(path: path)
+                guard status == 200 else { throw InboxError.http(status) }
+                let response = try JSONDecoder().decode(PendingImageResponse.self, from: data)
+                received.append(contentsOf: response.items)
+                guard response.hasMore == true else { break }
+                guard let next = response.nextCursor, !next.isEmpty else {
+                    throw InboxError.unexpectedResponse
+                }
+                cursor = next
+            }
+            async let trendTask = github.currentImageApprovalTrendEpisodes()
+            async let newsTask = github.currentImageApprovalNewsEpisodes()
+            let trends = try await trendTask
+            let news = try await newsTask
+            let items = ApprovalInboxScope.visible(
+                received, eligibleTrends: trends, eligibleNews: news)
+            pageDiagnostics = "Imágenes pendientes en el servidor: " +
+                String(received.count) + " · De fichas actuales: " +
+                String(items.count) + "."
             images = items
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
             notice = items.isEmpty ?
-                "No hay imágenes actuales para aprobar. Las antiguas están ocultas, no eliminadas." : ""
+                "No hay imágenes pendientes de tendencias del Top 30 sin IA ni de noticias en Listas." : ""
             for image in items.prefix(4) where previews[image.id] == nil {
                 await loadOriginal(image, using: github)
             }
@@ -114,7 +123,7 @@ private final class ApprovalInboxModel: ObservableObject {
             images = []
             previews = [:]
             pageDiagnostics = ""
-            notice = "No se pudo verificar el Top 30 y la bandeja privada: \(error.localizedDescription)"
+            notice = "No se pudo verificar la bandeja y las fichas actuales: \(error.localizedDescription)"
         }
     }
 
@@ -281,7 +290,7 @@ struct ImageApprovalInbox: View {
                         description: Text("Las imágenes pendientes solo pueden verse con tu cuenta autorizada."))
                 } else {
                     List {
-                        Text("Máximo 20 imágenes · tendencias del Top 30 actual y noticias desde el 6/11 a las 09:43.")
+                        Text("Todas las pendientes de tendencias del Top 30 sin IA y noticias en Listas. Sin límite de fecha ni cantidad.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         if !model.pageDiagnostics.isEmpty {
