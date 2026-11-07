@@ -49,6 +49,9 @@ SOURCES = {
     # radar if its parse succeeds and the existing freshness checks pass.
     "playersells": "https://playersells.com/es/tools/twitter-trends/spain",
     "fowtools": "https://fowtools.com/x-trends/spain",
+    # Secondary independent Spain-focused X signal. Never used without a
+    # valid ranked list and an independently checkable recent observation.
+    "gosocialsuite": "https://alert.gosocialsuite.com/tendencias?pais=es&red=x",
 }
 
 def clean(text):
@@ -215,6 +218,27 @@ def parse_fowtools(html):
     return names if len(names) >= 10 else parse_x_search_links(html)
 
 
+def parse_gosocialsuite(html):
+    """Read only the numbered Spain/X entries, never the worldwide sidebars."""
+    soup = BeautifulSoup(html, "html.parser")
+    text = soup.get_text("\n", strip=True)
+    match = re.search(r"España\s*\n\s*Últimos\s+7\s+días", text, re.I)
+    if not match:
+        return []
+    excerpt = text[match.end():]
+    excerpt = re.split(r"02\s*\n?\s*HACIA\s+D[ÓO]NDE\s+VA", excerpt, maxsplit=1, flags=re.I)[0]
+    ranked = []
+    for entry in re.finditer(r"(?:^|\n)\s*(\d{1,2})\s*\n\s*([^\n]+)\s*\n\s*Ver\s+en\s+X\b", excerpt, re.I):
+        rank = int(entry.group(1))
+        name = clean_term(entry.group(2))
+        if 1 <= rank <= 30 and name:
+            ranked.append((rank, name))
+    ranked.sort(key=lambda x: x[0])
+    if len(ranked) >= 10 and [rank for rank, _ in ranked[:10]] == list(range(1, 11)):
+        return unique(name for _, name in ranked)[:30]
+    return []
+
+
 def parse_snaplytics(html):
     vals = parse_x_search_links(html)
     if len(vals) >= 10:
@@ -365,6 +389,7 @@ def fetch_source(name):
             "snaplytics": parse_snaplytics,
             "playersells": parse_playersells,
             "fowtools": parse_fowtools,
+            "gosocialsuite": parse_gosocialsuite,
         }
         html = get(SOURCES[name])
         parser = parsers.get(name, parse_generic_ranked)
@@ -455,8 +480,8 @@ def reconcile_source_freshness(source_data, previous_doc, now):
                 row["freshness"] = "stale"
                 row["freshness_note"] = "frozen-relative-update-label"
 
-    # A live, changing, undated snapshot may be treated as corroborated
-    # only if it agrees with a separate source that has a known age <=90m.
+    # Undated pages are NOT independently live. Corroborate only when
+    # a separately timestamped, fresh (<=45m) peer agrees strongly.
     for name, row in source_data.items():
         if not row.get("ok") or row.get("freshness") != "unknown":
             continue
@@ -470,14 +495,10 @@ def reconcile_source_freshness(source_data, previous_doc, now):
         peers = [
             other_name for other_name, other in source_data.items()
             if other_name != name and other.get("ok")
-            and (
-                other.get("freshness") in {"fresh", "aging"}
-                or (
-                    other.get("age_minutes") is not None
-                    and float(other["age_minutes"]) <= 120
-                )
-            )
-            and overlap(row.get("trends") or [], other.get("trends") or []) >= 0.25
+            and other.get("freshness") == "fresh"
+            and other.get("age_minutes") is not None
+            and 0 <= float(other["age_minutes"]) <= 45
+            and overlap(row.get("trends") or [], other.get("trends") or []) >= 0.35
         ]
         if peers:
             row["freshness"] = "corroborated-change"
@@ -1092,8 +1113,22 @@ def main():
 
     valid = [n for n, d in source_data.items() if d.get("ok")]
     non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
-    fresh = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") == "fresh"]
-    reliability = "high" if len(non_stale) >= 6 else ("medium" if len(non_stale) >= 3 else "fallback")
+    # Distinguish fetch time from the real source observation time. A
+    # recently generated recent.json cannot certify a live Top 30 by itself.
+    fresh = [n for n, d in source_data.items()
+             if d.get("ok") and d.get("freshness") == "fresh"
+             and d.get("age_minutes") is not None
+             and 0 <= float(d["age_minutes"]) <= 45]
+    live_verified = bool(fresh) and (
+        method == "fresh-anchor" or
+        (method == "corroborated-anchor" and bool(
+            set(sources_used) & set(fresh) or
+            set((source_data.get(chosen_name) or {}).get("corroborating_sources") or []) & set(fresh)
+        )) or
+        (method == "aging-anchor" and len(sources_used) >= 2)
+    )
+    reliability = ("high" if len(fresh) >= 2 and len(sources_used) >= 2 else
+                   "medium" if live_verified else "unverified")
     ttittulares_status = load_json(TTITTULARES_STATUS, {})
     ttittulares_events_doc = load_json(TTITTULARES_EVENTS, {})
     ttittulares_events = {str(x.get("id")): x for x in (ttittulares_events_doc.get("events") or []) if x.get("id")}
@@ -1114,6 +1149,14 @@ def main():
         "source_count": len(valid),
         "non_stale_source_count": len(non_stale),
         "fresh_sources": fresh,
+        "live_verified": live_verified,
+        "source_observation_age_minutes": (
+            min(float(source_data[name]["age_minutes"]) for name in fresh)
+            if fresh else None
+        ),
+        "freshness_note": ("Captura actual con fuentes recientes verificadas"
+                           if live_verified else
+                           "Top 30 orientativo: no se ha verificado ningún ranking reciente de X"),
         "reliability": reliability,
         "top10": top10,
         "top30": top30,
