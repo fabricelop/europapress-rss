@@ -396,127 +396,178 @@ struct EditorialRelationsView: View {
         rebuildRelationIndex()
     }
 
+    @ViewBuilder private var selectedScopeSection: some View {
+        if let scope {
+            Section("Ficha seleccionada") {
+                Text(scopedEndpoint?.title ?? scope.title).font(.headline)
+                if model.snapshot != nil && scopedEndpoint == nil {
+                    Text("Esta ficha no está disponible con esa revisión. Actualiza la APP para consultar su estado actual.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder private var editorialNoticeSection: some View {
+        if !model.notice.isEmpty {
+            Section { Text(model.notice).font(.footnote).accessibilityAddTraits(.updatesFrequently) }
+        }
+    }
+
+    private var relationFilterSection: some View {
+        Section {
+            Picker("Estado de relaciones", selection: $filter) {
+                Text("Por revisar").tag("suggested")
+                Text("Confirmadas").tag("linked")
+                Text("Bloqueadas").tag("blocked")
+            }.pickerStyle(.segmented)
+        }
+    }
+
+    private var top30RelationSection: some View {
+        Section("Tendencias del Top 30 · \(min(30, top30Names.count))") {
+            Text("Abre una tendencia para ver hasta 5 noticias de los últimos 7 días que la mencionan en su titular o texto. El resultado de la búsqueda no crea una relación: tú decides qué asociar.")
+                .font(.footnote).foregroundStyle(.secondary)
+            Text("Noticias del historial recuperadas: \(model.historicalNews.count)")
+                .font(.caption).foregroundStyle(.secondary)
+            if top30Names.isEmpty && !model.loading {
+                Text("No está disponible el Top 30 actual. Actualiza la APP.")
+                    .foregroundStyle(.secondary)
+            }
+            ForEach(Array(top30Names.prefix(30).enumerated()), id: \.offset) { index, name in
+                trendCard(rank: index + 1, name: name)
+            }
+        }
+    }
+
+    private var existingRelationsSection: some View {
+        Section(filter == "linked" ? "Relaciones confirmadas por noticia" :
+                filter == "blocked" ? "Relaciones bloqueadas por noticia" :
+                "Relaciones de la ficha seleccionada") {
+            if newsGroups.isEmpty && !model.loading {
+                Text("No hay noticias con relaciones en este estado.")
+                    .foregroundStyle(.secondary)
+            }
+            ForEach(newsGroups, id: \.stableIdentity) { news in
+                newsCard(news)
+            }
+        }
+    }
+
+    @ViewBuilder private var manualNewsSelectionSection: some View {
+        if filter == "suggested", scope == nil, let selectedNews {
+            Section("Edición manual · noticia elegida") { newsCard(selectedNews) }
+        }
+    }
+
+    @ViewBuilder private var hiddenRelationNewsSection: some View {
+        if filter == "suggested" && scope == nil && !hiddenNewsChoices.isEmpty {
+            Section {
+                DisclosureGroup("Ocultas (\(hiddenNewsChoices.count))", isExpanded: $showHiddenNews) {
+                    ForEach(hiddenNewsChoices, id: \.stableIdentity) { news in
+                        HStack {
+                            Text(news.title).font(.subheadline)
+                            Spacer()
+                            Button("Restaurar") { restore(news) }
+                                .font(.caption)
+                        }
+                    }
+                    Text("Ocultar solo afecta a esta bandeja en este iPhone: no borra noticias ni modifica relaciones.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder private var manualSearchSection: some View {
+        if filter == "suggested" {
+            Section {
+                DisclosureGroup("Elegir otra noticia", isExpanded: $showManualLinking) {
+                    Text("Elige una noticia histórica de Listas para recuperar o añadir sus relaciones sin devolverla a Listas. Las fechas más recientes se muestran primero cuando el servidor las facilita.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                    Button {
+                        picker = EndpointPickerRoute(project: "ttittulares")
+                    } label: {
+                        Label(selectedNews?.title ?? "Buscar noticia",
+                              systemImage: "newspaper")
+                    }
+                }
+            }
+        }
+    }
+
+    private var relationList: some View {
+        List {
+            selectedScopeSection
+            editorialNoticeSection
+            relationFilterSection
+            if filter == "suggested" && scope == nil {
+                top30RelationSection
+            } else {
+                existingRelationsSection
+            }
+            manualNewsSelectionSection
+            hiddenRelationNewsSection
+            manualSearchSection
+        }
+        .refreshable { await model.load(using: github) }
+        .overlay {
+            if model.loading && model.snapshot == nil {
+                ProgressView("Consultando relaciones…")
+            }
+        }
+        .disabled(model.saving)
+    }
+
+    private var currentTop30Identity: [String] {
+        top30Trends.map { $0.editorialID + ":r" + String($0.revision) }
+    }
+
     var body: some View {
         NavigationStack {
             Group {
-                if !github.authenticated {
+                if github.authenticated {
+                    relationList
+                } else {
                     ContentUnavailableView("Conecta GitHub", systemImage: "lock.shield",
                         description: Text("Las relaciones se gestionan solo con tu cuenta de editor."))
-                } else {
-                    List {
-                        if let scope {
-                            Section("Ficha seleccionada") {
-                                Text(scopedEndpoint?.title ?? scope.title).font(.headline)
-                                if model.snapshot != nil && scopedEndpoint == nil {
-                                    Text("Esta ficha no está disponible con esa revisión. Actualiza la APP para consultar su estado actual.")
-                                        .font(.footnote).foregroundStyle(.secondary)
-                                }
-                            }
-                        }
-                        if !model.notice.isEmpty {
-                            Section { Text(model.notice).font(.footnote).accessibilityAddTraits(.updatesFrequently) }
-                        }
-                        Section {
-                            Picker("Estado de relaciones", selection: $filter) {
-                                Text("Por revisar").tag("suggested")
-                                Text("Confirmadas").tag("linked")
-                                Text("Bloqueadas").tag("blocked")
-                            }.pickerStyle(.segmented)
-                        }
-                        if filter == "suggested" && scope == nil {
-                            Section("Tendencias del Top 30 · \(min(30, top30Names.count))") {
-                                Text("Abre una tendencia para ver hasta 5 noticias de los últimos 7 días que la mencionan en su titular o texto. El resultado de la búsqueda no crea una relación: tú decides qué asociar.")
-                                    .font(.footnote).foregroundStyle(.secondary)
-                                Text("Noticias del historial recuperadas: \(model.historicalNews.count)")
-                                    .font(.caption).foregroundStyle(.secondary)
-                                if top30Names.isEmpty && !model.loading {
-                                    Text("No está disponible el Top 30 actual. Actualiza la APP.")
-                                        .foregroundStyle(.secondary)
-                                }
-                                ForEach(Array(top30Names.prefix(30).enumerated()), id: \.offset) { index, name in
-                                    trendCard(rank: index + 1, name: name)
-                                }
-                            }
-                        } else {
-                            Section(filter == "linked" ? "Relaciones confirmadas por noticia" :
-                                    filter == "blocked" ? "Relaciones bloqueadas por noticia" :
-                                    "Relaciones de la ficha seleccionada") {
-                                if newsGroups.isEmpty && !model.loading {
-                                    Text("No hay noticias con relaciones en este estado.")
-                                        .foregroundStyle(.secondary)
-                                }
-                                ForEach(newsGroups, id: \.stableIdentity) { news in
-                                    newsCard(news)
-                                }
-                            }
-                        }
-                        if filter == "suggested", scope == nil, let selectedNews {
-                            Section("Edición manual · noticia elegida") {
-                                newsCard(selectedNews)
-                            }
-                        }
-                        if filter == "suggested" && scope == nil && !hiddenNewsChoices.isEmpty {
-                            Section {
-                                DisclosureGroup("Ocultas (\(hiddenNewsChoices.count))", isExpanded: $showHiddenNews) {
-                                    ForEach(hiddenNewsChoices, id: \.stableIdentity) { news in
-                                        HStack {
-                                            Text(news.title).font(.subheadline)
-                                            Spacer()
-                                            Button("Restaurar") { restore(news) }
-                                                .font(.caption)
-                                        }
-                                    }
-                                    Text("Ocultar solo afecta a esta bandeja en este iPhone: no borra noticias ni modifica relaciones.")
-                                        .font(.caption).foregroundStyle(.secondary)
-                                }
-                            }
-                        }
-                        if filter == "suggested" {
-                            Section {
-                                DisclosureGroup("Elegir otra noticia", isExpanded: $showManualLinking) {
-                                    Text("Elige una noticia histórica de Listas para recuperar o añadir sus relaciones sin devolverla a Listas. Las fechas más recientes se muestran primero cuando el servidor las facilita.")
-                                        .font(.footnote).foregroundStyle(.secondary)
-                                    Button {
-                                        picker = EndpointPickerRoute(project: "ttittulares")
-                                    } label: {
-                                        Label(selectedNews?.title ?? "Buscar noticia",
-                                              systemImage: "newspaper")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .refreshable { await model.load(using: github) }
-                    .overlay { if model.loading && model.snapshot == nil { ProgressView("Consultando relaciones…") } }
-                    .disabled(model.saving)
                 }
             }
             .navigationTitle(scope == nil ? "Relaciones por noticia" : "Relaciones")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cerrar") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cerrar") { dismiss() }
+                }
                 ToolbarItem(placement: .primaryAction) {
-                    Button { Task { await model.load(using: github) } } label: {
+                    Button {
+                        Task { await model.load(using: github) }
+                    } label: {
                         Image(systemName: "arrow.clockwise")
-                    }.disabled(model.loading || model.saving || !github.authenticated)
+                    }
+                    .disabled(model.loading || model.saving || !github.authenticated)
                     .accessibilityLabel("Actualizar relaciones")
                 }
             }
-            .task { if github.authenticated { await model.load(using: github) } }
+            .task {
+                if github.authenticated {
+                    await model.load(using: github)
+                }
+            }
             .onChange(of: model.dataRevision) { _, _ in rebuildRelationIndex() }
             .onChange(of: top30Names) { _, _ in rebuildRelationIndex() }
-            .onChange(of: top30Trends.map {
-                $0.editorialID + ":r" + String($0.revision)
-            }) { _, _ in rebuildRelationIndex() }
+            .onChange(of: currentTop30Identity) { _, _ in rebuildRelationIndex() }
             .sheet(item: $picker) { route in
                 EditorialEndpointPicker(
                     title: route.project == "ttittulares" ? "Seleccionar noticia" : "Seleccionar tendencia",
-                    endpoints: route.project == "ttittulares" ? allNewsChoices : model.snapshot?.trends ?? []) { endpoint in
+                    endpoints: route.project == "ttittulares" ?
+                        allNewsChoices : model.snapshot?.trends ?? []) { endpoint in
                         selectedNews = endpoint
                         picker = nil
                     }
             }
-        }.preferredColorScheme(.dark)
+        }
+        .preferredColorScheme(.dark)
     }
 
     private func same(_ left: EditorialRelationEndpoint,
