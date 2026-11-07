@@ -150,22 +150,15 @@ function inCurrentApprovalScope(task,top30,active){
  return false;
 }
 function selectCurrentTasks(tasks,progress,active){
- const isCurrent=x=>active.has(x.project+':'+x.target_id+':'+x.revision);
- const oldest=(a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||
-   (Date.parse(b.created_at)||0)-(Date.parse(a.created_at)||0);
- const current=tasks.filter(isCurrent).sort(oldest);
- const historical=tasks.filter(x=>!isCurrent(x)).sort(oldest);
- // Previously eight perpetually waiting current cards could starve every
- // already-published/removed-from-Listas original forever. Reserve two slots
- // per cycle for exact historical jobs, without compromising current priority.
- const reserve=Math.min(2,historical.length);
- const chosen=[...current.slice(0,8-reserve),...historical.slice(0,reserve)];
- const names=new Set(chosen.map(x=>x.command_id));
- for(const entry of [...current,...historical]){
-  if(chosen.length>=8)break;
-  if(!names.has(entry.command_id)){chosen.push(entry);names.add(entry.command_id);}
- }
- return chosen;
+ // Every valid current Top30 / READY Listas original gets a processing
+ // attempt. Eight was a legacy queue-wide throttle, not editorial eligibility.
+ // Existing queue ordering uses oldest last-checked first so one broken
+ // conversation cannot repeatedly pre-empt other exact image jobs.
+ const checked=task=>Number(progress[task.command_id]?.checkedAt||0);
+ return [...tasks].sort((a,b)=>
+   checked(a)-checked(b) ||
+   (Date.parse(b.created_at||'')||0)-(Date.parse(a.created_at||'')||0) ||
+   String(a.command_id).localeCompare(String(b.command_id)));
 }
 async function liveIdentities(sources){
  const all=new Set();
@@ -200,7 +193,10 @@ async function once(base=__dirname){
   const selected=selectCurrentTasks(eligible,progress,active);
   fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,eligibleForApproval:eligible.length,excludedBacklog,
     scope:'current_top30_and_ready_listas_without_date_cutoff',
-    currentEditorial:active.size,selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,historicalQueued:eligible.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{queued:tasks.filter(x=>x.project===project).length,eligible:eligible.filter(x=>x.project===project).length,selected:selected.filter(x=>x.project===project).length}]))},null,2));
+    currentEditorial:active.size,attemptedThisCycle:selected.length,skippedByPerCycleLimit:0,
+    selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,
+    selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,
+    historicalQueued:eligible.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{queued:tasks.filter(x=>x.project===project).length,eligible:eligible.filter(x=>x.project===project).length,selected:selected.filter(x=>x.project===project).length}]))},null,2));
   tasks.splice(0,tasks.length,...selected);
   console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
   for(const task of tasks){
