@@ -266,7 +266,6 @@ enum EditorialRelationsPolicy {
 
     static func matches(_ endpoint: EditorialRelationEndpoint,
                         id: String, revision: Int) -> Bool {
-        endpoint.id == id && endpoint.revision == revision &&
-            !endpoint.episodeFingerprint.isEmpty
+        endpoint.id == id && endpoint.revision == revision
     }
 }
