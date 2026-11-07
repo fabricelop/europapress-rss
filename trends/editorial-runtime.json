@@ -3,39 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794055651059-manual",
-  "previous_run_id": "tr-manual-20261107-1340-chat",
-  "command_id": "tr-1794055651059-manual",
+  "run_id": "tr-1794057000000-manual",
+  "previous_run_id": "tr-1794055651059-manual",
+  "command_id": "tr-1794057000000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T13:48:30+01:00",
-  "updated_at": "2026-11-07T14:00:00+01:00",
-  "finished_at": "2026-11-07T14:00:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": "TTendencias editorial",
-  "queue_complete": true,
-  "processed_ids": [
-    "d0c7bbcd1a51",
-    "5504b913401f"
-  ],
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-07T14:10:00+01:00",
+  "updated_at": "2026-11-07T14:10:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "75431d358387",
+  "title": "#FDS7nov",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "75431d358387"
+  ],
+  "remaining_active_ids": [
+    "75431d358387"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -379,26 +380,16 @@
       "at": "2026-11-07T14:00:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794055651059-manual cerrada 2/2: dos explicaciones aplicadas y verificadas; sin imágenes generadas, sin image-outbox editorial y sin publicaciones."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "d0c7bbcd1a51",
-      "revision": 1,
-      "name": "DÍA DE PARTIDO",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "990cd50e380693a6d47251e71a02169ace70d81e"
     },
     {
-      "id": "5504b913401f",
-      "revision": 0,
-      "name": "Javier Ruiz",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "971e4c376cae95aee24fb2334e44cca82736ccba"
+      "at": "2026-11-07T14:10:00+01:00",
+      "phase": "investigating",
+      "trend_id": "75431d358387",
+      "title": "#FDS7nov",
+      "message": "Pasada tr-1794057000000-manual iniciada; #FDS7nov r0 revalidado JIT en puesto 13. Se investiga el detonante actual con fuentes independientes. Sin ImageGen ni publicaciones."
     }
   ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794055651059-manual",
@@ -614,7 +605,7 @@
     "tr-1794054829513-manual",
     "tr-manual-20261107-1340-chat"
   ],
-  "message": "Pasada tr-manual-20261107-1340-chat cerrada 0/0; barrera final main limpia, sin reexplicaciones activas, sin ImageGen ni publicaciones.",
+  "message": "Pasada manual iniciada; #FDS7nov r0 revalidado JIT en puesto 13 y en investigación. Sin ImageGen ni publicaciones.",
   "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
