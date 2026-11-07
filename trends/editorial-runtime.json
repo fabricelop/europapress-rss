@@ -10,12 +10,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-07T15:51:00+01:00",
-  "updated_at": "2026-11-07T15:55:00+01:00",
+  "updated_at": "2026-11-07T15:58:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "radar-prepare-cf0a9a199ff9269ac43e",
-  "title": "Radar · #LCN7nov",
+  "current": 1,
+  "total": 3,
+  "trend_id": "red-review-a3d9a77488158b13109c",
+  "title": "Revisar novedades: Widilo",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -27,13 +27,13 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 3,
+    "closed": 1,
     "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -499,6 +499,20 @@
       "trend_id": "radar-prepare-cf0a9a199ff9269ac43e",
       "title": "Radar · #LCN7nov",
       "message": "Resultado Radar r0 persistido como anticipation unverified tras dos búsquedas independientes sin detonante público verificable. Solo anticipation-outbox; sin Listas, sin ImageGen y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T15:57:30+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-a3d9a77488158b13109c",
+      "title": "Revisar novedades: Widilo",
+      "message": "Widilo r0 revalidado JIT. La web oficial mantiene súper boost, 100% Cashback y Black Month; no se identifica novedad material frente a la explicación vigente."
+    },
+    {
+      "at": "2026-11-07T15:58:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-a3d9a77488158b13109c",
+      "title": "Revisar novedades: Widilo",
+      "message": "Resultado maintenance unchanged persistido para Widilo. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [
@@ -746,7 +760,7 @@
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat"
   ],
-  "message": "Resultado #LCN7nov r0 persistido como unverified; verificando aplicación y barrera final.",
+  "message": "Widilo unchanged persistido; verificando aplicación antes de continuar con Paraguay.",
   "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
