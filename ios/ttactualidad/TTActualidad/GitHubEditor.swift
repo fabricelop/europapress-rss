@@ -826,9 +826,7 @@ final class GitHubEditor: ObservableObject {
     }
 
     private func actionReceipt(_ requestID: String) async throws -> String? {
-        // A Contents API metadata envelope is not an action receipt. Fetch the
-        // committed raw ledger so an actual deletion can be confirmed on iOS.
-        let doc = try await readPublicEditorialJSON("pilot/ttactualidad-action-receipts.json")
+        let doc = try await readMainJSON("pilot/ttactualidad-action-receipts.json")
         let receipt = (doc["items"] as? [[String: Any]])?.first {
             ($0["request_id"] as? String) == requestID
         }
