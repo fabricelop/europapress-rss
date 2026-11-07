@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794054978318-manual",
-  "previous_run_id": "tr-1794054464802-manual",
-  "command_id": "tr-1794054978318-manual",
+  "run_id": "tr-manual-20261107-1340-chat",
+  "previous_run_id": "tr-1794054978318-manual",
+  "command_id": "tr-manual-20261107-1340-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T12:38:10.645Z",
-  "updated_at": "2026-11-07T13:39:00+01:00",
-  "finished_at": "2026-11-07T12:38:38.997Z",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T13:40:30+01:00",
+  "updated_at": "2026-11-07T13:40:30+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -301,6 +301,11 @@
       "at": "2026-11-07T13:39:00+01:00",
       "phase": "closing",
       "message": "Solicitud tr-1794054829513-manual satisfecha por convergencia con la pasada canónica tr-1794054464802-manual: Santiago Peña review_red aplicado como continuidad y Fiscalía Europea unchanged. Barrera final main: editorial-queue=0 y reexplicaciones activas=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T13:40:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-manual-20261107-1340-chat iniciada; barrera fresca de main detecta 0 trabajo(s) editorial(es) activo(s). Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [],
@@ -516,7 +521,7 @@
     "tr-1794054978318-manual",
     "tr-1794054829513-manual"
   ],
-  "message": "Barrera final limpia. tr-1794054829513-manual satisfecha por convergencia con tr-1794054464802-manual; Santiago Peña continuity_update aplicado y Fiscalía Europea unchanged aplicado. Cola 0, rewrite_pending/reexplain 0, ImageGen=0, publicaciones=0.",
+  "message": "Pasada tr-manual-20261107-1340-chat iniciada; barrera fresca de main detecta 0 trabajo(s) editorial(es) activo(s). Sin ImageGen ni publicaciones.",
   "outcomes": [
     {
       "id": "99cc3c458e9b",
