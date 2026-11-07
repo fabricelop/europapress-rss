@@ -8,29 +8,33 @@
   "command_id": "tr-1794080400000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-07T20:40:00+01:00",
-  "updated_at": "2026-11-07T20:40:00+01:00",
+  "updated_at": "2026-11-07T19:42:52.277Z",
   "finished_at": null,
   "current": 0,
-  "total": 2,
-  "trend_id": null,
-  "title": "TTendencias editorial",
+  "total": 4,
+  "trend_id": "c5aeeec06cf1",
+  "title": "Enric Gallego",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
+    "c5aeeec06cf1",
+    "7199735417cb",
     "red-review-723c84da4167adcbdd59",
     "red-review-484a843b0d9c5e387d37"
   ],
   "remaining_active_ids": [
+    "c5aeeec06cf1",
+    "7199735417cb",
     "red-review-723c84da4167adcbdd59",
     "red-review-484a843b0d9c5e387d37"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
+    "attempted": 4,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -39,7 +43,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -733,6 +737,13 @@
       "at": "2026-11-07T20:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794080400000-manual iniciada; cola fresca de main detecta 2 review_red: Sprint de MotoGP en Sepang y Jorge Martín. Se procesan con revalidación JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T19:42:52.277Z",
+      "phase": "persisting",
+      "trend_id": "c5aeeec06cf1",
+      "title": "Enric Gallego",
+      "message": "Enric Gallego r0 revalidado JIT y cerrado con explicación factual del homenaje a Jesús de Miguel; closer_text vacío por sensibilidad. Outbox persistido; sin ImageGen."
     }
   ]
 }
