@@ -7,27 +7,26 @@
   "previous_run_id": "tr-manual-20261107-2025-chat",
   "command_id": "tr-1794080400000-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-07T20:40:00+01:00",
-  "updated_at": "2026-11-07T19:43:07.303Z",
+  "updated_at": "2026-11-07T20:43:26+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": "7199735417cb",
   "title": "Liam Delap",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "7199735417cb",
+    "c5aeeec06cf1"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "c5aeeec06cf1",
-    "7199735417cb",
     "red-review-723c84da4167adcbdd59",
     "red-review-484a843b0d9c5e387d37"
   ],
   "remaining_active_ids": [
-    "c5aeeec06cf1",
-    "7199735417cb",
     "red-review-723c84da4167adcbdd59",
     "red-review-484a843b0d9c5e387d37"
   ],
@@ -752,5 +751,8 @@
       "title": "Liam Delap",
       "message": "Liam Delap r0 revalidado JIT: doblete en el 3-1 del Nottingham Forest al Manchester City contrastado con dos fuentes. Outbox persistido; sin ImageGen."
     }
-  ]
+  ],
+  "last_started_at": "2026-11-07T20:43:26+01:00",
+  "last_completed_at": null,
+  "api_failover_enabled": false
 }
