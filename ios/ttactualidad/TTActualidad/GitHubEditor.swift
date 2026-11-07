@@ -389,16 +389,28 @@ final class GitHubEditor: ObservableObject {
         guard let base = imageInboxBaseURL else {
             throw GitHubError.message("El servicio privado de imágenes no está configurado.")
         }
-        guard let url = URL(string: base.absoluteString.trimmingCharacters(
-                                  in: CharacterSet(charactersIn: "/")) + path),
+        guard path.hasPrefix("/v1/images"),
+              let url = URL(string: base.absoluteString + path),
               let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              components.path.range(of: "^/v1/images(?:/[a-f0-9]{64}/(?:original|decision))?$",
-                                    options: .regularExpression) != nil,
-              ["GET", "POST"].contains(method)
+              components.scheme == base.scheme,
+              components.host == base.host,
+              components.user == nil, components.password == nil,
+              components.port == nil, components.fragment == nil,
+              // components.path includes the fixed /api/image-inbox prefix.
+              // Validate the *relative* route so that valid inbox reads work
+              // without ever widening the OAuth token's destination.
+              components.path.hasPrefix(base.path + "/")
+        else { throw GitHubError.message("Ruta privada no permitida.") }
+        let route = String(components.path.dropFirst(base.path.count))
+        guard route.range(of: "^/v1/images(?:/[a-f0-9]{64}/(?:original|decision))?$",
+                          options: .regularExpression) != nil,
+              (route == "/v1/images" && method == "GET" ||
+               route.hasSuffix("/original") && method == "GET" ||
+               route.hasSuffix("/decision") && method == "POST")
         else { throw GitHubError.message("Ruta privada no permitida.") }
         // Only the list route accepts two tightly scoped pagination parameters.
         let query = components.queryItems ?? []
-        let validPage = components.path == "/v1/images" && method == "GET" &&
+        let validPage = route == "/v1/images" && method == "GET" &&
             query.count <= 2 && query.contains(where: {
                 $0.name == "limit" && $0.value == "20"
             }) && Set(query.map(\.name)).count == query.count &&
