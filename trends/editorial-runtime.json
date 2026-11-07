@@ -7,11 +7,11 @@
   "previous_run_id": "tr-1794088629472-manual",
   "command_id": "tr-1794089454769-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T23:10:54.769+01:00",
-  "updated_at": "2026-11-07T23:10:54.769+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T23:11:23.169+01:00",
+  "finished_at": "2026-11-07T23:11:23.169+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -22,7 +22,25 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 5,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
   "outcomes": [],
   "incident_count": 0,
   "incidents": [],
@@ -32,9 +50,14 @@
       "at": "2026-11-07T23:10:54.769+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794089454769-manual iniciada desde chat; lectura inicial de main=0. Verificando barrera final, reexplicaciones y mantenimiento. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T23:11:23.169+01:00",
+      "phase": "closing",
+      "message": "Barrera final en main: editorial-queue=5; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain activos. Cierre 0/0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T23:10:54.769+01:00",
-  "last_completed_at": "2026-11-07T22:59:30+01:00",
+  "last_completed_at": "2026-11-07T23:11:23.169+01:00",
   "api_failover_enabled": false
 }
