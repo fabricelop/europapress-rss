@@ -27,6 +27,8 @@ private struct PendingImage: Decodable, Identifiable {
 
 private struct PendingImageResponse: Decodable {
     let items: [PendingImage]
+    let hasMore: Bool?
+    let nextCursor: String?
 }
 
 private struct ApprovalDecision: Encodable {
@@ -40,39 +42,33 @@ private struct DecisionResponse: Decodable {
     let sitesVerified: Bool?
 }
 
-// Explicit editorial cutover, not the later moment when an old PNG arrives.
+// The inbox follows the *current* editorial Listas and Top 30, not a
+// hard-coded date or a fixed number of pictures. The server remains the
+// authority for approvals, rejections and exact image ownership.
 private enum ApprovalInboxScope {
-    static let maximumVisible = 20
-    static let newsCutover: Date = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f.date(from: "2026-11-06T08:43:00.000Z")!
-    }()
-    static func parse(_ text: String?) -> Date? {
-        guard let text else { return nil }
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        if let date = f.date(from: text) { return date }
-        f.formatOptions = [.withInternetDateTime]
-        return f.date(from: text)
-    }
     static func visible(_ items: [PendingImage],
-                        currentTop30: Set<String>) -> [PendingImage] {
+                        currentTop30: Set<String>,
+                        readyNews: Set<String>,
+                        assignedAI: Set<String>) -> [PendingImage] {
         var seen = Set<String>()
         return items.sorted { $0.createdAt > $1.createdAt }.filter { item in
-            let id = item.identity
-            let scope: Bool
-            if id.project == "ttendencias" {
-                scope = currentTop30.contains(id.editorialId + ":r" + String(id.revision))
-            } else if id.project == "ttittulares" {
-                // Never use ingestion time to make an old news article "new".
-                scope = parse(item.editorialAt).map { $0 >= newsCutover } ?? false
-            } else {
-                scope = false
+            let identity = item.identity
+            let episode = identity.editorialId + ":r" + String(identity.revision)
+            let key = identity.project + ":" + episode
+            let pending = ["pending", "pending_approval"].contains(
+                (item.state ?? "pending").lowercased())
+            let inScope: Bool
+            switch identity.project {
+            case "ttendencias":
+                inScope = currentTop30.contains(episode)
+            case "ttittulares":
+                inScope = readyNews.contains(episode)
+            default:
+                inScope = false
             }
-            let key = id.project + ":" + id.editorialId + ":r" + String(id.revision)
-            return scope && seen.insert(key).inserted
-        }.prefix(maximumVisible).map { $0 }
+            return pending && inScope && !assignedAI.contains(key) &&
+                seen.insert(key).inserted
+        }
     }
 }
 
@@ -85,36 +81,57 @@ private final class ApprovalInboxModel: ObservableObject {
     @Published var notice = ""
     @Published private(set) var pageDiagnostics = ""
 
-    func load(using github: GitHubEditor) async {
+    func load(using github: GitHubEditor, readyNews: Set<String>,
+              assignedAI: Set<String>) async {
         guard !loading else { return }
         loading = true
         defer { loading = false }
         do {
-            let (data, status) = try await github.privateImageInboxRequest(path: "/v1/images")
+            // Read every page with the server's opaque chronological cursor.
+            // A server without pagination must not be misreported as complete.
+            let (data, status) = try await github.privateImageInboxRequest(path: "/v1/images?limit=20")
             guard status == 200 else { throw InboxError.http(status) }
-            let received = try JSONDecoder().decode(PendingImageResponse.self, from: data).items
+            var page = try JSONDecoder().decode(PendingImageResponse.self, from: data)
+            var received = page.items
+            let supportsPagination = page.hasMore != nil
+            var seenCursors = Set<String>()
+            while page.hasMore == true {
+                guard let cursor = page.nextCursor, !cursor.isEmpty,
+                      seenCursors.insert(cursor).inserted else {
+                    throw InboxError.unexpectedResponse
+                }
+                var query = URLComponents()
+                query.queryItems = [URLQueryItem(name: "before", value: cursor)]
+                guard let encoded = query.percentEncodedQuery else {
+                    throw InboxError.unexpectedResponse
+                }
+                let (nextData, nextStatus) = try await github.privateImageInboxRequest(
+                    path: "/v1/images?limit=20&" + encoded)
+                guard nextStatus == 200 else { throw InboxError.http(nextStatus) }
+                page = try JSONDecoder().decode(PendingImageResponse.self, from: nextData)
+                received.append(contentsOf: page.items)
+            }
             let top30 = try await github.currentImageApprovalTrendEpisodes()
-            let items = ApprovalInboxScope.visible(received, currentTop30: top30)
-            // Diagnostics describe THIS server page, not total outstanding
-            // images. No old PNG previews or identifiers are exposed.
+            let items = ApprovalInboxScope.visible(received, currentTop30: top30,
+                                                    readyNews: readyNews, assignedAI: assignedAI)
             pageDiagnostics = "Servidor: " + String(received.count) +
-                " candidatas en esta página · " + String(items.count) +
-                " elegibles tras el filtro."
+                " candidatas consultadas · " + String(items.count) +
+                " pendientes elegibles." +
+                (supportsPagination ? "" : " El servidor no confirma paginación; podrían faltar imágenes.")
             images = items
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
             notice = items.isEmpty ?
-                "No hay imágenes actuales para aprobar. Las antiguas están ocultas, no eliminadas." : ""
+                "No hay imágenes pendientes elegibles en las páginas consultadas." : ""
             for image in items.prefix(4) where previews[image.id] == nil {
                 await loadOriginal(image, using: github)
             }
         } catch {
-            // Fail closed on Top30 identity/read errors: never leave a stale
-            // approval card on screen after a failed scope refresh.
+            // Fail closed on source/pagination errors; do not show stale approvals.
             images = []
             previews = [:]
             pageDiagnostics = ""
-            notice = "No se pudo verificar el Top 30 y la bandeja privada: \(error.localizedDescription)"
+            notice = "No se pudo comprobar completamente la bandeja privada: \(error.localizedDescription)"
         }
     }
 
@@ -263,8 +280,28 @@ private final class ApprovalInboxModel: ObservableObject {
 
 struct ImageApprovalInbox: View {
     @ObservedObject var github: GitHubEditor
+    @EnvironmentObject private var store: EditorialStore
     @Environment(\.dismiss) private var dismiss
     @StateObject private var model = ApprovalInboxModel()
+
+    private var readyNewsEpisodes: Set<String> {
+        Set(store.snapshot.news.map { $0.id + ":r" + String($0.revision) })
+    }
+
+    private var assignedAI: Set<String> {
+        let news = store.snapshot.news.filter { $0.siteImageURL != nil }.map {
+            "ttittulares:" + $0.id + ":r" + String($0.revision)
+        }
+        let trends = store.snapshot.top30.filter { $0.siteImageURL != nil }.map {
+            "ttendencias:" + $0.editorialID + ":r" + String($0.revision)
+        }
+        return Set(news + trends)
+    }
+
+    private func reload() async {
+        await model.load(using: github, readyNews: readyNewsEpisodes,
+                         assignedAI: assignedAI)
+    }
 
     var body: some View {
         NavigationStack {
@@ -281,7 +318,7 @@ struct ImageApprovalInbox: View {
                         description: Text("Las imágenes pendientes solo pueden verse con tu cuenta autorizada."))
                 } else {
                     List {
-                        Text("Máximo 20 imágenes · tendencias del Top 30 actual y noticias desde el 6/11 a las 09:43.")
+                        Text("Todas las pendientes: tendencias actuales del Top 30 sin IA asignada y noticias que siguen en Listas sin IA.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         if !model.pageDiagnostics.isEmpty {
@@ -340,7 +377,7 @@ struct ImageApprovalInbox: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    .refreshable { await model.load(using: github) }
+                    .refreshable { await reload() }
                     .overlay {
                         if model.loading && model.images.isEmpty { ProgressView("Consultando bandeja privada…") }
                     }
@@ -353,7 +390,7 @@ struct ImageApprovalInbox: View {
                     Button("Cerrar") { dismiss() }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { Task { await model.load(using: github) } } label: {
+                    Button { Task { await reload() } } label: {
                         Image(systemName: "arrow.clockwise")
                     }
                     .disabled(!github.imageInboxConfigured || !github.authenticated || model.loading)
@@ -362,7 +399,7 @@ struct ImageApprovalInbox: View {
             }
             .task {
                 if github.imageInboxConfigured && github.authenticated {
-                    await model.load(using: github)
+                    await reload()
                 }
             }
         }
