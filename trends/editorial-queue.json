@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T10:43:47+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-07T09:44:22.004291+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-b600427448342ab117fe",
+      "revision": 0,
+      "name": "Revisar novedades: Widilo",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-11-07T09:44:22.004291+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ff856dec111d",
+        "revision": 0,
+        "name": "Widilo",
+        "rank": 26,
+        "explanation": "TT#26 Widilo aparece entre las tendencias mientras la plataforma promociona ofertas de otoño y cashback aumentado en varias tiendas. No se ha podido confirmar qué ha impulsado el término.\n#Widilo #Cashback",
+        "explanation_sha256": "37ba91067512bd9ef7b1fa55de829a350e746d3b2af568c5a85903d6596e127d",
+        "explained_at": "2026-10-31T12:44:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://trends24.in/spain/palma/"
+          },
+          {
+            "url": "https://www.widilo.es/"
+          },
+          {
+            "url": "https://www.widilo.es/eventos/otono"
+          }
+        ],
+        "fingerprint": "2cc5131de803432dd499aee573a39009c2362e9bbae74ab7c75fde8defebaf6a"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-e2092675a56e9a6b06db",
+      "revision": 0,
+      "name": "Revisar novedades: Santiago Peña",
+      "rank": 16,
+      "status": "preparing",
+      "requested_at": "2026-11-07T09:44:22.004291+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c4f3771c12ae",
+        "revision": 0,
+        "name": "Santiago Peña",
+        "rank": 13,
+        "explanation": "TT#22 Santiago Peña sigue siendo tendencia por la crisis de Ueno Bank: tras su destitución quedó bajo arresto domiciliario, mientras Pedro Alliana juró como presidente de Paraguay.\n#Paraguay #UenoBank\n🌶️ La sucesión y la orden de arresto llegaron en la misma tarde.",
+        "explanation_sha256": "eaef6ff35cffdecee169c66d7bcb63567ce33672919802eb21a25c221171859f",
+        "explained_at": "2026-11-05T18:15:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/world/americas/paraguay-president-pea-resigns-under-mounting-pressure-bank-collapse-2026-11-05/"
+          },
+          {
+            "url": "https://apnews.com/article/eccea1c9a64808b5cd7e6e1d5542084f"
+          }
+        ],
+        "fingerprint": "27fa36f902d12a47c0efea8bf96353bb80f10e11ee49661f864280cae16798d5"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
