@@ -137,6 +137,26 @@ test('current index excludes closed news and old episodes while retaining exact 
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
 });
 
+test('isolated receiver installer updates only exact pinned CJS without disrupting generators',()=>{
+ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+ const script=fs.readFileSync(path.join(__dirname,'../Actualizar-Solo-Receptor-Imagenes-TT.ps1'),'utf8');
+ const receiver=fs.readFileSync(path.join(__dirname,'../TTImageApprovalReceiver.cjs'),'utf8');
+ const canonical=receiver.replace(/\r\n/g,'\n').replace(/\n/g,'\r\n');
+ const sha=crypto.createHash('sha256').update(canonical,'utf8').digest('hex');
+ assert.ok(script.includes("$expected='"+sha+"'"),'sha target bound to receiver source');
+ for(const marker of ['RECEIVER_UNKNOWN_SHA','RECEIVER_DEPENDENCY_UNKNOWN',
+  'RECEIVER_APPROVAL_PAUSE_MISSING','RECEIVER_HIDDEN_TASK_REQUIRED',
+  'RECEIVER_DOWNLOAD_SHA_INVALID','RECEIVER_JS_SYNTAX_INVALID',
+  'RECEIVER_CHANGED_DURING_STAGE','RECEIVER_REPLACEMENT_SHA_INVALID',
+  'MAX_NEW_RELAY_TABS_PER_CYCLE=1','RELAY_CLEANUP_UNCONFIRMED',
+  '[IO.File]::Replace($stage,$live','receiver-only-backup-']){
+  assert.ok(script.includes(marker),marker);
+ }
+ assert.doesNotMatch(script,/Wait-ForGeneratorsIdle|Assert-GeneratorsIdle|Stop-Process|Stop-ScheduledTask|taskkill|Enable-ScheduledTask|Start-ScheduledTask/);
+ assert.match(script,/\$before=Get-CanonicalSourceHash \$live/);
+ assert.match(script,/if\(\$accepted -notcontains \$before\)/);
+});
+
 test('installer waits for uninterrupted generator quiet before replacement',()=>{
  const fs=require('node:fs'),path=require('node:path');
  const script=fs.readFileSync(path.join(__dirname,'../Actualizar-Recogida-Privada-TT.ps1'),'utf8');
