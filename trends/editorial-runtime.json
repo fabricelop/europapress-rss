@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-0855-chat",
   "command_id": "tr-manual-20261107-0910-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T09:10:00+01:00",
-  "updated_at": "2026-11-07T09:10:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T09:11:13+01:00",
+  "finished_at": "2026-11-07T09:11:13+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -45,9 +45,9 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "preparing",
-    "message": "Releyendo cola y barreras editoriales en main.",
-    "updated_at": "2026-11-07T09:10:00+01:00"
+    "phase": "closing",
+    "message": "Pasada cerrada 0/0. Barrera final main: editorial-queue=0; sin preparing/update ni rewrite_pending detectados. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "updated_at": "2026-11-07T09:11:13+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -87,7 +87,7 @@
     "message": "Pasada tr-manual-20261107-0855-chat cerrada 0/0. Barrera final main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. Incidencia de salud: request_queue reporta 510 estados históricos inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T09:10:00+01:00",
-  "last_completed_at": "2026-11-07T08:56:00+01:00",
+  "last_completed_at": "2026-11-07T09:11:13+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -158,7 +158,8 @@
     "tr-manual-20261107-0710-chat",
     "tr-1794032311095-manual",
     "tr-1794032624278-manual",
-    "tr-manual-20261107-0755-chat"
+    "tr-manual-20261107-0755-chat",
+    "tr-manual-20261107-0910-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -231,7 +232,8 @@
     "tr-manual-20261107-0710-chat",
     "tr-1794032311095-manual",
     "tr-1794032624278-manual",
-    "tr-manual-20261107-0755-chat"
+    "tr-manual-20261107-0755-chat",
+    "tr-manual-20261107-0910-chat"
   ],
-  "message": "Pasada manual iniciada; releyendo main antes del cierre."
+  "message": "Pasada cerrada 0/0. Barrera final main: editorial-queue=0; sin preparing/update ni rewrite_pending detectados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
