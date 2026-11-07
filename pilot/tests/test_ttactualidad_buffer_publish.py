@@ -172,6 +172,84 @@ class DirectBufferPublisherTests(unittest.TestCase):
         self.assertEqual((image_url, kind), (approved, "ai"))
         check.assert_called_once_with(approved, "b"*64, "ttittulares", "news123456", 1)
 
+    def test_user_uploaded_trend_github_image_is_valid_without_second_approval(self):
+        # The iOS "Subir y aprobar" GitHub fallback stores user-selected PNGs
+        # under trends/generated-images, NOT ttendencias/generated-images.
+        # Its authenticated, exact-identity manifest is itself approval.
+        png = b"\x89PNG\r\n\x1a\n" + b"editor-submitted-image" * 80
+        sha = hashlib.sha256(png).hexdigest()
+        event_id = "espanyoltest123"
+        filename = event_id + "-r0-manual-" + sha[:12] + ".png"
+        url = ("https://raw.githubusercontent.com/fabricelop/europapress-rss/"
+               "main/trends/generated-images/" + filename)
+        explanation = "TT#8 Espanyol es tendencia por el encuentro de Liga."
+        at = "2026-11-07T22:00:00+01:00"
+        self._write("trends/telegram-manual-explained.json", {"items": [
+            {"id": event_id, "revision": 0, "status": "explained",
+             "explanation": explanation, "explained_at": at}]})
+        self._write("trends/mobile-decisions.json", {"items": []})
+        self._write("trends/site-ai-images.json", {"images": [
+            {"target_id": event_id, "revision": 0,
+             "explanation": explanation, "explained_at": at,
+             "image_url": url, "sha256": sha}]})
+        archive = self.root / "trends/archive-images"
+        archive.mkdir(parents=True)
+        (archive / (event_id + "-r0-file.jpg")).write_bytes(b"archive")
+
+        class Reply:
+            def __enter__(self): return self
+            def __exit__(self, *_args): return False
+            def geturl(self): return url
+            def read(self, limit): return png[:limit]
+
+        calls = []
+        def buffer_api(_key, _query, variables=None):
+            calls.append(variables)
+            return {"createPost": {"post": {
+                "id": "buffer-test-only", "status": "buffer",
+                "channelId": "trend_channel_test"}}}
+        payload = {"project": "ttendencias", "event_id": event_id,
+                   "revision": 0,
+                   "request_id": "22222222-2222-4222-8222-222222222222"}
+        with mock.patch.object(publisher, "urlopen", return_value=Reply()), \
+             mock.patch.object(publisher, "target_channel",
+                               return_value="trend_channel_test"), \
+             mock.patch.object(publisher, "graphql", side_effect=buffer_api):
+            text, chosen, media = publisher.editorial("ttendencias", event_id, 0)
+            self.assertEqual((text, chosen, media), (explanation, url, "ai"))
+            state = {"version": 1, "items": []}
+            publisher.publish(state, payload, "test-key")
+            publisher.publish(state, payload, "test-key")
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(calls[0]["input"]["assets"],
+                         [{"image": {"url": url}}])
+        self.assertEqual(state["items"][0]["media_type"], "ai")
+
+    def test_github_manual_trend_image_rejects_wrong_identity_and_digest(self):
+        png = b"\x89PNG\r\n\x1a\n" + b"editor-original" * 30
+        sha = hashlib.sha256(png).hexdigest()
+        prefix = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
+        correct = prefix + "trends/generated-images/trend123-r0-manual-" + sha[:12] + ".png"
+        class Reply:
+            def __enter__(self): return self
+            def __exit__(self, *_args): return False
+            def geturl(self): return correct
+            def read(self, limit): return png[:limit]
+        with mock.patch.object(publisher, "urlopen", return_value=Reply()):
+            self.assertEqual(publisher.check_image(
+                correct, sha, "ttendencias", "trend123", 0), correct)
+            for invalid in [
+                    correct.replace("trends/generated-images",
+                                    "ttendencias/generated-images"),
+                    correct.replace("trend123-r0", "trend999-r0"),
+                    correct.replace("trend123-r0", "trend123-r1")]:
+                with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                    publisher.check_image(
+                        invalid, sha, "ttendencias", "trend123", 0)
+            with self.assertRaisesRegex(ValueError, "SHA-256"):
+                publisher.check_image(correct, "f" * 64,
+                                      "ttendencias", "trend123", 0)
+
     def test_approved_espanyol_redirect_to_canonical_site_is_verified(self):
         png = b"\x89PNG\r\n\x1a\n" + b"test-exact-original" * 100
         sha = hashlib.sha256(png).hexdigest()
