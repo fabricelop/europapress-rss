@@ -243,7 +243,12 @@ def check_image(url, expected_hash, project, event_id=None, revision=None):
         raise ValueError("Imagen IA no verificada: URL o SHA-256 inválidos")
     filename = parsed.path.split("/")[-1]
     if parsed.hostname == "raw.githubusercontent.com":
-        prefix = "/fabricelop/europapress-rss/main/" + project + "/generated-images/"
+        # Authenticated manual uploads use the physical GitHub folder
+        # "trends" (not the editorial project slug "ttendencias").
+        # Both are first-class approved images when recorded for the exact
+        # editorial identity in site-ai-images.json.
+        folder = "trends" if project == "ttendencias" else "ttittulares"
+        prefix = "/fabricelop/europapress-rss/main/" + folder + "/generated-images/"
         if not parsed.path.startswith(prefix):
             raise ValueError("Origen IA no autorizado")
         if event_id is not None and revision is not None:
