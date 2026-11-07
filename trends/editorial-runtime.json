@@ -7,38 +7,35 @@
   "previous_run_id": "tr-autoguard-1794057063",
   "command_id": "tr-1794057704831-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T14:23:00+01:00",
-  "updated_at": "2026-11-07T14:27:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T14:30:00+01:00",
+  "finished_at": "2026-11-07T14:30:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-e4d3434008a7f544bd89",
-  "title": "Revisar novedades: Paraguay",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-4c4b24f489072034e148",
+    "red-review-e4d3434008a7f544bd89"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-4c4b24f489072034e148",
-    "red-review-e4d3434008a7f544bd89"
-  ],
-  "remaining_active_ids": [
-    "red-review-4c4b24f489072034e148",
-    "red-review-e4d3434008a7f544bd89"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "queue_remaining": 2,
+    "unchanged_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -420,22 +417,49 @@
       "trend_id": "red-review-e4d3434008a7f544bd89",
       "title": "Revisar novedades: Paraguay",
       "message": "Paraguay revalidado JIT. EFE y AP confirman que la orden fiscal ya se ejecutó: Peña está detenido en su domicilio. Es continuidad de la misma crisis de Ueno Bank; no episodio distinto."
+    },
+    {
+      "at": "2026-11-07T14:30:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; sin preparing/update ni rewrite_pending/reexplain. Widilo unchanged y Paraguay continuidad aplicados y sincronizados en requests.json + telegram-manual-explained.json. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T14:30:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794057704831-manual cerrada 2/2: 1 revisión unchanged y 1 actualización de continuidad; sin imágenes, sin publicaciones y sin pendientes editoriales."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-4c4b24f489072034e148",
+      "revision": 0,
+      "name": "Revisar novedades: Widilo",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "ff856dec111d"
+    },
+    {
+      "id": "red-review-e4d3434008a7f544bd89",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "continuity_update",
+      "applied": true,
+      "source_id": "7fb4d179ec62"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1794057063",
+    "run_id": "tr-1794057704831-manual",
     "status": "DONE",
-    "finished_at": "2026-11-07T14:14:30+01:00",
-    "total": 1,
-    "closed": 1,
+    "finished_at": "2026-11-07T14:30:00+01:00",
+    "total": 2,
+    "closed": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
-  "last_started_at": "2026-11-07T13:48:30+01:00",
-  "last_completed_at": "2026-11-07T14:14:30+01:00",
+  "last_started_at": "2026-11-07T14:23:00+01:00",
+  "last_completed_at": "2026-11-07T14:30:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -536,7 +560,8 @@
     "tr-1794054829513-manual",
     "tr-manual-20261107-1340-chat",
     "tr-1794055651059-manual",
-    "tr-1794057000000-manual"
+    "tr-1794057000000-manual",
+    "tr-1794057704831-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -638,17 +663,26 @@
     "tr-1794054978318-manual",
     "tr-1794054829513-manual",
     "tr-manual-20261107-1340-chat",
-    "tr-1794057000000-manual"
+    "tr-1794057000000-manual",
+    "tr-1794057704831-manual"
   ],
-  "message": "Revisando Paraguay: novedad de continuidad verificada (detención ejecutada).",
+  "message": "Pasada tr-1794057704831-manual cerrada 2/2: Widilo sin novedades sustanciales; Paraguay actualizado por continuidad con la detención domiciliaria ya ejecutada. Cola final 0. Sin ImageGen ni publicaciones.",
   "outcomes": [
     {
-      "id": "75431d358387",
+      "id": "red-review-4c4b24f489072034e148",
       "revision": 0,
-      "name": "#FDS7nov",
-      "outcome": "explained",
+      "name": "Revisar novedades: Widilo",
+      "outcome": "unchanged",
       "applied": true,
-      "apply_commit": "de4d74e1c254ca946c05580ec30f273942c6e74e"
+      "source_id": "ff856dec111d"
+    },
+    {
+      "id": "red-review-e4d3434008a7f544bd89",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "continuity_update",
+      "applied": true,
+      "source_id": "7fb4d179ec62"
     }
   ],
   "recent_runs": [
