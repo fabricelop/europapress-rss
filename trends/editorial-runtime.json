@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-0710-chat",
-  "previous_run_id": "tr-manual-20261107-0640-chat",
-  "command_id": "tr-manual-20261107-0710-chat",
+  "run_id": "tr-1794032311095-manual",
+  "previous_run_id": "tr-manual-20261107-0710-chat",
+  "command_id": "tr-1794032311095-manual",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-07T07:10:00+01:00",
-  "updated_at": "2026-11-07T07:11:45+01:00",
-  "finished_at": "2026-11-07T07:11:45+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T07:19:00+01:00",
+  "updated_at": "2026-11-07T07:19:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-7c7d9ca36d57029954e5",
+    "red-review-68a1ca00023f6f3ef1cb"
+  ],
+  "remaining_active_ids": [
+    "red-review-7c7d9ca36d57029954e5",
+    "red-review-68a1ca00023f6f3ef1cb"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,27 +39,21 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "incident_count": 1,
-  "incidents": [
-    {
-      "code": "request_queue_invalid_states",
-      "message": "health-status reporta 508 estados históricos inválidos en request_queue; editorial_queue está OK y no hay trabajo editorial activo.",
-      "blocking_editorial": false
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Pasada 0/0 cerrada tras barrera final en main: Top 30 fresco (07:10:53), editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. Incidencia de salud no editorial: request_queue mantiene 508 estados históricos inválidos.",
-    "updated_at": "2026-11-07T07:11:45+01:00"
+    "phase": "preparing",
+    "message": "Pasada editorial iniciada: 2 revisiones de novedades pendientes (La UCO y Koldo). Revalidación JIT antes de cada investigación. Sin ImageGen.",
+    "updated_at": "2026-11-07T07:19:00+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -233,5 +233,5 @@
     "tr-manual-20261107-0555-chat",
     "tr-manual-20261107-0710-chat"
   ],
-  "message": "Pasada tr-manual-20261107-0710-chat cerrada 0/0. Barrera final main: recent 07:10:53, editorial-queue=0, preparing/update/rewrite_pending/reexplain/review_red/anticipate=0. Incidencia de salud: request_queue reporta 508 estados históricos inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Procesando 2 revisiones de novedades; ImageGen=0; publicaciones=0."
 }
