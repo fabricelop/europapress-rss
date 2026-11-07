@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-2025-chat",
-  "previous_run_id": "tr-manual-20261107-2010-chat",
-  "command_id": "tr-manual-20261107-2025-chat",
+  "run_id": "tr-1794080400000-manual",
+  "previous_run_id": "tr-manual-20261107-2025-chat",
+  "command_id": "tr-1794080400000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T20:25:30+01:00",
-  "updated_at": "2026-11-07T20:26:30+01:00",
-  "finished_at": "2026-11-07T20:26:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T20:40:00+01:00",
+  "updated_at": "2026-11-07T20:40:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-723c84da4167adcbdd59",
+    "red-review-484a843b0d9c5e387d37"
+  ],
+  "remaining_active_ids": [
+    "red-review-723c84da4167adcbdd59",
+    "red-review-484a843b0d9c5e387d37"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -45,131 +51,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-07T12:25:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-manual-20261107-1225-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T12:27:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. ImageGen=0."
-    },
-    {
-      "at": "2026-11-07T12:27:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-manual-20261107-1225-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T12:40:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-manual-20261107-1240-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T12:42:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Últimos resultados de mantenimiento inspeccionados. ImageGen=0."
-    },
-    {
-      "at": "2026-11-07T12:42:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-manual-20261107-1240-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T12:58:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794052645605-manual iniciada; barrera fresca de main detecta 2 reelaboraciones manuales activas: La UCO y Koldo. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T13:02:00+01:00",
-      "phase": "persisting",
-      "trend_id": "b99fe04c5ad2",
-      "title": "La UCO",
-      "message": "Resultado editorial de La UCO b99fe04c5ad2 r0 materializado en editorial-outbox; esperando aplicación atómica en main. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T13:02:00+01:00",
-      "phase": "investigating",
-      "trend_id": "0c687fa6e606",
-      "title": "Koldo",
-      "message": "Koldo 0c687fa6e606 r0 revalidado JIT: sigue preparing y puesto 1; investigación actual contrastada antes de persistir."
-    },
-    {
-      "at": "2026-11-07T13:04:30+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain. La UCO b99fe04c5ad2 r0 y Koldo 0c687fa6e606 r0 constan explained con texto/remate persistidos. ImageGen=0."
-    },
-    {
-      "at": "2026-11-07T13:04:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794052645605-manual cerrada 2/2. Dos reelaboraciones aplicadas; sin imágenes generadas en esta pasada y sin publicaciones."
-    },
-    {
-      "at": "2026-11-07T13:06:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-997e4a88b31e86eeebcd",
-      "title": "Revisar novedades: Javier Ruiz",
-      "message": "La barrera final incorporó 2 review_red nuevos tras cerrar los trabajos manuales. Se reabre la misma pasada: 2/4 completados; procesando Javier Ruiz y después Paraguay. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T13:07:30+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-997e4a88b31e86eeebcd",
-      "title": "Revisar novedades: Javier Ruiz",
-      "message": "Pasada tr-1794052874051-manual toma la barrera vigente de 2 review_red: Javier Ruiz y Paraguay. Javier Ruiz revalidado JIT; investigación actual contrastada. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T13:09:30+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Javier Ruiz aplicado como continuidad y Paraguay como unchanged. ImageGen=0."
-    },
-    {
-      "at": "2026-11-07T13:09:30+01:00",
-      "phase": "closing",
-      "message": "tr-1794052645605-manual queda satisfecho por convergencia con tr-1794052874051-manual: 2 reelaboraciones manuales + 2 review_red resueltos, barrera final 0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T13:14:00+01:00",
-      "phase": "investigating",
-      "trend_id": "cca8446cab5f",
-      "title": "#IreneYGabrielEnMadrid",
-      "message": "Pasada tr-manual-20261107-1310-chat: #IreneYGabrielEnMadrid cca8446cab5f r0 revalidado JIT en puesto 5; motivo actual contrastado con dos fuentes. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T13:15:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0. #IreneYGabrielEnMadrid cca8446cab5f r0 consta explained y su revisión fue retirada de la cola. ImageGen=0."
-    },
-    {
-      "at": "2026-11-07T13:15:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-manual-20261107-1310-chat cerrada 1/1. Una tendencia explicada; sin imágenes generadas en esta pasada y sin publicaciones."
-    },
-    {
-      "at": "2026-11-07T12:14:18.026Z",
-      "phase": "preparing",
-      "message": "Reejecución real de tr-1794052874051-manual iniciada; se relee main y se comprueba trabajo editorial vigente. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T12:14:38.759Z",
-      "phase": "verifying",
-      "message": "Barrera final main revalidada: editorial-queue=0; sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. ImageGen=0."
-    },
-    {
-      "at": "2026-11-07T12:14:38.759Z",
-      "phase": "closing",
-      "message": "Reejecución de tr-1794052874051-manual cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T13:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-manual-20261107-1325-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T13:27:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main revalidada: editorial-queue=0; sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Últimos resultados de mantenimiento inspeccionados. ImageGen=0."
-    },
     {
       "at": "2026-11-07T13:27:00+01:00",
       "phase": "closing",
@@ -847,98 +728,11 @@
       "at": "2026-11-07T20:26:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-manual-20261107-2025-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
-    }
-  ],
-  "last_started_at": "2026-11-07T20:10:00+01:00",
-  "last_completed_at": "2026-11-07T20:16:30+01:00",
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-manual-20261107-2010-chat",
-    "status": "DONE",
-    "started_at": "2026-11-07T20:10:00+01:00",
-    "finished_at": "2026-11-07T20:16:30+01:00",
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 5,
-    "problematic": 0,
-    "updates": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0,
-    "outcomes": [
-      {
-        "id": "a08abcc188cf",
-        "revision": 0,
-        "name": "El Sadar",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox"
-      },
-      {
-        "id": "23252ca2849e",
-        "revision": 0,
-        "name": "Alcorcon",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox"
-      },
-      {
-        "id": "607c7369e0e3",
-        "revision": 0,
-        "name": "Sancet",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox"
-      },
-      {
-        "id": "be1ae41b540c",
-        "revision": 0,
-        "name": "Interlagos",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox"
-      },
-      {
-        "id": "438f36286fc7",
-        "revision": 0,
-        "name": "#BrazilGP",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox"
-      }
-    ]
-  },
-  "current_item": null,
-  "progress": [
+    },
     {
-      "at": "2026-11-07T20:10:00+01:00",
+      "at": "2026-11-07T20:40:00+01:00",
       "phase": "preparing",
-      "trend_id": "a08abcc188cf",
-      "title": "El Sadar",
-      "message": "Pasada tr-manual-20261107-2010-chat iniciada; barrera fresca de main detecta 5 trabajos preparing/update: El Sadar, Alcorcon, Sancet, Interlagos, #BrazilGP. Se procesan de antiguo a reciente con validación JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T20:14:00+01:00",
-      "phase": "investigating",
-      "trend_id": "a08abcc188cf",
-      "title": "El Sadar",
-      "message": "Barrera JIT: 5/5 revisiones siguen preparing/update y conservan su revisión. Investigación contrastada para El Sadar, Alcorcon, Sancet, Interlagos y #BrazilGP; sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T20:16:00+01:00",
-      "phase": "verifying",
-      "message": "Commit e4c1da23… confirma aplicación de las cinco revisiones en main. requests.json y telegram-manual-explained.json contienen los cinco ID/revisión como explained con texto/remate coincidentes; editorial-queue=0. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T20:16:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-manual-20261107-2010-chat cerrada 5/5: El Sadar, Alcorcon, Sancet, Interlagos y #BrazilGP explicados y verificados. Cola final 0; sin imágenes ni publicaciones."
+      "message": "Pasada tr-1794080400000-manual iniciada; cola fresca de main detecta 2 review_red: Sprint de MotoGP en Sepang y Jorge Martín. Se procesan con revalidación JIT. Sin ImageGen ni publicaciones."
     }
-  ],
-  "imagegen_calls": 0,
-  "publications": 0
+  ]
 }
