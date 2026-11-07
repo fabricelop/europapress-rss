@@ -1,110 +1,423 @@
 {
   "project": "TTendencias",
   "country": "ES",
-  "captured_at": "2026-11-07T20:31:17+01:00",
-  "primary_source": "getdaytrends",
-  "selection_method": "continuity-anchor",
+  "captured_at": "2026-11-07T20:40:59+01:00",
+  "primary_source": "snaplytics",
+  "selection_method": "fresh-anchor",
   "sources_used": [
-    "getdaytrends",
-    "fowtools"
+    "snaplytics"
   ],
   "source_count": 6,
-  "non_stale_source_count": 2,
-  "fresh_sources": [],
-  "reliability": "fallback",
+  "non_stale_source_count": 3,
+  "fresh_sources": [
+    "snaplytics"
+  ],
+  "reliability": "medium",
   "top10": [
-    "Cracovia",
-    "Marc",
+    "Abascal",
     "#IreneYGabrielEnMadrid",
-    "bezz",
-    "Leo Román",
-    "#WWECrownJewel",
-    "#FueraDeControl7nov",
-    "Rivola",
-    "Sancet",
-    "Funes"
+    "Cracovia",
+    "Broncano",
+    "La Revuelta",
+    "Paraguay",
+    "La Séptima",
+    "Marc",
+    "Bezz",
+    "Sancet"
   ],
   "top30": [
-    "Cracovia",
-    "Marc",
+    "Abascal",
     "#IreneYGabrielEnMadrid",
-    "bezz",
-    "Leo Román",
+    "Cracovia",
+    "Broncano",
+    "La Revuelta",
+    "Paraguay",
+    "La Séptima",
+    "Marc",
+    "Bezz",
+    "Sancet",
+    "Núcleo Nacional",
+    "#RTXON",
     "#WWECrownJewel",
     "#FueraDeControl7nov",
+    "Leo Román",
+    "Enric Gallego",
+    "Koldo",
+    "Liam Delap",
+    "Amaia",
+    "Santiago Peña",
+    "Fiscalía Europea",
+    "Osasuna",
     "Rivola",
-    "Sancet",
-    "Funes",
-    "Goni",
-    "Interlagos",
-    "Dani Calvo",
+    "Catena",
     "#BrazilGP",
-    "Sarabia",
-    "Pecco",
-    "Espanyol",
-    "Cadiz",
-    "Calero",
-    "Jorge Martín",
-    "#QatarGP",
-    "Einar",
-    "Sprint",
-    "El Sadar",
-    "Enzo",
-    "Loren",
-    "Alcorcon",
-    "Hidalgo",
-    "Malaga",
-    "#MotoGP"
+    "Mestalla",
+    "Berenguer",
+    "Funes",
+    "Gazir",
+    "Acierto"
   ],
   "rank_movement_version": 3,
   "rank_movement_history": {
     "ireneygabrielenmadrid": {
-      "rank": 3,
+      "rank": 2,
       "name": "#IreneYGabrielEnMadrid",
       "movement_version": 3,
       "movement": "up",
-      "previous_rank": 5,
-      "rank_delta": 2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 3,
+      "rank_delta": 1,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": "2026-11-07T13:10:51+01:00",
       "first_seen_at": "2026-11-07T13:10:51+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
     },
     "funes": {
-      "rank": 10,
+      "rank": 28,
       "name": "Funes",
       "movement_version": 3,
       "movement": "down",
-      "previous_rank": 8,
-      "rank_delta": -2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 10,
+      "rank_delta": -18,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": null,
       "first_seen_at": "2026-10-31T20:11:02+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
     },
     "leo roman": {
-      "rank": 5,
+      "rank": 15,
       "name": "Leo Román",
       "movement_version": 3,
       "movement": "down",
-      "previous_rank": 3,
-      "rank_delta": -2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 5,
+      "rank_delta": -10,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": null,
       "first_seen_at": "2026-11-03T00:54:45+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
     },
     "cracovia": {
-      "rank": 1,
+      "rank": 3,
       "name": "Cracovia",
       "movement_version": 3,
-      "movement": "up",
-      "previous_rank": 12,
-      "rank_delta": 11,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
+      "movement": "down",
+      "previous_rank": 1,
+      "rank_delta": -2,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": "2026-11-07T17:20:56+01:00",
       "first_seen_at": "2026-11-07T17:20:56+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "rivola": {
+      "rank": 23,
+      "name": "Rivola",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 8,
+      "rank_delta": -15,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T18:02:13+01:00",
+      "first_seen_at": "2026-11-07T18:02:13+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "marc": {
+      "rank": 8,
+      "name": "Marc",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 2,
+      "rank_delta": -6,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T19:01:37+01:00",
+      "first_seen_at": "2026-11-07T19:01:37+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "bezz": {
+      "rank": 9,
+      "name": "Bezz",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 4,
+      "rank_delta": -5,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T19:01:37+01:00",
+      "first_seen_at": "2026-11-07T19:01:37+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "fueradecontrol7nov": {
+      "rank": 14,
+      "name": "#FueraDeControl7nov",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 7,
+      "rank_delta": -7,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T19:01:37+01:00",
+      "first_seen_at": "2026-11-07T19:01:37+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "wwecrownjewel": {
+      "rank": 13,
+      "name": "#WWECrownJewel",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 6,
+      "rank_delta": -7,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T19:01:37+01:00",
+      "first_seen_at": "2026-11-07T19:01:37+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "sancet": {
+      "rank": 10,
+      "name": "Sancet",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 9,
+      "rank_delta": -1,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:03:23+01:00",
+      "first_seen_at": "2026-11-07T20:03:23+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "brazilgp": {
+      "rank": 25,
+      "name": "#BrazilGP",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 14,
+      "rank_delta": -11,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:03:23+01:00",
+      "first_seen_at": "2026-11-07T20:03:23+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "amaia": {
+      "rank": 19,
+      "name": "Amaia",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 29,
+      "rank_delta": 10,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T10:01:38+01:00",
+      "first_seen_at": "2026-11-07T10:01:38+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "gazir": {
+      "rank": 29,
+      "name": "Gazir",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 30,
+      "rank_delta": 1,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T17:20:56+01:00",
+      "first_seen_at": "2026-11-07T17:20:56+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "broncano": {
+      "rank": 4,
+      "name": "Broncano",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 17,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T20:41:01+01:00",
+      "first_seen_at": "2026-11-06T20:41:01+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "la revuelta": {
+      "rank": 5,
+      "name": "La Revuelta",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 18,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T21:40:57+01:00",
+      "first_seen_at": "2026-11-06T21:40:57+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "paraguay": {
+      "rank": 6,
+      "name": "Paraguay",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 19,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-04T15:50:56+01:00",
+      "first_seen_at": "2026-11-04T15:50:56+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "koldo": {
+      "rank": 17,
+      "name": "Koldo",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 22,
+      "rank_delta": 5,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": null,
+      "first_seen_at": "2026-10-28T22:40:53+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "la septima": {
+      "rank": 7,
+      "name": "La Séptima",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 20,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-04T20:01:42+01:00",
+      "first_seen_at": "2026-11-04T20:01:42+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "fiscalia europea": {
+      "rank": 21,
+      "name": "Fiscalía Europea",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 27,
+      "rank_delta": 6,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T11:01:31+01:00",
+      "first_seen_at": "2026-11-06T11:01:31+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "nucleo nacional": {
+      "rank": 11,
+      "name": "Núcleo Nacional",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 23,
+      "rank_delta": 12,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T11:51:04+01:00",
+      "first_seen_at": "2026-11-06T11:51:04+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "rtxon": {
+      "rank": 12,
+      "name": "#RTXON",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 21,
+      "rank_delta": 9,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T16:51:08+01:00",
+      "first_seen_at": "2026-11-06T16:51:08+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "abascal": {
+      "rank": 1,
+      "name": "Abascal",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 16,
+      "rank_delta": 15,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T16:51:08+01:00",
+      "first_seen_at": "2026-11-06T16:51:08+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "santiago pena": {
+      "rank": 20,
+      "name": "Santiago Peña",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 28,
+      "rank_delta": 8,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-05T18:01:35+01:00",
+      "first_seen_at": "2026-11-05T18:01:35+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "acierto": {
+      "rank": 30,
+      "name": "Acierto",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 28,
+      "rank_delta": -2,
+      "last_changed_at": "2026-11-07T17:41:03+01:00",
+      "entered_top30_at": "2026-11-07T10:01:38+01:00",
+      "first_seen_at": "2026-11-07T10:01:38+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "mestalla": {
+      "rank": 26,
+      "name": "Mestalla",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 30,
+      "rank_delta": 4,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T14:56:47+01:00",
+      "first_seen_at": "2026-11-07T14:56:47+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "osasuna": {
+      "rank": 22,
+      "name": "Osasuna",
+      "movement_version": 3,
+      "movement": "flat",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": null,
+      "entered_top30_at": null,
+      "first_seen_at": "2026-11-02T22:40:52+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "catena": {
+      "rank": 24,
+      "name": "Catena",
+      "movement_version": 3,
+      "movement": "flat",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": null,
+      "entered_top30_at": null,
+      "first_seen_at": "2026-11-02T21:41:33+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "berenguer": {
+      "rank": 27,
+      "name": "Berenguer",
+      "movement_version": 3,
+      "movement": "flat",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": null,
+      "entered_top30_at": null,
+      "first_seen_at": "2026-11-02T00:40:55+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "enric gallego": {
+      "rank": 16,
+      "name": "Enric Gallego",
+      "movement_version": 3,
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:40:59+01:00",
+      "first_seen_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "liam delap": {
+      "rank": 18,
+      "name": "Liam Delap",
+      "movement_version": 3,
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:40:59+01:00",
+      "first_seen_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
     },
     "pecco": {
       "rank": 16,
@@ -130,18 +443,6 @@
       "first_seen_at": "2026-11-07T17:41:03+01:00",
       "last_seen_at": "2026-11-07T20:31:17+01:00"
     },
-    "rivola": {
-      "rank": 8,
-      "name": "Rivola",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 6,
-      "rank_delta": -2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T18:02:13+01:00",
-      "first_seen_at": "2026-11-07T18:02:13+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
     "calero": {
       "rank": 19,
       "name": "Calero",
@@ -152,54 +453,6 @@
       "last_changed_at": "2026-11-07T20:03:23+01:00",
       "entered_top30_at": null,
       "first_seen_at": "2026-11-02T17:31:11+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "marc": {
-      "rank": 2,
-      "name": "Marc",
-      "movement_version": 3,
-      "movement": "flat",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": null,
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "bezz": {
-      "rank": 4,
-      "name": "bezz",
-      "movement_version": 3,
-      "movement": "flat",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": null,
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "fueradecontrol7nov": {
-      "rank": 7,
-      "name": "#FueraDeControl7nov",
-      "movement_version": 3,
-      "movement": "flat",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": null,
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "wwecrownjewel": {
-      "rank": 6,
-      "name": "#WWECrownJewel",
-      "movement_version": 3,
-      "movement": "up",
-      "previous_rank": 11,
-      "rank_delta": 5,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
       "last_seen_at": "2026-11-07T20:31:17+01:00"
     },
     "espanyol": {
@@ -382,18 +635,6 @@
       "first_seen_at": "2026-11-07T20:01:19+01:00",
       "last_seen_at": "2026-11-07T20:31:17+01:00"
     },
-    "sancet": {
-      "rank": 9,
-      "name": "Sancet",
-      "movement_version": 3,
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:03:23+01:00",
-      "first_seen_at": "2026-11-07T20:03:23+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
     "interlagos": {
       "rank": 12,
       "name": "Interlagos",
@@ -406,48 +647,12 @@
       "first_seen_at": "2026-11-07T20:03:23+01:00",
       "last_seen_at": "2026-11-07T20:31:17+01:00"
     },
-    "brazilgp": {
-      "rank": 14,
-      "name": "#BrazilGP",
-      "movement_version": 3,
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:03:23+01:00",
-      "first_seen_at": "2026-11-07T20:03:23+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "amaia": {
-      "rank": 29,
-      "name": "Amaia",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 25,
-      "rank_delta": -4,
-      "last_changed_at": "2026-11-07T19:44:29+01:00",
-      "entered_top30_at": "2026-11-07T10:01:38+01:00",
-      "first_seen_at": "2026-11-07T10:01:38+01:00",
-      "last_seen_at": "2026-11-07T20:01:19+01:00"
-    },
     "julen": {
       "rank": 28,
       "name": "Julen",
       "movement_version": 3,
       "movement": "down",
       "previous_rank": 25,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:01:19+01:00",
-      "entered_top30_at": "2026-11-07T17:20:56+01:00",
-      "first_seen_at": "2026-11-07T17:20:56+01:00",
-      "last_seen_at": "2026-11-07T20:01:19+01:00"
-    },
-    "gazir": {
-      "rank": 30,
-      "name": "Gazir",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 27,
       "rank_delta": -3,
       "last_changed_at": "2026-11-07T20:01:19+01:00",
       "entered_top30_at": "2026-11-07T17:20:56+01:00",
@@ -464,126 +669,6 @@
       "last_changed_at": "2026-11-07T19:44:29+01:00",
       "entered_top30_at": "2026-11-07T16:11:00+01:00",
       "first_seen_at": "2026-11-07T16:11:00+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "broncano": {
-      "rank": 17,
-      "name": "Broncano",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 2,
-      "rank_delta": -15,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": "2026-11-06T20:41:01+01:00",
-      "first_seen_at": "2026-11-06T20:41:01+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "la revuelta": {
-      "rank": 18,
-      "name": "La Revuelta",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 3,
-      "rank_delta": -15,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": "2026-11-06T21:40:57+01:00",
-      "first_seen_at": "2026-11-06T21:40:57+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "paraguay": {
-      "rank": 19,
-      "name": "Paraguay",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 4,
-      "rank_delta": -15,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": "2026-11-04T15:50:56+01:00",
-      "first_seen_at": "2026-11-04T15:50:56+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "koldo": {
-      "rank": 22,
-      "name": "Koldo",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 10,
-      "rank_delta": -12,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": null,
-      "first_seen_at": "2026-10-28T22:40:53+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "la septima": {
-      "rank": 20,
-      "name": "La Séptima",
-      "movement_version": 3,
-      "movement": "up",
-      "previous_rank": 21,
-      "rank_delta": 1,
-      "last_changed_at": "2026-11-07T19:44:29+01:00",
-      "entered_top30_at": "2026-11-04T20:01:42+01:00",
-      "first_seen_at": "2026-11-04T20:01:42+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "fiscalia europea": {
-      "rank": 27,
-      "name": "Fiscalía Europea",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 26,
-      "rank_delta": -1,
-      "last_changed_at": "2026-11-07T19:44:29+01:00",
-      "entered_top30_at": "2026-11-06T11:01:31+01:00",
-      "first_seen_at": "2026-11-06T11:01:31+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "nucleo nacional": {
-      "rank": 23,
-      "name": "Núcleo Nacional",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 13,
-      "rank_delta": -10,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": "2026-11-06T11:51:04+01:00",
-      "first_seen_at": "2026-11-06T11:51:04+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "rtxon": {
-      "rank": 21,
-      "name": "#RTXON",
-      "movement_version": 3,
-      "movement": "up",
-      "previous_rank": 24,
-      "rank_delta": 3,
-      "last_changed_at": "2026-11-07T19:44:29+01:00",
-      "entered_top30_at": "2026-11-06T16:51:08+01:00",
-      "first_seen_at": "2026-11-06T16:51:08+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "abascal": {
-      "rank": 16,
-      "name": "Abascal",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 1,
-      "rank_delta": -15,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": "2026-11-06T16:51:08+01:00",
-      "first_seen_at": "2026-11-06T16:51:08+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
-    },
-    "santiago pena": {
-      "rank": 28,
-      "name": "Santiago Peña",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 20,
-      "rank_delta": -8,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": "2026-11-05T18:01:35+01:00",
-      "first_seen_at": "2026-11-05T18:01:35+01:00",
       "last_seen_at": "2026-11-07T19:59:34+01:00"
     },
     "rcde": {
@@ -730,18 +815,6 @@
       "first_seen_at": "2026-11-07T08:05:38+01:00",
       "last_seen_at": "2026-11-07T18:58:10+01:00"
     },
-    "acierto": {
-      "rank": 30,
-      "name": "Acierto",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 28,
-      "rank_delta": -2,
-      "last_changed_at": "2026-11-07T17:41:03+01:00",
-      "entered_top30_at": "2026-11-07T10:01:38+01:00",
-      "first_seen_at": "2026-11-07T10:01:38+01:00",
-      "last_seen_at": "2026-11-07T17:50:50+01:00"
-    },
     "zelda": {
       "rank": 28,
       "name": "Zelda",
@@ -812,18 +885,6 @@
       "last_changed_at": "2026-11-07T17:20:56+01:00",
       "entered_top30_at": "2026-11-07T16:11:00+01:00",
       "first_seen_at": "2026-11-07T16:11:00+01:00",
-      "last_seen_at": "2026-11-07T17:31:29+01:00"
-    },
-    "mestalla": {
-      "rank": 30,
-      "name": "Mestalla",
-      "movement_version": 3,
-      "movement": "flat",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": null,
-      "entered_top30_at": "2026-11-07T14:56:47+01:00",
-      "first_seen_at": "2026-11-07T14:56:47+01:00",
       "last_seen_at": "2026-11-07T17:31:29+01:00"
     },
     "la rosaleda": {
@@ -7228,12 +7289,6 @@
       "first_seen_at": "2026-11-02T21:01:19+01:00",
       "last_seen_at": "2026-11-03T09:44:02+01:00"
     },
-    "osasuna": {
-      "name": "Osasuna",
-      "rank": null,
-      "first_seen_at": "2026-11-02T22:40:52+01:00",
-      "last_seen_at": "2026-11-03T09:44:02+01:00"
-    },
     "mario soriano": {
       "name": "Mario Soriano",
       "rank": null,
@@ -7262,12 +7317,6 @@
       "name": "Mallorca",
       "rank": null,
       "first_seen_at": "2026-11-02T23:40:50+01:00",
-      "last_seen_at": "2026-11-03T08:52:07+01:00"
-    },
-    "catena": {
-      "name": "Catena",
-      "rank": null,
-      "first_seen_at": "2026-11-02T21:41:33+01:00",
       "last_seen_at": "2026-11-03T08:52:07+01:00"
     },
     "loureiro": {
@@ -7930,12 +7979,6 @@
       "first_seen_at": "2026-10-31T22:40:51+01:00",
       "last_seen_at": "2026-11-02T16:20:58+01:00"
     },
-    "berenguer": {
-      "name": "Berenguer",
-      "rank": null,
-      "first_seen_at": "2026-11-02T00:40:55+01:00",
-      "last_seen_at": "2026-11-02T16:20:58+01:00"
-    },
     "falcon a barcelona": {
       "name": "Falcon a Barcelona",
       "rank": null,
@@ -8144,368 +8187,854 @@
   "items": [
     {
       "rank": 1,
-      "name": "Cracovia",
+      "name": "Abascal",
       "movement_version": 3,
       "movement": "up",
-      "previous_rank": 12,
-      "rank_delta": 11,
-      "last_changed_at": "2026-11-07T18:02:13+01:00",
-      "entered_top30_at": "2026-11-07T17:20:56+01:00",
-      "first_seen_at": "2026-11-07T17:20:56+01:00",
-      "entered_top10_at": "2026-11-07T18:02:13+01:00"
+      "previous_rank": 16,
+      "rank_delta": 15,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T16:51:08+01:00",
+      "first_seen_at": "2026-11-06T16:51:08+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
     },
     {
       "rank": 2,
-      "name": "Marc",
-      "movement_version": 3,
-      "movement": "flat",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": null,
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "entered_top10_at": "2026-11-07T19:01:37+01:00"
-    },
-    {
-      "rank": 3,
       "name": "#IreneYGabrielEnMadrid",
       "movement_version": 3,
       "movement": "up",
-      "previous_rank": 5,
-      "rank_delta": 2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 3,
+      "rank_delta": 1,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": "2026-11-07T13:10:51+01:00",
       "first_seen_at": "2026-11-07T13:10:51+01:00",
       "entered_top10_at": "2026-11-07T17:01:20+01:00"
     },
     {
-      "rank": 4,
-      "name": "bezz",
+      "rank": 3,
+      "name": "Cracovia",
       "movement_version": 3,
-      "movement": "flat",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": null,
+      "movement": "down",
+      "previous_rank": 1,
+      "rank_delta": -2,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T17:20:56+01:00",
+      "first_seen_at": "2026-11-07T17:20:56+01:00",
+      "entered_top10_at": "2026-11-07T18:02:13+01:00"
+    },
+    {
+      "rank": 4,
+      "name": "Broncano",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 17,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T20:41:01+01:00",
+      "first_seen_at": "2026-11-06T20:41:01+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 5,
+      "name": "La Revuelta",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 18,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T21:40:57+01:00",
+      "first_seen_at": "2026-11-06T21:40:57+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 6,
+      "name": "Paraguay",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 19,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-04T15:50:56+01:00",
+      "first_seen_at": "2026-11-04T15:50:56+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 7,
+      "name": "La Séptima",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 20,
+      "rank_delta": 13,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-04T20:01:42+01:00",
+      "first_seen_at": "2026-11-04T20:01:42+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 8,
+      "name": "Marc",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 2,
+      "rank_delta": -6,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": "2026-11-07T19:01:37+01:00",
       "first_seen_at": "2026-11-07T19:01:37+01:00",
       "entered_top10_at": "2026-11-07T19:01:37+01:00"
     },
     {
-      "rank": 5,
+      "rank": 9,
+      "name": "Bezz",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 4,
+      "rank_delta": -5,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T19:01:37+01:00",
+      "first_seen_at": "2026-11-07T19:01:37+01:00",
+      "entered_top10_at": "2026-11-07T19:01:37+01:00"
+    },
+    {
+      "rank": 10,
+      "name": "Sancet",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 9,
+      "rank_delta": -1,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:03:23+01:00",
+      "first_seen_at": "2026-11-07T20:03:23+01:00",
+      "entered_top10_at": "2026-11-07T20:03:23+01:00"
+    },
+    {
+      "rank": 11,
+      "name": "Núcleo Nacional",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 23,
+      "rank_delta": 12,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T11:51:04+01:00",
+      "first_seen_at": "2026-11-06T11:51:04+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 12,
+      "name": "#RTXON",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 21,
+      "rank_delta": 9,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T16:51:08+01:00",
+      "first_seen_at": "2026-11-06T16:51:08+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 13,
+      "name": "#WWECrownJewel",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 6,
+      "rank_delta": -7,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T19:01:37+01:00",
+      "first_seen_at": "2026-11-07T19:01:37+01:00",
+      "entered_top10_at": "2026-11-07T20:03:23+01:00"
+    },
+    {
+      "rank": 14,
+      "name": "#FueraDeControl7nov",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 7,
+      "rank_delta": -7,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T19:01:37+01:00",
+      "first_seen_at": "2026-11-07T19:01:37+01:00",
+      "entered_top10_at": "2026-11-07T19:01:37+01:00"
+    },
+    {
+      "rank": 15,
       "name": "Leo Román",
       "movement_version": 3,
       "movement": "down",
-      "previous_rank": 3,
-      "rank_delta": -2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 5,
+      "rank_delta": -10,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": null,
       "first_seen_at": "2026-11-03T00:54:45+01:00",
       "entered_top10_at": "2026-11-07T17:20:56+01:00"
     },
     {
-      "rank": 6,
-      "name": "#WWECrownJewel",
+      "rank": 16,
+      "name": "Enric Gallego",
       "movement_version": 3,
-      "movement": "up",
-      "previous_rank": 11,
-      "rank_delta": 5,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "entered_top10_at": "2026-11-07T20:03:23+01:00"
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:40:59+01:00",
+      "first_seen_at": "2026-11-07T20:40:59+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
     },
     {
-      "rank": 7,
-      "name": "#FueraDeControl7nov",
+      "rank": 17,
+      "name": "Koldo",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 22,
+      "rank_delta": 5,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": null,
+      "first_seen_at": "2026-10-28T22:40:53+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 18,
+      "name": "Liam Delap",
+      "movement_version": 3,
+      "movement": "new",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:40:59+01:00",
+      "first_seen_at": "2026-11-07T20:40:59+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 19,
+      "name": "Amaia",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 29,
+      "rank_delta": 10,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T10:01:38+01:00",
+      "first_seen_at": "2026-11-07T10:01:38+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 20,
+      "name": "Santiago Peña",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 28,
+      "rank_delta": 8,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-05T18:01:35+01:00",
+      "first_seen_at": "2026-11-05T18:01:35+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 21,
+      "name": "Fiscalía Europea",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 27,
+      "rank_delta": 6,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-06T11:01:31+01:00",
+      "first_seen_at": "2026-11-06T11:01:31+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 22,
+      "name": "Osasuna",
       "movement_version": 3,
       "movement": "flat",
       "previous_rank": null,
       "rank_delta": null,
       "last_changed_at": null,
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "entered_top10_at": "2026-11-07T19:01:37+01:00"
+      "entered_top30_at": null,
+      "first_seen_at": "2026-11-02T22:40:52+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
     },
     {
-      "rank": 8,
+      "rank": 23,
       "name": "Rivola",
       "movement_version": 3,
       "movement": "down",
-      "previous_rank": 6,
-      "rank_delta": -2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 8,
+      "rank_delta": -15,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": "2026-11-07T18:02:13+01:00",
       "first_seen_at": "2026-11-07T18:02:13+01:00",
       "entered_top10_at": "2026-11-07T18:02:13+01:00"
     },
     {
-      "rank": 9,
-      "name": "Sancet",
+      "rank": 24,
+      "name": "Catena",
       "movement_version": 3,
-      "movement": "new",
+      "movement": "flat",
       "previous_rank": null,
       "rank_delta": null,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:03:23+01:00",
-      "first_seen_at": "2026-11-07T20:03:23+01:00",
-      "entered_top10_at": "2026-11-07T20:03:23+01:00"
+      "last_changed_at": null,
+      "entered_top30_at": null,
+      "first_seen_at": "2026-11-02T21:41:33+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
     },
     {
-      "rank": 10,
+      "rank": 25,
+      "name": "#BrazilGP",
+      "movement_version": 3,
+      "movement": "down",
+      "previous_rank": 14,
+      "rank_delta": -11,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T20:03:23+01:00",
+      "first_seen_at": "2026-11-07T20:03:23+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 26,
+      "name": "Mestalla",
+      "movement_version": 3,
+      "movement": "up",
+      "previous_rank": 30,
+      "rank_delta": 4,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
+      "entered_top30_at": "2026-11-07T14:56:47+01:00",
+      "first_seen_at": "2026-11-07T14:56:47+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 27,
+      "name": "Berenguer",
+      "movement_version": 3,
+      "movement": "flat",
+      "previous_rank": null,
+      "rank_delta": null,
+      "last_changed_at": null,
+      "entered_top30_at": null,
+      "first_seen_at": "2026-11-02T00:40:55+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
+    },
+    {
+      "rank": 28,
       "name": "Funes",
       "movement_version": 3,
       "movement": "down",
-      "previous_rank": 8,
-      "rank_delta": -2,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 10,
+      "rank_delta": -18,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": null,
       "first_seen_at": "2026-10-31T20:11:02+01:00",
       "entered_top10_at": "2026-11-07T17:20:56+01:00"
     },
     {
-      "rank": 11,
-      "name": "Goni",
+      "rank": 29,
+      "name": "Gazir",
       "movement_version": 3,
       "movement": "up",
-      "previous_rank": 19,
-      "rank_delta": 8,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
+      "previous_rank": 30,
+      "rank_delta": 1,
+      "last_changed_at": "2026-11-07T20:40:59+01:00",
       "entered_top30_at": "2026-11-07T17:20:56+01:00",
       "first_seen_at": "2026-11-07T17:20:56+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 12,
-      "name": "Interlagos",
-      "movement_version": 3,
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:03:23+01:00",
-      "first_seen_at": "2026-11-07T20:03:23+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 13,
-      "name": "Dani Calvo",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 10,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T17:41:03+01:00",
-      "first_seen_at": "2026-11-07T17:41:03+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 14,
-      "name": "#BrazilGP",
-      "movement_version": 3,
-      "movement": "new",
-      "previous_rank": null,
-      "rank_delta": null,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:03:23+01:00",
-      "first_seen_at": "2026-11-07T20:03:23+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 15,
-      "name": "Sarabia",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 14,
-      "rank_delta": -1,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 16,
-      "name": "Pecco",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 9,
-      "rank_delta": -7,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T17:41:03+01:00",
-      "first_seen_at": "2026-11-07T17:41:03+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 17,
-      "name": "Espanyol",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 12,
-      "rank_delta": -5,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 18,
-      "name": "Cadiz",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 13,
-      "rank_delta": -5,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T19:01:37+01:00",
-      "first_seen_at": "2026-11-07T19:01:37+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 19,
-      "name": "Calero",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 15,
-      "rank_delta": -4,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": null,
-      "first_seen_at": "2026-11-02T17:31:11+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 20,
-      "name": "Jorge Martín",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 16,
-      "rank_delta": -4,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T18:02:13+01:00",
-      "first_seen_at": "2026-11-07T18:02:13+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 21,
-      "name": "#QatarGP",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 17,
-      "rank_delta": -4,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T18:02:13+01:00",
-      "first_seen_at": "2026-11-07T18:02:13+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 22,
-      "name": "Einar",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 18,
-      "rank_delta": -4,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T17:20:56+01:00",
-      "first_seen_at": "2026-11-07T17:20:56+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 23,
-      "name": "Sprint",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 20,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:01:19+01:00",
-      "first_seen_at": "2026-11-07T20:01:19+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 24,
-      "name": "El Sadar",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 21,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:01:19+01:00",
-      "first_seen_at": "2026-11-07T20:01:19+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 25,
-      "name": "Enzo",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 22,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": null,
-      "first_seen_at": "2026-11-02T19:31:15+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 26,
-      "name": "Loren",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 23,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T17:20:56+01:00",
-      "first_seen_at": "2026-11-07T17:20:56+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 27,
-      "name": "Alcorcon",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 24,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:01:19+01:00",
-      "first_seen_at": "2026-11-07T20:01:19+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 28,
-      "name": "Hidalgo",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 25,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": null,
-      "first_seen_at": "2026-11-02T22:40:52+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
-    },
-    {
-      "rank": 29,
-      "name": "Malaga",
-      "movement_version": 3,
-      "movement": "down",
-      "previous_rank": 26,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T16:11:00+01:00",
-      "first_seen_at": "2026-11-07T16:11:00+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
     },
     {
       "rank": 30,
-      "name": "#MotoGP",
+      "name": "Acierto",
       "movement_version": 3,
       "movement": "down",
-      "previous_rank": 27,
-      "rank_delta": -3,
-      "last_changed_at": "2026-11-07T20:03:23+01:00",
-      "entered_top30_at": "2026-11-07T20:01:19+01:00",
-      "first_seen_at": "2026-11-07T20:01:19+01:00",
-      "entered_top10_at": "2026-11-07T20:31:17+01:00"
+      "previous_rank": 28,
+      "rank_delta": -2,
+      "last_changed_at": "2026-11-07T17:41:03+01:00",
+      "entered_top30_at": "2026-11-07T10:01:38+01:00",
+      "first_seen_at": "2026-11-07T10:01:38+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00"
     }
   ],
-  "unchanged_from_previous": true,
-  "new_entries": [],
-  "upcoming": [],
+  "unchanged_from_previous": false,
+  "new_entries": [
+    "Abascal",
+    "Broncano",
+    "La Revuelta",
+    "Paraguay",
+    "La Séptima"
+  ],
+  "upcoming": [
+    {
+      "name": "Zelda",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 13,
+      "mean_observed_rank": 25.5,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T19:44:29+01:00",
+          "best_rank": 13,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:50:52+01:00",
+          "best_rank": 13,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:59:34+01:00",
+          "best_rank": 13,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 13,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 13,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 13,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:31:17+01:00",
+          "best_rank": 13,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 13,
+          "source_count": 2
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-05T16:22:35+01:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Leire",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 25,
+      "mean_observed_rank": 33.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T19:44:29+01:00",
+          "best_rank": 25,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:50:52+01:00",
+          "best_rank": 25,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:59:34+01:00",
+          "best_rank": 25,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 25,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 25,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 25,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:31:17+01:00",
+          "best_rank": 25,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 25,
+          "source_count": 2
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-05T22:01:48+01:00",
+      "news_source_count": 7,
+      "news_event_id": "87efde0506d2",
+      "news_title": "El juez cita a la matriarca del clan del Los Rochos a la que el enviado de Leire encargó supuestamente eliminar a la jueza Biedma",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-11-06T13:11:19.434697Z"
+    },
+    {
+      "name": "Bruna",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 34,
+      "mean_observed_rank": 39.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T19:44:29+01:00",
+          "best_rank": 34,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:50:52+01:00",
+          "best_rank": 34,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:59:34+01:00",
+          "best_rank": 34,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 34,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 34,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 34,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:31:17+01:00",
+          "best_rank": 34,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 34,
+          "source_count": 2
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-06T15:40:53+01:00",
+      "news_source_count": 9,
+      "news_event_id": "6a091578c110",
+      "news_title": "AEMET alerta de lluvias intensas por la borrasca Bruna en Canarias y la Península hasta el miércoles",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-11-05T14:31:38.199684Z"
+    },
+    {
+      "name": "Stephen Miller",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 32,
+      "mean_observed_rank": 35.5,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T19:44:29+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:50:52+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:59:34+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:31:17+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 32,
+          "source_count": 2
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-06T20:41:01+01:00",
+      "news_source_count": 6,
+      "news_event_id": "273f6085d2af",
+      "news_title": "Trump destituye a su jefa de Gabinete tras el batacazo electoral y coloca al ultra Stephen Miller al frente de la Casa Blanca",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-11-06T19:01:40.146401Z"
+    },
+    {
+      "name": "Javier Ruiz",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 26,
+      "mean_observed_rank": 30.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T19:44:29+01:00",
+          "best_rank": 26,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:50:52+01:00",
+          "best_rank": 26,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:59:34+01:00",
+          "best_rank": 26,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 26,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 26,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 26,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:31:17+01:00",
+          "best_rank": 26,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 26,
+          "source_count": 2
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-05T13:41:03+01:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Valencia",
+      "social_source_count": 1,
+      "social_sources": [
+        "snaplytics"
+      ],
+      "best_observed_rank": 40,
+      "mean_observed_rank": 40.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T16:21:10+01:00",
+          "best_rank": 30,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 50,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 50,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 50,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 40,
+          "source_count": 1
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-07T10:41:06+01:00",
+      "news_source_count": 9,
+      "news_event_id": "8e6c2ec53bef",
+      "news_title": "11:29 Mueren 12 de los 110 perros hallados hacinados, desnutridos y encadenados en una parcela rural en Valencia",
+      "news_status": "ELIGIBLE",
+      "news_first_seen": "2026-11-04T17:51:13.982816Z"
+    },
+    {
+      "name": "Túnez",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 44,
+      "mean_observed_rank": 46.5,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T19:44:29+01:00",
+          "best_rank": 44,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:50:52+01:00",
+          "best_rank": 44,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:59:34+01:00",
+          "best_rank": 44,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 44,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 44,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 44,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:31:17+01:00",
+          "best_rank": 44,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 44,
+          "source_count": 2
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-06T12:41:00+01:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    },
+    {
+      "name": "Diana Morant",
+      "social_source_count": 2,
+      "social_sources": [
+        "snaplytics",
+        "superx"
+      ],
+      "best_observed_rank": 46,
+      "mean_observed_rank": 48.0,
+      "movement": "up",
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T19:44:29+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:50:52+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:59:34+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:31:17+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 46,
+          "source_count": 2
+        }
+      ],
+      "observations": 8,
+      "first_detected_at": "2026-11-06T22:40:57+01:00",
+      "news_source_count": 0,
+      "news_event_id": null,
+      "news_title": null,
+      "news_status": null,
+      "news_first_seen": null
+    }
+  ],
   "radar_history": {
     "paraguay": {
       "name": "Paraguay",
@@ -8554,8 +9083,8 @@
         }
       ],
       "first_detected_at": "2026-11-04T13:01:22+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": true
     },
     "koldo": {
@@ -8605,8 +9134,8 @@
         }
       ],
       "first_detected_at": "2026-11-05T15:31:15+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": true
     },
     "la uco": {
@@ -8614,11 +9143,6 @@
       "best_observed_rank": 15,
       "social_source_count": 1,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 15,
@@ -8653,10 +9177,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 15,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 15,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T15:31:15+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -8666,11 +9195,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 14,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 14,
           "source_count": 1
@@ -8704,10 +9228,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 14,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 14,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-04T22:01:20+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -8717,11 +9246,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 35,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 35,
           "source_count": 1
@@ -8755,10 +9279,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 35,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 35,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T12:10:57+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -8768,11 +9297,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 21,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 21,
           "source_count": 1
@@ -8806,10 +9330,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 21,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 21,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T15:31:15+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -8819,11 +9348,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 28,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 28,
           "source_count": 1
@@ -8857,23 +9381,23 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 28,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 28,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T12:01:22+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
     "javier ruiz": {
       "name": "Javier Ruiz",
       "best_observed_rank": 26,
-      "social_source_count": 1,
+      "social_source_count": 2,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 26,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 26,
@@ -8908,12 +9432,17 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 26,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 26,
+          "source_count": 2
         }
       ],
       "first_detected_at": "2026-11-05T13:41:03+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
-      "radar_qualified": false
+      "radar_qualified": true
     },
     "svgala9": {
       "name": "#svgala9",
@@ -8921,11 +9450,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 6,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 6,
           "source_count": 1
@@ -8959,23 +9483,23 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 6,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 6,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T22:01:48+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
     "zelda": {
       "name": "Zelda",
       "best_observed_rank": 13,
-      "social_source_count": 1,
+      "social_source_count": 2,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 13,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 13,
@@ -9010,12 +9534,17 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 13,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 13,
+          "source_count": 2
         }
       ],
       "first_detected_at": "2026-11-05T16:22:35+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
-      "radar_qualified": false
+      "radar_qualified": true
     },
     "la septima": {
       "name": "La Séptima",
@@ -9064,8 +9593,8 @@
         }
       ],
       "first_detected_at": "2026-11-04T16:01:25+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": false
     },
     "fiscalia europea": {
@@ -9115,8 +9644,8 @@
         }
       ],
       "first_detected_at": "2026-11-06T14:31:08+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": true
     },
     "nucleo nacional": {
@@ -9166,8 +9695,8 @@
         }
       ],
       "first_detected_at": "2026-11-06T12:01:25+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": true
     },
     "marc roca": {
@@ -9175,11 +9704,6 @@
       "best_observed_rank": 20,
       "social_source_count": 1,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 20,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 20,
@@ -9214,10 +9738,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 20,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 20,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T14:31:08+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9268,8 +9797,8 @@
         }
       ],
       "first_detected_at": "2026-11-06T16:40:59+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": false
     },
     "trump": {
@@ -9277,11 +9806,6 @@
       "best_observed_rank": 17,
       "social_source_count": 1,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 17,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 17,
@@ -9316,10 +9840,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 17,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 17,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-04T05:50:53+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -9370,8 +9899,8 @@
         }
       ],
       "first_detected_at": "2026-11-06T09:01:28+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": false
     },
     "abascal": {
@@ -9421,8 +9950,8 @@
         }
       ],
       "first_detected_at": "2026-11-06T11:01:31+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": true
     },
     "deviernes": {
@@ -9430,11 +9959,6 @@
       "best_observed_rank": 9,
       "social_source_count": 1,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 9,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 9,
@@ -9469,10 +9993,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 9,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 9,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-07T02:51:09+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9482,11 +10011,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 12,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 12,
           "source_count": 1
@@ -9520,10 +10044,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 12,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 12,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-07T02:51:09+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9533,11 +10062,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 18,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 18,
           "source_count": 1
@@ -9571,10 +10095,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 18,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 18,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T22:31:10+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9625,8 +10154,8 @@
         }
       ],
       "first_detected_at": "2026-11-06T20:41:01+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": false,
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
       "radar_qualified": true
     },
     "alcaraz": {
@@ -9634,11 +10163,6 @@
       "best_observed_rank": 24,
       "social_source_count": 1,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 24,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 24,
@@ -9673,10 +10197,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 24,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 24,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T21:40:57+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -9686,11 +10215,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 19,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 19,
           "source_count": 1
@@ -9724,10 +10248,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 19,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 19,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T23:01:18+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9737,11 +10266,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 23,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 23,
           "source_count": 1
@@ -9775,10 +10299,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 23,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 23,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T20:41:01+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9788,11 +10317,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 29,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 29,
           "source_count": 1
@@ -9826,10 +10350,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 29,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 29,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T22:01:48+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9839,11 +10368,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 39,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 39,
           "source_count": 1
@@ -9877,10 +10401,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 39,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 39,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-04T13:50:58+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -9890,11 +10419,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 22,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 22,
           "source_count": 1
@@ -9928,23 +10452,23 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 22,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 22,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T14:31:08+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
     "leire": {
       "name": "Leire",
       "best_observed_rank": 25,
-      "social_source_count": 1,
+      "social_source_count": 2,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 25,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 25,
@@ -9979,10 +10503,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 25,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 25,
+          "source_count": 2
         }
       ],
       "first_detected_at": "2026-11-05T22:01:48+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -9992,11 +10521,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 27,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 27,
           "source_count": 1
@@ -10030,10 +10554,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 27,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 27,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T16:40:59+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10043,11 +10572,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 30,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 30,
           "source_count": 1
@@ -10081,23 +10605,23 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 30,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 30,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-07T02:51:09+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
     "bruna": {
       "name": "Bruna",
       "best_observed_rank": 34,
-      "social_source_count": 1,
+      "social_source_count": 2,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 34,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 34,
@@ -10132,10 +10656,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 34,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 34,
+          "source_count": 2
         }
       ],
       "first_detected_at": "2026-11-06T15:40:53+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -10145,11 +10674,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 42,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 42,
           "source_count": 1
@@ -10183,23 +10707,23 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 42,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 42,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T13:41:03+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
     "tunez": {
       "name": "Túnez",
       "best_observed_rank": 44,
-      "social_source_count": 1,
+      "social_source_count": 2,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 44,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 44,
@@ -10234,12 +10758,17 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 44,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 44,
+          "source_count": 2
         }
       ],
       "first_detected_at": "2026-11-06T12:41:00+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
-      "radar_qualified": false
+      "radar_qualified": true
     },
     "ueno bank": {
       "name": "Ueno Bank",
@@ -10247,11 +10776,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 38,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 38,
           "source_count": 1
@@ -10285,23 +10809,23 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 38,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 38,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T20:01:18+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
     "diana morant": {
       "name": "Diana Morant",
       "best_observed_rank": 46,
-      "social_source_count": 1,
+      "social_source_count": 2,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 46,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 46,
@@ -10336,23 +10860,23 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 46,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 46,
+          "source_count": 2
         }
       ],
       "first_detected_at": "2026-11-06T22:40:57+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
-      "radar_qualified": false
+      "radar_qualified": true
     },
     "stephen miller": {
       "name": "Stephen Miller",
       "best_observed_rank": 32,
-      "social_source_count": 1,
+      "social_source_count": 2,
       "rank_history": [
-        {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 32,
-          "source_count": 1
-        },
         {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 32,
@@ -10387,10 +10911,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 32,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 32,
+          "source_count": 2
         }
       ],
       "first_detected_at": "2026-11-06T20:41:01+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -10400,11 +10929,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 36,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 36,
           "source_count": 1
@@ -10438,10 +10962,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 36,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 36,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-04T07:40:54+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10451,11 +10980,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 43,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 43,
           "source_count": 1
@@ -10489,10 +11013,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 43,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 43,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-07T00:41:10+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10502,11 +11031,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 40,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 40,
           "source_count": 1
@@ -10540,10 +11064,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 40,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 40,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T12:51:05+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10553,11 +11082,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 33,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 33,
           "source_count": 1
@@ -10591,10 +11115,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 33,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 33,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T21:40:57+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10604,11 +11133,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 41,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 41,
           "source_count": 1
@@ -10642,10 +11166,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 41,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 41,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-02T19:31:15+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -10655,11 +11184,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 45,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 45,
           "source_count": 1
@@ -10693,10 +11217,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 45,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 45,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T23:01:33+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10706,11 +11235,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 31,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 31,
           "source_count": 1
@@ -10744,10 +11268,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 31,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 31,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-07T05:32:40+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10757,11 +11286,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 48,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 48,
           "source_count": 1
@@ -10795,10 +11319,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 48,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 48,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T16:40:57+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10808,11 +11337,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 47,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 47,
           "source_count": 1
@@ -10846,10 +11370,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 47,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 47,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T12:01:22+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -10859,11 +11388,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 49,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 49,
           "source_count": 1
@@ -10897,10 +11421,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 49,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 49,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-06T16:40:59+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -10910,11 +11439,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 3,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 3,
           "source_count": 1
@@ -10948,10 +11472,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 3,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 3,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-07T09:05:17+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -10961,11 +11490,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 50,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 50,
           "source_count": 1
@@ -10999,10 +11523,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 50,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 50,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-05T11:01:25+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": true
     },
@@ -11012,11 +11541,6 @@
       "social_source_count": 1,
       "rank_history": [
         {
-          "captured_at": "2026-11-07T19:31:05+01:00",
-          "best_rank": 37,
-          "source_count": 1
-        },
-        {
           "captured_at": "2026-11-07T19:44:29+01:00",
           "best_rank": 37,
           "source_count": 1
@@ -11050,10 +11574,15 @@
           "captured_at": "2026-11-07T20:31:17+01:00",
           "best_rank": 37,
           "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 37,
+          "source_count": 1
         }
       ],
       "first_detected_at": "2026-11-07T08:20:55+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": false,
       "radar_qualified": false
     },
@@ -11104,7 +11633,7 @@
         }
       ],
       "first_detected_at": "2026-11-07T13:01:33+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": true,
       "radar_qualified": false
     },
@@ -11145,7 +11674,7 @@
         }
       ],
       "first_detected_at": "2026-11-07T15:40:53+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": true,
       "radar_qualified": false
     },
@@ -11161,7 +11690,7 @@
         }
       ],
       "first_detected_at": "2026-11-07T17:10:59+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": true,
       "radar_qualified": false
     },
@@ -11177,22 +11706,771 @@
         }
       ],
       "first_detected_at": "2026-11-07T17:10:59+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
       "inside_top30": true,
       "radar_qualified": true
     },
-    "pecco": {
-      "name": "Pecco",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
     "dani calvo": {
       "name": "Dani Calvo",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
+      "best_observed_rank": 13,
+      "social_source_count": 2,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 13,
+          "source_count": 2
+        }
+      ],
+      "first_detected_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": true
     },
     "rivola": {
       "name": "Rivola",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "marc": {
+      "name": "Marc",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "bezz": {
+      "name": "Bezz",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "fueradecontrol7nov": {
+      "name": "#FueraDeControl7nov",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "wwecrownjewel": {
+      "name": "#WWECrownJewel",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "sarabia": {
+      "name": "Sarabia",
+      "best_observed_rank": 15,
+      "social_source_count": 2,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 15,
+          "source_count": 2
+        }
+      ],
+      "first_detected_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": true
+    },
+    "goni": {
+      "name": "Goni",
+      "best_observed_rank": 11,
+      "social_source_count": 2,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T17:01:20+01:00",
+          "best_rank": 15,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T17:10:59+01:00",
+          "best_rank": 15,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 19,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 19,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 31,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 31,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 31,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 11,
+          "source_count": 2
+        }
+      ],
+      "first_detected_at": "2026-11-07T17:01:20+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": true
+    },
+    "interlagos": {
+      "name": "Interlagos",
+      "best_observed_rank": 12,
+      "social_source_count": 2,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 36,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 36,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 42,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 42,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 42,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 35,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 12,
+          "source_count": 2
+        }
+      ],
+      "first_detected_at": "2026-11-07T18:02:13+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": true
+    },
+    "el sadar": {
+      "name": "El Sadar",
+      "best_observed_rank": 42,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 42,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": false
+    },
+    "brazilgp": {
+      "name": "#BrazilGP",
+      "best_observed_rank": 39,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 35,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 35,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 39,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 39,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 39,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T18:02:13+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
+      "radar_qualified": false
+    },
+    "sancet": {
+      "name": "Sancet",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "amaia": {
+      "name": "Amaia",
+      "best_observed_rank": 29,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T16:40:57+01:00",
+          "best_rank": 28,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 25,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 25,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 29,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 29,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 29,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 29,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 29,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T11:01:14+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
+      "radar_qualified": true
+    },
+    "gazir": {
+      "name": "Gazir",
+      "best_observed_rank": 30,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T16:14:13+01:00",
+          "best_rank": 28,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T16:21:10+01:00",
+          "best_rank": 28,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T17:01:20+01:00",
+          "best_rank": 13,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T17:10:59+01:00",
+          "best_rank": 11,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 11,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 11,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 30,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 30,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T15:40:53+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
+      "radar_qualified": false
+    },
+    "acierto": {
+      "name": "Acierto",
+      "best_observed_rank": 49,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 30,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 30,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 47,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 47,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 47,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 49,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 49,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 49,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T10:31:08+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
+      "radar_qualified": false
+    },
+    "mestalla": {
+      "name": "Mestalla",
+      "best_observed_rank": 48,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 26,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 26,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 45,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 45,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 45,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T12:59:55+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
+      "radar_qualified": false
+    },
+    "cabanyal": {
+      "name": "Cabanyal",
+      "best_observed_rank": 33,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 21,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 30,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 30,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 30,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 38,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 38,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 38,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 33,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T15:11:00+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": false
+    },
+    "valencia": {
+      "name": "Valencia",
+      "best_observed_rank": 40,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T16:21:10+01:00",
+          "best_rank": 30,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T19:01:37+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:11:00+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T19:21:01+01:00",
+          "best_rank": 48,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 50,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 50,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 50,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 40,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T10:41:06+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": true
+    },
+    "la rosaleda": {
+      "name": "La Rosaleda",
+      "best_observed_rank": 47,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T17:41:03+01:00",
+          "best_rank": 15,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T17:50:50+01:00",
+          "best_rank": 15,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 15,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 15,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T20:01:19+01:00",
+          "best_rank": 42,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:03:23+01:00",
+          "best_rank": 42,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:11:02+01:00",
+          "best_rank": 42,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 47,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T15:40:53+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": false
+    },
+    "santiago pena": {
+      "name": "Santiago Peña",
+      "best_observed_rank": 15,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T15:31:13+01:00",
+          "best_rank": 11,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T15:32:21+01:00",
+          "best_rank": 11,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T15:40:53+01:00",
+          "best_rank": 11,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T16:01:21+01:00",
+          "best_rank": 11,
+          "source_count": 3
+        },
+        {
+          "captured_at": "2026-11-07T16:31:04+01:00",
+          "best_rank": 15,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T16:40:57+01:00",
+          "best_rank": 15,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T16:50:56+01:00",
+          "best_rank": 15,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T17:20:56+01:00",
+          "best_rank": 15,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-05T20:01:18+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": true,
+      "radar_qualified": true
+    },
+    "racing": {
+      "name": "Racing",
+      "best_observed_rank": 35,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 35,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": true
+    },
+    "el hierro": {
+      "name": "El Hierro",
+      "best_observed_rank": 36,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T15:50:53+01:00",
+          "best_rank": 29,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T16:01:21+01:00",
+          "best_rank": 29,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T17:20:56+01:00",
+          "best_rank": 30,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T17:41:03+01:00",
+          "best_rank": 33,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T17:50:50+01:00",
+          "best_rank": 33,
+          "source_count": 1
+        },
+        {
+          "captured_at": "2026-11-07T18:02:13+01:00",
+          "best_rank": 33,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T18:21:00+01:00",
+          "best_rank": 33,
+          "source_count": 2
+        },
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 36,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T10:41:06+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": true
+    },
+    "enric gallego": {
+      "name": "Enric Gallego",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "liam delap": {
+      "name": "Liam Delap",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "osasuna": {
+      "name": "Osasuna",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "catena": {
+      "name": "Catena",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "berenguer": {
+      "name": "Berenguer",
+      "inside_top30": true,
+      "last_seen_at": "2026-11-07T20:40:59+01:00"
+    },
+    "higinio": {
+      "name": "Higinio",
+      "best_observed_rank": 32,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 32,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": false
+    },
+    "morata": {
+      "name": "Morata",
+      "best_observed_rank": 43,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 43,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": false
+    },
+    "chelsea green": {
+      "name": "Chelsea Green",
+      "best_observed_rank": 46,
+      "social_source_count": 1,
+      "rank_history": [
+        {
+          "captured_at": "2026-11-07T20:40:59+01:00",
+          "best_rank": 46,
+          "source_count": 1
+        }
+      ],
+      "first_detected_at": "2026-11-07T20:40:59+01:00",
+      "last_seen_at": "2026-11-07T20:40:59+01:00",
+      "inside_top30": false,
+      "radar_qualified": false
+    },
+    "pecco": {
+      "name": "Pecco",
       "inside_top30": true,
       "last_seen_at": "2026-11-07T20:31:17+01:00"
     },
@@ -11258,33 +12536,8 @@
       "inside_top30": true,
       "radar_qualified": false
     },
-    "marc": {
-      "name": "Marc",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "bezz": {
-      "name": "bezz",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "fueradecontrol7nov": {
-      "name": "#FueraDeControl7nov",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "wwecrownjewel": {
-      "name": "#WWECrownJewel",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
     "cadiz": {
       "name": "Cadiz",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "sarabia": {
-      "name": "Sarabia",
       "inside_top30": true,
       "last_seen_at": "2026-11-07T20:31:17+01:00"
     },
@@ -11350,93 +12603,6 @@
       "name": "Jorge Martín",
       "inside_top30": true,
       "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "goni": {
-      "name": "Goni",
-      "best_observed_rank": 31,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T17:01:20+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T17:10:59+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 19,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 19,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 31,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 31,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 31,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T17:01:20+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": true,
-      "radar_qualified": false
-    },
-    "interlagos": {
-      "name": "Interlagos",
-      "best_observed_rank": 35,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 36,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 36,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 42,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 42,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 42,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:01:19+01:00",
-          "best_rank": 35,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T18:02:13+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": true,
-      "radar_qualified": false
     },
     "alcorcon": {
       "name": "Alcorcon",
@@ -11520,11 +12686,6 @@
       "inside_top30": true,
       "last_seen_at": "2026-11-07T20:31:17+01:00"
     },
-    "el sadar": {
-      "name": "El Sadar",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
     "enzo": {
       "name": "Enzo",
       "inside_top30": true,
@@ -11539,98 +12700,6 @@
       "name": "#MotoGP",
       "inside_top30": true,
       "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "brazilgp": {
-      "name": "#BrazilGP",
-      "best_observed_rank": 39,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 35,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 35,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 39,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 39,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 39,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T18:02:13+01:00",
-      "last_seen_at": "2026-11-07T20:31:17+01:00",
-      "inside_top30": true,
-      "radar_qualified": false
-    },
-    "sancet": {
-      "name": "Sancet",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T20:31:17+01:00"
-    },
-    "amaia": {
-      "name": "Amaia",
-      "best_observed_rank": 29,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T16:40:57+01:00",
-          "best_rank": 28,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 25,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 25,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 29,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 29,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 29,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:03:23+01:00",
-          "best_rank": 29,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:11:02+01:00",
-          "best_rank": 29,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T11:01:14+01:00",
-      "last_seen_at": "2026-11-07T20:11:02+01:00",
-      "inside_top30": false,
-      "radar_qualified": true
     },
     "iker luque": {
       "name": "Iker Luque",
@@ -11785,57 +12854,6 @@
       "inside_top30": false,
       "radar_qualified": false
     },
-    "gazir": {
-      "name": "Gazir",
-      "best_observed_rank": 30,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T16:14:13+01:00",
-          "best_rank": 28,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T16:21:10+01:00",
-          "best_rank": 28,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T17:01:20+01:00",
-          "best_rank": 13,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T17:10:59+01:00",
-          "best_rank": 11,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 11,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 11,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T20:03:23+01:00",
-          "best_rank": 30,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:11:02+01:00",
-          "best_rank": 30,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T15:40:53+01:00",
-      "last_seen_at": "2026-11-07T20:11:02+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
     "julen": {
       "name": "Julen",
       "best_observed_rank": 28,
@@ -11927,159 +12945,6 @@
       "last_seen_at": "2026-11-07T20:11:02+01:00",
       "inside_top30": false,
       "radar_qualified": true
-    },
-    "acierto": {
-      "name": "Acierto",
-      "best_observed_rank": 49,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 30,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 30,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 47,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 47,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 47,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:01:19+01:00",
-          "best_rank": 49,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:03:23+01:00",
-          "best_rank": 49,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:11:02+01:00",
-          "best_rank": 49,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T10:31:08+01:00",
-      "last_seen_at": "2026-11-07T20:11:02+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "mestalla": {
-      "name": "Mestalla",
-      "best_observed_rank": 48,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 26,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 26,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 45,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 45,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 45,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:01:19+01:00",
-          "best_rank": 48,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:03:23+01:00",
-          "best_rank": 48,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:11:02+01:00",
-          "best_rank": 48,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T12:59:55+01:00",
-      "last_seen_at": "2026-11-07T20:11:02+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "cabanyal": {
-      "name": "Cabanyal",
-      "best_observed_rank": 38,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 21,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 21,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 30,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 30,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 30,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:01:19+01:00",
-          "best_rank": 38,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:03:23+01:00",
-          "best_rank": 38,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:11:02+01:00",
-          "best_rank": 38,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T15:11:00+01:00",
-      "last_seen_at": "2026-11-07T20:11:02+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
     },
     "pablo garcia": {
       "name": "Pablo García",
@@ -12591,108 +13456,6 @@
       "inside_top30": false,
       "radar_qualified": false
     },
-    "valencia": {
-      "name": "Valencia",
-      "best_observed_rank": 50,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T16:14:13+01:00",
-          "best_rank": 30,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T16:21:10+01:00",
-          "best_rank": 30,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T19:01:37+01:00",
-          "best_rank": 48,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:11:00+01:00",
-          "best_rank": 48,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T19:21:01+01:00",
-          "best_rank": 48,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:01:19+01:00",
-          "best_rank": 50,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:03:23+01:00",
-          "best_rank": 50,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:11:02+01:00",
-          "best_rank": 50,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T10:41:06+01:00",
-      "last_seen_at": "2026-11-07T20:11:02+01:00",
-      "inside_top30": false,
-      "radar_qualified": true
-    },
-    "la rosaleda": {
-      "name": "La Rosaleda",
-      "best_observed_rank": 42,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T17:10:59+01:00",
-          "best_rank": 12,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-11-07T17:41:03+01:00",
-          "best_rank": 15,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T17:50:50+01:00",
-          "best_rank": 15,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 15,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 15,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T20:01:19+01:00",
-          "best_rank": 42,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:03:23+01:00",
-          "best_rank": 42,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T20:11:02+01:00",
-          "best_rank": 42,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-07T15:40:53+01:00",
-      "last_seen_at": "2026-11-07T20:11:02+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
     "lcn7nov": {
       "name": "#LCN7nov",
       "best_observed_rank": 11,
@@ -12744,57 +13507,6 @@
       "inside_top30": true,
       "radar_qualified": false
     },
-    "santiago pena": {
-      "name": "Santiago Peña",
-      "best_observed_rank": 15,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T15:31:13+01:00",
-          "best_rank": 11,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T15:32:21+01:00",
-          "best_rank": 11,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T15:40:53+01:00",
-          "best_rank": 11,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T16:01:21+01:00",
-          "best_rank": 11,
-          "source_count": 3
-        },
-        {
-          "captured_at": "2026-11-07T16:31:04+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T16:40:57+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T16:50:56+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T17:20:56+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-05T20:01:18+01:00",
-      "last_seen_at": "2026-11-07T19:59:34+01:00",
-      "inside_top30": true,
-      "radar_qualified": true
-    },
     "rcde": {
       "name": "#rcde",
       "best_observed_rank": 17,
@@ -12810,11 +13522,6 @@
       "last_seen_at": "2026-11-07T19:59:34+01:00",
       "inside_top30": true,
       "radar_qualified": false
-    },
-    "racing": {
-      "name": "Racing",
-      "inside_top30": true,
-      "last_seen_at": "2026-11-07T19:59:34+01:00"
     },
     "aldeguer": {
       "name": "Aldeguer",
@@ -13086,57 +13793,6 @@
       "last_seen_at": "2026-11-07T19:21:01+01:00",
       "inside_top30": false,
       "radar_qualified": false
-    },
-    "el hierro": {
-      "name": "El Hierro",
-      "best_observed_rank": 33,
-      "social_source_count": 2,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-07T15:40:53+01:00",
-          "best_rank": 29,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T15:50:53+01:00",
-          "best_rank": 29,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T16:01:21+01:00",
-          "best_rank": 29,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T17:20:56+01:00",
-          "best_rank": 30,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T17:41:03+01:00",
-          "best_rank": 33,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T17:50:50+01:00",
-          "best_rank": 33,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-07T18:02:13+01:00",
-          "best_rank": 33,
-          "source_count": 2
-        },
-        {
-          "captured_at": "2026-11-07T18:21:00+01:00",
-          "best_rank": 33,
-          "source_count": 2
-        }
-      ],
-      "first_detected_at": "2026-11-07T10:41:06+01:00",
-      "last_seen_at": "2026-11-07T18:21:00+01:00",
-      "inside_top30": false,
-      "radar_qualified": true
     },
     "aznou": {
       "name": "Aznou",
@@ -20195,217 +20851,28 @@
       "last_seen_at": "2026-11-06T19:21:05+01:00",
       "inside_top30": false,
       "radar_qualified": false
-    },
-    "lastfourwatched": {
-      "name": "#LastFourWatched",
-      "best_observed_rank": 11,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 11,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 11,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 11,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "jay rockefeller": {
-      "name": "Jay Rockefeller",
-      "best_observed_rank": 12,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 12,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 12,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 12,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "doja cat": {
-      "name": "Doja Cat",
-      "best_observed_rank": 13,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 13,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 13,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 13,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "geoff": {
-      "name": "Geoff",
-      "best_observed_rank": 14,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 14,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 14,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 14,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "happy friyay": {
-      "name": "Happy Friyay",
-      "best_observed_rank": 15,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 15,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "keylor navas": {
-      "name": "Keylor Navas",
-      "best_observed_rank": 16,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 16,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 16,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 16,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "bandcamp friday": {
-      "name": "Bandcamp Friday",
-      "best_observed_rank": 17,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 17,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 17,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 17,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
-    },
-    "model y": {
-      "name": "Model Y",
-      "best_observed_rank": 18,
-      "social_source_count": 1,
-      "rank_history": [
-        {
-          "captured_at": "2026-11-06T19:02:19+01:00",
-          "best_rank": 18,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:10:55+01:00",
-          "best_rank": 18,
-          "source_count": 1
-        },
-        {
-          "captured_at": "2026-11-06T19:21:05+01:00",
-          "best_rank": 18,
-          "source_count": 1
-        }
-      ],
-      "first_detected_at": "2026-11-06T19:02:19+01:00",
-      "last_seen_at": "2026-11-06T19:21:05+01:00",
-      "inside_top30": false,
-      "radar_qualified": false
     }
   },
-  "anticipated_entries": [],
+  "anticipated_entries": [
+    {
+      "name": "Abascal",
+      "first_detected_at": "2026-11-06T11:01:31+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00",
+      "lead_minutes": 2019
+    },
+    {
+      "name": "La Revuelta",
+      "first_detected_at": "2026-11-06T20:41:01+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00",
+      "lead_minutes": 1440
+    },
+    {
+      "name": "Paraguay",
+      "first_detected_at": "2026-11-04T13:01:22+01:00",
+      "entered_top10_at": "2026-11-07T20:40:59+01:00",
+      "lead_minutes": 4780
+    }
+  ],
   "upcoming_method": "outside-top30 + confirmed-social-support + rising-or-new",
   "sources": {
     "trends24": {
@@ -20415,7 +20882,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-11-07T20:31:17+01:00"
+      "fetched_at": "2026-11-07T20:40:59+01:00"
     },
     "getdaytrends": {
       "ok": true,
@@ -20440,14 +20907,10 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-11-07T20:31:17+01:00",
+      "fetched_at": "2026-11-07T20:40:59+01:00",
       "last_list_change_at": "2026-11-07T20:03:23+01:00",
-      "list_unchanged_minutes": 27.9,
-      "relative_hint_unchanged_since": "2026-11-07T20:31:17+01:00",
-      "continuity_verified": true,
-      "continuity_peers": [
-        "fowtools"
-      ]
+      "list_unchanged_minutes": 37.6,
+      "relative_hint_unchanged_since": "2026-11-07T20:40:59+01:00"
     },
     "tweets24": {
       "ok": false,
@@ -20456,7 +20919,7 @@
       "update_hint": "Updated 1 month ago Live Twitter Trending Topics in Spain About Twitter (X) Trends in Sp",
       "age_minutes": null,
       "freshness": "invalid",
-      "fetched_at": "2026-11-07T20:31:17+01:00"
+      "fetched_at": "2026-11-07T20:40:59+01:00"
     },
     "superx": {
       "ok": true,
@@ -20516,10 +20979,10 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "unknown",
-      "fetched_at": "2026-11-07T20:31:17+01:00",
+      "fetched_at": "2026-11-07T20:40:59+01:00",
       "last_list_change_at": "2026-11-07T08:20:55+01:00",
-      "list_unchanged_minutes": 730.4,
-      "relative_hint_unchanged_since": "2026-11-07T20:31:17+01:00"
+      "list_unchanged_minutes": 740.1,
+      "relative_hint_unchanged_since": "2026-11-07T20:40:59+01:00"
     },
     "twtdata": {
       "ok": false,
@@ -20528,70 +20991,70 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-11-07T20:31:17+01:00"
+      "fetched_at": "2026-11-07T20:40:59+01:00"
     },
     "snaplytics": {
       "ok": true,
       "trends": [
-        "Leo Román",
         "Abascal",
-        "Broncano",
-        "Marc",
-        "Cracovia",
-        "La Revuelta",
         "#IreneYGabrielEnMadrid",
+        "Cracovia",
+        "Broncano",
+        "La Revuelta",
         "Paraguay",
-        "Rivola",
         "La Séptima",
+        "Marc",
         "Bezz",
-        "#FueraDeControl7nov",
-        "#RTXON",
-        "Funes",
-        "Koldo",
+        "Sancet",
         "Núcleo Nacional",
-        "Pecco",
-        "#rcde",
-        "Racing",
-        "#LCN7nov",
-        "Fiscalía Europea",
-        "Santiago Peña",
-        "Espanyol",
-        "Cádiz",
+        "#RTXON",
+        "#WWECrownJewel",
+        "#FueraDeControl7nov",
+        "Leo Román",
+        "Enric Gallego",
+        "Koldo",
+        "Liam Delap",
         "Amaia",
-        "Dani Calvo",
-        "Aldeguer",
-        "Loren",
-        "Jorge Martín",
-        "Sarabia",
-        "Sprint",
-        "Julen",
-        "Einar",
+        "Santiago Peña",
+        "Fiscalía Europea",
+        "Osasuna",
+        "Rivola",
+        "Catena",
+        "#BrazilGP",
+        "Mestalla",
+        "Berenguer",
+        "Funes",
         "Gazir",
         "Acierto",
-        "Calero",
-        "Zelda",
-        "Javier Ruiz",
         "Goñi",
-        "Hidalgo",
+        "Higinio",
         "Cabanyal",
+        "Javier Ruiz",
+        "Racing",
         "El Hierro",
-        "Leire",
+        "Interlagos",
+        "Zelda",
         "Stephen Miller",
-        "Mestalla",
+        "Valencia",
+        "Leire",
+        "El Sadar",
+        "Morata",
         "Bruna",
-        "Pattinson",
-        "Madueke",
-        "Fritz",
-        "Túnez"
+        "Dani Calvo",
+        "Chelsea Green",
+        "La Rosaleda",
+        "Sarabia",
+        "Túnez",
+        "Diana Morant"
       ],
       "error": null,
-      "update_hint": "Trending now Nov 7, 2026 17:00 UTC",
-      "age_minutes": 151.3,
-      "freshness": "stale",
-      "fetched_at": "2026-11-07T20:31:17+01:00",
-      "last_list_change_at": "2026-11-07T19:44:29+01:00",
-      "list_unchanged_minutes": 46.8,
-      "relative_hint_unchanged_since": "2026-11-07T20:31:17+01:00"
+      "update_hint": "Trending now Nov 7, 2026 19:00 UTC",
+      "age_minutes": 41.0,
+      "freshness": "fresh",
+      "fetched_at": "2026-11-07T20:40:59+01:00",
+      "last_list_change_at": "2026-11-07T20:40:59+01:00",
+      "list_unchanged_minutes": 0.0,
+      "relative_hint_unchanged_since": "2026-11-07T20:40:59+01:00"
     },
     "whatstrends": {
       "ok": true,
@@ -20649,9 +21112,9 @@
       "update_hint": "Last updated: 1 minutes ago # Tweets 1 Málaga <10K posts 2 Funes <10K posts 3 #IreneYGabrielEn",
       "age_minutes": 1.0,
       "freshness": "stale",
-      "fetched_at": "2026-11-07T20:31:17+01:00",
+      "fetched_at": "2026-11-07T20:40:59+01:00",
       "last_list_change_at": "2026-11-07T17:01:20+01:00",
-      "list_unchanged_minutes": 210.0,
+      "list_unchanged_minutes": 219.7,
       "relative_hint_unchanged_since": "2026-11-07T17:01:20+01:00",
       "freshness_note": "frozen-relative-update-label"
     },
@@ -20662,7 +21125,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-11-07T20:31:18+01:00"
+      "fetched_at": "2026-11-07T20:40:59+01:00"
     },
     "xtrendsiamrohit": {
       "ok": false,
@@ -20671,7 +21134,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-11-07T20:31:18+01:00"
+      "fetched_at": "2026-11-07T20:40:59+01:00"
     },
     "trendswe": {
       "ok": false,
@@ -20680,7 +21143,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-11-07T20:31:18+01:00"
+      "fetched_at": "2026-11-07T20:40:59+01:00"
     },
     "xtrendssaroj": {
       "ok": false,
@@ -20689,7 +21152,7 @@
       "update_hint": null,
       "age_minutes": null,
       "freshness": "error",
-      "fetched_at": "2026-11-07T20:31:18+01:00"
+      "fetched_at": "2026-11-07T20:41:00+01:00"
     },
     "playersells": {
       "ok": true,
@@ -20729,10 +21192,10 @@
       "update_hint": "Actualizado hace 5 horas",
       "age_minutes": 300.0,
       "freshness": "stale",
-      "fetched_at": "2026-11-07T20:31:18+01:00",
+      "fetched_at": "2026-11-07T20:41:00+01:00",
       "last_list_change_at": "2026-11-07T15:11:00+01:00",
-      "list_unchanged_minutes": 320.3,
-      "relative_hint_unchanged_since": "2026-11-07T20:31:17+01:00"
+      "list_unchanged_minutes": 330.0,
+      "relative_hint_unchanged_since": "2026-11-07T20:40:59+01:00"
     },
     "fowtools": {
       "ok": true,
@@ -20790,12 +21253,12 @@
       ],
       "error": null,
       "update_hint": "Updated: November 07, 2026 at 07:00 PM",
-      "age_minutes": 91.3,
+      "age_minutes": 101.0,
       "freshness": "stale",
-      "fetched_at": "2026-11-07T20:31:19+01:00",
+      "fetched_at": "2026-11-07T20:41:00+01:00",
       "last_list_change_at": "2026-11-07T20:01:19+01:00",
-      "list_unchanged_minutes": 30.0,
-      "relative_hint_unchanged_since": "2026-11-07T20:31:17+01:00"
+      "list_unchanged_minutes": 39.7,
+      "relative_hint_unchanged_since": "2026-11-07T20:40:59+01:00"
     }
   }
 }
