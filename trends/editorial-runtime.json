@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794063319124-manual",
   "command_id": "tr-1794063455844-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T16:08:00+01:00",
-  "updated_at": "2026-11-07T16:08:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T16:09:00+01:00",
+  "finished_at": "2026-11-07T16:09:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -550,22 +550,32 @@
       "at": "2026-11-07T16:08:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794063455844-manual iniciada; primera lectura de main muestra editorial-queue=0. Se verifican reexplicaciones, maintenance y barrera final antes de cerrar. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T16:09:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions y búsqueda de estado sin preparing/update, rewrite_pending, reexplain, anticipate ni review_red. Maintenance previo de Widilo y Paraguay ya cerrado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T16:09:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794063455844-manual cerrada 0/0; no había trabajo editorial activo tras la relectura final de main. Sin imágenes ni publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794063319124-manual",
+    "run_id": "tr-1794063455844-manual",
     "status": "DONE",
-    "finished_at": "2026-11-07T16:02:00+01:00",
-    "total": 2,
-    "closed": 2,
+    "finished_at": "2026-11-07T16:09:00+01:00",
+    "total": 0,
+    "closed": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
-  "last_started_at": "2026-11-07T15:12:00+01:00",
-  "last_completed_at": "2026-11-07T16:02:00+01:00",
+  "last_started_at": "2026-11-07T16:08:00+01:00",
+  "last_completed_at": "2026-11-07T16:09:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -672,7 +682,8 @@
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat",
     "tr-autoguard-1794063061",
-    "tr-1794063319124-manual"
+    "tr-1794063319124-manual",
+    "tr-1794063455844-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -780,9 +791,10 @@
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat",
     "tr-autoguard-1794063061",
-    "tr-1794063319124-manual"
+    "tr-1794063319124-manual",
+    "tr-1794063455844-manual"
   ],
-  "message": "Pasada en curso: verificando estado editorial y barrera final.",
+  "message": "Pasada tr-1794063455844-manual cerrada 0/0: barrera final main vacía, sin reexplicaciones ni mantenimiento pendiente; ImageGen=0; publicaciones=0.",
   "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
@@ -795,6 +807,7 @@
     "tr-1794057915598-manual",
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat",
-    "tr-autoguard-1794063061"
+    "tr-autoguard-1794063061",
+    "tr-1794063455844-manual"
   ]
 }
