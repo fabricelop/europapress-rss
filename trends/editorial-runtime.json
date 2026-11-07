@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-1741-chat",
   "command_id": "tr-manual-20261107-1755-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T17:55:00+01:00",
-  "updated_at": "2026-11-07T17:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T17:56:00+01:00",
+  "finished_at": "2026-11-07T17:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -612,9 +612,30 @@
       "at": "2026-11-07T17:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1755-chat iniciada; barrera fresca de main detecta 0 trabajo(s) en editorial-queue y 0 reexplicación/estado auxiliar activo. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T17:56:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions y requests sin preparing/update, rewrite_pending, reexplain, anticipate ni review_red activos. Últimos resultados de mantenimiento inspeccionados. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T17:56:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1755-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T17:55:00+01:00",
-  "last_completed_at": "2026-11-07T17:43:56+01:00",
-  "api_failover_enabled": false
+  "last_completed_at": "2026-11-07T17:56:00+01:00",
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-manual-20261107-1755-chat",
+    "status": "DONE",
+    "started_at": "2026-11-07T17:55:00+01:00",
+    "finished_at": "2026-11-07T17:56:00+01:00",
+    "attempted": 0,
+    "closed": 0,
+    "queue_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0
+  }
 }
