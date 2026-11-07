@@ -34,6 +34,13 @@ class DirectBufferPublisherTests(unittest.TestCase):
                               side_effect=lambda data, reason: self.saved.append(reason))
         m.start()
         self.addCleanup(m.stop)
+        # Unit tests are offline. Fetching the public approved-image feed is
+        # exercised separately with a complete mocked HTTP response.
+        self.read_approved = publisher.approved_catalog_candidates
+        public = mock.patch.object(publisher, "approved_catalog_candidates",
+                                   return_value=[])
+        public.start()
+        self.addCleanup(public.stop)
         self._write("ttittulares/prepared.json", {"items": [
             {"event_id": "news123456", "revision": 1,
              "tweet": {"text": "Texto editorial verificado"}}]})
@@ -148,6 +155,60 @@ class DirectBufferPublisherTests(unittest.TestCase):
         with mock.patch.object(publisher, "check_image",
                                side_effect=ValueError("SHA incorrecto")):
             text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual((image_url, kind), (archive, "archive"))
+
+    def test_public_approved_ia_takes_priority_over_archive_and_git_catalog(self):
+        approved = "https://ttactualidad-tendencias.rainyraven22.chatgpt.site/images/ttittulares/news123456-r1-manual-" + "b"*12 + ".png"
+        archive = "https://images.example.com/news-archive.jpg"
+        self._write("ttittulares/prepared.json", {"items": [{
+            "event_id": "news123456", "revision": 1,
+            "tweet": {"text": "Texto editorial verificado"},
+            "archive_image": {"url": archive}}]})
+        with mock.patch.object(publisher, "approved_catalog_candidates", return_value=[
+              {"image_url": approved, "sha256": "b"*64}]), \\
+             mock.patch.object(publisher, "check_image", return_value=approved) as check:
+            text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
+        self.assertEqual((image_url, kind), (approved, "ai"))
+        check.assert_called_once_with(approved, "b"*64, "ttittulares", "news123456", 1)
+
+    def test_site_approved_feed_validates_exact_identity_and_rejects_other_news(self):
+        class FakeReply:
+            status = 200
+            def __init__(self, url, body):
+                self.url, self.body = url, body
+            def __enter__(self): return self
+            def __exit__(self, *args): return False
+            def geturl(self): return self.url
+            def read(self, limit): return self.body[:limit]
+        target = {
+            "approval_id": "c"*64, "target_id": "news123456", "revision": 1,
+            "editorial_text": "Texto editorial verificado",
+            "prepared_at": "2026-11-07T12:00:00Z",
+            "image_url": URL, "sha256": HASH}
+        body = json.dumps({
+            "schema_version": 1, "project": "ttittulares",
+            "project_id": publisher.APPROVED_PROJECT_ID,
+            "images": [{**target, "target_id": "other"}, target,
+                       {**target, "editorial_text": "changed"},
+                       {**target, "approval_id": ""}]}).encode()
+        with mock.patch.object(publisher, "urlopen", side_effect=lambda req, timeout:
+                FakeReply(req.full_url, body)):
+            rows = self.read_approved("ttittulares", "news123456", 1,
+                "Texto editorial verificado", "2026-11-07T12:00:00Z")
+            other = self.read_approved("ttittulares", "news123456", 2,
+                "Texto editorial verificado", "2026-11-07T12:00:00Z")
+        self.assertEqual(rows, [{"image_url": URL, "sha256": HASH}])
+        self.assertEqual(other, [])
+
+    def test_unavailable_approved_feed_preserves_archive_fallback(self):
+        archive = "https://images.example.com/article.jpg"
+        self._write("ttittulares/site-ai-images.json", {"images": []})
+        self._write("ttittulares/prepared.json", {"items": [{
+            "event_id": "news123456", "revision": 1,
+            "tweet": {"text": "Texto editorial verificado"},
+            "archive_image": {"url": archive}}]})
+        with mock.patch.object(publisher, "approved_catalog_candidates", return_value=[]):
+            _, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual((image_url, kind), (archive, "archive"))
 
     def test_second_approved_ai_is_used_if_first_catalog_url_is_broken(self):
