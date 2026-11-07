@@ -838,7 +838,7 @@ assert 'try await github.saveEditorialManualRelations(' in relations_view
 assert 'snapshot = nil' in relations_view
 assert 'buffer.latestReceipt(' in actions
 assert 'project: project, id: editorialID, revision: revision' in actions
-assert 'Comprobar estado de Buffer' in actions
+assert 'Comprobar publicación Buffer' in actions
 assert 'func latestReceipt(project:' in buffer
 assert 'Publicado en X y retirado de Listas (recibos confirmados)' in actions
 print('NATIVE_0468_BUFFER_STATUS_AND_NO_FAKE_RELATION_SELECTION_OK')
