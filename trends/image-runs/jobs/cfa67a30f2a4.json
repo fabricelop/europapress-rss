@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791011327524-97681b",
+  "requested_at": "2026-10-03T07:08:47.524Z",
+  "updated_at": "2026-10-03T07:11:52.988Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "cfa67a30f2a4",
+  "trend_id": "cfa67a30f2a4",
+  "target_name": "Moncloa",
+  "revision": 0,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Moncloa",
+    "revision": 0,
+    "explanation": "TT#23 Moncloa es tendencia porque, tras caer dos decretos de vivienda en el Congreso, el Gobierno pide calma y dice que puede seguir gobernando mientras Sánchez analiza la situación.",
+    "closer_text": "",
+    "trend_names": [
+      "Moncloa"
+    ],
+    "group_title": "Moncloa · decretos de vivienda 2 de octubre",
+    "rank_at_explanation": 23,
+    "explained_at": "2026-10-03T08:57:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Servimedia · 2/10/2026",
+        "url": "https://www.servimedia.es/noticias/moncloa-pide-calma-porque-puede-seguir-gobernando-pero-sanchez-reflexionara-este-fin-semana/1413382570"
+      },
+      {
+        "source": "Europa Press · 2/10/2026",
+        "url": "https://www.europapress.es/nacional/noticia-miembros-gobierno-ven-muy-probable-adelanto-electoral-si-finalmente-caen-decretos-vivienda-20261002111842.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "No apareció un raster capturable en 2 minutos; {\"marker\":true,\"turns\":0,\"afterTurns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"assistantTail\":\"\"}",
+  "pc_upload_secret_hash": "d10bbce0968ee15554ffa75537627b46e526946788e2e65a545f0544d1ad7d02",
+  "pc_worker_id": "ttendencias-image-bridge-v1",
+  "pc_picked_up_at": "2026-10-03T07:09:40.498Z",
+  "pc_launched_at": "2026-10-03T07:09:49.885Z",
+  "finished_at": "2026-10-03T07:11:52.988Z"
+}
