@@ -1,7 +1,10 @@
 'use strict';
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
-console.log('PRIVATE_INBOX_RECEIVER_SHA256='+crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'../TTImageApprovalReceiver.cjs'))).digest('hex'));
+for(const filename of ['TTImageApprovalReceiver.cjs','TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs']){
+ console.log('PRIVATE_INBOX_FILE_SHA256 '+filename+'='+crypto.createHash('sha256')
+   .update(fs.readFileSync(path.join(__dirname,'..',filename))).digest('hex'));
+}
 const {allowedTop30,inCurrentApprovalScope,selectCurrentTasks,activeIdentities}=require('../TTImageApprovalReceiver.cjs');
 
 test('top30 current editorial episode and any-age READY/Listas news are eligible',async()=>{
