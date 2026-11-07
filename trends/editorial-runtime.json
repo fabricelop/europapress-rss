@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1840-chat",
+  "run_id": "tr-1794073996404-manual",
   "previous_run_id": "tr-manual-20261107-1825-chat",
   "command_id": "tr-manual-20261107-1840-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T18:40:30+01:00",
-  "updated_at": "2026-11-07T18:41:30+01:00",
-  "finished_at": "2026-11-07T18:41:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T18:54:00+01:00",
+  "updated_at": "2026-11-07T18:54:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": true,
@@ -697,7 +697,7 @@
       "message": "Pasada tr-manual-20261107-1840-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T18:40:30+01:00",
+  "last_started_at": "2026-11-07T18:54:00+01:00",
   "last_completed_at": "2026-11-07T18:41:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -710,5 +710,19 @@
     "queue_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0
-  }
+  },
+  "current_item": {
+    "id": "red-review-e6509560a4cc195d4ac0",
+    "revision": 0,
+    "name": "Revisar novedades: Espanyol"
+  },
+  "progress": [
+    {
+      "at": "2026-11-07T18:54:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-e6509560a4cc195d4ac0",
+      "title": "Revisar novedades: Espanyol",
+      "message": "Pasada tr-1794073996404-manual iniciada sobre main: 2 review_red preparing (Espanyol y Rivola), en orden de cola. Validación JIT antes de cada resultado. Sin ImageGen ni publicaciones."
+    }
+  ]
 }
