@@ -383,12 +383,29 @@ class DirectBufferPublisherTests(unittest.TestCase):
                 publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual(check.call_count, 1)
 
-    def test_buffer_text_matches_manual_x_section_link(self):
+    def test_both_x_accounts_end_at_working_site_homepage(self):
         text = "Titular contrastado y breve.\n\n#Noticias\n🌶️ Remate"
-        result = publisher.x_payload("ttittulares", text)
-        self.assertEqual(result, text +
-                         "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/noticias")
-        self.assertEqual(result.count("https://"), 1)
+        for project in ("ttittulares", "ttendencias"):
+            with self.subTest(project=project):
+                result = publisher.x_payload(project, text)
+                self.assertEqual(result, text +
+                                 "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")
+                self.assertEqual(result.count("https://"), 1)
+
+    def test_legacy_section_footer_is_replaced_not_duplicated(self):
+        base = "Texto editorial con remate y #Etiqueta"
+        old_urls = (
+            "https://ttactualidad.rainyraven22.chatgpt.site/noticias",
+            "https://ttactualidad.rainyraven22.chatgpt.site/tendencias",
+        )
+        for project in ("ttittulares", "ttendencias"):
+            for old in old_urls:
+                with self.subTest(project=project, old=old):
+                    result = publisher.x_payload(project, base + "\n\n" + old)
+                    self.assertEqual(result, base +
+                                     "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")
+        unrelated = "Enlace de fuente https://example.org/informe"
+        self.assertIn(unrelated, publisher.x_payload("ttittulares", unrelated))
 
     def test_x_text_is_truncated_without_losing_end_hashtags_and_link(self):
         text = ("Una noticia muy larga y contrastada. " * 22) + \
@@ -396,9 +413,9 @@ class DirectBufferPublisherTests(unittest.TestCase):
         result = publisher.x_payload("ttittulares", text)
         self.assertIn("#Actualidad #Noticias", result)
         self.assertIn("🌶️ Remate", result)
-        self.assertTrue(result.endswith("/noticias"))
+        self.assertTrue(result.endswith("https://ttactualidad.rainyraven22.chatgpt.site/"))
         self.assertLessEqual(publisher.x_weight(result.split(
-            "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/noticias")[0]), 255)
+            "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")[0]), 255)
 
     def test_rate_limit_headers_accept_buffer_spaces(self):
         headers = Message()
