@@ -7,198 +7,93 @@
   "previous_run_id": "tr-1794009075249-manual",
   "command_id": "tr-1794010714259-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T01:19:00+01:00",
-  "updated_at": "2026-11-07T01:22:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-07T00:23:56+00:00",
+  "finished_at": "2026-11-07T00:23:56+00:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-555e7f509affa6925638",
-  "title": "Revisar novedades: Santiago Peña",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "35fdbc5ccc10",
-    "de982193d4bd",
-    "16ac22023f2b",
-    "8c0d4ecd5327",
-    "50d1a6619b2a",
-    "50b8047cb3f4",
-    "4ee281bc339c",
-    "83fe8a78c514",
-    "a9d16526a859",
-    "5b461284ec93",
-    "97e735d07b7a"
+    "red-review-81849fed0388d3d2ddaf",
+    "red-review-555e7f509affa6925638"
   ],
   "converged_ids": [
-    "35fdbc5ccc10",
-    "de982193d4bd",
-    "16ac22023f2b",
-    "8c0d4ecd5327",
-    "50d1a6619b2a",
-    "50b8047cb3f4",
-    "4ee281bc339c",
-    "83fe8a78c514",
-    "a9d16526a859",
-    "5b461284ec93",
-    "97e735d07b7a"
-  ],
-  "remaining_ids": [
     "red-review-81849fed0388d3d2ddaf",
     "red-review-555e7f509affa6925638"
   ],
-  "remaining_active_ids": [
-    "red-review-81849fed0388d3d2ddaf",
-    "red-review-555e7f509affa6925638"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial real iniciada: 2 revisiones de novedades pendientes; comenzando por Paraguay.",
+  "summary": "Pasada editorial cerrada 2/2: Paraguay y Santiago Peña actualizados por continuidad con arresto domiciliario de Peña y toma de posesión de Pedro Alliana. Sin nuevas fichas, imágenes ni publicaciones.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "persisting",
-    "message": "Paraguay aplicado 1/2. Santiago Peña: continuidad verificada; resultado guardado para aplicación JIT.",
-    "updated_at": "2026-11-07T01:22:00+01:00"
+    "phase": "closing",
+    "message": "Barrera final previa: cola=0; sin preparing/update, rewrite_pending ni reexplain. 2/2 revisiones aplicadas como continuidad.",
+    "updated_at": "2026-11-07T00:23:56+00:00"
   },
   "final_outcomes": [
     {
-      "id": "35fdbc5ccc10",
+      "id": "red-review-81849fed0388d3d2ddaf",
       "revision": 0,
-      "name": "Miguel Sierra",
-      "outcome": "explained_cause_unconfirmed",
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "continuity_update",
       "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:49:00+01:00"
+      "via": "maintenance_outbox",
+      "apply_commit": "c3fc2471aa3a6c6cbea27c636ec254a3eedd444a"
     },
     {
-      "id": "de982193d4bd",
+      "id": "red-review-555e7f509affa6925638",
       "revision": 0,
-      "name": "#DeViernes",
-      "outcome": "explained",
+      "name": "Revisar novedades: Santiago Peña",
+      "outcome": "continuity_update",
       "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:50:00+01:00"
-    },
-    {
-      "id": "16ac22023f2b",
-      "revision": 0,
-      "name": "La Séptima",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:51:00+01:00"
-    },
-    {
-      "id": "8c0d4ecd5327",
-      "revision": 0,
-      "name": "Fritz",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:52:00+01:00"
-    },
-    {
-      "id": "50d1a6619b2a",
-      "revision": 0,
-      "name": "Broncano",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:53:00+01:00"
-    },
-    {
-      "id": "50b8047cb3f4",
-      "revision": 0,
-      "name": "Rafa Jódar",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:54:00+01:00"
-    },
-    {
-      "id": "4ee281bc339c",
-      "revision": 0,
-      "name": "Fofana",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:55:00+01:00"
-    },
-    {
-      "id": "83fe8a78c514",
-      "revision": 0,
-      "name": "Alcaraz",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:56:00+01:00"
-    },
-    {
-      "id": "a9d16526a859",
-      "revision": 0,
-      "name": "La Revuelta",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:57:00+01:00"
-    },
-    {
-      "id": "5b461284ec93",
-      "revision": 0,
-      "name": "Alavés",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T00:58:00+01:00"
-    },
-    {
-      "id": "97e735d07b7a",
-      "revision": 0,
-      "name": "Guridi",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "explained_at": "2026-11-07T01:00:00+01:00"
+      "via": "maintenance_outbox",
+      "apply_commit": "14698574cc37dc892503be455725c2f2752cc334"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794009075249-manual",
+    "run_id": "tr-1794010714259-manual",
     "status": "DONE",
-    "started_at": "2026-11-06T23:55:31.552Z",
-    "updated_at": "2026-11-06T23:56:41.953Z",
-    "finished_at": "2026-11-06T23:56:41.953Z",
+    "started_at": "2026-11-07T01:19:00+01:00",
+    "updated_at": "2026-11-07T00:23:56+00:00",
+    "finished_at": "2026-11-07T00:23:56+00:00",
     "current": 2,
     "total": 2,
     "queue_complete": true,
     "processed_ids": [
-      "red-review-8778c4777b28e7153bec",
-      "red-review-2f8aeaab11f279ca5b35"
+      "red-review-81849fed0388d3d2ddaf",
+      "red-review-555e7f509affa6925638"
     ],
     "converged_ids": [
-      "red-review-8778c4777b28e7153bec",
-      "red-review-2f8aeaab11f279ca5b35"
+      "red-review-81849fed0388d3d2ddaf",
+      "red-review-555e7f509affa6925638"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "red-review-8778c4777b28e7153bec",
+        "id": "red-review-81849fed0388d3d2ddaf",
         "revision": 0,
-        "name": "Revisar novedades: La UCO",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_convergence",
-        "apply_commit": "0f10546c565accbc1688e92d9cf316b719d1fe2a"
-      },
-      {
-        "id": "red-review-2f8aeaab11f279ca5b35",
-        "revision": 0,
-        "name": "Revisar novedades: Koldo",
+        "name": "Revisar novedades: Paraguay",
         "outcome": "continuity_update",
         "applied": true,
-        "via": "maintenance_convergence",
-        "apply_commit": "0f10546c565accbc1688e92d9cf316b719d1fe2a"
+        "via": "maintenance_outbox",
+        "apply_commit": "c3fc2471aa3a6c6cbea27c636ec254a3eedd444a"
+      },
+      {
+        "id": "red-review-555e7f509affa6925638",
+        "revision": 0,
+        "name": "Revisar novedades: Santiago Peña",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "apply_commit": "14698574cc37dc892503be455725c2f2752cc334"
       }
     ],
     "attempted": 2,
@@ -206,10 +101,10 @@
     "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 2,
+    "continuity_updates": 2,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -217,14 +112,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada editorial tr-1794009075249-manual cerrada 2/2 por convergencia JIT: La UCO sin novedad material; Koldo actualizado por continuidad. Barrera final main: editorial-queue=0 y rewrite_pending/reexplicación=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada editorial tr-1794010714259-manual cerrada 2/2: Paraguay y Santiago Peña actualizados por continuidad. Barrera previa main: cola=0 y sin preparing/update, rewrite_pending ni reexplain. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T00:50:40+01:00",
-  "last_completed_at": "2026-11-06T23:56:41.953Z",
+  "last_started_at": "2026-11-07T01:19:00+01:00",
+  "last_completed_at": "2026-11-07T00:23:56+00:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -278,7 +173,8 @@
     "tr-manual-20261106-2340-chat",
     "tr-autoguard-1794005467",
     "tr-manual-20261107-0025-chat",
-    "tr-1794009075249-manual"
+    "tr-1794009075249-manual",
+    "tr-1794010714259-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -334,7 +230,8 @@
     "tr-manual-20261106-2340-chat",
     "tr-autoguard-1794005467",
     "tr-manual-20261107-0025-chat",
-    "tr-1794009075249-manual"
+    "tr-1794009075249-manual",
+    "tr-1794010714259-manual"
   ],
-  "message": "Paraguay aplicado 1/2. Santiago Peña: continuidad verificada; resultado guardado para aplicación JIT."
+  "message": "Pasada editorial tr-1794010714259-manual cerrada 2/2: Paraguay y Santiago Peña actualizados por continuidad. Barrera previa main: cola=0 y sin preparing/update, rewrite_pending ni reexplain. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
