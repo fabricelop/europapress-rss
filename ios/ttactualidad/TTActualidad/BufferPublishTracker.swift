@@ -60,6 +60,12 @@ final class BufferPublishTracker: ObservableObject {
     private var confirmedSentKeys = Set<String>(
         UserDefaults.standard.stringArray(
             forKey: BufferPublishTracker.confirmedSentStorageKey) ?? [])
+    // A stale failed receipt for a PREVIOUS attempt must never unhide a newer
+    // pending one. Persist the actual dispatch identity across app restarts.
+    private static let pendingRequestIDsKey = "TTActualidad.bufferPendingRequestIds.v1"
+    private var pendingRequestIDs: [String: String] =
+        UserDefaults.standard.dictionary(
+            forKey: BufferPublishTracker.pendingRequestIDsKey) as? [String: String] ?? [:]
 
     private static func key(_ project: String, _ id: String, _ revision: Int) -> String {
         project + ":" + id + ":r" + String(revision)
@@ -72,6 +78,16 @@ final class BufferPublishTracker: ObservableObject {
 
     private func clearPendingHide(_ key: String) {
         if immediateHide.remove(key) != nil { persistPendingHide() }
+        if pendingRequestIDs.removeValue(forKey: key) != nil {
+            UserDefaults.standard.set(pendingRequestIDs,
+                                      forKey: Self.pendingRequestIDsKey)
+        }
+    }
+
+    private func registerPendingRequest(_ key: String, requestID: String) {
+        pendingRequestIDs[key] = requestID
+        UserDefaults.standard.set(pendingRequestIDs,
+                                  forKey: Self.pendingRequestIDsKey)
     }
 
     // Hide immediately, persist the reservation even after a process exit.
@@ -111,6 +127,7 @@ final class BufferPublishTracker: ObservableObject {
 
     func blocked(project: String, id: String, revision: Int) -> Bool {
         alreadySent(project: project, id: id, revision: revision) ||
+            pendingRequestIDs[Self.key(project, id, revision)] != nil ||
             sending.contains(Self.key(project, id, revision)) || posts.contains {
             $0.project == project && $0.event_id == id &&
             $0.revision == revision &&
@@ -183,15 +200,18 @@ final class BufferPublishTracker: ObservableObject {
                 UserDefaults.standard.set(Array(merged).sorted(),
                                           forKey: Self.confirmedSentStorageKey)
             }
-            // The ledger can settle while this iPhone is closed. Reconcile
-            // provisional visibility only from terminal, exact receipts.
-            var latestByKey: [String: TTBufferPublication] = [:]
-            for item in ledger.items {
-                latestByKey[Self.key(item.project, item.event_id, item.revision)] = item
-            }
-            for (key, item) in latestByKey where
-                (item.state == "sent" || item.state == "failed") && !sending.contains(key) {
-                clearPendingHide(key)
+            // Match the exact dispatch request. An older failed attempt for
+            // this episode cannot release a newer pending publication.
+            // "sent" is safe: confirmedSentKeys has already been persisted.
+            for (key, requestID) in pendingRequestIDs {
+                guard !sending.contains(key),
+                      let receipt = ledger.items.last(where: {
+                          Self.key($0.project, $0.event_id, $0.revision) == key &&
+                          $0.request_id == requestID
+                      }) else { continue }
+                if receipt.state == "sent" || receipt.state == "failed" {
+                    clearPendingHide(key)
+                }
             }
             apiQuota = ledger.api_quota
             loaded = true
@@ -241,6 +261,7 @@ final class BufferPublishTracker: ObservableObject {
         let account = project == "ttittulares" ? "@ttittulares" : "@ttendenciasesp"
         let requestID = UUID().uuidString.lowercased()
         stagePublish(project: project, id: id, revision: revision)
+        registerPendingRequest(key, requestID: requestID)
         sending.insert(key)
         notice = "Enviando solicitud a " + account + "; aún no se ha publicado."
         change += 1
