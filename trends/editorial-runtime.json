@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-0940-chat",
   "command_id": "tr-manual-20261107-0955-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T09:55:00+01:00",
-  "updated_at": "2026-11-07T09:57:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T09:59:00+01:00",
+  "finished_at": "2026-11-07T09:59:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -45,18 +45,18 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "preparing",
-    "message": "Refresco manual 09:55 lanzado; esperando su Top 30/cola y releyendo barreras editoriales en main.",
-    "updated_at": "2026-11-07T09:57:00+01:00"
+    "phase": "closing",
+    "message": "Pasada cerrada 0/0 tras refresco SUCCESS. Barrera final main: editorial-queue=0; sin preparing/update ni rewrite_pending/reexplain.",
+    "updated_at": "2026-11-07T09:59:00+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-0940-chat",
+    "run_id": "tr-manual-20261107-0955-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T09:40:00+01:00",
-    "updated_at": "2026-11-07T09:40:52+01:00",
-    "finished_at": "2026-11-07T09:40:52+01:00",
+    "started_at": "2026-11-07T09:55:00+01:00",
+    "updated_at": "2026-11-07T09:59:00+01:00",
+    "finished_at": "2026-11-07T09:59:00+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -84,10 +84,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 0/0. Barrera final main: editorial-queue=0; sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada cerrada 0/0. Workflow 42357578023 SUCCESS; Top 30 capturado 09:58:36; cola actualizada 09:58:39 a 0. Sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T09:55:00+01:00",
-  "last_completed_at": "2026-11-07T09:40:52+01:00",
+  "last_completed_at": "2026-11-07T09:59:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -161,7 +161,8 @@
     "tr-manual-20261107-0755-chat",
     "tr-manual-20261107-0910-chat",
     "tr-manual-20261107-0925-chat",
-    "tr-manual-20261107-0940-chat"
+    "tr-manual-20261107-0940-chat",
+    "tr-manual-20261107-0955-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -237,7 +238,8 @@
     "tr-manual-20261107-0755-chat",
     "tr-manual-20261107-0910-chat",
     "tr-manual-20261107-0925-chat",
-    "tr-manual-20261107-0940-chat"
+    "tr-manual-20261107-0940-chat",
+    "tr-manual-20261107-0955-chat"
   ],
-  "message": "Pasada manual activa tras disparar el refresco 09:55; esperando actualización de cola para procesar en esta conversación."
+  "message": "Pasada cerrada 0/0. Workflow de refresco SUCCESS; Top 30 09:58:36; editorial-queue=0 a las 09:58:39; sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
 }
