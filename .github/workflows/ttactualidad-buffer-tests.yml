@@ -1,0 +1,24 @@
+name: TTActualidad - pruebas Buffer sin publicar
+on:
+  push:
+    paths:
+      - "pilot/ttactualidad_buffer_publish.py"
+      - "pilot/tests/test_ttactualidad_buffer_publish.py"
+      - ".github/workflows/ttactualidad-buffer-tests.yml"
+  pull_request:
+    paths:
+      - "pilot/ttactualidad_buffer_publish.py"
+      - "pilot/tests/test_ttactualidad_buffer_publish.py"
+      - ".github/workflows/ttactualidad-buffer-tests.yml"
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compilar y probar sin cuentas ni claves
+        run: |
+          python3 -m py_compile pilot/ttactualidad_buffer_publish.py
+          python3 -m unittest discover -s pilot/tests -p 'test_ttactualidad_buffer_publish.py' -v
