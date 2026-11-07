@@ -40,10 +40,14 @@ private final class EditorialRelationsModel: ObservableObject {
         }
         do {
             historicalNews = try await datedHistory
+            if historicalNews.isEmpty {
+                issues.append("El historial editorial de 7 días no devolvió noticias; no se puede concluir que ninguna tendencia tenga coincidencias.")
+            }
         } catch {
+            historicalNews = []
             issues.append("No se pudieron recuperar las noticias históricas: \(error.localizedDescription)")
         }
-        if !issues.isEmpty { notice = issues.joined(separator: ". ") }
+        notice = issues.joined(separator: ". ")
     }
 
     private func postDecision(news: EditorialRelationEndpoint,
@@ -318,6 +322,8 @@ struct EditorialRelationsView: View {
                             Section("Tendencias del Top 30 · \(min(30, top30Names.count))") {
                                 Text("Abre una tendencia para ver hasta 5 noticias de los últimos 7 días que la mencionan en su titular o texto. El resultado de la búsqueda no crea una relación: tú decides qué asociar.")
                                     .font(.footnote).foregroundStyle(.secondary)
+                                Text("Noticias del historial recuperadas: \(model.historicalNews.count)")
+                                    .font(.caption).foregroundStyle(.secondary)
                                 if top30Names.isEmpty && !model.loading {
                                     Text("No está disponible el Top 30 actual. Actualiza la APP.")
                                         .foregroundStyle(.secondary)
@@ -461,7 +467,9 @@ struct EditorialRelationsView: View {
         let related = relatedNews(to: name)
         return DisclosureGroup(isExpanded: trendExpansion(rank: rank, name: name)) {
             if related.isEmpty {
-                Text("No se encontraron noticias que mencionen esta tendencia en los últimos 7 días.")
+                Text(model.historicalNews.isEmpty ?
+                     "No se ha podido comprobar esta tendencia: el historial está vacío. Actualiza y revisa el aviso de carga." :
+                     "No se encontraron coincidencias entre las noticias con fecha comprobada de los últimos 7 días.")
                     .font(.footnote).foregroundStyle(.secondary)
             } else {
                 ForEach(related, id: \.stableIdentity) { news in

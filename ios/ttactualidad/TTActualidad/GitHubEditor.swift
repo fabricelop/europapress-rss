@@ -670,10 +670,39 @@ final class GitHubEditor: ObservableObject {
         return object
     }
 
+    // Relations discovery uses the SAME public raw JSON source as the existing
+    // editorial dashboard. The GitHub Contents API can return a metadata
+    // envelope rather than raw JSON, leaving the trend-first inbox silently
+    // empty. Keep this read separate from private decision/receipt calls.
+    private func readPublicEditorialJSON(_ path: String) async throws -> [String: Any] {
+        var components = URLComponents(string:
+            "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path)!
+        components.queryItems = [URLQueryItem(name: "relations_read",
+                                              value: UUID().uuidString)]
+        guard let url = components.url else {
+            throw GitHubError.message("Dirección de historial editorial incorrecta.")
+        }
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 30)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw GitHubError.message("No se pudo obtener el historial público: " + path)
+        }
+        guard let object = (try? JSONSerialization.jsonObject(with: data))
+                as? [String: Any] else {
+            throw GitHubError.message("El historial público no es JSON válido: " + path)
+        }
+        return object
+    }
+
     // Preserve PR #325: image candidates must belong to a current, exact
     // Top30 editorial episode. A failed read must not expose stale approvals.
     func currentImageApprovalTrendEpisodes() async throws -> Set<String> {
-        let snapshot = try await readMainJSON("trends/site-top30-current.json")
+        // Read public Top30 IDs through the same reliable raw endpoint used
+        // by the editorial store, not the GitHub Contents metadata envelope.
+        let snapshot = try await readPublicEditorialJSON("trends/site-top30-current.json")
         guard let entries = snapshot["items"] as? [[String: Any]],
               !entries.isEmpty, entries.count <= 30 else {
             throw GitHubError.message("No está disponible el Top 30 actual.")
@@ -695,10 +724,10 @@ final class GitHubEditor: ObservableObject {
     // identities can ONLY come from Sites /v1/snapshot. This method NEVER
     // manufactures an episodeFingerprint or a publication confirmation.
     func editorialRelationRecentNews() async throws -> [EditorialRelationEndpoint] {
-        async let preparedRead = readMainJSON("ttittulares/prepared.json")
-        async let processedRead = readMainJSON("telegram/editorial-processing.json")
-        async let publishedRead = readMainJSON("pilot/ttactualidad-publication-events.json")
-        async let radarRead = readMainJSON("ttittulares/status.json")
+        async let preparedRead = readPublicEditorialJSON("ttittulares/prepared.json")
+        async let processedRead = readPublicEditorialJSON("telegram/editorial-processing.json")
+        async let publishedRead = readPublicEditorialJSON("pilot/ttactualidad-publication-events.json")
+        async let radarRead = readPublicEditorialJSON("ttittulares/status.json")
 
         let prepared = try? await preparedRead
         let processed = try? await processedRead

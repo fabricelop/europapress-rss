@@ -594,6 +594,7 @@ final class EditorialStore: ObservableObject {
         "ttittulares/editorial-queue.json",
         "ttittulares/tremending/items.json",
         "trends/recent.json",
+        "trends/site-top30-current.json",
         "trends/telegram-manual-explained.json",
         "trends/requests.json",
         "trends/explained.json",
@@ -806,6 +807,7 @@ final class EditorialStore: ObservableObject {
         )
         let top = Self.buildTop30(
             recent: docs["trends/recent.json"] ?? [:],
+            site: docs["trends/site-top30-current.json"] ?? [:],
             manual: docs["trends/telegram-manual-explained.json"]!,
             explained: docs["trends/explained.json"] ?? [:],
             requests: docs["trends/requests.json"]!,
@@ -2254,12 +2256,24 @@ final class EditorialStore: ObservableObject {
     }
 
     private static func buildTop30(
-        recent: [String: Any], manual: [String: Any], explained: [String: Any],
+        recent: [String: Any], site: [String: Any],
+        manual: [String: Any], explained: [String: Any],
         requests: [String: Any], ready: [TrendItem], archivePhotos: [String: URL],
         siteImages: [String: SiteAIImageCatalog.Entry], now: Date
     ) -> [TrendItem] {
         let names = recent["top30"] as? [String] ?? []
         let radar = rows(recent, "items")
+        // Use the small current Top30 episode ledger for exact identities.
+        let siteRows = rows(site, "items").filter {
+            !Self.str($0, "editorial_id").isEmpty &&
+            !Self.str($0, "name").isEmpty &&
+            !Self.str($0, "explanation").isEmpty
+        }
+        var siteByName: [String: [String: Any]] = [:]
+        for row in siteRows {
+            let key = norm(Self.str(row, "name"))
+            if siteByName[key] == nil { siteByName[key] = row }
+        }
         var byRank: [Int: String] = [:]
         var movementByRank: [Int: [String: Any]] = [:]
         for (index, row) in radar.enumerated() {
@@ -2311,6 +2325,10 @@ final class EditorialStore: ObservableObject {
         return (1...30).compactMap { rank -> TrendItem? in
             guard let name = byRank[rank], !name.isEmpty else { return nil }
             let key = norm(name), candidate = explanations[key] ?? [:]
+            let siteEpisode = siteByName[key] ?? [:]
+            let siteExplained = Self.str(siteEpisode, "status").uppercased() == "EXPLICADA"
+            let siteText = siteExplained ? Self.str(siteEpisode, "explanation") : ""
+            let siteDate = when(siteEpisode, ["explained_at"])
             let candidateDate = when(candidate, ["explained_at"])
             // The Site treats old explanations as pending. Do not display an
             // orphaned historical explanation in iOS just because the keyword
@@ -2320,8 +2338,8 @@ final class EditorialStore: ObservableObject {
                 $0.timeIntervalSince(now) <= 3600
             } ?? false
             let explanation = fresh ? candidate : [:]
-            let text = str(explanation, "explanation")
-            let date = fresh ? candidateDate : nil
+            let text = !siteText.isEmpty ? siteText : str(explanation, "explanation")
+            let date = !siteText.isEmpty ? siteDate : (fresh ? candidateDate : nil)
             let status: String = statuses[key] ??
                 (text.isEmpty ? "PENDIENTE" : "EXPLICADA")
             let request = requestByName[key] ?? [:]
@@ -2330,15 +2348,20 @@ final class EditorialStore: ObservableObject {
             // previous request. A blank ID would make "Preparar" impossible.
             let digest = SHA256.hash(data: Data(name.utf8))
             let manualID = "manual-" + String(digest.map { String(format: "%02x", $0) }.joined().prefix(32))
-            let editorialID = knownID.isEmpty ? String(manualID) : knownID
-            let revision = request.isEmpty ? int(explanation, "revision") : int(request, "revision")
+            let siteID = siteExplained ? str(siteEpisode, "editorial_id") : ""
+            let editorialID = !siteID.isEmpty ? siteID : (knownID.isEmpty ? String(manualID) : knownID)
+            let revision = !siteID.isEmpty ? int(siteEpisode, "revision") :
+                (request.isEmpty ? int(explanation, "revision") : int(request, "revision"))
             let archive = explanation["archive_image"] as? [String: Any] ??
                           explanation["fallback_image"] as? [String: Any] ?? [:]
             let source = str(request, "source_url")
             let trendMovement = movementByRank[rank] ?? [:]
             return TrendItem(id: "rank-\(rank)", rank: rank, name: name,
                              explanation: text, lastExplained: text.isEmpty ? nil : date,
-                             status: status, inListas: readyNames.contains(key),
+                             status: status,
+                             // Cached Listas can be stale: explicit user action
+                             // is validated by backend against exact identity.
+                             inListas: readyNames.contains(key) || siteExplained,
                              editorialID: editorialID, revision: revision,
                              imageURL: ArchivePhotoCatalog.resolved(
                                  project: "ttendencias", id: editorialID,
@@ -2355,20 +2378,23 @@ final class EditorialStore: ObservableObject {
                              lastReviewed: when(explanation, ["red_review_checked_at"]),
                              reviewOutcome: str(explanation, "red_review_outcome"),
                              reviewReason: str(explanation, "red_review_reason"),
-                             siteImageEditorialID: str(explanation, "id"),
-                             siteImageRevision: int(explanation, "revision"),
-                             siteImageExplainedAt: str(explanation, "explained_at"),
+                             siteImageEditorialID: editorialID,
+                             siteImageRevision: revision,
+                             siteImageExplainedAt: !siteText.isEmpty ?
+                                 str(siteEpisode, "explained_at") : str(explanation, "explained_at"),
                              siteImageURL: SiteAIImageCatalog.resolved(
-                                 id: str(explanation, "id"),
-                                 revision: int(explanation, "revision"),
+                                 id: editorialID,
+                                 revision: revision,
                                  explanation: text,
-                                 explainedAt: str(explanation, "explained_at"),
+                                 explainedAt: !siteText.isEmpty ?
+                                     str(siteEpisode, "explained_at") : str(explanation, "explained_at"),
                                  catalog: siteImages),
                              siteImageSHA256: SiteAIImageCatalog.resolvedSHA256(
-                                 id: str(explanation, "id"),
-                                 revision: int(explanation, "revision"),
+                                 id: editorialID,
+                                 revision: revision,
                                  explanation: text,
-                                 explainedAt: str(explanation, "explained_at"),
+                                 explainedAt: !siteText.isEmpty ?
+                                     str(siteEpisode, "explained_at") : str(explanation, "explained_at"),
                                  catalog: siteImages) ?? "")
         }
     }

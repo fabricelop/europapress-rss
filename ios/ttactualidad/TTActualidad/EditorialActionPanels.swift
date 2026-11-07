@@ -96,6 +96,12 @@ struct EditorialActions: View {
                 }
                     .disabled(news?.status == "EN ELABORACIÓN" || trend?.status == "EN ELABORACIÓN")
             }
+            if let trend, !trend.inListas {
+                Text("La ficha del iPhone no considera esta tendencia dentro de Listas. Actualiza los datos antes de retirarla.")
+                    .font(.caption2)
+                    .foregroundStyle(TTTheme.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             quickButton("Aportar Pistas", "lightbulb") {
                 if github.authenticated { showHints = true } else { showSettings = true }
             }
@@ -257,7 +263,12 @@ struct EditorialActions: View {
         guard store.beginEditorialAction(project: project, id: editorialID,
                                          revision: revision, decision: decision,
                                          title: title, rank: rank,
-                                         requestID: requestID) else { return }
+                                         requestID: requestID) else {
+            // A blocked/stale local order must never look like an ignored tap.
+            outcome = store.actionMessage
+            return
+        }
+        outcome = "Orden enviada a GitHub; esperando comprobante de aplicación."
         let requestedID = editorialID
         let requestedRevision = revision
         let requestedProject = project
@@ -273,6 +284,16 @@ struct EditorialActions: View {
             store.completeEditorialAction(project: requestedProject, id: requestedID,
                                           revision: requestedRevision, requestID: requestID,
                                           result: result, detail: github.notice)
+            // A 204 dispatch is NOT a completed removal. Show the receipt
+            // result on the same card; never silently swallow failed writes.
+            switch result {
+            case .verified:
+                outcome = "Retirada o decisión confirmada en GitHub."
+            case .pending:
+                outcome = "Orden sin confirmar: " + github.notice
+            case .failed:
+                outcome = "No se aplicó: " + github.notice
+            }
         }
     }
 
@@ -287,7 +308,11 @@ struct EditorialActions: View {
     }
 
     private func request(_ action: String) {
-        guard github.authenticated else { showSettings = true; return }
+        guard github.authenticated else {
+            outcome = "No se puede retirar de Listas: conecta GitHub en Ajustes."
+            showSettings = true
+            return
+        }
         guard !editorialID.isEmpty else { outcome = "Identificador editorial no disponible. Actualiza antes."; return }
         if store.isActionInProgress(project: project, id: editorialID, revision: revision) {
             // A stale request was previously a permanent lock. Check the
