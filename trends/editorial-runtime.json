@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-1117-chat",
   "command_id": "tr-manual-20261107-1125-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T10:26:07.652Z",
-  "updated_at": "2026-11-07T10:26:07.652Z",
-  "finished_at": null,
+  "updated_at": "2026-11-07T10:26:31.135Z",
+  "finished_at": "2026-11-07T10:26:31.135Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -94,17 +94,27 @@
       "at": "2026-11-07T10:26:07.652Z",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1125-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T10:26:31.135Z",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; no preparing/update, anticipate, review_red ni rewrite_pending localizado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T10:26:31.135Z",
+      "phase": "closing",
+      "message": "Pasada cerrada 0/0; sin trabajos editoriales activos, sin imágenes y sin publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1117-chat",
-    "command_id": "tr-1794044668169-manual",
+    "run_id": "tr-manual-20261107-1125-chat",
+    "command_id": "tr-manual-20261107-1125-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T11:17:30+01:00",
-    "updated_at": "2026-11-07T11:18:10+01:00",
-    "finished_at": "2026-11-07T11:18:10+01:00",
+    "started_at": "2026-11-07T10:26:07.652Z",
+    "updated_at": "2026-11-07T10:26:31.135Z",
+    "finished_at": "2026-11-07T10:26:31.135Z",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -134,8 +144,8 @@
     "title": null,
     "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, anticipate, review_red, rewrite_pending ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones."
   },
-  "last_started_at": "2026-11-07T11:17:30+01:00",
-  "last_completed_at": "2026-11-07T11:18:10+01:00",
+  "last_started_at": "2026-11-07T10:26:07.652Z",
+  "last_completed_at": "2026-11-07T10:26:31.135Z",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -219,7 +229,8 @@
     "tr-manual-20261107-1055-chat",
     "tr-1794044668169-manual",
     "tr-manual-20261107-1110-chat",
-    "tr-manual-20261107-1117-chat"
+    "tr-manual-20261107-1117-chat",
+    "tr-manual-20261107-1125-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -305,11 +316,12 @@
     "tr-manual-20261107-1055-chat",
     "tr-1794044668169-manual",
     "tr-manual-20261107-1110-chat",
-    "tr-manual-20261107-1117-chat"
+    "tr-manual-20261107-1117-chat",
+    "tr-manual-20261107-1125-chat"
   ],
-  "message": "Pasada manual iniciada; comprobando barrera fresca de main y trabajo editorial activo. Sin ImageGen ni publicaciones.",
+  "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, anticipate, review_red, rewrite_pending ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones.",
   "outcomes": [],
   "recent_runs": [
-    "tr-manual-20261107-1117-chat"
+    "tr-manual-20261107-1125-chat"
   ]
 }
