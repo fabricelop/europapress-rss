@@ -465,6 +465,53 @@ def load_state():
     return result
 
 
+def apply_completed_review_repair(state, command, now):
+    """Repair one already-applied continuity review without reopening or republishing it.
+
+    This path is deliberately fail-closed: exact source identity, revision and
+    current explanation must match in BOTH authoritative editorial documents.
+    """
+    source_id = str(command.get('source_id') or '').strip()
+    source_revision = int(command.get('source_revision') or 0)
+    expected = str(command.get('expected_explanation') or '')
+    replacement = str(command.get('explanation') or '')
+    closer = str(command.get('closer_text') or '').strip()
+    if not source_id or not expected or not replacement or expected == replacement:
+        raise ValueError('Reparación de review incompleta')
+    if not replacement.startswith('TT#') or weighted_length(replacement) >= 280:
+        raise ValueError('Texto reparado inválido o >=280')
+    if closer and (not closer.startswith('🌶️ ') or not replacement.endswith(closer)
+                   or replacement.count(closer) != 1):
+        raise ValueError('closer_text reparado inválido')
+
+    counts = {}
+    matched = []
+    for doc_path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
+        rows = [
+            row for row in state[doc_path][field]
+            if str(row.get('id') or '') == source_id
+            and revision(row) == source_revision
+            and str(row.get('explanation') or '') == expected
+            and str(row.get('red_review_outcome') or '') == 'continuity'
+        ]
+        counts[doc_path] = len(rows)
+        matched.extend(rows)
+    if counts.get(MANUAL) != 1 or counts.get(REQUESTS) != 1:
+        raise ValueError('Barrera JIT de reparación no coincide en ambos registros: '+json.dumps(counts, ensure_ascii=False))
+
+    for row in matched:
+        row['explanation'] = replacement
+        row['closer_text'] = closer
+        row['red_review_continuity_explanation'] = replacement
+        if command.get('new_facts') is not None:
+            row['red_review_new_facts'] = str(command.get('new_facts') or '')
+        row['red_review_repaired_at'] = now.isoformat()
+        row['red_review_repair_reason'] = str(command.get('repair_reason') or '').strip()
+    state[MANUAL]['updated_at'] = now.isoformat()
+    state[REQUESTS]['updated_at'] = now.isoformat()
+    return state, True
+
+
 def main():
     state = load_state()
     before = copy.deepcopy(state)
@@ -481,6 +528,9 @@ def main():
     # Historical grouping outboxes remain intact; no late result is applied.
     for path in sorted((ROOT/'trends/maintenance-outbox').glob('*.json')):
         command = json.loads(path.read_text(encoding='utf-8'))
+        if command.get('repair_completed_review') is True:
+            state, _ = apply_completed_review_repair(state, command, now)
+            continue
         job = next((x for x in state[REQUESTS]['requests'] if x.get('id') == command.get('job_id')), {})
         if job.get('status') not in {'preparing', 'update'}:
             continue
