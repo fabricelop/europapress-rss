@@ -389,11 +389,31 @@ final class GitHubEditor: ObservableObject {
         guard let base = imageInboxBaseURL else {
             throw GitHubError.message("El servicio privado de imágenes no está configurado.")
         }
-        guard path.range(of: "^/v1/images(?:/[a-f0-9]{64}/(?:original|decision))?$",
-                         options: .regularExpression) != nil,
-              ["GET", "POST"].contains(method),
-              let url = URL(string: base.absoluteString.trimmingCharacters(in: CharacterSet(charactersIn: "/")) + path)
+        guard let url = URL(string: base.absoluteString.trimmingCharacters(
+                                  in: CharacterSet(charactersIn: "/")) + path),
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              components.path.range(of: "^/v1/images(?:/[a-f0-9]{64}/(?:original|decision))?$",
+                                    options: .regularExpression) != nil,
+              ["GET", "POST"].contains(method)
         else { throw GitHubError.message("Ruta privada no permitida.") }
+        // Only the list route accepts two tightly scoped pagination parameters.
+        let query = components.queryItems ?? []
+        let validPage = components.path == "/v1/images" && method == "GET" &&
+            query.count <= 2 && query.contains(where: {
+                $0.name == "limit" && $0.value == "20"
+            }) && Set(query.map(\.name)).count == query.count &&
+            query.allSatisfy {
+                if $0.name == "limit" { return $0.value == "20" }
+                if $0.name == "before", let cursor = $0.value {
+                    return cursor.range(
+                        of: #"^\d{4}-\d{2}-\d{2}T[0-9:.]+Z\|[a-f0-9]{64}$"#,
+                        options: .regularExpression) != nil
+                }
+                return false
+            }
+        guard query.isEmpty || validPage else {
+            throw GitHubError.message("Paginación privada no permitida.")
+        }
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
                                  timeoutInterval: 25)
         request.httpMethod = method
