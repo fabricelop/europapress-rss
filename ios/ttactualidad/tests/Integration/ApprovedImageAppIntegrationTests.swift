@@ -37,4 +37,22 @@ final class ApprovedImageAppIntegrationTests: XCTestCase {
         XCTAssertNil(rejected.top30[0].siteImageURL)
     }
 
+    // Regression: a slow Buffer/X publication must not re-enter Listas after
+    // refreshing or reopening the iPhone. A different revision stays separate.
+    @MainActor
+    func testBufferReservationSurvivesTrackerRecreation() {
+        let key = "test-" + UUID().uuidString
+        let storage = "TTActualidad.bufferPendingHide.v2"
+        let original = UserDefaults.standard.stringArray(forKey: storage) ?? []
+        defer { UserDefaults.standard.set(original, forKey: storage) }
+
+        let first = BufferPublishTracker()
+        first.stagePublish(project: "ttendencias", id: key, revision: 1)
+        XCTAssertTrue(first.hidesFromListas(project: "ttendencias", id: key, revision: 1))
+        XCTAssertFalse(first.hidesFromListas(project: "ttendencias", id: key, revision: 2))
+        let reopened = BufferPublishTracker()
+        XCTAssertTrue(reopened.hidesFromListas(project: "ttendencias", id: key, revision: 1))
+        XCTAssertFalse(reopened.alreadySent(project: "ttendencias", id: key, revision: 1))
+    }
+
 }
