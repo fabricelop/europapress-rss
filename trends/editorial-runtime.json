@@ -7,45 +7,39 @@
   "previous_run_id": "tr-manual-20261107-1940-chat",
   "command_id": "tr-manual-20261107-2010-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T20:10:00+01:00",
-  "updated_at": "2026-11-07T20:14:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T20:16:30+01:00",
+  "finished_at": "2026-11-07T20:16:30+01:00",
+  "current": 5,
   "total": 5,
-  "trend_id": "a08abcc188cf",
-  "title": "El Sadar",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
+  "processed_ids": [
+    "a08abcc188cf",
+    "23252ca2849e",
+    "607c7369e0e3",
+    "be1ae41b540c",
+    "438f36286fc7"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "a08abcc188cf",
-    "23252ca2849e",
-    "607c7369e0e3",
-    "be1ae41b540c",
-    "438f36286fc7"
-  ],
-  "remaining_active_ids": [
-    "a08abcc188cf",
-    "23252ca2849e",
-    "607c7369e0e3",
-    "be1ae41b540c",
-    "438f36286fc7"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 5,
     "observed": 5,
-    "closed": 0,
-    "explained": 0,
+    "closed": 5,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 5,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -834,20 +828,30 @@
       "trend_id": "a08abcc188cf",
       "title": "El Sadar",
       "message": "Barrera JIT: 5/5 revisiones siguen preparing/update y conservan su revisión. Investigación contrastada para El Sadar, Alcorcon, Sancet, Interlagos y #BrazilGP; sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T20:16:00+01:00",
+      "phase": "verifying",
+      "message": "Commit e4c1da23… confirma aplicación de las cinco revisiones en main. requests.json y telegram-manual-explained.json contienen los cinco ID/revisión como explained con texto/remate coincidentes; editorial-queue=0. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T20:16:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-2010-chat cerrada 5/5: El Sadar, Alcorcon, Sancet, Interlagos y #BrazilGP explicados y verificados. Cola final 0; sin imágenes ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T19:25:30+01:00",
-  "last_completed_at": "2026-11-07T19:29:00+01:00",
+  "last_started_at": "2026-11-07T20:10:00+01:00",
+  "last_completed_at": "2026-11-07T20:16:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794075893768-manual",
+    "run_id": "tr-manual-20261107-2010-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T19:25:30+01:00",
-    "finished_at": "2026-11-07T19:29:00+01:00",
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
+    "started_at": "2026-11-07T20:10:00+01:00",
+    "finished_at": "2026-11-07T20:16:30+01:00",
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "queue_remaining": 0,
@@ -855,48 +859,51 @@
     "imagegen_calls": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1,
+    "concurrent_convergence": 0,
     "outcomes": [
       {
-        "id": "9000db3c3553",
+        "id": "a08abcc188cf",
         "revision": 0,
-        "name": "bezz",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence_jit"
-      },
-      {
-        "id": "1edd6ef875e4",
-        "revision": 0,
-        "name": "Espanyol",
+        "name": "El Sadar",
         "outcome": "explained",
         "applied": true,
         "via": "chat_outbox"
       },
       {
-        "id": "598cf9e27b69",
+        "id": "23252ca2849e",
         "revision": 0,
-        "name": "Marc",
+        "name": "Alcorcon",
         "outcome": "explained",
         "applied": true,
         "via": "chat_outbox"
       },
       {
-        "id": "35c83a0a6325",
+        "id": "607c7369e0e3",
         "revision": 0,
-        "name": "Calero",
+        "name": "Sancet",
+        "outcome": "explained",
+        "applied": true,
+        "via": "chat_outbox"
+      },
+      {
+        "id": "be1ae41b540c",
+        "revision": 0,
+        "name": "Interlagos",
+        "outcome": "explained",
+        "applied": true,
+        "via": "chat_outbox"
+      },
+      {
+        "id": "438f36286fc7",
+        "revision": 0,
+        "name": "#BrazilGP",
         "outcome": "explained",
         "applied": true,
         "via": "chat_outbox"
       }
     ]
   },
-  "current_item": {
-    "id": "a08abcc188cf",
-    "name": "El Sadar",
-    "revision": 0,
-    "status": "preparing"
-  },
+  "current_item": null,
   "progress": [
     {
       "at": "2026-11-07T20:10:00+01:00",
@@ -911,6 +918,16 @@
       "trend_id": "a08abcc188cf",
       "title": "El Sadar",
       "message": "Barrera JIT: 5/5 revisiones siguen preparing/update y conservan su revisión. Investigación contrastada para El Sadar, Alcorcon, Sancet, Interlagos y #BrazilGP; sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T20:16:00+01:00",
+      "phase": "verifying",
+      "message": "Commit e4c1da23… confirma aplicación de las cinco revisiones en main. requests.json y telegram-manual-explained.json contienen los cinco ID/revisión como explained con texto/remate coincidentes; editorial-queue=0. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T20:16:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-2010-chat cerrada 5/5: El Sadar, Alcorcon, Sancet, Interlagos y #BrazilGP explicados y verificados. Cola final 0; sin imágenes ni publicaciones."
     }
   ],
   "imagegen_calls": 0,
