@@ -476,7 +476,7 @@ def apply_completed_review_repair(state, command, now):
     expected = str(command.get('expected_explanation') or '')
     replacement = str(command.get('explanation') or '')
     closer = str(command.get('closer_text') or '').strip()
-    if not source_id or not expected or not replacement or expected == replacement:
+    if not source_id or not expected or not replacement:
         raise ValueError('Reparación de review incompleta')
     if not replacement.startswith('TT#') or weighted_length(replacement) >= 280:
         raise ValueError('Texto reparado inválido o >=280')
