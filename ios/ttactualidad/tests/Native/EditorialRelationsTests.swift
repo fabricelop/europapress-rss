@@ -259,4 +259,26 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(snapshot.items.first?.trend.episodeFingerprint, "trend-episode")
         XCTAssertNil(snapshot.items.first?.trend.path)
     }
+    func testPerTrendLookupHasNoExtraDateOrListasFilter() {
+        let publishedOld = EditorialRelationEndpoint(
+            id: "published-old", revision: 2, episodeFingerprint: "",
+            title: "Carrera histórica en Interlagos", text: "",
+            path: nil, listedAt: "2021-11-01T08:00:00Z")
+        let undated = EditorialRelationEndpoint(
+            id: "radar-unlisted", revision: 0, episodeFingerprint: "",
+            title: "Noticia sin fecha", text: "Fernando Alonso menciona #Interlagos",
+            path: nil)
+        let unrelated = EditorialRelationEndpoint(
+            id: "unrelated", revision: 0, episodeFingerprint: "",
+            title: "Otra carrera", text: "No hay datos de esa pista",
+            path: nil)
+        let found = EditorialRelationsPolicy.newsForTrend(
+            [unrelated, undated, publishedOld], name: "#Interlagos",
+            now: EditorialRelationsPolicy.parsedDate("2026-11-08T00:20:00Z")!,
+            hidden: [publishedOld.stableIdentity], limit: 5)
+        XCTAssertEqual(found.map(\.id), ["published-old", "radar-unlisted"])
+        XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
+            [publishedOld, undated], name: "#Interlagos", limit: 1).count, 1)
+    }
+
 }
