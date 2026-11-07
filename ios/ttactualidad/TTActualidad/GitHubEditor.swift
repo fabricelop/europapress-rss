@@ -700,7 +700,9 @@ final class GitHubEditor: ObservableObject {
     // Preserve PR #325: image candidates must belong to a current, exact
     // Top30 editorial episode. A failed read must not expose stale approvals.
     func currentImageApprovalTrendEpisodes() async throws -> Set<String> {
-        let snapshot = try await readMainJSON("trends/site-top30-current.json")
+        // Read public Top30 IDs through the same reliable raw endpoint used
+        // by the editorial store, not the GitHub Contents metadata envelope.
+        let snapshot = try await readPublicEditorialJSON("trends/site-top30-current.json")
         guard let entries = snapshot["items"] as? [[String: Any]],
               !entries.isEmpty, entries.count <= 30 else {
             throw GitHubError.message("No está disponible el Top 30 actual.")
