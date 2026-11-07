@@ -7,16 +7,16 @@
   "previous_run_id": "tr-autoguard-1794091831",
   "command_id": "tr-1794092100000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-07T23:55:00+01:00",
-  "updated_at": "2026-11-07T23:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T23:56:30+01:00",
+  "finished_at": "2026-11-07T23:56:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -38,12 +38,18 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
   "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "unverified-spain-top30-source",
+      "severity": "blocking_source_quality",
+      "message": "Barrera final: editorial-queue=0, pero recent.json (2026-11-07T23:21:09+01:00) sigue con live_verified:false/reliability:unverified; primary_source=getdaytrends. Ranking español provisional recuperado de la captura del 7/11 a las 23:21; no está confirmado como Top 30 actual de X. Snaplytics en cuarentena."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -160,9 +166,14 @@
       "at": "2026-11-07T23:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794092100000-manual iniciada desde chat. Relectura JIT: active=0, problematic=0. Se valida la fuente del Top 30 antes de reintentar. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T23:56:30+01:00",
+      "phase": "closing",
+      "message": "Barrera final real en main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. No se crean fichas porque recent.json sigue sin ranking ES verificado; Snaplytics está en cuarentena. ImageGen=0, image-outbox editorial=0, publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-07T23:55:00+01:00",
-  "last_completed_at": "2026-11-07T23:55:30+01:00",
+  "last_completed_at": "2026-11-07T23:56:30+01:00",
   "api_failover_enabled": false
 }
