@@ -272,7 +272,7 @@ def parse_snaplytics(html):
     ranked = []
     for link in rows.select("a[href]"):
         label = clean(link.get_text(" ", strip=True))
-        match = re.match(r"^(\\d{1,2})(?=\\D)", label)
+        match = re.match(r"^(\d{1,2})(?=\D)", label)
         if not match:
             continue
         rank = int(match.group(1))
