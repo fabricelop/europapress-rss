@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1110-chat",
-  "previous_run_id": "tr-1794044668169-manual",
-  "command_id": "tr-manual-20261107-1110-chat",
+  "run_id": "tr-manual-20261107-1117-chat",
+  "previous_run_id": "tr-manual-20261107-1110-chat",
+  "command_id": "tr-1794044668169-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T11:10:00+01:00",
-  "updated_at": "2026-11-07T11:12:00+01:00",
-  "finished_at": "2026-11-07T11:12:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T11:17:30+01:00",
+  "updated_at": "2026-11-07T11:17:30+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -74,6 +74,11 @@
       "at": "2026-11-07T11:12:00+01:00",
       "phase": "closing",
       "message": "Pasada cerrada 0/0; sin trabajos editoriales activos, sin imágenes y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T11:17:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-manual-20261107-1117-chat iniciada para tr-1794044668169-manual; barrera fresca de main detecta 0 trabajo(s) activo(s). Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [],
@@ -114,7 +119,7 @@
     "title": null,
     "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, rewrite_pending ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones."
   },
-  "last_started_at": "2026-11-07T11:10:00+01:00",
+  "last_started_at": "2026-11-07T11:17:30+01:00",
   "last_completed_at": "2026-11-07T11:12:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -285,9 +290,9 @@
     "tr-1794044668169-manual",
     "tr-manual-20261107-1110-chat"
   ],
-  "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, rewrite_pending ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones.",
+  "message": "Pasada editorial iniciada; barrera fresca de main detecta 0 trabajos activos. Verificando cola y reexplicaciones antes de cerrar.",
   "outcomes": [],
   "recent_runs": [
-    "tr-manual-20261107-1110-chat"
+    "tr-manual-20261107-1117-chat"
   ]
 }
