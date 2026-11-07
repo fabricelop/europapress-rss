@@ -800,5 +800,6 @@ assert 'readPublicEditorialJSON("ttittulares/status.json")' in auth
 assert 'Noticias del historial recuperadas:' in relations
 assert 'El historial editorial de 7 días no devolvió noticias' in relations
 assert 'outcome = store.actionMessage' in actions
+assert 'La ficha del iPhone no considera esta tendencia dentro de Listas' in actions
 assert 'case .pending:' in actions and 'Orden sin confirmar:' in actions
 print("NATIVE_0466_RELATIONS_HISTORY_LISTAS_FEEDBACK_OK")
