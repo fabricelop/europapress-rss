@@ -185,10 +185,14 @@ async function once(base=__dirname){
  try{
   const statusFile=path.join(receipts,'receiver-status.json');let progress={};try{progress=JSON.parse(fs.readFileSync(statusFile,'utf8'))}catch{}
   function report(task,reason){progress[task.command_id]={...progress[task.command_id],checkedAt:Date.now(),reason};const tmp=statusFile+'.tmp';fs.writeFileSync(tmp,JSON.stringify(progress,null,2),{mode:0o600});fs.renameSync(tmp,statusFile);console.log('PRIVATE_INBOX '+task.command_id+' '+reason)}
+  // A needs_review receipt retained the exact encrypted key during an
+  // old 72-hour pause. Reattempting its private inbox ingestion is safe
+  // only after job identity, revision, editorial text, current Listas/Top30
+  // membership and PNG SHA pass again. No automatic approval.
   const tasks=[];
   for(const project of ['ttendencias','ttittulares']){
    const dir=path.join(base,project+'-web-images');if(!fs.existsSync(dir))continue;
-   for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&task.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
+   for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&['waiting','needs_review'].includes(task.status)&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
   }
   const [top30,active]=await Promise.all([allowedTop30(),liveIdentities(sources)]);
   const eligible=tasks.filter(task=>inCurrentApprovalScope(task,top30,active));
