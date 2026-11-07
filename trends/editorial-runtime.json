@@ -3,33 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-2210-chat",
-  "previous_run_id": "tr-manual-20261107-2155-chat",
-  "command_id": "tr-manual-20261107-2210-chat",
+  "run_id": "tr-1794086087992-manual",
+  "previous_run_id": "tr-manual-20261107-2210-chat",
+  "command_id": "tr-1794086087992-manual",
   "source": "chat",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-07T22:10:00+01:00",
-  "updated_at": "2026-11-07T22:14:14+01:00",
+  "started_at": "2026-11-07T22:15:00+01:00",
+  "updated_at": "2026-11-07T22:15:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 4,
+  "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
-  "processed_ids": [
-    "1940ad68777c",
-    "474f630b611a",
-    "d889b34ddb94",
-    "eed88b3afe90"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-8284174a70af0148cca9",
+    "red-review-48ee988f595e75cb8d2e"
+  ],
+  "remaining_active_ids": [
+    "red-review-8284174a70af0148cca9",
+    "red-review-48ee988f595e75cb8d2e"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -59,6 +60,11 @@
       "at": "2026-11-07T22:11:15+01:00",
       "phase": "preparing",
       "message": "Detectadas 4 nuevas revisiones preparing en la barrera final: maffeo, #ValenciaRealMadrid, Fede y Forest."
+    },
+    {
+      "at": "2026-11-07T22:15:00+01:00",
+      "phase": "preparing",
+      "message": "Detectadas 2 revisiones review_red vigentes: #laSextaXplica y GP de México · Alonso y #MexicoGP. Revalidación JIT antes de cada resultado; sin ImageGen."
     }
   ],
   "last_started_at": "2026-11-07T22:14:14+01:00",
