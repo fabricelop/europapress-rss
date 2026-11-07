@@ -40,6 +40,10 @@ La incertidumbre explícita es EXCEPCIONAL, no una coletilla automática. No exi
 
 Cuando una ficha ya explicada de Listas contenga una coletilla defensiva innecesaria, investigar de nuevo la actualidad y fuentes antes de corregirla. Cambiar solo fichas vigentes y justificadas, mediante revisión ID/revisión JIT y persistencia sincronizada en ambos registros; no cambiar fechas por mera edición estilística, no alterar publicadas/terminales ni regenerar imágenes por defecto. Si hay cambio material de explicación, usar el circuito de actualización existente y sus comprobaciones.
 
+## Regla editorial prioritaria 07/11/2026 — sin antirremates
+
+**Prohibido escribir frases como «Aquí no hay chiste», «No hay chiste», «No es momento de bromas», «El humor se aparta» o equivalentes.** No justificar la ausencia de humor ni usar un falso remate que describa la falta de gracia. En muertes, heridos, tragedias, violencia u otras noticias sensibles, si no existe un remate realmente pertinente y respetuoso, **terminar con los hechos contrastados** (por ejemplo, «Hay víctimas y una investigación abierta» solo si consta). Mantener la explicación y los hashtags sin `🌶️`, guardar `closer_text:""` y continuar el cierre editorial; el humor nunca debe ser condición para publicar hechos verificados. No reabrir ni republicar una ficha que ya esté cerrada.
+
 ## Redacción y remate
 
 Mantener el estilo habitual del usuario. Para una primera explicación ordinaria:
