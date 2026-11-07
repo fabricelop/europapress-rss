@@ -277,7 +277,7 @@ class DirectBufferPublisherTests(unittest.TestCase):
             "buffer_post_id": "buf_123"}]}
         response = {"post": {"id": "buf_123", "channelId": "channel_123",
                              "status": "sent", "sentAt": "2026-11-06T09:00:00Z",
-                             "externalLink": "https://x.com/ttittulares/status/123"}}
+                             "externalLink": "https://x.com/ttittulares/status/123456"}}
         with mock.patch.object(publisher, "graphql", return_value=response), \
              mock.patch.dict("os.environ", {"GH_TOKEN": ""}):
             publisher.reconcile(data, "secret")
