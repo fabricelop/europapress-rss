@@ -3,39 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794089628496-manual",
-  "previous_run_id": "tr-1794089454769-manual",
-  "command_id": "tr-1794089628496-manual",
+  "run_id": "tr-1794089854856-manual",
+  "previous_run_id": "tr-1794089628496-manual",
+  "command_id": "tr-1794089854856-manual",
   "source": "chat",
-  "status": "waiting",
-  "phase": "investigating",
-  "started_at": "2026-11-07T23:14:00+01:00",
-  "updated_at": "2026-11-07T23:18:53+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T23:18:50+01:00",
+  "updated_at": "2026-11-07T23:18:50+01:00",
   "finished_at": null,
-  "current": 5,
-  "total": 7,
-  "trend_id": "red-review-a38fb8a6d2f4a141f9a0",
-  "title": "Revisar novedades: #laSextaXplica",
+  "current": 0,
+  "total": 6,
+  "trend_id": null,
+  "title": "TTendencias editorial",
   "queue_complete": false,
-  "processed_ids": [
-    "41998067bb7c",
-    "512c583859a1",
-    "53f97ad38ffe",
-    "ea15f50b5f06",
-    "ebe99fecd454"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "c7bb6c3446ee",
-    "19a794014e20",
-    "d1d830a84173",
-    "e51dc7aa7a37"
+    "41998067bb7c",
+    "ea15f50b5f06",
+    "512c583859a1",
+    "53f97ad38ffe",
+    "ebe99fecd454",
+    "c7bb6c3446ee"
   ],
   "remaining_active_ids": [
-    "c7bb6c3446ee",
-    "19a794014e20",
-    "d1d830a84173",
-    "e51dc7aa7a37"
+    "41998067bb7c",
+    "ea15f50b5f06",
+    "512c583859a1",
+    "53f97ad38ffe",
+    "ebe99fecd454",
+    "c7bb6c3446ee"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
@@ -73,9 +71,14 @@
       "at": "2026-11-07T23:16:06.970+01:00",
       "phase": "investigating",
       "message": "Dos review_red llegaron durante el cierre: #laSextaXplica y #MalasLenguasN. Ambas corresponden a emisiones del 07/11/2026 posteriores a sus fichas originales; se procesan JIT como episodios distintos verificados."
+    },
+    {
+      "at": "2026-11-07T23:18:50+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794089854856-manual iniciada desde chat; cola main=6 preparing/update. Procesamiento del más antiguo al más reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T23:18:52+01:00",
+  "last_started_at": "2026-11-07T23:18:50+01:00",
   "last_completed_at": "2026-11-07T23:13:16+01:00",
   "api_failover_enabled": false
 }
