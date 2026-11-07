@@ -460,7 +460,11 @@ function newestActiveByTarget(entries,now){
     if(!safeID(id)||!safeID(task.command_id))continue;
     if(!['waiting','published'].includes(task.status))continue;
     const created=Date.parse(task.created_at||'');
-    if(!Number.isFinite(created)||now-created>72*3600000)continue;
+    // Keep the latest exact command eligible while its editorial episode
+    // remains current. Time elapsed is not evidence that an image is invalid.
+    // The private receiver revalidates ID, revision and current Top30/Listas.
+    // Do not lose an original merely because an old attempt is still waiting.
+    if(!Number.isFinite(created))continue;
     const old=active.get(id),oldDate=Date.parse(old?.task.created_at||'');
     if(!old||created>oldDate||(created===oldDate&&task.command_id>old.task.command_id))active.set(id,entry);
   }
@@ -514,13 +518,9 @@ async function once(){
         console.log('TTENDENCIAS_WEB_IMAGE '+String(task.target_id||'?')+' rejected_invalid_enrollment');
         continue;
       }
-      // Keep pending images recoverable for three days without ever allowing
-      // a stuck/slow generation to delay later images.
-      if(!Number.isFinite(Date.parse(task.created_at||''))||now-Date.parse(task.created_at)>72*3600000){
-        atomic(file,{...task,status:'expired',reason:'image_not_confirmed_within_72h',secret_dpapi:undefined});
-        console.log('TTENDENCIAS_WEB_IMAGE '+task.target_id+' expired_without_confirmation');
-        continue;
-      }
+      // Do not terminally expire or discard the DPAPI-protected receipt
+      // after 72 hours. A delayed original is still valid for inbox delivery
+      // only if the receiver confirms its current exact editorial identity.
       let result;
       try{result=await consume(task);}
       catch(e){result={status:'waiting',reason:String(e&&e.message||'export_unavailable_retry').replace(/https?:\/\/\S+/g,'[url]').slice(0,140)};}

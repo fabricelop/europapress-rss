@@ -4,11 +4,11 @@ param([ValidateRange(10,3600)][int]$MaxWaitSeconds=900)
 # Do not replace generator bridges, secrets, Site, or other scheduled tasks.
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='ee73d4178e2a5bf9d747963f9aee3b26ee246836'
+$pin='f90c0a2764c55c0230bdb746428d10d6076a2d6e'
 $files=@{
- 'TTendenciasWebImages.cjs'='12fa8a80d176003a7ae6a8f888ef831dd867c9e6e12027ee3d6d0568d08af65a'
- 'TTiTTularesWebImages.cjs'='0a9c830dec48364ebddde76ca2796c25647315f4df5390d5645661522cf3fae5'
- 'TTImageApprovalReceiver.cjs'='55bcd5d89eefbe18ebe19c7014f5301e80b976e96365e5551a2fa3ac380ddf9e'
+ 'TTendenciasWebImages.cjs'='4f2f00db3aa3794e1c293201fc9f32e6f6dcd4cacc27c7742da0db93d9292e3f'
+ 'TTiTTularesWebImages.cjs'='7b7bc8d6e4e9a84e47714528df3cbe19e1feae7b11286712dd76d587396f707b'
+ 'TTImageApprovalReceiver.cjs'='d311fb31975a96c71aab9b14239089d5f55b75d4f2fe23ae55d1525023ac5ca1'
 }
 # Only documented pre-repair releases or the target version may be replaced.
 # A local custom version stops installation rather than silently deleting it.
@@ -16,10 +16,12 @@ $allowed=@{
  'TTendenciasWebImages.cjs'=@(
   '595425bcb143776ae378a7d7a5e37bdabe0aa496631da39a9214adadb3580774',
   '8b920e1b2034f1ee18c544ed15f16ca4d58d4c2c6b8422406af15ac66f9c6d01',
+  '12fa8a80d176003a7ae6a8f888ef831dd867c9e6e12027ee3d6d0568d08af65a',
   $files['TTendenciasWebImages.cjs'])
  'TTiTTularesWebImages.cjs'=@(
   '8ef3c4c1da5e4dfa0556c1f83e2db8e3f862a1ff028a168199dd562553e0467c',
   '8e7142b10da30f16db84dcd335cc92392a32a4736cd70480ffd99cb981a66e7b',
+  '0a9c830dec48364ebddde76ca2796c25647315f4df5390d5645661522cf3fae5',
   $files['TTiTTularesWebImages.cjs'])
  'TTImageApprovalReceiver.cjs'=@(
   '1299dbaabdd856cdd773cea71ed280c7dea5c34b67fc6d02601d1c32ed7eae58',
@@ -29,11 +31,29 @@ $allowed=@{
   '12ab6cf5bf2c54dc0d821d47e05ec39b25340d492734d9385497de72fc600076',
   '1788962e76fce00891f74027afba349f82d195e94ac8c2e06929cfdf2fa1bd37',
   'ec901721718b3be8192e583ad92c50961c6faf0c7a8d9aa78eab42e331f761b9',
+  '55bcd5d89eefbe18ebe19c7014f5301e80b976e96365e5551a2fa3ac380ddf9e',
+  '7d7791edded824e6d7adf0fa8838a26e60c01392416fa43a2f06f246b095c48a',
+  '5e4105171a9f27a42f619ce3fba7d912c2e5abf50a5fb7828e571491b2d9805a',
+  '1dfdca82a23813c1e72a5468dc7e05a14c16b2373f4bd0a94aea27676ebc54e4',
   $files['TTImageApprovalReceiver.cjs'])
 }
 # Generators must finish first: do not interrupt their CDP sessions.
 # The receiver is a one-shot Node process: its already-loaded modules continue
 # in memory while an atomic on-disk replacement prepares the NEXT cycle.
+# CI checked out CRLF scripts, while raw.githubusercontent.com serves LF
+# content. Validate the SAME UTF-8 source in canonical CRLF representation.
+# This preserves SHA-256 pinning; it never accepts different JS statements.
+function Get-CanonicalSourceHash([string]$file) {
+ $decoder=[System.Text.UTF8Encoding]::new($false,$true)
+ $txt=[IO.File]::ReadAllText($file,$decoder)
+ if($txt.Replace("`r`n",'').Contains("`r")){throw ('Final de linea no soportado: '+$file)}
+ $canonical=$txt.Replace("`r`n","`n").Replace("`n","`r`n")
+ $sha=[Security.Cryptography.SHA256]::Create()
+ try {
+  $bytes=[System.Text.Encoding]::UTF8.GetBytes($canonical)
+  return [BitConverter]::ToString($sha.ComputeHash($bytes)).Replace('-','').ToLowerInvariant()
+ }finally{$sha.Dispose()}
+}
 function Get-BusyGenerators {
  @(Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
   Where-Object {[string]$_.CommandLine -match '(?i)TT(endencias|iTTulares)ImageBridge\.js'})
@@ -44,20 +64,35 @@ function Assert-GeneratorsIdle {
  }
 }
 function Wait-ForGeneratorsIdle([int]$limitSeconds) {
+ # A single empty process query is NOT a safe installation window:
+ # the next image bridge can start between that query and File.Replace.
+ # Require a continuous 20-second idle interval; every new generation
+ # resets the timer. Never kill, suspend or disable any running task.
  $deadline=(Get-Date).AddSeconds($limitSeconds)
+ $quietSince=$null
  $lastNotice=[datetime]::MinValue
+ $quietSeconds=20
  while($true){
+  $now=Get-Date
   $busy=@(Get-BusyGenerators)
-  if(-not $busy.Count){return}
-  if((Get-Date) -ge $deadline){
-   $ids=($busy|ForEach-Object {$_.ProcessId}) -join ','
-   throw ('Generadores activos (PID '+$ids+'). Sin cambios ni procesos detenidos. Vuelve a ejecutar el instalador mas tarde.')
+  if($busy.Count){
+   $quietSince=$null
+  } else {
+   if($null -eq $quietSince){$quietSince=$now}
+   if(($now-$quietSince).TotalSeconds -ge $quietSeconds){return}
   }
-  if(((Get-Date)-$lastNotice).TotalSeconds -ge 30){
-   Write-Host 'Preparacion completa. Se espera a que termine la generacion actual; no se cierra ni detiene nada.'
-   $lastNotice=Get-Date
+  if($now -ge $deadline){
+   if($busy.Count){
+    $ids=($busy|ForEach-Object {$_.ProcessId}) -join ','
+    throw ('Generadores activos (PID '+$ids+'). Sin cambios ni procesos detenidos. Intenta cuando disminuya la cola.')
+   }
+   throw ('No ha habido '+$quietSeconds+' segundos consecutivos sin generadores. Sin cambios ni procesos detenidos.')
   }
-  Start-Sleep -Seconds 5
+  if(($now-$lastNotice).TotalSeconds -ge 30){
+   Write-Host ('Preparacion completa. Buscando '+$quietSeconds+' segundos continuos sin generacion; no se detiene nada.')
+   $lastNotice=$now
+  }
+  Start-Sleep -Seconds 2
  }
 }
 if(-not(Test-Path -LiteralPath $base -PathType Container)){throw 'No existe C:\TTiTTulares; sin cambios.'}
@@ -73,7 +108,15 @@ foreach($name in $files.Keys){
  $local=Join-Path $base $name
  if(-not(Test-Path -LiteralPath $local)){throw ('Falta '+$name+'; sin cambios.')}
  $current=(Get-FileHash -LiteralPath $local -Algorithm SHA256).Hash.ToLowerInvariant()
- if($allowed[$name] -notcontains $current){throw ('Version local no reconocida: '+$name+' ('+$current+'). No se sobrescribe.')}
+ if($allowed[$name] -notcontains $current){
+  # The first preflight used to reject LF bytes although the target/version
+  # pins represent identical content in the CI CRLF checkout. Keep the
+  # allowlist exact: normalize ONLY line endings, then fail closed otherwise.
+  $canonical=Get-CanonicalSourceHash $local
+  if($allowed[$name] -notcontains $canonical){
+   throw ('Version local no reconocida: '+$name+' (raw='+$current+', canonical='+$canonical+'). No se sobrescribe.')
+  }
+ }
 }
 foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
  $text=[IO.File]::ReadAllText((Join-Path $base $name))
@@ -92,7 +135,7 @@ try{
  foreach($name in $files.Keys){
   $destination=Join-Path $temp $name
   Invoke-WebRequest -UseBasicParsing -Uri ('https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$pin+'/windows/'+$name) -OutFile $destination -TimeoutSec 60
-  if((Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]){throw ('SHA invalido: '+$name)}
+  if((Get-CanonicalSourceHash $destination) -ne $files[$name]){throw ('SHA invalido tras normalizar CRLF: '+$name)}
   & $node --check $destination
   if($LASTEXITCODE -ne 0){throw ('Sintaxis JS invalida: '+$name)}
  }
@@ -113,7 +156,7 @@ try{
   $stage=Join-Path $base ('.'+$name+'.stage-'+[guid]::NewGuid().ToString('N'))
   Copy-Item -LiteralPath (Join-Path $temp $name) -Destination $stage -Force
   $stagedPaths+= $stage
-  if((Get-FileHash -LiteralPath $stage -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]) {
+  if((Get-CanonicalSourceHash $stage) -ne $files[$name]) {
    throw ('Archivo preparado invalido: '+$name)
   }
  }
@@ -123,14 +166,16 @@ try{
   $stage=@($stagedPaths | Where-Object { [IO.Path]::GetFileName($_) -like ('.'+$name+'.stage-*') })[0]
   if(-not $stage){ throw ('Falta archivo temporal: '+$name) }
   $old=(Get-FileHash -LiteralPath $live -Algorithm SHA256).Hash.ToLowerInvariant()
+  if($allowed[$name] -notcontains $old){$old=Get-CanonicalSourceHash $live}
   if($allowed[$name] -notcontains $old){throw ('Version local ha cambiado: '+$name)}
   [IO.File]::Replace($stage,$live,(Join-Path $backup $name),$true)
   $written+= $name
-  if((Get-FileHash -LiteralPath $live -Algorithm SHA256).Hash.ToLowerInvariant() -ne $files[$name]){
+  if((Get-CanonicalSourceHash $live) -ne $files[$name]){
    throw ('No coincide el SHA tras reemplazar: '+$name)
   }
  }
- Write-Host 'Receptor privado de imagenes actualizado y hashes verificados. NO se ha cambiado la APP ni el Site.' -ForegroundColor Green
+ Write-Host 'Receptor privado de imagenes actualizado y hashes UTF-8/CRLF verificados. NO se ha cambiado la APP ni el Site.' -ForegroundColor Green
+ Write-Host 'Sin corte de fecha, ni ocho por ciclo, ni caducidad a 72 h de originales pendientes.'
  Write-Host 'JPEG/WebP se convertiran a PNG solo para el buzón; reintentos recuperan originales sin generar otros.'
  Write-Host 'La tarea programada se conserva. La confirmacion de recepcion requiere ver un recibo PRIVATE_INBOX RECEIVED_pending.'
  Write-Host ('Copia de seguridad: '+$backup)
