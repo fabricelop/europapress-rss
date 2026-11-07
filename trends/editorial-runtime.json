@@ -7,39 +7,36 @@
   "previous_run_id": "tr-manual-20261107-0710-chat",
   "command_id": "tr-1794032311095-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T07:19:00+01:00",
-  "updated_at": "2026-11-07T07:25:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-07T07:26:00+01:00",
+  "finished_at": "2026-11-07T07:26:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-68a1ca00023f6f3ef1cb",
-  "title": "Revisar novedades: Koldo",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-7c7d9ca36d57029954e5"
+    "red-review-7c7d9ca36d57029954e5",
+    "red-review-68a1ca00023f6f3ef1cb"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-68a1ca00023f6f3ef1cb"
-  ],
-  "remaining_active_ids": [
-    "red-review-68a1ca00023f6f3ef1cb"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 2,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,9 +48,9 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "persisting",
-    "message": "Koldo: resultado de continuidad escrito en maintenance-outbox; verificando aplicación en main.",
-    "updated_at": "2026-11-07T07:25:00+01:00"
+    "phase": "closing",
+    "message": "Pasada 2/2 cerrada: La UCO y Koldo actualizados por continuidad. Barrera final main: editorial-queue=0, sin preparing/update ni reexplicación en la cola compacta. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "updated_at": "2026-11-07T07:26:00+01:00"
   },
   "final_outcomes": [
     {
@@ -63,29 +60,57 @@
       "outcome": "continuity_update",
       "applied": true,
       "via": "maintenance_outbox"
+    },
+    {
+      "id": "red-review-68a1ca00023f6f3ef1cb",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-0710-chat",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-07T07:10:00+01:00",
-    "updated_at": "2026-11-07T07:11:45+01:00",
-    "finished_at": "2026-11-07T07:11:45+01:00",
-    "current": 0,
-    "total": 0,
+    "run_id": "tr-1794032311095-manual",
+    "status": "DONE",
+    "started_at": "2026-11-07T07:19:00+01:00",
+    "updated_at": "2026-11-07T07:26:00+01:00",
+    "finished_at": "2026-11-07T07:26:00+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-7c7d9ca36d57029954e5",
+      "red-review-68a1ca00023f6f3ef1cb"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "final_outcomes": [
+      {
+        "id": "red-review-7c7d9ca36d57029954e5",
+        "revision": 0,
+        "name": "Revisar novedades: La UCO",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox"
+      },
+      {
+        "id": "red-review-68a1ca00023f6f3ef1cb",
+        "revision": 0,
+        "name": "Revisar novedades: Koldo",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 2,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -94,15 +119,15 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-manual-20261107-0710-chat cerrada 0/0. Barrera final main: recent 07:10:53, editorial-queue=0, preparing/update/rewrite_pending/reexplain/review_red/anticipate=0. Incidencia de salud: request_queue reporta 508 estados históricos inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794032311095-manual cerrada 2/2: La UCO y Koldo actualizados por continuidad. Barrera final main: editorial-queue=0, preparing/update/reexplicación=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T07:10:00+01:00",
-  "last_completed_at": "2026-11-07T07:11:45+01:00",
+  "last_started_at": "2026-11-07T07:19:00+01:00",
+  "last_completed_at": "2026-11-07T07:26:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -170,7 +195,8 @@
     "tr-1794021900000-manual",
     "tr-manual-20261107-0525-chat",
     "tr-manual-20261107-0555-chat",
-    "tr-manual-20261107-0710-chat"
+    "tr-manual-20261107-0710-chat",
+    "tr-1794032311095-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -240,7 +266,8 @@
     "tr-1794021900000-manual",
     "tr-manual-20261107-0525-chat",
     "tr-manual-20261107-0555-chat",
-    "tr-manual-20261107-0710-chat"
+    "tr-manual-20261107-0710-chat",
+    "tr-1794032311095-manual"
   ],
-  "message": "Procesando 2 revisiones de novedades; ImageGen=0; publicaciones=0."
+  "message": "Pasada tr-1794032311095-manual cerrada 2/2: La UCO y Koldo actualizados por continuidad. Barrera final main: editorial-queue=0, preparing/update/reexplicación=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
