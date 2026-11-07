@@ -28,7 +28,7 @@
   ],
   "converged_ids": [
     "db76e61cd3d4",
-    "a75e99a5ae99"
+    "tr-autoguard-1794042658"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -39,8 +39,8 @@
     "closed": 7,
     "explained": 5,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
@@ -57,7 +57,7 @@
   "error": null,
   "activity": {
     "phase": "closing",
-    "message": "Pasada cerrada 7/7 tras barrera final: cola 0. Se absorbieron dos review_red y un rework de #FelizSábado llegado durante el cierre. Sin ImageGen ni publicaciones.",
+    "message": "Pasada cerrada 7/7 tras barrera final main: cola 0, sin preparing/update ni reexplicación pendiente. ImageGen=0.",
     "updated_at": "2026-11-07T10:20:00+01:00"
   },
   "final_outcomes": [
@@ -74,7 +74,7 @@
       "name": "Acierto",
       "outcome": "explained_cause_unconfirmed",
       "applied": true,
-      "via": "concurrent_autoguard"
+      "via": "concurrent_convergence"
     },
     {
       "id": "a336abbd039a",
@@ -94,9 +94,8 @@
       "id": "red-review-c97623deb823ab0cfdb5",
       "revision": 0,
       "name": "Revisar novedades: #FelizSábado",
-      "outcome": "superseded_by_rework",
-      "applied": true,
-      "created_id": "a75e99a5ae99"
+      "outcome": "continuity_update",
+      "applied": true
     },
     {
       "id": "red-review-2763e0066d30912c8f78",
@@ -109,9 +108,8 @@
       "id": "a75e99a5ae99",
       "revision": 0,
       "name": "#FelizSábado",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_direct_writer"
+      "outcome": "explained_rework",
+      "applied": true
     }
   ],
   "api_failover_enabled": false,
@@ -135,7 +133,7 @@
     ],
     "converged_ids": [
       "db76e61cd3d4",
-      "a75e99a5ae99"
+      "tr-autoguard-1794042658"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
@@ -152,7 +150,7 @@
         "name": "Acierto",
         "outcome": "explained_cause_unconfirmed",
         "applied": true,
-        "via": "concurrent_autoguard"
+        "via": "concurrent_convergence"
       },
       {
         "id": "a336abbd039a",
@@ -172,9 +170,8 @@
         "id": "red-review-c97623deb823ab0cfdb5",
         "revision": 0,
         "name": "Revisar novedades: #FelizSábado",
-        "outcome": "superseded_by_rework",
-        "applied": true,
-        "created_id": "a75e99a5ae99"
+        "outcome": "continuity_update",
+        "applied": true
       },
       {
         "id": "red-review-2763e0066d30912c8f78",
@@ -187,9 +184,8 @@
         "id": "a75e99a5ae99",
         "revision": 0,
         "name": "#FelizSábado",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_direct_writer"
+        "outcome": "explained_rework",
+        "applied": true
       }
     ],
     "attempted": 7,
@@ -197,8 +193,8 @@
     "closed": 7,
     "explained": 5,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "unchanged_reviews": 1,
     "stale_reviews": 0,
@@ -212,7 +208,7 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 7/7. Cola final 0; cinco explicaciones cerradas y dos revisiones resueltas. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 7/7; tr-autoguard-1794042658 satisfecho por convergencia con tr-manual-20261107-1010-chat. Barrera final main: cola 0, sin preparing/update ni reexplicación pendiente. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T10:10:00+01:00",
   "last_completed_at": "2026-11-07T10:20:00+01:00",
@@ -291,7 +287,8 @@
     "tr-manual-20261107-0925-chat",
     "tr-manual-20261107-0940-chat",
     "tr-manual-20261107-0955-chat",
-    "tr-manual-20261107-1010-chat"
+    "tr-manual-20261107-1010-chat",
+    "tr-autoguard-1794042658"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -369,7 +366,8 @@
     "tr-manual-20261107-0925-chat",
     "tr-manual-20261107-0940-chat",
     "tr-manual-20261107-0955-chat",
-    "tr-manual-20261107-1010-chat"
+    "tr-manual-20261107-1010-chat",
+    "tr-autoguard-1794042658"
   ],
-  "message": "Pasada cerrada 7/7. Cola final 0. Explicadas #AgropopularRetinta, Acierto, Payoya, Amaia y #FelizSábado; Paraguay revisado sin cambios; review previo de #FelizSábado supersedido por rework actual. Sin ImageGen ni publicaciones."
+  "message": "Pasada cerrada 7/7; tr-autoguard-1794042658 satisfecho por convergencia con tr-manual-20261107-1010-chat. Barrera final main: cola 0, sin preparing/update ni reexplicación pendiente. ImageGen=0; publicaciones=0."
 }
