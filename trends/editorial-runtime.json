@@ -7,36 +7,35 @@
   "previous_run_id": "tr-1794090277346-manual",
   "command_id": "tr-1794090534398-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T23:29:00+01:00",
   "updated_at": "2026-11-07T23:33:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "finished_at": "2026-11-07T23:33:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-c43f1850076da4ea5465",
-  "title": "Revisar novedades: Cracovia",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-c43f1850076da4ea5465",
+    "red-review-b3bbff7c56959d09dcce"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-c43f1850076da4ea5465",
-    "red-review-b3bbff7c56959d09dcce"
-  ],
-  "remaining_active_ids": [
-    "red-review-c43f1850076da4ea5465",
-    "red-review-b3bbff7c56959d09dcce"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
+    "updates": 2,
+    "continuity_updates": 2,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -44,7 +43,28 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-c43f1850076da4ea5465",
+      "revision": 0,
+      "name": "Revisar novedades: Cracovia",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox_applied",
+      "source_id": "c997998b2d5a",
+      "apply_commit": "f8618ee75ef528a1f62acccb8e16689201faa6fc"
+    },
+    {
+      "id": "red-review-b3bbff7c56959d09dcce",
+      "revision": 0,
+      "name": "Revisar novedades: #BrazilGP",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox_applied",
+      "source_id": "438f36286fc7",
+      "apply_commit": "f8618ee75ef528a1f62acccb8e16689201faa6fc"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -138,9 +158,14 @@
       "at": "2026-11-07T23:33:00+01:00",
       "phase": "investigating",
       "message": "Revisando novedades: Cracovia. JIT id/revision validado en main; se contrasta información posterior al tiroteo frente a la explicación de las 17:26."
+    },
+    {
+      "at": "2026-11-07T23:33:00+01:00",
+      "phase": "closing",
+      "message": "Cracovia y #BrazilGP aplicadas como continuidad en commit f8618ee75ef528a1f62acccb8e16689201faa6fc, conservando ID/revisión/explained_at y sin crear nuevas tarjetas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T23:28:16+01:00",
-  "last_completed_at": "2026-11-07T23:28:54+01:00",
+  "last_completed_at": "2026-11-07T23:33:00+01:00",
   "api_failover_enabled": false
 }
