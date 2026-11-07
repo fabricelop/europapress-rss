@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-2240-chat",
-  "previous_run_id": "tr-1794087372681-manual",
-  "command_id": "tr-manual-20261107-2240-chat",
+  "run_id": "tr-1794088452492-manual",
+  "previous_run_id": "tr-manual-20261107-2240-chat",
+  "command_id": "tr-1794088452492-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T22:40:00+01:00",
-  "updated_at": "2026-11-07T22:41:00+01:00",
-  "finished_at": "2026-11-07T22:41:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T22:54:00+01:00",
+  "updated_at": "2026-11-07T22:54:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-960f59f54b3e6dbcaa0d",
+    "red-review-7015a5e7d747714c6ecb"
+  ],
+  "remaining_active_ids": [
+    "red-review-960f59f54b3e6dbcaa0d",
+    "red-review-7015a5e7d747714c6ecb"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,22 +53,12 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-07T22:40:00+01:00",
+      "at": "2026-11-07T22:54:00+01:00",
       "phase": "preparing",
-      "message": "Pasada tr-manual-20261107-2240-chat iniciada desde «Ejecuta TTendencias»; leyendo estado autoritativo de main."
-    },
-    {
-      "at": "2026-11-07T22:40:59+01:00",
-      "phase": "verifying",
-      "message": "Relectura JIT: editorial-queue=0. requests.json analizado por blob: 1727 entradas, 0 status preparing/update y 0 rewrite_pending."
-    },
-    {
-      "at": "2026-11-07T22:41:00+01:00",
-      "phase": "closing",
-      "message": "Barrera final main satisfecha: cola=0 y reexplicación pendiente=0. Cierre 0/0 válido. Sin ImageGen, image-outbox ni publicaciones."
+      "message": "Pasada tr-1794088452492-manual iniciada desde chat; cola autoritativa main=2 (Vargas y Santiago Peña). Sin ImageGen."
     }
   ],
-  "last_started_at": "2026-11-07T22:40:00+01:00",
+  "last_started_at": "2026-11-07T22:54:00+01:00",
   "last_completed_at": "2026-11-07T22:41:00+01:00",
   "api_failover_enabled": false
 }
