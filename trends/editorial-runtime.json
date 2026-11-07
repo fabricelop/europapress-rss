@@ -8,14 +8,14 @@
   "command_id": "tr-manual-20261107-1140-chat",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-07T11:40:00+01:00",
-  "updated_at": "2026-11-07T11:40:00+01:00",
+  "updated_at": "2026-11-07T11:41:10+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "bdd56dcea5a1",
+  "title": "Abogacía del Estado",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -24,7 +24,7 @@
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +33,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -109,6 +109,11 @@
       "at": "2026-11-07T11:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1140-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T11:41:10+01:00",
+      "phase": "investigating",
+      "message": "Detectados 2 trabajos nuevos en la barrera fresca: Abogacía del Estado y Pattinson. Se procesa primero Abogacía del Estado (bdd56dcea5a1 r0)."
     }
   ],
   "final_outcomes": [],
@@ -324,7 +329,7 @@
     "tr-manual-20261107-1117-chat",
     "tr-manual-20261107-1125-chat"
   ],
-  "message": "Pasada tr-manual-20261107-1140-chat en ejecución: barrera inicial y estado editorial en comprobación.",
+  "message": "Investigando 1/2: Abogacía del Estado (bdd56dcea5a1 r0).",
   "outcomes": [],
   "recent_runs": [
     "tr-manual-20261107-1140-chat"
