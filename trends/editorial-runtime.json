@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794080634431-manual",
   "command_id": "tr-manual-20261107-2055-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T20:55:00+01:00",
-  "updated_at": "2026-11-07T20:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T20:56:30+01:00",
+  "finished_at": "2026-11-07T20:56:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -771,9 +771,29 @@
       "at": "2026-11-07T20:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-2055-chat iniciada; la primera barrera de main muestra editorial-queue=0. Se revalidan estados activos, reexplicaciones y mantenimiento antes de cerrar. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T20:56:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions y requests sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Los últimos mantenimientos de Sepang y Jorge Martín ya están cerrados. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T20:56:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-2055-chat cerrada 0/0; no había trabajo editorial activo tras la relectura final de main. Sin imágenes ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T20:55:00+01:00",
-  "last_completed_at": "2026-11-07T20:46:00+01:00",
-  "api_failover_enabled": false
+  "last_completed_at": "2026-11-07T20:56:30+01:00",
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-manual-20261107-2055-chat",
+    "status": "DONE",
+    "finished_at": "2026-11-07T20:56:30+01:00",
+    "current": 0,
+    "total": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "incidents": 0
+  }
 }
