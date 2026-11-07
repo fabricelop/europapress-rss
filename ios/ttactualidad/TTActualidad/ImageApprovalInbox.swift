@@ -83,6 +83,7 @@ private final class ApprovalInboxModel: ObservableObject {
     @Published private(set) var loading = false
     @Published private(set) var actionID: String?
     @Published var notice = ""
+    @Published private(set) var pageDiagnostics = ""
 
     func load(using github: GitHubEditor) async {
         guard !loading else { return }
@@ -94,6 +95,11 @@ private final class ApprovalInboxModel: ObservableObject {
             let received = try JSONDecoder().decode(PendingImageResponse.self, from: data).items
             let top30 = try await github.currentImageApprovalTrendEpisodes()
             let items = ApprovalInboxScope.visible(received, currentTop30: top30)
+            // Diagnostics describe THIS server page, not total outstanding
+            // images. No old PNG previews or identifiers are exposed.
+            pageDiagnostics = "Servidor: " + String(received.count) +
+                " candidatas en esta página · " + String(items.count) +
+                " elegibles tras el filtro."
             images = items
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
@@ -107,6 +113,7 @@ private final class ApprovalInboxModel: ObservableObject {
             // approval card on screen after a failed scope refresh.
             images = []
             previews = [:]
+            pageDiagnostics = ""
             notice = "No se pudo verificar el Top 30 y la bandeja privada: \(error.localizedDescription)"
         }
     }
@@ -277,6 +284,10 @@ struct ImageApprovalInbox: View {
                         Text("Máximo 20 imágenes · tendencias del Top 30 actual y noticias desde el 6/11 a las 09:43.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
+                        if !model.pageDiagnostics.isEmpty {
+                            Text(model.pageDiagnostics)
+                                .font(.caption2).foregroundStyle(.secondary)
+                        }
                         if !model.notice.isEmpty {
                             Section {
                                 Text(model.notice)

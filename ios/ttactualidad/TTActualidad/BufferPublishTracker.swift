@@ -12,6 +12,9 @@ struct TTBufferPublication: Decodable {
     let state: String
     let sent_at: String?
     let post_url: String?
+    let closure_verified: Bool?
+    let closure_error: String?
+    let verification_note: String?
     let error: String?
 }
 
@@ -35,6 +38,10 @@ private struct TTBufferLedger: Decodable {
 final class BufferPublishTracker: ObservableObject {
     @Published private(set) var posts: [TTBufferPublication] = []
     @Published private(set) var loaded = false
+    // A GitHub 204 dispatch only acknowledges transport. Unless the default
+    // branch exposes the publisher's verified ledger, a button tap MUST NOT
+    // pretend a Buffer/X publisher exists.
+    @Published private(set) var backendAvailable = false
     @Published private(set) var apiQuota: TTBufferAPIQuota?
     @Published private(set) var notice = ""
     @Published private(set) var change = 0
@@ -99,6 +106,7 @@ final class BufferPublishTracker: ObservableObject {
     // Public, read-only GitHub ledger. The Buffer key stays server-side in
     // GitHub Actions Secrets, never in a mobile binary or network request.
     func refresh() async {
+        backendAvailable = false
         var components = URLComponents(string:
             "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/pilot/ttactualidad-buffer-posts.json")!
         components.queryItems = [URLQueryItem(name: "readback", value: UUID().uuidString)]
@@ -113,6 +121,7 @@ final class BufferPublishTracker: ObservableObject {
             posts = ledger.items
             apiQuota = ledger.api_quota
             loaded = true
+            backendAvailable = true
         } catch {
             // An outdated or unreachable readback is not proof of publication.
             // Preserve the previous verified values and mark unavailable initially.
@@ -131,6 +140,14 @@ final class BufferPublishTracker: ObservableObject {
         guard ["ttittulares", "ttendencias"].contains(project),
               !id.isEmpty && revision >= 0 else {
             notice = "Identidad editorial no confirmada. Actualiza la ficha."
+            change += 1
+            return
+        }
+        // First verify the Buffer receipt source exists on main. This is
+        // deliberately fail-closed; no request is submitted on 404/error.
+        await refresh()
+        guard backendAvailable else {
+            notice = "Buffer aún no está activado en GitHub. No se ha enviado nada a X; la ficha permanece en Listas."
             change += 1
             return
         }
@@ -156,7 +173,8 @@ final class BufferPublishTracker: ObservableObject {
             change += 1
             return
         }
-        notice = "Buffer procesará " + account + ". Esperando confirmación de X."
+        notice = "Orden aceptada por GitHub para " + account +
+            ". Esperando el recibo verificado de Buffer y el enlace real de X."
         change += 1
         Task { await followReceipt(requestID: requestID, project: project, id: id,
                                    revision: revision, key: key) }
@@ -172,7 +190,13 @@ final class BufferPublishTracker: ObservableObject {
                 $0.project == project && $0.event_id == id && $0.revision == revision }) {
                 switch receipt.state {
                 case "sent":
-                    notice = "Publicación confirmada en X · @" + receipt.account
+                    if receipt.closure_verified == true {
+                        notice = "Publicado en X y retirado de Listas · @" + receipt.account
+                    } else {
+                        notice = "Buffer confirmó el tuit en X · @" + receipt.account +
+                            ". Retirada de Listas pendiente de recibo."
+                    }
+                    if let url = receipt.post_url { notice += " · " + url }
                     change += 1
                     return
                 case "failed":
