@@ -3,29 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794089854856-manual",
-  "previous_run_id": "tr-1794089628496-manual",
-  "command_id": "tr-1794089854856-manual",
+  "run_id": "tr-1794089949610-manual",
+  "previous_run_id": "tr-1794089854856-manual",
+  "command_id": "tr-1794089949610-manual",
   "source": "chat",
-  "status": "waiting",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-07T23:18:50+01:00",
-  "updated_at": "2026-11-07T23:20:39+01:00",
+  "started_at": "2026-11-07T23:20:30+01:00",
+  "updated_at": "2026-11-07T23:20:30+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 6,
+  "total": 3,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": false,
-  "processed_ids": [
-    "65615694d300",
-    "ace5a78b186c"
+  "processed_ids": [],
+  "converged_ids": [
+    "c7bb6c3446ee",
+    "19a794014e20",
+    "d1d830a84173",
+    "e51dc7aa7a37",
+    "fe308194f4ea"
   ],
-  "converged_ids": [],
   "remaining_ids": [
+    "65615694d300",
+    "ace5a78b186c",
     "283971b24730"
   ],
   "remaining_active_ids": [
+    "65615694d300",
+    "ace5a78b186c",
     "283971b24730"
   ],
   "remaining_problematic_ids": [],
@@ -69,9 +76,14 @@
       "at": "2026-11-07T23:18:50+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794089854856-manual iniciada desde chat; cola main=6 preparing/update. Procesamiento del más antiguo al más reciente con validación JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T23:20:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794089949610-manual asumida en chat. Cinco trabajos iniciales convergieron por la ejecución inmediatamente anterior; quedan 3 preparing nuevos en main (Valverde, #MalasLenguasN, Catena), a procesar JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T23:20:38+01:00",
+  "last_started_at": "2026-11-07T23:20:30+01:00",
   "last_completed_at": "2026-11-07T23:19:43+01:00",
   "api_failover_enabled": false
 }
