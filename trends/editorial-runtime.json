@@ -8,9 +8,9 @@
   "command_id": "tr-autoguard-1794063061",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-07T15:51:00+01:00",
-  "updated_at": "2026-11-07T15:52:00+01:00",
+  "updated_at": "2026-11-07T15:55:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -492,6 +492,13 @@
       "trend_id": "radar-prepare-cf0a9a199ff9269ac43e",
       "title": "Radar · #LCN7nov",
       "message": "Pasada tr-autoguard-1794063061 iniciada; cola fresca de main detecta 1 borrador Radar #LCN7nov r0. Se revalida ID/revisión y se investiga el detonante actual. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T15:55:00+01:00",
+      "phase": "persisting",
+      "trend_id": "radar-prepare-cf0a9a199ff9269ac43e",
+      "title": "Radar · #LCN7nov",
+      "message": "Resultado Radar r0 persistido como anticipation unverified tras dos búsquedas independientes sin detonante público verificable. Solo anticipation-outbox; sin Listas, sin ImageGen y sin publicaciones."
     }
   ],
   "final_outcomes": [
@@ -739,7 +746,7 @@
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat"
   ],
-  "message": "Procesando 1/1: Radar · #LCN7nov; sin ImageGen ni publicaciones.",
+  "message": "Resultado #LCN7nov r0 persistido como unverified; verificando aplicación y barrera final.",
   "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
