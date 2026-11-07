@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794042658",
-  "previous_run_id": "tr-manual-20261107-0955-chat",
-  "command_id": "tr-autoguard-1794042658",
+  "run_id": "tr-manual-20261107-1010-chat",
+  "previous_run_id": "tr-autoguard-1794042658",
+  "command_id": "tr-manual-20261107-1010-chat",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
-  "started_at": "2026-11-07T10:11:00+01:00",
-  "updated_at": "2026-11-07T10:11:00+01:00",
+  "phase": "investigating",
+  "started_at": "2026-11-07T10:10:00+01:00",
+  "updated_at": "2026-11-07T10:10:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "b547e584c4e7",
+  "title": "#AgropopularRetinta",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -55,9 +55,9 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "preparing",
-    "message": "Cargando estado vigente y validando cola inicial 4/4 antes de investigar.",
-    "updated_at": "2026-11-07T10:11:00+01:00"
+    "phase": "investigating",
+    "message": "Investigando #AgropopularRetinta (1/4) y validando su revisión 0 en main.",
+    "updated_at": "2026-11-07T10:10:00+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -251,5 +251,5 @@
     "tr-manual-20261107-0940-chat",
     "tr-manual-20261107-0955-chat"
   ],
-  "message": "Pasada editorial real iniciada con 4 trabajos preparing; sin ImageGen."
+  "message": "Pasada manual en curso: 4 entradas preparing observadas en main."
 }
