@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794054464802-manual",
   "command_id": "tr-1794054978318-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T12:38:10.645Z",
-  "updated_at": "2026-11-07T12:38:10.645Z",
-  "finished_at": null,
+  "updated_at": "2026-11-07T12:38:38.997Z",
+  "finished_at": "2026-11-07T12:38:38.997Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -286,22 +286,32 @@
       "at": "2026-11-07T12:38:10.645Z",
       "phase": "preparing",
       "message": "Pasada tr-1794054978318-manual iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T12:38:38.997Z",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Búsqueda de rewrite/reexplain pendiente sin coincidencias. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T12:38:38.997Z",
+      "phase": "closing",
+      "message": "Pasada tr-1794054978318-manual cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794054464802-manual",
+    "run_id": "tr-1794054978318-manual",
     "status": "DONE",
-    "finished_at": "2026-11-07T13:37:30+01:00",
-    "total": 4,
-    "closed": 4,
+    "finished_at": "2026-11-07T12:38:38.997Z",
+    "total": 0,
+    "closed": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
-  "last_started_at": "2026-11-07T13:33:12+01:00",
-  "last_completed_at": "2026-11-07T13:33:12+01:00",
+  "last_started_at": "2026-11-07T12:38:10.645Z",
+  "last_completed_at": "2026-11-07T12:38:38.997Z",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -397,7 +407,8 @@
     "tr-1794052874051-manual",
     "tr-manual-20261107-1310-chat",
     "tr-1794052874051-manual-recheck-chat",
-    "tr-manual-20261107-1325-chat"
+    "tr-manual-20261107-1325-chat",
+    "tr-1794054978318-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -495,7 +506,8 @@
     "tr-1794052874051-manual",
     "tr-manual-20261107-1310-chat",
     "tr-1794052874051-manual-recheck-chat",
-    "tr-manual-20261107-1325-chat"
+    "tr-manual-20261107-1325-chat",
+    "tr-1794054978318-manual"
   ],
   "message": "Pasada completada tras reabrirse por dos review_red nuevos: Widilo y DÍA DE PARTIDO explicadas; Santiago Peña actualizado por continuidad; Fiscalía Europea sin cambios. Barrera final: cola 0, rewrite_pending 0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "outcomes": [
