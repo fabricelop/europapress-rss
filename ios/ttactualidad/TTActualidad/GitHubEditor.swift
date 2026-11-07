@@ -825,6 +825,166 @@ final class GitHubEditor: ObservableObject {
         }
     }
 
+    // APP manual associations are keyed by canonical news and trend IDs
+    // and revisions, both already present in GitHub editorial sources.
+    // Private Sites fingerprints remain optional and are never fabricated.
+    private let manualRelationsPath = "pilot/ttactualidad-manual-relations.json"
+
+    private func manualRelationsAPI(_ method: String = "GET",
+                                    body: [String: Any]? = nil,
+                                    token: String) async throws -> (Data, Int) {
+        var components = URLComponents(string:
+            "https://api.github.com/repos/fabricelop/europapress-rss/contents/" +
+            manualRelationsPath)!
+        if method == "GET" {
+            components.queryItems = [URLQueryItem(name: "ref", value: "main")]
+        }
+        let url = components.url!
+        var request = URLRequest(url: url,
+                                 cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 35)
+        request.httpMethod = method
+        request.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        request.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        if let body {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        }
+        let session = URLSession(configuration: .ephemeral,
+                                 delegate: EditorialRelationsNoRedirect(),
+                                 delegateQueue: nil)
+        defer { session.finishTasksAndInvalidate() }
+        let (bytes, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse,
+              http.url?.scheme == "https", http.url?.host == "api.github.com",
+              http.url?.path == url.path else {
+            throw GitHubError.message("GitHub redirigió el registro de relaciones.")
+        }
+        return (bytes, http.statusCode)
+    }
+
+    private func readManualRelations(token: String) async throws
+        -> (EditorialManualRelationsLedger, String?) {
+        let (data, status) = try await manualRelationsAPI(token: token)
+        if status == 404 { return (.empty, nil) }
+        guard status == 200,
+              let wrapper = try JSONSerialization.jsonObject(with: data)
+                    as? [String: Any],
+              let sha = wrapper["sha"] as? String,
+              let raw = wrapper["content"] as? String,
+              let bytes = Data(base64Encoded:
+                    raw.replacingOccurrences(of: "\n", with: ""),
+                    options: .ignoreUnknownCharacters),
+              let ledger = try? JSONDecoder().decode(
+                    EditorialManualRelationsLedger.self, from: bytes),
+              ledger.schemaVersion == 1 else {
+            throw GitHubError.message(
+                "El registro de relaciones no está accesible o tiene un formato incompatible.")
+        }
+        return (ledger, sha)
+    }
+
+    func editorialManualRelations() async throws -> [EditorialRelation] {
+        let (ledger, _) = try await readManualRelations(token: authorizedToken())
+        return ledger.items.filter { ["linked", "blocked"].contains($0.state) }
+            .map(\.relation)
+    }
+
+    // One atomic GitHub commit per user-initiated Save, regardless of how
+    // many matching news have been checked. A SHA conflict is reread, never
+    // overwritten. A commit must be visible on a second GET before success.
+    func saveEditorialManualRelations(
+        _ changes: [(news: EditorialRelationEndpoint,
+                     trend: EditorialRelationEndpoint, action: String)]
+    ) async throws {
+        guard !changes.isEmpty else { return }
+        let token = try await authorizedToken()
+        let top = try await readPublicEditorialJSON("trends/site-top30-current.json")
+        guard let topItems = top["items"] as? [[String: Any]] else {
+            throw GitHubError.message("No está disponible el Top30 actual.")
+        }
+        let currentTrendKeys = Set(topItems.compactMap { row -> String? in
+            guard let id = row["editorial_id"] as? String,
+                  let revision = row["revision"] as? Int else { return nil }
+            return id + ":r" + String(revision)
+        })
+        let history = try await editorialRelationRecentNews()
+        let currentNewsKeys = Set(history.map {
+            $0.id + ":r" + String($0.revision)
+        })
+        for change in changes {
+            let nkey = change.news.id + ":r" + String(change.news.revision)
+            let tkey = change.trend.id + ":r" + String(change.trend.revision)
+            guard !change.news.id.isEmpty, !change.trend.id.isEmpty,
+                  change.news.revision >= 0, change.trend.revision >= 0,
+                  ["link", "unlink"].contains(change.action),
+                  currentNewsKeys.contains(nkey), currentTrendKeys.contains(tkey)
+            else {
+                throw GitHubError.message(
+                    "La noticia o tendencia cambió de episodio. Actualiza Relaciones.")
+            }
+        }
+
+        func pairID(_ news: EditorialRelationEndpoint,
+                    _ trend: EditorialRelationEndpoint) -> String {
+            news.id + ":r" + String(news.revision) +
+              "↔" + trend.id + ":r" + String(trend.revision)
+        }
+
+        for _ in 0..<5 {
+            var (ledger, previousSHA) = try await readManualRelations(token: token)
+            for change in changes {
+                let id = pairID(change.news, change.trend)
+                let safeNews = EditorialRelationEndpoint(
+                    id: change.news.id, revision: change.news.revision,
+                    episodeFingerprint: "", title: change.news.title,
+                    text: change.news.text, path: change.news.path,
+                    listedAt: change.news.listedAt)
+                let safeTrend = EditorialRelationEndpoint(
+                    id: change.trend.id, revision: change.trend.revision,
+                    episodeFingerprint: "", title: change.trend.title,
+                    text: change.trend.text, path: change.trend.path,
+                    listedAt: change.trend.listedAt)
+                let item = EditorialManualRelationEntry(
+                    id: id, news: safeNews, trend: safeTrend,
+                    state: change.action == "link" ? "linked" : "blocked",
+                    updatedAt: ISO8601DateFormatter().string(from: Date()))
+                ledger.items.removeAll { $0.id == id }
+                ledger.items.append(item)
+            }
+            let encoded = try JSONEncoder().encode(ledger)
+            var payload: [String: Any] = [
+                "branch": "main",
+                "message": "TTActualidad: guardar relaciones manuales por ID/revisión",
+                "content": encoded.base64EncodedString(),
+            ]
+            if let previousSHA { payload["sha"] = previousSHA }
+            let (_, status) = try await manualRelationsAPI(
+                "PUT", body: payload, token: token)
+            if status == 409 { continue }
+            guard status == 200 || status == 201 else {
+                throw GitHubError.message(
+                    "No se guardaron relaciones en GitHub: HTTP " + String(status))
+            }
+            let (committed, _) = try await readManualRelations(token: token)
+            guard changes.allSatisfy({ change in
+                let id = pairID(change.news, change.trend)
+                return committed.items.contains(where: {
+                    $0.id == id &&
+                    $0.state == (change.action == "link" ? "linked" : "blocked")
+                })
+            }) else {
+                throw GitHubError.message(
+                    "GitHub recibió el lote, pero aún no confirmó todas las asociaciones.")
+            }
+            return
+        }
+        throw GitHubError.message(
+            "Conflicto de escritura de relaciones. Actualiza y vuelve a guardar.")
+    }
+
     private func actionReceipt(_ requestID: String) async throws -> String? {
         let doc = try await readMainJSON("pilot/ttactualidad-action-receipts.json")
         let receipt = (doc["items"] as? [[String: Any]])?.first {
