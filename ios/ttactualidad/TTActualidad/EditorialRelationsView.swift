@@ -12,6 +12,7 @@ struct EditorialRelationsScope {
 private final class EditorialRelationsModel: ObservableObject {
     @Published private(set) var snapshot: EditorialRelationsSnapshot?
     @Published private(set) var historicalNews: [EditorialRelationEndpoint] = []
+    @Published private(set) var manualRelations: [EditorialRelation] = []
     @Published private(set) var loading = false
     @Published private(set) var saving = false
     // Rebuild the expensive trend/news matching cache once per completed
@@ -33,6 +34,7 @@ private final class EditorialRelationsModel: ObservableObject {
         // independently: a missing/partial Sites snapshot must NOT make the
         // dated news inbox empty. Real links still require private receipts.
         async let datedHistory = github.editorialRelationRecentNews()
+        async let manualHistory = github.editorialManualRelations()
         var issues: [String] = []
         do {
             let (data, status) = try await github.privateEditorialRelationsRequest(path: "/v1/snapshot")
@@ -51,6 +53,13 @@ private final class EditorialRelationsModel: ObservableObject {
             historicalNews = []
             issues.append("No se pudieron recuperar las noticias históricas: \(error.localizedDescription)")
         }
+        do {
+            manualRelations = try await manualHistory
+        } catch {
+            manualRelations = []
+            issues.append("No se pudo leer el registro manual de asociaciones: " +
+                          error.localizedDescription)
+        }
         notice = issues.joined(separator: ". ")
         dataRevision &+= 1
     }
@@ -58,6 +67,12 @@ private final class EditorialRelationsModel: ObservableObject {
     private func postDecision(news: EditorialRelationEndpoint,
                               trend: EditorialRelationEndpoint,
                               action: String, using github: GitHubEditor) async throws {
+        if news.episodeFingerprint.isEmpty || trend.episodeFingerprint.isEmpty {
+            try await github.saveEditorialManualRelations([
+                (news: news, trend: trend, action: action)
+            ])
+            return
+        }
         let key = [action, news.id, String(news.revision), news.episodeFingerprint,
                    trend.id, String(trend.revision), trend.episodeFingerprint].joined(separator: "|")
         let command = commands[key] ?? UUID().uuidString.lowercased()
@@ -121,33 +136,52 @@ private final class EditorialRelationsModel: ObservableObject {
         defer { saving = false }
         var confirmed: [String] = []
         var errors: [String] = []
+        var unique: [(news: EditorialRelationEndpoint,
+                      trend: EditorialRelationEndpoint, action: String)] = []
         var seen = Set<String>()
-        for (index, change) in changes.enumerated() {
-            let pair = change.news.stableIdentity + "↔" + change.trend.stableIdentity
-            guard seen.insert(pair).inserted else { continue }
-            notice = "Guardando relaciones verificadas: " +
-                String(index + 1) + "/" + String(changes.count)
+        for change in changes {
+            let key = change.news.id + ":r" + String(change.news.revision) +
+                "↔" + change.trend.id + ":r" + String(change.trend.revision)
+            if seen.insert(key).inserted { unique.append(change) }
+        }
+        // One authenticated commit stores the historic pairs together.
+        let manual = unique.filter {
+            $0.news.episodeFingerprint.isEmpty || $0.trend.episodeFingerprint.isEmpty
+        }
+        if !manual.isEmpty {
+            notice = "Guardando asociaciones históricas en GitHub…"
+            do {
+                try await github.saveEditorialManualRelations(manual)
+                confirmed += manual.map {
+                    $0.news.id + ":r" + String($0.news.revision) +
+                    "↔" + $0.trend.id + ":r" + String($0.trend.revision)
+                }
+            } catch {
+                errors.append("Histórico: " + error.localizedDescription)
+            }
+        }
+        // Keep the Sites flow for episodes with genuine private identities.
+        for change in unique where !change.news.episodeFingerprint.isEmpty &&
+                                !change.trend.episodeFingerprint.isEmpty {
             do {
                 try await postDecision(news: change.news, trend: change.trend,
                                        action: change.action, using: github)
-                confirmed.append(pair)
+                confirmed.append(
+                    change.news.id + ":r" + String(change.news.revision) +
+                    "↔" + change.trend.id + ":r" + String(change.trend.revision))
             } catch {
                 errors.append(change.news.title + ": " + error.localizedDescription)
-                // A conflict requires a fresh episode identity. Do not keep
-                // writing with a stale fingerprint.
                 if let conflict = error as? RelationsError,
                    case .http(409) = conflict { break }
             }
         }
         await load(using: github)
-        let summary = String(confirmed.count) + " de " + String(changes.count) +
-            " cambios confirmados por el servidor."
+        let summary = String(confirmed.count) + " de " +
+                      String(unique.count) + " cambios guardados y comprobados."
         notice = errors.isEmpty ? summary :
-            summary + " Pendientes o rechazados: " +
-            errors.prefix(2).joined(separator: " · ") +
-            (errors.count > 2 ? " (y más)" : "")
-        return TrendSaveResult(confirmedKeys: confirmed,
-                               attempted: changes.count, errors: errors)
+            summary + " Errores: " + errors.prefix(2).joined(separator: " · ")
+        return TrendSaveResult(
+            confirmedKeys: confirmed, attempted: unique.count, errors: errors)
     }
 
     // Save only pairs explicitly changed by the editor. No automatic mass
@@ -340,7 +374,8 @@ struct EditorialRelationsView: View {
     }
 
     private func rebuildRelationIndex() {
-        let canonical = EditorialRelationsPolicy.canonical(model.snapshot?.items ?? [])
+        let canonical = EditorialRelationsPolicy.canonical(
+            (model.snapshot?.items ?? []) + model.manualRelations)
         let news = buildAllNewsChoices(canonical: canonical)
         let dates = buildFallbackDates()
         let endpoints = (model.snapshot?.trends ?? []) + canonical.map(\.trend)
