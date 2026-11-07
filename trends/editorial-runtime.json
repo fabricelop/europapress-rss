@@ -7,39 +7,41 @@
   "previous_run_id": "tr-autoguard-1794063061",
   "command_id": "tr-1794063319124-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T14:55:19.124Z",
-  "updated_at": "2026-11-07T16:00:00+01:00",
-  "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "red-review-bc9ff2944b5044f8b10d",
-  "title": "Revisar novedades: Paraguay",
-  "queue_complete": false,
+  "updated_at": "2026-11-07T16:02:00+01:00",
+  "finished_at": "2026-11-07T16:02:00+01:00",
+  "current": 2,
+  "total": 2,
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
     "red-review-a3d9a77488158b13109c",
     "red-review-bc9ff2944b5044f8b10d"
   ],
-  "remaining_active_ids": [
-    "red-review-a3d9a77488158b13109c",
-    "red-review-bc9ff2944b5044f8b10d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
-    "updates": 0,
-    "unchanged_reviews": 0,
-    "queue_remaining": 2,
+    "problematic": 0,
+    "updates": 1,
+    "continuity_updates": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
+    "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
@@ -536,41 +538,51 @@
       "trend_id": "red-review-bc9ff2944b5044f8b10d",
       "title": "Revisar novedades: Paraguay",
       "message": "Resultado maintenance updated de continuidad persistido para Paraguay; mismo episodio Ueno Bank, sin nueva ficha ni imagen."
+    },
+    {
+      "at": "2026-11-07T16:02:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; requests/mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Widilo y Paraguay aplicados por commits ecd116f7… y f92e7aec…. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T16:02:00+01:00",
+      "phase": "closing",
+      "message": "tr-1794063319124-manual satisfecho por convergencia con tr-autoguard-1794063061. El autoguard procesó además Radar #LCN7nov como unverified. Sin imágenes ni publicaciones."
     }
   ],
   "final_outcomes": [
     {
-      "id": "red-review-52ded1c88cb98112dee3",
+      "id": "red-review-a3d9a77488158b13109c",
       "revision": 0,
-      "name": "Revisar novedades: Santiago Peña",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "fce519f2a3498debb33e807a444c301ee7d69b3c"
-    },
-    {
-      "id": "red-review-e9186c195e8f495aec48",
-      "revision": 0,
-      "name": "Revisar novedades: Fiscalía Europea",
+      "name": "Revisar novedades: Widilo",
       "outcome": "unchanged",
       "applied": true,
       "via": "maintenance_outbox_convergence",
-      "apply_commit": "fce519f2a3498debb33e807a444c301ee7d69b3c"
+      "apply_commit": "ecd116f711db71414d4925278bb7adac27400ed5"
+    },
+    {
+      "id": "red-review-bc9ff2944b5044f8b10d",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox_convergence",
+      "apply_commit": "f92e7aec3839d82fc0c72729f599958aa953138e"
     }
   ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1510-chat",
+    "run_id": "tr-1794063319124-manual",
     "status": "DONE",
-    "finished_at": "2026-11-07T15:13:00+01:00",
-    "total": 0,
-    "closed": 0,
+    "finished_at": "2026-11-07T16:02:00+01:00",
+    "total": 2,
+    "closed": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
   "last_started_at": "2026-11-07T15:12:00+01:00",
-  "last_completed_at": "2026-11-07T15:13:00+01:00",
+  "last_completed_at": "2026-11-07T16:02:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -675,7 +687,9 @@
     "tr-1794057704831-manual",
     "tr-1794057915598-manual",
     "tr-1794060087055-manual",
-    "tr-manual-20261107-1510-chat"
+    "tr-manual-20261107-1510-chat",
+    "tr-autoguard-1794063061",
+    "tr-1794063319124-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -781,9 +795,11 @@
     "tr-1794057704831-manual",
     "tr-1794057915598-manual",
     "tr-1794060087055-manual",
-    "tr-manual-20261107-1510-chat"
+    "tr-manual-20261107-1510-chat",
+    "tr-autoguard-1794063061",
+    "tr-1794063319124-manual"
   ],
-  "message": "Widilo y Paraguay tienen resultado persistido; verificando aplicación y barrera final.",
+  "message": "Pasada tr-1794063319124-manual cerrada 2/2 por convergencia con tr-autoguard-1794063061: Widilo unchanged y Paraguay actualizado por continuidad. Barrera final main=0; sin reexplicaciones activas; ImageGen=0; publicaciones=0.",
   "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
