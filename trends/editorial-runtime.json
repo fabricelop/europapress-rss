@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-1155-chat",
   "command_id": "tr-manual-20261107-1210-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T12:11:30+01:00",
-  "updated_at": "2026-11-07T12:11:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T12:14:30+01:00",
+  "finished_at": "2026-11-07T12:14:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -144,17 +144,27 @@
       "at": "2026-11-07T12:11:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1210-chat iniciada; barrera fresca de main detecta 0 trabajos activos. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T12:14:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red ni rewrite_pending. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T12:14:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1210-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1155-chat",
-    "command_id": "tr-manual-20261107-1155-chat",
+    "run_id": "tr-manual-20261107-1210-chat",
+    "command_id": "tr-manual-20261107-1210-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T11:55:30+01:00",
-    "updated_at": "2026-11-07T11:56:20+01:00",
-    "finished_at": "2026-11-07T11:56:20+01:00",
+    "started_at": "2026-11-07T12:11:30+01:00",
+    "updated_at": "2026-11-07T12:14:30+01:00",
+    "finished_at": "2026-11-07T12:14:30+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -182,10 +192,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones pendientes. Sin ImageGen ni publicaciones."
+    "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones activas detectadas. Sin ImageGen ni publicaciones."
   },
-  "last_started_at": "2026-11-07T11:55:30+01:00",
-  "last_completed_at": "2026-11-07T11:56:20+01:00",
+  "last_started_at": "2026-11-07T12:11:30+01:00",
+  "last_completed_at": "2026-11-07T12:14:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -273,7 +283,8 @@
     "tr-manual-20261107-1125-chat",
     "tr-manual-20261107-1140-chat",
     "tr-1794048225232-manual",
-    "tr-manual-20261107-1155-chat"
+    "tr-manual-20261107-1155-chat",
+    "tr-manual-20261107-1210-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -363,13 +374,14 @@
     "tr-manual-20261107-1125-chat",
     "tr-manual-20261107-1140-chat",
     "tr-1794048225232-manual",
-    "tr-manual-20261107-1155-chat"
+    "tr-manual-20261107-1155-chat",
+    "tr-manual-20261107-1210-chat"
   ],
-  "message": "Pasada iniciada; barrera fresca de main detecta 0 trabajos activos. Sin ImageGen ni publicaciones.",
+  "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones activas detectadas. Sin ImageGen ni publicaciones.",
   "outcomes": [],
   "recent_runs": [
-    "tr-manual-20261107-1140-chat",
     "tr-1794048225232-manual",
-    "tr-manual-20261107-1155-chat"
+    "tr-manual-20261107-1155-chat",
+    "tr-manual-20261107-1210-chat"
   ]
 }
