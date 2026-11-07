@@ -48,13 +48,16 @@ private struct DecisionResponse: Decodable {
 private enum ApprovalInboxScope {
     static func visible(_ items: [PendingImage],
                         currentTop30: Set<String>,
-                        readyNews: Set<String>,
-                        assignedAI: Set<String>) -> [PendingImage] {
+                        readyNews: Set<String>) -> [PendingImage] {
         var seen = Set<String>()
         return items.sorted { $0.createdAt > $1.createdAt }.filter { item in
             let identity = item.identity
             let episode = identity.editorialId + ":r" + String(identity.revision)
             let key = identity.project + ":" + episode
+            // Reserve the identity before looking at state. If the latest
+            // server record is approved/rejected, an older pending original
+            // must NOT reappear after refresh.
+            guard seen.insert(key).inserted else { return false }
             let pending = ["pending", "pending_approval"].contains(
                 (item.state ?? "pending").lowercased())
             let inScope: Bool
@@ -66,8 +69,10 @@ private enum ApprovalInboxScope {
             default:
                 inScope = false
             }
-            return pending && inScope && !assignedAI.contains(key) &&
-                seen.insert(key).inserted
+            // A Site image URL can be stale or point at a missing asset;
+            // its mere presence is NOT a valid reason to hide a new pending
+            // original. The private approval state remains authoritative.
+            return pending && inScope
         }
     }
 }
@@ -81,8 +86,7 @@ private final class ApprovalInboxModel: ObservableObject {
     @Published var notice = ""
     @Published private(set) var pageDiagnostics = ""
 
-    func load(using github: GitHubEditor, readyNews: Set<String>,
-              assignedAI: Set<String>) async {
+    func load(using github: GitHubEditor, readyNews: Set<String>) async {
         guard !loading else { return }
         loading = true
         defer { loading = false }
@@ -113,7 +117,7 @@ private final class ApprovalInboxModel: ObservableObject {
             }
             let top30 = try await github.currentImageApprovalTrendEpisodes()
             let items = ApprovalInboxScope.visible(received, currentTop30: top30,
-                                                    readyNews: readyNews, assignedAI: assignedAI)
+                                                    readyNews: readyNews)
             pageDiagnostics = "Servidor: " + String(received.count) +
                 " candidatas consultadas · " + String(items.count) +
                 " pendientes elegibles." +
@@ -288,19 +292,8 @@ struct ImageApprovalInbox: View {
         Set(store.snapshot.news.map { $0.id + ":r" + String($0.revision) })
     }
 
-    private var assignedAI: Set<String> {
-        let news = store.snapshot.news.filter { $0.siteImageURL != nil }.map {
-            "ttittulares:" + $0.id + ":r" + String($0.revision)
-        }
-        let trends = store.snapshot.top30.filter { $0.siteImageURL != nil }.map {
-            "ttendencias:" + $0.editorialID + ":r" + String($0.revision)
-        }
-        return Set(news + trends)
-    }
-
     private func reload() async {
-        await model.load(using: github, readyNews: readyNewsEpisodes,
-                         assignedAI: assignedAI)
+        await model.load(using: github, readyNews: readyNewsEpisodes)
     }
 
     var body: some View {
@@ -318,7 +311,7 @@ struct ImageApprovalInbox: View {
                         description: Text("Las imágenes pendientes solo pueden verse con tu cuenta autorizada."))
                 } else {
                     List {
-                        Text("Todas las pendientes: tendencias actuales del Top 30 sin IA asignada y noticias que siguen en Listas sin IA.")
+                        Text("Todas las pendientes de las tendencias actuales del Top 30 y noticias en Listas. Un enlace de imagen roto no oculta un PNG pendiente.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         if !model.pageDiagnostics.isEmpty {
