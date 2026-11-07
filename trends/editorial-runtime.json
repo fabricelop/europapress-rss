@@ -8,19 +8,29 @@
   "command_id": "tr-manual-20261107-2210-chat",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "verifying",
+  "phase": "preparing",
   "started_at": "2026-11-07T22:10:00+01:00",
-  "updated_at": "2026-11-07T22:10:00+01:00",
+  "updated_at": "2026-11-07T22:11:15+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 4,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "1940ad68777c",
+    "474f630b611a",
+    "d889b34ddb94",
+    "eed88b3afe90"
+  ],
+  "remaining_active_ids": [
+    "1940ad68777c",
+    "474f630b611a",
+    "d889b34ddb94",
+    "eed88b3afe90"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -49,6 +59,11 @@
       "at": "2026-11-07T22:10:00+01:00",
       "phase": "verifying",
       "message": "Releyendo cola y estado editorial autoritativo antes de cerrar una pasada 0/0."
+    },
+    {
+      "at": "2026-11-07T22:11:15+01:00",
+      "phase": "preparing",
+      "message": "Detectadas 4 nuevas revisiones preparing en la barrera final: maffeo, #ValenciaRealMadrid, Fede y Forest."
     }
   ],
   "last_started_at": "2026-11-07T22:10:00+01:00",
