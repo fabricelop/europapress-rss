@@ -4,11 +4,11 @@ param([ValidateRange(10,3600)][int]$MaxWaitSeconds=900)
 # Do not replace generator bridges, secrets, Site, or other scheduled tasks.
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$pin='0a7f359fed523965da3340ac2db84dfcc07a85a8'
+$pin='f90c0a2764c55c0230bdb746428d10d6076a2d6e'
 $files=@{
  'TTendenciasWebImages.cjs'='4f2f00db3aa3794e1c293201fc9f32e6f6dcd4cacc27c7742da0db93d9292e3f'
  'TTiTTularesWebImages.cjs'='7b7bc8d6e4e9a84e47714528df3cbe19e1feae7b11286712dd76d587396f707b'
- 'TTImageApprovalReceiver.cjs'='1dfdca82a23813c1e72a5468dc7e05a14c16b2373f4bd0a94aea27676ebc54e4'
+ 'TTImageApprovalReceiver.cjs'='d311fb31975a96c71aab9b14239089d5f55b75d4f2fe23ae55d1525023ac5ca1'
 }
 # Only documented pre-repair releases or the target version may be replaced.
 # A local custom version stops installation rather than silently deleting it.
@@ -34,6 +34,7 @@ $allowed=@{
   '55bcd5d89eefbe18ebe19c7014f5301e80b976e96365e5551a2fa3ac380ddf9e',
   '7d7791edded824e6d7adf0fa8838a26e60c01392416fa43a2f06f246b095c48a',
   '5e4105171a9f27a42f619ce3fba7d912c2e5abf50a5fb7828e571491b2d9805a',
+  '1dfdca82a23813c1e72a5468dc7e05a14c16b2373f4bd0a94aea27676ebc54e4',
   $files['TTImageApprovalReceiver.cjs'])
 }
 # Generators must finish first: do not interrupt their CDP sessions.
