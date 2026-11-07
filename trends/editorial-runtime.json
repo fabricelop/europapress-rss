@@ -3,83 +3,59 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794086087992-manual",
-  "previous_run_id": "tr-manual-20261107-2210-chat",
-  "command_id": "tr-1794086087992-manual",
+  "run_id": "tr-1794087029651-manual",
+  "previous_run_id": "tr-1794086087992-manual",
+  "command_id": "tr-1794087029651-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T22:15:00+01:00",
-  "updated_at": "2026-11-07T22:18:00+01:00",
-  "finished_at": "2026-11-07T22:18:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": "TTendencias editorial",
-  "queue_complete": true,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T22:30:30+01:00",
+  "updated_at": "2026-11-07T22:30:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "a08abcc188cf",
+  "title": "El Sadar",
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-8284174a70af0148cca9",
-    "red-review-48ee988f595e75cb8d2e"
+  "converged_ids": [],
+  "remaining_ids": [
+    "a08abcc188cf"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "a08abcc188cf"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
-    "stale_reviews": 1,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 1,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-11-07T22:10:00+01:00",
-      "phase": "verifying",
-      "message": "Releyendo cola y estado editorial autoritativo antes de cerrar una pasada 0/0."
-    },
-    {
-      "at": "2026-11-07T22:11:15+01:00",
+      "at": "2026-11-07T22:30:30+01:00",
       "phase": "preparing",
-      "message": "Detectadas 4 nuevas revisiones preparing en la barrera final: maffeo, #ValenciaRealMadrid, Fede y Forest."
-    },
-    {
-      "at": "2026-11-07T22:15:00+01:00",
-      "phase": "preparing",
-      "message": "Detectadas 2 revisiones review_red vigentes: #laSextaXplica y GP de México · Alonso y #MexicoGP. Revalidación JIT antes de cada resultado; sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T22:18:00+01:00",
-      "phase": "closing",
-      "message": "Convergencia verificada: #laSextaXplica quedó stale por barrera JIT; GP de México · Alonso y #MexicoGP quedó unchanged. Cola final 0, sin rewrite_pending/reexplain activos."
+      "message": "Reelaboración manual detectada: El Sadar a08abcc188cf r1. Revalidación JIT antes de investigar; sin ImageGen."
     }
   ],
-  "last_started_at": "2026-11-07T22:14:14+01:00",
+  "last_started_at": "2026-11-07T22:30:30+01:00",
   "last_completed_at": "2026-11-07T22:18:00+01:00",
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1794086087992-manual",
-    "status": "DONE",
-    "finished_at": "2026-11-07T22:18:00+01:00",
-    "current": 2,
-    "total": 2,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "incidents": 0
-  }
+  "api_failover_enabled": false
 }
