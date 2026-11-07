@@ -3,25 +3,22 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794018109053-manual",
-  "previous_run_id": "tr-1794017935186-manual",
-  "command_id": "tr-1794018109053-manual",
+  "run_id": "tr-manual-20261107-0325-chat",
+  "previous_run_id": "tr-1794018109053-manual",
+  "command_id": "tr-manual-20261107-0325-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T03:23:42.061+01:00",
-  "updated_at": "2026-11-07T03:24:08.343+01:00",
-  "finished_at": "2026-11-07T03:24:08.343+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T03:25:00+01:00",
+  "updated_at": "2026-11-07T03:25:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-94d81c6c8219676ec7a0",
-    "red-review-74d774d6ed156dec8d74"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -42,72 +39,31 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Pasada tr-1794018109053-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. Los dos review_red observados al inicio ya habían convergido y quedado aplicados por tr-1794017935186-manual: POBRE DE MI y Ritz, ambos unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "updated_at": "2026-11-07T03:24:08.343+01:00"
+    "phase": "preparing",
+    "message": "Pasada manual iniciada: releyendo main y validando cola editorial vigente antes del cierre.",
+    "updated_at": "2026-11-07T03:25:00+01:00"
   },
-  "final_outcomes": [
-    {
-      "id": "red-review-94d81c6c8219676ec7a0",
-      "revision": 0,
-      "name": "Revisar novedades: POBRE DE MI",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "owner_run_id": "tr-1794017935186-manual"
-    },
-    {
-      "id": "red-review-74d774d6ed156dec8d74",
-      "revision": 0,
-      "name": "Revisar novedades: Ritz",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "owner_run_id": "tr-1794017935186-manual"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794018109053-manual",
-    "status": "DONE",
-    "started_at": "2026-11-07T03:23:42.061+01:00",
-    "updated_at": "2026-11-07T03:24:08.343+01:00",
-    "finished_at": "2026-11-07T03:24:08.343+01:00",
+    "run_id": "tr-manual-20261107-0325-chat",
+    "status": "RUNNING",
+    "started_at": "2026-11-07T03:25:00+01:00",
+    "updated_at": "2026-11-07T03:25:00+01:00",
+    "finished_at": null,
     "current": 0,
     "total": 0,
-    "queue_complete": true,
+    "queue_complete": false,
     "processed_ids": [],
-    "converged_ids": [
-      "red-review-94d81c6c8219676ec7a0",
-      "red-review-74d774d6ed156dec8d74"
-    ],
+    "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-94d81c6c8219676ec7a0",
-        "revision": 0,
-        "name": "Revisar novedades: POBRE DE MI",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "owner_run_id": "tr-1794017935186-manual"
-      },
-      {
-        "id": "red-review-74d774d6ed156dec8d74",
-        "revision": 0,
-        "name": "Revisar novedades: Ritz",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "owner_run_id": "tr-1794017935186-manual"
-      }
-    ],
+    "final_outcomes": [],
     "attempted": 0,
     "observed": 0,
     "closed": 0,
@@ -124,13 +80,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
-    "phase": "closing",
+    "concurrent_convergence": 0,
+    "phase": "preparing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-1794018109053-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. Los dos review_red observados al inicio ya habían convergido y quedado aplicados por tr-1794017935186-manual: POBRE DE MI y Ritz, ambos unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada manual iniciada: releyendo main y validando cola editorial vigente antes del cierre."
   },
-  "last_started_at": "2026-11-07T03:23:42.061+01:00",
+  "last_started_at": "2026-11-07T03:25:00+01:00",
   "last_completed_at": "2026-11-07T03:24:08.343+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -257,5 +213,5 @@
     "tr-1794017935186-manual",
     "tr-1794018109053-manual"
   ],
-  "message": "Pasada tr-1794018109053-manual cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. Los dos review_red observados al inicio ya habían convergido y quedado aplicados por tr-1794017935186-manual: POBRE DE MI y Ritz, ambos unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Pasada manual iniciada: releyendo main y validando cola editorial vigente antes del cierre."
 }
