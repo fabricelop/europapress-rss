@@ -60,6 +60,18 @@ test('all eligible episodes are attempted without the old eight-item ceiling',()
  assert(next.some(x=>x.command_id==='historical-16'));
 });
 
+test('receiver retries only reading exact PNG while ChatGPT hydration or CDP is transient',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const source=fs.readFileSync(path.join(__dirname,'..','TTImageApprovalReceiver.cjs'),'utf8');
+ assert.match(source,/const maxProbes=ownedTarget\?12:7/);
+ assert.match(source,/source\.rasterProbe\(task\.command_id,true\)/);
+ assert.match(source,/CDP_EVALUATION_FAILED/);
+ assert.match(source,/capture_requires_sign_in/);
+ assert.match(source,/if\(raster\?\.ready/);
+ assert.doesNotMatch(source,/Runtime\.navigate/);
+ assert.doesNotMatch(source,/Input\.insertText/);
+});
+
 test('a retained original stays eligible after 72 hours in both capture watchers',()=>{
  const fs=require('node:fs'),path=require('node:path');
  const now=Date.parse('2026-11-07T14:40:00Z');
