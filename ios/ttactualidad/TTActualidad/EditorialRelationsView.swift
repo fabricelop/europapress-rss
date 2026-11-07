@@ -567,8 +567,40 @@ struct EditorialRelationsView: View {
         indexedTrendEndpoints[trendKey(rank: rank, name: name)]
     }
 
+    private func confirmedCount(_ related: [EditorialRelationEndpoint],
+                                rank: Int, name: String) -> Int {
+        guard let trend = currentTrendEndpoint(rank: rank, name: name) else { return 0 }
+        return related.filter { relationState($0, trend) == "linked" }.count
+    }
+
+    private func changesForTrend(_ related: [EditorialRelationEndpoint],
+                                 rank: Int, name: String)
+        -> [(news: EditorialRelationEndpoint,
+             trend: EditorialRelationEndpoint, action: String)] {
+        guard let trend = currentTrendEndpoint(rank: rank, name: name) else { return [] }
+        return related.compactMap { news in
+            guard !news.episodeFingerprint.isEmpty,
+                  let desired = pendingSwitches[pairKey(news, trend)],
+                  let action = EditorialRelationsPolicy.actionForSwitch(
+                      current: relationState(news, trend), selected: desired)
+            else { return nil }
+            return (news: news, trend: trend, action: action)
+        }
+    }
+
+    private func unverifiableCount(_ related: [EditorialRelationEndpoint],
+                                   rank: Int, name: String) -> Int {
+        related.filter { news in
+            unresolvedTop30Selections.contains(
+                unresolvedKey(news, rank: rank, name: name))
+        }.count
+    }
+
     private func trendCard(rank: Int, name: String) -> some View {
         let related = relatedNews(rank: rank, name: name)
+        let associated = confirmedCount(related, rank: rank, name: name)
+        let changes = changesForTrend(related, rank: rank, name: name)
+        let unresolved = unverifiableCount(related, rank: rank, name: name)
         return DisclosureGroup(isExpanded: trendExpansion(rank: rank, name: name)) {
             if related.isEmpty {
                 Text(model.historicalNews.isEmpty ?
@@ -579,6 +611,27 @@ struct EditorialRelationsView: View {
                 ForEach(related, id: \.stableIdentity) { news in
                     trendNewsRow(news: news, rank: rank, name: name)
                 }
+                if unresolved > 0 {
+                    Text(String(unresolved) + " selecciones locales no guardables: el servidor debe proporcionar las identidades editoriales exactas. No se asociarán por nombre.")
+                        .font(.caption2).foregroundStyle(.orange)
+                }
+                if !changes.isEmpty {
+                    Button {
+                        Task {
+                            let result = await model.saveTrendChanges(
+                                changes, using: github)
+                            for key in result.confirmedKeys {
+                                pendingSwitches.removeValue(forKey: key)
+                            }
+                        }
+                    } label: {
+                        Label("Guardar " + String(changes.count) +
+                              (changes.count == 1 ? " cambio" : " cambios"),
+                              systemImage: "checkmark.circle.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(model.saving)
+                }
             }
         } label: {
             HStack {
@@ -587,7 +640,8 @@ struct EditorialRelationsView: View {
                     .frame(width: 26, alignment: .trailing)
                 Text(name).font(.headline)
                 Spacer()
-                Text("\(related.count)/5")
+                // Confirmed / found. Never claim a staged selection is saved.
+                Text(String(associated) + "/" + String(related.count))
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
@@ -627,20 +681,10 @@ struct EditorialRelationsView: View {
                       systemImage: selected ? "checkmark.square.fill" : "square")
             }
             .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
-            if verified, let trend,
-               let desired = pendingSwitches[linkKey],
-               let action = EditorialRelationsPolicy.actionForSwitch(
-                    current: relationState(news, trend), selected: desired) {
-                Button(action == "link" ? "Guardar asociación" : "Guardar desasociación") {
-                    Task {
-                        let ok = await model.saveSelection(
-                            news: news,
-                            links: action == "link" ? [trend] : [],
-                            unlinks: action == "unlink" ? [trend] : [],
-                            using: github)
-                        if ok { pendingSwitches.removeValue(forKey: linkKey) }
-                    }
-                }.buttonStyle(.borderedProminent).disabled(model.saving)
+            if pendingSwitches[linkKey] != nil && verified {
+                Text(selected ? "Se asociará al pulsar Guardar" :
+                     "Se desasociará al pulsar Guardar")
+                    .font(.caption2).foregroundStyle(.orange)
             } else if !verified {
                 Text("Identidad editorial pendiente: selección local, sin guardar en el servidor.")
                     .font(.caption2).foregroundStyle(.orange)
