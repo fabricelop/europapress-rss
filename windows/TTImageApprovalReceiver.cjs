@@ -268,7 +268,17 @@ async function once(base=__dirname){
        if(target)break;
        await new Promise(r=>setTimeout(r,500));
       }
-     }catch{report(task,'RELAY_OPEN_FAILED')}
+     }catch{
+      // A Target.createTarget request may have reached Chrome even if the
+      // transport failed before returning its target ID. Never try to open
+      // more tabs automatically when ownership cannot be established.
+      if(newlyOpened>0 && !ownedTarget){
+       fs.writeFileSync(relayGuard,JSON.stringify({
+        at:new Date().toISOString(),reason:'new_tab_id_unconfirmed'
+       }),{mode:0o600});
+      }
+      report(task,'RELAY_OPEN_FAILED');
+     }
     }
     if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}
     cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();
@@ -327,8 +337,8 @@ async function once(base=__dirname){
     }
     browser?.close();
    }
-   console.log('PRIVATE_INBOX_RELAY created='+newlyOpened+' deferred='+relayDeferred);
   }
+  console.log('PRIVATE_INBOX_RELAY created='+newlyOpened+' deferred='+relayDeferred);
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
 module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks,inCurrentApprovalScope,allowedTop30};
