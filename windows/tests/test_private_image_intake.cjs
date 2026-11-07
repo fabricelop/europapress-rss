@@ -30,28 +30,34 @@ for(const [file,name,news] of [['TTendenciasImageBridge.js','holdForWebImageRece
 }
 test('hundreds of obsolete never-checked jobs cannot starve an active card',()=>{
  const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');const old=Array.from({length:311},(_,i)=>({project:'ttendencias',target_id:'old-'+i,revision:0,command_id:'old-'+i,created_at:'2026-11-02T10:00:00Z'}));const live={project:'ttendencias',target_id:'live',revision:0,command_id:'live-job',created_at:'2026-11-02T22:00:00Z'};
- const selected=selectCurrentTasks([...old,live],{'live-job':{checkedAt:999999}},new Set(['ttendencias:live:0']));assert.equal(selected[0],live);assert.equal(selected.length,8);assert.equal(old.length,311);
+ const selected=selectCurrentTasks([...old,live],{'live-job':{checkedAt:999999}},new Set(['ttendencias:live:0']));
+ assert.equal(selected[0],live);
+ assert.equal(selected.length,312); // All eligible; the caller filters obsolete IDs first.
+ assert.equal(new Set(selected.map(x=>x.command_id)).size,312);
+ assert.equal(old.length,311);
 });
-test('historical originals receive retry slots while many current cards remain stuck',()=>{
+test('all eligible episodes are attempted without the old eight-item ceiling',()=>{
  const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');
- const recent=Array.from({length:32},(_,i)=>({
+ const current=Array.from({length:32},(_,i)=>({
   project:'ttendencias',target_id:'live-'+i,revision:0,
   command_id:'current-'+i,created_at:'2026-11-06T00:01:00Z'
  }));
  const historical=Array.from({length:17},(_,i)=>({
-  project:'ttittulares',target_id:'closed-'+i,revision:1,
-  command_id:'historical-'+i,created_at:'2026-11-05T10:01:00Z'
+  project:'ttittulares',target_id:'still-ready-'+i,revision:1,
+  command_id:'historical-'+i,created_at:'2026-10-25T10:01:00Z'
  }));
- const active=new Set(recent.map(x=>'ttendencias:'+x.target_id+':0'));
- const selection=selectCurrentTasks([...recent,...historical],{},active);
- assert.equal(selection.length,8);
- assert.equal(selection.filter(x=>x.command_id.startsWith('current-')).length,6);
- assert.equal(selection.filter(x=>x.command_id.startsWith('historical-')).length,2);
- // Cycles rotate historical jobs after updating their last checked times.
+ const active=new Set(current.map(x=>'ttendencias:'+x.target_id+':0'));
+ const selection=selectCurrentTasks([...current,...historical],{},active);
+ assert.equal(selection.length,49);
+ assert.equal(selection.filter(x=>x.command_id.startsWith('current-')).length,32);
+ assert.equal(selection.filter(x=>x.command_id.startsWith('historical-')).length,17);
+ assert.equal(new Set(selection.map(x=>x.command_id)).size,49);
+ // Priority is an ordering choice, never a drop. A previous failure does
+ // not remove an eligible command in the next receiver cycle.
  const progress=Object.fromEntries(selection.map(x=>[x.command_id,{checkedAt:Date.now()}]));
- const next=selectCurrentTasks([...recent,...historical],progress,active);
- assert.equal(next.filter(x=>x.command_id.startsWith('historical-')).length,2);
- assert.ok(next.some(x=>x.command_id==='historical-2'));
+ const next=selectCurrentTasks([...current,...historical],progress,active);
+ assert.equal(next.length,49);
+ assert(next.some(x=>x.command_id==='historical-16'));
 });
 
 test('current index excludes closed news and old episodes while retaining exact live revisions',()=>{
