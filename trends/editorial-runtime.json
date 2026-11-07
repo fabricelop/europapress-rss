@@ -3,60 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794010714259-manual",
-  "previous_run_id": "tr-1794009075249-manual",
-  "command_id": "tr-1794010714259-manual",
+  "run_id": "tr-1794010915548-manual",
+  "previous_run_id": "tr-1794010714259-manual",
+  "command_id": "tr-1794010915548-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T01:19:00+01:00",
-  "updated_at": "2026-11-07T00:23:56+00:00",
-  "finished_at": "2026-11-07T00:23:56+00:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-81849fed0388d3d2ddaf",
+  "status": "RUNNING",
+  "phase": "persisting",
+  "started_at": "2026-11-07T01:21:55.548+01:00",
+  "updated_at": "2026-11-07T01:23:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "red-review-555e7f509affa6925638",
+  "title": "Revisar novedades: Santiago Peña",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
     "red-review-555e7f509affa6925638"
   ],
-  "converged_ids": [
-    "red-review-81849fed0388d3d2ddaf",
+  "remaining_active_ids": [
     "red-review-555e7f509affa6925638"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada editorial cerrada 2/2: Paraguay y Santiago Peña actualizados por continuidad con arresto domiciliario de Peña y toma de posesión de Pedro Alliana. Sin nuevas fichas, imágenes ni publicaciones.",
+  "summary": "Pasada editorial tr-1794010915548-manual iniciada sobre el único pendiente: revisión de Santiago Peña.",
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Barrera final previa: cola=0; sin preparing/update, rewrite_pending ni reexplain. 2/2 revisiones aplicadas como continuidad.",
-    "updated_at": "2026-11-07T00:23:56+00:00"
+    "phase": "persisting",
+    "message": "Santiago Peña: corrigiendo el resultado de continuidad para satisfacer el contrato del aplicador.",
+    "updated_at": "2026-11-07T01:23:00+01:00"
   },
-  "final_outcomes": [
-    {
-      "id": "red-review-81849fed0388d3d2ddaf",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "c3fc2471aa3a6c6cbea27c636ec254a3eedd444a"
-    },
-    {
-      "id": "red-review-555e7f509affa6925638",
-      "revision": 0,
-      "name": "Revisar novedades: Santiago Peña",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "apply_commit": "14698574cc37dc892503be455725c2f2752cc334"
-    }
-  ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794010714259-manual",
@@ -233,5 +212,5 @@
     "tr-1794009075249-manual",
     "tr-1794010714259-manual"
   ],
-  "message": "Pasada editorial tr-1794010714259-manual cerrada 2/2: Paraguay y Santiago Peña actualizados por continuidad. Barrera previa main: cola=0 y sin preparing/update, rewrite_pending ni reexplain. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Santiago Peña: corrigiendo el resultado de continuidad para satisfacer el contrato del aplicador."
 }
