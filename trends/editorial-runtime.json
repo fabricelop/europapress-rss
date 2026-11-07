@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794087372681-manual",
   "command_id": "tr-manual-20261107-2240-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T22:40:00+01:00",
-  "updated_at": "2026-11-07T22:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T22:41:00+01:00",
+  "finished_at": "2026-11-07T22:41:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,9 +50,19 @@
       "at": "2026-11-07T22:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-2240-chat iniciada desde «Ejecuta TTendencias»; leyendo estado autoritativo de main."
+    },
+    {
+      "at": "2026-11-07T22:40:59+01:00",
+      "phase": "verifying",
+      "message": "Relectura JIT: editorial-queue=0. requests.json analizado por blob: 1727 entradas, 0 status preparing/update y 0 rewrite_pending."
+    },
+    {
+      "at": "2026-11-07T22:41:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final main satisfecha: cola=0 y reexplicación pendiente=0. Cierre 0/0 válido. Sin ImageGen, image-outbox ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T22:40:00+01:00",
-  "last_completed_at": "2026-11-07T22:37:20+01:00",
+  "last_completed_at": "2026-11-07T22:41:00+01:00",
   "api_failover_enabled": false
 }
