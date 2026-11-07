@@ -751,43 +751,39 @@ final class GitHubEditor: ObservableObject {
         return result
     }
 
-    // Rebuild the *display* news inbox from retained editorial history, not
-    // the transient Listas or the often-empty prepared.json. Opaque relation
-    // identities can ONLY come from Sites /v1/snapshot. This method NEVER
-    // manufactures an episodeFingerprint or a publication confirmation.
+    // Search retained news irrespective of age, Listas membership or
+    // publication state. Missing dates remain selectable by exact ID/revision.
+    // Never fabricate a server fingerprint or publication confirmation.
     func editorialRelationRecentNews() async throws -> [EditorialRelationEndpoint] {
         async let preparedRead = readPublicEditorialJSON("ttittulares/prepared.json")
         async let processedRead = readPublicEditorialJSON("telegram/editorial-processing.json")
         async let publishedRead = readPublicEditorialJSON("pilot/ttactualidad-publication-events.json")
         async let radarRead = readPublicEditorialJSON("ttittulares/status.json")
+        async let treatedRead = readPublicEditorialJSON("ttittulares/treated-stories.json")
 
         let prepared = try? await preparedRead
         let processed = try? await processedRead
         let published = try? await publishedRead
         let radar = try? await radarRead
-        guard prepared != nil || processed != nil || published != nil else {
-            throw GitHubError.message("No está accesible el historial reciente de noticias.")
+        let treated = try? await treatedRead
+        guard prepared != nil || processed != nil || published != nil ||
+              radar != nil || treated != nil else {
+            throw GitHubError.message("No está accesible ningún catálogo de noticias.")
         }
-
-        // Top30 discovery looks back seven days; the 48-hour inbox limit
-        // would silently exclude valid related stories.
-        let cutoff = Date().addingTimeInterval(-7 * 24 * 3600)
-        let latest = Date().addingTimeInterval(300)
         let radarEvents = radar?["events"] as? [String: [String: Any]] ?? [:]
         struct Candidate {
             var id: String
             var revision: Int
             var title: String
             var text: String
-            var issuedAt: Date
+            var issuedAt: Date?
         }
         var entries: [String: Candidate] = [:]
         func add(_ id: String, _ revision: Int, _ title: String,
                  _ text: String, _ dateValue: String?) {
             guard !id.isEmpty, revision >= 0,
-                  let date = EditorialRelationsPolicy.parsedDate(dateValue),
-                  date >= cutoff, date <= latest,
                   !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+            let date = EditorialRelationsPolicy.parsedDate(dateValue)
             let key = EditorialRelationsPolicy.newsKey(id: id, revision: revision)
             let candidate = Candidate(id: id, revision: revision, title: title,
                                       text: text, issuedAt: date)
@@ -796,7 +792,7 @@ final class GitHubEditor: ObservableObject {
                     id: id, revision: revision,
                     title: title.count > previous.title.count ? title : previous.title,
                     text: text.count > previous.text.count ? text : previous.text,
-                    issuedAt: max(date, previous.issuedAt))
+                    issuedAt: [date, previous.issuedAt].compactMap { $0 }.max())
             } else { entries[key] = candidate }
         }
 
@@ -845,15 +841,37 @@ final class GitHubEditor: ObservableObject {
             add(id, revision, title, text, row["prepared_at"] as? String)
         }
 
+        // Include radar and treated historical articles even if the original
+        // editorial queue was pruned. These rows are searchable and selectable;
+        // the private relation service still validates exact IDs on saving.
+        for (id, row) in radarEvents {
+            guard let title = row["title"] as? String else { continue }
+            let revision = row["revision"] as? Int ?? 0
+            let body = (row["editorial_text"] as? String) ??
+                (row["explanation"] as? String) ??
+                (row["factual_summary"] as? String) ?? ""
+            add(id, revision, title, body,
+                (row["updated_at"] as? String) ?? (row["created_at"] as? String))
+        }
+        for row in treated?["items"] as? [[String: Any]] ?? [] {
+            guard let id = row["event_id"] as? String,
+                  let title = row["title"] as? String else { continue }
+            let revision = (radarEvents[id]?["revision"] as? Int) ??
+                (row["revision"] as? Int) ?? 0
+            add(id, revision, title, (row["editorial_text"] as? String) ?? "",
+                row["treated_at"] as? String)
+        }
         return entries.values.sorted {
-            if $0.issuedAt != $1.issuedAt { return $0.issuedAt > $1.issuedAt }
+            let first = $0.issuedAt ?? .distantPast
+            let second = $1.issuedAt ?? .distantPast
+            if first != second { return first > second }
             if $0.revision != $1.revision { return $0.revision > $1.revision }
             return $0.id < $1.id
         }.map {
             EditorialRelationEndpoint(
                 id: $0.id, revision: $0.revision, episodeFingerprint: "",
                 title: $0.title, text: $0.text, path: nil,
-                listedAt: ISO8601DateFormatter().string(from: $0.issuedAt))
+                listedAt: $0.issuedAt.map { ISO8601DateFormatter().string(from: $0) })
         }
     }
 
