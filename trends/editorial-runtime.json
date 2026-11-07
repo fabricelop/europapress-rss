@@ -3,30 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794089454769-manual",
-  "previous_run_id": "tr-1794088629472-manual",
-  "command_id": "tr-1794089454769-manual",
+  "run_id": "tr-1794089628496-manual",
+  "previous_run_id": "tr-1794089454769-manual",
+  "command_id": "tr-1794089628496-manual",
   "source": "chat",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-07T23:10:54.769+01:00",
-  "updated_at": "2026-11-07T23:13:16+01:00",
+  "started_at": "2026-11-07T23:14:00+01:00",
+  "updated_at": "2026-11-07T23:14:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 5,
+  "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
-  "processed_ids": [
-    "1e7ec2241b6b",
-    "5d6c2e9d6aa6",
-    "81a8ac0e4777",
-    "ce2d7210b101",
-    "ef1a28d2ec89"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-a38fb8a6d2f4a141f9a0",
+    "red-review-1edaf82430cdbd876969"
+  ],
+  "remaining_active_ids": [
+    "red-review-a38fb8a6d2f4a141f9a0",
+    "red-review-1edaf82430cdbd876969"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "outcomes": [],
@@ -48,9 +48,14 @@
       "at": "2026-11-07T23:11:31.479+01:00",
       "phase": "preparing",
       "message": "Llegaron 5 trabajos nuevos durante la barrera de cierre; se reabre la misma pasada y se procesan JIT antes de cerrar."
+    },
+    {
+      "at": "2026-11-07T23:14:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794089628496-manual iniciada desde chat; cola main=2 (review_red). Procesamiento JIT de mantenimiento, sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T23:13:16+01:00",
+  "last_started_at": "2026-11-07T23:14:00+01:00",
   "last_completed_at": "2026-11-07T23:13:16+01:00",
   "api_failover_enabled": false
 }
