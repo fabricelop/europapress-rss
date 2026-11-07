@@ -66,8 +66,13 @@ def x_shorten(value, budget):
     return "".join(out).strip() + "…"
 
 
+def x_post_assets(image_url):
+    """Only attach a genuine editorial image; never create a website/XCard asset."""
+    return [{"image": {"url": image_url}}] if image_url else []
+
+
 def x_payload(project, editorial):
-    """Same section URL and 280-weight text budget as the existing X button."""
+    """Same canonical homepage URL and 280-weight text budget as the X button."""
     site_url = SECTION_URL[project]
     text = editorial.strip()
     for footer in (*LEGACY_FOOTER_URLS, site_url, site_url.rstrip("/")):
@@ -702,7 +707,7 @@ def publish(data, payload, key):
         result = graphql(key, mutation, {"input": {
             "text": text, "channelId": channel,
             "schedulingType": "automatic", "mode": "shareNow",
-            "assets": [{"image": {"url": image_url}}] if image_url else [],
+            "assets": x_post_assets(image_url),
             "needsApproval": False, "source": "TTActualidad"
         }})
         outcome = result.get("createPost") or {}
