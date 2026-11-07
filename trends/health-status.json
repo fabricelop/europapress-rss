@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-07T17:58:25.198923+00:00",
+  "checked_at": "2026-11-07T18:01:48.900612+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,12 +40,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
-      "non_stale_sources": 2,
+      "non_stale_sources": 3,
       "captured_age_minutes": 0.2,
-      "noise_count": 0,
-      "repair_started": true
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
@@ -54,9 +53,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
+      "age_minutes": 3.3,
       "run_id": 42398910101,
       "reason": null,
       "repairable": true,
@@ -69,7 +68,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 529,
+      "invalid_count": 531,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -79,9 +78,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 2,
+      "pending_count": 4,
       "overdue_count": 0,
-      "oldest_age_minutes": 5.3,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -91,8 +90,10 @@
       "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-e6509560a4cc195d4ac0",
-        "red-review-ce830350bbda257462ed"
+        "778a393ca8fa",
+        "98f145d5e880",
+        "61cd12acff26",
+        "901ade4dab33"
       ],
       "contradictory_success": false
     },
@@ -102,13 +103,11 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [
-    "cola con 529 estado(s) inválido(s)"
+    "cola con 531 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 529 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 531 estado(s) inválido(s)"
 }
