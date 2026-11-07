@@ -7,45 +7,43 @@
   "previous_run_id": "tr-manual-20261107-1440-chat",
   "command_id": "tr-1794060087055-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T15:02:10+01:00",
-  "updated_at": "2026-11-07T15:02:10+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T15:04:20+01:00",
+  "finished_at": "2026-11-07T15:04:20+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "1b4ed9b60cc0"
-  ],
-  "converged_ids": [],
-  "remaining_ids": [
     "red-review-52ded1c88cb98112dee3",
     "red-review-e9186c195e8f495aec48"
   ],
-  "remaining_active_ids": [
-    "red-review-52ded1c88cb98112dee3",
+  "converged_ids": [
     "red-review-e9186c195e8f495aec48"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 1,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "queue_remaining": 2,
+    "unchanged_reviews": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "concurrent_convergence": 1
   },
   "incident_count": 0,
   "incidents": [],
@@ -483,22 +481,51 @@
       "trend_id": "red-review-52ded1c88cb98112dee3",
       "title": "Revisar novedades: Santiago Peña",
       "message": "Barrera final incorporó 2 review_red: Santiago Peña y Fiscalía Europea. Santiago Peña no presenta novedad material frente al texto vigente; se verifican fuentes actuales antes de aplicar unchanged."
+    },
+    {
+      "at": "2026-11-07T15:04:10+01:00",
+      "phase": "verifying",
+      "message": "Barrera final fresca: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. El commit fce519f2… aplicó Santiago Peña y Fiscalía Europea como unchanged. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T15:04:20+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794060087055-manual cerrada 2/2 por ejecución y convergencia JIT: dos review_red unchanged aplicados, cola final 0, sin imágenes ni publicaciones."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-52ded1c88cb98112dee3",
+      "revision": 0,
+      "name": "Revisar novedades: Santiago Peña",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "fce519f2a3498debb33e807a444c301ee7d69b3c"
+    },
+    {
+      "id": "red-review-e9186c195e8f495aec48",
+      "revision": 0,
+      "name": "Revisar novedades: Fiscalía Europea",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_convergence",
+      "apply_commit": "fce519f2a3498debb33e807a444c301ee7d69b3c"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794057915598-manual",
+    "run_id": "tr-1794060087055-manual",
     "status": "DONE",
-    "finished_at": "2026-11-07T14:31:00+01:00",
-    "total": 0,
-    "closed": 0,
+    "finished_at": "2026-11-07T15:04:20+01:00",
+    "total": 2,
+    "closed": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
   "last_started_at": "2026-11-07T15:00:53+01:00",
-  "last_completed_at": "2026-11-07T15:00:53+01:00",
+  "last_completed_at": "2026-11-07T15:04:20+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -601,7 +628,8 @@
     "tr-1794055651059-manual",
     "tr-1794057000000-manual",
     "tr-1794057704831-manual",
-    "tr-1794057915598-manual"
+    "tr-1794057915598-manual",
+    "tr-1794060087055-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -705,10 +733,30 @@
     "tr-manual-20261107-1340-chat",
     "tr-1794057000000-manual",
     "tr-1794057704831-manual",
-    "tr-1794057915598-manual"
+    "tr-1794057915598-manual",
+    "tr-1794060087055-manual"
   ],
-  "message": "Preparando revisión editorial real: 2 trabajos review_red vigentes; ImageGen desactivado.",
-  "outcomes": [],
+  "message": "Pasada cerrada 2/2: Santiago Peña y Fiscalía Europea unchanged aplicados; barrera final 0; ImageGen=0; publicaciones=0.",
+  "outcomes": [
+    {
+      "id": "red-review-52ded1c88cb98112dee3",
+      "revision": 0,
+      "name": "Revisar novedades: Santiago Peña",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "apply_commit": "fce519f2a3498debb33e807a444c301ee7d69b3c"
+    },
+    {
+      "id": "red-review-e9186c195e8f495aec48",
+      "revision": 0,
+      "name": "Revisar novedades: Fiscalía Europea",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_convergence",
+      "apply_commit": "fce519f2a3498debb33e807a444c301ee7d69b3c"
+    }
+  ],
   "recent_runs": [
     "tr-1794052645605-manual",
     "tr-1794052874051-manual",
@@ -717,6 +765,7 @@
     "tr-manual-20261107-1340-chat",
     "tr-1794057000000-manual",
     "tr-autoguard-1794057063",
-    "tr-1794057915598-manual"
+    "tr-1794057915598-manual",
+    "tr-1794060087055-manual"
   ]
 }
