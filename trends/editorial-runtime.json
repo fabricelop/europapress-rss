@@ -8,14 +8,14 @@
   "command_id": "tr-1794063319124-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-07T14:55:19.124Z",
-  "updated_at": "2026-11-07T14:55:19.124Z",
+  "updated_at": "2026-11-07T16:00:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-a3d9a77488158b13109c",
-  "title": "Revisar novedades: Widilo",
+  "current": 1,
+  "total": 3,
+  "trend_id": "red-review-bc9ff2944b5044f8b10d",
+  "title": "Revisar novedades: Paraguay",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -29,9 +29,9 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 1,
     "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
@@ -522,6 +522,20 @@
       "trend_id": "red-review-a3d9a77488158b13109c",
       "title": "Revisar novedades: Widilo",
       "message": "Pasada tr-1794063319124-manual iniciada sobre la barrera fresca de main: 2 review_red preparing (Widilo y Paraguay), de antiguas a recientes. Radar previo ya no figura en editorial-queue. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T15:59:30+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-bc9ff2944b5044f8b10d",
+      "title": "Revisar novedades: Paraguay",
+      "message": "Paraguay r0 revalidado JIT. Reuters y N+ confirman una novedad de continuidad: Santiago Peña compareció este sábado ante la Fiscalía tras su destitución y arresto domiciliario."
+    },
+    {
+      "at": "2026-11-07T16:00:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-bc9ff2944b5044f8b10d",
+      "title": "Revisar novedades: Paraguay",
+      "message": "Resultado maintenance updated de continuidad persistido para Paraguay; mismo episodio Ueno Bank, sin nueva ficha ni imagen."
     }
   ],
   "final_outcomes": [
@@ -769,7 +783,7 @@
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat"
   ],
-  "message": "Widilo unchanged persistido; verificando aplicación antes de continuar con Paraguay.",
+  "message": "Widilo y Paraguay tienen resultado persistido; verificando aplicación y barrera final.",
   "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
