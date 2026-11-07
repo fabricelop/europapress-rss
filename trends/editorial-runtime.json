@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-1710-chat",
   "command_id": "tr-1794068115707-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-07T17:15:15.707+01:00",
-  "updated_at": "2026-11-07T17:22:30+01:00",
-  "finished_at": "2026-11-07T17:22:30+01:00",
+  "updated_at": "2026-11-07T17:23:15+01:00",
+  "finished_at": null,
   "current": 7,
-  "total": 7,
+  "total": 9,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "95238093ef54",
     "88577d0f4a21",
@@ -27,12 +27,18 @@
     "cdeea6f8a4d7"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-41a2dd415912d6bef9c1",
+    "red-review-3829fe7939afca3a80bb"
+  ],
+  "remaining_active_ids": [
+    "red-review-41a2dd415912d6bef9c1",
+    "red-review-3829fe7939afca3a80bb"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 7,
-    "observed": 7,
+    "observed": 9,
     "closed": 7,
     "explained": 7,
     "problematic": 0,
@@ -41,7 +47,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -535,6 +541,11 @@
       "at": "2026-11-07T17:22:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794068115707-manual cerrada 7/7. Sin imágenes generadas ni publicaciones; transporte visual queda pendiente en su circuito independiente."
+    },
+    {
+      "at": "2026-11-07T17:23:15+01:00",
+      "phase": "investigating",
+      "message": "Barrera posterior detectó 2 review_red nuevos: Santiago Peña y Fiscalía Europea. Se reabre la pasada y se procesan antes del cierre definitivo."
     }
   ],
   "last_started_at": "2026-11-07T17:19:59+01:00",
