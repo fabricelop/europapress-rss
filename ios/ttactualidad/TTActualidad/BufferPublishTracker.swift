@@ -47,8 +47,11 @@ final class BufferPublishTracker: ObservableObject {
     @Published private(set) var notice = ""
     @Published private(set) var change = 0
     @Published private(set) var sending = Set<String>()
-    // An in-memory visual reservation, NOT a GitHub or X publication receipt.
-    @Published private(set) var immediateHide = Set<String>()
+    // Persist the editor's provisional hide across app restarts. This is
+    // neither a publication confirmation nor permission to send another post.
+    private static let pendingHideStorageKey = "TTActualidad.bufferPendingHide.v2"
+    @Published private(set) var immediateHide = Set<String>(
+        UserDefaults.standard.stringArray(forKey: BufferPublishTracker.pendingHideStorageKey) ?? [])
     // X-confirmed transmissions are durable tombstones for Listas. The
     // Buffer ledger read can fail or lag while the app refreshes the other
     // editorial files; that must never resurrect an already sent episode.
@@ -62,11 +65,20 @@ final class BufferPublishTracker: ObservableObject {
         project + ":" + id + ":r" + String(revision)
     }
 
-    // The tap removes the item visually before the network round trip.
-    // The authoritative Listas store stays unchanged; failed / timed-out
-    // requests restore the row automatically.
+    private func persistPendingHide() {
+        UserDefaults.standard.set(Array(immediateHide).sorted(),
+                                  forKey: Self.pendingHideStorageKey)
+    }
+
+    private func clearPendingHide(_ key: String) {
+        if immediateHide.remove(key) != nil { persistPendingHide() }
+    }
+
+    // Hide immediately, persist the reservation even after a process exit.
+    // Only a definitive failed receipt can restore a provisional row.
     func stagePublish(project: String, id: String, revision: Int) {
         immediateHide.insert(Self.key(project, id, revision))
+        persistPendingHide()
     }
 
     func hidesFromListas(project: String, id: String, revision: Int) -> Bool {
@@ -74,7 +86,8 @@ final class BufferPublishTracker: ObservableObject {
         return immediateHide.contains(key) || confirmedSentKeys.contains(key) ||
             posts.contains {
                 $0.project == project && $0.event_id == id &&
-                $0.revision == revision && $0.state == "sent"
+                $0.revision == revision &&
+                ["reserved", "unknown", "pending", "sent"].contains($0.state)
             }
     }
 
@@ -170,6 +183,16 @@ final class BufferPublishTracker: ObservableObject {
                 UserDefaults.standard.set(Array(merged).sorted(),
                                           forKey: Self.confirmedSentStorageKey)
             }
+            // The ledger can settle while this iPhone is closed. Reconcile
+            // provisional visibility only from terminal, exact receipts.
+            var latestByKey: [String: TTBufferPublication] = [:]
+            for item in ledger.items {
+                latestByKey[Self.key(item.project, item.event_id, item.revision)] = item
+            }
+            for (key, item) in latestByKey where
+                (item.state == "sent" || item.state == "failed") && !sending.contains(key) {
+                clearPendingHide(key)
+            }
             apiQuota = ledger.api_quota
             loaded = true
             backendAvailable = true
@@ -185,14 +208,14 @@ final class BufferPublishTracker: ObservableObject {
                  revision: Int) async {
         let key = Self.key(project, id, revision)
         guard github.authenticated else {
-            immediateHide.remove(key)
+            clearPendingHide(key)
             notice = "Conecta GitHub antes de publicar directamente."
             change += 1
             return
         }
         guard ["ttittulares", "ttendencias"].contains(project),
               !id.isEmpty && revision >= 0 else {
-            immediateHide.remove(key)
+            clearPendingHide(key)
             notice = "Identidad editorial no confirmada. Actualiza la ficha."
             change += 1
             return
@@ -201,20 +224,23 @@ final class BufferPublishTracker: ObservableObject {
         // deliberately fail-closed; no request is submitted on 404/error.
         await refresh()
         guard backendAvailable else {
-            immediateHide.remove(key)
+            clearPendingHide(key)
             notice = "Buffer aún no está activado en GitHub. No se ha enviado nada a X; la ficha permanece en Listas."
             change += 1
             return
         }
         if blocked(project: project, id: id, revision: revision) {
-            immediateHide.remove(key)
+            // A remote pending/unknown entry must not reappear after reload.
+            if alreadySent(project: project, id: id, revision: revision) {
+                clearPendingHide(key)
+            }
             notice = "Esta revisión ya está publicada o pendiente. No se duplicará."
             change += 1
             return
         }
         let account = project == "ttittulares" ? "@ttittulares" : "@ttendenciasesp"
         let requestID = UUID().uuidString.lowercased()
-        immediateHide.insert(key)
+        stagePublish(project: project, id: id, revision: revision)
         sending.insert(key)
         notice = "Enviando solicitud a " + account + "; aún no se ha publicado."
         change += 1
@@ -225,7 +251,7 @@ final class BufferPublishTracker: ObservableObject {
         ], label: "Publicar directo en " + account)
         if result == .failed {
             sending.remove(key)
-            immediateHide.remove(key)
+            clearPendingHide(key)
             notice = github.notice
             change += 1
             return
@@ -248,7 +274,7 @@ final class BufferPublishTracker: ObservableObject {
                 switch receipt.state {
                 case "sent":
                     if receipt.closure_verified == true {
-                        immediateHide.remove(key)
+                        clearPendingHide(key)
                         notice = "Publicado en X y retirado de Listas · @" + receipt.account
                         if let url = receipt.post_url { notice += " · " + url }
                         change += 1
@@ -261,13 +287,12 @@ final class BufferPublishTracker: ObservableObject {
                     // Continue checking the *separate* closure receipt, never repost.
                     continue
                 case "failed":
-                    immediateHide.remove(key)
+                    clearPendingHide(key)
                     notice = "No publicada: " + (receipt.error ?? "Buffer rechazó la orden.")
                     change += 1
                     return
                 case "unknown":
-                    immediateHide.remove(key)
-                    notice = "Resultado incierto: comprueba X antes de intentar otra publicación."
+                    notice = "Resultado incierto: ficha reservada fuera de Listas. Comprueba X antes de actuar."
                     change += 1
                     return
                 default:
@@ -275,15 +300,15 @@ final class BufferPublishTracker: ObservableObject {
                 }
             }
         }
-        immediateHide.remove(key)
+        // Poll timeout is not a failure receipt. Keep the local reservation.
         if alreadySent(project: project, id: id, revision: revision) {
             // X already published; never resurface this as a fresh publishable
             // item or resend it. The GitHub Listas receipt remains independent.
             notice = "Buffer confirmó X, pero sigue pendiente el recibo de retirada de Listas. " +
                      "La ficha continúa oculta provisionalmente; no se volverá a publicar."
         } else {
-            notice = "Publicación no confirmada. La ficha vuelve a Listas; " +
-                     "comprueba el estado de Buffer antes de reintentar."
+            notice = "Publicación sin recibo definitivo: reservada fuera de Listas. " +
+                     "Comprueba Buffer; no se volverá a publicar automáticamente."
         }
         change += 1
     }

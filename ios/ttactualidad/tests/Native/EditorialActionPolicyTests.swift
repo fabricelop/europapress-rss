@@ -31,15 +31,31 @@ final class EditorialActionPolicyTests: XCTestCase {
         XCTAssertFalse(result.contains("Publica directamente"))
         XCTAssertFalse(result.contains("actualiza el catálogo"))
     }
-    func testXPayloadAppendsExactlyOneSectionLinkForEachProject() {
+    func testXPayloadAppendsExactlyOneWorkingHomepageLinkForEachProject() {
         let text = "Noticia comprobada.\n\n#Actualidad\n🌶️ Remate."
         for news in [true, false] {
             let site = news ? TTActualidadXPost.newsURL : TTActualidadXPost.trendsURL
             let payload = TTActualidadXPost.payload(editorial: text, news: news)
+            XCTAssertEqual(site, "https://ttactualidad.rainyraven22.chatgpt.site/")
             XCTAssertEqual(payload, text + "\n\n" + site)
             XCTAssertEqual(TTActualidadXPost.payload(
                 editorial: text + "\n\n" + site, news: news), payload)
             XCTAssertEqual(payload.components(separatedBy: site).count, 2)
+        }
+    }
+
+    func testOldSectionLinksAreReplacedWithoutDuplication() {
+        let text = "Texto editorial. #Noticia"
+        let legacy = [
+            "https://ttactualidad.rainyraven22.chatgpt.site/noticias",
+            "https://ttactualidad.rainyraven22.chatgpt.site/tendencias"
+        ]
+        for news in [true, false] {
+            for old in legacy {
+                let payload = TTActualidadXPost.payload(editorial: text + "\n\n" + old,
+                                                       news: news)
+                XCTAssertEqual(payload, text + "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")
+            }
         }
     }
 

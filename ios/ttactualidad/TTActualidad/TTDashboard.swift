@@ -96,7 +96,6 @@ struct TTDashboard: View {
     @State private var showNewStory = false
     @State private var showSettings = false
     @State private var showImageInbox = false
-    @State private var showRelations = false
     @State private var showCombinedListas = false
     @State private var publicationSheet: PublicationSheetRoute?
     @State private var requestingEditorialRun = false
@@ -127,12 +126,6 @@ struct TTDashboard: View {
             VStack(spacing: 0) {
                 topBar
                 topSections
-                Button { showRelations = true } label: {
-                    Label("Relaciones por revisar", systemImage: "point.3.connected.trianglepath.dotted")
-                        .font(.system(size: 12, weight: .semibold))
-                        .frame(maxWidth: .infinity).padding(.vertical, 8)
-                }
-                .foregroundStyle(TTTheme.teal)
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 14) {
                         if let quickOverview {
@@ -232,13 +225,6 @@ struct TTDashboard: View {
                 .environmentObject(store)
                 .presentationDetents([.large])
         }
-        .sheet(isPresented: $showRelations) {
-            EditorialRelationsView(github: github,
-                                   top30Names: store.snapshot.top30.map(\.name),
-                                   top30Trends: store.snapshot.top30,
-                                   listasNews: store.snapshot.news)
-                .presentationDetents([.large])
-        }
         .sheet(item: $publicationSheet) { selection in
             PublishedHistorySheet(project: selection.project)
                 .environmentObject(store)
@@ -254,7 +240,6 @@ struct TTDashboard: View {
         showNewStory = false
         showSettings = false
         showImageInbox = false
-        showRelations = false
         publicationSheet = nil
         showCombinedListas = false
         search = ""
@@ -1044,6 +1029,19 @@ private struct NewsTile: View {
                     .lineLimit(expanded ? nil : 2)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                if item.siteImageURL != nil && !item.siteImageSHA256.isEmpty {
+                    // Same verified-AI indicator already used on trend cards.
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(TTTheme.teal)
+                        .accessibilityLabel("Imagen IA verificada")
+                } else if item.imageURL != nil {
+                    // Archive photos are images, but must not be labelled IA.
+                    Image(systemName: "photo")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(TTTheme.muted)
+                        .accessibilityLabel("Fotografía de archivo")
+                }
             }
             .frame(minHeight: 36)
         }

@@ -206,7 +206,7 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertFalse(EditorialRelationsPolicy.newsMentionsTrend(bodyMatch, name: "Putin"))
     }
 
-    func testTrendSearchLimitsToFiveDistinctNewsWithinSevenDays() {
+    func testTrendSearchUsesAllHistoricalNewsWithoutDateOrHiddenBlocks() {
         let now = EditorialRelationsPolicy.parsedDate("2026-11-06T12:00:00Z")!
         func make(_ id: String, _ revision: Int, _ when: String?,
                   _ text: String = "Trump anuncia cambios") -> EditorialRelationEndpoint {
@@ -227,17 +227,17 @@ final class EditorialRelationsTests: XCTestCase {
             recent + [recent[0], make("n0", 2, "2026-11-06T10:30:00Z")]
         let found = EditorialRelationsPolicy.newsForTrend(
             candidates, name: "Trump", now: now)
-        XCTAssertEqual(found.map(\.id), ["n0", "n1", "n2", "n3", "n4"])
+        XCTAssertEqual(found.map(\.id), ["future", "n0", "n1", "n2", "n3"])
         XCTAssertEqual(found.count, 5)
         XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
             [edge, old, undated, unrelated], name: "Trump", now: now).map(\.id),
-            ["edge"])
+            ["edge", "old", "undated"])
         XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
             candidates, name: "Trump", now: now, hidden: ["n0:r1"]).map(\.id),
             ["n0", "n1", "n2", "n3", "n4"])
         XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
             [recent[0]], name: "Trump", now: now,
-            hidden: [recent[0].stableIdentity]).count, 0)
+            hidden: [recent[0].stableIdentity]).count, 1)
         XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
             candidates, name: "Trump", now: now, limit: 2).count, 2)
     }

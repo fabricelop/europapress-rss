@@ -149,32 +149,29 @@ enum EditorialRelationsPolicy {
         return content.range(of: pattern, options: .regularExpression) != nil
     }
 
-    // Up to five distinct news stories per current Top30 trend, from the last
-    // seven complete days. Unknown dates and future-dated rows are not shown.
-    // The local hidden-news preference continues to apply to this inbox.
+    // Search all known editorial news for a trend, with no date cutoff,
+    // hidden-state exclusions, or dependency on Listas membership. Only the
+    // five best textual matches are presented; selection remains explicit.
     static func newsForTrend(_ candidates: [EditorialRelationEndpoint],
                              name: String, now: Date = Date(),
                              fallbackDates: [String: Date] = [:],
                              hidden: Set<String> = [], limit: Int = 5)
         -> [EditorialRelationEndpoint] {
-        let cutoff = now.addingTimeInterval(-7 * 24 * 3600)
-        let latest = now.addingTimeInterval(300)
-        let dated = candidates.compactMap { news -> (EditorialRelationEndpoint, Date)? in
+        let matching = candidates.compactMap { news -> (EditorialRelationEndpoint, Date?)? in
             let key = newsKey(id: news.id, revision: news.revision)
-            guard !hidden.contains(news.stableIdentity), !hidden.contains(key),
-                  let date = parsedDate(news.listedAt) ?? fallbackDates[key],
-                  date >= cutoff, date <= latest,
-                  newsMentionsTrend(news, name: name) else { return nil }
-            return (news, date)
+            guard newsMentionsTrend(news, name: name) else { return nil }
+            return (news, parsedDate(news.listedAt) ?? fallbackDates[key])
         }.sorted { left, right in
-            if left.1 != right.1 { return left.1 > right.1 }
+            let leftDate = left.1 ?? .distantPast
+            let rightDate = right.1 ?? .distantPast
+            if leftDate != rightDate { return leftDate > rightDate }
             if left.0.revision != right.0.revision {
                 return left.0.revision > right.0.revision
             }
             return left.0.id < right.0.id
         }
         var ids = Set<String>()
-        return Array(dated.compactMap {
+        return Array(matching.compactMap {
             ids.insert($0.0.id).inserted ? $0.0 : nil
         }.prefix(max(0, min(5, limit))))
     }

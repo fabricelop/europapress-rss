@@ -1,12 +1,16 @@
 import Foundation
 
-// Prepare a manual X draft with the fixed section URL as plain text, not a
-// custom website card. X may independently unfurl links; the app never attaches
-// a card, and the editor can attach the chosen original photo in X.
-// Strip an existing copy of the same section URL to keep it unique.
+// Prepare a manual X draft with the canonical homepage link as plain text,
+// not a custom website card. X may independently unfurl links; the editor
+// can still attach the chosen original photo in X.
+// Strip only a managed old footer link, never unrelated editorial source URLs.
 enum TTActualidadXPost {
-    static let newsURL = "https://ttactualidad.rainyraven22.chatgpt.site/noticias"
-    static let trendsURL = "https://ttactualidad.rainyraven22.chatgpt.site/tendencias"
+    static let newsURL = "https://ttactualidad.rainyraven22.chatgpt.site/"
+    static let trendsURL = "https://ttactualidad.rainyraven22.chatgpt.site/"
+    private static let legacyFooterURLs = [
+        "https://ttactualidad.rainyraven22.chatgpt.site/noticias",
+        "https://ttactualidad.rainyraven22.chatgpt.site/tendencias"
+    ]
     private static let contentBudget = 280
     // X weighs each t.co URL at 23 characters, irrespective of display length.
     private static let sectionURLBudget = 23
@@ -48,9 +52,12 @@ enum TTActualidadXPost {
     static func payload(editorial: String, news: Bool) -> String {
         let site = news ? newsURL : trendsURL
         var text = editorial.trimmingCharacters(in: .whitespacesAndNewlines)
-        if text.hasSuffix(site) {
-            text = String(text.dropLast(site.count))
-                .trimmingCharacters(in: .whitespacesAndNewlines)
+        for footer in legacyFooterURLs + [site, String(site.dropLast())] {
+            if text.hasSuffix(footer) {
+                text = String(text.dropLast(footer.count))
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                break
+            }
         }
         let editorialBudget = contentBudget - sectionURLBudget - weight(sectionSeparator)
         if weight(text) > editorialBudget {
