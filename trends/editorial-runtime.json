@@ -10,9 +10,9 @@
   "status": "RUNNING",
   "phase": "closing",
   "started_at": "2026-11-07T19:03:00+01:00",
-  "updated_at": "2026-11-07T19:03:00+01:00",
+  "updated_at": "2026-11-07T19:13:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 5,
   "total": 8,
   "trend_id": null,
   "title": "TTendencias editorial",
@@ -726,16 +726,16 @@
     "status": "RUNNING",
     "started_at": "2026-11-07T19:03:00+01:00",
     "finished_at": null,
-    "attempted": 0,
-    "closed": 0,
-    "queue_remaining": 8,
+    "attempted": 8,
+    "closed": 5,
+    "queue_remaining": 3,
     "imagegen_calls": 0,
     "publications": 0
   },
   "current_item": {
-    "id": "778a393ca8fa",
+    "id": "61cd12acff26",
     "revision": 0,
-    "name": "#FueraDeControl7nov"
+    "name": "Cadiz"
   },
   "progress": [
     {
@@ -763,6 +763,11 @@
       "trend_id": "778a393ca8fa",
       "title": "#FueraDeControl7nov",
       "message": "Pasada tr-1794074588672-manual iniciada sobre main; barrera fresca detecta 8 trabajos preparing/update. Se procesan de antiguo a reciente con revalidación JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T19:13:00+01:00",
+      "phase": "persisting",
+      "message": "5/8 revisiones ya aplicadas por el reconciliador; permanecen activas Cadiz, Pecco y Leo Román. Se mantiene barrera JIT y no se cierra hasta su persistencia en ambos registros. ImageGen=0."
     }
   ],
   "imagegen_calls": 0,
