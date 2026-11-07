@@ -206,6 +206,12 @@ async function once(base=__dirname){
     historicalQueued:eligible.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{queued:tasks.filter(x=>x.project===project).length,eligible:eligible.filter(x=>x.project===project).length,selected:selected.filter(x=>x.project===project).length}]))},null,2));
   tasks.splice(0,tasks.length,...selected);
   console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
+  // All episodes remain eligible, but browser *creation* must be bounded.
+  // A fresh tab can spawn multiple Chrome subprocesses.
+  const MAX_NEW_RELAY_TABS_PER_CYCLE=1,MAX_RELAY_PAGE_TARGETS=6;
+  const RELAY_RETRY_COOLDOWN_MS=15*60*1000;
+  const relayGuard=path.join(receipts,'relay-cleanup-unconfirmed.json');
+  let newlyOpened=0,relayDeferred=0;
   for(const task of tasks){
    const source=sources[task.project];
    const receiptFile=path.join(receipts,task.command_id+'.json');if(fs.existsSync(receiptFile))continue;
@@ -225,13 +231,44 @@ async function once(base=__dirname){
      try{const r=await fetch('http://127.0.0.1:9223/json/list',{signal:AbortSignal.timeout(3000)});const own=(await r.json()).find(x=>x.id===task.browser_target_id&&x.webSocketDebuggerUrl);if(own){const history=new CDP(own.webSocketDebuggerUrl);try{await history.open();const h=await history.call('Page.getNavigationHistory',{});const urls=[...new Set((h.entries||[]).map(x=>source.chatURL(x.url)).filter(Boolean))].reverse();if(urls.length){const index=progress[task.command_id]?.recoveryIndex||0;task.conversation_url=urls[index%urls.length];progress[task.command_id]={...progress[task.command_id],recoveryIndex:index+1};target=null;}}finally{history.close()}}}catch{}
     }
     if(!target&&source.chatURL(task.conversation_url)){
-     // Recover a known closed conversation only in the separate relay profile.
-     // Nothing is typed or submitted; this temporary tab belongs to this receiver.
+     // At most one temporary tab per cycle, never in the generator's profile.
+     // Jobs deferred by resource safety remain eligible for a later cycle.
+     const last=Number(progress[task.command_id]?.lastRelayOpenAt||0);
+     if(fs.existsSync(relayGuard)){
+      relayDeferred++;report(task,'RELAY_CLEANUP_UNCONFIRMED');continue;
+     }
+     if(newlyOpened>=MAX_NEW_RELAY_TABS_PER_CYCLE){
+      relayDeferred++;report(task,'RELAY_TAB_BUDGET');continue;
+     }
+     if(Date.now()-last<RELAY_RETRY_COOLDOWN_MS){
+      relayDeferred++;report(task,'RELAY_RETRY_COOLDOWN');continue;
+     }
      try{
-      const r=await fetch('http://127.0.0.1:9234/json/version',{signal:AbortSignal.timeout(3000)});const version=await r.json();browser=new CDP(version.webSocketDebuggerUrl);await browser.open();
-      ownedTarget=(await browser.call('Target.createTarget',{url:source.chatURL(task.conversation_url),background:true})).targetId;
-      for(let n=0;n<5;n++){const q=await fetch('http://127.0.0.1:9234/json/list',{signal:AbortSignal.timeout(3000)});target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);if(target)break;await new Promise(r=>setTimeout(r,500))}
-     }catch{}
+      const pagesResponse=await fetch('http://127.0.0.1:9234/json/list',
+       {signal:AbortSignal.timeout(3000)});
+      if(!pagesResponse.ok)throw Error('RELAY_LIST_UNAVAILABLE');
+      const pages=await pagesResponse.json();
+      if(!Array.isArray(pages))throw Error('RELAY_LIST_UNAVAILABLE');
+      if(pages.filter(p=>p.type==='page').length>=MAX_RELAY_PAGE_TARGETS){
+       relayDeferred++;report(task,'RELAY_CAPACITY_REACHED');continue;
+      }
+      const r=await fetch('http://127.0.0.1:9234/json/version',
+       {signal:AbortSignal.timeout(3000)});
+      const version=await r.json();
+      if(!version.webSocketDebuggerUrl)throw Error('RELAY_UNAVAILABLE');
+      browser=new CDP(version.webSocketDebuggerUrl);await browser.open();
+      newlyOpened++;
+      progress[task.command_id]={...progress[task.command_id],lastRelayOpenAt:Date.now()};
+      ownedTarget=(await browser.call('Target.createTarget',
+       {url:source.chatURL(task.conversation_url),background:true})).targetId;
+      for(let n=0;n<5;n++){
+       const q=await fetch('http://127.0.0.1:9234/json/list',
+        {signal:AbortSignal.timeout(3000)});
+       target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);
+       if(target)break;
+       await new Promise(r=>setTimeout(r,500));
+      }
+     }catch{report(task,'RELAY_OPEN_FAILED')}
     }
     if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}
     cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();
@@ -266,7 +303,31 @@ async function once(base=__dirname){
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({project:meta.project,revision:meta.revision,commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
     discardOriginal(base,task);
     report(task,'RECEIVED_'+receipt.state);
-   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PRIVATE_RECEIPT_BAD_JSON|PRIVATE_RECEIPT_NETWORK_UNAVAILABLE|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
+   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PRIVATE_RECEIPT_BAD_JSON|PRIVATE_RECEIPT_NETWORK_UNAVAILABLE|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{
+    cdp?.close();
+    if(ownedTarget){
+     let closed=false;
+     try{
+      const reply=await browser?.call('Target.closeTarget',{targetId:ownedTarget});
+      closed=reply?.success!==false;
+     }catch{}
+     if(!closed){
+      try{
+       const response=await fetch('http://127.0.0.1:9234/json/close/'+encodeURIComponent(ownedTarget),
+        {signal:AbortSignal.timeout(3000)});
+       closed=response.ok;
+      }catch{}
+     }
+     if(!closed){
+      fs.writeFileSync(relayGuard,JSON.stringify({
+       at:new Date().toISOString(),reason:'owned_tab_cleanup_unconfirmed'
+      }),{mode:0o600});
+      console.warn('PRIVATE_INBOX_RELAY_CLEANUP_UNCONFIRMED');
+     }
+    }
+    browser?.close();
+   }
+   console.log('PRIVATE_INBOX_RELAY created='+newlyOpened+' deferred='+relayDeferred);
   }
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
