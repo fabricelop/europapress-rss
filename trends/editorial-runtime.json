@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794088452492-manual",
   "command_id": "tr-1794088629472-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T22:58:30+01:00",
-  "updated_at": "2026-11-07T22:58:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T22:59:30+01:00",
+  "finished_at": "2026-11-07T22:59:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,9 +50,14 @@
       "at": "2026-11-07T22:58:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794088629472-manual iniciada desde chat; primera lectura de main=0 y sin reexplicaciones activas. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T22:59:30+01:00",
+      "phase": "closing",
+      "message": "Barrera final en main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Revisados los dos últimos maintenance-outbox pendientes de la pasada anterior (Vargas y Santiago Peña), ya retirados de la cola por mantenimiento. Cierre 0/0. Sin ImageGen."
     }
   ],
   "last_started_at": "2026-11-07T22:58:30+01:00",
-  "last_completed_at": "2026-11-07T22:57:30.687324+01:00",
+  "last_completed_at": "2026-11-07T22:59:30+01:00",
   "api_failover_enabled": false
 }
