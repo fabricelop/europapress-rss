@@ -60,6 +60,21 @@ test('all eligible episodes are attempted without the old eight-item ceiling',()
  assert(next.some(x=>x.command_id==='historical-16'));
 });
 
+test('a retained original stays eligible after 72 hours in both capture watchers',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const now=Date.parse('2026-11-07T14:40:00Z');
+ for(const [name,mod] of [
+  ['TTendenciasWebImages.cjs',require('../TTendenciasWebImages.cjs')],
+  ['TTiTTularesWebImages.cjs',require('../TTiTTularesWebImages.cjs')]]) {
+  const original={file:'original.json',task:{target_id:'valid-id',command_id:'cmd-exact',
+   status:'waiting',created_at:'2026-10-20T09:00:00Z'}};
+  assert.equal(mod.dueTasks([original],now).length,1,name+' must not drop original by age');
+  const src=fs.readFileSync(path.join(__dirname,'..',name),'utf8');
+  assert.doesNotMatch(src,/status:'expired',reason:'image_not_confirmed_within_72h'/);
+  assert.doesNotMatch(src,/status:'needs_review',reason:'original_not_associated_within_72h'/);
+ }
+});
+
 test('current index excludes closed news and old episodes while retaining exact live revisions',()=>{
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
 });
