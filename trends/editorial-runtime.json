@@ -3,28 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794068115707-manual",
-  "previous_run_id": "tr-manual-20261107-1710-chat",
-  "command_id": "tr-1794068115707-manual",
+  "run_id": "tr-1794068435950-manual",
+  "previous_run_id": "tr-1794068115707-manual",
+  "command_id": "tr-1794068435950-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-07T17:15:15.707+01:00",
-  "updated_at": "2026-11-07T17:31:30+01:00",
-  "finished_at": "2026-11-07T17:31:30+01:00",
-  "current": 21,
-  "total": 21,
+  "started_at": "2026-11-07T17:20:35.950+01:00",
+  "updated_at": "2026-11-07T17:30:00+01:00",
+  "finished_at": "2026-11-07T17:30:00+01:00",
+  "current": 14,
+  "total": 14,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": true,
   "processed_ids": [
-    "95238093ef54",
-    "88577d0f4a21",
-    "526318f4dde5",
-    "af8c06747f9f",
-    "340a345d420d",
-    "5cabdde4143a",
-    "cdeea6f8a4d7",
+    "1586c82c14a8"
+  ],
+  "converged_ids": [
     "c997998b2d5a",
     "7d05b5d2cd3a",
     "6151b2e8e53b",
@@ -35,14 +31,6 @@
     "a2f5e09aa424",
     "a1f51e5dff90",
     "766a1752e9a8",
-    "1586c82c14a8",
-    "2be4fd331648",
-    "red-review-41a2dd415912d6bef9c1",
-    "red-review-3829fe7939afca3a80bb"
-  ],
-  "converged_ids": [
-    "c997998b2d5a",
-    "766a1752e9a8",
     "2be4fd331648",
     "red-review-41a2dd415912d6bef9c1",
     "red-review-3829fe7939afca3a80bb"
@@ -51,23 +39,23 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 21,
-    "observed": 21,
-    "closed": 21,
-    "explained": 19,
+    "attempted": 14,
+    "observed": 14,
+    "closed": 14,
+    "explained": 12,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 2,
+    "unchanged_reviews": 1,
+    "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 5
+    "concurrent_convergence": 13
   },
   "incident_count": 0,
   "incidents": [],
@@ -575,9 +563,24 @@
       "at": "2026-11-07T17:31:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794068115707-manual cerrada 21/21 por trabajo propio y convergencia JIT. editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T17:20:35.950+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794068435950-manual iniciada sobre main; se detectaron 12 explicaciones ordinarias y 2 review_red activos. Procesado JIT, sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T17:28:30+01:00",
+      "phase": "verifying",
+      "message": "La mayoría de revisiones convergieron con ejecuciones concurrentes. Deportivo r0 permaneció preparing y se reemitió tras validación JIT desde este run; no se duplicaron revisiones ya cerradas."
+    },
+    {
+      "at": "2026-11-07T17:30:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final: editorial-queue sin preparing/update; mobile-decisions sin trabajo activo; búsqueda de rewrite_pending:true y reexplain:true sin coincidencias. Santiago Peña updated por continuidad y Fiscalía Europea unchanged. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-07T17:25:38+01:00",
-  "last_completed_at": "2026-11-07T17:25:39+01:00",
+  "last_started_at": "2026-11-07T17:20:35.950+01:00",
+  "last_completed_at": "2026-11-07T17:30:00+01:00",
   "api_failover_enabled": false
 }
