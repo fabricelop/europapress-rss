@@ -3,57 +3,49 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794074588672-manual",
+  "run_id": "tr-manual-20261107-1925-chat",
   "previous_run_id": "tr-1794074588672-manual",
-  "command_id": "tr-manual-20261107-1910-chat",
+  "command_id": "tr-manual-20261107-1925-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T19:10:00+01:00",
-  "updated_at": "2026-11-07T19:18:00+01:00",
-  "finished_at": "2026-11-07T19:18:00+01:00",
-  "current": 10,
-  "total": 10,
-  "trend_id": null,
-  "title": "TTendencias editorial",
-  "queue_complete": true,
-  "processed_ids": [
-    "778a393ca8fa",
-    "98f145d5e880",
-    "61cd12acff26",
-    "901ade4dab33",
-    "4e881da58940",
-    "1a2d3bcbe5f7",
-    "5c89ebc8b798",
-    "8725b05c0cde",
-    "red-review-de8f137543fff08b4061",
-    "red-review-19b1799dce7a34fe0b8e"
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T19:25:30+01:00",
+  "updated_at": "2026-11-07T19:25:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "9000db3c3553",
+  "title": "bezz",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "9000db3c3553",
+    "1edd6ef875e4"
   ],
-  "converged_ids": [
-    "red-review-de8f137543fff08b4061",
-    "red-review-19b1799dce7a34fe0b8e"
+  "remaining_active_ids": [
+    "9000db3c3553",
+    "1edd6ef875e4"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "observed": 2,
-    "closed": 2,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
-    "queue_remaining": 0,
+    "stale_reviews": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -768,6 +760,13 @@
       "at": "2026-11-07T19:14:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 1 episodio distinto aplicado (eder sarabia) y 1 review stale (Espanyol). Cola final 0, sin imágenes ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T19:25:30+01:00",
+      "phase": "preparing",
+      "trend_id": "9000db3c3553",
+      "title": "bezz",
+      "message": "Pasada tr-manual-20261107-1925-chat iniciada; main contiene 2 reelaboraciones preparing: bezz r0 y Espanyol r0. Se procesan de antiguo a reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T19:10:00+01:00",
@@ -864,32 +863,19 @@
       }
     ]
   },
-  "current_item": null,
+  "current_item": {
+    "id": "9000db3c3553",
+    "revision": 0,
+    "name": "bezz",
+    "phase": "preparing"
+  },
   "progress": [
     {
-      "at": "2026-11-07T19:10:00+01:00",
+      "at": "2026-11-07T19:25:30+01:00",
       "phase": "preparing",
-      "message": "Pasada tr-manual-20261107-1910-chat iniciada; barrera fresca de main detecta 2 review_red preparing: Espanyol y eder sarabia. Se revalidan por ID/revisión. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T19:11:30+01:00",
-      "phase": "investigating",
-      "message": "Espanyol y eder sarabia revalidados JIT. Fuentes actuales confirman el 0-0 Espanyol-Deportivo y el primer partido de la etapa de Sarabia, seguido por el técnico desde la grada por sanción."
-    },
-    {
-      "at": "2026-11-07T19:12:10+01:00",
-      "phase": "persisting",
-      "message": "Los maintenance-outbox convergieron con una ejecución concurrente. Al aplicar, eder sarabia creó un episodio distinto; Espanyol quedó review_completed/stale porque el origen ya había sido revisado por un job anterior. No se reabre el terminal."
-    },
-    {
-      "at": "2026-11-07T19:13:30+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue=0; sin rewrite_pending, reexplain ni status update activos. Sarabia updated con nueva ficha; Espanyol stale sin nueva ficha. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-07T19:14:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-manual-20261107-1910-chat cerrada 2/2 por convergencia JIT: 1 episodio distinto aplicado (eder sarabia) y 1 review stale (Espanyol). Cola final 0, sin imágenes ni publicaciones."
+      "trend_id": "9000db3c3553",
+      "title": "bezz",
+      "message": "Pasada tr-manual-20261107-1925-chat iniciada; main contiene 2 reelaboraciones preparing: bezz r0 y Espanyol r0. Se procesan de antiguo a reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
   "imagegen_calls": 0,
