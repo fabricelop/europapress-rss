@@ -7,60 +7,58 @@
   "previous_run_id": "tr-manual-20261107-0955-chat",
   "command_id": "tr-manual-20261107-1010-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T10:10:00+01:00",
-  "updated_at": "2026-11-07T10:17:00+01:00",
-  "finished_at": null,
-  "current": 4,
-  "total": 6,
-  "trend_id": "red-review-c97623deb823ab0cfdb5",
-  "title": "Revisar novedades: #FelizSábado",
-  "queue_complete": false,
+  "updated_at": "2026-11-07T10:20:00+01:00",
+  "finished_at": "2026-11-07T10:20:00+01:00",
+  "current": 7,
+  "total": 7,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "b547e584c4e7",
     "db76e61cd3d4",
     "a336abbd039a",
-    "011bbdc1877d"
+    "011bbdc1877d",
+    "red-review-c97623deb823ab0cfdb5",
+    "red-review-2763e0066d30912c8f78",
+    "a75e99a5ae99"
   ],
   "converged_ids": [
-    "db76e61cd3d4"
+    "db76e61cd3d4",
+    "a75e99a5ae99"
   ],
-  "remaining_ids": [
-    "red-review-c97623deb823ab0cfdb5",
-    "red-review-2763e0066d30912c8f78"
-  ],
-  "remaining_active_ids": [
-    "red-review-c97623deb823ab0cfdb5",
-    "red-review-2763e0066d30912c8f78"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 6,
-    "closed": 4,
-    "explained": 4,
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "investigating",
-    "message": "Han entrado dos review_red durante el cierre. Revisando novedades de #FelizSábado (5/6).",
-    "updated_at": "2026-11-07T10:17:00+01:00"
+    "phase": "closing",
+    "message": "Pasada cerrada 7/7 tras barrera final: cola 0. Se absorbieron dos review_red y un rework de #FelizSábado llegado durante el cierre. Sin ImageGen ni publicaciones.",
+    "updated_at": "2026-11-07T10:20:00+01:00"
   },
   "final_outcomes": [
     {
@@ -91,6 +89,29 @@
       "name": "Amaia",
       "outcome": "explained",
       "applied": true
+    },
+    {
+      "id": "red-review-c97623deb823ab0cfdb5",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizSábado",
+      "outcome": "superseded_by_rework",
+      "applied": true,
+      "created_id": "a75e99a5ae99"
+    },
+    {
+      "id": "red-review-2763e0066d30912c8f78",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "outcome": "unchanged",
+      "applied": true
+    },
+    {
+      "id": "a75e99a5ae99",
+      "revision": 0,
+      "name": "#FelizSábado",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_direct_writer"
     }
   ],
   "api_failover_enabled": false,
@@ -98,19 +119,23 @@
     "run_id": "tr-manual-20261107-1010-chat",
     "status": "DONE",
     "started_at": "2026-11-07T10:10:00+01:00",
-    "updated_at": "2026-11-07T10:16:30+01:00",
-    "finished_at": "2026-11-07T10:16:30+01:00",
-    "current": 4,
-    "total": 4,
+    "updated_at": "2026-11-07T10:20:00+01:00",
+    "finished_at": "2026-11-07T10:20:00+01:00",
+    "current": 7,
+    "total": 7,
     "queue_complete": true,
     "processed_ids": [
       "b547e584c4e7",
       "db76e61cd3d4",
       "a336abbd039a",
-      "011bbdc1877d"
+      "011bbdc1877d",
+      "red-review-c97623deb823ab0cfdb5",
+      "red-review-2763e0066d30912c8f78",
+      "a75e99a5ae99"
     ],
     "converged_ids": [
-      "db76e61cd3d4"
+      "db76e61cd3d4",
+      "a75e99a5ae99"
     ],
     "remaining_active_ids": [],
     "final_outcomes": [
@@ -142,17 +167,40 @@
         "name": "Amaia",
         "outcome": "explained",
         "applied": true
+      },
+      {
+        "id": "red-review-c97623deb823ab0cfdb5",
+        "revision": 0,
+        "name": "Revisar novedades: #FelizSábado",
+        "outcome": "superseded_by_rework",
+        "applied": true,
+        "created_id": "a75e99a5ae99"
+      },
+      {
+        "id": "red-review-2763e0066d30912c8f78",
+        "revision": 0,
+        "name": "Revisar novedades: Paraguay",
+        "outcome": "unchanged",
+        "applied": true
+      },
+      {
+        "id": "a75e99a5ae99",
+        "revision": 0,
+        "name": "#FelizSábado",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_direct_writer"
       }
     ],
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 4,
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -160,14 +208,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1,
+    "concurrent_convergence": 2,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 4/4: #AgropopularRetinta, Acierto, Payoya y Amaia aplicadas. Acierto, causa concreta no confirmada. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 7/7. Cola final 0; cinco explicaciones cerradas y dos revisiones resueltas. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T10:10:00+01:00",
-  "last_completed_at": "2026-11-07T10:16:30+01:00",
+  "last_completed_at": "2026-11-07T10:20:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -323,5 +371,5 @@
     "tr-manual-20261107-0955-chat",
     "tr-manual-20261107-1010-chat"
   ],
-  "message": "Pasada ampliada a 6 entradas por dos review_red llegados durante la barrera final."
+  "message": "Pasada cerrada 7/7. Cola final 0. Explicadas #AgropopularRetinta, Acierto, Payoya, Amaia y #FelizSábado; Paraguay revisado sin cambios; review previo de #FelizSábado supersedido por rework actual. Sin ImageGen ni publicaciones."
 }
