@@ -51,6 +51,16 @@ final class BufferPublishTracker: ObservableObject {
         project + ":" + id + ":r" + String(revision)
     }
 
+    // Receipt survives reopening the editorial card. A pending dispatch is
+    // never presented as X publication; only Buffer's confirmed ledger is.
+    func latestReceipt(project: String, id: String,
+                       revision: Int) -> TTBufferPublication? {
+        posts.last {
+            $0.project == project && $0.event_id == id &&
+            $0.revision == revision
+        }
+    }
+
     func alreadySent(project: String, id: String, revision: Int) -> Bool {
         posts.contains {
             $0.project == project && $0.event_id == id &&

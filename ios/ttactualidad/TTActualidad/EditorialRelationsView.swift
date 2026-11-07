@@ -39,6 +39,7 @@ private final class EditorialRelationsModel: ObservableObject {
             guard status == 200 else { throw RelationsError.http(status) }
             snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self, from: data)
         } catch {
+            snapshot = nil
             issues.append("No se pudieron cargar las identidades de relaciones: \(error.localizedDescription)")
         }
         do {
@@ -641,10 +642,11 @@ struct EditorialRelationsView: View {
 
     private func unverifiableCount(_ related: [EditorialRelationEndpoint],
                                    rank: Int, name: String) -> Int {
-        related.filter { news in
-            unresolvedTop30Selections.contains(
-                unresolvedKey(news, rank: rank, name: name))
-        }.count
+        guard let trend = currentTrendEndpoint(rank: rank, name: name) else {
+            return related.count
+        }
+        return related.filter { $0.episodeFingerprint.isEmpty ||
+            trend.episodeFingerprint.isEmpty }.count
     }
 
     private func trendCard(rank: Int, name: String) -> some View {
@@ -663,8 +665,14 @@ struct EditorialRelationsView: View {
                     trendNewsRow(news: news, rank: rank, name: name)
                 }
                 if unresolved > 0 {
-                    Text(String(unresolved) + " selecciones locales no guardables: el servidor debe proporcionar las identidades editoriales exactas. No se asociarán por nombre.")
+                    Text(String(unresolved) + " de " + String(related.count) +
+                         " noticias sin identidad de Sites: se muestran, pero no es posible guardarlas todavía.")
                         .font(.caption2).foregroundStyle(.orange)
+                    if changes.isEmpty {
+                        Label("Guardar no disponible: falta identidad editorial del servidor.",
+                              systemImage: "lock")
+                            .font(.caption2).foregroundStyle(.secondary)
+                    }
                 }
                 if !changes.isEmpty {
                     Button {
@@ -704,10 +712,7 @@ struct EditorialRelationsView: View {
         let verified = trend != nil && !news.episodeFingerprint.isEmpty
         let linkKey = trend.map { pairKey(news, $0) } ?? ""
         let linked = trend.map { relationState(news, $0) == "linked" } ?? false
-        let unresolved = unresolvedKey(news, rank: rank, name: name)
-        let selected = verified ?
-            (pendingSwitches[linkKey] ?? linked) :
-            unresolvedTop30Selections.contains(unresolved)
+        let selected = verified ? (pendingSwitches[linkKey] ?? linked) : false
         return VStack(alignment: .leading, spacing: 8) {
             Text(news.title).font(.subheadline.weight(.semibold))
                 .fixedSize(horizontal: false, vertical: true)
@@ -720,24 +725,25 @@ struct EditorialRelationsView: View {
                 Text(news.text).font(.caption)
                     .foregroundStyle(.secondary).lineLimit(3)
             }
-            Button {
-                if let trend, verified {
+            if let trend, verified {
+                Button {
                     toggleSelection(news, trend)
-                } else {
-                    if selected { unresolvedTop30Selections.remove(unresolved) }
-                    else { unresolvedTop30Selections.insert(unresolved) }
+                } label: {
+                    Label(selected ? "Asociada / seleccionada" : "Marcar para asociar",
+                          systemImage: selected ? "checkmark.square.fill" : "square")
                 }
-            } label: {
-                Label(selected ? "Asociada / seleccionada" : "Marcar para asociar",
-                      systemImage: selected ? "checkmark.square.fill" : "square")
+                .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
+            } else {
+                Label("Solo consulta · identidad de Sites pendiente",
+                      systemImage: "lock")
+                    .font(.caption).foregroundStyle(.secondary)
             }
-            .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
             if pendingSwitches[linkKey] != nil && verified {
                 Text(selected ? "Se asociará al pulsar Guardar" :
                      "Se desasociará al pulsar Guardar")
                     .font(.caption2).foregroundStyle(.orange)
             } else if !verified {
-                Text("Identidad editorial pendiente: selección local, sin guardar en el servidor.")
+                Text("Sin huella editorial del servidor. No se puede asociar por nombre ni guardar esta noticia.")
                     .font(.caption2).foregroundStyle(.orange)
             }
             Button("Ocultar esta noticia") { hide(news) }
@@ -968,28 +974,15 @@ struct EditorialRelationsView: View {
                 .accessibilityValue(checked ? "Asociada" : "No asociada")
                 .disabled(model.saving)
             } else {
-                let staged = unresolvedTop30Selections.contains(
-                    unresolvedKey(news, rank: rank, name: name))
-                Button {
-                    let key = unresolvedKey(news, rank: rank, name: name)
-                    if staged { unresolvedTop30Selections.remove(key) }
-                    else { unresolvedTop30Selections.insert(key) }
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: staged ? "checkmark.square.fill" : "square")
-                            .font(.system(size: 21))
-                            .foregroundStyle(staged ? TTTheme.teal : Color.secondary)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(name).font(.subheadline)
-                            Text("Identidad pendiente · selección local")
-                                .font(.caption2).foregroundStyle(.orange)
-                        }
+                HStack(spacing: 8) {
+                    Image(systemName: "lock")
+                        .font(.system(size: 19)).foregroundStyle(.secondary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(name).font(.subheadline)
+                        Text("Solo consulta · identidad de Sites pendiente")
+                            .font(.caption2).foregroundStyle(.orange)
                     }
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel((staged ? "Desmarcar " : "Marcar ") + name)
-                .accessibilityValue(staged ? "Pendiente de confirmar" : "No seleccionada")
-                .disabled(model.saving)
             }
         }
         .padding(.vertical, 2)
