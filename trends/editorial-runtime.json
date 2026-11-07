@@ -7,39 +7,36 @@
   "previous_run_id": "tr-1794068435950-manual",
   "command_id": "tr-manual-20261107-1741-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T17:41:15+01:00",
-  "updated_at": "2026-11-07T17:41:15+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T17:43:56+01:00",
+  "finished_at": "2026-11-07T17:43:56+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "8e892488b415",
-  "title": "Aldeguer",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
+  "processed_ids": [
+    "8e892488b415",
+    "2762009ba2e2"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "8e892488b415",
-    "2762009ba2e2"
-  ],
-  "remaining_active_ids": [
-    "8e892488b415",
-    "2762009ba2e2"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -575,9 +572,47 @@
       "trend_id": "8e892488b415",
       "title": "Aldeguer",
       "message": "Pasada tr-manual-20261107-1741-chat iniciada; barrera fresca de main detecta 2 trabajos preparing: Aldeguer y Dani Calvo, en ese orden. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T17:42:20+01:00",
+      "phase": "investigating",
+      "trend_id": "8e892488b415",
+      "title": "Aldeguer",
+      "message": "Aldeguer r0 revalidado JIT. Fuentes actuales coinciden en el incidente con Bagnaia que terminó en fuerte caída y bandera roja durante la sprint de Qatar."
+    },
+    {
+      "at": "2026-11-07T17:42:40+01:00",
+      "phase": "persisting",
+      "trend_id": "8e892488b415",
+      "title": "Aldeguer",
+      "message": "Resultado editorial emitido por TTENDENCIAS_CHAT_OUTBOX_V1 y aplicado en main; explicación y ficha sincronizadas. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T17:42:53+01:00",
+      "phase": "investigating",
+      "trend_id": "2762009ba2e2",
+      "title": "Dani Calvo",
+      "message": "Dani Calvo r0 revalidado JIT. Fuentes actuales confirman su regreso al once del Real Oviedo ante el Cádiz tras perder la titularidad frente a Las Palmas."
+    },
+    {
+      "at": "2026-11-07T17:43:20+01:00",
+      "phase": "persisting",
+      "trend_id": "2762009ba2e2",
+      "title": "Dani Calvo",
+      "message": "Resultado editorial emitido por TTENDENCIAS_CHAT_OUTBOX_V1 y aplicado en main; explicación y ficha sincronizadas. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T17:43:45+01:00",
+      "phase": "verifying",
+      "message": "Commits cfe24468… y bb91c0e1… confirman aplicación en requests.json y telegram-manual-explained.json. Barrera final editorial-queue=0 y mobile-decisions sin trabajos activos."
+    },
+    {
+      "at": "2026-11-07T17:43:56+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1741-chat cerrada 2/2: Aldeguer y Dani Calvo explicados y verificados; sin ImageGen, sin publicaciones y sin pendientes editoriales activos."
     }
   ],
   "last_started_at": "2026-11-07T17:41:15+01:00",
-  "last_completed_at": "2026-11-07T17:30:00+01:00",
+  "last_completed_at": "2026-11-07T17:43:56+01:00",
   "api_failover_enabled": false
 }
