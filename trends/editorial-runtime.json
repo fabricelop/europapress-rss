@@ -7,41 +7,37 @@
   "previous_run_id": "tr-manual-20261107-1755-chat",
   "command_id": "tr-manual-20261107-1810-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T18:10:30+01:00",
-  "updated_at": "2026-11-07T18:14:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T18:16:30+01:00",
+  "finished_at": "2026-11-07T18:16:30+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "4be3807c1a9f",
-  "title": "Márquez",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
+  "processed_ids": [
+    "6d3bb2ddb79e",
+    "56211bc293be",
+    "4be3807c1a9f"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "6d3bb2ddb79e",
-    "56211bc293be",
-    "4be3807c1a9f"
-  ],
-  "remaining_active_ids": [
-    "6d3bb2ddb79e",
-    "56211bc293be",
-    "4be3807c1a9f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -658,19 +654,34 @@
       "trend_id": "4be3807c1a9f",
       "title": "Márquez",
       "message": "Márquez 4be3807c1a9f r0 revalidado JIT en puesto 14. Marc Márquez ganó la sprint de Qatar; Jorge Martín fue tercero y el líder conserva para el domingo su primera opción de cerrar el Mundial."
+    },
+    {
+      "at": "2026-11-07T18:15:30+01:00",
+      "phase": "persisting",
+      "message": "Las tres revisiones fueron aplicadas atómicamente en main por los commits f69d34e5…, 853d4c0f… y 628802f8…; cada una quedó explained en requests.json y telegram-manual-explained.json y fue retirada de editorial-queue.json. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T18:16:15+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending, reexplain, anticipate ni review_red activos. Las tres revisiones exactas constan persistidas en ambos registros. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T18:16:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1810-chat cerrada 3/3: El Málaga, #QatarGP y Márquez explicados y verificados; sin imágenes generadas en esta pasada y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T18:10:30+01:00",
-  "last_completed_at": "2026-11-07T17:56:00+01:00",
+  "last_completed_at": "2026-11-07T18:16:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-manual-20261107-1810-chat",
-    "status": "RUNNING",
+    "status": "DONE",
     "started_at": "2026-11-07T18:10:30+01:00",
-    "finished_at": null,
-    "attempted": 0,
-    "closed": 0,
-    "queue_remaining": 3,
+    "finished_at": "2026-11-07T18:16:30+01:00",
+    "attempted": 3,
+    "closed": 3,
+    "queue_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0
   }
