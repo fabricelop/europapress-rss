@@ -45,7 +45,7 @@ private final class EditorialRelationsModel: ObservableObject {
         do {
             historicalNews = try await datedHistory
             if historicalNews.isEmpty {
-                issues.append("El historial editorial de 7 días no devolvió noticias; no se puede concluir que ninguna tendencia tenga coincidencias.")
+                issues.append("El catálogo histórico no devolvió noticias; no se puede concluir que no existan coincidencias.")
             }
         } catch {
             historicalNews = []
@@ -357,7 +357,7 @@ struct EditorialRelationsView: View {
             let key = trendKey(rank: rank, name: name)
             matches[key] = EditorialRelationsPolicy.newsForTrend(
                 news, name: name, now: now,
-                fallbackDates: dates, hidden: hiddenNews, limit: 5)
+                fallbackDates: dates, limit: 5)
             if top30Trends.indices.contains(index) {
                 let row = top30Trends[index]
                 if row.name == name && !row.editorialID.isEmpty {
@@ -406,7 +406,8 @@ struct EditorialRelationsView: View {
         if let scope {
             Section("Ficha seleccionada") {
                 Text(scopedEndpoint?.title ?? scope.title).font(.headline)
-                if model.snapshot != nil && scopedEndpoint == nil {
+                if model.snapshot != nil && scopedEndpoint == nil &&
+                   scope.project != "ttendencias" {
                     Text("Esta ficha no está disponible con esa revisión. Actualiza la APP para consultar su estado actual.")
                         .font(.footnote).foregroundStyle(.secondary)
                 }
@@ -502,19 +503,71 @@ struct EditorialRelationsView: View {
         }
     }
 
+    private var scopedTop30Index: Int? {
+        guard let scope, scope.project == "ttendencias" else { return nil }
+        return top30Trends.firstIndex {
+            $0.editorialID == scope.id && $0.revision == scope.revision
+        }
+    }
+
+    @ViewBuilder private var scopedTrendNewsSection: some View {
+        if let index = scopedTop30Index, top30Names.indices.contains(index) {
+            let rank = index + 1
+            let name = top30Names[index]
+            let found = relatedNews(rank: rank, name: name)
+            let changes = changesForTrend(found, rank: rank, name: name)
+            Section("Noticias encontradas · " + String(found.count) + "/5") {
+                Text("Búsqueda de «" + name + "» en titulares y textos de noticias. Sin límite de fecha, filtros de Listas ni exclusiones por ocultación. Marca las que quieras relacionar.")
+                    .font(.footnote).foregroundStyle(.secondary)
+                if found.isEmpty {
+                    Text(model.loading ? "Buscando noticias…" :
+                         "No se encontraron noticias que mencionen esta tendencia en los catálogos disponibles.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                } else {
+                    ForEach(found, id: \.stableIdentity) { news in
+                        trendNewsRow(news: news, rank: rank, name: name)
+                    }
+                }
+                if !changes.isEmpty {
+                    Button {
+                        Task {
+                            let result = await model.saveTrendChanges(changes, using: github)
+                            for key in result.confirmedKeys { pendingSwitches.removeValue(forKey: key) }
+                        }
+                    } label: {
+                        Label("Guardar " + String(changes.count) +
+                              (changes.count == 1 ? " relación" : " relaciones"),
+                              systemImage: "checkmark.circle.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(model.saving)
+                }
+            }
+        } else if scope?.project == "ttendencias" {
+            Section {
+                Text("La tendencia ya no figura con esta revisión en Top 30. Actualiza las fichas.")
+                    .font(.footnote).foregroundStyle(.secondary)
+            }
+        }
+    }
+
     private var relationList: some View {
         List {
             selectedScopeSection
             editorialNoticeSection
-            relationFilterSection
-            if filter == "suggested" && scope == nil {
-                top30RelationSection
+            if scope?.project == "ttendencias" {
+                scopedTrendNewsSection
             } else {
-                existingRelationsSection
+                relationFilterSection
+                if filter == "suggested" && scope == nil {
+                    top30RelationSection
+                } else {
+                    existingRelationsSection
+                }
+                manualNewsSelectionSection
+                hiddenRelationNewsSection
+                manualSearchSection
             }
-            manualNewsSelectionSection
-            hiddenRelationNewsSection
-            manualSearchSection
         }
         .refreshable { await model.load(using: github) }
         .overlay {
@@ -729,8 +782,10 @@ struct EditorialRelationsView: View {
                 Text("Identificador de tendencia pendiente.")
                     .font(.caption2).foregroundStyle(.orange)
             }
-            Button("Ocultar esta noticia") { hide(news) }
-                .font(.caption).foregroundStyle(.secondary)
+            if scope?.project != "ttendencias" {
+                Button("Ocultar esta noticia") { hide(news) }
+                    .font(.caption).foregroundStyle(.secondary)
+            }
             Divider()
         }.padding(.vertical, 4)
     }
