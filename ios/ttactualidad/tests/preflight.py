@@ -835,7 +835,8 @@ buffer = (root / 'TTActualidad' / 'BufferPublishTracker.swift').read_text()
 assert 'Solo consulta · identidad de Sites pendiente' in relations_view
 assert 'Guardar no disponible: falta identidad editorial del servidor.' in relations_view
 assert 'snapshot = nil' in relations_view
-assert 'latestReceipt(project:' in actions
+assert 'buffer.latestReceipt(' in actions
+assert 'project: project, id: editorialID, revision: revision' in actions
 assert 'Comprobar estado de Buffer' in actions
 assert 'func latestReceipt(project:' in buffer
 assert 'Publicado en X y retirado de Listas (recibos confirmados)' in actions
