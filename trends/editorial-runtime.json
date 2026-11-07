@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1055-chat",
-  "previous_run_id": "tr-manual-20261107-1041-chat",
-  "command_id": "tr-manual-20261107-1055-chat",
+  "run_id": "tr-1794044668169-manual",
+  "previous_run_id": "tr-manual-20261107-1055-chat",
+  "command_id": "tr-1794044668169-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T10:55:00+01:00",
-  "updated_at": "2026-11-07T10:57:00+01:00",
-  "finished_at": "2026-11-07T10:57:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T11:06:00+01:00",
+  "updated_at": "2026-11-07T11:06:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -273,5 +273,9 @@
     "tr-manual-20261107-1055-chat",
     "tr-1794044668169-manual"
   ],
-  "message": "Pasada canónica cerrada 0/0. Cola final 0; sin ImageGen, image-outbox ni publicaciones."
+  "message": "Revalidando main: cola editorial, rewrite_pending/reexplicaciones y últimos resultados de mantenimiento.",
+  "outcomes": [],
+  "recent_runs": [
+    "tr-1794044668169-manual"
+  ]
 }
