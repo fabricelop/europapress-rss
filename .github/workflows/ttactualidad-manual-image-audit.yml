@@ -1,0 +1,17 @@
+name: TTActualidad real manual image checks (read only)
+on:
+  push:
+    branches: [fix/ttactualidad-manual-upload-priority-buffer-20261107]
+    paths:
+      - pilot/ttactualidad_manual_image_audit.py
+      - .github/workflows/ttactualidad-manual-image-audit.yml
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify actual user-uploaded originals via Buffer publisher
+        run: python3 pilot/ttactualidad_manual_image_audit.py
