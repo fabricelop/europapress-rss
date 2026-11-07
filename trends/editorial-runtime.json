@@ -3,38 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794092241790-manual",
-  "previous_run_id": "tr-1794092100000-manual",
-  "command_id": "tr-1794092241790-manual",
+  "run_id": "tr-1794093000000-manual",
+  "previous_run_id": "tr-1794092241790-manual",
+  "command_id": "tr-1794093000000-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-07T23:57:16+01:00",
-  "updated_at": "2026-11-07T23:59:50+01:00",
-  "finished_at": "2026-11-07T23:59:50+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-08T00:10:00+01:00",
+  "updated_at": "2026-11-08T00:14:30+01:00",
+  "finished_at": "2026-11-08T00:14:30+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-9f8037b1c43b4861b51d",
-    "red-review-adb82b9b89604f4bffde"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -44,23 +41,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-9f8037b1c43b4861b51d",
-      "trend_id": "be1ae41b540c",
-      "revision": 0,
-      "name": "Interlagos",
-      "outcome": "updated",
-      "mode": "continuity"
-    },
-    {
-      "id": "red-review-adb82b9b89604f4bffde",
-      "trend_id": "c5aeeec06cf1",
-      "revision": 0,
-      "name": "Enric Gallego",
-      "outcome": "unchanged"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -204,9 +185,24 @@
       "at": "2026-11-07T23:59:50+01:00",
       "phase": "closing",
       "message": "Aplicación verificada en main: Interlagos actualizado como continuidad y Enric Gallego marcado unchanged; editorial-queue=0 y sin rewrite_pending/reexplain detectados en la barrera final. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T00:10:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794093000000-manual iniciada desde chat; lectura JIT de main con editorial-queue=0. Se ejecuta refresco real del Top 30 y se mantiene ImageGen/publicaciones fuera de esta pasada."
+    },
+    {
+      "at": "2026-11-08T00:11:01+01:00",
+      "phase": "verifying",
+      "message": "El refresco manual persistió editorial-queue actualizada en main con count=0; no entraron preparing/update, anticipate ni review_red en la cola compacta."
+    },
+    {
+      "at": "2026-11-08T00:14:30+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT en main: editorial-queue=0. Cierre editorial 0/0; sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T23:57:16+01:00",
-  "last_completed_at": "2026-11-07T23:59:50+01:00",
+  "last_started_at": "2026-11-08T00:10:00+01:00",
+  "last_completed_at": "2026-11-08T00:14:30+01:00",
   "api_failover_enabled": false
 }
