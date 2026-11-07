@@ -179,10 +179,10 @@ test('stale identity and changed revision cannot be approved',async()=>{
  }
  assert.equal((await receive(env)).data.items.length,1);
 });
-test('different r0 episode and raster are independent candidates',async()=>{
+test('all distinct pending originals for the same current episode remain visible',async()=>{
  const {env}=context();await importOne(env);
  await importOne(env,{editorialText:'Otro episodio de esta misma tendencia'});
- assert.equal((await receive(env)).data.items.length,1);
+ assert.equal((await receive(env)).data.items.length,2);
 });
 test('missing configuration fails closed',async()=>{
  const {env}=context();delete env.DB;
