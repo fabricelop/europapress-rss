@@ -3,83 +3,46 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794090534398-manual",
-  "previous_run_id": "tr-1794090277346-manual",
-  "command_id": "tr-1794090534398-manual",
+  "run_id": "tr-autoguard-1794091831",
+  "previous_run_id": "tr-1794090534398-manual",
+  "command_id": "tr-autoguard-1794091831",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-07T23:29:00+01:00",
-  "updated_at": "2026-11-07T23:37:00+01:00",
-  "finished_at": "2026-11-07T23:37:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T23:50:00+01:00",
+  "updated_at": "2026-11-07T23:50:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 30,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-c43f1850076da4ea5465",
-    "red-review-b3bbff7c56959d09dcce"
-  ],
-  "converged_ids": [
-    "red-review-c43f1850076da4ea5465",
-    "red-review-b3bbff7c56959d09dcce"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 30,
+    "closed": 0,
     "explained": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 30,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 2
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-c43f1850076da4ea5465",
-      "revision": 0,
-      "name": "Revisar novedades: Cracovia",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "maintenance_outbox_applied",
-      "source_id": "c997998b2d5a",
-      "apply_commit": "f8618ee75ef528a1f62acccb8e16689201faa6fc"
-    },
-    {
-      "id": "red-review-b3bbff7c56959d09dcce",
-      "revision": 0,
-      "name": "Revisar novedades: #BrazilGP",
-      "outcome": "continuity_update_corrected",
-      "applied": true,
-      "via": "maintenance_outbox_then_verified_reconcile",
-      "source_id": "438f36286fc7",
-      "initial_apply_commit": "f8618ee75ef528a1f62acccb8e16689201faa6fc",
-      "factual_repair_commit": "16bbc07fcea9cae1bbe7419642bab93efcd98179",
-      "reconcile_commit": "260354ba3d4166244770e994142d59c99c13075e",
-      "metadata_sync_commit": "e928fe46249ffbb7560d636602e78fb3e871f1a0"
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "brazilgp-grid-position",
-      "trend_id": "438f36286fc7",
-      "severity": "corrected_before_close",
-      "message": "Una aplicación concurrente dejó temporalmente a Russell como P6; la verificación JIT detectó que la sanción de cinco puestos desde P2 implica P7. Se corrigió el texto y se sincronizó closer_text/continuidad antes del cierre."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -181,6 +144,11 @@
       "at": "2026-11-07T23:37:00+01:00",
       "phase": "closing",
       "message": "Barrera final real en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Cracovia aplicada como continuidad. #BrazilGP verificado y corregido a P7 tras detectar P6 en una aplicación concurrente; metadatos sincronizados. Sin ImageGen, sin image-outbox y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T23:50:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-autoguard-1794091831 iniciada desde chat; cola main=30 preparing, todos revision 0. Procesamiento antiguo→reciente con revalidación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T23:28:16+01:00",
