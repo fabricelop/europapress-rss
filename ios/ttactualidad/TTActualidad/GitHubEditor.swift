@@ -507,7 +507,7 @@ final class GitHubEditor: ObservableObject {
                                      png: Data) async throws -> URL {
         guard ["ttendencias", "ttittulares"].contains(project),
               editorialID.range(of: "^[A-Za-z0-9_-]{3,160}$", options: .regularExpression) != nil,
-              revision >= (project == "ttittulares" ? 1 : 0),
+              revision >= 0,  // READY news can legitimately be revision 0.
               !editorialText.isEmpty, png.count > 24, png.count <= 8_000_000
         else { throw GitHubError.message("Ficha o imagen incorrecta.") }
         let hex = SHA256.hash(data: png).map { String(format: "%02x", $0) }.joined()
