@@ -71,6 +71,8 @@ struct EditorialActions: View {
             }
             quickButton("Publicar directo · Buffer", "paperplane.fill") {
                 guard github.authenticated else { showSettings = true; return }
+                // Hide synchronously; a failed dispatch restores the row.
+                buffer.stagePublish(project: project, id: editorialID, revision: revision)
                 Task {
                     await buffer.publish(github: github, project: project,
                                          id: editorialID, revision: revision)
@@ -81,12 +83,21 @@ struct EditorialActions: View {
                       fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
                       buffer.blocked(project: project, id: editorialID, revision: revision))
             Text("Un toque · @" + (news == nil ? "ttendenciasesp" : "ttittulares") +
-                 " · " + (aiPhotoURL != nil ? "foto IA" :
-                           archivePhotoURL != nil ? "foto archivo" : "solo texto") +
+                 " · prioridad IA aprobada, después archivo y por último texto" +
                  " (sin abrir X)")
                 .font(.system(size: 10))
                 .foregroundStyle(TTTheme.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            if let receipt = buffer.latestReceipt(project: project, id: editorialID,
+                                                  revision: revision),
+               receipt.state == "sent", let media = receipt.media_type {
+                Text("Buffer envió: " + (media == "ai" ? "imagen IA verificada" :
+                     media == "archive" ? "foto de archivo" : "solo texto") +
+                     (receipt.closure_verified == true ?
+                      " · retirada confirmada" : " · retirada pendiente"))
+                    .font(.caption2).foregroundStyle(TTTheme.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             HStack(spacing: 7) {
                 quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                     .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
@@ -228,6 +239,10 @@ struct EditorialActions: View {
         }
         .onChange(of: buffer.change) { _, _ in
             outcome = buffer.notice
+            if buffer.latestReceipt(project: project, id: editorialID,
+                                    revision: revision)?.closure_verified == true {
+                Task { await store.refreshIfStale(minInterval: 0) }
+            }
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?
