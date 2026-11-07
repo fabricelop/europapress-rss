@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794052874051-manual-recheck-chat",
   "command_id": "tr-manual-20261107-1325-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T13:25:00+01:00",
-  "updated_at": "2026-11-07T13:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T13:27:00+01:00",
+  "finished_at": "2026-11-07T13:27:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -274,17 +274,27 @@
       "at": "2026-11-07T13:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1325-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:27:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Últimos resultados de mantenimiento inspeccionados. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T13:27:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1325-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794052874051-manual-recheck-chat",
-    "command_id": "tr-1794052874051-manual",
+    "run_id": "tr-manual-20261107-1325-chat",
+    "command_id": "tr-manual-20261107-1325-chat",
     "status": "DONE",
-    "started_at": "2026-11-07T12:14:18.026Z",
-    "updated_at": "2026-11-07T12:14:38.759Z",
-    "finished_at": "2026-11-07T12:14:38.759Z",
+    "started_at": "2026-11-07T13:25:00+01:00",
+    "updated_at": "2026-11-07T13:27:00+01:00",
+    "finished_at": "2026-11-07T13:27:00+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -312,10 +322,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Reejecución real cerrada 0/0 tras releer main: sin preparing/update ni reexplicaciones pendientes. ImageGen=0; publicaciones=0."
+    "message": "Pasada real cerrada 0/0 tras releer main: sin preparing/update, anticipate, review_red ni reexplicaciones pendientes. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T13:25:00+01:00",
-  "last_completed_at": "2026-11-07T12:14:38.759Z",
+  "last_completed_at": "2026-11-07T13:27:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -410,7 +420,8 @@
     "tr-1794052645605-manual",
     "tr-1794052874051-manual",
     "tr-manual-20261107-1310-chat",
-    "tr-1794052874051-manual-recheck-chat"
+    "tr-1794052874051-manual-recheck-chat",
+    "tr-manual-20261107-1325-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -507,9 +518,10 @@
     "tr-1794052645605-manual",
     "tr-1794052874051-manual",
     "tr-manual-20261107-1310-chat",
-    "tr-1794052874051-manual-recheck-chat"
+    "tr-1794052874051-manual-recheck-chat",
+    "tr-manual-20261107-1325-chat"
   ],
-  "message": "Pasada real iniciada; comprobando main, reexplicaciones y mantenimiento vigentes. Sin ImageGen ni publicaciones.",
+  "message": "Pasada real cerrada 0/0 tras releer main: sin preparing/update, anticipate, review_red ni reexplicaciones pendientes. ImageGen=0; publicaciones=0.",
   "outcomes": [],
   "recent_runs": [
     "tr-manual-20261107-1240-chat",
