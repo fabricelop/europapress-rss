@@ -7,39 +7,36 @@
   "previous_run_id": "tr-manual-20261107-0310-chat",
   "command_id": "tr-1794017935186-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T03:19:20+01:00",
-  "updated_at": "2026-11-07T03:22:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T03:24:20+01:00",
+  "finished_at": "2026-11-07T03:24:20+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-74d774d6ed156dec8d74",
-  "title": "Revisar novedades: Ritz",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-94d81c6c8219676ec7a0",
+    "red-review-74d774d6ed156dec8d74"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-94d81c6c8219676ec7a0",
-    "red-review-74d774d6ed156dec8d74"
-  ],
-  "remaining_active_ids": [
-    "red-review-94d81c6c8219676ec7a0",
-    "red-review-74d774d6ed156dec8d74"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,34 +48,75 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "investigating",
-    "message": "Revisando novedades: Ritz. La cobertura actual sigue remitiendo al acto del 5 de noviembre y a la misma propuesta “Tax the Rich”; comprobando si existe episodio posterior independiente.",
-    "updated_at": "2026-11-07T03:22:30+01:00"
+    "phase": "closing",
+    "message": "Pasada tr-1794017935186-manual cerrada 2/2: POBRE DE MI y Ritz revisadas sin novedades materiales; textos y explained_at conservados. Barrera final main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; publicaciones=0.",
+    "updated_at": "2026-11-07T03:24:20+01:00"
   },
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-94d81c6c8219676ec7a0",
+      "revision": 0,
+      "name": "Revisar novedades: POBRE DE MI",
+      "source_id": "fddf605b306b",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_applied"
+    },
+    {
+      "id": "red-review-74d774d6ed156dec8d74",
+      "revision": 0,
+      "name": "Revisar novedades: Ritz",
+      "source_id": "fbffe6468908",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_applied"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-0310-chat",
+    "run_id": "tr-1794017935186-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T03:11:10+01:00",
-    "updated_at": "2026-11-07T03:12:00+01:00",
-    "finished_at": "2026-11-07T03:12:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-07T03:19:20+01:00",
+    "updated_at": "2026-11-07T03:24:20+01:00",
+    "finished_at": "2026-11-07T03:24:20+01:00",
+    "current": 2,
+    "total": 2,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-94d81c6c8219676ec7a0",
+      "red-review-74d774d6ed156dec8d74"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "final_outcomes": [
+      {
+        "id": "red-review-94d81c6c8219676ec7a0",
+        "revision": 0,
+        "name": "Revisar novedades: POBRE DE MI",
+        "source_id": "fddf605b306b",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied"
+      },
+      {
+        "id": "red-review-74d774d6ed156dec8d74",
+        "revision": 0,
+        "name": "Revisar novedades: Ritz",
+        "source_id": "fbffe6468908",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied"
+      }
+    ],
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -90,10 +128,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-manual-20261107-0310-chat cerrada 0/0: barrera final main con editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794017935186-manual cerrada 2/2: POBRE DE MI y Ritz revisadas sin novedades materiales; textos y explained_at conservados. Barrera final main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T03:19:20+01:00",
-  "last_completed_at": "2026-11-07T03:12:00+01:00",
+  "last_completed_at": "2026-11-07T03:24:20+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -152,7 +190,8 @@
     "tr-1794010915548-manual",
     "tr-autoguard-1794012665",
     "tr-manual-20261107-0155-chat",
-    "tr-manual-20261107-0225-chat"
+    "tr-manual-20261107-0225-chat",
+    "tr-1794017935186-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -213,7 +252,8 @@
     "tr-1794010915548-manual",
     "tr-autoguard-1794012665",
     "tr-manual-20261107-0155-chat",
-    "tr-manual-20261107-0225-chat"
+    "tr-manual-20261107-0225-chat",
+    "tr-1794017935186-manual"
   ],
-  "message": "Revisando novedades: Ritz. La cobertura actual sigue remitiendo al acto del 5 de noviembre y a la misma propuesta “Tax the Rich”; comprobando si existe episodio posterior independiente."
+  "message": "Pasada tr-1794017935186-manual cerrada 2/2: POBRE DE MI y Ritz revisadas sin novedades materiales; textos y explained_at conservados. Barrera final main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; publicaciones=0."
 }
