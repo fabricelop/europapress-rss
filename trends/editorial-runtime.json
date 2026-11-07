@@ -8,9 +8,9 @@
   "command_id": "tr-manual-20261107-2125-chat",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-11-07T21:25:00+01:00",
-  "updated_at": "2026-11-07T21:25:00+01:00",
+  "updated_at": "2026-11-07T21:25:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 0,
@@ -801,6 +801,11 @@
       "at": "2026-11-07T21:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-2125-chat iniciada; la primera barrera de main muestra editorial-queue=0. Se revalidan estados activos, reexplicaciones y mantenimiento antes de cerrar. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T21:25:30+01:00",
+      "phase": "verifying",
+      "message": "Revalidación final: búsquedas sobre main sin preparing/update, rewrite_pending, reexplain_pending, anticipate ni review_red activos en los registros editoriales. Últimos mantenimientos inspeccionados: Sepang unchanged y Jorge Martín distinct episode. ImageGen=0."
     }
   ],
   "last_started_at": "2026-11-07T21:25:00+01:00",
