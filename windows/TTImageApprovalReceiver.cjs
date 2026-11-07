@@ -233,9 +233,30 @@ async function once(base=__dirname){
       for(let n=0;n<5;n++){const q=await fetch('http://127.0.0.1:9234/json/list',{signal:AbortSignal.timeout(3000)});target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);if(target)break;await new Promise(r=>setTimeout(r,500))}
      }catch{}
     }
-    if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
-    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id,true));if(raster?.ready||['later_user_turn','capture_requires_sign_in','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
-    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','png_conversion_failed','png_exceeds_private_limit','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
+    if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}
+    cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();
+    let raster;
+    // The ChatGPT conversation can be visible in CDP before its user turns
+    // and original image are hydrated. Previously an existing tab got only
+    // ONE probe, leaving valid images stuck as conversation_not_loaded.
+    // Retry only reading the exact original. Never click, navigate, generate,
+    // change a job, or accept an image from a different command.
+    const maxProbes=ownedTarget?12:7;
+    for(let n=0;n<maxProbes;n++){
+      try{
+        raster=await cdp.evaluate(source.rasterProbe(task.command_id,true));
+      }catch(e){
+        // A transient Runtime.evaluate navigation race is retriable. An
+        // unresponsive CDP connection is not evidence of an invalid image.
+        if(!['CDP_EVALUATION_FAILED','RASTER_READ_FAILED'].includes(String(e.message||'')))
+          throw e;
+        raster={ready:false,reason:'CDP_EVALUATION_FAILED'};
+      }
+      if(raster?.ready ||
+         ['later_user_turn','capture_requires_sign_in'].includes(raster?.reason))break;
+      if(n+1<maxProbes)await new Promise(r=>setTimeout(r,1500));
+    }
+    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','png_conversion_failed','png_exceeds_private_limit','conversation_not_loaded','CDP_EVALUATION_FAILED']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
     if(!String(raster.dataUrl).startsWith('data:image/png;base64,')){report(task,'ORIGINAL_FORMAT_NOT_PNG');continue;}
     bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
     const fresh=metadata(task,await editorialJob(source,task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
