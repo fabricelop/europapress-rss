@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-07T22:44:43.438828+00:00",
+  "checked_at": "2026-11-07T22:50:34.292638+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,9 +40,11 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
       "non_stale_sources": 3,
+      "verified_fresh_sources": [],
+      "live_verified": false,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -55,8 +57,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.0,
-      "run_id": 42421726956,
+      "age_minutes": 3.9,
+      "run_id": 42422181506,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -80,7 +82,7 @@
       "ok": true,
       "pending_count": 30,
       "overdue_count": 0,
-      "oldest_age_minutes": 0.1,
+      "oldest_age_minutes": 6.0,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -131,9 +133,10 @@
   },
   "repairs_started": [],
   "blocking": [
+    "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 545 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 545 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 545 estado(s) inválido(s)"
 }
