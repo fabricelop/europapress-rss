@@ -1,106 +1,67 @@
-# Integración en el Site real — bandeja privada limitada (6-XI-2026)
+# Integración del filtro editorial real — bandeja privada TTActualidad
 
-**Destino real**: `https://ttactualidad.rainyraven22.chatgpt.site`, proyecto Next.js
-`appgprj_6ae4dcf7d7488191a574e5b649e67370`.
+**Objetivo confirmado el 7 de noviembre de 2026:** la bandeja debe mostrar
+TODAS las imágenes **pendientes de decisión** que pertenezcan a uno de estos
+dos grupos, sin límite de fecha y sin máximo de imágenes:
 
-**Este repositorio no despliega ChatGPT Sites**. El código del Worker es una
-referencia verificable, no una sustitución de los endpoints del Site ni un
-permiso para alterar su portada. No desplegar sin editor autorizado del Site.
+1. **Tendencias**: episodio (ID + revisión) entre las 30 tendencias del Top 30
+   vigente, **sin imagen IA ya asignada**. La imagen asignada se comprueba
+   contra el catálogo IA y texto editorial de ese episodio; no basta con
+   comparar un nombre o una posición en el ranking.
+2. **Noticias**: episodio (ID + revisión) actualmente en **Listas**, según
+   `ttittulares/prepared.json` y sus decisiones terminales. Haber entrado en
+   Listas antes del 6 de noviembre no lo excluye.
 
-## Contrato obligatorio para las tres capas
+No hay más condiciones de visibilidad por edad, fecha de creación, máximo 20,
+ni deduplicación por episodio que suprima imágenes distintas pendientes.
+Se excluyen solo elementos que ya no estén en esos conjuntos editoriales
+o que hayan sido aprobados/rechazados; **no se eliminan sus originales**.
 
-- El usuario no quiere revisar las ~500 imágenes antiguas. Son históricas:
-  mantener PNG originales y decisiones; **no migrarlas todas a la lista visible**,
-  rechazarlas en masa, aprobarlas, republicarlas ni regenerarlas.
-- Tendencias elegibles: **solo** la identidad editorial (`editorial_id`,
-  `revision`) de una entrada explicada del **Top 30 vigente**, obtenida de
-  `trends/site-top30-current.json` en `main`. Nuevas tendencias se incorporan
-  automáticamente cuando llegan al Top 30 con identidad confirmada. Si sale
-  del Top 30 deja de aparecer en la bandeja, sin perder el original.
-- Noticias elegibles: fecha **original** del episodio
-  `editorialAt >= 2026-11-06T08:43:00.000Z` (09:43 CET); una entrega tardía
-  no convierte noticias anteriores en actuales.
-- Máximo **20 visibles por consulta**, orden descendente por fecha de
-  recepción y desempate por ID, con cursor para páginas posteriores si el
-  cliente lo solicita. Si el usuario decide sobre la versión más reciente de
-  un episodio, ninguna versión anterior de ese mismo ID/revisión reaparece.
-- La comprobación de autorización Github OAuth, las huellas SHA de los bytes
-  originales, la comparación de ID/revisión/episodio en decisión y el flujo
-  editorial de aprobación manual siguen intactos.
-- En caso de indisponibilidad del Top30, fail-closed con error claro y
-  reintento; no mostrar la cola sin filtrar como fallback.
-- **El Site solo muestra las imágenes ya aprobadas**. No crear allí
-  controles de selección, aprobación, rechazo ni subida. No tocar portada,
-  publicaciones, X, Instagram, Telegram o Live Activity.
+## UI y paginación
 
-## Compatibilidad con el receptor Windows ya instalado
+El servidor puede devolver páginas de 100 para no agotar memoria ni red. Es
+un tamaño de transporte, NO un límite de la bandeja; la APP recorre
+`hasMore`/`nextCursor` hasta obtener todas las candidatas elegibles.
+Revisar el resultado después de cada decisión. La UI sigue comprobando
+el SHA-256 del PNG original antes de aprobar y no publica automáticamente.
 
-El PC envía `POST /api/image-inbox/v1/images/ingest` con
-`Content-Type: multipart/form-data`, campo `image` PNG y campo
-`metadata` que es un JSON de **campos planos**:
+## Backend real
 
-```json
-{
-  "project": "ttendencias",
-  "editorialId": "ID_DE_EJEMPLO",
-  "revision": 0,
-  "commandId": "tr-img-encargo",
-  "editorialText": "Texto exacto",
-  "editorialAt": "2026-11-06T08:44:00Z",
-  "title": "Título de ejemplo",
-  "episodeFingerprint": "SHA256 del JSON canónico con fecha",
-  "rasterSHA256": "SHA256 del PNG real"
-}
-```
+Destino: `https://ttactualidad.rainyraven22.chatgpt.site`,
+proyecto Sites `appgprj_6ae4dcf7d7488191a574e5b649e67370`.
 
-La huella del receptor es SHA256(UTF8(JSON.stringify(
-`{project,editorialId,revision,editorialText,editorialAt}`)),
-**incluyendo la fecha original**. El prototipo anterior, incompatible,
-aceptaba `{identity:{...}}` y no incluía la fecha en la huella. La referencia
-de `src/index.mjs` se ha adaptado para aceptar ambas variantes verificadas;
-el Site real deberá conservar el contrato plano ya operativo para no romper
-las 321 confirmaciones acumuladas `RECEIVED_pending`.
+**La implementación de este repositorio es una referencia y NO despliega
+ChatGPT Sites.** Los endpoints reales
+`/api/image-inbox/v1/images`, `/ingest` y `/:id/decision`
+deben recibir estos mismos cambios dentro del proyecto Sites autorizado.
+No fusionar solo la APP declarando que el Site se ha reparado.
 
-## Modelo y consultas
+El receptor Windows mantiene los metadatos planos existentes:
+`project, editorialId, revision, commandId, editorialText, editorialAt,
+title, episodeFingerprint, rasterSHA256`. La fecha sigue formando parte de
+la huella del episodio para verificar los bytes, pero **no se compara
+con ningún corte temporal para la elegibilidad**.
 
-1. Persistir `editorial_at` en cada nueva imagen. Si ya existe una columna
-   equivalente en el Site, **reutilizarla**; no ejecutar la migración D1 del
-   prototipo sobre una base Next.js diferente.
-2. `GET /api/image-inbox/v1/images`: autenticar al editor; filtrar por
-   Top30 actual o fecha editorial original de noticias; elegir una sola
-   imagen candidata más reciente por episodio **antes** de seleccionar solo
-   `pending`; devolver máximo 20 y cursor si procede.
-3. `POST .../ingest`: rechazar noticias antiguas y tendencias fuera del
-   Top30 con error específico, sin impedir la entrega futura de casos
-   elegibles; respuestas 201 `pending` o 200 `existing` (idempotentes).
-   No forzar estado `pending` al reenviar una imagen rechazada.
-4. `POST .../:id/decision`: validar identidad exacta; el rechazo debe
-   funcionar incluso si falla la descarga del PNG; la aprobación requiere
-   PNG verificado. No reabrir una imagen antigua del mismo episodio.
-5. Para aprobación, revalidar la identidad con la fuente editorial
-   autoritativa actual: tendencias pueden haber salido de Listas pero siguen
-   en el Top30; las noticias pueden haber salido de `prepared.json`, así
-   que debe usarse un registro duradero **con texto e identidad exactos**.
-   No sustituirlo por coincidencia de título, fecha aproximada ni rank.
+La ingestión de una imagen se admite si su episodio pertenece a los dos
+grupos actuales. La identidad editorial, revisión y texto deben seguir
+coincidiendo antes de aprobar y antes de publicar. El servidor conserva D1/R2,
+originales, decisiones, autorización de editor y el flujo manual existente.
 
-## Pruebas E2E que deben pasar en el Site real
+## Pruebas de aceptación
 
-- Con centenares de registros antiguos aún almacenados, la APP recibe entre
-  0 y 20 elementos, ninguno de una noticia anterior al corte.
-- Tendencia explicada vigente del Top30: ingestion, consulta, descarga con
-  SHA, aprobar/rechazar, refrescar y comprobar estado persistido.
-- Imagen de noticia editorial **nueva**: el timestamp original, no
-  `created_at` de ingreso, determina elegibilidad.
-- Una tendencia que abandona el Top30 no reaparece por caché ni ocupa plaza.
-- Reenvío de imagen ya decidida devuelve `existing` pero no resucita en
-  pendientes.
-- Simular Top30 inaccesible, OAuth inválido, revision stale, PNG manipulado,
-  500 registros antiguos y error 503 del Site. En todos los casos, no
-  publicaciones ni aprobaciones automáticas.
-- Confirmar que portada y flujos X/Telegram/IG permanecen intactos.
+- Noticia que continúa en Listas desde octubre: imagen pendiente visible aunque
+  su `editorialAt` sea anterior al 6 de noviembre.
+- Noticia publicada o retirada de Listas: desaparece de pendientes; original
+  conservado.
+- Tendencia en Top 30 sin imagen IA asignada: pendiente visible; al salir
+  del Top 30, ya no es elegible.
+- Tendencia con imagen IA verificada en catálogo: su pendiente no aparece.
+- Más de 100 candidatas elegibles: la APP recorre páginas y muestra todas,
+  sin límite de 20 ni de fecha.
+- Imágenes aprobadas/rechazadas permanecen decididas y no reaparecen;
+  ninguna imagen se aprueba, publica o regenera automáticamente.
+- Top 30 o Listas no disponibles: mostrar error; nunca utilizar una lista
+  sin filtrar o una caché vieja como si estuviera verificada.
 
-**Estado al redactar**: el receptor Windows corregido está en GitHub
-`main`, pero requiere actualización en el PC. PR #323 es referencia de
-backend (no desplegada en ChatGPT Sites). PR #325 es iOS Build75 de prueba;
-no instalar como solución definitiva hasta que el endpoint real suministre
-`editorialAt` y aplique el filtro anterior.
+No se alteran X, Telegram, Instagram, las relaciones entre noticias y
+tendencias, ni el borrado de Listas.

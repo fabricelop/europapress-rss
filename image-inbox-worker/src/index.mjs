@@ -1,21 +1,36 @@
 import { episodeFingerprint, verifyEditorialNow, EditorialUnavailable } from './editorial-truth.mjs';
-import {NEWS_CUTOVER_ISO, VISIBLE_INBOX_LIMIT, editorialTime, recentNewsEpisode,
-  currentTop30Episodes, filterVisibleCandidates} from './approval-scope.mjs';
+import {currentTop30Episodes, currentListasNewsEpisodes,
+  inApprovalScope, filterVisibleCandidates} from './approval-scope.mjs';
 
 class ApprovalScopeUnavailable extends Error {}
-async function top30Now(env, fetchFn = fetch) {
-  const url = 'https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/site-top30-current.json?ref=main';
+async function mainJSON(path, env, fetchFn = fetch) {
+  const url = 'https://api.github.com/repos/fabricelop/europapress-rss/contents/' +
+    path + '?ref=main';
+  const r = await fetchFn(url, {headers: {
+    Accept:'application/vnd.github.raw+json', 'Cache-Control':'no-cache',
+    'User-Agent':'TTActualidad-Private-Inbox',
+    ...(env.GITHUB_SOURCE_READ_TOKEN ?
+      {Authorization:'Bearer '+env.GITHUB_SOURCE_READ_TOKEN} : {})
+  },cache:'no-store',redirect:'error'});
+  if (!r.ok) throw new ApprovalScopeUnavailable();
+  const raw = await r.text();
+  if (raw.length > 5_000_000) throw new ApprovalScopeUnavailable();
+  try { return JSON.parse(raw); }
+  catch { throw new ApprovalScopeUnavailable(); }
+}
+async function editorialScopeNow(env, fetchFn = fetch) {
   try {
-    const r = await fetchFn(url, {headers: {
-      Accept:'application/vnd.github.raw+json', 'Cache-Control':'no-cache',
-      'User-Agent':'TTActualidad-Private-Inbox',
-      ...(env.GITHUB_SOURCE_READ_TOKEN ? {Authorization:'Bearer '+env.GITHUB_SOURCE_READ_TOKEN} : {})
-    },cache:'no-store',redirect:'error'});
-    if (!r.ok) throw Error('TOP30_FETCH_FAILED');
-    const raw = await r.text();
-    if (raw.length > 400000) throw Error('TOP30_TOO_LARGE');
-    return currentTop30Episodes(JSON.parse(raw));
-  } catch { throw new ApprovalScopeUnavailable() }
+    const [top, ai, prepared, decisions] = await Promise.all([
+      mainJSON('trends/site-top30-current.json',env,fetchFn),
+      mainJSON('trends/site-ai-images.json',env,fetchFn),
+      mainJSON('ttittulares/prepared.json',env,fetchFn),
+      mainJSON('ttittulares/decisions.json',env,fetchFn)
+    ]);
+    return {
+      trends:currentTop30Episodes(top,ai),
+      news:currentListasNewsEpisodes(prepared,decisions)
+    };
+  } catch { throw new ApprovalScopeUnavailable(); }
 }
 
 // Private TTActualidad inbox. No automatic publication path and no public R2 links.
@@ -110,16 +125,14 @@ async function ingest(request, env, githubFetch = fetch) {
   }
   const title = assertText(meta.title, 300);
   const editorialText = assertText(meta.editorialText, 4000);
-  const originalAt = editorialTime(meta.editorialAt);
-  if (i.project === 'ttittulares' && !recentNewsEpisode(meta.editorialAt)) {
-    return error(409,'NEWS_BEFORE_CUTOVER');
-  }
-  if (i.project === 'ttendencias') {
-    const scope = await top30Now(env, githubFetch);
-    if (!scope.some(row=>row.editorialId===i.editorialId && row.revision===i.revision)) {
-      return error(409,'NOT_CURRENT_TOP30');
-    }
-  }
+  // Current Listas/Top30 membership governs ingestion; a valid old news
+  // episode may still be in Listas and must not be rejected by its date.
+  const originalAt = meta.editorialAt ? new Date(meta.editorialAt) : null;
+  const scopes = await editorialScopeNow(env, githubFetch);
+  const inCurrentScope = inApprovalScope({
+    project:i.project, editorial_id:i.editorialId, revision:i.revision
+  }, scopes.trends, scopes.news);
+  if (!inCurrentScope) return error(409, 'NOT_CURRENT_EDITORIAL_SCOPE');
   // A self-declared hash is insufficient: bind the episode to the exact
   // editorial bytes and identity, including revision 0 after a new episode.
   const expected = fromReceiver ?
@@ -140,7 +153,8 @@ async function ingest(request, env, githubFetch = fetch) {
   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?)`).bind(
     id, i.project, i.editorialId, i.revision, i.episodeFingerprint,
     i.commandId, originalSHA, r2key, title, editorialText,
-    originalAt===null?null:new Date(originalAt).toISOString(), new Date().toISOString(),
+    originalAt && Number.isFinite(originalAt.valueOf()) ?
+      originalAt.toISOString() : null, new Date().toISOString(),
   ).run();
   // Repeated ingest is idempotent, never reopens rejected/approved images.
   return json({ id, state: inserted.meta?.changes ? 'pending' : 'existing' }, inserted.meta?.changes ? 201 : 200);
@@ -152,60 +166,62 @@ function rowIdentity(row) {
     rasterSHA256: row.raster_sha256,
   };
 }
-// Stable newest-first pagination. The old ASC LIMIT 100 returned the oldest
-// pictures forever and hid every recent one when the inbox exceeded 100.
+// A page is a transport batch (100 by default), NOT a maximum visible
+// image count. The iPhone walks every cursor until hasMore=false.
+const INTERNAL_PAGE_SIZE = 100;
 function listPage(url) {
   const rawLimit = url.searchParams.get('limit');
-  const limit = rawLimit === null ? VISIBLE_INBOX_LIMIT : Number(rawLimit);
-  if (!Number.isSafeInteger(limit) || limit < 1 || limit > VISIBLE_INBOX_LIMIT) {
+  const limit = rawLimit === null ? INTERNAL_PAGE_SIZE : Number(rawLimit);
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 250) {
     throw new TypeError('INVALID_PAGE_LIMIT');
   }
   const before = url.searchParams.get('before');
-  if (!before) return { limit, before: null };
+  if (!before) return {limit,before:null};
   const separator = before.lastIndexOf('|');
   if (separator < 1) throw new TypeError('INVALID_PAGE_CURSOR');
-  const createdAt = before.slice(0, separator), id = before.slice(separator + 1);
+  const createdAt = before.slice(0,separator), id = before.slice(separator+1);
   const date = new Date(createdAt);
   if (!SHA.test(id) || !Number.isFinite(date.valueOf()) ||
       date.toISOString() !== createdAt) {
     throw new TypeError('INVALID_PAGE_CURSOR');
   }
-  return { limit, before: { createdAt, id } };
+  return {limit,before:{createdAt,id}};
 }
-async function list(env, url, githubFetch = fetch) {
+async function list(env,url,githubFetch=fetch) {
   const {limit,before} = listPage(url);
-  const current = await top30Now(env,githubFetch);
-  const exactTrends = current.length ? "(project='ttendencias' AND (editorial_id,revision) IN (" +
-    current.map(()=>'(?,?)').join(',') + "))" : "0";
-  // Rank ALL decisions before restricting to pending. Rejecting a newer PNG
-  // must not reveal an older duplicate and demand approval again.
+  const {trends,news} = await editorialScopeNow(env,githubFetch);
+  const allowed = [
+    ...trends.map(x=>['ttendencias',x.editorialId,x.revision]),
+    ...news.map(x=>['ttittulares',x.editorialId,x.revision]),
+  ];
+  if (!allowed.length) {
+    return json({items:[],hasMore:false,nextCursor:null,pageLimit:limit});
+  }
+  // SQL restricts to the exact eligible IDs; no age or arbitrary count
+  // restriction. Unlike the prior scope, all pending PNGs can be approved.
+  const identities = allowed.map(() =>
+    '(project=? AND editorial_id=? AND revision=?)').join(' OR ');
   const sql = [
-    'WITH ranked AS (',
-    ' SELECT id, project, editorial_id, revision, episode_fingerprint, command_id,',
-    ' raster_sha256, title, editorial_text, editorial_at, created_at, status,',
-    ' ROW_NUMBER() OVER (PARTITION BY project, editorial_id, revision',
-    ' ORDER BY created_at DESC, id DESC) AS rn',
-    ' FROM image_candidates WHERE ' + exactTrends,
-    " OR (project='ttittulares' AND editorial_at >= ?)",
-    ') SELECT id,project,editorial_id,revision,episode_fingerprint,command_id,',
-    ' raster_sha256,title,editorial_text,editorial_at,created_at,status FROM ranked',
-    " WHERE rn=1 AND status='pending'",
+    'SELECT id,project,editorial_id,revision,episode_fingerprint,command_id,',
+    'raster_sha256,title,editorial_text,editorial_at,created_at,status',
+    'FROM image_candidates WHERE status=\'pending\' AND (' + identities + ')',
     before ? 'AND (created_at < ? OR (created_at = ? AND id < ?))' : '',
     'ORDER BY created_at DESC,id DESC LIMIT ?',
-  ].join('\n');
-  const args = [...current.flatMap(x=>[x.editorialId,x.revision]),NEWS_CUTOVER_ISO,
+  ].join(' ');
+  const args = [...allowed.flat(),
     ...(before?[before.createdAt,before.createdAt,before.id]:[]),limit+1];
   const result = await env.DB.prepare(sql).bind(...args).all();
-  const rows = filterVisibleCandidates(result.results||[],current,limit+1,before);
-  const hasMore = rows.length > limit;
-  const page = rows.slice(0,limit);
-  const last = page[page.length-1];
+  const candidates = filterVisibleCandidates(
+    result.results||[],trends,news,before);
+  const hasMore = candidates.length > limit;
+  const page = candidates.slice(0,limit);
+  const last=page[page.length-1];
   return json({items:page.map(row=>({
     id:row.id,identity:rowIdentity(row),title:row.title,
     editorialText:row.editorial_text,editorialAt:row.editorial_at,
     createdAt:row.created_at,
   })),hasMore,nextCursor:hasMore?last.created_at+'|'+last.id:null,
-    pageLimit:VISIBLE_INBOX_LIMIT});
+    pageLimit:limit});
 }
 async function preview(env, id) {
   const row = await env.DB.prepare(`SELECT object_key FROM image_candidates
@@ -324,7 +340,7 @@ export async function handleRequest(request, env, githubFetch = fetch) {
     return error(405, 'METHOD_NOT_ALLOWED');
   } catch (e) {
     if (e instanceof EditorialUnavailable) return error(503, 'EDITORIAL_SOURCE_UNAVAILABLE');
-    if (e instanceof ApprovalScopeUnavailable) return error(503, 'TOP30_SCOPE_UNAVAILABLE');
+    if (e instanceof ApprovalScopeUnavailable) return error(503, 'CURRENT_LISTAS_OR_TOP30_UNAVAILABLE');
     if (e instanceof SyntaxError || e instanceof TypeError) return error(400, 'INVALID_REQUEST');
     // Never leak tokens, original bytes, private object names, SQL internals.
     return error(503, 'TEMPORARILY_UNAVAILABLE');
