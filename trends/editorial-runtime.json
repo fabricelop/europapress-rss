@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794080400000-manual",
   "command_id": "tr-1794080634431-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T20:44:30+01:00",
-  "updated_at": "2026-11-07T20:44:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T19:46:57.197Z",
+  "finished_at": "2026-11-07T19:46:57.197Z",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -746,9 +746,19 @@
       "at": "2026-11-07T20:44:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794080634431-manual iniciada; barrera fresca de main detecta 0 review_red activos: . Se procesan con revalidación JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T19:46:57.197Z",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending ni reexplain. El run previo tr-1794080400000-manual dejó Enric Gallego y Liam Delap aplicados; mantenimiento cerró Sepang unchanged y Jorge Martín como episodio distinto. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T19:46:57.197Z",
+      "phase": "closing",
+      "message": "Pasada sucesora tr-1794080634431-manual cerrada 0/0 por convergencia: el trabajo editorial quedó satisfecho por tr-1794080400000-manual y el aplicador de mantenimiento. Cola final 0; sin imágenes ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T20:44:30+01:00",
-  "last_completed_at": null,
+  "last_completed_at": "2026-11-07T19:46:57.197Z",
   "api_failover_enabled": false
 }
