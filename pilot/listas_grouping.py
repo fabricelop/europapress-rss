@@ -468,8 +468,8 @@ def load_state():
 def apply_completed_review_repair(state, command, now):
     """Repair one already-applied continuity review without reopening or republishing it.
 
-    This path is deliberately fail-closed: exact source identity, revision and
-    current explanation must match in BOTH authoritative editorial documents.
+    Fail closed on identity/revision/text mismatches. Idempotent when the exact
+    replacement is already present, so concurrent reconciliations can converge.
     """
     source_id = str(command.get('source_id') or '').strip()
     source_revision = int(command.get('source_revision') or 0)
@@ -484,32 +484,57 @@ def apply_completed_review_repair(state, command, now):
                    or replacement.count(closer) != 1):
         raise ValueError('closer_text reparado inválido')
 
-    counts = {}
-    matched = []
+    old_counts = {}
+    new_counts = {}
+    old_rows = []
     for doc_path, field in ((MANUAL, 'items'), (REQUESTS, 'requests')):
-        rows = [
+        old = [
             row for row in state[doc_path][field]
             if str(row.get('id') or '') == source_id
             and revision(row) == source_revision
             and str(row.get('explanation') or '') == expected
             and str(row.get('red_review_outcome') or '') == 'continuity'
         ]
-        counts[doc_path] = len(rows)
-        matched.extend(rows)
-    if counts.get(MANUAL) != 1 or counts.get(REQUESTS) != 1:
-        raise ValueError('Barrera JIT de reparación no coincide en ambos registros: '+json.dumps(counts, ensure_ascii=False))
+        new = [
+            row for row in state[doc_path][field]
+            if str(row.get('id') or '') == source_id
+            and revision(row) == source_revision
+            and str(row.get('explanation') or '') == replacement
+        ]
+        old_counts[doc_path] = len(old)
+        new_counts[doc_path] = len(new)
+        old_rows.extend(old)
 
-    for row in matched:
-        row['explanation'] = replacement
-        row['closer_text'] = closer
-        row['red_review_continuity_explanation'] = replacement
-        if command.get('new_facts') is not None:
-            row['red_review_new_facts'] = str(command.get('new_facts') or '')
-        row['red_review_repaired_at'] = now.isoformat()
-        row['red_review_repair_reason'] = str(command.get('repair_reason') or '').strip()
-    state[MANUAL]['updated_at'] = now.isoformat()
-    state[REQUESTS]['updated_at'] = now.isoformat()
-    return state, True
+    if old_counts.get(MANUAL) == 1 and old_counts.get(REQUESTS) == 1:
+        for row in old_rows:
+            row['explanation'] = replacement
+            row['closer_text'] = closer
+            row['red_review_continuity_explanation'] = replacement
+            if command.get('new_facts') is not None:
+                row['red_review_new_facts'] = str(command.get('new_facts') or '')
+            row['red_review_repaired_at'] = now.isoformat()
+            row['red_review_repair_reason'] = str(command.get('repair_reason') or '').strip()
+        state[MANUAL]['updated_at'] = now.isoformat()
+        state[REQUESTS]['updated_at'] = now.isoformat()
+        changed = True
+    elif new_counts.get(MANUAL) == 1 and new_counts.get(REQUESTS) == 1:
+        changed = False
+    else:
+        raise ValueError('Barrera JIT de reparación no coincide: '+json.dumps(
+            {'old': old_counts, 'new': new_counts}, ensure_ascii=False))
+
+    before_queue = len(state[QUEUE]['items'])
+    state[QUEUE]['items'] = [
+        row for row in state[QUEUE]['items']
+        if not (str(row.get('id') or '') == source_id
+                and revision(row) == source_revision
+                and str(row.get('task') or '') == 'repair_verified_explanation')
+    ]
+    if len(state[QUEUE]['items']) != before_queue:
+        state[QUEUE]['count'] = len(state[QUEUE]['items'])
+        state[QUEUE]['updated_at'] = now.isoformat()
+        changed = True
+    return state, changed
 
 
 def main():
