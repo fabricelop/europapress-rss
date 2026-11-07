@@ -1,0 +1,15 @@
+name: TTActualidad IA redirect audit (read only)
+on:
+  push:
+    branches: [fix/ttactualidad-buffer-approved-ai-redirect-20261107]
+    paths: [pilot/ttactualidad_ai_redirect_audit.py, .github/workflows/ttactualidad-ai-redirect-audit.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe Espanyol exact approved image without publishing
+        run: python3 pilot/ttactualidad_ai_redirect_audit.py
