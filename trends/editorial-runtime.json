@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-0640-chat",
   "command_id": "tr-manual-20261107-0710-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-07T07:10:00+01:00",
-  "updated_at": "2026-11-07T07:11:10+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T07:11:45+01:00",
+  "finished_at": "2026-11-07T07:11:45+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -38,25 +38,31 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "code": "request_queue_invalid_states",
+      "message": "health-status reporta 508 estados históricos inválidos en request_queue; editorial_queue está OK y no hay trabajo editorial activo.",
+      "blocking_editorial": false
+    }
+  ],
   "error": null,
   "activity": {
-    "phase": "verifying",
-    "message": "Refresco actual confirmado: recent.json 07:10:53, requests.json 07:10:57 y editorial-queue 07:10:57. Verificando barrera final en main.",
-    "updated_at": "2026-11-07T07:11:10+01:00"
+    "phase": "closing",
+    "message": "Pasada 0/0 cerrada tras barrera final en main: Top 30 fresco (07:10:53), editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. Incidencia de salud no editorial: request_queue mantiene 508 estados históricos inválidos.",
+    "updated_at": "2026-11-07T07:11:45+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-0555-chat",
+    "run_id": "tr-manual-20261107-0710-chat",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-07T05:55:00+01:00",
-    "updated_at": "2026-11-07T06:02:07+01:00",
-    "finished_at": "2026-11-07T06:02:07+01:00",
+    "started_at": "2026-11-07T07:10:00+01:00",
+    "updated_at": "2026-11-07T07:11:45+01:00",
+    "finished_at": "2026-11-07T07:11:45+01:00",
     "current": 0,
     "total": 0,
     "queue_complete": true,
@@ -84,10 +90,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-manual-20261107-0555-chat cerrada 0/0 tras refresh #711 SUCCESS. Barrera final main: editorial-queue=0, preparing/update/rewrite_pending/reexplain=0. Incidencia de salud: request_queue reporta 508 estados inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-manual-20261107-0710-chat cerrada 0/0. Barrera final main: recent 07:10:53, editorial-queue=0, preparing/update/rewrite_pending/reexplain/review_red/anticipate=0. Incidencia de salud: request_queue reporta 508 estados históricos inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T07:10:00+01:00",
-  "last_completed_at": "2026-11-07T06:02:07+01:00",
+  "last_completed_at": "2026-11-07T07:11:45+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -154,7 +160,8 @@
     "tr-1794019391555-manual",
     "tr-1794021900000-manual",
     "tr-manual-20261107-0525-chat",
-    "tr-manual-20261107-0555-chat"
+    "tr-manual-20261107-0555-chat",
+    "tr-manual-20261107-0710-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -223,7 +230,8 @@
     "tr-1794019391555-manual",
     "tr-1794021900000-manual",
     "tr-manual-20261107-0525-chat",
-    "tr-manual-20261107-0555-chat"
+    "tr-manual-20261107-0555-chat",
+    "tr-manual-20261107-0710-chat"
   ],
-  "message": "Refresco actual confirmado: recent.json 07:10:53, requests.json 07:10:57 y editorial-queue 07:10:57. Verificando barrera final en main."
+  "message": "Pasada tr-manual-20261107-0710-chat cerrada 0/0. Barrera final main: recent 07:10:53, editorial-queue=0, preparing/update/rewrite_pending/reexplain/review_red/anticipate=0. Incidencia de salud: request_queue reporta 508 estados históricos inválidos; editorial_queue=OK. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
