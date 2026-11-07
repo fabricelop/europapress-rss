@@ -7,44 +7,64 @@
   "previous_run_id": "tr-1794087029651-manual",
   "command_id": "tr-1794087259344-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T22:35:00+01:00",
-  "updated_at": "2026-11-07T22:35:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 1,
-  "trend_id": "red-review-90ee5d10efc88b0eb062",
-  "title": "Revisar novedades: Aldama",
-  "queue_complete": false,
+  "updated_at": "2026-11-07T22:37:00+01:00",
+  "finished_at": "2026-11-07T22:37:00+01:00",
+  "current": 2,
+  "total": 2,
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
+    "red-review-e8d758a81c6749b1b7ca",
     "red-review-90ee5d10efc88b0eb062"
   ],
-  "remaining_active_ids": [
-    "red-review-90ee5d10efc88b0eb062"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
+  "outcomes": [
+    {
+      "id": "red-review-e8d758a81c6749b1b7ca",
+      "revision": 0,
+      "name": "Revisar novedades: Iker Luque",
+      "outcome": "distinct_update",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "created_id": "trend-update-2d3d633d0064ec9edde7",
+      "apply_commit": "318b6c61e8d1c37669e68623f060628c8519c4ea"
+    },
+    {
+      "id": "red-review-90ee5d10efc88b0eb062",
+      "revision": 0,
+      "name": "Revisar novedades: Aldama",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "4bcc494fc4e5dd9fe16c403792f7cb58901eb9d0"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -52,10 +72,25 @@
     {
       "at": "2026-11-07T22:35:00+01:00",
       "phase": "preparing",
-      "message": "Pasada tr-1794087259344-manual iniciada con 1 revisiones activas; se procesarán por antigüedad con revalidación JIT. Sin ImageGen."
+      "message": "Pasada iniciada con dos review_red detectados en la lectura inicial. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T22:36:05+01:00",
+      "phase": "verifying",
+      "message": "Iker Luque convergió: episodio distinto aplicado y nueva ficha trend-update-2d3d633d0064ec9edde7 creada."
+    },
+    {
+      "at": "2026-11-07T22:36:35+01:00",
+      "phase": "verifying",
+      "message": "Aldama convergió como unchanged; se conserva texto y fecha de la ficha previa."
+    },
+    {
+      "at": "2026-11-07T22:37:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final main: editorial-queue=0; ambos review_red aplicados; sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T22:35:00+01:00",
-  "last_completed_at": null,
+  "last_completed_at": "2026-11-07T22:37:00+01:00",
   "api_failover_enabled": false
 }
