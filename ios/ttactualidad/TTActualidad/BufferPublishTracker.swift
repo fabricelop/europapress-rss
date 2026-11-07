@@ -12,6 +12,7 @@ struct TTBufferPublication: Decodable {
     let state: String
     let sent_at: String?
     let post_url: String?
+    let media_type: String?
     let closure_verified: Bool?
     let closure_error: String?
     let verification_note: String?
@@ -46,9 +47,35 @@ final class BufferPublishTracker: ObservableObject {
     @Published private(set) var notice = ""
     @Published private(set) var change = 0
     @Published private(set) var sending = Set<String>()
+    // An in-memory visual reservation, NOT a GitHub or X publication receipt.
+    @Published private(set) var immediateHide = Set<String>()
+    // X-confirmed transmissions are durable tombstones for Listas. The
+    // Buffer ledger read can fail or lag while the app refreshes the other
+    // editorial files; that must never resurrect an already sent episode.
+    // Only a verified "sent" ledger entry can add a key to this cache.
+    private static let confirmedSentStorageKey = "TTActualidad.bufferConfirmedSent.v1"
+    private var confirmedSentKeys = Set<String>(
+        UserDefaults.standard.stringArray(
+            forKey: BufferPublishTracker.confirmedSentStorageKey) ?? [])
 
     private static func key(_ project: String, _ id: String, _ revision: Int) -> String {
         project + ":" + id + ":r" + String(revision)
+    }
+
+    // The tap removes the item visually before the network round trip.
+    // The authoritative Listas store stays unchanged; failed / timed-out
+    // requests restore the row automatically.
+    func stagePublish(project: String, id: String, revision: Int) {
+        immediateHide.insert(Self.key(project, id, revision))
+    }
+
+    func hidesFromListas(project: String, id: String, revision: Int) -> Bool {
+        let key = Self.key(project, id, revision)
+        return immediateHide.contains(key) || confirmedSentKeys.contains(key) ||
+            posts.contains {
+                $0.project == project && $0.event_id == id &&
+                $0.revision == revision && $0.state == "sent"
+            }
     }
 
     // Receipt survives reopening the editorial card. A pending dispatch is
@@ -62,14 +89,16 @@ final class BufferPublishTracker: ObservableObject {
     }
 
     func alreadySent(project: String, id: String, revision: Int) -> Bool {
-        posts.contains {
-            $0.project == project && $0.event_id == id &&
-            $0.revision == revision && $0.state == "sent"
-        }
+        confirmedSentKeys.contains(Self.key(project, id, revision)) ||
+            posts.contains {
+                $0.project == project && $0.event_id == id &&
+                $0.revision == revision && $0.state == "sent"
+            }
     }
 
     func blocked(project: String, id: String, revision: Int) -> Bool {
-        sending.contains(Self.key(project, id, revision)) || posts.contains {
+        alreadySent(project: project, id: id, revision: revision) ||
+            sending.contains(Self.key(project, id, revision)) || posts.contains {
             $0.project == project && $0.event_id == id &&
             $0.revision == revision &&
             ["reserved", "unknown", "pending", "sent"].contains($0.state)
@@ -129,6 +158,18 @@ final class BufferPublishTracker: ObservableObject {
             guard (response as? HTTPURLResponse)?.statusCode == 200 else { return }
             let ledger = try JSONDecoder().decode(TTBufferLedger.self, from: data)
             posts = ledger.items
+            let confirmed = Set(ledger.items.filter { $0.state == "sent" }.map {
+                Self.key($0.project, $0.event_id, $0.revision)
+            })
+            // Monotonic, exact revision-specific closure. Never clear on a
+            // transient empty/stale response; a legitimate later revision
+            // remains a separate episode.
+            let merged = confirmedSentKeys.union(confirmed)
+            if merged != confirmedSentKeys {
+                confirmedSentKeys = merged
+                UserDefaults.standard.set(Array(merged).sorted(),
+                                          forKey: Self.confirmedSentStorageKey)
+            }
             apiQuota = ledger.api_quota
             loaded = true
             backendAvailable = true
@@ -142,13 +183,16 @@ final class BufferPublishTracker: ObservableObject {
     // editorial item. Buffer itself is never invoked by refresh() or polling.
     func publish(github: GitHubEditor, project: String, id: String,
                  revision: Int) async {
+        let key = Self.key(project, id, revision)
         guard github.authenticated else {
+            immediateHide.remove(key)
             notice = "Conecta GitHub antes de publicar directamente."
             change += 1
             return
         }
         guard ["ttittulares", "ttendencias"].contains(project),
               !id.isEmpty && revision >= 0 else {
+            immediateHide.remove(key)
             notice = "Identidad editorial no confirmada. Actualiza la ficha."
             change += 1
             return
@@ -157,18 +201,20 @@ final class BufferPublishTracker: ObservableObject {
         // deliberately fail-closed; no request is submitted on 404/error.
         await refresh()
         guard backendAvailable else {
+            immediateHide.remove(key)
             notice = "Buffer aún no está activado en GitHub. No se ha enviado nada a X; la ficha permanece en Listas."
             change += 1
             return
         }
         if blocked(project: project, id: id, revision: revision) {
+            immediateHide.remove(key)
             notice = "Esta revisión ya está publicada o pendiente. No se duplicará."
             change += 1
             return
         }
         let account = project == "ttittulares" ? "@ttittulares" : "@ttendenciasesp"
         let requestID = UUID().uuidString.lowercased()
-        let key = Self.key(project, id, revision)
+        immediateHide.insert(key)
         sending.insert(key)
         notice = "Enviando solicitud a " + account + "; aún no se ha publicado."
         change += 1
@@ -179,6 +225,7 @@ final class BufferPublishTracker: ObservableObject {
         ], label: "Publicar directo en " + account)
         if result == .failed {
             sending.remove(key)
+            immediateHide.remove(key)
             notice = github.notice
             change += 1
             return
@@ -201,19 +248,25 @@ final class BufferPublishTracker: ObservableObject {
                 switch receipt.state {
                 case "sent":
                     if receipt.closure_verified == true {
+                        immediateHide.remove(key)
                         notice = "Publicado en X y retirado de Listas · @" + receipt.account
-                    } else {
-                        notice = "Buffer confirmó el tuit en X · @" + receipt.account +
-                            ". Retirada de Listas pendiente de recibo."
+                        if let url = receipt.post_url { notice += " · " + url }
+                        change += 1
+                        return
                     }
+                    notice = "Buffer confirmó X, pero falta la retirada de Listas. " +
+                             "La ficha sigue oculta provisionalmente."
                     if let url = receipt.post_url { notice += " · " + url }
                     change += 1
-                    return
+                    // Continue checking the *separate* closure receipt, never repost.
+                    continue
                 case "failed":
+                    immediateHide.remove(key)
                     notice = "No publicada: " + (receipt.error ?? "Buffer rechazó la orden.")
                     change += 1
                     return
                 case "unknown":
+                    immediateHide.remove(key)
                     notice = "Resultado incierto: comprueba X antes de intentar otra publicación."
                     change += 1
                     return
@@ -222,7 +275,16 @@ final class BufferPublishTracker: ObservableObject {
                 }
             }
         }
-        notice = "Pendiente de confirmación; revisa los contadores al actualizar."
+        immediateHide.remove(key)
+        if alreadySent(project: project, id: id, revision: revision) {
+            // X already published; never resurface this as a fresh publishable
+            // item or resend it. The GitHub Listas receipt remains independent.
+            notice = "Buffer confirmó X, pero sigue pendiente el recibo de retirada de Listas. " +
+                     "La ficha continúa oculta provisionalmente; no se volverá a publicar."
+        } else {
+            notice = "Publicación no confirmada. La ficha vuelve a Listas; " +
+                     "comprueba el estado de Buffer antes de reintentar."
+        }
         change += 1
     }
 }

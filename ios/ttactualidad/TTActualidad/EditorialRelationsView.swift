@@ -125,7 +125,7 @@ private final class EditorialRelationsModel: ObservableObject {
         for (index, change) in changes.enumerated() {
             let pair = change.news.stableIdentity + "↔" + change.trend.stableIdentity
             guard seen.insert(pair).inserted else { continue }
-            notice = "Guardando relaciones verificadas: " +
+            notice = "Solicitando guardado de relaciones: " +
                 String(index + 1) + "/" + String(changes.count)
             do {
                 try await postDecision(news: change.news, trend: change.trend,
@@ -360,11 +360,16 @@ struct EditorialRelationsView: View {
                 fallbackDates: dates, hidden: hiddenNews, limit: 5)
             if top30Trends.indices.contains(index) {
                 let row = top30Trends[index]
-                if row.name == name,
-                   let endpoint = EditorialRelationsPolicy.matchingTop30Endpoint(
-                       id: row.editorialID, revision: row.revision,
-                       renderedText: row.explanation, candidates: endpoints) {
-                    trends[key] = endpoint
+                if row.name == name && !row.editorialID.isEmpty {
+                    // Prefer an exact server episode; otherwise the current
+                    // Top30 ID and revision remain valid selection references.
+                    trends[key] = EditorialRelationsPolicy.matchingTop30Endpoint(
+                        id: row.editorialID, revision: row.revision,
+                        renderedText: row.explanation, candidates: endpoints) ??
+                        EditorialRelationEndpoint(
+                            id: row.editorialID, revision: row.revision,
+                            episodeFingerprint: "", title: row.name,
+                            text: row.explanation, path: nil)
                 }
             }
         }
@@ -631,8 +636,7 @@ struct EditorialRelationsView: View {
              trend: EditorialRelationEndpoint, action: String)] {
         guard let trend = currentTrendEndpoint(rank: rank, name: name) else { return [] }
         return related.compactMap { news in
-            guard !news.episodeFingerprint.isEmpty,
-                  let desired = pendingSwitches[pairKey(news, trend)],
+            guard let desired = pendingSwitches[pairKey(news, trend)],
                   let action = EditorialRelationsPolicy.actionForSwitch(
                       current: relationState(news, trend), selected: desired)
             else { return nil }
@@ -640,20 +644,10 @@ struct EditorialRelationsView: View {
         }
     }
 
-    private func unverifiableCount(_ related: [EditorialRelationEndpoint],
-                                   rank: Int, name: String) -> Int {
-        guard let trend = currentTrendEndpoint(rank: rank, name: name) else {
-            return related.count
-        }
-        return related.filter { $0.episodeFingerprint.isEmpty ||
-            trend.episodeFingerprint.isEmpty }.count
-    }
-
     private func trendCard(rank: Int, name: String) -> some View {
         let related = relatedNews(rank: rank, name: name)
         let associated = confirmedCount(related, rank: rank, name: name)
         let changes = changesForTrend(related, rank: rank, name: name)
-        let unresolved = unverifiableCount(related, rank: rank, name: name)
         return DisclosureGroup(isExpanded: trendExpansion(rank: rank, name: name)) {
             if related.isEmpty {
                 Text(model.historicalNews.isEmpty ?
@@ -663,16 +657,6 @@ struct EditorialRelationsView: View {
             } else {
                 ForEach(related, id: \.stableIdentity) { news in
                     trendNewsRow(news: news, rank: rank, name: name)
-                }
-                if unresolved > 0 {
-                    Text(String(unresolved) + " de " + String(related.count) +
-                         " noticias sin identidad de Sites: se muestran, pero no es posible guardarlas todavía.")
-                        .font(.caption2).foregroundStyle(.orange)
-                    if changes.isEmpty {
-                        Label("Guardar no disponible: falta identidad editorial del servidor.",
-                              systemImage: "lock")
-                            .font(.caption2).foregroundStyle(.secondary)
-                    }
                 }
                 if !changes.isEmpty {
                     Button {
@@ -709,10 +693,10 @@ struct EditorialRelationsView: View {
     private func trendNewsRow(news: EditorialRelationEndpoint,
                               rank: Int, name: String) -> some View {
         let trend = currentTrendEndpoint(rank: rank, name: name)
-        let verified = trend != nil && !news.episodeFingerprint.isEmpty
+        let selectable = trend != nil
         let linkKey = trend.map { pairKey(news, $0) } ?? ""
         let linked = trend.map { relationState(news, $0) == "linked" } ?? false
-        let selected = verified ? (pendingSwitches[linkKey] ?? linked) : false
+        let selected = selectable ? (pendingSwitches[linkKey] ?? linked) : false
         return VStack(alignment: .leading, spacing: 8) {
             Text(news.title).font(.subheadline.weight(.semibold))
                 .fixedSize(horizontal: false, vertical: true)
@@ -725,7 +709,7 @@ struct EditorialRelationsView: View {
                 Text(news.text).font(.caption)
                     .foregroundStyle(.secondary).lineLimit(3)
             }
-            if let trend, verified {
+            if let trend, selectable {
                 Button {
                     toggleSelection(news, trend)
                 } label: {
@@ -734,16 +718,15 @@ struct EditorialRelationsView: View {
                 }
                 .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
             } else {
-                Label("Solo consulta · identidad de Sites pendiente",
-                      systemImage: "lock")
-                    .font(.caption).foregroundStyle(.secondary)
+                Text("No se reconoce el identificador de la tendencia.")
+                    .font(.caption).foregroundStyle(.orange)
             }
-            if pendingSwitches[linkKey] != nil && verified {
+            if pendingSwitches[linkKey] != nil && selectable {
                 Text(selected ? "Se asociará al pulsar Guardar" :
                      "Se desasociará al pulsar Guardar")
                     .font(.caption2).foregroundStyle(.orange)
-            } else if !verified {
-                Text("Sin huella editorial del servidor. No se puede asociar por nombre ni guardar esta noticia.")
+            } else if !selectable {
+                Text("Identificador de tendencia pendiente.")
                     .font(.caption2).foregroundStyle(.orange)
             }
             Button("Ocultar esta noticia") { hide(news) }
@@ -930,20 +913,11 @@ struct EditorialRelationsView: View {
     @ViewBuilder
     private func top30Row(news: EditorialRelationEndpoint,
                           rank: Int, name: String) -> some View {
-        let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
-        // Never link a stale trend with the same display name. The actual
-        // current Top30 row must carry the same exact editorial episode.
-        let row = top30Trends.indices.contains(rank - 1) ? top30Trends[rank - 1] : nil
-        let endpoint = row.flatMap { row -> EditorialRelationEndpoint? in
-            guard row.name == name else { return nil }
-            return EditorialRelationsPolicy.matchingTop30Endpoint(
-                id: row.editorialID, revision: row.revision,
-                renderedText: row.explanation, candidates: endpoints)
-        }
+        let endpoint = currentTrendEndpoint(rank: rank, name: name)
         HStack(spacing: 8) {
             Text(String(rank) + ".").font(.caption).foregroundStyle(.secondary)
                 .frame(width: 24, alignment: .trailing)
-            if let trend = endpoint, !news.episodeFingerprint.isEmpty {
+            if let trend = endpoint {
                 let state = relationState(news, trend)
                 let linked = state == "linked"
                 let checked = pendingSwitches[pairKey(news, trend)] ?? linked
@@ -979,7 +953,7 @@ struct EditorialRelationsView: View {
                         .font(.system(size: 19)).foregroundStyle(.secondary)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(name).font(.subheadline)
-                        Text("Solo consulta · identidad de Sites pendiente")
+                        Text("Identificador de tendencia pendiente")
                             .font(.caption2).foregroundStyle(.orange)
                     }
                 }

@@ -71,6 +71,8 @@ struct EditorialActions: View {
             }
             quickButton("Publicar directo · Buffer", "paperplane.fill") {
                 guard github.authenticated else { showSettings = true; return }
+                // Hide synchronously; a failed dispatch restores the row.
+                buffer.stagePublish(project: project, id: editorialID, revision: revision)
                 Task {
                     await buffer.publish(github: github, project: project,
                                          id: editorialID, revision: revision)
@@ -81,12 +83,60 @@ struct EditorialActions: View {
                       fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
                       buffer.blocked(project: project, id: editorialID, revision: revision))
             Text("Un toque · @" + (news == nil ? "ttendenciasesp" : "ttittulares") +
-                 " · " + (aiPhotoURL != nil ? "foto IA" :
-                           archivePhotoURL != nil ? "foto archivo" : "solo texto") +
+                 " · prioridad IA aprobada, después archivo y por último texto" +
                  " (sin abrir X)")
                 .font(.system(size: 10))
                 .foregroundStyle(TTTheme.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            if let receipt = buffer.latestReceipt(project: project, id: editorialID,
+                                                  revision: revision),
+               receipt.state == "sent", let media = receipt.media_type {
+                Text("Buffer envió: " + (media == "ai" ? "imagen IA verificada" :
+                     media == "archive" ? "foto de archivo" : "solo texto") +
+                     (receipt.closure_verified == true ?
+                      " · retirada confirmada" : " · retirada pendiente"))
+                    .font(.caption2).foregroundStyle(TTTheme.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            if let receipt = buffer.latestReceipt(project: project, id: editorialID,
+                                                  revision: revision) {
+                if receipt.state == "sent" && receipt.closure_verified == true {
+                    Text("Publicado en X y retirado de Listas (recibos confirmados)")
+                        .font(.caption2).foregroundStyle(TTTheme.teal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else if receipt.state == "sent" {
+                    Text("Publicado en X; esperando recibo de retirada de Listas.")
+                        .font(.caption2).foregroundStyle(TTTheme.muted)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if receipt.state == "sent", let raw = receipt.post_url,
+                   let verified = URL(string: raw),
+                   verified.scheme == "https",
+                   ["x.com", "twitter.com"].contains(verified.host?.lowercased() ?? ""),
+                   verified.path.contains("/status/") {
+                    quickButton("Ver publicación en X", "arrow.up.right.square") {
+                        openURL(verified)
+                    }
+                }
+            }
+            quickButton("Comprobar estado de Buffer", "arrow.clockwise") {
+                Task {
+                    await buffer.refresh()
+                    if let receipt = buffer.latestReceipt(project: project, id: editorialID,
+                                                         revision: revision),
+                       receipt.state == "sent" && receipt.closure_verified == true {
+                        outcome = "Publicado en X y retirado de Listas (recibos confirmados)"
+                        await store.refreshIfStale(minInterval: 0)
+                    } else if let receipt = buffer.latestReceipt(project: project,
+                                                                 id: editorialID,
+                                                                 revision: revision) {
+                        outcome = "Buffer: " + receipt.state +
+                                  ". La retirada de Listas necesita un recibo independiente."
+                    } else {
+                        outcome = "No hay recibo definitivo de Buffer para esta revisión."
+                    }
+                }
+            }
             HStack(spacing: 7) {
                 quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                     .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
@@ -228,6 +278,10 @@ struct EditorialActions: View {
         }
         .onChange(of: buffer.change) { _, _ in
             outcome = buffer.notice
+            if buffer.latestReceipt(project: project, id: editorialID,
+                                    revision: revision)?.closure_verified == true {
+                Task { await store.refreshIfStale(minInterval: 0) }
+            }
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?

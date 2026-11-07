@@ -30,14 +30,17 @@ struct EditorialRelationEndpoint: Codable, Identifiable, Equatable {
 
     var identity: EditorialRelationIdentity {
         EditorialRelationIdentity(id: id, revision: revision,
-                                  episodeFingerprint: episodeFingerprint)
+                                  episodeFingerprint: episodeFingerprint.isEmpty ?
+                                  nil : episodeFingerprint)
     }
 }
 
 struct EditorialRelationIdentity: Codable, Equatable {
     let id: String
     let revision: Int
-    let episodeFingerprint: String
+    // A fingerprint is an optional additional check; an exact ID/revision
+    // remains addressable even for historical episodes without that field.
+    let episodeFingerprint: String?
 }
 
 struct EditorialRelation: Decodable, Identifiable {
@@ -189,7 +192,7 @@ enum EditorialRelationsPolicy {
     ) -> EditorialRelationEndpoint? {
         guard !id.isEmpty else { return nil }
         let matches = candidates.filter {
-            $0.id == id && $0.revision == revision && !$0.episodeFingerprint.isEmpty
+            $0.id == id && $0.revision == revision
         }
         if let exact = matches.first(where: { $0.text == renderedText }) {
             return exact
@@ -242,7 +245,6 @@ enum EditorialRelationsPolicy {
 
     static func matches(_ endpoint: EditorialRelationEndpoint,
                         id: String, revision: Int) -> Bool {
-        endpoint.id == id && endpoint.revision == revision &&
-            !endpoint.episodeFingerprint.isEmpty
+        endpoint.id == id && endpoint.revision == revision
     }
 }

@@ -127,9 +127,9 @@ final class EditorialRelationsTests: XCTestCase {
 
     func testRecentInboxShowsGitHubOnlyNewsWhenSitesReturnsNoNews() {
         let now = EditorialRelationsPolicy.parsedDate("2026-11-05T08:05:00Z")!
-        // A real READY or recently published event exists, but Sites has no
-        // matching /v1/snapshot news endpoint. Display it with a missing
-        // fingerprint; never mint a fake relationship identity.
+        // Historical news remains selectable by its exact stable ID/revision
+        // when the private snapshot omits an opaque episode fingerprint.
+        // The server must still verify identity and return an actual receipt.
         let savedHistory = EditorialRelationEndpoint(
             id: "c1e7f17edda4", revision: 1, episodeFingerprint: "",
             title: "La Séptima arranca mañana como nuevo canal generalista de la TDT",
@@ -142,8 +142,11 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(EditorialRelationsPolicy.recentNews(
             [savedHistory], hours: 12, now: now,
             hidden: ["c1e7f17edda4:r1"]).count, 0)
-        XCTAssertFalse(EditorialRelationsPolicy.matches(savedHistory,
+        XCTAssertTrue(EditorialRelationsPolicy.matches(savedHistory,
             id: "c1e7f17edda4", revision: 1))
+        XCTAssertNil(savedHistory.identity.episodeFingerprint)
+        XCTAssertFalse(EditorialRelationsPolicy.matches(savedHistory,
+            id: "c1e7f17edda4", revision: 2))
     }
 
     func testTimestampParsingSupportsFractionalSecondsAndTimezones() {

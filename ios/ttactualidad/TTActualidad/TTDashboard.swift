@@ -4,6 +4,7 @@ import UIKit
 // Bulk removal remains available independently of retired trend grouping.
 private struct ListasTrendControls: View {
     @EnvironmentObject private var store: EditorialStore
+    @EnvironmentObject private var buffer: BufferPublishTracker
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
     @State private var busy = false
@@ -11,7 +12,13 @@ private struct ListasTrendControls: View {
     @State private var confirmRemoveAllTrends = false
     @State private var removeAllRequestID = UUID().uuidString.lowercased()
     @State private var removeAllSelection: [TrendItem] = []
-    private var allTrends: [TrendItem] { store.snapshot.trendListas.filter(\.inListas) }
+    private var allTrends: [TrendItem] {
+        store.snapshot.trendListas.filter {
+            $0.inListas && !buffer.hidesFromListas(project: "ttendencias",
+                                                   id: $0.editorialID,
+                                                   revision: $0.revision)
+        }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
@@ -94,6 +101,21 @@ struct TTDashboard: View {
     @State private var publicationSheet: PublicationSheetRoute?
     @State private var requestingEditorialRun = false
     @State private var editorialRunMessage = ""
+
+    // Presentation-only overlay. The canonical editorial snapshot is never
+    // modified until the exact GitHub closure receipt has been verified.
+    private var displayNewsListas: [NewsItem] {
+        store.snapshot.news.filter {
+            !buffer.hidesFromListas(project: "ttittulares", id: $0.id,
+                                    revision: $0.revision)
+        }
+    }
+    private var displayTrendListas: [TrendItem] {
+        store.snapshot.trendListas.filter {
+            !buffer.hidesFromListas(project: "ttendencias", id: $0.editorialID,
+                                    revision: $0.revision)
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -206,7 +228,9 @@ struct TTDashboard: View {
             GitHubConnectionSheet(github: github).presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showImageInbox, onDismiss: { Task { await store.refresh(manual: true) } }) {
-            ImageApprovalInbox(github: github).presentationDetents([.large])
+            ImageApprovalInbox(github: github)
+                .environmentObject(store)
+                .presentationDetents([.large])
         }
         .sheet(isPresented: $showRelations) {
             EditorialRelationsView(github: github,
@@ -461,7 +485,7 @@ struct TTDashboard: View {
                 search = ""
                 UISelectionFeedbackGenerator().selectionChanged()
             } label: {
-                metric(label: "NOTICIAS EN LISTAS", number: store.snapshot.news.count,
+                metric(label: "NOTICIAS EN LISTAS", number: displayNewsListas.count,
                        icon: "newspaper.fill", tint: TTTheme.teal)
             }
             .buttonStyle(.plain)
@@ -474,7 +498,7 @@ struct TTDashboard: View {
                 search = ""
                 UISelectionFeedbackGenerator().selectionChanged()
             } label: {
-                metric(label: "TENDENCIAS EN LISTAS", number: store.snapshot.trendListas.count,
+                metric(label: "TENDENCIAS EN LISTAS", number: displayTrendListas.count,
                        icon: "chart.bar.fill", tint: TTTheme.blue)
             }
             .buttonStyle(.plain)
@@ -648,7 +672,7 @@ struct TTDashboard: View {
                                              count: 3), spacing: 5) {
                         filterChip("Top 30", store.snapshot.top30.count,
                                    store.trendFilter == .top) { store.trendFilter = .top }
-                        filterChip("Listas", store.snapshot.trendListas.count,
+                        filterChip("Listas", displayTrendListas.count,
                                    store.trendFilter == .listas) { store.trendFilter = .listas }
                         filterChip("En elaboración", store.snapshot.trendsElaboracion.count,
                                    store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
@@ -662,7 +686,7 @@ struct TTDashboard: View {
                 } else {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 5),
                                              count: 3), spacing: 5) {
-                        filterChip("Listas", store.snapshot.news.count,
+                        filterChip("Listas", displayNewsListas.count,
                                    store.newsFilter == .listas) { store.newsFilter = .listas }
                         filterChip("En elaboración", store.snapshot.newsElaboracion.count,
                                    store.newsFilter == .elaboracion) { store.newsFilter = .elaboracion }
@@ -811,13 +835,13 @@ struct TTDashboard: View {
                 Label("TTiTTulares", systemImage: "newspaper.fill")
                     .font(.headline).foregroundStyle(TTTheme.teal)
                 Spacer()
-                Text(String(store.snapshot.news.count))
+                Text(String(displayNewsListas.count))
                     .font(.headline.monospacedDigit()).foregroundStyle(TTTheme.teal)
             }
             // Combined Listas can contain hundreds of news cards. Building
             // them eagerly inside a VStack makes tab navigation stutter.
             LazyVStack(spacing: 5) {
-                ForEach(store.snapshot.news.filter {
+                ForEach(displayNewsListas.filter {
                     search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)
                 }) { story in
                     NewsTile(item: story, github: github, settings: $showSettings)
@@ -827,19 +851,19 @@ struct TTDashboard: View {
                 Label("TTendencias", systemImage: "chart.bar.fill")
                     .font(.headline).foregroundStyle(TTTheme.blue)
                 Spacer()
-                Text(String(store.snapshot.trendListas.count))
+                Text(String(displayTrendListas.count))
                     .font(.headline.monospacedDigit()).foregroundStyle(TTTheme.blue)
             }
             .padding(.top, 8)
             LazyVStack(spacing: 5) {
-                ForEach(store.snapshot.trendListas.filter {
+                ForEach(displayTrendListas.filter {
                     search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
                 }) { item in
                     TrendTile(item: item, showRank: item.rank > 0,
                               github: github, settings: $showSettings)
                 }
             }
-            if store.snapshot.news.isEmpty && store.snapshot.trendListas.isEmpty {
+            if displayNewsListas.isEmpty && displayTrendListas.isEmpty {
                 emptyNotice("No hay elementos en Listas")
             }
         }
@@ -848,7 +872,7 @@ struct TTDashboard: View {
     @ViewBuilder private var newsContent: some View {
         let category: [NewsItem] = {
             switch store.newsFilter {
-            case .listas: return store.snapshot.news
+            case .listas: return displayNewsListas
             case .elaboracion: return store.snapshot.newsElaboracion
             case .revision: return store.snapshot.newsRevision
             case .creciendo: return store.snapshot.newsCreciendo
@@ -869,7 +893,7 @@ struct TTDashboard: View {
         let items = store.snapshot.top30
         switch filter {
         case .top: return items
-        case .listas: return store.snapshot.trendListas
+        case .listas: return displayTrendListas
         case .elaboracion: return store.snapshot.trendsElaboracion
         case .recientes:
             return items.filter { $0.lastExplained.map {
