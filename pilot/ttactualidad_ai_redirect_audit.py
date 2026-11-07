@@ -26,6 +26,12 @@ def main():
         image_url=entry.get("image_url") or ""
         expected=entry.get("sha256") or ""
         try:
+            verified=pub.check_image(image_url,expected,"ttendencias",TARGET,0)
+            print("actual_publisher_IA_preflight","PASS","canonical_host",urlparse(verified).hostname)
+        except Exception as exc:
+            print("actual_publisher_IA_preflight","FAILED",type(exc).__name__,str(exc)[:95])
+            raise
+        try:
             original=urlparse(image_url)
             with urlopen(Request(image_url,headers={"User-Agent":"TTActualidad-BufferPublisher/1"}),timeout=25) as response:
                 final=urlparse(response.geturl())
