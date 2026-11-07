@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-07T05:14:38.703769+00:00",
+  "checked_at": "2026-11-07T05:30:15.356789+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,11 +40,12 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 2,
       "captured_age_minutes": 0.2,
-      "noise_count": 0
+      "noise_count": 0,
+      "repair_started": true
     },
     "listener": {
       "ok": true,
@@ -53,10 +54,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "queued",
       "conclusion": null,
-      "age_minutes": 4.0,
-      "run_id": 42341595759,
+      "age_minutes": 0.0,
+      "run_id": 42342991358,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -98,7 +99,9 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [],
+  "repairs_started": [
+    "relanzado refresco Top 10"
+  ],
   "blocking": [
     "cola con 508 estado(s) inválido(s)"
   ],
