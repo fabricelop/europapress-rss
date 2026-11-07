@@ -797,6 +797,7 @@ assert 'readPublicEditorialJSON("telegram/editorial-processing.json")' in auth
 assert 'readPublicEditorialJSON("pilot/ttactualidad-publication-events.json")' in auth
 assert 'readPublicEditorialJSON("ttittulares/prepared.json")' in auth
 assert 'readPublicEditorialJSON("ttittulares/status.json")' in auth
+assert 'readPublicEditorialJSON("trends/site-top30-current.json")' in auth
 assert 'Noticias del historial recuperadas:' in relations
 assert 'El historial editorial de 7 días no devolvió noticias' in relations
 assert 'outcome = store.actionMessage' in actions
