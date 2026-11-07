@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T07:10:57+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-07T06:18:25.379934+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-7c7d9ca36d57029954e5",
+      "revision": 0,
+      "name": "Revisar novedades: La UCO",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-11-07T06:18:25.379934+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "208c4969cff9",
+        "revision": 0,
+        "name": "La UCO",
+        "rank": 5,
+        "explanation": "TT#5 La UCO sigue siendo tendencia por la nueva pieza del caso Koldo: los seis detenidos ya están en libertad y la investigación continúa sobre presuntos amaños de obra pública y documentación de Adif.\n#CasoKoldo #UCO\n🌶️ Hubo seis arrestos, pero la pieza sigue abierta.",
+        "explanation_sha256": "978defed4e40306997c94cb15222ced5f37c9ed04e8b6cc2f4861ff812873f42",
+        "explained_at": "2026-11-05T11:31:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261105/uco-operacion-nueva-pieza-secreta-caso-koldo-audiencia-nacional/17300796.shtml"
+          },
+          {
+            "url": "https://elpais.com/espana/2026-11-05/la-uco-despliega-un-nuevo-operativo-tras-entregar-un-informe-sobre-amanos-en-el-caso-koldo.html"
+          }
+        ],
+        "fingerprint": "ab6d642aed2041ab9940dd5b68b11a7c13b3ac9d972957461dc9609a409b4cd1"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-68a1ca00023f6f3ef1cb",
+      "revision": 0,
+      "name": "Revisar novedades: Koldo",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-07T06:18:25.379934+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "49691c684a3e",
+        "revision": 0,
+        "name": "Koldo",
+        "rank": 1,
+        "explanation": "TT#1 Koldo sigue siendo tendencia por decir que un abogado del PP le ofreció 1 M€ contra Sánchez. RTVE cita fuentes que confirman reuniones; su defensa fue pagada por Okdiario. El PP niega la oferta.\n#KoldoGarcía #PP\n🌶️ Reuniones confirmadas; el millón sigue en disputa.",
+        "explanation_sha256": "37db4ddbf22fbd9a8d55758d9b44dcc0236d72e782d6dca1a81d3f1700ad8f2a",
+        "explained_at": "2026-11-05T11:47:10+01:00",
+        "verification_sources": [
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/05/koldo-garcia-asegura-a-la-ser-que-pacto-con-el-abogado-del-pp-un-millon-de-euros-a-cambio-de-informacion-para-derrocar-a-pedro-sanchez-cadena-ser/"
+          },
+          {
+            "url": "https://elpais.com/espana/2026-11-05/koldo-garcia-asegura-que-acordo-con-el-abogado-del-pp-un-millon-de-euros-a-cambio-de-informacion-para-hacer-caer-a-sanchez.html"
+          },
+          {
+            "url": "https://www.europapress.es/nacional/noticia-psoe-acusa-pp-intentar-comprar-testimonio-koldo-derribar-sanchez-genova-dice-falso-20261105113213.html"
+          }
+        ],
+        "fingerprint": "51d7344fd98b6cd2f07bcda9bf97b88265f29aef697bd7d75a8945019aa3f675"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
