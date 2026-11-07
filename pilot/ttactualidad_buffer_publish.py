@@ -479,6 +479,15 @@ def reconcile(data, key):
         request_id = item.get("closure_request_id")
         if request_id:
             receipt = closure_receipt(request_id)
+            if receipt and (
+                receipt.get("project") != item.get("project")
+                or receipt.get("event_id") != item.get("event_id")
+                or receipt.get("revision") != item.get("revision")
+                or receipt.get("decision") != "published"
+            ):
+                item["closure_error"] = "El recibo de cierre no coincide con esta ficha."
+                save(data, "detectar recibo de cierre no coincidente")
+                continue
             status = str((receipt or {}).get("status") or "").lower()
             if status in {"applied", "already_applied"}:
                 item["closure_verified"] = True
