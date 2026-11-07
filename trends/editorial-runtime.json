@@ -10,12 +10,12 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-07T23:25:00+01:00",
-  "updated_at": "2026-11-07T23:30:00+01:00",
-  "finished_at": "2026-11-07T23:30:00+01:00",
+  "updated_at": "2026-11-07T23:28:54+01:00",
+  "finished_at": "2026-11-07T23:28:54+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
-  "title": "TTendencias editorial",
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "ce2d7210b101"
@@ -45,8 +45,7 @@
       "name": "Gayà",
       "outcome": "explained",
       "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "943cfdb7551e9203f2787ea4c6f3e3c31e0bad1f"
+      "via": "editorial_outbox_applied"
     }
   ],
   "incident_count": 0,
@@ -122,9 +121,14 @@
       "at": "2026-11-07T23:30:00+01:00",
       "phase": "closing",
       "message": "Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain detectados. Cierre 1/1. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T23:28:54+01:00",
+      "phase": "closing",
+      "message": "Gayà r1 verificado como explained en requests.json y telegram-manual-explained.json con texto y explained_at idénticos. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-07T23:28:16+01:00",
-  "last_completed_at": "2026-11-07T23:30:00+01:00",
+  "last_completed_at": "2026-11-07T23:28:54+01:00",
   "api_failover_enabled": false
 }
