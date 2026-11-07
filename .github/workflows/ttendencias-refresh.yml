@@ -33,6 +33,10 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      # Tracked Python cache files otherwise change during preflight and
+      # conflict on git pull/rebase (observed 7 Nov 2026 at 22:59 UTC).
+      PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -68,6 +72,8 @@ jobs:
         run: |
           git config user.name "ttendencias-bot"
           git config user.email "actions@users.noreply.github.com"
+          # Discard only generated binary cache changes, never editorial JSON.
+          git restore --worktree --staged -- trends/__pycache__/suppression.cpython-312.pyc 2>/dev/null || true
           git pull --rebase --autostash origin main
           cp trends/editorial-queue.json /tmp/tt-queue-before.json 2>/dev/null || printf '{"items":[]}\n' >/tmp/tt-queue-before.json
 
