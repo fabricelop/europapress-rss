@@ -137,6 +137,33 @@ test('current index excludes closed news and old episodes while retaining exact 
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
 });
 
+test('isolated installer accepts only pinned prior manual-approval bridge versions',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const script=fs.readFileSync(path.join(__dirname,'../Actualizar-Solo-Receptor-Imagenes-TT.ps1'),'utf8');
+ const expected={
+   TTendencias:[
+    '2b20c5ea4075a75b99014b47a60c68b59f3c7499c8fadcd54749d9d640dcf862',
+    '190384d1ef7370495b8b33eba6f5b1d132f9e5945c6fff5e2432a3fb72860cab',
+    'd8b6e66006d63d478e641ffe8fe1040fad3bec538791147bf40499826a7443bb',
+    '3032a4813547cd1cde963a67c28700f0befb5054f5bf4e8e371a42634f9bd8b8',
+    '4f2f00db3aa3794e1c293201fc9f32e6f6dcd4cacc27c7742da0db93d9292e3f'],
+   TTiTTulares:[
+    'da12b28af6e2f667515b851bb44f609148078a2c72d3f9ed9ecf077f19854b80',
+    '2bf584a4f266d1ed8c4781b81c27a5e47379c2c94e6802ad51902a99c48c287e',
+    '6f1e5e9b390ab04ce068683b2d61535bda441550f419e4c04dc8896d1dabfb19',
+    'b163d1a60ceefe75205b81a9e10c002805e3c8bfc52e175068fb080bae22c3ea',
+    '7b7bc8d6e4e9a84e47714528df3cbe19e1feae7b11286712dd76d587396f707b']
+ };
+ for(const list of Object.values(expected))for(const hash of list){
+  assert.ok(script.includes("'"+hash+"'"),hash);
+ }
+ assert.match(script,/\$dependencyHash=Get-CanonicalSourceHash \$dependency/);
+ assert.match(script,/if\(\$entry\.Value -notcontains \$dependencyHash\)/);
+ assert.match(script,/RECEIVER_DEPENDENCY_UNKNOWN:[^']*canonicalSHA256=/);
+ assert.match(script,/RECEIVER_DEPENDENCY_EXPORT_MISSING/);
+ assert.match(script,/RECEIVER_APPROVAL_PAUSE_MISSING/);
+ assert.doesNotMatch(script,/RECEIVER_DEPENDENCY_UNKNOWN:[^\n]*Write-Host/);
+});
 test('isolated receiver installer updates only exact pinned CJS without disrupting generators',()=>{
  const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
  const script=fs.readFileSync(path.join(__dirname,'../Actualizar-Solo-Receptor-Imagenes-TT.ps1'),'utf8');
