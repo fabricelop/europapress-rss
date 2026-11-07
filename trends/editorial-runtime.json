@@ -8,9 +8,9 @@
   "command_id": "tr-1794055651059-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-07T13:48:30+01:00",
-  "updated_at": "2026-11-07T13:48:30+01:00",
+  "updated_at": "2026-11-07T13:52:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -329,6 +329,13 @@
       "trend_id": "d0c7bbcd1a51",
       "title": "DÍA DE PARTIDO",
       "message": "Pasada tr-1794055651059-manual iniciada; barrera fresca de main detecta 2 trabajos preparing: DÍA DE PARTIDO r1 y Javier Ruiz r0. Se procesa de antiguo a reciente. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:52:00+01:00",
+      "phase": "persisting",
+      "trend_id": "d0c7bbcd1a51",
+      "title": "DÍA DE PARTIDO",
+      "message": "Resultado r1 enviado por TTENDENCIAS_CHAT_OUTBOX_V1 tras revalidación JIT; esperando aplicación atómica en requests+explained y retirada de la misma revisión de la cola. Sin ImageGen."
     }
   ],
   "final_outcomes": [],
