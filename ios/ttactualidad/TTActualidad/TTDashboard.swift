@@ -1044,6 +1044,19 @@ private struct NewsTile: View {
                     .lineLimit(expanded ? nil : 2)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                if item.siteImageURL != nil && !item.siteImageSHA256.isEmpty {
+                    // Same verified-AI indicator already used on trend cards.
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(TTTheme.teal)
+                        .accessibilityLabel("Imagen IA verificada")
+                } else if item.imageURL != nil {
+                    // Archive photos are images, but must not be labelled IA.
+                    Image(systemName: "photo")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(TTTheme.muted)
+                        .accessibilityLabel("Fotografía de archivo")
+                }
             }
             .frame(minHeight: 36)
         }
