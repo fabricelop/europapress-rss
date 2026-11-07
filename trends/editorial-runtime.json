@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1125-chat",
-  "previous_run_id": "tr-manual-20261107-1117-chat",
-  "command_id": "tr-manual-20261107-1125-chat",
+  "run_id": "tr-manual-20261107-1140-chat",
+  "previous_run_id": "tr-manual-20261107-1125-chat",
+  "command_id": "tr-manual-20261107-1140-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T10:26:07.652Z",
-  "updated_at": "2026-11-07T10:26:31.135Z",
-  "finished_at": "2026-11-07T10:26:31.135Z",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T11:40:00+01:00",
+  "updated_at": "2026-11-07T11:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -104,6 +104,11 @@
       "at": "2026-11-07T10:26:31.135Z",
       "phase": "closing",
       "message": "Pasada cerrada 0/0; sin trabajos editoriales activos, sin imágenes y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T11:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-manual-20261107-1140-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [],
@@ -319,9 +324,9 @@
     "tr-manual-20261107-1117-chat",
     "tr-manual-20261107-1125-chat"
   ],
-  "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update, anticipate, review_red, rewrite_pending ni reexplicaciones pendientes. Sin ImageGen, image-outbox ni publicaciones.",
+  "message": "Pasada tr-manual-20261107-1140-chat en ejecución: barrera inicial y estado editorial en comprobación.",
   "outcomes": [],
   "recent_runs": [
-    "tr-manual-20261107-1125-chat"
+    "tr-manual-20261107-1140-chat"
   ]
 }
