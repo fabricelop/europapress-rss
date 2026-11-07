@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-07T14:25:09.928154+00:00",
+      "checked_at": "2026-11-07T18:58:37.225076+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1917057,
+          "seconds": 1933464,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,31 +22,60 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-07T14:25:09.928154+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-07T18:58:37.225076+00:00",
+      "issue_count": 5,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "9000db3c3553",
+          "title": "bezz",
+          "seconds": 2028,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "1edd6ef875e4",
+          "title": "Espanyol",
+          "seconds": 2014,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "598cf9e27b69",
+          "title": "Marc",
+          "seconds": 2002,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "35c83a0a6325",
+          "title": "Calero",
+          "seconds": 1991,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1917057,
+          "seconds": 1933464,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "c52727d98bcda276d6be33a39792b01af32d4eb0d0e22d5bfac2d64382036408",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 4
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-07T14:25:09.928154+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-07T14:25:09.928154+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-07T07:51:03.726613+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-11-07T18:58:37.225076+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-07T18:58:37.225076+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-07T18:58:37.225076+00:00"
   },
-  "checked_at": "2026-11-07T14:25:09.928154+00:00"
+  "checked_at": "2026-11-07T18:58:37.225076+00:00"
 }
