@@ -1,11 +1,11 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto');
 const source=fs.readFileSync(path.join(__dirname,'../TTImageApprovalReceiver.cjs'),'utf8');
-for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact closed conversation only in private relay and returns pending receipt',async()=>{
+for(const project of ['ttittulares','ttendencias'])for(const status of ['waiting','needs_review'])test(project+' '+status+' recovers exact closed conversation and returns pending receipt',async()=>{
  const base=fs.mkdtempSync(path.join(os.tmpdir(),'tt-intake-test-'));
  try{
  const sha=x=>crypto.createHash('sha256').update(x).digest('hex'),news=project==='ttittulares',text='Texto exacto',at='2026-11-06T08:45:00Z';
- const task={project,target_id:'topic-abc',command_id:'job-abc',revision:1,status:'waiting',secret_dpapi:'encrypted',conversation_url:'https://chatgpt.com/c/exact',browser_target_id:'reused',created_at:at,explanation_sha256:sha(text),editorial_sha256:sha([text,'Hechos','Remate'].join('\n'))};
+ const task={project,target_id:'topic-abc',command_id:'job-abc',revision:1,status,secret_dpapi:'encrypted',conversation_url:'https://chatgpt.com/c/exact',browser_target_id:'reused',created_at:at,explanation_sha256:sha(text),editorial_sha256:sha([text,'Hechos','Remate'].join('\n'))};
  fs.mkdirSync(path.join(base,project+'-web-images'));fs.writeFileSync(path.join(base,project+'-web-images/job.json'),JSON.stringify(task));
  for(const file of ['TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs'])fs.writeFileSync(path.join(base,file),"return {status:'waiting',reason:'manual_approval_required'}");
  const job={target_id:task.target_id,command_id:task.command_id,revision:1,context_snapshot:news?{tweet_text:text,factual_summary:'Hechos',remate:'Remate',prepared_at:at}:{explanation:text,explained_at:at}};

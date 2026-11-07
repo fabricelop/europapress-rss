@@ -30,32 +30,145 @@ for(const [file,name,news] of [['TTendenciasImageBridge.js','holdForWebImageRece
 }
 test('hundreds of obsolete never-checked jobs cannot starve an active card',()=>{
  const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');const old=Array.from({length:311},(_,i)=>({project:'ttendencias',target_id:'old-'+i,revision:0,command_id:'old-'+i,created_at:'2026-11-02T10:00:00Z'}));const live={project:'ttendencias',target_id:'live',revision:0,command_id:'live-job',created_at:'2026-11-02T22:00:00Z'};
- const selected=selectCurrentTasks([...old,live],{'live-job':{checkedAt:999999}},new Set(['ttendencias:live:0']));assert.equal(selected[0],live);assert.equal(selected.length,8);assert.equal(old.length,311);
+ const selected=selectCurrentTasks([...old,live],{'live-job':{checkedAt:999999}},new Set(['ttendencias:live:0']));
+ assert.equal(selected[0],live);
+ assert.equal(selected.length,312); // All eligible; the caller filters obsolete IDs first.
+ assert.equal(new Set(selected.map(x=>x.command_id)).size,312);
+ assert.equal(old.length,311);
 });
-test('historical originals receive retry slots while many current cards remain stuck',()=>{
+test('all eligible episodes are attempted without the old eight-item ceiling',()=>{
  const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');
- const recent=Array.from({length:32},(_,i)=>({
+ const current=Array.from({length:32},(_,i)=>({
   project:'ttendencias',target_id:'live-'+i,revision:0,
   command_id:'current-'+i,created_at:'2026-11-06T00:01:00Z'
  }));
  const historical=Array.from({length:17},(_,i)=>({
-  project:'ttittulares',target_id:'closed-'+i,revision:1,
-  command_id:'historical-'+i,created_at:'2026-11-05T10:01:00Z'
+  project:'ttittulares',target_id:'still-ready-'+i,revision:1,
+  command_id:'historical-'+i,created_at:'2026-10-25T10:01:00Z'
  }));
- const active=new Set(recent.map(x=>'ttendencias:'+x.target_id+':0'));
- const selection=selectCurrentTasks([...recent,...historical],{},active);
- assert.equal(selection.length,8);
- assert.equal(selection.filter(x=>x.command_id.startsWith('current-')).length,6);
- assert.equal(selection.filter(x=>x.command_id.startsWith('historical-')).length,2);
- // Cycles rotate historical jobs after updating their last checked times.
+ const active=new Set(current.map(x=>'ttendencias:'+x.target_id+':0'));
+ const selection=selectCurrentTasks([...current,...historical],{},active);
+ assert.equal(selection.length,49);
+ assert.equal(selection.filter(x=>x.command_id.startsWith('current-')).length,32);
+ assert.equal(selection.filter(x=>x.command_id.startsWith('historical-')).length,17);
+ assert.equal(new Set(selection.map(x=>x.command_id)).size,49);
+ // Priority is an ordering choice, never a drop. A previous failure does
+ // not remove an eligible command in the next receiver cycle.
  const progress=Object.fromEntries(selection.map(x=>[x.command_id,{checkedAt:Date.now()}]));
- const next=selectCurrentTasks([...recent,...historical],progress,active);
- assert.equal(next.filter(x=>x.command_id.startsWith('historical-')).length,2);
- assert.ok(next.some(x=>x.command_id==='historical-2'));
+ const next=selectCurrentTasks([...current,...historical],progress,active);
+ assert.equal(next.length,49);
+ assert(next.some(x=>x.command_id==='historical-16'));
+});
+
+test('receiver retries only reading exact PNG while ChatGPT hydration or CDP is transient',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const source=fs.readFileSync(path.join(__dirname,'..','TTImageApprovalReceiver.cjs'),'utf8');
+ assert.match(source,/const maxProbes=ownedTarget\?12:7/);
+ assert.match(source,/source\.rasterProbe\(task\.command_id,true\)/);
+ assert.match(source,/CDP_EVALUATION_FAILED/);
+ assert.match(source,/capture_requires_sign_in/);
+ assert.match(source,/if\(raster\?\.ready/);
+ assert.doesNotMatch(source,/Runtime\.navigate/);
+ assert.doesNotMatch(source,/Input\.insertText/);
+});
+
+test('hidden Windows startup updater validates local hash, backs up, and never kills processes',()=>{
+ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+ const updater=fs.readFileSync(path.join(__dirname,'../Actualizar-Inicio-Oculto-TT.ps1'),'utf8');
+ const watchdog=fs.readFileSync(path.join(__dirname,'../TT-LocalWatchdog.ps1'),'utf8');
+ const canonical=watchdog.replace(/\r\n/g,'\n').replace(/\n/g,'\r\n');
+ const hash=crypto.createHash('sha256').update(canonical,'utf8').digest('hex');
+ assert.ok(updater.includes("$expected='"+hash+"'"));
+ for(const marker of ['WATCHDOG_LOCAL_VERSION_UNKNOWN','WATCHDOG_REMOTE_SHA_INVALID',
+     'WATCHDOG_PARSE_INVALID','WATCHDOG_CHANGED_DURING_INSTALL',
+     'WATCHDOG_INSTALLED_SHA_INVALID','TTActualidad hidden startup v2',
+     'Startup','Move-Item -LiteralPath $entry.cmd','[IO.File]::Replace(']){
+  assert.ok(updater.includes(marker),marker);
+ }
+ assert.doesNotMatch(updater,/Stop-Process|Stop-ScheduledTask|taskkill|Enable-ScheduledTask|Start-ScheduledTask/);
+ assert.match(updater,/if\(\$PreflightOnly\)/);
+ assert.match(updater,/script personalizado/);
+});
+
+test('relay Chrome recovery is bounded and fails closed after uncertain cleanup',()=>{
+ const source=require('node:fs').readFileSync(
+  require('node:path').join(__dirname,'../TTImageApprovalReceiver.cjs'),'utf8');
+ assert.match(source,/MAX_NEW_RELAY_TABS_PER_CYCLE=1/);
+ assert.match(source,/MAX_RELAY_PAGE_TARGETS=6/);
+ assert.match(source,/RELAY_RETRY_COOLDOWN_MS=15\*60\*1000/);
+ assert.match(source,/newlyOpened>=MAX_NEW_RELAY_TABS_PER_CYCLE/);
+ assert.match(source,/pages\.filter\(p=>p\.type==='page'\)\.length>=MAX_RELAY_PAGE_TARGETS/);
+ assert.match(source,/relay-cleanup-unconfirmed\.json/);
+ assert.match(source,/Target\.closeTarget/);
+ assert.match(source,/json\/close/);
+ assert.match(source,/RELAY_CLEANUP_UNCONFIRMED/);
+ assert.match(source,/RELAY_TAB_BUDGET/);
+ assert.match(source,/RELAY_RETRY_COOLDOWN/);
+ assert.match(source,/RELAY_OPEN_FAILED/);
+});
+test('watchdog keeps known hidden startup and does not re-create visible CMD',()=>{
+ const source=require('node:fs').readFileSync(
+  require('node:path').join(__dirname,'../TT-LocalWatchdog.ps1'),'utf8');
+ const section=source.slice(source.indexOf('function EnsureStartup('),source.indexOf('function EnsureChrome{'));
+ assert.match(section,/ChangeExtension\(\$Name,'\.vbs'\)/);
+ assert.match(section,/TTActualidad hidden startup v2/);
+ assert.match(section,/STARTUP CUSTOM CMD PRESERVED/);
+ assert.match(section,/STARTUP CUSTOM VBS PRESERVED/);
+ assert.match(section,/Move-Item -LiteralPath \$legacy -Destination \$disabled/);
+ assert.doesNotMatch(section,/Set-Content -LiteralPath \$path/);
+});
+
+test('a retained original stays eligible after 72 hours in both capture watchers',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const now=Date.parse('2026-11-07T14:40:00Z');
+ for(const [name,mod] of [
+  ['TTendenciasWebImages.cjs',require('../TTendenciasWebImages.cjs')],
+  ['TTiTTularesWebImages.cjs',require('../TTiTTularesWebImages.cjs')]]) {
+  const original={file:'original.json',task:{target_id:'valid-id',command_id:'cmd-exact',
+   status:'waiting',created_at:'2026-10-20T09:00:00Z'}};
+  assert.equal(mod.dueTasks([original],now).length,1,name+' must not drop original by age');
+  const src=fs.readFileSync(path.join(__dirname,'..',name),'utf8');
+  assert.doesNotMatch(src,/status:'expired',reason:'image_not_confirmed_within_72h'/);
+  assert.doesNotMatch(src,/status:'needs_review',reason:'original_not_associated_within_72h'/);
+ }
 });
 
 test('current index excludes closed news and old episodes while retaining exact live revisions',()=>{
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
+});
+
+test('installer waits for uninterrupted generator quiet before replacement',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const script=fs.readFileSync(path.join(__dirname,'../Actualizar-Recogida-Privada-TT.ps1'),'utf8');
+ const start=script.indexOf('function Wait-ForGeneratorsIdle(');
+ const end=script.indexOf('if(-not(Test-Path -LiteralPath $base',start);
+ const fn=script.slice(start,end);
+ assert.ok(start>0 && end>start);
+ assert.match(fn,/\$quietSeconds=20/);
+ assert.match(fn,/\$quietSince=\$null/);
+ assert.match(fn,/if\(\$busy\.Count\)\{\s*\$quietSince=\$null/);
+ assert.match(fn,/if\(\(\$now-\$quietSince\)\.TotalSeconds -ge \$quietSeconds\)\{return\}/);
+ assert.match(fn,/Start-Sleep -Seconds 2/);
+ assert.doesNotMatch(fn,/if\(-not \$busy\.Count\)\{return\}/);
+ assert.match(script,/Wait-ForGeneratorsIdle \$MaxWaitSeconds\s+Assert-GeneratorsIdle/);
+ assert.match(script,/\[IO.File\]::Replace\(\$stage,\$live/);
+ assert.match(script,/foreach\(\$name in \$written\)/);
+});
+test('installer SHA pins accept only checked-in UTF-8 content with equivalent line endings',()=>{
+ const crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
+ const script=fs.readFileSync(path.join(__dirname,'..','Actualizar-Recogida-Privada-TT.ps1'),'utf8');
+ assert.match(script,/function Get-CanonicalSourceHash/);
+ assert.match(script,/Get-CanonicalSourceHash \$destination/);
+ assert.match(script,/Get-CanonicalSourceHash \$stage/);
+ assert.match(script,/Get-CanonicalSourceHash \$live/);
+ for(const name of ['TTImageApprovalReceiver.cjs','TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs']){
+  const source=fs.readFileSync(path.join(__dirname,'..',name),'utf8');
+  const canonical=source.replace(/\r\n/g,'\n').replace(/\n/g,'\r\n');
+  const hash=crypto.createHash('sha256').update(canonical,'utf8').digest('hex');
+  assert.ok(script.includes("'"+name+"'='"+hash+"'"),name+' SHA mismatch');
+  const utf8lf=Buffer.from(source.replace(/\r\n/g,'\n'),'utf8');
+  assert.equal(crypto.createHash('sha256').update(utf8lf).digest('hex').length,64);
+ }
 });
 
 test('installer can replace a running inbox receiver atomically without stopping it or disabling tasks',()=>{
