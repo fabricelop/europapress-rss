@@ -8,38 +8,38 @@
   "command_id": "tr-1794032311095-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "drafting",
+  "phase": "investigating",
   "started_at": "2026-11-07T07:19:00+01:00",
-  "updated_at": "2026-11-07T07:23:00+01:00",
+  "updated_at": "2026-11-07T07:24:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": "red-review-7c7d9ca36d57029954e5",
-  "title": "Revisar novedades: La UCO",
+  "trend_id": "red-review-68a1ca00023f6f3ef1cb",
+  "title": "Revisar novedades: Koldo",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-7c7d9ca36d57029954e5"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-7c7d9ca36d57029954e5",
     "red-review-68a1ca00023f6f3ef1cb"
   ],
   "remaining_active_ids": [
-    "red-review-7c7d9ca36d57029954e5",
     "red-review-68a1ca00023f6f3ef1cb"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 2,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,11 +51,20 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "drafting",
-    "message": "La UCO: novedad de continuidad verificada en la misma pieza; se prepara actualización textual sin nueva ficha ni imagen.",
-    "updated_at": "2026-11-07T07:23:00+01:00"
+    "phase": "investigating",
+    "message": "La UCO aplicada como actualización de continuidad. Investigando Koldo tras revalidar ID/revisión en main.",
+    "updated_at": "2026-11-07T07:24:00+01:00"
   },
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "red-review-7c7d9ca36d57029954e5",
+      "revision": 0,
+      "name": "Revisar novedades: La UCO",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-manual-20261107-0710-chat",
