@@ -25,10 +25,13 @@ ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "pilot/ttactualidad-buffer-posts.json"
 CLOSED = {"published", "deleted", "dismissed", "removed", "delete_pending"}
 PROJECT_ACCOUNT = {"ttittulares": "ttittulares", "ttendencias": "ttendenciasesp"}
-SECTION_URL = {
-    "ttittulares": "https://ttactualidad.rainyraven22.chatgpt.site/noticias",
-    "ttendencias": "https://ttactualidad.rainyraven22.chatgpt.site/tendencias",
-}
+SITE_ROOT = "https://ttactualidad.rainyraven22.chatgpt.site/"
+SECTION_URL = {"ttittulares": SITE_ROOT, "ttendencias": SITE_ROOT}
+# Retire only managed obsolete footer links, not source URLs in editorial text.
+LEGACY_FOOTER_URLS = (
+    "https://ttactualidad.rainyraven22.chatgpt.site/noticias",
+    "https://ttactualidad.rainyraven22.chatgpt.site/tendencias",
+)
 
 
 def x_weight(value):
@@ -67,8 +70,10 @@ def x_payload(project, editorial):
     """Same section URL and 280-weight text budget as the existing X button."""
     site_url = SECTION_URL[project]
     text = editorial.strip()
-    if text.endswith(site_url):
-        text = text[:-len(site_url)].strip()
+    for footer in (*LEGACY_FOOTER_URLS, site_url, site_url.rstrip("/")):
+        if text.endswith(footer):
+            text = text[:-len(footer)].strip()
+            break
     content_budget = 280 - 23 - x_weight("\n\n")
     if x_weight(text) > content_budget:
         suffix_at = text.rfind("\n\n#")
