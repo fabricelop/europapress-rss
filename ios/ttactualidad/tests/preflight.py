@@ -802,4 +802,8 @@ assert 'El historial editorial de 7 días no devolvió noticias' in relations
 assert 'outcome = store.actionMessage' in actions
 assert 'La ficha del iPhone no considera esta tendencia dentro de Listas' in actions
 assert 'case .pending:' in actions and 'Orden sin confirmar:' in actions
+assert '"trends/site-top30-current.json"' in store
+assert 'let siteEpisode = siteByName[key] ?? [:]' in store
+assert 'let siteID = siteExplained ? str(siteEpisode, "editorial_id")' in store
+assert 'inListas: readyNames.contains(key) || siteExplained' in store
 print("NATIVE_0466_RELATIONS_HISTORY_LISTAS_FEEDBACK_OK")
