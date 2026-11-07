@@ -428,6 +428,16 @@ class DirectBufferPublisherTests(unittest.TestCase):
         self.assertEqual(publisher.LAST_API_QUOTA["used"], 350)
         self.assertEqual(publisher.LAST_API_QUOTA["remaining"], 1650)
 
+    def test_posts_never_attach_a_website_xcard_asset(self):
+        self.assertEqual(publisher.x_post_assets(None), [])
+        url = "https://example.org/approved-original.png"
+        self.assertEqual(publisher.x_post_assets(url),
+                         [{"image": {"url": url}}])
+        # Both accounts share the visible text link and no card asset.
+        for project in ("ttittulares", "ttendencias"):
+            self.assertTrue(publisher.x_payload(project, "Texto").endswith(
+                "https://ttactualidad.rainyraven22.chatgpt.site/"))
+
     def test_two_channels_share_one_30_day_api_quota(self):
         headers = Message()
         headers.add_header("RateLimit-Policy", '"150-in-15min";q=150;w=900;pk=:same:')
