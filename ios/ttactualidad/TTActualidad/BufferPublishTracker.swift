@@ -12,6 +12,9 @@ struct TTBufferPublication: Decodable {
     let state: String
     let sent_at: String?
     let post_url: String?
+    let closure_verified: Bool?
+    let closure_error: String?
+    let verification_note: String?
     let error: String?
 }
 
@@ -187,8 +190,13 @@ final class BufferPublishTracker: ObservableObject {
                 $0.project == project && $0.event_id == id && $0.revision == revision }) {
                 switch receipt.state {
                 case "sent":
-                    notice = "Publicación confirmada por Buffer en X · @" + receipt.account +
-                        (receipt.post_url.map { " · " + $0 } ?? "")
+                    if receipt.closure_verified == true {
+                        notice = "Publicado en X y retirado de Listas · @" + receipt.account
+                    } else {
+                        notice = "Buffer confirmó el tuit en X · @" + receipt.account +
+                            ". Retirada de Listas pendiente de recibo."
+                    }
+                    if let url = receipt.post_url { notice += " · " + url }
                     change += 1
                     return
                 case "failed":
