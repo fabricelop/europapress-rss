@@ -7,24 +7,22 @@
   "previous_run_id": "tr-1794089949610-manual",
   "command_id": "tr-1794090277346-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-07T23:25:00+01:00",
-  "updated_at": "2026-11-07T23:29:00+01:00",
+  "updated_at": "2026-11-07T23:28:16+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "ce2d7210b101",
   "title": "Gayà",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "ce2d7210b101"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "ce2d7210b101"
-  ],
-  "remaining_active_ids": [
-    "ce2d7210b101"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -106,7 +104,7 @@
       "message": "Outbox ce2d7210b101-r1 creado tras revalidación JIT; workflow Aplicar resultados editoriales TTendencias en ejecución. Se verificará aplicación real en ambos registros y retirada de cola."
     }
   ],
-  "last_started_at": "2026-11-07T23:25:00+01:00",
-  "last_completed_at": "2026-11-07T23:22:00+01:00",
+  "last_started_at": "2026-11-07T23:28:16+01:00",
+  "last_completed_at": "2026-11-07T23:28:16+01:00",
   "api_failover_enabled": false
 }
