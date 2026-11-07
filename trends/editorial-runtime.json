@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794052874051-manual-recheck-chat",
-  "previous_run_id": "tr-manual-20261107-1310-chat",
-  "command_id": "tr-1794052874051-manual",
+  "run_id": "tr-manual-20261107-1325-chat",
+  "previous_run_id": "tr-1794052874051-manual-recheck-chat",
+  "command_id": "tr-manual-20261107-1325-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T12:14:18.026Z",
-  "updated_at": "2026-11-07T12:14:38.759Z",
-  "finished_at": "2026-11-07T12:14:38.759Z",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T13:25:00+01:00",
+  "updated_at": "2026-11-07T13:25:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -269,6 +269,11 @@
       "at": "2026-11-07T12:14:38.759Z",
       "phase": "closing",
       "message": "Reejecución de tr-1794052874051-manual cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:25:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-manual-20261107-1325-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [],
@@ -309,7 +314,7 @@
     "title": null,
     "message": "Reejecución real cerrada 0/0 tras releer main: sin preparing/update ni reexplicaciones pendientes. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T12:14:18.026Z",
+  "last_started_at": "2026-11-07T13:25:00+01:00",
   "last_completed_at": "2026-11-07T12:14:38.759Z",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -504,12 +509,13 @@
     "tr-manual-20261107-1310-chat",
     "tr-1794052874051-manual-recheck-chat"
   ],
-  "message": "Reejecución real cerrada 0/0 tras releer main: sin preparing/update ni reexplicaciones pendientes. ImageGen=0; publicaciones=0.",
+  "message": "Pasada real iniciada; comprobando main, reexplicaciones y mantenimiento vigentes. Sin ImageGen ni publicaciones.",
   "outcomes": [],
   "recent_runs": [
     "tr-manual-20261107-1240-chat",
     "tr-1794052645605-manual",
     "tr-1794052874051-manual",
-    "tr-1794052874051-manual-recheck-chat"
+    "tr-1794052874051-manual-recheck-chat",
+    "tr-manual-20261107-1325-chat"
   ]
 }
