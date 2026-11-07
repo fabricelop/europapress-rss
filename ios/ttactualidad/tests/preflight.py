@@ -544,8 +544,13 @@ x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
 assert 'return text + sectionSeparator + site' in x_post
 assert 'private static let sectionURLBudget = 23' in x_post
-assert 'https://ttactualidad.rainyraven22.chatgpt.site/tendencias' in x_post
-assert 'https://ttactualidad.rainyraven22.chatgpt.site/noticias' in x_post
+assert x_post.count('= "https://ttactualidad.rainyraven22.chatgpt.site/"') == 2
+assert '"https://ttactualidad.rainyraven22.chatgpt.site/tendencias"' in x_post
+assert '"https://ttactualidad.rainyraven22.chatgpt.site/noticias"' in x_post
+assert 'legacyFooterURLs + [site, String(site.dropLast())]' in x_post
+assert 'Same verified-AI indicator already used on trend cards.' in dashboard
+assert 'Image(systemName: "sparkles")' in dashboard[_news_start:_trend_start]
+assert 'Image(systemName: "photo")' in dashboard[_news_start:_trend_start]
 assert 'TTActualidad/TTActualidadXPost.swift' in project
 assert 'value: xText' in actions
 assert 'JPEG' in actions and 'image/jpeg' in actions
