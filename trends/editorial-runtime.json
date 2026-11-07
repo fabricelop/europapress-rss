@@ -7,11 +7,11 @@
   "previous_run_id": "tr-1794090277346-manual",
   "command_id": "tr-1794090534398-manual",
   "source": "chat",
-  "status": "DONE",
+  "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
   "started_at": "2026-11-07T23:29:00+01:00",
-  "updated_at": "2026-11-07T23:33:00+01:00",
-  "finished_at": "2026-11-07T23:33:00+01:00",
+  "updated_at": "2026-11-07T23:37:00+01:00",
+  "finished_at": "2026-11-07T23:37:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -21,7 +21,10 @@
     "red-review-c43f1850076da4ea5465",
     "red-review-b3bbff7c56959d09dcce"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "red-review-c43f1850076da4ea5465",
+    "red-review-b3bbff7c56959d09dcce"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -40,8 +43,8 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 1,
+    "concurrent_convergence": 2
   },
   "outcomes": [
     {
@@ -58,15 +61,25 @@
       "id": "red-review-b3bbff7c56959d09dcce",
       "revision": 0,
       "name": "Revisar novedades: #BrazilGP",
-      "outcome": "continuity_update",
+      "outcome": "continuity_update_corrected",
       "applied": true,
-      "via": "maintenance_outbox_applied",
+      "via": "maintenance_outbox_then_verified_reconcile",
       "source_id": "438f36286fc7",
-      "apply_commit": "f8618ee75ef528a1f62acccb8e16689201faa6fc"
+      "initial_apply_commit": "f8618ee75ef528a1f62acccb8e16689201faa6fc",
+      "factual_repair_commit": "16bbc07fcea9cae1bbe7419642bab93efcd98179",
+      "reconcile_commit": "260354ba3d4166244770e994142d59c99c13075e",
+      "metadata_sync_commit": "e928fe46249ffbb7560d636602e78fb3e871f1a0"
     }
   ],
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "brazilgp-grid-position",
+      "trend_id": "438f36286fc7",
+      "severity": "corrected_before_close",
+      "message": "Una aplicación concurrente dejó temporalmente a Russell como P6; la verificación JIT detectó que la sanción de cinco puestos desde P2 implica P7. Se corrigió el texto y se sincronizó closer_text/continuidad antes del cierre."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -163,9 +176,14 @@
       "at": "2026-11-07T23:33:00+01:00",
       "phase": "closing",
       "message": "Cracovia y #BrazilGP aplicadas como continuidad en commit f8618ee75ef528a1f62acccb8e16689201faa6fc, conservando ID/revisión/explained_at y sin crear nuevas tarjetas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T23:37:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final real en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Cracovia aplicada como continuidad. #BrazilGP verificado y corregido a P7 tras detectar P6 en una aplicación concurrente; metadatos sincronizados. Sin ImageGen, sin image-outbox y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T23:28:16+01:00",
-  "last_completed_at": "2026-11-07T23:33:00+01:00",
+  "last_completed_at": "2026-11-07T23:37:00+01:00",
   "api_failover_enabled": false
 }
