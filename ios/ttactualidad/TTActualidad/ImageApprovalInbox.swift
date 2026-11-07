@@ -236,12 +236,27 @@ private final class ApprovalInboxModel: ObservableObject {
             if action == "approve" {
                 await SiteAIImageCatalog.invalidateCache()
                 await NewsAIImageCatalog.invalidateCache()
+                // The private service's "published" receipt proves APP/Site,
+                // NOT that Buffer can obtain a verified public IA asset.
+                // Mirror this same approved original into the existing GitHub
+                // manifest that Buffer reads; never mirror a pending/rejected
+                // image. An exact SHA/episode check is performed again.
+                do {
+                    _ = try await associateVerifiedOriginalInGitHub(item, using: github)
+                    notice = "Aprobada en APP y Site. IA asociada también al " +
+                        "catálogo verificado para publicaciones en X."
+                } catch {
+                    // Do not retract or disguise an already accepted Site
+                    // approval if GitHub fails independently. Buffer will
+                    // continue using archive until the mirror succeeds.
+                    notice = "Aprobada en APP y Site. Atención: la IA para X " +
+                        "no está confirmada en GitHub: " + error.localizedDescription
+                }
+            } else {
+                notice = "Rechazada. Solo se ha retirado de la bandeja; original conservado."
             }
             images.removeAll { $0.id == item.id }
             previews.removeValue(forKey: item.id)
-            notice = action == "approve" ?
-                "Aprobada y publicada en la APP y la web." :
-                "Rechazada. Solo se ha retirado de la bandeja; original conservado."
         } catch {
             notice = "No se ha confirmado la decisión: \(error.localizedDescription)"
             // Leave card visible, including original, for a deliberate retry.
