@@ -7,17 +7,20 @@
   "previous_run_id": "tr-manual-20261107-1825-chat",
   "command_id": "tr-manual-20261107-1840-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T18:54:00+01:00",
-  "updated_at": "2026-11-07T18:59:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-07T19:00:30+01:00",
+  "finished_at": "2026-11-07T19:00:30+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-e6509560a4cc195d4ac0",
+    "red-review-ce830350bbda257462ed"
+  ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -698,24 +701,20 @@
     }
   ],
   "last_started_at": "2026-11-07T18:54:00+01:00",
-  "last_completed_at": "2026-11-07T18:41:30+01:00",
+  "last_completed_at": "2026-11-07T19:00:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1840-chat",
+    "run_id": "tr-1794073996404-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T18:40:30+01:00",
-    "finished_at": "2026-11-07T18:41:30+01:00",
-    "attempted": 0,
-    "closed": 0,
+    "started_at": "2026-11-07T18:54:00+01:00",
+    "finished_at": "2026-11-07T19:00:30+01:00",
+    "attempted": 2,
+    "closed": 2,
     "queue_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0
   },
-  "current_item": {
-    "id": "red-review-ce830350bbda257462ed",
-    "revision": 0,
-    "name": "Revisar novedades: Rivola"
-  },
+  "current_item": null,
   "progress": [
     {
       "at": "2026-11-07T18:54:00+01:00",
@@ -730,6 +729,25 @@
       "trend_id": "red-review-e6509560a4cc195d4ac0",
       "title": "Revisar novedades: Espanyol",
       "message": "Resultado de mantenimiento aplicado por barrera fresca: review_completed/stale; no se creó nueva ficha ni imagen. El término fuente ya no estaba vigente como nombre del Top 30 actual. Cola: 1 pendiente (Rivola)."
+    },
+    {
+      "at": "2026-11-07T18:59:52+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-ce830350bbda257462ed",
+      "title": "Revisar novedades: Rivola",
+      "message": "Resultado aplicado como episodio distinto: nueva ficha trend-update-88f65692364c1e7ef119, texto verificado y sin ImageGen en esta pasada."
+    },
+    {
+      "at": "2026-11-07T19:00:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending ni reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-07T19:00:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794073996404-manual cerrada 2/2: Espanyol review_completed/stale; Rivola updated como episodio distinto. Cola final 0."
     }
-  ]
+  ],
+  "imagegen_calls": 0,
+  "publications": 0
 }
