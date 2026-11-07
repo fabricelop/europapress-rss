@@ -1,104 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T15:50:57+01:00",
-  "count": 1,
+  "updated_at": "2026-11-07T14:55:11.115069+00:00",
+  "count": 2,
   "items": [
     {
-      "id": "radar-prepare-cf0a9a199ff9269ac43e",
-      "name": "Radar · #LCN7nov",
-      "rank": 0,
-      "status": "preparing",
-      "requested_at": "2026-11-07T15:40:57.259066+01:00",
+      "id": "red-review-a3d9a77488158b13109c",
       "revision": 0,
-      "rewrite_instruction": "Prepara un borrador factual de esta señal emergente, no una ficha de Top30. Verifica el detonante actual con fuentes. Guarda anticipation-outbox, sin publicar ni crear imágenes ni tocar Listas.",
-      "reexplain": false,
-      "rewrite_with_image": false,
-      "with_image": false,
-      "disable_ai_image": true,
-      "image_strategy": null,
-      "selected_tweet_image": null,
-      "task": "anticipate",
-      "anticipation_request": true,
-      "anticipated_name": "#LCN7nov",
-      "anticipation_signal": {
-        "name": "#LCN7nov",
-        "social_source_count": 2,
-        "social_sources": [
-          "getdaytrends",
-          "snaplytics"
-        ],
-        "best_observed_rank": 10,
-        "mean_observed_rank": 11.0,
-        "movement": "up",
-        "rank_history": [
+      "name": "Revisar novedades: Widilo",
+      "rank": 21,
+      "status": "preparing",
+      "requested_at": "2026-11-07T14:55:11.115069+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ff856dec111d",
+        "revision": 0,
+        "name": "Widilo",
+        "rank": 26,
+        "explanation": "TT#17 Widilo sigue siendo tendencia por su actividad promocional: la plataforma anuncia un «súper boost» en todos los cashback, 100% Cashback y ofertas de Black Month.\n#Widilo #Cashback",
+        "explanation_sha256": "5609e32e216fd6a0d3d6eff3ca408efb0a7754d58a4a17c5cc288076be05615e",
+        "explained_at": "2026-10-31T12:44:00+01:00",
+        "verification_sources": [
           {
-            "captured_at": "2026-11-07T15:11:00+01:00",
-            "best_rank": 12,
-            "source_count": 1
+            "url": "https://trends24.in/spain/palma/"
           },
           {
-            "captured_at": "2026-11-07T15:20:55+01:00",
-            "best_rank": 12,
-            "source_count": 1
+            "url": "https://www.widilo.es/"
           },
           {
-            "captured_at": "2026-11-07T15:28:56+01:00",
-            "best_rank": 12,
-            "source_count": 1
-          },
-          {
-            "captured_at": "2026-11-07T15:31:13+01:00",
-            "best_rank": 12,
-            "source_count": 1
-          },
-          {
-            "captured_at": "2026-11-07T15:32:21+01:00",
-            "best_rank": 12,
-            "source_count": 1
-          },
-          {
-            "captured_at": "2026-11-07T15:40:53+01:00",
-            "best_rank": 10,
-            "source_count": 2
+            "url": "https://www.widilo.es/eventos/otono"
           }
         ],
-        "observations": 6,
-        "first_detected_at": "2026-11-07T15:11:00+01:00",
-        "news_source_count": 0,
-        "news_event_id": null,
-        "news_title": null,
-        "news_status": null,
-        "news_first_seen": null
+        "fingerprint": "f562d19d0a714b355986ff77cfe622698bd2041856614bc8bc99ede25a1c1643"
       },
-      "anticipation_origin_id": null,
-      "anticipation_draft": null,
-      "red_review_request": null,
-      "review_source": null,
-      "review_error": null,
-      "automatic_grouping": null,
-      "published_context": null,
-      "listas_grouping_request": false,
-      "grouping_candidates": [],
-      "grouping_state": null,
-      "grouping_error": null,
-      "tremending_origin": false,
-      "tremending_id": null,
-      "article_title": null,
-      "source_url": null,
-      "selected_tweet": null,
-      "batch_id": null,
-      "requested_together": [
-        "Radar · #LCN7nov"
-      ],
-      "captured_with": [],
+      "with_image": false,
+      "disable_ai_image": true,
       "auto_queued": false,
-      "anticipated": false,
-      "anticipated_at": "2026-11-07T15:11:00+01:00",
-      "anticipated_best_rank": 10,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-bc9ff2944b5044f8b10d",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-07T14:55:11.115069+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7fb4d179ec62",
+        "revision": 0,
+        "name": "Paraguay",
+        "rank": 22,
+        "explanation": "TT#5 Paraguay sigue siendo tendencia por la crisis de Ueno Bank: la Policía detuvo en su domicilio al ya destituido Santiago Peña; Pedro Alliana asumió la Presidencia.\n#UenoBank #SantiagoPeña\n🌶️ El relevo llegó con banda presidencial y custodia policial.",
+        "explanation_sha256": "af0b9f13c8a6dec63a285e81e887f2de5e2c5f518f7919425a750849e387974f",
+        "explained_at": "2026-11-04T15:10:18.408Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
+          },
+          {
+            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
+          }
+        ],
+        "fingerprint": "9db0742bdabf2894f0f0661df19b6db7d76246f982f44606db3efa137225cc5d"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
