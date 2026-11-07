@@ -7,24 +7,22 @@
   "previous_run_id": "tr-1794086087992-manual",
   "command_id": "tr-1794087029651-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-07T22:30:30+01:00",
-  "updated_at": "2026-11-07T22:30:30+01:00",
+  "updated_at": "2026-11-07T22:33:44+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "a08abcc188cf",
   "title": "El Sadar",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "a08abcc188cf"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "a08abcc188cf"
-  ],
-  "remaining_active_ids": [
-    "a08abcc188cf"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -55,7 +53,7 @@
       "message": "Reelaboración manual detectada: El Sadar a08abcc188cf r1. Revalidación JIT antes de investigar; sin ImageGen."
     }
   ],
-  "last_started_at": "2026-11-07T22:30:30+01:00",
-  "last_completed_at": "2026-11-07T22:18:00+01:00",
+  "last_started_at": "2026-11-07T22:33:44+01:00",
+  "last_completed_at": "2026-11-07T22:33:44+01:00",
   "api_failover_enabled": false
 }
