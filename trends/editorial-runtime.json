@@ -3,38 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794057704831-manual",
-  "previous_run_id": "tr-autoguard-1794057063",
-  "command_id": "tr-1794057704831-manual",
+  "run_id": "tr-1794057915598-manual",
+  "previous_run_id": "tr-1794057704831-manual",
+  "command_id": "tr-1794057915598-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-07T14:23:00+01:00",
-  "updated_at": "2026-11-07T14:30:00+01:00",
-  "finished_at": "2026-11-07T14:30:00+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-07T14:26:00+01:00",
+  "updated_at": "2026-11-07T14:31:00+01:00",
+  "finished_at": "2026-11-07T14:31:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-4c4b24f489072034e148",
-    "red-review-e4d3434008a7f544bd89"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -427,39 +424,37 @@
       "at": "2026-11-07T14:30:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794057704831-manual cerrada 2/2: 1 revisión unchanged y 1 actualización de continuidad; sin imágenes, sin publicaciones y sin pendientes editoriales."
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "red-review-4c4b24f489072034e148",
-      "revision": 0,
-      "name": "Revisar novedades: Widilo",
-      "outcome": "unchanged",
-      "applied": true,
-      "source_id": "ff856dec111d"
     },
     {
-      "id": "red-review-e4d3434008a7f544bd89",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
-      "outcome": "continuity_update",
-      "applied": true,
-      "source_id": "7fb4d179ec62"
+      "at": "2026-11-07T14:26:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794057915598-manual iniciada; la primera lectura de main encontró editorial-queue=0 mientras la pasada canónica anterior terminaba de aplicar dos review_red. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T14:31:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Widilo y Paraguay de la pasada anterior constan aplicados por commits b9403fca… y f877201b…. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T14:31:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794057915598-manual cerrada 0/0. No quedó trabajo editorial activo tras convergencia con tr-1794057704831-manual; sin imágenes ni publicaciones."
     }
   ],
+  "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794057704831-manual",
+    "run_id": "tr-1794057915598-manual",
     "status": "DONE",
-    "finished_at": "2026-11-07T14:30:00+01:00",
-    "total": 2,
-    "closed": 2,
+    "finished_at": "2026-11-07T14:31:00+01:00",
+    "total": 0,
+    "closed": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
-  "last_started_at": "2026-11-07T14:23:00+01:00",
-  "last_completed_at": "2026-11-07T14:30:00+01:00",
+  "last_started_at": "2026-11-07T14:26:00+01:00",
+  "last_completed_at": "2026-11-07T14:31:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -561,7 +556,8 @@
     "tr-manual-20261107-1340-chat",
     "tr-1794055651059-manual",
     "tr-1794057000000-manual",
-    "tr-1794057704831-manual"
+    "tr-1794057704831-manual",
+    "tr-1794057915598-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -664,27 +660,11 @@
     "tr-1794054829513-manual",
     "tr-manual-20261107-1340-chat",
     "tr-1794057000000-manual",
-    "tr-1794057704831-manual"
+    "tr-1794057704831-manual",
+    "tr-1794057915598-manual"
   ],
-  "message": "Pasada tr-1794057704831-manual cerrada 2/2: Widilo sin novedades sustanciales; Paraguay actualizado por continuidad con la detención domiciliaria ya ejecutada. Cola final 0. Sin ImageGen ni publicaciones.",
-  "outcomes": [
-    {
-      "id": "red-review-4c4b24f489072034e148",
-      "revision": 0,
-      "name": "Revisar novedades: Widilo",
-      "outcome": "unchanged",
-      "applied": true,
-      "source_id": "ff856dec111d"
-    },
-    {
-      "id": "red-review-e4d3434008a7f544bd89",
-      "revision": 0,
-      "name": "Revisar novedades: Paraguay",
-      "outcome": "continuity_update",
-      "applied": true,
-      "source_id": "7fb4d179ec62"
-    }
-  ],
+  "message": "Pasada tr-1794057915598-manual cerrada 0/0 tras barrera final fresca: cola 0 y ninguna reexplicación activa. Los dos review_red solapados con tr-1794057704831-manual quedaron aplicados y verificados. ImageGen=0; publicaciones=0.",
+  "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
     "tr-1794052874051-manual",
@@ -692,6 +672,7 @@
     "tr-manual-20261107-1325-chat",
     "tr-manual-20261107-1340-chat",
     "tr-1794057000000-manual",
-    "tr-autoguard-1794057063"
+    "tr-autoguard-1794057063",
+    "tr-1794057915598-manual"
   ]
 }
