@@ -79,6 +79,23 @@ test('current index excludes closed news and old episodes while retaining exact 
  const {activeIdentities}=require('../TTImageApprovalReceiver.cjs');const now=Date.parse('2026-11-03T00:00:00Z');const doc={items:[{id:'live',revision:1,status:'explained',explanation:'Actual',explained_at:'2026-11-02T22:00:00Z'},{id:'old',revision:0,status:'explained',explanation:'Antiguo',explained_at:'2026-10-30T10:00:00Z'}]};assert.deepEqual([...activeIdentities('ttendencias',doc,{items:[]},now)],['ttendencias:live:1']);assert.equal(activeIdentities('ttittulares',{items:[{event_id:'news',revision:1,prepared_at:'2026-11-02T22:00:00Z'}]},{items:[{event_id:'news',status:'published',revision:1}]},now).size,0);
 });
 
+test('installer SHA pins accept only checked-in UTF-8 content with equivalent line endings',()=>{
+ const crypto=require('node:crypto'),fs=require('node:fs'),path=require('node:path');
+ const script=fs.readFileSync(path.join(__dirname,'..','Actualizar-Recogida-Privada-TT.ps1'),'utf8');
+ assert.match(script,/function Get-CanonicalSourceHash/);
+ assert.match(script,/Get-CanonicalSourceHash \$destination/);
+ assert.match(script,/Get-CanonicalSourceHash \$stage/);
+ assert.match(script,/Get-CanonicalSourceHash \$live/);
+ for(const name of ['TTImageApprovalReceiver.cjs','TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs']){
+  const source=fs.readFileSync(path.join(__dirname,'..',name),'utf8');
+  const canonical=source.replace(/\r\n/g,'\n').replace(/\n/g,'\r\n');
+  const hash=crypto.createHash('sha256').update(canonical,'utf8').digest('hex');
+  assert.ok(script.includes("'"+name+"'='"+hash+"'"),name+' SHA mismatch');
+  const utf8lf=Buffer.from(source.replace(/\r\n/g,'\n'),'utf8');
+  assert.equal(crypto.createHash('sha256').update(utf8lf).digest('hex').length,64);
+ }
+});
+
 test('installer can replace a running inbox receiver atomically without stopping it or disabling tasks',()=>{
  const fs=require('node:fs'),path=require('node:path');
  const text=fs.readFileSync(path.join(__dirname,'..','Actualizar-Recogida-Privada-TT.ps1'),'utf8');
