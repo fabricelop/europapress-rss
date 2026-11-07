@@ -165,7 +165,7 @@ class DirectBufferPublisherTests(unittest.TestCase):
             "tweet": {"text": "Texto editorial verificado"},
             "archive_image": {"url": archive}}]})
         with mock.patch.object(publisher, "approved_catalog_candidates", return_value=[
-              {"image_url": approved, "sha256": "b"*64}]), \\
+              {"image_url": approved, "sha256": "b"*64}]), \
              mock.patch.object(publisher, "check_image", return_value=approved) as check:
             text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual((image_url, kind), (approved, "ai"))
