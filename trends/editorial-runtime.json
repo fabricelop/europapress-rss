@@ -10,7 +10,7 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-07T12:38:10.645Z",
-  "updated_at": "2026-11-07T12:38:38.997Z",
+  "updated_at": "2026-11-07T13:39:00+01:00",
   "finished_at": "2026-11-07T12:38:38.997Z",
   "current": 0,
   "total": 0,
@@ -296,6 +296,11 @@
       "at": "2026-11-07T12:38:38.997Z",
       "phase": "closing",
       "message": "Pasada tr-1794054978318-manual cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:39:00+01:00",
+      "phase": "closing",
+      "message": "Solicitud tr-1794054829513-manual satisfecha por convergencia con la pasada canónica tr-1794054464802-manual: Santiago Peña review_red aplicado como continuidad y Fiscalía Europea unchanged. Barrera final main: editorial-queue=0 y reexplicaciones activas=0. ImageGen=0; publicaciones=0."
     }
   ],
   "final_outcomes": [],
@@ -408,7 +413,8 @@
     "tr-manual-20261107-1310-chat",
     "tr-1794052874051-manual-recheck-chat",
     "tr-manual-20261107-1325-chat",
-    "tr-1794054978318-manual"
+    "tr-1794054978318-manual",
+    "tr-1794054829513-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -507,9 +513,10 @@
     "tr-manual-20261107-1310-chat",
     "tr-1794052874051-manual-recheck-chat",
     "tr-manual-20261107-1325-chat",
-    "tr-1794054978318-manual"
+    "tr-1794054978318-manual",
+    "tr-1794054829513-manual"
   ],
-  "message": "Pasada completada tras reabrirse por dos review_red nuevos: Widilo y DÍA DE PARTIDO explicadas; Santiago Peña actualizado por continuidad; Fiscalía Europea sin cambios. Barrera final: cola 0, rewrite_pending 0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Barrera final limpia. tr-1794054829513-manual satisfecha por convergencia con tr-1794054464802-manual; Santiago Peña continuity_update aplicado y Fiscalía Europea unchanged aplicado. Cola 0, rewrite_pending/reexplain 0, ImageGen=0, publicaciones=0.",
   "outcomes": [
     {
       "id": "99cc3c458e9b",
