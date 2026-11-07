@@ -3,118 +3,44 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794089949610-manual",
-  "previous_run_id": "tr-1794089854856-manual",
-  "command_id": "tr-1794089949610-manual",
+  "run_id": "tr-1794090277346-manual",
+  "previous_run_id": "tr-1794089949610-manual",
+  "command_id": "tr-1794090277346-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T23:20:30+01:00",
-  "updated_at": "2026-11-07T23:22:00+01:00",
-  "finished_at": "2026-11-07T23:22:00+01:00",
-  "current": 8,
-  "total": 8,
-  "trend_id": null,
-  "title": "TTendencias editorial",
-  "queue_complete": true,
-  "processed_ids": [
-    "283971b24730"
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T23:25:00+01:00",
+  "updated_at": "2026-11-07T23:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "ce2d7210b101",
+  "title": "Gayà",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "ce2d7210b101"
   ],
-  "converged_ids": [
-    "c7bb6c3446ee",
-    "19a794014e20",
-    "d1d830a84173",
-    "e51dc7aa7a37",
-    "fe308194f4ea",
-    "65615694d300",
-    "ace5a78b186c"
+  "remaining_active_ids": [
+    "ce2d7210b101"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 8,
-    "observed": 8,
-    "closed": 8,
-    "explained": 8,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 7
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "c7bb6c3446ee",
-      "revision": 0,
-      "name": "#laSextaXplica",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_predecessor"
-    },
-    {
-      "id": "19a794014e20",
-      "revision": 0,
-      "name": "Berenguer",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_predecessor"
-    },
-    {
-      "id": "d1d830a84173",
-      "revision": 0,
-      "name": "Osasuna",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_predecessor"
-    },
-    {
-      "id": "e51dc7aa7a37",
-      "revision": 0,
-      "name": "morata",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_predecessor"
-    },
-    {
-      "id": "fe308194f4ea",
-      "revision": 0,
-      "name": "DAZN",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_predecessor"
-    },
-    {
-      "id": "65615694d300",
-      "revision": 0,
-      "name": "Valverde",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_apply",
-      "apply_commit": "cd3f7ec8c0981716245f0aec83c18ab86d4b406a"
-    },
-    {
-      "id": "ace5a78b186c",
-      "revision": 0,
-      "name": "#MalasLenguasN",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_apply",
-      "apply_commit": "cd3f7ec8c0981716245f0aec83c18ab86d4b406a"
-    },
-    {
-      "id": "283971b24730",
-      "revision": 0,
-      "name": "Catena",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox",
-      "apply_commit": "4e0f027aad2752f3e943e53f272dea286e4e4c27"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -163,9 +89,14 @@
       "at": "2026-11-07T23:22:00+01:00",
       "phase": "closing",
       "message": "Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain activos. Ocho trabajos observados cerrados: 7 por convergencia concurrente y Catena aplicado por editorial-outbox. requests y telegram-manual-explained fueron actualizados por los commits de aplicación. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T23:25:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794090277346-manual iniciada desde chat; cola main=1: Gayà r1 en preparing, reelaboración desde cero. Se procesará con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T23:21:31+01:00",
+  "last_started_at": "2026-11-07T23:25:00+01:00",
   "last_completed_at": "2026-11-07T23:22:00+01:00",
   "api_failover_enabled": false
 }
