@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import hashlib
 from pathlib import Path
 from email.message import Message
 import tempfile
@@ -146,7 +147,7 @@ class DirectBufferPublisherTests(unittest.TestCase):
         self.assertEqual(text, "Texto editorial verificado")
         self.assertEqual((image_url, kind), (None, "text"))
 
-    def test_corrupt_ai_falls_back_to_archive_image(self):
+    def test_corrupt_exact_ai_blocks_publication_instead_of_archive(self):
         archive = "https://images.example.com/original.jpg"
         self._write("ttittulares/prepared.json", {"items": [
             {"event_id": "news123456", "revision": 1,
@@ -154,8 +155,8 @@ class DirectBufferPublisherTests(unittest.TestCase):
              "archive_image": {"url": archive}}]})
         with mock.patch.object(publisher, "check_image",
                                side_effect=ValueError("SHA incorrecto")):
-            text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
-        self.assertEqual((image_url, kind), (archive, "archive"))
+            with self.assertRaisesRegex(ValueError, "Hay imagen IA aprobada"):
+                publisher.editorial("ttittulares", "news123456", 1)
 
     def test_public_approved_ia_takes_priority_over_archive_and_git_catalog(self):
         approved = "https://ttactualidad-tendencias.rainyraven22.chatgpt.site/images/ttittulares/news123456-r1-manual-" + "b"*12 + ".png"
@@ -170,6 +171,61 @@ class DirectBufferPublisherTests(unittest.TestCase):
             text, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual((image_url, kind), (approved, "ai"))
         check.assert_called_once_with(approved, "b"*64, "ttittulares", "news123456", 1)
+
+    def test_approved_espanyol_redirect_to_canonical_site_is_verified(self):
+        png = b"\x89PNG\r\n\x1a\n" + b"test-exact-original" * 100
+        sha = hashlib.sha256(png).hexdigest()
+        name = "1edd6ef875e4-r0-" + sha[:12] + ".png"
+        source = ("https://ttactualidad-tendencias.rainyraven22.chatgpt.site"
+                  "/images/ttendencias/" + name)
+        canonical = ("https://ttactualidad.rainyraven22.chatgpt.site"
+                     "/images/ttendencias/" + name)
+
+        class Response:
+            def __init__(self, final_url): self.final_url = final_url
+            def __enter__(self): return self
+            def __exit__(self, *args): return False
+            def geturl(self): return self.final_url
+            def read(self, limit): return png[:limit]
+
+        with mock.patch.object(publisher, "urlopen", return_value=Response(canonical)):
+            self.assertEqual(
+                publisher.check_image(source, sha, "ttendencias", "1edd6ef875e4", 0),
+                canonical)
+        for invalid in [
+                canonical.replace("ttactualidad.rainyraven22.chatgpt.site",
+                                  "wrong.example.net"),
+                canonical.replace("1edd6ef875e4-r0-", "another-episode-r0-"),
+                canonical + "?untrusted=1",
+                canonical.replace("https://", "http://")]:
+            with self.subTest(invalid=invalid):
+                with mock.patch.object(publisher, "urlopen",
+                                       return_value=Response(invalid)):
+                    with self.assertRaises(ValueError):
+                        publisher.check_image(
+                            source, sha, "ttendencias", "1edd6ef875e4", 0)
+        with mock.patch.object(publisher, "urlopen",
+                               return_value=Response(canonical)), \
+             mock.patch.object(publisher.hashlib, "sha256",
+                               return_value=mock.Mock(hexdigest=lambda: "0"*64)):
+            with self.assertRaisesRegex(ValueError, "SHA-256"):
+                publisher.check_image(source, sha, "ttendencias", "1edd6ef875e4", 0)
+
+    def test_unverified_approved_ai_never_calls_buffer_or_publishes_text(self):
+        approved = ("https://ttactualidad-tendencias.rainyraven22.chatgpt.site"
+                    "/images/ttittulares/news123456-r1-broken.png")
+        with mock.patch.object(publisher, "approved_catalog_candidates",
+                               return_value=[{"image_url": approved, "sha256": "b"*64}]), \
+             mock.patch.object(publisher, "check_image",
+                               side_effect=ValueError("Imagen temporalmente inaccesible")), \
+             mock.patch.object(publisher, "target_channel") as channel, \
+             mock.patch.object(publisher, "graphql") as graphql:
+            ledger = {"version": 1, "items": []}
+            publisher.publish(ledger, self.payload(), "dummy-key")
+            self.assertEqual(ledger["items"][0]["state"], "failed")
+            self.assertIn("Hay imagen IA aprobada", ledger["items"][0]["error"])
+            channel.assert_not_called()
+            graphql.assert_not_called()
 
     def test_site_approved_feed_validates_exact_identity_and_rejects_other_news(self):
         class FakeReply:
@@ -245,8 +301,8 @@ class DirectBufferPublisherTests(unittest.TestCase):
         ]})
         with mock.patch.object(publisher, "check_image",
                                side_effect=ValueError("Archivo roto")) as check:
-            _, image_url, kind = publisher.editorial("ttittulares", "news123456", 1)
-        self.assertEqual((image_url, kind), (None, "text"))
+            with self.assertRaisesRegex(ValueError, "Hay imagen IA aprobada"):
+                publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual(check.call_count, 1)
 
     def test_buffer_text_matches_manual_x_section_link(self):
