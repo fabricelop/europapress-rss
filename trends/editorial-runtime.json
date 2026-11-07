@@ -7,33 +7,35 @@
   "previous_run_id": "tr-manual-20261107-1325-chat",
   "command_id": "tr-1794054464802-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T13:28:00+01:00",
-  "updated_at": "2026-11-07T13:37:00+01:00",
-  "finished_at": null,
-  "current": 3,
+  "updated_at": "2026-11-07T13:37:30+01:00",
+  "finished_at": "2026-11-07T13:37:30+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "red-review-44000b013e0f0fda5c91",
-  "title": "Revisar novedades: Fiscalía Europea",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": "TTendencias editorial",
+  "queue_complete": true,
   "processed_ids": [
     "99cc3c458e9b",
     "d0c7bbcd1a51",
-    "red-review-ee1dc2c979195457904d"
+    "red-review-ee1dc2c979195457904d",
+    "red-review-44000b013e0f0fda5c91"
   ],
   "converged_ids": [],
   "remaining_ids": [],
-  "remaining_active_ids": [
-    "red-review-44000b013e0f0fda5c91"
-  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
     "explained": 2,
-    "updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -291,9 +293,9 @@
   "last_run": {
     "run_id": "tr-1794054464802-manual",
     "status": "DONE",
-    "finished_at": "2026-11-07T13:33:30+01:00",
-    "total": 2,
-    "closed": 2,
+    "finished_at": "2026-11-07T13:37:30+01:00",
+    "total": 4,
+    "closed": 4,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
@@ -495,7 +497,7 @@
     "tr-1794052874051-manual-recheck-chat",
     "tr-manual-20261107-1325-chat"
   ],
-  "message": "Santiago Peña cerrado como actualización de continuidad. Revisando Fiscalía Europea; sin ImageGen.",
+  "message": "Pasada completada tras reabrirse por dos review_red nuevos: Widilo y DÍA DE PARTIDO explicadas; Santiago Peña actualizado por continuidad; Fiscalía Europea sin cambios. Barrera final: cola 0, rewrite_pending 0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "outcomes": [
     {
       "id": "99cc3c458e9b",
@@ -509,6 +511,20 @@
       "revision": 0,
       "name": "DÍA DE PARTIDO",
       "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "red-review-ee1dc2c979195457904d",
+      "revision": 0,
+      "name": "Revisar novedades: Santiago Peña",
+      "outcome": "continuity_update",
+      "applied": true
+    },
+    {
+      "id": "red-review-44000b013e0f0fda5c91",
+      "revision": 0,
+      "name": "Revisar novedades: Fiscalía Europea",
+      "outcome": "unchanged",
       "applied": true
     }
   ],
