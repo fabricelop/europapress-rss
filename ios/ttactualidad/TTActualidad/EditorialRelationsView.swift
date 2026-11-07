@@ -14,6 +14,9 @@ private final class EditorialRelationsModel: ObservableObject {
     @Published private(set) var historicalNews: [EditorialRelationEndpoint] = []
     @Published private(set) var loading = false
     @Published private(set) var saving = false
+    // Rebuild the expensive trend/news matching cache once per completed
+    // download, never for each checkbox tap or SwiftUI List body update.
+    @Published private(set) var dataRevision = 0
     @Published var notice = ""
     // Persist retry identities across reopening the APP, so an uncertain
     // response cannot accidentally create a second command.
@@ -48,6 +51,7 @@ private final class EditorialRelationsModel: ObservableObject {
             issues.append("No se pudieron recuperar las noticias históricas: \(error.localizedDescription)")
         }
         notice = issues.joined(separator: ". ")
+        dataRevision &+= 1
     }
 
     private func postDecision(news: EditorialRelationEndpoint,
@@ -93,6 +97,56 @@ private final class EditorialRelationsModel: ObservableObject {
             }
             notice = "No se ha confirmado la decisión: \(error.localizedDescription)"
         }
+    }
+
+    struct TrendSaveResult {
+        let confirmedKeys: [String]
+        let attempted: Int
+        let errors: [String]
+    }
+
+    // One deliberate Save per expanded trend. Requests are still individually
+    // authenticated by Sites, but checkbox changes never POST and the costly
+    // source refresh happens only ONCE after the whole selected batch.
+    func saveTrendChanges(
+        _ changes: [(news: EditorialRelationEndpoint,
+                     trend: EditorialRelationEndpoint, action: String)],
+        using github: GitHubEditor
+    ) async -> TrendSaveResult {
+        guard !saving, !changes.isEmpty else {
+            return TrendSaveResult(confirmedKeys: [], attempted: 0, errors: [])
+        }
+        saving = true
+        defer { saving = false }
+        var confirmed: [String] = []
+        var errors: [String] = []
+        var seen = Set<String>()
+        for (index, change) in changes.enumerated() {
+            let pair = change.news.stableIdentity + "↔" + change.trend.stableIdentity
+            guard seen.insert(pair).inserted else { continue }
+            notice = "Guardando relaciones verificadas: " +
+                String(index + 1) + "/" + String(changes.count)
+            do {
+                try await postDecision(news: change.news, trend: change.trend,
+                                       action: change.action, using: github)
+                confirmed.append(pair)
+            } catch {
+                errors.append(change.news.title + ": " + error.localizedDescription)
+                // A conflict requires a fresh episode identity. Do not keep
+                // writing with a stale fingerprint.
+                if let conflict = error as? RelationsError,
+                   case .http(409) = conflict { break }
+            }
+        }
+        await load(using: github)
+        let summary = String(confirmed.count) + " de " + String(changes.count) +
+            " cambios confirmados por el servidor."
+        notice = errors.isEmpty ? summary :
+            summary + " Pendientes o rechazados: " +
+            errors.prefix(2).joined(separator: " · ") +
+            (errors.count > 2 ? " (y más)" : "")
+        return TrendSaveResult(confirmedKeys: confirmed,
+                               attempted: changes.count, errors: errors)
     }
 
     // Save only pairs explicitly changed by the editor. No automatic mass
