@@ -42,11 +42,11 @@ final class EditorialRelationsTests: XCTestCase {
         let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
                                                from: Data(payload.utf8))
         let canonical = EditorialRelationsPolicy.canonical(snapshot.items)
-        XCTAssertEqual(canonical.count, 2)
+        XCTAssertEqual(canonical.count, 1)
         XCTAssertEqual(canonical[0].state, "linked")
         XCTAssertEqual(canonical[0].origin, "manual")
-        XCTAssertEqual(canonical[1].state, "suggested")
-        XCTAssertEqual(canonical[1].news.episodeFingerprint, "N2")
+        // Same original ID + revision is one news episode, even if a
+        // history provider supplies a different optional fingerprint.
     }
 
     func testManualBlockPreventsDuplicateAutomaticRelink() throws {
@@ -142,7 +142,7 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(EditorialRelationsPolicy.recentNews(
             [savedHistory], hours: 12, now: now,
             hidden: ["c1e7f17edda4:r1"]).count, 0)
-        XCTAssertFalse(EditorialRelationsPolicy.matches(savedHistory,
+        XCTAssertTrue(EditorialRelationsPolicy.matches(savedHistory,
             id: "c1e7f17edda4", revision: 1))
     }
 
@@ -237,6 +237,44 @@ final class EditorialRelationsTests: XCTestCase {
             hidden: [recent[0].stableIdentity]).count, 0)
         XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
             candidates, name: "Trump", now: now, limit: 2).count, 2)
+    }
+
+    func testHistoricalIDsRemainSufficientForManualAssociation() throws {
+        let news = EditorialRelationEndpoint(
+            id: "c1e7f17edda4", revision: 1, episodeFingerprint: "",
+            title: "La Séptima y la TDT", text: "Noticias de La Séptima",
+            path: nil, listedAt: "2026-11-05T07:36:30Z")
+        let trend = EditorialRelationEndpoint(
+            id: "d234abcd5678", revision: 0, episodeFingerprint: "",
+            title: "La Séptima", text: "La Séptima en el Top30", path: nil)
+        let item = EditorialManualRelationEntry(
+            id: "c1e7f17edda4:r1↔d234abcd5678:r0",
+            news: news, trend: trend, state: "linked",
+            updatedAt: "2026-11-07T10:00:00Z")
+        let ledger = EditorialManualRelationsLedger(schemaVersion: 1, items: [item])
+        let restored = try JSONDecoder().decode(
+            EditorialManualRelationsLedger.self, from: JSONEncoder().encode(ledger))
+        XCTAssertEqual(restored.items.count, 1)
+        XCTAssertEqual(restored.items[0].news.id, news.id)
+        XCTAssertEqual(restored.items[0].news.revision, 1)
+        XCTAssertEqual(restored.items[0].relation.state, "linked")
+        XCTAssertEqual(restored.items[0].relation.origin, "manual")
+        XCTAssertTrue(EditorialRelationsPolicy.matches(restored.items[0].news,
+            id: "c1e7f17edda4", revision: 1))
+        XCTAssertFalse(EditorialRelationsPolicy.matches(restored.items[0].news,
+            id: "c1e7f17edda4", revision: 2))
+        let siteNews = EditorialRelationEndpoint(
+            id: news.id, revision: news.revision,
+            episodeFingerprint: "optional-existing-sites-fingerprint",
+            title: news.title, text: news.text, path: nil)
+        let automatic = EditorialRelation(
+            id: "auto", news: siteNews, trend: trend, state: "suggested",
+            origin: "automatic", reason: "")
+        let canonical = EditorialRelationsPolicy.canonical(
+            [automatic, restored.items[0].relation])
+        XCTAssertEqual(canonical.count, 1)
+        XCTAssertEqual(canonical[0].state, "linked")
+        XCTAssertEqual(canonical[0].origin, "manual")
     }
 
     func testOnlyConfirmedDecisionCountsAsSaved() {
