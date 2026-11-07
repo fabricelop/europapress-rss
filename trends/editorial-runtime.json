@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794089949610-manual",
   "command_id": "tr-1794090277346-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T23:25:00+01:00",
-  "updated_at": "2026-11-07T23:28:16+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T23:30:00+01:00",
+  "finished_at": "2026-11-07T23:30:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "ce2d7210b101",
-  "title": "Gayà",
+  "trend_id": null,
+  "title": "TTendencias editorial",
   "queue_complete": true,
   "processed_ids": [
     "ce2d7210b101"
@@ -25,12 +25,12 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -38,7 +38,17 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "ce2d7210b101",
+      "revision": 1,
+      "name": "Gayà",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "apply_commit": "943cfdb7551e9203f2787ea4c6f3e3c31e0bad1f"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -102,9 +112,19 @@
       "at": "2026-11-07T23:29:00+01:00",
       "phase": "persisting",
       "message": "Outbox ce2d7210b101-r1 creado tras revalidación JIT; workflow Aplicar resultados editoriales TTendencias en ejecución. Se verificará aplicación real en ambos registros y retirada de cola."
+    },
+    {
+      "at": "2026-11-07T23:30:00+01:00",
+      "phase": "verifying",
+      "message": "Aplicación verificada en commit 943cfdb7551e9203f2787ea4c6f3e3c31e0bad1f: Gayà r1 sincronizado en requests y telegram-manual-explained; outbox retirado y cola main=0."
+    },
+    {
+      "at": "2026-11-07T23:30:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain detectados. Cierre 1/1. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-07T23:28:16+01:00",
-  "last_completed_at": "2026-11-07T23:28:16+01:00",
+  "last_completed_at": "2026-11-07T23:30:00+01:00",
   "api_failover_enabled": false
 }
