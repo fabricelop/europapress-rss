@@ -390,6 +390,53 @@ def set_state(row, state, **extra):
     row.update(extra)
 
 
+def verified_x_link(url, account):
+    """Only a permalink for the EXACT destination account can confirm a post."""
+    try:
+        parsed = urlparse(str(url or "").strip())
+        if (parsed.scheme != "https"
+            or (parsed.hostname or "").lower()
+            not in {"x.com", "www.x.com", "twitter.com", "www.twitter.com"}
+            or parsed.username or parsed.password or parsed.port):
+            return False
+        components = parsed.path.strip("/").split("/")
+        return (len(components) == 3 and
+                components[0].lower() == str(account).lower().lstrip("@") and
+                components[1].lower() == "status" and
+                bool(re.fullmatch(r"[0-9]{5,25}", components[2])))
+    except (ValueError, TypeError):
+        return False
+
+
+def sent_post_verified(post, item):
+    """Buffer has to confirm status, channel, send-time and exact X permalink."""
+    return (
+        isinstance(post, dict) and
+        post.get("id") == item.get("buffer_post_id") and
+        post.get("channelId") == item.get("channel_id") and
+        str(post.get("status") or "").lower() == "sent" and
+        bool(str(post.get("sentAt") or "").strip()) and
+        verified_x_link(post.get("externalLink"), item.get("account"))
+    )
+
+
+def closure_receipt(request_id):
+    """Read GitHub's COMMITTED application receipt, not a dispatch HTTP 204."""
+    if not request_id:
+        return None
+    try:
+        run("git", "fetch", "--quiet", "origin", "main")
+        raw = run("git", "show",
+                  "origin/main:pilot/ttactualidad-action-receipts.json").stdout
+        receipt = next((
+            item for item in json.loads(raw).get("items", [])
+            if item.get("request_id") == request_id
+        ), None)
+        return receipt
+    except (subprocess.CalledProcessError, ValueError, KeyError):
+        return None
+
+
 def reconcile(data, key):
     changed = False
     for item in data["items"]:
@@ -404,10 +451,16 @@ def reconcile(data, key):
             if post.get("id") != post_id or post.get("channelId") != item.get("channel_id"):
                 continue
             status = str(post.get("status") or "").lower()
-            if status == "sent":
-                set_state(item, "sent", sent_at=post.get("sentAt") or utc_now(),
-                          post_url=post.get("externalLink") or "")
+            if sent_post_verified(post, item):
+                set_state(item, "sent", sent_at=post["sentAt"],
+                          post_url=post["externalLink"])
+                item.pop("verification_note", None)
                 changed = True
+            elif status == "sent":
+                reason = "Buffer indicó enviado, sin enlace verificable a X de esta cuenta."
+                if item.get("verification_note") != reason:
+                    item["verification_note"] = reason
+                    changed = True
             elif status in ("error", "failed"):
                 set_state(item, "failed", error="Buffer marcó error de publicación")
                 changed = True
@@ -415,18 +468,43 @@ def reconcile(data, key):
             print("Comprobación Buffer pendiente para " + post_id + ": " + str(exc))
     attach_latest_quota(data)
     if changed or LAST_API_QUOTA is not None:
-        save(data, "confirmar estados de X y cuota API global")
-    # Close canonical Listas only after Buffer confirmed the destination post.
+        save(data, "confirmar posts de X mediante enlace verificable")
+
+    # Only a Buffer-verified X status + exact permalink authorizes the
+    # existing editorial close workflow. The close itself also needs a
+    # COMMITTED receipt before we claim Listas has been updated.
     for item in data["items"]:
-        if item.get("state") != "sent" or item.get("closure_dispatched"):
+        if item.get("state") != "sent" or item.get("closure_verified"):
             continue
-        token = os.getenv("GH_TOKEN", "")
+        request_id = item.get("closure_request_id")
+        if request_id:
+            receipt = closure_receipt(request_id)
+            status = str((receipt or {}).get("status") or "").lower()
+            if status in {"applied", "already_applied"}:
+                item["closure_verified"] = True
+                item["closure_error"] = ""
+                save(data, "confirmar retirada de Listas con recibo real")
+                continue
+            if status in {"rejected", "failed"}:
+                item["closure_error"] = "Cierre editorial rechazado; revisar en Listas."
+                save(data, "registrar cierre editorial rechazado")
+                continue
+            if item.get("closure_dispatched"):
+                continue
+            # The request ID was persisted before a possible network timeout.
+            # Never replay a potentially successful dispatch blindly.
+            continue
+        token = os.getenv("GH_TOKEN", "").strip()
         if not token:
             continue
+        request_id = str(uuid.uuid4())
+        item["closure_request_id"] = request_id
+        item["closure_dispatched"] = False
+        save(data, "reservar cierre de Listas sin duplicados")
         payload = {"event_type": "ttactualidad_action_v1", "client_payload": {
             "project": item["project"], "event_id": item["event_id"],
             "revision": item["revision"], "decision": "published",
-            "request_id": str(uuid.uuid4()),
+            "request_id": request_id,
             "trend_name": "", "trend_rank": 0
         }}
         request = Request(
@@ -440,12 +518,14 @@ def reconcile(data, key):
         try:
             with urlopen(request, timeout=20) as response:
                 if response.status != 204:
-                    continue
+                    raise RuntimeError("GitHub no aceptó el cierre editorial")
             item["closure_dispatched"] = True
-            save(data, "pedir cierre editorial confirmado")
+            save(data, "pedir cierre editorial sin darlo por aplicado")
         except (HTTPError, URLError, RuntimeError) as exc:
-            print("Cierre editorial pendiente: " + str(exc))
-
+            # Ambiguous external result; keep the same ID on record and do
+            # not send another request automatically.
+            item["closure_error"] = "Resultado de cierre sin confirmar: " + str(exc)[:100]
+            save(data, "guardar fallo o incertidumbre del cierre")
 
 def publish(data, payload, key):
     project, event_id, revision = (payload.get("project"),
@@ -508,10 +588,9 @@ def publish(data, payload, key):
             set_state(row, "failed", error=str(outcome.get("message") or
                                                "Buffer rechazó la publicación")[:230])
         elif post.get("id") and post.get("channelId") == channel:
-            state = "sent" if str(post.get("status")).lower() == "sent" else "pending"
-            set_state(row, state, buffer_post_id=post["id"],
-                      sent_at=(post.get("sentAt") or utc_now()) if state == "sent" else None,
-                      post_url=post.get("externalLink") or "")
+            # Mutation acknowledgement alone is NOT proof X has published.
+            # A separate Buffer post readback must verify sentAt + X permalink.
+            set_state(row, "pending", buffer_post_id=post["id"])
         else:
             set_state(row, "unknown", error="Respuesta de Buffer no identificable")
     except Exception as exc:
@@ -532,7 +611,7 @@ def main():
     if payload:
         publish(data, payload, key)
     if key and any(x.get("state") == "pending" or
-                   (x.get("state") == "sent" and not x.get("closure_dispatched"))
+                   (x.get("state") == "sent" and not x.get("closure_verified"))
                    for x in data["items"]):
         reconcile(data, key)
 
