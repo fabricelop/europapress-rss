@@ -252,8 +252,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.68"' in project
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
+assert 'MARKETING_VERSION: "0.4.69"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -286,7 +286,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -298,7 +298,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -314,8 +314,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.68"' in project
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
+assert 'MARKETING_VERSION: "0.4.69"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -466,8 +466,8 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
-assert 'MARKETING_VERSION: "0.4.68"' in project
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
+assert 'MARKETING_VERSION: "0.4.69"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
 # 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
@@ -487,8 +487,8 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.68"' in project
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
+assert 'MARKETING_VERSION: "0.4.69"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.47 build 53: one identical image-action panel for news and trends.
@@ -507,7 +507,7 @@ assert 'if let archive = item.imageURL' in live
 assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
 
 
@@ -536,8 +536,8 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert project.count('CURRENT_PROJECT_VERSION: "80"') == 2
-assert project.count('CFBundleVersion: "80"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "81"') == 2
+assert project.count('CFBundleVersion: "81"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
@@ -656,7 +656,7 @@ assert 'canonical.map(\\.news) + model.historicalNews' in relations
 assert 'let candidates = (model.snapshot?.news ?? []) +' in relations
 assert 'private func rebuildRelationIndex()' in relations
 assert 'news.episodeFingerprint.isEmpty' in relations
-assert '!news.episodeFingerprint.isEmpty else { return ([], []) }' in relations
+assert 'saveEditorialManualRelations(' in relations
 assert '!candidate.episodeFingerprint.isEmpty' not in relation_models
 assert 'func editorialRelationRecentNews() async throws' in auth
 assert 'telegram/editorial-processing.json' in auth
@@ -692,8 +692,8 @@ focused = store[store.index('func reconcilePendingOperations() async'):store.ind
 assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
 assert 'Conciliar órdenes con GitHub' in panel
-assert project.count('CURRENT_PROJECT_VERSION: "80"') == 2
-assert project.count('CFBundleVersion: "80"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "81"') == 2
+assert project.count('CFBundleVersion: "81"') == 2
 print("NATIVE_BUILD66_PENDING_GITHUB_RECEIPT_RECONCILIATION_OK")
 
 # Build67: no stale "waiting GitHub" indicators after the remote rolling
@@ -720,8 +720,8 @@ assert 'private var showEveryPending = false' in pending_panel
 assert 'visiblePending' in pending_panel
 assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
-assert 'CURRENT_PROJECT_VERSION: "80"' in project
-assert 'CFBundleVersion: "80"' in project
+assert 'CURRENT_PROJECT_VERSION: "81"' in project
+assert 'CFBundleVersion: "81"' in project
 assert 'pendingOperationsDiagnostic' in store
 assert 'request_id=' in store
 assert 'sin-identificador' in store
@@ -769,12 +769,13 @@ inbox = (root / 'TTActualidad/ImageApprovalInbox.swift').read_text()
 assert 'associateVerifiedOriginalInGitHub' in inbox
 assert 'original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10])' in inbox
 assert 'item.identity.rasterSHA256' in inbox
-assert 'static let maximumVisible = 20' in inbox
-assert '2026-11-06T08:43:00.000Z' in inbox
+assert 'static let maximumVisible = 20' not in inbox
+assert 'newsCutover' not in inbox
 assert 'currentImageApprovalTrendEpisodes()' in inbox
-assert 'scope = parse(item.editorialAt).map { $0 >= newsCutover }' in inbox
+assert 'currentImageApprovalNewsEpisodes()' in inbox
+assert 'response.hasMore == true' in inbox
 assert 'editorialAt: String?' in inbox
-assert 'items.sorted { $0.createdAt > $1.createdAt }' in inbox
+assert 'received.sorted { $0.createdAt > $1.createdAt }' in inbox
 assert 'func currentImageApprovalTrendEpisodes() async throws' in auth
 assert '[404, 409, 503].contains(status)' in inbox
 assert 'imagen ya no está en Listas' not in inbox.lower()
@@ -824,20 +825,36 @@ assert 'private func postDecision(news:' in relations_view
 assert 'Button(action == "link" ?' not in relations_view
 assert 'func saveTrendChanges(' in relations_view
 assert 'await load(using: github)' in relations_view
-assert 'pageDiagnostics = "Servidor: "' in inbox
-assert 'Servidor: " + String(received.count)' in inbox
+assert 'pageDiagnostics = "Imágenes pendientes en el servidor: "' in inbox
+assert 'String(received.count)' in inbox
 assert 'inListas: readyNames.contains(key) || siteExplained' in store
 print("NATIVE_0467_TOP30_ONE_SAVE_PER_TREND_AND_INBOX_DIAGNOSTICS_OK")
 
 # Build80: read-only relation rows are not fake persistent checkboxes.
 actions = (root / 'TTActualidad' / 'EditorialActionPanels.swift').read_text()
 buffer = (root / 'TTActualidad' / 'BufferPublishTracker.swift').read_text()
-assert 'Solo consulta · identidad de Sites pendiente' in relations_view
-assert 'Guardar no disponible: falta identidad editorial del servidor.' in relations_view
+assert 'Guardar no disponible: faltan ID o revisión de la noticia.' in relations_view
+assert 'try await github.saveEditorialManualRelations(' in relations_view
 assert 'snapshot = nil' in relations_view
 assert 'buffer.latestReceipt(' in actions
 assert 'project: project, id: editorialID, revision: revision' in actions
-assert 'Comprobar estado de Buffer' in actions
+assert 'Comprobar publicación Buffer' in actions
 assert 'func latestReceipt(project:' in buffer
 assert 'Publicado en X y retirado de Listas (recibos confirmados)' in actions
 print('NATIVE_0468_BUFFER_STATUS_AND_NO_FAKE_RELATION_SELECTION_OK')
+
+# Build81: manual historic relations use real GitHub IDs/revisions, and
+# the image inbox uses only current Top30-without-AI or Listas membership.
+assert 'EditorialManualRelationsLedger' in relations_policy
+assert 'let manualHistory = github.editorialManualRelations()' in relations_view or 'async let manualHistory = github.editorialManualRelations()' in relations_view
+assert 'saveEditorialManualRelations(' in auth
+assert 'pilot/ttactualidad-manual-relations.json' in auth
+assert 'currentNewsKeys.contains(nkey)' in auth
+assert 'currentTrendKeys.contains(tkey)' in auth
+assert 'currentImageApprovalNewsEpisodes() async throws' in auth
+assert 'trends/site-ai-images.json' in auth
+assert 'ttittulares/prepared.json' in auth
+assert 'ttittulares/decisions.json' in auth
+assert 'currentTop30WithoutAI' not in inbox or 'eligibleTrends' in inbox
+assert 'newsCutover' not in inbox and 'maximumVisible' not in inbox
+print('NATIVE_0469_MANUAL_HISTORY_RELATIONS_ALL_CURRENT_IMAGES_OK')
