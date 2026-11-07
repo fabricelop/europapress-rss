@@ -49,6 +49,14 @@ final class BufferPublishTracker: ObservableObject {
     @Published private(set) var sending = Set<String>()
     // An in-memory visual reservation, NOT a GitHub or X publication receipt.
     @Published private(set) var immediateHide = Set<String>()
+    // X-confirmed transmissions are durable tombstones for Listas. The
+    // Buffer ledger read can fail or lag while the app refreshes the other
+    // editorial files; that must never resurrect an already sent episode.
+    // Only a verified "sent" ledger entry can add a key to this cache.
+    private static let confirmedSentStorageKey = "TTActualidad.bufferConfirmedSent.v1"
+    private var confirmedSentKeys = Set<String>(
+        UserDefaults.standard.stringArray(
+            forKey: BufferPublishTracker.confirmedSentStorageKey) ?? [])
 
     private static func key(_ project: String, _ id: String, _ revision: Int) -> String {
         project + ":" + id + ":r" + String(revision)
@@ -63,10 +71,11 @@ final class BufferPublishTracker: ObservableObject {
 
     func hidesFromListas(project: String, id: String, revision: Int) -> Bool {
         let key = Self.key(project, id, revision)
-        return immediateHide.contains(key) || posts.contains {
-            $0.project == project && $0.event_id == id &&
-            $0.revision == revision && $0.state == "sent"
-        }
+        return immediateHide.contains(key) || confirmedSentKeys.contains(key) ||
+            posts.contains {
+                $0.project == project && $0.event_id == id &&
+                $0.revision == revision && $0.state == "sent"
+            }
     }
 
     // Receipt survives reopening the editorial card. A pending dispatch is
@@ -80,14 +89,16 @@ final class BufferPublishTracker: ObservableObject {
     }
 
     func alreadySent(project: String, id: String, revision: Int) -> Bool {
-        posts.contains {
-            $0.project == project && $0.event_id == id &&
-            $0.revision == revision && $0.state == "sent"
-        }
+        confirmedSentKeys.contains(Self.key(project, id, revision)) ||
+            posts.contains {
+                $0.project == project && $0.event_id == id &&
+                $0.revision == revision && $0.state == "sent"
+            }
     }
 
     func blocked(project: String, id: String, revision: Int) -> Bool {
-        sending.contains(Self.key(project, id, revision)) || posts.contains {
+        alreadySent(project: project, id: id, revision: revision) ||
+            sending.contains(Self.key(project, id, revision)) || posts.contains {
             $0.project == project && $0.event_id == id &&
             $0.revision == revision &&
             ["reserved", "unknown", "pending", "sent"].contains($0.state)
@@ -147,6 +158,18 @@ final class BufferPublishTracker: ObservableObject {
             guard (response as? HTTPURLResponse)?.statusCode == 200 else { return }
             let ledger = try JSONDecoder().decode(TTBufferLedger.self, from: data)
             posts = ledger.items
+            let confirmed = Set(ledger.items.filter { $0.state == "sent" }.map {
+                Self.key($0.project, $0.event_id, $0.revision)
+            })
+            // Monotonic, exact revision-specific closure. Never clear on a
+            // transient empty/stale response; a legitimate later revision
+            // remains a separate episode.
+            let merged = confirmedSentKeys.union(confirmed)
+            if merged != confirmedSentKeys {
+                confirmedSentKeys = merged
+                UserDefaults.standard.set(Array(merged).sorted(),
+                                          forKey: Self.confirmedSentStorageKey)
+            }
             apiQuota = ledger.api_quota
             loaded = true
             backendAvailable = true
