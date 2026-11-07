@@ -13,9 +13,25 @@ $accepted=@(
  '1dfdca82a23813c1e72a5468dc7e05a14c16b2373f4bd0a94aea27676ebc54e4',
  $expected
 )
+# Exact SHA-256 of verified historical bridge revisions, normalized to CRLF.
+# All enumerated revisions retain the manual_approval_required pause and the
+# readEditorialState/readImageJob/discoverConversation/rasterProbe exports used
+# by this receiver. These dependencies are read-only, never replaced here.
 $dependencies=@{
- 'TTendenciasWebImages.cjs'='4f2f00db3aa3794e1c293201fc9f32e6f6dcd4cacc27c7742da0db93d9292e3f'
- 'TTiTTularesWebImages.cjs'='7b7bc8d6e4e9a84e47714528df3cbe19e1feae7b11286712dd76d587396f707b'
+ 'TTendenciasWebImages.cjs'=@(
+  '2b20c5ea4075a75b99014b47a60c68b59f3c7499c8fadcd54749d9d640dcf862', # 2026-11-02 manual approval pause
+  '190384d1ef7370495b8b33eba6f5b1d132f9e5945c6fff5e2432a3fb72860cab', # 2026-11-03 message reader
+  'd8b6e66006d63d478e641ffe8fe1040fad3bec538791147bf40499826a7443bb', # 2026-11-03 user bubbles
+  '3032a4813547cd1cde963a67c28700f0befb5054f5bf4e8e371a42634f9bd8b8', # 2026-11-06 private inbox
+  '4f2f00db3aa3794e1c293201fc9f32e6f6dcd4cacc27c7742da0db93d9292e3f' # receiver companion release
+ )
+ 'TTiTTularesWebImages.cjs'=@(
+  'da12b28af6e2f667515b851bb44f609148078a2c72d3f9ed9ecf077f19854b80', # 2026-11-02 manual approval pause
+  '2bf584a4f266d1ed8c4781b81c27a5e47379c2c94e6802ad51902a99c48c287e', # 2026-11-03 message reader
+  '6f1e5e9b390ab04ce068683b2d61535bda441550f419e4c04dc8896d1dabfb19', # 2026-11-03 user bubbles
+  'b163d1a60ceefe75205b81a9e10c002805e3c8bfc52e175068fb080bae22c3ea', # 2026-11-06 private inbox
+  '7b7bc8d6e4e9a84e47714528df3cbe19e1feae7b11286712dd76d587396f707b' # receiver companion release
+ )
 }
 function Get-CanonicalSourceHash([string]$path) {
  $decoder=[System.Text.UTF8Encoding]::new($false,$true)
@@ -37,11 +53,16 @@ foreach($entry in $dependencies.GetEnumerator()){
  if(-not(Test-Path -LiteralPath $dependency -PathType Leaf)){
   throw ('RECEIVER_DEPENDENCY_MISSING: '+$entry.Key)
  }
- if((Get-CanonicalSourceHash $dependency) -ne $entry.Value){
-  throw ('RECEIVER_DEPENDENCY_UNKNOWN: '+$entry.Key)
+ $dependencyHash=Get-CanonicalSourceHash $dependency
+ if($entry.Value -notcontains $dependencyHash){
+  throw ('RECEIVER_DEPENDENCY_UNKNOWN: '+$entry.Key+' canonicalSHA256='+$dependencyHash+'. Sin cambios.')
  }
- if(-not([IO.File]::ReadAllText($dependency).Contains("return {status:'waiting',reason:'manual_approval_required'}"))){
+ $source=[IO.File]::ReadAllText($dependency)
+ if(-not($source.Contains("return {status:'waiting',reason:'manual_approval_required'}"))){
   throw ('RECEIVER_APPROVAL_PAUSE_MISSING: '+$entry.Key)
+ }
+ foreach($export in @('readEditorialState','readImageJob','discoverConversation','rasterProbe','chatURL')){
+  if(-not $source.Contains($export)){throw ('RECEIVER_DEPENDENCY_EXPORT_MISSING: '+$entry.Key+' '+$export)}
  }
 }
 $task=Get-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP' -ErrorAction Stop
