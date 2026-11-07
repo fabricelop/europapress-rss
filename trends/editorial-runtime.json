@@ -7,27 +7,33 @@
   "previous_run_id": "tr-manual-20261107-1240-chat",
   "command_id": "tr-1794052645605-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-07T12:58:30+01:00",
-  "updated_at": "2026-11-07T13:04:30+01:00",
-  "finished_at": "2026-11-07T13:04:30+01:00",
+  "updated_at": "2026-11-07T13:06:00+01:00",
+  "finished_at": null,
   "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 4,
+  "trend_id": "red-review-997e4a88b31e86eeebcd",
+  "title": "Revisar novedades: Javier Ruiz",
+  "queue_complete": false,
   "processed_ids": [
     "b99fe04c5ad2",
     "0c687fa6e606"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-997e4a88b31e86eeebcd",
+    "red-review-13bb70614ff422ef1ed0"
+  ],
+  "remaining_active_ids": [
+    "red-review-997e4a88b31e86eeebcd",
+    "red-review-13bb70614ff422ef1ed0"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
-    "observed": 2,
+    "observed": 4,
     "closed": 2,
     "explained": 2,
     "problematic": 0,
@@ -36,7 +42,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -216,6 +222,13 @@
       "at": "2026-11-07T13:04:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794052645605-manual cerrada 2/2. Dos reelaboraciones aplicadas; sin imágenes generadas en esta pasada y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:06:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-997e4a88b31e86eeebcd",
+      "title": "Revisar novedades: Javier Ruiz",
+      "message": "La barrera final incorporó 2 review_red nuevos tras cerrar los trabajos manuales. Se reabre la misma pasada: 2/4 completados; procesando Javier Ruiz y después Paraguay. Sin ImageGen."
     }
   ],
   "final_outcomes": [
@@ -478,7 +491,7 @@
     "tr-manual-20261107-1240-chat",
     "tr-1794052645605-manual"
   ],
-  "message": "Pasada cerrada 2/2: La UCO y Koldo explicadas y verificadas en main; cola y reexplicaciones activas en 0. Sin ImageGen ni publicaciones.",
+  "message": "Pasada reabierta 2/4 por dos review_red llegados antes del cierre definitivo.",
   "outcomes": [
     {
       "id": "b99fe04c5ad2",
