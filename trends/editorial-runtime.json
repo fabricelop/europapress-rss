@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794019391555-manual",
   "command_id": "tr-1794021900000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T04:25:00+01:00",
-  "updated_at": "2026-11-07T04:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T04:26:24.047+01:00",
+  "finished_at": "2026-11-07T04:26:24.047+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -45,61 +45,34 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "preparing",
-    "message": "Releyendo main y verificando cola editorial, reexplicaciones y mantenimiento antes del cierre.",
-    "updated_at": "2026-11-07T04:25:00+01:00"
+    "phase": "closing",
+    "message": "Pasada tr-1794021900000-manual cerrada 0/0. Barrera final main: editorial-queue=0, rewrite_pending/reexplain/status preparing/update=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "updated_at": "2026-11-07T04:26:24.047+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794019391555-manual",
+    "run_id": "tr-1794021900000-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T03:43:11.555+01:00",
-    "updated_at": "2026-11-07T03:46:00+01:00",
-    "finished_at": "2026-11-07T03:46:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-11-07T04:25:00+01:00",
+    "updated_at": "2026-11-07T04:26:24.047+01:00",
+    "finished_at": "2026-11-07T04:26:24.047+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "red-review-d63be6097d4fbb7c5658",
-      "red-review-2478a94fe749b17090eb"
-    ],
-    "converged_ids": [
-      "red-review-d63be6097d4fbb7c5658",
-      "red-review-2478a94fe749b17090eb"
-    ],
+    "processed_ids": [],
+    "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "red-review-d63be6097d4fbb7c5658",
-        "revision": 0,
-        "name": "Revisar novedades: Peugeot",
-        "outcome": "continuity",
-        "applied": true,
-        "via": "maintenance_outbox_applied",
-        "apply_commit": "9fb9427eb7c687105acbda58ec12ca1d2df4fd9e",
-        "reason": "La Guardia Civil investiga si Cristian Corvillo actuó como intermediario en presuntas mordidas de obra pública; actualización de continuidad sobre la misma ficha."
-      },
-      {
-        "id": "red-review-2478a94fe749b17090eb",
-        "revision": 0,
-        "name": "Revisar novedades: Javier Ruiz",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox_applied",
-        "apply_commit": "9fb9427eb7c687105acbda58ec12ca1d2df4fd9e",
-        "reason": "Las fuentes posteriores repiten las mismas cifras del estreno de La Séptima y no aportan un hecho material nuevo."
-      }
-    ],
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "final_outcomes": [],
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -107,14 +80,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada tr-1794019391555-manual cerrada 2/2 por convergencia: Peugeot actualizado como continuidad en la misma ficha y Javier Ruiz revisado sin novedades. Barrera final main: editorial-queue=0, rewrite_pending/reexplain/status update=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794021900000-manual cerrada 0/0. Barrera final main: editorial-queue=0, rewrite_pending/reexplain/status preparing/update=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-07T04:25:00+01:00",
-  "last_completed_at": "2026-11-07T03:46:00+01:00",
+  "last_completed_at": "2026-11-07T04:26:24.047+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -178,7 +151,8 @@
     "tr-1794018109053-manual",
     "tr-manual-20261107-0325-chat",
     "tr-manual-20261107-0340-chat",
-    "tr-1794019391555-manual"
+    "tr-1794019391555-manual",
+    "tr-1794021900000-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -244,7 +218,8 @@
     "tr-1794018109053-manual",
     "tr-manual-20261107-0325-chat",
     "tr-manual-20261107-0340-chat",
-    "tr-1794019391555-manual"
+    "tr-1794019391555-manual",
+    "tr-1794021900000-manual"
   ],
-  "message": "Pasada manual en ejecución: verificando cola y barreras de estado."
+  "message": "Pasada tr-1794021900000-manual cerrada 0/0. Barrera final main: editorial-queue=0, rewrite_pending/reexplain/status preparing/update=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
 }
