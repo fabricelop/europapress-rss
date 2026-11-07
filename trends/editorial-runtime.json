@@ -8,9 +8,9 @@
   "command_id": "tr-autoguard-1794064878",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "verifying",
+  "phase": "applying",
   "started_at": "2026-11-07T16:48:00+01:00",
-  "updated_at": "2026-11-07T17:07:00+01:00",
+  "updated_at": "2026-11-07T17:13:00+01:00",
   "finished_at": null,
   "current": 9,
   "total": 30,
@@ -615,6 +615,11 @@
       "at": "2026-11-07T17:07:00+01:00",
       "phase": "verifying",
       "message": "Los 29 resultados restantes se han emitido por TTENDENCIAS_CHAT_OUTBOX_V1 con JIT; el reconciliador ha cerrado 9/30 y quedan 21 activos en la barrera. Leeds convergió por otro proceso. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T17:13:00+01:00",
+      "phase": "applying",
+      "message": "Concurrencia corregida: lote único de 21 revisiones aún activas emitido en comentario 6709434760. La verificación final se hará contra main."
     }
   ],
   "final_outcomes": [
@@ -881,7 +886,7 @@
     "tr-1794063319124-manual",
     "tr-1794063455844-manual"
   ],
-  "message": "Verificando aplicación: 9/30 cerrados; 21 aún activos en main.",
+  "message": "Lote único JIT de 21 revisiones restantes emitido en TTENDENCIAS_CHAT_OUTBOX_V1; esperando confirmación autoritativa en main.",
   "outcomes": [
     {
       "id": "80c80d664d0d",
