@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1030-chat",
-  "previous_run_id": "tr-manual-20261107-1025-chat",
+  "run_id": "tr-manual-20261107-1041-chat",
+  "previous_run_id": "tr-manual-20261107-1030-chat",
   "command_id": "tr-1794043085297-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T10:30:00+01:00",
-  "updated_at": "2026-11-07T10:31:20+01:00",
-  "finished_at": "2026-11-07T10:31:20+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T10:41:30+01:00",
+  "updated_at": "2026-11-07T10:41:30+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "c7b2dcedccea",
+  "title": "HOY JUGAMOS",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "c7b2dcedccea",
+    "868ebdb8d539"
+  ],
+  "remaining_active_ids": [
+    "c7b2dcedccea",
+    "868ebdb8d539"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,7 +39,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -46,19 +52,9 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-07T10:30:00+01:00",
+      "at": "2026-11-07T10:41:30+01:00",
       "phase": "preparing",
-      "message": "Pasada solicitada; leyendo estado autoritativo de main y preparando barrera final."
-    },
-    {
-      "at": "2026-11-07T10:31:12+01:00",
-      "phase": "verifying",
-      "message": "Barrera final main: editorial-queue.json count=0; no preparing/update; búsqueda de rewrite_pending vigente sin resultados."
-    },
-    {
-      "at": "2026-11-07T10:31:20+01:00",
-      "phase": "closing",
-      "message": "Pasada cerrada 0/0; ImageGen=0; publicaciones=0."
+      "message": "Pasada solicitada; barrera fresca de main detecta 2 preparing: HOY JUGAMOS r0 y Túnez r0. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [],
@@ -264,5 +260,5 @@
     "tr-1794042927737-manual",
     "tr-manual-20261107-1025-chat"
   ],
-  "message": "Pasada canónica cerrada 0/0. Barrera final main: cola 0, sin preparing/update ni rewrite_pending vigente. ImageGen=0; publicaciones=0."
+  "message": "RUNNING 0/2: preparando HOY JUGAMOS r0; después Túnez r0. Validación JIT obligatoria."
 }
