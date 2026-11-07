@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
   "checked_at": "2026-11-07T01:43:48.450439+00:00",
+=======
+  "checked_at": "2026-11-07T01:47:22.299656+00:00",
+>>>>>>> Stashed changes
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,12 +44,18 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
+<<<<<<< Updated upstream
       "non_stale_sources": 2,
       "captured_age_minutes": 12.6,
       "noise_count": 0,
       "repair_started": true
+=======
+      "non_stale_sources": 3,
+      "captured_age_minutes": 6.4,
+      "noise_count": 0
+>>>>>>> Stashed changes
     },
     "listener": {
       "ok": true,
@@ -54,10 +64,15 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "pending",
       "conclusion": null,
+<<<<<<< Updated upstream
       "age_minutes": 0.0,
       "run_id": 42325610637,
+=======
+      "age_minutes": 1.2,
+      "run_id": 42325814936,
+>>>>>>> Stashed changes
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,7 +96,11 @@
       "ok": true,
       "pending_count": 0,
       "overdue_count": 0,
+<<<<<<< Updated upstream
       "oldest_age_minutes": 0,
+=======
+      "oldest_age_minutes": 6.4,
+>>>>>>> Stashed changes
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -89,8 +108,15 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
+<<<<<<< Updated upstream
       "queue_complete": true,
       "remaining_active_ids": [],
+=======
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "c73f1c05a572"
+      ],
+>>>>>>> Stashed changes
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -99,9 +125,7 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [
     "cola con 504 estado(s) inválido(s)"
   ],
