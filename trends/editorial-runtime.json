@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794057915598-manual",
   "command_id": "tr-manual-20261107-1440-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T14:40:50+01:00",
-  "updated_at": "2026-11-07T14:40:50+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T14:41:30+01:00",
+  "finished_at": "2026-11-07T14:41:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -444,6 +444,16 @@
       "at": "2026-11-07T14:40:50+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada; barrera fresca de main detecta 0 trabajos editoriales activos. Se verifican reexplicaciones, mantenimiento y cola antes de cerrar. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T14:41:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions y requests sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T14:41:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1440-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
   "final_outcomes": [],
