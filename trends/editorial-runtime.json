@@ -8,14 +8,14 @@
   "command_id": "tr-1794052645605-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-07T12:58:30+01:00",
-  "updated_at": "2026-11-07T12:58:30+01:00",
+  "updated_at": "2026-11-07T13:02:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "b99fe04c5ad2",
-  "title": "La UCO",
+  "trend_id": "0c687fa6e606",
+  "title": "Koldo",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -195,6 +195,20 @@
       "at": "2026-11-07T12:58:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794052645605-manual iniciada; barrera fresca de main detecta 2 reelaboraciones manuales activas: La UCO y Koldo. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:02:00+01:00",
+      "phase": "persisting",
+      "trend_id": "b99fe04c5ad2",
+      "title": "La UCO",
+      "message": "Resultado editorial de La UCO b99fe04c5ad2 r0 materializado en editorial-outbox; esperando aplicación atómica en main. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T13:02:00+01:00",
+      "phase": "investigating",
+      "trend_id": "0c687fa6e606",
+      "title": "Koldo",
+      "message": "Koldo 0c687fa6e606 r0 revalidado JIT: sigue preparing y puesto 1; investigación actual contrastada antes de persistir."
     }
   ],
   "final_outcomes": [],
@@ -422,7 +436,7 @@
     "tr-manual-20261107-1225-chat",
     "tr-manual-20261107-1240-chat"
   ],
-  "message": "Procesando 0/2. Primera entrada: La UCO.",
+  "message": "Procesando 0/2. La UCO materializada; investigando Koldo.",
   "outcomes": [],
   "recent_runs": [
     "tr-manual-20261107-1210-chat",
