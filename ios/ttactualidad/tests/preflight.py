@@ -253,7 +253,7 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.72"' in project
+assert 'MARKETING_VERSION: "0.4.73"' in project
 assert 'CURRENT_PROJECT_VERSION: "80"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
@@ -315,7 +315,7 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.72"' in project
+assert 'MARKETING_VERSION: "0.4.73"' in project
 assert 'CURRENT_PROJECT_VERSION: "80"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
@@ -467,7 +467,7 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
-assert 'MARKETING_VERSION: "0.4.72"' in project
+assert 'MARKETING_VERSION: "0.4.73"' in project
 assert 'CURRENT_PROJECT_VERSION: "80"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
@@ -488,7 +488,7 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.72"' in project
+assert 'MARKETING_VERSION: "0.4.73"' in project
 assert 'CURRENT_PROJECT_VERSION: "80"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
@@ -538,7 +538,7 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
 assert project.count('CURRENT_PROJECT_VERSION: "80"') == 2
-assert project.count('CFBundleVersion: "84"') == 2
+assert project.count('CFBundleVersion: "85"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
@@ -694,7 +694,7 @@ assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
 assert 'Conciliar órdenes con GitHub' in panel
 assert project.count('CURRENT_PROJECT_VERSION: "80"') == 2
-assert project.count('CFBundleVersion: "84"') == 2
+assert project.count('CFBundleVersion: "85"') == 2
 print("NATIVE_BUILD66_PENDING_GITHUB_RECEIPT_RECONCILIATION_OK")
 
 # Build67: no stale "waiting GitHub" indicators after the remote rolling
@@ -722,7 +722,7 @@ assert 'visiblePending' in pending_panel
 assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
 assert 'CURRENT_PROJECT_VERSION: "80"' in project
-assert 'CFBundleVersion: "84"' in project
+assert 'CFBundleVersion: "85"' in project
 assert 'pendingOperationsDiagnostic' in store
 assert 'request_id=' in store
 assert 'sin-identificador' in store
@@ -768,6 +768,14 @@ assert '[404, 409, 503].contains(code)' in manual_sheet
 assert '[404, 409, 503].contains(resultCode)' in manual_sheet
 inbox = (root / 'TTActualidad/ImageApprovalInbox.swift').read_text()
 assert 'associateVerifiedOriginalInGitHub' in inbox
+# Buffer requires a VERIFIED public GitHub original *after* approval;
+# a Sites published receipt is not evidence the X publisher can read it.
+assert 'response.appVerified == true && response.sitesVerified == true' in inbox
+assert '_ = try await associateVerifiedOriginalInGitHub(item, using: github)' in inbox
+assert 'catálogo verificado para publicaciones en X' in inbox
+assert 'no está confirmada en GitHub' in inbox
+assert 'revision >= 0,  // READY news can legitimately be revision 0.' in auth
+assert 'images.removeAll { $0.id == item.id }' in inbox
 assert 'original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10])' in inbox
 assert 'item.identity.rasterSHA256' in inbox
 assert 'static let maximumVisible = 20' not in inbox
@@ -780,7 +788,7 @@ assert 'return pending && inScope' in inbox
 assert 'Un enlace de imagen roto no oculta un PNG pendiente' in inbox
 assert 'let key = identity.project + ":" + episode' in inbox
 assert 'page.hasMore == true' in inbox and 'nextCursor' in inbox
-# Build84: full URL includes the fixed /api/image-inbox prefix.
+# Build85: full URL includes the fixed /api/image-inbox prefix.
 # The allowlist validates the *relative* route after dropping that prefix.
 assert 'components.path.hasPrefix(base.path + "/")' in auth
 assert 'let route = String(components.path.dropFirst(base.path.count))' in auth
@@ -853,7 +861,7 @@ assert 'func reload() async {' in inbox
 assert 'inListas: readyNames.contains(key) || siteExplained' in store
 print("NATIVE_0467_TOP30_ONE_SAVE_PER_TREND_AND_INBOX_DIAGNOSTICS_OK")
 
-# Build84: exact ID/revision always selectable, receipts remain authoritative.
+# Build85: exact ID/revision always selectable, receipts remain authoritative.
 actions = (root / 'TTActualidad' / 'EditorialActionPanels.swift').read_text()
 buffer = (root / 'TTActualidad' / 'BufferPublishTracker.swift').read_text()
 assert 'Solo consulta · identidad de Sites pendiente' not in relations_view
