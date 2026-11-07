@@ -816,7 +816,10 @@ relations_policy = (root / 'TTActualidad' / 'EditorialRelations.swift').read_tex
 relations_view = (root / 'TTActualidad' / 'EditorialRelationsView.swift').read_text()
 assert 'newsForTrend(' in relations_policy
 assert 'newsMentionsTrend(' in relations_policy
-assert '-7 * 24 * 3600' in relations_policy
+assert '-7 * 24 * 3600' not in relations_policy
+assert 'scopedTrendNewsSection' in relations_view
+assert 'bufferPendingHide.v2' in (root / 'TTActualidad/BufferPublishTracker.swift').read_text()
+assert 'Relaciones por revisar' not in dashboard
 assert 'min(5, limit)' in relations_policy
 assert 'Tendencias del Top 30' in relations_view
 assert 'trendCard(rank: index + 1' in relations_view
@@ -832,7 +835,7 @@ assert 'readPublicEditorialJSON("ttittulares/prepared.json")' in auth
 assert 'readPublicEditorialJSON("ttittulares/status.json")' in auth
 assert 'readPublicEditorialJSON("trends/site-top30-current.json")' in auth
 assert 'Noticias del historial recuperadas:' in relations
-assert 'El historial editorial de 7 días no devolvió noticias' in relations
+assert 'El catálogo histórico no devolvió noticias' in relations
 assert 'outcome = store.actionMessage' in actions
 assert 'La ficha del iPhone no considera esta tendencia dentro de Listas' in actions
 assert 'case .pending:' in actions and 'Orden sin confirmar:' in actions
