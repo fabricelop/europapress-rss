@@ -10,20 +10,20 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-07T14:11:00+01:00",
-  "updated_at": "2026-11-07T14:13:00+01:00",
-  "finished_at": "2026-11-07T14:13:00+01:00",
+  "updated_at": "2026-11-07T14:14:30+01:00",
+  "finished_at": "2026-11-07T14:14:30+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
-  "title": null,
+  "title": "TTendencias editorial",
   "queue_complete": true,
   "processed_ids": [
     "75431d358387"
   ],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
     "75431d358387"
   ],
+  "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
@@ -41,8 +41,7 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
+    "incidents": 0
   },
   "incident_count": 0,
   "incidents": [],
@@ -388,22 +387,43 @@
       "trend_id": "75431d358387",
       "title": "#FDS7nov",
       "message": "Pasada tr-1794057000000-manual iniciada; #FDS7nov r0 revalidado JIT en puesto 13. Se investiga el detonante actual con fuentes independientes. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T14:14:30+01:00",
+      "phase": "verifying",
+      "trend_id": "75431d358387",
+      "title": "#FDS7nov",
+      "message": "Main confirma #FDS7nov r0 explained en requests.json y telegram-manual-explained.json mediante commit de aplicación de chat; editorial-queue=0."
+    },
+    {
+      "at": "2026-11-07T14:14:30+01:00",
+      "phase": "closing",
+      "message": "Solicitud tr-1794057000000-manual satisfecha por convergencia con la pasada canónica tr-autoguard-1794057063: 1/1 cerrado; ImageGen=0; publicaciones=0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "75431d358387",
+      "revision": 0,
+      "name": "#FDS7nov",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "de4d74e1c254ca946c05580ec30f273942c6e74e"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794055651059-manual",
+    "run_id": "tr-autoguard-1794057063",
     "status": "DONE",
-    "finished_at": "2026-11-07T14:00:00+01:00",
-    "total": 2,
-    "closed": 2,
+    "finished_at": "2026-11-07T14:14:30+01:00",
+    "total": 1,
+    "closed": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
   "last_started_at": "2026-11-07T13:48:30+01:00",
-  "last_completed_at": "2026-11-07T14:00:00+01:00",
+  "last_completed_at": "2026-11-07T14:14:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -503,7 +523,8 @@
     "tr-1794054978318-manual",
     "tr-1794054829513-manual",
     "tr-manual-20261107-1340-chat",
-    "tr-1794055651059-manual"
+    "tr-1794055651059-manual",
+    "tr-1794057000000-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -604,18 +625,18 @@
     "tr-manual-20261107-1325-chat",
     "tr-1794054978318-manual",
     "tr-1794054829513-manual",
-    "tr-manual-20261107-1340-chat"
+    "tr-manual-20261107-1340-chat",
+    "tr-1794057000000-manual"
   ],
-  "message": "Pasada tr-autoguard-1794057063 cerrada 1/1 por convergencia JIT: #FDS7nov r0 quedó explained en requests + telegram-manual-explained con causa no confirmada. Barrera final: editorial-queue=0 y rewrite_pending/reexplain=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada canónica tr-autoguard-1794057063 cerrada 1/1 por convergencia con tr-1794057000000-manual: #FDS7nov r0 consta explained en requests.json y telegram-manual-explained.json; cola final 0. Sin ImageGen ni publicaciones.",
   "outcomes": [
     {
       "id": "75431d358387",
       "revision": 0,
       "name": "#FDS7nov",
-      "outcome": "explained_cause_unconfirmed",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence_jit",
-      "explained_at": "2026-11-07T14:12:00+01:00"
+      "apply_commit": "de4d74e1c254ca946c05580ec30f273942c6e74e"
     }
   ],
   "recent_runs": [
@@ -623,6 +644,8 @@
     "tr-1794052874051-manual",
     "tr-1794052874051-manual-recheck-chat",
     "tr-manual-20261107-1325-chat",
-    "tr-manual-20261107-1340-chat"
+    "tr-manual-20261107-1340-chat",
+    "tr-1794057000000-manual",
+    "tr-autoguard-1794057063"
   ]
 }
