@@ -155,7 +155,10 @@ function selectCurrentTasks(tasks,progress,active){
  // Existing queue ordering uses oldest last-checked first so one broken
  // conversation cannot repeatedly pre-empt other exact image jobs.
  const checked=task=>Number(progress[task.command_id]?.checkedAt||0);
+ const isCurrent=task=>active instanceof Set &&
+   active.has(task.project+':'+task.target_id+':'+task.revision);
  return [...tasks].sort((a,b)=>
+   Number(isCurrent(b))-Number(isCurrent(a)) ||
    checked(a)-checked(b) ||
    (Date.parse(b.created_at||'')||0)-(Date.parse(a.created_at||'')||0) ||
    String(a.command_id).localeCompare(String(b.command_id)));
