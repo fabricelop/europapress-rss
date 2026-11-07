@@ -72,6 +72,24 @@ test('receiver retries only reading exact PNG while ChatGPT hydration or CDP is 
  assert.doesNotMatch(source,/Input\.insertText/);
 });
 
+test('hidden Windows startup updater validates local hash, backs up, and never kills processes',()=>{
+ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+ const updater=fs.readFileSync(path.join(__dirname,'../Actualizar-Inicio-Oculto-TT.ps1'),'utf8');
+ const watchdog=fs.readFileSync(path.join(__dirname,'../TT-LocalWatchdog.ps1'),'utf8');
+ const canonical=watchdog.replace(/\r\n/g,'\n').replace(/\n/g,'\r\n');
+ const hash=crypto.createHash('sha256').update(canonical,'utf8').digest('hex');
+ assert.ok(updater.includes("$expected='"+hash+"'"));
+ for(const marker of ['WATCHDOG_LOCAL_VERSION_UNKNOWN','WATCHDOG_REMOTE_SHA_INVALID',
+     'WATCHDOG_PARSE_INVALID','WATCHDOG_CHANGED_DURING_INSTALL',
+     'WATCHDOG_INSTALLED_SHA_INVALID','TTActualidad hidden startup v2',
+     'Startup','Move-Item -LiteralPath $entry.cmd','[IO.File]::Replace(']){
+  assert.ok(updater.includes(marker),marker);
+ }
+ assert.doesNotMatch(updater,/Stop-Process|Stop-ScheduledTask|taskkill|Enable-ScheduledTask|Start-ScheduledTask/);
+ assert.match(updater,/if\(\$PreflightOnly\)/);
+ assert.match(updater,/script personalizado/);
+});
+
 test('relay Chrome recovery is bounded and fails closed after uncertain cleanup',()=>{
  const source=require('node:fs').readFileSync(
   require('node:path').join(__dirname,'../TTImageApprovalReceiver.cjs'),'utf8');
