@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T20:31:21+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-07T19:40:12.345106+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-723c84da4167adcbdd59",
+      "revision": 0,
+      "name": "Revisar novedades: Sprint de MotoGP en Sepang",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-07T19:40:12.345106+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "listas-joint-021a97e2e386c40f",
+        "revision": 0,
+        "name": "Sprint de MotoGP en Sepang",
+        "rank": 18,
+        "explanation": "TT#18 #MalaysianGP, Ogura, Alex Márquez, #MotoGP y Pedro Acosta son tendencia por el sprint de Sepang: Acosta ganó tras la caída de Álex cuando lideraba; Ogura fue cuarto.\n#Sepang #SprintMotoGP\n🌶️ La carrera juntó pole, caída y victoria.",
+        "explanation_sha256": "e3ba63e88f508ea8d7d313a36c8c05e253fbd0445496896b35f8fc2c8a9c5aeb",
+        "explained_at": "2026-10-31T07:59:18.389139+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.crash.net/motogp/news/1108910/1/pedro-acosta-wins-rain-hit-sepang-motogp-sprint-after-alex-marquez-crash"
+          },
+          {
+            "url": "https://www.autosport.com/motogp/news/motogp-malaysian-grand-prix-pedro-acosta-beats-marc-marquez-in-tense-sprint/10869993/"
+          }
+        ],
+        "fingerprint": "7aba47feb42d62dee0fd285527a137891130ba6ccd484839e2adfe29757f3c7e"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-484a843b0d9c5e387d37",
+      "revision": 0,
+      "name": "Revisar novedades: Jorge Martín",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-07T19:40:12.345106+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-166ff7a9a68de41cad16",
+        "revision": 0,
+        "name": "Jorge Martín",
+        "rank": 24,
+        "explanation": "TT#24 Jorge Martín es tendencia porque se ha retirado del GP de Malasia: intentó volver seis días después de fracturarse la muñeca en Australia, pero no pudo frenar con suficiente fuerza.\n#MotoGP #Sepang",
+        "explanation_sha256": "c977cc6f051a05390fdfd1f36119ffafcf95e0e638e5879e0d51c3f46a6255b6",
+        "explained_at": "2026-10-31T08:48:54.149139+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.motogp.com/es/news/2026/10/30/martin-zieht-sich-zuruck-die-89-wird-in-malaysia-nicht-an-den-start-gehen/1182474"
+          },
+          {
+            "url": "https://www.reuters.com/sports/motogp-title-already-lost-after-sepang-withdrawal-says-martin-2026-10-31/"
+          }
+        ],
+        "fingerprint": "eb12ba2e1c9ab9b03bf108f46a45a82cf7c923dd5178ad6f87ccddad2ca49fd1"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
