@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1225-chat",
-  "previous_run_id": "tr-manual-20261107-1210-chat",
-  "command_id": "tr-manual-20261107-1225-chat",
+  "run_id": "tr-manual-20261107-1240-chat",
+  "previous_run_id": "tr-manual-20261107-1225-chat",
+  "command_id": "tr-manual-20261107-1240-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T12:25:30+01:00",
-  "updated_at": "2026-11-07T12:27:00+01:00",
-  "finished_at": "2026-11-07T12:27:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T12:40:30+01:00",
+  "updated_at": "2026-11-07T12:40:30+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -169,6 +169,11 @@
       "at": "2026-11-07T12:27:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-manual-20261107-1225-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T12:40:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-manual-20261107-1240-chat iniciada; comprobando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [],
@@ -209,7 +214,7 @@
     "title": null,
     "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones activas detectadas. Sin ImageGen ni publicaciones."
   },
-  "last_started_at": "2026-11-07T12:25:30+01:00",
+  "last_started_at": "2026-11-07T12:40:30+01:00",
   "last_completed_at": "2026-11-07T12:27:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -394,7 +399,7 @@
     "tr-manual-20261107-1210-chat",
     "tr-manual-20261107-1225-chat"
   ],
-  "message": "Pasada cerrada 0/0: barrera final main vacía y sin reexplicaciones activas detectadas. Sin ImageGen ni publicaciones.",
+  "message": "Pasada iniciada; verificando cola, reexplicaciones y mantenimiento vigentes en main. Sin ImageGen ni publicaciones.",
   "outcomes": [],
   "recent_runs": [
     "tr-manual-20261107-1155-chat",
