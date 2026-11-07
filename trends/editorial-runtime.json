@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-0325-chat",
-  "previous_run_id": "tr-1794018109053-manual",
-  "command_id": "tr-manual-20261107-0325-chat",
+  "run_id": "tr-manual-20261107-0340-chat",
+  "previous_run_id": "tr-manual-20261107-0325-chat",
+  "command_id": "tr-manual-20261107-0340-chat",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T03:25:00+01:00",
-  "updated_at": "2026-11-07T03:26:00+01:00",
-  "finished_at": "2026-11-07T03:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T03:40:00+01:00",
+  "updated_at": "2026-11-07T03:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -45,9 +45,9 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "closing",
-    "message": "Pasada tr-manual-20261107-0325-chat cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "updated_at": "2026-11-07T03:26:00+01:00"
+    "phase": "preparing",
+    "message": "Iniciando pasada editorial real; releyendo main y verificando cola/reexplicaciones antes del cierre.",
+    "updated_at": "2026-11-07T03:40:00+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
@@ -86,7 +86,7 @@
     "title": null,
     "message": "Pasada tr-manual-20261107-0325-chat cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T03:25:00+01:00",
+  "last_started_at": "2026-11-07T03:40:00+01:00",
   "last_completed_at": "2026-11-07T03:26:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
@@ -215,5 +215,5 @@
     "tr-1794018109053-manual",
     "tr-manual-20261107-0325-chat"
   ],
-  "message": "Pasada tr-manual-20261107-0325-chat cerrada 0/0 tras relectura final de main: editorial-queue=0, sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  "message": "Iniciando pasada editorial real; releyendo main y verificando cola/reexplicaciones antes del cierre."
 }
