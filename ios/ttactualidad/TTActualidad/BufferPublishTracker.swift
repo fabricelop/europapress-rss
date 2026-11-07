@@ -203,7 +203,7 @@ final class BufferPublishTracker: ObservableObject {
             // Match the exact dispatch request. An older failed attempt for
             // this episode cannot release a newer pending publication.
             // "sent" is safe: confirmedSentKeys has already been persisted.
-            for (key, requestID) in pendingRequestIDs {
+            for (key, requestID) in Array(pendingRequestIDs) {
                 guard !sending.contains(key),
                       let receipt = ledger.items.last(where: {
                           Self.key($0.project, $0.event_id, $0.revision) == key &&
