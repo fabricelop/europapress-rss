@@ -347,7 +347,9 @@ class DirectBufferPublisherTests(unittest.TestCase):
             send.assert_not_called()
         self.assertFalse(data["items"][0].get("closure_verified", False))
         with mock.patch.object(publisher, "closure_receipt",
-                               return_value={"status": "applied"}), \
+                               return_value={"status": "applied", "project": "ttittulares",
+                                             "event_id": "news123456", "revision": 1,
+                                             "decision": "published"}), \
              mock.patch.object(publisher, "urlopen") as send:
             publisher.reconcile(data, "secret")
             send.assert_not_called()
@@ -361,12 +363,32 @@ class DirectBufferPublisherTests(unittest.TestCase):
             "buffer_post_id": "buf_123", "closure_dispatched": True,
             "closure_request_id": "22222222-2222-4222-8222-222222222222"}]}
         with mock.patch.object(publisher, "closure_receipt",
-                               return_value={"status": "rejected"}), \
+                               return_value={"status": "rejected", "project": "ttendencias",
+                                             "event_id": "50d1a6619b2a", "revision": 0,
+                                             "decision": "published"}), \
              mock.patch.object(publisher, "urlopen") as send:
             publisher.reconcile(data, "secret")
             send.assert_not_called()
         self.assertFalse(data["items"][0].get("closure_verified", False))
         self.assertIn("rechazado", data["items"][0]["closure_error"])
+
+
+    def test_wrong_editorial_receipt_cannot_remove_another_trend(self):
+        data = {"items": [{
+            "project": "ttendencias", "event_id": "50d1a6619b2a",
+            "revision": 0, "account": "ttendenciasesp",
+            "state": "sent", "channel_id": "channel_123",
+            "buffer_post_id": "buf_123", "closure_dispatched": True,
+            "closure_request_id": "22222222-2222-4222-8222-222222222222"}]}
+        receipt = {"status": "applied", "project": "ttendencias",
+                   "event_id": "other-id", "revision": 0,
+                   "decision": "published"}
+        with mock.patch.object(publisher, "closure_receipt", return_value=receipt), \
+             mock.patch.object(publisher, "urlopen") as send:
+            publisher.reconcile(data, "secret")
+            send.assert_not_called()
+        self.assertFalse(data["items"][0].get("closure_verified", False))
+        self.assertIn("no coincide", data["items"][0]["closure_error"])
 
 
 if __name__ == "__main__":
