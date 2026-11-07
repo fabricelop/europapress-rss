@@ -59,6 +59,11 @@
       "at": "2026-11-07T10:57:00+01:00",
       "phase": "closing",
       "message": "Pasada cerrada 0/0; sin trabajos editoriales activos, sin imágenes y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T10:57:00+01:00",
+      "phase": "closing",
+      "message": "Solicitud tr-1794044668169-manual satisfecha por convergencia con la pasada canónica tr-manual-20261107-1055-chat; barrera final seguía vacía."
     }
   ],
   "final_outcomes": [],
@@ -181,7 +186,8 @@
     "tr-1794043085297-manual",
     "tr-1794042927737-manual",
     "tr-manual-20261107-1025-chat",
-    "tr-manual-20261107-1055-chat"
+    "tr-manual-20261107-1055-chat",
+    "tr-1794044668169-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -264,7 +270,8 @@
     "tr-1794043085297-manual",
     "tr-1794042927737-manual",
     "tr-manual-20261107-1025-chat",
-    "tr-manual-20261107-1055-chat"
+    "tr-manual-20261107-1055-chat",
+    "tr-1794044668169-manual"
   ],
   "message": "Pasada canónica cerrada 0/0. Cola final 0; sin ImageGen, image-outbox ni publicaciones."
 }
