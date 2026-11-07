@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-07T01:11:04+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-07T00:18:27.139266+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-81849fed0388d3d2ddaf",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-11-07T00:18:27.139266+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7fb4d179ec62",
+        "revision": 0,
+        "name": "Paraguay",
+        "rank": 22,
+        "explanation": "TT#2 Paraguay sigue siendo tendencia por la crisis de Ueno Bank: el Senado destituyó a Santiago Peña tras su renuncia y abrió paso a la sucesión de Pedro Alliana.\n#UenoBank #SantiagoPeña\n🌶️ La renuncia llegó primero; el Senado quiso poner el punto final.",
+        "explanation_sha256": "94acc0ace3c1e2c300eeeb63158128f889909f5f8d1056d238929f290cf694b7",
+        "explained_at": "2026-11-04T15:10:18.408Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
+          },
+          {
+            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
+          }
+        ],
+        "fingerprint": "b25d002abe46dc5b79216ffe0c4ad4cdfdea6ac393207e0209cc41aea8be95b8"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-555e7f509affa6925638",
+      "revision": 0,
+      "name": "Revisar novedades: Santiago Peña",
+      "rank": 22,
+      "status": "preparing",
+      "requested_at": "2026-11-07T00:18:27.139266+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c4f3771c12ae",
+        "revision": 0,
+        "name": "Santiago Peña",
+        "rank": 13,
+        "explanation": "TT#17 Santiago Peña sigue siendo tendencia porque el Senado de Paraguay votó destituirlo tras su renuncia por la crisis de Ueno Bank; Pedro Alliana queda como sucesor.\n#Paraguay #UenoBank\n🌶️ La renuncia no cerró el expediente: el Senado añadió la destitución.",
+        "explanation_sha256": "37d736155676fabfb090872447f6b18f18675b4a1506e1ae48826c99b13c140b",
+        "explained_at": "2026-11-05T18:15:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/world/americas/paraguay-president-pea-resigns-under-mounting-pressure-bank-collapse-2026-11-05/"
+          },
+          {
+            "url": "https://apnews.com/article/eccea1c9a64808b5cd7e6e1d5542084f"
+          }
+        ],
+        "fingerprint": "69941d916d603cfad95bcd7abb710f7e5fb476468200b50056c1ab0ccbc584db"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
