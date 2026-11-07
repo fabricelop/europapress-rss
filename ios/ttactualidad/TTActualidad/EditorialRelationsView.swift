@@ -295,8 +295,8 @@ struct EditorialRelationsView: View {
                 byKey[key] = EditorialRelationEndpoint(
                     id: preferred.id, revision: preferred.revision,
                     episodeFingerprint: preferred.episodeFingerprint,
-                    title: preferred.title.isEmpty ? row.title : preferred.title,
-                    text: preferred.text.isEmpty ? row.text : preferred.text,
+                    title: preferred.title.count >= row.title.count ? preferred.title : row.title,
+                    text: preferred.text.count >= row.text.count ? preferred.text : row.text,
                     path: preferred.path, listedAt: date)
             } else {
                 byKey[key] = row
@@ -372,6 +372,25 @@ struct EditorialRelationsView: View {
                             text: row.explanation, path: nil)
                 }
             }
+        }
+        // The per-card button must work for the exact trend opened, including
+        // Listas, Recientes, Pendientes or Antiguas and changed Top 30 ranks.
+        // It is never gated by Top 30 membership or a historical time window.
+        if let scope, scope.project == "ttendencias" {
+            let key = trendKey(rank: 0, name: scope.title)
+            matches[key] = EditorialRelationsPolicy.newsForTrend(
+                news, name: scope.title, now: now,
+                fallbackDates: dates, limit: 5)
+            let renderedText = top30Trends.first {
+                $0.editorialID == scope.id && $0.revision == scope.revision
+            }?.explanation ?? ""
+            trends[key] = EditorialRelationsPolicy.matchingTop30Endpoint(
+                id: scope.id, revision: scope.revision,
+                renderedText: renderedText, candidates: endpoints) ??
+                EditorialRelationEndpoint(
+                    id: scope.id, revision: scope.revision,
+                    episodeFingerprint: "", title: scope.title,
+                    text: renderedText, path: nil)
         }
         indexedCanonical = canonical
         indexedNews = news
@@ -503,25 +522,27 @@ struct EditorialRelationsView: View {
         }
     }
 
-    private var scopedTop30Index: Int? {
-        guard let scope, scope.project == "ttendencias" else { return nil }
-        return top30Trends.firstIndex {
-            $0.editorialID == scope.id && $0.revision == scope.revision
-        }
-    }
-
+    // The relationship button belongs to a concrete editorial trend, not
+    // a global "Por revisar" menu. Show all known news matching this term,
+    // regardless of when or where the news appeared. Only the editor links.
     @ViewBuilder private var scopedTrendNewsSection: some View {
-        if let index = scopedTop30Index, top30Names.indices.contains(index) {
-            let rank = index + 1
-            let name = top30Names[index]
+        if let scope, scope.project == "ttendencias" {
+            let rank = 0
+            let name = scope.title
             let found = relatedNews(rank: rank, name: name)
             let changes = changesForTrend(found, rank: rank, name: name)
             Section("Noticias encontradas · " + String(found.count) + "/5") {
-                Text("Búsqueda de «" + name + "» en titulares y textos de noticias. Sin límite de fecha, filtros de Listas ni exclusiones por ocultación. Marca las que quieras relacionar.")
+                Text("Búsqueda de «" + name +
+                     "» en titulares y textos de noticias, sin filtros de fecha, " +
+                     "Listas, estado ni publicación. Marca las que quieras " +
+                     "relacionar y pulsa Guardar.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if found.isEmpty {
                     Text(model.loading ? "Buscando noticias…" :
-                         "No se encontraron noticias que mencionen esta tendencia en los catálogos disponibles.")
+                         allNewsChoices.isEmpty ?
+                         "No se ha recuperado ningún catálogo de noticias. " +
+                         "Actualiza y comprueba el aviso de carga." :
+                         "No se encontraron noticias que mencionen esta tendencia.")
                         .font(.footnote).foregroundStyle(.secondary)
                 } else {
                     ForEach(found, id: \.stableIdentity) { news in
@@ -542,11 +563,6 @@ struct EditorialRelationsView: View {
                     .buttonStyle(.borderedProminent)
                     .disabled(model.saving)
                 }
-            }
-        } else if scope?.project == "ttendencias" {
-            Section {
-                Text("La tendencia ya no figura con esta revisión en Top 30. Actualiza las fichas.")
-                    .font(.footnote).foregroundStyle(.secondary)
             }
         }
     }
