@@ -648,7 +648,7 @@ assert 'Tendencias del Top 30' in relations
 assert 'trendCard(rank: index + 1' in relations
 assert 'Ocultar esta noticia' in relations and 'Restaurar' in relations
 assert 'recentNews(' in relation_models and 'actionForSwitch(' in relation_models
-assert 'top30Trends: store.snapshot.top30' in dashboard
+assert 'top30Trends: store.snapshot.top30' not in dashboard
 assert 'top30Trends: store.snapshot.top30' in actions
 assert 'id: row.editorialID' in relations
 assert 'revision: row.revision' in relations
