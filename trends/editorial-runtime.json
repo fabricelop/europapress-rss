@@ -7,16 +7,16 @@
   "previous_run_id": "tr-manual-20261107-1010-chat",
   "command_id": "tr-1794043085297-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T10:20:00+01:00",
-  "updated_at": "2026-11-07T10:20:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T10:21:00+01:00",
+  "finished_at": "2026-11-07T10:21:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -45,96 +45,34 @@
   "incidents": [],
   "error": null,
   "activity": {
-    "phase": "preparing",
-    "message": "Releyendo main y comprobando cola autoritativa, reexplicaciones y revisiones pendientes.",
-    "updated_at": "2026-11-07T10:20:00+01:00"
+    "phase": "closing",
+    "message": "Pasada cerrada 0/0 tras relectura final de main: cola 0, sin preparing/update ni reexplicación pendiente. ImageGen=0.",
+    "updated_at": "2026-11-07T10:21:00+01:00"
   },
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1010-chat",
+    "run_id": "tr-1794043085297-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T10:10:00+01:00",
-    "updated_at": "2026-11-07T10:20:00+01:00",
-    "finished_at": "2026-11-07T10:20:00+01:00",
-    "current": 7,
-    "total": 7,
+    "started_at": "2026-11-07T10:20:00+01:00",
+    "updated_at": "2026-11-07T10:21:00+01:00",
+    "finished_at": "2026-11-07T10:21:00+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "b547e584c4e7",
-      "db76e61cd3d4",
-      "a336abbd039a",
-      "011bbdc1877d",
-      "red-review-c97623deb823ab0cfdb5",
-      "red-review-2763e0066d30912c8f78",
-      "a75e99a5ae99"
-    ],
-    "converged_ids": [
-      "db76e61cd3d4",
-      "tr-autoguard-1794042658"
-    ],
+    "processed_ids": [],
+    "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "b547e584c4e7",
-        "revision": 0,
-        "name": "#AgropopularRetinta",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "db76e61cd3d4",
-        "revision": 0,
-        "name": "Acierto",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "a336abbd039a",
-        "revision": 0,
-        "name": "Payoya",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "011bbdc1877d",
-        "revision": 0,
-        "name": "Amaia",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "red-review-c97623deb823ab0cfdb5",
-        "revision": 0,
-        "name": "Revisar novedades: #FelizSábado",
-        "outcome": "continuity_update",
-        "applied": true
-      },
-      {
-        "id": "red-review-2763e0066d30912c8f78",
-        "revision": 0,
-        "name": "Revisar novedades: Paraguay",
-        "outcome": "unchanged",
-        "applied": true
-      },
-      {
-        "id": "a75e99a5ae99",
-        "revision": 0,
-        "name": "#FelizSábado",
-        "outcome": "explained_rework",
-        "applied": true
-      }
-    ],
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 5,
+    "final_outcomes": [],
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -142,14 +80,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
+    "concurrent_convergence": 0,
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 7/7; tr-autoguard-1794042658 satisfecho por convergencia con tr-manual-20261107-1010-chat. Barrera final main: cola 0, sin preparing/update ni reexplicación pendiente. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 0/0 tras barrera final main: editorial-queue.json sigue vacía; no hay preparing/update ni rewrite_pending vigente. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T10:10:00+01:00",
-  "last_completed_at": "2026-11-07T10:20:00+01:00",
+  "last_started_at": "2026-11-07T10:20:00+01:00",
+  "last_completed_at": "2026-11-07T10:21:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -226,7 +164,8 @@
     "tr-manual-20261107-0940-chat",
     "tr-manual-20261107-0955-chat",
     "tr-manual-20261107-1010-chat",
-    "tr-autoguard-1794042658"
+    "tr-autoguard-1794042658",
+    "tr-1794043085297-manual"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -305,7 +244,8 @@
     "tr-manual-20261107-0940-chat",
     "tr-manual-20261107-0955-chat",
     "tr-manual-20261107-1010-chat",
-    "tr-autoguard-1794042658"
+    "tr-autoguard-1794042658",
+    "tr-1794043085297-manual"
   ],
-  "message": "Pasada editorial en curso; aún no se ha cerrado la barrera final de main."
+  "message": "Pasada cerrada 0/0 tras barrera final main: editorial-queue.json sigue vacía; no hay preparing/update ni rewrite_pending vigente. ImageGen=0; publicaciones=0."
 }
