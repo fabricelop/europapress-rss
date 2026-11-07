@@ -652,7 +652,9 @@ assert '$0.text == renderedText' in relation_models
 assert 'return matches.count == 1 ? matches[0] : nil' in relation_models
 assert 'editorialRelationRecentNews()' in relations
 assert 'historicalNews: [EditorialRelationEndpoint]' in relations
-assert 'canonicalRelations.map(\\.news) + model.historicalNews' in relations
+assert 'canonical.map(\\.news) + model.historicalNews' in relations
+assert 'let candidates = (model.snapshot?.news ?? []) +' in relations
+assert 'private func rebuildRelationIndex()' in relations
 assert 'news.episodeFingerprint.isEmpty' in relations
 assert '!news.episodeFingerprint.isEmpty else { return ([], []) }' in relations
 assert '!candidate.episodeFingerprint.isEmpty' not in relation_models
