@@ -177,7 +177,8 @@ assert 'quickButton("Volver a evaluar"' not in actions
 # 0.4.45: one explicit non-publication batch for every trend in Listas.
 assert 'Label("Retirar todas las tendencias (' in dashboard
 assert 'private var allTrends: [TrendItem]' in dashboard
-assert 'store.snapshot.trendListas.filter(\\.inListas)' in dashboard
+assert 'store.snapshot.trendListas.filter {' in dashboard
+assert 'buffer.hidesFromListas(project: "ttendencias"' in dashboard
 assert 'confirmRemoveAllTrends' in dashboard
 assert 'Button("Retirar \\(removeAllSelection.count) · No publicadas"' in dashboard
 assert 'github.removeAllTrendsFromListas(' in dashboard
