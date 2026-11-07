@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-06T22:02:20.322692+00:00",
+      "checked_at": "2026-11-07T01:48:49.344665+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1858088,
+          "seconds": 1871677,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,21 +22,98 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-06T22:02:20.322692+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-11-07T01:48:49.344665+00:00",
+      "issue_count": 13,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "c73f1c05a572",
+          "title": "Juan Iglesias",
+          "seconds": 470,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "missing_delivery",
           "id": "1d446fcf702d",
           "title": "#sevillaalaves",
-          "seconds": 159,
+          "seconds": 13748,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "de982193d4bd",
+          "title": "#DeViernes",
+          "seconds": 7509,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "16ac22023f2b",
+          "title": "La Séptima",
+          "seconds": 7501,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "8c0d4ecd5327",
+          "title": "Fritz",
+          "seconds": 7488,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "50d1a6619b2a",
+          "title": "Broncano",
+          "seconds": 7475,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "50b8047cb3f4",
+          "title": "Rafa Jódar",
+          "seconds": 7464,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4ee281bc339c",
+          "title": "Fofana",
+          "seconds": 7452,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "83fe8a78c514",
+          "title": "Alcaraz",
+          "seconds": 7447,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "a9d16526a859",
+          "title": "La Revuelta",
+          "seconds": 7370,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "5b461284ec93",
+          "title": "Alavés",
+          "seconds": 7358,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "97e735d07b7a",
+          "title": "Guridi",
+          "seconds": 7352,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1858087,
+          "seconds": 1871676,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -45,16 +122,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "198dbd57c04850d33f75109d386d0c80612011c8b5993540fdda1a6e082df915",
+      "open_signature": "261b6156c81447902633081b09cad1ef97c4333744ff8cd8ff1091e53f3c0244",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 11
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-06T22:02:20.322692+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-06T22:02:20.322692+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-06T22:02:20.322692+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-11-07T01:48:49.344665+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-07T01:48:49.344665+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-07T01:48:49.344665+00:00"
   },
-  "checked_at": "2026-11-06T22:02:20.322692+00:00"
+  "checked_at": "2026-11-07T01:48:49.344665+00:00"
 }

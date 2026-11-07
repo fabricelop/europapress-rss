@@ -1,17 +1,13 @@
 {
   "version": 1,
-  "checked_at": "2026-11-07T00:55:34.891000+00:00",
+  "checked_at": "2026-11-07T01:48:46.956891+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-07T00:55:34.891000+00:00",
-      "pending_count": 3,
-      "pending_ids": [
-        "d26af6e5a302",
-        "5927ced3df9c",
-        "8e82505e791a"
-      ],
-      "oldest_at": "2026-11-07T00:53:54.957377Z",
+      "checked_at": "2026-11-07T01:48:46.956891+00:00",
+      "pending_count": 0,
+      "pending_ids": [],
+      "oldest_at": null,
       "latest_run": {
         "id": "tt-manual-20261107-0145-chat",
         "status": "DONE",
@@ -22,48 +18,23 @@
       },
       "control_command": "tt-manual-20261107-0145-chat",
       "last_command_at": "2026-11-07T00:45:00.000Z",
-      "status": "within_start_window",
+      "status": "no_work",
       "should_dispatch": false,
-      "item_execution": [
-        {
-          "id": "d26af6e5a302",
-          "entered_at": "2026-11-07T00:53:54.957377Z",
-          "should_start_by": "2026-11-07T00:58:54.957377+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "5927ced3df9c",
-          "entered_at": "2026-11-07T00:53:55.073128Z",
-          "should_start_by": "2026-11-07T00:58:55.073128+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "8e82505e791a",
-          "entered_at": "2026-11-07T00:53:55.298227Z",
-          "should_start_by": "2026-11-07T00:58:55.298227+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        }
-      ],
-      "backlog_signature": "5cde3a57fea78bb3",
-      "expected_start_by": "2026-11-07T00:58:54.957377+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-05T20:04:07.801680+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-07T00:55:34.891000+00:00",
+      "checked_at": "2026-11-07T01:48:46.956891+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tr-autoguard-1794012665",
+        "id": "tr-manual-20261107-0225-chat",
         "status": "DONE",
-        "started_at": "2026-11-07T01:51:00+01:00",
-        "updated_at": "2026-11-07T00:55:00+00:00",
-        "finished_at": "2026-11-07T01:55:00+01:00",
+        "started_at": "2026-11-07T02:25:10+01:00",
+        "updated_at": "2026-11-07T01:26:10+00:00",
+        "finished_at": "2026-11-07T02:26:10+01:00",
         "source": "github_pr_trace"
       },
       "control_command": "tr-autoguard-1794012665",
