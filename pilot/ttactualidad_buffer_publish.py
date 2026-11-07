@@ -275,14 +275,28 @@ def check_image(url, expected_hash, project, event_id=None, revision=None):
                                else {parsed.hostname})
         if (final.scheme != "https" or final.hostname not in allowed_final_hosts
             or final.port is not None or final.username or final.password
-            or final.fragment):
+            or final.fragment or final.query):
             raise ValueError("Redirección IA fuera de los orígenes autorizados")
+        # The redirect must preserve the exact event/revision/SHA filename,
+        # not just land somewhere on the same Site. Espanyol r0 was verified
+        # live against its canonical PNG path and all 64 SHA-256 digits.
+        if parsed.hostname in site_hosts:
+            exact_prefix = ("/images/" + project + "/" + event_id
+                            + "-r" + str(revision) + "-")
+            if (not final.path.startswith(exact_prefix)
+                or not final.path.lower().endswith((".png", ".jpeg", ".jpg", ".webp"))
+                or sha[:12] not in final.path.split("/")[-1].lower()):
+                raise ValueError("Redirección IA no conserva la ficha")
+        elif final.path != parsed.path:
+            raise ValueError("Redirección IA de GitHub a otra ruta")
         data = response.read(12 * 1024 * 1024 + 1)
         if len(data) > 12 * 1024 * 1024:
             raise ValueError("Imagen IA supera 12 MB")
     if hashlib.sha256(data).hexdigest() != sha:
         raise ValueError("Imagen IA no coincide con el SHA-256 editorial")
-    return url
+    # Give Buffer the already-verified canonical URL instead of forcing it to
+    # follow a cross-host redirect. Nothing is published during verification.
+    return final.geturl()
 
 
 # The app's public, read-only catalog contains originals after the user
