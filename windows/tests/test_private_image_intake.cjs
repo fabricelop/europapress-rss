@@ -72,6 +72,34 @@ test('receiver retries only reading exact PNG while ChatGPT hydration or CDP is 
  assert.doesNotMatch(source,/Input\.insertText/);
 });
 
+test('relay Chrome recovery is bounded and fails closed after uncertain cleanup',()=>{
+ const source=require('node:fs').readFileSync(
+  require('node:path').join(__dirname,'../TTImageApprovalReceiver.cjs'),'utf8');
+ assert.match(source,/MAX_NEW_RELAY_TABS_PER_CYCLE=1/);
+ assert.match(source,/MAX_RELAY_PAGE_TARGETS=6/);
+ assert.match(source,/RELAY_RETRY_COOLDOWN_MS=15\*60\*1000/);
+ assert.match(source,/newlyOpened>=MAX_NEW_RELAY_TABS_PER_CYCLE/);
+ assert.match(source,/pages\.filter\(p=>p\.type==='page'\)\.length>=MAX_RELAY_PAGE_TARGETS/);
+ assert.match(source,/relay-cleanup-unconfirmed\.json/);
+ assert.match(source,/Target\.closeTarget/);
+ assert.match(source,/json\/close/);
+ assert.match(source,/RELAY_CLEANUP_UNCONFIRMED/);
+ assert.match(source,/RELAY_TAB_BUDGET/);
+ assert.match(source,/RELAY_RETRY_COOLDOWN/);
+ assert.match(source,/RELAY_OPEN_FAILED/);
+});
+test('watchdog keeps known hidden startup and does not re-create visible CMD',()=>{
+ const source=require('node:fs').readFileSync(
+  require('node:path').join(__dirname,'../TT-LocalWatchdog.ps1'),'utf8');
+ const section=source.slice(source.indexOf('function EnsureStartup('),source.indexOf('function EnsureChrome{'));
+ assert.match(section,/ChangeExtension\(\$Name,'\.vbs'\)/);
+ assert.match(section,/TTActualidad hidden startup v2/);
+ assert.match(section,/STARTUP CUSTOM CMD PRESERVED/);
+ assert.match(section,/STARTUP CUSTOM VBS PRESERVED/);
+ assert.match(section,/Move-Item -LiteralPath \$legacy -Destination \$disabled/);
+ assert.doesNotMatch(section,/Set-Content -LiteralPath \$path/);
+});
+
 test('a retained original stays eligible after 72 hours in both capture watchers',()=>{
  const fs=require('node:fs'),path=require('node:path');
  const now=Date.parse('2026-11-07T14:40:00Z');
