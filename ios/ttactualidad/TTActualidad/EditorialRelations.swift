@@ -67,6 +67,29 @@ struct EditorialRelationReceipt: Decodable {
     let relationId: String
 }
 
+// The original editorial IDs and revisions remain valid after a story leaves
+// Listas. Manual APP decisions are committed in a GitHub ledger with those
+// IDs, independently of optional private Sites fingerprints.
+struct EditorialManualRelationEntry: Codable {
+    let id: String
+    let news: EditorialRelationEndpoint
+    let trend: EditorialRelationEndpoint
+    let state: String
+    let updatedAt: String
+
+    var relation: EditorialRelation {
+        EditorialRelation(id: id, news: news, trend: trend, state: state,
+                          origin: "manual", reason: "Asociación manual APP")
+    }
+}
+
+struct EditorialManualRelationsLedger: Codable {
+    var schemaVersion: Int
+    var items: [EditorialManualRelationEntry]
+
+    static var empty: Self { Self(schemaVersion: 1, items: []) }
+}
+
 enum EditorialRelationsPolicy {
     static func newsKey(id: String, revision: Int) -> String {
         id + ":r" + String(revision)
@@ -211,7 +234,8 @@ enum EditorialRelationsPolicy {
         var keys: [String] = []
         var byKey: [String: EditorialRelation] = [:]
         for item in items {
-            let key = item.news.stableIdentity + "↔" + item.trend.stableIdentity
+            let key = newsKey(id: item.news.id, revision: item.news.revision) +
+                "↔" + newsKey(id: item.trend.id, revision: item.trend.revision)
             if let previous = byKey[key] {
                 if precedence(item) > precedence(previous) { byKey[key] = item }
             } else {
