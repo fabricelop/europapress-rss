@@ -67,14 +67,46 @@ function EnsureSingle([string]$Pattern,[string]$Script,[string]$Tag){
   }
 }
 function EnsureStartup([string]$Name,[string]$Script){
+  # Startup .cmd creates a console even when the child PowerShell is Hidden.
+  # This watchdog used to recreate those .cmd launchers on every startup.
+  # Use a verified WScript VBS wrapper, preserving foreign custom launchers.
   try{
-    if(-not $StartupDir){return}
-    $path=Join-Path $StartupDir $Name
-    $content='@echo off'+[Environment]::NewLine+'start "" powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$Script+'"'
-    if(-not (Test-Path $path) -or (Get-Content $path -Raw -ErrorAction SilentlyContinue) -ne $content){
-      Set-Content -LiteralPath $path -Value $content -Encoding ASCII
-      Log "STARTUP ENSURED $Name"
+    if(-not $StartupDir -or -not(Test-Path -LiteralPath $Script)){return}
+    $legacy=Join-Path $StartupDir $Name
+    $hidden=Join-Path $StartupDir ([IO.Path]::ChangeExtension($Name,'.vbs'))
+    $expected='@echo off'+[Environment]::NewLine+
+      'start "" powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$Script+'"'
+    if(Test-Path -LiteralPath $legacy){
+      $old=[IO.File]::ReadAllText($legacy).TrimEnd("`r","`n")
+      if($old -ne $expected){
+        Log "STARTUP CUSTOM CMD PRESERVED $Name"
+        return
+      }
     }
+    $command='powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$Script+'"'
+    $content="' TTActualidad hidden startup v2"+[Environment]::NewLine+
+      'CreateObject("WScript.Shell").Run "'+$command.Replace('"','""')+'",0,False'
+    if(Test-Path -LiteralPath $hidden){
+      $oldHidden=[IO.File]::ReadAllText($hidden)
+      # The old known hidden v1 launcher may be kept unchanged if it already
+      # executes the SAME script and uses the hidden, asynchronous VBS mode.
+      $validated=($oldHidden.Contains('TTActualidad hidden startup v1') -or
+                  $oldHidden.Contains('TTActualidad hidden startup v2')) -and
+                  $oldHidden.Contains($Script) -and
+                  $oldHidden.Contains(',0,False')
+      if(-not $validated){
+        Log "STARTUP CUSTOM VBS PRESERVED $Name"
+        return
+      }
+    }else{
+      [IO.File]::WriteAllText($hidden,$content,[Text.Encoding]::Unicode)
+    }
+    if(Test-Path -LiteralPath $legacy){
+      $disabled=$legacy+'.disabled-'+(Get-Date -Format yyyyMMddHHmmss)
+      Move-Item -LiteralPath $legacy -Destination $disabled -ErrorAction Stop
+      Log "STARTUP CMD RETIRED $Name"
+    }
+    Log "STARTUP HIDDEN VBS READY $Name"
   }catch{Log "STARTUP ERROR $Name :: $($_.Exception.Message)"}
 }
 function EnsureChrome{
