@@ -98,6 +98,45 @@ struct EditorialActions: View {
                     .font(.caption2).foregroundStyle(TTTheme.muted)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
+            if let receipt = buffer.latestReceipt(project: project, id: editorialID,
+                                                  revision: revision) {
+                if receipt.state == "sent" && receipt.closure_verified == true {
+                    Text("Publicado en X y retirado de Listas (recibos confirmados)")
+                        .font(.caption2).foregroundStyle(TTTheme.teal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else if receipt.state == "sent" {
+                    Text("Publicado en X; esperando recibo de retirada de Listas.")
+                        .font(.caption2).foregroundStyle(TTTheme.muted)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if receipt.state == "sent", let raw = receipt.post_url,
+                   let verified = URL(string: raw),
+                   verified.scheme == "https",
+                   ["x.com", "twitter.com"].contains(verified.host?.lowercased() ?? ""),
+                   verified.path.contains("/status/") {
+                    quickButton("Ver publicación en X", "arrow.up.right.square") {
+                        openURL(verified)
+                    }
+                }
+            }
+            quickButton("Comprobar estado de Buffer", "arrow.clockwise") {
+                Task {
+                    await buffer.refresh()
+                    if let receipt = buffer.latestReceipt(project: project, id: editorialID,
+                                                         revision: revision),
+                       receipt.state == "sent" && receipt.closure_verified == true {
+                        outcome = "Publicado en X y retirado de Listas (recibos confirmados)"
+                        await store.refreshIfStale(minInterval: 0)
+                    } else if let receipt = buffer.latestReceipt(project: project,
+                                                                 id: editorialID,
+                                                                 revision: revision) {
+                        outcome = "Buffer: " + receipt.state +
+                                  ". La retirada de Listas necesita un recibo independiente."
+                    } else {
+                        outcome = "No hay recibo definitivo de Buffer para esta revisión."
+                    }
+                }
+            }
             HStack(spacing: 7) {
                 quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
                     .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
