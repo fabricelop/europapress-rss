@@ -7,42 +7,38 @@
   "previous_run_id": "tr-manual-20261107-1030-chat",
   "command_id": "tr-1794043085297-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T10:41:30+01:00",
-  "updated_at": "2026-11-07T10:48:00+01:00",
-  "finished_at": null,
-  "current": 2,
+  "updated_at": "2026-11-07T10:51:00+01:00",
+  "finished_at": "2026-11-07T10:51:00+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "red-review-b600427448342ab117fe",
-  "title": "Revisar novedades: Widilo",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "c7b2dcedccea",
-    "868ebdb8d539"
+    "868ebdb8d539",
+    "red-review-b600427448342ab117fe",
+    "red-review-e2092675a56e9a6b06db"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-b600427448342ab117fe",
-    "red-review-e2092675a56e9a6b06db"
-  ],
-  "remaining_active_ids": [
-    "red-review-b600427448342ab117fe",
-    "red-review-e2092675a56e9a6b06db"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 4,
     "observed": 4,
-    "closed": 2,
+    "closed": 4,
     "explained": 2,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 2,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -65,31 +61,138 @@
       "trend_id": "red-review-b600427448342ab117fe",
       "title": "Revisar novedades: Widilo",
       "message": "Entraron dos review_red durante el cierre: Widilo y Santiago Peña. Continúa la misma pasada; sin ImageGen."
+    },
+    {
+      "at": "2026-11-07T10:49:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-b600427448342ab117fe",
+      "title": "Revisar novedades: Widilo",
+      "message": "Widilo actualizado como continuidad; misma ficha, misma fecha e imagen, sin volver a Listas."
+    },
+    {
+      "at": "2026-11-07T10:50:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-e2092675a56e9a6b06db",
+      "title": "Revisar novedades: Santiago Peña",
+      "message": "Santiago Peña actualizado como continuidad; misma ficha, misma fecha e imagen, sin volver a Listas."
+    },
+    {
+      "at": "2026-11-07T10:51:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main: editorial-queue=0; no preparing/update ni reexplicación pendiente observada. Aplicaciones confirmadas en 5f0d2273 y 1f087b9d."
+    },
+    {
+      "at": "2026-11-07T10:51:00+01:00",
+      "phase": "closing",
+      "message": "Pasada cerrada 4/4; ImageGen=0, image-outbox=0, publicaciones=0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "c7b2dcedccea",
+      "revision": 0,
+      "name": "HOY JUGAMOS",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "5f0d2273bd14ac98c18e4b831960ce02d6ed3b98"
+    },
+    {
+      "id": "868ebdb8d539",
+      "revision": 0,
+      "name": "Túnez",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "5f0d2273bd14ac98c18e4b831960ce02d6ed3b98"
+    },
+    {
+      "id": "red-review-b600427448342ab117fe",
+      "revision": 0,
+      "name": "Revisar novedades: Widilo",
+      "outcome": "continuity_update",
+      "applied": true,
+      "source_id": "ff856dec111d",
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "1f087b9d6dbca585703d67719f4883284687a8a4"
+    },
+    {
+      "id": "red-review-e2092675a56e9a6b06db",
+      "revision": 0,
+      "name": "Revisar novedades: Santiago Peña",
+      "outcome": "continuity_update",
+      "applied": true,
+      "source_id": "c4f3771c12ae",
+      "via": "maintenance_outbox_applied",
+      "apply_commit": "1f087b9d6dbca585703d67719f4883284687a8a4"
+    }
+  ],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-manual-20261107-1030-chat",
+    "run_id": "tr-manual-20261107-1041-chat",
     "command_id": "tr-1794043085297-manual",
     "status": "DONE",
-    "started_at": "2026-11-07T10:30:00+01:00",
-    "updated_at": "2026-11-07T10:31:20+01:00",
-    "finished_at": "2026-11-07T10:31:20+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-07T10:41:30+01:00",
+    "updated_at": "2026-11-07T10:51:00+01:00",
+    "finished_at": "2026-11-07T10:51:00+01:00",
+    "current": 4,
+    "total": 4,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "c7b2dcedccea",
+      "868ebdb8d539",
+      "red-review-b600427448342ab117fe",
+      "red-review-e2092675a56e9a6b06db"
+    ],
     "converged_ids": [],
     "remaining_active_ids": [],
-    "final_outcomes": [],
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "final_outcomes": [
+      {
+        "id": "c7b2dcedccea",
+        "revision": 0,
+        "name": "HOY JUGAMOS",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "5f0d2273bd14ac98c18e4b831960ce02d6ed3b98"
+      },
+      {
+        "id": "868ebdb8d539",
+        "revision": 0,
+        "name": "Túnez",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "5f0d2273bd14ac98c18e4b831960ce02d6ed3b98"
+      },
+      {
+        "id": "red-review-b600427448342ab117fe",
+        "revision": 0,
+        "name": "Revisar novedades: Widilo",
+        "outcome": "continuity_update",
+        "applied": true,
+        "source_id": "ff856dec111d",
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "1f087b9d6dbca585703d67719f4883284687a8a4"
+      },
+      {
+        "id": "red-review-e2092675a56e9a6b06db",
+        "revision": 0,
+        "name": "Revisar novedades: Santiago Peña",
+        "outcome": "continuity_update",
+        "applied": true,
+        "source_id": "c4f3771c12ae",
+        "via": "maintenance_outbox_applied",
+        "apply_commit": "1f087b9d6dbca585703d67719f4883284687a8a4"
+      }
+    ],
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 2,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 2,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
@@ -103,10 +206,10 @@
     "phase": "closing",
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 0/0 tras barrera final main: editorial-queue.json count=0; no preparing/update ni rewrite_pending vigente. ImageGen=0; publicaciones=0."
+    "message": "Pasada cerrada 4/4: HOY JUGAMOS y Túnez explicados; Widilo y Santiago Peña actualizados como continuidad. Barrera final main: cola 0 y sin preparing/update ni reexplicación pendiente. ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-07T10:43:46+01:00",
-  "last_completed_at": "2026-11-07T10:43:47+01:00",
+  "last_started_at": "2026-11-07T10:41:30+01:00",
+  "last_completed_at": "2026-11-07T10:51:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -270,5 +373,5 @@
     "tr-1794042927737-manual",
     "tr-manual-20261107-1025-chat"
   ],
-  "message": "RUNNING 2/4: nuevas review_red detectadas durante el cierre; procesando Widilo y Santiago Peña en orden de cola."
+  "message": "Pasada canónica cerrada 4/4. Cola final 0; sin ImageGen, image-outbox ni publicaciones."
 }
