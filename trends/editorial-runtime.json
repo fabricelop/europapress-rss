@@ -3,38 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-manual-20261107-1510-chat",
-  "previous_run_id": "tr-manual-20261107-1440-chat",
-  "command_id": "tr-1794060087055-manual",
+  "run_id": "tr-autoguard-1794063061",
+  "previous_run_id": "tr-manual-20261107-1510-chat",
+  "command_id": "tr-autoguard-1794063061",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-07T15:12:00+01:00",
-  "updated_at": "2026-11-07T15:13:00+01:00",
-  "finished_at": "2026-11-07T15:13:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-07T15:51:00+01:00",
+  "updated_at": "2026-11-07T15:52:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-52ded1c88cb98112dee3",
-    "red-review-e9186c195e8f495aec48"
+  "total": 1,
+  "trend_id": "radar-prepare-cf0a9a199ff9269ac43e",
+  "title": "Radar · #LCN7nov",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "radar-prepare-cf0a9a199ff9269ac43e"
   ],
-  "converged_ids": [
-    "red-review-e9186c195e8f495aec48"
+  "remaining_active_ids": [
+    "radar-prepare-cf0a9a199ff9269ac43e"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "updates": 0,
     "unchanged_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0,
@@ -486,6 +485,13 @@
       "at": "2026-11-07T15:04:20+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794060087055-manual cerrada 2/2 por ejecución y convergencia JIT: dos review_red unchanged aplicados, cola final 0, sin imágenes ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T15:52:00+01:00",
+      "phase": "preparing",
+      "trend_id": "radar-prepare-cf0a9a199ff9269ac43e",
+      "title": "Radar · #LCN7nov",
+      "message": "Pasada tr-autoguard-1794063061 iniciada; cola fresca de main detecta 1 borrador Radar #LCN7nov r0. Se revalida ID/revisión y se investiga el detonante actual. Sin ImageGen ni publicaciones."
     }
   ],
   "final_outcomes": [
@@ -733,7 +739,7 @@
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat"
   ],
-  "message": "Pasada cerrada 0/0: cola main vacía en la barrera final, sin rewrite_pending activo; ImageGen=0; publicaciones=0.",
+  "message": "Procesando 1/1: Radar · #LCN7nov; sin ImageGen ni publicaciones.",
   "outcomes": [],
   "recent_runs": [
     "tr-1794052645605-manual",
@@ -745,6 +751,7 @@
     "tr-autoguard-1794057063",
     "tr-1794057915598-manual",
     "tr-1794060087055-manual",
-    "tr-manual-20261107-1510-chat"
+    "tr-manual-20261107-1510-chat",
+    "tr-autoguard-1794063061"
   ]
 }
