@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794054978318-manual",
   "command_id": "tr-manual-20261107-1340-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T13:40:30+01:00",
-  "updated_at": "2026-11-07T13:40:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-07T13:41:30+01:00",
+  "finished_at": "2026-11-07T13:41:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -306,22 +306,32 @@
       "at": "2026-11-07T13:40:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-manual-20261107-1340-chat iniciada; barrera fresca de main detecta 0 trabajo(s) editorial(es) activo(s). Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-07T13:41:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main revalidada: editorial-queue=0; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain. Búsqueda de rewrite/reexplain pendiente sin coincidencias. Últimos resultados de mantenimiento inspeccionados. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T13:41:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1340-chat cerrada 0/0; no había trabajo editorial activo. Sin imágenes ni publicaciones."
     }
   ],
   "final_outcomes": [],
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794054978318-manual",
+    "run_id": "tr-manual-20261107-1340-chat",
     "status": "DONE",
-    "finished_at": "2026-11-07T12:38:38.997Z",
+    "finished_at": "2026-11-07T13:41:30+01:00",
     "total": 0,
     "closed": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0
   },
-  "last_started_at": "2026-11-07T12:38:10.645Z",
-  "last_completed_at": "2026-11-07T12:38:38.997Z",
+  "last_started_at": "2026-11-07T13:40:30+01:00",
+  "last_completed_at": "2026-11-07T13:41:30+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -419,7 +429,8 @@
     "tr-1794052874051-manual-recheck-chat",
     "tr-manual-20261107-1325-chat",
     "tr-1794054978318-manual",
-    "tr-1794054829513-manual"
+    "tr-1794054829513-manual",
+    "tr-manual-20261107-1340-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -519,44 +530,16 @@
     "tr-1794052874051-manual-recheck-chat",
     "tr-manual-20261107-1325-chat",
     "tr-1794054978318-manual",
-    "tr-1794054829513-manual"
+    "tr-1794054829513-manual",
+    "tr-manual-20261107-1340-chat"
   ],
-  "message": "Pasada tr-manual-20261107-1340-chat iniciada; barrera fresca de main detecta 0 trabajo(s) editorial(es) activo(s). Sin ImageGen ni publicaciones.",
-  "outcomes": [
-    {
-      "id": "99cc3c458e9b",
-      "revision": 0,
-      "name": "Widilo",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "d0c7bbcd1a51",
-      "revision": 0,
-      "name": "DÍA DE PARTIDO",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "red-review-ee1dc2c979195457904d",
-      "revision": 0,
-      "name": "Revisar novedades: Santiago Peña",
-      "outcome": "continuity_update",
-      "applied": true
-    },
-    {
-      "id": "red-review-44000b013e0f0fda5c91",
-      "revision": 0,
-      "name": "Revisar novedades: Fiscalía Europea",
-      "outcome": "unchanged",
-      "applied": true
-    }
-  ],
+  "message": "Pasada tr-manual-20261107-1340-chat cerrada 0/0; barrera final main limpia, sin reexplicaciones activas, sin ImageGen ni publicaciones.",
+  "outcomes": [],
   "recent_runs": [
-    "tr-manual-20261107-1240-chat",
     "tr-1794052645605-manual",
     "tr-1794052874051-manual",
     "tr-1794052874051-manual-recheck-chat",
-    "tr-manual-20261107-1325-chat"
+    "tr-manual-20261107-1325-chat",
+    "tr-manual-20261107-1340-chat"
   ]
 }
