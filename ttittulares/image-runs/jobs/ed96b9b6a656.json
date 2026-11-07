@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-ed96b9b6a656-r1-a1-1791988927616",
+  "requested_at": "2026-10-14T14:42:07.601694Z",
+  "updated_at": "2026-10-14T14:43:42.560028Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "ed96b9b6a656",
+  "event_id": "ed96b9b6a656",
+  "target_name": "El Museo Sorolla abre mañana al público su nuevo edificio de ampliación tras una inversión superior a los 13 millones de euros",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El Museo Sorolla abre mañana al público su nuevo edificio de ampliación tras una inversión superior a los 13 millones de euros",
+    "revision": 1,
+    "factual_summary": "El Museo Sorolla abre al público el 15 de octubre su nuevo edificio de ampliación en la calle Zurbano de Madrid. La ampliación incorpora más de 2.000 m² de nuevos espacios y la inversión supera los 13,1 millones de euros; la casa museo histórica permanece temporalmente cerrada por rehabilitación.",
+    "tweet_text": "El Museo Sorolla abre este jueves su ampliación en Madrid: más de 2.000 m² nuevos y una inversión superior a 13,1 millones. La casa museo sigue cerrada por rehabilitación.\n\n🌶️ Sorolla gana metros sin mover un caballete.",
+    "remate": "🌶️ Sorolla gana metros sin mover un caballete.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl Museo Sorolla abre este jueves su ampliación en Madrid: más de 2.000 m² nuevos y una inversión superior a 13,1 millones. La casa museo sigue cerrada por rehabilitación.\n\n🌶️ Sorolla gana metros sin mover un caballete.\n\nREMATE EXACTO:\n🌶️ Sorolla gana metros sin mover un caballete.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl Museo Sorolla abre al público el 15 de octubre su nuevo edificio de ampliación en la calle Zurbano de Madrid. La ampliación incorpora más de 2.000 m² de nuevos espacios y la inversión supera los 13,1 millones de euros; la casa museo histórica permanece temporalmente cerrada por rehabilitación.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.servimedia.es/noticias/museo-sorolla-abre-manana-publico-nuevo-edificio-ampliacion-tras-una-inversion-superior-13-millones-euros/1413437014",
+    "citations": [
+      {
+        "source": "Servimedia",
+        "title": "El Museo Sorolla abre mañana al público su nuevo edificio de ampliación tras una inversión superior a los 13 millones de euros",
+        "url": "https://www.servimedia.es/noticias/museo-sorolla-abre-manana-publico-nuevo-edificio-ampliacion-tras-una-inversion-superior-13-millones-euros/1413437014"
+      },
+      {
+        "source": "Ministerio de Cultura",
+        "title": "Presentación de la ampliación del Museo Sorolla",
+        "url": "https://www.cultura.gob.es/prensa/convocatorias-prensa/2026/10/261013-presentacion-ampliacion-museo-sorolla.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "title": "Abre la ampliación del Museo Sorolla: un viaje a través del tiempo por un palacete a medida del maestro de la luz",
+        "url": "https://elpais.com/cultura/2026-10-14/abre-la-ampliacion-del-museo-sorolla-un-viaje-a-traves-del-tiempo-por-un-palacete-a-medida-del-maestro-de-la-luz.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "38196afbbe0c4d802dec5381c7204e0636d17683312cba77ffdceebd9c9c05e9",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-14T14:42:42.946Z",
+  "pc_launched_at": "2026-10-14T14:42:52.747Z",
+  "finished_at": "2026-10-14T14:42:52.747Z"
+}

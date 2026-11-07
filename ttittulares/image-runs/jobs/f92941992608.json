@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-f92941992608-r1-a1-1792861210968",
+  "requested_at": "2026-10-24T17:00:10.899613Z",
+  "updated_at": "2026-10-24T18:01:58.906487Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "f92941992608",
+  "event_id": "f92941992608",
+  "target_name": "La estación de Plaza de Armas recupera la normalidad tras el incendio de un autobús",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "La estación de Plaza de Armas recupera la normalidad tras el incendio de un autobús",
+    "revision": 1,
+    "factual_summary": "Un autobús se incendió sobre las 14:00 en la estación Plaza de Armas de Sevilla. La estación fue desalojada de forma preventiva, no hubo heridos y el servicio quedó restablecido después de extinguir el fuego y extraer el humo.",
+    "tweet_text": "Un autobús ardió en Plaza de Armas, Sevilla. La estación fue desalojada sin heridos y el servicio quedó restablecido tras extinguir el fuego y retirar el humo.\n\n#Sevilla #PlazaDeArmas\n🌶️ El humo se quedó sin billete de vuelta.",
+    "remate": "🌶️ El humo se quedó sin billete de vuelta.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn autobús ardió en Plaza de Armas, Sevilla. La estación fue desalojada sin heridos y el servicio quedó restablecido tras extinguir el fuego y retirar el humo.\n\n#Sevilla #PlazaDeArmas\n🌶️ El humo se quedó sin billete de vuelta.\n\nREMATE EXACTO:\n🌶️ El humo se quedó sin billete de vuelta.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUn autobús se incendió sobre las 14:00 en la estación Plaza de Armas de Sevilla. La estación fue desalojada de forma preventiva, no hubo heridos y el servicio quedó restablecido después de extinguir el fuego y extraer el humo.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.abc.es/sevilla/ciudad/estacion-plaza-armas-recupera-normalidad-tras-incendio-20261024170538-nts.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/andalucia/sevilla-00357/noticia-restablecido-servicio-plaza-armas-sevilla-desalojo-temporal-incendio-bus-20261024170843.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/andalucia/2026/10/24/el-incendio-de-un-autobus-en-la-estacion-de-plaza-de-armas-obliga-a-su-evacuacion-radio-sevilla/"
+      },
+      {
+        "source": "EFE",
+        "url": "https://www.infobae.com/espana/agencias/2026/10/24/desalojada-la-estacion-de-plaza-de-armas-de-sevilla-por-el-incendio-de-un-autobus/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "78670aadec0185c46ea4b5c7cb61b67ae6efe8ce52089c2409de43f91aa52c70",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-24T17:01:52.093Z",
+  "pc_launched_at": "2026-10-24T17:02:00.157Z",
+  "finished_at": "2026-10-24T17:02:00.157Z"
+}

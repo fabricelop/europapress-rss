@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-571aa1d2f4ca-r1-a1-1792079000197",
+  "requested_at": "2026-10-15T15:43:20.174547Z",
+  "updated_at": "2026-10-15T16:06:36.468540Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "571aa1d2f4ca",
+  "event_id": "571aa1d2f4ca",
+  "target_name": "La Junta Electoral abre expediente sancionador a Sánchez por la rueda de prensa en La Moncloa donde anunció los decretos sobre vivienda",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "La Junta Electoral abre expediente sancionador a Sánchez por la rueda de prensa en La Moncloa donde anunció los decretos sobre vivienda",
+    "revision": 1,
+    "factual_summary": "La Junta Electoral Central abrió un expediente sancionador a Pedro Sánchez por una rueda de prensa celebrada en La Moncloa el 6 de octubre, al apreciar posibles manifestaciones de carácter partidista durante el periodo electoral.",
+    "tweet_text": "La JEC abre expediente sancionador a Pedro Sánchez por una rueda de prensa del 6 de octubre en La Moncloa, al apreciar posibles manifestaciones partidistas en periodo electoral.\n\n#JEC #PedroSánchez\n🌶️ La rueda de prensa acabó con carpeta propia en la JEC.",
+    "remate": "🌶️ La rueda de prensa acabó con carpeta propia en la JEC.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLa JEC abre expediente sancionador a Pedro Sánchez por una rueda de prensa del 6 de octubre en La Moncloa, al apreciar posibles manifestaciones partidistas en periodo electoral.\n\n#JEC #PedroSánchez\n🌶️ La rueda de prensa acabó con carpeta propia en la JEC.\n\nREMATE EXACTO:\n🌶️ La rueda de prensa acabó con carpeta propia en la JEC.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa Junta Electoral Central abrió un expediente sancionador a Pedro Sánchez por una rueda de prensa celebrada en La Moncloa el 6 de octubre, al apreciar posibles manifestaciones de carácter partidista durante el periodo electoral.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/2026-10-15/la-junta-electoral-abre-expediente-sancionador-a-sanchez-por-la-rueda-de-prensa-en-la-moncloa-donde-anuncio-los-decretos-sobre-vivienda.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "title": "La Junta Electoral abre expediente sancionador a Sánchez por la rueda de prensa en La Moncloa donde anunció los decretos sobre vivienda",
+        "url": "https://elpais.com/espana/2026-10-15/la-junta-electoral-abre-expediente-sancionador-a-sanchez-por-la-rueda-de-prensa-en-la-moncloa-donde-anuncio-los-decretos-sobre-vivienda.html"
+      },
+      {
+        "source": "Europa Press",
+        "title": "La JEC abre nuevo expediente sancionador a Sánchez por hacer partidismo desde Moncloa",
+        "url": "https://www.europapress.es/nacional/noticia-jec-abre-nuevo-expediente-sancionador-sanchez-hacer-partidismo-moncloa-20261015164433.html"
+      },
+      {
+        "source": "20minutos",
+        "title": "La Junta Electoral abre un expediente a Sánchez por la rueda de prensa en Moncloa tras convocar las elecciones",
+        "url": "https://www.20minutos.es/nacional/junta-electoral-abre-un-expediente-sanchez-por-rueda-prensa-moncloa-tras-convocar-las-elecciones_7049268_0.html"
+      },
+      {
+        "source": "elDiario.es",
+        "title": "La Junta Electoral expedienta a Sánchez por sus manifestaciones valorativas en una rueda de prensa en Moncloa",
+        "url": "https://www.eldiario.es/politica/junta-electoral-expedienta-sanchez-manifestaciones-valorativas-rueda-prensa-moncloa_1_13588771.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "7b52379969fa39c9c316169b4ec1a57d4780267f1e1709c8371d1409bfd1bea0",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-15T15:56:08.700Z",
+  "pc_launched_at": "2026-10-15T15:56:19.428Z",
+  "finished_at": "2026-10-15T15:56:19.428Z"
+}

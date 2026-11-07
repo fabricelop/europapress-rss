@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-96f5652cb937-r1-a1-1792753655353",
+  "requested_at": "2026-10-23T11:07:35.310054Z",
+  "updated_at": "2026-10-23T11:11:31.748Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "96f5652cb937",
+  "event_id": "96f5652cb937",
+  "target_name": "ÚLTIMA HORA » Un muerto y varios heridos en tiroteos perpetrados por un hombre en la periferia de París",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "ÚLTIMA HORA » Un muerto y varios heridos en tiroteos perpetrados por un hombre en la periferia de París",
+    "revision": 1,
+    "factual_summary": "Una persona murió y al menos cuatro resultaron heridas en varios tiroteos en Trappes y sus alrededores, al oeste de París. Un sospechoso fue detenido y el móvil no estaba determinado.",
+    "tweet_text": "Un hombre mató a una persona e hirió al menos a cuatro en varios tiroteos en Trappes y alrededores, al oeste de París. El sospechoso fue detenido y el móvil sigue sin determinar.\n\n#Trappes #Francia\n🌶️ Un ataque bajo investigación, sin móvil confirmado.",
+    "remate": "🌶️ Un ataque bajo investigación, sin móvil confirmado.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn hombre mató a una persona e hirió al menos a cuatro en varios tiroteos en Trappes y alrededores, al oeste de París. El sospechoso fue detenido y el móvil sigue sin determinar.\n\n#Trappes #Francia\n🌶️ Un ataque bajo investigación, sin móvil confirmado.\n\nREMATE EXACTO:\n🌶️ Un ataque bajo investigación, sin móvil confirmado.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUna persona murió y al menos cuatro resultaron heridas en varios tiroteos en Trappes y sus alrededores, al oeste de París. Un sospechoso fue detenido y el móvil no estaba determinado.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.publico.es/internacional/muerto-varios-heridos-tiroteos-perpetrados-hombre-periferia-paris.html",
+    "citations": [
+      {
+        "source": "Reuters",
+        "url": "https://www.reuters.com/world/least-two-injured-shooting-street-near-paris-bfm-reports-2026-10-23/"
+      },
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261023/francia-tiroteo-periferia-paris/17280198.shtml"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false,",
+  "pc_upload_secret_hash": "30139a427afe18706630ac5c8c61a37efdf809c6be90cefa6fbbc3f382ea942e",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-23T11:10:38.205Z",
+  "finished_at": "2026-10-23T11:11:31.748Z"
+}

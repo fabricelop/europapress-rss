@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-b19a11053faf-r1-a2-1791231737125",
+  "requested_at": "2026-10-05T20:22:17.124987Z",
+  "updated_at": "2026-10-05T20:23:02.149Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "b19a11053faf",
+  "event_id": "b19a11053faf",
+  "target_name": "Aznar, ante las elecciones: «Si Sánchez forma otra vez gobierno, la Monarquía se terminaría»",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 2,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v8_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "title": "Aznar, ante las elecciones: «Si Sánchez forma otra vez gobierno, la Monarquía se terminaría»",
+    "revision": 1,
+    "factual_summary": "José María Aznar afirmó en Sevilla que, si Pedro Sánchez vuelve a formar Gobierno tras las elecciones generales del 29 de noviembre, «la monarquía que hemos conocido se terminaría». También sostuvo que Sánchez y sus aliados pretenden dar a esos comicios un carácter «prácticamente constituyente». EL PAÍS, Europa Press, ABC y RTVE recogen la declaración.",
+    "tweet_text": "Aznar sostiene que si Sánchez vuelve a formar Gobierno el 29-N “la monarquía que hemos conocido se terminaría” y presenta las elecciones como de carácter “prácticamente constituyente”.\n\n🌶️ Aznar ha metido la Corona en la papeleta sin pasar por imprenta.",
+    "remate": "🌶️ Aznar ha metido la Corona en la papeleta sin pasar por imprenta.",
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.",
+    "image_prompt": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en hechos reales. Crear un gag visual específico a partir de la noticia, no una representación literal. Texto en español únicamente cuando sea necesario para el gag. Evitar caricatura genérica, collage, aspecto fotográfico puro e infografía. Un gag principal inmediatamente reconocible y pocos detalles secundarios, solo si refuerzan el chiste.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nAznar sostiene que si Sánchez vuelve a formar Gobierno el 29-N “la monarquía que hemos conocido se terminaría” y presenta las elecciones como de carácter “prácticamente constituyente”.\n\n🌶️ Aznar ha metido la Corona en la papeleta sin pasar por imprenta.\n\nREMATE EXACTO:\n🌶️ Aznar ha metido la Corona en la papeleta sin pasar por imprenta.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nJosé María Aznar afirmó en Sevilla que, si Pedro Sánchez vuelve a formar Gobierno tras las elecciones generales del 29 de noviembre, «la monarquía que hemos conocido se terminaría». También sostuvo que Sánchez y sus aliados pretenden dar a esos comicios un carácter «prácticamente constituyente». EL PAÍS, Europa Press, ABC y RTVE recogen la declaración.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.abc.es/sevilla/cultura/jose-maria-aznar-sanchez-logra-formar-gobierno-20261005203601-nts.html",
+    "citations": []
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "CDP timeout Runtime.evaluate",
+  "pc_upload_secret_hash": "b4760c90000d5b9bd1039b7c78ffe47d0d6f4900ab9dffe6c0a5cfc4f10882fa",
+  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-05T20:22:44.508Z",
+  "finished_at": "2026-10-05T20:23:02.149Z"
+}

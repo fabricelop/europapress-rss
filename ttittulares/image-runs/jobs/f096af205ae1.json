@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-f096af205ae1-r1-a2-1792109126901",
+  "requested_at": "2026-10-16T00:05:26.865660Z",
+  "updated_at": "2026-10-16T00:09:07.848770Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "f096af205ae1",
+  "event_id": "f096af205ae1",
+  "target_name": "Al menos cuatro muertos, entre ellos tres menores, en un tiroteo en una escuela de primaria de Oregón",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 2,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Al menos cuatro muertos, entre ellos tres menores, en un tiroteo en una escuela de primaria de Oregón",
+    "revision": 1,
+    "factual_summary": "Un tiroteo en una escuela primaria de Oregón (EEUU) dejó al menos cuatro muertos, entre ellos tres menores.",
+    "tweet_text": "Un tiroteo en una escuela primaria de Oregón (EEUU) dejó al menos cuatro muertos, entre ellos tres menores.\n\n#Oregón #EEUU\n🌶️ Las autoridades investigan las circunstancias del ataque.",
+    "remate": "🌶️ Las autoridades investigan las circunstancias del ataque.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn tiroteo en una escuela primaria de Oregón (EEUU) dejó al menos cuatro muertos, entre ellos tres menores.\n\n#Oregón #EEUU\n🌶️ Las autoridades investigan las circunstancias del ataque.\n\nREMATE EXACTO:\n🌶️ Las autoridades investigan las circunstancias del ataque.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUn tiroteo en una escuela primaria de Oregón (EEUU) dejó al menos cuatro muertos, entre ellos tres menores.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.huffingtonpost.es/global/al-dos-heridos-menor-tiroteo-escuela-primaria-oregon-f202610.html",
+    "citations": [
+      {
+        "source": "EFE",
+        "title": "Al menos cuatro muertos en un tiroteo en una escuela de primaria en Estados Unidos",
+        "url": "https://efe.com/mundo/2026-10-16/tiroteo-escuela-oregon/"
+      },
+      {
+        "source": "Cadena SER",
+        "title": "Al menos cuatro muertos en un tiroteo en una escuela de primaria en Estados Unidos",
+        "url": "https://cadenaser.com/nacional/2026/10/15/al-menos-cuatro-muertos-en-un-tiroteo-en-una-escuela-de-primaria-en-estados-unidos-cadena-ser/"
+      },
+      {
+        "source": "ABC",
+        "title": "Al menos cuatro muertos en un tiroteo en una escuela de Oregon (EE.UU.)",
+        "url": "https://www.abc.es/internacional/cuatro-muertos-tiroteo-escuela-oregon-eeuu-20261016005748-nt.html"
+      },
+      {
+        "source": "El HuffPost",
+        "title": "Al menos cuatro muertos, entre ellos tres menores, en un tiroteo en una escuela de primaria de Oregón",
+        "url": "https://www.huffingtonpost.es/global/al-dos-heridos-menor-tiroteo-escuela-primaria-oregon-f202610.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "title": "Un tiroteo en una escuela primaria de Oregón deja tres ninos muertos",
+        "url": "https://elpais.com/us/2026-10-15/un-tiroteo-en-una-escuela-primaria-de-oregon-deja-tres-ninos-muertos.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "bd61866a3f29d254befc21aa77f0b6ac0dcd975bf7f4d4705246d2a0a8e2e21a",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T00:07:11.659Z",
+  "pc_launched_at": "2026-10-16T00:07:25.068Z",
+  "finished_at": "2026-10-16T00:07:25.068Z"
+}
