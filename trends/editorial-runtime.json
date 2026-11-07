@@ -7,41 +7,38 @@
   "previous_run_id": "tr-autoguard-1794064878",
   "command_id": "tr-manual-20261107-1710-chat",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-07T17:12:00+01:00",
-  "updated_at": "2026-11-07T17:14:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T17:15:00+01:00",
+  "finished_at": "2026-11-07T17:15:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "ee827d40c1b4",
-  "title": "Canales",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "ebe2ad4e2592",
+    "ee827d40c1b4"
+  ],
   "converged_ids": [
     "0527bd84df25"
   ],
-  "remaining_ids": [
-    "ebe2ad4e2592",
-    "ee827d40c1b4"
-  ],
-  "remaining_active_ids": [
-    "ebe2ad4e2592",
-    "ee827d40c1b4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -610,13 +607,40 @@
       "trend_id": "ee827d40c1b4",
       "title": "Canales",
       "message": "Canales r0 revalidado JIT. El contexto actual de Monterrey-Toluca y la presencia de Sergio Canales en Rayados están verificados, pero no se acredita qué impulsó exactamente el término."
+    },
+    {
+      "at": "2026-11-07T17:15:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final main verificada: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending, reexplain, anticipate ni review_red. Javi Hernández y Canales constan aplicados en requests/ficha por commits 8d2af20e… y db547ba0…. ImageGen=0."
+    },
+    {
+      "at": "2026-11-07T17:15:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-manual-20261107-1710-chat cerrada 2/2 propios + 1 convergencia concurrente (Lo Celso): cola final 0, reexplicaciones activas 0, ImageGen 0, publicaciones 0."
     }
   ],
-  "final_outcomes": [],
+  "final_outcomes": [
+    {
+      "id": "ebe2ad4e2592",
+      "revision": 0,
+      "name": "Javi Hernández",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox"
+    },
+    {
+      "id": "ee827d40c1b4",
+      "revision": 0,
+      "name": "Canales",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "via": "chat_outbox"
+    }
+  ],
   "api_failover_enabled": false,
-  "last_run": "tr-autoguard-1794064878",
-  "last_started_at": "2026-11-07T16:22:00+01:00",
-  "last_completed_at": "2026-11-07T16:36:00+01:00",
+  "last_run": "tr-manual-20261107-1710-chat",
+  "last_started_at": "2026-11-07T17:12:00+01:00",
+  "last_completed_at": "2026-11-07T17:15:00+01:00",
   "draft_preview": null,
   "satisfied_run_ids": [
     "tr-1793966100000-manual",
@@ -724,7 +748,8 @@
     "tr-manual-20261107-1510-chat",
     "tr-autoguard-1794063061",
     "tr-1794063319124-manual",
-    "tr-1794063455844-manual"
+    "tr-1794063455844-manual",
+    "tr-manual-20261107-1710-chat"
   ],
   "canonical_successor_run_id": null,
   "satisfied_run_chain": [
@@ -833,12 +858,29 @@
     "tr-manual-20261107-1510-chat",
     "tr-autoguard-1794063061",
     "tr-1794063319124-manual",
-    "tr-1794063455844-manual"
+    "tr-1794063455844-manual",
+    "tr-manual-20261107-1710-chat"
   ],
-  "message": "Canales r0 revalidado JIT. El contexto actual de Monterrey-Toluca y la presencia de Sergio Canales en Rayados están verificados, pero no se acredita qué impulsó exactamente el término.",
-  "outcomes": [],
+  "message": "Pasada tr-manual-20261107-1710-chat cerrada 2/2 propios + 1 convergencia concurrente (Lo Celso): cola final 0, reexplicaciones activas 0, ImageGen 0, publicaciones 0.",
+  "outcomes": [
+    {
+      "id": "ebe2ad4e2592",
+      "revision": 0,
+      "name": "Javi Hernández",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox"
+    },
+    {
+      "id": "ee827d40c1b4",
+      "revision": 0,
+      "name": "Canales",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "via": "chat_outbox"
+    }
+  ],
   "recent_runs": [
-    "tr-1794052645605-manual",
     "tr-1794052874051-manual",
     "tr-1794052874051-manual-recheck-chat",
     "tr-manual-20261107-1325-chat",
@@ -849,6 +891,7 @@
     "tr-1794060087055-manual",
     "tr-manual-20261107-1510-chat",
     "tr-autoguard-1794063061",
-    "tr-1794063455844-manual"
+    "tr-1794063455844-manual",
+    "tr-manual-20261107-1710-chat"
   ]
 }
