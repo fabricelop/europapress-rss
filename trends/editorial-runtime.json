@@ -7,17 +7,19 @@
   "previous_run_id": "tr-1794089854856-manual",
   "command_id": "tr-1794089949610-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-07T23:20:30+01:00",
-  "updated_at": "2026-11-07T23:20:30+01:00",
+  "updated_at": "2026-11-07T23:21:31+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
   "trend_id": null,
   "title": "TTendencias editorial",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "283971b24730"
+  ],
   "converged_ids": [
     "c7bb6c3446ee",
     "19a794014e20",
@@ -25,16 +27,8 @@
     "e51dc7aa7a37",
     "fe308194f4ea"
   ],
-  "remaining_ids": [
-    "65615694d300",
-    "ace5a78b186c",
-    "283971b24730"
-  ],
-  "remaining_active_ids": [
-    "65615694d300",
-    "ace5a78b186c",
-    "283971b24730"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": null,
   "outcomes": [],
@@ -83,7 +77,7 @@
       "message": "Pasada tr-1794089949610-manual asumida en chat. Cinco trabajos iniciales convergieron por la ejecución inmediatamente anterior; quedan 3 preparing nuevos en main (Valverde, #MalasLenguasN, Catena), a procesar JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-07T23:20:30+01:00",
-  "last_completed_at": "2026-11-07T23:19:43+01:00",
+  "last_started_at": "2026-11-07T23:21:31+01:00",
+  "last_completed_at": "2026-11-07T23:21:31+01:00",
   "api_failover_enabled": false
 }
