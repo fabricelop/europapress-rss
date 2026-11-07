@@ -18,7 +18,7 @@ $dependencies=@{
  'TTiTTularesWebImages.cjs'='7b7bc8d6e4e9a84e47714528df3cbe19e1feae7b11286712dd76d587396f707b'
 }
 function Get-CanonicalSourceHash([string]$path) {
- $decoder=New-Object System.Text.UTF8Encoding($false,$true)
+ $decoder=[System.Text.UTF8Encoding]::new($false,$true)
  $source=[IO.File]::ReadAllText($path,$decoder)
  if($source.Replace("`r`n",'').Contains("`r")){throw ('Linea no valida: '+$path)}
  $canonical=$source.Replace("`r`n","`n").Replace("`n","`r`n")
