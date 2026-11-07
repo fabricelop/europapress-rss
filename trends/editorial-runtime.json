@@ -7,36 +7,47 @@
   "previous_run_id": "tr-1794090534398-manual",
   "command_id": "tr-autoguard-1794091831",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-07T23:50:00+01:00",
-  "updated_at": "2026-11-07T23:54:58+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-07T23:55:30+01:00",
+  "finished_at": "2026-11-07T23:55:30+01:00",
+  "current": 30,
   "total": 30,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "13cfc1140898",
-    "25ecceec685e",
+    "ad394a9b799a",
+    "a5f4021e3de8",
+    "1356ba6ecf7e",
+    "6e375c9eb4eb",
+    "2074df132048",
+    "c5f47cf35ca0",
+    "4cb151027e1d",
+    "655264c9c8a1",
+    "9c045a87215c",
+    "eb0067679d4b",
+    "6cc19b3c488b",
     "2af723126c42",
-    "48c60e5c6f0b",
-    "513a0cf130e2",
-    "677c4883821c",
     "68d9e456f962",
-    "90b4a00c5c34",
-    "94ea5224ae40",
-    "99abd93de9c3",
-    "9cd671105a94",
-    "a8e17c1aee9e",
-    "bad24bb138d9",
-    "c02d763943b8",
-    "cb61c7b2757d",
-    "dc946d41659a",
     "e11231bc43f9",
+    "94ea5224ae40",
+    "c02d763943b8",
+    "677c4883821c",
+    "9cd671105a94",
+    "48c60e5c6f0b",
+    "99abd93de9c3",
+    "13cfc1140898",
+    "90b4a00c5c34",
+    "cb61c7b2757d",
+    "f589342bd32c",
+    "a8e17c1aee9e",
     "ef3eff258739",
-    "f589342bd32c"
+    "513a0cf130e2",
+    "bad24bb138d9",
+    "25ecceec685e",
+    "dc946d41659a"
   ],
   "converged_ids": [],
   "remaining_ids": [
@@ -105,10 +116,11 @@
     "dc946d41659a"
   ],
   "summary": {
-    "attempted": 0,
+    "attempted": 30,
     "observed": 30,
-    "closed": 0,
+    "closed": 30,
     "explained": 0,
+    "problematic": 30,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -119,12 +131,259 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "ad394a9b799a",
+      "revision": 0,
+      "name": "#เขมจิราตลอดกาลEP2",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "a5f4021e3de8",
+      "revision": 0,
+      "name": "KHEMJIRA FOREVER EP2",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "1356ba6ecf7e",
+      "revision": 0,
+      "name": "#MrFanboyEP11",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "6e375c9eb4eb",
+      "revision": 0,
+      "name": "#DewTeeFanconD1",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "2074df132048",
+      "revision": 0,
+      "name": "#PoliceinLoveEP9",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "c5f47cf35ca0",
+      "revision": 0,
+      "name": "#CentralHatyaixKengNamping",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "4cb151027e1d",
+      "revision": 0,
+      "name": "PIL SERIES EP9",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "655264c9c8a1",
+      "revision": 0,
+      "name": "FORCEBOOK LAG EP2",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "9c045a87215c",
+      "revision": 0,
+      "name": "ZNN ZON X PROPOLIZ",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "eb0067679d4b",
+      "revision": 0,
+      "name": "MAGICAL DAY WITH TLEFIRSTONE",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "6cc19b3c488b",
+      "revision": 0,
+      "name": "all about you x pnb",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "2af723126c42",
+      "revision": 0,
+      "name": "EST X VANILLIN FW26 SHOW",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "68d9e456f962",
+      "revision": 0,
+      "name": "ohae ten times cuter",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "e11231bc43f9",
+      "revision": 0,
+      "name": "JJJ BLOOMING KAOHSIUNG",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "94ea5224ae40",
+      "revision": 0,
+      "name": "NEWWIEE X NESCAFE RUN",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "c02d763943b8",
+      "revision": 0,
+      "name": "SIX WOLVES COOKING",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "677c4883821c",
+      "revision": 0,
+      "name": "THE STORY CONTINUES WITH PEAK",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "9cd671105a94",
+      "revision": 0,
+      "name": "3CE BLUSH THOMASKONG",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "48c60e5c6f0b",
+      "revision": 0,
+      "name": "perthsanta house of lee",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "99abd93de9c3",
+      "revision": 0,
+      "name": "UHR FIRST EP IQIYI NOW",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "13cfc1140898",
+      "revision": 0,
+      "name": "ENGFA ALL ROUNDER07",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "90b4a00c5c34",
+      "revision": 0,
+      "name": "zee zon x beautrium",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "cb61c7b2757d",
+      "revision": 0,
+      "name": "FORCEBOOK X GARNIERMEN TRIP D1",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "f589342bd32c",
+      "revision": 0,
+      "name": "simtrue7 x knp",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "a8e17c1aee9e",
+      "revision": 0,
+      "name": "nong rainy 90k",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "ef3eff258739",
+      "revision": 0,
+      "name": "MEENBABE UNDER HER RULES",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "513a0cf130e2",
+      "revision": 0,
+      "name": "THE PUZZLE SOLVED",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "bad24bb138d9",
+      "revision": 0,
+      "name": "SAROCHA LUCID SAO PAULO",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "25ecceec685e",
+      "revision": 0,
+      "name": "TOYOTA x YIN ANAN",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    },
+    {
+      "id": "dc946d41659a",
+      "revision": 0,
+      "name": "TGL BUCKET POOHPAVEL",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Ranking ES no verificado en la captura; se conserva para reintento sin crear ficha."
+    }
+  ],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "unverified-spain-top30-source",
+      "severity": "blocking_source_quality",
+      "message": "recent.json de la captura 2026-11-07T23:50:56+01:00 declara live_verified:false/reliability:unverified y Top 30 orientativo. Las comprobaciones externas localizaron el lote en rankings internacionales/Tailandia, pero no una lista española actual fiable; las 30 revisiones se conservaron como problematic."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -231,9 +490,14 @@
       "at": "2026-11-07T23:50:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-autoguard-1794091831 iniciada desde chat; cola main=30 preparing, todos revision 0. Procesamiento antiguo→reciente con revalidación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-07T23:55:30+01:00",
+      "phase": "closing",
+      "message": "Barrera final real en main: preparing/update=0; rewrite_pending/reexplain=0; 30 revisiones r0 conservadas como problematic por ranking español no verificado. ImageGen=0, image-outbox editorial=0, publicaciones=0. No se declara cola vacía: quedan 30 problemáticas reintentables."
     }
   ],
   "last_started_at": "2026-11-07T23:54:58+01:00",
-  "last_completed_at": "2026-11-07T23:54:58+01:00",
+  "last_completed_at": "2026-11-07T23:55:30+01:00",
   "api_failover_enabled": false
 }
