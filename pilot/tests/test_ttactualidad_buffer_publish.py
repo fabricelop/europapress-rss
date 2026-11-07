@@ -286,5 +286,88 @@ class DirectBufferPublisherTests(unittest.TestCase):
                          "https://x.com/ttittulares/status/123")
 
 
+    def test_x_permalink_requires_exact_destination_and_real_status_id(self):
+        self.assertTrue(publisher.verified_x_link(
+            "https://x.com/ttendenciasesp/status/123456", "ttendenciasesp"))
+        self.assertTrue(publisher.verified_x_link(
+            "https://twitter.com/TTiTTulares/status/1234567?s=20", "ttittulares"))
+        self.assertFalse(publisher.verified_x_link(
+            "https://x.com/other/status/123456", "ttendenciasesp"))
+        self.assertFalse(publisher.verified_x_link(
+            "https://notx.com/ttendenciasesp/status/123456", "ttendenciasesp"))
+        self.assertFalse(publisher.verified_x_link(
+            "https://x.com/ttendenciasesp", "ttendenciasesp"))
+        self.assertFalse(publisher.verified_x_link(
+            "https://x.com/ttendenciasesp/status/fake", "ttendenciasesp"))
+
+    def test_sent_without_matching_x_link_is_pending_and_never_closes(self):
+        data = {"items": [{
+            "request_id": self.payload()["request_id"], "project": "ttittulares",
+            "event_id": "news123456", "revision": 1, "account": "ttittulares",
+            "state": "pending", "channel_id": "channel_123",
+            "buffer_post_id": "buf_123"}]}
+        response = {"post": {"id": "buf_123", "channelId": "channel_123",
+                             "status": "sent", "sentAt": "2026-11-07T09:00:00Z",
+                             "externalLink": "https://x.com/other/status/123456"}}
+        with mock.patch.object(publisher, "graphql", return_value=response), \
+             mock.patch.object(publisher, "urlopen") as send, \
+             mock.patch.dict("os.environ", {"GH_TOKEN": "should-not-be-used"}):
+            publisher.reconcile(data, "secret")
+            send.assert_not_called()
+        self.assertEqual(data["items"][0]["state"], "pending")
+        self.assertNotIn("closure_request_id", data["items"][0])
+        self.assertIn("sin enlace verificable", data["items"][0]["verification_note"])
+
+    def test_initial_buffer_sent_mutation_is_not_proof_until_readback(self):
+        data = {"version": 1, "items": []}
+        response = {"createPost": {"post": {
+            "id": "buf_123", "channelId": "channel_123", "status": "sent",
+            "sentAt": "2026-11-07T09:00:00Z",
+            "externalLink": "https://x.com/ttittulares/status/123456"}}}
+        with mock.patch.object(publisher, "target_channel", return_value="channel_123"), \
+             mock.patch.object(publisher, "graphql", return_value=response), \
+             mock.patch.object(publisher, "check_image", return_value=URL):
+            publisher.publish(data, self.payload(), "secret")
+        self.assertEqual(data["items"][0]["state"], "pending")
+        self.assertNotIn("closure_request_id", data["items"][0])
+        self.assertNotIn("post_url", data["items"][0])
+
+    def test_closure_requires_committed_github_receipt(self):
+        data = {"items": [{
+            "request_id": self.payload()["request_id"], "project": "ttittulares",
+            "event_id": "news123456", "revision": 1, "account": "ttittulares",
+            "state": "sent", "channel_id": "channel_123",
+            "buffer_post_id": "buf_123", "sent_at": "2026-11-07T09:00:00Z",
+            "post_url": "https://x.com/ttittulares/status/123456",
+            "closure_request_id": "22222222-2222-4222-8222-222222222222",
+            "closure_dispatched": True}]}
+        with mock.patch.object(publisher, "closure_receipt", return_value=None), \
+             mock.patch.object(publisher, "urlopen") as send:
+            publisher.reconcile(data, "secret")
+            send.assert_not_called()
+        self.assertFalse(data["items"][0].get("closure_verified", False))
+        with mock.patch.object(publisher, "closure_receipt",
+                               return_value={"status": "applied"}), \
+             mock.patch.object(publisher, "urlopen") as send:
+            publisher.reconcile(data, "secret")
+            send.assert_not_called()
+        self.assertTrue(data["items"][0]["closure_verified"])
+
+    def test_rejected_closure_does_not_claim_listas_removed(self):
+        data = {"items": [{
+            "project": "ttendencias", "event_id": "50d1a6619b2a",
+            "revision": 0, "account": "ttendenciasesp",
+            "state": "sent", "channel_id": "channel_123",
+            "buffer_post_id": "buf_123", "closure_dispatched": True,
+            "closure_request_id": "22222222-2222-4222-8222-222222222222"}]}
+        with mock.patch.object(publisher, "closure_receipt",
+                               return_value={"status": "rejected"}), \
+             mock.patch.object(publisher, "urlopen") as send:
+            publisher.reconcile(data, "secret")
+            send.assert_not_called()
+        self.assertFalse(data["items"][0].get("closure_verified", False))
+        self.assertIn("rechazado", data["items"][0]["closure_error"])
+
+
 if __name__ == "__main__":
     unittest.main()
