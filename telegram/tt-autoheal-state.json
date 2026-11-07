@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-07T07:51:03.726613+00:00",
+      "checked_at": "2026-11-07T14:25:09.928154+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1893411,
+          "seconds": 1917057,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,95 +22,31 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-07T07:51:03.726613+00:00",
-      "issue_count": 10,
+      "checked_at": "2026-11-07T14:25:09.928154+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "1d446fcf702d",
-          "title": "#sevillaalaves",
-          "seconds": 35482,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "8c0d4ecd5327",
-          "title": "Fritz",
-          "seconds": 29222,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "50d1a6619b2a",
-          "title": "Broncano",
-          "seconds": 29210,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "50b8047cb3f4",
-          "title": "Rafa Jódar",
-          "seconds": 29198,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "4ee281bc339c",
-          "title": "Fofana",
-          "seconds": 29187,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "a9d16526a859",
-          "title": "La Revuelta",
-          "seconds": 29104,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5b461284ec93",
-          "title": "Alavés",
-          "seconds": 29092,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "97e735d07b7a",
-          "title": "Guridi",
-          "seconds": 29086,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "2976214cee41",
-          "title": "#ReleaseTheOdds",
-          "seconds": 18607,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1893410,
+          "seconds": 1917057,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "03ff173a0ab259b926cc5f48b33080ae745d926757cde7ac101934765f539dec",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
-      "escalation_required": 9
+      "escalation_required": 0
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-07T07:51:03.726613+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-07T07:51:03.726613+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-07T14:25:09.928154+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-07T14:25:09.928154+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-07T07:51:03.726613+00:00"
   },
-  "checked_at": "2026-11-07T07:51:03.726613+00:00"
+  "checked_at": "2026-11-07T14:25:09.928154+00:00"
 }
