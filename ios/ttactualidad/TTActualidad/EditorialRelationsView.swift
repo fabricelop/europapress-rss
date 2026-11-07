@@ -222,6 +222,14 @@ struct EditorialRelationsView: View {
     @State private var expandedTop30 = Set<String>()
     // The primary inbox is now trend-first, not a selectable 12/24-hour news window.
     @State private var expandedTrends = Set<String>()
+    // Each expensive source join/search runs only after a real data refresh.
+    // SwiftUI checkbox taps and DisclosureGroup animations then stay O(1).
+    @State private var indexedNews: [EditorialRelationEndpoint] = []
+    @State private var indexedCanonical: [EditorialRelation] = []
+    @State private var indexedMatches: [String: [EditorialRelationEndpoint]] = [:]
+    @State private var indexedTrendEndpoints: [String: EditorialRelationEndpoint] = [:]
+    @State private var indexedRelationStates: [String: String] = [:]
+    @State private var indexedDates: [String: Date] = [:]
     @State private var showHiddenNews = false
     private let hiddenStorageKey = "TTActualidad.relations-hidden-news.v1"
     @State private var hiddenNews = Set(
@@ -242,9 +250,7 @@ struct EditorialRelationsView: View {
         }
     }
 
-    private var canonicalRelations: [EditorialRelation] {
-        EditorialRelationsPolicy.canonical(model.snapshot?.items ?? [])
-    }
+    private var canonicalRelations: [EditorialRelation] { indexedCanonical }
 
     private var activeListasKeys: Set<String> {
         Set(listasNews.map { EditorialRelationsPolicy.newsKey(id: $0.id, revision: $0.revision) })
@@ -263,12 +269,14 @@ struct EditorialRelationsView: View {
         }
     }
 
-    private var allNewsChoices: [EditorialRelationEndpoint] {
+    private var allNewsChoices: [EditorialRelationEndpoint] { indexedNews }
+
+    private func buildAllNewsChoices(canonical: [EditorialRelation]) -> [EditorialRelationEndpoint] {
         // The server returns linkable episodes; GitHub returns extra recent
         // display-only episodes (fingerprint empty). Combine by exact ID and
         // revision, preferring any server-issued fingerprint for decisions.
         let candidates = (model.snapshot?.news ?? []) +
-            canonicalRelations.map(\.news) + model.historicalNews
+            canonical.map(\.news) + model.historicalNews
         var byKey: [String: EditorialRelationEndpoint] = [:]
         for row in candidates {
             let key = EditorialRelationsPolicy.newsKey(id: row.id, revision: row.revision)
@@ -302,7 +310,9 @@ struct EditorialRelationsView: View {
         }
     }
 
-    private var fallbackDates: [String: Date] {
+    private var fallbackDates: [String: Date] { indexedDates }
+
+    private func buildFallbackDates() -> [String: Date] {
         var dates: [String: Date] = [:]
         for item in model.historicalNews {
             let key = EditorialRelationsPolicy.newsKey(id: item.id, revision: item.revision)
@@ -320,10 +330,49 @@ struct EditorialRelationsView: View {
         return dates
     }
 
-    private func relatedNews(to trendName: String) -> [EditorialRelationEndpoint] {
-        EditorialRelationsPolicy.newsForTrend(
-            allNewsChoices, name: trendName, now: Date(),
-            fallbackDates: fallbackDates, hidden: hiddenNews, limit: 5)
+    private func trendKey(rank: Int, name: String) -> String {
+        String(rank) + ":" + name
+    }
+
+    private func relatedNews(rank: Int, name: String) -> [EditorialRelationEndpoint] {
+        indexedMatches[trendKey(rank: rank, name: name)] ?? []
+    }
+
+    private func rebuildRelationIndex() {
+        let canonical = EditorialRelationsPolicy.canonical(model.snapshot?.items ?? [])
+        let news = buildAllNewsChoices(canonical: canonical)
+        let dates = buildFallbackDates()
+        let endpoints = (model.snapshot?.trends ?? []) + canonical.map(\.trend)
+        var states: [String: String] = [:]
+        for relation in canonical {
+            let key = pairKey(relation.news, relation.trend)
+            states[key] = relation.state
+        }
+        var matches: [String: [EditorialRelationEndpoint]] = [:]
+        var trends: [String: EditorialRelationEndpoint] = [:]
+        let now = Date()
+        for (index, name) in top30Names.prefix(30).enumerated() {
+            let rank = index + 1
+            let key = trendKey(rank: rank, name: name)
+            matches[key] = EditorialRelationsPolicy.newsForTrend(
+                news, name: name, now: now,
+                fallbackDates: dates, hidden: hiddenNews, limit: 5)
+            if top30Trends.indices.contains(index) {
+                let row = top30Trends[index]
+                if row.name == name,
+                   let endpoint = EditorialRelationsPolicy.matchingTop30Endpoint(
+                       id: row.editorialID, revision: row.revision,
+                       renderedText: row.explanation, candidates: endpoints) {
+                    trends[key] = endpoint
+                }
+            }
+        }
+        indexedCanonical = canonical
+        indexedNews = news
+        indexedDates = dates
+        indexedRelationStates = states
+        indexedTrendEndpoints = trends
+        indexedMatches = matches
     }
 
     private var hiddenNewsChoices: [EditorialRelationEndpoint] {
@@ -337,12 +386,14 @@ struct EditorialRelationsView: View {
         hiddenNews.insert(EditorialRelationsPolicy.newsKey(id: news.id, revision: news.revision))
         UserDefaults.standard.set(Array(hiddenNews).sorted(), forKey: hiddenStorageKey)
         expandedTop30.remove(news.stableIdentity)
+        rebuildRelationIndex()
     }
 
     private func restore(_ news: EditorialRelationEndpoint) {
         hiddenNews.remove(news.stableIdentity)
         hiddenNews.remove(EditorialRelationsPolicy.newsKey(id: news.id, revision: news.revision))
         UserDefaults.standard.set(Array(hiddenNews).sorted(), forKey: hiddenStorageKey)
+        rebuildRelationIndex()
     }
 
     var body: some View {
@@ -452,6 +503,11 @@ struct EditorialRelationsView: View {
                 }
             }
             .task { if github.authenticated { await model.load(using: github) } }
+            .onChange(of: model.dataRevision) { _, _ in rebuildRelationIndex() }
+            .onChange(of: top30Names) { _, _ in rebuildRelationIndex() }
+            .onChange(of: top30Trends.map {
+                $0.editorialID + ":r" + String($0.revision)
+            }) { _, _ in rebuildRelationIndex() }
             .sheet(item: $picker) { route in
                 EditorialEndpointPicker(
                     title: route.project == "ttittulares" ? "Seleccionar noticia" : "Seleccionar tendencia",
@@ -499,7 +555,7 @@ struct EditorialRelationsView: View {
     }
 
     private func trendExpansion(rank: Int, name: String) -> Binding<Bool> {
-        let key = String(rank) + ":" + name
+        let key = trendKey(rank: rank, name: name)
         return Binding(get: { expandedTrends.contains(key) },
                        set: { value in
                            if value { expandedTrends.insert(key) }
@@ -508,17 +564,11 @@ struct EditorialRelationsView: View {
     }
 
     private func currentTrendEndpoint(rank: Int, name: String) -> EditorialRelationEndpoint? {
-        guard top30Trends.indices.contains(rank - 1) else { return nil }
-        let row = top30Trends[rank - 1]
-        guard row.name == name else { return nil }
-        return EditorialRelationsPolicy.matchingTop30Endpoint(
-            id: row.editorialID, revision: row.revision,
-            renderedText: row.explanation,
-            candidates: (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend))
+        indexedTrendEndpoints[trendKey(rank: rank, name: name)]
     }
 
     private func trendCard(rank: Int, name: String) -> some View {
-        let related = relatedNews(to: name)
+        let related = relatedNews(rank: rank, name: name)
         return DisclosureGroup(isExpanded: trendExpansion(rank: rank, name: name)) {
             if related.isEmpty {
                 Text(model.historicalNews.isEmpty ?
@@ -635,9 +685,7 @@ struct EditorialRelationsView: View {
 
     private func relationState(_ news: EditorialRelationEndpoint,
                                _ trend: EditorialRelationEndpoint) -> String? {
-        canonicalRelations.first {
-            same($0.news, news) && same($0.trend, trend)
-        }?.state
+        indexedRelationStates[pairKey(news, trend)]
     }
 
     private func unresolvedKey(_ news: EditorialRelationEndpoint,
