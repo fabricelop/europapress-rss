@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-08T15:03:04.782656+00:00",
+  "checked_at": "2026-11-08T19:33:01.258506+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,14 +40,12 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
-      "verified_fresh_sources": [
-        "playersells"
-      ],
-      "live_verified": true,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 1,
+      "verified_fresh_sources": [],
+      "live_verified": false,
+      "captured_age_minutes": 0.1,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +57,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.9,
-      "run_id": 42492455036,
+      "age_minutes": 4.1,
+      "run_id": 42515242457,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +70,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 577,
+      "invalid_count": 583,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,21 +79,95 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 2,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0.1,
+      "ok": false,
+      "pending_count": 15,
+      "overdue_count": 15,
+      "oldest_age_minutes": 141.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "bd2b2934d243",
+          "name": "#NFLMadridGame",
+          "status": "preparing",
+          "age_minutes": 49.6
+        },
+        {
+          "id": "097a158384e1",
+          "name": "Bengals",
+          "status": "preparing",
+          "age_minutes": 49.0
+        },
+        {
+          "id": "red-review-45745a370b36ec2c799a",
+          "name": "Revisar novedades: Robe",
+          "status": "preparing",
+          "age_minutes": 141.4
+        },
+        {
+          "id": "red-review-2b8c36b362764c37d989",
+          "name": "Revisar novedades: Carvajal",
+          "status": "preparing",
+          "age_minutes": 141.4
+        },
+        {
+          "id": "78a4dfe59496",
+          "name": "Barrene",
+          "status": "preparing",
+          "age_minutes": 44.7
+        },
+        {
+          "id": "20a90e357907",
+          "name": "Masters 1000 de París",
+          "status": "preparing",
+          "age_minutes": 38.2
+        },
+        {
+          "id": "1196cc9f8b21",
+          "name": "Shelton",
+          "status": "preparing",
+          "age_minutes": 37.6
+        },
+        {
+          "id": "e0098a5f8970",
+          "name": "Carlos Alcaraz",
+          "status": "preparing",
+          "age_minutes": 37.5
+        },
+        {
+          "id": "392ac0248b65",
+          "name": "#RealSociedadRayo",
+          "status": "preparing",
+          "age_minutes": 37.4
+        },
+        {
+          "id": "00bfd43ca5fa",
+          "name": "portimão",
+          "status": "preparing",
+          "age_minutes": 37.3
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "b9658d33a425",
-        "4a7655afa1f7"
+        "bd2b2934d243",
+        "097a158384e1",
+        "red-review-45745a370b36ec2c799a",
+        "red-review-2b8c36b362764c37d989",
+        "78a4dfe59496",
+        "20a90e357907",
+        "1196cc9f8b21",
+        "e0098a5f8970",
+        "392ac0248b65",
+        "00bfd43ca5fa",
+        "ff67019b39ba",
+        "d5728f873d7c",
+        "f5ecd642ce16",
+        "1a600d6d046e",
+        "f9e1f460adf1"
       ],
       "contradictory_success": false
     },
@@ -107,9 +179,11 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 577 estado(s) inválido(s)"
+    "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
+    "cola con 583 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 15 pendiente(s) superan 30 min; más antigua 141.4 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 577 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 583 estado(s) inválido(s) | cola de explicaciones retrasada: 15 pendiente(s) superan 30 min; más antigua 141.4 min"
 }
