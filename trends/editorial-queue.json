@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T18:11:26+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-08T17:11:40.162754+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-45745a370b36ec2c799a",
+      "revision": 0,
+      "name": "Revisar novedades: Robe",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-11-08T17:11:40.162754+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "1943c4a59cd3",
+        "revision": 0,
+        "name": "Robe",
+        "rank": 28,
+        "explanation": "TT#28 Robe es tendencia en medio del cruce electoral por Extremoduro: Sánchez compartió «Ama, ama, ama y ensancha el alma» con «Siempre habrá música» y el PP respondió citando «So payaso».\n#Extremoduro\n🌶️ La playlist ha acabado entrando en campaña.",
+        "explanation_sha256": "f38ae871d38f57d45160b6e9219c711d56af68a509506981605058f0bd3908ac",
+        "explained_at": "2026-11-08T14:06:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.eldiario.es/politica/ultima-hora-actualidad-politica-directo_6_13647552_1126399.html"
+          }
+        ],
+        "fingerprint": "9cf40402d3b6c2900031bbd6b33bcfa98f1f82c6354c81f8b00e73de82c119e6"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-2b8c36b362764c37d989",
+      "revision": 0,
+      "name": "Revisar novedades: Carvajal",
+      "rank": 25,
+      "status": "preparing",
+      "requested_at": "2026-11-08T17:11:40.162754+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "e4fb8818600e",
+        "revision": 0,
+        "name": "Carvajal",
+        "rank": 23,
+        "explanation": "TT#23 Carvajal es tendencia ante el Villarreal-Getafe de hoy: el lateral vuelve al once azulón tras quedarse fuera ante el Brighton porque no está inscrito en la Conference League.\n#GetafeCF #LaLiga\n🌶️ Europa lo dejó en la grada; hoy vuelve al carril.",
+        "explanation_sha256": "3ffceefe33d061cb07967e25c9504781052f80062f26f057e349d0dbe3edfd50",
+        "explained_at": "2026-11-08T14:17:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.mundodeportivo.com/futbol/laliga/20261108/1004248288/villarreal-getafe-dos-heridas-cerrar.html"
+          },
+          {
+            "url": "https://www.getafecf.com/noticias/daniel-carvajal-nuevo-jugador-del-getafe-cf"
+          },
+          {
+            "url": "https://as.com/futbol/primera/posible-once-del-getafe-en-la-jornada-12-de-laliga-ea-sports-f202611-n/"
+          }
+        ],
+        "fingerprint": "e192587adc1c4f930d8efb1ce651803bca8a11339776018a29eee397ca49e2a3"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
