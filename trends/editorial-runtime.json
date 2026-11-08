@@ -3,36 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794178144244-manual",
-  "previous_run_id": "tr-1794176640252-manual",
-  "command_id": "tr-1794178144244-manual",
+  "run_id": "tr-1794178498903-manual",
+  "previous_run_id": "tr-1794178144244-manual",
+  "command_id": "tr-1794178498903-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-08T23:51:00+01:00",
-  "updated_at": "2026-11-08T23:54:22+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T23:57:00+01:00",
+  "updated_at": "2026-11-08T23:57:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 7,
-  "trend_id": "9e1649b8ed38",
-  "title": "#SVSemifinal",
-  "queue_complete": true,
-  "processed_ids": [
-    "9e1649b8ed38",
-    "113f2f9ba728",
-    "458f869fdc14",
-    "e714e4de2209",
-    "c5fb8b304b6e",
-    "312f7bce521d",
-    "9731285d0638"
-  ],
+  "total": 2,
+  "trend_id": "red-review-7d9fce4e1da10ec2ddac",
+  "title": "Revisar novedades: Levante 0-2 Atlético",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-7d9fce4e1da10ec2ddac",
+    "red-review-1888f27e01a9b053b86e"
+  ],
+  "remaining_active_ids": [
+    "red-review-7d9fce4e1da10ec2ddac",
+    "red-review-1888f27e01a9b053b86e"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 7,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -42,7 +40,7 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 7,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,30 +48,11 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-9e32be2848a10d84489c",
-      "revision": 0,
-      "name": "Revisar novedades: Julián Álvarez",
-      "outcome": "distinct_update",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b"
-    },
-    {
-      "id": "red-review-c683874a2ac7fe16e327",
-      "revision": 0,
-      "name": "Revisar novedades: Gerard Martín",
-      "outcome": "distinct_update",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Resultados editoriales preparados; aplicador oficial en ejecución (workflow 42532478303).",
+  "activity": "Revisando novedades: Levante 0-2 Atlético",
   "last_started_at": "2026-11-08T23:54:22+01:00",
   "last_completed_at": "2026-11-08T23:54:22+01:00",
   "api_failover_enabled": false,
@@ -104,7 +83,7 @@
     },
     "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "7/7 investigados y preparados; 0/7 materializados todavía. Aplicador oficial en curso. ImageGen=0.",
+  "message": "Pasada tr-1794178498903-manual iniciada. Cola JIT=2 review_red; se procesan del más antiguo al más reciente con revalidación ID/revisión. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -656,6 +635,11 @@
       "trend_id": "9e1649b8ed38",
       "title": "#SVSemifinal",
       "message": "Lote editorial ordenado persistido en editorial-outbox y workflow 42532478303 en ejecución. No se ha generado ninguna imagen."
+    },
+    {
+      "at": "2026-11-08T23:57:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794178498903-manual iniciada. Cola JIT=2 review_red; se procesan del más antiguo al más reciente con revalidación ID/revisión. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
