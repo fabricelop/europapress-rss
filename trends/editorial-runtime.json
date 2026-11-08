@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794113700000-manual",
-  "previous_run_id": "tr-1794112156029-manual",
-  "command_id": "tr-1794113700000-manual",
+  "run_id": "tr-1794114683942-manual",
+  "previous_run_id": "tr-1794113700000-manual",
+  "command_id": "tr-1794114683942-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T05:55:00+01:00",
-  "updated_at": "2026-11-08T05:57:00+01:00",
-  "finished_at": "2026-11-08T05:57:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T06:11:23+01:00",
+  "updated_at": "2026-11-08T06:11:23+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -46,176 +46,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-07T23:10:54.769+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794089454769-manual iniciada desde chat; lectura inicial de main=0. Verificando barrera final, reexplicaciones y mantenimiento. Sin ImageGen."
-    },
-    {
-      "at": "2026-11-07T23:11:23.169+01:00",
-      "phase": "closing",
-      "message": "Barrera final en main: editorial-queue=5; mobile-decisions sin preparing/update, anticipate, review_red, rewrite_pending ni reexplain activos. Cierre 0/0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:11:31.479+01:00",
-      "phase": "preparing",
-      "message": "Llegaron 5 trabajos nuevos durante la barrera de cierre; se reabre la misma pasada y se procesan JIT antes de cerrar."
-    },
-    {
-      "at": "2026-11-07T23:14:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794089628496-manual iniciada desde chat; cola main=2 (review_red). Procesamiento JIT de mantenimiento, sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:15:00+01:00",
-      "phase": "investigating",
-      "message": "Revisando novedades: #laSextaXplica. JIT id/revision validado en main; se contrasta la nueva emisión del 07/11 frente al episodio anterior."
-    },
-    {
-      "at": "2026-11-07T23:16:06.970+01:00",
-      "phase": "investigating",
-      "message": "Dos review_red llegaron durante el cierre: #laSextaXplica y #MalasLenguasN. Ambas corresponden a emisiones del 07/11/2026 posteriores a sus fichas originales; se procesan JIT como episodios distintos verificados."
-    },
-    {
-      "at": "2026-11-07T23:18:50+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794089854856-manual iniciada desde chat; cola main=6 preparing/update. Procesamiento del más antiguo al más reciente con validación JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:20:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794089949610-manual asumida en chat. Cinco trabajos iniciales convergieron por la ejecución inmediatamente anterior; quedan 3 preparing nuevos en main (Valverde, #MalasLenguasN, Catena), a procesar JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:22:00+01:00",
-      "phase": "closing",
-      "message": "Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain activos. Ocho trabajos observados cerrados: 7 por convergencia concurrente y Catena aplicado por editorial-outbox. requests y telegram-manual-explained fueron actualizados por los commits de aplicación. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794090277346-manual iniciada desde chat; cola main=1: Gayà r1 en preparing, reelaboración desde cero. Se procesará con validación JIT. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:27:00+01:00",
-      "phase": "investigating",
-      "message": "Gayà r1 validado JIT. Fuentes actuales confirman derrota 0-3 y expulsión de Gayà en el 79' por falta/entrada sobre Mbappé; se redacta desde cero con remate nuevo. Foto de archivo nueva localizada como candidata, sin incorporar imagen al editor textual."
-    },
-    {
-      "at": "2026-11-07T23:29:00+01:00",
-      "phase": "persisting",
-      "message": "Outbox ce2d7210b101-r1 creado tras revalidación JIT; workflow Aplicar resultados editoriales TTendencias en ejecución. Se verificará aplicación real en ambos registros y retirada de cola."
-    },
-    {
-      "at": "2026-11-07T23:30:00+01:00",
-      "phase": "verifying",
-      "message": "Aplicación verificada en commit 943cfdb7551e9203f2787ea4c6f3e3c31e0bad1f: Gayà r1 sincronizado en requests y telegram-manual-explained; outbox retirado y cola main=0."
-    },
-    {
-      "at": "2026-11-07T23:30:00+01:00",
-      "phase": "closing",
-      "message": "Barrera final en main: editorial-queue=0 y sin rewrite_pending/reexplain detectados. Cierre 1/1. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:28:54+01:00",
-      "phase": "closing",
-      "message": "Gayà r1 verificado como explained en requests.json y telegram-manual-explained.json con texto y explained_at idénticos. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-07T23:31:00+01:00",
-      "phase": "preparing",
-      "message": "Barrera final detectó 2 review_red nuevos (Cracovia y #BrazilGP) llegados durante el cierre. Se reabre la misma pasada y se procesan JIT, sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:32:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794090534398-manual iniciada desde chat; cola main=2 review_red (Cracovia y #BrazilGP). Se procesan del más antiguo al más reciente con validación JIT; sin ImageGen ni publicaciones. La ejecución anterior queda sujeta a convergencia JIT."
-    },
-    {
-      "at": "2026-11-07T23:33:00+01:00",
-      "phase": "investigating",
-      "message": "Revisando novedades: Cracovia. JIT id/revision validado en main; se contrasta información posterior al tiroteo frente a la explicación de las 17:26."
-    },
-    {
-      "at": "2026-11-07T23:33:00+01:00",
-      "phase": "closing",
-      "message": "Cracovia y #BrazilGP aplicadas como continuidad en commit f8618ee75ef528a1f62acccb8e16689201faa6fc, conservando ID/revisión/explained_at y sin crear nuevas tarjetas. Barrera final main: editorial-queue=0, preparing/update=0 y rewrite_pending/reexplain=0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:37:00+01:00",
-      "phase": "closing",
-      "message": "Barrera final real en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Cracovia aplicada como continuidad. #BrazilGP verificado y corregido a P7 tras detectar P6 en una aplicación concurrente; metadatos sincronizados. Sin ImageGen, sin image-outbox y sin publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:50:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-autoguard-1794091831 iniciada desde chat; cola main=30 preparing, todos revision 0. Procesamiento antiguo→reciente con revalidación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:55:30+01:00",
-      "phase": "closing",
-      "message": "Barrera final real en main: preparing/update=0; rewrite_pending/reexplain=0; 30 revisiones r0 conservadas como problematic por ranking español no verificado. ImageGen=0, image-outbox editorial=0, publicaciones=0. No se declara cola vacía: quedan 30 problemáticas reintentables."
-    },
-    {
-      "at": "2026-11-07T23:55:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794092100000-manual iniciada desde chat. Relectura JIT: active=0, problematic=0. Se valida la fuente del Top 30 antes de reintentar. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:56:30+01:00",
-      "phase": "closing",
-      "message": "Barrera final real en main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0. No se crean fichas porque recent.json sigue sin ranking ES verificado; Snaplytics está en cuarentena. ImageGen=0, image-outbox editorial=0, publicaciones=0."
-    },
-    {
-      "at": "2026-11-07T23:57:16+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794092241790-manual iniciada desde chat; cola main=2 review_red (Interlagos y Enric Gallego), del más antiguo al más reciente con validación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
-    },
-    {
-      "at": "2026-11-07T23:58:30+01:00",
-      "phase": "persisting",
-      "message": "Interlagos r0 validado JIT. Novedad de continuidad: la clasificación se reanudó tras el parón por lluvia y terminó con Norris en pole. Se actualiza la misma ficha; distinct_episode=false, material_change=false."
-    },
-    {
-      "at": "2026-11-07T23:59:20+01:00",
-      "phase": "persisting",
-      "message": "Enric Gallego r0 validado JIT. Las fuentes posteriores describen el mismo homenaje y la misma intervención emocionada del capitán; sin novedad sustancial. Resultado unchanged, conservando texto y explained_at."
-    },
-    {
-      "at": "2026-11-07T23:59:50+01:00",
-      "phase": "closing",
-      "message": "Aplicación verificada en main: Interlagos actualizado como continuidad y Enric Gallego marcado unchanged; editorial-queue=0 y sin rewrite_pending/reexplain detectados en la barrera final. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
-    },
-    {
-      "at": "2026-11-08T00:10:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794093000000-manual iniciada desde chat; lectura JIT de main con editorial-queue=0. Se ejecuta refresco real del Top 30 y se mantiene ImageGen/publicaciones fuera de esta pasada."
-    },
-    {
-      "at": "2026-11-08T00:11:01+01:00",
-      "phase": "verifying",
-      "message": "El refresco manual persistió editorial-queue actualizada en main con count=0; no entraron preparing/update, anticipate ni review_red en la cola compacta."
-    },
-    {
-      "at": "2026-11-08T00:14:30+01:00",
-      "phase": "closing",
-      "message": "Barrera final JIT en main: editorial-queue=0. Cierre editorial 0/0; sin ImageGen, sin image-outbox editorial y sin publicaciones."
-    },
-    {
-      "at": "2026-11-08T00:25:00+01:00",
-      "phase": "verifying",
-      "message": "Pasada tr-1794093900000-manual iniciada desde chat; recent.json capturado a las 00:20:54 con Top 30 ES y editorial-queue=0. Se verifica barrera JIT, rewrite_pending/reexplain y trabajos especiales. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-08T00:25:45+01:00",
-      "phase": "closing",
-      "message": "Barrera final JIT en main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; anticipate/review_red activos=0. Cierre 0/0. recent.json mantiene Top 30 ES capturado a las 00:20:54. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
-    },
-    {
-      "at": "2026-11-08T00:40:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794094800000-manual iniciada desde chat. Cola inicial observada en main=0; se ejecuta barrera JIT de cola compacta, reelaboraciones y trabajos especiales. Sin ImageGen ni publicaciones."
-    },
     {
       "at": "2026-11-08T00:42:00+01:00",
       "phase": "closing",
@@ -632,6 +462,11 @@
       "at": "2026-11-08T05:57:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT en main: editorial-queue=0; preparing/update=0; rewrite_pending/reexplain=0; anticipate/review_red activos=0. Cierre 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T06:11:23+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794114683942-manual iniciada desde chat. Cola main=0; se valida barrera final, reexplicaciones y mantenimiento. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T05:29:16+01:00",
