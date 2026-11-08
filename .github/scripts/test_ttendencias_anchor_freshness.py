@@ -120,3 +120,28 @@ fixture = ("<div>España</div><div>Últimos 7 días</div>"
 assert module.parse_gosocialsuite(fixture) == names
 assert module.parse_gosocialsuite(fixture.replace("España", "Francia")) == []
 print("TT_SPAIN_SOURCE_GUARD_OK: exact 1-10 country scope without extra noise")
+
+# A source with NO observation timestamp cannot keep confirming a ranking
+# after its exact top list has been frozen for hours. Previously SuperX
+# remained "unknown" for >30h and could vote in consensus as a live peer.
+now4 = datetime(2026, 11, 8, 15, 40, tzinfo=module.MADRID)
+stuck = row(["Paraguay", "Cracovia"] + old, "unknown")
+stuck["update_hint"] = None
+changed = row(["Cracovia", "Paraguay"] + current, "unknown")
+changed["update_hint"] = None
+previous4 = {
+    "captured_at": (now4 - timedelta(minutes=10)).isoformat(),
+    "sources": {
+        "superx": {**stuck, "last_list_change_at":
+                   (now4 - timedelta(hours=4)).isoformat()},
+        "getdaytrends": row(old, "unknown"),
+    }
+}
+actual4 = {"superx": stuck, "getdaytrends": changed}
+module.reconcile_source_freshness(actual4, previous4, now4)
+assert actual4["superx"]["freshness"] == "stale", actual4["superx"]
+assert actual4["superx"]["freshness_note"] == "undated-ranking-unchanged-90m"
+assert actual4["getdaytrends"]["freshness"] == "unknown", actual4["getdaytrends"]
+assert module.choose_top10(actual4)[2] != "superx", actual4
+assert actual4["superx"]["trends"][:2] == ["Paraguay", "Cracovia"]
+print("TT_UNDATED_FROZEN_FEED_OK: unchanged 4h undated ranking does not vote")

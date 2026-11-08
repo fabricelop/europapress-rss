@@ -479,6 +479,16 @@ def reconcile_source_freshness(source_data, previous_doc, now):
         row["last_list_change_at"] = last_change
         row["list_unchanged_minutes"] = round(elapsed_minutes(last_change), 1)
 
+        # Undated country feeds can remain unchanged for many hours while
+        # returning HTTP 200. A stale, unobserved list is NOT corroborating
+        # evidence for current X Spain trends. Keep the raw list for audit,
+        # but remove it from live consensus after 90 minutes unchanged.
+        # This does not suppress legitimate foreign-named topics in Spain.
+        if (same_list and row.get("freshness") == "unknown" and
+                row["list_unchanged_minutes"] >= 90):
+            row["freshness"] = "stale"
+            row["freshness_note"] = "undated-ranking-unchanged-90m"
+
         # A relative timestamp should advance when nothing is refreshed.
         # A frozen timestamp AND unchanged ranking across a whole refresh
         # cycle (>=10 min) makes the claimed freshness unreliable. A freshly
