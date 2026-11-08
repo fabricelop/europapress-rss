@@ -1,73 +1,8 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T08:04:53.286797+00:00",
+  "updated_at": "2026-11-08T08:05:32.143963+00:00",
   "count": 2,
   "items": [
-    {
-      "id": "red-review-c7e476f68780c4ca2a4b",
-      "name": "Revisar novedades: Santiago Peña",
-      "rank": 20,
-      "status": "preparing",
-      "requested_at": "2026-11-08T07:28:25.291799+00:00",
-      "revision": 0,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques.",
-      "reexplain": false,
-      "rewrite_with_image": false,
-      "with_image": false,
-      "disable_ai_image": true,
-      "image_strategy": null,
-      "selected_tweet_image": null,
-      "task": "review_red",
-      "anticipation_request": false,
-      "anticipated_name": null,
-      "anticipation_signal": null,
-      "anticipation_origin_id": null,
-      "anticipation_draft": null,
-      "red_review_request": true,
-      "review_source": {
-        "id": "c4f3771c12ae",
-        "revision": 0,
-        "name": "Santiago Peña",
-        "rank": 13,
-        "explanation": "TT#12 Santiago Peña sigue siendo tendencia por la crisis de Ueno Bank: la Fiscalía lo imputó por presunta lesión de confianza y administración en provecho propio y pidió prisión preventiva.\n#Paraguay #UenoBank\n🌶️ Del Palacio a la Fiscalía, el caso cambió de despacho.",
-        "explanation_sha256": "9ad0674c0c2fc38177366123239ceaf97d76d7bbc2b83e7538e20edf9ebd3edf",
-        "explained_at": "2026-11-05T18:15:00+01:00",
-        "verification_sources": [
-          {
-            "url": "https://www.reuters.com/world/americas/paraguay-president-pea-resigns-under-mounting-pressure-bank-collapse-2026-11-05/"
-          },
-          {
-            "url": "https://apnews.com/article/eccea1c9a64808b5cd7e6e1d5542084f"
-          }
-        ],
-        "fingerprint": "45ec6b68a197e4eace67d4ee98dcb7ee5716d4b953dc1365bb14e788dae401b7"
-      },
-      "review_error": null,
-      "automatic_grouping": null,
-      "published_context": null,
-      "listas_grouping_request": false,
-      "grouping_candidates": [],
-      "grouping_state": null,
-      "grouping_error": null,
-      "tremending_origin": false,
-      "tremending_id": null,
-      "article_title": null,
-      "source_url": null,
-      "selected_tweet": null,
-      "batch_id": null,
-      "requested_together": [
-        "Revisar novedades: Santiago Peña"
-      ],
-      "captured_with": [],
-      "auto_queued": false,
-      "anticipated": false,
-      "anticipated_at": null,
-      "anticipated_best_rank": null,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
-    },
     {
       "id": "red-review-3f5dd3c46afe4236d594",
       "revision": 0,
@@ -99,6 +34,40 @@
           }
         ],
         "fingerprint": "ced0e55f5bff5c12b510661e2f9f7a718bf51c2faa190b4bbda203c43b703c75"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-27f79782d1e5b08d2e5e",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-08T08:05:32.143963+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "16ac22023f2b",
+        "revision": 0,
+        "name": "La Séptima",
+        "rank": 11,
+        "explanation": "TT#13 La Séptima sigue siendo tendencia por su arranque en TDT: en su segundo día subió del 2,8% al 2,9% y El Pulso alcanzó un 5,4%.\n#TDT #Audiencias\n🌶️ La segunda jornada añadió una décima al estreno.",
+        "explanation_sha256": "4c4efeee0a6649f5977cf9a68d5c23eb8fca7ecd55eb3aa94e590038d4e223f9",
+        "explained_at": "2026-11-07T00:51:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://ipmark.com/la-septima-alcanza-cobertura-del-10-5-en-primer-dia-de-emisiones/"
+          },
+          {
+            "url": "https://www.elnacional.cat/enblau/es/television/audiencias-tv-ayer-5-noviembre-2026_1721642_102.html"
+          }
+        ],
+        "fingerprint": "bb5fc080fc4ed62993444207f30fd8ebeb34e6cc1d737761d131869efcdc132d"
       },
       "with_image": false,
       "disable_ai_image": true,
