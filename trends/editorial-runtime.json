@@ -3,39 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794100640284-manual",
-  "previous_run_id": "tr-1794100543249-manual",
-  "command_id": "tr-1794100640284-manual",
+  "run_id": "tr-1794100779331-manual",
+  "previous_run_id": "tr-1794100640284-manual",
+  "command_id": "tr-1794100779331-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T02:17:00+01:00",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-08T02:22:00+01:00",
   "updated_at": "2026-11-08T02:22:00+01:00",
-  "finished_at": "2026-11-08T02:22:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-4b33f5be7423e8c0aa98",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "red-review-38b2c896f1d0891dab75",
+  "title": "Revisar novedades: GP de México · Alonso y #MexicoGP",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
     "red-review-38b2c896f1d0891dab75"
   ],
-  "converged_ids": [
-    "red-review-4b33f5be7423e8c0aa98",
+  "remaining_active_ids": [
     "red-review-38b2c896f1d0891dab75"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
@@ -45,26 +43,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-4b33f5be7423e8c0aa98",
-      "revision": 0,
-      "name": "Revisar novedades: maffeo",
-      "outcome": "continuity_update",
-      "applied": true,
-      "apply_commit": "b124a842735eea9568745e30fe21d210b7b98b25"
-    },
-    {
-      "id": "red-review-38b2c896f1d0891dab75",
-      "revision": 0,
-      "name": "Revisar novedades: GP de México · Alonso y #MexicoGP",
-      "outcome": "continuity_update",
-      "applied": true,
-      "apply_commit": "68aa2d5ee504da79863d349c8323d9c8a29533ba"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -368,9 +349,14 @@
       "at": "2026-11-08T02:22:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT en main: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending ni reexplain activos. Maffeo aplicado en b124a842735eea9568745e30fe21d210b7b98b25 y GP de México en 68aa2d5ee504da79863d349c8323d9c8a29533ba, ambos como continuidad sin nueva ficha ni imagen. Las pasadas tr-1794100341078-manual, tr-1794100543249-manual y tr-1794100640284-manual convergen sobre los mismos 2 resultados. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T02:22:00+01:00",
+      "phase": "investigating",
+      "message": "Pasada tr-1794100779331-manual toma el trabajo pendiente del GP de México tras revalidación JIT. Se detecta que Alonso figura ahora en el Top 30 por un episodio posterior: primera Q3 de 2026 en São Paulo, P9 en clasificación y salida P8 por sanción a Leclerc. Se corrige el resultado pendiente a episodio distinto; sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T02:17:00+01:00",
+  "last_started_at": "2026-11-08T02:22:00+01:00",
   "last_completed_at": "2026-11-08T02:22:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
