@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T16:33:23.305132+00:00",
+  "updated_at": "2026-11-08T17:45:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -263280,7 +263280,7 @@
       "name": "Ceballos",
       "rank": 2,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-11-08T16:29:50.598986+00:00",
       "requested_at": "2026-11-08T16:29:50.598986+00:00",
       "updated_at": "2026-11-08T16:29:50.598986+00:00",
@@ -263291,13 +263291,42 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Ceballos"
       ],
       "originated_from_prior_id": "0275a07b4992",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Ceballos, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Ceballos, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-11-08T17:45:00+01:00",
+      "last_attempt_at": "2026-11-08T17:45:00+01:00",
+      "explanation": "TT#2 Ceballos es tendencia porque Dani Ceballos asistió a Marc Bartra en el 0-2 del Betis ante el Elche, después de entrar en la segunda parte.\n#DaniCeballos #RealBetis\n🌶️ Entró desde el banquillo y puso la firma en el segundo.",
+      "closer_text": "🌶️ Entró desde el banquillo y puso la firma en el segundo.",
+      "rank_at_explanation": 2,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-elche-betis-resumen-goles-resultado-partido-hoy-20261108155716.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "",
+      "group_id": "grp-f0ec98d556f8",
+      "explanation_group_id": "grp-f0ec98d556f8",
+      "group_title": "Ceballos",
+      "group_leader_id": "f0ec98d556f8",
+      "trend_names": [
+        "Ceballos"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "f0ec98d556f8",
+          "name": "Ceballos",
+          "revision": 0
+        }
+      ],
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "fbefb17d6eb2",
@@ -263708,5 +263737,5 @@
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Bartra, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
     }
   ],
-  "count": 1863
+  "count": 1890
 }
