@@ -7,17 +7,22 @@
   "previous_run_id": "tr-1794105151194-manual",
   "command_id": "tr-1794105600000-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-08T03:40:00+01:00",
-  "updated_at": "2026-11-08T03:45:00+01:00",
+  "updated_at": "2026-11-08T03:45:21+01:00",
   "finished_at": null,
   "current": 4,
   "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "05392fc6b8fb",
+    "522f1f4ba5fb",
+    "9986911fa8ce",
+    "c2fe552a4ceb"
+  ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -470,8 +475,8 @@
       "message": "Se materializan cuatro editorial-outbox ready. El cierre textual no espera imágenes; ImageGen=0 y publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T03:40:00+01:00",
-  "last_completed_at": "2026-11-08T03:26:42.758+01:00",
+  "last_started_at": "2026-11-08T03:45:21+01:00",
+  "last_completed_at": "2026-11-08T03:45:21+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794104700000-manual",
