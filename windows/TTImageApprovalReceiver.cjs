@@ -129,9 +129,8 @@ function activeIdentities(project,document,decisions,now=Date.now()){
  }
  return result;
 }
-// Scope requested by editor on 2026-11-06 09:43 Europe/Paris.
-// Do not send the 500 historical news jobs to the iPhone now.
-const NEWS_CUTOFF=Date.parse('2026-11-06T08:43:00.000Z');
+// Eligibility follows current editorial identities, never a date cutover.
+// Private image ingestion never approves or publishes a raster.
 async function allowedTop30(fetcher=fetch){
  const url='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/site-top30-current.json?t='+Date.now();
  try {
@@ -143,32 +142,26 @@ async function allowedTop30(fetcher=fetch){
    .map(x=>x.editorial_id+':r'+x.revision));
  }catch{return null}
 }
-function inCurrentApprovalScope(task,top30){
- if(task.project==='ttendencias')return top30 instanceof Set &&
-   top30.has(task.target_id+':r'+task.revision);
- if(task.project==='ttittulares'){
-  const at=Date.parse(task.created_at||'');
-  return Number.isFinite(at)&&at>=NEWS_CUTOFF;
- }
+function inCurrentApprovalScope(task,top30,active){
+ const key=task.target_id+':r'+task.revision;
+ if(task.project==='ttendencias')return top30 instanceof Set && top30.has(key);
+ if(task.project==='ttittulares')return active instanceof Set &&
+   active.has('ttittulares:'+task.target_id+':'+task.revision);
  return false;
 }
 function selectCurrentTasks(tasks,progress,active){
- const isCurrent=x=>active.has(x.project+':'+x.target_id+':'+x.revision);
- const oldest=(a,b)=>(progress[a.command_id]?.checkedAt||0)-(progress[b.command_id]?.checkedAt||0)||
-   (Date.parse(b.created_at)||0)-(Date.parse(a.created_at)||0);
- const current=tasks.filter(isCurrent).sort(oldest);
- const historical=tasks.filter(x=>!isCurrent(x)).sort(oldest);
- // Previously eight perpetually waiting current cards could starve every
- // already-published/removed-from-Listas original forever. Reserve two slots
- // per cycle for exact historical jobs, without compromising current priority.
- const reserve=Math.min(2,historical.length);
- const chosen=[...current.slice(0,8-reserve),...historical.slice(0,reserve)];
- const names=new Set(chosen.map(x=>x.command_id));
- for(const entry of [...current,...historical]){
-  if(chosen.length>=8)break;
-  if(!names.has(entry.command_id)){chosen.push(entry);names.add(entry.command_id);}
- }
- return chosen;
+ // Every valid current Top30 / READY Listas original gets a processing
+ // attempt. Eight was a legacy queue-wide throttle, not editorial eligibility.
+ // Existing queue ordering uses oldest last-checked first so one broken
+ // conversation cannot repeatedly pre-empt other exact image jobs.
+ const checked=task=>Number(progress[task.command_id]?.checkedAt||0);
+ const isCurrent=task=>active instanceof Set &&
+   active.has(task.project+':'+task.target_id+':'+task.revision);
+ return [...tasks].sort((a,b)=>
+   Number(isCurrent(b))-Number(isCurrent(a)) ||
+   checked(a)-checked(b) ||
+   (Date.parse(b.created_at||'')||0)-(Date.parse(a.created_at||'')||0) ||
+   String(a.command_id).localeCompare(String(b.command_id)));
 }
 async function liveIdentities(sources){
  const all=new Set();
@@ -192,29 +185,39 @@ async function once(base=__dirname){
  try{
   const statusFile=path.join(receipts,'receiver-status.json');let progress={};try{progress=JSON.parse(fs.readFileSync(statusFile,'utf8'))}catch{}
   function report(task,reason){progress[task.command_id]={...progress[task.command_id],checkedAt:Date.now(),reason};const tmp=statusFile+'.tmp';fs.writeFileSync(tmp,JSON.stringify(progress,null,2),{mode:0o600});fs.renameSync(tmp,statusFile);console.log('PRIVATE_INBOX '+task.command_id+' '+reason)}
+  // A needs_review receipt retained the exact encrypted key during an
+  // old 72-hour pause. Reattempting its private inbox ingestion is safe
+  // only after job identity, revision, editorial text, current Listas/Top30
+  // membership and PNG SHA pass again. No automatic approval.
   const tasks=[];
   for(const project of ['ttendencias','ttittulares']){
    const dir=path.join(base,project+'-web-images');if(!fs.existsSync(dir))continue;
-   for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&task.status==='waiting'&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
+   for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&['waiting','needs_review'].includes(task.status)&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
   }
-  const top30=await allowedTop30();
-  const eligible=tasks.filter(task=>inCurrentApprovalScope(task,top30));
+  const [top30,active]=await Promise.all([allowedTop30(),liveIdentities(sources)]);
+  const eligible=tasks.filter(task=>inCurrentApprovalScope(task,top30,active));
   const excludedBacklog=tasks.length-eligible.length;
-  const active=await liveIdentities(sources),selected=selectCurrentTasks(eligible,progress,active);
+  const selected=selectCurrentTasks(eligible,progress,active);
   fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({checkedAt:new Date().toISOString(),queuedLocal:tasks.length,eligibleForApproval:eligible.length,excludedBacklog,
-    scopeCutover:'2026-11-06T08:43:00.000Z',
-    currentEditorial:active.size,selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,historicalQueued:eligible.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{queued:tasks.filter(x=>x.project===project).length,eligible:eligible.filter(x=>x.project===project).length,selected:selected.filter(x=>x.project===project).length}]))},null,2));
+    scope:'current_top30_and_ready_listas_without_date_cutoff',
+    currentEditorial:active.size,attemptedThisCycle:selected.length,skippedByPerCycleLimit:0,
+    selectedCurrent:selected.filter(x=>active.has(x.project+':'+x.target_id+':'+x.revision)).length,
+    selectedHistorical:selected.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,
+    historicalQueued:eligible.filter(x=>!active.has(x.project+':'+x.target_id+':'+x.revision)).length,projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{queued:tasks.filter(x=>x.project===project).length,eligible:eligible.filter(x=>x.project===project).length,selected:selected.filter(x=>x.project===project).length}]))},null,2));
   tasks.splice(0,tasks.length,...selected);
   console.log('PRIVATE_INBOX_CYCLE candidates='+tasks.length);
+  // All episodes remain eligible, but browser *creation* must be bounded.
+  // A fresh tab can spawn multiple Chrome subprocesses.
+  const MAX_NEW_RELAY_TABS_PER_CYCLE=1,MAX_RELAY_PAGE_TARGETS=6;
+  const RELAY_RETRY_COOLDOWN_MS=15*60*1000;
+  const relayGuard=path.join(receipts,'relay-cleanup-unconfirmed.json');
+  let newlyOpened=0,relayDeferred=0;
   for(const task of tasks){
    const source=sources[task.project];
    const receiptFile=path.join(receipts,task.command_id+'.json');if(fs.existsSync(receiptFile))continue;
    let cdp,browser,ownedTarget;
    try{
     const job=await editorialJob(source,task),meta=metadata(task,job);
-    if(task.project==='ttittulares'&&Date.parse(meta.editorialAt)<NEWS_CUTOFF){
-     report(task,'NEWS_BEFORE_APPROVAL_CUTOVER');continue;
-    }
     let bytes=cachedOriginal(base,task,meta);
     if(!bytes){
     if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
@@ -228,17 +231,79 @@ async function once(base=__dirname){
      try{const r=await fetch('http://127.0.0.1:9223/json/list',{signal:AbortSignal.timeout(3000)});const own=(await r.json()).find(x=>x.id===task.browser_target_id&&x.webSocketDebuggerUrl);if(own){const history=new CDP(own.webSocketDebuggerUrl);try{await history.open();const h=await history.call('Page.getNavigationHistory',{});const urls=[...new Set((h.entries||[]).map(x=>source.chatURL(x.url)).filter(Boolean))].reverse();if(urls.length){const index=progress[task.command_id]?.recoveryIndex||0;task.conversation_url=urls[index%urls.length];progress[task.command_id]={...progress[task.command_id],recoveryIndex:index+1};target=null;}}finally{history.close()}}}catch{}
     }
     if(!target&&source.chatURL(task.conversation_url)){
-     // Recover a known closed conversation only in the separate relay profile.
-     // Nothing is typed or submitted; this temporary tab belongs to this receiver.
+     // At most one temporary tab per cycle, never in the generator's profile.
+     // Jobs deferred by resource safety remain eligible for a later cycle.
+     const last=Number(progress[task.command_id]?.lastRelayOpenAt||0);
+     if(fs.existsSync(relayGuard)){
+      relayDeferred++;report(task,'RELAY_CLEANUP_UNCONFIRMED');continue;
+     }
+     if(newlyOpened>=MAX_NEW_RELAY_TABS_PER_CYCLE){
+      relayDeferred++;report(task,'RELAY_TAB_BUDGET');continue;
+     }
+     if(Date.now()-last<RELAY_RETRY_COOLDOWN_MS){
+      relayDeferred++;report(task,'RELAY_RETRY_COOLDOWN');continue;
+     }
      try{
-      const r=await fetch('http://127.0.0.1:9234/json/version',{signal:AbortSignal.timeout(3000)});const version=await r.json();browser=new CDP(version.webSocketDebuggerUrl);await browser.open();
-      ownedTarget=(await browser.call('Target.createTarget',{url:source.chatURL(task.conversation_url),background:true})).targetId;
-      for(let n=0;n<5;n++){const q=await fetch('http://127.0.0.1:9234/json/list',{signal:AbortSignal.timeout(3000)});target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);if(target)break;await new Promise(r=>setTimeout(r,500))}
-     }catch{}
+      const pagesResponse=await fetch('http://127.0.0.1:9234/json/list',
+       {signal:AbortSignal.timeout(3000)});
+      if(!pagesResponse.ok)throw Error('RELAY_LIST_UNAVAILABLE');
+      const pages=await pagesResponse.json();
+      if(!Array.isArray(pages))throw Error('RELAY_LIST_UNAVAILABLE');
+      if(pages.filter(p=>p.type==='page').length>=MAX_RELAY_PAGE_TARGETS){
+       relayDeferred++;report(task,'RELAY_CAPACITY_REACHED');continue;
+      }
+      const r=await fetch('http://127.0.0.1:9234/json/version',
+       {signal:AbortSignal.timeout(3000)});
+      const version=await r.json();
+      if(!version.webSocketDebuggerUrl)throw Error('RELAY_UNAVAILABLE');
+      browser=new CDP(version.webSocketDebuggerUrl);await browser.open();
+      newlyOpened++;
+      progress[task.command_id]={...progress[task.command_id],lastRelayOpenAt:Date.now()};
+      ownedTarget=(await browser.call('Target.createTarget',
+       {url:source.chatURL(task.conversation_url),background:true})).targetId;
+      for(let n=0;n<5;n++){
+       const q=await fetch('http://127.0.0.1:9234/json/list',
+        {signal:AbortSignal.timeout(3000)});
+       target=(await q.json()).find(x=>x.id===ownedTarget&&x.webSocketDebuggerUrl);
+       if(target)break;
+       await new Promise(r=>setTimeout(r,500));
+      }
+     }catch{
+      // A Target.createTarget request may have reached Chrome even if the
+      // transport failed before returning its target ID. Never try to open
+      // more tabs automatically when ownership cannot be established.
+      if(newlyOpened>0 && !ownedTarget){
+       fs.writeFileSync(relayGuard,JSON.stringify({
+        at:new Date().toISOString(),reason:'new_tab_id_unconfirmed'
+       }),{mode:0o600});
+      }
+      report(task,'RELAY_OPEN_FAILED');
+     }
     }
-    if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();let raster;
-    for(let n=0;n<(ownedTarget?12:1);n++){raster=await cdp.evaluate(source.rasterProbe(task.command_id,true));if(raster?.ready||['later_user_turn','capture_requires_sign_in','generating'].includes(raster?.reason))break;await new Promise(r=>setTimeout(r,1500))}
-    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','png_conversion_failed','png_exceeds_private_limit','conversation_not_loaded']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
+    if(!target){report(task,'EXACT_CONVERSATION_UNAVAILABLE');continue;}
+    cdp=new CDP(target.webSocketDebuggerUrl);await cdp.open();
+    let raster;
+    // The ChatGPT conversation can be visible in CDP before its user turns
+    // and original image are hydrated. Previously an existing tab got only
+    // ONE probe, leaving valid images stuck as conversation_not_loaded.
+    // Retry only reading the exact original. Never click, navigate, generate,
+    // change a job, or accept an image from a different command.
+    const maxProbes=ownedTarget?12:7;
+    for(let n=0;n<maxProbes;n++){
+      try{
+        raster=await cdp.evaluate(source.rasterProbe(task.command_id,true));
+      }catch(e){
+        // A transient Runtime.evaluate navigation race is retriable. An
+        // unresponsive CDP connection is not evidence of an invalid image.
+        if(!['CDP_EVALUATION_FAILED','RASTER_READ_FAILED'].includes(String(e.message||'')))
+          throw e;
+        raster={ready:false,reason:'CDP_EVALUATION_FAILED'};
+      }
+      if(raster?.ready ||
+         ['later_user_turn','capture_requires_sign_in'].includes(raster?.reason))break;
+      if(n+1<maxProbes)await new Promise(r=>setTimeout(r,1500));
+    }
+    if(!raster?.ready){const allowed=new Set(['later_user_turn','capture_requires_sign_in','command_not_in_conversation','generating','ambiguous_or_missing_raster','raster_fetch_failed','raster_size_or_type','png_conversion_failed','png_exceeds_private_limit','conversation_not_loaded','CDP_EVALUATION_FAILED']);report(task,allowed.has(raster?.reason)?raster.reason:'ORIGINAL_NOT_READY');continue;}
     if(!String(raster.dataUrl).startsWith('data:image/png;base64,')){report(task,'ORIGINAL_FORMAT_NOT_PNG');continue;}
     bytes=Buffer.from(raster.dataUrl.slice('data:image/png;base64,'.length),'base64');
     const fresh=metadata(task,await editorialJob(source,task));if(fresh.episodeFingerprint!==meta.episodeFingerprint)throw Error('EPISODE_CHANGED');
@@ -248,9 +313,33 @@ async function once(base=__dirname){
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({project:meta.project,revision:meta.revision,commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
     discardOriginal(base,task);
     report(task,'RECEIVED_'+receipt.state);
-   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PRIVATE_RECEIPT_BAD_JSON|PRIVATE_RECEIPT_NETWORK_UNAVAILABLE|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{cdp?.close();if(ownedTarget)try{await browser?.call('Target.closeTarget',{targetId:ownedTarget})}catch{}browser?.close()}
+   }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PRIVATE_RECEIPT_BAD_JSON|PRIVATE_RECEIPT_NETWORK_UNAVAILABLE|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{
+    cdp?.close();
+    if(ownedTarget){
+     let closed=false;
+     try{
+      const reply=await browser?.call('Target.closeTarget',{targetId:ownedTarget});
+      closed=reply?.success!==false;
+     }catch{}
+     if(!closed){
+      try{
+       const response=await fetch('http://127.0.0.1:9234/json/close/'+encodeURIComponent(ownedTarget),
+        {signal:AbortSignal.timeout(3000)});
+       closed=response.ok;
+      }catch{}
+     }
+     if(!closed){
+      fs.writeFileSync(relayGuard,JSON.stringify({
+       at:new Date().toISOString(),reason:'owned_tab_cleanup_unconfirmed'
+      }),{mode:0o600});
+      console.warn('PRIVATE_INBOX_RELAY_CLEANUP_UNCONFIRMED');
+     }
+    }
+    browser?.close();
+   }
   }
+  console.log('PRIVATE_INBOX_RELAY created='+newlyOpened+' deferred='+relayDeferred);
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
-module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks,inCurrentApprovalScope,allowedTop30,NEWS_CUTOFF};
+module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks,inCurrentApprovalScope,allowedTop30};
 if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
