@@ -3,54 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794166219",
-  "previous_run_id": "tr-1794149555656-manual",
-  "command_id": "tr-autoguard-1794166219",
+  "run_id": "tr-1794167585384-manual",
+  "previous_run_id": "tr-autoguard-1794166219",
+  "command_id": "tr-1794167585384-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-08T20:46:00+01:00",
+  "started_at": "2026-11-08T20:54:00+01:00",
   "updated_at": "2026-11-08T20:55:00+01:00",
   "finished_at": "2026-11-08T20:55:00+01:00",
-  "current": 17,
-  "total": 17,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
-  "title": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [
-    "bd2b2934d243",
-    "097a158384e1",
-    "78a4dfe59496",
-    "20a90e357907",
-    "1196cc9f8b21",
-    "e0098a5f8970",
-    "392ac0248b65",
-    "00bfd43ca5fa",
-    "ff67019b39ba",
-    "d5728f873d7c",
-    "f5ecd642ce16",
-    "1a600d6d046e",
-    "f9e1f460adf1",
-    "red-review-45745a370b36ec2c799a",
-    "red-review-2b8c36b362764c37d989",
-    "red-review-dd760f62fefd26c71237",
-    "red-review-2c5c620a098a3e2965b8"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 17,
-    "observed": 17,
-    "closed": 17,
-    "explained": 14,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 1,
-    "stale_reviews": 2,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -60,145 +41,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "bd2b2934d243",
-      "revision": 1,
-      "name": "#NFLMadridGame",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "097a158384e1",
-      "revision": 1,
-      "name": "Bengals",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "78a4dfe59496",
-      "revision": 0,
-      "name": "Barrene",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "20a90e357907",
-      "revision": 0,
-      "name": "Masters 1000 de París",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "1196cc9f8b21",
-      "revision": 0,
-      "name": "Shelton",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "e0098a5f8970",
-      "revision": 0,
-      "name": "Carlos Alcaraz",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "392ac0248b65",
-      "revision": 0,
-      "name": "#RealSociedadRayo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "00bfd43ca5fa",
-      "revision": 0,
-      "name": "portimão",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "ff67019b39ba",
-      "revision": 0,
-      "name": "Carlitos",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "d5728f873d7c",
-      "revision": 0,
-      "name": "Chase",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "f5ecd642ce16",
-      "revision": 0,
-      "name": "#PremierLeagueDAZN",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "1a600d6d046e",
-      "revision": 0,
-      "name": "#LaPistaDelTenis",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "f9e1f460adf1",
-      "revision": 0,
-      "name": "Ruibal",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox"
-    },
-    {
-      "id": "red-review-45745a370b36ec2c799a",
-      "revision": 0,
-      "name": "Revisar novedades: Robe",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox"
-    },
-    {
-      "id": "red-review-2b8c36b362764c37d989",
-      "revision": 0,
-      "name": "Revisar novedades: Carvajal",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_outbox"
-    },
-    {
-      "id": "red-review-dd760f62fefd26c71237",
-      "revision": 0,
-      "name": "Revisar novedades: Aston Martin",
-      "outcome": "distinct_update",
-      "applied": true,
-      "via": "maintenance_outbox",
-      "created_id": "trend-update-a79b9ee04dbb9b45034a"
-    },
-    {
-      "id": "red-review-2c5c620a098a3e2965b8",
-      "revision": 0,
-      "name": "Revisar novedades: Russell",
-      "outcome": "stale",
-      "applied": true,
-      "via": "maintenance_outbox"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -989,20 +832,30 @@
       "at": "2026-11-08T20:55:00+01:00",
       "phase": "closing",
       "message": "Barrera final main verificada: editorial-queue=0; requests y mobile-decisions sin preparing/update, rewrite_pending ni reexplain. 17/17 cerrados: 13 explicaciones ordinarias, Robe unchanged, Carvajal stale, Aston Martin episodio distinto y Russell stale. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T20:54:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794167585384-manual iniciada desde chat. Lectura inicial de main: editorial-queue=0. Se ejecuta barrera JIT de cola compacta, reelaboraciones y trabajos especiales. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T20:55:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos; búsqueda del repositorio sin esos estados ni los dos review_red de Aston Martin/Russell que figuraban en telemetría anterior. Cierre editorial 0/0. recent.json 20:51:12+01:00 está live_verified=false/reliability=unverified, por lo que no se inventa trabajo nuevo. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T20:52:21+01:00",
-  "last_completed_at": "2026-11-08T18:11:26+01:00",
+  "last_started_at": "2026-11-08T20:54:00+01:00",
+  "last_completed_at": "2026-11-08T20:55:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794149555656-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-08T15:52:35.656+01:00",
-    "finished_at": "2026-11-08T16:07:30+01:00",
-    "attempted": 12,
-    "observed": 12,
-    "closed": 12,
-    "explained": 12,
+    "run_id": "tr-1794167585384-manual",
+    "status": "DONE",
+    "started_at": "2026-11-08T20:54:00+01:00",
+    "finished_at": "2026-11-08T20:55:00+01:00",
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -1014,121 +867,12 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 2,
-    "processed_ids": [
-      "48ef49a80a85",
-      "16174b2e5cf2",
-      "0baf2af7e494",
-      "6121d2770c7a",
-      "e4423895dd54",
-      "d7e94e63db2c",
-      "5921c5cfb37a",
-      "5b559b316c23",
-      "b07209fa7a7c",
-      "e2fd4ec01c09",
-      "ec86fd039cfe",
-      "f7e247a958e1"
-    ],
-    "converged_ids": [
-      "48ef49a80a85",
-      "16174b2e5cf2",
-      "0baf2af7e494",
-      "6121d2770c7a",
-      "e4423895dd54",
-      "d7e94e63db2c",
-      "5921c5cfb37a",
-      "5b559b316c23",
-      "b07209fa7a7c",
-      "e2fd4ec01c09"
-    ],
-    "outcomes": [
-      {
-        "id": "48ef49a80a85",
-        "revision": 0,
-        "name": "Extremoduro",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "16174b2e5cf2",
-        "revision": 0,
-        "name": "Antony",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "0baf2af7e494",
-        "revision": 0,
-        "name": "Nadal",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "6121d2770c7a",
-        "revision": 0,
-        "name": "la séptima",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "e4423895dd54",
-        "revision": 0,
-        "name": "#SorteoCOAC2027",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "d7e94e63db2c",
-        "revision": 0,
-        "name": "Aguirre",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "5921c5cfb37a",
-        "revision": 0,
-        "name": "Amaia",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "5b559b316c23",
-        "revision": 0,
-        "name": "Vinicius",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "b07209fa7a7c",
-        "revision": 0,
-        "name": "bezz",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "e2fd4ec01c09",
-        "revision": 2,
-        "name": "#CCubicos441",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "ec86fd039cfe",
-        "revision": 0,
-        "name": "Marc",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "f7e247a958e1",
-        "revision": 0,
-        "name": "La Revuelta",
-        "outcome": "explained",
-        "applied": true
-      }
-    ]
+    "incidents": 0,
+    "processed_ids": [],
+    "converged_ids": [],
+    "outcomes": []
   },
-  "message": "Pasada tr-1794149555656-manual cerrada 12/12. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Dos aplicaciones de chat-outbox canceladas por concurrencia (la séptima y Amaia) fueron reemitidas tras validación JIT y quedaron aplicadas. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos; búsqueda del repositorio sin esos estados ni los dos review_red de Aston Martin/Russell que figuraban en telemetría anterior. Cierre editorial 0/0. recent.json 20:51:12+01:00 está live_verified=false/reliability=unverified, por lo que no se inventa trabajo nuevo. Sin ImageGen, sin image-outbox editorial y sin publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -1171,6 +915,11 @@
       "at": "2026-11-08T15:43:00+01:00",
       "phase": "closing",
       "message": "tr-1794148669902-manual DONE 1/1: elche r1 reelaborado desde cero con resultado final 0-0 y aplicado en edf02e30bb89df92fc5d6e11871961cad73c1e46; cola final 0, sin reexplicaciones activas, ImageGen=0."
+    },
+    {
+      "at": "2026-11-08T20:55:00+01:00",
+      "phase": "closing",
+      "message": "tr-1794167585384-manual DONE 0/0: cola final 0, sin reelaboraciones activas; la telemetría previa tr-autoguard-1794166219 quedó superada por el estado autoritativo actual de main. ImageGen=0."
     }
   ]
 }
