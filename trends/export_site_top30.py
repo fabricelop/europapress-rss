@@ -295,11 +295,32 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
                 "movement_version", "previous_rank", "rank_delta", "last_changed_at", "entered_top30_at")},
         }
         output.append(selected)
+    # Downloading a ranking at the current minute does not certify that
+    # X's Spain list was observed recently. Expose the upstream evidence
+    # alongside the exact same UI rows, without altering editorial state,
+    # relations or the existing Top30 order.
+    fresh_sources = recent.get("fresh_sources") if isinstance(recent, dict) else []
+    if not isinstance(fresh_sources, list):
+        fresh_sources = []
+    fresh_sources = [name for name in fresh_sources if isinstance(name, str)]
+    live_verified = (
+        isinstance(recent, dict)
+        and recent.get("live_verified") is True
+        and bool(fresh_sources)
+        and text(recent, "country").upper() == "ES"
+    )
     return {
         "schema_version": 1,
         "source": "ttactualidad-ios-buildTop30-parity",
         "generated_at": now.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"),
         "radar_captured_at": text(recent, "captured_at"),
+        "radar_country": text(recent, "country"),
+        "radar_live_verified": live_verified,
+        "radar_fresh_sources": fresh_sources,
+        "ranking_verification": "freshness-confirmed" if live_verified else "unverified",
+        "ranking_warning": "" if live_verified else (
+            "Top 30 orientativo: sin observación fechada y corroborada de X España."
+        ),
         "count": len(output),
         "items": output,
     }

@@ -182,6 +182,41 @@ class PublicTop30ParityTests(unittest.TestCase):
         self.assertFalse(any("-untrusted-" in (row.get("image") or {}).get("url","")
                              for row in untrusted["items"]))
 
+    def test_spain_radar_unverified_is_explicit_in_export_without_changing_rows(self):
+        uncertain = {
+            **RADAR, "country": "ES", "live_verified": False,
+            "reliability": "unverified", "fresh_sources": []
+        }
+        report = make(recent=uncertain)
+        self.assertFalse(report["radar_live_verified"])
+        self.assertEqual(report["ranking_verification"], "unverified")
+        self.assertEqual(report["radar_country"], "ES")
+        self.assertIn("orientativo", report["ranking_warning"])
+        self.assertEqual([r["name"] for r in report["items"]],
+                         RADAR["top30"])
+
+    def test_download_time_or_unverified_country_cannot_certify_top30(self):
+        false_positive = {**RADAR, "country": "XX",
+                          "live_verified": True,
+                          "fresh_sources": ["source-1"]}
+        report = make(recent=false_positive)
+        self.assertFalse(report["radar_live_verified"])
+        self.assertEqual(report["ranking_verification"], "unverified")
+        false_positive["country"] = "ES"
+        false_positive["fresh_sources"] = []
+        self.assertFalse(make(recent=false_positive)["radar_live_verified"])
+
+    def test_only_upstream_source_evidence_can_confirm_freshness_not_exact_rank(self):
+        checked = {**RADAR, "country": "ES",
+                   "live_verified": True, "fresh_sources": ["dated-es"]}
+        report = make(recent=checked)
+        self.assertTrue(report["radar_live_verified"])
+        self.assertEqual(report["ranking_verification"], "freshness-confirmed")
+        self.assertEqual(report["ranking_warning"], "")
+        self.assertEqual(report["radar_fresh_sources"], ["dated-es"])
+        self.assertEqual([r["card_id"] for r in report["items"]],
+                         ["rank-1", "rank-2", "rank-3"])
+
     def test_timezone_and_search_numeration(self):
         self.assertEqual(norm("  Óscar   Puente "), "oscar puente")
         items = make()["items"]
