@@ -1,6 +1,68 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T22:23:01+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-08T21:23:35.758755+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-20cf9be8f813af596108",
+      "revision": 0,
+      "name": "Revisar novedades: Balaídos",
+      "rank": 22,
+      "status": "preparing",
+      "requested_at": "2026-11-08T21:23:35.758755+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "d2c385cd4faf",
+        "revision": 2,
+        "name": "Balaídos",
+        "rank": 12,
+        "explanation": "TT#12 Balaídos es tendencia por el Celta-Union Saint-Gilloise de Europa League, que terminó 1-2: Pablo Durán adelantó a los vigueses y Besfort Zeneli remontó con un doblete.\n#Celta #UEL\n🌶️ El marcador se dio la vuelta antes de que Balaídos pudiera cerrarlo.",
+        "explanation_sha256": "c243d7f958348a97e3b4790cecd5fa5586cbec60453c8e32b8cddb1daa0d50d3",
+        "explained_at": "2026-11-05T22:56:30+01:00",
+        "verification_sources": [
+          "https://as.com/resultados/futbol/europa_league/2026_2027/directo/regular_a_4_6a940eaa08af053/",
+          "https://www.eurosport.es/futbol/europa-league/2026-2027/live-celta-saint-gilloise_mtc21878705/live.shtml"
+        ],
+        "fingerprint": "7c1e0656c1ef7154c15e1a9498ea8b4f1f43aed62a06d79f9543d529c8a03888"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-ce9c23b8f3e4833f80e1",
+      "revision": 0,
+      "name": "Revisar novedades: Interlagos",
+      "rank": 19,
+      "status": "preparing",
+      "requested_at": "2026-11-08T21:23:35.758755+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "be1ae41b540c",
+        "revision": 0,
+        "name": "Interlagos",
+        "rank": 12,
+        "explanation": "TT#21 Interlagos sigue siendo tendencia por la clasificación del GP de São Paulo: tras 84 minutos de parón por lluvia, Norris logró la pole y Alonso fue 9º.\n#F1 #BrazilGP\n🌶️ La lluvia tardó en soltar la pista y Norris no soltó la pole.",
+        "explanation_sha256": "d00351497ac794b0f54955eb10c9f828ea7cf8f77f5d9129a50c82482216741c",
+        "explained_at": "2026-11-07T20:15:00+01:00",
+        "verification_sources": [
+          "https://www.theguardian.com/sport/live/2026/nov/07/sao-paulo-formula-one-grand-prix-qualifying-in-brazil-live",
+          "https://www.autosport.pt/sem-categoria/gp-sao-paulo-f1-qualificacao-interrompida-devido-a-chuva/",
+          "https://nos.nl/liveblog/2638427-kwalificatie-stilgelegd-vanwege-regen-sessie-was-nog-maar-net-begonnen"
+        ],
+        "fingerprint": "520788979463f4f69589472d9752635d30b82dc55a0c37a1324c998fe4186b2c"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
