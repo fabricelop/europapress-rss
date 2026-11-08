@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T14:53:22.561075+00:00",
+  "updated_at": "2026-11-08T15:53:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -262208,7 +262208,7 @@
       "name": "Broncano",
       "rank": 8,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-11-08T14:50:54.325028+00:00",
       "requested_at": "2026-11-08T14:50:54.325028+00:00",
       "updated_at": "2026-11-08T14:50:54.325028+00:00",
@@ -262219,13 +262219,43 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Broncano"
       ],
       "originated_from_prior_id": "50d1a6619b2a",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Broncano, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Broncano, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-11-08T15:53:00+01:00",
+      "last_attempt_at": "2026-11-08T15:53:00+01:00",
+      "explanation": "TT#8 Broncano es tendencia por la entrevista de Santiago Abascal mañana en La Revuelta: RTVE confirma su visita y el programa ha cancelado la asistencia del público previsto para esa grabación.\n#LaRevuelta #SantiagoAbascal\n🌶️ La entrevista ya mueve el plató antes de empezar.",
+      "closer_text": "🌶️ La entrevista ya mueve el plató antes de empezar.",
+      "rank_at_explanation": 8,
+      "category": "Actualidad",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://www.rtve.es/play/noticias/20261108/santiago-abascal-revuelta-hora-donde-ver-entrevista-lider-vox-broncano/17302397.shtml",
+        "https://elpais.com/television/2026-11-07/la-revuelta-cancela-la-presencia-de-su-publico-previsto-para-la-entrevista-con-santiago-abascal-se-va-a-grabar-en-condiciones-distintas.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Investigación nueva desde cero. JIT id/revision validado; texto y remate nuevos. No se reutiliza versión previa ni se afirma que no habrá ningún público, solo la cancelación del previsto. Sin ImageGen ni publicación.",
+      "group_id": "grp-3a82af74dabc",
+      "explanation_group_id": "grp-3a82af74dabc",
+      "group_title": "Broncano",
+      "group_leader_id": "3a82af74dabc",
+      "trend_names": [
+        "Broncano"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "3a82af74dabc",
+          "name": "Broncano",
+          "revision": 0
+        }
+      ],
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "48ef49a80a85",
@@ -262444,5 +262474,5 @@
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de bezz, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
     }
   ],
-  "count": 1860
+  "count": 1861
 }
