@@ -383,30 +383,30 @@ class DirectBufferPublisherTests(unittest.TestCase):
                 publisher.editorial("ttittulares", "news123456", 1)
         self.assertEqual(check.call_count, 1)
 
-    def test_both_x_accounts_end_at_working_site_homepage(self):
+    def test_only_news_x_posts_keep_working_site_homepage(self):
         text = "Titular contrastado y breve.\n\n#Noticias\n🌶️ Remate"
-        for project in ("ttittulares", "ttendencias"):
-            with self.subTest(project=project):
-                result = publisher.x_payload(project, text)
-                self.assertEqual(result, text +
-                                 "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")
-                self.assertEqual(result.count("https://"), 1)
-
-    def test_legacy_section_footer_is_replaced_not_duplicated(self):
+        news = publisher.x_payload("ttittulares", text)
+        trends = publisher.x_payload("ttendencias", text)
+        self.assertEqual(news, text + "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")
+        self.assertEqual(trends, text)
+        self.assertNotIn("ttactualidad.rainyraven22.chatgpt.site", trends)
+    def test_legacy_section_footer_is_removed_only_for_trends(self):
         base = "Texto editorial con remate y #Etiqueta"
         old_urls = (
             "https://ttactualidad.rainyraven22.chatgpt.site/noticias",
             "https://ttactualidad.rainyraven22.chatgpt.site/tendencias",
         )
-        for project in ("ttittulares", "ttendencias"):
-            for old in old_urls:
-                with self.subTest(project=project, old=old):
-                    result = publisher.x_payload(project, base + "\n\n" + old)
-                    self.assertEqual(result, base +
-                                     "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")
+        for old in old_urls:
+            with self.subTest(old=old):
+                self.assertEqual(
+                    publisher.x_payload("ttittulares", base + "\n\n" + old),
+                    base + "\n\nhttps://ttactualidad.rainyraven22.chatgpt.site/")
+                self.assertEqual(
+                    publisher.x_payload("ttendencias", base + "\n\n" + old),
+                    base)
         unrelated = "Enlace de fuente https://example.org/informe"
         self.assertIn(unrelated, publisher.x_payload("ttittulares", unrelated))
-
+        self.assertIn(unrelated, publisher.x_payload("ttendencias", unrelated))
     def test_x_text_is_truncated_without_losing_end_hashtags_and_link(self):
         text = ("Una noticia muy larga y contrastada. " * 22) + \
             "\n\n#Actualidad #Noticias\n🌶️ Remate"
@@ -433,11 +433,28 @@ class DirectBufferPublisherTests(unittest.TestCase):
         url = "https://example.org/approved-original.png"
         self.assertEqual(publisher.x_post_assets(url),
                          [{"image": {"url": url}}])
-        # Both accounts share the visible text link and no card asset.
-        for project in ("ttittulares", "ttendencias"):
-            self.assertTrue(publisher.x_payload(project, "Texto").endswith(
-                "https://ttactualidad.rainyraven22.chatgpt.site/"))
+        self.assertTrue(publisher.x_payload("ttittulares", "Texto").endswith(
+            "https://ttactualidad.rainyraven22.chatgpt.site/"))
+        self.assertEqual(publisher.x_payload("ttendencias", "Texto"), "Texto")
 
+    def test_trends_remove_embedded_site_link_without_losing_source(self):
+        original = ("Hecho verificado https://example.org/fuente\n"
+                    "https://ttactualidad.rainyraven22.chatgpt.site/tendencias\n"
+                    "#Tendencias\n🌶️ Remate")
+        result = publisher.x_payload("ttendencias", original)
+        self.assertNotIn("ttactualidad.rainyraven22.chatgpt.site", result)
+        self.assertIn("https://example.org/fuente", result)
+        self.assertIn("#Tendencias", result)
+        self.assertIn("🌶️ Remate", result)
+
+    def test_trends_use_full_text_budget_without_website_footer(self):
+        text = ("Una tendencia contrastada. " * 20) + (
+            "\n\n#Tendencias #Actualidad\n🌶️ Remate")
+        result = publisher.x_payload("ttendencias", text)
+        self.assertNotIn("ttactualidad", result)
+        self.assertIn("#Tendencias #Actualidad", result)
+        self.assertIn("🌶️ Remate", result)
+        self.assertLessEqual(publisher.x_weight(result), 280)
     def test_two_channels_share_one_30_day_api_quota(self):
         headers = Message()
         headers.add_header("RateLimit-Policy", '"150-in-15min";q=150;w=900;pk=:same:')
