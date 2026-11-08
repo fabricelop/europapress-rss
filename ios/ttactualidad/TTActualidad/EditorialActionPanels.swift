@@ -25,6 +25,12 @@ struct EditorialActions: View {
 
     private var title: String { news?.title ?? trend?.name ?? "" }
     private var fullText: String { news?.editorial ?? trend?.explanation ?? "" }
+    private var xPublicationText: String {
+        guard news == nil else { return fullText }
+        return fullText.replacingOccurrences(of: "https?://\\S+", with: "", options: .regularExpression)
+            .replacingOccurrences(of: "\\n{3,}", with: "\\n\\n", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
     private var rank: Int { trend?.rank ?? 0 }
     private var revision: Int { news?.revision ?? trend?.revision ?? 0 }
     private var editorialID: String { news?.id ?? trend?.editorialID ?? "" }
@@ -58,9 +64,9 @@ struct EditorialActions: View {
             HStack(spacing: 7) {
                 quickLink("TTImages", "photo.stack", "https://t.me/TTImages_bot")
                 quickButton("Publicar en X", "square.and.arrow.up") {
-                    guard !fullText.isEmpty else { outcome = "Sin texto para publicar"; return }
+                    guard !xPublicationText.isEmpty else { outcome = "Sin texto para publicar"; return }
                     var parts = URLComponents(string: "https://twitter.com/intent/tweet")
-                    parts?.queryItems = [URLQueryItem(name: "text", value: fullText)]
+                    parts?.queryItems = [URLQueryItem(name: "text", value: xPublicationText)]
                     if let url = parts?.url {
                         openURL(url)
                         // The editor decides after returning from X; opening a compose URL
