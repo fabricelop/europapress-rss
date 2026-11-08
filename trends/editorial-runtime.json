@@ -3,25 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794120538462-manual",
-  "previous_run_id": "tr-1794117300000-manual",
-  "command_id": "tr-1794120538462-manual",
+  "run_id": "tr-1794120749061-manual",
+  "previous_run_id": "tr-1794120538462-manual",
+  "command_id": "tr-1794120749061-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-08T07:49:00+01:00",
-  "updated_at": "2026-11-08T07:52:40+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-08T07:53:00+01:00",
+  "updated_at": "2026-11-08T07:53:00+01:00",
   "finished_at": null,
-  "current": 3,
-  "total": 5,
+  "current": 0,
+  "total": 2,
   "trend_id": "red-review-75339fd167356c788f2d",
   "title": "Revisar novedades: Leo Román",
   "queue_complete": false,
-  "processed_ids": [
-    "1d931d3e44fe",
-    "a18902b32c40",
-    "e2b9766d0f1a"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "red-review-75339fd167356c788f2d",
@@ -33,10 +29,10 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 5,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -514,6 +510,11 @@
       "trend_id": "red-review-75339fd167356c788f2d",
       "title": "Revisar novedades: Leo Román",
       "message": "Barrera posterior a las 3 reelaboraciones detecta 2 review_red nuevos: Leo Román y Fiscalía Europea. Se incorporan a la misma pasada, antiguo→reciente. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T07:53:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794120749061-manual iniciada desde chat. Cola main=2 review_red (Leo Román y Fiscalía Europea). La pasada anterior tr-1794120538462-manual figura RUNNING sobre los mismos trabajos; se revalida JIT y se evita duplicar persistencia. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T07:51:50+01:00",
@@ -531,5 +532,5 @@
     "imagegen_calls": 0,
     "publications": 0
   },
-  "message": "Pasada en curso: 3/5; revisando novedades de Leo Román. Sin ImageGen ni publicaciones."
+  "message": "Pasada en curso: 0/2; revalidando cola y revisiones. Sin ImageGen ni publicaciones."
 }
