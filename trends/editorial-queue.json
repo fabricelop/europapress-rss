@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T08:21:00+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-08T07:28:25.291799+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-98b5e92d7311bb4dc401",
+      "revision": 0,
+      "name": "Revisar novedades: Paraguay",
+      "rank": 12,
+      "status": "preparing",
+      "requested_at": "2026-11-08T07:28:25.291799+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "7fb4d179ec62",
+        "revision": 0,
+        "name": "Paraguay",
+        "rank": 22,
+        "explanation": "TT#2 Paraguay sigue siendo tendencia por la crisis de Ueno Bank: tras su destitución y arresto domiciliario, Santiago Peña compareció este sábado ante la Fiscalía mientras se determinan los cargos.\n#UenoBank #SantiagoPeña\n🌶️ El relevo en Palacio vino con turno en Fiscalía.",
+        "explanation_sha256": "1090796b0e0115bfc13ac053da76172dadd982643e9c35d9a789f5ea77d7af96",
+        "explained_at": "2026-11-04T15:10:18.408Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
+          },
+          {
+            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
+          }
+        ],
+        "fingerprint": "8d51769ad50f9493920c76723ca63d6b393d54c8f85b11a8bdcd2612be6fc653"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-c7e476f68780c4ca2a4b",
+      "revision": 0,
+      "name": "Revisar novedades: Santiago Peña",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-08T07:28:25.291799+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c4f3771c12ae",
+        "revision": 0,
+        "name": "Santiago Peña",
+        "rank": 13,
+        "explanation": "TT#12 Santiago Peña sigue siendo tendencia por la crisis de Ueno Bank: la Fiscalía lo imputó por presunta lesión de confianza y administración en provecho propio y pidió prisión preventiva.\n#Paraguay #UenoBank\n🌶️ Del Palacio a la Fiscalía, el caso cambió de despacho.",
+        "explanation_sha256": "9ad0674c0c2fc38177366123239ceaf97d76d7bbc2b83e7538e20edf9ebd3edf",
+        "explained_at": "2026-11-05T18:15:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/world/americas/paraguay-president-pea-resigns-under-mounting-pressure-bank-collapse-2026-11-05/"
+          },
+          {
+            "url": "https://apnews.com/article/eccea1c9a64808b5cd7e6e1d5542084f"
+          }
+        ],
+        "fingerprint": "45ec6b68a197e4eace67d4ee98dcb7ee5716d4b953dc1365bb14e788dae401b7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
