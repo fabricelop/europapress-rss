@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T15:42:00+01:00",
+  "updated_at": "2026-11-08T14:46:41.100766+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -261882,55 +261882,44 @@
       "created_at": "2026-11-08T14:20:00.649505+00:00",
       "name": "elche",
       "rank": 30,
-      "revision": 1,
-      "status": "explained",
-      "requested_at": "2026-11-08T14:37:45.248234+00:00",
-      "updated_at": "2026-11-08T14:37:45.248234+00:00",
+      "revision": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-08T14:46:41.100766+00:00",
+      "updated_at": "2026-11-08T14:46:41.100766+00:00",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
       "auto_queued": false,
-      "request_source": "ttactualidad_direct_rework",
+      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "image_choice": null,
-      "image_pending": false,
-      "fallback_image_status": "none",
-      "ai_image_status": "not_requested",
+      "image_choice": "none",
+      "image_pending": true,
+      "fallback_image_status": "pending",
+      "ai_image_status": "pending",
       "requested_together": [
         "elche"
       ],
-      "rewrite_instruction": "Elaboración desde cero por información desfasada. Investiga hechos y marcador o resultado ACTUALES antes de escribir. Redacta un texto factual nuevo y un remate nuevo. Busca y valida una foto de archivo nueva para esta revisión. No reutilices texto, remate ni imágenes de revisiones anteriores.",
-      "explained_at": "2026-11-08T15:42:00+01:00",
-      "last_attempt_at": "2026-11-08T15:42:00+01:00",
-      "explanation": "TT#12 elche es tendencia por el Elche-Betis de hoy, que terminó 0-0 en el Martínez Valero.\n#ElcheCF #RealBetis\n🌶️ Los dos ceros aguantaron los noventa minutos.",
-      "closer_text": "🌶️ Los dos ceros aguantaron los noventa minutos.",
-      "rank_at_explanation": 12,
-      "category": "Deportes",
-      "source": "editorial_chat_direct",
-      "verification_sources": [
-        "https://www.skysports.com/football/elche-vs-real-betis/stats/563036",
-        "https://www.jornadaperfecta.com/partido/13425/elche-betis"
-      ],
-      "news_disposition": "ignored",
-      "news_note": "Reelaboración desde cero solicitada desde TTActualidad por información desfasada. Resultado final 0-0 verificado con dos fuentes; JIT id/revision validado. Texto y remate nuevos. La imagen queda fuera de esta pasada editorial; ImageGen=0.",
-      "group_id": "grp-3d36913a2caa",
-      "explanation_group_id": "grp-3d36913a2caa",
-      "group_title": "elche",
-      "group_leader_id": "3d36913a2caa",
-      "trend_names": [
-        "elche"
-      ],
-      "grouped_member_revisions": [
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nRevisa el resultado. No ha acabado y además ha marcado el Betis.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
         {
-          "id": "3d36913a2caa",
-          "name": "elche",
-          "revision": 1
+          "at": "2026-11-08T14:46:41.100766+00:00",
+          "source_revision": 1,
+          "text": "Revisa el resultado. No ha acabado y además ha marcado el Betis.",
+          "verification": "unverified_editor_context"
         }
       ],
-      "image_status": "none"
+      "investigation_history": [
+        {
+          "revision": 1,
+          "status": "explained",
+          "problem_reason": "",
+          "last_attempt_at": "2026-11-08T15:42:00+01:00"
+        }
+      ],
+      "hints_verification_status": "unverified"
     },
     {
       "id": "e7a443c3aa40",
