@@ -7,37 +7,31 @@
   "previous_run_id": "tr-1794120749061-manual",
   "command_id": "tr-1794140385588-manual",
   "source": "chat",
-  "status": "running",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-08T14:04:00+01:00",
-  "updated_at": "2026-11-08T14:04:00+01:00",
+  "updated_at": "2026-11-08T14:09:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 9,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "1943c4a59cd3",
+    "2dfcf6049e63",
+    "85294e93c44d",
+    "9a3f0bfdde9a",
+    "af5a918453c9",
+    "ba0c2459fd8c",
+    "e2fd4ec01c09"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "e2fd4ec01c09",
-    "2dfcf6049e63",
-    "af5a918453c9",
-    "9a3f0bfdde9a",
-    "ba0c2459fd8c",
-    "1943c4a59cd3",
-    "85294e93c44d",
     "red-review-b39c1bcdb7c287e6270f",
     "red-review-c46c495a527e6a9cd814"
   ],
   "remaining_active_ids": [
-    "e2fd4ec01c09",
-    "2dfcf6049e63",
-    "af5a918453c9",
-    "9a3f0bfdde9a",
-    "ba0c2459fd8c",
-    "1943c4a59cd3",
-    "85294e93c44d",
     "red-review-b39c1bcdb7c287e6270f",
     "red-review-c46c495a527e6a9cd814"
   ],
@@ -560,7 +554,7 @@
       "message": "Pasada tr-1794140385588-manual iniciada desde chat; cola main=9: siete explain y dos review_red. Procesamiento JIT antiguo→reciente, priorizando explain antes de mantenimiento. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T12:03:44+01:00",
+  "last_started_at": "2026-11-08T14:09:00+01:00",
   "last_completed_at": "2026-11-08T12:03:44+01:00",
   "api_failover_enabled": false,
   "last_run": {
