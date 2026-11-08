@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T21:45:11+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-08T20:45:41.976064+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-4214bffa4a42fd70ed8d",
+      "revision": 0,
+      "name": "Revisar novedades: Escribá",
+      "rank": 13,
+      "status": "preparing",
+      "requested_at": "2026-11-08T20:45:41.976064+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "4c937a96fa19",
+        "revision": 0,
+        "name": "Escribá",
+        "rank": 8,
+        "explanation": "TT#8 Escribá es tendencia tras el 2-1 del Granada al Valladolid: su equipo empató en el 57, encajó de nuevo diez minutos después y acabó con Torres expulsado.\n#FranEscribá #RealValladolid #GranadaCF\n🌶️ El empate duró menos que la charla del descanso.",
+        "explanation_sha256": "df6fa35316b5a3d00a2c2dcf43bca4151c1a3f10c2c91b6aaafcea74fcfcf172",
+        "explained_at": "2026-10-24T00:07:41.325Z",
+        "verification_sources": [
+          "https://www.realvalladolid.es/noticias/cronica-j11-granada-real-valladolid-26-27",
+          "https://as.com/futbol/segunda/escriba-es-una-derrota-que-nos-duele-f202610-n/"
+        ],
+        "fingerprint": "571a9acf7c1a60c78486f32f6886e62169c88b205637c392f6a8b0308e03ccb8"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-52886e82b36f36595fd8",
+      "revision": 0,
+      "name": "Revisar novedades: #DragRaceEs",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-08T20:45:41.976064+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "b4e57b51c750",
+        "revision": 0,
+        "name": "#DragRaceEs",
+        "rank": 9,
+        "explanation": "TT#9 #DragRaceEs es tendencia por la emisión del episodio 6 de Drag Race España 6, “El ladrillo de oro”, un musical homenaje a Federico Chueca con Asier Etxeandia como juez invitado.\n#DragRaceEspaña #DragRace6\n🌶️ La zarzuela también pasó por la pasarela.",
+        "explanation_sha256": "32cf41ff633632a78f3996af5f479e9651b5248eb73607bd10c58036c5a3568a",
+        "explained_at": "2026-11-01T21:21:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.atresmedia.com/prensa/notas/atresplayer/programas/drag-race-espana-rinde-homenaje-federico-chueca-recibe-asier-etxeandia-este-domingo-atresplayer_202610296ae323a602501232156c5ce3.html"
+          },
+          {
+            "url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programa-sabado-31-octubre-domingo-1-noviembre_202610306ae49c4a004b78127aba28c7.html"
+          }
+        ],
+        "fingerprint": "c054e3c58ad70b8418f750803c4cd3cf07e7d9f0bebdd681a95a6ce0751a91e5"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
