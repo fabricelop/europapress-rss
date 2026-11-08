@@ -3,37 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794143640000-manual",
-  "previous_run_id": "tr-1794140385588-manual",
-  "command_id": "tr-1794143640000-manual",
+  "run_id": "tr-1794144300000-manual",
+  "previous_run_id": "tr-1794143640000-manual",
+  "command_id": "tr-1794144300000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-08T14:14:00+01:00",
-  "updated_at": "2026-11-08T14:17:30+01:00",
-  "finished_at": "2026-11-08T14:17:30+01:00",
-  "current": 3,
-  "total": 3,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T14:25:00+01:00",
+  "updated_at": "2026-11-08T14:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "b8319f5f818f",
-    "e986c2c85214",
-    "e4fb8818600e"
-  ],
-  "converged_ids": [
-    "b8319f5f818f",
-    "e986c2c85214"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -46,36 +39,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "b8319f5f818f",
-      "revision": 0,
-      "name": "#SorteoCOAC2027",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "433dccac9f4a9f441ef9e2e439ff2da92657f669",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "e986c2c85214",
-      "revision": 0,
-      "name": "Nadal",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "433dccac9f4a9f441ef9e2e439ff2da92657f669",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "e4fb8818600e",
-      "revision": 0,
-      "name": "Carvajal",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "433dccac9f4a9f441ef9e2e439ff2da92657f669"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -608,6 +574,11 @@
       "at": "2026-11-08T14:18:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794143373869-manual satisfecha por convergencia JIT: 5/5 observados cerrados (Carvajal review=unverified, Amaia review=unchanged; #SorteoCOAC2027, Nadal y Carvajal reelaborados=explained). La ejecución sucesora tr-1794143640000-manual conserva la telemetría canónica. Barrera final main=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T14:25:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794144300000-manual iniciada desde chat. Cola inicial observada en main=0; se ejecuta barrera JIT de cola compacta, reelaboraciones y trabajos especiales. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T14:16:47+01:00",
