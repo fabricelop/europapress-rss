@@ -7,18 +7,20 @@
   "previous_run_id": "tr-1794100779331-manual",
   "command_id": "tr-1794101100000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T02:25:00+01:00",
-  "updated_at": "2026-11-08T02:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-08T02:26:00+01:00",
+  "finished_at": "2026-11-08T02:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [],
+  "converged_ids": [
+    "tr-1794100779331-manual"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -39,7 +41,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "outcomes": [],
   "incident_count": 0,
@@ -355,18 +357,23 @@
       "at": "2026-11-08T02:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794101100000-manual iniciada desde chat; lectura inicial de main con editorial-queue=0. La ejecución previa tr-1794100779331-manual figuraba RUNNING pero su ID ya no está activo en la cola autoritativa; no se resucita ese snapshot. Se ejecuta barrera JIT de cola, reelaboraciones y trabajos especiales. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T02:26:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT en main: editorial-queue=0; requests, telegram-manual-explained y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Cierre editorial 0/0. La ejecución previa marcada RUNNING no se resucita porque su trabajo ya no existe en el estado autoritativo. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T02:25:00+01:00",
-  "last_completed_at": "2026-11-08T02:22:00+01:00",
+  "last_completed_at": "2026-11-08T02:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794100640284-manual",
+    "run_id": "tr-1794101100000-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T02:17:00+01:00",
-    "finished_at": "2026-11-08T02:22:00+01:00",
-    "attempted": 2,
-    "closed": 2,
+    "started_at": "2026-11-08T02:25:00+01:00",
+    "finished_at": "2026-11-08T02:26:00+01:00",
+    "attempted": 0,
+    "closed": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0
   }
