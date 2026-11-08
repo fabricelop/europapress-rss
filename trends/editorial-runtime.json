@@ -937,44 +937,59 @@
     }
   ],
   "last_started_at": "2026-11-08T21:48:30+01:00",
-  "last_completed_at": "2026-11-08T21:45:11+01:00",
+  "last_completed_at": "2026-11-08T21:52:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794170750315-manual",
-    "status": "RUNNING",
+    "status": "DONE",
     "started_at": "2026-11-08T21:48:30+01:00",
-    "finished_at": null,
+    "finished_at": "2026-11-08T21:52:30+01:00",
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 2,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 2,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "current": 1,
+    "validation_retries": 1,
+    "current": 2,
     "total": 2,
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-4214bffa4a42fd70ed8d",
+      "red-review-52886e82b36f36595fd8"
+    ],
     "outcomes": [
+      {
+        "id": "red-review-4214bffa4a42fd70ed8d",
+        "revision": 0,
+        "name": "Revisar novedades: Escribá",
+        "outcome": "distinct_update",
+        "applied": true,
+        "created_id": "trend-update-5e18ed31b3cde5d0d4db",
+        "apply_commit": "6b2da7388526ad6dcf32ba5235f0b48cf07d0f61"
+      },
       {
         "id": "red-review-52886e82b36f36595fd8",
         "revision": 0,
         "name": "Revisar novedades: #DragRaceEs",
         "outcome": "distinct_update",
-        "applied": true
+        "applied": true,
+        "created_id": "trend-update-b46ce17ac9aca3335d73",
+        "apply_commit": "e1524ee0ba6d36db92f116402f3271f3c9043d73"
       }
     ]
   },
-  "message": "1/2 aplicado: #DragRaceEs quedó cerrado como episodio distinto. Escribá fue rechazado por el validador por usar «es tendencia tras»; el mismo outbox se corrigió JIT a «es tendencia por» y su nuevo aplicador está lanzado. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794170750315-manual cerrada 2/2. Escribá y #DragRaceEs se verificaron como episodios distintos y quedaron aplicados en nuevas fichas. Escribá requirió una corrección de formato del mismo outbox antes de aplicar. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -1131,6 +1146,11 @@
       "trend_id": "red-review-4214bffa4a42fd70ed8d",
       "title": "Revisar novedades: Escribá",
       "message": "1/2 aplicado: #DragRaceEs quedó cerrado como episodio distinto. Escribá fue rechazado por el validador por usar «es tendencia tras»; el mismo outbox se corrigió JIT a «es tendencia por» y su nuevo aplicador está lanzado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T21:52:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794170750315-manual cerrada 2/2. Escribá y #DragRaceEs se verificaron como episodios distintos y quedaron aplicados en nuevas fichas. Escribá requirió una corrección de formato del mismo outbox antes de aplicar. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ]
 }
