@@ -10,12 +10,12 @@
   "status": "RUNNING",
   "phase": "verifying",
   "started_at": "2026-11-08T20:46:00+01:00",
-  "updated_at": "2026-11-08T21:05:00+01:00",
+  "updated_at": "2026-11-08T21:08:00+01:00",
   "finished_at": null,
-  "current": 13,
-  "total": 15,
-  "trend_id": "red-review-45745a370b36ec2c799a",
-  "title": "Revisando novedades: Robe / Carvajal",
+  "current": 15,
+  "total": 17,
+  "trend_id": "red-review-dd760f62fefd26c71237",
+  "title": "Revisando novedades: Aston Martin / Russell",
   "queue_complete": false,
   "processed_ids": [
     "1a600d6d046e",
@@ -24,24 +24,24 @@
   ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-45745a370b36ec2c799a",
-    "red-review-2b8c36b362764c37d989"
+    "red-review-dd760f62fefd26c71237",
+    "red-review-2c5c620a098a3e2965b8"
   ],
   "remaining_active_ids": [
-    "red-review-45745a370b36ec2c799a",
-    "red-review-2b8c36b362764c37d989"
+    "red-review-dd760f62fefd26c71237",
+    "red-review-2c5c620a098a3e2965b8"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 15,
-    "observed": 15,
-    "closed": 13,
+    "attempted": 17,
+    "observed": 17,
+    "closed": 15,
     "explained": 13,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "unverified_reviews": 0,
     "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
@@ -832,6 +832,11 @@
       "at": "2026-11-08T21:05:00+01:00",
       "phase": "verifying",
       "message": "13/15 explicaciones ordinarias aplicadas y retiradas de la cola autoritativa. Permanecen solo los dos review_red de Robe y Carvajal; sus maintenance-outbox se han persistido tras revalidación JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T21:08:00+01:00",
+      "phase": "investigating",
+      "message": "Barrera de cierre detectó 2 review_red nuevos: Aston Martin y Russell. Ambos corresponden al GP de São Paulo del 08/11, episodio posterior al GP de México. Se persisten como candidatos a episodio distinto con fuentes F1 actuales; pendientes de aplicación JIT."
     }
   ],
   "last_started_at": "2026-11-08T20:52:21+01:00",
