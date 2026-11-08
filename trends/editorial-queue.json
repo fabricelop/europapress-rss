@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T05:28:43+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-08T04:29:09.498584+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-1c184434eff23e2ae2a3",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "rank": 13,
+      "status": "preparing",
+      "requested_at": "2026-11-08T04:29:09.498584+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "16ac22023f2b",
+        "revision": 0,
+        "name": "La Séptima",
+        "rank": 11,
+        "explanation": "TT#11 La Séptima es tendencia tras su estreno en TDT: en su primer día logró un 2,8% de cuota y 4,9 millones de espectadores únicos.\n#TDT #Audiencias\n🌶️ La nueva cadena necesitó un día para entrar también en el audímetro.",
+        "explanation_sha256": "53117e9f25ccb6680e61396a961a3966d3cde8e751cd5c8d53476129e819401c",
+        "explained_at": "2026-11-07T00:51:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://ipmark.com/la-septima-alcanza-cobertura-del-10-5-en-primer-dia-de-emisiones/"
+          },
+          {
+            "url": "https://www.elnacional.cat/enblau/es/television/audiencias-tv-ayer-5-noviembre-2026_1721642_102.html"
+          }
+        ],
+        "fingerprint": "22bdeb072e9e5f3b58782df1489c48e85d9d799811f59a22ad25b19a376cfd8d"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-177fb2cbc0827f4da6c0",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-08T04:29:09.498584+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "50d1a6619b2a",
+        "revision": 0,
+        "name": "Broncano",
+        "rank": 18,
+        "explanation": "TT#18 Broncano es tendencia tras confirmar que Santiago Abascal será invitado en La Revuelta el lunes 9 de noviembre, dentro de la ronda de candidatos antes de las generales del 29N.\n#LaRevuelta #SantiagoAbascal\n🌶️ El sofá sigue ampliando su ronda de candidatos.",
+        "explanation_sha256": "77bcce00687a06a0ac273d2d026eaaa847dc58bd9829cb9aa71ade305a2ee23d",
+        "explained_at": "2026-11-07T00:53:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/play/videos/la-revuelta/broncano-confirma-santiago-abascal-como-invitado/17302195/"
+          },
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/05/santiago-abascal-asistira-a-la-revuelta-de-tve-el-lunes-9-de-noviembre-y-afronta-la-entrevista-como-un-ahora-o-nunca-cadena-ser/"
+          }
+        ],
+        "fingerprint": "76d53290a89c157ba51f14282922615d1cf34e92e380f2269b7c1a81d034ad07"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
