@@ -8,14 +8,14 @@
   "command_id": "tr-1794178144244-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-08T23:51:00+01:00",
-  "updated_at": "2026-11-08T23:51:00+01:00",
+  "updated_at": "2026-11-08T23:56:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 7,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "9e1649b8ed38",
+  "title": "#SVSemifinal",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -81,7 +81,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando 7 trabajos editoriales activos; revalidación JIT antes de cada tratamiento.",
+  "activity": "Resultados editoriales preparados; aplicador oficial en ejecución (workflow 42532478303).",
   "last_started_at": "2026-11-08T23:24:00+01:00",
   "last_completed_at": "2026-11-08T23:28:00+01:00",
   "api_failover_enabled": false,
@@ -112,7 +112,7 @@
     },
     "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794178144244-manual RUNNING con 7 preparing en main. Sin ImageGen ni publicaciones.",
+  "message": "7/7 investigados y preparados; 0/7 materializados todavía. Aplicador oficial en curso. ImageGen=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -608,7 +608,68 @@
       "at": "2026-11-08T23:51:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794178144244-manual iniciada con 7 trabajos preparing: #SVSemifinal, cholo, #SalvadosEmilioDelgado, Pantoja, Jurado, Liak y Fermín. Orden por antigüedad y revalidación JIT ID/revisión. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "investigating",
+      "trend_id": "9e1649b8ed38",
+      "title": "#SVSemifinal",
+      "message": "Detonante verificado: semifinal de Supervivientes All Stars 3 y expulsión decisiva."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "investigating",
+      "trend_id": "113f2f9ba728",
+      "title": "cholo",
+      "message": "Detonante verificado: Atlético-Barça del Metropolitano, derrota 1-2 tras adelantarse Atlético."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "investigating",
+      "trend_id": "458f869fdc14",
+      "title": "#SalvadosEmilioDelgado",
+      "message": "Detonante verificado: entrevista de Gonzo a Emilio Delgado sobre 29N, vivienda y 11N."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "investigating",
+      "trend_id": "e714e4de2209",
+      "title": "Pantoja",
+      "message": "Contexto actual verificado: cumpleaños de Isa Pantoja y choque público con Rosa Benito por Asraf/Supervivientes."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "investigating",
+      "trend_id": "c5fb8b304b6e",
+      "title": "Jurado",
+      "message": "Dos focos actuales verificados; causalidad única no confirmada, se redacta con incertidumbre explícita."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "investigating",
+      "trend_id": "312f7bce521d",
+      "title": "Liak",
+      "message": "Detonante verificado: episodio Las Campanadrags de Drag Race España estrenado hoy."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "investigating",
+      "trend_id": "9731285d0638",
+      "title": "Fermín",
+      "message": "Reelaboración desde cero: doblete de Fermín en el 1-2 del Barça al Atlético verificado."
+    },
+    {
+      "at": "2026-11-08T23:56:30+01:00",
+      "phase": "persisting",
+      "trend_id": "9e1649b8ed38",
+      "title": "#SVSemifinal",
+      "message": "Lote editorial ordenado persistido en editorial-outbox y workflow 42532478303 en ejecución. No se ha generado ninguna imagen."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "9e1649b8ed38",
+    "revision": 0,
+    "name": "#SVSemifinal",
+    "phase": "persisting"
+  }
 }
