@@ -8,9 +8,9 @@
   "command_id": "tr-1794181125518-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-09T00:39:00+01:00",
-  "updated_at": "2026-11-09T00:39:00+01:00",
+  "updated_at": "2026-11-09T00:42:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -50,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial en ejecución",
+  "activity": "Investigando Atleti",
   "last_started_at": "2026-11-09T00:39:00+01:00",
   "last_completed_at": "2026-11-09T00:29:00+01:00",
   "api_failover_enabled": false,
@@ -81,7 +81,7 @@
     },
     "message": "Pasada tr-1794180300000-manual cerrada 0/0 tras barrera final JIT en main: editorial-queue=0 y requests, telegram-manual-explained y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Se verificaron los últimos resultados de mantenimiento ya aplicados; no se resucitó trabajo terminal. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794181125518-manual RUNNING. Cola inicial JIT=1: Atleti r0, puesto 3, reelaboración manual desde cero. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Atleti r0 revalidado JIT. Dos fuentes actuales confirman Atlético 1-2 Barcelona el 8/11/2026 en el Metropolitano: Giuliano Simeone abrió el marcador y Fermín remontó con dos goles. Se redacta texto nuevo; ImageGen=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -774,6 +774,13 @@
       "trend_id": "bc91860c9bb9",
       "title": "Atleti",
       "message": "Pasada tr-1794181125518-manual RUNNING. Cola inicial JIT=1: Atleti r0, puesto 3, reelaboración manual desde cero. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T00:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "bc91860c9bb9",
+      "title": "Atleti",
+      "message": "Atleti r0 revalidado JIT. Dos fuentes actuales confirman Atlético 1-2 Barcelona el 8/11/2026 en el Metropolitano: Giuliano Simeone abrió el marcador y Fermín remontó con dos goles. Se redacta texto nuevo; ImageGen=0."
     }
   ],
   "current_item": {
@@ -782,6 +789,6 @@
     "name": "Atleti",
     "rank": 3,
     "status": "preparing",
-    "phase": "preparing"
+    "phase": "investigating"
   }
 }
