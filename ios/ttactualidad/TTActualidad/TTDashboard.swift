@@ -58,7 +58,23 @@ struct TTDashboard: View {
             github.reconcileOptimisticClosures(news: store.snapshot.news, trends: store.snapshot.trendListas)
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-            Task { await github.resumeReceiptChecks() }
+            Task {
+                await store.refreshIfOlderThan(3600)
+                await github.resumeReceiptChecks()
+            }
+        }
+        .task {
+            // GetDayTrends publishes an hourly Spanish ranking. Recheck the
+            // common GitHub snapshot while this screen is active, including
+            // when the user keeps it open across an hourly source update.
+            // This loop is cancelled automatically when the view disappears.
+            while !Task.isCancelled {
+                do { try await Task.sleep(nanoseconds: 300_000_000_000) }
+                catch { break }
+                if UIApplication.shared.applicationState == .active {
+                    await store.refreshIfOlderThan(3600)
+                }
+            }
         }
     }
 
