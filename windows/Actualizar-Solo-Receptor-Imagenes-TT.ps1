@@ -6,7 +6,7 @@ $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
 $file='TTImageApprovalReceiver.cjs'
 $live=Join-Path $base $file
-$pin='0ebc716790e10402fb8ca10b72bb74d982bda551'
+$pin='7c120aaf85f9351c05fa6b894d43e58139d2cfe4'
 $expected='7a393cf5cb760f7b4a3d1fe5b7d059757666494311fad5657fdb96b2d0a7b9c9'
 $accepted=@(
  '5726f9aa5c543e4bfffd6b5a2451db2215c8a0f71c52d4f8142de65d1c5b2d0f',
