@@ -3,34 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794172605662-manual",
-  "previous_run_id": "tr-1794172200000-manual",
-  "command_id": "tr-1794172605662-manual",
+  "run_id": "tr-1794173160000-manual",
+  "previous_run_id": "tr-1794172605662-manual",
+  "command_id": "tr-1794173160000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-08T22:17:40+01:00",
-  "updated_at": "2026-11-08T22:25:10+01:00",
-  "finished_at": null,
-  "current": 7,
-  "total": 8,
-  "trend_id": "red-review-ce9c23b8f3e4833f80e1",
-  "title": "Revisando novedades: Interlagos",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-08T22:25:20+01:00",
+  "updated_at": "2026-11-08T22:26:00+01:00",
+  "finished_at": "2026-11-08T22:26:00+01:00",
+  "current": 0,
+  "total": 0,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "34c59fd12412",
-    "555bb13d46aa",
-    "ae3da9f12e3b",
-    "c254c019cd08",
-    "f9c4dfa3b7d6"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
+    "attempted": 0,
+    "observed": 0,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -40,7 +34,7 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 5,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -899,16 +893,26 @@
       "at": "2026-11-08T22:11:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsquedas en repo sin trabajo editorial activo. Cierre 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T22:25:20+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794173160000-manual iniciada desde chat. Lectura autoritativa de main: editorial-queue=0; se ejecuta barrera JIT de cola y reexplicaciones. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T22:26:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT en main: editorial-queue=0 y búsqueda del repositorio sin preparing/update, rewrite_pending ni reexplain activos. La telemetría RUNNING anterior queda superada por el estado autoritativo actual. Cierre 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T22:23:01+01:00",
-  "last_completed_at": "2026-11-08T22:23:01+01:00",
+  "last_started_at": "2026-11-08T22:25:20+01:00",
+  "last_completed_at": "2026-11-08T22:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794171031168-manual",
+    "run_id": "tr-1794173160000-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T21:50:31+01:00",
-    "finished_at": "2026-11-08T21:53:00+01:00",
+    "started_at": "2026-11-08T22:25:20+01:00",
+    "finished_at": "2026-11-08T22:26:00+01:00",
     "attempted": 0,
     "observed": 0,
     "closed": 0,
@@ -930,9 +934,9 @@
     "total": 0,
     "processed_ids": [],
     "outcomes": [],
-    "message": "Pasada tr-1794171031168-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y las relecturas de requests, mobile-decisions y telegram-manual-explained no muestran preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. La pasada anterior tr-1794170750315-manual terminó 2/2 durante esta ventana y dejó su trabajo aplicado en main. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794173160000-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y la búsqueda en main no muestra preparing/update, rewrite_pending/reexplain activos. La ejecución anterior figuraba RUNNING en telemetría, pero su trabajo ya había desaparecido del estado autoritativo; no se resucita. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Interlagos: episodio distinto verificado (carrera del 8/11 posterior a la clasificación del 7/11); resultado de mantenimiento persistido tras JIT.",
+  "message": "Pasada tr-1794173160000-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y la búsqueda en main no muestra preparing/update, rewrite_pending/reexplain activos. La ejecución anterior figuraba RUNNING en telemetría, pero su trabajo ya había desaparecido del estado autoritativo; no se resucita. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -1165,6 +1169,33 @@
       "trend_id": "red-review-ce9c23b8f3e4833f80e1",
       "title": "Revisando novedades: Interlagos",
       "message": "Interlagos: episodio distinto verificado (carrera del 8/11 posterior a la clasificación del 7/11); resultado de mantenimiento persistido tras JIT."
+    },
+    {
+      "run_id": "tr-1794173160000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-08T22:25:20+01:00",
+      "finished_at": "2026-11-08T22:26:00+01:00",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada tr-1794173160000-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y la búsqueda en main no muestra preparing/update, rewrite_pending/reexplain activos. La ejecución anterior figuraba RUNNING en telemetría, pero su trabajo ya había desaparecido del estado autoritativo; no se resucita. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ]
 }
