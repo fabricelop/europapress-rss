@@ -1,9 +1,9 @@
 name: Private image intake both projects
 on:
   push:
-    paths: ['windows/TTendenciasWebImages.cjs', 'windows/TTiTTularesWebImages.cjs', 'windows/tests/user-bubble-reader.test.cjs', 'windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', 'windows/tests/private-image-format-and-recovery.test.cjs', 'windows/tests/private-inbox-cutover.test.cjs', 'windows/tests/closed-conversation-recovery.test.cjs', 'windows/Actualizar-Receptor-Noticias-TT.ps1', 'windows/Auditar-Inicio-TT.ps1', 'windows/TT-Relay9234-Guard.ps1', 'windows/Instalar-Relay-Oculto-TT.ps1', '.github/workflows/private-image-intake.yml']
+    paths: ['windows/TTendenciasWebImages.cjs', 'windows/TTiTTularesWebImages.cjs', 'windows/tests/user-bubble-reader.test.cjs', 'windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Solo-Receptor-Imagenes-TT.ps1', 'windows/tests/receiver-only-installer-20261108.test.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', 'windows/tests/private-image-format-and-recovery.test.cjs', 'windows/tests/private-inbox-cutover.test.cjs', 'windows/tests/closed-conversation-recovery.test.cjs', 'windows/Actualizar-Receptor-Noticias-TT.ps1', 'windows/Auditar-Inicio-TT.ps1', 'windows/TT-Relay9234-Guard.ps1', 'windows/Instalar-Relay-Oculto-TT.ps1', '.github/workflows/private-image-intake.yml']
   pull_request:
-    paths: ['windows/TTendenciasWebImages.cjs', 'windows/TTiTTularesWebImages.cjs', 'windows/tests/user-bubble-reader.test.cjs', 'windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', 'windows/tests/private-image-format-and-recovery.test.cjs', 'windows/tests/private-inbox-cutover.test.cjs', 'windows/tests/closed-conversation-recovery.test.cjs', 'windows/Actualizar-Receptor-Noticias-TT.ps1', 'windows/Auditar-Inicio-TT.ps1', 'windows/TT-Relay9234-Guard.ps1', 'windows/Instalar-Relay-Oculto-TT.ps1', '.github/workflows/private-image-intake.yml']
+    paths: ['windows/TTendenciasWebImages.cjs', 'windows/TTiTTularesWebImages.cjs', 'windows/tests/user-bubble-reader.test.cjs', 'windows/TTImageApprovalReceiver.cjs', 'windows/Actualizar-Solo-Receptor-Imagenes-TT.ps1', 'windows/tests/receiver-only-installer-20261108.test.cjs', 'windows/Actualizar-Recogida-Privada-TT.ps1', 'windows/tests/test_private_image_intake.cjs', 'windows/tests/private-image-format-and-recovery.test.cjs', 'windows/tests/private-inbox-cutover.test.cjs', 'windows/tests/closed-conversation-recovery.test.cjs', 'windows/Actualizar-Receptor-Noticias-TT.ps1', 'windows/Auditar-Inicio-TT.ps1', 'windows/TT-Relay9234-Guard.ps1', 'windows/Instalar-Relay-Oculto-TT.ps1', '.github/workflows/private-image-intake.yml']
 permissions:
   contents: read
 jobs:
@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test windows/tests/test_private_image_intake.cjs windows/tests/private-image-format-and-recovery.test.cjs windows/tests/private-inbox-cutover.test.cjs windows/tests/user-bubble-reader.test.cjs windows/tests/closed-conversation-recovery.test.cjs
+      - run: node --test windows/tests/receiver-only-installer-20261108.test.cjs windows/tests/test_private_image_intake.cjs windows/tests/private-image-format-and-recovery.test.cjs windows/tests/private-inbox-cutover.test.cjs windows/tests/user-bubble-reader.test.cjs windows/tests/closed-conversation-recovery.test.cjs
       - run: |
           $tokens=$null; $errors=$null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path 'windows/Actualizar-Recogida-Privada-TT.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
