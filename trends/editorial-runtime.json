@@ -7,34 +7,26 @@
   "previous_run_id": "tr-1794172200000-manual",
   "command_id": "tr-1794172605662-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-08T22:17:40+01:00",
-  "updated_at": "2026-11-08T22:24:00+01:00",
+  "updated_at": "2026-11-08T22:23:01+01:00",
   "finished_at": null,
   "current": 5,
   "total": 6,
   "trend_id": "c254c019cd08",
   "title": "Bernal",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "8566c8fefa8d"
+    "34c59fd12412",
+    "555bb13d46aa",
+    "ae3da9f12e3b",
+    "c254c019cd08",
+    "f9c4dfa3b7d6"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "555bb13d46aa",
-    "34c59fd12412",
-    "ae3da9f12e3b",
-    "f9c4dfa3b7d6",
-    "c254c019cd08"
-  ],
-  "remaining_active_ids": [
-    "555bb13d46aa",
-    "34c59fd12412",
-    "ae3da9f12e3b",
-    "f9c4dfa3b7d6",
-    "c254c019cd08"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 5,
@@ -909,8 +901,8 @@
       "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsquedas en repo sin trabajo editorial activo. Cierre 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T22:20:54+01:00",
-  "last_completed_at": "2026-11-08T21:53:00+01:00",
+  "last_started_at": "2026-11-08T22:23:01+01:00",
+  "last_completed_at": "2026-11-08T22:23:01+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794171031168-manual",
