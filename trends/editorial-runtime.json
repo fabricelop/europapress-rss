@@ -8,25 +8,34 @@
   "command_id": "tr-1794170400000-manual",
   "source": "chat",
   "status": "DONE",
-  "phase": "preparing",
+  "phase": "closing",
   "started_at": "2026-11-08T21:40:00+01:00",
   "updated_at": "2026-11-08T21:50:00+01:00",
   "finished_at": "2026-11-08T21:50:00+01:00",
-  "current": 5,
-  "total": 5,
+  "current": 7,
+  "total": 7,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [],
-  "converged_ids": [],
+  "processed_ids": [
+    "a710157b5414",
+    "714f8f0e1ea6",
+    "988b4ce8dc58",
+    "2393cedbe478",
+    "c3887f1b1ecc"
+  ],
+  "converged_ids": [
+    "ba6cfc447a32",
+    "555e7cb8732e"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 7,
     "observed": 7,
-    "closed": 0,
-    "explained": 0,
+    "closed": 7,
+    "explained": 7,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -34,15 +43,73 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 7,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "a710157b5414",
+      "revision": 0,
+      "name": "#FueraDeControl8nov",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox_or_convergence"
+    },
+    {
+      "id": "714f8f0e1ea6",
+      "revision": 0,
+      "name": "Otero",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox_or_convergence"
+    },
+    {
+      "id": "988b4ce8dc58",
+      "revision": 0,
+      "name": "#Fiesta8N",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox_retry",
+      "workflow_run": 42521643048
+    },
+    {
+      "id": "2393cedbe478",
+      "revision": 0,
+      "name": "Hadjar",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox_or_convergence"
+    },
+    {
+      "id": "c3887f1b1ecc",
+      "revision": 0,
+      "name": "Old Trafford",
+      "outcome": "explained",
+      "applied": true,
+      "via": "chat_outbox_or_convergence"
+    },
+    {
+      "id": "ba6cfc447a32",
+      "revision": 0,
+      "name": "Albon",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "555e7cb8732e",
+      "revision": 0,
+      "name": "El Molinón",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -863,20 +930,30 @@
       "at": "2026-11-08T21:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794170400000-manual iniciada desde chat. Cola main=7 preparing: #FueraDeControl8nov, Otero, #Fiesta8N, Hadjar, Old Trafford, Albon y El Molinón. Orden antiguo→reciente con revalidación JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T21:49:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT: editorial-queue bajó a 0. #Fiesta8N fue reemitida tras un job cancelado y su workflow 42521643048 completó success; Albon y El Molinón ya habían convergido antes de persistencia propia."
+    },
+    {
+      "at": "2026-11-08T21:50:00+01:00",
+      "phase": "closing",
+      "message": "Cierre 7/7: siete revisiones ordinarias fuera de la cola autoritativa, sin reexplicaciones observadas, ImageGen=0 y publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T21:25:00+01:00",
-  "last_completed_at": "2026-11-08T21:28:00+01:00",
+  "last_started_at": "2026-11-08T21:40:00+01:00",
+  "last_completed_at": "2026-11-08T21:50:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1794170465",
+    "run_id": "tr-1794170400000-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T21:41:00+01:00",
+    "started_at": "2026-11-08T21:40:00+01:00",
     "finished_at": "2026-11-08T21:50:00+01:00",
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 5,
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 7,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -890,6 +967,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
+    "concurrent_convergence": 2,
     "processed_ids": [
       "a710157b5414",
       "714f8f0e1ea6",
@@ -898,8 +976,8 @@
       "c3887f1b1ecc"
     ],
     "converged_ids": [
-      "a710157b5414",
-      "c3887f1b1ecc"
+      "ba6cfc447a32",
+      "555e7cb8732e"
     ],
     "outcomes": [
       {
@@ -908,14 +986,15 @@
         "name": "#FueraDeControl8nov",
         "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence"
+        "via": "chat_outbox_or_convergence"
       },
       {
         "id": "714f8f0e1ea6",
         "revision": 0,
         "name": "Otero",
         "outcome": "explained",
-        "applied": true
+        "applied": true,
+        "via": "chat_outbox_or_convergence"
       },
       {
         "id": "988b4ce8dc58",
@@ -923,14 +1002,16 @@
         "name": "#Fiesta8N",
         "outcome": "explained",
         "applied": true,
-        "via": "editorial_outbox_backup"
+        "via": "chat_outbox_retry",
+        "workflow_run": 42521643048
       },
       {
         "id": "2393cedbe478",
         "revision": 0,
         "name": "Hadjar",
         "outcome": "explained",
-        "applied": true
+        "applied": true,
+        "via": "chat_outbox_or_convergence"
       },
       {
         "id": "c3887f1b1ecc",
@@ -938,11 +1019,27 @@
         "name": "Old Trafford",
         "outcome": "explained",
         "applied": true,
+        "via": "chat_outbox_or_convergence"
+      },
+      {
+        "id": "ba6cfc447a32",
+        "revision": 0,
+        "name": "Albon",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence"
+      },
+      {
+        "id": "555e7cb8732e",
+        "revision": 0,
+        "name": "El Molinón",
+        "outcome": "explained",
+        "applied": true,
         "via": "concurrent_convergence"
       }
     ]
   },
-  "message": "Pasada tr-autoguard-1794170465 cerrada 5/5; cola final 0 y sin reexplicaciones activas. Sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794170400000-manual cerrada 7/7. Cinco revisiones se emitieron por CHAT_OUTBOX; Albon y El Molinón convergieron antes de la persistencia propia y no se sobrescribieron. #Fiesta8N requirió reemisión JIT tras cancelación de un job y quedó aplicado con workflow 42521643048. Barrera final: editorial-queue=0. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -1060,6 +1157,33 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada tr-autoguard-1794170465 cerrada 5/5. #FueraDeControl8nov y Old Trafford convergieron con otra pasada; Otero y Hadjar quedaron aplicados tras transporte oficial; #Fiesta8N se cerró mediante editorial-outbox de respaldo y aplicador oficial. Barrera final editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794170400000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-08T21:40:00+01:00",
+      "finished_at": "2026-11-08T21:50:00+01:00",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 7,
+        "problematic": 0,
+        "updates": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada tr-1794170400000-manual cerrada 7/7. Cinco revisiones se emitieron por CHAT_OUTBOX; Albon y El Molinón convergieron antes de la persistencia propia y no se sobrescribieron. #Fiesta8N requirió reemisión JIT tras cancelación de un job y quedó aplicado con workflow 42521643048. Barrera final: editorial-queue=0. ImageGen=0; publicaciones=0."
     }
   ]
 }
