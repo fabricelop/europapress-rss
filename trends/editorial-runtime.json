@@ -7,39 +7,36 @@
   "previous_run_id": "tr-1794104700000-manual",
   "command_id": "tr-1794105151194-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T03:33:15+01:00",
-  "updated_at": "2026-11-08T03:36:20+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-08T03:37:20+01:00",
+  "finished_at": "2026-11-08T03:37:20+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-0bfe6d34697e3eb97a6b",
+    "red-review-e3af40ea185902ecf937"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-0bfe6d34697e3eb97a6b",
-    "red-review-e3af40ea185902ecf937"
-  ],
-  "remaining_active_ids": [
-    "red-review-0bfe6d34697e3eb97a6b",
-    "red-review-e3af40ea185902ecf937"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "unchanged_reviews": 0,
-    "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "unverified_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,7 +44,23 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-0bfe6d34697e3eb97a6b",
+      "revision": 0,
+      "name": "#UFCHBOMax",
+      "outcome": "updated",
+      "distinct_episode": true,
+      "created_id": "trend-update-d17eb9676b1264f2e310"
+    },
+    {
+      "id": "red-review-e3af40ea185902ecf937",
+      "revision": 0,
+      "name": "Carvajal",
+      "outcome": "unverified",
+      "distinct_episode": false
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -421,6 +434,16 @@
       "at": "2026-11-08T03:36:20+01:00",
       "phase": "persisting",
       "message": "Resultados materializados en maintenance-outbox: #UFCHBOMax como episodio distinto verificado y Carvajal como unverified. Se espera la aplicación automática del mantenedor y se comprueba estado real en main."
+    },
+    {
+      "at": "2026-11-08T03:35:43+01:00",
+      "phase": "verifying",
+      "message": "Aplicación real verificada en commit 383f8575e1d7b3efeed6b1e14fcf324e8195a9fc: #UFCHBOMax crea episodio distinto trend-update-d17eb9676b1264f2e310; Carvajal queda unverified; ambos jobs retirados de la cola."
+    },
+    {
+      "at": "2026-11-08T03:37:20+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos. Cierre 2/2. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T03:25:00+01:00",
