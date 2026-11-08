@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794173160000-manual",
   "command_id": "tr-1794174000000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T22:40:00+01:00",
-  "updated_at": "2026-11-08T22:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-08T22:41:00+01:00",
+  "finished_at": "2026-11-08T22:41:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -908,6 +908,11 @@
       "at": "2026-11-08T22:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794174000000-manual iniciada desde chat. Cola inicial observada en main=0; se ejecuta barrera JIT de editorial-queue, reelaboraciones y trabajos especiales. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T22:41:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794174000000-manual cerrada 0/0 por barrera JIT: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsqueda en main sin marcadores activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-08T22:25:20+01:00",
