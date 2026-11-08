@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794147499437-manual",
-  "previous_run_id": "tr-1794147000000-manual",
-  "command_id": "tr-1794147499437-manual",
+  "run_id": "tr-1794147605058-manual",
+  "previous_run_id": "tr-1794147499437-manual",
+  "command_id": "tr-1794147605058-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-08T15:19:00+01:00",
-  "updated_at": "2026-11-08T15:20:30+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-08T15:20:05.058+01:00",
+  "updated_at": "2026-11-08T15:20:05.058+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 3,
+  "total": 4,
   "trend_id": "e2fd4ec01c09",
   "title": "#CCubicos441",
   "queue_complete": false,
@@ -22,17 +22,19 @@
   "remaining_ids": [
     "e2fd4ec01c09",
     "8648b034950f",
-    "3d36913a2caa"
+    "3d36913a2caa",
+    "e7a443c3aa40"
   ],
   "remaining_active_ids": [
     "e2fd4ec01c09",
     "8648b034950f",
-    "3d36913a2caa"
+    "3d36913a2caa",
+    "e7a443c3aa40"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 3,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -41,7 +43,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -606,6 +608,13 @@
       "trend_id": "e2fd4ec01c09",
       "title": "#CCubicos441",
       "message": "#CCubicos441 r1 validado JIT. La cola dinámica ha pasado a 3 tras entrar elche r0; se investiga desde cero y se exige doble búsqueda independiente. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-08T15:20:05.058+01:00",
+      "phase": "preparing",
+      "trend_id": "e2fd4ec01c09",
+      "title": "#CCubicos441",
+      "message": "Pasada tr-1794147605058-manual iniciada desde chat. Cola dinámica=4; toma relevo canónico de tr-1794147499437-manual y procesará preparing/update antiguo→reciente con validación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T15:19:00+01:00",
@@ -642,7 +651,7 @@
       }
     ]
   },
-  "message": "Pasada RUNNING: 0/3 cerrados; investigando #CCubicos441 r1.",
+  "message": "Pasada RUNNING: 0/4 cerrados; validando #CCubicos441.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
