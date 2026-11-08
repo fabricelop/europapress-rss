@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-08T14:50:20.161122+00:00",
+  "checked_at": "2026-11-08T15:03:04.782656+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,11 +40,13 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
-      "non_stale_sources": 1,
-      "verified_fresh_sources": [],
-      "live_verified": false,
+      "non_stale_sources": 3,
+      "verified_fresh_sources": [
+        "playersells"
+      ],
+      "live_verified": true,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -57,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.6,
-      "run_id": 42491379128,
+      "age_minutes": 3.9,
+      "run_id": 42492455036,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -80,9 +82,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 1,
+      "pending_count": 2,
       "overdue_count": 0,
-      "oldest_age_minutes": 3.7,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -92,7 +94,8 @@
       "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "3d36913a2caa"
+        "b9658d33a425",
+        "4a7655afa1f7"
       ],
       "contradictory_success": false
     },
@@ -104,10 +107,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 577 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 577 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 577 estado(s) inválido(s)"
 }
