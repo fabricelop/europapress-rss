@@ -156,7 +156,7 @@ function inCurrentApprovalScope(task,top30,listNews,now=Date.now()){
     !['waiting','needs_review'].includes(task?.status) ||
     !task?.secret_dpapi)return false;
  const created=Date.parse(task.created_at||'');
- if(!Number.isFinite(created)||created>now+60000||now-created>MAX_IMAGE_AGE_MS)return false;
+ if(!Number.isFinite(created)||created>now+60000)return false;
  if(task.project==='ttittulares'){
   return listNews instanceof Set && listNews.has(task.target_id);
  }
