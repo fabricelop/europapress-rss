@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794179931321-manual",
   "command_id": "tr-1794180300000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T00:27:00+01:00",
-  "updated_at": "2026-11-09T00:27:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T00:29:00+01:00",
+  "finished_at": "2026-11-09T00:29:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -46,26 +46,26 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial en ejecución",
+  "activity": "Pasada editorial completada",
   "last_started_at": "2026-11-09T00:18:17+01:00",
-  "last_completed_at": "2026-11-09T00:23:30+01:00",
+  "last_completed_at": "2026-11-09T00:29:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794179931321-manual",
+    "run_id": "tr-1794180300000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T00:20:00+01:00",
-    "finished_at": "2026-11-09T00:23:30+01:00",
+    "started_at": "2026-11-09T00:27:00+01:00",
+    "finished_at": "2026-11-09T00:29:00+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
-      "updates": 1,
+      "updates": 0,
       "continuity_updates": 0,
-      "distinct_updates": 1,
+      "distinct_updates": 0,
       "unchanged_reviews": 0,
-      "stale_reviews": 1,
+      "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -73,11 +73,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794180300000-manual cerrada 0/0 tras barrera final JIT en main: editorial-queue=0 y requests, telegram-manual-explained y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Se verificaron los últimos resultados de mantenimiento ya aplicados; no se resucitó trabajo terminal. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794180300000-manual iniciada. Cola JIT inicial=0. Se aplica barrera ID/revisión y cierre solo tras releer main. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794180300000-manual cerrada 0/0 tras barrera final JIT en main: editorial-queue=0 y requests, telegram-manual-explained y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Se verificaron los últimos resultados de mantenimiento ya aplicados; no se resucitó trabajo terminal. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -756,6 +756,13 @@
       "at": "2026-11-09T00:27:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794180300000-manual iniciada. Cola JIT inicial=0. Se aplica barrera ID/revisión y cierre solo tras releer main. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794180300000-manual",
+      "status": "DONE",
+      "at": "2026-11-09T00:29:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794180300000-manual cerrada 0/0 tras barrera final JIT en main: editorial-queue=0 y requests, telegram-manual-explained y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Se verificaron los últimos resultados de mantenimiento ya aplicados; no se resucitó trabajo terminal. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
