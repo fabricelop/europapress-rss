@@ -7,8 +7,9 @@ $base='C:\TTiTTulares'
 $file='TTImageApprovalReceiver.cjs'
 $live=Join-Path $base $file
 $pin='0ebc716790e10402fb8ca10b72bb74d982bda551'
-$expected='5726f9aa5c543e4bfffd6b5a2451db2215c8a0f71c52d4f8142de65d1c5b2d0f'
+$expected='7a393cf5cb760f7b4a3d1fe5b7d059757666494311fad5657fdb96b2d0a7b9c9'
 $accepted=@(
+ '7a393cf5cb760f7b4a3d1fe5b7d059757666494311fad5657fdb96b2d0a7b9c9',
  '5e4105171a9f27a42f619ce3fba7d912c2e5abf50a5fb7828e571491b2d9805a',
  '1dfdca82a23813c1e72a5468dc7e05a14c16b2373f4bd0a94aea27676ebc54e4',
  '340c1d28024d532310c51648794331a541bf93299e4db7a2365d6095b94129f1', # receptor físicamente verificado por el editor 07/11/2026
