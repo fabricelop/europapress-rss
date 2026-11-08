@@ -34,7 +34,7 @@ HEADERS = {
     "Pragma": "no-cache",
 }
 SOURCES = {
-    "trends24": "https://trends24.in/spain/index.html",
+    "trends24": "https://trends24.in/spain/",
     "getdaytrends": "https://getdaytrends.com/es/spain/",
     "tweets24": "https://tweets24.com/trending-on-twitter-in-spain",
     "superx": "https://superx.so/twitter-trends/spain",
@@ -367,6 +367,12 @@ def parse_generic_ranked(html):
 def sane_trend_list(trends):
     if len(trends) < 10:
         return False
+    # A wrong-region snapshot must not be accepted merely because its ranking
+    # looks syntactically valid. Thai-script contamination was observed in
+    # a feed incorrectly presented as Spain. This is a strong rejection
+    # signal, NOT a ban on foreign people/topics legitimately trending in ES.
+    if obviously_foreign_snapshot(trends):
+        return False
     bad = 0
     noise = re.compile(
         r"\b(?:hour|hours|minute|minutes)\s+ago\b|\bUTC\b|^Updated\b|^Last updated\b"
@@ -399,6 +405,11 @@ def fetch_source(name):
             "gosocialsuite": parse_gosocialsuite,
         }
         html = get(SOURCES[name])
+        if source_page_explicitly_foreign(html):
+            return {"ok": False, "trends": [], "update_hint": None,
+                    "error": "Cuarentena: la página declara otra región, no España",
+                    "age_minutes": None, "freshness": "invalid",
+                    "fetched_at": fetched_at.isoformat(timespec="seconds")}
         parser = parsers.get(name, parse_generic_ranked)
         trends = parser(html)
         hint = page_update_hint(html)
@@ -512,10 +523,46 @@ def reconcile_source_freshness(source_data, previous_doc, now):
             row["corroborating_sources"] = peers
 
 
+def source_page_explicitly_foreign(html):
+    """Reject an explicitly non-Spain country page (not foreign *topics*).
+
+    Only strong page-level evidence is decisive. The word 'Paraguay' in a
+    Spanish ranked trend is valid; generic links to other countries in the
+    footer are not region evidence. Unknown region remains unverified.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    for meta in soup.find_all("meta"):
+        key = str(meta.get("name") or meta.get("property") or "").strip().lower()
+        if key not in {"geo.country", "geo.region", "country"}:
+            continue
+        country = str(meta.get("content") or "").strip().casefold()
+        if country and country not in {"es", "es-es", "esp", "spain", "españa"}:
+            # Region meta can include subdivisions: ES-M, ES-AN, etc.
+            if not country.startswith("es-"):
+                return True
+    foreign = (
+        r"Thailand|United States|USA|United Kingdom|France|Germany|Mexico|"
+        r"Argentina|Brazil|India|Japan|Canada|Australia|Indonesia|"
+        r"Pakistan|Nigeria|Portugal|Italy|Poland"
+    )
+    for h1 in soup.find_all("h1"):
+        title = clean(h1.get_text(" ", strip=True))
+        if re.search(
+            rf"\b(?:Twitter|X)\b.{0,45}\b(?:trends?|trending|tendencias)\b"
+            rf".{0,25}\b(?:in|for|en|de)\s+(?:{foreign})\b",
+            title, flags=re.I,
+        ):
+            return True
+        if re.search(rf"^(?:{foreign})\s*[—–|:-]\s*(?:X|Twitter)\b",
+                     title, flags=re.I):
+            return True
+    return False
+
+
 def obviously_foreign_snapshot(names):
     # Two or more Thai-script names in a purported Spanish top 10 are an
     # unambiguous signal of the regional misconfiguration seen on Nov 7.
-    return sum(bool(re.search(r"[\u0E00-\u0E7F]", str(name))) for name in names[:10]) >= 2
+    return sum(bool(re.search(r"[\u0E00-\u0E7F]", str(name))) for name in names[:30]) >= 2
 
 
 def previous_top10():
