@@ -1,0 +1,42 @@
+name: TTendencias - GetDayTrends España ranking actual
+on:
+  push:
+    paths:
+      - "trends/update_trends.py"
+      - "tests/test_getdaytrends_spain_current.py"
+      - ".github/workflows/ttendencias-getdaytrends-spain-verify.yml"
+  pull_request:
+    paths:
+      - "trends/update_trends.py"
+      - "tests/test_getdaytrends_spain_current.py"
+      - ".github/workflows/ttendencias-getdaytrends-spain-verify.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip install --disable-pip-version-check --quiet requests beautifulsoup4
+      - name: Observe actual GetDayTrends Spain HTML (read only)
+        run: |
+          python - <<'PY'
+          import requests,bs4
+          from datetime import datetime,timezone
+          print("OBSERVED_AT_UTC",datetime.now(timezone.utc).isoformat())
+          for u in ("https://getdaytrends.com/es/spain/","https://getdaytrends.com/spain/"):
+              try:
+                  r=requests.get(u,headers={"User-Agent":"Mozilla/5.0","Accept-Language":"es-ES,es;q=0.9"},timeout=25)
+                  soup=bs4.BeautifulSoup(r.text,"html.parser")
+                  print("URL",u,"HTTP",r.status_code,"bytes",len(r.content))
+                  print("HEADINGS",[(h.name,h.get_text(" ",strip=True)[:100]) for h in soup.select("h1,h2,h3")[:12]])
+                  for i,t in enumerate(soup.select("table")[:12]):
+                      rows=t.select("tr")
+                      print("TABLE",i,"class",t.get("class"),"id",t.get("id"),"rows",len(rows),"first",[[c.get_text(" ",strip=True)[:50] for c in tr.select("td,th")[:3]] for tr in rows[:3]])
+                  print("CURRENT_PARSED",len(__import__("trends.update_trends",fromlist=["parse_getdaytrends"]).parse_getdaytrends(r.text)))
+              except Exception as e:print("FETCH_FAILED",type(e).__name__,str(e)[:160])
+          PY
+      - name: Unit regressions
+        run: python -m unittest discover -s tests -p test_getdaytrends_spain_current.py -v
