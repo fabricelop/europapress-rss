@@ -234,7 +234,7 @@ final class EditorialRelationsTests: XCTestCase {
             ["edge", "old", "undated"])
         XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
             candidates, name: "Trump", now: now, hidden: ["n0:r1"]).map(\.id),
-            ["n0", "n1", "n2", "n3", "n4"])
+            ["future", "n0", "n1", "n2", "n3"])
         XCTAssertEqual(EditorialRelationsPolicy.newsForTrend(
             [recent[0]], name: "Trump", now: now,
             hidden: [recent[0].stableIdentity]).count, 1)
