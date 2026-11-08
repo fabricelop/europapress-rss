@@ -494,6 +494,46 @@ def capture_is_safe(doc):
     method = str(doc.get("selection_method") or "")
     sources_used = list(doc.get("sources_used") or [])
     source_data = doc.get("sources") or {}
+    if method == "getdaytrends-spain-now":
+        # The editor selected the Spain/Ahora table for the Top 30. Its
+        # complete ordinal 1-30 is enough to START fact-checking, not to
+        # certify X's own live order or to approve/publish any content.
+        # GetDayTrends does not expose a trustworthy upstream timestamp.
+        # Require our actual Spain scrape to be recent AND a changing list:
+        # an old/held/cross-provider ranking must never trigger new work.
+        row = source_data.get("getdaytrends") or {}
+        observed_at = parse_timestamp(doc.get("captured_at"))
+        fetched_at = parse_timestamp(row.get("fetched_at"))
+        now = datetime.now(MADRID)
+        if (doc.get("country") != "ES"
+                or doc.get("primary_source") != "getdaytrends"
+                or doc.get("ranking_source_status") == "held"
+                or not row.get("ok")
+                or row.get("freshness") in {"stale", "invalid", "error"}
+                or not observed_at or not fetched_at):
+            return False
+        if not (0 <= (now - observed_at).total_seconds() <= 25 * 60
+                and 0 <= (now - fetched_at).total_seconds() <= 25 * 60):
+            return False
+        try:
+            unchanged = float(row["list_unchanged_minutes"])
+        except (KeyError, TypeError, ValueError):
+            return False
+        if not 0 <= unchanged <= 90:
+            return False
+        ranked = row.get("trends") or []
+        observed = (doc.get("items") or [])[:30]
+        if len(ranked) < 30 or len(observed) < 30:
+            return False
+        source_positions = {norm(name): i for i, name in enumerate(ranked)}
+        positions = []
+        for i, item in enumerate(observed, 1):
+            key = norm(item.get("name"))
+            if int(item.get("rank") or 0) != i or not key or key not in source_positions:
+                return False
+            positions.append(source_positions[key])
+        return len(set(positions)) == 30 and positions == sorted(positions)
+
     # A fetched HTML snapshot is not an observed X ranking. Production data
     # must include a timestamped, genuinely fresh (<=45m) source before
     # automatically creating or reopening editorial work. Empty synthetic
