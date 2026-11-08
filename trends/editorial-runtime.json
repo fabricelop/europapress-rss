@@ -7,42 +7,41 @@
   "previous_run_id": "tr-1794147499437-manual",
   "command_id": "tr-1794147605058-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T15:20:05.058+01:00",
-  "updated_at": "2026-11-08T15:24:30+01:00",
-  "finished_at": null,
-  "current": 4,
+  "updated_at": "2026-11-08T15:26:00+01:00",
+  "finished_at": "2026-11-08T15:26:00+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "red-review-6f470a75ff14308a70e0",
-  "title": "Revisar novedades: Broncano",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "3d36913a2caa",
-    "e7a443c3aa40"
-  ],
-  "converged_ids": [],
-  "remaining_ids": [
+    "e7a443c3aa40",
     "red-review-6f470a75ff14308a70e0",
     "red-review-1bde9d60f94ed2a61c23"
   ],
-  "remaining_active_ids": [
-    "red-review-6f470a75ff14308a70e0",
-    "red-review-1bde9d60f94ed2a61c23"
+  "converged_ids": [
+    "e2fd4ec01c09",
+    "8648b034950f"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 6,
     "observed": 6,
-    "closed": 4,
+    "closed": 6,
     "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,7 +49,62 @@
     "incidents": 0,
     "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "e2fd4ec01c09",
+      "revision": 1,
+      "name": "#CCubicos441",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf",
+      "via": "concurrent_predecessor"
+    },
+    {
+      "id": "8648b034950f",
+      "revision": 0,
+      "name": "Iván Martínez",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf",
+      "via": "concurrent_predecessor"
+    },
+    {
+      "id": "3d36913a2caa",
+      "revision": 0,
+      "name": "elche",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "169b11a6dcd8828f3698268e2b944f41e8ea6a34",
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "e7a443c3aa40",
+      "revision": 0,
+      "name": "Numancia",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "169b11a6dcd8828f3698268e2b944f41e8ea6a34",
+      "via": "concurrent_outbox_same_apply"
+    },
+    {
+      "id": "red-review-6f470a75ff14308a70e0",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
+      "via": "maintenance_outbox"
+    },
+    {
+      "id": "red-review-1bde9d60f94ed2a61c23",
+      "revision": 0,
+      "name": "Revisar novedades: Amaia",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
+      "via": "maintenance_outbox"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -626,24 +680,34 @@
       "trend_id": "red-review-6f470a75ff14308a70e0",
       "title": "Revisar novedades: Broncano",
       "message": "Barrera dinámica: entran 2 review_red (Broncano y Amaia). Broncano r0 validado JIT; se revisan novedades posteriores a la explicación vigente. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:25:43+01:00",
+      "phase": "verifying",
+      "message": "Mantenimiento aplicado en b59423b2f82fc9db12b714e6d41cb09c28ea7f7e: Broncano y Amaia cerrados unchanged; editorial-queue=0. Los cuatro explain previos constan aplicados en 232b0e266aae2b97edfd50922c939df4f1d038bf y 169b11a6dcd8828f3698268e2b944f41e8ea6a34."
+    },
+    {
+      "at": "2026-11-08T15:26:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain activos. Cierre 6/6: 4 explained y 2 unchanged. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T15:23:03+01:00",
-  "last_completed_at": "2026-11-08T15:24:30+01:00",
+  "last_completed_at": "2026-11-08T15:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794147499437-manual",
+    "run_id": "tr-1794147605058-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T15:19:00+01:00",
-    "finished_at": "2026-11-08T15:24:30+01:00",
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
+    "started_at": "2026-11-08T15:20:05.058+01:00",
+    "finished_at": "2026-11-08T15:26:00+01:00",
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
     "explained": 4,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -652,22 +716,24 @@
     "publications": 0,
     "incidents": 0,
     "processed_ids": [
-      "e2fd4ec01c09",
-      "8648b034950f",
       "3d36913a2caa",
-      "e7a443c3aa40"
+      "e7a443c3aa40",
+      "red-review-6f470a75ff14308a70e0",
+      "red-review-1bde9d60f94ed2a61c23"
     ],
     "converged_ids": [
-      "3d36913a2caa"
+      "e2fd4ec01c09",
+      "8648b034950f"
     ],
     "outcomes": [
       {
         "id": "e2fd4ec01c09",
         "revision": 1,
         "name": "#CCubicos441",
-        "outcome": "explained",
+        "outcome": "explained_cause_unconfirmed",
         "applied": true,
-        "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf"
+        "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf",
+        "via": "concurrent_predecessor"
       },
       {
         "id": "8648b034950f",
@@ -675,7 +741,8 @@
         "name": "Iván Martínez",
         "outcome": "explained",
         "applied": true,
-        "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf"
+        "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf",
+        "via": "concurrent_predecessor"
       },
       {
         "id": "3d36913a2caa",
@@ -684,7 +751,7 @@
         "outcome": "explained",
         "applied": true,
         "apply_commit": "169b11a6dcd8828f3698268e2b944f41e8ea6a34",
-        "via": "concurrent_newer_text_respected"
+        "via": "editorial_outbox"
       },
       {
         "id": "e7a443c3aa40",
@@ -692,13 +759,30 @@
         "name": "Numancia",
         "outcome": "explained",
         "applied": true,
-        "apply_commit": "169b11a6dcd8828f3698268e2b944f41e8ea6a34"
+        "apply_commit": "169b11a6dcd8828f3698268e2b944f41e8ea6a34",
+        "via": "concurrent_outbox_same_apply"
+      },
+      {
+        "id": "red-review-6f470a75ff14308a70e0",
+        "revision": 0,
+        "name": "Revisar novedades: Broncano",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
+        "via": "maintenance_outbox"
+      },
+      {
+        "id": "red-review-1bde9d60f94ed2a61c23",
+        "revision": 0,
+        "name": "Revisar novedades: Amaia",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
+        "via": "maintenance_outbox"
       }
-    ],
-    "superseded_by": "tr-1794147605058-manual",
-    "incident_details": []
+    ]
   },
-  "message": "Pasada RUNNING: 4/6 cerrados; revisando novedades de Broncano.",
+  "message": "Pasada DONE 6/6: 4 explicaciones aplicadas y 2 revisiones sin novedades; cola final 0, sin reexplicaciones pendientes. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
