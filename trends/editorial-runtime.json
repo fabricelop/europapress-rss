@@ -3,32 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794149205755-manual",
-  "previous_run_id": "tr-1794148669902-manual",
-  "command_id": "tr-1794149205755-manual",
+  "run_id": "tr-1794149458886-manual",
+  "previous_run_id": "tr-1794149205755-manual",
+  "command_id": "tr-1794149458886-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
-  "started_at": "2026-11-08T15:47:00+01:00",
-  "updated_at": "2026-11-08T15:47:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-08T15:51:50+01:00",
+  "updated_at": "2026-11-08T15:51:50+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
+  "total": 5,
   "trend_id": "3d36913a2caa",
   "title": "elche",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "3d36913a2caa"
+    "3d36913a2caa",
+    "3a82af74dabc",
+    "48ef49a80a85",
+    "16174b2e5cf2",
+    "0baf2af7e494"
   ],
   "remaining_active_ids": [
-    "3d36913a2caa"
+    "3d36913a2caa",
+    "3a82af74dabc",
+    "48ef49a80a85",
+    "16174b2e5cf2",
+    "0baf2af7e494"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
+    "attempted": 5,
+    "observed": 5,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -37,7 +45,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 5,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -733,9 +741,16 @@
       "trend_id": "3d36913a2caa",
       "title": "elche",
       "message": "Pasada tr-1794149205755-manual iniciada. Cola main=1: elche r2, reelaboración manual desde cero. La pista del editor indica que el partido no había acabado y Betis había marcado; se contrasta independientemente antes de persistir. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:51:50+01:00",
+      "phase": "preparing",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Pasada tr-1794149458886-manual RUNNING. Cola inicial=5 preparing: elche r2, Broncano r0, Extremoduro r0, Antony r0 y Nadal r0; antiguo→reciente con validación JIT antes de cada tratamiento. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T15:47:00+01:00",
+  "last_started_at": "2026-11-08T15:51:50+01:00",
   "last_completed_at": "2026-11-08T15:43:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -773,7 +788,7 @@
       }
     ]
   },
-  "message": "Pasada tr-1794149205755-manual RUNNING. elche r2 validación JIT e investigación nueva desde cero; la revisión r1 se descarta por información de partido incorrecta. Sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794149458886-manual RUNNING. Cola inicial=5 preparing: elche r2, Broncano r0, Extremoduro r0, Antony r0 y Nadal r0; antiguo→reciente con validación JIT antes de cada tratamiento. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
