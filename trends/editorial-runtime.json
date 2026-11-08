@@ -3,44 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794097720733-manual",
-  "previous_run_id": "tr-1794097500000-manual",
-  "command_id": "tr-1794097720733-manual",
+  "run_id": "tr-1794098400000-manual",
+  "previous_run_id": "tr-1794097720733-manual",
+  "command_id": "tr-1794098400000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T01:25:00+01:00",
-  "updated_at": "2026-11-08T01:32:13+01:00",
-  "finished_at": "2026-11-08T01:32:13+01:00",
-  "current": 7,
-  "total": 7,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T01:40:00+01:00",
+  "updated_at": "2026-11-08T01:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "755010cb7b21",
-    "0040b96611d3",
-    "fa26d3affd08",
-    "4c41c9b56c12",
-    "ad46f5c26451",
-    "red-review-cbb32c012470fa8f5174",
-    "red-review-4e0ba866c92399136630"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 6,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
-    "unverified_reviews": 1,
+    "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -49,51 +41,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "755010cb7b21",
-      "name": "José Mourinho",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "0040b96611d3",
-      "name": "Quirante",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "fa26d3affd08",
-      "name": "Hernández Maeso",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "4c41c9b56c12",
-      "name": "Vadillo",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "ad46f5c26451",
-      "name": "Huijsen",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "red-review-cbb32c012470fa8f5174",
-      "name": "Carvajal",
-      "revision": 0,
-      "outcome": "unverified"
-    },
-    {
-      "id": "red-review-4e0ba866c92399136630",
-      "name": "Rudiger",
-      "revision": 0,
-      "outcome": "distinct_episode",
-      "created_id": "trend-update-cd405c86697547704c92"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -337,6 +285,11 @@
       "at": "2026-11-08T01:32:13+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0 tras refresco de las 01:31:19; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Cierre 7/7: 5 explicaciones, 1 episodio distinto y 1 revisión no verificable. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T01:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794098400000-manual iniciada desde chat; lectura inicial de main con editorial-queue=0. Se ejecuta barrera JIT de cola compacta, reelaboraciones y trabajos especiales. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T01:25:00+01:00",
