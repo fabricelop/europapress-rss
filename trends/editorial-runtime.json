@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794096600000-manual",
   "command_id": "tr-1794097500000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "PROCESSING",
+  "phase": "investigating",
   "started_at": "2026-11-08T01:25:00+01:00",
-  "updated_at": "2026-11-08T01:28:09+01:00",
+  "updated_at": "2026-11-08T01:36:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 5,
-  "trend_id": "755010cb7b21",
-  "title": "José Mourinho",
-  "queue_complete": true,
+  "current": 5,
+  "total": 7,
+  "trend_id": "red-review-cbb32c012470fa8f5174",
+  "title": "Revisar novedades: Carvajal",
+  "queue_complete": false,
   "processed_ids": [
     "0040b96611d3",
     "4c41c9b56c12",
@@ -25,8 +25,14 @@
     "fa26d3affd08"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-cbb32c012470fa8f5174",
+    "red-review-4e0ba866c92399136630"
+  ],
+  "remaining_active_ids": [
+    "red-review-cbb32c012470fa8f5174",
+    "red-review-4e0ba866c92399136630"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -261,6 +267,11 @@
       "at": "2026-11-08T01:31:00+01:00",
       "phase": "persisting",
       "message": "Se materializan 5 editorial-outbox ready en un único commit. Texto+remate cerrados; ImageGen=0 y la imagen queda para el circuito visual paralelo."
+    },
+    {
+      "at": "2026-11-08T01:36:00+01:00",
+      "phase": "investigating",
+      "message": "Barrera posterior a los 5 cierres detecta 2 review_red nuevos: Carvajal y Rüdiger. Se incorporan a la misma pasada. Carvajal: no se verifica detonante material nuevo; Rüdiger: se contrasta la tangana del descanso en Mestalla como episodio posterior independiente."
     }
   ],
   "last_started_at": "2026-11-08T01:28:08+01:00",
