@@ -10,12 +10,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-08T15:51:50+01:00",
-  "updated_at": "2026-11-08T15:52:00+01:00",
+  "updated_at": "2026-11-08T15:53:00+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 9,
-  "trend_id": "3d36913a2caa",
-  "title": "elche",
+  "current": 2,
+  "total": 10,
+  "trend_id": "3a82af74dabc",
+  "title": "Broncano",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -35,7 +35,8 @@
     "6121d2770c7a",
     "e4423895dd54",
     "d7e94e63db2c",
-    "5921c5cfb37a"
+    "5921c5cfb37a",
+    "5b559b316c23"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -49,7 +50,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 9,
+    "queue_remaining": 10,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -773,6 +774,27 @@
       "trend_id": "3d36913a2caa",
       "title": "elche",
       "message": "Persistiendo elche r2 por TTENDENCIAS_CHAT_OUTBOX_V1 tras validación JIT."
+    },
+    {
+      "at": "2026-11-08T15:52:30+01:00",
+      "phase": "drafting",
+      "trend_id": "3a82af74dabc",
+      "title": "Broncano",
+      "message": "Broncano r0 JIT validado. RTVE confirma la entrevista a Santiago Abascal el 9/11 y EL PAÍS confirma que se anuló la asistencia del público previsto."
+    },
+    {
+      "at": "2026-11-08T15:52:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "3a82af74dabc",
+      "title": "Broncano",
+      "message": "Texto factual y remate nuevo seleccionados; se evita afirmar que el plató estará completamente sin público."
+    },
+    {
+      "at": "2026-11-08T15:53:00+01:00",
+      "phase": "persisting",
+      "trend_id": "3a82af74dabc",
+      "title": "Broncano",
+      "message": "Persistiendo Broncano r0 por CHAT_OUTBOX. ImageGen=0."
     }
   ],
   "last_started_at": "2026-11-08T15:51:50+01:00",
