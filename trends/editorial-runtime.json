@@ -7,31 +7,33 @@
   "previous_run_id": "tr-1794172200000-manual",
   "command_id": "tr-1794172605662-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-08T22:17:40+01:00",
-  "updated_at": "2026-11-08T22:20:30+01:00",
+  "updated_at": "2026-11-08T22:20:54+01:00",
   "finished_at": null,
   "current": 0,
   "total": 5,
   "trend_id": "8566c8fefa8d",
   "title": "Pablo Durán",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "8566c8fefa8d"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "8566c8fefa8d",
     "555bb13d46aa",
     "34c59fd12412",
     "ae3da9f12e3b",
-    "f9c4dfa3b7d6"
+    "f9c4dfa3b7d6",
+    "c254c019cd08"
   ],
   "remaining_active_ids": [
-    "8566c8fefa8d",
     "555bb13d46aa",
     "34c59fd12412",
     "ae3da9f12e3b",
-    "f9c4dfa3b7d6"
+    "f9c4dfa3b7d6",
+    "c254c019cd08"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -907,7 +909,7 @@
       "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsquedas en repo sin trabajo editorial activo. Cierre 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T22:17:40+01:00",
+  "last_started_at": "2026-11-08T22:20:54+01:00",
   "last_completed_at": "2026-11-08T21:53:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
