@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794172200000-manual",
   "command_id": "tr-1794172605662-manual",
   "source": "chat",
-  "status": "waiting",
+  "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-08T22:17:40+01:00",
-  "updated_at": "2026-11-08T22:20:54+01:00",
+  "updated_at": "2026-11-08T22:22:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 5,
-  "trend_id": "8566c8fefa8d",
-  "title": "Pablo Durán",
+  "current": 1,
+  "total": 6,
+  "trend_id": "555bb13d46aa",
+  "title": "Verstappen",
   "queue_complete": false,
   "processed_ids": [
     "8566c8fefa8d"
@@ -940,7 +940,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794171031168-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y las relecturas de requests, mobile-decisions y telegram-manual-explained no muestran preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. La pasada anterior tr-1794170750315-manual terminó 2/2 durante esta ventana y dejó su trabajo aplicado en main. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pablo Durán investigado y resultado listo para aplicación; esperando verificación del aplicador.",
+  "message": "Pablo Durán aplicado; Verstappen investigado y enviado al aplicador tras revalidación JIT. Se incorporó Bernal como sexto trabajo durante la pasada.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -1124,6 +1124,13 @@
       "trend_id": "8566c8fefa8d",
       "title": "Pablo Durán",
       "message": "Pablo Durán investigado y resultado listo para aplicación; esperando verificación del aplicador."
+    },
+    {
+      "at": "2026-11-08T22:22:00+01:00",
+      "phase": "persisting",
+      "trend_id": "555bb13d46aa",
+      "title": "Verstappen",
+      "message": "Pablo Durán aplicado; Verstappen investigado y enviado al aplicador tras revalidación JIT. Se incorporó Bernal como sexto trabajo durante la pasada."
     }
   ]
 }
