@@ -3,33 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794170400000-manual",
-  "previous_run_id": "tr-1794167484200-manual",
-  "command_id": "tr-1794170400000-manual",
+  "run_id": "tr-1794171300000-manual",
+  "previous_run_id": "tr-1794170400000-manual",
+  "command_id": "tr-1794171300000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-08T21:40:00+01:00",
-  "updated_at": "2026-11-08T21:45:11+01:00",
-  "finished_at": "2026-11-08T21:50:00+01:00",
-  "current": 7,
-  "total": 7,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T21:55:00+01:00",
+  "updated_at": "2026-11-08T21:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "ba6cfc447a32",
-    "555e7cb8732e"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 7,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -43,67 +40,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "a710157b5414",
-      "revision": 0,
-      "name": "#FueraDeControl8nov",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox_or_convergence"
-    },
-    {
-      "id": "714f8f0e1ea6",
-      "revision": 0,
-      "name": "Otero",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox_or_convergence"
-    },
-    {
-      "id": "988b4ce8dc58",
-      "revision": 0,
-      "name": "#Fiesta8N",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox_retry",
-      "workflow_run": 42521643048
-    },
-    {
-      "id": "2393cedbe478",
-      "revision": 0,
-      "name": "Hadjar",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox_or_convergence"
-    },
-    {
-      "id": "c3887f1b1ecc",
-      "revision": 0,
-      "name": "Old Trafford",
-      "outcome": "explained",
-      "applied": true,
-      "via": "chat_outbox_or_convergence"
-    },
-    {
-      "id": "ba6cfc447a32",
-      "revision": 0,
-      "name": "Albon",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "555e7cb8732e",
-      "revision": 0,
-      "name": "El Molinón",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -934,6 +873,11 @@
       "at": "2026-11-08T21:50:00+01:00",
       "phase": "closing",
       "message": "Cierre 7/7: siete revisiones ordinarias fuera de la cola autoritativa, sin reexplicaciones observadas, ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T21:55:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794171300000-manual iniciada desde chat. Lectura autoritativa de main: editorial-queue=0; se ejecuta barrera JIT de requests, telegram-manual-explained, mobile-decisions y trabajos especiales. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T21:50:31+01:00",
