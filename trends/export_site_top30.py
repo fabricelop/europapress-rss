@@ -315,10 +315,23 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
         "generated_at": now.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"),
         "radar_captured_at": text(recent, "captured_at"),
         "radar_country": text(recent, "country"),
+        # Explicit source provenance shared by the web Site feed and iOS radar.
+        # The hourly update cadence is the provider's, not a promise that
+        # X's authenticated trend positions match at that exact moment.
+        "ranking_provider": text(recent, "ranking_provider"),
+        "ranking_source_url": text(recent, "rank_source_url"),
+        "ranking_source_status": text(recent, "ranking_source_status"),
+        "ranking_source_observed_at": text(recent, "ranking_source_observed_at"),
+        "ranking_provider_update_interval_minutes": recent.get("ranking_provider_update_interval_minutes"),
         "radar_live_verified": live_verified,
         "radar_fresh_sources": fresh_sources,
         "ranking_verification": "freshness-confirmed" if live_verified else "unverified",
-        "ranking_warning": "" if live_verified else (
+        "ranking_warning": (
+            "GetDayTrends España no ha entregado otra lista completa; se conserva la última válida."
+            if text(recent, "ranking_source_status") == "held" else
+            "" if live_verified else
+            "GetDayTrends España · Ahora: ranking de proveedor, no validación directa de X."
+            if text(recent, "ranking_provider") == "GetDayTrends España" else
             "Top 30 orientativo: sin observación fechada y corroborada de X España."
         ),
         "count": len(output),
