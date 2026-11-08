@@ -3,54 +3,45 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794140385588-manual",
-  "previous_run_id": "tr-1794120749061-manual",
-  "command_id": "tr-1794140385588-manual",
+  "run_id": "tr-1794143640000-manual",
+  "previous_run_id": "tr-1794140385588-manual",
+  "command_id": "tr-1794143640000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-08T14:04:00+01:00",
-  "updated_at": "2026-11-08T14:12:00+01:00",
-  "finished_at": "2026-11-08T14:12:00+01:00",
-  "current": 11,
-  "total": 11,
+  "status": "running",
+  "phase": "preparing",
+  "started_at": "2026-11-08T14:14:00+01:00",
+  "updated_at": "2026-11-08T14:14:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "e2fd4ec01c09",
-    "2dfcf6049e63",
-    "af5a918453c9",
-    "9a3f0bfdde9a",
-    "ba0c2459fd8c",
-    "1943c4a59cd3",
-    "85294e93c44d",
-    "red-review-b39c1bcdb7c287e6270f",
-    "red-review-c46c495a527e6a9cd814",
-    "red-review-01e99eea7c76b642ba9a",
-    "red-review-44817baa9d50617f9187"
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "b8319f5f818f",
+    "e986c2c85214",
+    "e4fb8818600e"
   ],
-  "converged_ids": [
-    "red-review-b39c1bcdb7c287e6270f",
-    "red-review-c46c495a527e6a9cd814",
-    "red-review-01e99eea7c76b642ba9a",
-    "red-review-44817baa9d50617f9187"
+  "remaining_active_ids": [
+    "b8319f5f818f",
+    "e986c2c85214",
+    "e4fb8818600e"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 11,
-    "observed": 11,
-    "closed": 11,
-    "explained": 7,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 2,
-    "unverified_reviews": 1,
-    "queue_remaining": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "unverified_reviews": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -58,96 +49,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "e2fd4ec01c09",
-      "revision": 0,
-      "name": "#CCubicos441",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5526a2bf32fb73d6b0f71198c6905ae5a850d940"
-    },
-    {
-      "id": "2dfcf6049e63",
-      "revision": 0,
-      "name": "#NoVotesOdio",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5526a2bf32fb73d6b0f71198c6905ae5a850d940"
-    },
-    {
-      "id": "af5a918453c9",
-      "revision": 0,
-      "name": "núcleo nacional",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5526a2bf32fb73d6b0f71198c6905ae5a850d940"
-    },
-    {
-      "id": "9a3f0bfdde9a",
-      "revision": 0,
-      "name": "Reyes y Feijóo",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5526a2bf32fb73d6b0f71198c6905ae5a850d940"
-    },
-    {
-      "id": "ba0c2459fd8c",
-      "revision": 0,
-      "name": "Bruna",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5526a2bf32fb73d6b0f71198c6905ae5a850d940"
-    },
-    {
-      "id": "1943c4a59cd3",
-      "revision": 0,
-      "name": "Robe",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5526a2bf32fb73d6b0f71198c6905ae5a850d940"
-    },
-    {
-      "id": "85294e93c44d",
-      "revision": 0,
-      "name": "Extremoduro",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5526a2bf32fb73d6b0f71198c6905ae5a850d940"
-    },
-    {
-      "id": "red-review-b39c1bcdb7c287e6270f",
-      "revision": 0,
-      "name": "Revisar novedades: #UFCHBOMax",
-      "outcome": "distinct_update",
-      "applied": true,
-      "apply_commit": "4491fcad034094bcdee92cdf3b01841de8a4c5da"
-    },
-    {
-      "id": "red-review-c46c495a527e6a9cd814",
-      "revision": 0,
-      "name": "Revisar novedades: Broncano",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "4491fcad034094bcdee92cdf3b01841de8a4c5da"
-    },
-    {
-      "id": "red-review-01e99eea7c76b642ba9a",
-      "revision": 0,
-      "name": "Revisar novedades: Carvajal",
-      "outcome": "unverified",
-      "applied": true,
-      "apply_commit": "0ea6cf49dc65bdf5e8c5555b09db26db5fc5cfb5"
-    },
-    {
-      "id": "red-review-44817baa9d50617f9187",
-      "revision": 0,
-      "name": "Revisar novedades: Amaia",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "0ea6cf49dc65bdf5e8c5555b09db26db5fc5cfb5"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -665,9 +567,14 @@
       "at": "2026-11-08T14:12:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT tras refresco de las 14:11:21: editorial-queue=0; requests y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 11/11: 7 explicaciones, 1 episodio distinto, 2 unchanged y 1 unverified. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T14:14:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794143640000-manual iniciada desde chat tras barrera dinámica: 3 reelaboraciones manuales (#SorteoCOAC2027, Nadal y Carvajal), antiguo→reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T14:09:00+01:00",
+  "last_started_at": "2026-11-08T14:14:00+01:00",
   "last_completed_at": "2026-11-08T14:12:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -793,5 +700,5 @@
       }
     ]
   },
-  "message": "Pasada tr-1794140385588-manual cerrada 11/11. Cola final main=0 y reexplicaciones pendientes=0. Sin ImageGen ni publicaciones."
+  "message": "Pasada tr-1794143640000-manual en ejecución: 0/3; sin ImageGen."
 }
