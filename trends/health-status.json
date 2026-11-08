@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-08T22:47:33.467415+00:00",
+  "checked_at": "2026-11-08T23:08:02.569359+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 2,
+      "non_stale_sources": 3,
       "verified_fresh_sources": [],
       "live_verified": false,
       "captured_age_minutes": 0.2,
@@ -57,8 +57,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.5,
-      "run_id": 42531494611,
+      "age_minutes": 4.2,
+      "run_id": 42533292261,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -70,7 +70,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 593,
+      "invalid_count": 595,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -80,9 +80,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 6,
+      "pending_count": 1,
       "overdue_count": 0,
-      "oldest_age_minutes": 2.7,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -92,12 +92,7 @@
       "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "9e1649b8ed38",
-        "113f2f9ba728",
-        "458f869fdc14",
-        "e714e4de2209",
-        "c5fb8b304b6e",
-        "312f7bce521d"
+        "a6852f36db22"
       ],
       "contradictory_success": false
     },
@@ -110,9 +105,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 593 estado(s) inválido(s)"
+    "cola con 595 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 593 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 595 estado(s) inválido(s)"
 }
