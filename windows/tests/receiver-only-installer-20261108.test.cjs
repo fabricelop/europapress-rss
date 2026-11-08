@@ -23,8 +23,8 @@ test("installer downloads exactly the audited receiver revision, verifies bytes,
 });
 test("target receiver remains scope based with a bounded number of new Chrome tabs",()=>{
   assert.doesNotMatch(receiver,/const NEWS_CUTOFF=/);
-  assert.match(receiver,/current_top30_and_ready_listas_without_date_cutoff/);
-  assert.match(receiver,/skippedByPerCycleLimit:0/);
+  assert.match(receiver,/listas_and_current_or_at_creation_top30_images_max_48h/);
+  assert.match(receiver,/MAX_ORIGINAL_CHECKS_PER_CYCLE=16/);
   assert.match(receiver,/MAX_NEW_RELAY_TABS_PER_CYCLE=1/);
   assert.match(receiver,/RELAY_CLEANUP_UNCONFIRMED/);
 });
