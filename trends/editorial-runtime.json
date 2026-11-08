@@ -603,6 +603,11 @@
       "at": "2026-11-08T14:17:30+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos. #SorteoCOAC2027, Nadal y Carvajal aplicados como explained; se retiró un outbox tardío de Nadal ya aplicado para evitar duplicación. Cierre 3/3. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T14:18:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794143373869-manual satisfecha por convergencia JIT: 5/5 observados cerrados (Carvajal review=unverified, Amaia review=unchanged; #SorteoCOAC2027, Nadal y Carvajal reelaborados=explained). La ejecución sucesora tr-1794143640000-manual conserva la telemetría canónica. Barrera final main=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-08T14:16:47+01:00",
