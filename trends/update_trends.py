@@ -1104,6 +1104,13 @@ def main():
     reconcile_source_freshness(source_data, previous_doc, now)
 
     top10, sources_used, chosen_name, method = choose_top10(source_data)
+    # The editor chose GetDayTrends Spain "Ahora" as the preferred
+    # source for the displayed Top30. Never blend the missing positions
+    # with another provider's rankings or with 24-hour hashtag scores.
+    direct_spain = getdaytrends_current_ranked(source_data)
+    if direct_spain:
+        top10, sources_used = direct_spain[:10], ["getdaytrends"]
+        chosen_name, method = "getdaytrends", "getdaytrends-spain-now"
     if len(top10) < 10:
         raise RuntimeError("No se pudo obtener un Top 10 fiable de las fuentes disponibles")
     # A user-suppressed trend is not an editorial candidate, even if it is
@@ -1160,7 +1167,7 @@ def main():
                 seen_top30.add(key)
     # Mantener la fuente elegida como referencia para las posiciones,
     # sin presentar las señales de otras fuentes como posiciones verificadas.
-    primary_ranked = (source_data.get(chosen_name) or {}).get("trends") or []
+    primary_ranked = direct_spain or (source_data.get(chosen_name) or {}).get("trends") or []
     # In hold-last-good the anchor name is "previous": there is no provider
     # called "previous". Preserve the real 1-10 ranking and complete 11-30
     # from an actual source that currently repeats at least 6 of those ten
@@ -1287,9 +1294,13 @@ def main():
             min(float(source_data[name]["age_minutes"]) for name in fresh)
             if fresh else None
         ),
-        "freshness_note": ("Captura actual con fuentes recientes verificadas"
-                           if live_verified else
-                           "Top 30 orientativo: no se ha verificado ningún ranking reciente de X"),
+        "freshness_note": (
+            "GetDayTrends España · Ahora: orden directo 1-30; origen X sin verificación independiente"
+            if method == "getdaytrends-spain-now" else
+            "Captura actual con fuentes recientes verificadas"
+            if live_verified else
+            "Top 30 orientativo: no se ha verificado ningún ranking reciente de X"
+        ),
         "reliability": reliability,
         "top10": top10,
         "top30": top30,
