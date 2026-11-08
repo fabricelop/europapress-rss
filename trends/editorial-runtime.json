@@ -7,47 +7,64 @@
   "previous_run_id": "tr-1794120538462-manual",
   "command_id": "tr-1794120749061-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T07:53:00+01:00",
-  "updated_at": "2026-11-08T07:53:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-08T07:55:30+01:00",
+  "finished_at": "2026-11-08T07:55:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-75339fd167356c788f2d",
-  "title": "Revisar novedades: Leo Román",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
     "red-review-75339fd167356c788f2d",
     "red-review-82c90fc3544822598817"
   ],
-  "remaining_active_ids": [
-    "red-review-75339fd167356c788f2d",
-    "red-review-82c90fc3544822598817"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-75339fd167356c788f2d",
+      "revision": 0,
+      "name": "Revisar novedades: Leo Román",
+      "outcome": "distinct_update",
+      "applied": true,
+      "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae",
+      "new_id": "trend-update-5f94b8b39a1caaa943ee",
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "red-review-82c90fc3544822598817",
+      "revision": 0,
+      "name": "Revisar novedades: Fiscalía Europea",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae",
+      "via": "concurrent_convergence"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -530,20 +547,30 @@
       "at": "2026-11-08T07:55:10+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794120538462-manual cerrada 5/5. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. La telemetría canónica ya fue tomada por la sucesora tr-1794120749061-manual; se conserva su RUNNING y se registra esta pasada como last_run completada."
+    },
+    {
+      "at": "2026-11-08T07:55:20+01:00",
+      "phase": "verifying",
+      "message": "Pasada tr-1794120749061-manual: convergencia JIT verificada en de25bd43274051bba94b3630e82ae0857cc208ae. Leo Román quedó como episodio distinto trend-update-5f94b8b39a1caaa943ee; Fiscalía Europea quedó unchanged. El commit aplicó resultados y retiró ambos review_red de la cola. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T07:55:30+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos. Cierre 2/2 por convergencia. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T07:51:50+01:00",
-  "last_completed_at": "2026-11-08T07:55:10+01:00",
+  "last_started_at": "2026-11-08T07:53:00+01:00",
+  "last_completed_at": "2026-11-08T07:55:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794120538462-manual",
+    "run_id": "tr-1794120749061-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T07:49:00+01:00",
-    "finished_at": "2026-11-08T07:55:10+01:00",
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 3,
+    "started_at": "2026-11-08T07:53:00+01:00",
+    "finished_at": "2026-11-08T07:55:30+01:00",
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "updates": 1,
     "distinct_updates": 1,
     "unchanged_reviews": 1,
@@ -553,38 +580,12 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "processed_ids": [
-      "e2b9766d0f1a",
-      "1d931d3e44fe",
-      "a18902b32c40",
+    "concurrent_convergence": 2,
+    "converged_ids": [
       "red-review-75339fd167356c788f2d",
       "red-review-82c90fc3544822598817"
     ],
     "outcomes": [
-      {
-        "id": "e2b9766d0f1a",
-        "revision": 0,
-        "name": "Vinicius",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "fe299443fb1ddc2321b293f8abff919c890d6c59"
-      },
-      {
-        "id": "1d931d3e44fe",
-        "revision": 0,
-        "name": "Santiago Peña",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "fe299443fb1ddc2321b293f8abff919c890d6c59"
-      },
-      {
-        "id": "a18902b32c40",
-        "revision": 0,
-        "name": "Mourinho",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "fe299443fb1ddc2321b293f8abff919c890d6c59"
-      },
       {
         "id": "red-review-75339fd167356c788f2d",
         "revision": 0,
@@ -592,7 +593,8 @@
         "outcome": "distinct_update",
         "applied": true,
         "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae",
-        "new_id": "trend-update-5f94b8b39a1caaa943ee"
+        "new_id": "trend-update-5f94b8b39a1caaa943ee",
+        "via": "concurrent_convergence"
       },
       {
         "id": "red-review-82c90fc3544822598817",
@@ -600,9 +602,10 @@
         "name": "Revisar novedades: Fiscalía Europea",
         "outcome": "unchanged",
         "applied": true,
-        "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae"
+        "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae",
+        "via": "concurrent_convergence"
       }
     ]
   },
-  "message": "Pasada en curso: 0/2; revalidando cola y revisiones. Sin ImageGen ni publicaciones."
+  "message": "Pasada tr-1794120749061-manual cerrada 2/2 por convergencia JIT: Leo Román como episodio distinto y Fiscalía Europea unchanged. Barrera final main sin trabajos editoriales activos. Sin ImageGen ni publicaciones."
 }
