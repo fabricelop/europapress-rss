@@ -548,8 +548,8 @@ def source_page_explicitly_foreign(html):
     for h1 in soup.find_all("h1"):
         title = clean(h1.get_text(" ", strip=True))
         if re.search(
-            rf"\b(?:Twitter|X)\b.{0,45}\b(?:trends?|trending|tendencias)\b"
-            rf".{0,25}\b(?:in|for|en|de)\s+(?:{foreign})\b",
+            rf"\b(?:Twitter|X)\b.{{0,45}}\b(?:trends?|trending|tendencias)\b"
+            rf".{{0,25}}\b(?:in|for|en|de)\s+(?:{foreign})\b",
             title, flags=re.I,
         ):
             return True
