@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-08T08:04:18.337812+00:00",
+  "checked_at": "2026-11-08T13:45:13.472948+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,10 +42,10 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 2,
       "verified_fresh_sources": [],
       "live_verified": false,
-      "captured_age_minutes": 0.1,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -57,8 +57,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.6,
-      "run_id": 42461004792,
+      "age_minutes": 3.9,
+      "run_id": 42486133985,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -70,7 +70,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 557,
+      "invalid_count": 573,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -79,35 +79,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 2,
-      "overdue_count": 2,
-      "oldest_age_minutes": 35.9,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-98b5e92d7311bb4dc401",
-          "name": "Revisar novedades: Paraguay",
-          "status": "preparing",
-          "age_minutes": 35.9
-        },
-        {
-          "id": "red-review-c7e476f68780c4ca2a4b",
-          "name": "Revisar novedades: Santiago Peña",
-          "status": "preparing",
-          "age_minutes": 35.9
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "red-review-98b5e92d7311bb4dc401",
-        "red-review-c7e476f68780c4ca2a4b"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -119,10 +103,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 557 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 35.9 min"
+    "cola con 573 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 557 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 35.9 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 573 estado(s) inválido(s)"
 }
