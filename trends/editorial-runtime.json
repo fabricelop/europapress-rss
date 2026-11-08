@@ -7,11 +7,11 @@
   "previous_run_id": "tr-1794105151194-manual",
   "command_id": "tr-1794105600000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T03:40:00+01:00",
-  "updated_at": "2026-11-08T03:45:21+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-08T03:46:00+01:00",
+  "finished_at": "2026-11-08T03:46:00+01:00",
   "current": 4,
   "total": 4,
   "trend_id": null,
@@ -20,8 +20,8 @@
   "processed_ids": [
     "05392fc6b8fb",
     "522f1f4ba5fb",
-    "9986911fa8ce",
-    "c2fe552a4ceb"
+    "c2fe552a4ceb",
+    "9986911fa8ce"
   ],
   "converged_ids": [],
   "remaining_ids": [],
@@ -30,15 +30,15 @@
   "summary": {
     "attempted": 4,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -46,7 +46,40 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "05392fc6b8fb",
+      "revision": 0,
+      "name": "Manresa",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "336776376689f850b13b3f3200be845e856a01b2"
+    },
+    {
+      "id": "522f1f4ba5fb",
+      "revision": 0,
+      "name": "Butarque",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "336776376689f850b13b3f3200be845e856a01b2"
+    },
+    {
+      "id": "c2fe552a4ceb",
+      "revision": 0,
+      "name": "Laporte",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "336776376689f850b13b3f3200be845e856a01b2"
+    },
+    {
+      "id": "9986911fa8ce",
+      "revision": 0,
+      "name": "Manchester City",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "336776376689f850b13b3f3200be845e856a01b2"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -473,18 +506,28 @@
       "at": "2026-11-08T03:45:00+01:00",
       "phase": "persisting",
       "message": "Se materializan cuatro editorial-outbox ready. El cierre textual no espera imágenes; ImageGen=0 y publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T03:45:21+01:00",
+      "phase": "verifying",
+      "message": "Aplicación real verificada en commit 336776376689f850b13b3f3200be845e856a01b2: los cuatro outbox fueron consumidos, requests.json y telegram-manual-explained.json modificados, y editorial-queue quedó en 0."
+    },
+    {
+      "at": "2026-11-08T03:46:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos. Cierre 4/4. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T03:45:21+01:00",
-  "last_completed_at": "2026-11-08T03:45:21+01:00",
+  "last_completed_at": "2026-11-08T03:46:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794104700000-manual",
+    "run_id": "tr-1794105600000-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T03:25:00+01:00",
-    "finished_at": "2026-11-08T03:26:42.758+01:00",
-    "attempted": 0,
-    "closed": 0,
+    "started_at": "2026-11-08T03:40:00+01:00",
+    "finished_at": "2026-11-08T03:46:00+01:00",
+    "attempted": 4,
+    "closed": 4,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
