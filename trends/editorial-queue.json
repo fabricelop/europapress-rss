@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T10:11:14+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-08T09:11:50.011028+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-2f0ad10afdc1ba569580",
+      "revision": 0,
+      "name": "Revisar novedades: #UFCHBOMax",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-11-08T09:11:50.011028+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "e7a34c909e2e",
+        "revision": 0,
+        "name": "#UFCHBOMax",
+        "rank": 8,
+        "explanation": "TT#8 #UFCHBOMax es tendencia por la retransmisión en HBO Max de UFC Fight Night en Las Vegas: Tom Nolan derrotó a Renato Moicano por TKO en el 3.º asalto el 31 de octubre.\n#UFCVegas123\n🌶️ Nolan dejó el truco para Halloween y se quedó con el TKO.",
+        "explanation_sha256": "72d26e149fbf743f9e01a9a69ecb59b9652b75f454815a9becb22726196caf45",
+        "explained_at": "2026-11-01T12:19:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://press-spain.max.com/post/destacados-de-hbo-max-deportes-del-28-de-octubre-al-4-de-noviemb"
+          },
+          {
+            "url": "https://www.ufc.com/news/ufc-fight-night-moicano-vs-nolan-official-scorecards"
+          },
+          {
+            "url": "https://xtrends.iamrohit.in/spain"
+          }
+        ],
+        "fingerprint": "21269aea75c3a63649a197d8aa20e4da7a61fcc09a48d4a585b5aa1deff388c8"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-6735657c405dba387b5e",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-08T09:11:50.011028+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "50d1a6619b2a",
+        "revision": 0,
+        "name": "Broncano",
+        "rank": 18,
+        "explanation": "TT#7 Broncano sigue siendo tendencia por la entrevista a Santiago Abascal del lunes 9: el público previsto recibió la cancelación de asistencia y RTVE no aclaró el motivo.\n#LaRevuelta #SantiagoAbascal\n🌶️ El sofá tendrá candidato, pero la grada queda en interrogante.",
+        "explanation_sha256": "6516cb115bd5e0c98a50a12c699722ec39ef08cdb8b0864346dd8c41f948bbad",
+        "explained_at": "2026-11-07T00:53:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/play/videos/la-revuelta/broncano-confirma-santiago-abascal-como-invitado/17302195/"
+          },
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/05/santiago-abascal-asistira-a-la-revuelta-de-tve-el-lunes-9-de-noviembre-y-afronta-la-entrevista-como-un-ahora-o-nunca-cadena-ser/"
+          }
+        ],
+        "fingerprint": "04d1c315b76e9d03b216c5ba5219009429b0de5d8efd5e06bba7aa38df8b35d4"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
