@@ -8,9 +8,9 @@
   "command_id": "tr-autoguard-1794179692",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-09T00:15:00+01:00",
-  "updated_at": "2026-11-09T00:16:30+01:00",
+  "updated_at": "2026-11-09T00:18:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -50,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando Jong",
+  "activity": "Aplicando Jong r0",
   "last_started_at": "2026-11-09T00:15:00+01:00",
   "last_completed_at": "2026-11-08T23:58:00+01:00",
   "api_failover_enabled": false,
@@ -659,6 +659,13 @@
       "trend_id": "a6852f36db22",
       "title": "Jong",
       "message": "Jong r0 revalidado JIT. Fuentes actuales sitúan a Frenkie de Jong en el Atlético-Barça: entró al descanso por Brian Fariñas con 1-1 y el Barça ganó 1-2. Se contrasta el detonante antes de redactar."
+    },
+    {
+      "at": "2026-11-09T00:18:30+01:00",
+      "phase": "persisting",
+      "trend_id": "a6852f36db22",
+      "title": "Jong",
+      "message": "Resultado de Jong r0 persistido en editorial-outbox tras revalidación JIT. Aplicador oficial disparado por push; se verifica materialización en requests y telegram-manual-explained. ImageGen=0."
     }
   ],
   "current_item": {
