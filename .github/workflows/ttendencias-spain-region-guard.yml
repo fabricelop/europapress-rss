@@ -1,0 +1,27 @@
+name: TTendencias - origen España y regresión geográfica
+on:
+  pull_request:
+    paths:
+      - 'trends/update_trends.py'
+      - 'tests/test_trends_spain_region_guard.py'
+      - '.github/workflows/ttendencias-spain-region-guard.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  geo-evidence-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Rechazar fuentes de otra región sin vetar temas extranjeros legítimos
+        run: python3 -m unittest discover -s tests -p 'test_trends_spain_region_guard.py' -v
+      - name: Verificar invariantes existentes del radar
+        run: |
+          python3 .github/scripts/test_ttendencias_anchor_freshness.py
+          python3 .github/scripts/test_ttendencias_radar_source_diversity.py
