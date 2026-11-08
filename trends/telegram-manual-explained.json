@@ -87914,14 +87914,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "editorial_grouping_state": "pending",
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/2THD6GECLZIK7PMCIVDYDL2TA4.jpg?auth=20577d84030ab4876a83a993a8d1f88c51749df444a14e989963b62bcabbc792&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/deportes/futbol/2026-11-08/el-betis-tira-de-plantilla-y-acaba-con-un-elche-fundido.html",
+        "alt": "Imagen de archivo relacionada con Ruibal",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/2THD6GECLZIK7PMCIVDYDL2TA4.jpg?auth=20577d84030ab4876a83a993a8d1f88c51749df444a14e989963b62bcabbc792&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/deportes/futbol/2026-11-08/el-betis-tira-de-plantilla-y-acaba-con-un-elche-fundido.html",
+        "alt": "Imagen de archivo relacionada con Ruibal",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "trend-update-a79b9ee04dbb9b45034a",
@@ -87959,6 +87974,6 @@
       "ai_image_status": "pending"
     }
   ],
-  "updated_at": "2026-11-08T19:56:39.998508Z",
+  "updated_at": "2026-11-08T20:00:45.709335Z",
   "count": 1479
 }
