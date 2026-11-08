@@ -936,18 +936,18 @@
       "message": "Cierre 7/7: siete revisiones ordinarias fuera de la cola autoritativa, sin reexplicaciones observadas, ImageGen=0 y publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T21:45:10+01:00",
+  "last_started_at": "2026-11-08T21:48:30+01:00",
   "last_completed_at": "2026-11-08T21:45:11+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794170400000-manual",
-    "status": "DONE",
-    "started_at": "2026-11-08T21:40:00+01:00",
-    "finished_at": "2026-11-08T21:50:00+01:00",
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 7,
+    "run_id": "tr-1794170750315-manual",
+    "status": "RUNNING",
+    "started_at": "2026-11-08T21:48:30+01:00",
+    "finished_at": null,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -955,85 +955,18 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
-    "processed_ids": [
-      "a710157b5414",
-      "714f8f0e1ea6",
-      "988b4ce8dc58",
-      "2393cedbe478",
-      "c3887f1b1ecc"
-    ],
-    "converged_ids": [
-      "ba6cfc447a32",
-      "555e7cb8732e"
-    ],
-    "outcomes": [
-      {
-        "id": "a710157b5414",
-        "revision": 0,
-        "name": "#FueraDeControl8nov",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox_or_convergence"
-      },
-      {
-        "id": "714f8f0e1ea6",
-        "revision": 0,
-        "name": "Otero",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox_or_convergence"
-      },
-      {
-        "id": "988b4ce8dc58",
-        "revision": 0,
-        "name": "#Fiesta8N",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox_retry",
-        "workflow_run": 42521643048
-      },
-      {
-        "id": "2393cedbe478",
-        "revision": 0,
-        "name": "Hadjar",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox_or_convergence"
-      },
-      {
-        "id": "c3887f1b1ecc",
-        "revision": 0,
-        "name": "Old Trafford",
-        "outcome": "explained",
-        "applied": true,
-        "via": "chat_outbox_or_convergence"
-      },
-      {
-        "id": "ba6cfc447a32",
-        "revision": 0,
-        "name": "Albon",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "555e7cb8732e",
-        "revision": 0,
-        "name": "El Molinón",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      }
-    ]
+    "current": 0,
+    "total": 2,
+    "processed_ids": [],
+    "outcomes": []
   },
-  "message": "Pasada tr-1794170400000-manual cerrada 7/7. Cinco revisiones se emitieron por CHAT_OUTBOX; Albon y El Molinón convergieron antes de la persistencia propia y no se sobrescribieron. #Fiesta8N requirió reemisión JIT tras cancelación de un job y quedó aplicado con workflow 42521643048. Barrera final: editorial-queue=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794170750315-manual RUNNING. Cola inicial JIT=2 review_red: Escribá y #DragRaceEs; se procesan del más antiguo al más reciente, revalidando id/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -1178,6 +1111,11 @@
         "concurrent_convergence": 2
       },
       "message": "Pasada tr-1794170400000-manual cerrada 7/7. Cinco revisiones se emitieron por CHAT_OUTBOX; Albon y El Molinón convergieron antes de la persistencia propia y no se sobrescribieron. #Fiesta8N requirió reemisión JIT tras cancelación de un job y quedó aplicado con workflow 42521643048. Barrera final: editorial-queue=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T21:48:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794170750315-manual RUNNING. Cola inicial JIT=2 review_red: Escribá y #DragRaceEs; se procesan del más antiguo al más reciente, revalidando id/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
     }
   ]
 }
