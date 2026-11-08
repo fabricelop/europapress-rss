@@ -7,19 +7,17 @@
   "previous_run_id": "tr-1794149458886-manual",
   "command_id": "tr-1794149555656-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-08T15:52:35.656+01:00",
-  "updated_at": "2026-11-08T15:56:00+01:00",
-  "finished_at": null,
-  "current": 4,
-  "total": 11,
-  "trend_id": "16174b2e5cf2",
-  "title": "Antony",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "updated_at": "2026-11-08T16:07:30+01:00",
+  "finished_at": "2026-11-08T16:07:30+01:00",
+  "current": 12,
+  "total": 12,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "48ef49a80a85",
     "16174b2e5cf2",
     "0baf2af7e494",
@@ -30,9 +28,10 @@
     "5b559b316c23",
     "b07209fa7a7c",
     "e2fd4ec01c09",
-    "ec86fd039cfe"
+    "ec86fd039cfe",
+    "f7e247a958e1"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "48ef49a80a85",
     "16174b2e5cf2",
     "0baf2af7e494",
@@ -42,32 +41,131 @@
     "5921c5cfb37a",
     "5b559b316c23",
     "b07209fa7a7c",
-    "e2fd4ec01c09",
-    "ec86fd039cfe"
+    "e2fd4ec01c09"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 11,
-    "observed": 11,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 12,
+    "observed": 12,
+    "closed": 12,
+    "explained": 12,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 11,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 2,
+    "concurrent_convergence": 10
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "48ef49a80a85",
+      "revision": 0,
+      "name": "Extremoduro",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "16174b2e5cf2",
+      "revision": 0,
+      "name": "Antony",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "0baf2af7e494",
+      "revision": 0,
+      "name": "Nadal",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "6121d2770c7a",
+      "revision": 0,
+      "name": "la séptima",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "e4423895dd54",
+      "revision": 0,
+      "name": "#SorteoCOAC2027",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d7e94e63db2c",
+      "revision": 0,
+      "name": "Aguirre",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "5921c5cfb37a",
+      "revision": 0,
+      "name": "Amaia",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "5b559b316c23",
+      "revision": 0,
+      "name": "Vinicius",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "b07209fa7a7c",
+      "revision": 0,
+      "name": "bezz",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "e2fd4ec01c09",
+      "revision": 2,
+      "name": "#CCubicos441",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "ec86fd039cfe",
+      "revision": 0,
+      "name": "Marc",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "f7e247a958e1",
+      "revision": 0,
+      "name": "La Revuelta",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
+  "incident_count": 2,
+  "incidents": [
+    {
+      "id": "6121d2770c7a",
+      "revision": 0,
+      "type": "chat_outbox_workflow_cancelled_recovered",
+      "message": "La primera aplicación del outbox fue cancelada por concurrencia; se revalidó JIT la misma revisión y se reemitió sin cambiar el texto. Aplicación final confirmada por retirada de la cola."
+    },
+    {
+      "id": "5921c5cfb37a",
+      "revision": 0,
+      "type": "chat_outbox_workflow_cancelled_recovered",
+      "message": "La primera aplicación del outbox fue cancelada por concurrencia; se revalidó JIT la misma revisión y se reemitió sin cambiar el texto. Aplicación final confirmada por retirada de la cola."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -821,20 +919,26 @@
       "trend_id": "16174b2e5cf2",
       "title": "Antony",
       "message": "Antony r0 validado JIT. Titularidad en Elche-Betis corroborada por dos fuentes; texto y remate nuevos enviados. ImageGen=0."
+    },
+    {
+      "at": "2026-11-08T16:07:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794149555656-manual cerrada 12/12. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Dos aplicaciones de chat-outbox canceladas por concurrencia (la séptima y Amaia) fueron reemitidas tras validación JIT y quedaron aplicadas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-08T15:51:50+01:00",
-  "last_completed_at": "2026-11-08T15:43:00+01:00",
+  "last_completed_at": "2026-11-08T16:07:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794148669902-manual",
-    "status": "DONE",
-    "started_at": "2026-11-08T15:38:00+01:00",
-    "finished_at": "2026-11-08T15:43:00+01:00",
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "run_id": "tr-1794149555656-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-08T15:52:35.656+01:00",
+    "finished_at": "2026-11-08T16:07:30+01:00",
+    "attempted": 12,
+    "observed": 12,
+    "closed": 12,
+    "explained": 12,
+    "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -845,23 +949,121 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 2,
     "processed_ids": [
-      "3d36913a2caa"
+      "48ef49a80a85",
+      "16174b2e5cf2",
+      "0baf2af7e494",
+      "6121d2770c7a",
+      "e4423895dd54",
+      "d7e94e63db2c",
+      "5921c5cfb37a",
+      "5b559b316c23",
+      "b07209fa7a7c",
+      "e2fd4ec01c09",
+      "ec86fd039cfe",
+      "f7e247a958e1"
     ],
-    "converged_ids": [],
+    "converged_ids": [
+      "48ef49a80a85",
+      "16174b2e5cf2",
+      "0baf2af7e494",
+      "6121d2770c7a",
+      "e4423895dd54",
+      "d7e94e63db2c",
+      "5921c5cfb37a",
+      "5b559b316c23",
+      "b07209fa7a7c",
+      "e2fd4ec01c09"
+    ],
     "outcomes": [
       {
-        "id": "3d36913a2caa",
-        "revision": 1,
-        "name": "elche",
+        "id": "48ef49a80a85",
+        "revision": 0,
+        "name": "Extremoduro",
         "outcome": "explained",
-        "applied": true,
-        "apply_commit": "edf02e30bb89df92fc5d6e11871961cad73c1e46"
+        "applied": true
+      },
+      {
+        "id": "16174b2e5cf2",
+        "revision": 0,
+        "name": "Antony",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "0baf2af7e494",
+        "revision": 0,
+        "name": "Nadal",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "6121d2770c7a",
+        "revision": 0,
+        "name": "la séptima",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "e4423895dd54",
+        "revision": 0,
+        "name": "#SorteoCOAC2027",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "d7e94e63db2c",
+        "revision": 0,
+        "name": "Aguirre",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "5921c5cfb37a",
+        "revision": 0,
+        "name": "Amaia",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "5b559b316c23",
+        "revision": 0,
+        "name": "Vinicius",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "b07209fa7a7c",
+        "revision": 0,
+        "name": "bezz",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "e2fd4ec01c09",
+        "revision": 2,
+        "name": "#CCubicos441",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "ec86fd039cfe",
+        "revision": 0,
+        "name": "Marc",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "f7e247a958e1",
+        "revision": 0,
+        "name": "La Revuelta",
+        "outcome": "explained",
+        "applied": true
       }
     ]
   },
-  "message": "Pasada tr-1794149458886-manual RUNNING. Cola inicial=5 preparing: elche r2, Broncano r0, Extremoduro r0, Antony r0 y Nadal r0; antiguo→reciente con validación JIT antes de cada tratamiento. Sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794149555656-manual cerrada 12/12. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Dos aplicaciones de chat-outbox canceladas por concurrencia (la séptima y Amaia) fueron reemitidas tras validación JIT y quedaron aplicadas. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
