@@ -1167,7 +1167,13 @@ def main():
                 seen_top30.add(key)
     # Mantener la fuente elegida como referencia para las posiciones,
     # sin presentar las señales de otras fuentes como posiciones verificadas.
-    primary_ranked = direct_spain or (source_data.get(chosen_name) or {}).get("trends") or []
+    # Use all 50 genuine GetDayTrends terms only to replace topics that the
+    # editor explicitly suppressed. Never borrow missing ranks from a peer.
+    primary_ranked = (
+        (source_data.get("getdaytrends") or {}).get("trends") or []
+        if direct_spain else
+        (source_data.get(chosen_name) or {}).get("trends") or []
+    )
     # In hold-last-good the anchor name is "previous": there is no provider
     # called "previous". Preserve the real 1-10 ranking and complete 11-30
     # from an actual source that currently repeats at least 6 of those ten
@@ -1193,7 +1199,9 @@ def main():
             print("Top 30: puestos 11-30 observados en", aligned[0][1],
                   "con", aligned[0][0], "coincidencias actuales de Top 10")
     extend_ranked(primary_ranked[:30])
-    if len(top30) < 30:
+    if len(top30) < 30 and not direct_spain:
+        # Only legacy consensus may use independent providers for fill.
+        # A current GetDayTrends Spain ranking never mixes other rankings.
         # Prefer related, dated secondary snapshots. A disconnected
         # never-updating undated feed must not fill the remaining places.
         secondary = []
