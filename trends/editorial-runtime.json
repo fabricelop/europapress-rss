@@ -3,28 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794117300000-manual",
-  "previous_run_id": "tr-1794115500000-manual",
-  "command_id": "tr-1794117300000-manual",
+  "run_id": "tr-1794120538462-manual",
+  "previous_run_id": "tr-1794117300000-manual",
+  "command_id": "tr-1794120538462-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T06:55:00+01:00",
-  "updated_at": "2026-11-08T06:59:43+01:00",
-  "finished_at": "2026-11-08T06:59:43+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T07:49:00+01:00",
+  "updated_at": "2026-11-08T07:49:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "e2b9766d0f1a",
+  "title": "Vinicius",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "e2b9766d0f1a",
+    "1d931d3e44fe",
+    "a18902b32c40"
+  ],
+  "remaining_active_ids": [
+    "e2b9766d0f1a",
+    "1d931d3e44fe",
+    "a18902b32c40"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -33,8 +41,8 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "queue_remaining": 3,
+    "rewrite_pending_remaining": 3,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
@@ -492,6 +500,11 @@
       "at": "2026-11-08T06:59:43+01:00",
       "phase": "verifying",
       "message": "Refresh manual 42452670432 completado con éxito. Relectura posterior de main: editorial-queue=0 (actualizada 2026-11-08T06:59:22+01:00) y mobile-decisions sin trabajos activos. Cierre 0/0 confirmado tras el refresco."
+    },
+    {
+      "at": "2026-11-08T07:49:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794120538462-manual iniciada desde chat. Cola main=3 preparing (Vinicius, Santiago Peña y Mourinho), en orden antiguo→reciente con validación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T05:29:16+01:00",
@@ -509,5 +522,5 @@
     "imagegen_calls": 0,
     "publications": 0
   },
-  "message": "Pasada tr-1794112156029-manual cerrada 2/2 por convergencia JIT. La Séptima y Broncano quedaron actualizados como continuidad en sus mismas fichas; cola final 0 y sin reexplicaciones pendientes. ImageGen=0; publicaciones=0."
+  "message": "Pasada en curso: 0/3; investigando Vinicius. Sin ImageGen ni publicaciones."
 }
