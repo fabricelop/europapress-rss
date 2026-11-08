@@ -317,9 +317,9 @@ def export_top30(recent, manual, explained, requests, catalog=None, now=None):
         "radar_country": text(recent, "country"),
         "radar_live_verified": live_verified,
         "radar_fresh_sources": fresh_sources,
-        "ranking_verification": "verified" if live_verified else "unverified",
+        "ranking_verification": "freshness-confirmed" if live_verified else "unverified",
         "ranking_warning": "" if live_verified else (
-            "Top 30 orientativo: sin evidencia reciente confirmada de X España."
+            "Top 30 orientativo: sin observación fechada y corroborada de X España."
         ),
         "count": len(output),
         "items": output,
