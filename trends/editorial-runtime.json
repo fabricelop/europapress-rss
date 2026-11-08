@@ -1196,6 +1196,104 @@
         "concurrent_convergence": 0
       },
       "message": "Pasada tr-1794173160000-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y la búsqueda en main no muestra preparing/update, rewrite_pending/reexplain activos. La ejecución anterior figuraba RUNNING en telemetría, pero su trabajo ya había desaparecido del estado autoritativo; no se resucita. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794172605662-manual",
+      "status": "DONE",
+      "started_at": "2026-11-08T22:17:40+01:00",
+      "finished_at": "2026-11-08T22:26:00+01:00",
+      "superseded_by": "tr-1794173160000-manual",
+      "summary": {
+        "attempted": 8,
+        "observed": 8,
+        "closed": 8,
+        "explained": 6,
+        "problematic": 0,
+        "updates": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "8566c8fefa8d",
+        "555bb13d46aa",
+        "34c59fd12412",
+        "ae3da9f12e3b",
+        "f9c4dfa3b7d6",
+        "c254c019cd08",
+        "red-review-20cf9be8f813af596108",
+        "red-review-ce9c23b8f3e4833f80e1"
+      ],
+      "outcomes": [
+        {
+          "id": "8566c8fefa8d",
+          "revision": 0,
+          "name": "Pablo Durán",
+          "outcome": "explained",
+          "apply_commit": "92488cdf543557324e28b5ea4c8510b67b23fcca"
+        },
+        {
+          "id": "555bb13d46aa",
+          "revision": 0,
+          "name": "Verstappen",
+          "outcome": "explained",
+          "apply_commit": "2480487d509d923073968a56a3107d2b47cb05d3"
+        },
+        {
+          "id": "34c59fd12412",
+          "revision": 0,
+          "name": "Sporting",
+          "outcome": "explained",
+          "apply_commit": "2480487d509d923073968a56a3107d2b47cb05d3"
+        },
+        {
+          "id": "ae3da9f12e3b",
+          "revision": 0,
+          "name": "Jandro",
+          "outcome": "explained",
+          "apply_commit": "2480487d509d923073968a56a3107d2b47cb05d3"
+        },
+        {
+          "id": "f9c4dfa3b7d6",
+          "revision": 0,
+          "name": "Norris",
+          "outcome": "explained",
+          "apply_commit": "2480487d509d923073968a56a3107d2b47cb05d3"
+        },
+        {
+          "id": "c254c019cd08",
+          "revision": 0,
+          "name": "Bernal",
+          "outcome": "explained",
+          "apply_commit": "2480487d509d923073968a56a3107d2b47cb05d3"
+        },
+        {
+          "id": "red-review-20cf9be8f813af596108",
+          "revision": 0,
+          "name": "Balaídos",
+          "outcome": "distinct_update",
+          "created_id": "trend-update-debb5feb7b94586ff002",
+          "apply_commit": "619dd50feec4eb81e15a86dd529d1d362b8d0386"
+        },
+        {
+          "id": "red-review-ce9c23b8f3e4833f80e1",
+          "revision": 0,
+          "name": "Interlagos",
+          "outcome": "distinct_update",
+          "created_id": "trend-update-f4f7b8ffb3fda224a810",
+          "apply_commit": "619dd50feec4eb81e15a86dd529d1d362b8d0386"
+        }
+      ],
+      "message": "Pasada tr-1794172605662-manual completada 8/8: seis reelaboraciones ordinarias aplicadas y dos revisiones review_red (Balaídos e Interlagos) materializadas como episodios distintos. La sucesora tr-1794173160000-manual tomó la telemetría canónica durante el cierre y confirmó la barrera final con editorial-queue=0 y sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ]
 }
