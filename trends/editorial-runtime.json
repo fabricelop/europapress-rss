@@ -7,43 +7,52 @@
   "previous_run_id": "tr-1794149555656-manual",
   "command_id": "tr-autoguard-1794166219",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T20:46:00+01:00",
-  "updated_at": "2026-11-08T21:08:00+01:00",
-  "finished_at": null,
-  "current": 15,
+  "updated_at": "2026-11-08T20:55:00+01:00",
+  "finished_at": "2026-11-08T20:55:00+01:00",
+  "current": 17,
   "total": 17,
-  "trend_id": "red-review-dd760f62fefd26c71237",
-  "title": "Revisando novedades: Aston Martin / Russell",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "1a600d6d046e",
+    "bd2b2934d243",
+    "097a158384e1",
+    "78a4dfe59496",
+    "20a90e357907",
+    "1196cc9f8b21",
+    "e0098a5f8970",
+    "392ac0248b65",
+    "00bfd43ca5fa",
+    "ff67019b39ba",
+    "d5728f873d7c",
     "f5ecd642ce16",
-    "f9e1f460adf1"
+    "1a600d6d046e",
+    "f9e1f460adf1",
+    "red-review-45745a370b36ec2c799a",
+    "red-review-2b8c36b362764c37d989",
+    "red-review-dd760f62fefd26c71237",
+    "red-review-2c5c620a098a3e2965b8"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-dd760f62fefd26c71237",
-    "red-review-2c5c620a098a3e2965b8"
-  ],
-  "remaining_active_ids": [
-    "red-review-dd760f62fefd26c71237",
-    "red-review-2c5c620a098a3e2965b8"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 17,
     "observed": 17,
-    "closed": 15,
-    "explained": 13,
+    "closed": 17,
+    "explained": 14,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "unchanged_reviews": 1,
+    "stale_reviews": 2,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,7 +60,145 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "bd2b2934d243",
+      "revision": 1,
+      "name": "#NFLMadridGame",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "097a158384e1",
+      "revision": 1,
+      "name": "Bengals",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "78a4dfe59496",
+      "revision": 0,
+      "name": "Barrene",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "20a90e357907",
+      "revision": 0,
+      "name": "Masters 1000 de París",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "1196cc9f8b21",
+      "revision": 0,
+      "name": "Shelton",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "e0098a5f8970",
+      "revision": 0,
+      "name": "Carlos Alcaraz",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "392ac0248b65",
+      "revision": 0,
+      "name": "#RealSociedadRayo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "00bfd43ca5fa",
+      "revision": 0,
+      "name": "portimão",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "ff67019b39ba",
+      "revision": 0,
+      "name": "Carlitos",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "d5728f873d7c",
+      "revision": 0,
+      "name": "Chase",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "f5ecd642ce16",
+      "revision": 0,
+      "name": "#PremierLeagueDAZN",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "1a600d6d046e",
+      "revision": 0,
+      "name": "#LaPistaDelTenis",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "f9e1f460adf1",
+      "revision": 0,
+      "name": "Ruibal",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "red-review-45745a370b36ec2c799a",
+      "revision": 0,
+      "name": "Revisar novedades: Robe",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox"
+    },
+    {
+      "id": "red-review-2b8c36b362764c37d989",
+      "revision": 0,
+      "name": "Revisar novedades: Carvajal",
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_outbox"
+    },
+    {
+      "id": "red-review-dd760f62fefd26c71237",
+      "revision": 0,
+      "name": "Revisar novedades: Aston Martin",
+      "outcome": "distinct_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "created_id": "trend-update-a79b9ee04dbb9b45034a"
+    },
+    {
+      "id": "red-review-2c5c620a098a3e2965b8",
+      "revision": 0,
+      "name": "Revisar novedades: Russell",
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_outbox"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -837,6 +984,11 @@
       "at": "2026-11-08T21:08:00+01:00",
       "phase": "investigating",
       "message": "Barrera de cierre detectó 2 review_red nuevos: Aston Martin y Russell. Ambos corresponden al GP de São Paulo del 08/11, episodio posterior al GP de México. Se persisten como candidatos a episodio distinto con fuentes F1 actuales; pendientes de aplicación JIT."
+    },
+    {
+      "at": "2026-11-08T20:55:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final main verificada: editorial-queue=0; requests y mobile-decisions sin preparing/update, rewrite_pending ni reexplain. 17/17 cerrados: 13 explicaciones ordinarias, Robe unchanged, Carvajal stale, Aston Martin episodio distinto y Russell stale. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-08T20:52:21+01:00",
