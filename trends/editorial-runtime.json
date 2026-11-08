@@ -7,45 +7,52 @@
   "previous_run_id": "tr-1794148104890-manual",
   "command_id": "tr-1794148669902-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T15:38:00+01:00",
-  "updated_at": "2026-11-08T15:42:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-08T15:43:00+01:00",
+  "finished_at": "2026-11-08T15:43:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "3d36913a2caa",
-  "title": "elche",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "3d36913a2caa"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "3d36913a2caa"
-  ],
-  "remaining_active_ids": [
-    "3d36913a2caa"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "3d36913a2caa",
+      "revision": 1,
+      "name": "elche",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "edf02e30bb89df92fc5d6e11871961cad73c1e46"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -714,20 +721,32 @@
       "trend_id": "3d36913a2caa",
       "title": "elche",
       "message": "Persistiendo elche r1 mediante TTENDENCIAS_CHAT_OUTBOX_V1. Fuentes: Sky Sports y Jornada Perfecta; sin ImageGen, sin image-outbox editorial."
+    },
+    {
+      "at": "2026-11-08T15:43:00+01:00",
+      "phase": "verifying",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Aplicación real verificada en edf02e30bb89df92fc5d6e11871961cad73c1e46: requests.json y telegram-manual-explained.json contienen elche r1 como explained con el mismo texto, remate, rank_at_explanation=12 y fuentes; editorial-queue retiró la revisión."
+    },
+    {
+      "at": "2026-11-08T15:43:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 1/1. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-08T15:38:00+01:00",
-  "last_completed_at": "2026-11-08T15:34:00+01:00",
+  "last_completed_at": "2026-11-08T15:43:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794148104890-manual",
+    "run_id": "tr-1794148669902-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T15:28:30+01:00",
-    "finished_at": "2026-11-08T15:34:00+01:00",
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "started_at": "2026-11-08T15:38:00+01:00",
+    "finished_at": "2026-11-08T15:43:00+01:00",
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -740,30 +759,21 @@
     "publications": 0,
     "incidents": 0,
     "processed_ids": [
-      "105f7f6dd85b",
-      "3950f5d82b16"
+      "3d36913a2caa"
     ],
     "converged_ids": [],
     "outcomes": [
       {
-        "id": "105f7f6dd85b",
-        "revision": 0,
-        "name": "maffeo",
+        "id": "3d36913a2caa",
+        "revision": 1,
+        "name": "elche",
         "outcome": "explained",
         "applied": true,
-        "apply_commit": "441815d576ab4442d730943ac14bce23b87d5ecd"
-      },
-      {
-        "id": "3950f5d82b16",
-        "revision": 0,
-        "name": "Abascal",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "38ac2b14b8ac17fe51a87d38a758ce43bb6c7d36"
+        "apply_commit": "edf02e30bb89df92fc5d6e11871961cad73c1e46"
       }
     ]
   },
-  "message": "Persistiendo elche r1 con resultado final 0-0; esperando aplicación real en main.",
+  "message": "Pasada tr-1794148669902-manual cerrada 1/1. elche r1 aplicado en edf02e30bb89df92fc5d6e11871961cad73c1e46. Barrera final: editorial-queue=0 y sin preparing/update ni reexplicaciones activas en mobile-decisions. Sin ImageGen, sin image-outbox editorial y sin publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -801,6 +811,11 @@
       "at": "2026-11-08T15:34:00+01:00",
       "phase": "closing",
       "message": "tr-1794148104890-manual DONE 2/2: maffeo y Abascal reelaborados desde cero y aplicados; cola final 0, sin reexplicaciones activas, ImageGen=0."
+    },
+    {
+      "at": "2026-11-08T15:43:00+01:00",
+      "phase": "closing",
+      "message": "tr-1794148669902-manual DONE 1/1: elche r1 reelaborado desde cero con resultado final 0-0 y aplicado en edf02e30bb89df92fc5d6e11871961cad73c1e46; cola final 0, sin reexplicaciones activas, ImageGen=0."
     }
   ]
 }
