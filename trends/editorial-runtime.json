@@ -3,23 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794179692",
-  "previous_run_id": "tr-1794178498903-manual",
-  "command_id": "tr-autoguard-1794179692",
+  "run_id": "tr-1794179931321-manual",
+  "previous_run_id": "tr-autoguard-1794179692",
+  "command_id": "tr-1794179931321-manual",
   "source": "chat",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-09T00:15:00+01:00",
-  "updated_at": "2026-11-09T00:20:00+01:00",
+  "started_at": "2026-11-09T00:20:00+01:00",
+  "updated_at": "2026-11-09T00:20:30+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "red-review-48eaf1fc122194897b46",
-  "title": "Revisar novedades: Gerard Martín",
+  "current": 0,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "a6852f36db22"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "red-review-48eaf1fc122194897b46",
@@ -31,10 +29,10 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -50,17 +48,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "a6852f36db22",
-      "revision": 0,
-      "name": "Jong",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7f078e8d396fd57ed7af965ba46bdadfcdce2d6d",
-      "apply_workflow_run": 42534472747
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -95,7 +83,7 @@
     },
     "message": "Pasada tr-autoguard-1794179692 cerrada 1/1. Jong r0 quedó explicado y aplicado en main; barrera final observada con editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794179692 cerrada 1/1. Jong r0 quedó explicado y aplicado en main; barrera final observada con editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual iniciada con 2 review_red: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -697,6 +685,11 @@
       "at": "2026-11-09T00:20:00+01:00",
       "phase": "preparing",
       "message": "La barrera final detectó 2 review_red nuevos: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Se reabre la pasada y se procesan JIT tras Jong r0 ya cerrado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T00:20:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada con 2 review_red: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
