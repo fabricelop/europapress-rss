@@ -72,14 +72,22 @@ def x_post_assets(image_url):
 
 
 def x_payload(project, editorial):
-    """Same canonical homepage URL and 280-weight text budget as the X button."""
+    """Keep the TTActualidad link for news, never attach its X card to trends."""
     site_url = SECTION_URL[project]
     text = editorial.strip()
     for footer in (*LEGACY_FOOTER_URLS, site_url, site_url.rstrip("/")):
         if text.endswith(footer):
             text = text[:-len(footer)].strip()
             break
-    content_budget = 280 - 23 - x_weight("\n\n")
+    # X auto-expands a TTActualidad link into an unwanted X Card. Keep the
+    # news channel unchanged, but send TTendencias text (+ approved image)
+    # without any managed TTActualidad URL, even if one was embedded.
+    include_site = project == "ttittulares"
+    if not include_site:
+        text = re.sub(r"https?://ttactualidad\\.rainyraven22\\.chatgpt\\.site(?:/[^\\s]*)?",
+                      "", text, flags=re.IGNORECASE)
+        text = re.sub(r"\n{3,}", "\n\n", text).strip()
+    content_budget = 280 - (23 + x_weight("\n\n") if include_site else 0)
     if x_weight(text) > content_budget:
         suffix_at = text.rfind("\n\n#")
         if suffix_at < 0:
@@ -92,7 +100,7 @@ def x_payload(project, editorial):
                 text = x_shorten(text, content_budget)
         else:
             text = x_shorten(text, content_budget)
-    result = text + "\n\n" + site_url
+    result = text + ("\n\n" + site_url if include_site else "")
     if x_weight(text) > content_budget:
         raise ValueError("Texto de X aún excede el límite de caracteres")
     return result
