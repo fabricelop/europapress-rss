@@ -2,132 +2,175 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-08T15:01:51.963136+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-08T19:30:23.999461+00:00",
+      "issue_count": 5,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "27be22f221b6",
+          "title": "Transportes fija los servicios mínimos en Renfe para la huelga de maquinistas del 10 y 12 de noviemb",
+          "seconds": 5769,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "188eb5536589",
+          "title": "Muere un cazador por un disparo accidental de un compañero cuando guardaban las armas en Cantabria",
+          "seconds": 5769,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "7673cc272693",
+          "title": "Canal y horario del Atlético Madrid - Barcelona de LaLiga EA Sports: dónde ver por TV este partido d",
+          "seconds": 3406,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4630559a4d2e",
+          "title": "La caja negra del Iryo muestra que la maquinista trató de \"reportar a Atocha en 3-4 ocasiones sin co",
+          "seconds": 1544,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2005659,
+          "seconds": 2021771,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "785b4fb5ce52048e7da85b616118127317142aed441ff2dd195ae2e3dccacd9b",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 4
     },
     "ttendencias": {
-      "checked_at": "2026-11-08T15:01:51.963136+00:00",
-      "issue_count": 15,
+      "checked_at": "2026-11-08T19:30:23.999461+00:00",
+      "issue_count": 17,
       "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "bd2b2934d243",
+          "title": "#NFLMadridGame",
+          "seconds": 2820,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "097a158384e1",
+          "title": "Bengals",
+          "seconds": 2783,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "78a4dfe59496",
+          "title": "Barrene",
+          "seconds": 2525,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "20a90e357907",
+          "title": "Masters 1000 de París",
+          "seconds": 2133,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "1196cc9f8b21",
+          "title": "Shelton",
+          "seconds": 2101,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "e0098a5f8970",
+          "title": "Carlos Alcaraz",
+          "seconds": 2091,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "392ac0248b65",
+          "title": "#RealSociedadRayo",
+          "seconds": 2085,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "00bfd43ca5fa",
+          "title": "portimão",
+          "seconds": 2079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "ff67019b39ba",
+          "title": "Carlitos",
+          "seconds": 2070,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "d5728f873d7c",
+          "title": "Chase",
+          "seconds": 2059,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "f5ecd642ce16",
+          "title": "#PremierLeagueDAZN",
+          "seconds": 2051,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "1a600d6d046e",
+          "title": "#LaPistaDelTenis",
+          "seconds": 2040,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "f9e1f460adf1",
+          "title": "Ruibal",
+          "seconds": 2028,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "red-review-45745a370b36ec2c799a",
+          "title": "Revisar novedades: Robe",
+          "seconds": 8323,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "red-review-2b8c36b362764c37d989",
+          "title": "Revisar novedades: Carvajal",
+          "seconds": 8323,
+          "workflow": null
+        },
         {
           "kind": "missing_delivery",
           "id": "3983b7d095c2",
           "title": "Paraguay",
-          "seconds": 24238,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "e2fd4ec01c09",
-          "title": "#CCubicos441",
-          "seconds": 495,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "3d36913a2caa",
-          "title": "elche",
-          "seconds": 910,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "48ef49a80a85",
-          "title": "Extremoduro",
-          "seconds": 633,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "16174b2e5cf2",
-          "title": "Antony",
-          "seconds": 623,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "0baf2af7e494",
-          "title": "Nadal",
-          "seconds": 604,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "6121d2770c7a",
-          "title": "la séptima",
-          "seconds": 591,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "e4423895dd54",
-          "title": "#SorteoCOAC2027",
-          "seconds": 579,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "d7e94e63db2c",
-          "title": "Aguirre",
-          "seconds": 570,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5921c5cfb37a",
-          "title": "Amaia",
-          "seconds": 560,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5b559b316c23",
-          "title": "Vinicius",
-          "seconds": 529,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "b07209fa7a7c",
-          "title": "bezz",
-          "seconds": 509,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "ec86fd039cfe",
-          "title": "Marc",
-          "seconds": 487,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "f7e247a958e1",
-          "title": "La Revuelta",
-          "seconds": 364,
+          "seconds": 40350,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2005659,
+          "seconds": 2021771,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -136,16 +179,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "088ac916f0acb81dc60611729b15a684977efa510cb0ed237b08655efe2300c2",
+      "open_signature": "cbaa0c0f87a0b0b378f2d399f2cf0601758a4315a425579a5f7fbc3683435fc8",
       "repair_via_workflow_run": false,
-      "escalation_required": 1
+      "escalation_required": 16
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-08T15:01:51.963136+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-08T15:01:51.963136+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-08T15:01:51.963136+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-08T19:30:23.999461+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-08T19:30:23.999461+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-08T19:30:23.999461+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-08T19:30:23.999461+00:00"
   },
-  "checked_at": "2026-11-08T15:01:51.963136+00:00"
+  "checked_at": "2026-11-08T19:30:23.999461+00:00"
 }
