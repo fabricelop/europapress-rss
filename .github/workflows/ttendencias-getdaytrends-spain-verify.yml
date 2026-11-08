@@ -4,11 +4,15 @@ on:
     paths:
       - "trends/update_trends.py"
       - "tests/test_getdaytrends_spain_current.py"
+      - ".github/scripts/test_ttendencias_top30_queue.py"
+      - "trends/auto_queue_new.py"
       - ".github/workflows/ttendencias-getdaytrends-spain-verify.yml"
   pull_request:
     paths:
       - "trends/update_trends.py"
       - "tests/test_getdaytrends_spain_current.py"
+      - ".github/scripts/test_ttendencias_top30_queue.py"
+      - "trends/auto_queue_new.py"
       - ".github/workflows/ttendencias-getdaytrends-spain-verify.yml"
   workflow_dispatch:
 permissions:
@@ -40,3 +44,5 @@ jobs:
           PY
       - name: Unit regressions
         run: python -m unittest discover -s tests -p test_getdaytrends_spain_current.py -v
+      - name: All 30 Spain pending trends enter editorial preparation, safely
+        run: python .github/scripts/test_ttendencias_top30_queue.py
