@@ -7,40 +7,37 @@
   "previous_run_id": "tr-1794178144244-manual",
   "command_id": "tr-1794178498903-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T23:57:00+01:00",
-  "updated_at": "2026-11-08T23:57:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-08T23:58:00+01:00",
+  "finished_at": "2026-11-08T23:58:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-7d9fce4e1da10ec2ddac",
-  "title": "Revisar novedades: Levante 0-2 Atlético",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-7d9fce4e1da10ec2ddac",
+    "red-review-1888f27e01a9b053b86e"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-7d9fce4e1da10ec2ddac",
-    "red-review-1888f27e01a9b053b86e"
-  ],
-  "remaining_active_ids": [
-    "red-review-7d9fce4e1da10ec2ddac",
-    "red-review-1888f27e01a9b053b86e"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,19 +45,37 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-7d9fce4e1da10ec2ddac",
+      "revision": 0,
+      "name": "Revisar novedades: Levante 0-2 Atlético",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "69032bbb8ded67f869856911fb1899b5c19ac185"
+    },
+    {
+      "id": "red-review-1888f27e01a9b053b86e",
+      "revision": 0,
+      "name": "Revisar novedades: Simeone",
+      "outcome": "distinct_update",
+      "applied": true,
+      "created_id": "trend-update-a6ba2247d4ace88428d6",
+      "apply_commit": "69032bbb8ded67f869856911fb1899b5c19ac185"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades: Levante 0-2 Atlético",
-  "last_started_at": "2026-11-08T23:54:22+01:00",
-  "last_completed_at": "2026-11-08T23:54:22+01:00",
+  "activity": "Pasada editorial completada",
+  "last_started_at": "2026-11-08T23:57:00+01:00",
+  "last_completed_at": "2026-11-08T23:58:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794176640252-manual",
+    "run_id": "tr-1794178498903-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T23:24:00+01:00",
-    "finished_at": "2026-11-08T23:28:00+01:00",
+    "started_at": "2026-11-08T23:57:00+01:00",
+    "finished_at": "2026-11-08T23:58:00+01:00",
     "summary": {
       "attempted": 2,
       "observed": 2,
@@ -70,8 +85,8 @@
       "updates": 1,
       "continuity_updates": 0,
       "distinct_updates": 1,
-      "unchanged_reviews": 0,
-      "stale_reviews": 1,
+      "unchanged_reviews": 1,
+      "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -81,9 +96,9 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794178498903-manual cerrada 2/2. «Levante 0-2 Atlético» quedó unchanged; «Simeone» se verificó como episodio distinto del Atlético-Barça del 8/11 y quedó aplicado en trend-update-a6ba2247d4ace88428d6. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794178498903-manual iniciada. Cola JIT=2 review_red; se procesan del más antiguo al más reciente con revalidación ID/revisión. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794178498903-manual cerrada 2/2. «Levante 0-2 Atlético» quedó unchanged; «Simeone» se verificó como episodio distinto del Atlético-Barça del 8/11 y quedó aplicado en trend-update-a6ba2247d4ace88428d6. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -640,12 +655,14 @@
       "at": "2026-11-08T23:57:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794178498903-manual iniciada. Cola JIT=2 review_red; se procesan del más antiguo al más reciente con revalidación ID/revisión. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794178498903-manual",
+      "status": "DONE",
+      "at": "2026-11-08T23:58:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794178498903-manual cerrada 2/2. «Levante 0-2 Atlético» quedó unchanged; «Simeone» se verificó como episodio distinto del Atlético-Barça del 8/11 y quedó aplicado en trend-update-a6ba2247d4ace88428d6. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "9e1649b8ed38",
-    "revision": 0,
-    "name": "#SVSemifinal",
-    "phase": "persisting"
-  }
+  "current_item": null
 }
