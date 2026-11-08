@@ -515,22 +515,94 @@
       "at": "2026-11-08T07:53:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794120749061-manual iniciada desde chat. Cola main=2 review_red (Leo Román y Fiscalía Europea). La pasada anterior tr-1794120538462-manual figura RUNNING sobre los mismos trabajos; se revalida JIT y se evita duplicar persistencia. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T07:51:50+01:00",
+      "phase": "verifying",
+      "message": "Pasada tr-1794120538462-manual: aplicación real de Vinicius, Santiago Peña y Mourinho verificada en fe299443fb1ddc2321b293f8abff919c890d6c59; las tres revisiones quedaron explained y la cola ordinaria pasó a 0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T07:54:36+01:00",
+      "phase": "verifying",
+      "message": "Pasada tr-1794120538462-manual: mantenimiento aplicado en de25bd43274051bba94b3630e82ae0857cc208ae. Leo Román crea episodio distinto trend-update-5f94b8b39a1caaa943ee; Fiscalía Europea queda unchanged. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T07:55:10+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794120538462-manual cerrada 5/5. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. La telemetría canónica ya fue tomada por la sucesora tr-1794120749061-manual; se conserva su RUNNING y se registra esta pasada como last_run completada."
     }
   ],
   "last_started_at": "2026-11-08T07:51:50+01:00",
-  "last_completed_at": "2026-11-08T07:51:50+01:00",
+  "last_completed_at": "2026-11-08T07:55:10+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794112156029-manual",
+    "run_id": "tr-1794120538462-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T05:29:16+01:00",
-    "finished_at": "2026-11-08T05:35:00+01:00",
-    "attempted": 2,
-    "closed": 2,
+    "started_at": "2026-11-08T07:49:00+01:00",
+    "finished_at": "2026-11-08T07:55:10+01:00",
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
+    "updates": 1,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
-    "publications": 0
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "processed_ids": [
+      "e2b9766d0f1a",
+      "1d931d3e44fe",
+      "a18902b32c40",
+      "red-review-75339fd167356c788f2d",
+      "red-review-82c90fc3544822598817"
+    ],
+    "outcomes": [
+      {
+        "id": "e2b9766d0f1a",
+        "revision": 0,
+        "name": "Vinicius",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "fe299443fb1ddc2321b293f8abff919c890d6c59"
+      },
+      {
+        "id": "1d931d3e44fe",
+        "revision": 0,
+        "name": "Santiago Peña",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "fe299443fb1ddc2321b293f8abff919c890d6c59"
+      },
+      {
+        "id": "a18902b32c40",
+        "revision": 0,
+        "name": "Mourinho",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "fe299443fb1ddc2321b293f8abff919c890d6c59"
+      },
+      {
+        "id": "red-review-75339fd167356c788f2d",
+        "revision": 0,
+        "name": "Revisar novedades: Leo Román",
+        "outcome": "distinct_update",
+        "applied": true,
+        "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae",
+        "new_id": "trend-update-5f94b8b39a1caaa943ee"
+      },
+      {
+        "id": "red-review-82c90fc3544822598817",
+        "revision": 0,
+        "name": "Revisar novedades: Fiscalía Europea",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae"
+      }
+    ]
   },
   "message": "Pasada en curso: 0/2; revalidando cola y revisiones. Sin ImageGen ni publicaciones."
 }
