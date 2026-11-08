@@ -3,47 +3,60 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794176640252-manual",
-  "previous_run_id": "tr-1794175800000-manual",
-  "command_id": "tr-1794176640252-manual",
+  "run_id": "tr-1794178144244-manual",
+  "previous_run_id": "tr-1794176640252-manual",
+  "command_id": "tr-1794178144244-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T23:24:00+01:00",
-  "updated_at": "2026-11-08T23:29:00+01:00",
-  "finished_at": "2026-11-08T23:29:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T23:51:00+01:00",
+  "updated_at": "2026-11-08T23:51:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 7,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-9e32be2848a10d84489c",
-    "red-review-c683874a2ac7fe16e327"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "9e1649b8ed38",
+    "113f2f9ba728",
+    "458f869fdc14",
+    "e714e4de2209",
+    "c5fb8b304b6e",
+    "312f7bce521d",
+    "9731285d0638"
+  ],
+  "remaining_active_ids": [
+    "9e1649b8ed38",
+    "113f2f9ba728",
+    "458f869fdc14",
+    "e714e4de2209",
+    "c5fb8b304b6e",
+    "312f7bce521d",
+    "9731285d0638"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 7,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 7,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
@@ -68,7 +81,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre JIT completado: cola autoritativa vacía y sin marcadores activos de reelaboración.",
+  "activity": "Preparando 7 trabajos editoriales activos; revalidación JIT antes de cada tratamiento.",
   "last_started_at": "2026-11-08T23:24:00+01:00",
   "last_completed_at": "2026-11-08T23:28:00+01:00",
   "api_failover_enabled": false,
@@ -99,7 +112,7 @@
     },
     "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794176640252-manual cerrada 2/2 por convergencia JIT: Julián Álvarez y Gerard Martín fueron verificados como episodios distintos del Atlético-Barcelona del 8/11 y aplicados por el mantenimiento concurrente antes de la escritura propia. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794178144244-manual RUNNING con 7 preparing en main. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -590,6 +603,11 @@
       "at": "2026-11-08T23:29:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794176640252-manual cerrada 2/2 por convergencia JIT: Julián Álvarez y Gerard Martín fueron verificados como episodios distintos del Atlético-Barcelona del 8/11 y aplicados por el mantenimiento concurrente antes de la escritura propia. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T23:51:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794178144244-manual iniciada con 7 trabajos preparing: #SVSemifinal, cholo, #SalvadosEmilioDelgado, Pantoja, Jurado, Liak y Fermín. Orden por antigüedad y revalidación JIT ID/revisión. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
