@@ -7,26 +7,32 @@
   "previous_run_id": "tr-1794178498903-manual",
   "command_id": "tr-autoguard-1794179692",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "preparing",
   "started_at": "2026-11-09T00:15:00+01:00",
-  "updated_at": "2026-11-09T00:19:30+01:00",
-  "finished_at": "2026-11-09T00:19:30+01:00",
+  "updated_at": "2026-11-09T00:20:00+01:00",
+  "finished_at": null,
   "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "red-review-48eaf1fc122194897b46",
+  "title": "Revisar novedades: Gerard Martín",
+  "queue_complete": false,
   "processed_ids": [
     "a6852f36db22"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-48eaf1fc122194897b46",
+    "red-review-1e8c87c9286d54fba68d"
+  ],
+  "remaining_active_ids": [
+    "red-review-48eaf1fc122194897b46",
+    "red-review-1e8c87c9286d54fba68d"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
+    "attempted": 3,
+    "observed": 3,
     "closed": 1,
     "explained": 1,
     "problematic": 0,
@@ -36,7 +42,7 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -58,7 +64,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada",
+  "activity": "Procesando revisiones de novedades",
   "last_started_at": "2026-11-09T00:18:17+01:00",
   "last_completed_at": "2026-11-09T00:19:30+01:00",
   "api_failover_enabled": false,
@@ -686,6 +692,11 @@
       "at": "2026-11-09T00:19:30+01:00",
       "phase": "closing",
       "message": "Cierre 1/1: Jong r0 aplicado. Cola=0, sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T00:20:00+01:00",
+      "phase": "preparing",
+      "message": "La barrera final detectó 2 review_red nuevos: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Se reabre la pasada y se procesan JIT tras Jong r0 ya cerrado. ImageGen=0."
     }
   ],
   "current_item": null
