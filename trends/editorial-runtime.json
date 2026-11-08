@@ -8,9 +8,9 @@
   "command_id": "tr-1794097500000-manual",
   "source": "chat",
   "status": "PROCESSING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-08T01:25:00+01:00",
-  "updated_at": "2026-11-08T01:25:00+01:00",
+  "updated_at": "2026-11-08T01:31:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 5,
@@ -257,6 +257,16 @@
       "at": "2026-11-08T01:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794097500000-manual iniciada desde chat; cola main=5 preparing (José Mourinho, Quirante, Hernández Maeso, Vadillo y Huijsen). Procesamiento JIT antiguo→reciente. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T01:31:00+01:00",
+      "phase": "investigating",
+      "message": "Cinco revisiones r0 validadas JIT. Causas verificadas: Mourinho (rueda de prensa tras 0-3), Quirante (entrevista tensa a Maffeo), Hernández Maeso (arbitraje y acta), Vadillo (gol del 2-0 Zaragoza-Huesca), Huijsen (acción reclamada como mano y partido en Mestalla)."
+    },
+    {
+      "at": "2026-11-08T01:31:00+01:00",
+      "phase": "persisting",
+      "message": "Se materializan 5 editorial-outbox ready en un único commit. Texto+remate cerrados; ImageGen=0 y la imagen queda para el circuito visual paralelo."
     }
   ],
   "last_started_at": "2026-11-08T01:25:00+01:00",
