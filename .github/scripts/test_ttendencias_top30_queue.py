@@ -252,3 +252,81 @@ with tempfile.TemporaryDirectory() as foldername:
     assert manual_fixed["status"]=="preparing",manual_fixed
     assert not manual_fixed.get("explanation"),manual_fixed
     print("TT_TOP30_CLOSED_TOPIC_AND_MANUAL_GROUP_OK")
+
+
+# A genuinely observed Spain/Ahora GetDayTrends snapshot may start research
+# for all 30 positions without pretending that X's authenticated Top30 or
+# the upstream observation time has been independently verified.
+with tempfile.TemporaryDirectory() as foldername:
+    folder = Path(foldername)
+    for script in ("auto_queue_new.py", "anticipation.py",
+                   "reconcile_prepared_ready.py", "requests_json.py",
+                   "trend_episode_policy.py", "suppression.py",
+                   "suppressed-terms.json"):
+        shutil.copy2(source.with_name(script), folder / script)
+    names = [f"ES Agora Example {i:02}" for i in range(1, 51)]
+    now = datetime.now(ZoneInfo("Europe/Madrid"))
+
+    def snapshot(**overrides):
+        doc = {
+            "country": "ES",
+            "primary_source": "getdaytrends",
+            "selection_method": "getdaytrends-spain-now",
+            "live_verified": False,
+            "captured_at": now.isoformat(timespec="seconds"),
+            "sources_used": ["getdaytrends"],
+            "top30": names[:30],
+            "items": [{"name": name, "rank": i} for i, name in enumerate(names[:30], 1)],
+            "sources": {"getdaytrends": {
+                "ok": True, "trends": names,
+                "fetched_at": now.isoformat(timespec="seconds"),
+                "freshness": "unknown",
+                "age_minutes": None,
+                "list_unchanged_minutes": 18,
+            }},
+        }
+        doc.update(overrides)
+        return doc
+
+    def run(doc):
+        put(folder / "recent.json", doc)
+        result = subprocess.run([sys.executable, str(folder / "auto_queue_new.py")],
+                                cwd=folder, capture_output=True, text=True)
+        assert result.returncode == 0, (result.stdout, result.stderr)
+        return load(folder / "editorial-queue.json")
+
+    for fname, content in (("requests.json", {"requests": []}),
+                           ("telegram-manual-explained.json", {"items": []}),
+                           ("prepared.json", {"items": []})):
+        put(folder / fname, content)
+    q = run(snapshot())
+    assert q["count"] == 30, q
+    assert [x["name"] for x in q["items"]] == names[:30], q
+    assert all(x["status"] == "preparing" for x in q["items"])
+    assert run(snapshot())["count"] == 30, "Repeat must not duplicate jobs"
+    # Changes to source or country must NOT create new work.
+    altered = snapshot(country="TH")
+    altered["items"][29] = {"name": "Foreign Snapshot Topic", "rank": 30}
+    before = load(folder / "requests.json")
+    assert run(altered)["count"] == 30
+    assert load(folder / "requests.json") == before
+
+    # New test topic at rank 30 must never enter on a held, frozen, too-old
+    # or cross-provider snapshot; failure is safe and preserves existing queue.
+    for mutation in ("held", "frozen", "expired", "wrong_order", "other_provider"):
+        doc = snapshot()
+        doc["items"][29] = {"name": "New Unchecked Topic", "rank": 30}
+        if mutation == "held":
+            doc["selection_method"] = "getdaytrends-spain-held"
+            doc["ranking_source_status"] = "held"
+        elif mutation == "frozen":
+            doc["sources"]["getdaytrends"]["list_unchanged_minutes"] = 180
+        elif mutation == "expired":
+            doc["captured_at"] = (now - timedelta(hours=2)).isoformat()
+        elif mutation == "wrong_order":
+            doc["sources"]["getdaytrends"]["trends"] = list(reversed(names))
+        elif mutation == "other_provider":
+            doc["primary_source"] = "playersells"
+        assert run(doc)["count"] == 30, mutation
+        assert load(folder / "requests.json") == before, mutation
+    print("TT_GDT_SPAIN_AUTOSTART_OK: 30 researched, no duplicate, stale/held/geo-safe, approval still manual")
