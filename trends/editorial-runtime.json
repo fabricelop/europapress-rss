@@ -3,39 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794112156029-manual",
-  "previous_run_id": "tr-1794111900000-manual",
-  "command_id": "tr-1794112156029-manual",
+  "run_id": "tr-1794113700000-manual",
+  "previous_run_id": "tr-1794112156029-manual",
+  "command_id": "tr-1794113700000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T05:29:16+01:00",
-  "updated_at": "2026-11-08T05:35:00+01:00",
-  "finished_at": "2026-11-08T05:35:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T05:55:00+01:00",
+  "updated_at": "2026-11-08T05:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-1c184434eff23e2ae2a3",
-    "red-review-177fb2cbc0827f4da6c0"
-  ],
-  "converged_ids": [
-    "red-review-1c184434eff23e2ae2a3",
-    "red-review-177fb2cbc0827f4da6c0"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "continuity_updates": 2,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
@@ -45,30 +39,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-1c184434eff23e2ae2a3",
-      "revision": 0,
-      "name": "Revisar novedades: La Séptima",
-      "outcome": "continuity_update",
-      "applied": true,
-      "source_id": "16ac22023f2b",
-      "apply_commit": "6ec4d302a0649bd05711278257bb2e1ef5d7bd8a",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-177fb2cbc0827f4da6c0",
-      "revision": 0,
-      "name": "Revisar novedades: Broncano",
-      "outcome": "continuity_update",
-      "applied": true,
-      "source_id": "50d1a6619b2a",
-      "apply_commit": "6ec4d302a0649bd05711278257bb2e1ef5d7bd8a",
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -649,6 +622,11 @@
       "at": "2026-11-08T05:35:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT de tr-1794112156029-manual: editorial-queue=0; requests y mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Cierre 2/2 por convergencia. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T05:55:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794113700000-manual iniciada desde chat; lectura JIT de main con editorial-queue=0 y Top 30 fresco a las 05:50:50. Verificando barrera final, reexplicaciones y mantenimiento. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T05:29:16+01:00",
