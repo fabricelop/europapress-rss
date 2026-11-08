@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T18:47:55.871351+00:00",
+  "updated_at": "2026-11-08T18:48:18.528657+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -264587,6 +264587,30 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "78a4dfe59496",
+      "name": "Barrene",
+      "rank": 4,
+      "revision": 0,
+      "status": "preparing",
+      "created_at": "2026-11-08T18:48:18.528657+00:00",
+      "requested_at": "2026-11-08T18:48:18.528657+00:00",
+      "updated_at": "2026-11-08T18:48:18.528657+00:00",
+      "task": "explain",
+      "auto_queued": false,
+      "request_source": "ttactualidad_direct_rework",
+      "with_image": true,
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "fallback_image_status": "pending",
+      "ai_image_status": "pending",
+      "requested_together": [
+        "Barrene"
+      ],
+      "originated_from_prior_id": "manual-ab337821f637a273cbc3072986c87498",
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Barrene, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
     }
   ],
   "count": 1890
