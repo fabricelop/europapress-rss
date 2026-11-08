@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-08T01:47:55.505395+00:00",
+      "checked_at": "2026-11-08T08:03:07.653261+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1958023,
+          "seconds": 1980535,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,39 +22,45 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-08T01:47:55.505395+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-11-08T08:03:07.653261+00:00",
+      "issue_count": 3,
       "issues": [
         {
-          "kind": "missing_delivery",
-          "id": "trend-update-cd405c86697547704c92",
-          "title": "Rudiger",
-          "seconds": 4610,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "red-review-98b5e92d7311bb4dc401",
+          "title": "Revisar novedades: Paraguay",
+          "seconds": 2082,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "red-review-c7e476f68780c4ca2a4b",
+          "title": "Revisar novedades: Santiago Peña",
+          "seconds": 2082,
+          "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1958022,
+          "seconds": 1980534,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "23e599582a860c596295b1597d58fef8d30902213eff0ec3080f37938da2d0b8",
+      "open_signature": "b30104fda9f33c9b26439b7315de914f9e008b1ed04c28e8776afa9ac1d5d8d6",
       "repair_via_workflow_run": false,
-      "escalation_required": 1
+      "escalation_required": 2
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-05T16:48:26.785706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-08T01:47:55.505395+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-08T01:47:55.505395+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-08T08:03:07.653261+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-08T08:03:07.653261+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-08T01:47:55.505395+00:00"
   },
-  "checked_at": "2026-11-08T01:47:55.505395+00:00"
+  "checked_at": "2026-11-08T08:03:07.653261+00:00"
 }
