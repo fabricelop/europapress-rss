@@ -7,28 +7,20 @@
   "previous_run_id": "tr-1794167484200-manual",
   "command_id": "tr-1794170400000-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "DONE",
   "phase": "preparing",
   "started_at": "2026-11-08T21:40:00+01:00",
-  "updated_at": "2026-11-08T21:40:00+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 7,
+  "updated_at": "2026-11-08T21:50:00+01:00",
+  "finished_at": "2026-11-08T21:50:00+01:00",
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
-  "remaining_active_ids": [
-    "a710157b5414",
-    "714f8f0e1ea6",
-    "988b4ce8dc58",
-    "2393cedbe478",
-    "c3887f1b1ecc",
-    "ba6cfc447a32",
-    "555e7cb8732e"
-  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 7,
@@ -877,14 +869,14 @@
   "last_completed_at": "2026-11-08T21:28:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794169500000-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-08T21:25:00+01:00",
-    "finished_at": "2026-11-08T21:28:00+01:00",
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "run_id": "tr-autoguard-1794170465",
+    "status": "DONE",
+    "started_at": "2026-11-08T21:41:00+01:00",
+    "finished_at": "2026-11-08T21:50:00+01:00",
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -897,12 +889,60 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": []
+    "incidents": 0,
+    "processed_ids": [
+      "a710157b5414",
+      "714f8f0e1ea6",
+      "988b4ce8dc58",
+      "2393cedbe478",
+      "c3887f1b1ecc"
+    ],
+    "converged_ids": [
+      "a710157b5414",
+      "c3887f1b1ecc"
+    ],
+    "outcomes": [
+      {
+        "id": "a710157b5414",
+        "revision": 0,
+        "name": "#FueraDeControl8nov",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence"
+      },
+      {
+        "id": "714f8f0e1ea6",
+        "revision": 0,
+        "name": "Otero",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "988b4ce8dc58",
+        "revision": 0,
+        "name": "#Fiesta8N",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_backup"
+      },
+      {
+        "id": "2393cedbe478",
+        "revision": 0,
+        "name": "Hadjar",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "c3887f1b1ecc",
+        "revision": 0,
+        "name": "Old Trafford",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence"
+      }
+    ]
   },
-  "message": "Pasada manual iniciada con 7 revisiones preparing observadas en main; procesamiento antiguo→reciente con revalidación JIT. Sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-autoguard-1794170465 cerrada 5/5; cola final 0 y sin reexplicaciones activas. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -998,6 +1038,28 @@
         "incidents": 1
       },
       "message": "Pasada manual tr-1794169500000-manual: barrera JIT en main con editorial-queue=0 y mobile-decisions sin preparing/update ni reexplicaciones activas. Se lanzó refresco manual del Top 30 mediante commit 1aa1b0b5387a11397e0b3141406dd25ea84aeb2a; el workflow 42520091973 seguía in_progress en checkout y no materializó un ranking nuevo durante esta pasada. recent.json permaneció en 21:20:51, live_verified=false/reliability=unverified. No se inventó trabajo. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794170465",
+      "status": "DONE",
+      "started_at": "2026-11-08T21:41:00+01:00",
+      "finished_at": "2026-11-08T21:50:00+01:00",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "message": "Pasada tr-autoguard-1794170465 cerrada 5/5. #FueraDeControl8nov y Old Trafford convergieron con otra pasada; Otero y Hadjar quedaron aplicados tras transporte oficial; #Fiesta8N se cerró mediante editorial-outbox de respaldo y aplicador oficial. Barrera final editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ]
 }
