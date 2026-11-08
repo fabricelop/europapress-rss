@@ -1305,6 +1305,10 @@ def main():
         "ranking_provider": "GetDayTrends España",
         "ranking_provider_update_interval_minutes": 60,
         "ranking_source_status": "held" if method == "getdaytrends-spain-held" else "observed",
+        "ranking_source_observed_at": (
+            (previous_doc.get("ranking_source_observed_at") or previous_doc.get("captured_at"))
+            if method == "getdaytrends-spain-held" else now.isoformat(timespec="seconds")
+        ),
         "selection_method": method,
         "sources_used": sources_used,
         "source_count": len(valid),
