@@ -3,65 +3,49 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794148104890-manual",
-  "previous_run_id": "tr-1794147824052-manual",
-  "command_id": "tr-1794148104890-manual",
+  "run_id": "tr-1794148669902-manual",
+  "previous_run_id": "tr-1794148104890-manual",
+  "command_id": "tr-1794148669902-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T15:28:30+01:00",
-  "updated_at": "2026-11-08T15:34:00+01:00",
-  "finished_at": "2026-11-08T15:34:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "105f7f6dd85b",
-    "3950f5d82b16"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T15:38:00+01:00",
+  "updated_at": "2026-11-08T15:38:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "3d36913a2caa",
+  "title": "elche",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "3d36913a2caa"
+  ],
+  "remaining_active_ids": [
+    "3d36913a2caa"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "queue_remaining": 1,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "105f7f6dd85b",
-      "revision": 0,
-      "name": "maffeo",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "441815d576ab4442d730943ac14bce23b87d5ecd"
-    },
-    {
-      "id": "3950f5d82b16",
-      "revision": 0,
-      "name": "Abascal",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "38ac2b14b8ac17fe51a87d38a758ce43bb6c7d36"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -695,9 +679,16 @@
       "at": "2026-11-08T15:34:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 2/2. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T15:38:00+01:00",
+      "phase": "preparing",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Pasada tr-1794148669902-manual iniciada desde chat. Cola main=1: elche r1, reelaboración manual desde cero por información desfasada. Validación JIT previa a investigación. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T15:28:30+01:00",
+  "last_started_at": "2026-11-08T15:38:00+01:00",
   "last_completed_at": "2026-11-08T15:34:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -744,7 +735,7 @@
       }
     ]
   },
-  "message": "Pasada tr-1794148104890-manual cerrada 2/2. maffeo r0 aplicado en 441815d576ab4442d730943ac14bce23b87d5ecd y Abascal r0 en 38ac2b14b8ac17fe51a87d38a758ce43bb6c7d36. Barrera final: editorial-queue=0 y sin preparing/update ni reexplicaciones activas en mobile-decisions. Sin ImageGen, sin image-outbox editorial y sin publicaciones.",
+  "message": "Pasada tr-1794148669902-manual RUNNING 0/1. Procesando elche r1; sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
