@@ -7,28 +7,24 @@
   "previous_run_id": "tr-1794117300000-manual",
   "command_id": "tr-1794120538462-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-08T07:49:00+01:00",
-  "updated_at": "2026-11-08T07:49:00+01:00",
+  "updated_at": "2026-11-08T07:51:50+01:00",
   "finished_at": null,
   "current": 0,
   "total": 3,
   "trend_id": "e2b9766d0f1a",
   "title": "Vinicius",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "1d931d3e44fe",
+    "a18902b32c40",
+    "e2b9766d0f1a"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "e2b9766d0f1a",
-    "1d931d3e44fe",
-    "a18902b32c40"
-  ],
-  "remaining_active_ids": [
-    "e2b9766d0f1a",
-    "1d931d3e44fe",
-    "a18902b32c40"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -507,8 +503,8 @@
       "message": "Pasada tr-1794120538462-manual iniciada desde chat. Cola main=3 preparing (Vinicius, Santiago Peña y Mourinho), en orden antiguo→reciente con validación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T05:29:16+01:00",
-  "last_completed_at": "2026-11-08T05:35:00+01:00",
+  "last_started_at": "2026-11-08T07:51:50+01:00",
+  "last_completed_at": "2026-11-08T07:51:50+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794112156029-manual",
