@@ -3,67 +3,51 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794147824052-manual",
-  "previous_run_id": "tr-1794147605058-manual",
-  "command_id": "tr-1794147824052-manual",
+  "run_id": "tr-1794148104890-manual",
+  "previous_run_id": "tr-1794147824052-manual",
+  "command_id": "tr-1794148104890-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T15:23:44.052+01:00",
-  "updated_at": "2026-11-08T15:27:00+01:00",
-  "finished_at": "2026-11-08T15:27:00+01:00",
-  "current": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T15:28:30+01:00",
+  "updated_at": "2026-11-08T15:28:30+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "trend_id": "105f7f6dd85b",
+  "title": "maffeo",
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-6f470a75ff14308a70e0",
-    "red-review-1bde9d60f94ed2a61c23"
+  "converged_ids": [],
+  "remaining_ids": [
+    "105f7f6dd85b",
+    "3950f5d82b16"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "105f7f6dd85b",
+    "3950f5d82b16"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 2,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-6f470a75ff14308a70e0",
-      "revision": 0,
-      "name": "Revisar novedades: Broncano",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-1bde9d60f94ed2a61c23",
-      "revision": 0,
-      "name": "Revisar novedades: Amaia",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -666,9 +650,16 @@
       "at": "2026-11-08T15:27:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 2/2 por convergencia. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T15:28:30+01:00",
+      "phase": "preparing",
+      "trend_id": "105f7f6dd85b",
+      "title": "maffeo",
+      "message": "Pasada tr-1794148104890-manual iniciada: 2 reelaboraciones manuales preparing (maffeo r0 y Abascal r0), antiguo→reciente con validación JIT. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T15:23:03+01:00",
+  "last_started_at": "2026-11-08T15:28:30+01:00",
   "last_completed_at": "2026-11-08T15:27:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -717,7 +708,7 @@
       }
     ]
   },
-  "message": "Pasada cerrada 2/2 por convergencia JIT: Broncano y Amaia ya estaban aplicados como unchanged en main. Cola final=0 y sin reexplicaciones activas. Sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794148104890-manual iniciada: 2 reelaboraciones manuales preparing (maffeo r0 y Abascal r0), antiguo→reciente con validación JIT. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
